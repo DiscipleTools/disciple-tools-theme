@@ -22,6 +22,7 @@ require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-security.
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-translation.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-tags.php' );
 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-roles.php' );
+require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-sso-login.php' );
 
 /**
  * Class Disciple_Tools_Settings_Menu
@@ -37,7 +38,7 @@ class Disciple_Tools_Settings_Menu
     }
 
     public function __construct() {
-        add_action( "admin_menu", [ $this, "add_dt_options_menu" ] );
+        add_action( 'admin_menu', [ $this, 'add_dt_options_menu' ] );
     }
 
     public function add_dt_options_menu() {
@@ -50,7 +51,7 @@ class Disciple_Tools_Settings_Menu
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }
 
-        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'general';
+        $tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 
         ?>
         <div class="wrap">

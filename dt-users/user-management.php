@@ -15,16 +15,16 @@ class DT_User_Management
     public function __construct() {
         $url_path = dt_get_url_path();
         if ( self::has_permission() || self::non_admins_can_make_users() ) {
-            if ( ( strpos( $url_path, "user-management/user" ) !== false || strpos( $url_path, "user-management/add-user" ) !== false ) ) {
+            if ( ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
             }
         }
         if ( self::has_permission() ){
-            if ( strpos( $url_path, "user-management" ) !== false ) {
+            if ( strpos( $url_path, 'user-management' ) !== false ) {
                 add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
             }
-            if ( strpos( $url_path, "user-management/user" ) !== false || ( strpos( $url_path, "user-management/add-user" ) !== false && ( current_user_can( "create_users" ) ) ) ){
+            if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && ( current_user_can( 'create_users' ) ) ) ){
 
 
                 add_action( 'init', function() {
@@ -71,7 +71,7 @@ class DT_User_Management
         register_rest_route(
             $namespace, '/user', [
                 [
-                    'methods'  => "GET",
+                    'methods'  => 'GET',
                     'callback' => [ $this, 'get_user_endpoint' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -81,7 +81,7 @@ class DT_User_Management
         register_rest_route(
             $namespace, '/user', [
                 [
-                    'methods'  => "POST",
+                    'methods'  => 'POST',
                     'callback' => [ $this, 'update_settings_on_user' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -90,7 +90,7 @@ class DT_User_Management
         register_rest_route(
             $namespace, '/get_users', [
                 [
-                    'methods'  => "GET",
+                    'methods'  => 'GET',
                     'callback' => [ $this, 'get_users_endpoints' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -106,7 +106,7 @@ class DT_User_Management
 
     public function add_menu( $content ) {
         $content .= '<li><a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a></li>';
-        if ( current_user_can( "manage_dt" ) ){
+        if ( current_user_can( 'manage_dt' ) ){
             $content .= '<li><a href="'. esc_url( site_url( '/user-management/add-user/' ) ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
         }
         return $content;
@@ -114,18 +114,18 @@ class DT_User_Management
 
     public static function user_management_options(){
         return [
-            "user_status_options" => [
-                "active" => __( 'Active', 'disciple_tools' ),
-                "away" => __( 'Away', 'disciple_tools' ),
-                "inconsistent" => __( 'Inconsistent', 'disciple_tools' ),
-                "inactive" => __( 'Inactive', 'disciple_tools' ),
+            'user_status_options' => [
+                'active' => __( 'Active', 'disciple_tools' ),
+                'away' => __( 'Away', 'disciple_tools' ),
+                'inconsistent' => __( 'Inconsistent', 'disciple_tools' ),
+                'inactive' => __( 'Inactive', 'disciple_tools' ),
             ]
         ];
     }
 
     public function scripts() {
         $url_path = dt_get_url_path();
-        if ( strpos( $url_path, "user-management/user" ) !== false || strpos( $url_path, "user-management/add-user" ) !== false ) {
+        if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) {
 
             $dependencies = [
                 'jquery',
@@ -185,7 +185,8 @@ class DT_User_Management
                         'less' => __( 'Less', 'disciple_tools' ),
                     ],
                     'language_dropdown' => dt_get_available_languages(),
-                    'has_permission' => self::has_permission(),
+                    'default_language' => get_option( 'dt_user_default_language', 'en_US' ),
+                    'has_permission' => self::has_permission()
                 ]
             );
 
@@ -199,39 +200,39 @@ class DT_User_Management
 
     public function get_dt_user( $user_id, $section = null ) {
         if ( ! self::has_permission() ) {
-            return new WP_Error( __METHOD__, "Permission error", [ 'status' => 403 ] );
+            return new WP_Error( __METHOD__, 'Permission error', [ 'status' => 403 ] );
         }
 
         global $wpdb;
-        $user = get_user_by( "ID", $user_id );
+        $user = get_user_by( 'ID', $user_id );
         if ( ! $user ) {
-            return new WP_Error( __METHOD__, "No User", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'No User', [ 'status' => 400 ] );
         }
 
         $user_response = [
-            "display_name" => wp_specialchars_decode( $user->display_name ),
-            "user_email" => $user->user_email,
-            "user_id" => $user->ID,
-            "corresponds_to_contact" => 0,
-            "contact" => [],
-            "user_status" => '',
-            "workload_status" => '',
-            "dates_unavailable" => false,
-            "location_grid" => [],
-            "user_activity" => [],
-            "active_contacts" => 0,
-            "update_needed" => [],
-            "unread_notifications" => 0,
-            "needs_accepted" => 0,
-            "days_active" => [],
-            "times" => [],
-            "assigned_counts" => [],
-            "contact_statuses" => [],
-            "contact_attempts" => [],
-            "contact_accepts" => [],
-            "unaccepted_contacts" => [],
-            "unattempted_contacts" => [],
-            "allowed_sources" => [],
+            'display_name' => wp_specialchars_decode( $user->display_name ),
+            'user_email' => $user->user_email,
+            'user_id' => $user->ID,
+            'corresponds_to_contact' => 0,
+            'contact' => [],
+            'user_status' => '',
+            'workload_status' => '',
+            'dates_unavailable' => false,
+            'location_grid' => [],
+            'user_activity' => [],
+            'active_contacts' => 0,
+            'update_needed' => [],
+            'unread_notifications' => 0,
+            'needs_accepted' => 0,
+            'days_active' => [],
+            'times' => [],
+            'assigned_counts' => [],
+            'contact_statuses' => [],
+            'contact_attempts' => [],
+            'contact_accepts' => [],
+            'unaccepted_contacts' => [],
+            'unattempted_contacts' => [],
+            'allowed_sources' => [],
         ];
 
         /* details section */
@@ -245,46 +246,46 @@ class DT_User_Management
             $user_response['workload_status'] = $workload_status;
 
             /* dates unavailable */
-            $dates_unavailable = get_user_option( "user_dates_unavailable", $user->ID );
+            $dates_unavailable = get_user_option( 'user_dates_unavailable', $user->ID );
             if ( ! empty( $dates_unavailable ) ) {
                 foreach ( $dates_unavailable as &$range ) {
-                    $range["start_date"] = dt_format_date( $range["start_date"] );
-                    $range["end_date"] = dt_format_date( $range["end_date"] );
+                    $range['start_date'] = dt_format_date( $range['start_date'] );
+                    $range['end_date'] = dt_format_date( $range['end_date'] );
                 }
             }
             $user_response['dates_unavailable'] = $dates_unavailable;
 
             $user_response['user_location'] = Disciple_Tools_Users::get_user_location( $user->ID );
-            $user_response["gender"] = get_user_option( 'user_gender', $user_id );
-            $user_response["languages"] = get_user_option( 'user_languages', $user_id );
-            $user_response["description"] = get_user_meta( $user_id, 'description', true );
-            $user_response["corresponds_to_contact"] = Disciple_Tools_Users::get_contact_for_user( $user_id );
+            $user_response['gender'] = get_user_option( 'user_gender', $user_id );
+            $user_response['languages'] = get_user_option( 'user_languages', $user_id );
+            $user_response['description'] = get_user_meta( $user_id, 'description', true );
+            $user_response['corresponds_to_contact'] = Disciple_Tools_Users::get_contact_for_user( $user_id );
             $dt_user_meta = get_user_meta( $user_id ); // Full array of user meta data
-            $user_response["user_fields"] = dt_build_user_fields_display( $dt_user_meta );
+            $user_response['user_fields'] = dt_build_user_fields_display( $dt_user_meta );
 
         }
 
-        $modules = dt_get_option( "dt_post_type_modules" );
-        if ( ( $section === 'stats' || $section === 'pace' || $section === null ) && isset( $modules["access_module"]["enabled"] ) && $modules["access_module"]["enabled"] ) {
-            $to_accept = DT_Posts::search_viewable_post( "contacts", [
+        $modules = dt_get_option( 'dt_post_type_modules' );
+        if ( ( $section === 'stats' || $section === 'pace' || $section === null ) && isset( $modules['access_module']['enabled'] ) && $modules['access_module']['enabled'] ) {
+            $to_accept = DT_Posts::search_viewable_post( 'contacts', [
                 'overall_status' => [ 'assigned' ],
                 'assigned_to' => [ $user->ID ]
             ], false );
-            $update_needed = DT_Posts::search_viewable_post( "contacts", [
-                'requires_update' => [ "true" ],
+            $update_needed = DT_Posts::search_viewable_post( 'contacts', [
+                'requires_update' => [ 'true' ],
                 'assigned_to' => [ $user->ID ],
                 'overall_status' => [ '-closed', '-paused' ],
                 'sort' => 'last_modified'
             ], false );
-            if ( sizeof( $update_needed["posts"] ) > 5 ) {
-                $update_needed["posts"] = array_slice( $update_needed["posts"], 0, 5 );
+            if ( sizeof( $update_needed['posts'] ) > 5 ) {
+                $update_needed['posts'] = array_slice( $update_needed['posts'], 0, 5 );
             }
-            if ( sizeof( $to_accept["posts"] ) > 10 ) {
-                $to_accept["posts"] = array_slice( $to_accept["posts"], 0, 10 );
+            if ( sizeof( $to_accept['posts'] ) > 10 ) {
+                $to_accept['posts'] = array_slice( $to_accept['posts'], 0, 10 );
             }
-            foreach ( $update_needed["posts"] as &$contact ) {
+            foreach ( $update_needed['posts'] as &$contact ) {
                 $now = time();
-                $last_modified = get_post_meta( $contact->ID, "last_modified", true );
+                $last_modified = get_post_meta( $contact->ID, 'last_modified', true );
                 $days_different = (int) round( ( $now - (int) $last_modified ) / ( 60 * 60 * 24 ) );
                 $contact->last_modified_msg = esc_attr( sprintf( __( '%s days since last update', 'disciple_tools' ), $days_different ), 'disciple_tools' );
             }
@@ -331,9 +332,9 @@ class DT_User_Management
         }
 
 
-        if ( current_user_can( "promote_users" ) ){
-            $user_response["roles"] = $user->roles;
-            $user_response["allowed_sources"] = get_user_option( 'allowed_sources', $user->ID ) ?: [];
+        if ( current_user_can( 'promote_users' ) ){
+            $user_response['roles'] = $user->roles;
+            $user_response['allowed_sources'] = get_user_option( 'allowed_sources', $user->ID ) ?: [];
         }
 
         return $user_response;
@@ -342,25 +343,25 @@ class DT_User_Management
 
     public function get_user_endpoint( WP_REST_Request $request ) {
         if ( !self::has_permission() ) {
-            return new WP_Error( "get_user", "Missing Permissions", [ 'status' => 401 ] );
+            return new WP_Error( 'get_user', 'Missing Permissions', [ 'status' => 401 ] );
         }
 
         $params = $request->get_params();
-        if ( ! isset( $params["user"] ) ) {
-            return new WP_Error( __METHOD__, "Missing user id", [ 'status' => 400 ] );
+        if ( ! isset( $params['user'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing user id', [ 'status' => 400 ] );
         }
-        if ( ! isset( $params["section"] ) ) {
-            return new WP_Error( __METHOD__, "Missing collection id", [ 'status' => 400 ] );
+        if ( ! isset( $params['section'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing collection id', [ 'status' => 400 ] );
         }
-        return $this->get_dt_user( $params["user"], $params["section"] );
+        return $this->get_dt_user( $params['user'], $params['section'] );
     }
 
     public function get_users_endpoints( WP_REST_Request $request ){
         if ( !self::has_permission() ){
-            return new WP_Error( "get_user", "Missing Permissions", [ 'status' => 401 ] );
+            return new WP_Error( 'get_user', 'Missing Permissions', [ 'status' => 401 ] );
         }
         $params = $request->get_params();
-        $refresh = isset( $params["refresh"] ) && $params["refresh"] = "1";
+        $refresh = isset( $params['refresh'] ) && $params['refresh'] = '1';
         return self::get_users( $refresh );
     }
 
@@ -382,13 +383,13 @@ class DT_User_Management
             ARRAY_A );
 
             foreach ( $users_query as $user ){
-                $users[ $user["ID"] ] = $user;
-                $users[ $user["ID"] ]['location_grid'] = false;
-                $users[ $user["ID"] ]['location_grid_meta'] = false;
-                $users[ $user["ID"] ]['number_update'] = 0;
-                $users[ $user["ID"] ]['number_assigned_to'] = 0;
-                $users[ $user["ID"] ]['number_new_assigned'] = 0;
-                $users[ $user["ID"] ]['number_active'] = 0;
+                $users[ $user['ID'] ] = $user;
+                $users[ $user['ID'] ]['location_grid'] = false;
+                $users[ $user['ID'] ]['location_grid_meta'] = false;
+                $users[ $user['ID'] ]['number_update'] = 0;
+                $users[ $user['ID'] ]['number_assigned_to'] = 0;
+                $users[ $user['ID'] ]['number_new_assigned'] = 0;
+                $users[ $user['ID'] ]['number_active'] = 0;
             }
             $user_data = $wpdb->get_results("
                 SELECT
@@ -413,12 +414,12 @@ class DT_User_Management
             ", ARRAY_A );
 
             foreach ( $user_data as $user ){
-                $user_id = str_replace( "user-", '', $user["assigned_to"] );
+                $user_id = str_replace( 'user-', '', $user['assigned_to'] );
                 if ( isset( $users[$user_id] ) ) {
-                    $users[$user_id]["number_assigned_to"] = $user["number_assigned_to"];
-                    $users[$user_id]["number_active"] = $user["number_active"];
-                    $users[$user_id]["number_new_assigned"] = $user["number_new_assigned"];
-                    $users[$user_id]["number_update"] = $user["number_update"];
+                    $users[$user_id]['number_assigned_to'] = $user['number_assigned_to'];
+                    $users[$user_id]['number_active'] = $user['number_active'];
+                    $users[$user_id]['number_new_assigned'] = $user['number_new_assigned'];
+                    $users[$user_id]['number_update'] = $user['number_update'];
                 }
             }
 
@@ -427,8 +428,8 @@ class DT_User_Management
                 WHERE meta_key = %s
             ", $wpdb->prefix . 'user_status' ), ARRAY_A );
             foreach ( $user_statuses as $meta_row ){
-                if ( isset( $users[ $meta_row["user_id"] ] ) ) {
-                    $users[$meta_row["user_id"]]["user_status"] = $meta_row["meta_value"];
+                if ( isset( $users[ $meta_row['user_id'] ] ) ) {
+                    $users[$meta_row['user_id']]['user_status'] = $meta_row['meta_value'];
                 }
             }
             $user_workloads = $wpdb->get_results( $wpdb->prepare( "
@@ -436,8 +437,8 @@ class DT_User_Management
                 WHERE meta_key = %s
             ", $wpdb->prefix . 'workload_status' ), ARRAY_A );
             foreach ( $user_workloads as $meta_row ){
-                if ( isset( $users[ $meta_row["user_id"] ] ) ) {
-                    $users[$meta_row["user_id"]]["workload_status"] = $meta_row["meta_value"];
+                if ( isset( $users[ $meta_row['user_id'] ] ) ) {
+                    $users[$meta_row['user_id']]['workload_status'] = $meta_row['meta_value'];
                 }
             }
             $user_locations_grid_meta = $wpdb->get_results( $wpdb->prepare( "
@@ -447,7 +448,7 @@ class DT_User_Management
             ", $wpdb->prefix . 'location_grid_meta'), ARRAY_A);
             foreach ( $user_locations_grid_meta as $user_with_location ){
                 if ( isset( $users[ $user_with_location['user_id'] ] ) ) {
-                    $users[$user_with_location['user_id']]["location_grid_meta"] = true;
+                    $users[$user_with_location['user_id']]['location_grid_meta'] = true;
                 }
             }
             $user_locations_grid = $wpdb->get_results( $wpdb->prepare( "
@@ -457,7 +458,7 @@ class DT_User_Management
             ", $wpdb->prefix . 'location_grid'), ARRAY_A);
             foreach ( $user_locations_grid as $user_with_location ){
                 if ( isset( $users[ $user_with_location['user_id'] ] ) ) {
-                    $users[$user_with_location['user_id']]["location_grid"] = true;
+                    $users[$user_with_location['user_id']]['location_grid'] = true;
                 }
             }
 
@@ -475,8 +476,8 @@ class DT_User_Management
                 ORDER by user_id",
             ARRAY_A);
             foreach ( $last_activity as $a ){
-                if ( isset( $users[ $a["user_id"] ] ) ) {
-                    $users[$a["user_id"]]["last_activity"] = $a["last_activity"];
+                if ( isset( $users[ $a['user_id'] ] ) ) {
+                    $users[$a['user_id']]['last_activity'] = $a['last_activity'];
                 }
             }
 
@@ -484,14 +485,14 @@ class DT_User_Management
                 set_transient( 'dispatcher_user_data', maybe_serialize( $users ), 60 * 60 * 24 );
             }
         }
-        if ( current_user_can( "list_users" ) ) {
+        if ( current_user_can( 'list_users' ) ) {
             return $users;
         } else {
             $multipliers = [];
             foreach ( $users as $user_id => $user ) {
-                $user_roles = maybe_unserialize( $user["roles"] );
-                if ( in_array( "multiplier", $user_roles ) ){
-                    unset( $user["roles"] );
+                $user_roles = maybe_unserialize( $user['roles'] );
+                if ( in_array( 'multiplier', $user_roles ) ){
+                    unset( $user['roles'] );
                     $multipliers[$user_id] = $user;
                 }
             }
@@ -502,14 +503,14 @@ class DT_User_Management
 
     public function update_settings_on_user( WP_REST_Request $request ){
         if ( !self::has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 401 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 401 ] );
         }
 
         $get_params = $request->get_params();
         $body = $request->get_json_params();
 
-        if ( isset( $get_params["user"] ) ) {
-            return Disciple_Tools_Users::update_settings_on_user( $get_params["user"], $body );
+        if ( isset( $get_params['user'] ) ) {
+            return Disciple_Tools_Users::update_settings_on_user( $get_params['user'], $body );
         }
         return false;
     }

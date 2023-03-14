@@ -852,7 +852,7 @@ jQuery(document).ready(function($) {
       optionalFields.addClass('show-for-medium')
     })
 
-    $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown))
+    $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown, dt_user_management_localized.default_language))
 
     let result_div = $('#result-link')
     let submit_button = $('#create-user')
@@ -1029,10 +1029,10 @@ jQuery(document).ready(function($) {
     }
   }
 
-  function write_language_dropdown(translations) {
+  function write_language_dropdown(translations, default_language) {
       let select = '<select name="locale" id="locale">';
       for ( const translation in translations ) {
-        select += `<option value="${window.lodash.escape(translations[translation].language )}" ${translations[translation].site_default ? 'selected' : '' } >${window.lodash.escape( translations[translation].native_name )}</option>`
+        select += `<option value="${window.lodash.escape(translations[translation].language )}" ${(translations[translation].language === default_language) ? 'selected' : '' } > ${(translations[translation].flag ? translations[translation].flag + ' ' : '')} ${window.lodash.escape( translations[translation].native_name )}</option>`
       }
       select += '</select>'
       return select;

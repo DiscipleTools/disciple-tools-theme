@@ -21,13 +21,13 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             // prioritize the smallest unit
             if ( !empty( $ip_result['city'] ) ) {
                 $label = $ip_result['city'] . ', ' . $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "district";
+                $level = 'district';
             } elseif ( !empty( $ip_result['region_name'] ) ) {
                 $label = $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "region";
+                $level = 'region';
             } elseif ( !empty( $ip_result['country_name'] ) ) {
                 $label = $ip_result['country_name'];
-                $level = "country";
+                $level = 'country';
             } elseif ( !empty( $ip_result['continent_name'] ) ) {
                 $label = $ip_result['continent_name'];
                 $level = 'world';
@@ -175,7 +175,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             $status = false;
 
             if ( 'all' === $type ) {
-                $wpdb->delete( $wpdb->dt_location_grid_meta, [ "post_id" => $post_id ] );
+                $wpdb->delete( $wpdb->dt_location_grid_meta, [ 'post_id' => $post_id ] );
                 $status = true;
             }
 
@@ -187,10 +187,10 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
                         delete_metadata_by_mid( 'post', $postmeta_id_location_grid );
                         $wpdb->delete($wpdb->dt_location_grid_meta, [
-                            "post_id" => $post_id,
-                            "grid_meta_id" => $value
+                            'post_id' => $post_id,
+                            'grid_meta_id' => $value
                         ]);
-                        delete_post_meta( $post_id, "location_grid_meta", $value );
+                        delete_post_meta( $post_id, 'location_grid_meta', $value );
                         $status = true;
                         break;
 
@@ -283,8 +283,8 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
             if ( 'all' === $type ) {
                 $wpdb->delete( $wpdb->dt_location_grid_meta, [
-                    "post_id" => $user_id,
-                    "post_type" => "users"
+                    'post_id' => $user_id,
+                    'post_type' => 'users'
                 ] );
                 $status = true;
             }
@@ -297,13 +297,13 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
                         delete_metadata_by_mid( 'user', $postmeta_id_location_grid );
                         $wpdb->delete($wpdb->dt_location_grid_meta, [
-                            "post_id" => $user_id,
-                            "grid_meta_id" => $grid_meta_id
+                            'post_id' => $user_id,
+                            'grid_meta_id' => $grid_meta_id
                         ]);
                         $wpdb->delete($wpdb->usermeta, [
-                            "user_id" => $user_id,
-                            "meta_key" => $wpdb->prefix . "location_grid_meta",
-                            "meta_value" => $grid_meta_id
+                            'user_id' => $user_id,
+                            'meta_key' => $wpdb->prefix . 'location_grid_meta',
+                            'meta_value' => $grid_meta_id
                         ]);
                         $status = true;
                         break;

@@ -55,7 +55,7 @@ class Disciple_Tools_Migration_0020 extends Disciple_Tools_Migration
 
             }
             $query .= ';';
-            $query = str_replace( ", ;", ";", $query ); //remove last comma
+            $query = str_replace( ', ;', ';', $query ); //remove last comma
 
             $wpdb->query( $query );  //phpcs:ignore
         }

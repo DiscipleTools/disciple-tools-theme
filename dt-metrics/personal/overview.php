@@ -21,11 +21,13 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         parent::__construct();
         $this->title = __( 'Overview', 'disciple_tools' );
         $this->base_title = __( 'Personal', 'disciple_tools' );
+        $this->namespace = 'dt-metrics/personal/overview';
 
         $url_path = dt_get_url_path();
-        if ( "metrics/$this->base_slug/$this->slug" === $url_path || "metrics" === $url_path || "metrics/" === $url_path ) {
+        if ( "metrics/$this->base_slug/$this->slug" === $url_path || 'metrics' === $url_path || 'metrics/' === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
         }
+        add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
     }
 
     public function scripts() {
@@ -44,42 +46,54 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_metrics_personal_script', 'dtMetricsPersonal', [
                 'root' => esc_url_raw( rest_url() ),
+                'rest_url' => esc_url_raw( rest_url( $this->namespace ) ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'data' => $this->overview(),
+                'translations' => [
+                    'title' => __( 'My Overview', 'disciple_tools' ),
+                    'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
+                    'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
+                    'title_contacts' => __( 'Contacts', 'disciple_tools' ),
+                    'title_groups' => __( 'Groups', 'disciple_tools' ),
+                    'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
+                    'title_group_types' => __( 'Group Types', 'disciple_tools' ),
+                    'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
+                    'title_teams' => __( 'Lead Teams', 'disciple_tools' ),
+                    'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
+                    'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
+                    'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
+                    'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
+                    'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
+                    'label_generation' => __( 'Generation', 'disciple_tools' ),
+                ]
+            ]
+        );
+    }
+
+    public function rest_api_init(){
+        register_rest_route(
+            $this->namespace, 'data', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'overview' ],
+                'permission_callback' => function(){
+                    return $this->has_permission();
+                },
             ]
         );
     }
 
     public function overview() {
         $data = [
-            'translations' => [
-                'title' => __( 'My Overview', 'disciple_tools' ),
-                'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
-                'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
-                'title_contacts' => __( 'Contacts', 'disciple_tools' ),
-                'title_groups' => __( 'Groups', 'disciple_tools' ),
-                'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
-                'title_group_types' => __( 'Group Types', 'disciple_tools' ),
-                'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
-                'title_teams' => __( 'Lead Teams', 'disciple_tools' ),
-                'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
-                'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
-                'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
-                'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
-                'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
-                'label_generation' => __( 'Generation', 'disciple_tools' ),
-            ],
             'preferences'       => $this->preferences(),
             'hero_stats'        => $this->chart_my_hero_stats(),
             'group_types'       => $this->chart_group_types(),
             'group_health'      => $this->chart_group_health(),
             'group_generations' => $this->chart_group_generations(),
         ];
-        $modules = dt_get_option( "dt_post_type_modules" );
-        if ( !empty( $modules["access_module"]["enabled"] ) ){
+        $modules = dt_get_option( 'dt_post_type_modules' );
+        if ( !empty( $modules['access_module']['enabled'] ) ){
             $data['contacts_progress'] = $this->chart_contacts_progress();
         }
 
@@ -160,12 +174,12 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
 
         $chart = [];
 
-        $group_fields = DT_Posts::get_post_field_settings( "groups" );
-        $types = $group_fields["group_type"]["default"];
+        $group_fields = DT_Posts::get_post_field_settings( 'groups' );
+        $types = $group_fields['group_type']['default'];
 
         $results = $this->query_my_group_types();
         foreach ( $results as $result ) {
-            $result["label"] = $types[$result['type']]["label"] ?? $result['type'];
+            $result['label'] = $types[$result['type']]['label'] ?? $result['type'];
             $chart[] = $result;
         }
 
@@ -175,11 +189,11 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
     public function chart_group_health() {
 
         // Make key list
-        $group_fields = DT_Posts::get_post_field_settings( "groups" );
+        $group_fields = DT_Posts::get_post_field_settings( 'groups' );
         $labels = [];
 
-        foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
-            $labels[$key] = $option["label"];
+        foreach ( $group_fields['health_metrics']['default'] as $key => $option ) {
+            $labels[$key] = $option['label'];
         }
 
         $chart = [];
@@ -193,14 +207,14 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             }
             foreach ( $labels as $label_key => $label_value ) {
                 $row = [
-                    "label"      => $label_value,
-                    "practicing" => 0,
-                    "remaining"  => (int) $out_of
+                    'label'      => $label_value,
+                    'practicing' => 0,
+                    'remaining'  => (int) $out_of
                 ];
                 foreach ( $results as $result ) {
                     if ( $result['health_key'] === $label_key ) {
-                        $row["practicing"] = (int) $result["count"];
-                        $row["remaining"]  = intval( $result['out_of'] ) - intval( $result['count'] );
+                        $row['practicing'] = (int) $result['count'];
+                        $row['remaining']  = intval( $result['out_of'] ) - intval( $result['count'] );
                     }
                 }
                 $chart[] = $row;
@@ -478,11 +492,11 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         }
 
         $defaults = [];
-        $contact_fields = DT_Posts::get_post_field_settings( "contacts" );
-        $seeker_path_options = $contact_fields["seeker_path"]["default"];
+        $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
+        $seeker_path_options = $contact_fields['seeker_path']['default'];
         foreach ( $seeker_path_options as $key => $option ) {
             $defaults[$key] = [
-                'label' => $option["label"],
+                'label' => $option['label'],
                 'count' => 0,
             ];
         }

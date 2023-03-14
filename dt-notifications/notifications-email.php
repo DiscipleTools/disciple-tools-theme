@@ -40,13 +40,13 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
      */
     $disabled = apply_filters( 'dt_block_development_emails', false );
     if ( $disabled ) {
-        $email = [];
-        $email['email'] = $email;
-        $email['subject'] = $subject;
-        $email['message'] = $message_plain_text;
+        $print_email = [];
+        $print_email['email'] = $email;
+        $print_email['subject'] = $subject;
+        $print_email['message'] = $message_plain_text;
 
         dt_write_log( __METHOD__ );
-        dt_write_log( $email );
+        dt_write_log( $print_email );
 
         return true;
     }
@@ -56,15 +56,15 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     $subject = sanitize_text_field( $subject );
     $message_plain_text = sanitize_textarea_field( $message_plain_text );
 
-    $subject = dt_get_option( "dt_email_base_subject" ) . ": " . $subject;
+    $subject = dt_get_option( 'dt_email_base_subject' ) . ': ' . $subject;
 
-    $user = get_user_by( "email", $email );
+    $user = get_user_by( 'email', $email );
     $continue = true;
     // don't send notifications if the user only has "registered" role.
-    if ( $user && in_array( "registered", $user->roles ) && sizeof( $user->roles ) === 1 ){
+    if ( $user && in_array( 'registered', $user->roles ) && sizeof( $user->roles ) === 1 ){
         $continue = false;
     }
-    $continue = apply_filters( "dt_sent_email_check", $continue, $email, $subject, $message_plain_text );
+    $continue = apply_filters( 'dt_sent_email_check', $continue, $email, $subject, $message_plain_text );
     if ( !$continue ){
         return false;
     }
@@ -74,7 +74,7 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
      */
-    if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON && !( defined( "WP_DEBUG" ) && WP_DEBUG ) ){
+    if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON && !( defined( 'WP_DEBUG' ) && WP_DEBUG ) ){
         wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
     } else {
         $is_sent = wp_mail( $email, $subject, $message_plain_text );

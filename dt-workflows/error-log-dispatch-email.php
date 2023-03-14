@@ -26,11 +26,11 @@ function find_new_error_logs() {
     if ( $count > 0 ) {
 
         // Build error logs url.
-        $logs_url = home_url( $wp->request ) . "/wp-admin/admin.php?page=dt_utilities&tab=logs";
+        $logs_url = home_url( $wp->request ) . '/wp-admin/admin.php?page=dt_utilities&tab=logs';
 
         // Build and dispatch notification email.
         $email_to      = get_bloginfo( 'admin_email' );
-        $email_subject = "Disciple.Tools: Error Logs Detected";
+        $email_subject = 'Disciple.Tools: Error Logs Detected';
         $email_body    = build_email_body( $count, $deltas, $logs_url );
         $email_headers = array( 'Content-Type: text/html; charset=UTF-8' );
         wp_mail( $email_to, $email_subject, $email_body, $email_headers );
@@ -40,7 +40,7 @@ function find_new_error_logs() {
 function build_email_body( $count, $deltas, $logs_url ): string {
     $summary = build_email_body_logs_summary( $deltas );
 
-    $dt_logo = get_template_directory_uri() . "/dt-assets/images/disciple-tools-logo-blue.png";
+    $dt_logo = get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-blue.png';
 
     return <<<HTML
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -122,13 +122,13 @@ HTML;
 }
 
 function build_email_body_logs_summary( $deltas ): string {
-    $summary       = "";
+    $summary       = '';
     $summary_limit = 5;
     $summary_count = 0;
 
     foreach ( $deltas as $delta ) {
         $summary .= '<tr>
-                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr( gmdate( "Y-m-d h:i:sa", esc_attr( $delta->hist_time ) ) ) . '</td>
+                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr( gmdate( 'Y-m-d h:i:sa', esc_attr( $delta->hist_time ) ) ) . '</td>
                 <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr( $delta->object_note ) . '</td>
             </tr>';
 

@@ -44,56 +44,58 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function process_data(){
         if ( !empty( $_POST ) ){
-            if ( isset( $_POST['report_edit_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['report_edit_nonce'] ), 'report_edit' ) && isset( $_POST["report"] ) && ! empty( $_POST["report"] ) ) {
-                dt_write_log( $_POST );
-                $post_report = dt_recursive_sanitize_array( $_POST["report"] );
+            if ( isset( $_POST['report_edit_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['report_edit_nonce'] ), 'report_edit' ) ) {
 
-                if ( isset( $_POST["create_report"], $_POST["report"]["year"], $_POST["report"]["month"] ) ){
-                    $year = sanitize_key( wp_unslash( $_POST["report"]["year"] ) );
-                    $month = sanitize_key( wp_unslash( $_POST["report"]["month"] ) );
-                    $report = [
-                        "post_id" => 0,
-                        "type" => "monthly_report",
-                        "payload" => null,
-                        "time_end" => strtotime( $year . '-' . $month . '-01' ),
-                        "timestamp" => time(),
-                        'meta_input' => []
-                    ];
+                if ( ( isset( $_POST['report'] ) && ! empty( $_POST['report'] ) ) ) {
+                    $post_report = dt_recursive_sanitize_array( $_POST['report'] );
 
-                    foreach ( $post_report as $key => $value ){
-                        $key = sanitize_text_field( wp_unslash( $key ) );
-                        $value = sanitize_text_field( wp_unslash( $value ) );
-                        $report["meta_input"][ $key] = $value;
-                    }
+                    if ( isset( $_POST['create_report'], $_POST['report']['year'], $_POST['report']['month'] ) ){
+                        $year = sanitize_key( wp_unslash( $_POST['report']['year'] ) );
+                        $month = sanitize_key( wp_unslash( $_POST['report']['month'] ) );
+                        $report = [
+                            'post_id' => 0,
+                            'type' => 'monthly_report',
+                            'payload' => null,
+                            'time_end' => strtotime( $year . '-' . $month . '-01' ),
+                            'timestamp' => time(),
+                            'meta_input' => []
+                        ];
 
-                    $new_id = Disciple_Tools_Reports::insert( $report );
-                    if ( ! empty( $new_id ) ) {
-                        wp_redirect( '?page=dt_metrics&tab=edit&report_id='.$new_id );
-                    }
-                } elseif ( isset( $_POST["update_report"] ) ) {
-                    $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
-                    if ( ! empty( $id ) ) {
-                        global $wpdb;
-                        $current_meta_raw = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reportmeta WHERE report_id = %s", $id ), ARRAY_A );
-                        $current_meta = [];
-                        foreach ( $current_meta_raw as $value ){
-                            $current_meta[$value['meta_key']] = $value;
-                        }
-
-                        $post_report = dt_recursive_sanitize_array( $_POST["report"] );
                         foreach ( $post_report as $key => $value ){
                             $key = sanitize_text_field( wp_unslash( $key ) );
                             $value = sanitize_text_field( wp_unslash( $value ) );
+                            $report['meta_input'][ $key] = $value;
+                        }
 
-                            if ( isset( $current_meta[ $key ] ) ) {
-                                Disciple_Tools_Reports::update_meta( $id, $key, $value );
-                            } else {
-                                Disciple_Tools_Reports::add_meta( $id, $key, $value );
+                        $new_id = Disciple_Tools_Reports::insert( $report );
+                        if ( ! empty( $new_id ) ) {
+                            wp_redirect( '?page=dt_metrics&tab=edit&report_id='.$new_id );
+                        }
+                    } elseif ( isset( $_POST['update_report'] ) ) {
+                        $id = isset( $_GET['report_id'] ) ? sanitize_key( wp_unslash( $_GET['report_id'] ) ) : null;
+                        if ( ! empty( $id ) ) {
+                            global $wpdb;
+                            $current_meta_raw = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reportmeta WHERE report_id = %s", $id ), ARRAY_A );
+                            $current_meta = [];
+                            foreach ( $current_meta_raw as $value ){
+                                $current_meta[$value['meta_key']] = $value;
+                            }
+
+                            $post_report = dt_recursive_sanitize_array( $_POST['report'] );
+                            foreach ( $post_report as $key => $value ){
+                                $key = sanitize_text_field( wp_unslash( $key ) );
+                                $value = sanitize_text_field( wp_unslash( $value ) );
+
+                                if ( isset( $current_meta[ $key ] ) ) {
+                                    Disciple_Tools_Reports::update_meta( $id, $key, $value );
+                                } else {
+                                    Disciple_Tools_Reports::add_meta( $id, $key, $value );
+                                }
                             }
                         }
                     }
-                } elseif ( isset( $_POST["delete_report"] ) ) {
-                    $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
+                } elseif ( isset( $_POST['delete_report'] ) ) {
+                    $id = isset( $_GET['report_id'] ) ? sanitize_key( wp_unslash( $_GET['report_id'] ) ) : null;
                     Disciple_Tools_Reports::delete( $id );
                     wp_redirect( '?page=dt_metrics&tab=list' );
                 }
@@ -105,7 +107,7 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( 'edit' == $tab ) {
             self::template( 'begin' );
 
-            $this->table( "edit" );
+            $this->table( 'edit' );
 
             self::template( 'right_column' );
             self::template( 'end' );
@@ -124,21 +126,21 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function table( $tab ) {
         $sources = get_option( 'dt_critical_path_sources', [] );
         $report = [
-            "year" => '',
-            "month" => ''
+            'year' => '',
+            'month' => ''
         ];
 
-        if ( $tab == "new" ){
+        if ( $tab == 'new' ){
             $this->box( 'top', 'Create new Report' );
         } else {
             $this->box( 'top', 'Edit' );
-            $id = isset( $_GET["report_id"] ) ? sanitize_key( wp_unslash( $_GET["report_id"] ) ) : null;
+            $id = isset( $_GET['report_id'] ) ? sanitize_key( wp_unslash( $_GET['report_id'] ) ) : null;
             $result = Disciple_Tools_Reports::get( $id, 'id_and_meta' );
-            $report["year"] = gmdate( 'Y', $result["time_end"] );
-            $report["month"] = gmdate( 'm', $result["time_end"] );
+            $report['year'] = gmdate( 'Y', $result['time_end'] ?? time() );
+            $report['month'] = gmdate( 'm', $result['time_end'] ?? time() );
 
             foreach ( $result['meta_input'] as $meta ){
-                $report[$meta["meta_key"]] = $meta["meta_value"];
+                $report[$meta['meta_key']] = $meta['meta_value'];
             }
         }
         ?>
@@ -164,13 +166,13 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>Year</td>
                     <td>
-                        <?php if ( empty( $report["year"] ) ) : ?>
+                        <?php if ( empty( $report['year'] ) ) : ?>
                         <select name="report[year]" id="year">
                             <?php
                             $current_year = (int) gmdate( 'Y' );
                             $number_of_years = 20;
                             for ( $i = 0; $number_of_years >= $i; $i++ ): ?>
-                                <option <?php echo esc_html( (int) $report["year"] == $current_year ? 'selected' : '' ) ?>>
+                                <option <?php echo esc_html( (int) $report['year'] == $current_year ? 'selected' : '' ) ?>>
                                     <?php echo esc_attr( $current_year )?>
                                 </option>
                                 <?php $current_year--;
@@ -178,37 +180,37 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                             ?>
                         </select>
                         <?php else :
-                            echo esc_html( $report["year"] );
+                            echo esc_html( $report['year'] );
                         endif; ?>
                     </td>
                 </tr>
                 <tr>
                     <td>Month</td>
                     <td>
-                        <?php if ( empty( $report["month"] ) ) : ?>
+                        <?php if ( empty( $report['month'] ) ) : ?>
                         <select name="report[month]" id="month">
                             <?php
                             $number_of_months = 12;
                             for ( $i = 1; $number_of_months >= $i; $i++ ) : ?>
-                                <option value="<?php echo esc_html( $i ) ?>" <?php echo esc_html( (int) $report["month"] == $i ? 'selected' : '' ) ?>>
+                                <option value="<?php echo esc_html( $i ) ?>" <?php echo esc_html( (int) $report['month'] == $i ? 'selected' : '' ) ?>>
                                     <?php echo esc_attr( DateTime::createFromFormat( '!m', $i )->format( 'F' ) ) ?>
                                 </option>
                             <?php endfor;?>
                         </select>
                         <?php else :
-                            echo esc_attr( DateTime::createFromFormat( '!m', $report["month"] )->format( 'F' ) );
+                            echo esc_attr( DateTime::createFromFormat( '!m', $report['month'] )->format( 'F' ) );
                         endif; ?>
                     </td>
                 </tr>
                 <?php foreach ( $sources as $source ) : ?>
                 <tr>
-                    <td><?php echo esc_html( $source["label"] ) ?></td>
+                    <td><?php echo esc_html( $source['label'] ) ?></td>
                     <td>
-                        <input name="report[<?php echo esc_html( $source["key"] ) ?>]"
-                               value="<?php echo esc_html( isset( $report[$source["key"] ] ) ? $report[$source["key"] ] : '' ) ?>">
+                        <input name="report[<?php echo esc_html( $source['key'] ) ?>]"
+                               value="<?php echo esc_html( isset( $report[$source['key'] ] ) ? $report[$source['key'] ] : '' ) ?>">
                     </td>
                     <td>
-                        <?php echo esc_html( $source["description"] ?? '' ) ?>
+                        <?php echo esc_html( $source['description'] ?? '' ) ?>
                     </td>
                 </tr>
                 <?php endforeach;?>

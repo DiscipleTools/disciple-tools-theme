@@ -65,7 +65,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @param $var
          * @param $type
          *
-         * @return array|\WP_Error
+         * @return array|WP_Error
          */
         public static function get_site_connection_vars( $var, $type = 'post_id' ) {
 
@@ -78,7 +78,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     break;
                 default:
                     return new WP_Error( __METHOD__, 'Must be a valid type' );
-                    break;
             }
 
             if ( empty( $post_id ) ) {
@@ -96,7 +95,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             $transfer_token = self::create_transfer_token_for_site( $key );
-            if ( empty( $key ) || is_wp_error( $key ) ) {
+            if ( empty( $transfer_token ) || is_wp_error( $key ) ) {
                 return new WP_Error( __METHOD__, 'Could not create a transfer token for this post id.' );
             }
 
@@ -114,9 +113,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function get_site_keys() {
             $prefix = self::$token;
-            $keys = get_option( $prefix . '_api_keys', [] );
-
-            return $keys;
+            return get_option( $prefix . '_api_keys', [] );
         }
 
         /**
@@ -129,13 +126,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @return array
          */
-        public static function get_list_of_sites_by_type( array $type_name, $format = 'name_list' ) {
+        public static function get_list_of_sites_by_type( array $type_name, string $format = 'name_list' ) {
             global $wpdb;
-
-            if ( ! is_array( $type_name ) ) {
-                dt_write_log( new WP_Error( __METHOD__, '$type_name is not an array.' ) );
-                return [];
-            }
 
             $type_string = array_map( 'sanitize_text_field', wp_unslash( $type_name ) );
             $type_string = "'" . implode( "','", $type_string ) . "'";
@@ -143,7 +135,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             switch ( $format ) {
 
                 case 'name_list':
-                    $results = $wpdb->get_results(
+                    return $wpdb->get_results(
                         "SELECT ID as id, post_title as name
                         FROM $wpdb->posts
                           JOIN $wpdb->postmeta
@@ -153,11 +145,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         AND $wpdb->posts.post_status = 'publish'
                         AND meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
 
-                    return $results;
-                    break;
-
                 case 'post_ids':
-                    $results = $wpdb->get_col(
+                    return $wpdb->get_col(
                         "SELECT id
                         FROM $wpdb->posts
                           JOIN $wpdb->postmeta
@@ -167,12 +156,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         AND $wpdb->posts.post_status = 'publish'
                         AND meta_value IN ($type_string)" ); //@phpcs:ignore
 
-                    return $results;
-                    break;
-
                 default:
                     return [];
-                    break;
             }
         }
 
@@ -246,7 +231,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             // add prepared permissions to the current_user object
             $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
-            $site_link_label = isset( $keys[$decrypted_key]["label"] ) ? $keys[$decrypted_key]["label"] : __( "Site Link", 'disciple_tools' );
+            $site_link_label = isset( $keys[$decrypted_key]['label'] ) ? $keys[$decrypted_key]['label'] : __( 'Site Link', 'disciple_tools' );
             if ( ! empty( $connection_type ) ) {
                 self::add_capabilities_required_by_type( $connection_type, $site_link_label, $decrypted_key );
             }
@@ -260,7 +245,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @note: You need to add two filters to make this feature work.
          *      First, add filter 'site_link_type' found in the meta_box_custom_fields_settings function for the type field.
-         *      Second, add this filter add_capabilities_required_by_type to filter for the right type and to add the array of capabilties to the current user
+         *      Second, add this filter add_capabilities_required_by_type to filter for the right type and to add the array of capabilities to the current user
          *      These combination of functions are used for restricting the current_user (which for an api call is a non-signed in user with empty permissions)
          *      and giving the current_user the specific permissions needed for the tasks done during the site to site link.
          *
@@ -268,7 +253,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @param string $site_link_label
          * @param string $site_key
          */
-        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = "Site Link", $site_key = '' ) {
+        public static function add_capabilities_required_by_type( $connection_type, $site_link_label = 'Site Link', $site_key = '' ) {
             /**
              * Use the $connection_type to filter for the correct type
              * Update and return the $capabilities array
@@ -387,19 +372,19 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public function register_post_type() {
             $args = [
                 'labels' => [
-                        'name'               => $this->plural, /* This is the Title of the Group */
-                        'singular_name'      => $this->singular, /* This is the individual type */
-                        'all_items'          => __( 'All' ) . ' ' . $this->plural, /* the all items menu item */
-                        'add_new'            => __( 'Add New' ), /* The add new menu item */
-                        'add_new_item'       => __( 'Add New' ) . ' ' . $this->singular, /* Add New Display Title */
-                        'edit'               => __( 'Edit' ), /* Edit Dialog */
-                        'edit_item'          => __( 'Edit' ) . ' ' . $this->singular, /* Edit Display Title */
-                        'new_item'           => __( 'New' ) . ' ' . $this->singular, /* New Display Title */
-                        'view_item'          => __( 'View' ) . ' ' . $this->singular, /* View Display Title */
-                        'search_items'       => __( 'Search' ) . ' ' . $this->plural, /* Search Custom Type Title */
-                        'not_found'          => __( 'Nothing found in the Database.' ), /* This displays if there are no entries yet */
-                        'not_found_in_trash' => __( 'Nothing found in Trash' ), /* This displays if there is nothing in the trash */
-                        'parent_item_colon'  => ''
+                    'name'               => $this->plural, /* This is the Title of the Group */
+                    'singular_name'      => $this->singular, /* This is the individual type */
+                    'all_items'          => __( 'All' ) . ' ' . $this->plural, /* the all items menu item */
+                    'add_new'            => __( 'Add New' ), /* The add new menu item */
+                    'add_new_item'       => __( 'Add New' ) . ' ' . $this->singular, /* Add New Display Title */
+                    'edit'               => __( 'Edit' ), /* Edit Dialog */
+                    'edit_item'          => __( 'Edit' ) . ' ' . $this->singular, /* Edit Display Title */
+                    'new_item'           => __( 'New' ) . ' ' . $this->singular, /* New Display Title */
+                    'view_item'          => __( 'View' ) . ' ' . $this->singular, /* View Display Title */
+                    'search_items'       => __( 'Search' ) . ' ' . $this->plural, /* Search Custom Type Title */
+                    'not_found'          => __( 'Nothing found in the Database.' ), /* This displays if there are no entries yet */
+                    'not_found_in_trash' => __( 'Nothing found in Trash' ), /* This displays if there is nothing in the trash */
+                    'parent_item_colon'  => ''
                 ], /* end of arrays */
 
                 'public'              => false,
@@ -415,16 +400,16 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 ], /* you can specify its url slug */
                 'has_archive'         => false, /* you can rename the slug here */
                 'capabilities'     => [
-                    "read_post" => "manage_dt",
-                    "edit_post" => "manage_dt",
-                    "delete_post" => "manage_dt",
-                    "edit_posts" => "manage_dt",
-                    "edit_others_posts" => "manage_dt",
-                    "publish_posts" => "manage_dt",
-                    "read_private_posts" => "manage_dt",
-                    "delete_others_posts" => "manage_dt",
-                    "delete_posts" => "manage_dt",
-                    "delete_published_posts" => "manage_dt",
+                    'read_post' => 'manage_dt',
+                    'edit_post' => 'manage_dt',
+                    'delete_post' => 'manage_dt',
+                    'edit_posts' => 'manage_dt',
+                    'edit_others_posts' => 'manage_dt',
+                    'publish_posts' => 'manage_dt',
+                    'read_private_posts' => 'manage_dt',
+                    'delete_others_posts' => 'manage_dt',
+                    'delete_posts' => 'manage_dt',
+                    'delete_published_posts' => 'manage_dt',
                 ],
                 'hierarchical'        => false,
                 /* the next one is important, it tells what's enabled in the post editor */
@@ -483,8 +468,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public function register_custom_column_headings( $defaults ) {
 
             $new_columns = array(
-            'linked' => __( 'Linked' ),
-            'type' => __( 'Type' )
+                'linked' => __( 'Linked' ),
+                'type' => __( 'Type' )
             );
 
             $last_item = [];
@@ -666,6 +651,20 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 echo '</td><tr/>' . "\n";
                                 break;
 
+                            case 'boolean':
+                                echo '<tr><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
+                                    <td><input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '"' . ( $data ? 'checked' : '' ) . '/>';
+                                echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                                echo '</td><tr/>' . "\n";
+                                break;
+
+                            case 'number':
+                                echo '<tr><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
+                                    <td><input name="' . esc_attr( $k ) . '" type="number" id="' . esc_attr( $k ) . '" value="' . esc_attr( $data ) . '" />';
+                                echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                                echo '</td><tr/>' . "\n";
+                                break;
+
                             default:
                                 break;
                         }
@@ -712,6 +711,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     delete_post_meta( $post_id, 'site2' );
                     delete_post_meta( $post_id, 'site_key' );
                     delete_post_meta( $post_id, 'approved_ip_address' );
+                    delete_post_meta( $post_id, 'dev_key' );
+                    delete_post_meta( $post_id, 'token_as_transfer_key' );
 
                     $this->build_cached_option(); // rebuilds cache for options
 
@@ -721,6 +722,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $field_data = $this->meta_box_custom_fields_settings();
             $fields = array_keys( $field_data );
+
+            if ( !isset( $_POST['token_as_transfer_key'] ) ){
+                delete_post_meta( $post_id, 'token_as_transfer_key' );
+            }
 
             foreach ( $fields as $f ) {
                 if ( ! isset( $_POST[ $f ] ) ) {
@@ -791,9 +796,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'name'        => __( 'Connection Type' ),
                 'description' => __( 'This adds permissions needed for the labeled task. If you have trouble with a connection succeeding, and a task failing. This permission setting may be the reason.' ),
                 'type'        => 'key_select',
-                'default'     => apply_filters( 'site_link_type', $permission = [ "" => "" ] ),
+                'default'     => apply_filters( 'site_link_type', $permission = [ '' => '' ] ),
                 'section'     => 'site',
             ];
+
+            $fields['token_as_transfer_key'] = [
+                'name' => __( 'Use Token As API Key' ),
+                'description' => __( 'Enable if you wish to use this key directly for API calls.' ),
+                'type' => 'boolean',
+                'default' => false,
+                'section' => 'site'
+            ];
+
 
             $fields['approved_ip_address'] = [
                 'name'        => __( 'Approved IP Address' ),
@@ -811,6 +825,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     0 => __( 'Yes, connected to another Disciple.Tools site (default)' ),
                     1 => __( 'No, connection for a non-Disciple.Tools system.' )
                 ],
+                'section'     => 'non_wp',
+            ];
+            $fields['dev_key'] = [
+                'name'        => __( 'Custom Key' ),
+                'description' => '',
+                'type'        => 'text',
+                'default'     => '',
                 'section'     => 'non_wp',
             ];
 
@@ -840,7 +861,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     ?>
                     <hr>
 
-                    <table width="100%">
+                    <table>
                         <tr>
                             <td>
 
@@ -895,15 +916,16 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                     <!-- Footer Information -->
                     <p><?php esc_attr_e( 'Current Site' ) ?>: <span
-                                class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
+                            class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
                     <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span
-                                class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
+                            class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
                         <em>( <?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?> )</em></p>
                     <p><?php esc_attr_e( 'Server IP' ) ?>: <span
-                          class="info-color">
+                            class="info-color">
                             <span id="server-ip"></span>
                             <button id="get-server-ip" type="button" onclick="get_server_ip(event)"><?php echo esc_attr_e( 'Get Server IP' ) ?></button></span>
-                      <em>( <?php esc_attr_e( 'Use if you need to whitelist API requests on your server' ) ?> )</em></p>
+                        <em>( <?php esc_attr_e( 'Use if you need to whitelist API requests on your server' ) ?> )</em>
+                    </p>
                     <?php
 
                 } else {
@@ -941,7 +963,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             if ( $this->post_type === $pt ) {
 
                 $url = self::get_current_site_base_url();
-                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? "http://$url" : "https://$url";
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? "http://$url" : "https://$url";
 
                 echo "<script type='text/javascript'>
 
@@ -1001,7 +1023,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 }
                 </script>";
 
-                echo "<style>
+                echo '<style>
                     .success-green { color: limegreen;}
                     .fail-red { color: red;}
                     .info-color { color: steelblue; }
@@ -1015,30 +1037,30 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         /*border is optional*/
                         cursor: pointer;
                         }
-                        </style>";
+                        </style>';
 
             }
             $uri = $this->get_url_path();
 
             if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
                 <script>
-                  jQuery(function($) {
-                    $(`<div><a href="https://disciple.tools/user-docs/getting-started-info/admin/site-links/" style="margin-bottom:15px;" target="_blank">
+                    jQuery(function($) {
+                        $(`<div><a href="https://disciple.tools/user-docs/getting-started-info/admin/site-links/" style="margin-bottom:15px;" target="_blank">
                         <img style="height:15px" class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         Site link documentation</a></div>`).insertAfter(
-                        '#wpbody-content .wrap .wp-header-end:eq(0)')
-                  });
+                            '#wpbody-content .wrap .wp-header-end:eq(0)')
+                    });
                 </script>
             <?php endif;
         }
 
         public function get_url_path() {
-            if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-                $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-                if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-                    $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+            if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
+                if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+                    $url .= sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
-                return trim( str_replace( get_site_url(), "", $url ), '/' );
+                return trim( str_replace( get_site_url(), '', $url ), '/' );
             }
             return '';
         }
@@ -1113,13 +1135,17 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                   meta3.meta_value as site1,
                   meta4.meta_value as site2,
                   meta1.meta_value as site_key,
-                  meta5.meta_value as approved_ip_address
+                  meta5.meta_value as approved_ip_address,
+                  meta6.meta_value as dev_key,
+                  meta7.meta_value as token_as_transfer_key
                 FROM $wpdb->posts as post
                   JOIN $wpdb->postmeta as meta1 ON post.ID=meta1.post_id AND meta1.meta_key = 'site_key'
                   JOIN $wpdb->postmeta as meta2 ON post.ID=meta2.post_id AND meta2.meta_key = 'token'
                   JOIN $wpdb->postmeta as meta3 ON post.ID=meta3.post_id AND meta3.meta_key = 'site1'
                   JOIN $wpdb->postmeta as meta4 ON post.ID=meta4.post_id AND meta4.meta_key = 'site2'
                   LEFT JOIN $wpdb->postmeta as meta5 ON post.ID=meta5.post_id AND meta5.meta_key = 'approved_ip_address'
+                  LEFT JOIN $wpdb->postmeta as meta6 ON post.ID=meta6.post_id AND meta6.meta_key = 'dev_key'
+                  LEFT JOIN $wpdb->postmeta as meta7 ON post.ID=meta7.post_id AND meta7.meta_key = 'token_as_transfer_key'
                 WHERE post.post_status = 'publish' AND post.post_type = 'site_link_system'
             ", ARRAY_A  );
 
@@ -1132,6 +1158,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     'site1'     => $result['site1'],
                     'site2'     => $result['site2'],
                     'approved_ip_address' => $result['approved_ip_address'],
+                    'dev_key' => $result['dev_key'],
+                    'token_as_transfer_key' => $result['token_as_transfer_key']
                 ];
             }
 
@@ -1255,7 +1283,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     return false;
                 }
             } else {
-                return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
+                return new WP_Error( 'site_check_error', 'Malformed request', [ 'status' => 400 ] );
             }
         }
 
@@ -1298,9 +1326,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         // Second request failed too. Return appropriate error
                         $error_message = $result->get_error_message() ?? '';
                         if ( strpos( $error_message, 'not resolve' ) > -1 || strpos( $error_message, 'timed out' ) > -1 ) {
-                            return new WP_Error( "site_check_error", $not_found, [ 'status' => 400 ] );
+                            return new WP_Error( 'site_check_error', $not_found, [ 'status' => 400 ] );
                         } else if ( strpos( $error_message, 'SSL' ) > -1 || strpos( $error_message, 'HTTPS' ) > -1 || strpos( $error_message, 'certificate verification failed' ) > -1 ) {
-                            return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
+                            return new WP_Error( 'site_check_error', $no_ssl, [ 'status' => 400 ] );
                         }
                         return $result;
                     }
@@ -1309,18 +1337,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $result_body = json_decode( $result['body'] );
                 if ( !empty( $result_body ) && $result_body === true ) {
                     return [
-                        "success" => true,
-                        "message" => $linked,
+                        'success' => true,
+                        'message' => $linked,
                     ];
                 } else if ( $https_failed ) {
                     // If verification failed on HTTP and HTTPS, throw SSL error message
-                    return new WP_Error( "site_check_error", $no_ssl, [ 'status' => 400 ] );
+                    return new WP_Error( 'site_check_error', $no_ssl, [ 'status' => 400 ] );
                 } else {
-                    return new WP_Error( "site_check_error", $not_linked, [ 'status' => 400 ] );
+                    return new WP_Error( 'site_check_error', $not_linked, [ 'status' => 400 ] );
                 }
                 return $result_body;
             } else {
-                return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
+                return new WP_Error( 'site_check_error', 'Malformed request', [ 'status' => 400 ] );
             }
         }
 
@@ -1369,17 +1397,29 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             foreach ( $keys as $key => $array ) {
-                $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
-                $past = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '-1 hour' ) );
-                $past_hour = md5( $key . $past );
-                $next = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) .  '+1 hour' ) );
-                $next_hour = md5( $key . $next );
 
-                if ( $current_hour == $transfer_token
-                    || $past_hour == $transfer_token
-                    || $next_hour == $transfer_token ) {
+                /**
+                 * Determine how transfer token is to be examined; in order
+                 * to support long-lived tokens.
+                 */
 
-                    return $key;
+                if ( isset( $array['token'], $array['token_as_transfer_key'] ) && $array['token_as_transfer_key'] ){
+                    if ( $array['token'] == $transfer_token ){
+                        return $key;
+                    }
+                } else {
+                    $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
+                    $past = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '-1 hour' ) );
+                    $past_hour = md5( $key . $past );
+                    $next = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '+1 hour' ) );
+                    $next_hour = md5( $key . $next );
+
+                    if ( $current_hour == $transfer_token
+                        || $past_hour == $transfer_token
+                        || $next_hour == $transfer_token ){
+
+                        return $key;
+                    }
                 }
             }
 
@@ -1453,21 +1493,29 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         // Adds the type of connection to the site link system
-        public function default_site_link_type( $type ) {
-            $type['create_contacts'] = __( 'Create Contacts', 'disciple_tools' );
-            $type['create_update_contacts'] = __( 'Create and Update Contacts', 'disciple_tools' );
+        public function default_site_link_type( $type ){
+            $post_types = DT_Posts::get_post_types();
+            foreach ( $post_types ?? [] as $post_type ){
+                $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+
+                $type['create_' . $post_type] = sprintf( __( 'Create %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
+                $type['create_update_' . $post_type] = sprintf( __( 'Create and Update %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
+            }
 
             return $type;
         }
 
         // Add the specific capabilities needed for the site to site linking.
-        public function default_site_link_capabilities( $args ) {
-            if ( 'create_contacts' === $args['connection_type'] ) {
-                $args['capabilities'][] = 'create_contacts';
-            }
-            if ( 'create_update_contacts' === $args['connection_type'] ) {
-                $args['capabilities'][] = 'create_contacts';
-                $args['capabilities'][] = 'update_any_contacts';
+        public function default_site_link_capabilities( $args ){
+            $post_types = DT_Posts::get_post_types();
+            foreach ( $post_types ?? [] as $post_type ){
+                if ( 'create_' . $post_type === $args['connection_type'] ){
+                    $args['capabilities'][] = 'create_' . $post_type;
+                }
+                if ( 'create_update_' . $post_type === $args['connection_type'] ){
+                    $args['capabilities'][] = 'create_' . $post_type;
+                    $args['capabilities'][] = 'update_any_' . $post_type;
+                }
             }
 
             return $args;

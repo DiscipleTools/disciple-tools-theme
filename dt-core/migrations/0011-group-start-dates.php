@@ -21,7 +21,7 @@ class Disciple_Tools_Migration_0011 extends Disciple_Tools_Migration {
         ", ARRAY_A);
 
         foreach ( $groups as $group ){
-            update_post_meta( $group['ID'], 'start_date', strtotime( $group["post_date"] ) );
+            update_post_meta( $group['ID'], 'start_date', strtotime( $group['post_date'] ) );
         }
         //make sure all churches have a church date.
         $churches_no_start_date = $wpdb->get_results( "
@@ -38,7 +38,7 @@ class Disciple_Tools_Migration_0011 extends Disciple_Tools_Migration {
         ", ARRAY_A);
 
         foreach ( $churches_no_start_date as $church ){
-            update_post_meta( $church['ID'], 'church_start_date', get_post_meta( $church["ID"], "start_date", true ) );
+            update_post_meta( $church['ID'], 'church_start_date', get_post_meta( $church['ID'], 'start_date', true ) );
         }
     }
 

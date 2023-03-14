@@ -42,7 +42,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $this->title = __( 'Fields over Time Charts', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -50,7 +50,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         }
 
         $post_types = DT_Posts::get_post_types();
-        $post_types = array_values( array_diff( $post_types, [ "peoplegroups" ] ) ); //skip people groups for now.
+        $post_types = array_values( array_diff( $post_types, [ 'peoplegroups' ] ) ); //skip people groups for now.
         $this->post_types = $post_types;
         $post_type_options = [];
         foreach ( $post_types as $post_type ) {
@@ -98,24 +98,24 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'chart_view' => 'month',
                     'post_type' => $post_type,
                     'field' => $field,
-                    'year' => gmdate( "Y" ),
+                    'year' => gmdate( 'Y' ),
                     'earliest_year' => $this->get_earliest_year(),
                 ],
                 'data'               => [],
                 'translations'       => [
-                    "title_time_charts" => __( 'Fields over Time Charts', 'disciple_tools' ),
-                    "post_type_select_label" => __( 'Post Type', 'disciple_tools' ),
-                    "post_field_select_label" => __( 'Field', 'disciple_tools' ),
-                    "total_label" => __( 'Total', 'disciple_tools' ),
-                    "added_label" => __( 'Added', 'disciple_tools' ),
-                    "tooltip_label" => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
-                    "date_select_label" => __( 'Date', 'disciple_tools' ),
-                    "all_time" => __( 'All Time', 'disciple_tools' ),
-                    "stacked_chart_title" => __( 'All cumulative totals', 'disciple_tools' ),
-                    "cumulative_chart_title" => __( 'Single cumulative totals', 'disciple_tools' ),
-                    "additions_chart_title" => __( 'Number added', 'disciple_tools' ),
-                    "true_label" => __( 'Yes', 'disciple_tools' ),
-                    "false_label" => __( 'No', 'disciple_tools' ),
+                    'title_time_charts' => __( 'Fields over Time Charts', 'disciple_tools' ),
+                    'post_type_select_label' => __( 'Post Type', 'disciple_tools' ),
+                    'post_field_select_label' => __( 'Field', 'disciple_tools' ),
+                    'total_label' => __( 'Total', 'disciple_tools' ),
+                    'added_label' => __( 'Added', 'disciple_tools' ),
+                    'tooltip_label' => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
+                    'date_select_label' => __( 'Date', 'disciple_tools' ),
+                    'all_time' => __( 'All Time', 'disciple_tools' ),
+                    'stacked_chart_title' => __( 'All cumulative totals', 'disciple_tools' ),
+                    'cumulative_chart_title' => __( 'Single cumulative totals', 'disciple_tools' ),
+                    'additions_chart_title' => __( 'Number added', 'disciple_tools' ),
+                    'true_label' => __( 'Yes', 'disciple_tools' ),
+                    'false_label' => __( 'No', 'disciple_tools' ),
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
@@ -165,7 +165,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function time_metrics_by_month( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( "time_metrics_by_month", "Missing Permissions", [ 'status' => 400 ] ) );
+            wp_send_json_error( new WP_Error( 'time_metrics_by_month', 'Missing Permissions', [ 'status' => 400 ] ) );
         }
 
 
@@ -184,7 +184,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function time_metrics_by_year( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( "time_metrics_by_year", "Missing Permissions", [ 'status' => 400 ] ) );
+            wp_send_json_error( new WP_Error( 'time_metrics_by_year', 'Missing Permissions', [ 'status' => 400 ] ) );
         }
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
@@ -200,7 +200,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 
     public function field_settings( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( "get_field_settings", "Missing Permissions", [ 'status' => 400 ] ) );
+            wp_send_json_error( new WP_Error( 'get_field_settings', 'Missing Permissions', [ 'status' => 400 ] ) );
         }
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
@@ -264,7 +264,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     }
 
     private function checkInput( $post_type, $field, $year = null ) {
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         if ( !in_array( $post_type, $this->post_types, true ) ) {
             return new WP_Error( 'time_metrics_by_month', 'not a suitable post type', [ 'status' => 400 ] );
         }

@@ -17,12 +17,9 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'access_groups' ];
     public $namespace = 'dt-metrics/personal/groups';
-    public $base_filter = [ "assigned_to" => [ "me" ] ];
+    public $base_filter = [ 'assigned_to' => [ 'me' ] ];
 
     public function __construct() {
-        if ( ! DT_Mapbox_API::get_key() ) {
-            return;
-        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
@@ -30,7 +27,7 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
         $this->title = __( 'Groups Maps', 'disciple_tools' );
         $this->base_title = __( 'Groups', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
@@ -54,6 +51,7 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
                 'translations' => [],
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
+                    'no_map_key_msg' => _x( 'To view this map, a mapbox key is needed; click here to add.', 'install mapbox key to view map', 'disciple_tools' ),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
                     'menu_slug' => $this->base_slug,
                     'post_type' => $this->post_type,
@@ -111,15 +109,15 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
 
     public function cluster_geojson( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
 
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
-        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
         return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query );
@@ -129,14 +127,14 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
 
     public function get_grid_totals( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
-        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
         $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
 
@@ -152,11 +150,11 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
     public function get_list_by_grid_id( WP_REST_Request $request ) {
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['grid_id'] ) || empty( $params['grid_id'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $grid_id = sanitize_text_field( wp_unslash( $params['grid_id'] ) );
         $post_type = $params['post_type'];
-        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
         return Disciple_Tools_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, $query );
@@ -168,15 +166,15 @@ class DT_Metrics_Mapbox_Personal_Groups_Maps extends DT_Metrics_Chart_Base
      */
     public function points_geojson( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
 
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, "Missing Post Types", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
-        $query = ( isset( $params["query"] ) && !empty( $params["query"] ) ) ? $params["query"] : [];
+        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
         return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );

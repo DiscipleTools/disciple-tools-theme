@@ -5,12 +5,12 @@ global $post;
 <div class="reveal" id="share-contact-modal" data-reveal style="min-height:550px">
 
     <h3><?php esc_html_e( 'Share settings', 'disciple_tools' )?></h3>
-    
+
     <h6>
         <?php
-        if ( is_singular( "groups" ) ){
+        if ( is_singular( 'groups' ) ){
             esc_html_e( 'This group is shared with:', 'disciple_tools' );
-        } else if ( is_singular( "contacts" ) ) {
+        } else if ( is_singular( 'contacts' ) ) {
             esc_html_e( 'This contact is shared with:', 'disciple_tools' );
         }
         ?>
@@ -24,7 +24,7 @@ global $post;
                     <span class="typeahead__query">
                         <input class="js-typeahead-share input-height"
                                name="share[query]"
-                               placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                               placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
                                autocomplete="off">
                     </span>
                 </div>
@@ -53,7 +53,7 @@ global $post;
         </div>
     </div>
 
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>

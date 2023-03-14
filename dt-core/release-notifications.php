@@ -13,10 +13,10 @@ function dt_release_modal() {
     }
     $url = dt_get_url_path( true );
     //bail if not an a D.T front end page.
-    if ( !is_archive() && !is_single() && !isset( apply_filters( "desktop_navbar_menu_options", [] )[untrailingslashit( $url )] ) ){
+    if ( !is_archive() && !is_single() && !isset( apply_filters( 'desktop_navbar_menu_options', [] )[untrailingslashit( $url )] ) ){
         return;
     }
-    $show_notification_for_theme_version = '1.31.0'; // increment this number with each new release modal
+    $show_notification_for_theme_version = '1.37.0'; // increment this number with each new release modal
 
     $theme_version = wp_get_theme()->version;
     $last_release_notification = get_user_meta( get_current_user_id(), 'dt_release_notification', true );
@@ -152,7 +152,7 @@ function dt_get_plugins_news_links() {
     set_transient( 'dt_plugin_news_items', $plugin_news_items, DAY_IN_SECONDS );
     return $plugin_news_items;
 }
-function dt_load_github_release_markdown( $tag, $repo = "DiscipleTools/disciple-tools-theme" ){
+function dt_load_github_release_markdown( $tag, $repo = 'DiscipleTools/disciple-tools-theme' ){
     if ( empty( $repo ) || empty( $tag ) ){
         return false;
     }
@@ -161,7 +161,7 @@ function dt_load_github_release_markdown( $tag, $repo = "DiscipleTools/disciple-
         return $release;
     }
 
-    $url = "https://api.github.com/repos/" . esc_attr( $repo ) . "/releases/tags/" . esc_attr( $tag );
+    $url = 'https://api.github.com/repos/' . esc_attr( $repo ) . '/releases/tags/' . esc_attr( $tag );
     $response = wp_remote_get( $url );
 
     $data_result = wp_remote_retrieve_body( $response );
@@ -172,9 +172,9 @@ function dt_load_github_release_markdown( $tag, $repo = "DiscipleTools/disciple-
     $release = json_decode( $data_result, true );
 
     // end check on readme existence
-    if ( !empty( $release["body"] ) ){
+    if ( !empty( $release['body'] ) ){
         $parsedown = new Parsedown();
-        $release = $parsedown->text( $release["body"] );
+        $release = $parsedown->text( $release['body'] );
         set_transient( 'dt_release_notification_' . $tag, $release, DAY_IN_SECONDS );
         return $release;
     }

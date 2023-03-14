@@ -12,8 +12,8 @@ declare( strict_types=1 );
  * @throws \Error Dt_theme_enqueue_script took $rel_src argument which unexpectedly started with /.
  */
 function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps = array(), bool $in_footer = false ) {
-    if ( $rel_src[0] === "/" ) {
-        throw new Error( "dt_theme_enqueue_script took \$rel_src argument which unexpectedly started with /" );
+    if ( $rel_src[0] === '/' ) {
+        throw new Error( 'dt_theme_enqueue_script took $rel_src argument which unexpectedly started with /' );
     }
     wp_enqueue_script( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $in_footer );
 }
@@ -23,8 +23,8 @@ function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps =
  *
  */
 function dt_theme_register_script( string $handle, string $rel_src, array $deps = array(), bool $in_footer = false ) {
-    if ( $rel_src[0] === "/" ) {
-        throw new Error( "dt_theme_register_script took \$rel_src argument which unexpectedly started with /" );
+    if ( $rel_src[0] === '/' ) {
+        throw new Error( 'dt_theme_register_script took $rel_src argument which unexpectedly started with /' );
     }
     return wp_register_script( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $in_footer );
 }
@@ -41,8 +41,8 @@ function dt_theme_register_script( string $handle, string $rel_src, array $deps 
  * @throws \Error Dt_theme_enqueue_style took $rel_src argument which unexpectedly started with /.
  */
 function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = array(), string $media = 'all' ) {
-    if ( $rel_src[0] === "/" ) {
-        throw new Error( "dt_theme_enqueue_style took \$rel_src argument which unexpectedly started with /" );
+    if ( $rel_src[0] === '/' ) {
+        throw new Error( 'dt_theme_enqueue_style took $rel_src argument which unexpectedly started with /' );
     }
     wp_enqueue_style( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $media );
 }
@@ -52,8 +52,8 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
  * Register styles, in a way that implements cache-busting
  */
 function dt_theme_register_style( string $handle, string $rel_src, array $deps = array(), string $media = 'all' ) {
-    if ( $rel_src[0] === "/" ) {
-        throw new Error( "dt_theme_register_style took \$rel_src argument which unexpectedly started with /" );
+    if ( $rel_src[0] === '/' ) {
+        throw new Error( 'dt_theme_register_style took $rel_src argument which unexpectedly started with /' );
     }
     return wp_register_style( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $media );
 }
@@ -67,12 +67,10 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'modernizr-custom', 'dt-assets/js/modernizr-custom.js', [], true );
     dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
 
-    // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
-    wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
-    wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css' );
+    wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css', [], '3.0.0' );
+    wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css', [], '6.6.96' );
 
-    // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
-    wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
+    wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '1.12.1', 'all' );
     wp_deregister_script( 'jquery' );
     wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js', false, '3.5.1' );
     wp_enqueue_script( 'jquery' );
@@ -114,16 +112,16 @@ function dt_site_scripts() {
                 'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                 'all_locations' => __( 'All Locations', 'disciple_tools' ),
                 'used_locations' => __( 'Used Locations', 'disciple_tools' ),
-                'no_records_found' => _x( 'No results found matching "{{query}}"', "Empty list results. Keep {{query}} as is in english", 'disciple_tools' ),
+                'no_records_found' => _x( 'No results found matching "{{query}}"', 'Empty list results. Keep {{query}} as is in english', 'disciple_tools' ),
                 'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
                 'edit' => __( 'Edit', 'disciple_tools' ),
             ],
             'post_type' => $post_type,
             'url_path' => $url_path,
-            'post_type_modules' => dt_get_option( "dt_post_type_modules" ),
+            'post_type_modules' => dt_get_option( 'dt_post_type_modules' ),
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
-            'can_manage_dt' => current_user_can( "manage_dt" ),
+            'can_manage_dt' => current_user_can( 'manage_dt' ),
         )
     );
 
@@ -135,8 +133,8 @@ function dt_site_scripts() {
             'current_user_login' => wp_get_current_user()->user_login,
             'current_user_id' => get_current_user_id(),
             'translations' => [
-                "no-unread" => __( "You don't have any unread notifications", "disciple_tools" ),
-                "no-notifications" => __( "You don't have any notifications", "disciple_tools" )
+                'no-unread' => __( "You don't have any unread notifications", 'disciple_tools' ),
+                'no-notifications' => __( "You don't have any notifications", 'disciple_tools' )
             ]
         )
     );
@@ -167,17 +165,17 @@ function dt_site_scripts() {
             ) );
             wp_localize_script(
                 'comments', 'commentsSettings', [
-                    "post" => get_post(),
+                    'post' => get_post(),
                     'post_with_fields' => $post,
                     'template_dir' => get_template_directory_uri(),
-                    'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
+                    'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : '',
                     'translations' => [
-                        "edit" => strtolower( __( "Edit", "disciple_tools" ) ),
-                        "delete" => strtolower( __( "Delete", "disciple_tools" ) ),
-                        "translate" => __( "Translate with Google Translate", "disciple_tools" ),
-                        "hide_translation" => __( "Hide Translation", "disciple_tools" ),
-                        "reaction_title_1" => _x( '%1$s reacted with %2$s emoji', 'Bob reacted with heart emoji', 'disciple_tools' ),
-                        "reaction_title_many" => _x( '%3$s and %1$s reacted with %2$s emoji', 'Bob, Bill and Ben reacted with heart emoji', 'disciple_tools' ),
+                        'edit' => strtolower( __( 'Edit', 'disciple_tools' ) ),
+                        'delete' => strtolower( __( 'Delete', 'disciple_tools' ) ),
+                        'translate' => __( 'Translate with Google Translate', 'disciple_tools' ),
+                        'hide_translation' => __( 'Hide Translation', 'disciple_tools' ),
+                        'reaction_title_1' => _x( '%1$s reacted with %2$s emoji', 'Bob reacted with heart emoji', 'disciple_tools' ),
+                        'reaction_title_many' => _x( '%3$s and %1$s reacted with %2$s emoji', 'Bob, Bill and Ben reacted with heart emoji', 'disciple_tools' ),
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
@@ -188,8 +186,8 @@ function dt_site_scripts() {
                      * Returned assosciative array must be of the form [ 'reaction_alias' => [ 'name' => 'reaction_translateable_name', 'path' => 'optional_path_to_reaction_image', 'emoji' => 'copy_and_pasted_text_emoji' ], ... ]
                      */
                     'reaction_options' => apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) ),
-                    'comments' => DT_Posts::get_post_comments( $post_type, $post["ID"] ),
-                    'activity' => DT_Posts::get_post_activity( $post_type, $post["ID"] ),
+                    'comments' => DT_Posts::get_post_comments( $post_type, $post['ID'] ),
+                    'activity' => DT_Posts::get_post_activity( $post_type, $post['ID'] ),
                     'google_translate_key' => get_option( 'dt_googletranslate_api_key' ),
                 ]
             );
@@ -213,10 +211,10 @@ function dt_site_scripts() {
                     'reminder' => __( 'Reminder', 'disciple_tools' ),
                     'no_note' => __( 'No note set', 'disciple_tools' ),
                     'duplicates_detected' => __( 'Duplicates Detected', 'disciple_tools' ),
-                    'merge' => __( "Merge", 'disciple_tools' ),
-                    'dismiss' => __( "Dismiss", 'disciple_tools' ),
-                    'dismissed_duplicates' => __( "Dismissed Duplicates", 'disciple_tools' ),
-                    'duplicates_on' => __( "Duplicates on: %s", 'disciple_tools' ),
+                    'merge' => __( 'Merge', 'disciple_tools' ),
+                    'dismiss' => __( 'Dismiss', 'disciple_tools' ),
+                    'dismissed_duplicates' => __( 'Dismissed Duplicates', 'disciple_tools' ),
+                    'duplicates_on' => __( 'Duplicates on: %s', 'disciple_tools' ),
                     'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' ),
                     'transfer_update_error' => __( 'Transfer update failed. Check site-to-site configuration.', 'disciple_tools' ),
                     'transfer_update_success' => __( 'Transfer update successful.', 'disciple_tools' ),
@@ -256,7 +254,7 @@ function dt_site_scripts() {
                 'associated_contact_id' => $contact_id,
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
                     'delete' => __( 'Delete', 'disciple_tools' ),
-                    'responsible_for_locations' => __( "Locations you are responsible for", 'disciple_tools' ),
+                    'responsible_for_locations' => __( 'Locations you are responsible for', 'disciple_tools' ),
                     'add' => __( 'Add', 'disciple_tools' ),
                     'save' => __( 'Save', 'disciple_tools' ),
                     'link' => __( 'link', 'disciple_tools' ),
@@ -265,7 +263,7 @@ function dt_site_scripts() {
                 'google_translate_api_key' => get_option( 'dt_googletranslate_api_key' ),
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
                 'workload_status'       => get_user_option( 'workload_status', get_current_user_id() ),
-                'workload_status_options' => dt_get_site_custom_lists()["user_workload_status"] ?? [],
+                'workload_status_options' => dt_get_site_custom_lists()['user_workload_status'] ?? [],
                 'user_people_groups' => DT_Posts::get_post_names_from_ids( get_user_option( 'user_people_groups', get_current_user_id() ) ?: [] ),
             )
         );
@@ -277,15 +275,15 @@ function dt_site_scripts() {
             'dt-settings', 'view_duplicates_settings', array(
                 'translations'          => apply_filters( 'dt_settings_js_translations', [
                     'matches_found' => _x( 'Matches Found:', 'Matches for duplicate contacts found: 230', 'disciple_tools' ),
-                    'dismiss_all' => _x( "Dismiss all matches for %s", 'Dismiss all duplicate matches for Bob', 'disciple_tools' ),
+                    'dismiss_all' => _x( 'Dismiss all matches for %s', 'Dismiss all duplicate matches for Bob', 'disciple_tools' ),
                 ] ),
-                "fields" => DT_Posts::get_post_field_settings( "contacts" ),
+                'fields' => DT_Posts::get_post_field_settings( 'contacts' ),
             )
         );
     }
 
-    $is_new_post      = ( strpos( $url_path, "/new" ) !== false ) && in_array( str_replace( "/new", "", $url_path ), $post_types );
-    $is_new_bulk_post = ( strpos( $url_path, "/new-bulk" ) !== false ) && in_array( str_replace( "/new-bulk", "", $url_path ), $post_types );
+    $is_new_post      = ( strpos( $url_path, '/new' ) !== false ) && in_array( str_replace( '/new', '', $url_path ), $post_types );
+    $is_new_bulk_post = ( strpos( $url_path, '/new-bulk' ) !== false ) && in_array( str_replace( '/new-bulk', '', $url_path ), $post_types );
 
     $path_without_params = untrailingslashit( dt_get_url_path( true ) );
     //list page
@@ -302,7 +300,7 @@ function dt_site_scripts() {
             'date_modified' => __( 'Date Modified', 'disciple_tools' ),
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
-            'filter_all' => sprintf( _x( "All %s", 'All records', 'disciple_tools' ), $post_settings["label_plural"] ),
+            'filter_all' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_settings['label_plural'] ),
             'range_start' => __( 'start', 'disciple_tools' ),
             'range_end' => __( 'end', 'disciple_tools' ),
             'all' => __( 'All', 'disciple_tools' ),
@@ -330,6 +328,10 @@ function dt_site_scripts() {
 
     if ( $is_new_post || $is_new_bulk_post ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
+        $translations = [
+            'contact' => __( 'Contact', 'disciple_tools' ),
+            'value_already_exists' => _x( '%s already exists', 'Communication channel already exists', 'disciple_tools' ),
+        ];
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
             DT_Mapbox_API::load_mapbox_search_widget();
@@ -340,6 +342,7 @@ function dt_site_scripts() {
         wp_localize_script( 'new-record', 'new_record_localized', array(
             'post_type'          => $post_type,
             'post_type_settings' => $post_settings,
+            'translations'       => $translations,
         ) );
     }
 

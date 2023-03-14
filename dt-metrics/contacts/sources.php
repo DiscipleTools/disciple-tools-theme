@@ -24,7 +24,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         $this->title = __( 'Sources Chart', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -58,25 +58,25 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
-        $contacts_custom_field_settings = DT_Posts::get_post_field_settings( "contacts" );
+        $contacts_custom_field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $sources = [];
-        foreach ( $contacts_custom_field_settings["sources"]["default"] as $key => $values ){
-            $sources[ $key ] = $values["label"];
+        foreach ( $contacts_custom_field_settings['sources']['default'] as $key => $values ){
+            $sources[ $key ] = $values['label'];
         }
         $seeker_path_settings = $contacts_custom_field_settings['seeker_path'];
         $seeker_path_settings['order'] = array_keys( $seeker_path_settings['default'] );
         $overall_status_settings = $contacts_custom_field_settings['overall_status'];
         $overall_status_settings['order'] = array_keys( $overall_status_settings['default'] );
         $milestone_settings = [];
-        foreach ( $contacts_custom_field_settings["milestones"]["default"] as $key => $option ){
-            $milestone_settings[$key] = $option["label"];
+        foreach ( $contacts_custom_field_settings['milestones']['default'] as $key => $option ){
+            $milestone_settings[$key] = $option['label'];
         }
         // Localize script with array data
         wp_localize_script(
             'dt_'.$this->slug.'_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                "data" => [
-                    "sources" => $this->get_source_data_from_db(),
+                'data' => [
+                    'sources' => $this->get_source_data_from_db(),
                 ],
                 'sources' => $sources,
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
@@ -84,18 +84,18 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 'overall_status_settings' => $overall_status_settings,
                 'milestone_settings' => $milestone_settings,
                 'translations' => [
-                    'filter_contacts_to_date_range' => __( "Filter contacts to date range:", 'disciple_tools' ),
-                    'all_time' => __( "All Time", 'disciple_tools' ),
-                    'filter_to_date_range' => __( "Filter to date range", 'disciple_tools' ),
-                    'sources' => __( "Sources", 'disciple_tools' ),
-                    'sources_filter_out_text' => __( "Showing contacts created during", 'disciple_tools' ),
-                    'sources_all_contacts_by_source_and_status' => __( "All contacts, by source and status", 'disciple_tools' ),
-                    'sources_contacts_warning' => __( "A contact can come from more than one source.", 'disciple_tools' ),
-                    'sources_active_by_seeker_path' => __( "Active contacts, by source and seeker path", 'disciple_tools' ),
+                    'filter_contacts_to_date_range' => __( 'Filter contacts to date range:', 'disciple_tools' ),
+                    'all_time' => __( 'All Time', 'disciple_tools' ),
+                    'filter_to_date_range' => __( 'Filter to date range', 'disciple_tools' ),
+                    'sources' => __( 'Sources', 'disciple_tools' ),
+                    'sources_filter_out_text' => __( 'Showing contacts created during', 'disciple_tools' ),
+                    'sources_all_contacts_by_source_and_status' => __( 'All contacts, by source and status', 'disciple_tools' ),
+                    'sources_contacts_warning' => __( 'A contact can come from more than one source.', 'disciple_tools' ),
+                    'sources_active_by_seeker_path' => __( 'Active contacts, by source and seeker path', 'disciple_tools' ),
                     'sources_only_active' => __( "This is displaying only the contacts with an 'active' status right now.", 'disciple_tools' ),
-                    'sources_active_milestone' => __( "Active contacts, by source and faith milestone", 'disciple_tools' ),
+                    'sources_active_milestone' => __( 'Active contacts, by source and faith milestone', 'disciple_tools' ),
                     'sources_active_status_warning' => __( "This is displaying only the contacts with an 'active' status right now.", 'disciple_tools' ),
-                    'sources_contacts_warning_milestones' => __( "A contact can come from more than one source, and it can have more than one faith milestone at the same time.", 'disciple_tools' ),
+                    'sources_contacts_warning_milestones' => __( 'A contact can come from more than one source, and it can have more than one faith milestone at the same time.', 'disciple_tools' ),
                 ]
             ]
         );
@@ -121,8 +121,8 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
 
     public function api_sources_chart_data( WP_REST_Request $request ) {
         $params = $request->get_params();
-        if ( !( current_user_can( "dt_all_access_contacts" ) || current_user_can( "view_project_metrics" ) ) ) {
-            return new WP_Error( __FUNCTION__, "Permission required: view all contacts", [ 'status' => 403 ] );
+        if ( !( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'view_project_metrics' ) ) ) {
+            return new WP_Error( __FUNCTION__, 'Permission required: view all contacts', [ 'status' => 403 ] );
         }
         try {
             if ( isset( $params['from'] ) && isset( $params['to'] ) ) {
@@ -138,12 +138,12 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             }
         } catch ( Exception $e ) {
             error_log( $e );
-            return new WP_Error( __FUNCTION__, "got error ", [ 'status' => 500 ] );
+            return new WP_Error( __FUNCTION__, 'got error ', [ 'status' => 500 ] );
         }
     }
     private static function check_date_string( string $str ) {
         if ( ! preg_match( '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $str, $matches ) ) {
-            return new WP_Error( "Could not parse date, expected YYYY-MM-DD format" );
+            return new WP_Error( 'Could not parse date, expected YYYY-MM-DD format' );
         }
     }
     /**
@@ -191,10 +191,10 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             WHERE
                 post_type = 'contacts'
                 AND 1=%s "
-                               . ( $from ? " AND post_date >= %s " : "" )
-                               . ( $to ? " AND post_date <= %s " : "" )
-                               . "
-            GROUP BY sources, overall_status, seeker_path;",
+                               . ( $from ? ' AND post_date >= %s ' : '' )
+                               . ( $to ? ' AND post_date <= %s ' : '' )
+                               . '
+            GROUP BY sources, overall_status, seeker_path;',
             ...$prepare_args
         );
         $rows = $wpdb->get_results( $sql, ARRAY_A );
@@ -264,11 +264,11 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             WHERE
                 post_type = 'contacts'
                 AND 1=1 "
-                               . ( $from ? " AND post_date >= %s " : "" )
-                               . ( $to ? " AND post_date <= %s " : "" )
-                               . "
+                               . ( $from ? ' AND post_date >= %s ' : '' )
+                               . ( $to ? ' AND post_date <= %s ' : '' )
+                               . '
             GROUP BY
-                sources, milestone;",
+                sources, milestone;',
             ...$prepare_args
         );
         $rows = $wpdb->get_results( $sql, ARRAY_A );

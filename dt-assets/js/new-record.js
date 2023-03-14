@@ -42,7 +42,9 @@ jQuery(function($) {
     const listClass = $(e.currentTarget).data('list-class')
     const $list = $(`#edit-${listClass}`)
     const field = $(e.currentTarget).data('list-class')
+    const fieldName = window.new_record_localized.post_type_settings.fields[field].name
     const fieldType = $(e.currentTarget).data('field-type')
+    var elementIndex = $(`input[data-${field}-index]`).length
 
     if (fieldType === 'link') {
       const addLinkForm = $(`.add-link-${field}`)
@@ -51,23 +53,40 @@ jQuery(function($) {
       $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
     } else {
       $list.append(`<li style="display: flex">
-                <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}"/>
-                <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button">
+                <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}" data-${field}-index="${window.lodash.escape( elementIndex )}"/>
+                <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button" data-${field}-index="${elementIndex}">
                     <img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
                 </button>
-              </li>`)
+                <span class="loading-spinner" data-${field}-index="${window.lodash.escape( elementIndex )}" style="margin: 0.5rem;"></span>
+              </li>
+              <div class="communication-channel-error" data-${field}-index="${window.lodash.escape( elementIndex )}" style="display: none;">
+                ${window.new_record_localized.translations.value_already_exists.replace('%s', fieldName)}: 
+                <span class="duplicate-ids" data-${field}-index="${window.lodash.escape( elementIndex )}" style="color: #3f729b;"></span>
+              </div>`)
     }
   })
 
   /* breadcrumb: new-field-type Add anything that the field type needs for creating a new record */
 
-  $('.add-link-button').on('click', window.SHAREDFUNCTIONS.addLink)
+  $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
+
+  $('.add-link__option').on('click', (event) => {
+    SHAREDFUNCTIONS.addLink(event)
+    $(event.target).parent().hide()
+    setTimeout(() => {
+      event.target.parentElement.removeAttribute('style')
+    }, 100)
+  })
 
   $(document).on('click', '.link-delete-button', function(){
     $(this).closest('.link-section').remove()
   })
 
   $('.js-create-post').on('click', '.delete-button', function () {
+    var field_type = $(this).prev('input').data('field')
+    var element_index = $(this).data(`${field_type}-index`)
+    console.log(field_type, element_index)
+    $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).remove()
     $(this).parent().remove()
   })
 
@@ -1366,6 +1385,63 @@ jQuery(function($) {
       }
     }
   }
+
+  // Check for phone and email duplication
+  non_duplicable_fields = ['contact_phone', 'contact_email'];
+  $.each(non_duplicable_fields, function(field_key, field_type){
+    var field_name = window.new_record_localized.post_type_settings.fields[field_type].name
+    $(`input[data-field="${field_type}"]`).attr(`data-${field_type}-index`, '0');
+    $(`input[data-field="${field_type}"]`).after(`<span class="loading-spinner" data-${field_type}-index="0" style="margin: 0.5rem;"></span>`);
+    $(`input[data-field="${field_type}"]`).parent().after(`
+      <div class="communication-channel-error" data-${field_type}-index="0" style="display: none;">
+        ${window.new_record_localized.translations.value_already_exists.replace('%s', field_name)}: 
+        <span class="duplicate-ids" data-${field_type}-index="0" style="color: #3f729b;"></span>
+        </div>`);
+  })
+  
+  function check_field_value_exists(field_type, element_index) {
+    var email = $(`input[data-${field_type}-index="${element_index}"]`).val();
+    $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner active');
+    if (!email) {
+      $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).hide();
+      $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner');
+      return;
+    }
+    var post_type = window.wpApiShare.post_type;
+    var data = {"communication_channel": `${field_type}`, "field_value": email,}
+    jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: window.wpApiShare.root + `dt-posts/v2/${post_type}/check_field_value_exists`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader("X-WP-Nonce", window.wpApiShare.nonce);
+      },
+    }).then(result => {
+      if (!$.isEmptyObject(result)) {
+        var duplicate_ids_html = '';
+        $.each(result, function(k,v) {
+          if ( k > 0 ) {
+            duplicate_ids_html += ', ';
+          }
+          duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">${window.new_record_localized.translations.contact} #${v.post_id}</a>`;
+        });
+        $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html(duplicate_ids_html);
+        $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).show();
+      } else {
+        $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).hide();
+        $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html('');
+      }
+      $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner');
+    });
+  }
+
+  $('.form-fields').on('change', 'input[data-field^="contact_"]', function() {
+    var post_type = $(this).data('field');
+    var element_index = $(this).data(`${post_type}-index`);
+    check_field_value_exists(post_type, element_index)
+  });
 
   /**
    * ============== [ BULK RECORD ADDING FUNCTIONALITY ] ==============

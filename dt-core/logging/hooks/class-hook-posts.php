@@ -12,9 +12,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         add_action( 'wp_insert_post', [ &$this, 'hooks_new_post' ], 10, 3 );
         add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
 
-        add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta' ], 10, 4 );
-        add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
-        add_action( "delete_post_meta", [ &$this, 'post_meta_deleted' ], 10, 4 );
+        add_action( 'added_post_meta', [ &$this, 'hooks_added_post_meta' ], 10, 4 );
+        add_action( 'updated_post_meta', [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
+        add_action( 'delete_post_meta', [ &$this, 'post_meta_deleted' ], 10, 4 );
 
         add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created' ], 10, 1 );
         add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted' ], 10, 1 );
@@ -61,9 +61,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             if ( ! get_current_user_id() ) {
                 $user = wp_get_current_user();
                 if ( $user->display_name ) {
-                    $activity['object_note'] = "Created with site link: " . $user->display_name;
+                    $activity['object_note'] = 'Created with site link: ' . $user->display_name;
                     if ( isset( $user->site_key ) ) {
-                        $activity["user_caps"] = $user->site_key;
+                        $activity['user_caps'] = $user->site_key;
                     }
                 }
             }
@@ -119,12 +119,12 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        $ignore_fields = [ '_edit_lock', '_edit_last', "last_modified", "follow", "unfollow" ];
+        $ignore_fields = [ '_edit_lock', '_edit_last', 'last_modified', 'follow', 'unfollow' ];
 
         if ( in_array( $meta_key, $ignore_fields ) ) {
             return;
         }
-        if ( $parent_post["post_status"] === "auto-draft" ) {
+        if ( $parent_post['post_status'] === 'auto-draft' ) {
             return;
         }
 
@@ -163,45 +163,51 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $prev_value = $prev[0]->meta_value;
             }
         }
-        $field_type  = "";
+        $field_type  = '';
         $object_note = '';
         $fields      = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
 
         //build message for verifying and invalidating contact information fields.
-        if ( strpos( $meta_key, "_details" ) !== false && is_array( $meta_value ) ) {
-            $original_key = str_replace( "_details", "", $meta_key );
+        if ( strpos( $meta_key, '_details' ) !== false && is_array( $meta_value ) ) {
+            $original_key = str_replace( '_details', '', $meta_key );
             $original     = get_post_meta( $object_id, $original_key, true );
             $object_note  = $this->_key_name( $original_key, $fields ) . ' "' . $original . '" ';
-            $field_type   = "details";
+            $field_type   = 'details';
             foreach ( $meta_value as $k => $v ) {
                 if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ) {
                     continue;
                 }
-                if ( $k === "verified" ) {
-                    $object_note .= $v ? "verified" : "not verified";
+                if ( $k === 'verified' ) {
+                    $object_note .= $v ? 'verified' : 'not verified';
                 }
-                if ( $k === "invalid" ) {
-                    $object_note .= $v ? "invalidated" : "not invalidated";
+                if ( $k === 'invalid' ) {
+                    $object_note .= $v ? 'invalidated' : 'not invalidated';
                 }
                 $object_note .= ', ';
             }
             $object_note = chop( $object_note, ', ' );
         }
 
-        if ( $meta_key == "title" ) {
-            $object_note = "Name changed to: " . $meta_value;
+        if ( $meta_key == 'title' ) {
+            $object_note = 'Name changed to: ' . $meta_value;
         }
-        if ( strpos( $meta_key, "assigned_to" ) !== false ) {
+        if ( strpos( $meta_key, 'assigned_to' ) !== false ) {
             $meta_array = explode( '-', $meta_value ); // Separate the type and id
             if ( isset( $meta_array[1] ) ) {
-                $user        = get_user_by( "ID", $meta_array[1] );
-                $object_note = "Assigned to: " . ( $user ? $user->display_name : "Nobody" );
+                $user        = get_user_by( 'ID', $meta_array[1] );
+                $object_note = 'Assigned to: ' . ( $user ? $user->display_name : 'Nobody' );
             }
         }
 
 
-        if ( ! empty( $fields ) && isset( $fields[ $meta_key ]["type"] ) ) {
-            $field_type = $fields[ $meta_key ]["type"];
+        if ( ! empty( $fields ) && isset( $fields[ $meta_key ]['type'] ) ) {
+            $field_type = $fields[ $meta_key ]['type'];
+        } elseif ( empty( $field_type ) && ( !empty( $fields ) && ( strpos( $meta_key, 'contact_' ) !== false ) ) ){
+            foreach ( $fields as $field_key => $field ){
+                if ( ( strpos( $field_key, 'contact_' ) !== false ) && ( strpos( $meta_key, $field_key ) !== false ) ){
+                    $field_type = $field['type'];
+                }
+            }
         }
 
         if ( ! empty( $fields ) && ! $object_note ) { // Build object note if contact, group, location, else ignore object note
@@ -227,7 +233,18 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         if ( $deleted ) {
             $prev_value = empty( $prev_value ) ? ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) : $prev_value;
-            $meta_value = "value_deleted";
+            $meta_value = 'value_deleted';
+        }
+
+        // Ensure the best efforts are made to avoid blank field types.
+        if ( empty( $field_type ) ) {
+
+            // Handle any potential link field types.
+            foreach ( DT_Posts::get_field_settings_by_type( $parent_post['post_type'], 'link' ) ?? [] as $link_field ) {
+                if ( strpos( $meta_key, $link_field ) !== false ) {
+                    $field_type = $fields[$link_field]['type'] ?? '';
+                }
+            }
         }
 
         dt_activity_insert( // insert activity record
@@ -239,7 +256,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'object_name'    => ( empty( $parent_post['post_title'] ) ) ? 'unknown' : $parent_post['post_title'],
                 'meta_id'        => $meta_id,
                 'meta_key'       => $meta_key,
-                'meta_value'     => ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) ?? "",
+                'meta_value'     => ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) ?? '',
                 'meta_parent'    => ( empty( $parent_post['post_parent'] ) ) ? 'unknown' : $parent_post['post_parent'],
                 'object_note'    => $object_note,
                 'old_value'      => is_array( $prev_value ) ? serialize( $prev_value ) : $prev_value,
@@ -285,7 +302,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 return $meta_value;
             } else {
                 if ( is_array( $fields[ $meta_key ]['default'][ $meta_value ] ) ) {
-                    return $fields[ $meta_key ]['default'][ $meta_value ]["label"] ?? "";
+                    return $fields[ $meta_key ]['default'][ $meta_value ]['label'] ?? '';
                 } else {
                     return $fields[ $meta_key ]['default'][ $meta_value ];
                 }
@@ -302,36 +319,60 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $p2p_to     = get_post( $p2p_record->p2p_to, ARRAY_A );
         $p2p_type   = $p2p_record->p2p_type;
 
+        // Determine actual [from] field key.
+        $from_field_key = '';
+        $field_settings = DT_Posts::get_post_field_settings( $p2p_from['post_type'], false );
+        $connection_fields = DT_Posts::get_field_settings_by_type( $p2p_from['post_type'], 'connection' );
+        foreach ( $field_settings as $field_key => $field_setting ){
+            if ( in_array( $field_key, $connection_fields ) && isset( $field_setting['p2p_direction'], $field_setting['p2p_key'] ) ){
+                if ( ( $field_setting['p2p_direction'] === 'from' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
+                    $from_field_key = $field_key;
+                }
+            }
+        }
+
+        // Determine actual [to] field key.
+        $to_field_key = '';
+        $field_settings = DT_Posts::get_post_field_settings( $p2p_to['post_type'], false );
+        $connection_fields = DT_Posts::get_field_settings_by_type( $p2p_to['post_type'], 'connection' );
+        foreach ( $field_settings as $field_key => $field_setting ){
+            if ( in_array( $field_key, $connection_fields ) && isset( $field_setting['p2p_direction'], $field_setting['p2p_key'] ) ){
+                if ( ( $field_setting['p2p_direction'] === 'to' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
+                    $to_field_key = $field_key;
+                }
+            }
+        }
+
         // Log for both records
-        dt_activity_insert(
+        dt_activity_insert( // From
             [
                 'action'         => $action,
                 'object_type'    => $p2p_from['post_type'],
-                'object_subtype' => 'p2p',
+                'object_subtype' => $from_field_key,
                 'object_id'      => $p2p_from['ID'],
                 'object_name'    => $p2p_from['post_title'],
                 'meta_id'        => $p2p_id,
                 'meta_key'       => $p2p_type,
                 'meta_value'     => $p2p_to['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
-                'object_note'    => '',
-                'field_type'     => "connection from"
+                'object_note'    => 'connection from',
+                'field_type'     => 'connection'
             ]
         );
 
-        dt_activity_insert(
+        dt_activity_insert( // To
             [
                 'action'         => $action,
                 'object_type'    => $p2p_to['post_type'],
-                'object_subtype' => 'p2p',
+                'object_subtype' => $to_field_key,
                 'object_id'      => $p2p_to['ID'],
                 'object_name'    => $p2p_to['post_title'],
                 'meta_id'        => $p2p_id,
                 'meta_key'       => $p2p_type,
                 'meta_value'     => $p2p_from['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
-                'object_note'    => '',
-                'field_type'     => "connection to",
+                'object_note'    => 'connection to',
+                'field_type'     => 'connection',
             ]
         );
 
@@ -343,7 +384,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     }
 
     public function post_meta_deleted( $meta_id, $object_id, $meta_key, $meta_value = '', $new = false ) {
-        if ( strpos( $meta_key, "_details" ) === false ) {
+        if ( strpos( $meta_key, '_details' ) === false ) {
             $this->hooks_updated_post_meta( $meta_id[0], $object_id, $meta_key, $meta_value, $new, true );
         }
     }
@@ -363,13 +404,14 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             if ( empty( $current_migration ) || intval( $current_migration ) < 40 ){
                 return;
             }
+            $url = ( isset( $_SERVER['HTTP_HOST'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
             $activity = [
                 'action'         => 'error_log',
                 'object_type'    => '',
                 'object_subtype' => '',
                 'object_id'      => 0,
                 'object_name'    => '',
-                'object_note'    => $message,
+                'object_note'    => $message . ( empty( $url ) ? '' : ' From: ' . $url ),
                 'meta_id'        => '',
                 'meta_key'       => $code,
                 'meta_value'     => maybe_serialize( $data ),

@@ -18,7 +18,7 @@ class Disciple_Tools_People_Groups_Endpoints
 {
 
     private $version = 1;
-    private $context = "dt";
+    private $context = 'dt';
     private $namespace;
 
     /**
@@ -53,7 +53,7 @@ class Disciple_Tools_People_Groups_Endpoints
      * @since   0.1.0
      */
     public function __construct() {
-        $this->namespace = $this->context . "/v" . intval( $this->version );
+        $this->namespace = $this->context . '/v' . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     } // End __construct()
 
@@ -93,6 +93,13 @@ class Disciple_Tools_People_Groups_Endpoints
                 'permission_callback' => '__return_true',
             ]
         );
+        register_rest_route(
+            $this->namespace, '/people-groups/update_setting_options', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'update_setting_options' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
     }
 
     /**
@@ -103,7 +110,7 @@ class Disciple_Tools_People_Groups_Endpoints
     public function get_people_groups_compact( WP_REST_Request $request ) {
 
         $params = $request->get_params();
-        $search = "";
+        $search = '';
         if ( isset( $params['s'] ) ) {
             $search = $params['s'];
         }
@@ -167,6 +174,21 @@ class Disciple_Tools_People_Groups_Endpoints
             return $result;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|WP_Error
+     */
+    public function update_setting_options( WP_REST_Request $request ) {
+
+        $params = $request->get_params();
+        if ( isset( $params['settings'] ) ) {
+            return Disciple_Tools_People_Groups::update_setting_options( $params['settings'] );
+        } else {
+            return new WP_Error( __METHOD__, 'Missing required parameter `settings`' );
         }
     }
 }

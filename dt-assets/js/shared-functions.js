@@ -131,11 +131,11 @@ window.API = {
   get_comments: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/comments`),
 
-  toggle_comment_reaction: (postType, postId, commentId, userId, reaction) => {
+  toggle_comment_reaction: (postType, postId, commentId, reaction) => {
     makeRequestOnPosts(
       "POST",
       `${postType}/${postId}/comments/${commentId}/react`,
-      { user_id: userId, reaction: reaction }
+      { reaction: reaction }
     )
   },
 
@@ -222,7 +222,7 @@ jQuery(document)
   .ajaxComplete((event, xhr, settings) => {
     if ( xhr && xhr.responseJSON && settings.type === "POST" ) {
       // Event that a contact record has been updated, check to make sure the post type that is being updated is the same as the current page post type.
-      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type &&  xhr.responseJSON.post_type === window.detailsSettings.post_type ) {
+      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type &&  xhr.responseJSON.post_type === window.detailsSettings?.post_type ) {
         let request = settings.data ? JSON.parse(settings.data) : {};
         $(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
       }
@@ -672,11 +672,8 @@ window.SHAREDFUNCTIONS = {
           if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
             url = match
           }
-          else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+          else if (match.indexOf("http") === -1) {
             url = "http://" + match
-          }
-          else if (match.indexOf("www.") === -1) {
-            url = "http://www." + match
           }
           return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
         }
@@ -742,15 +739,24 @@ window.SHAREDFUNCTIONS = {
     $(selector).html(elem_text)
   },
   addLink(e) {
-    fieldKey = e.target.dataset['fieldKey']
+    let fieldKey = e.target.dataset['fieldKey']
+    let linkType = e.target.dataset['linkType']
+    let onlyOneOption = e.target.dataset['onlyOneOption']
 
-    linkType = $(this).siblings(".link-type").val()
+    const linkList = document.querySelector(`.link-list-${fieldKey} .link-section--${linkType}`)
 
-    const linkList = $(`.link-list-${fieldKey}`)
+    const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`).querySelector('.input-group')
 
-    const template = $(`#link-template-${fieldKey}-${linkType}`)
+    const newInputGroup = $(template).clone(true);
+    const newInput = newInputGroup[0].querySelector('input')
+    $(linkList).append(newInputGroup)
+    newInput.focus()
 
-    linkList.append(template.clone(true).removeAttr('id').show())
+    if ( onlyOneOption !== '' ) {
+      linkList.querySelector('.section-subheader').style.display = 'block'
+    }
+
+    $(".grid").masonry("layout"); //resize or reorder tile
   }
 };
 

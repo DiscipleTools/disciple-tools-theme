@@ -82,6 +82,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Worker Profile */
 
+            /* Comment Types */
+            $this->box( 'top', __( 'Contact Comment Types', 'disciple_tools' ) );
+            $this->process_comment_types_box();
+            $this->comment_types_box(); // prints
+            $this->box( 'bottom' );
+            /* end Comment Types */
+
             /* Channels */
             $this->box( 'top', __( 'Contact Communication Channels', 'disciple_tools' ) );
             $this->process_channels_box();
@@ -116,11 +123,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function user_profile_box() {
         echo '<form method="post" name="user_fields_form">';
         echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
-        echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
-        echo '<p>' . esc_html( __( "You can add or remove types of contact fields for user profiles.", 'disciple_tools' ) ) . '</p>';
+        echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">' . esc_html( __( 'reset', 'disciple_tools' ) ) . '</button>';
+        echo '<p>' . esc_html( __( 'You can add or remove types of contact fields for user profiles.', 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . esc_attr( wp_create_nonce( 'user_fields' ) ) . '" />';
         echo '<table class="widefat">';
-        echo '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
+        echo '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>' . esc_html( __( 'Delete', 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -132,17 +139,17 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         foreach ( $user_fields as $field ) {
             echo '<tr>
                         <td>' . esc_attr( $field['label'] ) . '</td>
-                        <td>' . esc_attr( isset( $user_fields_types[$field['type']]["label"] ) ? $user_fields_types[$field['type']]["label"] : $field['type'] ) . '</td>
+                        <td>' . esc_attr( isset( $user_fields_types[$field['type']]['label'] ) ? $user_fields_types[$field['type']]['label'] : $field['type'] ) . '</td>
                         <td>' . esc_attr( $field['description'] ) . ' </td>
-                        <td><input name="user_fields[' . esc_attr( $field['key'] ) . ']" type="checkbox" ' . ( $field['enabled'] ? "checked" : "" ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . esc_attr( $field['key'] ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
+                        <td><input name="user_fields[' . esc_attr( $field['key'] ) . ']" type="checkbox" ' . ( $field['enabled'] ? 'checked' : '' ) . ' /></td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $field['key'] ) . '" class="button small" >' . esc_html( __( 'Delete', 'disciple_tools' ) ) . '</button> </td>
                       </tr>';
         }
         // end list block
 
         echo '</table>';
-        echo '<br><button type="button" onclick="jQuery(\'#add_user\').toggle();" class="button">' . esc_html( __( "Add", 'disciple_tools' ) ) . '</button>
-                        <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_user\').toggle();" class="button">' . esc_html( __( 'Add', 'disciple_tools' ) ) . '</button>
+                        <button type="submit" style="float:right;" class="button">' . esc_html( __( 'Save', 'disciple_tools' ) ) . '</button>';
         echo '<div id="add_user" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
@@ -241,9 +248,181 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
+    public function process_comment_types_box() {
+        if ( isset( $_POST['comment_types_box_nonce'] ) ) {
+            $custom_key_prefix = 'cmt_type_';
+
+            if ( ! wp_verify_nonce( sanitize_key( $_POST['comment_types_box_nonce'] ), 'comment_types_box' ) ) {
+                self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
+
+                return;
+            }
+
+            $langs                 = dt_get_available_languages();
+            $comment_type_options  = dt_get_option( 'dt_comment_types' );
+            $comment_type_fields = $comment_type_options['contacts'] ?? [];
+            $comment_types         = isset( $_POST['type_keys'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['type_keys'] ) ) : [];
+
+            // Handle general updates.
+            foreach ( $comment_types as $type ){
+
+                // Ensure 3rd party custom comment type extra parameters are also persisted.
+                if ( !isset( $comment_type_fields[$type] ) ){
+                    $filtered_types = apply_filters( 'dt_comments_additional_sections', [], 'contacts' );
+                    foreach ( $filtered_types ?? [] as $filtered_type ){
+                        if ( $filtered_type['key'] == $type ){
+                            $comment_type_fields[$type] = $filtered_type;
+                            $comment_type_fields[$type]['is_comment_type'] = true;
+                        }
+                    }
+                }
+
+                // Proceed with type updating.
+                if ( isset( $comment_type_fields[$type] ) ){
+
+                    // Type Name
+                    if ( isset( $_POST['type_labels'][$type]['default'] ) ){
+                        $comment_type_fields[$type]['name'] = sanitize_text_field( wp_unslash( $_POST['type_labels'][$type]['default'] ) );
+                    }
+
+                    // Type Enabled - Only apply if it's an original custom type.
+                    if ( substr( $type, 0, strlen( $custom_key_prefix ) ) === $custom_key_prefix ){
+                        $comment_type_fields[$type]['enabled'] = isset( $_POST['type_enabled'][$type] );
+                    }
+
+                    // Type Translations
+                    foreach ( $langs as $lang => $val ){
+                        $langcode = $val['language'];
+                        if ( isset( $_POST['type_labels'][$type][$langcode] ) ){
+                            $translated_label = sanitize_text_field( wp_unslash( $_POST['type_labels'][$type][$langcode] ) );
+                            if ( ( empty( $translated_label ) && !empty( $comment_type_fields[$type]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
+                                $comment_type_fields[$type]['translations'][$langcode] = $translated_label;
+                            }
+                        }
+                    }
+
+                    // Persist key prefix.
+                    $comment_type_fields[$type]['key_prefix'] = $custom_key_prefix;
+                }
+            }
+
+            // Handle the adding of new comment types.
+            if ( ! empty( $_POST['add_type'] ) ) {
+                $label = sanitize_text_field( wp_unslash( $_POST['add_type'] ) );
+                $key   = substr( dt_create_field_key( $custom_key_prefix . $label ), 0, 20 );
+                if ( ! empty( $key ) ) {
+                    if ( isset( $comment_type_fields[ $key ] ) ) {
+                        self::admin_notice( __( 'This comment type already exists', 'disciple_tools' ), 'error' );
+                    } else {
+                        $comment_type_fields[$key] = [
+                            'name' => $label,
+                            'enabled' => true,
+                            'is_comment_type' => true,
+                            'key_prefix' => $custom_key_prefix
+                        ];
+                    }
+                }
+            }
+
+            // Update and persist custom comment type options.
+            $comment_type_options['contacts'] = $comment_type_fields;
+            update_option( 'dt_comment_types', $comment_type_options );
+        }
+    }
+
+    public function comment_types_box() {
+        $form_name = 'comment_types_box';
+        ?>
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>">
+            <input type="hidden" name="comment_types_box_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'comment_types_box' ) ) ?>"/>
+            <table class="widefat">
+                <thead>
+                <tr>
+                    <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Key', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Enabled', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Translation', 'disciple_tools' ) ?></td>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                // Display comment types, ignoring contact_ communication channel fields.
+                $comment_types  = apply_filters( 'dt_comments_additional_sections', [], 'contacts' );
+                foreach ( $comment_types ?? [] as $type ) {
+                    if ( ( ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ) || ( strpos( $type['key'], 'contact_' ) === false ) ) && !in_array( $type['key'], [ 'activity' ] ) ){
+                        $enabled = ! isset( $type['enabled'] ) || $type['enabled'] !== false;
+                        $supported_key_prefixes = isset( $type['key_prefix'] ) && substr( $type['key'], 0, strlen( $type['key_prefix'] ) ) === $type['key_prefix'];
+                        ?>
+                        <tr>
+                            <input type="hidden" name="type_keys[<?php echo esc_html( $type['key'] ) ?>]">
+                            <td><input type="text" name="type_labels[<?php echo esc_html( $type['key'] ) ?>][default]"
+                                       value="<?php echo esc_html( $type['name'] ?? ( $type['label'] ?? $type['key'] ) ) ?>">
+                            </td>
+                            <td><?php echo esc_html( $type['key'] ) ?></td>
+                            <td>
+                                <input name="type_enabled[<?php echo esc_html( $type['key'] ) ?>]"
+                                       type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?>
+                                    <?php echo esc_html( !$supported_key_prefixes ? 'disabled' : '' ) ?>
+                                />
+                            </td>
+                            <td>
+                                <?php $langs = dt_get_available_languages(); ?>
+                                <button class="button small expand_translations"
+                                        data-form_name="<?php echo esc_html( $form_name ) ?>">
+                                    <?php
+                                    $number_of_translations = 0;
+                                    foreach ( $langs as $lang => $val ) {
+                                        if ( ! empty( $type['translations'][ $val['language'] ] ) ) {
+                                            $number_of_translations ++;
+                                        }
+                                    }
+                                    ?>
+                                    <img style="height: 15px; vertical-align: middle"
+                                         src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                                    (<?php echo esc_html( $number_of_translations ); ?>)
+                                </button>
+                                <div class="translation_container hide">
+                                    <table>
+                                        <?php foreach ( $langs as $lang => $val ) : ?>
+                                            <tr>
+                                                <td><label
+                                                        for="type_labels[<?php echo esc_html( $type['key'] ) ?>][<?php echo esc_html( $val['language'] ) ?>]"><?php echo esc_html( $val['native_name'] ) ?></label>
+                                                </td>
+                                                <td><input
+                                                        name="type_labels[<?php echo esc_html( $type['key'] ) ?>][<?php echo esc_html( $val['language'] ) ?>]"
+                                                        type="text"
+                                                        value="<?php echo esc_html( $type['translations'][ $val['language'] ] ?? '' ); ?>"/>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                }
+                ?>
+                </tbody>
+            </table>
+            <br>
+            <button type="button" onclick="jQuery('#add_type').toggle();" class="button">
+                <?php echo esc_html_x( 'Add new type', 'comment types', 'disciple_tools' ) ?></button>
+            <button type="submit" class="button" style="float:right;">
+                <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
+            </button>
+            <div id="add_type" style="display:none;">
+                <hr>
+                <input type="text" name="add_type" placeholder="type"/>
+                <button type="submit"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
+            </div>
+        </form>
+        <?php
+    }
 
     public function channels_box(){
-        $fields = DT_Posts::get_post_field_settings( "contacts", false );
+        $fields = DT_Posts::get_post_field_settings( 'contacts', false );
         $form_name = 'channels_box';
         ?>
         <form method="post" name="<?php echo esc_html( $form_name ) ?>">
@@ -251,46 +430,44 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <thead>
                     <tr>
-                        <td><?php esc_html_e( "Name", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Hide domain if a url", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Icon link (must be https or mdi webfont)", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( 'Name', 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( 'Key', 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( 'Enabled', 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( 'Hide domain if a url', 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( 'Icon link (must be https or mdi webfont)', 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( 'Translation', 'disciple_tools' ) ?></td>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ( $fields as $channel_key => $channel_option ) :
-                        if ( $channel_option['type'] !== "communication_channel" ){
+                        if ( $channel_option['type'] !== 'communication_channel' ) {
                             continue;
                         }
 
                         $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
-                        $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
-                        if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
-                            continue;
-                        } ?>
+                        $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true; ?>
 
                     <tr>
-                        <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>][default]" value="<?php echo esc_html( $channel_option["name"] ?? $channel_key ) ?>"></td>
+                        <input type="hidden" name="channel_fields[<?php echo esc_html( $channel_key ) ?>]">
+                        <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>][default]" value="<?php echo esc_html( $channel_option['name'] ?? $channel_key ) ?>"></td>
                         <td><?php echo esc_html( $channel_key ) ?></td>
                         <td>
                             <input name="channel_enabled[<?php echo esc_html( $channel_key ) ?>]"
-                                   type="checkbox" <?php echo esc_html( $enabled ? "checked" : "" ) ?> />
+                                   type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?> />
                         </td>
                         <td>
                             <input name="channel_hide_domain[<?php echo esc_html( $channel_key ) ?>]"
-                                   type="checkbox" <?php echo esc_html( $hide_domain ? "checked" : "" ) ?> />
+                                   type="checkbox" <?php echo esc_html( $hide_domain ? 'checked' : '' ) ?> />
                         </td>
                         <td>
                             <input type="text" name="channel_icon[<?php echo esc_html( $channel_key ) ?>]"
-                                   value="<?php echo esc_html( $channel_option["icon"] ?? ( $channel_option["font-icon"] ?? '' ) ) ?>">
-                            <?php if ( ! empty( $channel_option["icon"] ) || ! empty( $channel_option["font-icon"] ) ) : ?>
+                                   value="<?php echo esc_html( $channel_option['icon'] ?? ( $channel_option['font-icon'] ?? '' ) ) ?>">
+                            <?php if ( ! empty( $channel_option['icon'] ) || ! empty( $channel_option['font-icon'] ) ) : ?>
                                 <button class="button change-icon-button" data-form="channels_box"
                                         data-icon-input="channel_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
 
                                 <button type="submit" class="button"
-                                        name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( "Reset link", 'disciple_tools' ) ?></button>
+                                        name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( 'Reset link', 'disciple_tools' ) ?></button>
                             <?php endif; ?>
                         </td>
                         <td>
@@ -299,12 +476,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
-                                if ( !empty( $channel_option["translations"][$val['language']] ) ){
+                                if ( !empty( $channel_option['translations'][$val['language']] ) ){
                                     $number_of_translations++;
                                 }
                             }
                             ?>
-                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
                             (<?php echo esc_html( $number_of_translations ); ?>)
                         </button>
                         <div class="translation_container hide">
@@ -312,7 +489,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <?php foreach ( $langs as $lang => $val ) : ?>
                                 <tr>
                                     <td><label for="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                    <td><input name="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $channel_option["translations"][$val['language']] ?? "" );?>"/></td>
+                                    <td><input name="channel_label[<?php echo esc_html( $channel_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $channel_option['translations'][$val['language']] ?? '' );?>"/></td>
                                 </tr>
                             <?php endforeach; ?>
                             </table>
@@ -323,55 +500,56 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 </tbody>
             </table>
             <br><button type="button" onclick="jQuery('#add_channel').toggle();" class="button">
-                <?php echo esc_html_x( "Add new channel", 'communication channel (Phone, Email, Facebook)', 'disciple_tools' ) ?></button>
+                <?php echo esc_html_x( 'Add new channel', 'communication channel (Phone, Email, Facebook)', 'disciple_tools' ) ?></button>
             <button type="submit" class="button" style="float:right;">
-                <?php esc_html_e( "Save", 'disciple_tools' ) ?>
+                <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
             </button>
             <div id="add_channel" style="display:none;">
                 <hr>
                 <input type="text" name="add_channel" placeholder="channel" />
-                <button type="submit"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+                <button type="submit"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
             </div>
         </form>
         <?php
     }
 
     public function process_channels_box(){
-        if ( isset( $_POST["channels_box_nonce"] ) ){
-            $fields = DT_Posts::get_post_field_settings( "contacts" );
+        if ( isset( $_POST['channels_box_nonce'] ) ){
+            $fields = DT_Posts::get_post_field_settings( 'contacts' );
             if ( !wp_verify_nonce( sanitize_key( $_POST['channels_box_nonce'] ), 'channels_box' ) ){
-                self::admin_notice( __( "Something went wrong", 'disciple_tools' ), "error" );
+                self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
                 return;
             }
 
-            $langs = dt_get_available_languages();
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
+            $channel_fields        = isset( $_POST['channel_fields'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['channel_fields'] ) ) : [];
+            $langs                 = dt_get_available_languages();
+            $custom_field_options  = dt_get_option( 'dt_field_customizations' );
             $custom_contact_fields = $custom_field_options['contacts'];
 
             foreach ( $fields as $field_key => $field_settings ){
-                if ( $field_settings["type"] !== "communication_channel" ){
+                if ( ! in_array( $field_key, $channel_fields ) ) {
                     continue;
                 }
-                if ( isset( $_POST["channel_label"][$field_key]["default"] ) ){
-                    $label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$field_key]["default"] ) );
-                    if ( $field_settings["name"] != $label ){
-                        $custom_contact_fields[$field_key]["name"] = $label;
+                if ( isset( $_POST['channel_label'][$field_key]['default'] ) ){
+                    $label = sanitize_text_field( wp_unslash( $_POST['channel_label'][$field_key]['default'] ) );
+                    if ( $field_settings['name'] != $label ){
+                        $custom_contact_fields[$field_key]['name'] = $label;
                     }
                 }
                 foreach ( $langs as $lang => $val ){
                     $langcode = $val['language'];
 
-                    if ( isset( $_POST["channel_label"][$field_key][$langcode] ) ) {
-                        $translated_label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$field_key][$langcode] ) );
-                        if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$field_key]["translations"][$langcode] ) ) || !empty( $translated_label ) ) {
-                            $custom_contact_fields[$field_key]["translations"][$langcode] = $translated_label;
+                    if ( isset( $_POST['channel_label'][$field_key][$langcode] ) ) {
+                        $translated_label = sanitize_text_field( wp_unslash( $_POST['channel_label'][$field_key][$langcode] ) );
+                        if ( ( empty( $translated_label ) && !empty( $custom_contact_fields[$field_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ) {
+                            $custom_contact_fields[$field_key]['translations'][$langcode] = $translated_label;
                         }
                     }
                 }
-                if ( isset( $_POST["channel_icon"][ $field_key ] ) ) {
+                if ( isset( $_POST['channel_icon'][ $field_key ] ) ) {
 
                     // Determine icon keys
-                    $icon          = sanitize_text_field( wp_unslash( $_POST["channel_icon"][ $field_key ] ) );
+                    $icon          = sanitize_text_field( wp_unslash( $_POST['channel_icon'][ $field_key ] ) );
                     $icon_key      = ( ! empty( $icon ) && strpos( $icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
                     $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
 
@@ -381,39 +559,39 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         $custom_contact_fields[ $field_key ][ $null_icon_key ] = null;
                     }
                 }
-                if ( isset( $_POST["channel_enabled"][$field_key] ) ){
-                    $custom_contact_fields[$field_key]["enabled"] = true;
+                if ( isset( $_POST['channel_enabled'][$field_key] ) ){
+                    $custom_contact_fields[$field_key]['enabled'] = true;
                 } else {
-                    $custom_contact_fields[$field_key]["enabled"] = false;
+                    $custom_contact_fields[$field_key]['enabled'] = false;
                 }
-                if ( isset( $_POST["channel_hide_domain"][$field_key] ) ){
-                    $custom_contact_fields[$field_key]["hide_domain"] = true;
+                if ( isset( $_POST['channel_hide_domain'][$field_key] ) ){
+                    $custom_contact_fields[$field_key]['hide_domain'] = true;
                 } else {
-                    $custom_contact_fields[$field_key]["hide_domain"] = false;
+                    $custom_contact_fields[$field_key]['hide_domain'] = false;
                 }
-                if ( isset( $_POST["channel_reset_icon"][$field_key] ) ){
-                    unset( $custom_contact_fields[$field_key]["icon"] );
+                if ( isset( $_POST['channel_reset_icon'][$field_key] ) ){
+                    unset( $custom_contact_fields[$field_key]['icon'] );
                 }
             }
-            if ( !empty( $_POST["add_channel"] ) ){
-                $label = sanitize_text_field( wp_unslash( $_POST["add_channel"] ) );
+            if ( !empty( $_POST['add_channel'] ) ){
+                $label = sanitize_text_field( wp_unslash( $_POST['add_channel'] ) );
                 $key = dt_create_field_key( 'contact_' . $label );
                 if ( !empty( $key ) ){
                     if ( isset( $custom_contact_fields[$key] ) ){
-                        self::admin_notice( __( "This channel already exists", 'disciple_tools' ), "error" );
+                        self::admin_notice( __( 'This channel already exists', 'disciple_tools' ), 'error' );
                     } else {
-                        $custom_contact_fields[$key] = [
-                            "name" => $label,
-                            "type" => "communication_channel",
-                            "tile" => "details",
-                            "enabled" => true
+                        $custom_contact_fields[ $key ] = [
+                            'name'       => $label,
+                            'type'       => 'communication_channel',
+                            'tile'       => 'details',
+                            'enabled'    => true
                         ];
-                        wp_cache_delete( "contacts_field_settings" );
+                        wp_cache_delete( 'contacts_field_settings' );
                     }
                 }
             }
-            $custom_field_options["contacts"] = $custom_contact_fields;
-            update_option( "dt_field_customizations", $custom_field_options );
+            $custom_field_options['contacts'] = $custom_contact_fields;
+            update_option( 'dt_field_customizations', $custom_field_options );
         }
     }
 
@@ -436,7 +614,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      * UI for picking languages
      */
     private function languages_box(){
-        $languages = dt_get_option( "dt_working_languages" ) ?: [];
+        $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
         uasort($dt_global_languages_list, function( $a, $b ) {
             return strcmp( $a['label'], $b['label'] );
@@ -448,12 +626,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <thead>
                 <tr>
-                    <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Default Label", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Custom Label", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "ISO 639-3 code", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
-                    <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Key', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Default Label', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Custom Label', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'ISO 639-3 code', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Enabled', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Translation', 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
                 <tbody>
@@ -463,12 +641,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
                     <tr>
                         <td><?php echo esc_html( $language_key ) ?></td>
-                        <td><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]["label"] : "" ) ?></td>
-                        <td><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]["label"] != $language_option["label"] ) ) ? $language_option["label"] : "" ) ?>"></td>
-                        <td><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option["iso_639-3"] ?? "" ) ?>"></td>
+                        <td><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
+                        <td><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
+                        <td><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
                         <td>
                             <input name="language_enabled[<?php echo esc_html( $language_key ) ?>]"
-                                   type="checkbox" <?php echo esc_html( $enabled ? "checked" : "" ) ?> />
+                                   type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?> />
                         </td>
 
                         <td>
@@ -477,12 +655,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                 <?php
                                 $number_of_translations = 0;
                                 foreach ( $langs as $lang => $val ){
-                                    if ( !empty( $language_option["translations"][$val['language']] ) ){
+                                    if ( !empty( $language_option['translations'][$val['language']] ) ){
                                         $number_of_translations++;
                                     }
                                 }
                                 ?>
-                                <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
                                 (<?php echo esc_html( $number_of_translations ); ?>)
                             </button>
                             <div class="translation_container hide">
@@ -490,7 +668,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     <?php foreach ( $langs as $lang => $val ) : ?>
                                         <tr>
                                             <td><label for="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                            <td><input name="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $language_option["translations"][$val['language']] ?? "" );?>"/></td>
+                                            <td><input name="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $language_option['translations'][$val['language']] ?? '' );?>"/></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
@@ -501,9 +679,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 </tbody>
             </table>
             <br><button type="button" onclick="jQuery('#add_language').toggle();" class="button">
-                <?php echo esc_html__( "Add new language", 'disciple_tools' ) ?></button>
+                <?php echo esc_html__( 'Add new language', 'disciple_tools' ) ?></button>
             <button type="submit" class="button" style="float:right;">
-                <?php esc_html_e( "Save", 'disciple_tools' ) ?>
+                <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
             </button>
             <div id="add_language" style="display:none;">
                 <hr>
@@ -511,89 +689,89 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <select name="new_lang_select">
                     <option></option>
                     <?php foreach ( $dt_global_languages_list as $lang_key => $lang_option ) : ?>
-                        <option value="<?php echo esc_html( $lang_key ); ?>"><?php echo esc_html( $lang_option["label"] ?? "" ); ?></option>
+                        <option value="<?php echo esc_html( $lang_key ); ?>"><?php echo esc_html( $lang_option['label'] ?? '' ); ?></option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit" class="button"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+                <button type="submit" class="button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
                 <br>
                 <br>
                 <p><?php esc_html_e( 'If your language is not in the list, you can create it manually', 'disciple_tools' ); ?></p>
                 <input name="create_custom_language" placeholder="Custom Language" type="text">
                 <input name="create_custom_language_code" placeholder="ISO 639-3 code (optional)" maxlength="3" type="text">
-                <button type="submit" class="button"><?php esc_html_e( "Create", 'disciple_tools' ) ?></button>
+                <button type="submit" class="button"><?php esc_html_e( 'Create', 'disciple_tools' ) ?></button>
             </div>
         </form>
         <?php
     }
 
     private function process_languages_box() {
-        if ( !isset( $_POST["languages_box_nonce"] ) ) {
+        if ( !isset( $_POST['languages_box_nonce'] ) ) {
             return;
         }
         if ( !wp_verify_nonce( sanitize_key( $_POST['languages_box_nonce'] ), 'languages_box' ) ) {
-            self::admin_notice( __( "Something went wrong", 'disciple_tools' ), "error" );
+            self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
             return;
         }
 
-        $languages = dt_get_option( "dt_working_languages" ) ?: [];
+        $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
 
         $langs = dt_get_available_languages();
         foreach ( $languages as $language_key => $language_options ){
 
-            if ( isset( $_POST["language_label"][$language_key]["default"] ) ){
-                $label = sanitize_text_field( wp_unslash( $_POST["language_label"][$language_key]["default"] ) );
-                if ( $language_options["label"] != $label ){
-                    $languages[$language_key]["label"] = $label;
+            if ( isset( $_POST['language_label'][$language_key]['default'] ) ){
+                $label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key]['default'] ) );
+                if ( $language_options['label'] != $label ){
+                    $languages[$language_key]['label'] = $label;
                 }
-                if ( empty( $label ) && isset( $dt_global_languages_list[$language_key]["label"] ) ){
-                    $languages[$language_key]["label"] = $dt_global_languages_list[$language_key]["label"];
+                if ( empty( $label ) && isset( $dt_global_languages_list[$language_key]['label'] ) ){
+                    $languages[$language_key]['label'] = $dt_global_languages_list[$language_key]['label'];
                 }
             }
-            if ( isset( $_POST["language_code"][$language_key] ) ){
-                $code = sanitize_text_field( wp_unslash( $_POST["language_code"][$language_key] ) );
-                if ( ( $language_options["iso_639-3"] ?? "" ) != $code ) {
-                    $languages[$language_key]["iso_639-3"] = $code;
+            if ( isset( $_POST['language_code'][$language_key] ) ){
+                $code = sanitize_text_field( wp_unslash( $_POST['language_code'][$language_key] ) );
+                if ( ( $language_options['iso_639-3'] ?? '' ) != $code ) {
+                    $languages[$language_key]['iso_639-3'] = $code;
                 }
             }
             foreach ( $langs as $lang => $val ){
                 $langcode = $val['language'];
-                if ( isset( $_POST["language_label"][$language_key][$langcode] ) ) {
-                    $translated_label = sanitize_text_field( wp_unslash( $_POST["language_label"][$language_key][$langcode] ) );
-                    if ( ( empty( $translated_label ) && !empty( $languages[$language_key]["translations"][$langcode] ) ) || !empty( $translated_label ) ){
-                        $languages[$language_key]["translations"][$langcode] = $translated_label;
+                if ( isset( $_POST['language_label'][$language_key][$langcode] ) ) {
+                    $translated_label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key][$langcode] ) );
+                    if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
+                        $languages[$language_key]['translations'][$langcode] = $translated_label;
                     }
                 }
             }
-            $languages[$language_key]["deleted"] = !isset( $_POST["language_enabled"][$language_key] );
+            $languages[$language_key]['deleted'] = !isset( $_POST['language_enabled'][$language_key] );
         }
 
-        if ( !empty( $_POST["new_lang_select"] ) ) {
-            $lang_key = sanitize_text_field( wp_unslash( $_POST["new_lang_select"] ) );
+        if ( !empty( $_POST['new_lang_select'] ) ) {
+            $lang_key = sanitize_text_field( wp_unslash( $_POST['new_lang_select'] ) );
             $lang = isset( $dt_global_languages_list[ $lang_key ] ) ? $dt_global_languages_list[ $lang_key ] : null;
             if ( $lang === null ) {
                 return;
             };
             $languages[$lang_key] = $dt_global_languages_list[ $lang_key ];
-            $languages[$lang_key]["enabled"] = true;
+            $languages[$lang_key]['enabled'] = true;
         }
-        if ( !empty( $_POST["create_custom_language"] ) ) {
-            $language = sanitize_text_field( wp_unslash( $_POST["create_custom_language"] ) );
-            $code = isset( $_POST["create_custom_language_code"] ) ?sanitize_text_field( wp_unslash( $_POST["create_custom_language_code"] ) ) : null;
+        if ( !empty( $_POST['create_custom_language'] ) ) {
+            $language = sanitize_text_field( wp_unslash( $_POST['create_custom_language'] ) );
+            $code = isset( $_POST['create_custom_language_code'] ) ?sanitize_text_field( wp_unslash( $_POST['create_custom_language_code'] ) ) : null;
             $lang_key = dt_create_field_key( $language );
             if ( isset( $dt_global_languages_list[$lang_key] ) || isset( $languages[$lang_key] ) ) {
                 $lang_key = dt_create_field_key( $language, true );
             }
             $languages[$lang_key] = [
-                "label" => $language,
-                "enabled" => true
+                'label' => $language,
+                'enabled' => true
             ];
             if ( !empty( $code ) ){
-                $languages[$lang_key]["iso_639-3"] = $code;
+                $languages[$lang_key]['iso_639-3'] = $code;
             }
         }
 
-        update_option( "dt_working_languages", $languages, false );
+        update_option( 'dt_working_languages', $languages, false );
     }
 
 
@@ -602,7 +780,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     private function quick_actions_box(){
         $fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
-        $default_fields = apply_filters( 'dt_custom_fields_settings', [], "contacts" );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], 'contacts' );
         $form_name = 'quick_actions_box';
         ?>
         <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="quick-actions">
@@ -615,7 +793,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <td><?php esc_html_e( 'Key', 'disciple_tools' ); ?></td>
                     <td><?php esc_html_e( 'Icon link (must be https or mdi webfont)', 'disciple_tools' ) ?></td>
                     <td></td>
-                    <td><?php esc_html_e( "Translation", 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Translation', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></td>
                 </tr>
                 </thead>
@@ -667,7 +845,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                         }
                                     }
                                     ?>
-                                    <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . "/dt-assets/images/languages.svg" ); ?>">
+                                    <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
                                     (<?php echo esc_html( $number_of_translations ); ?>)
                                 </button>
                                 <div class="translation_container hide">
@@ -675,7 +853,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     <?php foreach ( $langs as $lang => $val ) : ?>
                                         <tr>
                                             <td><label for="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                            <td><input name="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $fields[$field_key]["translations"][$val['language']] ?? "" );?>"/></td>
+                                            <td><input name="field_label[<?php echo esc_html( $field_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $fields[$field_key]['translations'][$val['language']] ?? '' );?>"/></td>
                                         </tr>
                                     <?php endforeach; ?>
                                     </table>
@@ -684,7 +862,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <td>
                                 <?php
                                 if ( !isset( $default_fields[$field_key] ) ){
-                                    echo '<button type="submit" name="delete_field" value="' . esc_attr( $field_key ) . '" class="button small">' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button>';
+                                    echo '<button type="submit" name="delete_field" value="' . esc_attr( $field_key ) . '" class="button small">' . esc_html( __( 'Delete', 'disciple_tools' ) ) . '</button>';
                                 } ?>
                             </td>
                         </tr>
@@ -757,7 +935,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
             // Check quick action icon
             if ( ! empty( $_POST['add_custom_quick_action_icon'] ) ) {
-                $icon_url = sanitize_text_field( wp_unslash( $_POST["add_custom_quick_action_icon"] ) );
+                $icon_url = sanitize_text_field( wp_unslash( $_POST['add_custom_quick_action_icon'] ) );
             } else {
                 $icon_url = get_template_directory_uri() . '/dt-assets/images/contact.svg';
             }
@@ -782,7 +960,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 ];
 
                 update_option( 'dt_field_customizations', $custom_field_options, true );
-                wp_cache_delete( "contacts_field_settings" );
+                wp_cache_delete( 'contacts_field_settings' );
 
                 self::admin_notice( __( 'Quick Action added successfully', 'disciple_tools' ), 'success' );
                 return;
@@ -796,7 +974,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             unset( $custom_field_options['contacts'][ $delete_key ] );
             update_option( 'dt_field_customizations', $custom_field_options, true );
 
-            wp_cache_delete( "contacts_field_settings" );
+            wp_cache_delete( 'contacts_field_settings' );
             self::admin_notice( __( 'Quick Action deleted successfully', 'disciple_tools' ), 'success' );
             return;
         }
@@ -830,7 +1008,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
 
             update_option( 'dt_field_customizations', $custom_field_options, true );
-            wp_cache_delete( "contacts_field_settings" );
+            wp_cache_delete( 'contacts_field_settings' );
 
             self::admin_notice( __( 'Quick Action edited successfully', 'disciple_tools' ), 'success' );
             return;

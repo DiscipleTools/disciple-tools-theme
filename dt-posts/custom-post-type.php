@@ -15,7 +15,7 @@ class Disciple_Tools_Post_Type_Template {
         $this->post_type = $post_type;
         $this->singular = $singular;
         $this->plural = $plural;
-        $this->search_items = sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $this->plural );
+        $this->search_items = sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $this->plural );
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
@@ -26,6 +26,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
+        add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
     }
 
     public function register_post_type(){
@@ -76,8 +77,9 @@ class Disciple_Tools_Post_Type_Template {
             'show_in_rest'          => false
         ];
 
+        // Adjust defaults accordingly, prior to registration.
+        $defaults = apply_filters( 'dt_register_post_type_defaults', $defaults, $this->post_type );
         register_post_type( $this->post_type, $defaults );
-
     }
 
     public function rewrite_init(){
@@ -112,8 +114,8 @@ class Disciple_Tools_Post_Type_Template {
     public function add_navigation_links( $tabs ) {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
             $tabs[$this->post_type] = [
-                "link" => site_url( "/$this->post_type/" ),
-                "label" => $this->plural,
+                'link' => site_url( "/$this->post_type/" ),
+                'label' => $this->plural,
                 'icon' => '',
                 'hidden' => false,
                 'submenu' => []
@@ -123,11 +125,11 @@ class Disciple_Tools_Post_Type_Template {
     }
 
     public function dt_nav_add_post_menu( $links ){
-        if ( current_user_can( "create_" . $this->post_type ) ){
+        if ( current_user_can( 'create_' . $this->post_type ) ){
             $links[] = [
                 'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
                 'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
-                'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-green.svg",
+                'icon' => get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg',
                 'hidden' => false,
             ];
         }
@@ -144,28 +146,28 @@ class Disciple_Tools_Post_Type_Template {
 
     public static function get_base_post_type_fields(){
         $fields = [];
-        $fields["name"] = [
-            'name' => __( "Name", 'disciple_tools' ),
+        $fields['name'] = [
+            'name' => __( 'Name', 'disciple_tools' ),
             'type' => 'text',
             'tile' => 'details',
             'in_create_form' => true,
             'required' => true,
-            'icon' => get_template_directory_uri() . "/dt-assets/images/name.svg",
-            "show_in_table" => 5
+            'icon' => get_template_directory_uri() . '/dt-assets/images/name.svg',
+            'show_in_table' => 5
         ];
-        $fields["last_modified"] =[
+        $fields['last_modified'] =[
             'name' => __( 'Last Modified', 'disciple_tools' ),
             'type' => 'date',
             'default' => 0,
-            'icon' => get_template_directory_uri() . "/dt-assets/images/calendar-range.svg",
+            'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-range.svg',
             'customizable' => false,
-            "show_in_table" => 100
+            'show_in_table' => 100
         ];
-        $fields["post_date"] =[
+        $fields['post_date'] =[
             'name' => __( 'Creation Date', 'disciple_tools' ),
             'type' => 'date',
             'default' => 0,
-            'icon' => get_template_directory_uri() . "/dt-assets/images/calendar-plus.svg",
+            'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-plus.svg',
             'customizable' => false,
         ];
         $fields['favorite'] = [
@@ -173,8 +175,8 @@ class Disciple_Tools_Post_Type_Template {
             'type'        => 'boolean',
             'default'     => false,
             'private'     => true,
-            "show_in_table" => 6,
-            "icon" => get_template_directory_uri() . "/dt-assets/images/star.svg"
+            'show_in_table' => 6,
+            'icon' => get_template_directory_uri() . '/dt-assets/images/star.svg'
         ];
         $fields['tags'] = [
             'name'        => __( 'Tags', 'disciple_tools' ),
@@ -182,15 +184,15 @@ class Disciple_Tools_Post_Type_Template {
             'type'        => 'tags',
             'default'     => [],
             'tile'        => 'other',
-            'icon' => get_template_directory_uri() . "/dt-assets/images/tag.svg",
+            'icon' => get_template_directory_uri() . '/dt-assets/images/tag.svg',
         ];
-        $fields["follow"] = [
+        $fields['follow'] = [
             'name'        => __( 'Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
             'hidden'      => true
         ];
-        $fields["unfollow"] = [
+        $fields['unfollow'] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
@@ -199,8 +201,14 @@ class Disciple_Tools_Post_Type_Template {
         $fields['tasks'] = [
             'name' => __( 'Tasks', 'disciple_tools' ),
             'type' => 'task',
-            'icon' => get_template_directory_uri() . "/dt-assets/images/calendar-clock.svg",
+            'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-clock.svg',
             'private' => true
+        ];
+        //notes field used for adding comments when creating a record
+        $fields['notes'] = [
+            'name' => 'Notes',
+            'type' => 'array',
+            'hidden' => true
         ];
         return $fields;
     }
@@ -219,23 +227,23 @@ class Disciple_Tools_Post_Type_Template {
 
     public function dt_get_post_type_settings( $settings, $post_type ){
         if ( $post_type === $this->post_type ){
-            $cached = wp_cache_get( $post_type . "_type_settings" );
+            $cached = wp_cache_get( $post_type . '_type_settings' );
             if ( $cached ){
                 return $cached;
             }
             $fields = $this->get_custom_fields_settings();
             $channels = [];
             foreach ( $fields as $field_key => $field_value ){
-                if ( $field_value["type"] === "communication_channel" ){
-                    $field_value["label"] = $field_value["name"];
-                    $channels[str_replace( "contact_", "", $field_key )] = $field_value;
+                if ( $field_value['type'] === 'communication_channel' ){
+                    $field_value['label'] = $field_value['name'];
+                    $channels[str_replace( 'contact_', '', $field_key )] = $field_value;
                 }
             }
             $s = [
                 'fields' => $fields,
                 'channels' => $channels,
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
-                    return $a["type"] === "connection";
+                    return $a['type'] === 'connection';
                 } ) ),
                 'label_singular' => $this->singular,
                 'label_plural' => $this->plural,
@@ -243,7 +251,7 @@ class Disciple_Tools_Post_Type_Template {
             ];
             $settings = dt_array_merge_recursive_distinct( $settings, $s );
 
-            wp_cache_set( $post_type . "_type_settings", $settings );
+            wp_cache_set( $post_type . '_type_settings', $settings );
         }
         return $settings;
     }
@@ -267,27 +275,27 @@ class Disciple_Tools_Post_Type_Template {
     public function register_p2p_connections(){
         $fields = DT_Posts::get_post_field_settings( $this->post_type, false );
         foreach ( $fields as $field_key => &$field ){
-            if ( !isset( $field["name"] ) ){
-                $field["name"] = $field_key; //set a field name so integration can depend on it.
+            if ( !isset( $field['name'] ) ){
+                $field['name'] = $field_key; //set a field name so integration can depend on it.
             }
             //register a connection if it is not set
-            if ( $field["type"] === "connection" && isset( $field["p2p_key"], $field["post_type"] ) ){
-                $p2p_type = p2p_type( $field["p2p_key"] );
+            if ( $field['type'] === 'connection' && isset( $field['p2p_key'], $field['post_type'] ) ){
+                $p2p_type = p2p_type( $field['p2p_key'] );
                 if ( $p2p_type === false ){
-                    if ( $field["p2p_direction"] === "to" ){
+                    if ( $field['p2p_direction'] === 'to' ){
                         p2p_register_connection_type(
                             [
-                                'name'        => $field["p2p_key"],
+                                'name'        => $field['p2p_key'],
                                 'to'          => $this->post_type,
-                                'from'        => $field["post_type"]
+                                'from'        => $field['post_type']
                             ]
                         );
                     } else {
                         p2p_register_connection_type(
                             [
-                                'name'        => $field["p2p_key"],
+                                'name'        => $field['p2p_key'],
                                 'from'        => $this->post_type,
-                                'to'          => $field["post_type"]
+                                'to'          => $field['post_type']
                             ]
                         );
                     }
@@ -295,50 +303,105 @@ class Disciple_Tools_Post_Type_Template {
             }
         }
     }
+    /**
+     * Declare Default D.T post roles
+     */
+    public function dt_capabilities( $capabilities ){
+        $capabilities['access_' . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can access the UI for ' . $this->plural,
+        ];
+//        $capabilities['update_'  . $this->post_type] = [
+//            'source' => $this->plural,
+//            'description' => 'The user can edit existing ' . $this->plural,
+//        ];
+        $capabilities['create_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can create ' . $this->plural
+        ];
+        $capabilities['view_any_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can view any ' . $this->singular
+        ];
+        $capabilities['update_any_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can update any ' . $this->singular
+        ];
+        $capabilities['delete_any_'  . $this->post_type] = [
+            'source' => $this->plural,
+            'description' => 'The user can delete any ' . $this->singular
+        ];
+        return $capabilities;
+    }
 }
 
 /**
  * Build default filter available on all post type list pages
  */
-add_filter( "dt_user_list_filters", "base_dt_user_list_filters", 100, 2 );
+add_filter( 'dt_user_list_filters', 'base_dt_user_list_filters', 100, 2 );
 function base_dt_user_list_filters( $filters, $post_type ){
     // check of the all tab is declared
     $tab_names = array_map( function ( $f ){
-        return $f["key"];
-    }, $filters["tabs"] );
+        return $f['key'];
+    }, $filters['tabs'] );
+
+    if ( !in_array( 'all', $tab_names ) && !in_array( 'default', $tab_names ) ){
+        $filters['tabs'][] = [
+            'key' => 'all',
+            'label' => __( 'Default Filters', 'disciple_tools' ),
+            'query' => [
+                'sort' => '-post_date'
+            ],
+            'order' => 10
+        ];
+        $tab_names[] = 'all';
+    }
+
     if ( in_array( 'all', $tab_names, true ) ){
 
         $filter_ids = array_map( function ( $f ){
-            return $f["ID"];
-        }, $filters["filters"] );
+            return $f['ID'];
+        }, $filters['filters'] );
 
+        // add favorite posts filter to all abb
+        if ( !in_array( 'default', $filter_ids ) && !in_array( 'all', $filter_ids ) ){
+            $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
+            $filters['filters'][] = [
+                'ID' => 'all',
+                'tab' => 'all',
+                'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    'sort' => '-post_date'
+                ],
+            ];
+        }
         // add favorite posts filter to all abb
         if ( !in_array( 'favorite', $filter_ids ) ){
             $post_type_settings = DT_Posts::get_post_settings( $post_type );
-            $filters["filters"][] = [
+            $filters['filters'][] = [
                 'ID' => 'favorite',
                 'tab' => 'all',
-                'name' => sprintf( _x( "Favorite %s", 'Favorite Contacts', 'disciple_tools' ), $post_type_settings["label_plural"] ),
+                'name' => sprintf( _x( 'Favorite %s', 'Favorite Contacts', 'disciple_tools' ), $post_type_settings['label_plural'] ),
                 'query' => [
-                    "fields" => [ "favorite" => [ "1" ] ],
-                    'sort' => "name"
+                    'fields' => [ 'favorite' => [ '1' ] ],
+                    'sort' => 'name'
                 ],
                 'labels' => [
-                    [ "id" => "1", "name" => __( "Favorite", "disciple_tools" ) ]
+                    [ 'id' => '1', 'name' => __( 'Favorite', 'disciple_tools' ) ]
                 ]
             ];
         }
         // add recently viewed filter to all tab
         if ( !in_array( 'recent', $filter_ids, true ) ){
-            $filters["filters"][] = [
+            $filters['filters'][] = [
                 'ID' => 'recent',
                 'tab' => 'all',
-                'name' => __( "My Recently Viewed", 'disciple_tools' ),
+                'name' => __( 'My Recently Viewed', 'disciple_tools' ),
                 'query' => [
                     'dt_recent' => true
                 ],
                 'labels' => [
-                    [ "id" => 'recent', 'name' => __( "Last 30 viewed", 'disciple_tools' ) ]
+                    [ 'id' => 'recent', 'name' => __( 'Last 30 viewed', 'disciple_tools' ) ]
                 ]
             ];
         }

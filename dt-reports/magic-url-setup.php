@@ -15,20 +15,20 @@ class DT_Magic_URL_Setup {
      * @return mixed
      */
     public function dt_details_additional_tiles( $tiles, $post_type ){
-        if ( !isset( $tiles["apps"] ) ){
+        if ( !isset( $tiles['apps'] ) ){
             $post_types_has_registered_apps = false;
             $magic_link_apps = dt_get_registered_types();
             foreach ( $magic_link_apps as $app_root => $app_types ){
                 foreach ( $app_types as $app_type => $app_value ){
-                    if ( $app_value["post_type"] === $post_type && isset( $app_value["show_app_tile"] ) && $app_value["show_app_tile"] === true ){
+                    if ( $app_value['post_type'] === $post_type && isset( $app_value['show_app_tile'] ) && $app_value['show_app_tile'] === true ){
                         $post_types_has_registered_apps = true;
                     }
                 }
             }
             if ( $post_types_has_registered_apps ){
-                $tiles["apps"] = [
-                    "label" => __( "Apps", 'disciple_tools' ),
-                    "description" => __( "Apps available on this record.", 'disciple_tools' )
+                $tiles['apps'] = [
+                    'label' => __( 'Apps', 'disciple_tools' ),
+                    'description' => __( 'Apps available on this record.', 'disciple_tools' )
                 ];
             }
         }
@@ -43,11 +43,11 @@ class DT_Magic_URL_Setup {
      * @return void
      */
     public function dt_details_additional_section( $section, $post_type ){
-        if ( $section === "apps" ){
+        if ( $section === 'apps' ){
             $magic_link_apps = dt_get_registered_types();
             foreach ( $magic_link_apps as $app_root => $app_types ){
                 foreach ( $app_types as $app_type => $app_value ){
-                    if ( $app_value["post_type"] === $post_type && isset( $app_value["show_app_tile"] ) && $app_value["show_app_tile"] === true ){
+                    if ( $app_value['post_type'] === $post_type && isset( $app_value['show_app_tile'] ) && $app_value['show_app_tile'] === true ){
                         $this->add_app_row( $post_type, $app_value );
                     }
                 }
@@ -83,14 +83,14 @@ class DT_Magic_URL_Setup {
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
         <div class="section-app-links <?php echo esc_attr( $meta_key ); ?>">
-            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Copy to clipboard', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
+            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Copy to clipboard', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
                data-value="<?php echo esc_url( site_url() . '/' . $app['root'] . '/' . $app['type'] . '/' . $key ) ?>">
                 <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
             </a>
-            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
         </div>
         <script>
             jQuery(document).ready(function($){
