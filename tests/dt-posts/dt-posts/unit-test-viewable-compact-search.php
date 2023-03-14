@@ -75,7 +75,6 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
     public static $assert_type_between = 1;
 
     public static function setupBeforeClass(): void{
-
         /*
          * User 1
          */
@@ -167,7 +166,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
 
         // Assert Returned Totals.
         if ( !empty( $expected['totals'] ) ){
-            switch ($expected['totals']['assert_type']){
+            switch ( $expected['totals']['assert_type'] ){
                 case self::$assert_type_equal:
                     $this->assertSame( $result['total'], $expected['totals']['value'] );
                     break;
