@@ -139,11 +139,8 @@ window.API = {
     )
   },
 
-  get_activity: (post_type, postId) =>
-    makeRequestOnPosts("GET", `${post_type}/${postId}/activity`),
-
-  get_activity_history: (post_type, post_id, data = {}) =>
-    makeRequestOnPosts("GET", `${post_type}/${post_id}/activity_history`, data),
+  get_activity: (post_type, postId, data = {}) =>
+    makeRequestOnPosts("GET", `${post_type}/${postId}/activity`, data),
 
   revert_activity_history: (post_type, post_id, data = {}) =>
     makeRequestOnPosts("POST", `${post_type}/${post_id}/revert_activity_history`, data),

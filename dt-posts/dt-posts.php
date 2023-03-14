@@ -1277,20 +1277,25 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
         }
-        $post_settings = self::get_post_settings( $post_type );
-        $fields = $post_settings['fields'];
-        $hidden_fields = [];
-        foreach ( $fields as $field_key => $field ){
-            if ( isset( $field['hidden'] ) && $field['hidden'] === true ){
-                $hidden_fields[] = $field_key;
-            }
-        }
 
-        $hidden_keys = empty( $hidden_fields ) ? "''" : dt_array_to_sql( $hidden_fields );
-        // phpcs:disable
-        // WordPress.WP.PreparedSQL.NotPrepared
-        $activity = $wpdb->get_results( $wpdb->prepare(
-            "SELECT
+        // Follow the appropriate activity retrieval path....
+        if ( isset( $args['revert'] ) && $args['revert'] ){
+            return self::list_revert_post_activity_history( $post_type, $post_id, $args );
+        } else {
+            $post_settings = self::get_post_settings( $post_type );
+            $fields = $post_settings['fields'];
+            $hidden_fields = [];
+            foreach ( $fields as $field_key => $field ){
+                if ( isset( $field['hidden'] ) && $field['hidden'] === true ){
+                    $hidden_fields[] = $field_key;
+                }
+            }
+
+            $hidden_keys = empty( $hidden_fields ) ? "''" : dt_array_to_sql( $hidden_fields );
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $activity = $wpdb->get_results( $wpdb->prepare(
+                "SELECT
                 *
             FROM
                 `$wpdb->dt_activity_log`
@@ -1299,51 +1304,52 @@ class DT_Posts extends Disciple_Tools_Posts {
                 AND `object_id` = %s
                 AND meta_key NOT IN ( $hidden_keys )
             ORDER BY hist_time DESC",
-            $post_type,
-            $post_id
-        ) );
-        //@phpcs:enable
-        $activity_simple = [];
-        foreach ( $activity as $a ) {
-            $a->object_note = self::format_activity_message( $a, $post_settings );
-            $a->object_note = sanitize_text_field( $a->object_note );
-            if ( isset( $a->user_id ) && $a->user_id > 0 ) {
-                $user = get_user_by( 'id', $a->user_id );
-                if ( $user ){
-                    $a->name     = $user->display_name;
-                    $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                $post_type,
+                $post_id
+            ) );
+            //@phpcs:enable
+            $activity_simple = [];
+            foreach ( $activity as $a ){
+                $a->object_note = self::format_activity_message( $a, $post_settings );
+                $a->object_note = sanitize_text_field( $a->object_note );
+                if ( isset( $a->user_id ) && $a->user_id > 0 ){
+                    $user = get_user_by( 'id', $a->user_id );
+                    if ( $user ){
+                        $a->name = $user->display_name;
+                        $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                    }
+                } else if ( isset( $a->user_caps ) && strlen( $a->user_caps ) === 32 ){
+                    //get site-link name
+                    $site_link = Site_Link_System::get_post_id_by_site_key( $a->user_caps );
+                    if ( $site_link ){
+                        $a->name = get_the_title( $site_link );
+                    }
+                } else if ( isset( $a->user_caps ) && $a->user_caps === 'magic_link' ){
+                    $a->name = __( 'Magic Link Submission', 'disciple_tools' );
+                } else if ( isset( $a->user_caps ) && $a->user_caps === 'activity_revert' ){
+                    $a->name = __( 'Revert Bot', 'disciple_tools' );
                 }
-            } else if ( isset( $a->user_caps ) && strlen( $a->user_caps ) === 32 ){
-                //get site-link name
-                $site_link = Site_Link_System::get_post_id_by_site_key( $a->user_caps );
-                if ( $site_link ){
-                    $a->name = get_the_title( $site_link );
-                }
-            } else if ( isset( $a->user_caps ) && $a->user_caps === 'magic_link' ){
-                $a->name = __( 'Magic Link Submission', 'disciple_tools' );
-            } else if ( isset( $a->user_caps ) && $a->user_caps === 'activity_revert' ){
-                $a->name = __( 'Revert Bot', 'disciple_tools' );
-            }
-            if ( ! empty( $a->object_note ) ) {
-                $activity_obj = [
-                    'meta_key'    => $a->meta_key,
-                    'gravatar'    => isset( $a->gravatar ) ? $a->gravatar : '',
-                    'name'        => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( 'D.T System', 'disciple_tools' ),
-                    'object_note' => $a->object_note,
-                    'hist_time'   => $a->hist_time,
-                    'meta_id'     => $a->meta_id,
-                    'histid'      => $a->histid,
-                ];
+                if ( !empty( $a->object_note ) ){
+                    $activity_obj = [
+                        'meta_key' => $a->meta_key,
+                        'gravatar' => isset( $a->gravatar ) ? $a->gravatar : '',
+                        'name' => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( 'D.T System', 'disciple_tools' ),
+                        'object_note' => $a->object_note,
+                        'hist_time' => $a->hist_time,
+                        'meta_id' => $a->meta_id,
+                        'histid' => $a->histid,
+                    ];
 
-                $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
+                    $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
+                }
             }
+
+            $paged = array_slice( $activity_simple, $args['offset'] ?? 0, $args['number'] ?? 1000 );
+            return [
+                'activity' => $paged,
+                'total' => sizeof( $activity_simple )
+            ];
         }
-
-        $paged = array_slice( $activity_simple, $args['offset'] ?? 0, $args['number'] ?? 1000 );
-        return [
-            'activity' => $paged,
-            'total' => sizeof( $activity_simple )
-        ];
     }
 
     /**
@@ -1353,11 +1359,8 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|null|object|WP_Error
      */
-    public static function get_post_activity_history( string $post_type, int $post_id, array $args = [] ) {
+    private static function list_revert_post_activity_history( string $post_type, int $post_id, array $args = [] ) {
         global $wpdb;
-        if ( ! self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
-        }
 
         // Determine key query parameters
         $supported_actions         = ( ! empty( $args['actions'] ) ) ? $args['actions'] : [
@@ -1388,7 +1391,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $supported_field_types_sql = dt_array_to_sql( $supported_field_types );
         $ts_start                  = ( ! empty( $args['ts_start'] ) ) ? $args['ts_start'] : strtotime( '-12 month', time() );
         $ts_end                    = ( ! empty( $args['ts_end'] ) ) ? $args['ts_end'] : time();
-        $result_order              = ( ! empty( $args['result_order'] ) ) ? $args['result_order'] : 'DESC';
+        $result_order              = esc_sql( ( ! empty( $args['result_order'] ) ) ? $args['result_order'] : 'DESC' );
         $extra_meta                = ! empty( $args['extra_meta'] ) && $args['extra_meta'];
 
         // Fetch post activity history
@@ -1447,7 +1450,7 @@ class DT_Posts extends Disciple_Tools_Posts {
          */
 
         $args['result_order'] = 'DESC';
-        $activities = self::get_post_activity_history( $post_type, $post_id, $args );
+        $activities = self::list_revert_post_activity_history( $post_type, $post_id, $args );
 
         /**
          * March back in time to revert date, adjusting fields accordingly.

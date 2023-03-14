@@ -29,7 +29,10 @@ jQuery(document).ready(function ($) {
     let record_history_select = $('#record_history_calendar');
 
     // Fetch initial corresponding activities, to be used in date filter select.
-    handle_activity_history_refresh({result_order: 'DESC'}, function (activities) {
+    handle_activity_history_refresh({
+      revert: true,
+      result_order: 'DESC'
+    }, function (activities) {
 
       // Package filtered dates.
       let filtered_dates = {};
@@ -51,10 +54,10 @@ jQuery(document).ready(function ($) {
       $.each(filtered_dates, function (idx, filtered_date) {
         record_history_select.append(`<option value="${filtered_date.unix()}">${idx}</option>`);
       });
-    });
 
-    // By default, and if selected, show all-time activities.
-    handle_show_all_activities();
+      // By default, and if selected, show all-time activities.
+      handle_activities_display(activities);
+    });
   }
 
   function handle_filtered_date_selection() {
@@ -80,6 +83,7 @@ jQuery(document).ready(function ($) {
   function handle_show_all_activities() {
     if (is_show_all_activities_switch_checked()) {
       handle_activity_history_refresh({
+        revert: true,
         ts_start: 0,
         result_order: 'DESC',
         extra_meta: true
@@ -95,7 +99,7 @@ jQuery(document).ready(function ($) {
 
     // Assuming a valid post, refresh activity history
     if (post && post['post_type'] && post['ID']) {
-      window.API.get_activity_history(post['post_type'], post['ID'], request_args).then(activities => {
+      window.API.get_activity(post['post_type'], post['ID'], request_args).then(activities => {
 
         // Execute callback with returned activities
         callback(activities);
@@ -108,6 +112,7 @@ jQuery(document).ready(function ($) {
 
     // Retrieve activities from specified starting point to current date.
     handle_activity_history_refresh({
+      revert: true,
       ts_start: ts_start,
       ts_end: ts_end,
       result_order: 'DESC',

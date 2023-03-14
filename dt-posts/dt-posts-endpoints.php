@@ -269,20 +269,6 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
-        //get_activity_history
-        register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity_history', [
-                [
-                    'methods'  => 'GET',
-                    'callback' => [ $this, 'get_activity_history' ],
-                    'args' => [
-                        'post_type' => $arg_schemas['post_type'],
-                        'id' => $arg_schemas['id'],
-                    ],
-                    'permission_callback' => '__return_true',
-                ]
-            ]
-        );
         //revert_activity_history
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/revert_activity_history', [
@@ -563,17 +549,10 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::get_viewable_compact( $url_params['post_type'], $search, $get_params );
     }
 
-
     public function get_activity( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         return DT_Posts::get_post_activity( $url_params['post_type'], $url_params['id'], $get_params );
-    }
-
-    public function get_activity_history( WP_REST_Request $request ){
-        $url_params = $request->get_url_params();
-        $get_params = $request->get_query_params();
-        return DT_Posts::get_post_activity_history( $url_params['post_type'], $url_params['id'], $get_params );
     }
 
     public function revert_activity_history( WP_REST_Request $request ){
