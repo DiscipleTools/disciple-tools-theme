@@ -11,9 +11,9 @@ class Disciple_Tools_Migration_0047 extends Disciple_Tools_Migration {
 
         $at_install = get_option( 'dt_initial_install_meta' );
 
-        $first_activity_time = $wpdb->get_var( "SELECT MIN(hist_time) FROM $wpdb->dt_activity_log" );
 
         if ( empty( $at_install ) ){
+            $first_activity_time = $wpdb->get_var( "SELECT MIN(hist_time) FROM $wpdb->dt_activity_log" );
             update_option( 'dt_initial_install_meta', [
                 'time' => $first_activity_time,
                 'migration_number' => 0,
