@@ -46,9 +46,13 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
         'title' => 'Jane Sally Doe',
         'overall_status' => 'active'
     ];
+    public static $sample_contact_andrew = [
+        'title' => 'Andrew',
+        'overall_status' => 'active'
+    ];
 
     public static $sample_group = [
-        'name' => 'Bob\'s group',
+        'name' => 'Bobs group',
         'group_type' => 'church',
         'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
         'member_count' => 5
@@ -76,7 +80,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
          * User 1
          */
 
-        $user_1_id = wp_create_user( 'dispatcher4', 'test', 'testdisp4@example.com' );
+        $user_1_id = wp_create_user( 'dispatcher1', 'disp1', 'testdisp1@example.com' );
         self::$user_1 = get_user_by( 'id', $user_1_id );
         self::$user_1->set_role( 'dispatcher' );
         self::$user_1->add_cap( 'access_contacts' );
@@ -108,44 +112,47 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
          * User 2
          */
 
-        $user_2_id = wp_create_user( 'dispatcher5', 'test5', 'testdisp5@example.com' );
+        $user_2_id = wp_create_user( 'multiplier1', 'multi1', 'testmulti1@example.com' );
         self::$user_2 = get_user_by( 'id', $user_2_id );
-        self::$user_2->set_role( 'dispatcher' );
+        self::$user_2->set_role( 'multiplier' );
         self::$user_2->add_cap( 'access_contacts' );
         self::$user_2->add_cap( 'list_all_contacts' );
         self::$user_2->add_cap( 'access_groups' );
         self::$user_2->add_cap( 'list_all_groups' );
 
+        self::$sample_contact_andrew['assigned_to'] = $user_2_id;
+
         wp_set_current_user( self::$user_2->ID );
 
-        self::$user_2_contact_john = DT_Posts::create_post( 'contacts', [
-            'title' => 'John',
-            'overall_status' => 'active',
-            'assigned_to' => $user_2_id
-        ], true, false );
+        self::$user_2_contact_john = DT_Posts::create_post( 'contacts', self::$sample_contact_andrew, true, false );
     }
 
-    /* TODO: Better understand get_viewable_compact() logic and complete unit test!
     public function test_viewable_compact_search_by_different_user(){
+
+        // User 1 [Dispatcher] Search
         wp_set_current_user( self::$user_1->ID );
-
-        $user_1_results = DT_Posts::get_viewable_compact( 'contacts', 'John Doe', [
+        $user_1_results = DT_Posts::get_viewable_compact( 'contacts', '', [
             'field_key' => 'coaching'
         ] );
 
+        // User 2 [Multiplier] Search
         wp_set_current_user( self::$user_2->ID );
-
-        $user_2_results = DT_Posts::get_viewable_compact( 'contacts', 'John Doe', [
+        $user_2_results = DT_Posts::get_viewable_compact( 'contacts', '', [
             'field_key' => 'coaching'
         ] );
 
-        //fwrite( STDERR, print_r( wp_get_current_user(), TRUE ) );
-        fwrite( STDERR, print_r( $user_1_results, TRUE ) );
-        fwrite( STDERR, print_r( $user_2_results, TRUE ) );
+        // fwrite( STDERR, print_r( $user_1_results, TRUE ) );
+        // fwrite( STDERR, print_r( $user_2_results, TRUE ) );
 
+        // Ensure both user results are valid.
+        $this->assertNotWPError( $user_1_results );
         $this->assertNotWPError( $user_2_results );
 
-    }*/
+        // Ensure user 1's results do not contain user 2's contact.
+        foreach ( $user_1_results['posts'] ?? [] as $post ){
+            $this->assertNotSame( self::$sample_contact_andrew['title'], $post['name'] );
+        }
+    }
 
     /**
      * @dataProvider provide_filter_query_data
@@ -154,14 +161,13 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
         wp_set_current_user( self::$user_1->ID );
 
         $result = DT_Posts::get_viewable_compact( $post_type, $search, $args );
-        // fwrite( STDERR, print_r( wp_get_current_user(), TRUE ) );
-        fwrite( STDERR, print_r( $result, TRUE ) );
+        // fwrite( STDERR, print_r( $result, TRUE ) );
 
         $this->assertNotWPError( $result );
 
         // Assert Returned Totals.
         if ( !empty( $expected['totals'] ) ){
-            switch ( $expected['totals']['assert_type'] ){
+            switch ($expected['totals']['assert_type']){
                 case self::$assert_type_equal:
                     $this->assertSame( $result['total'], $expected['totals']['value'] );
                     break;
@@ -185,7 +191,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
 
     public function provide_filter_query_data(): array{
         return [
-            /*'groups field search' => [
+            'groups field search' => [
                 'groups',
                 '',
                 [
@@ -229,18 +235,16 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                     ],
                     'posts' => []
                 ]
-            ],*/
-            'coaching field search by wildcard' => [
+            ],
+            'field search by wildcard' => [
                 'contacts',
                 'Jane Doe',
-                [
-                    //'field_key' => 'coaching'
-                ],
+                [],
                 [
                     'totals' => [
                         'assert_type' => self::$assert_type_between,
-                        'min' => 6,
-                        'max' => 7
+                        'min' => 1,
+                        'max' => 2
                     ],
                     'posts' => []
                 ]

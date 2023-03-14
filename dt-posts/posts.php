@@ -688,7 +688,7 @@ class Disciple_Tools_Posts
                                     $equality = '=';
                                     $name = ltrim( $name, '^' );
                                 }
-                                $val = $equality === '=' ? $name : '%' . $name . '%';
+                                $val = $equality === '=' ? $name : '%' . str_replace( ' ', '%', esc_sql( $name ) ) . '%';
                                 $where_sql .= ( $index > 0 ? $connector : ' ' ) . "p.post_title $equality '" . esc_sql( $val ) . "' ";
                             }
                         } else if ( $query_key === 'post_date' ){
@@ -1192,8 +1192,6 @@ class Disciple_Tools_Posts
         }
         if ( empty( $sort ) && isset( $query['name'][0] ) ){
             $sort_sql = "( p.post_title LIKE '%" . str_replace( ' ', '%', esc_sql( $query['name'][0] ) ) . "%' ) desc, p.post_title asc";
-            fwrite( STDERR, print_r( $sort_sql, TRUE ) );
-
         }
 
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
