@@ -96,6 +96,12 @@ jQuery(document).ready(function($) {
         dt_custom_tiles_and_fields_ordered: dt_custom_tiles_and_fields_ordered,
     }, `dt-core/v1/`);
 
+    window.API.update_field_options_order = (post_type, field_key, sortable_field_options_ordering) => makeRequest("POST", `update-field-options-order`, {
+        post_type: post_type,
+        field_key: field_key,
+        sortable_field_options_ordering: sortable_field_options_ordering,
+    }, `dt-core/v1/`);
+
     function autonavigate_to_menu() {
         var tile_key = get_tile_from_uri();
         var field_key = get_field_from_uri();
@@ -139,7 +145,25 @@ jQuery(document).ready(function($) {
 
     $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
         update: function(event,ui) {
-            post_type = get_post_type();
+            if (!$(event)[0].originalEvent.target.nextElementSibling.dataset) {
+                return;
+            }
+            var post_type = get_post_type();
+            var moved_element = $(event)[0].originalEvent.target.nextElementSibling;
+
+            // Check if moved element is a field option
+            if (moved_element.dataset['fieldOptionKey']) {
+                var field_key = moved_element.dataset['fieldKey'];
+                var sortable_field_options_ordering = [];
+                var field_options = $(`.field-name-content[data-field-key=${field_key}]`);
+
+                $.each(field_options, function(option_index, option_element) {
+                    sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
+                });
+                API.update_field_options_order(post_type, field_key, sortable_field_options_ordering);
+                return;
+            }
+
             dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
             API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(data) {});
         },

@@ -159,6 +159,14 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/update-field-options-order', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_field_options_order' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
     }
 
     /**
@@ -755,6 +763,24 @@ class Disciple_Tools_Core_Endpoints {
 
         $tile_options[$post_type] = $dt_custom_tiles_and_fields_ordered;
         update_option( 'dt_custom_tiles', $tile_options );
+    }
+
+    public static function update_field_options_order( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
+        $field_key = sanitize_text_field( wp_unslash( $post_submission['field_key'] ) );
+
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+        $custom_field = $field_customizations[$post_type][$field_key] ?? [];
+
+        $sortable_field_options_ordering = dt_recursive_sanitize_array( $post_submission['sortable_field_options_ordering'] );
+        if ( ! empty( $sortable_field_options_ordering ) ) {
+            $custom_field['order'] = $sortable_field_options_ordering;
+        }
+
+        $field_customizations[$post_type][$field_key] = $custom_field;
+        update_option( 'dt_field_customizations', $field_customizations );
+        wp_cache_delete( $post_type . '_field_settings' );
     }
 
     public static function edit_field( WP_REST_Request $request ) {
