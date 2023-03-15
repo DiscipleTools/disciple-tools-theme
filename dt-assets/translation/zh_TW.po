@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"POT-Creation-Date: 2023-03-14T15:52:16+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.disciple.tools/"
@@ -66,7 +66,7 @@ msgstr "將通知紀錄擁有者要求存取。是否同意並繼續？"
 msgid "Submit Request"
 msgstr "提交要求"
 
-#: 403.php:55 archive-template.php:777 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:780 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -74,12 +74,51 @@ msgstr "提交要求"
 #: dt-contacts/access-module.php:505 dt-contacts/access-module.php:536
 #: dt-contacts/access-module.php:564 dt-contacts/base-setup.php:427
 #: dt-contacts/base-setup.php:462 dt-contacts/user-module.php:159
-#: single-template.php:411 single-template.php:428
+#: single-template.php:419 single-template.php:436
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:179
 msgid "Cancel"
 msgstr "取消"
+
+#: 403.php:59 archive-template.php:321 archive-template.php:363
+#: archive-template.php:804 dt-assets/parts/loop-activity-comment.php:132
+#: dt-assets/parts/loop-activity-comment.php:137
+#: dt-assets/parts/loop-activity-comment.php:172
+#: dt-assets/parts/loop-activity-comment.php:177
+#: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
+#: dt-assets/parts/merge-details.php:75
+#: dt-assets/parts/modals/modal-advanced-search.php:65
+#: dt-assets/parts/modals/modal-filters.php:14
+#: dt-assets/parts/modals/modal-filters.php:33
+#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/modals/modal-help.php:164
+#: dt-assets/parts/modals/modal-help.php:204
+#: dt-assets/parts/modals/modal-help.php:214
+#: dt-assets/parts/modals/modal-new-contact.php:33
+#: dt-assets/parts/modals/modal-revert.php:15
+#: dt-assets/parts/modals/modal-revert.php:20
+#: dt-assets/parts/modals/modal-share.php:50
+#: dt-assets/parts/modals/modal-share.php:56
+#: dt-assets/parts/modals/modal-support.php:4
+#: dt-assets/parts/modals/modal-support.php:11
+#: dt-assets/parts/modals/modal-support.php:18
+#: dt-assets/parts/modals/modal-tasks.php:46
+#: dt-assets/parts/modals/modal-tasks.php:48
+#: dt-assets/parts/modals/modal-tasks.php:54 dt-contacts/access-module.php:510
+#: dt-contacts/access-module.php:541 dt-contacts/access-module.php:569
+#: dt-contacts/access-module.php:660 dt-contacts/base-setup.php:432
+#: dt-contacts/base-setup.php:467 dt-contacts/dmm-module.php:523
+#: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
+#: dt-groups/base-setup.php:618 dt-groups/base-setup.php:623
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
+#: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
+#: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
+#: single-template.php:424 single-template.php:441
+#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
+#: template-new-post.php:184 template-settings.php:563
+msgid "Close"
+msgstr "關"
 
 #: 404.php:25
 msgid "Epic 404 - Not Found"
@@ -98,10 +137,10 @@ msgstr "建立新的%s"
 msgid "Filters"
 msgstr "篩選器"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:461
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:630
-#: dt-core/global-functions.php:658 dt-core/global-functions.php:775
-#: dt-core/global-functions.php:819 dt-posts/custom-post-type.php:18
+#: archive-template.php:36 archive-template.php:126 archive-template.php:471
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:632
+#: dt-core/global-functions.php:660 dt-core/global-functions.php:778
+#: dt-core/global-functions.php:822 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -118,10 +157,7 @@ msgstr "清除"
 msgid "Advanced Search"
 msgstr "進階搜尋"
 
-#: archive-template.php:46 archive-template.php:494
-#: dt-assets/parts/loop-activity-comment.php:93
-#: dt-assets/parts/loop-activity-comment.php:177
-#: dt-assets/parts/modals/modal-advanced-search.php:96
+#: archive-template.php:46 dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "註釋"
 
@@ -203,6 +239,13 @@ msgstr "更多的"
 msgid "Archived"
 msgstr "已封存"
 
+#: archive-template.php:301
+#, fuzzy
+#| msgid "New %s"
+msgctxt "Show archived"
+msgid "Show %s"
+msgstr "新％s"
+
 #: archive-template.php:324
 msgid "Choose which fields to display as columns in the list"
 msgstr "選擇哪些欄位要顯示為列表中的直行"
@@ -214,152 +257,153 @@ msgstr "從列表中選擇想要更新的所有 %1$s，並在下方進行更新"
 
 #: archive-template.php:385 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:857
+#: dt-core/global-functions.php:860
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "搜索用戶"
 
-#: archive-template.php:403 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1810
+#: archive-template.php:409 dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1815
 #: dt-users/template-user-management.php:88
-#: dt-users/template-user-management.php:520 single-template.php:129
+#: dt-users/template-user-management.php:520 single-template.php:132
 msgid "Status"
 msgstr "狀態"
 
-#: archive-template.php:449
+#: archive-template.php:459
 msgid "Share with:"
 msgstr "分享給："
 
-#: archive-template.php:477 dt-assets/functions/details-bar.php:168
+#: archive-template.php:487 dt-assets/functions/details-bar.php:168
 #: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "跟隨"
 
-#: archive-template.php:482 dt-assets/parts/loop-activity-comment.php:22
-#: dt-assets/parts/modals/modal-help.php:42
+#: archive-template.php:492 dt-assets/parts/loop-activity-comment.php:22
+#: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "評論和活動"
 
-#: archive-template.php:487 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:497 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "在這裡寫下您的評論或註釋"
 
-#: archive-template.php:502 dt-assets/parts/loop-activity-comment.php:55
+#: archive-template.php:505 dt-assets/parts/loop-activity-comment.php:48
 msgid "Type:"
 msgstr "類型："
 
-#: archive-template.php:522 dt-users/template-new-user.php:129
+#: archive-template.php:525 dt-users/template-new-user.php:129
 #: dt-users/template-new-user.php:242
 msgid "See More Options"
 msgstr "查看更多選項"
 
-#: archive-template.php:523 dt-users/template-new-user.php:132
+#: archive-template.php:526 dt-users/template-new-user.php:132
 #: dt-users/template-new-user.php:245
 msgid "See Fewer Options"
 msgstr "查看較少選項"
 
-#: archive-template.php:559 dt-assets/parts/loop-activity-comment.php:203
+#: archive-template.php:562 dt-assets/parts/loop-activity-comment.php:175
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "更新資料"
 
-#: archive-template.php:560 dt-assets/functions/enqueue-scripts.php:310
+#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:308
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "在下面進行選擇"
 
-#: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:594 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "名稱"
 
-#: archive-template.php:602
+#: archive-template.php:605
 msgid "Loading..."
 msgstr "載入中..."
 
-#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:354
+#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:352
 msgid "Load More"
 msgstr "裝載更多"
 
-#: archive-template.php:619
+#: archive-template.php:622
 msgid "Field Name"
 msgstr "字段名稱"
 
-#: archive-template.php:675
+#: archive-template.php:678
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "輸入搜索"
 
-#: archive-template.php:684
+#: archive-template.php:687
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "所有％1 $ s與％2 $ s"
 
-#: archive-template.php:687
+#: archive-template.php:690
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "沒有 %2$s 的所有 %1$s"
 
-#: archive-template.php:694
+#: archive-template.php:697
 msgid "Filter for subassigned OR Assigned To"
 msgstr "篩選子分配或分配給"
 
-#: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:301
+#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:299
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "創立日期"
 
-#: archive-template.php:710 archive-template.php:717
+#: archive-template.php:713 archive-template.php:720
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76
 msgid "None Set"
 msgstr "沒有設置"
 
-#: archive-template.php:731 archive-template.php:732
+#: archive-template.php:734 archive-template.php:735
 #: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:441
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "沒有"
 
-#: archive-template.php:738 archive-template.php:739
+#: archive-template.php:741 archive-template.php:742
 #: dt-metrics/combined/time-charts.php:117 dt-posts/posts.php:439
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "是"
 
-#: archive-template.php:743
+#: archive-template.php:746
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "範圍開始"
 
-#: archive-template.php:746 archive-template.php:757
+#: archive-template.php:749 archive-template.php:760
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "明確"
 
-#: archive-template.php:753
+#: archive-template.php:756
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "範圍結束"
 
-#: archive-template.php:785
+#: archive-template.php:788
 msgid "Filter Name"
 msgstr "篩選器名稱"
 
-#: archive-template.php:790
+#: archive-template.php:793
 msgid "Filter Records"
 msgstr "篩選記錄"
 
-#: archive-template.php:794 dt-assets/functions/enqueue-scripts.php:261
-#: dt-assets/functions/enqueue-scripts.php:296 template-settings.php:681
+#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:259
+#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "保存"
 
 #: dt-assets/functions/details-bar.php:44
 #: dt-assets/functions/details-bar.php:243
-#: dt-core/configuration/config-site-defaults.php:361
+#: dt-core/configuration/config-site-defaults.php:364
 #: dt-users/template-user-management.php:93 dt-workflows/update-required.php:70
 #: dt-workflows/update-required.php:109
 msgid "Update Needed"
@@ -369,7 +413,7 @@ msgstr "需要更新"
 msgid "Admin Actions"
 msgstr "管理者活動"
 
-#: dt-assets/functions/details-bar.php:60 single-template.php:423
+#: dt-assets/functions/details-bar.php:60 single-template.php:431
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "移除 %s"
@@ -424,230 +468,230 @@ msgstr "以下"
 msgid "Share"
 msgstr "分享"
 
-#: dt-assets/functions/enqueue-scripts.php:114
+#: dt-assets/functions/enqueue-scripts.php:112
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "重點領域"
 
-#: dt-assets/functions/enqueue-scripts.php:115
+#: dt-assets/functions/enqueue-scripts.php:113
 #: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "所有地點"
 
-#: dt-assets/functions/enqueue-scripts.php:116
+#: dt-assets/functions/enqueue-scripts.php:114
 msgid "Used Locations"
 msgstr "使用地點"
 
-#: dt-assets/functions/enqueue-scripts.php:117
+#: dt-assets/functions/enqueue-scripts.php:115
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
 msgstr "找不到與“ {{query}}”匹配的結果"
 
-#: dt-assets/functions/enqueue-scripts.php:118
+#: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "顯示 %s 個項目。輸入以尋找更多。"
 
-#: dt-assets/functions/enqueue-scripts.php:119
+#: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "顯示 %1$s 個與 %2$s 相符的項目"
 
-#: dt-assets/functions/enqueue-scripts.php:120
-#: dt-assets/functions/enqueue-scripts.php:175
-#: dt-assets/functions/enqueue-scripts.php:297 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:118
+#: dt-assets/functions/enqueue-scripts.php:173
+#: dt-assets/functions/enqueue-scripts.php:295 template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
 msgstr "編輯"
 
-#: dt-assets/functions/enqueue-scripts.php:138
+#: dt-assets/functions/enqueue-scripts.php:136
 msgid "You don't have any unread notifications"
 msgstr "您沒有任何未讀的通知"
 
-#: dt-assets/functions/enqueue-scripts.php:139
+#: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "您沒有任何通知"
 
-#: dt-assets/functions/enqueue-scripts.php:176
-#: dt-assets/functions/enqueue-scripts.php:210
-#: dt-assets/functions/enqueue-scripts.php:258
-#: dt-assets/functions/enqueue-scripts.php:298
-#: dt-assets/parts/loop-activity-comment.php:156 single-template.php:431
+#: dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:208
+#: dt-assets/functions/enqueue-scripts.php:256
+#: dt-assets/functions/enqueue-scripts.php:296
+#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:439
 msgid "Delete"
 msgstr "刪除"
 
-#: dt-assets/functions/enqueue-scripts.php:177
+#: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
 msgstr "以 Google 翻譯進行翻譯"
 
-#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:176
 msgid "Hide Translation"
 msgstr "隱藏翻譯"
 
-#: dt-assets/functions/enqueue-scripts.php:179
+#: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s 回應了 %2$s 表情圖示"
 
-#: dt-assets/functions/enqueue-scripts.php:180
+#: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s 和 %1$s 回應了 %2$s 表情圖示"
 
-#: dt-assets/functions/enqueue-scripts.php:211
+#: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
 msgstr "標記為完成"
 
-#: dt-assets/functions/enqueue-scripts.php:212
+#: dt-assets/functions/enqueue-scripts.php:210
 msgid "No task created"
 msgstr "未創建任務"
 
-#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/functions/enqueue-scripts.php:211
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "提醒"
 
-#: dt-assets/functions/enqueue-scripts.php:214
+#: dt-assets/functions/enqueue-scripts.php:212
 msgid "No note set"
 msgstr "沒有音符集"
 
-#: dt-assets/functions/enqueue-scripts.php:215
+#: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
 msgstr "已偵測到重覆項目"
 
-#: dt-assets/functions/enqueue-scripts.php:216
+#: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
 #: dt-users/template-new-user.php:301 template-merge-post-details.php:121
 #: template-merge-post-details.php:178
 msgid "Merge"
 msgstr "合併"
 
-#: dt-assets/functions/enqueue-scripts.php:217
+#: dt-assets/functions/enqueue-scripts.php:215
 msgid "Dismiss"
 msgstr "解僱"
 
-#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:216
 msgid "Dismissed Duplicates"
 msgstr "已關閉的重複項目"
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
 msgstr "重複項目：%s"
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "轉移失敗。檢查站點到站點的配置。"
 
-#: dt-assets/functions/enqueue-scripts.php:221
+#: dt-assets/functions/enqueue-scripts.php:219
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "傳輸更新失敗。檢查站點到站點的配置。"
 
-#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:220
 msgid "Transfer update successful."
 msgstr "傳輸更新成功。"
 
-#: dt-assets/functions/enqueue-scripts.php:223
+#: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "建立於 %s"
 
-#: dt-assets/functions/enqueue-scripts.php:224
+#: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
 msgstr "打開用"
 
-#: dt-assets/functions/enqueue-scripts.php:259
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Locations you are responsible for"
 msgstr "您負責的位置"
 
-#: dt-assets/functions/enqueue-scripts.php:260
+#: dt-assets/functions/enqueue-scripts.php:258
 msgid "Add"
 msgstr "新增"
 
-#: dt-assets/functions/enqueue-scripts.php:262 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:260 template-settings.php:285
 msgid "link"
 msgstr "關聯"
 
-#: dt-assets/functions/enqueue-scripts.php:263 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:261 template-settings.php:286
 msgid "copy"
 msgstr "複製"
 
-#: dt-assets/functions/enqueue-scripts.php:279
+#: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "找到符合者："
 
-#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "放棄所有符合 %s 的項目"
 
-#: dt-assets/functions/enqueue-scripts.php:299
+#: dt-assets/functions/enqueue-scripts.php:297
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "顯示_START_個，共_TOTAL_個"
 
-#: dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:298
 msgid "Sorting By"
 msgstr "排序依據"
 
-#: dt-assets/functions/enqueue-scripts.php:302
+#: dt-assets/functions/enqueue-scripts.php:300
 msgid "Date Modified"
 msgstr "修改日期"
 
-#: dt-assets/functions/enqueue-scripts.php:303
+#: dt-assets/functions/enqueue-scripts.php:301
 msgid "No filters, create one below"
 msgstr "沒有過濾條件，請在下面創建一個"
 
-#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/functions/enqueue-scripts.php:302
 msgid "No records found matching your filter."
 msgstr "找不到與您的過濾器匹配的記錄。"
 
-#: dt-assets/functions/enqueue-scripts.php:305 dt-contacts/base-setup.php:537
+#: dt-assets/functions/enqueue-scripts.php:303 dt-contacts/base-setup.php:537
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "所有％s"
 
-#: dt-assets/functions/enqueue-scripts.php:306
+#: dt-assets/functions/enqueue-scripts.php:304
 msgid "start"
 msgstr "開始"
 
-#: dt-assets/functions/enqueue-scripts.php:307
+#: dt-assets/functions/enqueue-scripts.php:305
 msgid "end"
 msgstr "結束"
 
-#: dt-assets/functions/enqueue-scripts.php:308
+#: dt-assets/functions/enqueue-scripts.php:306
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1291 dt-groups/base-setup.php:985
+#: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "全部"
 
-#: dt-assets/functions/enqueue-scripts.php:309
+#: dt-assets/functions/enqueue-scripts.php:307
 msgid "Without"
 msgstr "沒有"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:309
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "發送"
 
-#: dt-assets/functions/enqueue-scripts.php:312
+#: dt-assets/functions/enqueue-scripts.php:310
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "未發送（可能缺少有效的電子郵件）"
 
-#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/functions/enqueue-scripts.php:311
 msgid "Exclude Item"
 msgstr "排除項目"
 
-#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:332 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "聯繫"
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:333
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -678,7 +722,7 @@ msgstr "通知事項"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:131 dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:109
 #: dt-assets/parts/nav-topbar.php:318 template-notifications.php:68
 msgid "Settings"
 msgstr "設定值"
@@ -698,66 +742,45 @@ msgstr "用戶數"
 msgid "Help"
 msgstr "救命"
 
-#: dt-assets/parts/loop-activity-comment.php:46
-msgid "Comment"
-msgstr "評論"
-
-#: dt-assets/parts/loop-activity-comment.php:78
+#: dt-assets/parts/loop-activity-comment.php:71
 msgid "Submit comment"
 msgstr "提交評論"
 
-#: dt-assets/parts/loop-activity-comment.php:86
+#: dt-assets/parts/loop-activity-comment.php:79
 msgid "Showing:"
 msgstr "顯示："
 
-#: dt-assets/parts/loop-activity-comment.php:99
-#: dt-users/template-user-management.php:235
-msgid "Activity"
-msgstr "活動"
-
-#: dt-assets/parts/loop-activity-comment.php:133
+#: dt-assets/parts/loop-activity-comment.php:112
 msgid "show all"
 msgstr "顯示所有"
 
-#: dt-assets/parts/loop-activity-comment.php:137
+#: dt-assets/parts/loop-activity-comment.php:116
 msgid "hide all"
 msgstr "全部藏起來"
 
-#: dt-assets/parts/loop-activity-comment.php:149
+#: dt-assets/parts/loop-activity-comment.php:128
 msgid "Delete Comment:"
 msgstr "刪除評論："
 
-#: dt-assets/parts/loop-activity-comment.php:153
-#: dt-assets/parts/loop-activity-comment.php:200
-#: dt-assets/parts/merge-details.php:26
-#: dt-assets/parts/modals/modal-help.php:155
-#: dt-assets/parts/modals/modal-help.php:205
-#: dt-assets/parts/modals/modal-revert.php:15
-#: dt-assets/parts/modals/modal-share.php:50
-#: dt-assets/parts/modals/modal-tasks.php:46 dt-contacts/dmm-module.php:523
-#: dt-groups/base-setup.php:618 dt-users/template-new-user.php:299
-msgid "Close"
-msgstr "關"
-
-#: dt-assets/parts/loop-activity-comment.php:163
-#: dt-assets/parts/loop-activity-comment.php:210
+#: dt-assets/parts/loop-activity-comment.php:142
+#: dt-assets/parts/loop-activity-comment.php:182
 #: template-merge-post-details.php:95
 msgid "Sorry, something went wrong"
 msgstr "抱歉，出了一些問題"
 
-#: dt-assets/parts/loop-activity-comment.php:164
+#: dt-assets/parts/loop-activity-comment.php:143
 msgid "The comment could not be deleted."
 msgstr "無法刪除評論。"
 
-#: dt-assets/parts/loop-activity-comment.php:169
+#: dt-assets/parts/loop-activity-comment.php:148
 msgid "Edit Comment:"
 msgstr "編輯評論："
 
-#: dt-assets/parts/loop-activity-comment.php:184
+#: dt-assets/parts/loop-activity-comment.php:156
 msgid "Type of Comment"
 msgstr "評論類型"
 
-#: dt-assets/parts/loop-activity-comment.php:211
+#: dt-assets/parts/loop-activity-comment.php:183
 msgid "The comment could not be updated."
 msgstr "該評論無法更新。"
 
@@ -847,56 +870,63 @@ msgstr ""
 "這些快速操作按鈕可幫助您更快地更新聯繫人記錄，並記錄每個操作已執行了多少次。"
 
 #: dt-assets/parts/modals/modal-help.php:15
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "For example, If you click the 'No Answer' button 4 times, we will log "
+#| "that you attempted to reach this contact 4 times, but they did not "
+#| "answer.\n"
+#| "                This action will also change the 'Seeker Path' to "
+#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
-"you attempted to reach this contact 4 times, but they did not answer.\n"
-"                This action will also change the 'Seeker Path' to 'Contact "
-"Attempted'."
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
 "例如，如果您單擊“無人接聽”按鈕4次，我們將記錄您嘗試聯繫該聯繫人4次，但他們沒"
 "有接聽。\n"
 "                此操作還將“搜索者路徑”更改為“嘗試聯繫”。"
 
-#: dt-assets/parts/modals/modal-help.php:28
+#: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
 msgstr "用戶工作負載狀態圖標圖例："
 
-#: dt-assets/parts/modals/modal-help.php:34
+#: dt-assets/parts/modals/modal-help.php:33
 msgid "2 contacts need an update"
 msgstr "2位聯絡人需要更新"
 
-#: dt-assets/parts/modals/modal-help.php:43
+#: dt-assets/parts/modals/modal-help.php:42
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr "您可以在此處記錄會議和對話的筆記。"
 
-#: dt-assets/parts/modals/modal-help.php:44
+#: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
 "Type @ and the name of a user to mention them in a comment. This user will "
 "then receive a notification."
 msgstr "鍵入@以及要在評論中提及他們的用戶名。然後，該用戶將收到通知。"
 
-#: dt-assets/parts/modals/modal-help.php:45
+#: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
 "This section also includes the history of activity, such as when the contact "
 "or group status became active etc."
 msgstr "此部分還包括活動的歷史記錄，例如聯繫人或組的狀態何時變為活動狀態等。"
 
-#: dt-assets/parts/modals/modal-help.php:46
+#: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "您可以按“全部”，“評論”或“活動”過濾此部分。"
 
-#: dt-assets/parts/modals/modal-help.php:56
+#: dt-assets/parts/modals/modal-help.php:55
 msgctxt "Optional Documentation"
 msgid "Default and Custom Filters Tile"
 msgstr "默認和自定義過濾器"
 
-#: dt-assets/parts/modals/modal-help.php:57
+#: dt-assets/parts/modals/modal-help.php:56
 msgctxt "Optional Documentation"
 msgid ""
 "Use these filters to focus in on the contacts or groups you are responsible "
@@ -906,12 +936,12 @@ msgstr ""
 "使用這些過濾器可以將重點放在您負責的聯繫人或組上。如果默認過濾器無法滿足您的"
 "需求，則可以創建自己的自定義過濾器。"
 
-#: dt-assets/parts/modals/modal-help.php:62
+#: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid "Contacts List Tile"
 msgstr "聯繫人列表圖塊"
 
-#: dt-assets/parts/modals/modal-help.php:63
+#: dt-assets/parts/modals/modal-help.php:62
 msgctxt "Optional Documentation"
 msgid ""
 "Your list of contacts will show up here. Whenever you filter contacts, the "
@@ -926,12 +956,12 @@ msgstr ""
 "表很長，則不會一次全部加載它們，因此，單擊列表底部的“加載更多聯繫人”按鈕將允"
 "許您加載更多。"
 
-#: dt-assets/parts/modals/modal-help.php:68
+#: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid "Groups List Tile"
 msgstr "組列表圖塊"
 
-#: dt-assets/parts/modals/modal-help.php:69
+#: dt-assets/parts/modals/modal-help.php:68
 msgctxt "Optional Documentation"
 msgid ""
 "Your list of groups will show up here. Whenever you filter groups, the list "
@@ -945,72 +975,72 @@ msgstr ""
 "新，最舊，最近修改和最近修改的順序對組進行排序。如果組列表較長，它們將不會一"
 "次全部加載，因此，單擊列表底部的“加載更多組”按鈕將允許您加載更多。"
 
-#: dt-assets/parts/modals/modal-help.php:74
+#: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid "Closed Contacts Switch"
 msgstr "閉合觸點開關"
 
-#: dt-assets/parts/modals/modal-help.php:75
+#: dt-assets/parts/modals/modal-help.php:74
 msgctxt "Optional Documentation"
 msgid ""
 "Use this toggle switch to either show or not show closed contacts in the "
 "list."
 msgstr "使用此撥動開關可以顯示或不顯示列表中的已關閉聯繫人。"
 
-#: dt-assets/parts/modals/modal-help.php:80
+#: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid "Inactive Groups Switch"
 msgstr "非活動組切換"
 
-#: dt-assets/parts/modals/modal-help.php:81
+#: dt-assets/parts/modals/modal-help.php:80
 msgctxt "Optional Documentation"
 msgid ""
 "Use this toggle switch to either show or not show inactive groups in the "
 "list."
 msgstr "使用此切換開關可以顯示或不顯示列表中的非活動組。"
 
-#: dt-assets/parts/modals/modal-help.php:95 template-settings.php:117
+#: dt-assets/parts/modals/modal-help.php:94 template-settings.php:117
 msgid "Your Profile"
 msgstr "你的個人資料"
 
-#: dt-assets/parts/modals/modal-help.php:96
+#: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
 msgstr "在此區域中，您可以看到您的用戶個人資料。"
 
-#: dt-assets/parts/modals/modal-help.php:97
+#: dt-assets/parts/modals/modal-help.php:96
 msgctxt "Optional Documentation"
 msgid ""
 "You are not required to fill out any of these profile fields. They are "
 "optional to meet your team’s needs."
 msgstr "您無需填寫任何這些配置文件字段。它們是可選的，可以滿足您團隊的需求。"
 
-#: dt-assets/parts/modals/modal-help.php:98
+#: dt-assets/parts/modals/modal-help.php:97
 msgctxt "Optional Documentation"
 msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
 msgstr "通過單擊“編輯”，您將能夠調整諸如該系統使用的語言之類的內容。"
 
-#: dt-assets/parts/modals/modal-help.php:103 dt-contacts/base-setup.php:239
+#: dt-assets/parts/modals/modal-help.php:102 dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364 dt-people-groups/people-groups-base.php:202
 #: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "地點"
 
-#: dt-assets/parts/modals/modal-help.php:104
+#: dt-assets/parts/modals/modal-help.php:103
 msgctxt "Optional Documentation"
 msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr "這些是您負責的領域。點擊“添加”按鈕將彈出一個位置列表供您選擇。"
 
-#: dt-assets/parts/modals/modal-help.php:109
+#: dt-assets/parts/modals/modal-help.php:108
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
 msgstr "您的通知"
 
-#: dt-assets/parts/modals/modal-help.php:110
+#: dt-assets/parts/modals/modal-help.php:109
 msgctxt "Optional Documentation"
 msgid ""
 "You will receive web notifications and email notifications based on your "
@@ -1020,24 +1050,24 @@ msgstr ""
 "您將根據您的通知首選項接收網絡通知和電子郵件通知。要更改您的首選項，請單擊切"
 "換按鈕。"
 
-#: dt-assets/parts/modals/modal-help.php:112
+#: dt-assets/parts/modals/modal-help.php:111
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
 msgstr "通知已打開：切換將顯示為藍色。"
 
-#: dt-assets/parts/modals/modal-help.php:113
+#: dt-assets/parts/modals/modal-help.php:112
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr "通知已關閉：此切換將顯示為灰色。"
 
-#: dt-assets/parts/modals/modal-help.php:115
+#: dt-assets/parts/modals/modal-help.php:114
 msgctxt "Optional Documentation"
 msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
 "required by the system."
 msgstr "某些通知類型無法調整，因為系統需要它們。"
 
-#: dt-assets/parts/modals/modal-help.php:116
+#: dt-assets/parts/modals/modal-help.php:115
 msgctxt "Optional Documentation"
 msgid ""
 "Adjust whether you want to see notifications about new comments, contact "
@@ -1048,12 +1078,12 @@ msgstr ""
 "調整是否要查看有關新評論，聯繫人信息更改，聯繫人里程碑和組運行狀況指標的通"
 "知，以及是否向您發送系統中發生的任何更新的通知。"
 
-#: dt-assets/parts/modals/modal-help.php:124
+#: dt-assets/parts/modals/modal-help.php:123
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
 msgstr "通知頁面"
 
-#: dt-assets/parts/modals/modal-help.php:125
+#: dt-assets/parts/modals/modal-help.php:124
 msgctxt "Optional Documentation"
 msgid ""
 "This Notifications Page is where you can read updates to users and groups. "
@@ -1062,30 +1092,30 @@ msgstr ""
 "在此通知頁面上，您可以閱讀用戶和組的更新。它會在您的記錄中顯示有關活動的通"
 "知。"
 
-#: dt-assets/parts/modals/modal-help.php:126
+#: dt-assets/parts/modals/modal-help.php:125
 msgctxt "Optional Documentation"
 msgid "All / Unread"
 msgstr "全部/未讀"
 
-#: dt-assets/parts/modals/modal-help.php:127
+#: dt-assets/parts/modals/modal-help.php:126
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr "點擊“全部”按鈕以顯示所有通知的完整列表。"
 
-#: dt-assets/parts/modals/modal-help.php:128
+#: dt-assets/parts/modals/modal-help.php:127
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr "點擊“未讀”按鈕以顯示所有未讀通知的列表。"
 
-#: dt-assets/parts/modals/modal-help.php:129 dt-assets/parts/nav-topbar.php:316
+#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "標記為已讀"
 
-#: dt-assets/parts/modals/modal-help.php:130
+#: dt-assets/parts/modals/modal-help.php:129
 msgctxt "Optional Documentation"
 msgid ""
 "If you don't want to click each filled in circle on the right side of each "
@@ -1096,7 +1126,7 @@ msgstr ""
 "如果您不想單擊每行右側的每個實心圓圈表示通知已被閱讀，請單擊頂部的“將所有內容"
 "標記為已讀”鏈接以快速調整所有已包含的消息被閱讀。"
 
-#: dt-assets/parts/modals/modal-help.php:132
+#: dt-assets/parts/modals/modal-help.php:131
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Settings' link to go to the notifications settings area to adjust "
@@ -1109,12 +1139,12 @@ msgstr ""
 "聯繫人里程碑和組運行狀況指標的通知，以及是否收到有關以下內容的任何更新的通"
 "知：系統。"
 
-#: dt-assets/parts/modals/modal-help.php:137
+#: dt-assets/parts/modals/modal-help.php:136
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
 msgstr "聯繫人頁面重複"
 
-#: dt-assets/parts/modals/modal-help.php:138
+#: dt-assets/parts/modals/modal-help.php:137
 msgctxt "Optional Documentation"
 msgid ""
 "This Duplicate Contact Page is where you can review, decline or merge "
@@ -1125,17 +1155,42 @@ msgstr ""
 "在此重複聯繫人頁面中，您可以查看，拒絕或合併系統已挑選的聯繫人（檢查其姓名，"
 "電子郵件和電話），以作為與另一個現有聯繫人的重複。"
 
-#: dt-assets/parts/modals/modal-help.php:161
-#: dt-assets/parts/modals/modal-help.php:211
+#: dt-assets/parts/modals/modal-help.php:160
+#: dt-assets/parts/modals/modal-help.php:210
 msgctxt "Optional Documentation"
 msgid "Need more help?"
 msgstr "需要更多幫助嗎？"
 
-#: dt-assets/parts/modals/modal-help.php:162
-#: dt-assets/parts/modals/modal-help.php:212
+#: dt-assets/parts/modals/modal-help.php:161
+#: dt-assets/parts/modals/modal-help.php:211
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "閱讀文檔"
+
+#: dt-assets/parts/modals/modal-help.php:179
+#, fuzzy
+#| msgid "Open With"
+msgid "Open the link"
+msgstr "打開用"
+
+#: dt-assets/parts/modals/modal-help.php:183
+msgid "Copy the link to the clipboard"
+msgstr ""
+
+#: dt-assets/parts/modals/modal-help.php:187 dt-reports/magic-url-setup.php:113
+msgid "Send the link via email."
+msgstr "通過電子郵件發送鏈接。"
+
+#: dt-assets/parts/modals/modal-help.php:191 dt-reports/magic-url-setup.php:150
+msgid "Scan the QR code to open the magic link on a mobile device."
+msgstr "掃描二維碼在移動設備上打開魔術鏈接。"
+
+#: dt-assets/parts/modals/modal-help.php:195 dt-reports/magic-url-setup.php:155
+msgid ""
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
+msgstr ""
+"重置安全代碼。沒有數據被刪除。只能訪問。上一個鏈接將被禁用並創建另一個鏈接。"
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1561,7 +1616,7 @@ msgid "Personal"
 msgstr "個人"
 
 #: dt-contacts/access-module.php:298
-#: dt-core/configuration/config-site-defaults.php:341
+#: dt-core/configuration/config-site-defaults.php:344
 msgid "Web"
 msgstr "網頁"
 
@@ -1644,66 +1699,66 @@ msgstr "接受"
 msgid "Decline"
 msgstr "下降"
 
-#: dt-contacts/access-module.php:911 dt-contacts/access-module.php:921
+#: dt-contacts/access-module.php:913 dt-contacts/access-module.php:923
 msgid "My Follow-Up"
 msgstr "我的持續追蹤對象"
 
-#: dt-contacts/access-module.php:922 dt-contacts/access-module.php:943
-#: dt-contacts/access-module.php:966 dt-contacts/access-module.php:990
+#: dt-contacts/access-module.php:924 dt-contacts/access-module.php:945
+#: dt-contacts/access-module.php:968 dt-contacts/access-module.php:993
 #: dt-groups/base-setup.php:977
 msgid "Assigned to me"
 msgstr "指派給我"
 
-#: dt-contacts/access-module.php:923 dt-contacts/access-module.php:944
-#: dt-contacts/access-module.php:967 dt-contacts/access-module.php:991
+#: dt-contacts/access-module.php:925 dt-contacts/access-module.php:946
+#: dt-contacts/access-module.php:969 dt-contacts/access-module.php:994
 msgid "Sub-assigned to me"
 msgstr "替換指派給我"
 
-#: dt-contacts/access-module.php:1027
+#: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "持續追蹤 %s"
 
-#: dt-contacts/access-module.php:1035
+#: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
 msgstr "所有持續追蹤對象"
 
-#: dt-contacts/access-module.php:1135 dt-contacts/access-module.php:1136
+#: dt-contacts/access-module.php:1141 dt-contacts/access-module.php:1142
 msgid "Subassigned only"
 msgstr "僅子分配"
 
-#: dt-contacts/access-module.php:1292
+#: dt-contacts/access-module.php:1298
 msgid "Ready"
 msgstr "準備好"
 
-#: dt-contacts/access-module.php:1293
+#: dt-contacts/access-module.php:1299
 msgid "Recent"
 msgstr "最近的"
 
-#: dt-contacts/access-module.php:1294 dt-users/template-user-management.php:95
+#: dt-contacts/access-module.php:1300 dt-users/template-user-management.php:95
 msgid "Location"
 msgstr "位置"
 
-#: dt-contacts/access-module.php:1295
+#: dt-contacts/access-module.php:1301
 msgid "Assign"
 msgstr "分配"
 
-#: dt-contacts/access-module.php:1296 dt-users/template-new-user.php:136
+#: dt-contacts/access-module.php:1302 dt-users/template-new-user.php:136
 #: dt-users/template-user-management.php:91 template-settings.php:216
 msgid "Language"
 msgstr "語言"
 
-#: dt-contacts/access-module.php:1297 dt-contacts/base-setup.php:314
+#: dt-contacts/access-module.php:1303 dt-contacts/base-setup.php:314
 #: dt-users/template-new-user.php:193 dt-users/template-user-management.php:363
 #: template-settings.php:653
 msgid "Gender"
 msgstr "性別"
 
-#: dt-contacts/access-module.php:1470
+#: dt-contacts/access-module.php:1476
 msgid "This record might be a duplicate of: "
 msgstr "此紀錄可能是重複項目："
 
-#: dt-contacts/access-module.php:1476 dt-contacts/duplicates-merging.php:465
+#: dt-contacts/access-module.php:1482 dt-contacts/duplicates-merging.php:465
 #: dt-contacts/duplicates-merging.php:545
 msgid "Duplicate Checker"
 msgstr "重複檢查工具"
@@ -1727,7 +1782,7 @@ msgstr "重複檢查工具"
 msgid "Contacts"
 msgstr "聯絡人"
 
-#: dt-contacts/base-setup.php:74 dt-core/configuration/class-roles.php:142
+#: dt-contacts/base-setup.php:74 dt-core/configuration/class-roles.php:143
 msgid "Registered"
 msgstr "註冊"
 
@@ -1796,13 +1851,16 @@ msgid "Viber"
 msgstr "維伯"
 
 #: dt-contacts/base-setup.php:223
-msgid "Whatsapp"
+#, fuzzy
+#| msgid "Whatsapp"
+msgid "WhatsApp"
 msgstr "Whatsapp"
 
 #: dt-contacts/base-setup.php:230
-#: dt-core/configuration/config-site-defaults.php:338
-#: dt-users/template-new-user.php:118 dt-users/template-new-user.php:119
-#: dt-users/template-user-management.php:355 template-settings.php:156
+#: dt-core/configuration/config-site-defaults.php:341
+#: dt-login/login-template.php:384 dt-users/template-new-user.php:118
+#: dt-users/template-new-user.php:119 dt-users/template-user-management.php:355
+#: template-settings.php:156
 msgid "Email"
 msgstr "電子郵件"
 
@@ -1916,7 +1974,7 @@ msgid "Archive"
 msgstr "封存"
 
 #: dt-contacts/base-setup.php:489
-#: dt-core/configuration/config-site-defaults.php:540
+#: dt-core/configuration/config-site-defaults.php:543
 #: dt-groups/base-setup.php:642 template-settings.php:202
 msgid "Other"
 msgstr "其他"
@@ -1957,11 +2015,19 @@ msgstr "最近 30 個查看過的"
 msgid "Shared with me"
 msgstr "與我分享"
 
-#: dt-contacts/base-setup.php:678
+#: dt-contacts/base-setup.php:702 dt-users/template-user-management.php:235
+msgid "Activity"
+msgstr "活動"
+
+#: dt-contacts/base-setup.php:709
+msgid "Comment"
+msgstr "評論"
+
+#: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
 msgstr "此 %s 已封存"
 
-#: dt-contacts/base-setup.php:680
+#: dt-contacts/base-setup.php:774
 msgid "Restore"
 msgstr "恢復"
 
@@ -2291,6 +2357,12 @@ msgstr "此聯繫人代表您作為用戶。"
 msgid "Please update contact details on your profile page instead of here."
 msgstr "請在您的個人資料頁面而不是此處更新聯繫方式。"
 
+#: dt-contacts/user-module.php:73
+#, fuzzy
+#| msgid "Settings"
+msgid "Profile Settings"
+msgstr "設定值"
+
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
 msgstr "該聯繫人代表用戶。"
@@ -2323,152 +2395,153 @@ msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr "要完成鏈接，請將此聯繫人與現有用戶詳細信息合併。"
 
-#: dt-core/configuration/class-roles.php:183
+#: dt-core/configuration/class-roles.php:184
 msgid "Subscriber"
 msgstr "訂戶"
 
-#: dt-core/configuration/config-site-defaults.php:346
+#: dt-core/configuration/config-site-defaults.php:349
 msgid "Newly Assigned Contact"
 msgstr "新分配的聯繫人"
 
-#: dt-core/configuration/config-site-defaults.php:351
+#: dt-core/configuration/config-site-defaults.php:354
 msgid "@Mentions"
 msgstr "@提及"
 
-#: dt-core/configuration/config-site-defaults.php:356
+#: dt-core/configuration/config-site-defaults.php:359
 msgid "New Comments"
 msgstr "新評論"
 
-#: dt-core/configuration/config-site-defaults.php:366
+#: dt-core/configuration/config-site-defaults.php:369
 msgid "Contact Info Changed"
 msgstr "聯繫信息已更改"
 
-#: dt-core/configuration/config-site-defaults.php:371
-#: dt-core/migrations/0012-typo-rename.php:8
+#: dt-core/configuration/config-site-defaults.php:374
+#: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "聯繫人里程碑和組健康指標"
 
-#: dt-core/configuration/config-site-defaults.php:396
+#: dt-core/configuration/config-site-defaults.php:399
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
 msgstr "該聯繫人處於活動狀態，但是沒有任何人與他們聯繫的記錄。請與他們聯繫。"
 
-#: dt-core/configuration/config-site-defaults.php:402
+#: dt-core/configuration/config-site-defaults.php:405
 msgid "Please try connecting with this contact again."
 msgstr "請嘗試再次與此聯繫人聯繫。"
 
-#: dt-core/configuration/config-site-defaults.php:408
-#: dt-core/configuration/config-site-defaults.php:414
-#: dt-core/configuration/config-site-defaults.php:420
-#: dt-core/configuration/config-site-defaults.php:426
-#: dt-core/configuration/config-site-defaults.php:432
+#: dt-core/configuration/config-site-defaults.php:411
+#: dt-core/configuration/config-site-defaults.php:417
+#: dt-core/configuration/config-site-defaults.php:423
+#: dt-core/configuration/config-site-defaults.php:429
+#: dt-core/configuration/config-site-defaults.php:435
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
 msgstr "我們已經有一段時間沒有聽說這個人了。您有此聯繫人的最新消息嗎？"
 
-#: dt-core/configuration/config-site-defaults.php:442
+#: dt-core/configuration/config-site-defaults.php:445
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "我們已經有一段時間沒有聽說過這個小組了。你有更新嗎？"
 
-#: dt-core/configuration/config-site-defaults.php:473
+#: dt-core/configuration/config-site-defaults.php:476
 msgid "Personal Phone"
 msgstr "個人電話"
 
-#: dt-core/configuration/config-site-defaults.php:476
+#: dt-core/configuration/config-site-defaults.php:479
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "個人電話是團隊專用的，不用於分發。"
 
-#: dt-core/configuration/config-site-defaults.php:480
+#: dt-core/configuration/config-site-defaults.php:483
 msgid "Personal Email"
 msgstr "私人郵箱"
 
-#: dt-core/configuration/config-site-defaults.php:483
+#: dt-core/configuration/config-site-defaults.php:486
 msgid "Personal email is private to the team, not for distribution."
 msgstr "個人電子郵件是團隊專用的，不能分發。"
 
-#: dt-core/configuration/config-site-defaults.php:487
+#: dt-core/configuration/config-site-defaults.php:490
 msgid "Personal Address"
 msgstr "個人地址"
 
-#: dt-core/configuration/config-site-defaults.php:490
+#: dt-core/configuration/config-site-defaults.php:493
 msgid "Personal address is private to the team, not for distribution."
 msgstr "個人地址僅供團隊使用，不能用於分發。"
 
-#: dt-core/configuration/config-site-defaults.php:494
+#: dt-core/configuration/config-site-defaults.php:497
 msgid "Work Phone"
 msgstr "工作電話"
 
-#: dt-core/configuration/config-site-defaults.php:497
+#: dt-core/configuration/config-site-defaults.php:500
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "工作電話用於分發給聯繫人和尋求者。"
 
-#: dt-core/configuration/config-site-defaults.php:501
+#: dt-core/configuration/config-site-defaults.php:504
 msgid "Work Email"
 msgstr "工作電郵"
 
-#: dt-core/configuration/config-site-defaults.php:504
+#: dt-core/configuration/config-site-defaults.php:507
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "工作電子郵件用於分發給聯繫人和求職者。"
 
-#: dt-core/configuration/config-site-defaults.php:508
+#: dt-core/configuration/config-site-defaults.php:511
 msgid "Work Facebook"
 msgstr "工作Facebook"
 
-#: dt-core/configuration/config-site-defaults.php:511
+#: dt-core/configuration/config-site-defaults.php:514
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "Facebook工作用於向聯繫人和求職者分發。"
 
-#: dt-core/configuration/config-site-defaults.php:515
+#: dt-core/configuration/config-site-defaults.php:518
 msgid "Work WhatsApp"
 msgstr "工作WhatsApp"
 
-#: dt-core/configuration/config-site-defaults.php:518
+#: dt-core/configuration/config-site-defaults.php:521
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "工作WhatsApp用於分發給聯繫人和尋求者。"
 
-#: dt-core/configuration/config-site-defaults.php:525
+#: dt-core/configuration/config-site-defaults.php:528
 msgid "thumbs up"
 msgstr "比讚"
 
-#: dt-core/configuration/config-site-defaults.php:526
+#: dt-core/configuration/config-site-defaults.php:529
 msgid "heart"
 msgstr "愛心"
 
-#: dt-core/configuration/config-site-defaults.php:527
+#: dt-core/configuration/config-site-defaults.php:530
 msgid "laugh"
 msgstr "大笑"
 
-#: dt-core/configuration/config-site-defaults.php:528
+#: dt-core/configuration/config-site-defaults.php:531
 msgid "wow"
 msgstr "驚呼"
 
-#: dt-core/configuration/config-site-defaults.php:529
+#: dt-core/configuration/config-site-defaults.php:532
 msgid "sad"
 msgstr "傷心"
 
-#: dt-core/configuration/config-site-defaults.php:530
+#: dt-core/configuration/config-site-defaults.php:533
 msgid "prayer"
 msgstr "禱告"
 
-#: dt-core/configuration/config-site-defaults.php:538
+#: dt-core/configuration/config-site-defaults.php:541
+#: dt-login/login-template.php:573
 msgid "Home"
 msgstr "家"
 
-#: dt-core/configuration/config-site-defaults.php:539
+#: dt-core/configuration/config-site-defaults.php:542
 msgid "Work"
 msgstr "工作"
 
-#: dt-core/configuration/config-site-defaults.php:549
+#: dt-core/configuration/config-site-defaults.php:552
 msgid "Accepting new contacts"
 msgstr "接受新聯繫人"
 
-#: dt-core/configuration/config-site-defaults.php:553
+#: dt-core/configuration/config-site-defaults.php:556
 msgid "I'm only investing in existing contacts"
 msgstr "我只投資現有的聯繫人"
 
-#: dt-core/configuration/config-site-defaults.php:557
+#: dt-core/configuration/config-site-defaults.php:560
 msgid "I have too many contacts"
 msgstr "我的聯絡人太多"
 
@@ -2507,17 +2580,17 @@ msgstr "如果這是一個錯誤，請忽略此電子郵件，將不會發生任
 msgid "To reset your password, visit the following address:"
 msgstr "要重置密碼，請訪問以下地址："
 
-#: dt-core/global-functions.php:484 single-template.php:406
+#: dt-core/global-functions.php:486 single-template.php:414
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:174
 msgid "This is required"
 msgstr "這是必需的"
 
-#: dt-core/global-functions.php:632
+#: dt-core/global-functions.php:634
 msgid "Add new tag \"%s\""
 msgstr "新增標籤「%s」"
 
-#: dt-core/global-functions.php:633
+#: dt-core/global-functions.php:635
 msgid "Tag \"%s\" is already being used"
 msgstr "「%s」標籤已被使用"
 
@@ -2565,7 +2638,8 @@ msgstr ""
 msgid "Translate"
 msgstr ""
 
-#: dt-core/release-notifications.php:88
+#: dt-core/release-notifications.php:88 dt-users/user-initial-setup.php:68
+#: template-settings.php:674
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
@@ -2971,6 +3045,103 @@ msgid ""
 "for:"
 msgstr ""
 "四場圖中有5個正方形。從左上象限開始，順時針旋轉，第五個在中間，它們代表："
+
+#: dt-login/login-template.php:68
+msgid ""
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
+msgstr ""
+
+#: dt-login/login-template.php:70
+msgid "Your password reset link has expired. Please request a new link below."
+msgstr ""
+
+#: dt-login/login-template.php:89 dt-login/login-template.php:115
+#, fuzzy
+#| msgid "Password"
+msgid "Get New Password"
+msgstr "密碼"
+
+#: dt-login/login-template.php:104 dt-login/login-template.php:532
+#, fuzzy
+#| msgid "Add email address"
+msgid "Email Address"
+msgstr "添加電子郵件地址"
+
+#: dt-login/login-template.php:118
+msgid ""
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
+msgstr ""
+
+#: dt-login/login-template.php:171 dt-login/login-template.php:261
+#: dt-login/login-template.php:400
+msgid "Passwords do not match. Please, try again."
+msgstr ""
+
+#: dt-login/login-template.php:233 dt-login/login-template.php:282
+#, fuzzy
+#| msgid "Reset password"
+msgid "Reset Password"
+msgstr "重設密碼"
+
+#: dt-login/login-template.php:248 dt-login/login-template.php:251
+#: dt-login/login-template.php:388 dt-login/login-template.php:391
+#, fuzzy
+#| msgid "Password"
+msgid "Password Required"
+msgstr "密碼"
+
+#: dt-login/login-template.php:258 dt-login/login-template.php:397
+#, fuzzy
+#| msgid "Reset password"
+msgid "Re-enter Password"
+msgstr "重設密碼"
+
+#: dt-login/login-template.php:340 dt-login/login-template.php:409
+#: dt-login/login-template.php:589
+#, fuzzy
+#| msgid "Registered"
+msgid "Register"
+msgstr "註冊"
+
+#: dt-login/login-template.php:375 dt-users/template-new-user.php:90
+msgid "There are some errors in your form."
+msgstr "您的表單中有錯誤。"
+
+#: dt-login/login-template.php:380
+#, fuzzy
+#| msgid "Display Name"
+msgid "Display Name (optional)"
+msgstr "顯示名稱"
+
+#: dt-login/login-template.php:493
+msgid "User action confirmed."
+msgstr ""
+
+#: dt-login/login-template.php:509 dt-login/login-template.php:535
+#: dt-login/login-template.php:581
+msgid "Login"
+msgstr ""
+
+#: dt-login/login-template.php:516
+msgid "Username or password does not match. Try again."
+msgstr ""
+
+#: dt-login/login-template.php:533 dt-users/template-new-user.php:123
+#: dt-users/template-new-user.php:124 template-settings.php:600
+msgid "Password"
+msgstr "密碼"
+
+#: dt-login/login-template.php:534
+msgid "Remember Me"
+msgstr ""
+
+#: dt-login/login-template.php:596
+#, fuzzy
+#| msgid "Lost your password"
+msgid "Lost your password?"
+msgstr "忘記密碼"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
@@ -3824,23 +3995,23 @@ msgstr "取消關注"
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1316
+#: dt-posts/dt-posts.php:1319
 msgid "Magic Link Submission"
 msgstr "魔術鏈接提交"
 
-#: dt-posts/dt-posts.php:1322
+#: dt-posts/dt-posts.php:1325
 msgid "D.T System"
 msgstr "D.T 系統"
 
-#: dt-posts/dt-posts.php:1557
+#: dt-posts/dt-posts.php:1560
 msgid "Post already shared with user."
 msgstr "帖子已與用戶共享。"
 
-#: dt-posts/dt-posts.php:1811 single-template.php:171
+#: dt-posts/dt-posts.php:1816 single-template.php:178
 msgid "Details"
 msgstr "詳細資訊"
 
-#: dt-posts/dt-posts.php:1875
+#: dt-posts/dt-posts.php:1880
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -3852,7 +4023,7 @@ msgstr ""
 "@[%1$s](%2$s) - 使用者 %3$s 已要求存取 %4$s [%5$s](%6$s)。若願意，將該紀錄與"
 "此聯絡人分享以授予權限。"
 
-#: dt-posts/dt-posts.php:1881
+#: dt-posts/dt-posts.php:1886
 msgid "Access Request"
 msgstr "存取要求"
 
@@ -4077,6 +4248,22 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "已將 %1$s 添加到位置"
 
+#: dt-posts/posts.php:491
+#, fuzzy
+#| msgctxt "Milestone1 removed from Milestones"
+#| msgid "%1$s removed from %2$s"
+msgctxt "link1 removed from Social Links"
+msgid "%1$s removed from %2$s links"
+msgstr "已從%2$s中刪除 %1$s "
+
+#: dt-posts/posts.php:494
+#, fuzzy
+#| msgctxt "Milestone1 added to Milestones"
+#| msgid "%1$s added to %2$s"
+msgctxt "link1 added to Social Links"
+msgid "%1$s added to %2$s links"
+msgstr "已將 %1$s 添加到%2$s"
+
 #: dt-posts/posts.php:515
 msgctxt "message"
 msgid "verified"
@@ -4179,7 +4366,7 @@ msgstr "發送到選定的記錄"
 msgid "You must select at least one record"
 msgstr "您必須至少選擇一條記錄"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:91
 msgid "Send"
 msgstr "發送"
 
@@ -4187,17 +4374,35 @@ msgstr "發送"
 msgid "Links"
 msgstr "鏈接"
 
-#: dt-reports/magic-url-setup.php:30 template-settings.php:56
-msgid "Apps"
-msgstr "應用"
+#: dt-reports/magic-url-setup.php:30
+#, fuzzy
+#| msgid "Magic Link Submission"
+msgid "Magic Links"
+msgstr "魔術鏈接提交"
 
 #: dt-reports/magic-url-setup.php:31
-msgid "Apps available on this record."
+#, fuzzy
+#| msgid "Apps available on this record."
+msgid "Magic Links available on this record."
 msgstr "此記錄上可用的應用程序。"
 
-#: dt-reports/magic-url-setup.php:113
-msgid "Send the link via email."
-msgstr "通過電子郵件發送鏈接。"
+#: dt-reports/magic-url-setup.php:86
+#, fuzzy
+#| msgid "View User"
+msgid "View"
+msgstr "檢視使用者"
+
+#: dt-reports/magic-url-setup.php:87
+msgid "Copy to clipboard"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:92
+msgid "QR code"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:93
+msgid "Reset"
+msgstr ""
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Add email address"
@@ -4210,17 +4415,6 @@ msgstr "添加註釋"
 #: dt-reports/magic-url-setup.php:114
 msgid "Send email with link"
 msgstr "發送帶有鏈接的電子郵件"
-
-#: dt-reports/magic-url-setup.php:150
-msgid "Scan the QR code to open the magic link on a mobile device."
-msgstr "掃描二維碼在移動設備上打開魔術鏈接。"
-
-#: dt-reports/magic-url-setup.php:155
-msgid ""
-"Reset the security code. No data is removed. Only access. The previous link "
-"will be disabled and another one created."
-msgstr ""
-"重置安全代碼。沒有數據被刪除。只能訪問。上一個鏈接將被禁用並創建另一個鏈接。"
 
 #: dt-reports/magic-url-setup.php:156
 msgid "Delete and replace the app link"
@@ -4273,10 +4467,6 @@ msgstr "管理員必須在多站點設置中啟用“添加新用戶”選項：
 msgid "Add New User"
 msgstr "新增使用者"
 
-#: dt-users/template-new-user.php:90
-msgid "There are some errors in your form."
-msgstr "您的表單中有錯誤。"
-
 #: dt-users/template-new-user.php:96
 msgid "Contact to make a user (optional)"
 msgstr "要設為使用者的聯絡人 (選用)"
@@ -4299,11 +4489,6 @@ msgstr "暱稱（顯示名稱）"
 #: template-settings.php:130 template-settings.php:586
 msgid "Username"
 msgstr "用戶名"
-
-#: dt-users/template-new-user.php:123 dt-users/template-new-user.php:124
-#: template-settings.php:600
-msgid "Password"
-msgstr "密碼"
 
 #: dt-users/template-new-user.php:139 dt-users/template-user-management.php:90
 msgid "Role"
@@ -4587,6 +4772,18 @@ msgstr "學到更多。"
 msgid "User Language"
 msgstr "用戶語言"
 
+#: dt-users/user-initial-setup.php:44
+#, fuzzy
+#| msgid "Invite User"
+msgid "Initial User Setup!"
+msgstr "邀請用戶"
+
+#: dt-users/user-initial-setup.php:52
+#, fuzzy
+#| msgid "User Language"
+msgid "Default Language"
+msgstr "用戶語言"
+
 #: dt-users/user-management.php:110
 msgid "Add User"
 msgstr "新增使用者"
@@ -4646,7 +4843,7 @@ msgstr "這個聯絡人已是使用者。"
 msgid "View User"
 msgstr "檢視使用者"
 
-#: dt-users/user-management.php:289
+#: dt-users/user-management.php:290
 msgid "%s days since last update"
 msgstr "自上次更新以來的％s天"
 
@@ -4701,7 +4898,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "自定義過濾器"
 
-#: dt-users/users.php:1187 template-settings.php:159 template-settings.php:592
+#: dt-users/users.php:1194 template-settings.php:159 template-settings.php:592
 msgid "System Email"
 msgstr "系統電子郵件"
 
@@ -4748,36 +4945,36 @@ msgstr "此 %s 需要更新。"
 msgid "Please provide an update by posting a comment."
 msgstr "請通過發表評論來提供更新。"
 
-#: single-template.php:254
+#: single-template.php:262
 msgid "Edit all details fields"
 msgstr "編輯所有詳細資訊欄位"
 
-#: single-template.php:377
+#: single-template.php:385
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:398 template-new-bulk-post.php:276
+#: single-template.php:406 template-new-bulk-post.php:276
 #: template-new-post.php:166
 msgid "Create Tag"
 msgstr "創建標籤"
 
-#: single-template.php:399 template-new-bulk-post.php:277
+#: single-template.php:407 template-new-bulk-post.php:277
 #: template-new-post.php:167
 msgid "Create a tag and apply it to this record."
 msgstr "建立標籤並套用到此紀錄。"
 
-#: single-template.php:403 single-template.php:405
+#: single-template.php:411 single-template.php:413
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
 #: template-new-post.php:171 template-new-post.php:173
 msgid "Tag"
 msgstr "標籤"
 
-#: single-template.php:414 template-new-bulk-post.php:293
+#: single-template.php:422 template-new-bulk-post.php:293
 #: template-new-post.php:182
 msgid "Create and apply tag"
 msgstr "創建並應用標籤"
 
-#: single-template.php:424
+#: single-template.php:432
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "確定要刪除 %s 嗎？"
@@ -4862,6 +5059,10 @@ msgstr "提及"
 #: template-notifications.php:86 template-notifications.php:89
 msgid "Load more notifications"
 msgstr "加載更多通知"
+
+#: template-settings.php:56
+msgid "Apps"
+msgstr "應用"
 
 #: template-settings.php:58 template-settings.php:314
 msgid "Multiplier Preferences"

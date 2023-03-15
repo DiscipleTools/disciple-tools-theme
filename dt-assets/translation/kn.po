@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-02-02T16:02:54+00:00\n"
+"POT-Creation-Date: 2023-03-14T15:52:16+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Kannada <https://translate.disciple.tools/projects/"
-"disciple-tools/disciple-tools-theme/kn/>\n"
+"Language-Team: Kannada <https://translate.disciple.tools/projects/disciple-"
+"tools/disciple-tools-theme/kn/>\n"
 "Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "ವಿನಂತಿಯನ್ನು ಸಲ್ಲಿಸಿ"
 
-#: 403.php:55 archive-template.php:777 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:780 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -76,12 +76,51 @@ msgstr "ವಿನಂತಿಯನ್ನು ಸಲ್ಲಿಸಿ"
 #: dt-contacts/access-module.php:505 dt-contacts/access-module.php:536
 #: dt-contacts/access-module.php:564 dt-contacts/base-setup.php:427
 #: dt-contacts/base-setup.php:462 dt-contacts/user-module.php:159
-#: single-template.php:411 single-template.php:428
+#: single-template.php:419 single-template.php:436
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:179
 msgid "Cancel"
 msgstr "ರದ್ದುಮಾಡಿ"
+
+#: 403.php:59 archive-template.php:321 archive-template.php:363
+#: archive-template.php:804 dt-assets/parts/loop-activity-comment.php:132
+#: dt-assets/parts/loop-activity-comment.php:137
+#: dt-assets/parts/loop-activity-comment.php:172
+#: dt-assets/parts/loop-activity-comment.php:177
+#: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
+#: dt-assets/parts/merge-details.php:75
+#: dt-assets/parts/modals/modal-advanced-search.php:65
+#: dt-assets/parts/modals/modal-filters.php:14
+#: dt-assets/parts/modals/modal-filters.php:33
+#: dt-assets/parts/modals/modal-help.php:154
+#: dt-assets/parts/modals/modal-help.php:164
+#: dt-assets/parts/modals/modal-help.php:204
+#: dt-assets/parts/modals/modal-help.php:214
+#: dt-assets/parts/modals/modal-new-contact.php:33
+#: dt-assets/parts/modals/modal-revert.php:15
+#: dt-assets/parts/modals/modal-revert.php:20
+#: dt-assets/parts/modals/modal-share.php:50
+#: dt-assets/parts/modals/modal-share.php:56
+#: dt-assets/parts/modals/modal-support.php:4
+#: dt-assets/parts/modals/modal-support.php:11
+#: dt-assets/parts/modals/modal-support.php:18
+#: dt-assets/parts/modals/modal-tasks.php:46
+#: dt-assets/parts/modals/modal-tasks.php:48
+#: dt-assets/parts/modals/modal-tasks.php:54 dt-contacts/access-module.php:510
+#: dt-contacts/access-module.php:541 dt-contacts/access-module.php:569
+#: dt-contacts/access-module.php:660 dt-contacts/base-setup.php:432
+#: dt-contacts/base-setup.php:467 dt-contacts/dmm-module.php:523
+#: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
+#: dt-groups/base-setup.php:618 dt-groups/base-setup.php:623
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
+#: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
+#: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
+#: single-template.php:424 single-template.php:441
+#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
+#: template-new-post.php:184 template-settings.php:563
+msgid "Close"
+msgstr "ಮುಚ್ಚಿ"
 
 #: 404.php:25
 msgid "Epic 404 - Not Found"
@@ -100,10 +139,10 @@ msgstr "ಹೊಸ%s ಅನ್ನು ರಚಿಸಿ"
 msgid "Filters"
 msgstr "ಫಿಲ್ಟರ್‌ಗಳು"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:461
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:630
-#: dt-core/global-functions.php:658 dt-core/global-functions.php:775
-#: dt-core/global-functions.php:819 dt-posts/custom-post-type.php:18
+#: archive-template.php:36 archive-template.php:126 archive-template.php:471
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:632
+#: dt-core/global-functions.php:660 dt-core/global-functions.php:778
+#: dt-core/global-functions.php:822 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -120,10 +159,7 @@ msgstr "ಸ್ಪಷ್ಟ"
 msgid "Advanced Search"
 msgstr "ವಿಸ್ತೃತ ಹುಡುಕಾಟ"
 
-#: archive-template.php:46 archive-template.php:494
-#: dt-assets/parts/loop-activity-comment.php:93
-#: dt-assets/parts/loop-activity-comment.php:177
-#: dt-assets/parts/modals/modal-advanced-search.php:96
+#: archive-template.php:46 dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "ಪ್ರತಿಕ್ರಿಯೆಗಳು"
 
@@ -205,6 +241,13 @@ msgstr "ಇನ್ನಷ್ಟು"
 msgid "Archived"
 msgstr "ಸಂಗ್ರಹಿಸಲಾಗಿದೆ"
 
+#: archive-template.php:301
+#, fuzzy
+#| msgid "New %s"
+msgctxt "Show archived"
+msgid "Show %s"
+msgstr "ಸುದ್ದಿ"
+
 #: archive-template.php:324
 msgid "Choose which fields to display as columns in the list"
 msgstr "ಪಟ್ಟಿಯಲ್ಲಿ ಯಾವ ಕ್ಷೇತ್ರಗಳನ್ನು ಕಾಲಮ್‌ಗಳಾಗಿ ಪ್ರದರ್ಶಿಸಬೇಕು ಎಂಬುದನ್ನು ಆರಿಸಿ"
@@ -218,152 +261,153 @@ msgstr ""
 
 #: archive-template.php:385 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:857
+#: dt-core/global-functions.php:860
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ಬಳಕೆದಾರರನ್ನು ಹುಡುಕಿ"
 
-#: archive-template.php:403 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1810
+#: archive-template.php:409 dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1815
 #: dt-users/template-user-management.php:88
-#: dt-users/template-user-management.php:520 single-template.php:129
+#: dt-users/template-user-management.php:520 single-template.php:132
 msgid "Status"
 msgstr "ಸ್ಥಿತಿ"
 
-#: archive-template.php:449
+#: archive-template.php:459
 msgid "Share with:"
 msgstr "ಜೊತೆ ಹಂಚಿಕೊ:"
 
-#: archive-template.php:477 dt-assets/functions/details-bar.php:168
+#: archive-template.php:487 dt-assets/functions/details-bar.php:168
 #: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "ಅನುಸರಿಸಿ"
 
-#: archive-template.php:482 dt-assets/parts/loop-activity-comment.php:22
-#: dt-assets/parts/modals/modal-help.php:42
+#: archive-template.php:492 dt-assets/parts/loop-activity-comment.php:22
+#: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "ಪ್ರತಿಕ್ರಿಯೆಗಳು ಮತ್ತು ಚಟುವಟಿಕೆ"
 
-#: archive-template.php:487 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:497 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "ನಿಮ್ಮ ಕಾಮೆಂಟ್ ಅಥವಾ ಟಿಪ್ಪಣಿಯನ್ನು ಇಲ್ಲಿ ಬರೆಯಿರಿ"
 
-#: archive-template.php:502 dt-assets/parts/loop-activity-comment.php:55
+#: archive-template.php:505 dt-assets/parts/loop-activity-comment.php:48
 msgid "Type:"
 msgstr "ಮಾದರಿ:"
 
-#: archive-template.php:522 dt-users/template-new-user.php:129
+#: archive-template.php:525 dt-users/template-new-user.php:129
 #: dt-users/template-new-user.php:242
 msgid "See More Options"
 msgstr "ಇನ್ನಷ್ಟು ಆಯ್ಕೆಗಳನ್ನು ನೋಡಿ"
 
-#: archive-template.php:523 dt-users/template-new-user.php:132
+#: archive-template.php:526 dt-users/template-new-user.php:132
 #: dt-users/template-new-user.php:245
 msgid "See Fewer Options"
 msgstr "ಕಡಿಮೆ ಆಯ್ಕೆಗಳನ್ನು ನೋಡಿ"
 
-#: archive-template.php:559 dt-assets/parts/loop-activity-comment.php:203
+#: archive-template.php:562 dt-assets/parts/loop-activity-comment.php:175
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "ನವೀಕರಿಸಿ"
 
-#: archive-template.php:560 dt-assets/functions/enqueue-scripts.php:310
+#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:308
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "ಕೆಳಗೆ ಆಯ್ಕೆಗಳನ್ನು ಮಾಡಿ"
 
-#: archive-template.php:591 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:594 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "ಹೆಸರು"
 
-#: archive-template.php:602
+#: archive-template.php:605
 msgid "Loading..."
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ ..."
 
-#: archive-template.php:607 dt-assets/functions/enqueue-scripts.php:354
+#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:352
 msgid "Load More"
 msgstr "ಇನ್ನಷ್ಟು ಲೋಡ್ ಮಾಡಿ"
 
-#: archive-template.php:619
+#: archive-template.php:622
 msgid "Field Name"
 msgstr "ಕ್ಷೇತ್ರದ ಹೆಸರು"
 
-#: archive-template.php:675
+#: archive-template.php:678
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ"
 
-#: archive-template.php:684
+#: archive-template.php:687
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "% 2 $ s ನೊಂದಿಗೆ ಎಲ್ಲಾ% 1 $ s"
 
-#: archive-template.php:687
+#: archive-template.php:690
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s ಇಲ್ಲದೆ ಎಲ್ಲಾ %1$s"
 
-#: archive-template.php:694
+#: archive-template.php:697
 msgid "Filter for subassigned OR Assigned To"
 msgstr "ಸಬ್‌ಸೈನ್ಡ್ ಅಥವಾ ನಿಯೋಜಿಸಲಾದ ಫಿಲ್ಟರ್"
 
-#: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:301
+#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:299
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "ಸೃಷ್ಟಿ ದಿನಾಂಕ"
 
-#: archive-template.php:710 archive-template.php:717
+#: archive-template.php:713 archive-template.php:720
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76
 msgid "None Set"
 msgstr "ಯಾವುದೂ ಹೊಂದಿಸಿಲ್ಲ"
 
-#: archive-template.php:731 archive-template.php:732
+#: archive-template.php:734 archive-template.php:735
 #: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:441
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "ಇಲ್ಲ"
 
-#: archive-template.php:738 archive-template.php:739
+#: archive-template.php:741 archive-template.php:742
 #: dt-metrics/combined/time-charts.php:117 dt-posts/posts.php:439
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "ಹೌದು"
 
-#: archive-template.php:743
+#: archive-template.php:746
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "ಶ್ರೇಣಿ ಪ್ರಾರಂಭ"
 
-#: archive-template.php:746 archive-template.php:757
+#: archive-template.php:749 archive-template.php:760
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ಸ್ಪಷ್ಟ"
 
-#: archive-template.php:753
+#: archive-template.php:756
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "ಶ್ರೇಣಿ ಅಂತ್ಯ"
 
-#: archive-template.php:785
+#: archive-template.php:788
 msgid "Filter Name"
 msgstr "ಫಿಲ್ಟರ್ ಹೆಸರು"
 
-#: archive-template.php:790
+#: archive-template.php:793
 msgid "Filter Records"
 msgstr "ದಾಖಲೆಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ"
 
-#: archive-template.php:794 dt-assets/functions/enqueue-scripts.php:261
-#: dt-assets/functions/enqueue-scripts.php:296 template-settings.php:681
+#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:259
+#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "ಉಳಿಸಿ"
 
 #: dt-assets/functions/details-bar.php:44
 #: dt-assets/functions/details-bar.php:243
-#: dt-core/configuration/config-site-defaults.php:361
+#: dt-core/configuration/config-site-defaults.php:364
 #: dt-users/template-user-management.php:93 dt-workflows/update-required.php:70
 #: dt-workflows/update-required.php:109
 msgid "Update Needed"
@@ -373,7 +417,7 @@ msgstr "ನವೀಕರಣ ಅಗತ್ಯವಿದೆ"
 msgid "Admin Actions"
 msgstr "ನಿರ್ವಹಣೆ ಕ್ರಿಯೆಗಳು"
 
-#: dt-assets/functions/details-bar.php:60 single-template.php:423
+#: dt-assets/functions/details-bar.php:60 single-template.php:431
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "% S ಅನ್ನು ಅಳಿಸಿ"
@@ -428,230 +472,230 @@ msgstr "ಅನುಸರಿಸಲಾಗುತ್ತಿದೆ"
 msgid "Share"
 msgstr "ಹಂಚಿಕೊಳ್ಳಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:114
+#: dt-assets/functions/enqueue-scripts.php:112
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "ಫೋಕಸ್ ಪ್ರದೇಶಗಳು"
 
-#: dt-assets/functions/enqueue-scripts.php:115
+#: dt-assets/functions/enqueue-scripts.php:113
 #: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "ಎಲ್ಲಾ ಸ್ಥಳಗಳು"
 
-#: dt-assets/functions/enqueue-scripts.php:116
+#: dt-assets/functions/enqueue-scripts.php:114
 msgid "Used Locations"
 msgstr "ಬಳಸಿದ ಸ್ಥಳಗಳು"
 
-#: dt-assets/functions/enqueue-scripts.php:117
+#: dt-assets/functions/enqueue-scripts.php:115
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
 msgstr "\"{{ಪ್ರಶ್ನೆ}}\" ಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ"
 
-#: dt-assets/functions/enqueue-scripts.php:118
+#: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "% S ವಸ್ತುಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ. ಹೆಚ್ಚಿನದನ್ನು ಕಂಡುಹಿಡಿಯಲು ಟೈಪ್ ಮಾಡಿ."
 
-#: dt-assets/functions/enqueue-scripts.php:119
+#: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "% 2 $ s ಗೆ ಹೊಂದಿಕೆಯಾಗುವ% 1 $ s ವಸ್ತುಗಳನ್ನು ತೋರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:120
-#: dt-assets/functions/enqueue-scripts.php:175
-#: dt-assets/functions/enqueue-scripts.php:297 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:118
+#: dt-assets/functions/enqueue-scripts.php:173
+#: dt-assets/functions/enqueue-scripts.php:295 template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
 msgstr "ತಿದ್ದು"
 
-#: dt-assets/functions/enqueue-scripts.php:138
+#: dt-assets/functions/enqueue-scripts.php:136
 msgid "You don't have any unread notifications"
 msgstr "ನೀವು ಯಾವುದೇ ಓದದ ಅಧಿಸೂಚನೆಗಳನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: dt-assets/functions/enqueue-scripts.php:139
+#: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "ನಿಮಗೆ ಯಾವುದೇ ಅಧಿಸೂಚನೆಗಳು ಇಲ್ಲ"
 
-#: dt-assets/functions/enqueue-scripts.php:176
-#: dt-assets/functions/enqueue-scripts.php:210
-#: dt-assets/functions/enqueue-scripts.php:258
-#: dt-assets/functions/enqueue-scripts.php:298
-#: dt-assets/parts/loop-activity-comment.php:156 single-template.php:431
+#: dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:208
+#: dt-assets/functions/enqueue-scripts.php:256
+#: dt-assets/functions/enqueue-scripts.php:296
+#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:439
 msgid "Delete"
 msgstr "ಅಳಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:177
+#: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
 msgstr "Google ಅನುವಾದದೊಂದಿಗೆ ಅನುವಾದಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:176
 msgid "Hide Translation"
 msgstr "ಅನುವಾದವನ್ನು ಮರೆಮಾಡಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:179
+#: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "% 1 $ s% 2 $ s ಎಮೋಜಿಯೊಂದಿಗೆ ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತದೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:180
+#: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "% 3 $ s ಮತ್ತು% 1 $ s% 2 $ s ಎಮೋಜಿಗಳೊಂದಿಗೆ ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತವೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:211
+#: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
 msgstr "ಸಂಪೂರ್ಣ ಎಂದು ಗುರುತಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:212
+#: dt-assets/functions/enqueue-scripts.php:210
 msgid "No task created"
 msgstr "ಯಾವುದೇ ಕಾರ್ಯವನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ"
 
-#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/functions/enqueue-scripts.php:211
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "ಜ್ಞಾಪನೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:214
+#: dt-assets/functions/enqueue-scripts.php:212
 msgid "No note set"
 msgstr "ಟಿಪ್ಪಣಿ ಹೊಂದಿಸಿಲ್ಲ"
 
-#: dt-assets/functions/enqueue-scripts.php:215
+#: dt-assets/functions/enqueue-scripts.php:213
 msgid "Duplicates Detected"
 msgstr "ನಕಲುಗಳು ಪತ್ತೆಯಾಗಿವೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:216
+#: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
 #: dt-users/template-new-user.php:301 template-merge-post-details.php:121
 #: template-merge-post-details.php:178
 msgid "Merge"
 msgstr "ವಿಲೀನಗೊಳ್ಳಲು"
 
-#: dt-assets/functions/enqueue-scripts.php:217
+#: dt-assets/functions/enqueue-scripts.php:215
 msgid "Dismiss"
 msgstr "ವಜಾಗೊಳಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:216
 msgid "Dismissed Duplicates"
 msgstr "ವಜಾಗೊಳಿಸಿದ ನಕಲುಗಳು"
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
 msgstr "ಇದರ ಮೇಲೆ ನಕಲುಗಳು:% s"
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "ವರ್ಗಾವಣೆ ವಿಫಲವಾಗಿದೆ. ಸೈಟ್-ಟು-ಸೈಟ್ ಕಾನ್ಫಿಗರೇಶನ್ ಪರಿಶೀಲಿಸಿ."
 
-#: dt-assets/functions/enqueue-scripts.php:221
+#: dt-assets/functions/enqueue-scripts.php:219
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "ವರ್ಗಾವಣೆ ನವೀಕರಣ ವಿಫಲವಾಗಿದೆ. ಸೈಟ್-ಟು-ಸೈಟ್ ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ."
 
-#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:220
 msgid "Transfer update successful."
 msgstr "ವರ್ಗಾವಣೆ ನವೀಕರಣ ಯಶಸ್ವಿಯಾಗಿದೆ."
 
-#: dt-assets/functions/enqueue-scripts.php:223
+#: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "% S ನಲ್ಲಿ ರಚಿಸಲಾಗಿದೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:224
+#: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
 msgstr "ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:259
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Locations you are responsible for"
 msgstr "ನೀವು ಜವಾಬ್ದಾರರಾಗಿರುವ ಸ್ಥಳಗಳು"
 
-#: dt-assets/functions/enqueue-scripts.php:260
+#: dt-assets/functions/enqueue-scripts.php:258
 msgid "Add"
 msgstr "ಸೇರಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:262 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:260 template-settings.php:285
 msgid "link"
 msgstr "ಲಿಂಕ್"
 
-#: dt-assets/functions/enqueue-scripts.php:263 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:261 template-settings.php:286
 msgid "copy"
 msgstr "ನಕಲು"
 
-#: dt-assets/functions/enqueue-scripts.php:279
+#: dt-assets/functions/enqueue-scripts.php:277
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "ಪಂದ್ಯಗಳು ಕಂಡುಬಂದಿವೆ:"
 
-#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:278
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "% S ಗಾಗಿ ಎಲ್ಲಾ ಪಂದ್ಯಗಳನ್ನು ವಜಾಗೊಳಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:299
+#: dt-assets/functions/enqueue-scripts.php:297
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "_TOTAL_ ನ _START_ ತೋರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:298
 msgid "Sorting By"
 msgstr "ಮೂಲಕ ವಿಂಗಡಿಸಲಾಗುತ್ತಿದೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:302
+#: dt-assets/functions/enqueue-scripts.php:300
 msgid "Date Modified"
 msgstr "ಮಾರ್ಪಡಿಸಿದ ದಿನಾಂಕ"
 
-#: dt-assets/functions/enqueue-scripts.php:303
+#: dt-assets/functions/enqueue-scripts.php:301
 msgid "No filters, create one below"
 msgstr "ಫಿಲ್ಟರ್‌ಗಳಿಲ್ಲ, ಕೆಳಗೆ ಒಂದನ್ನು ರಚಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/functions/enqueue-scripts.php:302
 msgid "No records found matching your filter."
 msgstr "ನಿಮ್ಮ ಫಿಲ್ಟರ್‌ಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಯಾವುದೇ ದಾಖಲೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ."
 
-#: dt-assets/functions/enqueue-scripts.php:305 dt-contacts/base-setup.php:537
+#: dt-assets/functions/enqueue-scripts.php:303 dt-contacts/base-setup.php:537
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "ಎಲ್ಲಾ% s"
 
-#: dt-assets/functions/enqueue-scripts.php:306
+#: dt-assets/functions/enqueue-scripts.php:304
 msgid "start"
 msgstr "ಪ್ರಾರಂಭ"
 
-#: dt-assets/functions/enqueue-scripts.php:307
+#: dt-assets/functions/enqueue-scripts.php:305
 msgid "end"
 msgstr "ಅಂತ್ಯ"
 
-#: dt-assets/functions/enqueue-scripts.php:308
+#: dt-assets/functions/enqueue-scripts.php:306
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1291 dt-groups/base-setup.php:985
+#: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "ಎಲ್ಲಾ"
 
-#: dt-assets/functions/enqueue-scripts.php:309
+#: dt-assets/functions/enqueue-scripts.php:307
 msgid "Without"
 msgstr "ಇಲ್ಲದೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:309
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "ಕಳುಹಿಸಲಾಗಿದೆ"
 
-#: dt-assets/functions/enqueue-scripts.php:312
+#: dt-assets/functions/enqueue-scripts.php:310
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "ಕಳುಹಿಸಲಾಗಿಲ್ಲ (ಮಾನ್ಯವಾದ ಇಮೇಲ್ ಕಾಣೆಯಾಗಿದೆ)"
 
-#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/functions/enqueue-scripts.php:311
 msgid "Exclude Item"
 msgstr "ಐಟಂ ಅನ್ನು ಹೊರತುಪಡಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:332 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "ಸಂಪರ್ಕಿಸಿ"
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:333
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -682,7 +726,7 @@ msgstr "ಅಧಿಸೂಚನೆಗಳು"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:131 dt-assets/parts/nav-topbar.php:109
+#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:109
 #: dt-assets/parts/nav-topbar.php:318 template-notifications.php:68
 msgid "Settings"
 msgstr "ಸಂಯೋಜನೆಗಳು"
@@ -702,66 +746,45 @@ msgstr "ಬಳಕೆದಾರರು"
 msgid "Help"
 msgstr "ಸಹಾಯ"
 
-#: dt-assets/parts/loop-activity-comment.php:46
-msgid "Comment"
-msgstr "ಕಾಮೆಂಟ್ ಮಾಡಿ"
-
-#: dt-assets/parts/loop-activity-comment.php:78
+#: dt-assets/parts/loop-activity-comment.php:71
 msgid "Submit comment"
 msgstr "ಕಾಮೆಂಟ್ ಸಲ್ಲಿಸಿ"
 
-#: dt-assets/parts/loop-activity-comment.php:86
+#: dt-assets/parts/loop-activity-comment.php:79
 msgid "Showing:"
 msgstr "ತೋರಿಸಲಾಗುತ್ತಿದೆ:"
 
-#: dt-assets/parts/loop-activity-comment.php:99
-#: dt-users/template-user-management.php:235
-msgid "Activity"
-msgstr "ಚಟುವಟಿಕೆ"
-
-#: dt-assets/parts/loop-activity-comment.php:133
+#: dt-assets/parts/loop-activity-comment.php:112
 msgid "show all"
 msgstr "ಎಲ್ಲ ತೋರಿಸು"
 
-#: dt-assets/parts/loop-activity-comment.php:137
+#: dt-assets/parts/loop-activity-comment.php:116
 msgid "hide all"
 msgstr "ಎಲ್ಲವನ್ನು ಬಚ್ಚಿಡು"
 
-#: dt-assets/parts/loop-activity-comment.php:149
+#: dt-assets/parts/loop-activity-comment.php:128
 msgid "Delete Comment:"
 msgstr "ಕಾಮೆಂಟ್ ಅಳಿಸಿ:"
 
-#: dt-assets/parts/loop-activity-comment.php:153
-#: dt-assets/parts/loop-activity-comment.php:200
-#: dt-assets/parts/merge-details.php:26
-#: dt-assets/parts/modals/modal-help.php:155
-#: dt-assets/parts/modals/modal-help.php:205
-#: dt-assets/parts/modals/modal-revert.php:15
-#: dt-assets/parts/modals/modal-share.php:50
-#: dt-assets/parts/modals/modal-tasks.php:46 dt-contacts/dmm-module.php:523
-#: dt-groups/base-setup.php:618 dt-users/template-new-user.php:299
-msgid "Close"
-msgstr "ಮುಚ್ಚಿ"
-
-#: dt-assets/parts/loop-activity-comment.php:163
-#: dt-assets/parts/loop-activity-comment.php:210
+#: dt-assets/parts/loop-activity-comment.php:142
+#: dt-assets/parts/loop-activity-comment.php:182
 #: template-merge-post-details.php:95
 msgid "Sorry, something went wrong"
 msgstr "ಕ್ಷಮಿಸಿ, ಏನೋ ಸರಿಯಾಗಿಲ್ಲ"
 
-#: dt-assets/parts/loop-activity-comment.php:164
+#: dt-assets/parts/loop-activity-comment.php:143
 msgid "The comment could not be deleted."
 msgstr "ಕಾಮೆಂಟ್ ಅನ್ನು ಅಳಿಸಲಾಗಲಿಲ್ಲ."
 
-#: dt-assets/parts/loop-activity-comment.php:169
+#: dt-assets/parts/loop-activity-comment.php:148
 msgid "Edit Comment:"
 msgstr "ಕಾಮೆಂಟ್ ಸಂಪಾದಿಸಿ:"
 
-#: dt-assets/parts/loop-activity-comment.php:184
+#: dt-assets/parts/loop-activity-comment.php:156
 msgid "Type of Comment"
 msgstr "ಕಾಮೆಂಟ್ ಪ್ರಕಾರ"
 
-#: dt-assets/parts/loop-activity-comment.php:211
+#: dt-assets/parts/loop-activity-comment.php:183
 msgid "The comment could not be updated."
 msgstr "ಕಾಮೆಂಟ್ ಅನ್ನು ನವೀಕರಿಸಲಾಗಲಿಲ್ಲ."
 
@@ -852,32 +875,39 @@ msgstr ""
 "ಬಾರಿ ಮಾಡಲಾಗಿದೆ ಎಂಬುದನ್ನು ಎಣಿಸಲು ಈ ತ್ವರಿತ ಕ್ರಿಯೆಯ ಗುಂಡಿಗಳು ಇಲ್ಲಿವೆ."
 
 #: dt-assets/parts/modals/modal-help.php:15
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "For example, If you click the 'No Answer' button 4 times, we will log "
+#| "that you attempted to reach this contact 4 times, but they did not "
+#| "answer.\n"
+#| "                This action will also change the 'Seeker Path' to "
+#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
-"you attempted to reach this contact 4 times, but they did not answer.\n"
-"                This action will also change the 'Seeker Path' to 'Contact "
-"Attempted'."
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
 "ಉದಾಹರಣೆಗೆ, ನೀವು 'ಉತ್ತರವಿಲ್ಲ' ಗುಂಡಿಯನ್ನು 4 ಬಾರಿ ಕ್ಲಿಕ್ ಮಾಡಿದರೆ, ನೀವು ಈ ಸಂಪರ್ಕವನ್ನು 4 "
 "ಬಾರಿ ತಲುಪಲು ಪ್ರಯತ್ನಿಸಿದ್ದೀರಿ ಎಂದು ನಾವು ಲಾಗ್ ಮಾಡುತ್ತೇವೆ, ಆದರೆ ಅವರು ಉತ್ತರಿಸಲಿಲ್ಲ.\n"
 "                ಈ ಕ್ರಿಯೆಯು 'ಸೀಕರ್ ಪಾತ್' ಅನ್ನು 'ಸಂಪರ್ಕ ಪ್ರಯತ್ನ' ಎಂದು ಬದಲಾಯಿಸುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:28
+#: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
 msgstr "ಬಳಕೆದಾರರ ಕೆಲಸದ ಹೊರೆ ಸ್ಥಿತಿ ಐಕಾನ್‌ಗಳ ದಂತಕಥೆ:"
 
-#: dt-assets/parts/modals/modal-help.php:34
+#: dt-assets/parts/modals/modal-help.php:33
 msgid "2 contacts need an update"
 msgstr "2 ಸಂಪರ್ಕಗಳಿಗೆ ನವೀಕರಣದ ಅಗತ್ಯವಿದೆ"
 
-#: dt-assets/parts/modals/modal-help.php:43
+#: dt-assets/parts/modals/modal-help.php:42
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr "ಸಭೆಗಳು ಮತ್ತು ಸಂಭಾಷಣೆಗಳಿಂದ ನೀವು ಟಿಪ್ಪಣಿಗಳನ್ನು ರೆಕಾರ್ಡ್ ಮಾಡಬಹುದು."
 
-#: dt-assets/parts/modals/modal-help.php:44
+#: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
 "Type @ and the name of a user to mention them in a comment. This user will "
@@ -886,7 +916,7 @@ msgstr ""
 "ಕಾಮೆಂಟ್‌ನಲ್ಲಿ ನಮೂದಿಸಲು @ ಮತ್ತು ಬಳಕೆದಾರರ ಹೆಸರನ್ನು ಟೈಪ್ ಮಾಡಿ. ಈ ಬಳಕೆದಾರರು ನಂತರ "
 "ಅಧಿಸೂಚನೆಯನ್ನು ಸ್ವೀಕರಿಸುತ್ತಾರೆ."
 
-#: dt-assets/parts/modals/modal-help.php:45
+#: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
 "This section also includes the history of activity, such as when the contact "
@@ -895,18 +925,18 @@ msgstr ""
 "ಈ ವಿಭಾಗವು ಚಟುವಟಿಕೆಯ ಇತಿಹಾಸವನ್ನು ಸಹ ಒಳಗೊಂಡಿದೆ, ಉದಾಹರಣೆಗೆ ಸಂಪರ್ಕ ಅಥವಾ ಗುಂಪು "
 "ಸ್ಥಿತಿ ಸಕ್ರಿಯಗೊಂಡಾಗ."
 
-#: dt-assets/parts/modals/modal-help.php:46
+#: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
 "ನೀವು ಈ ವಿಭಾಗವನ್ನು 'ಎಲ್ಲ', 'ಪ್ರತಿಕ್ರಿಯೆಗಳು' ಅಥವಾ 'ಚಟುವಟಿಕೆ' ಮೂಲಕ ಫಿಲ್ಟರ್ ಮಾಡಬಹುದು."
 
-#: dt-assets/parts/modals/modal-help.php:56
+#: dt-assets/parts/modals/modal-help.php:55
 msgctxt "Optional Documentation"
 msgid "Default and Custom Filters Tile"
 msgstr "ಡೀಫಾಲ್ಟ್ ಮತ್ತು ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳ ಟೈಲ್"
 
-#: dt-assets/parts/modals/modal-help.php:57
+#: dt-assets/parts/modals/modal-help.php:56
 msgctxt "Optional Documentation"
 msgid ""
 "Use these filters to focus in on the contacts or groups you are responsible "
@@ -917,12 +947,12 @@ msgstr ""
 "ಬಳಸಿ. ಡೀಫಾಲ್ಟ್ ಫಿಲ್ಟರ್‌ಗಳು ನಿಮ್ಮ ಅಗತ್ಯಗಳಿಗೆ ಸರಿಹೊಂದುವುದಿಲ್ಲವಾದರೆ ನಿಮ್ಮ ಸ್ವಂತ ಕಸ್ಟಮ್ "
 "ಫಿಲ್ಟರ್ ಅನ್ನು ನೀವು ರಚಿಸಬಹುದು."
 
-#: dt-assets/parts/modals/modal-help.php:62
+#: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid "Contacts List Tile"
 msgstr "ಸಂಪರ್ಕಗಳ ಪಟ್ಟಿ ಟೈಲ್"
 
-#: dt-assets/parts/modals/modal-help.php:63
+#: dt-assets/parts/modals/modal-help.php:62
 msgctxt "Optional Documentation"
 msgid ""
 "Your list of contacts will show up here. Whenever you filter contacts, the "
@@ -939,12 +969,12 @@ msgstr ""
 "ಆದ್ದರಿಂದ ಪಟ್ಟಿಯ ಕೆಳಭಾಗದಲ್ಲಿರುವ 'ಹೆಚ್ಚಿನ ಸಂಪರ್ಕಗಳನ್ನು ಲೋಡ್ ಮಾಡಿ' ಬಟನ್ ಕ್ಲಿಕ್ "
 "ಮಾಡುವುದರಿಂದ ಹೆಚ್ಚಿನದನ್ನು ಲೋಡ್ ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:68
+#: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid "Groups List Tile"
 msgstr "ಗುಂಪುಗಳ ಪಟ್ಟಿ ಟೈಲ್"
 
-#: dt-assets/parts/modals/modal-help.php:69
+#: dt-assets/parts/modals/modal-help.php:68
 msgctxt "Optional Documentation"
 msgid ""
 "Your list of groups will show up here. Whenever you filter groups, the list "
@@ -961,40 +991,40 @@ msgstr ""
 "ಪಟ್ಟಿಯ ಕೆಳಭಾಗದಲ್ಲಿರುವ 'ಹೆಚ್ಚಿನ ಗುಂಪುಗಳನ್ನು ಲೋಡ್ ಮಾಡಿ' ಗುಂಡಿಯನ್ನು ಕ್ಲಿಕ್ ಮಾಡುವುದರಿಂದ "
 "ಹೆಚ್ಚಿನದನ್ನು ಲೋಡ್ ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:74
+#: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid "Closed Contacts Switch"
 msgstr "ಮುಚ್ಚಿದ ಸಂಪರ್ಕಗಳ ಸ್ವಿಚ್"
 
-#: dt-assets/parts/modals/modal-help.php:75
+#: dt-assets/parts/modals/modal-help.php:74
 msgctxt "Optional Documentation"
 msgid ""
 "Use this toggle switch to either show or not show closed contacts in the "
 "list."
 msgstr "ಪಟ್ಟಿಯಲ್ಲಿ ಮುಚ್ಚಿದ ಸಂಪರ್ಕಗಳನ್ನು ತೋರಿಸಲು ಅಥವಾ ತೋರಿಸದಿರಲು ಈ ಟಾಗಲ್ ಸ್ವಿಚ್ ಬಳಸಿ."
 
-#: dt-assets/parts/modals/modal-help.php:80
+#: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid "Inactive Groups Switch"
 msgstr "ನಿಷ್ಕ್ರಿಯ ಗುಂಪುಗಳ ಸ್ವಿಚ್"
 
-#: dt-assets/parts/modals/modal-help.php:81
+#: dt-assets/parts/modals/modal-help.php:80
 msgctxt "Optional Documentation"
 msgid ""
 "Use this toggle switch to either show or not show inactive groups in the "
 "list."
 msgstr "ಪಟ್ಟಿಯಲ್ಲಿ ನಿಷ್ಕ್ರಿಯ ಗುಂಪುಗಳನ್ನು ತೋರಿಸಲು ಅಥವಾ ತೋರಿಸದಿರಲು ಈ ಟಾಗಲ್ ಸ್ವಿಚ್ ಬಳಸಿ."
 
-#: dt-assets/parts/modals/modal-help.php:95 template-settings.php:117
+#: dt-assets/parts/modals/modal-help.php:94 template-settings.php:117
 msgid "Your Profile"
 msgstr "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್"
 
-#: dt-assets/parts/modals/modal-help.php:96
+#: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
 msgstr "ಈ ಪ್ರದೇಶದಲ್ಲಿ ನಿಮ್ಮ ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನೀವು ನೋಡಬಹುದು."
 
-#: dt-assets/parts/modals/modal-help.php:97
+#: dt-assets/parts/modals/modal-help.php:96
 msgctxt "Optional Documentation"
 msgid ""
 "You are not required to fill out any of these profile fields. They are "
@@ -1003,7 +1033,7 @@ msgstr ""
 "ಈ ಯಾವುದೇ ಪ್ರೊಫೈಲ್ ಕ್ಷೇತ್ರಗಳನ್ನು ನೀವು ಭರ್ತಿ ಮಾಡುವ ಅಗತ್ಯವಿಲ್ಲ. ನಿಮ್ಮ ತಂಡದ ಅಗತ್ಯಗಳನ್ನು "
 "ಪೂರೈಸಲು ಅವು ಐಚ್ al ಿಕವಾಗಿರುತ್ತವೆ."
 
-#: dt-assets/parts/modals/modal-help.php:98
+#: dt-assets/parts/modals/modal-help.php:97
 msgctxt "Optional Documentation"
 msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
@@ -1012,13 +1042,13 @@ msgstr ""
 "'ಸಂಪಾದಿಸು' ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ಈ ಸಿಸ್ಟಮ್ ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಭಾಷೆಯಂತಹ ವಿಷಯಗಳನ್ನು "
 "ಹೊಂದಿಸಲು ನಿಮಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:103 dt-contacts/base-setup.php:239
+#: dt-assets/parts/modals/modal-help.php:102 dt-contacts/base-setup.php:239
 #: dt-groups/base-setup.php:364 dt-people-groups/people-groups-base.php:202
 #: dt-people-groups/people-groups-base.php:211
 msgid "Locations"
 msgstr "ಸ್ಥಳಗಳು"
 
-#: dt-assets/parts/modals/modal-help.php:104
+#: dt-assets/parts/modals/modal-help.php:103
 msgctxt "Optional Documentation"
 msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
@@ -1027,12 +1057,12 @@ msgstr ""
 "ಇವುಗಳು ನೀವು ಜವಾಬ್ದಾರರಾಗಿರುವ ಕ್ಷೇತ್ರಗಳು. 'ಸೇರಿಸು' ಗುಂಡಿಯನ್ನು ಕ್ಲಿಕ್ ಮಾಡುವುದರಿಂದ "
 "ಆರಿಸಬೇಕಾದ ಸ್ಥಳಗಳ ಪಟ್ಟಿಯನ್ನು ತರುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:109
+#: dt-assets/parts/modals/modal-help.php:108
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
 msgstr "ನಿಮ್ಮ ಅಧಿಸೂಚನೆಗಳು"
 
-#: dt-assets/parts/modals/modal-help.php:110
+#: dt-assets/parts/modals/modal-help.php:109
 msgctxt "Optional Documentation"
 msgid ""
 "You will receive web notifications and email notifications based on your "
@@ -1042,17 +1072,17 @@ msgstr ""
 "ನಿಮ್ಮ ಅಧಿಸೂಚನೆ ಆದ್ಯತೆಗಳ ಆಧಾರದ ಮೇಲೆ ನೀವು ವೆಬ್ ಅಧಿಸೂಚನೆಗಳು ಮತ್ತು ಇಮೇಲ್ "
 "ಅಧಿಸೂಚನೆಗಳನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಿ. ನಿಮ್ಮ ಆದ್ಯತೆಯನ್ನು ಬದಲಾಯಿಸಲು, ಟಾಗಲ್ ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ."
 
-#: dt-assets/parts/modals/modal-help.php:112
+#: dt-assets/parts/modals/modal-help.php:111
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
 msgstr "ಅಧಿಸೂಚನೆಗಳನ್ನು ಆನ್ ಮಾಡಲಾಗಿದೆ: ಟಾಗಲ್ ನೀಲಿ ಬಣ್ಣದಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:113
+#: dt-assets/parts/modals/modal-help.php:112
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr "ಅಧಿಸೂಚನೆಗಳನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ: ಟಾಗಲ್ ಬೂದು ಬಣ್ಣದಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:115
+#: dt-assets/parts/modals/modal-help.php:114
 msgctxt "Optional Documentation"
 msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
@@ -1061,7 +1091,7 @@ msgstr ""
 "ಕೆಲವು ರೀತಿಯ ಅಧಿಸೂಚನೆಗಳನ್ನು ವ್ಯವಸ್ಥೆಗೆ ಅಗತ್ಯವಿರುವ ಕಾರಣ ಅವುಗಳನ್ನು ಸರಿಹೊಂದಿಸಲು "
 "ಸಾಧ್ಯವಿಲ್ಲ."
 
-#: dt-assets/parts/modals/modal-help.php:116
+#: dt-assets/parts/modals/modal-help.php:115
 msgctxt "Optional Documentation"
 msgid ""
 "Adjust whether you want to see notifications about new comments, contact "
@@ -1073,12 +1103,12 @@ msgstr ""
 "ಮೆಟ್ರಿಕ್‌ಗಳ ಕುರಿತು ನೀವು ಅಧಿಸೂಚನೆಗಳನ್ನು ನೋಡಲು ಬಯಸುತ್ತೀರಾ ಮತ್ತು ವ್ಯವಸ್ಥೆಯಲ್ಲಿ ಸಂಭವಿಸುವ "
 "ಯಾವುದೇ ನವೀಕರಣಕ್ಕಾಗಿ ನೀವು ಅಧಿಸೂಚನೆಯನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಾ ಎಂದು ಹೊಂದಿಸಿ."
 
-#: dt-assets/parts/modals/modal-help.php:124
+#: dt-assets/parts/modals/modal-help.php:123
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
 msgstr "ಅಧಿಸೂಚನೆಗಳ ಪುಟ"
 
-#: dt-assets/parts/modals/modal-help.php:125
+#: dt-assets/parts/modals/modal-help.php:124
 msgctxt "Optional Documentation"
 msgid ""
 "This Notifications Page is where you can read updates to users and groups. "
@@ -1087,30 +1117,30 @@ msgstr ""
 "ಈ ಅಧಿಸೂಚನೆಗಳ ಪುಟವೆಂದರೆ ಅಲ್ಲಿ ನೀವು ಬಳಕೆದಾರರು ಮತ್ತು ಗುಂಪುಗಳಿಗೆ ನವೀಕರಣಗಳನ್ನು "
 "ಓದಬಹುದು. ಇದು ನಿಮ್ಮ ದಾಖಲೆಗಳಲ್ಲಿ ಚಟುವಟಿಕೆಯ ಕುರಿತು ಅಧಿಸೂಚನೆಗಳನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:126
+#: dt-assets/parts/modals/modal-help.php:125
 msgctxt "Optional Documentation"
 msgid "All / Unread"
 msgstr "ಎಲ್ಲಾ / ಓದಿಲ್ಲ"
 
-#: dt-assets/parts/modals/modal-help.php:127
+#: dt-assets/parts/modals/modal-help.php:126
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr "ನಿಮ್ಮ ಎಲ್ಲಾ ಅಧಿಸೂಚನೆಗಳ ಪೂರ್ಣ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸಲು 'ಎಲ್ಲ' ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ."
 
-#: dt-assets/parts/modals/modal-help.php:128
+#: dt-assets/parts/modals/modal-help.php:127
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr "ನಿಮ್ಮ ಎಲ್ಲಾ ಓದದ ಅಧಿಸೂಚನೆಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸಲು 'ಓದಿಲ್ಲ' ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ."
 
-#: dt-assets/parts/modals/modal-help.php:129 dt-assets/parts/nav-topbar.php:316
+#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:316
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "ಎಲ್ಲವನ್ನು ಓದಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಿ"
 
-#: dt-assets/parts/modals/modal-help.php:130
+#: dt-assets/parts/modals/modal-help.php:129
 msgctxt "Optional Documentation"
 msgid ""
 "If you don't want to click each filled in circle on the right side of each "
@@ -1122,7 +1152,7 @@ msgstr ""
 "ಕ್ಲಿಕ್ ಮಾಡಲು ನೀವು ಬಯಸದಿದ್ದರೆ, ನಂತರ ಎಲ್ಲಾ ಸಂದೇಶಗಳನ್ನು ತ್ವರಿತವಾಗಿ ಹೊಂದಿಸಲು "
 "ಮೇಲ್ಭಾಗದಲ್ಲಿರುವ 'ಎಲ್ಲವನ್ನೂ ಓದಿದಂತೆ ಗುರುತಿಸಿ' ಲಿಂಕ್ ಕ್ಲಿಕ್ ಮಾಡಿ. ಓದಲಾಗಿದೆ."
 
-#: dt-assets/parts/modals/modal-help.php:132
+#: dt-assets/parts/modals/modal-help.php:131
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Settings' link to go to the notifications settings area to adjust "
@@ -1136,12 +1166,12 @@ msgstr ""
 "ಅಧಿಸೂಚನೆಗಳ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಪ್ರದೇಶಕ್ಕೆ ಹೋಗಲು 'ಸೆಟ್ಟಿಂಗ್‌ಗಳು' ಲಿಂಕ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು "
 "ಯಾವುದೇ ನವೀಕರಣಕ್ಕಾಗಿ ನೀವು ಅಧಿಸೂಚನೆಯನ್ನು ಸ್ವೀಕರಿಸುತ್ತೀರಾ. ವ್ಯವಸ್ಥೆ."
 
-#: dt-assets/parts/modals/modal-help.php:137
+#: dt-assets/parts/modals/modal-help.php:136
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
 msgstr "ಸಂಪರ್ಕ ಪುಟವನ್ನು ನಕಲು ಮಾಡಿ"
 
-#: dt-assets/parts/modals/modal-help.php:138
+#: dt-assets/parts/modals/modal-help.php:137
 msgctxt "Optional Documentation"
 msgid ""
 "This Duplicate Contact Page is where you can review, decline or merge "
@@ -1154,17 +1184,43 @@ msgstr ""
 "ಫೋನ್‌ಗೆ ವಿರುದ್ಧವಾಗಿ ಪರಿಶೀಲಿಸಬಹುದು) ಬಹುಶಃ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಮತ್ತೊಂದು ಸಂಪರ್ಕದ "
 "ನಕಲುಗಳಾಗಿರಬಹುದು."
 
-#: dt-assets/parts/modals/modal-help.php:161
-#: dt-assets/parts/modals/modal-help.php:211
+#: dt-assets/parts/modals/modal-help.php:160
+#: dt-assets/parts/modals/modal-help.php:210
 msgctxt "Optional Documentation"
 msgid "Need more help?"
 msgstr "ಹೆಚ್ಚಿನ ಸಹಾಯ ಬೇಕೇ?"
 
-#: dt-assets/parts/modals/modal-help.php:162
-#: dt-assets/parts/modals/modal-help.php:212
+#: dt-assets/parts/modals/modal-help.php:161
+#: dt-assets/parts/modals/modal-help.php:211
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "ದಸ್ತಾವೇಜನ್ನು ಓದಿ"
+
+#: dt-assets/parts/modals/modal-help.php:179
+#, fuzzy
+#| msgid "Open With"
+msgid "Open the link"
+msgstr "ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ"
+
+#: dt-assets/parts/modals/modal-help.php:183
+msgid "Copy the link to the clipboard"
+msgstr ""
+
+#: dt-assets/parts/modals/modal-help.php:187 dt-reports/magic-url-setup.php:113
+msgid "Send the link via email."
+msgstr "ಇಮೇಲ್ ಮೂಲಕ ಲಿಂಕ್ ಕಳುಹಿಸಿ."
+
+#: dt-assets/parts/modals/modal-help.php:191 dt-reports/magic-url-setup.php:150
+msgid "Scan the QR code to open the magic link on a mobile device."
+msgstr "ಮೊಬೈಲ್ ಸಾಧನದಲ್ಲಿ ಮ್ಯಾಜಿಕ್ ಲಿಂಕ್ ತೆರೆಯಲು QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ."
+
+#: dt-assets/parts/modals/modal-help.php:195 dt-reports/magic-url-setup.php:155
+msgid ""
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
+msgstr ""
+"ಭದ್ರತಾ ಕೋಡ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿ. ಯಾವುದೇ ಡೇಟಾವನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿಲ್ಲ. ಪ್ರವೇಶ ಮಾತ್ರ. "
+"ಹಿಂದಿನ ಲಿಂಕ್ ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಇನ್ನೊಂದನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1598,7 +1654,7 @@ msgid "Personal"
 msgstr "ವೈಯಕ್ತಿಕ"
 
 #: dt-contacts/access-module.php:298
-#: dt-core/configuration/config-site-defaults.php:341
+#: dt-core/configuration/config-site-defaults.php:344
 msgid "Web"
 msgstr "ವೆಬ್"
 
@@ -1681,66 +1737,66 @@ msgstr "ಒಪ್ಪಿಕೊಳ್ಳಿ"
 msgid "Decline"
 msgstr "ಅವನತಿ"
 
-#: dt-contacts/access-module.php:911 dt-contacts/access-module.php:921
+#: dt-contacts/access-module.php:913 dt-contacts/access-module.php:923
 msgid "My Follow-Up"
 msgstr "ನನ್ನ ಫಾಲೋ-ಅಪ್"
 
-#: dt-contacts/access-module.php:922 dt-contacts/access-module.php:943
-#: dt-contacts/access-module.php:966 dt-contacts/access-module.php:990
+#: dt-contacts/access-module.php:924 dt-contacts/access-module.php:945
+#: dt-contacts/access-module.php:968 dt-contacts/access-module.php:993
 #: dt-groups/base-setup.php:977
 msgid "Assigned to me"
 msgstr "ನನಗೆ ನಿಯೋಜಿಸಲಾಗಿದೆ"
 
-#: dt-contacts/access-module.php:923 dt-contacts/access-module.php:944
-#: dt-contacts/access-module.php:967 dt-contacts/access-module.php:991
+#: dt-contacts/access-module.php:925 dt-contacts/access-module.php:946
+#: dt-contacts/access-module.php:969 dt-contacts/access-module.php:994
 msgid "Sub-assigned to me"
 msgstr "ನನಗೆ ಉಪ-ನಿಯೋಜಿಸಲಾಗಿದೆ"
 
-#: dt-contacts/access-module.php:1027
+#: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ಅನುಸರಣೆಗಳು"
 
-#: dt-contacts/access-module.php:1035
+#: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
 msgstr "ಎಲ್ಲಾ ಫಾಲೋ-ಅಪ್"
 
-#: dt-contacts/access-module.php:1135 dt-contacts/access-module.php:1136
+#: dt-contacts/access-module.php:1141 dt-contacts/access-module.php:1142
 msgid "Subassigned only"
 msgstr "ಉಪ ನಿಯೋಜನೆ ಮಾತ್ರ"
 
-#: dt-contacts/access-module.php:1292
+#: dt-contacts/access-module.php:1298
 msgid "Ready"
 msgstr "ಸಿದ್ಧವಾಗಿದೆ"
 
-#: dt-contacts/access-module.php:1293
+#: dt-contacts/access-module.php:1299
 msgid "Recent"
 msgstr "ಇತ್ತೀಚಿನ"
 
-#: dt-contacts/access-module.php:1294 dt-users/template-user-management.php:95
+#: dt-contacts/access-module.php:1300 dt-users/template-user-management.php:95
 msgid "Location"
 msgstr "ಸ್ಥಳ"
 
-#: dt-contacts/access-module.php:1295
+#: dt-contacts/access-module.php:1301
 msgid "Assign"
 msgstr "ನಿಯೋಜಿಸಿ"
 
-#: dt-contacts/access-module.php:1296 dt-users/template-new-user.php:136
+#: dt-contacts/access-module.php:1302 dt-users/template-new-user.php:136
 #: dt-users/template-user-management.php:91 template-settings.php:216
 msgid "Language"
 msgstr "ಭಾಷೆ"
 
-#: dt-contacts/access-module.php:1297 dt-contacts/base-setup.php:314
+#: dt-contacts/access-module.php:1303 dt-contacts/base-setup.php:314
 #: dt-users/template-new-user.php:193 dt-users/template-user-management.php:363
 #: template-settings.php:653
 msgid "Gender"
 msgstr "ಲಿಂಗ"
 
-#: dt-contacts/access-module.php:1470
+#: dt-contacts/access-module.php:1476
 msgid "This record might be a duplicate of: "
 msgstr "ಈ ರೆಕಾರ್ಡ್ ಇದರ ನಕಲು ಆಗಿರಬಹುದು: "
 
-#: dt-contacts/access-module.php:1476 dt-contacts/duplicates-merging.php:465
+#: dt-contacts/access-module.php:1482 dt-contacts/duplicates-merging.php:465
 #: dt-contacts/duplicates-merging.php:545
 msgid "Duplicate Checker"
 msgstr "ನಕಲಿ ಪರೀಕ್ಷಕ"
@@ -1764,7 +1820,7 @@ msgstr "ನಕಲಿ ಪರೀಕ್ಷಕ"
 msgid "Contacts"
 msgstr "ಸಂಪರ್ಕಗಳು"
 
-#: dt-contacts/base-setup.php:74 dt-core/configuration/class-roles.php:142
+#: dt-contacts/base-setup.php:74 dt-core/configuration/class-roles.php:143
 msgid "Registered"
 msgstr "ನೋಂದಾಯಿಸಲಾಗಿದೆ"
 
@@ -1833,13 +1889,16 @@ msgid "Viber"
 msgstr "Viber"
 
 #: dt-contacts/base-setup.php:223
-msgid "Whatsapp"
+#, fuzzy
+#| msgid "Whatsapp"
+msgid "WhatsApp"
 msgstr "Whatsapp"
 
 #: dt-contacts/base-setup.php:230
-#: dt-core/configuration/config-site-defaults.php:338
-#: dt-users/template-new-user.php:118 dt-users/template-new-user.php:119
-#: dt-users/template-user-management.php:355 template-settings.php:156
+#: dt-core/configuration/config-site-defaults.php:341
+#: dt-login/login-template.php:384 dt-users/template-new-user.php:118
+#: dt-users/template-new-user.php:119 dt-users/template-user-management.php:355
+#: template-settings.php:156
 msgid "Email"
 msgstr "ಇಮೇಲ್"
 
@@ -1955,7 +2014,7 @@ msgid "Archive"
 msgstr "ಆರ್ಕೈವ್"
 
 #: dt-contacts/base-setup.php:489
-#: dt-core/configuration/config-site-defaults.php:540
+#: dt-core/configuration/config-site-defaults.php:543
 #: dt-groups/base-setup.php:642 template-settings.php:202
 msgid "Other"
 msgstr "ಇತರೆ"
@@ -1996,11 +2055,19 @@ msgstr "ಕೊನೆಯ 30 ವೀಕ್ಷಿಸಲಾಗಿದೆ"
 msgid "Shared with me"
 msgstr "ನನ್ನೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ"
 
-#: dt-contacts/base-setup.php:678
+#: dt-contacts/base-setup.php:702 dt-users/template-user-management.php:235
+msgid "Activity"
+msgstr "ಚಟುವಟಿಕೆ"
+
+#: dt-contacts/base-setup.php:709
+msgid "Comment"
+msgstr "ಕಾಮೆಂಟ್ ಮಾಡಿ"
+
+#: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
 msgstr "ಈ% s ಅನ್ನು ಆರ್ಕೈವ್ ಮಾಡಲಾಗಿದೆ"
 
-#: dt-contacts/base-setup.php:680
+#: dt-contacts/base-setup.php:774
 msgid "Restore"
 msgstr "ಮರುಸ್ಥಾಪಿಸಿ"
 
@@ -2332,6 +2399,12 @@ msgstr "ಈ ಸಂಪರ್ಕವು ನಿಮ್ಮನ್ನು ಬಳಕೆದ
 msgid "Please update contact details on your profile page instead of here."
 msgstr "ದಯವಿಟ್ಟು ಇಲ್ಲಿ ಬದಲಿಗೆ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಪುಟದಲ್ಲಿ ಸಂಪರ್ಕ ವಿವರಗಳನ್ನು ನವೀಕರಿಸಿ."
 
+#: dt-contacts/user-module.php:73
+#, fuzzy
+#| msgid "Settings"
+msgid "Profile Settings"
+msgstr "ಸಂಯೋಜನೆಗಳು"
+
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
 msgstr "ಈ ಸಂಪರ್ಕವು ಬಳಕೆದಾರರನ್ನು ಪ್ರತಿನಿಧಿಸುತ್ತದೆ."
@@ -2368,32 +2441,32 @@ msgstr ""
 "ಲಿಂಕ್ ಮಾಡುವುದನ್ನು ಮುಗಿಸಲು, ಈ ಸಂಪರ್ಕವನ್ನು ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಬಳಕೆದಾರ ವಿವರಗಳೊಂದಿಗೆ "
 "ವಿಲೀನಗೊಳಿಸಿ."
 
-#: dt-core/configuration/class-roles.php:183
+#: dt-core/configuration/class-roles.php:184
 msgid "Subscriber"
 msgstr "ಚಂದಾದಾರರು"
 
-#: dt-core/configuration/config-site-defaults.php:346
+#: dt-core/configuration/config-site-defaults.php:349
 msgid "Newly Assigned Contact"
 msgstr "ಹೊಸದಾಗಿ ನಿಯೋಜಿಸಲಾದ ಸಂಪರ್ಕ"
 
-#: dt-core/configuration/config-site-defaults.php:351
+#: dt-core/configuration/config-site-defaults.php:354
 msgid "@Mentions"
 msgstr "-ಉಲ್ಲೇಖಗಳು"
 
-#: dt-core/configuration/config-site-defaults.php:356
+#: dt-core/configuration/config-site-defaults.php:359
 msgid "New Comments"
 msgstr "ಹೊಸ ಪ್ರತಿಕ್ರಿಯೆಗಳು"
 
-#: dt-core/configuration/config-site-defaults.php:366
+#: dt-core/configuration/config-site-defaults.php:369
 msgid "Contact Info Changed"
 msgstr "ಸಂಪರ್ಕ ಮಾಹಿತಿ ಬದಲಾಯಿಸಲಾಗಿದೆ"
 
-#: dt-core/configuration/config-site-defaults.php:371
-#: dt-core/migrations/0012-typo-rename.php:8
+#: dt-core/configuration/config-site-defaults.php:374
+#: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "ಮೈಲಿಗಲ್ಲುಗಳು ಮತ್ತು ಗುಂಪು ಆರೋಗ್ಯ ಮಾಪನಗಳನ್ನು ಸಂಪರ್ಕಿಸಿ"
 
-#: dt-core/configuration/config-site-defaults.php:396
+#: dt-core/configuration/config-site-defaults.php:399
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
@@ -2401,15 +2474,15 @@ msgstr ""
 "ಈ ಸಂಪರ್ಕವು ಸಕ್ರಿಯವಾಗಿದೆ ಆದರೆ ಯಾರಾದರೂ ಅವರನ್ನು ಸಂಪರ್ಕಿಸಿದ ಬಗ್ಗೆ ಯಾವುದೇ ದಾಖಲೆಗಳಿಲ್ಲ. "
 "ದಯವಿಟ್ಟು ಅವರನ್ನು ಸಂಪರ್ಕಿಸಿ."
 
-#: dt-core/configuration/config-site-defaults.php:402
+#: dt-core/configuration/config-site-defaults.php:405
 msgid "Please try connecting with this contact again."
 msgstr "ದಯವಿಟ್ಟು ಈ ಸಂಪರ್ಕದೊಂದಿಗೆ ಮತ್ತೆ ಸಂಪರ್ಕಿಸಲು ಪ್ರಯತ್ನಿಸಿ."
 
-#: dt-core/configuration/config-site-defaults.php:408
-#: dt-core/configuration/config-site-defaults.php:414
-#: dt-core/configuration/config-site-defaults.php:420
-#: dt-core/configuration/config-site-defaults.php:426
-#: dt-core/configuration/config-site-defaults.php:432
+#: dt-core/configuration/config-site-defaults.php:411
+#: dt-core/configuration/config-site-defaults.php:417
+#: dt-core/configuration/config-site-defaults.php:423
+#: dt-core/configuration/config-site-defaults.php:429
+#: dt-core/configuration/config-site-defaults.php:435
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
@@ -2417,107 +2490,108 @@ msgstr ""
 "ಈ ವ್ಯಕ್ತಿಯ ಬಗ್ಗೆ ನಾವು ಸ್ವಲ್ಪ ಸಮಯದವರೆಗೆ ಕೇಳಿಲ್ಲ. ಈ ಸಂಪರ್ಕಕ್ಕಾಗಿ ನೀವು ನವೀಕರಣವನ್ನು "
 "ಹೊಂದಿದ್ದೀರಾ?"
 
-#: dt-core/configuration/config-site-defaults.php:442
+#: dt-core/configuration/config-site-defaults.php:445
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "ಈ ಗುಂಪಿನ ಬಗ್ಗೆ ನಾವು ಸ್ವಲ್ಪ ಸಮಯದವರೆಗೆ ಕೇಳಿಲ್ಲ. ನೀವು ನವೀಕರಣವನ್ನು ಹೊಂದಿದ್ದೀರಾ?"
 
-#: dt-core/configuration/config-site-defaults.php:473
+#: dt-core/configuration/config-site-defaults.php:476
 msgid "Personal Phone"
 msgstr "ವೈಯಕ್ತಿಕ ಫೋನ್"
 
-#: dt-core/configuration/config-site-defaults.php:476
+#: dt-core/configuration/config-site-defaults.php:479
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "ವೈಯಕ್ತಿಕ ಫೋನ್ ತಂಡಕ್ಕೆ ಖಾಸಗಿಯಾಗಿದೆ, ವಿತರಣೆಗಾಗಿ ಅಲ್ಲ."
 
-#: dt-core/configuration/config-site-defaults.php:480
+#: dt-core/configuration/config-site-defaults.php:483
 msgid "Personal Email"
 msgstr "ವೈಯಕ್ತಿಕ ಇಮೇಲ್"
 
-#: dt-core/configuration/config-site-defaults.php:483
+#: dt-core/configuration/config-site-defaults.php:486
 msgid "Personal email is private to the team, not for distribution."
 msgstr "ವೈಯಕ್ತಿಕ ಇಮೇಲ್ ತಂಡಕ್ಕೆ ಖಾಸಗಿಯಾಗಿದೆ, ವಿತರಣೆಗಾಗಿ ಅಲ್ಲ."
 
-#: dt-core/configuration/config-site-defaults.php:487
+#: dt-core/configuration/config-site-defaults.php:490
 msgid "Personal Address"
 msgstr "ವೈಯಕ್ತಿಕ ವಿಳಾಸ"
 
-#: dt-core/configuration/config-site-defaults.php:490
+#: dt-core/configuration/config-site-defaults.php:493
 msgid "Personal address is private to the team, not for distribution."
 msgstr "ವೈಯಕ್ತಿಕ ವಿಳಾಸವು ತಂಡಕ್ಕೆ ಖಾಸಗಿಯಾಗಿದೆ, ವಿತರಣೆಗಾಗಿ ಅಲ್ಲ."
 
-#: dt-core/configuration/config-site-defaults.php:494
+#: dt-core/configuration/config-site-defaults.php:497
 msgid "Work Phone"
 msgstr "ಕೆಲಸದ ದೂರವಾಣಿ"
 
-#: dt-core/configuration/config-site-defaults.php:497
+#: dt-core/configuration/config-site-defaults.php:500
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "ಕೆಲಸದ ಫೋನ್ ಸಂಪರ್ಕಗಳು ಮತ್ತು ಅನ್ವೇಷಕರಿಗೆ ವಿತರಣೆಯಾಗಿದೆ."
 
-#: dt-core/configuration/config-site-defaults.php:501
+#: dt-core/configuration/config-site-defaults.php:504
 msgid "Work Email"
 msgstr "ಕೆಲಸದ ಇಮೇಲ್"
 
-#: dt-core/configuration/config-site-defaults.php:504
+#: dt-core/configuration/config-site-defaults.php:507
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "ಕೆಲಸದ ಇಮೇಲ್ ಸಂಪರ್ಕಗಳು ಮತ್ತು ಅನ್ವೇಷಕರಿಗೆ ವಿತರಣೆಯಾಗಿದೆ."
 
-#: dt-core/configuration/config-site-defaults.php:508
+#: dt-core/configuration/config-site-defaults.php:511
 msgid "Work Facebook"
 msgstr "ಫೇಸ್ಬುಕ್ ಕೆಲಸ"
 
-#: dt-core/configuration/config-site-defaults.php:511
+#: dt-core/configuration/config-site-defaults.php:514
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "ಕೆಲಸ ಫೇಸ್‌ಬುಕ್ ಸಂಪರ್ಕಗಳು ಮತ್ತು ಅನ್ವೇಷಕರಿಗೆ ವಿತರಣೆಗಾಗಿ."
 
-#: dt-core/configuration/config-site-defaults.php:515
+#: dt-core/configuration/config-site-defaults.php:518
 msgid "Work WhatsApp"
 msgstr "ವಾಟ್ಸಾಪ್ ಕೆಲಸ"
 
-#: dt-core/configuration/config-site-defaults.php:518
+#: dt-core/configuration/config-site-defaults.php:521
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "ವರ್ಕ್ಸ್ ವಾಟ್ಸಾಪ್ ಸಂಪರ್ಕಗಳು ಮತ್ತು ಅನ್ವೇಷಕರಿಗೆ ವಿತರಣೆಯಾಗಿದೆ."
 
-#: dt-core/configuration/config-site-defaults.php:525
+#: dt-core/configuration/config-site-defaults.php:528
 msgid "thumbs up"
 msgstr "ಥಂಬ್ಸ್ ಅಪ್"
 
-#: dt-core/configuration/config-site-defaults.php:526
+#: dt-core/configuration/config-site-defaults.php:529
 msgid "heart"
 msgstr "ಹೃದಯ"
 
-#: dt-core/configuration/config-site-defaults.php:527
+#: dt-core/configuration/config-site-defaults.php:530
 msgid "laugh"
 msgstr "ನಗು"
 
-#: dt-core/configuration/config-site-defaults.php:528
+#: dt-core/configuration/config-site-defaults.php:531
 msgid "wow"
 msgstr "ಅದ್ಭುತ"
 
-#: dt-core/configuration/config-site-defaults.php:529
+#: dt-core/configuration/config-site-defaults.php:532
 msgid "sad"
 msgstr "ದುಃಖ"
 
-#: dt-core/configuration/config-site-defaults.php:530
+#: dt-core/configuration/config-site-defaults.php:533
 msgid "prayer"
 msgstr "ಪ್ರಾರ್ಥನೆ"
 
-#: dt-core/configuration/config-site-defaults.php:538
+#: dt-core/configuration/config-site-defaults.php:541
+#: dt-login/login-template.php:573
 msgid "Home"
 msgstr "ಮನೆ"
 
-#: dt-core/configuration/config-site-defaults.php:539
+#: dt-core/configuration/config-site-defaults.php:542
 msgid "Work"
 msgstr "ಕೆಲಸ"
 
-#: dt-core/configuration/config-site-defaults.php:549
+#: dt-core/configuration/config-site-defaults.php:552
 msgid "Accepting new contacts"
 msgstr "ಹೊಸ ಸಂಪರ್ಕಗಳನ್ನು ಸ್ವೀಕರಿಸಲಾಗುತ್ತಿದೆ"
 
-#: dt-core/configuration/config-site-defaults.php:553
+#: dt-core/configuration/config-site-defaults.php:556
 msgid "I'm only investing in existing contacts"
 msgstr "ನಾನು ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಸಂಪರ್ಕಗಳಲ್ಲಿ ಮಾತ್ರ ಹೂಡಿಕೆ ಮಾಡುತ್ತಿದ್ದೇನೆ"
 
-#: dt-core/configuration/config-site-defaults.php:557
+#: dt-core/configuration/config-site-defaults.php:560
 msgid "I have too many contacts"
 msgstr "ನನಗೆ ಹಲವಾರು ಸಂಪರ್ಕಗಳಿವೆ"
 
@@ -2556,17 +2630,17 @@ msgstr "ಇದು ತಪ್ಪಾಗಿದ್ದರೆ, ಈ ಇಮೇಲ್ ಅ�
 msgid "To reset your password, visit the following address:"
 msgstr "ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲು, ಈ ಕೆಳಗಿನ ವಿಳಾಸಕ್ಕೆ ಭೇಟಿ ನೀಡಿ:"
 
-#: dt-core/global-functions.php:484 single-template.php:406
+#: dt-core/global-functions.php:486 single-template.php:414
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:174
 msgid "This is required"
 msgstr "ಇದು ಅಗತ್ಯವಿದೆ"
 
-#: dt-core/global-functions.php:632
+#: dt-core/global-functions.php:634
 msgid "Add new tag \"%s\""
 msgstr "ಹೊಸ ಟ್ಯಾಗ್ \"% s\" ಸೇರಿಸಿ"
 
-#: dt-core/global-functions.php:633
+#: dt-core/global-functions.php:635
 msgid "Tag \"%s\" is already being used"
 msgstr "\"% S\" ಟ್ಯಾಗ್ ಅನ್ನು ಈಗಾಗಲೇ ಬಳಸಲಾಗುತ್ತಿದೆ"
 
@@ -2614,7 +2688,8 @@ msgstr ""
 msgid "Translate"
 msgstr ""
 
-#: dt-core/release-notifications.php:88
+#: dt-core/release-notifications.php:88 dt-users/user-initial-setup.php:68
+#: template-settings.php:674
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
@@ -3028,6 +3103,103 @@ msgid ""
 msgstr ""
 "ನಾಲ್ಕು ಕ್ಷೇತ್ರಗಳ ರೇಖಾಚಿತ್ರದಲ್ಲಿ 5 ಚೌಕಗಳಿವೆ. ಮೇಲಿನ ಎಡ ಚತುರ್ಭುಜದಿಂದ ಪ್ರಾರಂಭಿಸಿ "
 "ಪ್ರದಕ್ಷಿಣಾಕಾರವಾಗಿ ಹೋಗುವುದು ಮತ್ತು ಐದನೆಯದು ಮಧ್ಯದಲ್ಲಿದೆ, ಅವು ಇದಕ್ಕಾಗಿ ನಿಲ್ಲುತ್ತವೆ:"
+
+#: dt-login/login-template.php:68
+msgid ""
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
+msgstr ""
+
+#: dt-login/login-template.php:70
+msgid "Your password reset link has expired. Please request a new link below."
+msgstr ""
+
+#: dt-login/login-template.php:89 dt-login/login-template.php:115
+#, fuzzy
+#| msgid "Password"
+msgid "Get New Password"
+msgstr "ಗುಪ್ತಪದ"
+
+#: dt-login/login-template.php:104 dt-login/login-template.php:532
+#, fuzzy
+#| msgid "Add email address"
+msgid "Email Address"
+msgstr "ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಸೇರಿಸಿ"
+
+#: dt-login/login-template.php:118
+msgid ""
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
+msgstr ""
+
+#: dt-login/login-template.php:171 dt-login/login-template.php:261
+#: dt-login/login-template.php:400
+msgid "Passwords do not match. Please, try again."
+msgstr ""
+
+#: dt-login/login-template.php:233 dt-login/login-template.php:282
+#, fuzzy
+#| msgid "Reset password"
+msgid "Reset Password"
+msgstr "ಪಾಸ್ವರ್ಡ್ ಮರುಹೊಂದಿಸಿ"
+
+#: dt-login/login-template.php:248 dt-login/login-template.php:251
+#: dt-login/login-template.php:388 dt-login/login-template.php:391
+#, fuzzy
+#| msgid "Password"
+msgid "Password Required"
+msgstr "ಗುಪ್ತಪದ"
+
+#: dt-login/login-template.php:258 dt-login/login-template.php:397
+#, fuzzy
+#| msgid "Reset password"
+msgid "Re-enter Password"
+msgstr "ಪಾಸ್ವರ್ಡ್ ಮರುಹೊಂದಿಸಿ"
+
+#: dt-login/login-template.php:340 dt-login/login-template.php:409
+#: dt-login/login-template.php:589
+#, fuzzy
+#| msgid "Registered"
+msgid "Register"
+msgstr "ನೋಂದಾಯಿಸಲಾಗಿದೆ"
+
+#: dt-login/login-template.php:375 dt-users/template-new-user.php:90
+msgid "There are some errors in your form."
+msgstr "ನಿಮ್ಮ ರೂಪದಲ್ಲಿ ಕೆಲವು ದೋಷಗಳಿವೆ."
+
+#: dt-login/login-template.php:380
+#, fuzzy
+#| msgid "Display Name"
+msgid "Display Name (optional)"
+msgstr "ಪ್ರದರ್ಶನ ಹೆಸರು"
+
+#: dt-login/login-template.php:493
+msgid "User action confirmed."
+msgstr ""
+
+#: dt-login/login-template.php:509 dt-login/login-template.php:535
+#: dt-login/login-template.php:581
+msgid "Login"
+msgstr ""
+
+#: dt-login/login-template.php:516
+msgid "Username or password does not match. Try again."
+msgstr ""
+
+#: dt-login/login-template.php:533 dt-users/template-new-user.php:123
+#: dt-users/template-new-user.php:124 template-settings.php:600
+msgid "Password"
+msgstr "ಗುಪ್ತಪದ"
+
+#: dt-login/login-template.php:534
+msgid "Remember Me"
+msgstr ""
+
+#: dt-login/login-template.php:596
+#, fuzzy
+#| msgid "Lost your password"
+msgid "Lost your password?"
+msgstr "ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಕಳೆದುಕೊಂಡಿದೆ"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
@@ -3895,23 +4067,23 @@ msgstr "ಅನ್-ಫಾಲೋ"
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1316
+#: dt-posts/dt-posts.php:1319
 msgid "Magic Link Submission"
 msgstr "ಮ್ಯಾಜಿಕ್ ಲಿಂಕ್ ಸಲ್ಲಿಕೆ"
 
-#: dt-posts/dt-posts.php:1322
+#: dt-posts/dt-posts.php:1325
 msgid "D.T System"
 msgstr "ಡಿ.ಟಿ ಸಿಸ್ಟಮ್"
 
-#: dt-posts/dt-posts.php:1557
+#: dt-posts/dt-posts.php:1560
 msgid "Post already shared with user."
 msgstr "ಪೋಸ್ಟ್ ಅನ್ನು ಈಗಾಗಲೇ ಬಳಕೆದಾರರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ."
 
-#: dt-posts/dt-posts.php:1811 single-template.php:171
+#: dt-posts/dt-posts.php:1816 single-template.php:178
 msgid "Details"
 msgstr "ವಿವರಗಳು"
 
-#: dt-posts/dt-posts.php:1875
+#: dt-posts/dt-posts.php:1880
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -3924,7 +4096,7 @@ msgstr ""
 "ಪ್ರವೇಶವನ್ನು ಕೋರಿದ್ದಾರೆ. ಬಯಸಿದಲ್ಲಿ, ಪ್ರವೇಶವನ್ನು ನೀಡಲು ಈ ದಾಖಲೆಯನ್ನು ಬಳಕೆದಾರರೊಂದಿಗೆ "
 "ಹಂಚಿಕೊಳ್ಳಿ."
 
-#: dt-posts/dt-posts.php:1881
+#: dt-posts/dt-posts.php:1886
 msgid "Access Request"
 msgstr "ಪ್ರವೇಶ ವಿನಂತಿ"
 
@@ -4149,6 +4321,22 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "% 1 $ s ಅನ್ನು ಸ್ಥಳಗಳಿಗೆ ಸೇರಿಸಲಾಗಿದೆ"
 
+#: dt-posts/posts.php:491
+#, fuzzy
+#| msgctxt "Milestone1 removed from Milestones"
+#| msgid "%1$s removed from %2$s"
+msgctxt "link1 removed from Social Links"
+msgid "%1$s removed from %2$s links"
+msgstr "% 1 $ s ಅನ್ನು% 2 $ s ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
+
+#: dt-posts/posts.php:494
+#, fuzzy
+#| msgctxt "Milestone1 added to Milestones"
+#| msgid "%1$s added to %2$s"
+msgctxt "link1 added to Social Links"
+msgid "%1$s added to %2$s links"
+msgstr "% 1 $ s ಅನ್ನು% 2 $ s ಗೆ ಸೇರಿಸಲಾಗಿದೆ"
+
 #: dt-posts/posts.php:515
 msgctxt "message"
 msgid "verified"
@@ -4251,7 +4439,7 @@ msgstr "ಆಯ್ದ ದಾಖಲೆಗಳಿಗೆ ಕಳುಹಿಸಿ"
 msgid "You must select at least one record"
 msgstr "ನೀವು ಕನಿಷ್ಟ ಒಂದು ದಾಖಲೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಬೇಕು"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:91
 msgid "Send"
 msgstr "ಕಳುಹಿಸು"
 
@@ -4259,17 +4447,35 @@ msgstr "ಕಳುಹಿಸು"
 msgid "Links"
 msgstr "ಲಿಂಕ್‌ಗಳು"
 
-#: dt-reports/magic-url-setup.php:30 template-settings.php:56
-msgid "Apps"
-msgstr "ಅಪ್ಲಿಕೇಶನ್‌ಗಳು"
+#: dt-reports/magic-url-setup.php:30
+#, fuzzy
+#| msgid "Magic Link Submission"
+msgid "Magic Links"
+msgstr "ಮ್ಯಾಜಿಕ್ ಲಿಂಕ್ ಸಲ್ಲಿಕೆ"
 
 #: dt-reports/magic-url-setup.php:31
-msgid "Apps available on this record."
+#, fuzzy
+#| msgid "Apps available on this record."
+msgid "Magic Links available on this record."
 msgstr "ಈ ದಾಖಲೆಯಲ್ಲಿ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಲಭ್ಯವಿದೆ."
 
-#: dt-reports/magic-url-setup.php:113
-msgid "Send the link via email."
-msgstr "ಇಮೇಲ್ ಮೂಲಕ ಲಿಂಕ್ ಕಳುಹಿಸಿ."
+#: dt-reports/magic-url-setup.php:86
+#, fuzzy
+#| msgid "View User"
+msgid "View"
+msgstr "ಬಳಕೆದಾರರನ್ನು ವೀಕ್ಷಿಸಿ"
+
+#: dt-reports/magic-url-setup.php:87
+msgid "Copy to clipboard"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:92
+msgid "QR code"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:93
+msgid "Reset"
+msgstr ""
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Add email address"
@@ -4282,18 +4488,6 @@ msgstr "ಟಿಪ್ಪಣಿ ಸೇರಿಸಿ"
 #: dt-reports/magic-url-setup.php:114
 msgid "Send email with link"
 msgstr "ಲಿಂಕ್‌ನೊಂದಿಗೆ ಇಮೇಲ್ ಕಳುಹಿಸಿ"
-
-#: dt-reports/magic-url-setup.php:150
-msgid "Scan the QR code to open the magic link on a mobile device."
-msgstr "ಮೊಬೈಲ್ ಸಾಧನದಲ್ಲಿ ಮ್ಯಾಜಿಕ್ ಲಿಂಕ್ ತೆರೆಯಲು QR ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ."
-
-#: dt-reports/magic-url-setup.php:155
-msgid ""
-"Reset the security code. No data is removed. Only access. The previous link "
-"will be disabled and another one created."
-msgstr ""
-"ಭದ್ರತಾ ಕೋಡ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿ. ಯಾವುದೇ ಡೇಟಾವನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿಲ್ಲ. ಪ್ರವೇಶ ಮಾತ್ರ. "
-"ಹಿಂದಿನ ಲಿಂಕ್ ಅನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಇನ್ನೊಂದನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ."
 
 #: dt-reports/magic-url-setup.php:156
 msgid "Delete and replace the app link"
@@ -4348,10 +4542,6 @@ msgstr ""
 msgid "Add New User"
 msgstr "ಹೊಸ ಬಳಕೆದಾರರನ್ನು ಸೇರಿಸಿ"
 
-#: dt-users/template-new-user.php:90
-msgid "There are some errors in your form."
-msgstr "ನಿಮ್ಮ ರೂಪದಲ್ಲಿ ಕೆಲವು ದೋಷಗಳಿವೆ."
-
 #: dt-users/template-new-user.php:96
 msgid "Contact to make a user (optional)"
 msgstr "ಬಳಕೆದಾರರನ್ನು ಮಾಡಲು ಸಂಪರ್ಕಿಸಿ (ಐಚ್ al ಿಕ)"
@@ -4374,11 +4564,6 @@ msgstr "ಅಡ್ಡಹೆಸರು (ಪ್ರದರ್ಶನದ ಹೆಸರು
 #: template-settings.php:130 template-settings.php:586
 msgid "Username"
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು"
-
-#: dt-users/template-new-user.php:123 dt-users/template-new-user.php:124
-#: template-settings.php:600
-msgid "Password"
-msgstr "ಗುಪ್ತಪದ"
 
 #: dt-users/template-new-user.php:139 dt-users/template-user-management.php:90
 msgid "Role"
@@ -4669,6 +4854,18 @@ msgstr "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ."
 msgid "User Language"
 msgstr "ಬಳಕೆದಾರ ಭಾಷೆ"
 
+#: dt-users/user-initial-setup.php:44
+#, fuzzy
+#| msgid "Invite User"
+msgid "Initial User Setup!"
+msgstr "ಬಳಕೆದಾರರನ್ನು ಆಹ್ವಾನಿಸಿ"
+
+#: dt-users/user-initial-setup.php:52
+#, fuzzy
+#| msgid "User Language"
+msgid "Default Language"
+msgstr "ಬಳಕೆದಾರ ಭಾಷೆ"
+
 #: dt-users/user-management.php:110
 msgid "Add User"
 msgstr "ಬಳಕೆದಾರರನ್ನು ಸೇರಿಸಿ"
@@ -4728,7 +4925,7 @@ msgstr "ಈ ಸಂಪರ್ಕವು ಈಗಾಗಲೇ ಬಳಕೆದಾರವ
 msgid "View User"
 msgstr "ಬಳಕೆದಾರರನ್ನು ವೀಕ್ಷಿಸಿ"
 
-#: dt-users/user-management.php:289
+#: dt-users/user-management.php:290
 msgid "%s days since last update"
 msgstr "ಕೊನೆಯ ನವೀಕರಣದ ನಂತರ% s ದಿನಗಳು"
 
@@ -4783,7 +4980,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳು"
 
-#: dt-users/users.php:1187 template-settings.php:159 template-settings.php:592
+#: dt-users/users.php:1194 template-settings.php:159 template-settings.php:592
 msgid "System Email"
 msgstr "ಸಿಸ್ಟಮ್ ಇಮೇಲ್"
 
@@ -4831,36 +5028,36 @@ msgstr "ಈ% s ಗೆ ನವೀಕರಣದ ಅಗತ್ಯವಿದೆ."
 msgid "Please provide an update by posting a comment."
 msgstr "ಕಾಮೆಂಟ್ ಪೋಸ್ಟ್ ಮಾಡುವ ಮೂಲಕ ದಯವಿಟ್ಟು ನವೀಕರಣವನ್ನು ಒದಗಿಸಿ."
 
-#: single-template.php:254
+#: single-template.php:262
 msgid "Edit all details fields"
 msgstr "ಎಲ್ಲಾ ವಿವರ ಕ್ಷೇತ್ರಗಳನ್ನು ಸಂಪಾದಿಸಿ"
 
-#: single-template.php:377
+#: single-template.php:385
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:398 template-new-bulk-post.php:276
+#: single-template.php:406 template-new-bulk-post.php:276
 #: template-new-post.php:166
 msgid "Create Tag"
 msgstr "ಟ್ಯಾಗ್ ರಚಿಸಿ"
 
-#: single-template.php:399 template-new-bulk-post.php:277
+#: single-template.php:407 template-new-bulk-post.php:277
 #: template-new-post.php:167
 msgid "Create a tag and apply it to this record."
 msgstr "ಟ್ಯಾಗ್ ರಚಿಸಿ ಮತ್ತು ಅದನ್ನು ಈ ರೆಕಾರ್ಡ್‌ಗೆ ಅನ್ವಯಿಸಿ."
 
-#: single-template.php:403 single-template.php:405
+#: single-template.php:411 single-template.php:413
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
 #: template-new-post.php:171 template-new-post.php:173
 msgid "Tag"
 msgstr "ಟ್ಯಾಗ್"
 
-#: single-template.php:414 template-new-bulk-post.php:293
+#: single-template.php:422 template-new-bulk-post.php:293
 #: template-new-post.php:182
 msgid "Create and apply tag"
 msgstr "ಟ್ಯಾಗ್ ರಚಿಸಿ ಮತ್ತು ಅನ್ವಯಿಸಿ"
 
-#: single-template.php:424
+#: single-template.php:432
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "% S ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?"
@@ -4946,6 +5143,10 @@ msgstr "ಉಲ್ಲೇಖಿಸುತ್ತಾರೆ"
 #: template-notifications.php:86 template-notifications.php:89
 msgid "Load more notifications"
 msgstr "ಹೆಚ್ಚಿನ ಅಧಿಸೂಚನೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಿ"
+
+#: template-settings.php:56
+msgid "Apps"
+msgstr "ಅಪ್ಲಿಕೇಶನ್‌ಗಳು"
 
 #: template-settings.php:58 template-settings.php:314
 msgid "Multiplier Preferences"
