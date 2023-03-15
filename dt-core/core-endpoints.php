@@ -696,17 +696,23 @@ class Disciple_Tools_Core_Endpoints {
     public static function new_field_option( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
         if ( isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_name'] ) ) {
+            $field_key = $post_submission['field_key'];
+            $post_type = $post_submission['post_type'];
             $new_field_option_name = $post_submission['field_option_name'];
             $new_field_option_key = dt_create_field_key( $new_field_option_name );
             $new_field_option_description = $post_submission['field_option_description'];
-            $field_key = $post_submission['field_key'];
-            $post_type = $post_submission['post_type'];
+            $field_option_icon = $post_submission['field_option_icon'];
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
             $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = [
                     'label' => $new_field_option_name,
                     'description' => $new_field_option_description,
                 ];
+
+            if ( $field_option_icon ) {
+                $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key]['icon'] = $field_option_icon;
+            }
+
             update_option( 'dt_field_customizations', $custom_field_options );
             return $new_field_option_key;
         }
@@ -724,9 +730,14 @@ class Disciple_Tools_Core_Endpoints {
             $field_option_icon = $post_submission['field_option_icon'];
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
-            $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['label'] = $new_field_option_label;
-            $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['description'] = $new_field_option_description;
-            $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['icon'] = $field_option_icon;
+            $custom_field_options[$post_type][$field_key]['default'][$field_option_key] = [
+                'label' => $new_field_option_label,
+                'description' => $new_field_option_description,
+            ];
+
+            if ( $field_option_icon ) {
+                $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['icon'] = $field_option_icon;
+            }
 
             update_option( 'dt_field_customizations', $custom_field_options );
             return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];

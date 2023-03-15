@@ -75,12 +75,13 @@ jQuery(document).ready(function($) {
         field_icon: field_icon,
     }, `dt-core/v1/`);
 
-    window.API.new_field_option = (post_type, tile_key, field_key, field_option_name, field_option_description) => makeRequest("POST", `new-field-option`, {
+    window.API.new_field_option = (post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon) => makeRequest("POST", `new-field-option`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
         field_option_name: field_option_name,
         field_option_description: field_option_description,
+        field_option_icon: field_option_icon,
     }, `dt-core/v1/`);
 
     window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon) => makeRequest("POST", `edit-field-option`, {
@@ -457,7 +458,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label for="new_tile_name"><b>Name:</b></label>
+                <label for="new_tile_name"><b>Name</b></label>
             </td>
             <td>
                 <input name="new_tile_name" id="new_tile_name" type="text" required>
@@ -465,7 +466,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label for="new_tile_description"><b>Description:</b></label>
+                <label for="new_tile_description"><b>Description</b></label>
             </td>
             <td>
                 <input name="new_tile_description" id="new_tile_description" type="text">
@@ -802,10 +803,18 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label><b>Description:</b></label>
+                <label><b>Description</b></label>
             </td>
             <td>
                 <input name="new_field_option_description" class="new-field-option-description" type="text">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="edit-field-icon"><b>Icon</b></label>
+            </td>
+            <td>
+                <input name="edit-field-icon" id="edit-field-icon" type="text">
             </td>
         </tr>
         <tr>
@@ -855,7 +864,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label><b>Key:</b></label>
+                <label><b>Key</b></label>
             </td>
             <td>
                 ${field_option_key}
@@ -863,7 +872,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label><b>Custom Label:</b></label>
+                <label><b>Custom Label</b></label>
             </td>
             <td>
                 <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
@@ -875,7 +884,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label><b>Description:</b></label>
+                <label><b>Description</b></label>
             </td>
             <td>
                 <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
@@ -1093,8 +1102,9 @@ jQuery(document).ready(function($) {
         var field_key = $(this).data('field-key');
         var field_option_name = $('.new-field-option-name').val();
         var field_option_description = $('.new-field-option-description').val();
+        var field_option_icon = $('#edit-field-icon').val();
 
-        API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description).promise().then(function(new_field_option_key) {
+        API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
             window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
                 'label':field_option_name,
             };
@@ -1103,6 +1113,7 @@ jQuery(document).ready(function($) {
                 window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
                     'label':field_option_name,
                     'description':field_option_description,
+                    'icon':field_option_icon,
                 };
             }
 
