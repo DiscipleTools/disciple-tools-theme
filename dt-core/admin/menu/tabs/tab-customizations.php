@@ -35,6 +35,20 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         }
     }
 
+    public static function get_post_settings_with_customization_status( $post_type ) {
+        $post_settings = DT_Posts::get_post_settings( $post_type );
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+
+        // Check if field is not a default field and add a note in the array
+        foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
+            if ( !array_key_exists( $field_key, $base_fields ) && !array_key_exists( $field_key, $default_fields) ) {
+                $post_settings['fields'][$field_key]['is_custom'] = true;
+            }
+        }
+        return $post_settings;
+    }
+
     public function admin_enqueue_scripts() {
         wp_register_script( 'jquery-ui-js', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', [ 'jquery' ], '1.12.1', true );
         wp_enqueue_script( 'jquery-ui-js' );
@@ -54,7 +68,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             return;
         }
 
-        $post_settings = DT_Posts::get_post_settings( $post_type );
+        $post_settings = self::get_post_settings_with_customization_status( $post_type );
 
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),

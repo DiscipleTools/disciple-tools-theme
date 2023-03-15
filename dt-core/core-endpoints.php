@@ -532,7 +532,7 @@ class Disciple_Tools_Core_Endpoints {
                 return false;
             }
 
-            //field privacy
+            // Field privacy
             if ( isset( $post_submission['new_field_private'] ) && $post_submission['new_field_private'] ) {
                 $field_private = true;
             } else {
@@ -627,7 +627,7 @@ class Disciple_Tools_Core_Endpoints {
                     $p2p_key = dt_create_field_key( $p2p_key, true );
                 }
 
-                // connection field to the same post type
+                // Connection field to the same post type
                 if ( $post_type === $post_submission['connection_target'] ){
                     //default direction to "any". If not multidirectional, then from
                     $direction = 'any';
@@ -643,7 +643,8 @@ class Disciple_Tools_Core_Endpoints {
                         'tile'     => $field_tile,
                         'customizable' => 'all',
                     ];
-                    //if not multidirectional, create the reverse direction field
+
+                    // If not multidirectional, create the reverse direction field
                     if ( $post_submission['multidirectional'] != 1 ){
                         $reverse_name = $post_submission['reverse_connection_name'] ?? $post_submission['new_field_name'];
                         $custom_field_options[$post_type][$field_key . '_reverse']  = [
@@ -668,7 +669,7 @@ class Disciple_Tools_Core_Endpoints {
                         'tile'     => $field_tile,
                         'customizable' => 'all',
                     ];
-                    //create the reverse fields on the connection post type
+                    // Create the reverse fields on the connection post type
                     $reverse_name = $post_submission['other_field_name'] ?? $post_submission['new_field_name'];
                     $custom_field_options[$post_submission['connection_target']][$field_key]  = [
                         'name'        => $reverse_name,
