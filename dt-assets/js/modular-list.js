@@ -424,7 +424,7 @@
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
     sort = sort || current_filter.query.sort;
-    current_filter.query.sort = (typeof sort === "string") ? sort : "name"
+    current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
 
     // Conduct a deep copy (clone) of filter, so as to support future returns to default
     current_filter = $.extend(true, {}, current_filter);
@@ -1872,6 +1872,7 @@
     }
 
     let query = {text:searchText}
+    query.sort = current_filter?.query?.sort || '-post_date'
 
     if (fieldsToSearch.length !== 0) {
       query.fields_to_search = fieldsToSearch;
