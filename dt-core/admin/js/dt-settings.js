@@ -875,7 +875,7 @@ jQuery(document).ready(function($) {
                 <label><b>Custom Label</b></label>
             </td>
             <td>
-                <input name="edit-option-label" id="new-option-name-${field_option_key}" type="text" value="${option_label}" required>
+                <input name="edit-option-label" id="new-option-name" type="text" value="${option_label}" required>
                 <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
                     <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                     (${translations_count})
@@ -887,7 +887,7 @@ jQuery(document).ready(function($) {
                 <label><b>Description</b></label>
             </td>
             <td>
-                <input name="edit-option-description" id="new-option-description-${field_option_key}" type="text" value="${option_description}">
+                <input name="edit-option-description" id="new-option-description" type="text" value="${option_description}">
                 <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
                     <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                     (${description_translations_count})
@@ -1139,8 +1139,8 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
         var field_option_key = $(this).data('field-option-key');
-        var new_field_option_label = $(`#new-option-name-${field_option_key}`).val();
-        var new_field_option_description = $(`#new-option-description-${field_option_key}`).val();
+        var new_field_option_label = $('#new-option-name').val();
+        var new_field_option_description = $('#new-option-description').val();
         var field_option_icon = $('#edit-field-icon').val();
 
         API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function() {
