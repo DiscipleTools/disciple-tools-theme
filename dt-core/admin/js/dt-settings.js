@@ -83,13 +83,14 @@ jQuery(document).ready(function($) {
         field_option_description: field_option_description,
     }, `dt-core/v1/`);
 
-    window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description) => makeRequest("POST", `edit-field-option`, {
+    window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon) => makeRequest("POST", `edit-field-option`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
         field_option_key: field_option_key,
         new_field_option_label: new_field_option_label,
         new_field_option_description: new_field_option_description,
+        field_option_icon: field_option_icon,
     }, `dt-core/v1/`);
 
     window.API.update_tile_and_fields_order = (post_type, dt_custom_tiles_and_fields_ordered) => makeRequest("POST", `update-tiles-and-fields-order`, {
@@ -821,20 +822,30 @@ jQuery(document).ready(function($) {
         var tile_key = data['tile_key'];
         var field_key = data['field_key'];
         var field_option_key = data['option_key'];
-        var option_label = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['label'];
+        var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
+        var option_label = field_settings['default'][field_option_key]['label'];
         var option_description = '';
-        if ( 'description' in window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] ) {
-            option_description = window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description'];
+
+        if ( 'description' in field_settings['default'][field_option_key] ) {
+            option_description = field_settings['default'][field_option_key]['description'];
         }
 
         var translations_count = 0;
-        if (window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']) {
-            translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
+        if (field_settings['default'][field_option_key]['translations']) {
+            translations_count = Object.values(field_settings['default'][field_option_key]['translations']).filter(function(t) {return t;}).length;
         }
 
         var description_translations_count = 0;
-        if (window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations']) {
-            description_translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
+        if (field_settings['default'][field_option_key]['description_translations']) {
+            description_translations_count = Object.values(field_settings['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
+        }
+
+        var field_icon_url = '';
+        var field_icon_image_html = '';
+
+        if ( field_settings['default'][field_option_key]['icon'] ) {
+            field_icon_url = field_settings['default'][field_option_key]['icon'];
+            field_icon_image_html = `<img src="${field_icon_url}" class="field-icon">`;
         }
         var modal_html_content = `
         <tr>
@@ -872,6 +883,15 @@ jQuery(document).ready(function($) {
                     <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                     (${description_translations_count})
                 </button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="edit-field-icon"><b>Icon</b></label>
+            </td>
+            <td>
+                ${field_icon_image_html}
+                <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}">
             </td>
         </tr>
         <tr>
@@ -1110,11 +1130,14 @@ jQuery(document).ready(function($) {
         var field_option_key = $(this).data('field-option-key');
         var new_field_option_label = $(`#new-option-name-${field_option_key}`).val();
         var new_field_option_description = $(`#new-option-description-${field_option_key}`).val();
+        var field_option_icon = $('#edit-field-icon').val();
 
-        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description).promise().then(function() {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['label'] = new_field_option_label;
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['description'] = new_field_option_description;
-
+        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function() {
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = {
+                'label':new_field_option_label,
+                'description':new_field_option_description,
+                'icon':field_option_icon,
+            }
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element[0].innerText = new_field_option_label;
             closeModal();

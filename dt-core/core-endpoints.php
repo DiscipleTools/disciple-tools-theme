@@ -721,10 +721,13 @@ class Disciple_Tools_Core_Endpoints {
             $field_option_key = $post_submission['field_option_key'];
             $new_field_option_label = $post_submission['new_field_option_label'];
             $new_field_option_description = $post_submission['new_field_option_description'];
+            $field_option_icon = $post_submission['field_option_icon'];
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
             $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['label'] = $new_field_option_label;
             $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['description'] = $new_field_option_description;
+            $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['icon'] = $field_option_icon;
+
             update_option( 'dt_field_customizations', $custom_field_options );
             return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];
         }
