@@ -508,7 +508,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_value = strtotime( $field_value );
                 }
 
-                if ( $field_type === 'number' && (
+                if ( $field_type === 'number' && !empty( $field_value ) && (
                     isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
                     $field_value < $post_settings['fields'][$field_key]['min_option'] ||
                     isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
