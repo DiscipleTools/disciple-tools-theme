@@ -93,8 +93,8 @@ class DT_Login_User_Manager {
     }
 
     private function update_user_meta( int $user_id ) {
-        add_user_meta( $user_id, 'firebase_uid', $this->uid );
-        add_user_meta( $user_id, 'firebase_identities', $this->identities );
+        update_user_meta( $user_id, 'firebase_uid', $this->uid );
+        update_user_meta( $user_id, 'firebase_identities', $this->identities );
     }
 
     /**
