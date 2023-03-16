@@ -252,6 +252,26 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                     'posts' => []
                 ]
             ],
+            'subassigned field search by john doe' => [
+                'contacts',
+                'John Doe',
+                [
+                    'field_key' => 'subassigned'
+                ],
+                [
+                    'totals' => [
+                        'assert_type' => self::$assert_type_count,
+                        'count' => 3,
+                        'key' => 'name',
+                        'values' => [
+                            self::$sample_contact_john_doe['title'],
+                            self::$sample_contact_john_bob_doe['title'],
+                            self::$sample_contact_johndoe['title'],
+                        ]
+                    ],
+                    'posts' => []
+                ]
+            ],
             'field search by jane doe wildcard' => [
                 'contacts',
                 'Jane Doe',
