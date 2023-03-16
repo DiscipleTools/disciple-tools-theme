@@ -453,6 +453,7 @@ jQuery(document).ready(function($) {
       matcher: function (item) {
         return parseInt(item.ID) !== parseInt(post_id)
       },
+      filter: false,
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
       display: ["name", "label"],
       templateValue: function() {
