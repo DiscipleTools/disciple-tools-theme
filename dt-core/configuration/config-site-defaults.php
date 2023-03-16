@@ -622,3 +622,27 @@ function dt_site_options_upgrade_version( string $name ) {
 
     return update_option( $name, $new_options, 'no' );
 }
+
+
+function dt_get_initial_install_meta( $arg = '' ){
+    $at_install = get_option( 'dt_initial_install_meta', [] );
+    if ( !isset( $at_install['time'] ) ){
+        $at_install['time'] = 0;
+    }
+    if ( !isset( $at_install['migration_number'] ) ){
+        $at_install['migration_number'] = 0;
+    }
+    if ( !isset( $at_install['theme_version'] ) ){
+        $at_install['theme_version'] = 0;
+    }
+
+    if ( !empty( $arg ) ){
+        if ( isset( $at_install[$arg] ) ){
+            return $at_install[$arg];
+        } else {
+            return 0;
+        }
+    }
+
+    return $at_install;
+}

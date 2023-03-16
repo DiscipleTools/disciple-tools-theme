@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * Class DT_Mapping_Module_Migration_0017
  * checks east and west are installed correctly
  */
-class DT_Mapping_Module_Migration_0017 extends DT_Mapping_Module_Migration {
+class DT_Mapping_Module_Migration_0018 extends DT_Mapping_Module_Migration {
 
     /**
      * @throws \Exception  Got error when creating table $name.
@@ -16,8 +16,8 @@ class DT_Mapping_Module_Migration_0017 extends DT_Mapping_Module_Migration {
             $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
         }
 
-        $count = $wpdb->query( "SELECT COUNT(*) FROM $wpdb->dt_location_grid WHERE east_longitude < west_longitude" );
-        if ( $count > 0 ) {
+        $count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->dt_location_grid WHERE east_longitude < west_longitude" );
+        if ( !empty( $count ) ) {
             // alter columns
             $wpdb->query( "ALTER TABLE $wpdb->dt_location_grid CHANGE `east_longitude` `west_longitude_new` FLOAT NULL DEFAULT NULL" );
             $wpdb->query( "ALTER TABLE $wpdb->dt_location_grid CHANGE `west_longitude` `east_longitude` FLOAT NULL DEFAULT NULL" );

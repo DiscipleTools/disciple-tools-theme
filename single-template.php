@@ -444,6 +444,8 @@ function dt_display_tile( $tile, $post ): bool {
         </div>
     </div>
 
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'record-history' ); ?>
+
     <?php do_action( 'dt_record_footer', $post_type, $post_id ) ?>
 
     <?php get_footer();

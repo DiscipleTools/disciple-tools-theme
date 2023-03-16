@@ -10,7 +10,7 @@ class DT_Login_Firebase_Token {
 
     private $token;
 
-    const PUBLIC_KEYS_CACHE = 'pg_login_public_keys';
+    const PUBLIC_KEYS_CACHE = 'dt_login_public_keys';
 
     public function __construct( string $token ) {
         $this->token = $token;

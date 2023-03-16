@@ -59,6 +59,13 @@ function dt_print_details_bar(
                                                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>"/>
                                                     <?php echo esc_html( sprintf( _x( 'Delete %s', 'Delete Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) ?></a></li>
                                         <?php endif; ?>
+                                        <?php if ( DT_Posts::can_update( $dt_post_type, $post_id ) ) : ?>
+                                            <li><a data-open="record_history_modal">
+                                                    <span class="mdi mdi-history" style="font-size: 20px;"></span>
+                                                    <?php echo esc_html( sprintf( _x( 'View %s History', 'View Contact History', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) ?>
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
                                         <li><a class="open-merge-with-post"
                                                data-post_type="<?php echo esc_html( $dt_post_type ) ?>">
                                                 <img class="dt-icon"

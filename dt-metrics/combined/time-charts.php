@@ -25,6 +25,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         'key_select',
         'connection',
         'boolean',
+        'number'
     ]; // connection and number would be interesting for additions to groups, and quick button usage
     public $multi_fields = [
         'tags',
@@ -215,6 +216,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         } elseif ( $field_settings[$field]['type'] === 'connection' ) {
             $connection_type = $field_settings[$field]['p2p_key'];
             return DT_Counter_Post_Stats::get_connection_field_by_month( $connection_type, $year );
+        } elseif ( $field_settings[$field]['type'] === 'number' ) {
+            return DT_Counter_Post_Stats::get_number_field_by_month( $post_type, $field, $year );
         } else {
             return [];
         }
@@ -229,6 +232,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         } elseif ( $field_settings[$field]['type'] === 'connection' ) {
             $connection_type = $field_settings[$field]['p2p_key'];
             return DT_Counter_Post_Stats::get_connection_field_by_year( $connection_type );
+        }  elseif ( $field_settings[$field]['type'] === 'number' ) {
+            return DT_Counter_Post_Stats::get_number_field_by_year( $post_type, $field );
         } else {
             return [];
         }
