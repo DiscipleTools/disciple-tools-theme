@@ -173,7 +173,8 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                             <input type="radio" id="dt_import_service_select_all"
                                    name="dt_import_service_select_th_option"
                                    class="dt-import-service-select-th-option"
-                                   data-select_type="all"/>
+                                   data-select_type="all"
+                                   checked/>
                         </th>
                         <th style="text-align: center; font-size: 12px; padding-right: 22px;">
                             <label for="dt_import_service_select_some">Choose Assets</label><br>
@@ -186,8 +187,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                             <label for="dt_import_service_select_none">None</label><br>
                             <input type="radio" id="dt_import_service_select_none"
                                    name="dt_import_service_select_th_option" class="dt-import-service-select-th-option"
-                                   data-select_type="none"
-                                   checked/>
+                                   data-select_type="none"/>
                         </th>
                     </tr>
                 </thead>
@@ -211,7 +211,8 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                                 <input type="radio" class="dt-import-service-select-td-option"
                                        name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
                                        data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="all"/>
+                                       data-select_type="all"
+                                       checked/>
                             </td>
                             <td style="text-align: center;">
                                 <input type="radio" class="dt-import-service-select-td-option"
@@ -223,8 +224,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                                 <input type="radio" class="dt-import-service-select-td-option"
                                        name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
                                        data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="none"
-                                       checked/>
+                                       data-select_type="none"/>
                             </td>
                         </tr>
                         <?php

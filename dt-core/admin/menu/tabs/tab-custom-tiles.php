@@ -96,13 +96,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <thead>
                 <tr>
                     <th style="text-align: right; padding-right: 14px;">
-                        <input type="checkbox" id="dt_import_tile_settings_service_enable_overwrite_checkbox"/>
+                        <input type="checkbox" id="dt_import_tile_settings_service_enable_overwrite_checkbox" checked/>
                     </th>
                     <th>Enable Overwrite</th>
                 </tr>
                 <tr>
                     <th style="text-align: right; padding-right: 14px;">
-                        <input type="checkbox" id="dt_import_tile_settings_service_select_all_checkbox"/>
+                        <input type="checkbox" id="dt_import_tile_settings_service_select_all_checkbox" checked/>
                     </th>
                     <th>Select All</th>
                 </tr>
@@ -140,7 +140,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                             <td style="text-align: right;">
                                 <input type="checkbox" class="dt-import-tile-settings-details-table-checkbox"
                                        data-post_type="<?php echo esc_attr( $post_type ) ?>"
-                                       data-tile_id="<?php echo esc_attr( $tile_id ) ?>" <?php echo $already_has_tile ? 'disabled' : '' ?> />
+                                       data-tile_id="<?php echo esc_attr( $tile_id ) ?>"
+                                       checked/>
                             </td>
                             <td>
                                 <span><?php echo esc_attr( $tile['label'] ?? $tile_id ) ?></span>
@@ -166,6 +167,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             jQuery('#dt_import_tile_settings_service_enable_overwrite_checkbox').on('click', function (e) {
                 if (jQuery(e.currentTarget).prop('checked')) {
                     jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox').prop('disabled', false);
+                    jQuery('#dt_import_tile_settings_service_select_all_checkbox').prop('checked', false);
                 } else {
                     jQuery.each(existing_tiles, function (post_type, post_type_array) {
                         jQuery.each(post_type_array, function (idx, tile_id) {

@@ -200,6 +200,13 @@ jQuery(document).ready(function ($) {
 
       // By default, hide right-side section.
       $(side).hide();
+
+      // ...then, display the first service's details.
+      let services = $('.dt-import-service');
+      if (services.length > 0) {
+        display_import_service_details($(services[0]).data('service_id'), function () {
+        });
+      }
     }
   }
 
