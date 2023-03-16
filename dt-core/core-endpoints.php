@@ -838,7 +838,7 @@ class Disciple_Tools_Core_Endpoints {
         if ( !empty( $post_type ) && !empty( $field_key ) ) {
             $field_customizations = dt_get_option( 'dt_field_customizations' );
             $default_name = $field_customizations[$post_type][$field_key]['default_name'];
-            $field_customizations[$post_type][$field_key]['name'] =  $default_name;
+            $field_customizations[$post_type][$field_key]['name'] = $default_name;
             unset( $field_customizations[$post_type][$field_key]['default_name'] );
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );

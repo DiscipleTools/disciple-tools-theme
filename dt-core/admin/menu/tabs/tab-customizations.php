@@ -51,7 +51,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             if ( array_key_exists( $field_key, $all_non_custom_fields ) && $post_settings['fields'][$field_key]['name'] != $all_non_custom_fields[$field_key]['name'] ) {
                 $post_settings['fields'][$field_key]['default_name'] = $all_non_custom_fields[$field_key]['name'];
             }
-
         }
         return $post_settings;
     }
