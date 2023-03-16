@@ -167,6 +167,14 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/remove-custom-name', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'remove_custom_name' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
     }
 
     /**
@@ -759,6 +767,26 @@ class Disciple_Tools_Core_Endpoints {
         return false;
     }
 
+    public function default_field_name_changed( $post_type, $field_key, $custom_name ) {
+        $post_settings = DT_Posts::get_post_settings( $post_type );
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $all_non_custom_fields = array_merge( $base_fields, $default_fields );
+
+        if ( $all_non_custom_fields[$field_key]['name'] === trim( $custom_name ) ) {
+            return true;
+        }
+        return false;
+    }
+
+    public function get_default_name( $post_type, $field_key ) {
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $all_non_custom_fields = array_merge( $base_fields, $default_fields );
+        $default_name = $all_non_custom_fields[$field_key]['name'];
+        return $default_name;
+    }
+
     public static function update_tiles_and_fields_order( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
         $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
@@ -793,7 +821,7 @@ class Disciple_Tools_Core_Endpoints {
         $custom_field = $field_customizations[$post_type][$field_key] ?? [];
 
         $sortable_field_options_ordering = dt_recursive_sanitize_array( $post_submission['sortable_field_options_ordering'] );
-        if ( ! empty( $sortable_field_options_ordering ) ) {
+        if ( !empty( $sortable_field_options_ordering ) ) {
             $custom_field['order'] = $sortable_field_options_ordering;
         }
 
@@ -802,14 +830,31 @@ class Disciple_Tools_Core_Endpoints {
         wp_cache_delete( $post_type . '_field_settings' );
     }
 
+    public static function remove_custom_name( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
+        $field_key = sanitize_text_field( wp_unslash( $post_submission['field_key'] ) );
+
+        if ( !empty( $post_type ) && !empty( $field_key ) ) {
+            $field_customizations = dt_get_option( 'dt_field_customizations' );
+            $default_name = $field_customizations[$post_type][$field_key]['default_name'];
+            $field_customizations[$post_type][$field_key]['name'] =  $default_name;
+            unset( $field_customizations[$post_type][$field_key]['default_name'] );
+            update_option( 'dt_field_customizations', $field_customizations );
+            wp_cache_delete( $post_type . '_field_settings' );
+            return $default_name;
+        }
+        return false;
+    }
+
     public static function edit_field( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
         $post_type = $post_submission['post_type'];
         $field_key = $post_submission['field_key'];
-        $tile_key = $post_submission['tile_key'];
-        $custom_name = $post_submission['custom_name'];
-        $field_private = $post_submission['field_private'];
         $field_icon = $post_submission['field_icon'];
+        // $tile_key = $post_submission['tile_key'];
+        // $custom_name = $post_submission['custom_name'];
+        // $field_private = $post_submission['field_private'];
 
         $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
         $field_customizations = dt_get_option( 'dt_field_customizations' );
@@ -821,28 +866,34 @@ class Disciple_Tools_Core_Endpoints {
             $custom_field = $field_customizations[$post_type][$field_key];
             $field = $post_fields[$field_key];
 
-            // update name
+            // Update name
             if ( isset( $post_submission['custom_name'] ) && !empty( $post_submission['custom_name'] ) ) {
                 $custom_field['name'] = $post_submission['custom_name'];
+                $custom_field['default_name'] = self::get_default_name( $post_type, $field_key );
             }
 
-            // field privacy
+            // Create default_name to store the default field name if it changed
+            if ( self::default_field_name_changed( $post_type, $field_key, $custom_field['name'] ) === true ) {
+                $custom_field['default_name'] = $field_customizations[$post_type][$field_key]['name'];
+            }
+
+            // Field privacy
             $custom_field['private'] = false;
             if ( isset( $post_submission['field_private'] ) && $post_submission['field_private'] ) {
                 $custom_field['private'] = true;
             }
 
-            // field tile
+            // Field tile
             if ( isset( $post_submission['tile_select'] ) ) {
                 $custom_field['tile'] = $post_submission['tile_select'];
             }
 
-            // field description
+            // Field description
             if ( isset( $post_submission['field_description'] ) && $post_submission['field_description'] != ( $custom_field['description'] ?? '' ) ){
                 $custom_field['description'] = $post_submission['field_description'];
             }
 
-            // field icon
+            // Field icon
             if ( isset( $post_submission['field_icon'] ) ) {
                 $field_icon                           = $post_submission['field_icon'];
                 $field_icon_key                       = ( ! empty( $field_icon ) && strpos( $field_icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';

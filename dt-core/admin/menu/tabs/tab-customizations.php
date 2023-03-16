@@ -39,12 +39,19 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $all_non_custom_fields = array_merge( $base_fields, $default_fields );
 
         // Check if field is not a default field and add a note in the array
         foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
-            if ( !array_key_exists( $field_key, $base_fields ) && !array_key_exists( $field_key, $default_fields) ) {
+            if ( !array_key_exists( $field_key, $all_non_custom_fields ) ) {
                 $post_settings['fields'][$field_key]['is_custom'] = true;
+                continue;
             }
+
+            if ( array_key_exists( $field_key, $all_non_custom_fields ) && $post_settings['fields'][$field_key]['name'] != $all_non_custom_fields[$field_key]['name'] ) {
+                $post_settings['fields'][$field_key]['default_name'] = $all_non_custom_fields[$field_key]['name'];
+            }
+
         }
         return $post_settings;
     }

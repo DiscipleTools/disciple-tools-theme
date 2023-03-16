@@ -105,6 +105,11 @@ jQuery(document).ready(function($) {
         sortable_field_options_ordering: sortable_field_options_ordering,
     }, `dt-core/v1/`);
 
+    window.API.remove_custom_name = (post_type, field_key) => makeRequest("POST", `remove-custom-name`, {
+        post_type: post_type,
+        field_key: field_key,
+    }, `dt-core/v1/`);
+
     function autonavigate_to_menu() {
         var tile_key = get_tile_from_uri();
         var field_key = get_field_from_uri();
@@ -666,6 +671,11 @@ jQuery(document).ready(function($) {
         var field_key = field_data['field_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
 
+        var name_is_custom = false;
+        if ( field_settings['default_name'] ) {
+            name_is_custom = true;
+        }
+
         var translations_count = 0;
         if (window['field_settings']['post_type_settings']['fields'][field_key]['translations']) {
             translations_count = Object.values(window['field_settings']['post_type_settings']['fields'][field_key]['translations']).filter(function(t){return t;}).length;
@@ -707,27 +717,48 @@ jQuery(document).ready(function($) {
                 <td>
                     ${field_key}
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <label><b>Default Name</b></label>
-                </td>
-                <td>
-                    ${field_settings['name']}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="edit-field-custom-name"><b>Custom Name</b></label>
-                </td>
-                <td>
-                    <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="">
-                    <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
-                </td>
-            </tr>
+            </tr>`;
+
+            var name_section_html = `
+                <tr>
+                    <td>
+                        <label for="edit-field-custom-name"><b>Name</b></label>
+                    </td>
+                    <td>
+                        <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                        <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${translations_count})
+                        </button>
+                    </td>
+                </tr>`;
+
+            if ( name_is_custom ) {
+            name_section_html = `
+                    <tr>
+                        <td>
+                            <label><b>Default Name</b></label>
+                        </td>
+                        <td>
+                            ${field_settings['default_name']}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="edit-field-custom-name"><b>Custom Name</b></label>
+                        </td>
+                        <td>
+                            <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                            <button class="button small" id="remove-custom-name" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Remove Custom Name</button>
+                            <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                                <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                                (${translations_count})
+                            </button>
+                        </td>
+                    </tr>`;
+            }
+            modal_html_content += name_section_html;
+            modal_html_content += `
             <tr>
                 <td>
                     <label for="edit-field-description"><b>Description</b></label>
@@ -1051,6 +1082,7 @@ jQuery(document).ready(function($) {
         var tile_select = $('#tile_select').val();
         var field_description = $('#edit-field-description').val();
         var field_icon = $('#edit-field-icon').val();
+
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
             window.field_settings.post_type_settings.fields[field_key] = result;
 
@@ -1071,7 +1103,7 @@ jQuery(document).ready(function($) {
                 edited_field_menu_name_element[0].innerText = custom_name;
             }
 
-            //check if rundown element and sub element need to be moved to another tile
+            // Check if rundown element and sub element need to be moved to another tile
             if ( tile_key != tile_select ) {
                 var target_tile_menu = $(`.field-settings-table-tile-name[data-key="${tile_select}"]`);
                 var target_tile_submenu = $(`.tile-rundown-elements[data-parent-tile-key="${tile_select}"]`);
@@ -1153,6 +1185,24 @@ jQuery(document).ready(function($) {
             edited_field_option_element[0].innerText = new_field_option_label;
             closeModal();
             edited_field_option_element.parent().addClass('submenu-highlight');
+        });
+    });
+
+    // Process Remove Custom Name
+    $('.dt-admin-modal-box').on('click', '#remove-custom-name', function() {
+        var post_type = $(this).data('post-type');
+        var tile_key = $(this).data('tile-key');
+        var field_key = $(this).data('field-key');
+
+        API.remove_custom_name(post_type, field_key).promise().then(function(result) {
+            var default_name = window['field_settings']['post_type_settings']['fields'][field_key]['default_name']
+            window['field_settings']['post_type_settings']['fields'][field_key]['name'] = default_name;
+            delete window['field_settings']['post_type_settings']['fields'][field_key]['default_name'];
+            var edited_field_option_element = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`);
+            closeModal();
+            $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`).html(result);
+            edited_field_option_element.removeClass('menu-highlight');
+            edited_field_option_element.addClass('menu-highlight');
         });
     });
 
