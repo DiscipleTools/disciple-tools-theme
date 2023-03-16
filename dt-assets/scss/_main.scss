@@ -1468,6 +1468,65 @@ img.dt-black-icon, i.dt-black-icon {
 }
 
 /*
+ * Record History
+ */
+
+#record_history_activities {
+    min-height: 500px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 20px;
+}
+
+.record-history-activity-block {
+    border-radius: 5px;
+    border: 1px solid #e8e8e8;
+    margin-bottom: 10px;
+    min-height: 70px;
+    max-height: 70px;
+    padding: 10px;
+
+    .record-history-activity-block-body {
+        font-family: Arial, Helvetica, sans-serif;
+
+        .record-history-activity-heading {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .record-history-activity-gravatar {
+            display: flex;
+            align-items: center;
+
+            img {
+                margin-right: 10px;
+            }
+        }
+
+        .record-history-activity-owner {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .record-history-activity-date {
+            font-weight: normal;
+            font-size: 13px;
+            color: #989898;
+        }
+    }
+
+    .record-history-activity-block-controls {
+
+    }
+}
+
+.record-history-activity-block:hover {
+    cursor: pointer;
+    color: #989898;
+    border: 1px solid #000000;
+}
+
+/*
  * Advanced Search
  */
 
