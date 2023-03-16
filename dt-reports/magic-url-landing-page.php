@@ -61,7 +61,7 @@ if ( !defined( 'ABSPATH' ) ){
         <br><br>
         <div style="text-align: center;">
             <p><?php echo esc_html( __( 'Link key is no longer valid or has expired.', 'disciple_tools' ) ) ?></p>
-            <p><?php echo sprintf( esc_html( __( 'Please %s, or locate a more recent key, or request a new one.', 'disciple_tools' ) ), '<a href="' . get_site_url( null, 'wp-login.php?action=logout' ) . '">login</a>' ) ?></p>
+            <p><?php echo sprintf( esc_html( __( 'Please %s, or locate a more recent key, or request a new one.', 'disciple_tools' ) ), '<a href="' . esc_attr( get_site_url( null, 'wp-login.php?action=logout' ) ) . '">login</a>' ) ?></p>
         </div>
     </body>
 </html>
