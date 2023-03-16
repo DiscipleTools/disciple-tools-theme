@@ -154,12 +154,20 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
     public function test_custom_number_field_min_max_error() {
         // test that lower than the minimum creates an error
-        $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => 0 ], true, false );
+        $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => -1 ], true, false );
         $this->assertWPError( $contact1 );
 
-        // test that higher than the maximum creates an error
-        $contact2 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test_private' => 300 ], true, false );
+        // test that lower than the minimum creates an error
+        $contact2 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => 0 ], true, false );
         $this->assertWPError( $contact2 );
+
+        // test that higher than the maximum creates an error
+        $contact3 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test_private' => 300 ], true, false );
+        $this->assertWPError( $contact3 );
+
+        // test that clearing the field is not an error
+        $contact4 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => '' ], true, false );
+        $this->assertNotWPError( $contact4 );
 
     }
 
