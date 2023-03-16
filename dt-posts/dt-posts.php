@@ -918,7 +918,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             $users_interacted_with = array_slice( $users_interacted_with, 0, 5 );
-            if ( $current_user ){
+            if ( $current_user && strpos( strtolower( $current_user->display_name ), strtolower( $search_string ) ) !== false ){
                 array_unshift( $users_interacted_with, [ 'name' => $current_user->display_name, 'ID' => $current_user->ID ] );
             }
             foreach ( $users_interacted_with as $user ) {
