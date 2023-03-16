@@ -73,6 +73,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
 
     public static $assert_type_equal = 0;
     public static $assert_type_between = 1;
+    public static $assert_type_count = 2;
 
     public static function setupBeforeClass(): void{
         /*
@@ -160,7 +161,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
         wp_set_current_user( self::$user_1->ID );
 
         $result = DT_Posts::get_viewable_compact( $post_type, $search, $args );
-        // fwrite( STDERR, print_r( $result, TRUE ) );
+        fwrite( STDERR, print_r( $result, TRUE ) );
 
         $this->assertNotWPError( $result );
 
@@ -178,6 +179,15 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                             $this->lessThanOrEqual( $expected['totals']['max'] )
                         )
                     );
+                    break;
+                case self::$assert_type_count:
+                    $test_count = 0;
+                    foreach ( $result['posts'] ?? [] as $post ){
+                        if ( in_array( $post[$expected['totals']['key']], $expected['totals']['values'] ) ){
+                            $test_count++;
+                        }
+                    }
+                    $this->assertSame( $test_count, $expected['totals']['count'] );
                     break;
             }
         }
@@ -220,30 +230,40 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                     ]
                 ]
             ],
-            'subassigned field search by all' => [
+            'subassigned field search by john' => [
                 'contacts',
-                '',
+                'John',
                 [
                     'field_key' => 'subassigned'
                 ],
                 [
                     'totals' => [
-                        'assert_type' => self::$assert_type_between,
-                        'min' => 6,
-                        'max' => 7
+                        'assert_type' => self::$assert_type_count,
+                        'count' => 5,
+                        'key' => 'name',
+                        'values' => [
+                            self::$sample_contact_john_doe['title'],
+                            self::$sample_contact_john_bob_doe['title'],
+                            self::$sample_contact_john['title'],
+                            self::$sample_contact_johndoe['title'],
+                            self::$sample_contact_doe_john['title']
+                        ]
                     ],
                     'posts' => []
                 ]
             ],
-            'field search by wildcard' => [
+            'field search by jane doe wildcard' => [
                 'contacts',
                 'Jane Doe',
                 [],
                 [
                     'totals' => [
-                        'assert_type' => self::$assert_type_between,
-                        'min' => 1,
-                        'max' => 2
+                        'assert_type' => self::$assert_type_count,
+                        'count' => 1,
+                        'key' => 'name',
+                        'values' => [
+                            self::$sample_contact_jane_sally_doe['title']
+                        ]
                     ],
                     'posts' => []
                 ]
