@@ -161,7 +161,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
         wp_set_current_user( self::$user_1->ID );
 
         $result = DT_Posts::get_viewable_compact( $post_type, $search, $args );
-        fwrite( STDERR, print_r( $result, TRUE ) );
+        // fwrite( STDERR, print_r( $result, TRUE ) );
 
         $this->assertNotWPError( $result );
 
