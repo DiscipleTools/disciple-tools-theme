@@ -113,7 +113,7 @@ class DT_Login_Endpoints {
         }
 
         return new WP_Error(
-            'pg_login_not_logged_in',
+            'dt_login_not_logged_in',
             'User is not authenticated',
             [
                 'status' => 401,
@@ -147,7 +147,7 @@ class DT_Login_Endpoints {
             $user_id = $token->data->user->id;
         }
 
-        $user = pg_get_user( $user_id, [] );
+        $user = get_userdata( $user_id );
         return $user;
     }
 
