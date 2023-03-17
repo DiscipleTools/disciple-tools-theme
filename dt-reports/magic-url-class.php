@@ -245,7 +245,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         // if user
                         $user_id = self::get_user_id( $elements['meta_key'], $parts[2] );
                         if ( ! $user_id ){ // fail if no post id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $user_id;
                         }
@@ -253,7 +253,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         // get post_id
                         $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
                         if ( ! $post_id ){ // fail if no post id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $post_id;
                         }
@@ -333,7 +333,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         // if user
                         $user_id = self::get_user_id( $elements['meta_key'], $public_key );
                         if ( ! $user_id ){ // fail if no user id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $user_id;
                         }
@@ -341,7 +341,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         // get post_id
                         $post_id = self::get_post_id( $elements['meta_key'], $public_key );
                         if ( ! $post_id ){ // fail if no post id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $post_id;
                         }
@@ -553,6 +553,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 }
             }
             return $bulk_send_list;
+        }
+
+        public function redirect_to_expired_landing_page(){
+            $path = get_theme_file_path( 'dt-reports/magic-url-landing-page.php' );
+            include( $path );
+            die();
         }
     }
 }
