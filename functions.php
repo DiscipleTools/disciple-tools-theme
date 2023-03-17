@@ -457,6 +457,8 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/admin/menu/tabs/tab-email-logs.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-error-logs.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-workflows.php' );
+                require_once( 'dt-core/admin/menu/tabs/tab-exports.php' );
+                require_once( 'dt-core/admin/menu/tabs/tab-imports.php' );
 
                 require_once( 'dt-core/admin/menu/menu-metrics.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-reports.php' );
