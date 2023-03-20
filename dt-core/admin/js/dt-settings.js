@@ -993,6 +993,7 @@ jQuery(document).ready(function($) {
         var tile_description = $(`#edit-tile-description-${tile_key}`).val();
         var hide_tile = $(`#hide-tile-${tile_key}`).is(':checked');
         API.edit_tile(post_type, tile_key, tile_label, tile_description, hide_tile).promise().then(function(response) {
+            $(`#tile-key-${tile_key}`).parent().removeClass('menu-highlight');
             window['field_settings']['post_type_tiles'][tile_key] = response;
             $(`#tile-key-${tile_key}`).html(tile_label);
             show_preview_tile(tile_key);
@@ -1095,9 +1096,8 @@ jQuery(document).ready(function($) {
             });
 
             var edited_field_menu_name_element = edited_field_menu_element.children('.field-name-content');
-
-            edited_field_menu_element.addClass('menu-highlight');
-            edited_field_submenu_element.children('.field-settings-table-field-option').addClass('submenu-highlight');
+            edited_field_menu_element.removeClass('menu-highlight');
+            edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
 
             if ( custom_name != '' ) {
                 edited_field_menu_name_element[0].innerText = custom_name;
@@ -1123,6 +1123,8 @@ jQuery(document).ready(function($) {
             }
             show_preview_tile(tile_key);
             closeModal();
+            edited_field_menu_element.addClass('menu-highlight');
+            edited_field_submenu_element.children('.field-settings-table-field-option').addClass('submenu-highlight');
         });
         return;
     });
@@ -1182,6 +1184,7 @@ jQuery(document).ready(function($) {
                 'icon':field_option_icon,
             }
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
+            edited_field_option_element.parent().removeClass('submenu-highlight');
             edited_field_option_element[0].innerText = new_field_option_label;
             closeModal();
             edited_field_option_element.parent().addClass('submenu-highlight');
@@ -1199,9 +1202,9 @@ jQuery(document).ready(function($) {
             window['field_settings']['post_type_settings']['fields'][field_key]['name'] = default_name;
             delete window['field_settings']['post_type_settings']['fields'][field_key]['default_name'];
             var edited_field_option_element = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`);
+            edited_field_option_element.removeClass('menu-highlight');
             closeModal();
             $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`).html(result);
-            edited_field_option_element.removeClass('menu-highlight');
             edited_field_option_element.addClass('menu-highlight');
         });
     });
