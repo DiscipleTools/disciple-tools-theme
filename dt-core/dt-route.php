@@ -28,9 +28,7 @@ class DT_Route {
         register_rest_route(
             $namespace,
             $route,
-            [
-                $merged_options
-            ],
+            [ $merged_options ],
         );
     }
 }
