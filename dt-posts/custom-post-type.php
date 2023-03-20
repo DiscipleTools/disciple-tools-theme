@@ -22,7 +22,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
-        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 4 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
@@ -221,17 +221,17 @@ class Disciple_Tools_Post_Type_Template {
      *
      * @return mixed
      */
-    public function get_custom_fields_settings( $with_deleted_options = false, $load_from_cache = true ) {
-        return DT_Posts::get_post_field_settings( $this->post_type, $load_from_cache, $with_deleted_options );
+    public function get_custom_fields_settings( $with_deleted_options = false, $load_from_cache = true, $load_everything = false ) {
+        return DT_Posts::get_post_field_settings( $this->post_type, $load_from_cache, $with_deleted_options, $load_everything );
     }
 
-    public function dt_get_post_type_settings( $settings, $post_type ){
+    public function dt_get_post_type_settings( $settings, $post_type, $return_cache = true, $load_everything = false ){
         if ( $post_type === $this->post_type ){
             $cached = wp_cache_get( $post_type . '_type_settings' );
             if ( $cached ){
                 return $cached;
             }
-            $fields = $this->get_custom_fields_settings();
+            $fields = $this->get_custom_fields_settings( false, $return_cache, $load_everything );
             $channels = [];
             foreach ( $fields as $field_key => $field_value ){
                 if ( $field_value['type'] === 'communication_channel' ){

@@ -94,12 +94,16 @@ class Disciple_Tools_Core_Endpoints {
         $post_types = DT_Posts::get_post_types();
         $post_types_settings = [];
         foreach ( $post_types as $post_type ){
-            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type );
+            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type, false, true );
         }
         return [
             'available_translations' => $available_translations,
             'post_types' => $post_types_settings,
             'plugins' => apply_filters( 'dt_plugins', [] ),
+            'mapping' => [
+                'mapbox_api_key' => DT_Mapbox_API::get_key(),
+                'google_api_key' => Disciple_Tools_Google_Geocode_API::get_key(),
+            ]
         ];
     }
 
