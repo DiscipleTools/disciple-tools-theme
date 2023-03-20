@@ -31,7 +31,8 @@ jQuery(document).ready(function ($) {
     // Fetch initial corresponding activities, to be used in date filter select.
     handle_activity_history_refresh({
       revert: true,
-      result_order: 'DESC'
+      result_order: 'DESC',
+      extra_meta: true
     }, function (activities) {
 
       // Package filtered dates.
