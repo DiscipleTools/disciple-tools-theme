@@ -119,7 +119,7 @@ function dt_firebase_login_ui( $attr ) {
                 user.sendEmailVerification()
             }
 
-            return fetch( `${window.location.origin}/wp-json/dt/v1/session/login`, {
+            fetch( `${window.location.origin}/wp-json/dt/v1/session/login`, {
                 method: 'POST',
                 body: JSON.stringify(authResult)
             })
