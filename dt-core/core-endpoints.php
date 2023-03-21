@@ -169,9 +169,17 @@ class Disciple_Tools_Core_Endpoints {
         );
 
         register_rest_route(
-            $this->namespace, '/remove-custom-name', [
+            $this->namespace, '/remove-custom-field-name', [
                 'methods' => 'POST',
-                'callback' => [ $this, 'remove_custom_name' ],
+                'callback' => [ $this, 'remove_custom_field_name' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/remove-custom-field-option-label', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'remove_custom_field_option_label' ],
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
@@ -738,18 +746,25 @@ class Disciple_Tools_Core_Endpoints {
             $new_field_option_description = $post_submission['new_field_option_description'];
             $field_option_icon = $post_submission['field_option_icon'];
 
-            $custom_field_options = dt_get_option( 'dt_field_customizations' );
-            $custom_field_options[$post_type][$field_key]['default'][$field_option_key] = [
+            $field_customizations = dt_get_option( 'dt_field_customizations' );
+            $custom_field_option = [
                 'label' => $new_field_option_label,
                 'description' => $new_field_option_description,
             ];
 
             if ( $field_option_icon ) {
-                $custom_field_options[$post_type][$field_key]['default'][$field_option_key]['icon'] = $field_option_icon;
+                $custom_field_option['icon'] = $field_option_icon;
             }
 
-            update_option( 'dt_field_customizations', $custom_field_options );
-            return $custom_field_options[$post_type][$field_key]['default'][$field_option_key];
+            // Create default_name to store the default field option label if it changed
+            if ( self::default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_field_option['label'] ) ) {
+                $custom_field_option['default_name'] = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
+            }
+
+            $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
+            update_option( 'dt_field_customizations', $field_customizations );
+            dt_write_log( $custom_field_option );
+            return $custom_field_option;
         }
     }
 
@@ -768,22 +783,37 @@ class Disciple_Tools_Core_Endpoints {
     }
 
     public function default_field_name_changed( $post_type, $field_key, $custom_name ) {
-        $post_settings = DT_Posts::get_post_settings( $post_type );
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-
         if ( $all_non_custom_fields[$field_key]['name'] === trim( $custom_name ) ) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
+    }
+    public function default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_label ) {
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $all_non_custom_fields = array_merge( $base_fields, $default_fields );
+        if ( $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] == trim( $custom_label ) ) {
+            return false;
+        }
+        return true;
     }
 
-    public function get_default_name( $post_type, $field_key ) {
+    public function get_default_field_name( $post_type, $field_key ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
         $default_name = $all_non_custom_fields[$field_key]['name'];
+        return $default_name;
+    }
+
+    public function get_default_field_option_label( $post_type, $field_key, $field_option_key ) {
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $all_non_custom_fields = array_merge( $base_fields, $default_fields );
+        $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'];
         return $default_name;
     }
 
@@ -830,7 +860,7 @@ class Disciple_Tools_Core_Endpoints {
         wp_cache_delete( $post_type . '_field_settings' );
     }
 
-    public static function remove_custom_name( WP_REST_Request $request ) {
+    public static function remove_custom_field_name( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
         $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
         $field_key = sanitize_text_field( wp_unslash( $post_submission['field_key'] ) );
@@ -847,14 +877,34 @@ class Disciple_Tools_Core_Endpoints {
         return false;
     }
 
+    public static function remove_custom_field_option_label( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        $post_type = sanitize_text_field( wp_unslash( $post_submission['post_type'] ) );
+        $field_key = sanitize_text_field( wp_unslash( $post_submission['field_key'] ) );
+        $field_option_key = sanitize_text_field( wp_unslash( $post_submission['field_option_key'] ) );
+
+        if ( !empty( $post_type ) && !empty( $field_key ) ) {
+            $field_customizations = dt_get_option( 'dt_field_customizations' );
+            $default_label = $field_customizations[$post_type][$field_key]['default'][$field_option_key]['default_name'];
+            $field_customizations[$post_type][$field_key]['default'][$field_option_key]['label'] = $default_label;
+            unset( $field_customizations[$post_type][$field_key]['default'][$field_option_key]['default_name'] );
+            update_option( 'dt_field_customizations', $field_customizations );
+            wp_cache_delete( $post_type . '_field_settings' );
+            return $default_label;
+        }
+        return false;
+    }
+
     public static function edit_field( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
+
+        if ( !isset( $post_submission['post_type'], $post_submission['field_key'] ) ) {
+            return false;
+        }
+
         $post_type = $post_submission['post_type'];
         $field_key = $post_submission['field_key'];
         $field_icon = $post_submission['field_icon'];
-        // $tile_key = $post_submission['tile_key'];
-        // $custom_name = $post_submission['custom_name'];
-        // $field_private = $post_submission['field_private'];
 
         $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
         $field_customizations = dt_get_option( 'dt_field_customizations' );
@@ -864,17 +914,16 @@ class Disciple_Tools_Core_Endpoints {
                 $field_customizations[$post_type][$field_key] = [];
             }
             $custom_field = $field_customizations[$post_type][$field_key];
-            $field = $post_fields[$field_key];
 
             // Update name
             if ( isset( $post_submission['custom_name'] ) && !empty( $post_submission['custom_name'] ) ) {
                 $custom_field['name'] = $post_submission['custom_name'];
-                $custom_field['default_name'] = self::get_default_name( $post_type, $field_key );
+                $custom_field['default_name'] = self::get_default_field_name( $post_type, $field_key );
             }
 
             // Create default_name to store the default field name if it changed
             if ( self::default_field_name_changed( $post_type, $field_key, $custom_field['name'] ) === true ) {
-                $custom_field['default_name'] = $field_customizations[$post_type][$field_key]['name'];
+                $custom_field['default_name'] = self::get_default_field_name( $post_type, $field_key );
             }
 
             // Field privacy
@@ -902,6 +951,7 @@ class Disciple_Tools_Core_Endpoints {
                 $custom_field[ $field_null_icon_key ] = null;
             }
 
+            dt_write_log( $custom_field );
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );

@@ -105,9 +105,15 @@ jQuery(document).ready(function($) {
         sortable_field_options_ordering: sortable_field_options_ordering,
     }, `dt-core/v1/`);
 
-    window.API.remove_custom_name = (post_type, field_key) => makeRequest("POST", `remove-custom-name`, {
+    window.API.remove_custom_field_name = (post_type, field_key) => makeRequest("POST", `remove-custom-field-name`, {
         post_type: post_type,
         field_key: field_key,
+    }, `dt-core/v1/`);
+
+    window.API.remove_custom_field_option_label = (post_type, field_key, field_option_key) => makeRequest("POST", `remove-custom-field-option-label`, {
+        post_type: post_type,
+        field_key: field_key,
+        field_option_key: field_option_key,
     }, `dt-core/v1/`);
 
     function autonavigate_to_menu() {
@@ -733,7 +739,7 @@ jQuery(document).ready(function($) {
                     </td>
                 </tr>`;
 
-            if ( name_is_custom ) {
+            if (name_is_custom) {
             name_section_html = `
                     <tr>
                         <td>
@@ -863,8 +869,13 @@ jQuery(document).ready(function($) {
         var field_key = data['field_key'];
         var field_option_key = data['option_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
-        var option_label = field_settings['default'][field_option_key]['label'];
+        var field_option = field_settings['default'][field_option_key];
         var option_description = '';
+
+        var name_is_custom = false;
+        if ( field_option['default_name'] ) {
+            name_is_custom = true;
+        }
 
         if ( 'description' in field_settings['default'][field_option_key] ) {
             option_description = field_settings['default'][field_option_key]['description'];
@@ -900,19 +911,49 @@ jQuery(document).ready(function($) {
             <td>
                 ${field_option_key}
             </td>
-        </tr>
+        </tr>`;
+
+        var name_section_html = `
         <tr>
             <td>
-                <label><b>Custom Label</b></label>
+                <label><b>Name</b></label>
             </td>
             <td>
-                <input name="edit-option-label" id="new-option-name" type="text" value="${option_label}" required>
+                <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
                 <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
                     <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
                     (${translations_count})
                 </button>
             </td>
-        </tr>
+        </tr>`;
+
+        if (name_is_custom) {
+            name_section_html = `
+            <tr>
+                <td>
+                    <label><b>Default Name</b></label>
+                </td>
+                <td>
+                    ${field_option['default_name']}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label><b>Custom Label</b></label>
+                </td>
+                <td>
+                    <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
+                    <button class="button small" id="remove-custom-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Remove Custom Label</button>
+                    <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                        (${translations_count})
+                    </button>
+                </td>
+            </tr>`;
+        }
+
+        modal_html_content += name_section_html;
+        modal_html_content += `
         <tr>
             <td>
                 <label><b>Description</b></label>
@@ -1177,12 +1218,8 @@ jQuery(document).ready(function($) {
         var new_field_option_description = $('#new-option-description').val();
         var field_option_icon = $('#edit-field-icon').val();
 
-        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function() {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = {
-                'label':new_field_option_label,
-                'description':new_field_option_description,
-                'icon':field_option_icon,
-            }
+        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function(result) {
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = result;
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element.parent().removeClass('submenu-highlight');
             edited_field_option_element[0].innerText = new_field_option_label;
@@ -1191,21 +1228,42 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Process Remove Custom Name
+    // Process Remove Custom Field Name
     $('.dt-admin-modal-box').on('click', '#remove-custom-name', function() {
         var post_type = $(this).data('post-type');
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
 
-        API.remove_custom_name(post_type, field_key).promise().then(function(result) {
-            var default_name = window['field_settings']['post_type_settings']['fields'][field_key]['default_name']
+        API.remove_custom_field_name(post_type, field_key).promise().then(function(default_name) {
             window['field_settings']['post_type_settings']['fields'][field_key]['name'] = default_name;
             delete window['field_settings']['post_type_settings']['fields'][field_key]['default_name'];
-            var edited_field_option_element = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`);
-            edited_field_option_element.removeClass('menu-highlight');
+            var edited_field_content_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`);
+            var edited_field_parent_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`).parent();
+            edited_field_parent_element.removeClass('menu-highlight');
             closeModal();
-            $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`).html(result);
-            edited_field_option_element.addClass('menu-highlight');
+            edited_field_content_element.html(default_name);
+            edited_field_parent_element.addClass('menu-highlight');
+        });
+    });
+
+     // Process Remove Custom Field Option Label
+     $('.dt-admin-modal-box').on('click', '#remove-custom-label', function() {
+        var post_type = $(this).data('post-type');
+        var tile_key = $(this).data('tile-key');
+        var field_key = $(this).data('field-key');
+        var field_option_key = $(this).data('field-option-key');
+
+        API.remove_custom_field_option_label(post_type, field_key, field_option_key).promise().then(function(default_label) {
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key]['label'] = default_label;
+            delete window['field_settings']['post_type_settings']['fields'][field_key]['default_name'];
+
+            var edited_field_option_content_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
+            var edited_field_option_parent_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`).parent();
+
+            edited_field_option_parent_element.removeClass('submenu-highlight');
+            closeModal();
+            edited_field_option_content_element.html(default_label);
+            edited_field_option_parent_element.addClass('submenu-highlight');
         });
     });
 
