@@ -109,10 +109,10 @@ jQuery(document).ready(function($) {
 
   $('button.dt_multi_select').on('click',function () {
     let fieldKey = $(this).data("field-key")
-    let optionKey = $(this).attr('id')
+    let optionKey = $(this).val()
     let fieldValue = {}
     let data = {}
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+    let field = jQuery(`[data-field-key="${fieldKey}"][value="${optionKey}"]`)
     field.addClass("submitting-select-button")
     let action = "add"
     if (field.hasClass("selected-select-button")){
