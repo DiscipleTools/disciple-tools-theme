@@ -18,111 +18,37 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
  * main post types, load before 20, if you want to load after the list, load after 30.
  */
 $dt_nav_tabs = dt_default_menu_array();
+// Check for Custom Logo
+$logo_url = $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-white.png';
+$custom_logo_url = get_option( 'custom_logo_url' );
+if ( !empty( $custom_logo_url ) ) {
+    $logo_url = $custom_logo_url;
+}
+
+add_action( 'dt_nav_add_before', function (){
+    $install_meta = get_option( 'dt_initial_install_meta' );
+    if ( isset( $install_meta['time'] ) ){
+        $expires_in_days = ( $install_meta['time'] + ( 30 * DAY_IN_SECONDS ) - time() ) / DAY_IN_SECONDS
+        ?>
+        <div class="hide-on-scroll" style='background-color: #8BC34A; padding:5px 20px; text-align: center; color:white'>
+            Demo expires in <?php echo esc_html( round( $expires_in_days ) ); ?> days. Consider long term
+            hosting options: <a target="_blank" href='https://disciple.tools/hosting'>here</a>
+        </div>
+        <?php
+    }
+} );
+
 
 ?>
 
-<script>
-
-    jQuery(document).ready(function () {
-        get_notifications(false, true, dropdown = true, limit = 5);
-    });
-
-</script>
-
-<!--  /* MOBILE VIEW TOP LEFT SIDE MENU AREA */ -->
-<div data-sticky-container>
-    <div class="title-bar show-for-small-only" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0" data-sticky-on="medium">
-
-        <div class="title-bar-left">
-
-            <!-- menu -->
-            <?php if ( ! $dt_nav_tabs['admin']['menu']['hidden'] ?? ! false ) : ?>
-                <button class="" type="button" data-open="off-canvas">
-                    <img class="dt-white-icon" src="<?php echo esc_url( $dt_nav_tabs['admin']['menu']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/hamburger.svg?v=2' ) ?>">
-                </button>
-            <?php endif; ?>
-
-            <!-- site logo -->
-            <?php
-
-            // Check for Custom Logo
-            $logo_url = $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-white.png';
-            $custom_logo_url = get_option( 'custom_logo_url' );
-            if ( !empty( $custom_logo_url ) ) {
-                $logo_url = $custom_logo_url;
-            }
-            ?>
-            <?php if ( ! $dt_nav_tabs['admin']['site']['hidden'] ?? ! false ) : ?>
-                <div class="title-bar-title" style="margin-left: 5px">
-                    <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link" ><img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image"></a>
-                </div>
-            <?php endif; ?>
-
-        </div>
-
-        <div class="title-bar-right">
-
-            <!-- advanced search -->
-            <?php if ( isset( $dt_nav_tabs['admin']['advanced_search'] ) && ! empty( $dt_nav_tabs['admin']['advanced_search'] ) ) : ?>
-                <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>" style="margin-left: 10px">
-                    <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
-                </a>
-            <?php endif; // end advanced search ?>
-
-            <!-- add new-->
-            <?php if ( isset( $dt_nav_tabs['admin']['add_new'] ) && ! empty( $dt_nav_tabs['admin']['add_new'] ) ) : ?>
-                <ul class="dropdown menu" data-dropdown-menu style="display:inline-block; margin-left: 10px">
-                    <li class="has-submenu center-items" style="width:21px;">
-                        <button>
-                            <img title="<?php esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? '' ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>" style="width:24px;">
-                        </button>
-                        <ul class="submenu menu vertical add-new-items-dropdown is-dropdown-submenu" style="text-align:left;">
-                            <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) :
-                                foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) :
-                                    if ( !isset( $dt_nav_submenu['hidden'] ) || empty( $dt_nav_submenu['hidden'] ) ) : ?>
-                                    <li>
-                                        <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                            <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
-                                                 src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri()  . '/dt-assets/images/circle-add-green.svg' ) ?>">
-                                            <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
-                                        </a>
-                                    </li>
-                                    <?php endif;
-                                endforeach;
-                            endif; ?>
-                        </ul>
-                    </li>
-                </ul>
-            <?php endif; ?>
-
-            <!-- notifications -->
-            <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
-                <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-left: 15px; margin-bottom: 0">
-                    <img class="dt-white-icon" title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( 'Notifications', 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/bell.svg' ); ?>">
-                    <span class="badge alert notification-count" style="display:none"></span>
-                </a>
-            <?php endif; ?>
-
-            <!-- settings -->
-            <?php if ( isset( $dt_nav_tabs['admin']['settings'] ) && ! empty( $dt_nav_tabs['admin']['settings'] ) ) : ?>
-                <a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['link'] ?? site_url( '/settings/' ) ); ?>" style="margin-left: 10px">
-                    <img class="dt-white-icon" title="<?php esc_html( $dt_nav_tabs['admin']['settings']['label'] ?? __( 'Settings', 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/settings.svg' ) ?>">
-                </a>
-            <?php endif; ?>
-
-        </div>
-    </div>
-    <?php do_action( 'dt_nav_add_after' ) ?>
-</div>
-
-<!--  /* DESKTOP VIEW NAV BAR */ -->
+<!-- DESKTOP VIEW NAV BAR -->
 <div data-sticky-container class="hide-for-small-only">
-    <div data-sticky style="width:100%;margin-top:0;display: block;!important;" data-options='marginTop:0;'>
-        <div style='background-color: #8BC34A;display: block; padding:5px 20px; text-align: center; color:white'>
-            This is a demo site. It will expire in 25 days. Please consider a long term hosting option here: <a
-                href='https://disciple.tools/hosting'>https://disciple.tools/hosting</a>
-        </div>
-        <div id='top-bar-menu' class='top-bar' style="width: 100%;display: flex;margin-top:0;border:none">
+    <div data-sticky class="hide-for-small-only" data-margin-top="0">
+
+        <?php // hook for nav header above menu bar
+        do_action( 'dt_nav_add_before', true ) ?>
+
+        <div id='top-bar-menu' class='top-bar'>
             <!-- Logo -->
             <div>
                 <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link"><img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image"></a>
@@ -276,7 +202,42 @@ $dt_nav_tabs = dt_default_menu_array();
             </div>
         </div>
 
-        <?php do_action( 'dt_nav_add_after' ) ?>
+        <?php //  hook for nav header below menu bar
+        do_action( 'dt_nav_add_after', true ) ?>
+
+    </div>
+</div>
+
+<!-- MOBILE VIEW TOP LEFT SIDE MENU AREA -->
+<div data-sticky-container class="show-for-small-only">
+    <div data-sticky data-responsive-toggle='top-bar-menu' data-margin-top='0' data-sticky-on='small'>
+        <?php // hook for nav header above menu bar
+        do_action( 'dt_nav_add_before', false ) ?>
+
+        <div class='title-bar hide-on-scroll'>
+            <div class='title-bar-left'>
+                <!-- menu -->
+                <?php if ( !$dt_nav_tabs['admin']['menu']['hidden'] ?? !false ) : ?>
+                    <button class="" type="button" data-open="off-canvas">
+                        <img class="dt-white-icon"
+                             src="<?php echo esc_url( $dt_nav_tabs['admin']['menu']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/hamburger.svg?v=2' ) ?>">
+                    </button>
+                <?php endif; ?>
+
+                <!-- site logo -->
+                <?php if ( !$dt_nav_tabs['admin']['site']['hidden'] ?? !false ) : ?>
+                    <div class="title-bar-title" style="margin-left: 5px">
+                        <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() ) ?>" class="logo-link">
+                            <img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image">
+                        </a>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="title-bar-right"></div>
+        </div>
+
+        <?php // hook for nav header below menu bar
+        do_action( 'dt_nav_add_after', false ) ?>
     </div>
 </div>
 
@@ -338,4 +299,4 @@ $dt_nav_tabs = dt_default_menu_array();
 <?php endif; ?>
 
 <!-- Load advanced search model template part -->
-<?php get_template_part( 'dt-assets/parts/modals/modal', 'advanced-search' ); ?>
+<?php get_template_part( 'dt-assets/parts/modals/modal', 'advanced-search' );

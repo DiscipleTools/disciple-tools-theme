@@ -1,22 +1,8 @@
 <?php
 declare(strict_types=1);
-/**
- * @param bool $share_button
- * @param bool $comment_button
- * @param bool $show_update_needed
- * @param bool $update_needed
- * @param bool $following
- * @param bool $disable_following_toggle_function
- * @param bool $task
- */
+
 function dt_print_details_bar(
-    bool $share_button = true,
-    bool $comment_button = true,
-    bool $show_update_needed = false,
-    bool $update_needed = false,
-    bool $following = false,
-    bool $disable_following_toggle_function = false,
-    bool $task = true
+    bool $desktop = true
 ) {
     $dt_post_type     = get_post_type();
     $post_id          = get_the_ID();
@@ -26,21 +12,32 @@ function dt_print_details_bar(
     $shared_with_text = '';
     $current_user_id = get_current_user_id();
     $following = DT_Posts::get_users_following_post( $dt_post_type, $post_id );
-
-
+    $share_button = true;
+    $comment_button = true;
+    $task = true;
     $show_update_needed = isset( $post_settings['fields']['requires_update'] );
     $update_needed = isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true;
     $following = in_array( $current_user_id, $following );
-    $disable_following_toggle_function = isset( $dt_post['assigned_to']['id'] ) ? $dt_post['assigned_to']['id'] == $current_user_id : false;
+    $is_assigned = isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == $current_user_id;
+    $disable_following_toggle_function = $is_assigned;
+    $can_update = $is_assigned || DT_Posts::can_update( $dt_post_type, $dt_post['ID'] );
 
     foreach ( $shared_with as $shared ) {
         $shared_with_text .= sprintf( ', %s', $shared['display_name'] );
     }
-    ?>
 
+
+    $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+    $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
+
+    $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
+    $type_icon = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['icon'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['icon'] : false;
+
+
+    if ( $desktop ) : ?>
 
     <!-- DESKTOP -->
-    <div  class="show-for-medium details-second-bar" style="z-index: 9">
+    <div class="show-for-medium details-second-bar" style="z-index: 9">
         <nav role="navigation"
              style="width:100%"
              class="second-bar" id="second-bar-large">
@@ -94,39 +91,25 @@ function dt_print_details_bar(
                         </div>
                     </div>
                     <div class="cell small-3 large-4 center hide-for-small-only grid-x">
-                            <div class="cell medium-2 large-1 center-items align-left">
-                                <a class="section-chevron navigation-previous" style="max-width: 1rem; display: none;" href="javascript:void(0)">
-                                    <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
-                                    $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                                    if ( $dir == 'rtl' ) {
-                                        echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
-                                    } else {
-                                        echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
-                                    }?>">
-                                </a>
-                            </div>
-                            <div class="cell small-8">
-                            <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
-                            $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
-
-                            $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
-                            $type_icon = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['icon'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['icon'] : false;
+                        <div class="cell medium-2 large-1 center-items align-left">
+                            <a class="section-chevron navigation-previous" style="max-width: 1rem; display: none;" href="javascript:void(0)">
+                                <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
+                                $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+                                if ( $dir == 'rtl' ) {
+                                    echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
+                                } else {
+                                    echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
+                                }?>">
+                            </a>
+                        </div>
+                        <div class="cell small-8">
+                            <?php
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
                                 <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
-                            <span id="title"
-                            <?php
-                            if ( isset( $dt_post['post_type'] ) && isset( $dt_post['ID'] ) ) {
-                                $can_update = DT_Posts::can_update( $dt_post['post_type'], $dt_post['ID'] );
-                            } else {
-                                $can_update = true;
-                            }
-                            if ( $can_update || ( isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == get_current_user_id() ) ) {
-                                echo esc_attr( 'contenteditable=true' ); } ?>
-
-                            class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
+                            <span id="title" <?php echo esc_attr( $can_update ? 'contenteditable=true' : '' ); ?> class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span class="record-name-tagline">
@@ -202,10 +185,12 @@ function dt_print_details_bar(
         </nav>
     </div>
 
+    <?php else : ?>
 
-    <div data-sticky data-options='marginTop:0;' data-sticky-on='small' data-top-anchor='95' class="show-for-small-only details-second-bar" style="z-index: 9">
-        <nav role="navigation"
-            style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
+
+    <!-- MOBILE -->
+    <div class="details-second-bar">
+        <nav role="navigation" style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
             class="second-bar" id="second-bar-small">
             <?php if ( $comment_button ): ?>
                 <div class="container-width">
@@ -221,7 +206,6 @@ function dt_print_details_bar(
                     <svg class='icon-star' viewBox="0 0 32 32">
                         <use xlink:href="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/star.svg#star' ) ?>"></use>
                     </svg>
-                    </object>
                     </button>
                     <?php endif; ?>
                     <?php if ( $share_button ): ?>
@@ -284,15 +268,7 @@ function dt_print_details_bar(
                         <?php else : ?>
                             <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                         <?php endif; ?>
-                        <span id="title" <?php
-                        if ( isset( $dt_post['post_type'] ) && isset( $dt_post['ID'] ) ) {
-                                    $can_update = DT_Posts::can_update( $dt_post['post_type'], $dt_post['ID'] );
-                        } else {
-                            $can_update = true;
-                        }
-                        if ( $can_update || ( isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == get_current_user_id() ) ) {
-                            echo esc_attr( 'contenteditable=true' ); } ?>
-                            class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
+                        <span id='title' <?php echo esc_attr( $can_update ? 'contenteditable=true' : '' ); ?> class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                         <div id="record-tagline">
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span class="record-name-tagline">
@@ -321,5 +297,6 @@ function dt_print_details_bar(
             </div>
         </nav>
     </div>
-    <?php
+
+    <?php endif;
 }
