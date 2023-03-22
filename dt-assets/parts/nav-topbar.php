@@ -24,21 +24,6 @@ $custom_logo_url = get_option( 'custom_logo_url' );
 if ( !empty( $custom_logo_url ) ) {
     $logo_url = $custom_logo_url;
 }
-
-add_action( 'dt_nav_add_before', function (){
-    $install_meta = get_option( 'dt_initial_install_meta' );
-    if ( isset( $install_meta['time'] ) ){
-        $expires_in_days = ( $install_meta['time'] + ( 30 * DAY_IN_SECONDS ) - time() ) / DAY_IN_SECONDS
-        ?>
-        <div class="hide-on-scroll" style='background-color: #8BC34A; padding:5px 20px; text-align: center; color:white'>
-            Demo expires in <?php echo esc_html( round( $expires_in_days ) ); ?> days. Consider long term
-            hosting options: <a target="_blank" href='https://disciple.tools/hosting'>here</a>
-        </div>
-        <?php
-    }
-} );
-
-
 ?>
 
 <!-- DESKTOP VIEW NAV BAR -->
