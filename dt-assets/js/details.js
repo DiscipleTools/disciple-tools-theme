@@ -638,6 +638,12 @@ jQuery(document).ready(function($) {
               $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
             }).catch(err => { console.error(err) })
           }
+        },
+        href: function (item) {
+          const postType = window.wpApiShare.post_type
+          const query =  window.SHAREDFUNCTIONS.createCustomFilter(field, [item.value])
+          const labels = [{ id: `${field}_${item.value}`, name: `${field}: ${item.value}`}]
+          return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
         }
       },
       callback: {
@@ -1063,7 +1069,7 @@ jQuery(document).ready(function($) {
           const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name])
           const labels = [{ id: `tags_${item.name}`, name: `Tags: ${item.name}`}]
           return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
-        },
+        }
       },
       callback: {
         onClick: function (node, a, item, event) {
