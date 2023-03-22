@@ -29,7 +29,7 @@ $dt_nav_tabs = dt_default_menu_array();
 
 </script>
 
-<!--  /* TOP LEFT SIDE MENU AREA */ -->
+<!--  /* MOBILE VIEW TOP LEFT SIDE MENU AREA */ -->
 <div data-sticky-container>
     <div class="title-bar show-for-small-only" data-sticky data-responsive-toggle="top-bar-menu" data-margin-top="0" data-sticky-on="medium">
 
@@ -112,161 +112,171 @@ $dt_nav_tabs = dt_default_menu_array();
 
         </div>
     </div>
+    <?php do_action( 'dt_nav_add_after' ) ?>
 </div>
 
-<!--  /* LOGO AREA */ -->
+<!--  /* DESKTOP VIEW NAV BAR */ -->
 <div data-sticky-container class="hide-for-small-only">
-    <div class="top-bar" id="top-bar-menu"
-         data-sticky style="width:100%;margin-top:0">
-        <div>
-            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link"><img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image"></a>
+    <div data-sticky style="width:100%;margin-top:0;display: block;!important;" data-options='marginTop:0;'>
+        <div style='background-color: #8BC34A;display: block; padding:5px 20px; text-align: center; color:white'>
+            This is a demo site. It will expire in 25 days. Please consider a long term hosting option here: <a
+                href='https://disciple.tools/hosting'>https://disciple.tools/hosting</a>
         </div>
-        <div class="top-bar-left">
-            <ul class="dropdown menu" data-dropdown-menu>
-                <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) : ?>
-                    <?php if ( ! ( isset( $dt_main_tabs['hidden'] ) && $dt_main_tabs['hidden'] ) ) { ?>
-                        <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
-                            <?php
-                            if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
-                                ?>
-                                <ul class="menu vertical nested is-dropdown-submenu">
-                                    <?php
-                                    foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
-                                        if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
-                                            <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
-                                            <?php
-                                        endif;
-                                    endforeach;
-                                    ?>
-                                </ul>
+        <div id='top-bar-menu' class='top-bar' style="width: 100%;display: flex;margin-top:0;border:none">
+            <!-- Logo -->
+            <div>
+                <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() )?>" class="logo-link"><img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image"></a>
+            </div>
+            <!-- Tabs -->
+            <div class="top-bar-left">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) : ?>
+                        <?php if ( ! ( isset( $dt_main_tabs['hidden'] ) && $dt_main_tabs['hidden'] ) ) { ?>
+                            <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
                                 <?php
-                            }
-                            ?></li>
-                    <?php } ?>
-                <?php endforeach; ?>
-                    <li id="more-menu-button"><a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?>&nbsp;</a>
-                        <ul class="menu vertical nested is-dropdown-submenu">
-                            <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs_extra ) : ?>
-                                <?php if ( ! ( isset( $dt_main_tabs_extra['hidden'] ) && $dt_main_tabs_extra['hidden'] ) ) { ?>
-                                    <li><a href="<?php echo esc_url( $dt_main_tabs_extra['link'] ) ?>"><?php echo esc_html( $dt_main_tabs_extra['label'] ) ?>&nbsp;</a>
-                                <?php } ?>
-                            <?php endforeach; ?>
-                        </ul>
-                    </li>
-            </ul>
-        </div>
-        <div class="top-bar-right">
-            <ul class="dropdown menu" data-dropdown-menu>
-
-                <!-- core update -->
-                <?php
-                if ( current_user_can( 'update_core' ) ){
-                    $theme = wp_get_theme();
-                    $update = maybe_unserialize( get_site_option( 'puc_external_updates_theme-' . $theme->get_stylesheet(), '' ) );
-                    if ( !empty( $update ) && isset( $update->update->version ) && version_compare( $update->update->version, wp_get_theme()->version, '>' ) ) : ?>
-                        <li class="image-menu-nav">
-                            <a href="<?php echo esc_url( network_admin_url( 'update-core.php' ) ); ?>">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" />
-                                <span><?php esc_html_e( 'Theme Update Available!', 'disciple_tools' ); ?></span>
-                            </a>
-                        </li>
-                    <?php endif;
-                }
-                ?>
-
-
-                <!-- profile name -->
-                <?php if ( isset( $dt_nav_tabs['admin']['profile']['hidden'] ) && empty( $dt_nav_tabs['admin']['profile']['hidden'] ) ) : ?>
-                    <li class="image-menu-nav">
-                        <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? get_template_directory_uri() . '/dt-assets/images/profile.svg' ); ?>">
-                            <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/profile.svg?v=2' ) ?>">
-                            <span dir="auto"><?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?></span>
-                        </a>
-                    </li>
-                <?php endif; // end profile ?>
-
-
-                <!-- advanced search -->
-                <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
-                    <li class="image-menu-nav">
-                        <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
-                            <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
-                        </a>
-                    </li>
-                <?php endif; // end advanced search ?>
-
-
-                <!-- add new -->
-                <?php if ( isset( $dt_nav_tabs['admin']['add_new']['hidden'] ) && empty( $dt_nav_tabs['admin']['add_new']['hidden'] ) ) : ?>
-                    <li class="has-submenu center-items add-buttons">
-                        <button>
-                            <img title="<?php esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? '' ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>" style="width:24px;">
-                        </button>
-                        <!--  /* HEADER add menu */ -->
-                        <ul class="submenu menu vertical title-bar-right add-new-items-dropdown">
-                            <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
-                                <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
-                                    <?php if ( ! isset( $dt_nav_submenu['hidden'] ) || ! $dt_nav_submenu['hidden'] ) { ?>
-                                        <li>
-                                            <a class="add-new-menu-item"
-                                               href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                                <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
-                                                     src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>">
-                                                <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
-                                            </a>
-                                        </li>
+                                if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) {
+                                    ?>
+                                    <ul class="menu vertical nested is-dropdown-submenu">
+                                        <?php
+                                        foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
+                                            if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
+                                                <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
+                                                <?php
+                                            endif;
+                                        endforeach;
+                                        ?>
+                                    </ul>
+                                    <?php
+                                }
+                                ?></li>
+                        <?php } ?>
+                    <?php endforeach; ?>
+                        <li id="more-menu-button"><a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?>&nbsp;</a>
+                            <ul class="menu vertical nested is-dropdown-submenu">
+                                <?php foreach ( $dt_nav_tabs['main'] as $dt_main_tabs_extra ) : ?>
+                                    <?php if ( ! ( isset( $dt_main_tabs_extra['hidden'] ) && $dt_main_tabs_extra['hidden'] ) ) { ?>
+                                        <li><a href="<?php echo esc_url( $dt_main_tabs_extra['link'] ) ?>"><?php echo esc_html( $dt_main_tabs_extra['label'] ) ?>&nbsp;</a>
                                     <?php } ?>
                                 <?php endforeach; ?>
-                            <?php endif; ?>
-                        </ul>
-                    </li>
-                <?php endif; // end add new ?>
+                            </ul>
+                        </li>
+                </ul>
+            </div>
+            <div class="top-bar-right">
+                <ul class="dropdown menu" data-dropdown-menu>
 
-
-                <!--  notifications -->
-                <?php if ( isset( $dt_nav_tabs['admin']['notifications']['hidden'] ) && empty( $dt_nav_tabs['admin']['notifications']['hidden'] ) ) : ?>
-                    <li class="image-menu-nav">
-                        <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-bottom: 0">
-                            <img class="dt-white-icon" title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( 'Notifications', 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/bell.svg' ); ?>">
-                            <span class="badge alert notification-count" style="display:none"></span>
-                        </a>
-                    </li>
-                <?php endif; // end notifications ?>
-
-
-                <!-- settings -->
-                <?php if ( isset( $dt_nav_tabs['admin']['settings']['hidden'] ) && empty( $dt_nav_tabs['admin']['settings']['hidden'] ) ) : ?>
-                    <li class="has-submenu center-items">
-                        <button>
-                            <img class="dt-white-icon" src="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/settings.svg' ) ?>">
-                        </button>
-                        <ul class="submenu menu vertical">
-
-                            <?php foreach ( $dt_nav_tabs['admin']['settings']['submenu'] as $dt_nav_submenu ) :
-                                if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
-                                    <li>
-                                        <a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                            <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri()  . '/dt-assets/images/settings.svg' ) ?>">
-                                            <?php echo esc_html( $dt_nav_submenu['label'] ) ?>
-                                        </a>
-                                    </li>
-                                <?php endif;
-                            endforeach; ?>
-
-                            <?php do_action( 'dt_settings_menu_post' ) ?>
-
-                            <li><a href="<?php echo esc_url( wp_logout_url() ); ?>">
-                                    <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( get_template_directory_uri()  . '/dt-assets/images/logout.svg' ) ?>">
-                                    <?php esc_html_e( 'Log Out', 'disciple_tools' )?></a>
+                    <!-- core update -->
+                    <?php
+                    if ( current_user_can( 'update_core' ) ){
+                        $theme = wp_get_theme();
+                        $update = maybe_unserialize( get_site_option( 'puc_external_updates_theme-' . $theme->get_stylesheet(), '' ) );
+                        if ( !empty( $update ) && isset( $update->update->version ) && version_compare( $update->update->version, wp_get_theme()->version, '>' ) ) : ?>
+                            <li class="image-menu-nav">
+                                <a href="<?php echo esc_url( network_admin_url( 'update-core.php' ) ); ?>">
+                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" />
+                                    <span><?php esc_html_e( 'Theme Update Available!', 'disciple_tools' ); ?></span>
+                                </a>
                             </li>
-                        </ul>
-                    </li>
-                <?php endif; // end settings ?>
+                        <?php endif;
+                    }
+                    ?>
 
-                <?php do_action( 'dt_nav_add_post_settings' ) ?>
 
-            </ul>
+                    <!-- profile name -->
+                    <?php if ( isset( $dt_nav_tabs['admin']['profile']['hidden'] ) && empty( $dt_nav_tabs['admin']['profile']['hidden'] ) ) : ?>
+                        <li class="image-menu-nav">
+                            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? get_template_directory_uri() . '/dt-assets/images/profile.svg' ); ?>">
+                                <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/profile.svg?v=2' ) ?>">
+                                <span dir="auto"><?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?></span>
+                            </a>
+                        </li>
+                    <?php endif; // end profile ?>
+
+
+                    <!-- advanced search -->
+                    <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
+                        <li class="image-menu-nav">
+                            <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                                <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                            </a>
+                        </li>
+                    <?php endif; // end advanced search ?>
+
+
+                    <!-- add new -->
+                    <?php if ( isset( $dt_nav_tabs['admin']['add_new']['hidden'] ) && empty( $dt_nav_tabs['admin']['add_new']['hidden'] ) ) : ?>
+                        <li class="has-submenu center-items add-buttons">
+                            <button>
+                                <img title="<?php esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? '' ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>" style="width:24px;">
+                            </button>
+                            <!--  /* HEADER add menu */ -->
+                            <ul class="submenu menu vertical title-bar-right add-new-items-dropdown">
+                                <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
+                                    <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
+                                        <?php if ( ! isset( $dt_nav_submenu['hidden'] ) || ! $dt_nav_submenu['hidden'] ) { ?>
+                                            <li>
+                                                <a class="add-new-menu-item"
+                                                   href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
+                                                    <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
+                                                         src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>">
+                                                    <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    <?php endif; // end add new ?>
+
+
+                    <!--  notifications -->
+                    <?php if ( isset( $dt_nav_tabs['admin']['notifications']['hidden'] ) && empty( $dt_nav_tabs['admin']['notifications']['hidden'] ) ) : ?>
+                        <li class="image-menu-nav">
+                            <a href="#" class="notifications-menu-item" type="button" data-toggle="notification-dropdown" style="margin-bottom: 0">
+                                <img class="dt-white-icon" title="<?php esc_html( $dt_nav_tabs['admin']['notifications']['label'] ?? __( 'Notifications', 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['notifications']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/bell.svg' ); ?>">
+                                <span class="badge alert notification-count" style="display:none"></span>
+                            </a>
+                        </li>
+                    <?php endif; // end notifications ?>
+
+
+                    <!-- settings -->
+                    <?php if ( isset( $dt_nav_tabs['admin']['settings']['hidden'] ) && empty( $dt_nav_tabs['admin']['settings']['hidden'] ) ) : ?>
+                        <li class="has-submenu center-items">
+                            <button>
+                                <img class="dt-white-icon" src="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/settings.svg' ) ?>">
+                            </button>
+                            <ul class="submenu menu vertical">
+
+                                <?php foreach ( $dt_nav_tabs['admin']['settings']['submenu'] as $dt_nav_submenu ) :
+                                    if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
+                                        <li>
+                                            <a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
+                                                <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri()  . '/dt-assets/images/settings.svg' ) ?>">
+                                                <?php echo esc_html( $dt_nav_submenu['label'] ) ?>
+                                            </a>
+                                        </li>
+                                    <?php endif;
+                                endforeach; ?>
+
+                                <?php do_action( 'dt_settings_menu_post' ) ?>
+
+                                <li><a href="<?php echo esc_url( wp_logout_url() ); ?>">
+                                        <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>" src="<?php echo esc_url( get_template_directory_uri()  . '/dt-assets/images/logout.svg' ) ?>">
+                                        <?php esc_html_e( 'Log Out', 'disciple_tools' )?></a>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php endif; // end settings ?>
+
+                    <?php do_action( 'dt_nav_add_post_settings' ) ?>
+
+                </ul>
+            </div>
         </div>
+
+        <?php do_action( 'dt_nav_add_after' ) ?>
     </div>
 </div>
 

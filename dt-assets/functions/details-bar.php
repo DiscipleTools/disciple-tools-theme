@@ -10,13 +10,13 @@ declare(strict_types=1);
  * @param bool $task
  */
 function dt_print_details_bar(
-    bool $share_button = false,
-    bool $comment_button = false,
+    bool $share_button = true,
+    bool $comment_button = true,
     bool $show_update_needed = false,
     bool $update_needed = false,
     bool $following = false,
     bool $disable_following_toggle_function = false,
-    bool $task = false
+    bool $task = true
 ) {
     $dt_post_type     = get_post_type();
     $post_id          = get_the_ID();
@@ -24,15 +24,25 @@ function dt_print_details_bar(
     $dt_post          = DT_Posts::get_post( $dt_post_type, $post_id );
     $shared_with      = DT_Posts::get_shared_with( $dt_post['post_type'], $post_id );
     $shared_with_text = '';
+    $current_user_id = get_current_user_id();
+    $following = DT_Posts::get_users_following_post( $dt_post_type, $post_id );
+
+
+    $show_update_needed = isset( $post_settings['fields']['requires_update'] );
+    $update_needed = isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true;
+    $following = in_array( $current_user_id, $following );
+    $disable_following_toggle_function = isset( $dt_post['assigned_to']['id'] ) ? $dt_post['assigned_to']['id'] == $current_user_id : false;
 
     foreach ( $shared_with as $shared ) {
         $shared_with_text .= sprintf( ', %s', $shared['display_name'] );
     }
     ?>
 
-    <div data-sticky-container class="show-for-medium details-second-bar" style="z-index: 9">
+
+    <!-- DESKTOP -->
+    <div  class="show-for-medium details-second-bar" style="z-index: 9">
         <nav role="navigation"
-             data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
+             style="width:100%"
              class="second-bar" id="second-bar-large">
             <div class="container-width">
 
@@ -192,124 +202,124 @@ function dt_print_details_bar(
         </nav>
     </div>
 
-    <?php if ( $comment_button || $share_button ): ?>
-    <div data-sticky-container class="show-for-small-only details-second-bar" style="z-index: 9">
-    <nav role="navigation"
-        data-sticky data-options="marginTop:0;" data-sticky-on="small" data-top-anchor="95" style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
-        class="second-bar" id="second-bar-small">
-        <?php if ( $comment_button ): ?>
-            <div class="container-width">
-            <div class="grid-x align-center mobile-nav-actions" style="align-items: center">
-                <div class="cell shrink">
-                    <button  id="nav-view-comments" class="center-items">
-                        <a href="#comment-activity-section" class="center-items" style="color:black">
-                            <img src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/view-comments.svg' ); ?>">
-                        </a>
-                    </button>
-                </div>
-                <button class="button favorite" data-favorite="false">
-                <svg class='icon-star' viewBox="0 0 32 32">
-                    <use xlink:href="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/star.svg#star' ) ?>"></use>
-                </svg>
-                </object>
-                </button>
-                <?php endif; ?>
-                <?php if ( $share_button ): ?>
-                    <div class="cell shrink">
-                        <button class="center-items open-share">
-                            <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/share.svg' ) ?>">
-                        </button>
-                    </div>
-                <?php endif; ?>
-                <div class="cell shrink">
-                    <?php if ( $disable_following_toggle_function ) : ?>
-                        <button class="button follow mobile hollow" data-value="following" disabled>
-                            <i class="fi-eye"></i>
-                        </button>
-                    <?php else :
-                        if ( $following ) : ?>
-                            <button class="button follow mobile hollow" data-value="following">
-                                <i class="fi-eye"></i>
-                            </button>
-                        <?php else : ?>
-                            <button class="button follow mobile" data-value="">
-                                <i class="fi-eye"></i>
-                            </button>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-                <?php if ( $task ) : ?>
-                    <div class="cell shrink center-items">
-                        <button class="button open-set-task">
-                            <i class="fi-clock"></i>
-                        </button>
-                    </div>
-                <?php endif; ?>
-                <div class="cell shrink center-item">
-                    <?php if ( $show_update_needed ){ ?>
-                        <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
-                        <input type="checkbox" id="update-needed-small" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : '' ) ?>/>
-                        <label class="dt-switch" for="update-needed-small" style="vertical-align: top;"></label>
-                    <?php } ?>
-                </div>
-            </div>
 
-            <div class="grid-x">
-                <div class="cell small-1 center-items">
-                    <a class="section-chevron navigation-previous" style="display: none;" href="javascript:void(0)">
-                        <img style="height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
-                        $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                        if ( $dir == 'rtl' ) {
-                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
-                        } else {
-                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
-                        }?>">
-                    </a>
-                </div>
-                <div class="cell small-10 center">
-                    <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
-                        $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
-                    if ( !empty( $picture ) ) : ?>
-                        <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
-                    <?php else : ?>
-                        <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+    <div data-sticky data-options='marginTop:0;' data-sticky-on='small' data-top-anchor='95' class="show-for-small-only details-second-bar" style="z-index: 9">
+        <nav role="navigation"
+            style="width:100%; border-color: <?php echo esc_html( $type_color ); ?>"
+            class="second-bar" id="second-bar-small">
+            <?php if ( $comment_button ): ?>
+                <div class="container-width">
+                <div class="grid-x align-center mobile-nav-actions" style="align-items: center">
+                    <div class="cell shrink">
+                        <button  id="nav-view-comments" class="center-items">
+                            <a href="#comment-activity-section" class="center-items" style="color:black">
+                                <img src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/view-comments.svg' ); ?>">
+                            </a>
+                        </button>
+                    </div>
+                    <button class="button favorite" data-favorite="false">
+                    <svg class='icon-star' viewBox="0 0 32 32">
+                        <use xlink:href="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/star.svg#star' ) ?>"></use>
+                    </svg>
+                    </object>
+                    </button>
                     <?php endif; ?>
-                    <span id="title" <?php
-                    if ( isset( $dt_post['post_type'] ) && isset( $dt_post['ID'] ) ) {
-                                $can_update = DT_Posts::can_update( $dt_post['post_type'], $dt_post['ID'] );
-                    } else {
-                        $can_update = true;
-                    }
-                    if ( $can_update || ( isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == get_current_user_id() ) ) {
-                        echo esc_attr( 'contenteditable=true' ); } ?>
-                        class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
-                    <div id="record-tagline">
-                        <?php do_action( 'dt_post_record_name_tagline' ); ?>
-                        <span class="record-name-tagline">
-                        <?php if ( isset( $dt_post['type']['label'] ) ) : ?>
-                            <a data-open="contact-type-modal"><?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                    <?php if ( $share_button ): ?>
+                        <div class="cell shrink">
+                            <button class="center-items open-share">
+                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/share.svg' ) ?>">
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                    <div class="cell shrink">
+                        <?php if ( $disable_following_toggle_function ) : ?>
+                            <button class="button follow mobile hollow" data-value="following" disabled>
+                                <i class="fi-eye"></i>
+                            </button>
+                        <?php else :
+                            if ( $following ) : ?>
+                                <button class="button follow mobile hollow" data-value="following">
+                                    <i class="fi-eye"></i>
+                                </button>
+                            <?php else : ?>
+                                <button class="button follow mobile" data-value="">
+                                    <i class="fi-eye"></i>
+                                </button>
+                            <?php endif; ?>
                         <?php endif; ?>
-                        <span class="details-bar-created-on"></span>
-                            <?php if ( $dt_post['post_author_display_name'] ):
-                                echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post['post_author_display_name'] ) );
-                            endif; ?>
-                        </span>
+                    </div>
+                    <?php if ( $task ) : ?>
+                        <div class="cell shrink center-items">
+                            <button class="button open-set-task">
+                                <i class="fi-clock"></i>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                    <div class="cell shrink center-item">
+                        <?php if ( $show_update_needed ){ ?>
+                            <span style="margin-right:5px"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?>:</span>
+                            <input type="checkbox" id="update-needed-small" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : '' ) ?>/>
+                            <label class="dt-switch" for="update-needed-small" style="vertical-align: top;"></label>
+                        <?php } ?>
                     </div>
                 </div>
-                <div class="cell small-1 center-items">
-                    <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
-                        <img style="height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
-                        $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                        if ( $dir == 'rtl' ) {
-                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
+
+                <div class="grid-x">
+                    <div class="cell small-1 center-items">
+                        <a class="section-chevron navigation-previous" style="display: none;" href="javascript:void(0)">
+                            <img style="height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
+                            $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+                            if ( $dir == 'rtl' ) {
+                                echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
+                            } else {
+                                echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
+                            }?>">
+                        </a>
+                    </div>
+                    <div class="cell small-10 center">
+                        <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                            $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
+                        if ( !empty( $picture ) ) : ?>
+                            <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
+                        <?php else : ?>
+                            <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                        <?php endif; ?>
+                        <span id="title" <?php
+                        if ( isset( $dt_post['post_type'] ) && isset( $dt_post['ID'] ) ) {
+                                    $can_update = DT_Posts::can_update( $dt_post['post_type'], $dt_post['ID'] );
                         } else {
-                            echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
-                        }?>">
-                    </a>
+                            $can_update = true;
+                        }
+                        if ( $can_update || ( isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == get_current_user_id() ) ) {
+                            echo esc_attr( 'contenteditable=true' ); } ?>
+                            class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
+                        <div id="record-tagline">
+                            <?php do_action( 'dt_post_record_name_tagline' ); ?>
+                            <span class="record-name-tagline">
+                            <?php if ( isset( $dt_post['type']['label'] ) ) : ?>
+                                <a data-open="contact-type-modal"><?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                            <?php endif; ?>
+                            <span class="details-bar-created-on"></span>
+                                <?php if ( $dt_post['post_author_display_name'] ):
+                                    echo esc_html( ' ' . sprintf( _x( 'by %s', '(record created) by multiplier1', 'disciple_tools' ), $dt_post['post_author_display_name'] ) );
+                                endif; ?>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="cell small-1 center-items">
+                        <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
+                            <img style="height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
+                            $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+                            if ( $dir == 'rtl' ) {
+                                echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
+                            } else {
+                                echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
+                            }?>">
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
     </div>
-    <?php endif;
+    <?php
 }
