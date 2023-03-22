@@ -71,18 +71,14 @@ function dt_display_tile( $tile, $post ): bool {
     $post_settings = DT_Posts::get_post_settings( $post_type );
     $dt_post = DT_Posts::get_post( $post_type, $post_id );
     $tiles = DT_Posts::get_post_tiles( $post_type );
-    $following = DT_Posts::get_users_following_post( $post_type, $post_id );
+
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
+    add_action( 'dt_nav_add_after', function ( $desktop = true ){
+        dt_print_details_bar( $desktop );
+
+    }, 10, 1);
     get_header();
-    dt_print_details_bar(
-        true,
-        true,
-        isset( $post_settings['fields']['requires_update'] ) && current_user_can( 'assign_any_contacts' ),
-        isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true,
-        in_array( $current_user_id, $following ),
-        isset( $dt_post['assigned_to']['id'] ) ? $dt_post['assigned_to']['id'] == $current_user_id : false,
-        true
-    );
+
     ?>
     <div id="content" class="single-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
