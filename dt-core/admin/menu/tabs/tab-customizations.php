@@ -48,7 +48,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 continue;
             }
 
-            if ( array_key_exists( $field_key, $all_non_custom_fields ) && $post_settings['fields'][$field_key]['name'] != $all_non_custom_fields[$field_key]['name'] ) {
+            if ( isset( $all_non_custom_fields[$field_key]['name'] ) && $post_settings['fields'][$field_key]['name'] != $all_non_custom_fields[$field_key]['name'] ) {
                 $post_settings['fields'][$field_key]['default_name'] = $all_non_custom_fields[$field_key]['name'];
             }
         }
@@ -197,6 +197,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function space_between_div_open() {
         ?>
+        <p style="margin-bottom: 50px">
+            This feature is in BETA. Please download a copy of your settings  <a target='_blank' href="<?php echo esc_url( admin_url( 'admin.php?page=dt_utilities&tab=exports' ) ); ?>">here</a>. before making any changes.
+        </p>
         <div class="top-nav-row">
         <?php
     }
@@ -210,7 +213,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     public function show_post_type_pills() {
         ?>
         <div id="post-type-buttons">
-            <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a post type:', 'disciple_tools' ); ?></b></div>
+            <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a record type:', 'disciple_tools' ); ?></b></div>
         <?php
         $post_types = DT_Posts::get_post_types();
         foreach ( $post_types as $post_type ) :
