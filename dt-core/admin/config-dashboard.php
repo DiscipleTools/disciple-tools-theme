@@ -189,6 +189,9 @@ final class Disciple_Tools_Dashboard
 
             ?>
                 <style>
+                    .news-feed {
+                        overflow-wrap: anywhere;
+                    }
                     .news-feed img {
                         max-width: 100%;
                         height: auto;

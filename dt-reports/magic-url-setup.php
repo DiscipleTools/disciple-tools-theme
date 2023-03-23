@@ -27,8 +27,8 @@ class DT_Magic_URL_Setup {
             }
             if ( $post_types_has_registered_apps ){
                 $tiles['apps'] = [
-                    'label' => __( 'Apps', 'disciple_tools' ),
-                    'description' => __( 'Apps available on this record.', 'disciple_tools' )
+                    'label' => __( 'Magic Links', 'disciple_tools' ),
+                    'description' => __( 'Magic Links available on this record.', 'disciple_tools' )
                 ];
             }
         }

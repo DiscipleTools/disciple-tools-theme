@@ -3,6 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0011 extends Disciple_Tools_Migration {
     public function up() {
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 11 ){
+            return;
+        }
+
         global $wpdb;
         //make sure all groups have a start date and that it is correctly formatted.
         $groups = $wpdb->get_results( "

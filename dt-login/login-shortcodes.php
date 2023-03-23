@@ -31,8 +31,8 @@ function dt_firebase_login_ui( $attr ) {
     ?>
 
     <?php //phpcs:disable ?>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script>
         const config = [<?php echo json_encode( $config ) ?>][0]
 
@@ -81,8 +81,8 @@ function dt_firebase_login_ui( $attr ) {
         }
 
     </script>
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
+    <script src="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth.css" />
 
     <style>
         #firebaseui-auth-container .firebaseui-tos {
@@ -106,55 +106,56 @@ function dt_firebase_login_ui( $attr ) {
             }
             loaderElement.style.display = show ? 'block' : 'none'
         }
-        const uiConfig = {
-            callbacks: {
-                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-                    // User successfully signed in.
-                    // Return type determines whether we continue the redirect automatically
-                    // or whether we leave that to developer to handle.
+        function signInSuccessWithAuthResult(authResult, redirectUrl) {
+            // User successfully signed in.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
 
-                    showLoader()
+            showLoader()
 
-                    const user = authResult.user
+            const user = authResult.user
 
-                    if (authResult.additionalUserInfo.isNewUser && authResult.user.emailVerified === false) {
-                        user.sendEmailVerification()
+            if (authResult.additionalUserInfo.isNewUser && authResult.user.emailVerified === false) {
+                user.sendEmailVerification()
+            }
+
+            fetch( `${window.location.origin}/wp-json/dt/v1/session/login`, {
+                method: 'POST',
+                body: JSON.stringify(authResult)
+            })
+            .then((result) => result.text())
+            .then((json) => {
+                const response = JSON.parse(json)
+
+                if ( response.status === 200 ) {
+                    const { login_method, jwt } = response.body
+
+                    if ( login_method === 'mobile' ) {
+                        if ( !Object.prototype.hasOwnProperty.call( jwt, 'token' ) ) {
+                            throw new Error('token missing from response', jwt.error)
+                        }
+
+                        const { token } = jwt
+
+                        localStorage.setItem( 'login_token', token )
+                        localStorage.setItem( 'login_method', 'mobile' )
                     }
 
-                    fetch( `${window.location.origin}/wp-json/dt/v1/session/login`, {
-                        method: 'POST',
-                        body: JSON.stringify(authResult)
-                    })
-                    .then((result) => result.text())
-                    .then((json) => {
-                        const response = JSON.parse(json)
 
-                        if ( response.status === 200 ) {
-                            const { login_method, jwt } = response.body
+                    window.location = config.redirect_url
+                } else {
+                    showLoader(false)
+                    showErrorMessage(response.message)
+                    startUI()
+                }
+            })
+            .catch(console.error)
 
-                            if ( login_method === 'mobile' ) {
-                                if ( !Object.prototype.hasOwnProperty.call( jwt, 'token' ) ) {
-                                    throw new Error('token missing from response', jwt.error)
-                                }
-
-                                const { token } = jwt
-
-                                localStorage.setItem( 'login_token', token )
-                                localStorage.setItem( 'login_method', 'mobile' )
-                            }
-
-
-                            window.location = config.redirect_url
-                        } else {
-                            showLoader(false)
-                            showErrorMessage(response.message)
-                            startUI()
-                        }
-                    })
-                    .catch(console.error)
-
-                    return false;
-                },
+            return false;
+        }
+        const uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult,
                 uiShown: function() {
                     // The widget is rendered.
                     // Hide the loader.

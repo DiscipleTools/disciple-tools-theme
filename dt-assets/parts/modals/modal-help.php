@@ -12,8 +12,7 @@
         <div class="help-section" id="quick-action-help-text" style="display: none">
             <h3><?php esc_html_e( 'Quick Action Buttons', 'disciple_tools' ) ?></h3>
             <p><?php echo esc_html_x( 'These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done.', 'Optional Documentation', 'disciple_tools' ) ?>
-            <p><?php echo esc_html_x( "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer.
-                This action will also change the 'Seeker Path' to 'Contact Attempted'.", 'Optional Documentation', 'disciple_tools' ) ?>
+            <p><?php echo esc_html_x( "For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'.", 'Optional Documentation', 'disciple_tools' ) ?>
             </p>
         </div>
 

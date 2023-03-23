@@ -3,6 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0005 extends Disciple_Tools_Migration {
     public function up() {
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 5 ){
+            return;
+        }
+
         $query_args = [
             'post_type' => 'contacts',
             'nopaging'  => true,

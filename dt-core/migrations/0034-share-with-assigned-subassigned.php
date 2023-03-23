@@ -3,6 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0034 extends Disciple_Tools_Migration {
     public function up() {
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 34 ){
+            return;
+        }
+
         /**
          * Make sure contacts and groups are shared with the user assigned to them.
          * Make sure contacts are shared with the subassigned users.

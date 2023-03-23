@@ -258,10 +258,12 @@ class Disciple_Tools_Users
             }
         }
 
-        function asc_meth( $a, $b ){
-            $a['name'] = strtolower( $a['name'] );
-            $b['name'] = strtolower( $b['name'] );
-            return strcmp( $a['name'], $b['name'] );
+        if ( !function_exists( 'asc_meth' ) ){
+            function asc_meth( $a, $b ){
+                $a['name'] = strtolower( $a['name'] );
+                $b['name'] = strtolower( $b['name'] );
+                return strcmp( $a['name'], $b['name'] );
+            }
         }
 
         $list = apply_filters( 'dt_assignable_users_compact', $list, $search_string, $get_all );

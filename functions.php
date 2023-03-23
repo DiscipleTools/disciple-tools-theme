@@ -154,7 +154,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.37.1';
+            $this->version = '1.38.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -457,6 +457,8 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/admin/menu/tabs/tab-email-logs.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-error-logs.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-workflows.php' );
+                require_once( 'dt-core/admin/menu/tabs/tab-exports.php' );
+                require_once( 'dt-core/admin/menu/tabs/tab-imports.php' );
 
                 require_once( 'dt-core/admin/menu/menu-metrics.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-reports.php' );
