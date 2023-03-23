@@ -6,7 +6,7 @@
 /**
  * Class Disciple_Tools_Users_Endpoints
  */
-class Disciple_Tools_Core_Endpoints {
+class Disciple_Tools_Admin_Settings_Endpoints {
 
     private $context = 'dt-admin-settings';
     private $namespace;
@@ -161,84 +161,6 @@ class Disciple_Tools_Core_Endpoints {
         );
     }
 
-    /**
-     * These are settings available to any logged in user.
-     */
-    public static function get_settings() {
-        $user = wp_get_current_user();
-        if ( !$user ){
-            return new WP_Error( 'get_settings', 'Something went wrong. Are you a user?', [ 'status' => 400 ] );
-        }
-        $available_translations = dt_get_available_languages();
-        $post_types = DT_Posts::get_post_types();
-        $post_types_settings = [];
-        foreach ( $post_types as $post_type ){
-            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type );
-        }
-        return [
-            'available_translations' => $available_translations,
-            'post_types' => $post_types_settings,
-            'plugins' => apply_filters( 'dt_plugins', [] ),
-        ];
-    }
-
-    /**
-     * Expose settings publicly to world.
-     * To not use unless it is for setting that must be accessed
-     * before the user is logged in.
-     */
-    public function get_public_settings(){
-        $public_settings = [
-            'url' => get_home_url(),
-            'login_settings' => [],
-        ];
-        $public_settings = apply_filters( 'dt_core_public_endpoint_settings', $public_settings );
-        return $public_settings;
-    }
-
-
-    /**
-     * Log activity to the dt_activity_log
-     * @param WP_REST_Request $request
-     * @return array|WP_Error
-     */
-    public function log_activity( WP_REST_Request $request ) {
-        $params = $request->get_params();
-        if ( !isset( $params['action'] ) ) {
-            return new WP_Error( 'activity_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
-        }
-
-        // Validate user isn't trying to log activity for a different user
-        $user = wp_get_current_user();
-        if ( isset( $params['user_id'] ) && $params['user_id'] != $user->ID ) {
-            return new WP_Error( 'activity_param_error', 'Cannot log activity for another user', [ 'status' => 400 ] );
-        }
-
-        // If logging for a post, validate user has permission
-        if ( isset( $params['object_type'] ) && !empty( $params['object_type'] ) ) {
-            $type = $params['object_type'];
-            $post_types = DT_Posts::get_post_types();
-            if ( array_search( $type, $post_types ) !== false ) {
-                $post_id = isset( $params['object_id'] ) ? $params['object_id'] : null;
-
-                if ( !empty( $post_id ) ) {
-                    $has_permission = DT_Posts::can_update( $type, $post_id );
-                } else {
-                    $has_permission = DT_Posts::can_access( $type );
-                }
-
-                if ( !$has_permission ) {
-                    return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
-                }
-            }
-        }
-
-        dt_activity_insert( $params );
-        return [
-            'logged' => true
-        ];
-    }
-
     public static function get_post_fields() {
         $output = [];
         $post_types = DT_Posts::get_post_types();
@@ -288,8 +210,7 @@ class Disciple_Tools_Core_Endpoints {
             $post_tiles = DT_Posts::get_post_tiles( $post_type );
 
             if ( in_array( $tile_key, array_keys( $post_tiles ) ) ) {
-                Disciple_Tools_Customizations_Tab::admin_notice( __( 'tile already exists', 'disciple_tools' ), 'error' );
-                return false;
+                return new WP_Error( __FUNCTION__, 'Tile already exists', [ 'status' => 400 ] );
             }
 
             if ( !isset( $tile_options[$post_type] ) ) {
@@ -320,7 +241,7 @@ class Disciple_Tools_Core_Endpoints {
         $params = $request->get_params();
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
         $tile_key = sanitize_text_field( wp_unslash( $params['tile_key'] ) );
-        $tile_options = $tile_options = DT_Posts::get_post_tiles( $post_type, false );
+        $tile_options = DT_Posts::get_post_tiles( $post_type, false );
         return $tile_options[$tile_key];
     }
 
@@ -466,6 +387,7 @@ class Disciple_Tools_Core_Endpoints {
             }
             return $translations;
         }
+        return false;
     }
 
     public function plugin_install( WP_REST_Request $request ) {
@@ -533,8 +455,7 @@ class Disciple_Tools_Core_Endpoints {
 
             $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
             if ( isset( $post_fields[ $field_key ] ) ){
-                self::admin_notice( __( 'Field already exists', 'disciple_tools' ), 'error' );
-                return false;
+                return new WP_Error( __METHOD__, 'Field already exists', [ 'status' => 400 ] );
             }
             $new_field = [];
             if ( $field_type === 'key_select' ){
@@ -611,8 +532,7 @@ class Disciple_Tools_Core_Endpoints {
                 ];
             } elseif ( $field_type === 'connection' ){
                 if ( !$post_submission['connection_target'] ){
-                    self::admin_notice( __( 'Please select a connection target', 'disciple_tools' ), 'error' );
-                    return false;
+                    return new WP_Error( __METHOD__, 'Please select a connection target', [ 'status' => 400 ] );
                 }
                 $p2p_key = $post_type . '_to_' . $post_submission['connection_target'];
                 if ( p2p_type( $p2p_key ) !== false ){
@@ -758,7 +678,7 @@ class Disciple_Tools_Core_Endpoints {
         return false;
     }
 
-    public function default_field_name_changed( $post_type, $field_key, $custom_name ) {
+    public static function default_field_name_changed( $post_type, $field_key, $custom_name ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
@@ -767,7 +687,7 @@ class Disciple_Tools_Core_Endpoints {
         }
         return true;
     }
-    public function default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_label ) {
+    public static function default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_label ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
@@ -777,7 +697,7 @@ class Disciple_Tools_Core_Endpoints {
         return true;
     }
 
-    public function get_default_field_name( $post_type, $field_key ) {
+    public static function get_default_field_name( $post_type, $field_key ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
@@ -785,7 +705,7 @@ class Disciple_Tools_Core_Endpoints {
         return $default_name;
     }
 
-    public function get_default_field_option_label( $post_type, $field_key, $field_option_key ) {
+    public static function get_default_field_option_label( $post_type, $field_key, $field_option_key ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );

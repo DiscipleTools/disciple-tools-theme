@@ -412,6 +412,8 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              */
             require_once( 'dt-core/core-endpoints.php' );
             new Disciple_Tools_Core_Endpoints();
+            require_once( 'dt-core/admin/admin-settings-endpoints.php' );
+            new Disciple_Tools_Admin_Settings_Endpoints();
 
             /**
              * Admin panel
