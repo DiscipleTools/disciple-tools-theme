@@ -1204,6 +1204,7 @@ jQuery(document).ready(function($) {
                 <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${new_field_option_key}"></span>
             </div>`;
             $(`.new-field-option[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`).before(new_field_option_html);
+            show_preview_tile(tile_key);
             closeModal();
         });
     });
@@ -1223,6 +1224,7 @@ jQuery(document).ready(function($) {
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element.parent().removeClass('submenu-highlight');
             edited_field_option_element[0].innerText = new_field_option_label;
+            show_preview_tile(tile_key);
             closeModal();
             edited_field_option_element.parent().addClass('submenu-highlight');
         });

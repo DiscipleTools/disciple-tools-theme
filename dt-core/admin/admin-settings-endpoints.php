@@ -659,7 +659,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
             update_option( 'dt_field_customizations', $field_customizations );
-            dt_write_log( $custom_field_option );
             return $custom_field_option;
         }
     }
@@ -847,7 +846,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $custom_field[ $field_null_icon_key ] = null;
             }
 
-            dt_write_log( $custom_field );
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );
