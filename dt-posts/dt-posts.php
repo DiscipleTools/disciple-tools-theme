@@ -813,6 +813,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        /**
+         * Empty Search String
+         * Return the most recent posts viewed by the user
+         * and recently chosen value for this field
+         */
         $send_quick_results = false;
         if ( empty( $search_string ) ){
             $field_settings = self::get_post_field_settings( $post_type );
@@ -877,11 +882,16 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+
+        /**
+         * Use the search string to find connections
+         */
         if ( !$send_quick_results ){
             $query = [ 'limit' => 50 ];
             if ( !empty( $search_string ) ){
                 $query['name'] = [ $search_string ];
             }
+            $query = apply_filters( 'dt_get_viewable_compact_search_query', $query, $post_type, $search_string, $args );
             // if user can't list_all_, check permissions so they don't get access to things they shouldn't
             $check_permissions = !self::can_list_all( $post_type );
             $posts_list = self::search_viewable_post( $post_type, $query, $check_permissions );
