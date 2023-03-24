@@ -438,7 +438,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         if ( isset( $post_submission['new_field_name'], $post_submission['new_field_type'], $post_submission['post_type'] ) ){
             $post_type = $post_submission['post_type'];
             $field_type = $post_submission['new_field_type'];
-            $field_tile = $post_submission['new_field_tile'] ?? '';
+            $tile_key = $post_submission['tile_key'] ?? '';
             $field_key = dt_create_field_key( $post_submission['new_field_name'] );
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
 
@@ -463,7 +463,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name' => $post_submission['new_field_name'],
                     'default' => [],
                     'type' => 'key_select',
-                    'tile' => $field_tile,
+                    'tile' => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
@@ -472,7 +472,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name' => $post_submission['new_field_name'],
                     'default' => [],
                     'type' => 'multi_select',
-                    'tile' => $field_tile,
+                    'tile' => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private,
                 ];
@@ -481,7 +481,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name' => $post_submission['new_field_name'],
                     'default' => [],
                     'type' => 'tags',
-                    'tile' => $field_tile,
+                    'tile' => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
@@ -490,7 +490,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'date',
                     'default'     => '',
-                    'tile'     => $field_tile,
+                    'tile'     => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
@@ -499,7 +499,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'text',
                     'default'     => '',
-                    'tile'     => $field_tile,
+                    'tile'     => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
@@ -508,7 +508,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'textarea',
                     'default'     => '',
-                    'tile'     => $field_tile,
+                    'tile'     => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
@@ -517,7 +517,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'number',
                     'default'     => '',
-                    'tile'     => $field_tile,
+                    'tile'     => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
@@ -526,7 +526,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'link',
                     'default'     => [],
-                    'tile'     => $field_tile,
+                    'tile'     => $tile_key,
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
@@ -552,7 +552,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'post_type' => $post_submission['connection_target'],
                         'p2p_direction' => $direction,
                         'p2p_key' => $p2p_key,
-                        'tile'     => $field_tile,
+                        'tile'     => $tile_key,
                         'customizable' => 'all',
                     ];
 
@@ -578,7 +578,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'post_type' => $post_submission['connection_target'],
                         'p2p_direction' => $direction,
                         'p2p_key' => $p2p_key,
-                        'tile'     => $field_tile,
+                        'tile'     => $tile_key,
                         'customizable' => 'all',
                     ];
                     // Create the reverse fields on the connection post type

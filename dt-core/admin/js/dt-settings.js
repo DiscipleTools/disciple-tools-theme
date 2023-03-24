@@ -53,9 +53,9 @@ jQuery(document).ready(function($) {
         field_option_key: field_option_key,
     }, `dt-admin-settings`);
 
-    window.API.new_field = (post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name) => makeRequest("POST", `new-field`, {
+    window.API.new_field = (post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name) => makeRequest("POST", `new-field`, {
         post_type: post_type,
-        new_field_tile: new_field_tile,
+        tile_key: tile_key,
         new_field_name: new_field_name,
         new_field_type: new_field_type,
         new_field_private: new_field_private,
@@ -1046,22 +1046,22 @@ jQuery(document).ready(function($) {
     // Process Add Field
     $('#modal-overlay-form').on('click', '#js-add-field', function(e) {
         var post_type = get_post_type();
-        var new_field_tile = $(this).data('tile-key');
-        var new_field_name = $(`#new-field-name-${new_field_tile}`).val();
-        var new_field_type = $(`#new-field-type-${new_field_tile}`).val();
-        var new_field_private = $(`#new-field-private-${new_field_tile}`).is(':checked');
+        var tile_key = $(this).data('tile-key');
+        var new_field_name = $(`#new-field-name-${tile_key}`).val();
+        var new_field_type = $(`#new-field-type-${tile_key}`).val();
+        var new_field_private = $(`#new-field-private-${tile_key}`).is(':checked');
         var connection_target = $('#connection-field-target').val();
         var multidirectional = $('#multidirectional_checkbox').is(':checked');
         var other_field_name = $('#other_field_name').val();
 
-        API.new_field(post_type, new_field_tile, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(response) {
+        API.new_field(post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(response) {
             var field_key = response['key'];
             window['field_settings']['post_type_settings']['fields'][field_key] = response;
             var new_field_nonexpandable_html = `
                 <div class="sortable-fields" id="${field_key}">
-                    <div class="field-settings-table-field-name submenu-highlight" id="${field_key}" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
+                    <div class="field-settings-table-field-name submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
-                        <span class="field-name-content" data-parent-tile="${new_field_tile}" data-key="${field_key}">
+                        <span class="field-name-content" data-parent-tile="${tile_key}" data-key="${field_key}">
                             ${new_field_name}
                             <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                                 <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
@@ -1074,10 +1074,10 @@ jQuery(document).ready(function($) {
 
             var new_field_expandable_html = `
             <div class="sortable-fields" id="${field_key}">
-                <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${new_field_tile}" data-key="${field_key}" data-modal="edit-field">
+                <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                    <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
-                    <span class="field-name-content" data-parent-tile="${new_field_tile}" data-key="${field_key}">
+                    <span class="field-name-content" data-parent-tile="${tile_key}" data-key="${field_key}">
                         ${new_field_name}
                         <svg style="width:24px;height:24px;margin-left:6px;vertical-align:middle;" viewBox="0 0 24 24">
                             <path fill="green" d="M20,4C21.11,4 22,4.89 22,6V18C22,19.11 21.11,20 20,20H4C2.89,20 2,19.11 2,18V6C2,4.89 2.89,4 4,4H20M8.5,15V9H7.25V12.5L4.75,9H3.5V15H4.75V11.5L7.3,15H8.5M13.5,10.26V9H9.5V15H13.5V13.75H11V12.64H13.5V11.38H11V10.26H13.5M20.5,14V9H19.25V13.5H18.13V10H16.88V13.5H15.75V9H14.5V14A1,1 0 0,0 15.5,15H19.5A1,1 0 0,0 20.5,14Z" />
@@ -1091,7 +1091,7 @@ jQuery(document).ready(function($) {
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content"><i>default blank</i></span>
                     </div>
-                    <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${new_field_tile}" data-field-key="${field_key}">
+                    <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content">new field option</span>
                     </div>
@@ -1103,9 +1103,9 @@ jQuery(document).ready(function($) {
             if(['key_select', 'multi_select'].indexOf(new_field_type) > -1) {
                 new_field_html = new_field_expandable_html;
             }
-            if (new_field_tile){
-                $(`.add-new-field[data-parent-tile-key='${new_field_tile}']`).parent().before(new_field_html); //todo
-                show_preview_tile(new_field_tile);
+            if (tile_key){
+                $(`.add-new-field[data-parent-tile-key='${tile_key}']`).parent().before(new_field_html); //todo
+                show_preview_tile(tile_key);
             } else {
                 $('.add-new-field').parent().before(new_field_html);
             }
