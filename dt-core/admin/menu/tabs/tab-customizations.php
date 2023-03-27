@@ -22,8 +22,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
      */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_customizations_tab_content', [ $this, 'content' ], 99, 1 );
-        add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+        if ( isset( $_GET['page'] ) && $_GET['page'] === 'dt_customizations' ){
+            add_action( 'dt_customizations_tab_content', [ $this, 'content' ], 99, 1 );
+            add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+        }
         parent::__construct();
     }
 
@@ -112,24 +114,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'site_url' => get_site_url(),
                 'template_dir' => get_template_directory_uri(),
-            )
-        );
-
-        wp_localize_script(
-            'shared-functions', 'wpApiShare', array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'site_url' => get_site_url(),
-                'template_dir' => get_template_directory_uri(),
-                'translations' => [
-                    'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
-                    'all_locations' => __( 'All Locations', 'disciple_tools' ),
-                    'used_locations' => __( 'Used Locations', 'disciple_tools' ),
-                    'no_records_found' => _x( 'No results found matching "{{query}}"', 'Empty list results. Keep {{query}} as is in english', 'disciple_tools' ),
-                    'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
-                    'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
-                    'edit' => __( 'Edit', 'disciple_tools' ),
-                ],
             )
         );
 
