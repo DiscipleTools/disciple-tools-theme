@@ -642,7 +642,8 @@ jQuery(document).ready(function($) {
         href: function (item) {
           const postType = window.wpApiShare.post_type
           const query =  window.SHAREDFUNCTIONS.createCustomFilter(field, [item.value])
-          const labels = [{ id: `${field}_${item.value}`, name: `${field}: ${item.value}`}]
+          const field_label = field_settings[field].name || field
+          const labels = [{ id: `${field}_${item.value}`, name: `${field_label}: ${item.value}`}]
           return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
         }
       },
@@ -1067,7 +1068,8 @@ jQuery(document).ready(function($) {
         href: function (item) {
           const postType = window.wpApiShare.post_type
           const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name])
-          const labels = [{ id: `tags_${item.name}`, name: `Tags: ${item.name}`}]
+          const field_label = field_settings[field].name || field
+          const labels = [{ id: `tags_${item.name}`, name: `${field_label}: ${item.name}`}]
           return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
         }
       },
