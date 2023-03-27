@@ -1399,7 +1399,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             ''
         ];
         $supported_field_types_sql = dt_array_to_sql( $supported_field_types );
-        $ts_start                  = ( ! empty( $args['ts_start'] ) ) ? $args['ts_start'] : strtotime( '-12 month', time() );
+        $ts_start                  = ( ! empty( $args['ts_start'] ) ) ? $args['ts_start'] : 0;
         $ts_end                    = ( ! empty( $args['ts_end'] ) ) ? $args['ts_end'] : time();
         $result_order              = esc_sql( ( ! empty( $args['result_order'] ) ) ? $args['result_order'] : 'DESC' );
         $extra_meta                = ! empty( $args['extra_meta'] ) && $args['extra_meta'];
