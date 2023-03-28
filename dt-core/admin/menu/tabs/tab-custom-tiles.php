@@ -72,7 +72,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             foreach ( DT_Posts::get_post_types() as $post_type ){
 
                 // Extract accordingly, based on export type.
-                switch ($export_type){
+                switch ( $export_type ){
                     case 'full':
                         $payload[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
                         break;

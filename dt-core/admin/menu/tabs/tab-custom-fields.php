@@ -76,7 +76,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             foreach ( DT_Posts::get_post_types() as $post_type ){
 
                 // Extract accordingly, based on export type.
-                switch ($export_type){
+                switch ( $export_type ){
                     case 'full':
                         $payload[$post_type] = self::get_post_fields( $post_type );
                         break;
