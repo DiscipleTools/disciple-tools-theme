@@ -509,7 +509,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         } else {
             $can_update = true;
         }
-        if ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) {
+        $field_disabled = !empty( $fields[$field_key]['readonly'] );
+        if ( !$field_disabled && ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) {
             $disabled = '';
         }
         $required_tag = ( isset( $fields[$field_key]['required'] ) && $fields[$field_key]['required'] === true ) ? 'required' : '';

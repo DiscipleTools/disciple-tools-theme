@@ -70,7 +70,10 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //check to see if we want to create this contact.
         //could be used to check for duplicates first
-        $continue = apply_filters( 'dt_create_post_check_proceed', true, $fields );
+        $continue = apply_filters( 'dt_create_post_check_proceed', true, $fields, $post_type );
+        if ( is_wp_error( $continue ) ){
+            return $continue;
+        }
         if ( !$continue ){
             return new WP_Error( __FUNCTION__, 'Could not create this post. Maybe it already exists', [ 'status' => 409 ] );
         }
@@ -397,6 +400,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ){
             return new WP_Error( __FUNCTION__, "You do not have permission to update $post_type with ID $post_id", [ 'status' => 403 ] );
         }
+        //check to see if we want to update this record.
+        $continue = apply_filters( 'dt_update_post_check_proceed', true, $fields, $post_type );
+        if ( is_wp_error( $continue ) ){
+            return $continue;
+        }
+        if ( !$continue ){
+            return new WP_Error( __FUNCTION__, 'Could not update this post.', [ 'status' => 409 ] );
+        }
+
         $post_settings = self::get_post_settings( $post_type );
         $initial_fields = $fields;
         $post = get_post( $post_id );
