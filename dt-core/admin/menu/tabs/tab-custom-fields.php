@@ -67,10 +67,25 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function export_payload( $export_payload ){
-        if ( isset( $export_payload['services'], $export_payload['payload'] ) && in_array( self::$export_import_id, $export_payload['services'] ) ){
+        if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ){
+
             $payload = [];
+            $existing_custom_options = dt_get_option( 'dt_field_customizations' );
+            $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
+
             foreach ( DT_Posts::get_post_types() as $post_type ){
-                $payload[$post_type] = self::get_post_fields( $post_type );
+
+                // Extract accordingly, based on export type.
+                switch ($export_type){
+                    case 'full':
+                        $payload[$post_type] = self::get_post_fields( $post_type );
+                        break;
+                    case 'partial':
+                        if ( !empty( $existing_custom_options[$post_type] ) ){
+                            $payload[$post_type] = $existing_custom_options[$post_type];
+                        }
+                        break;
+                }
             }
 
             if ( !empty( $payload ) ){
@@ -148,7 +163,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                        checked/>
                             </td>
                             <td>
-                                <span><?php echo esc_attr( $field['name'] ?? $field_id ) ?></span>
+                                <span><?php echo esc_attr( !empty( $field['name'] ) ? $field['name'] : $field_id ) ?></span>
                             </td>
                         </tr>
                         <?php

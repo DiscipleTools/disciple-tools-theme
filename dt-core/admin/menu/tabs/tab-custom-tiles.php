@@ -63,11 +63,25 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function export_payload( $export_payload ){
-        if ( isset( $export_payload['services'], $export_payload['payload'] ) && in_array( self::$export_import_id, $export_payload['services'] ) ){
+        if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ){
 
             $payload = [];
+            $existing_custom_options = dt_get_option( 'dt_custom_tiles' );
+            $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
+
             foreach ( DT_Posts::get_post_types() as $post_type ){
-                $payload[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
+
+                // Extract accordingly, based on export type.
+                switch ($export_type){
+                    case 'full':
+                        $payload[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
+                        break;
+                    case 'partial':
+                        if ( !empty( $existing_custom_options[$post_type] ) ){
+                            $payload[$post_type] = $existing_custom_options[$post_type];
+                        }
+                        break;
+                }
             }
 
             if ( !empty( $payload ) ){
