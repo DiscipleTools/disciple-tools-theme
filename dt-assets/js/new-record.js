@@ -60,7 +60,7 @@ jQuery(function($) {
                 <span class="loading-spinner" data-${field}-index="${window.lodash.escape( elementIndex )}" style="margin: 0.5rem;"></span>
               </li>
               <div class="communication-channel-error" data-${field}-index="${window.lodash.escape( elementIndex )}" style="display: none;">
-                ${window.new_record_localized.translations.value_already_exists.replace('%s', fieldName)}: 
+                ${window.new_record_localized.translations.value_already_exists.replace('%s', fieldName)}:
                 <span class="duplicate-ids" data-${field}-index="${window.lodash.escape( elementIndex )}" style="color: #3f729b;"></span>
               </div>`)
     }
@@ -154,11 +154,9 @@ jQuery(function($) {
     API.create_post( window.new_record_localized.post_type, new_post).promise().then(function(data) {
       window.location = data.permalink;
     }).catch(function(error) {
-      $(".js-create-post-button").removeClass("loading").addClass("alert");
-      $(".js-create-post").append(
-        $("<div>").html(error.responseText)
-      );
-      console.error(error);
+      const message = error.responseJSON?.message || error.responseText
+      $(".js-create-post-button").removeClass("loading").addClass("alert").attr("disabled", false)
+      $(".error-text").html(message);
     });
     return false;
   });
@@ -1387,18 +1385,20 @@ jQuery(function($) {
   }
 
   // Check for phone and email duplication
-  non_duplicable_fields = ['contact_phone', 'contact_email'];
+  let non_duplicable_fields = ['contact_phone', 'contact_email'];
   $.each(non_duplicable_fields, function(field_key, field_type){
-    var field_name = window.new_record_localized.post_type_settings.fields[field_type].name
-    $(`input[data-field="${field_type}"]`).attr(`data-${field_type}-index`, '0');
-    $(`input[data-field="${field_type}"]`).after(`<span class="loading-spinner" data-${field_type}-index="0" style="margin: 0.5rem;"></span>`);
-    $(`input[data-field="${field_type}"]`).parent().after(`
-      <div class="communication-channel-error" data-${field_type}-index="0" style="display: none;">
-        ${window.new_record_localized.translations.value_already_exists.replace('%s', field_name)}: 
-        <span class="duplicate-ids" data-${field_type}-index="0" style="color: #3f729b;"></span>
-        </div>`);
+    if ( window.new_record_localized.post_type_settings.fields[field_type] ){
+      var field_name = window.new_record_localized.post_type_settings.fields[field_type].name
+      $(`input[data-field="${field_type}"]`).attr(`data-${field_type}-index`, '0');
+      $(`input[data-field="${field_type}"]`).after(`<span class="loading-spinner" data-${field_type}-index="0" style="margin: 0.5rem;"></span>`);
+      $(`input[data-field="${field_type}"]`).parent().after(`
+        <div class="communication-channel-error" data-${field_type}-index="0" style="display: none;">
+          ${window.new_record_localized.translations.value_already_exists.replace('%s', field_name)}:
+          <span class="duplicate-ids" data-${field_type}-index="0" style="color: #3f729b;"></span>
+          </div>`);
+    }
   })
-  
+
   function check_field_value_exists(field_type, element_index) {
     var email = $(`input[data-${field_type}-index="${element_index}"]`).val();
     $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner active');
