@@ -1527,7 +1527,7 @@ jQuery(document).ready(function($) {
         source: {
             ajax: {
                 type: "POST",
-                url: window.wpApiSettings.root+ 'dt-admin-settings/get-post-fields',
+                url: window.wpApiSettings.root + 'dt-admin-settings/get-post-fields',
                 beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
                 },

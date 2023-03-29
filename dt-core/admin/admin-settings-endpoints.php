@@ -185,7 +185,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
                 $post_settings = DT_Posts::get_post_settings( $post_type, false );
                 foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
-                    if ( $setting_value['tile'] === $tile_key ) {
+                    if ( isset( $setting_value['tile'] ) && $setting_value['tile'] === $tile_key ) {
                         $output[] = [
                             'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_value['name'],
                             'post_type' => $post_type,
@@ -196,7 +196,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 }
             }
         }
-        header( 'Content-Type" => application/json' );
         echo json_encode( $output );
     }
 
