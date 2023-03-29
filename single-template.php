@@ -158,7 +158,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <?php }
                         }
                         ?>
-                        <?php do_action( 'dt_details_additional_section', 'status', $post_type ); ?>
+                        <?php do_action( 'dt_details_additional_section', 'status', $post_type, $post_id ); ?>
                         </div>
                     </section>
                     <?php endif; ?>
@@ -288,7 +288,7 @@ function dt_display_tile( $tile, $post ): bool {
                                     <?php }
                                 }
                                 // let the plugin add section content
-                                do_action( 'dt_details_additional_section', 'details', $post_type );
+                                do_action( 'dt_details_additional_section', 'details', $post_type, $post_id );
                                 ?>
                             </div>
                         </div>
@@ -363,7 +363,7 @@ function dt_display_tile( $tile, $post ): bool {
                                                     }
                                                 }
                                             }, 20, 2 );
-                                            do_action( 'dt_details_additional_section', $tile_key, $post_type );
+                                            do_action( 'dt_details_additional_section', $tile_key, $post_type, $post_id );
                                             ?>
                                         </div>
                                     </div>
