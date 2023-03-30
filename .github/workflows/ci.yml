@@ -33,9 +33,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: 16.x
+        cache: 'npm'
+    - run: npm install -g gulp-cli eslint @babel/eslint-parser
 
     - name: Install PHP
       uses: shivammathur/setup-php@master
@@ -63,24 +65,6 @@ jobs:
       run: |
         composer install -o
         export PATH="$HOME/.composer/vendor/bin:$PATH"
-
-    - name: Cache global node modules
-      id: cache-global-nodemodules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-global-node-modules
-      with:
-        # caching node_modules
-        path: /usr/lib/node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}
-        restore-keys: |
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-
-    - name: Install global npm dependencies
-      if: steps.cache-global-nodemodules.outputs.cache-hit != 'true'
-      run: |
-        npm install -g gulp-cli eslint @babel/eslint-parser
 
     - name: Cache node modules
       id: cache-nodemodules
