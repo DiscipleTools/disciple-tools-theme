@@ -111,7 +111,23 @@ jobs:
     - name: Test eslint
       run: ./tests/test_eslint.sh
 
+    - name: Get changed CSS & JS files
+      id: changed-css-js-files
+      uses: tj-actions/changed-files@v35
+      with:
+        files: |
+          **/*.css
+          **/*.js
+
+    - name: List all changed CSS & JS files
+      run: |
+        for file in ${{ steps.changed-css-js-files.outputs.all_changed_and_modified_files }}; do
+          echo "$file was changed"
+        done
+
+
     - name: Test minification
+      if: steps.changed-css-js-files.outputs.all_changed_and_modified_files != ''
       run : |
         find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
         gulp
