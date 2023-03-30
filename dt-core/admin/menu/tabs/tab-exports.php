@@ -162,7 +162,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                         </script>
                         <?php
                     } else {
-                        echo __( 'Unable to detect any suitable service settings to export.', 'disciple_tools' );
+                        echo esc_attr( __( 'Unable to detect any suitable service settings to export.', 'disciple_tools' ) );
                         exit();
                     }
                 }
