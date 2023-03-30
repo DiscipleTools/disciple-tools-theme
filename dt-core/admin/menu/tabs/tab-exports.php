@@ -161,6 +161,9 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                             document.getElementById('dt_export_downloadable_form').submit();
                         </script>
                         <?php
+                    } else {
+                        echo __( 'Unable to detect any suitable service settings to export.', 'disciple_tools' );
+                        exit();
                     }
                 }
             }
@@ -191,15 +194,15 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                             <input type="radio" id="dt_export_service_select_full"
                                    name="dt_export_service_select_th_option"
                                    class="dt-export-service-select-th-option"
-                                   data-select_type="full"
-                                   checked/>
+                                   data-select_type="full"/>
                         </th>
                         <th style="text-align: center; font-size: 12px; padding-right: 22px;">
                             <label for="dt_export_service_select_partial">Partial</label><br>
                             <input type="radio" id="dt_export_service_select_partial"
                                    name="dt_export_service_select_th_option"
                                    class="dt-export-service-select-th-option"
-                                   data-select_type="partial"/>
+                                   data-select_type="partial"
+                                   checked/>
                         </th>
                         <th style="text-align: center; font-size: 12px; padding-right: 22px;">
                             <label for="dt_export_service_select_none">None</label><br>
@@ -228,14 +231,14 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                                 <input type="radio" class="dt-export-service-select-td-option"
                                        name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
                                        data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="full"
-                                       checked/>
+                                       data-select_type="full"/>
                             </td>
                             <td style="text-align: center;">
                                 <input type="radio" class="dt-export-service-select-td-option"
                                        name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
                                        data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="partial"/>
+                                       data-select_type="partial"
+                                       checked/>
                             </td>
                             <td style="text-align: center;">
                                 <input type="radio" class="dt-export-service-select-td-option"
