@@ -33,9 +33,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: 16.x
+        cache: 'npm'
+    - run: npm install -g gulp-cli eslint @babel/eslint-parser
 
     - name: Install PHP
       uses: shivammathur/setup-php@master
@@ -45,11 +47,42 @@ jobs:
     - name: Report PHP version
       run: php -v
 
-    - name: Install dependencies
+    - name: Cache Composer dependencies
+      id: cache-composer-dependencies
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-composer-dependencies-${{ matrix.php }}
+      with:
+        # caching node_modules
+        path: vendor
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Install Composer dependencies
+      if: steps.cache-composer-dependencies.outputs.cache-hit != 'true'
       run: |
         composer install -o
         export PATH="$HOME/.composer/vendor/bin:$PATH"
-        npm install -g gulp-cli eslint @babel/eslint-parser
+
+    - name: Cache node modules
+      id: cache-nodemodules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        # caching node_modules
+        path: node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install npm Dependencies
+      if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+      run: |
         npm install
 
     - name: Test Syntax
@@ -58,13 +91,31 @@ jobs:
     - name: Test Installation
       run: ./tests/test_installation.sh
 
-    - name: Test phpcs
-      run: ./tests/test_phpcs.sh
+    - name: Get changed PHP files
+      id: changed-php-files
+      uses: tj-actions/changed-files@v35
+      with:
+        files: |
+          **/*.php
+
+    - name: Run PHPCS on changed PHP files
+      if: steps.changed-php-files.outputs.all_changed_files != ''
+      run: |
+        ./tests/test_phpcs.sh ${{ steps.changed-php-files.outputs.all_changed_files }}
 
     - name: Test eslint
       run: ./tests/test_eslint.sh
 
+    - name: Get changed CSS & JS files
+      id: changed-css-js-files
+      uses: tj-actions/changed-files@v35
+      with:
+        files: |
+          **/*.css
+          **/*.js
+
     - name: Test minification
+      if: steps.changed-css-js-files.outputs.all_changed_and_modified_files != ''
       run : |
         find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
         gulp
