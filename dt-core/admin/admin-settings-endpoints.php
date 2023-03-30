@@ -28,7 +28,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/plugin-install', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_install' ],
-                'permission_callback' => [ $this, 'plugin_permission_check' ],
+                'permission_callback' => [ $this, 'plugin_install_permission_check' ],
             ]
         );
 
@@ -36,7 +36,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/plugin-delete', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_delete' ],
-                'permission_callback' => [ $this, 'plugin_permission_check' ],
+                'permission_callback' => [ $this, 'plugin_install_permission_check' ],
             ]
         );
 
@@ -44,7 +44,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/plugin-activate', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_activate' ],
-                'permission_callback' => [ $this, 'plugin_permission_check' ],
+                'permission_callback' => [ $this, 'plugin_activate_permission_check' ],
             ]
         );
 
@@ -52,7 +52,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/plugin-deactivate', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'plugin_deactivate' ],
-                'permission_callback' => [ $this, 'plugin_permission_check' ],
+                'permission_callback' => [ $this, 'plugin_activate_permission_check' ],
             ]
         );
 
@@ -60,7 +60,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/get-post-fields', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'get_post_fields' ],
-                'permission_callback' => '__return_true',
+                'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
 
@@ -76,7 +76,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/get-tile', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'get_tile' ],
-                'permission_callback' => '__return_true',
+                'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
 
@@ -410,8 +410,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         return true;
     }
 
-    public function plugin_permission_check() {
-        if ( ! current_user_can( 'manage_dt' ) ) {
+    public function plugin_install_permission_check() {
+        if ( !current_user_can( 'manage_dt' ) || !current_user_can( 'install_plugins' ) ) {
+            return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
+        }
+        return true;
+    }
+    public function plugin_activate_permission_check() {
+        if ( !current_user_can( 'manage_dt' ) ) {
             return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
         }
         return true;
@@ -854,7 +860,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function default_permission_check() {
-        if ( ! current_user_can( 'manage_options' ) ) {
+        if ( ! current_user_can( 'manage_dt' ) ) {
             return new WP_Error( 'forbidden', 'You are not allowed to do that.', array( 'status' => 403 ) );
         }
         return true;

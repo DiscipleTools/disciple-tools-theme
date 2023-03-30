@@ -30,6 +30,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
             wp_localize_script(
                 'dt-extensions', 'plugins', array(
+                    'can_install_plugins' => current_user_can( 'install_plugins' ),
                     'all_plugins' => self::get_dt_plugins(),
                     'translations' => [
                         'install' => __( 'Install', 'disciple_tools' ),
