@@ -15,6 +15,7 @@ jQuery(function($){
     function load_all_plugin_cards() {
         let all_plugins = window.plugins.all_plugins;
         var translations = window.plugins.translations;
+        let can_install_plugins = window.plugins.can_install_plugins;
         var install_text = window.lodash.escape(translations.install);
         var delete_text = window.lodash.escape(translations.delete);
         var activate_text = window.lodash.escape(translations.activate);
@@ -42,20 +43,21 @@ jQuery(function($){
 
                 var installation_button_html =  `
                     <li>
-                        <button class="button" data-action="install" data-plugin-slug="${plugin['slug']}">${install_text}</button>
+                        <button class="button" data-action="install" data-plugin-slug="${plugin['slug']}" ${can_install_plugins ? '' : 'disabled' }>${install_text}</button>
                     </li>`;
+
                 var activation_button_html = '';
-
-
-
-                if ( plugin['installed'] & !plugin['active'] ) {
+                if ( plugin['installed'] && !plugin['active']  ) {
                     activation_button_html =   `
                     <li>
                         <button class="button" data-action="activate" data-plugin-slug="${plugin['slug']}">${activate_text}</button>
                     </li>`;
-                    installation_button_html = `<li>
-                        <button class="button" data-action="delete" data-plugin-slug="${plugin['slug']}">${delete_text}</button>
-                    </li>`;
+                    installation_button_html = ''
+                    if ( can_install_plugins ) {
+                      installation_button_html = `<li>
+                          <button class="button" data-action="delete" data-plugin-slug="${plugin['slug']}">${delete_text}</button>
+                      </li>`;
+                    }
                 }
 
 
