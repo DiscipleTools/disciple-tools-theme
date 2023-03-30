@@ -196,7 +196,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 }
             }
         }
-        echo json_encode( $output );
+        return $output;
     }
 
     public static function create_new_tile( WP_REST_Request $request ) {
