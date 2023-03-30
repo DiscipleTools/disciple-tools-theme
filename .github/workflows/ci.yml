@@ -91,12 +91,17 @@ jobs:
     - name: Test Installation
       run: ./tests/test_installation.sh
 
+    - name: Base SHA
+      id: base-sha
+      run: echo "sha=$(git rev-parse origin/master)" >> $GITHUB_OUTPUT
+
     - name: Get changed PHP files
       id: changed-php-files
       uses: tj-actions/changed-files@v35
       with:
         files: |
           **/*.php
+        base_sha: "${{ steps.base-sha.outputs.sha }}"
 
     - name: Run PHPCS on changed PHP files
       if: steps.changed-php-files.outputs.all_changed_files != ''
@@ -113,6 +118,7 @@ jobs:
         files: |
           **/*.css
           **/*.js
+        base_sha: "${{ steps.base-sha.outputs.sha }}"
 
     - name: Test minification
       if: steps.changed-css-js-files.outputs.all_changed_and_modified_files != ''
