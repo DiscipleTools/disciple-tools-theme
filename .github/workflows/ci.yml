@@ -73,7 +73,7 @@ jobs:
 
     - name: Run PHPCS on changed PHP files
       run: |
-        ./test/test_phpcs.sh ${{ steps.changed-php-files.outputs.all_changed_files }}
+        ./tests/test_phpcs.sh ${{ steps.changed-php-files.outputs.all_changed_files }}
 
     - name: Test eslint
       run: ./tests/test_eslint.sh
