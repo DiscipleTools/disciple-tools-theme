@@ -2683,13 +2683,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'location_meta':
                 case 'connection':
                 case 'communication_channel':
-                    $value_array = ( $field_type == 'communication_channel' ) ? $post[ $field_id ] : ( $post[ $field_id ]['values'] ?? [] );
+                    $value_array = $post[$field_id]['values'] ?? $post[$field_id];
                     foreach ( $value_array ?? [] as $entry ) {
                         if ( isset( $entry['value'] ) ) {
 
                             // Attempt to find match within incoming value array.
                             if ( ! empty( $value ) && is_array( $value ) ) {
-                                foreach ( $value as $val ) {
+                                foreach ( $value['values'] ?? $value as $val ) {
                                     if ( $entry['value'] == $val['value'] ) {
                                         return true;
                                     }
