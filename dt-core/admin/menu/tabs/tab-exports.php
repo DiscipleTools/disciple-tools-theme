@@ -162,7 +162,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                         </script>
                         <?php
                     } else {
-                        echo esc_attr( __( 'Unable to detect any suitable service settings to export.', 'disciple_tools' ) );
+                        echo esc_attr( __( 'Unable to detect any suitable service settings to export, or no user customizations have been made.', 'disciple_tools' ) );
                         exit();
                     }
                 }
@@ -176,7 +176,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
 
         ?>
         <p>
-            Select services below, to be exported into a json configuration file. A Full export is a deep extraction of a service's entire settings; whilst a Partial extraction will only contain recent customizations.
+            Select services below, to be exported into a json configuration file. A Full export is a deep extraction of a service's entire settings; whilst a Partial extraction will only contain user customizations.
         </p>
         <form id="dt_export_form" method="POST">
             <input type="hidden" name="dt_export_nonce" id="dt_export_nonce"
