@@ -67,7 +67,7 @@ function makeRequest(type, url, data, base = "dt/v1/") {
     },
   };
 
-  if (data) {
+  if (data && !window.lodash.isEmpty(data)) {
     options.data = type === "GET" ? data : JSON.stringify(data);
   }
 
