@@ -261,14 +261,18 @@ jQuery(function($){
         return;
     }
     function plugin_deactivate(plugin_slug) {
+        let can_install_plugins = window.plugins.can_install_plugins;
         window.API.plugin_deactivate(plugin_slug).promise().then(function() {
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="activate" data-plugin-slug="${plugin_slug}">Activate</button>
-            </li>
-            <li>
-                <button class="button" data-action="delete" data-plugin-slug="${plugin_slug}">Delete</button>
             </li>`);
+            if ( can_install_plugins ) {
+                $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).append(`
+                <li>
+                <button class="button" data-action="delete" data-plugin-slug="${plugin_slug}">Delete</button>
+                </li>`);
+            }
             $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
         return;
