@@ -11,9 +11,13 @@
         opacity: .5;
         color: white;
     }
+    &[disabled] {
+        background-color: #eee;
+        color: black;
+    }
 }
 //unselected options
-.empty-select-button {
+.button.select-button.empty-select-button {
     background-color: #eee;
     color: black;
     &:focus {
@@ -21,7 +25,7 @@
         color:black;
     }
 }
-.selected-select-button {
+.button.select-button.selected-select-button {
     background-color: #4CAF50;
     color: white;
     &:focus {
