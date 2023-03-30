@@ -58,8 +58,22 @@ jobs:
     - name: Test Installation
       run: ./tests/test_installation.sh
 
-    - name: Test phpcs
-      run: ./tests/test_phpcs.sh
+    - name: Get changed PHP files
+      id: changed-php-files
+      uses: tj-actions/changed-files@v35
+      with:
+        files: |
+          **/*.php
+
+    - name: List all changed PHP files
+      run: |
+        for file in ${{ steps.changed-php-files.outputs.all_changed_files }}; do
+          echo "$file was changed"
+        done
+
+    - name: Run PHPCS on changed PHP files
+      run: |
+        ./test/test_phpcs.sh ${{ steps.changed-php-files.outputs.all_changed_files }}
 
     - name: Test eslint
       run: ./tests/test_eslint.sh
