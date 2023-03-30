@@ -60,7 +60,7 @@ function dt_login_url( string $name, string $url = '' ) : string {
             return dt_create_site_url( $login_url, $redirect_params );
         case 'redirect':
         case 'success':
-            return dt_create_site_url( $redirect_url );
+            return $redirect_url;
         case 'logout':
             return dt_create_site_url( $login_url, [ 'action' => 'logout' ] );
         case 'register':
