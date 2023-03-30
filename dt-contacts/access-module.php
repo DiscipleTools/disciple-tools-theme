@@ -29,7 +29,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         //display tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
         add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
-        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 5 );
+        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 6 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -415,7 +415,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         return $sections;
     }
 
-    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id ){
+    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display = false ){
         $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
             $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
@@ -427,7 +427,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $disabled = '';
         }
         if ( isset( $post['post_type'] ) && $post['post_type'] === 'contacts' && $field_key === 'overall_status'
-            && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]['custom_display'] )
+            && isset( $contact_fields[$field_key] ) && $custom_display
             && empty( $contact_fields[$field_key]['hidden'] )
             ){
             $contact = $post;

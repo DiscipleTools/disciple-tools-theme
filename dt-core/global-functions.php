@@ -513,6 +513,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         if ( !$field_disabled && ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) {
             $disabled = '';
         }
+        $custom_display = !empty( $fields[$field_key]['custom_display'] );
         $required_tag = ( isset( $fields[$field_key]['required'] ) && $fields[$field_key]['required'] === true ) ? 'required' : '';
         $field_type = isset( $fields[$field_key]['type'] ) ? $fields[$field_key]['type'] : null;
         $is_private = isset( $fields[$field_key]['private'] ) && $fields[$field_key]['private'] === true;
@@ -520,7 +521,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         if ( !empty( $field_id_prefix ) ) {
             $display_field_id = $field_id_prefix . $field_key;
         }
-        if ( isset( $fields[$field_key]['type'] ) && empty( $fields[$field_key]['custom_display'] ) && empty( $fields[$field_key]['hidden'] ) ) {
+        if ( isset( $fields[$field_key]['type'] ) && !$custom_display && empty( $fields[$field_key]['hidden'] ) ) {
             /* breadrcrumb: new-field-type Add allowed field types */
             $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
@@ -874,7 +875,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
             <?php endif;
         }
-        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id );
+        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display );
     }
 
     function render_link_field( $field_key, $option_key, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
