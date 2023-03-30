@@ -99,6 +99,7 @@ jobs:
           **/*.php
 
     - name: Run PHPCS on changed PHP files
+      if: steps.changed-php-files.outputs.all_changed_files != ''
       run: |
         ./tests/test_phpcs.sh ${{ steps.changed-php-files.outputs.all_changed_files }}
 
