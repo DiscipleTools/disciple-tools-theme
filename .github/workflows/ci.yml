@@ -51,7 +51,7 @@ jobs:
       id: cache-composer-dependencies
       uses: actions/cache@v2
       env:
-        cache-name: cache-composer-dependencies
+        cache-name: cache-composer-dependencies-${{ matrix.php }}
       with:
         # caching node_modules
         path: vendor
