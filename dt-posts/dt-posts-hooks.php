@@ -173,6 +173,9 @@ class DT_Posts_Hooks {
                         case 'communication_channel':
                             $values       = [];
                             $fields_array = ( $field_type == 'communication_channel' ) ? $fields[ $search_field ] : $fields[ $search_field ]['values'];
+                            if ( isset( $fields_array['values'] ) ){
+                                $fields_array = $fields_array['values'];
+                            }
                             foreach ( $fields_array ?? [] as $value ) {
                                 if ( isset( $value['value'] ) ) {
                                     $values[] = '^' . $value['value'];
