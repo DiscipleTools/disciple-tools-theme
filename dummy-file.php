@@ -1,4 +1,4 @@
 <?php
 
-$bad_line='';
+$bad_line = '';
 
