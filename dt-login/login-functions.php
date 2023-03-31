@@ -41,7 +41,7 @@ function dt_login_url( string $name, string $url = '' ) : string {
     $dt_login = DT_Login_Fields::all_values();
 
     $url = new DT_URL( $url );
-    $query_redirect_url = $url->query_params()->get( 'redirect_to' );
+    $query_redirect_url = $url->query_params->get( 'redirect_to' );
 
     $login_url = $dt_login['login_url'] ?? '';
     $redirect_url = empty( $query_redirect_url ) ? site_url( $dt_login['redirect_url'] ) ?? '' : $query_redirect_url;
