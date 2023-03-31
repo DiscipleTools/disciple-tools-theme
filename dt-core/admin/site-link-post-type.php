@@ -1494,12 +1494,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         // Adds the type of connection to the site link system
         public function default_site_link_type( $type ){
-            $post_types = DT_Posts::get_post_types();
-            foreach ( $post_types ?? [] as $post_type ){
-                $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+            if ( class_exists( 'DT_Posts' ) ){
+                $post_types = DT_Posts::get_post_types();
+                foreach ( $post_types ?? [] as $post_type ){
+                    $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
 
-                $type['create_' . $post_type] = sprintf( __( 'Create %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
-                $type['create_update_' . $post_type] = sprintf( __( 'Create and Update %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
+                    $type['create_' . $post_type] = sprintf( __( 'Create %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
+                    $type['create_update_' . $post_type] = sprintf( __( 'Create and Update %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
+                }
             }
 
             return $type;
@@ -1507,14 +1509,16 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         // Add the specific capabilities needed for the site to site linking.
         public function default_site_link_capabilities( $args ){
-            $post_types = DT_Posts::get_post_types();
-            foreach ( $post_types ?? [] as $post_type ){
-                if ( 'create_' . $post_type === $args['connection_type'] ){
-                    $args['capabilities'][] = 'create_' . $post_type;
-                }
-                if ( 'create_update_' . $post_type === $args['connection_type'] ){
-                    $args['capabilities'][] = 'create_' . $post_type;
-                    $args['capabilities'][] = 'update_any_' . $post_type;
+            if ( class_exists( 'DT_Posts' ) ){
+                $post_types = DT_Posts::get_post_types();
+                foreach ( $post_types ?? [] as $post_type ){
+                    if ( 'create_' . $post_type === $args['connection_type'] ){
+                        $args['capabilities'][] = 'create_' . $post_type;
+                    }
+                    if ( 'create_update_' . $post_type === $args['connection_type'] ){
+                        $args['capabilities'][] = 'create_' . $post_type;
+                        $args['capabilities'][] = 'update_any_' . $post_type;
+                    }
                 }
             }
 
