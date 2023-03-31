@@ -210,6 +210,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <a href="<?php echo esc_url( admin_url() . $pill_link ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
         <?php endforeach; ?>
         </div>
+        <style>
+            #delete-text {
+                width: 100%;
+                color: #e14d43;
+                text-decoration: none;
+            }
+            #delete-confirmation-container{
+                display: contents;
+                cursor: pointer;
+            }
+        </style>
         <?php
     }
 

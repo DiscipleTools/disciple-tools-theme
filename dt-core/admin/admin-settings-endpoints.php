@@ -89,6 +89,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/delete-tile', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'delete_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/edit-translations', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'edit_translations' ],
@@ -285,6 +293,35 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         }
         update_option( 'dt_custom_tiles', $tile_options );
         return $tile_options[$post_type][$tile_key];
+    }
+
+    public static function delete_tile( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+        $tile_key = sanitize_text_field( wp_unslash( $params['tile_key' ] ) );
+
+        dt_write_log( self::is_custom_tile( $post_type, $tile_key ) );
+        if ( self::is_custom_tile( $post_type, $tile_key ) === false ) {
+            $tile_options = dt_get_option( 'dt_custom_tiles' );
+            unset( $tile_options[$post_type][$tile_key] );
+            update_option( 'dt_custom_tiles', $tile_options );
+            return true;
+        }
+        dt_write_log('false');
+        return false;
+    }
+
+    public static function is_custom_tile( $post_type, $tile_key ) {
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+
+        foreach( $default_fields as $fields ) {
+            foreach( $fields as $field_key => $field_value ) {
+                if ( $field_key === 'tile' && $field_value === $tile_key ) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static function edit_translations( WP_REST_Request $request ) {

@@ -44,6 +44,11 @@ jQuery(document).ready(function($) {
         hide_tile: hide_tile,
     }, `dt-admin-settings/`);
 
+    window.API.delete_tile = (post_type, tile_key) => makeRequest("POST", `delete-tile`, {
+        post_type: post_type,
+        tile_key: tile_key,
+    }, `dt-admin-settings/`);
+
     window.API.edit_translations = (translation_type, post_type, tile_key, translations, field_key=null, field_option_key=null) => makeRequest("POST", `edit-translations`, {
         translation_type: translation_type,
         post_type: post_type,
@@ -565,10 +570,39 @@ jQuery(document).ready(function($) {
                 <td colspan="2">
                     <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
+            </tr>
+            <tr style="text-align: right;">
+                <td class="delete-text" colspan="2">
+                    <a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>
+                </td>
             </tr>`;
             $('#modal-overlay-content-table').html(modal_html_content);
         });
     }
+
+    // Delete Text Click
+    $('#modal-overlay-form').on('click', '#delete-text', function(e) {
+        $(this).blur();
+        var tile_key = $(this).closest('#delete-text').data('tile-key');
+        $(this).parent().append(`
+            <div id="delete-confirmation-container" style="cursor: pointer;">
+                <svg id="delete-confirmation-confirm" data-tile-key="${tile_key}" stroke="#e14d43" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg id="delete-confirmation-cancel" stroke="#e14d43" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+        `);
+    });
+
+    // Delete Confirmation Confirm
+    $('#modal-overlay-form').on('click', '#delete-confirmation-confirm', function(e) {
+        var post_type = get_post_type();
+        var tile_key = $(this).data('tile-key');
+        API.delete_tile(post_type, tile_key);
+    });
+
+    // Delete Confirmation Cancel
+    $('#modal-overlay-form').on('click', '#delete-confirmation-cancel', function(e) {
+        $(this).parent().remove();
+    });
 
     // Add Field Modal
     function loadAddFieldContentBox(tile_key) {
