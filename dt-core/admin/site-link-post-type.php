@@ -116,6 +116,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return get_option( $prefix . '_api_keys', [] );
         }
 
+        public static function get_site_key_by_dev_key( $dev_key ) {
+            $keys = self::get_site_keys();
+            if ( ! empty( $keys ) ) {
+                foreach ( $keys as $key ) {
+                    if ( $key['dev_key'] === $dev_key ) {
+                        return $key;
+                    }
+                }
+            }
+            return false;
+        }
+
         /**
          * GET A LIST OF SITES BY CONNECTION TYPE
          *
