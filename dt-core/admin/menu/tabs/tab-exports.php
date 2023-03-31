@@ -91,11 +91,10 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
 
     private function process_export(){
         if ( isset( $_POST['dt_export_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_export_nonce'] ) ), 'dt_export_nonce' ) ){
-            if ( isset( $_POST['services'] ) ){
+            if ( isset( $_POST['dt_export_selected_services'] ) ){
 
                 // Extract selected services to be exported.
-                $post_services = dt_recursive_sanitize_array( wp_unslash( $_POST['services'] ) );
-                $services = array_keys( dt_sanitize_array( $post_services ) );
+                $services = json_decode( sanitize_text_field( wp_unslash( $_POST['dt_export_selected_services'] ) ), true );
 
                 // Assuming services have been selected, proceed with export payload generation.
                 if ( !empty( $services ) ){
@@ -162,6 +161,9 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                             document.getElementById('dt_export_downloadable_form').submit();
                         </script>
                         <?php
+                    } else {
+                        echo esc_attr( __( 'Unable to detect any suitable service settings to export, or no user customizations have been made.', 'disciple_tools' ) );
+                        exit();
                     }
                 }
             }
@@ -174,19 +176,43 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
 
         ?>
         <p>
-            Select services below, to be exported into json configuration file.
+            Select services below, to be exported into a json configuration file. A Full export is a deep extraction of a service's entire settings; whilst a Partial extraction will only contain user customizations.
         </p>
-        <form method="POST">
+        <form id="dt_export_form" method="POST">
             <input type="hidden" name="dt_export_nonce" id="dt_export_nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'dt_export_nonce' ) ) ?>"/>
-            <table class="widefat striped">
+
+            <input type="hidden" name="dt_export_selected_services" id="dt_export_selected_services"/>
+
+            <table class="widefat striped" id="dt_export_table">
                 <thead>
                     <tr>
-                        <th style="text-align: right; padding-right: 14px;">
-                            <input type="checkbox" id="dt_export_service_select_all_checkbox"/>
-                        </th>
+                        <th style="text-align: right; padding-right: 14px;"></th>
                         <th></th>
+                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
+                            <label for="dt_export_service_select_full">Full</label><br>
+                            <input type="radio" id="dt_export_service_select_full"
+                                   name="dt_export_service_select_th_option"
+                                   class="dt-export-service-select-th-option"
+                                   data-select_type="full"/>
+                        </th>
+                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
+                            <label for="dt_export_service_select_partial">Partial</label><br>
+                            <input type="radio" id="dt_export_service_select_partial"
+                                   name="dt_export_service_select_th_option"
+                                   class="dt-export-service-select-th-option"
+                                   data-select_type="partial"
+                                   checked/>
+                        </th>
+                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
+                            <label for="dt_export_service_select_none">None</label><br>
+                            <input type="radio" id="dt_export_service_select_none"
+                                   name="dt_export_service_select_th_option"
+                                   class="dt-export-service-select-th-option"
+                                   data-select_type="none"/>
+                        </th>
                     </tr>
+                </thead>
                 <tbody>
                 <?php
                 $export_services = apply_filters( 'dt_export_services', [] );
@@ -194,14 +220,31 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                     if ( isset( $service['id'], $service['enabled'], $service['label'] ) && $service['enabled'] ){
                         ?>
                         <tr>
-                            <td style="text-align: right;">
-                                <input type="checkbox" class="dt-export-service-checkbox" name="services[<?php echo esc_attr( $service['id'] ) ?>]"/>
-                            </td>
+                            <td style="text-align: right;"></td>
                             <td>
                                 <?php echo esc_attr( $service['label'] ) ?><br>
                                 <span style="font-size: 10px; color: #9a9797;">
                                     <?php echo esc_attr( $service['description'] ?? '' ) ?>
                                 </span>
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="radio" class="dt-export-service-select-td-option"
+                                       name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-select_type="full"/>
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="radio" class="dt-export-service-select-td-option"
+                                       name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-select_type="partial"
+                                       checked/>
+                            </td>
+                            <td style="text-align: center;">
+                                <input type="radio" class="dt-export-service-select-td-option"
+                                       name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
+                                       data-select_type="none"/>
                             </td>
                         </tr>
                         <?php
@@ -212,7 +255,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
             </table>
             <br>
             <span style="float:right;">
-                <button type="submit"
+                <button id="dt_export_submit_but" type="submit"
                         class="button float-right"><?php esc_html_e( 'Export', 'disciple_tools' ) ?></button>
             </span>
         </form>

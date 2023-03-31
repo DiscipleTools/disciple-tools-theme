@@ -9,4 +9,4 @@ if [ "$(php -r 'echo version_compare( phpversion(), "7.0", ">=" ) ? 1 : 0;')" !=
     exit
 fi
 
-eval vendor/bin/phpcs
+eval vendor/bin/phpcs $args
