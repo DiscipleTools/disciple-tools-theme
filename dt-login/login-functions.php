@@ -104,9 +104,11 @@ add_filter( 'login_headertext', 'dt_login_login_title' );
 /* Where to go if a login failed */
 add_action( 'wp_login_failed', 'dt_login_login_failed' );
 function dt_login_login_failed() {
-    $login_page  = dt_login_url( 'login' );
-    wp_redirect( $login_page . '?login=failed' );
-    exit;
+    if ( !dt_is_rest() ){
+        $login_page  = dt_login_url( 'login' );
+        wp_redirect( $login_page . '?login=failed' );
+        exit;
+    }
 }
 
 /* Where to go if any of the fields were empty */
