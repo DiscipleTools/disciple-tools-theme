@@ -175,6 +175,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Load first files
              */
             require_once( 'dt-core/global-functions.php' );
+            require_once( 'dt-core/utilities/loader.php' );
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
