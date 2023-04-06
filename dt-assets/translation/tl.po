@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-03-14T15:52:16+00:00\n"
+"POT-Creation-Date: 2023-03-30T15:54:40+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Tagalog <https://translate.disciple.tools/projects/disciple-"
@@ -78,10 +78,10 @@ msgstr "Isumite ang Kahilingan"
 #: dt-contacts/access-module.php:505 dt-contacts/access-module.php:536
 #: dt-contacts/access-module.php:564 dt-contacts/base-setup.php:427
 #: dt-contacts/base-setup.php:462 dt-contacts/user-module.php:159
-#: single-template.php:419 single-template.php:436
+#: single-template.php:415 single-template.php:432
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
-#: template-new-post.php:179
+#: template-new-post.php:180
 msgid "Cancel"
 msgstr "Kanselahin"
 
@@ -118,9 +118,9 @@ msgstr "Kanselahin"
 #: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
 #: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
 #: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
-#: single-template.php:424 single-template.php:441
+#: single-template.php:420 single-template.php:437
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-new-post.php:184 template-settings.php:563
+#: template-new-post.php:185 template-settings.php:563
 msgid "Close"
 msgstr "Isara"
 
@@ -142,9 +142,9 @@ msgid "Filters"
 msgstr "Mga Filter"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:471
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:632
-#: dt-core/global-functions.php:660 dt-core/global-functions.php:778
-#: dt-core/global-functions.php:822 dt-posts/custom-post-type.php:18
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:634
+#: dt-core/global-functions.php:662 dt-core/global-functions.php:780
+#: dt-core/global-functions.php:824 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -233,13 +233,13 @@ msgstr "Mga Field"
 msgid "Bulk Edit"
 msgstr "Maramihang Pag-edit"
 
-#: archive-template.php:278 dt-assets/parts/nav-topbar.php:147
+#: archive-template.php:278 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:184
 msgid "More"
 msgstr "Higit pa"
 
 #: archive-template.php:300 dt-contacts/base-setup.php:356
-#: dt-users/users.php:437
+#: dt-users/users.php:439
 msgid "Archived"
 msgstr "Naka-archive"
 
@@ -264,15 +264,15 @@ msgstr ""
 
 #: archive-template.php:385 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:860
+#: dt-core/global-functions.php:862
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Maghanap ng mga User"
 
 #: archive-template.php:409 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1815
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2389
 #: dt-users/template-user-management.php:88
-#: dt-users/template-user-management.php:520 single-template.php:132
+#: dt-users/template-user-management.php:520 single-template.php:128
 msgid "Status"
 msgstr "Kalagayan"
 
@@ -314,7 +314,7 @@ msgstr "Tumingin ng mas Kaunting mga Opsyon"
 msgid "Update"
 msgstr "I-update"
 
-#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:308
+#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:323
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "Mamili sa Ibaba"
@@ -329,7 +329,7 @@ msgstr "Pangalan"
 msgid "Loading..."
 msgstr "Naglo-load..."
 
-#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:352
+#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:367
 msgid "Load More"
 msgstr "Mag-load ng Higit Pa"
 
@@ -356,7 +356,7 @@ msgstr "Lahat ng %1$s na walang %2$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Filter para sa subassigned O Assigned To"
 
-#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:299
+#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:314
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "Petsa ng Paggawa"
@@ -368,13 +368,13 @@ msgid "None Set"
 msgstr "Walang Naka-set"
 
 #: archive-template.php:734 archive-template.php:735
-#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:441
+#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:441
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "Hindi"
 
 #: archive-template.php:741 archive-template.php:742
-#: dt-metrics/combined/time-charts.php:117 dt-posts/posts.php:439
+#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:439
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "Oo"
@@ -402,62 +402,67 @@ msgstr "Pangalan ng Filter"
 msgid "Filter Records"
 msgstr "Mag-filter ng mga Rekord"
 
-#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:259
-#: dt-assets/functions/enqueue-scripts.php:294
+#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:274
+#: dt-assets/functions/enqueue-scripts.php:309
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "I-save"
 
-#: dt-assets/functions/details-bar.php:44
-#: dt-assets/functions/details-bar.php:243
+#: dt-assets/functions/details-bar.php:51
+#: dt-assets/functions/details-bar.php:244
 #: dt-core/configuration/config-site-defaults.php:364
 #: dt-users/template-user-management.php:93 dt-workflows/update-required.php:70
 #: dt-workflows/update-required.php:109
 msgid "Update Needed"
 msgstr "Kailangan ng Pag-update"
 
-#: dt-assets/functions/details-bar.php:55
+#: dt-assets/functions/details-bar.php:62
 msgid "Admin Actions"
 msgstr "Mga Aksyon ng Admin"
 
-#: dt-assets/functions/details-bar.php:60 single-template.php:431
+#: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "Burahin ang %s"
 
-#: dt-assets/functions/details-bar.php:66
+#: dt-assets/functions/details-bar.php:72
+msgctxt "View Contact History"
+msgid "View %s History"
+msgstr ""
+
+#: dt-assets/functions/details-bar.php:80
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
 msgstr "Pagsamahin sa isa pang %s"
 
-#: dt-assets/functions/details-bar.php:82
-#: dt-assets/functions/details-bar.php:253
+#: dt-assets/functions/details-bar.php:96
+#: dt-assets/functions/details-bar.php:254
 msgid "Previous record"
 msgstr "Dating tala"
 
 #. translators: If your language is written right to left make this translation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank
-#: dt-assets/functions/details-bar.php:83
+#: dt-assets/functions/details-bar.php:97
 #: dt-assets/functions/details-bar.php:132
-#: dt-assets/functions/details-bar.php:254
-#: dt-assets/functions/details-bar.php:295
+#: dt-assets/functions/details-bar.php:255
+#: dt-assets/functions/details-bar.php:288
 #: dt-core/configuration/dt-configuration.php:75
 msgctxt "either rtl or ltr"
 msgid "ltr"
 msgstr "ltr"
 
 #: dt-assets/functions/details-bar.php:121
-#: dt-assets/functions/details-bar.php:283
+#: dt-assets/functions/details-bar.php:276
 msgid "Record"
 msgstr "Tala"
 
 #: dt-assets/functions/details-bar.php:125
-#: dt-assets/functions/details-bar.php:287
+#: dt-assets/functions/details-bar.php:280
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "ni %s"
 
 #: dt-assets/functions/details-bar.php:131
-#: dt-assets/functions/details-bar.php:294
+#: dt-assets/functions/details-bar.php:287
 msgid "Next record"
 msgstr "Susunod na tala"
 
@@ -506,7 +511,7 @@ msgstr "Nagpapakita ng %s (na) item na tumutugma sa %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:295 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:310 template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
 msgstr "I-edit"
@@ -521,9 +526,9 @@ msgstr "Wala kang kahit anong notipikasyon"
 
 #: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:256
-#: dt-assets/functions/enqueue-scripts.php:296
-#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:439
+#: dt-assets/functions/enqueue-scripts.php:271
+#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:435
 msgid "Delete"
 msgstr "Tanggalin"
 
@@ -607,68 +612,79 @@ msgstr "Ginawa noong %s"
 msgid "Open With"
 msgstr "Buksan Gamit Ang"
 
-#: dt-assets/functions/enqueue-scripts.php:257
+#: dt-assets/functions/enqueue-scripts.php:240
+msgid "Revert Record Back To This Point"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:241
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you want to revert record state back to %s?"
+msgstr "Sigurado ka bang gusto mong burahin si %s?"
+
+#: dt-assets/functions/enqueue-scripts.php:272
 msgid "Locations you are responsible for"
 msgstr "Mga lokasyon na ikaw ang may-pananagutan"
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:273
 msgid "Add"
 msgstr "Idagdag"
 
-#: dt-assets/functions/enqueue-scripts.php:260 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:275 template-settings.php:285
 msgid "link"
 msgstr "link"
 
-#: dt-assets/functions/enqueue-scripts.php:261 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:276 template-settings.php:286
 msgid "copy"
 msgstr "kopyahin"
 
-#: dt-assets/functions/enqueue-scripts.php:277
+#: dt-assets/functions/enqueue-scripts.php:292
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Mga Nahanap na Ka-match:"
 
-#: dt-assets/functions/enqueue-scripts.php:278
+#: dt-assets/functions/enqueue-scripts.php:293
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "I-dismiss ang lahat ng ka-match ni %s"
 
-#: dt-assets/functions/enqueue-scripts.php:297
+#: dt-assets/functions/enqueue-scripts.php:312
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Ipinapakita ang _START_ of _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:298
+#: dt-assets/functions/enqueue-scripts.php:313
 msgid "Sorting By"
 msgstr "Pinagbubukod-bukod sa Pamamagitan ng"
 
-#: dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:315
 msgid "Date Modified"
 msgstr "Petsa nang Baguhin"
 
-#: dt-assets/functions/enqueue-scripts.php:301
+#: dt-assets/functions/enqueue-scripts.php:316
 msgid "No filters, create one below"
 msgstr "Walang mga filter, gumawa ng isa sa ibaba"
 
-#: dt-assets/functions/enqueue-scripts.php:302
+#: dt-assets/functions/enqueue-scripts.php:317
 msgid "No records found matching your filter."
 msgstr "Walang nakitang mga rekord na tumutugma sa iyong filter."
 
-#: dt-assets/functions/enqueue-scripts.php:303 dt-contacts/base-setup.php:537
+#: dt-assets/functions/enqueue-scripts.php:318 dt-contacts/base-setup.php:537
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "Lahat ng %s"
 
-#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/functions/enqueue-scripts.php:319
 msgid "start"
 msgstr "simula"
 
-#: dt-assets/functions/enqueue-scripts.php:305
+#: dt-assets/functions/enqueue-scripts.php:320
 msgid "end"
 msgstr "katapusan"
 
-#: dt-assets/functions/enqueue-scripts.php:306
+#: dt-assets/functions/enqueue-scripts.php:321
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
@@ -676,30 +692,30 @@ msgstr "katapusan"
 msgid "All"
 msgstr "Lahat"
 
-#: dt-assets/functions/enqueue-scripts.php:307
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Without"
 msgstr "Wala"
 
-#: dt-assets/functions/enqueue-scripts.php:309
+#: dt-assets/functions/enqueue-scripts.php:324
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "naipadala"
 
-#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-assets/functions/enqueue-scripts.php:325
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "(na) hindi naipadala (malamang na nawawala ang balidong email)"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "Exclude Item"
 msgstr "Ibukod ang Item"
 
-#: dt-assets/functions/enqueue-scripts.php:332 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:347 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Kontak"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:348
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -722,16 +738,15 @@ msgstr "Magdagdag ng Bago"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:101 dt-assets/parts/nav-topbar.php:230
-#: template-notifications.php:33 template-settings.php:60
-#: template-settings.php:467
+#: dt-assets/parts/nav-topbar.php:148 template-notifications.php:33
+#: template-settings.php:60 template-settings.php:467
 msgid "Notifications"
 msgstr "Mga Notipikasyon"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:109
-#: dt-assets/parts/nav-topbar.php:318 template-notifications.php:68
+#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:274
+#: template-notifications.php:68
 msgid "Settings"
 msgstr "Settings"
 
@@ -759,6 +774,8 @@ msgid "Showing:"
 msgstr "Ipinapakita:"
 
 #: dt-assets/parts/loop-activity-comment.php:112
+#: dt-assets/parts/modals/modal-record-history.php:28
+#: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "ipakita lahat"
 
@@ -1159,7 +1176,7 @@ msgstr ""
 "I-click ang buton na 'Hindi Nabasa' upang ipakita ang listahan ng lahat ng "
 "iyong hindi nabasang notipikasyon."
 
-#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:316
+#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:272
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Markahan ang lahat bilang nabasa na"
@@ -1268,12 +1285,31 @@ msgctxt "back to record"
 msgid "Back to %s"
 msgstr "Bumalik sa %s"
 
+#: dt-assets/parts/modals/modal-record-history.php:6
+#, fuzzy
+#| msgid "Record Hits:"
+msgctxt "Record History"
+msgid "%s Record History"
+msgstr "Itala ang mga Hit:"
+
+#: dt-assets/parts/modals/modal-record-history.php:16
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Filter To Date"
+msgstr "Pangalan ng Filter"
+
+#: dt-assets/parts/modals/modal-record-history.php:22
+#, fuzzy
+#| msgid "Create custom filter"
+msgid "select date to filter by"
+msgstr "Gumawa ng custom na filter"
+
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
 msgstr "Ibalik ang Aktibidad"
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/combined/time-charts.php:108
+#: dt-metrics/combined/time-charts.php:109
 msgid "Field"
 msgstr "Field"
 
@@ -1329,33 +1365,33 @@ msgstr "Gumawa ng Gawain"
 msgid "Existing tasks for this record:"
 msgstr "Kasalukuyang mga gawain para sa rekord na ito:"
 
-#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:260
+#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:178
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "Mag-log Out"
 
-#: dt-assets/parts/nav-topbar.php:170
+#: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
 msgstr "May Magagamit na Update sa Tema!"
 
-#: dt-assets/parts/nav-topbar.php:286 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:242 template-notifications.php:43
 msgid "New"
 msgstr "Bago"
 
-#: dt-assets/parts/nav-topbar.php:292 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:248 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Lahat"
 
-#: dt-assets/parts/nav-topbar.php:296 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:252 template-notifications.php:54
 msgid "Unread"
 msgstr "Hindi pa nababasa"
 
-#: dt-assets/parts/nav-topbar.php:303
+#: dt-assets/parts/nav-topbar.php:259
 msgid "See All"
 msgstr "Tingnan Lahat"
 
-#: dt-assets/parts/nav-topbar.php:322 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:278 template-notifications.php:72
 msgid "Mark All"
 msgstr "Markahan Lahat"
 
@@ -2684,17 +2720,17 @@ msgstr ""
 msgid "To reset your password, visit the following address:"
 msgstr "Upang i-reset ang iyong password, bisitahin ang sumusunod na address:"
 
-#: dt-core/global-functions.php:486 single-template.php:414
+#: dt-core/global-functions.php:486 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
-#: template-new-post.php:174
+#: template-new-post.php:175
 msgid "This is required"
 msgstr "Kailangan ito"
 
-#: dt-core/global-functions.php:634
+#: dt-core/global-functions.php:636
 msgid "Add new tag \"%s\""
 msgstr "Idagdag ang bagong tag na \"%s\""
 
-#: dt-core/global-functions.php:635
+#: dt-core/global-functions.php:637
 msgid "Tag \"%s\" is already being used"
 msgstr "Ginagamit na ang tag na \"%s\""
 
@@ -3340,7 +3376,7 @@ msgstr "Kritikal na Landas"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/combined/time-charts.php:43 dt-metrics/metrics.php:91
+#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:91
 msgid "Project"
 msgstr "Proyekto"
 
@@ -3583,34 +3619,34 @@ msgstr "Pagbabago sa %s sa panahon ng hanay ng petsa"
 msgid "No Data Available"
 msgstr "Walang Magagamit na Datos"
 
-#: dt-metrics/combined/time-charts.php:42
-#: dt-metrics/combined/time-charts.php:106
+#: dt-metrics/combined/time-charts.php:43
+#: dt-metrics/combined/time-charts.php:107
 msgid "Fields over Time Charts"
 msgstr "Mga Field sa itaas ng mga Time Chart"
 
-#: dt-metrics/combined/time-charts.php:107
+#: dt-metrics/combined/time-charts.php:108
 msgid "Post Type"
 msgstr "Uri ng Post"
 
-#: dt-metrics/combined/time-charts.php:109
+#: dt-metrics/combined/time-charts.php:110
 msgid "Total"
 msgstr "Kabuuan"
 
-#: dt-metrics/combined/time-charts.php:110
+#: dt-metrics/combined/time-charts.php:111
 msgid "Added"
 msgstr "Idinagdag"
 
-#: dt-metrics/combined/time-charts.php:111
+#: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "%1$s sa %2$s"
 
-#: dt-metrics/combined/time-charts.php:112
+#: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
 msgid "Date"
 msgstr "Petsa"
 
-#: dt-metrics/combined/time-charts.php:113
+#: dt-metrics/combined/time-charts.php:114
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
@@ -3618,15 +3654,15 @@ msgstr "Petsa"
 msgid "All Time"
 msgstr "Lahat ng Panahon"
 
-#: dt-metrics/combined/time-charts.php:114
+#: dt-metrics/combined/time-charts.php:115
 msgid "All cumulative totals"
 msgstr "Lahat ng mga pinagsama-samang kabuuan"
 
-#: dt-metrics/combined/time-charts.php:115
+#: dt-metrics/combined/time-charts.php:116
 msgid "Single cumulative totals"
 msgstr "Iisang pinagsama-samang kabuuan"
 
-#: dt-metrics/combined/time-charts.php:116
+#: dt-metrics/combined/time-charts.php:117
 msgid "Number added"
 msgstr "Numerong idinagdag"
 
@@ -4110,18 +4146,6 @@ msgstr "Mga Pagsasalin"
 msgid "Enter the People Group title here"
 msgstr "Ilagay ang pamagat ng Grupo ng Mga Tao rito"
 
-#: dt-people-groups/people-groups.php:275
-msgid "Display Options"
-msgstr ""
-
-#: dt-people-groups/people-groups.php:282
-msgid "Display People Groups Tab in Navigation Bar"
-msgstr ""
-
-#: dt-people-groups/people-groups.php:304
-msgid "Import People Group"
-msgstr ""
-
 #: dt-posts/custom-post-type.php:182
 msgid "Tags"
 msgstr "Mga tag"
@@ -4137,27 +4161,33 @@ msgstr ""
 msgid "Un-Follow"
 msgstr "I-Un-Follow"
 
-#: dt-posts/dt-posts.php:107
+#: dt-posts/dt-posts.php:110
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1319
+#: dt-posts/dt-posts.php:1350
 msgid "Magic Link Submission"
 msgstr "Pagsusumite ng Magic na Link"
 
-#: dt-posts/dt-posts.php:1325
+#: dt-posts/dt-posts.php:1352 dt-posts/dt-posts.php:1895
+#, fuzzy
+#| msgid "Revert Activity"
+msgid "Revert Bot"
+msgstr "Ibalik ang Aktibidad"
+
+#: dt-posts/dt-posts.php:1358
 msgid "D.T System"
 msgstr "D.T System"
 
-#: dt-posts/dt-posts.php:1560
+#: dt-posts/dt-posts.php:2135
 msgid "Post already shared with user."
 msgstr "Naibahagi na ang post sa user."
 
-#: dt-posts/dt-posts.php:1816 single-template.php:178
+#: dt-posts/dt-posts.php:2390 single-template.php:174
 msgid "Details"
 msgstr "Mga Detalye"
 
-#: dt-posts/dt-posts.php:1880
+#: dt-posts/dt-posts.php:2454
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4169,7 +4199,7 @@ msgstr ""
 "@[%1$s](%2$s) - Nag-request ang user %3$s ng access sa %4$s [%5$s](%6$s). "
 "Kung gusto mo, i-share ang talang ito sa user para maibigay ang access."
 
-#: dt-posts/dt-posts.php:1886
+#: dt-posts/dt-posts.php:2460
 msgid "Access Request"
 msgstr "Request sa Pag-access"
 
@@ -4519,6 +4549,25 @@ msgstr "Ipadala"
 #: dt-reports/magic-url-bulk-send.php:67
 msgid "Links"
 msgstr "Mga Link"
+
+#: dt-reports/magic-url-landing-page.php:54
+#: dt-reports/magic-url-landing-page.php:58
+#, fuzzy
+#| msgid "Magic Link Submission"
+msgid "Invalid Link"
+msgstr "Pagsusumite ng Magic na Link"
+
+#: dt-reports/magic-url-landing-page.php:63
+msgid "Link key is no longer valid or has expired."
+msgstr ""
+
+#: dt-reports/magic-url-landing-page.php:64
+msgid "Please %s, or locate a more recent key, or request a new one."
+msgstr ""
+
+#: dt-reports/magic-url-landing-page.php:64
+msgid "login"
+msgstr ""
 
 #: dt-reports/magic-url-setup.php:30
 #, fuzzy
@@ -5042,29 +5091,29 @@ msgstr "Tinanggihang gawain sa %s"
 msgid "No permissions to assign"
 msgstr "Walang permiso para magtalaga"
 
-#: dt-users/users.php:281
+#: dt-users/users.php:283
 msgid "Insufficient permissions"
 msgstr "Hindi sapat ang permiso"
 
-#: dt-users/users.php:390
+#: dt-users/users.php:392
 msgid "Email already exists and is a user on this site"
 msgstr "Umiiral na ang email at ito ay user na sa site na ito"
 
-#: dt-users/users.php:396
+#: dt-users/users.php:398
 msgid "Failed to add user to site."
 msgstr "Hindi naidagdag ang user sa site."
 
-#: dt-users/users.php:447
+#: dt-users/users.php:449
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "Ito ay mga komentong nasa artsibo para kay %1$s"
 
-#: dt-users/users.php:609
+#: dt-users/users.php:611
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Nababagong mga Filter"
 
-#: dt-users/users.php:1194 template-settings.php:159 template-settings.php:592
+#: dt-users/users.php:1196 template-settings.php:159 template-settings.php:592
 msgid "System Email"
 msgstr "Email ng Sistema"
 
@@ -5104,44 +5153,44 @@ msgstr ""
 msgid "See what browser you are using."
 msgstr "Tingnan kung anong ginagamit ng iyong browser."
 
-#: single-template.php:104 single-template.php:112
+#: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
 msgstr "Kailangan ng update ng %s na ito."
 
-#: single-template.php:106 single-template.php:114
+#: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
 msgstr "Mangyaring magbigay ng update sa pamamagitan ng pagpo-post ng komento."
 
-#: single-template.php:262
+#: single-template.php:258
 msgid "Edit all details fields"
 msgstr "I-edit ang lahat ng field ng mga detalye"
 
-#: single-template.php:385
+#: single-template.php:381
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:406 template-new-bulk-post.php:276
-#: template-new-post.php:166
+#: single-template.php:402 template-new-bulk-post.php:276
+#: template-new-post.php:167
 msgid "Create Tag"
 msgstr "Gumawa ng Tag"
 
-#: single-template.php:407 template-new-bulk-post.php:277
-#: template-new-post.php:167
+#: single-template.php:403 template-new-bulk-post.php:277
+#: template-new-post.php:168
 msgid "Create a tag and apply it to this record."
 msgstr "Gumawa ng tag at i-apply sa talang ito."
 
-#: single-template.php:411 single-template.php:413
+#: single-template.php:407 single-template.php:409
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
-#: template-new-post.php:171 template-new-post.php:173
+#: template-new-post.php:172 template-new-post.php:174
 msgid "Tag"
 msgstr "Tag"
 
-#: single-template.php:422 template-new-bulk-post.php:293
-#: template-new-post.php:182
+#: single-template.php:418 template-new-bulk-post.php:293
+#: template-new-post.php:183
 msgid "Create and apply tag"
 msgstr "Gumawa at gamitin ang tag"
 
-#: single-template.php:432
+#: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Sigurado ka bang gusto mong burahin si %s?"
