@@ -213,25 +213,13 @@ class Disciple_Tools_Post_Type_Template {
         return $fields;
     }
 
-    /**
-     * Get the settings for the custom fields.
-     *
-     * @param bool $with_deleted_options
-     * @param bool $load_from_cache
-     *
-     * @return mixed
-     */
-    public function get_custom_fields_settings( $with_deleted_options = false, $load_from_cache = true, $load_everything = false ) {
-        return DT_Posts::get_post_field_settings( $this->post_type, $load_from_cache, $with_deleted_options, $load_everything );
-    }
-
-    public function dt_get_post_type_settings( $settings, $post_type, $return_cache = true, $load_everything = false ){
+    public function dt_get_post_type_settings( $settings, $post_type, $return_cache = true, $load_tags = false ){
         if ( $post_type === $this->post_type ){
             $cached = wp_cache_get( $post_type . '_type_settings' );
-            if ( $cached ){
+            if ( $cached && $return_cache ){
                 return $cached;
             }
-            $fields = $this->get_custom_fields_settings( false, $return_cache, $load_everything );
+            $fields = DT_Posts::get_post_field_settings( $this->post_type, false, false, $load_tags );
             $channels = [];
             foreach ( $fields as $field_key => $field_value ){
                 if ( $field_value['type'] === 'communication_channel' ){
