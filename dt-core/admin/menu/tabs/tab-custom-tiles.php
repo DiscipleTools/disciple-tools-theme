@@ -63,11 +63,25 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function export_payload( $export_payload ){
-        if ( isset( $export_payload['services'], $export_payload['payload'] ) && in_array( self::$export_import_id, $export_payload['services'] ) ){
+        if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ){
 
             $payload = [];
+            $existing_custom_options = dt_get_option( 'dt_custom_tiles' );
+            $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
+
             foreach ( DT_Posts::get_post_types() as $post_type ){
-                $payload[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
+
+                // Extract accordingly, based on export type.
+                switch ( $export_type ){
+                    case 'full':
+                        $payload[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
+                        break;
+                    case 'partial':
+                        if ( !empty( $existing_custom_options[$post_type] ) ){
+                            $payload[$post_type] = $existing_custom_options[$post_type];
+                        }
+                        break;
+                }
             }
 
             if ( !empty( $payload ) ){
@@ -830,10 +844,15 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         $tile['display_conditions']['conditions'] = [];
                     }
                     foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
+                        $key_label = $fields[$condition['key']]['name'] ?? $condition['key'];
+                        $value_label = $condition['value'];
+                        if ( isset( $fields[$condition['key']]['default'][$condition['value']]['label'] ) ){
+                            $value_label = $fields[$condition['key']]['default'][$condition['value']]['label'];
+                        }
                         ?>
                         <tr>
-                            <td><?php echo esc_html( $condition['key_label'] ) ?></td>
-                            <td><?php echo esc_html( $condition['value_label'] ) ?></td>
+                            <td><?php echo esc_html( $key_label ) ?></td>
+                            <td><?php echo esc_html( $value_label ) ?></td>
                             <td>
                                 <span style="float: right;">
                                     <button class="button" type="submit" id="tile_display_custom_condition_remove_but" name="tile_display_custom_condition_remove_but" value="<?php echo esc_html( $condition['key'].'___'.$condition['value'] ) ?>">Remove</button>
@@ -950,23 +969,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
                         // Append latest entry, ensuring uniqueness.
                         if ( isset( $field_id, $option_id ) ) {
-                            $field_id_label = $field_id;
-                            $option_id_label = $option_id;
-
-                            // Determine respective labels.
-                            if ( isset( $post_fields[ $field_id ] ) ) {
-                                $field_id_label = $post_fields[ $field_id ]['name'] ?? $field_id;
-                                if ( isset( $post_fields[ $field_id ]['default'], $post_fields[ $field_id ]['default'][ $option_id ] ) ) {
-                                    $option_id_label = $post_fields[ $field_id ]['default'][ $option_id ]['label'] ?? $option_id;
-                                }
-                            }
-
                             // Package and return....
                             $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] = [
                                 'key' => $field_id,
-                                'key_label' => $field_id_label,
                                 'value' => $option_id,
-                                'value_label' => $option_id_label
                             ];
                         }
                     }

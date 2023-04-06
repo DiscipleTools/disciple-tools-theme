@@ -96,6 +96,9 @@ class Disciple_Tools_Workflows_Defaults {
 
     private function build_default_workflows_contacts( &$workflows ) {
         $dt_fields = DT_Posts::get_post_field_settings( 'contacts' );
+        if ( !isset( $dt_fields['milestones'] ) || !isset( $dt_fields['groups'] ) ) {
+            return;
+        }
 
         $workflows[] = (object) [
             'id'         => 'contacts_220808',

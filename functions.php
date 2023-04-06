@@ -154,7 +154,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.38.0';
+            $this->version = '1.39.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -175,6 +175,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Load first files
              */
             require_once( 'dt-core/global-functions.php' );
+            require_once( 'dt-core/utilities/loader.php' );
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
@@ -412,6 +413,8 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              */
             require_once( 'dt-core/core-endpoints.php' );
             new Disciple_Tools_Core_Endpoints();
+            require_once( 'dt-core/admin/admin-settings-endpoints.php' );
+            new Disciple_Tools_Admin_Settings_Endpoints();
 
             /**
              * Admin panel
@@ -464,6 +467,9 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-reports.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-sources.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-metrics-edit.php' );
+
+                require_once( 'dt-core/admin/menu/menu-customizations.php' );
+                require_once( 'dt-core/admin/menu/tabs/tab-customizations.php' );
                 /* End menu tab section */
 
                 require_once( 'dt-core/setup-functions.php' );

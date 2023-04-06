@@ -524,8 +524,9 @@ switch ( $request_action ) {
                                     <div class="cell" >
                                         <div class="wp_login_form">
                                             <?php
+                                            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
                                             $args = array(
-                                                'redirect' => dt_login_url( 'redirect' ),
+                                                'redirect' => dt_login_url( 'redirect', site_url( $request_uri ) ),
                                                 'id_username' => 'user',
                                                 'id_password' => 'pass',
                                                 'value_remember' => true,

@@ -129,6 +129,7 @@ NAVIGATION STYLES
     margin-top: 0 !important;
     padding: 0 20px;
     z-index: 999;
+    border: none;
 
     .logo-link {
         padding-inline-start:0;
@@ -441,10 +442,8 @@ html[dir='rtl'] nav.second-bar .advanced_search {
     left: 1.15rem;
 }
 
-#second-bar-small{
-    // transition: all .2s;
-    border-top: none;
-    &.is-stuck {
+.is-stuck {
+    #second-bar-small {
         border-top: .5rem solid $primary-color;
         .mobile-nav-actions {
             display: none;
@@ -454,6 +453,13 @@ html[dir='rtl'] nav.second-bar .advanced_search {
             height: 0;
         }
     }
+    .hide-on-scroll {
+        display: none;
+    }
+}
+
+#second-bar-small{
+    border-top: none;
     .grid-x {
         margin-bottom: .3rem;
     }
@@ -1410,6 +1416,10 @@ img.dt-black-icon, i.dt-black-icon {
     filter: invert(0%) sepia(0%) saturate(17%) hue-rotate(193deg) brightness(99%) contrast(101%);
 }
 
+.error-text {
+    color: red;
+}
+
 .template-new-post {
     .type-options {
         display:flex;
@@ -1458,6 +1468,9 @@ img.dt-black-icon, i.dt-black-icon {
             }
 
         }
+    }
+    .error-text {
+        text-align: center;
     }
 }
 @media screen and (max-width : 640px) {

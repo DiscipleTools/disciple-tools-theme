@@ -109,10 +109,10 @@ jQuery(document).ready(function($) {
 
   $('button.dt_multi_select').on('click',function () {
     let fieldKey = $(this).data("field-key")
-    let optionKey = $(this).attr('id')
+    let optionKey = $(this).val()
     let fieldValue = {}
     let data = {}
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+    let field = jQuery(`[data-field-key="${fieldKey}"][value="${optionKey}"]`)
     field.addClass("submitting-select-button")
     let action = "add"
     if (field.hasClass("selected-select-button")){
@@ -638,6 +638,13 @@ jQuery(document).ready(function($) {
               $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
             }).catch(err => { console.error(err) })
           }
+        },
+        href: function (item) {
+          const postType = window.wpApiShare.post_type
+          const query =  window.SHAREDFUNCTIONS.createCustomFilter(field, [item.value])
+          const field_label = field_settings[field].name || field
+          const labels = [{ id: `${field}_${item.value}`, name: `${field_label}: ${item.value}`}]
+          return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
         }
       },
       callback: {
@@ -1061,9 +1068,10 @@ jQuery(document).ready(function($) {
         href: function (item) {
           const postType = window.wpApiShare.post_type
           const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name])
-          const labels = [{ id: `tags_${item.name}`, name: `Tags: ${item.name}`}]
+          const field_label = field_settings[field].name || field
+          const labels = [{ id: `tags_${item.name}`, name: `${field_label}: ${item.name}`}]
           return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
-        },
+        }
       },
       callback: {
         onClick: function (node, a, item, event) {

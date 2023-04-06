@@ -15,6 +15,7 @@ jQuery(function($){
     function load_all_plugin_cards() {
         let all_plugins = window.plugins.all_plugins;
         var translations = window.plugins.translations;
+        let can_install_plugins = window.plugins.can_install_plugins;
         var install_text = window.lodash.escape(translations.install);
         var delete_text = window.lodash.escape(translations.delete);
         var activate_text = window.lodash.escape(translations.activate);
@@ -42,20 +43,21 @@ jQuery(function($){
 
                 var installation_button_html =  `
                     <li>
-                        <button class="button" data-action="install" data-plugin-slug="${plugin['slug']}">${install_text}</button>
+                        <button class="button" data-action="install" data-plugin-slug="${plugin['slug']}" ${can_install_plugins ? '' : 'disabled' }>${install_text}</button>
                     </li>`;
+
                 var activation_button_html = '';
-
-
-
-                if ( plugin['installed'] & !plugin['active'] ) {
+                if ( plugin['installed'] && !plugin['active']  ) {
                     activation_button_html =   `
                     <li>
                         <button class="button" data-action="activate" data-plugin-slug="${plugin['slug']}">${activate_text}</button>
                     </li>`;
-                    installation_button_html = `<li>
-                        <button class="button" data-action="delete" data-plugin-slug="${plugin['slug']}">${delete_text}</button>
-                    </li>`;
+                    installation_button_html = ''
+                    if ( can_install_plugins ) {
+                      installation_button_html = `<li>
+                          <button class="button" data-action="delete" data-plugin-slug="${plugin['slug']}">${delete_text}</button>
+                      </li>`;
+                    }
                 }
 
 
@@ -196,19 +198,19 @@ jQuery(function($){
     window.API = {
         plugin_install: (download_url) => makeRequest("POST", `plugin-install`, {
                 download_url: download_url
-            }, `dt-core/v1/`),
+            }, `dt-admin-settings/`),
 
         plugin_delete: (plugin_slug) => makeRequest("POST", `plugin-delete`, {
             plugin_slug: plugin_slug
-        }, `dt-core/v1/`),
+        }, `dt-admin-settings/`),
 
         plugin_activate: (plugin_slug) => makeRequest("POST", `plugin-activate`, {
                 plugin_slug: plugin_slug
-            }, `dt-core/v1/`),
+            }, `dt-admin-settings/`),
 
         plugin_deactivate: (plugin_slug) => makeRequest("POST", `plugin-deactivate`, {
                 plugin_slug: plugin_slug
-            }, `dt-core/v1/`),
+            }, `dt-admin-settings/`),
     }
 
     function get_plugin_download_url(plugin_slug) {
@@ -259,14 +261,18 @@ jQuery(function($){
         return;
     }
     function plugin_deactivate(plugin_slug) {
+        let can_install_plugins = window.plugins.can_install_plugins;
         window.API.plugin_deactivate(plugin_slug).promise().then(function() {
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="activate" data-plugin-slug="${plugin_slug}">Activate</button>
-            </li>
-            <li>
-                <button class="button" data-action="delete" data-plugin-slug="${plugin_slug}">Delete</button>
             </li>`);
+            if ( can_install_plugins ) {
+                $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).append(`
+                <li>
+                <button class="button" data-action="delete" data-plugin-slug="${plugin_slug}">Delete</button>
+                </li>`);
+            }
             $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
         return;

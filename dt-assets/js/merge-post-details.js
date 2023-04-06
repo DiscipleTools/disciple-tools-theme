@@ -1595,7 +1595,7 @@ jQuery(function ($) {
       }).catch(err => {
         console.error(err);
         $('.submit-merge').toggleClass('loading').attr("disabled", false);
-        $('#merge_errors').html(window.lodash.escape(window.merge_post_details['translations']['error_msg']) + ' : ' + window.lodash.escape(window.lodash.get(err, 'responseJSON.message', err)));
+        $('.merge_errors').html(window.lodash.escape(window.merge_post_details['translations']['error_msg']) + ' : ' + window.lodash.escape(window.lodash.get(err, 'responseJSON.message', err)));
       });
 
     } else {

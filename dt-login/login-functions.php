@@ -37,40 +37,55 @@ function dt_login_redirect_login_page() {
 }
 // END LOGIN PAGE REDIRECT
 
-function dt_login_url( string $name ) : string {
+function dt_login_url( string $name, string $url = '' ) : string {
     $dt_login = DT_Login_Fields::all_values();
 
+    $url = new DT_URL( $url );
+    $query_redirect_url = $url->query_params->get( 'redirect_to' );
+
     $login_url = $dt_login['login_url'] ?? '';
-    $redirect_url = $dt_login['redirect_url'] ?? '';
+    $redirect_url = empty( $query_redirect_url ) ? site_url( $dt_login['redirect_url'] ) ?? '' : $query_redirect_url;
     $login_page_enabled = $dt_login['login_enabled'] === 'on';
 
     if ( !$login_page_enabled ) {
         $login_url = 'wp-login.php';
     }
 
+    $redirect_params = empty( $redirect_url ) ? [] : [ 'redirect_to' => rawurlencode( $redirect_url ) ];
+
     switch ( $name ) {
         case 'home':
-            return trailingslashit( site_url() );
+            return dt_create_site_url();
         case 'login':
-            return trailingslashit( site_url() ) . $login_url;
+            return dt_create_site_url( $login_url, $redirect_params );
         case 'redirect':
         case 'success':
-            return trailingslashit( site_url() ) . $redirect_url;
+            return $redirect_url;
         case 'logout':
-            return trailingslashit( site_url() ) . $login_url . '/?action=logout';
+            return dt_create_site_url( $login_url, [ 'action' => 'logout' ] );
         case 'register':
-            return trailingslashit( site_url() ) . $login_url . '/?action=register';
+            return dt_create_site_url( $login_url, [ 'action' => 'register' ] );
         case 'lostpassword':
-            return trailingslashit( site_url() ) . $login_url . '/?action=lostpassword';
+            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword' ] );
         case 'resetpass':
-            return trailingslashit( site_url() ) . $login_url . '/?action=resetpass';
+            return dt_create_site_url( $login_url, [ 'action' => 'resetpass' ] );
         case 'expiredkey':
-            return trailingslashit( site_url() ) . $login_url . '/?action=lostpassword&error=expiredkey';
+            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword', 'error' => 'expiredkey' ] );
         case 'invalidkey':
-            return trailingslashit( site_url() ) . $login_url . '/?action=lostpassword&error=invalidkey';
+            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword', 'error' => 'invalidkey' ] );
         default:
             return '';
     }
+}
+
+function dt_create_site_url( $path = '', $params = [] ) {
+    $site_url = site_url( $path );
+
+    if ( !empty( $params ) ) {
+        $site_url = add_query_arg( $params, $site_url );
+    }
+
+    return $site_url;
 }
 
 
@@ -104,9 +119,11 @@ add_filter( 'login_headertext', 'dt_login_login_title' );
 /* Where to go if a login failed */
 add_action( 'wp_login_failed', 'dt_login_login_failed' );
 function dt_login_login_failed() {
-    $login_page  = dt_login_url( 'login' );
-    wp_redirect( $login_page . '?login=failed' );
-    exit;
+    if ( !dt_is_rest() ){
+        $login_page  = dt_login_url( 'login' );
+        wp_redirect( $login_page . '?login=failed' );
+        exit;
+    }
 }
 
 /* Where to go if any of the fields were empty */
@@ -138,5 +155,5 @@ function dt_login_login_url( $url ){
         return $url;
     }
 
-    return dt_login_url( 'login' );
+    return dt_login_url( 'login', $url );
 }
