@@ -88,7 +88,9 @@ function dt_site_scripts() {
     add_filter( 'script_loader_tag', 'add_module_type_to_script', 10, 3 );
     function add_module_type_to_script( $tag, $handle, $src ) {
         if ( 'web-components' === $handle ) {
+            // @codingStandardsIgnoreStart
             $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+            // @codingStandardsIgnoreEnd
         }
         return $tag;
     }
