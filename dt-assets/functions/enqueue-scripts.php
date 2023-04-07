@@ -83,6 +83,19 @@ function dt_site_scripts() {
     // Register main stylesheet
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
 
+    // Register web components
+    dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
+    add_filter( 'script_loader_tag', 'add_module_type_to_script', 10, 3 );
+    function add_module_type_to_script( $tag, $handle, $src ) {
+        if ( 'web-components' === $handle ) {
+            $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+        }
+        return $tag;
+    }
+    dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
+    dt_theme_enqueue_script( 'web-components-services', 'dt-assets/build/components/services.min.js', array( 'jquery' ), true );
+
+
     // Comment reply script for threaded comments
     if ( is_singular() && comments_open() && ( get_option( 'thread_comments' ) == 1 ) ) {
         wp_enqueue_script( 'comment-reply' );
@@ -195,6 +208,8 @@ function dt_site_scripts() {
                 'jquery',
                 'lodash',
                 'shared-functions',
+                'web-components',
+                'web-components-services',
                 'typeahead-jquery',
                 'jquery-masonry'
             ) );

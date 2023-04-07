@@ -490,6 +490,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    function dt_render_icon_slot( $field ) {
+        if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ): ?>
+            <span slot="icon-start">
+                <i class="dt-icon <?php echo esc_html( $field['font-icon'] ) ?>"></i>
+            </span>
+        <?php endif;
+    }
+
     /**
      * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select, link
      *
@@ -531,8 +539,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return;
             }
 
+            $icon = null;
+            if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
+                $icon = 'icon=' . esc_attr( $fields[$field_key]['icon'] );
+            }
+
+            $shared_attributes = '
+                  id="' . esc_attr( $display_field_id ) . '"
+                  name="' . esc_attr( $field_key ) .'"
+                  label="' . esc_attr( $fields[$field_key]['name'] ) . '"
+                  ' . esc_html( $icon ) . '
+                  ' . esc_html( $required_tag ) . '
+                  ' . esc_html( $disabled ) . '
+                  ' . ( $is_private ? 'private privateLabel=' . esc_attr( _x( "Private Field: Only I can see it\'s content", 'disciple_tools' ) ) : null ) . '
+            ';
+            $supported_web_components = [ 'text' ];
 
             ?>
+            <?php if ( !in_array( $field_type, $supported_web_components ) ): ?>
             <div class="section-subheader">
                 <?php dt_render_field_icon( $fields[$field_key] );
 
@@ -594,6 +618,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </button>
                 <?php endif ?>
             </div>
+            <?php endif; ?>
+
             <?php
             if ( $field_type === 'key_select' ) :
                 $color_select = false;
@@ -687,9 +713,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                 <?php } ?>
             <?php elseif ( $field_type === 'text' ) :?>
-                <input id="<?php echo esc_html( $display_field_id ); ?>" type="text" <?php echo esc_html( $required_tag ) ?>
-                       class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?>/>
+                <dt-text
+                    <?php echo wp_kses_post( $shared_attributes ) ?>
+                    value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>"
+                >
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-text>
             <?php elseif ( $field_type === 'textarea' ) :?>
                 <textarea id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $required_tag ) ?>
                        class="textarea dt_textarea" <?php echo esc_html( $disabled ); ?>><?php echo esc_html( $post[$field_key] ?? '' ) ?></textarea>
