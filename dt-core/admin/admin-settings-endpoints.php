@@ -300,14 +300,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
         $tile_key = sanitize_text_field( wp_unslash( $params['tile_key' ] ) );
 
-        dt_write_log( self::is_custom_tile( $post_type, $tile_key ) );
         if ( self::is_custom_tile( $post_type, $tile_key ) === false ) {
             $tile_options = dt_get_option( 'dt_custom_tiles' );
             unset( $tile_options[$post_type][$tile_key] );
             update_option( 'dt_custom_tiles', $tile_options );
             return true;
         }
-        dt_write_log('false');
         return false;
     }
 

@@ -570,12 +570,17 @@ jQuery(document).ready(function($) {
                 <td colspan="2">
                     <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
-            </tr>
-            <tr style="text-align: right;">
-                <td class="delete-text" colspan="2">
-                    <a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>
-                </td>
             </tr>`;
+
+            if (window.field_settings.custom_tiles.includes(tile_key)) {
+                modal_html_content += `
+                <tr style="text-align: right;">
+                    <td class="delete-text" colspan="2">
+                        <a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>
+                    </td>
+                </tr>`;
+            }
+
             $('#modal-overlay-content-table').html(modal_html_content);
         });
     }
@@ -596,7 +601,20 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#delete-confirmation-confirm', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
-        API.delete_tile(post_type, tile_key);
+        API.delete_tile(post_type, tile_key).promise().then(function() {
+            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
+            var tile_submenu = $(`div.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`);
+            closeModal();
+            if (tile_submenu.is(':visible')) {
+                var tile_expand_icon = $(`.field-settings-table-tile-name[data-key="${tile_key}"]>span.expand-icon`);
+                tile_expand_icon.click();
+            }
+            tile_element.css('background', '#e14d43');
+            tile_element.fadeOut(500, function(){
+                tile_element.parent().remove();
+                tile_submenu.remove();
+            });
+        });
     });
 
     // Delete Confirmation Cancel
@@ -1032,6 +1050,7 @@ jQuery(document).ready(function($) {
             var tile_key = data['key'];
             var tile_label = data['label'];
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
+            window.field_settings.custom_tiles = tile_key;
             closeModal();
             $('#add-new-tile-link').parent().before(`
             <div class="sortable-tile" id="${tile_key}">
@@ -1138,7 +1157,7 @@ jQuery(document).ready(function($) {
                 new_field_html = new_field_expandable_html;
             }
             if (tile_key){
-                $(`.add-new-field[data-parent-tile-key='${tile_key}']`).parent().before(new_field_html); //todo
+                $(`.add-new-field[data-parent-tile-key='${tile_key}']`).parent().before(new_field_html);
                 show_preview_tile(tile_key);
             } else {
                 $('.add-new-field').parent().before(new_field_html);

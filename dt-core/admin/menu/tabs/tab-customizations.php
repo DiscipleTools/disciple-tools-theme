@@ -106,6 +106,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
                 'post_type_settings' => $post_settings,
                 'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
+                'custom_tiles' => self::get_custom_tiles( $post_type ),
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
                 'translations' => apply_filters( 'dt_list_js_translations', $translations ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
@@ -121,7 +122,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function content() {
-
         $this->load_overlay_modal();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
@@ -144,6 +144,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $all_post_types[$key] = DT_Posts::get_label_for_post_type( $key );
         }
         return $all_post_types;
+    }
+
+    public static function get_custom_tiles( $post_type ) {
+        $all_custom_tiles = dt_get_option( 'dt_custom_tiles' );
+        $custom_tiles = [];
+        if ( isset( $all_custom_tiles[$post_type] ) ) {
+            foreach( $all_custom_tiles[$post_type] as $tile_key => $tile_value ) {
+                $custom_tiles[] = $tile_key;
+            }
+        }
+        return $custom_tiles;
     }
 
     public static function load_overlay_modal() {
@@ -210,17 +221,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <a href="<?php echo esc_url( admin_url() . $pill_link ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
         <?php endforeach; ?>
         </div>
-        <style>
-            #delete-text {
-                width: 100%;
-                color: #e14d43;
-                text-decoration: none;
-            }
-            #delete-confirmation-container{
-                display: contents;
-                cursor: pointer;
-            }
-        </style>
         <?php
     }
 
@@ -374,7 +374,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         </span>
                         <span class="edit-icon"></span>
                     </div>
-                    <!-- END TILE -->
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                         <!-- START TOGGLED FIELD ITEMS -->
                         <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
@@ -439,6 +438,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         </div>
                     </div>
                 </div>
+                <!-- END TILE -->
                 <?php endif; ?>
             <?php endforeach; ?>
             <!-- START UNTILED FIELDS -->
