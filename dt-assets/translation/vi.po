@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-03-14T15:52:16+00:00\n"
+"POT-Creation-Date: 2023-03-30T15:54:40+00:00\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,10 +73,10 @@ msgstr "Gửi Yêu cầu"
 #: dt-contacts/access-module.php:505 dt-contacts/access-module.php:536
 #: dt-contacts/access-module.php:564 dt-contacts/base-setup.php:427
 #: dt-contacts/base-setup.php:462 dt-contacts/user-module.php:159
-#: single-template.php:419 single-template.php:436
+#: single-template.php:415 single-template.php:432
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
-#: template-new-post.php:179
+#: template-new-post.php:180
 msgid "Cancel"
 msgstr "Hủy"
 
@@ -113,9 +113,9 @@ msgstr "Hủy"
 #: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
 #: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
 #: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
-#: single-template.php:424 single-template.php:441
+#: single-template.php:420 single-template.php:437
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-new-post.php:184 template-settings.php:563
+#: template-new-post.php:185 template-settings.php:563
 msgid "Close"
 msgstr "Đóng"
 
@@ -137,9 +137,9 @@ msgid "Filters"
 msgstr "Bộ lọc"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:471
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:632
-#: dt-core/global-functions.php:660 dt-core/global-functions.php:778
-#: dt-core/global-functions.php:822 dt-posts/custom-post-type.php:18
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:634
+#: dt-core/global-functions.php:662 dt-core/global-functions.php:780
+#: dt-core/global-functions.php:824 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -228,13 +228,13 @@ msgstr "Trường"
 msgid "Bulk Edit"
 msgstr "Chỉnh sửa Hàng loạt"
 
-#: archive-template.php:278 dt-assets/parts/nav-topbar.php:147
+#: archive-template.php:278 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:184
 msgid "More"
 msgstr "Nhiều hơn"
 
 #: archive-template.php:300 dt-contacts/base-setup.php:356
-#: dt-users/users.php:437
+#: dt-users/users.php:439
 msgid "Archived"
 msgstr "Đã lưu trữ"
 
@@ -257,15 +257,15 @@ msgstr ""
 
 #: archive-template.php:385 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:860
+#: dt-core/global-functions.php:862
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Tìm Người dùng"
 
 #: archive-template.php:409 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:1815
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2389
 #: dt-users/template-user-management.php:88
-#: dt-users/template-user-management.php:520 single-template.php:132
+#: dt-users/template-user-management.php:520 single-template.php:128
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -307,7 +307,7 @@ msgstr "Ẩn Bớt Tùy chọn"
 msgid "Update"
 msgstr "Cập nhật"
 
-#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:308
+#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:323
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "Thực hiện các Lựa chọn Bên dưới"
@@ -322,7 +322,7 @@ msgstr "Tên"
 msgid "Loading..."
 msgstr "Đang tải..."
 
-#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:352
+#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:367
 msgid "Load More"
 msgstr "Tải Thêm"
 
@@ -349,7 +349,7 @@ msgstr "Tất cả %1$s không có %2$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Lọc theo các liên hệ gán lại HOẶC Gán cho"
 
-#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:299
+#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:314
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "Ngày tạo"
@@ -361,13 +361,13 @@ msgid "None Set"
 msgstr "Chưa có gì Được thiết lập"
 
 #: archive-template.php:734 archive-template.php:735
-#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:441
+#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:441
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "Không"
 
 #: archive-template.php:741 archive-template.php:742
-#: dt-metrics/combined/time-charts.php:117 dt-posts/posts.php:439
+#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:439
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "Có"
@@ -395,62 +395,67 @@ msgstr "Lọc Tên"
 msgid "Filter Records"
 msgstr "Lọc Hồ sơ"
 
-#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:259
-#: dt-assets/functions/enqueue-scripts.php:294
+#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:274
+#: dt-assets/functions/enqueue-scripts.php:309
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "Lưu"
 
-#: dt-assets/functions/details-bar.php:44
-#: dt-assets/functions/details-bar.php:243
+#: dt-assets/functions/details-bar.php:51
+#: dt-assets/functions/details-bar.php:244
 #: dt-core/configuration/config-site-defaults.php:364
 #: dt-users/template-user-management.php:93 dt-workflows/update-required.php:70
 #: dt-workflows/update-required.php:109
 msgid "Update Needed"
 msgstr "Cần cập nhật"
 
-#: dt-assets/functions/details-bar.php:55
+#: dt-assets/functions/details-bar.php:62
 msgid "Admin Actions"
 msgstr "Hành động của Quản trị viên"
 
-#: dt-assets/functions/details-bar.php:60 single-template.php:431
+#: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "Xóa %s"
 
-#: dt-assets/functions/details-bar.php:66
+#: dt-assets/functions/details-bar.php:72
+msgctxt "View Contact History"
+msgid "View %s History"
+msgstr ""
+
+#: dt-assets/functions/details-bar.php:80
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
 msgstr "Hợp nhất với một %s khác"
 
-#: dt-assets/functions/details-bar.php:82
-#: dt-assets/functions/details-bar.php:253
+#: dt-assets/functions/details-bar.php:96
+#: dt-assets/functions/details-bar.php:254
 msgid "Previous record"
 msgstr "Hồ sơ trước"
 
 #. translators: If your language is written right to left make this translation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank
-#: dt-assets/functions/details-bar.php:83
+#: dt-assets/functions/details-bar.php:97
 #: dt-assets/functions/details-bar.php:132
-#: dt-assets/functions/details-bar.php:254
-#: dt-assets/functions/details-bar.php:295
+#: dt-assets/functions/details-bar.php:255
+#: dt-assets/functions/details-bar.php:288
 #: dt-core/configuration/dt-configuration.php:75
 msgctxt "either rtl or ltr"
 msgid "ltr"
 msgstr "ltr"
 
 #: dt-assets/functions/details-bar.php:121
-#: dt-assets/functions/details-bar.php:283
+#: dt-assets/functions/details-bar.php:276
 msgid "Record"
 msgstr "Hồ sơ"
 
 #: dt-assets/functions/details-bar.php:125
-#: dt-assets/functions/details-bar.php:287
+#: dt-assets/functions/details-bar.php:280
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "bởi %s"
 
 #: dt-assets/functions/details-bar.php:131
-#: dt-assets/functions/details-bar.php:294
+#: dt-assets/functions/details-bar.php:287
 msgid "Next record"
 msgstr "Hồ sơ tiếp theo"
 
@@ -499,7 +504,7 @@ msgstr "Đang hiển thị %1$s mục khớp với %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:295 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:310 template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
 msgstr "Sửa"
@@ -514,9 +519,9 @@ msgstr "Bạn không có thông báo"
 
 #: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:256
-#: dt-assets/functions/enqueue-scripts.php:296
-#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:439
+#: dt-assets/functions/enqueue-scripts.php:271
+#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:435
 msgid "Delete"
 msgstr "Xóa"
 
@@ -599,68 +604,79 @@ msgstr "Được tạo vào %s"
 msgid "Open With"
 msgstr "Mở bằng"
 
-#: dt-assets/functions/enqueue-scripts.php:257
+#: dt-assets/functions/enqueue-scripts.php:240
+msgid "Revert Record Back To This Point"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:241
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you want to revert record state back to %s?"
+msgstr "Bạn có chắc chắn muốn xóa %s không?"
+
+#: dt-assets/functions/enqueue-scripts.php:272
 msgid "Locations you are responsible for"
 msgstr "Các địa điểm bạn chịu trách nhiệm"
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:273
 msgid "Add"
 msgstr "Bổ sung"
 
-#: dt-assets/functions/enqueue-scripts.php:260 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:275 template-settings.php:285
 msgid "link"
 msgstr "liên kết"
 
-#: dt-assets/functions/enqueue-scripts.php:261 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:276 template-settings.php:286
 msgid "copy"
 msgstr "sao chép"
 
-#: dt-assets/functions/enqueue-scripts.php:277
+#: dt-assets/functions/enqueue-scripts.php:292
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Đã tìm thấy Kết quả phù hợp:"
 
-#: dt-assets/functions/enqueue-scripts.php:278
+#: dt-assets/functions/enqueue-scripts.php:293
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Loại bỏ tất cả các kết quả phù hợp dành cho %s"
 
-#: dt-assets/functions/enqueue-scripts.php:297
+#: dt-assets/functions/enqueue-scripts.php:312
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Đang hiển thị _START_ trong _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:298
+#: dt-assets/functions/enqueue-scripts.php:313
 msgid "Sorting By"
 msgstr "Sắp xếp theo"
 
-#: dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:315
 msgid "Date Modified"
 msgstr "Ngày chỉnh sửa"
 
-#: dt-assets/functions/enqueue-scripts.php:301
+#: dt-assets/functions/enqueue-scripts.php:316
 msgid "No filters, create one below"
 msgstr "Không có bộ lọc nào, hãy tạo một bộ lọc bên dưới"
 
-#: dt-assets/functions/enqueue-scripts.php:302
+#: dt-assets/functions/enqueue-scripts.php:317
 msgid "No records found matching your filter."
 msgstr "Không tìm thấy hồ sơ nào phù hợp với bộ lọc của bạn."
 
-#: dt-assets/functions/enqueue-scripts.php:303 dt-contacts/base-setup.php:537
+#: dt-assets/functions/enqueue-scripts.php:318 dt-contacts/base-setup.php:537
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
 msgctxt "All records"
 msgid "All %s"
 msgstr "Tất cả %s"
 
-#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/functions/enqueue-scripts.php:319
 msgid "start"
 msgstr "bắt đầu"
 
-#: dt-assets/functions/enqueue-scripts.php:305
+#: dt-assets/functions/enqueue-scripts.php:320
 msgid "end"
 msgstr "kết thúc"
 
-#: dt-assets/functions/enqueue-scripts.php:306
+#: dt-assets/functions/enqueue-scripts.php:321
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
@@ -668,30 +684,30 @@ msgstr "kết thúc"
 msgid "All"
 msgstr "Tất cả"
 
-#: dt-assets/functions/enqueue-scripts.php:307
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Without"
 msgstr "Không có"
 
-#: dt-assets/functions/enqueue-scripts.php:309
+#: dt-assets/functions/enqueue-scripts.php:324
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "đã gửi"
 
-#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-assets/functions/enqueue-scripts.php:325
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "không gửi được (có thể thiếu email hợp lệ)"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "Exclude Item"
 msgstr "Loại trừ Mục"
 
-#: dt-assets/functions/enqueue-scripts.php:332 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:347 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Liên hệ"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:348
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -714,16 +730,15 @@ msgstr "Bổ sung mới"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:101 dt-assets/parts/nav-topbar.php:230
-#: template-notifications.php:33 template-settings.php:60
-#: template-settings.php:467
+#: dt-assets/parts/nav-topbar.php:148 template-notifications.php:33
+#: template-settings.php:60 template-settings.php:467
 msgid "Notifications"
 msgstr "Thông báo"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:109
-#: dt-assets/parts/nav-topbar.php:318 template-notifications.php:68
+#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:274
+#: template-notifications.php:68
 msgid "Settings"
 msgstr "Cài đặt"
 
@@ -751,6 +766,8 @@ msgid "Showing:"
 msgstr "Đang hiện:"
 
 #: dt-assets/parts/loop-activity-comment.php:112
+#: dt-assets/parts/modals/modal-record-history.php:28
+#: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "hiện tất cả"
 
@@ -1142,7 +1159,7 @@ msgstr ""
 "Bấm vào nút \"Chưa đọc\" để hiển thị danh sách tất cả các thông báo chưa đọc "
 "của bạn."
 
-#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:316
+#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:272
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Đánh dấu tất cả là đã đọc"
@@ -1248,12 +1265,31 @@ msgctxt "back to record"
 msgid "Back to %s"
 msgstr "Quay về %s"
 
+#: dt-assets/parts/modals/modal-record-history.php:6
+#, fuzzy
+#| msgid "Record Hits:"
+msgctxt "Record History"
+msgid "%s Record History"
+msgstr "Lượt truy cập Bản ghi:"
+
+#: dt-assets/parts/modals/modal-record-history.php:16
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Filter To Date"
+msgstr "Lọc Tên"
+
+#: dt-assets/parts/modals/modal-record-history.php:22
+#, fuzzy
+#| msgid "Create custom filter"
+msgid "select date to filter by"
+msgstr "Tạo bộ lọc tùy chỉnh"
+
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
 msgstr "Hoàn tác hoạt động"
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/combined/time-charts.php:108
+#: dt-metrics/combined/time-charts.php:109
 msgid "Field"
 msgstr "Trường"
 
@@ -1309,33 +1345,33 @@ msgstr "Tạo Nhiệm vụ"
 msgid "Existing tasks for this record:"
 msgstr "Các nhiệm vụ hiện có cho hồ sơ này:"
 
-#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:260
+#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:178
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "Đăng xuất"
 
-#: dt-assets/parts/nav-topbar.php:170
+#: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
 msgstr "Đã có Bản cập nhật Chủ đề!"
 
-#: dt-assets/parts/nav-topbar.php:286 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:242 template-notifications.php:43
 msgid "New"
 msgstr "Mới"
 
-#: dt-assets/parts/nav-topbar.php:292 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:248 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Tất cả"
 
-#: dt-assets/parts/nav-topbar.php:296 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:252 template-notifications.php:54
 msgid "Unread"
 msgstr "Chưa đọc"
 
-#: dt-assets/parts/nav-topbar.php:303
+#: dt-assets/parts/nav-topbar.php:259
 msgid "See All"
 msgstr "Xem Tất cả"
 
-#: dt-assets/parts/nav-topbar.php:322 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:278 template-notifications.php:72
 msgid "Mark All"
 msgstr "Đánh dấu tất cả"
 
@@ -2666,17 +2702,17 @@ msgstr ""
 msgid "To reset your password, visit the following address:"
 msgstr "Để đặt lại mật khẩu của bạn, hãy truy cập địa chỉ sau:"
 
-#: dt-core/global-functions.php:486 single-template.php:414
+#: dt-core/global-functions.php:486 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
-#: template-new-post.php:174
+#: template-new-post.php:175
 msgid "This is required"
 msgstr "Bắt buộc"
 
-#: dt-core/global-functions.php:634
+#: dt-core/global-functions.php:636
 msgid "Add new tag \"%s\""
 msgstr "Thêm tag mới \"%s\""
 
-#: dt-core/global-functions.php:635
+#: dt-core/global-functions.php:637
 msgid "Tag \"%s\" is already being used"
 msgstr "Tag \"%s\" đang được sử dụng"
 
@@ -3313,7 +3349,7 @@ msgstr "Đường lối quan trọng"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/combined/time-charts.php:43 dt-metrics/metrics.php:91
+#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:91
 msgid "Project"
 msgstr "Dự án"
 
@@ -3556,34 +3592,34 @@ msgstr "%s thay đổi trong phạm vi ngày"
 msgid "No Data Available"
 msgstr "Không Có Dữ liệu"
 
-#: dt-metrics/combined/time-charts.php:42
-#: dt-metrics/combined/time-charts.php:106
+#: dt-metrics/combined/time-charts.php:43
+#: dt-metrics/combined/time-charts.php:107
 msgid "Fields over Time Charts"
 msgstr "Các trường theo Biểu đồ Thời gian"
 
-#: dt-metrics/combined/time-charts.php:107
+#: dt-metrics/combined/time-charts.php:108
 msgid "Post Type"
 msgstr "Loại Bài đăng"
 
-#: dt-metrics/combined/time-charts.php:109
+#: dt-metrics/combined/time-charts.php:110
 msgid "Total"
 msgstr "Tổng cộng"
 
-#: dt-metrics/combined/time-charts.php:110
+#: dt-metrics/combined/time-charts.php:111
 msgid "Added"
 msgstr "Đã thêm"
 
-#: dt-metrics/combined/time-charts.php:111
+#: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "%1$s trong %2$s"
 
-#: dt-metrics/combined/time-charts.php:112
+#: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
 msgid "Date"
 msgstr "Ngày"
 
-#: dt-metrics/combined/time-charts.php:113
+#: dt-metrics/combined/time-charts.php:114
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
@@ -3591,15 +3627,15 @@ msgstr "Ngày"
 msgid "All Time"
 msgstr "Toàn bộ Thời gian"
 
-#: dt-metrics/combined/time-charts.php:114
+#: dt-metrics/combined/time-charts.php:115
 msgid "All cumulative totals"
 msgstr "Tất cả các tổng lũy kế"
 
-#: dt-metrics/combined/time-charts.php:115
+#: dt-metrics/combined/time-charts.php:116
 msgid "Single cumulative totals"
 msgstr "Các tổng lũy kế đơn lẻ"
 
-#: dt-metrics/combined/time-charts.php:116
+#: dt-metrics/combined/time-charts.php:117
 msgid "Number added"
 msgstr "Đã thêm số lượng"
 
@@ -4076,18 +4112,6 @@ msgstr "Bản dịch"
 msgid "Enter the People Group title here"
 msgstr "Nhập tiêu đề Nhóm Người tại đây"
 
-#: dt-people-groups/people-groups.php:275
-msgid "Display Options"
-msgstr ""
-
-#: dt-people-groups/people-groups.php:282
-msgid "Display People Groups Tab in Navigation Bar"
-msgstr ""
-
-#: dt-people-groups/people-groups.php:304
-msgid "Import People Group"
-msgstr ""
-
 #: dt-posts/custom-post-type.php:182
 msgid "Tags"
 msgstr "Thẻ"
@@ -4101,27 +4125,33 @@ msgstr "Một cách hữu ích để nhóm các mục liên quan."
 msgid "Un-Follow"
 msgstr "Bỏ theo dõi"
 
-#: dt-posts/dt-posts.php:107
+#: dt-posts/dt-posts.php:110
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1319
+#: dt-posts/dt-posts.php:1350
 msgid "Magic Link Submission"
 msgstr "Gửi Liên kết Ma thuật"
 
-#: dt-posts/dt-posts.php:1325
+#: dt-posts/dt-posts.php:1352 dt-posts/dt-posts.php:1895
+#, fuzzy
+#| msgid "Revert Activity"
+msgid "Revert Bot"
+msgstr "Hoàn tác hoạt động"
+
+#: dt-posts/dt-posts.php:1358
 msgid "D.T System"
 msgstr "Hệ thống D.T"
 
-#: dt-posts/dt-posts.php:1560
+#: dt-posts/dt-posts.php:2135
 msgid "Post already shared with user."
 msgstr "Bài đăng đã được chia sẻ với người dùng rồi."
 
-#: dt-posts/dt-posts.php:1816 single-template.php:178
+#: dt-posts/dt-posts.php:2390 single-template.php:174
 msgid "Details"
 msgstr "Chi tiết"
 
-#: dt-posts/dt-posts.php:1880
+#: dt-posts/dt-posts.php:2454
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4134,7 +4164,7 @@ msgstr ""
 "(%6$s). Nếu muốn, hãy chia sẻ hồ sơ này với người dùng đó để cấp quyền truy "
 "cập."
 
-#: dt-posts/dt-posts.php:1886
+#: dt-posts/dt-posts.php:2460
 msgid "Access Request"
 msgstr "Yêu cầu Truy cập"
 
@@ -4483,6 +4513,25 @@ msgstr "Gửi"
 #: dt-reports/magic-url-bulk-send.php:67
 msgid "Links"
 msgstr "Liên kết"
+
+#: dt-reports/magic-url-landing-page.php:54
+#: dt-reports/magic-url-landing-page.php:58
+#, fuzzy
+#| msgid "Magic Link Submission"
+msgid "Invalid Link"
+msgstr "Gửi Liên kết Ma thuật"
+
+#: dt-reports/magic-url-landing-page.php:63
+msgid "Link key is no longer valid or has expired."
+msgstr ""
+
+#: dt-reports/magic-url-landing-page.php:64
+msgid "Please %s, or locate a more recent key, or request a new one."
+msgstr ""
+
+#: dt-reports/magic-url-landing-page.php:64
+msgid "login"
+msgstr ""
 
 #: dt-reports/magic-url-setup.php:30
 #, fuzzy
@@ -5001,29 +5050,29 @@ msgstr "Đã từ chối chỉ định cho %s"
 msgid "No permissions to assign"
 msgstr "Không được cấp quyền để gán"
 
-#: dt-users/users.php:281
+#: dt-users/users.php:283
 msgid "Insufficient permissions"
 msgstr "Không có đủ quyền"
 
-#: dt-users/users.php:390
+#: dt-users/users.php:392
 msgid "Email already exists and is a user on this site"
 msgstr "Email đã tồn tại và là người dùng trên trang web này"
 
-#: dt-users/users.php:396
+#: dt-users/users.php:398
 msgid "Failed to add user to site."
 msgstr "Không thể bổ sung người dùng vào trang web."
 
-#: dt-users/users.php:447
+#: dt-users/users.php:449
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "Đây là những bình luận được lưu trữ cho %1$s"
 
-#: dt-users/users.php:609
+#: dt-users/users.php:611
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Bộ lọc Tùy chỉnh"
 
-#: dt-users/users.php:1194 template-settings.php:159 template-settings.php:592
+#: dt-users/users.php:1196 template-settings.php:159 template-settings.php:592
 msgid "System Email"
 msgstr "Email hệ thống"
 
@@ -5063,44 +5112,44 @@ msgstr ""
 msgid "See what browser you are using."
 msgstr "Xem bạn đang dùng trình duyệt gì."
 
-#: single-template.php:104 single-template.php:112
+#: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
 msgstr "%s này cần được cập nhật."
 
-#: single-template.php:106 single-template.php:114
+#: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
 msgstr "Vui lòng cập nhật bằng cách đăng bình luận."
 
-#: single-template.php:262
+#: single-template.php:258
 msgid "Edit all details fields"
 msgstr "Chỉnh sửa tất cả các trường chi tiết"
 
-#: single-template.php:385
+#: single-template.php:381
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:406 template-new-bulk-post.php:276
-#: template-new-post.php:166
+#: single-template.php:402 template-new-bulk-post.php:276
+#: template-new-post.php:167
 msgid "Create Tag"
 msgstr "Tạo Thẻ"
 
-#: single-template.php:407 template-new-bulk-post.php:277
-#: template-new-post.php:167
+#: single-template.php:403 template-new-bulk-post.php:277
+#: template-new-post.php:168
 msgid "Create a tag and apply it to this record."
 msgstr "Tạo một tag và áp dụng vào hồ sơ này."
 
-#: single-template.php:411 single-template.php:413
+#: single-template.php:407 single-template.php:409
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
-#: template-new-post.php:171 template-new-post.php:173
+#: template-new-post.php:172 template-new-post.php:174
 msgid "Tag"
 msgstr "Thẻ"
 
-#: single-template.php:422 template-new-bulk-post.php:293
-#: template-new-post.php:182
+#: single-template.php:418 template-new-bulk-post.php:293
+#: template-new-post.php:183
 msgid "Create and apply tag"
 msgstr "Tạo và gắn thẻ"
 
-#: single-template.php:432
+#: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Bạn có chắc chắn muốn xóa %s không?"
