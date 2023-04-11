@@ -298,7 +298,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function delete_tile( WP_REST_Request $request ) {
         $params = $request->get_params();
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
-        $tile_key = sanitize_text_field( wp_unslash( $params['tile_key' ] ) );
+        $tile_key = sanitize_text_field( wp_unslash( $params['tile_key'] ) );
 
         if ( self::is_custom_tile( $post_type, $tile_key ) === false ) {
             $tile_options = dt_get_option( 'dt_custom_tiles' );
@@ -312,8 +312,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function is_custom_tile( $post_type, $tile_key ) {
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
 
-        foreach( $default_fields as $fields ) {
-            foreach( $fields as $field_key => $field_value ) {
+        foreach ( $default_fields as $fields ) {
+            foreach ( $fields as $field_key => $field_value ) {
                 if ( $field_key === 'tile' && $field_value === $tile_key ) {
                     return true;
                 }

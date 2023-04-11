@@ -150,7 +150,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $all_custom_tiles = dt_get_option( 'dt_custom_tiles' );
         $custom_tiles = [];
         if ( isset( $all_custom_tiles[$post_type] ) ) {
-            foreach( $all_custom_tiles[$post_type] as $tile_key => $tile_value ) {
+            foreach ( $all_custom_tiles[$post_type] as $tile_key => $tile_value ) {
                 $custom_tiles[] = $tile_key;
             }
         }
