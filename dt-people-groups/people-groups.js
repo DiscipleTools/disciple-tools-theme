@@ -52,13 +52,23 @@ function group_search() {
           div.empty()
           search_button.empty().text('Get List')
 
-
+          console.log(data);
           div.append(`<dl><dt><strong>` + sval + `</strong></dt>`)
 
           jQuery.each(data, function (i, v) {
             div.append(`
                 <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
                 `)
+
+            // Flag already installed groups.
+            if (v[32]) {
+              let button = jQuery('#button-' + v[3]);
+              if (button) {
+                jQuery(button).text('installed');
+                jQuery(button).attr('disabled', 'disabled');
+              }
+            }
+
           })
           div.append(`</dl>`)
 

@@ -59,6 +59,7 @@ class Disciple_Tools_People_Groups
         $result = [];
         foreach ( $data as $row ) {
             if ( $row[1] === $search ) {
+                $row[] = ( self::duplicate_db_checker_by_rop3( $row[3] ) > 0 );
                 $result[] = $row;
             }
         }
@@ -77,6 +78,17 @@ class Disciple_Tools_People_Groups
             }
         }
         return $result;
+    }
+
+    public static function duplicate_db_checker_by_rop3( $rop3 ){
+        global $wpdb;
+        return $wpdb->get_var( $wpdb->prepare( "
+            SELECT count(meta_id)
+            FROM $wpdb->postmeta
+            WHERE meta_key = 'jp_ROP3' AND
+            post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
+            meta_value = %s",
+            $rop3 ) );
     }
 
     public static function get_country_dropdown() {
@@ -135,15 +147,7 @@ class Disciple_Tools_People_Groups
 
         // get current people groups
         // check for duplicate and return fail install because of duplicate.
-        global $wpdb;
-        $duplicate = $wpdb->get_var( $wpdb->prepare( "
-            SELECT count(meta_id)
-            FROM $wpdb->postmeta
-            WHERE meta_key = 'ROP3' AND
-            post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
-            meta_value = %s",
-        $rop3 ) );
-        if ( $duplicate > 0 ) {
+        if ( self::duplicate_db_checker_by_rop3( $rop3 ) > 0 ) {
             return [
                 'status' => 'Duplicate',
                 'message' => 'Duplicate found. Already installed.'
