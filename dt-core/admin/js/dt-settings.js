@@ -607,7 +607,6 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     <select id="new-field-type-${tile_key}" name="new-field-type" required>
-                        <option></option>
                         <option value="key_select">Dropdown</option>
                         <option value="multi_select">Multi Select</option>
                         <option value="tags">Tags</option>
@@ -722,6 +721,14 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     ${field_key}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label><b>Field Type</label></b>
+                </td>
+                <td>
+                    ${field_settings['type']}
                 </td>
             </tr>`;
 
