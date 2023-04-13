@@ -1398,6 +1398,13 @@ jQuery(document).ready(function($) {
    * Custom Tile Display - [END]
    */
 
+  if (window.WebComponentServices && window.WebComponentServices.ComponentService) {
+    const service = new window.WebComponentServices.ComponentService(
+      window.detailsSettings.post_type,
+      window.detailsSettings.post_id,
+      wpApiShare.nonce);
+    service.enableAutoSave();
+  }
 })
 
 

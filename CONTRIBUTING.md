@@ -29,3 +29,28 @@ Enable `WP_DEBUG` in your `wp-config.php`: `define('WP_DEBUG', true);`
 Checking out a PR and seeing the orange debug table is disappointing.
 
 We look forward to hearing from you!
+
+### Web Components
+When working on updates to the web components package and wanting to test them here in the them, you can use NPM Link to streamline local testing.
+
+See https://medium.com/dailyjs/how-to-use-npm-link-7375b6219557 for a good overview of how NPM Link works.
+
+To have your local changes to the web components be available in your local theme, do the following:
+
+```
+cd /path/to/disciple-tools-web-components
+npm link
+
+cd /path/to/disciple-tools-theme
+npm link @disciple.tools/web-components
+```
+
+After doing this, the `/node_modules/@disciple.tools/web-components/` directory will be a symlink to your local web components directory, so any updates you do will be immediately available here in the theme.
+
+After changes to your local web components, you just need to run the `npm run build` command (first in the web components directory, then here in the theme) to package them into the script deployed with the theme.
+
+When you've finished testing local changes and want to go back to the production NPM package, execute the following to re-install the production NPM package.
+
+```
+npm unlink --no-save @disciple.tools/web-components && npm i
+```
