@@ -316,6 +316,7 @@ class Disciple_Tools_People_Groups
                         endforeach; ?>
                     </select>
                     <button class="button" id="search_button" onclick="group_search()">Get List</button>
+                    <button class="button" id="import_all_button" onclick="import_all_people_groups()">Import All</button>
                     <br><br>
                     <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
                     <script>

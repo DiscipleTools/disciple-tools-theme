@@ -31,7 +31,9 @@ function update_setting_options() {
   })
 }
 
-function group_search() {
+function group_search(importing_all = false, callback = function () {
+}) {
+    let uninstalled_groups = [];
     let sval = jQuery('#group-search').val();
     let data = { "s": sval }
     let search_button = jQuery('#search_button')
@@ -49,24 +51,33 @@ function group_search() {
     })
         .done(function (data) {
           let div = jQuery('#results')
-          div.empty()
           search_button.empty().text('Get List')
 
-          console.log(data);
-          div.append(`<dl><dt><strong>` + sval + `</strong></dt>`)
+          // Maintain a long list of all people groups, when importing all.
+          if (!importing_all) {
+            div.empty();
+          }
 
+          div.append(`<dl><dt><strong>` + sval + `</strong></dt>`)
           jQuery.each(data, function (i, v) {
             div.append(`
                 <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
                 `)
 
-            // Flag already installed groups.
-            if (v[32]) {
+            // Check last element for duplicate flag to determine if group has already been installed.
+            if (v[v.length - 1]) {
               let button = jQuery('#button-' + v[3]);
               if (button) {
                 jQuery(button).text('installed');
                 jQuery(button).attr('disabled', 'disabled');
               }
+            } else if (importing_all) {
+
+              // Only capture uninstalled groups, to be auto-imported.
+              uninstalled_groups.push({
+                'rop3': v[3],
+                'country': v[1]
+              });
             }
 
           })
@@ -83,13 +94,46 @@ function group_search() {
             })
           })
 
+          callback(uninstalled_groups);
         })
         .fail(function (err) {
-            console.log("error");
-            console.log(err);
+          console.log("error");
+          console.log(err);
+
+          callback(uninstalled_groups);
         })
 }
 
+function import_all_people_groups() {
+  if (confirm("Import all people groups?")) {
+    let group_search_select = jQuery('#group-search');
+    let search_button = jQuery('#search_button')
+    let import_all_button = jQuery('#import_all_button');
+    let results_div = jQuery('#results');
+    import_all_button.append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />')
+    import_all_button.attr('disabled', 'disabled');
+    search_button.attr('disabled', 'disabled');
+    results_div.empty();
+
+    // First, list all people groups and countries.
+    jQuery(group_search_select).find('option').each(function () {
+      let value = jQuery(this).val();
+      group_search_select.val(value);
+      group_search(true, function (uninstalled_groups) {
+        let add_all_groups = jQuery('#add_all_groups');
+        add_all_groups.hide();
+
+        // Then, auto-import all identified uninstalled groups.
+        jQuery.each(uninstalled_groups, function (idx, group) {
+          add_single_people_group(group.rop3, group.country);
+        });
+      });
+    });
+
+    // Remove import all spinner, but maintain disabled state.
+    import_all_button.empty().text('Import All');
+  }
+}
 
 function add_single_people_group( rop3, country ) {
     let data = { "rop3": rop3, "country": country }
