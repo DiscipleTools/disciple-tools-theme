@@ -222,7 +222,6 @@ jQuery(document).ready(function($) {
     }
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
-
         var tile_key = $(this).data('key');
         if (!tile_key || tile_key === 'no-tile-hidden') {
             hide_preview_tile();
@@ -1180,17 +1179,12 @@ jQuery(document).ready(function($) {
         var field_option_icon = $('#edit-field-icon').val();
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
-                'label':field_option_name,
-            };
-
-            if (field_option_description) {
-                window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
-                    'label':field_option_name,
-                    'description':field_option_description,
-                    'icon':field_option_icon,
-                };
-            }
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'].push(none = {label:''});
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'].push( new_field_option_key = {
+                label:field_option_name,
+                description:field_option_description,
+                icon:field_option_icon,
+            });
 
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
