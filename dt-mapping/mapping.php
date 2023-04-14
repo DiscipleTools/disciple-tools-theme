@@ -362,6 +362,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'GET',
             ];
+            $endpoints['search_location_grid_by_lng_lat'] = [
+                'namespace' => $this->namespace,
+                'route' => '/mapping_module/search_location_grid_by_lng_lat',
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'method' => 'GET',
+            ];
             $endpoints['get_drilldown_endpoint'] = [
                 'namespace' => $this->namespace,
                 'route' => '/mapping_module/get_drilldown',
@@ -509,6 +515,19 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'location_grid' => $prepared,
                 'total' => $locations['total']
             ];
+        }
+
+        public function search_location_grid_by_lng_lat( WP_REST_Request $request ){
+            $params = $request->get_params();
+            if ( isset( $params['lng'], $params['lat'] ) ) {
+                $geocoder = new Location_Grid_Geocoder();
+                $grid = $geocoder->get_grid_id_by_lnglat( $params['lng'], $params['lat'] );
+                if ( $grid ) {
+                    return $grid;
+                }
+            }
+
+            return [];
         }
 
         public function get_drilldown_endpoint( WP_REST_Request $request ) {
