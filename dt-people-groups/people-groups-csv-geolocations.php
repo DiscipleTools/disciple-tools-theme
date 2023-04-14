@@ -46,7 +46,7 @@ function save_csv_content( $csv_file, $content ): bool{
                 fclose( $handle );
                 return true;
             }
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             echo 'Caught exception: ', esc_attr( $e->getMessage() ), PHP_EOL;
             return false;
         }
@@ -97,7 +97,7 @@ if ( ( count( $argv ) - 1 ) === count( $params ) ){
     $input_csv_file_row_count = 0;
     echo PHP_EOL . 'Processing loaded contents of file: ' . esc_attr( $input_csv_file ) . '; which contains ' . esc_attr( $input_csv_file_row_total ) . ' records.' . PHP_EOL . PHP_EOL;
     foreach ( $input_csv_file_content as $csv ){
-        echo 'Processing ' . ( ++$input_csv_file_row_count ) . ' of ' . esc_attr( $input_csv_file_row_total ) . PHP_EOL;
+        echo 'Processing ' . esc_attr( ++$input_csv_file_row_count ) . ' of ' . esc_attr( $input_csv_file_row_total ) . PHP_EOL;
         $grid = [];
         if ( isset( $csv[$latitude_idx], $csv[$longitude_idx] ) ){
             $latitude = $csv[$latitude_idx];
