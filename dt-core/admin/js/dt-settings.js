@@ -1179,7 +1179,6 @@ jQuery(document).ready(function($) {
         var field_option_icon = $('#edit-field-icon').val();
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'].push(none = {label:''});
             window['field_settings']['post_type_settings']['fields'][field_key]['default'].push( new_field_option_key = {
                 label:field_option_name,
                 description:field_option_description,
