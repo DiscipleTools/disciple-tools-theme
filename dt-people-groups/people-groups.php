@@ -88,7 +88,7 @@ class Disciple_Tools_People_Groups
             WHERE meta_key = 'jp_ROP3' AND
             post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
             meta_value = %s",
-            $rop3 ) );
+        $rop3 ) );
     }
 
     public static function get_country_dropdown() {
