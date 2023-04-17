@@ -304,6 +304,15 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $tile_options = dt_get_option( 'dt_custom_tiles' );
             unset( $tile_options[$post_type][$tile_key] );
             update_option( 'dt_custom_tiles', $tile_options );
+
+            // Move all tile fields to No Tile
+            $field_customizations = dt_get_option( 'dt_field_customizations' );
+            foreach ( $field_customizations[$post_type] as  $field_key => $field_settings ) {
+                if ( $field_customizations[$post_type][$field_key]['tile'] === $tile_key ) {
+                    unset( $field_customizations[$post_type][$field_key]['tile'] );
+                }
+            }
+            update_option( 'dt_field_customizations', $field_customizations );
             return true;
         }
         return false;
