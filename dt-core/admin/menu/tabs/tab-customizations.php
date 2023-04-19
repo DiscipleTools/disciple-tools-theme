@@ -106,7 +106,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
                 'post_type_settings' => $post_settings,
                 'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
-                'custom_tiles' => self::get_custom_tiles( $post_type ),
+                'default_tiles' => self::get_default_tiles( $post_type ),
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
                 'translations' => apply_filters( 'dt_list_js_translations', $translations ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
@@ -146,15 +146,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         return $all_post_types;
     }
 
-    public static function get_custom_tiles( $post_type ) {
-        $all_custom_tiles = dt_get_option( 'dt_custom_tiles' );
-        $custom_tiles = [];
-        if ( isset( $all_custom_tiles[$post_type] ) ) {
-            foreach ( $all_custom_tiles[$post_type] as $tile_key => $tile_value ) {
-                $custom_tiles[] = $tile_key;
+    public static function get_default_tiles( $post_type ) {
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $default_tiles = [];
+        foreach ( $default_fields as $field) {
+            foreach( $field as $field_key => $field_value ) {
+                if ( $field_key === 'tile' && !in_array( $field_value, $default_tiles ) ) {
+                    $default_tiles[] = $field_value;
+                }
             }
         }
-        return $custom_tiles;
+        return $default_tiles;
     }
 
     public static function load_overlay_modal() {

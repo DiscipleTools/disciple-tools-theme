@@ -521,7 +521,7 @@ jQuery(document).ready(function($) {
             }
 
             var delete_tile_html_content = '';
-            if (window.field_settings.custom_tiles.includes(tile_key)) {
+            if (window.field_settings.default_tiles.includes(tile_key) == false) {
                 delete_tile_html_content = `<a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>`;
             }
 
