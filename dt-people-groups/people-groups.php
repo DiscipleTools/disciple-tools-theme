@@ -91,6 +91,30 @@ class Disciple_Tools_People_Groups
         $rop3 ) );
     }
 
+    public static function add_location_grid_meta( $post_type, $post_id, $grid_id ){
+        if ( !empty( $post_type ) &&  !empty( $post_id ) && !empty( $grid_id ) ){
+            $geocoder = new Location_Grid_Geocoder();
+            $grid = $geocoder->query_by_grid_id( $grid_id );
+            if ( $grid ) {
+                $location_meta_grid = [];
+
+                // creates the full record from the grid_id
+                Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                $location_meta_grid['post_id'] = $post_id;
+                $location_meta_grid['post_type'] = $post_type;
+                $location_meta_grid['grid_id'] = $grid['grid_id'];
+                $location_meta_grid['lng'] = $grid['longitude'];
+                $location_meta_grid['lat'] = $grid['latitude'];
+                $location_meta_grid['level'] = $grid['level_name'];
+                $location_meta_grid['label'] = $grid['name'];
+
+                return Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+            }
+        }
+
+        return false;
+    }
+
     public static function get_country_dropdown() {
         if ( ! current_user_can( 'manage_dt' ) ) {
             return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
@@ -108,10 +132,11 @@ class Disciple_Tools_People_Groups
      *
      * @param $rop3
      * @param $country
+     * @param $location_grid
      *
      * @return array|WP_Error
      */
-    public static function add_single_people_group( $rop3, $country ) {
+    public static function add_single_people_group( $rop3, $country, $location_grid ) {
         if ( ! current_user_can( 'manage_dt' ) ) {
             return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
         }
@@ -182,6 +207,10 @@ class Disciple_Tools_People_Groups
 
         // return success
         if ( ! is_wp_error( $post_id ) ) {
+
+            // Capture corresponding location_grid_meta to above location_grid for newly created post id.
+            self::add_location_grid_meta( 'peoplegroups', $post_id, $location_grid );
+
             return [
                 'status' => 'Success',
                 'message' => 'New people group has been added! ( <a href="'.admin_url() . 'post.php?post=' . $post_id . '&action=edit">View new record</a> )',
@@ -192,6 +221,109 @@ class Disciple_Tools_People_Groups
                 'message' => 'Unable to insert ' . $rop3_row[4],
             ];
         }
+    }
+
+    /**
+     * Bulk Add People Groups
+     *
+     * @param $groups
+     *
+     * @return array|WP_Error
+     */
+    public static function add_bulk_people_groups( $groups ){
+        if ( !current_user_can( 'manage_dt' ) ){
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
+
+        $group_results = [];
+
+        // Load jp and imb csv data.
+        $jp_data = self::get_jp_source();
+        $jp_columns = $jp_data[0];
+        $imb_data = self::get_imb_source();
+        $imb_columns = $imb_data[0];
+
+        // Proceed with people group installation.
+        foreach ( $groups ?? [] as $group ){
+            if ( !empty( $group['rop3'] ) && !empty( $group['country'] ) ){
+                $rop3 = $group['rop3'];
+                $country = $group['country'];
+                $group_results[$rop3] = $group;
+
+                // Attempt to locate corresponding jp csv row.
+                $jp_data_rop3_row = '';
+                foreach ( $jp_data as $row ){
+                    if ( $row[3] == $rop3 && $row[1] === $country ){
+                        $jp_data_rop3_row = $row;
+                        break;
+                    }
+                }
+
+                // Attempt to locate corresponding imb csv row.
+                $imb_data_rop3_row = '';
+                foreach ( $imb_data as $row ){
+                    if ( $row[32] == $rop3 && $row[5] === $country ){
+                        $imb_data_rop3_row = $row;
+                        break;
+                    }
+                }
+
+                // Ensure a corresponding jp csv row is located.
+                if ( empty( $jp_data_rop3_row ) || ! is_array( $jp_data_rop3_row ) ){
+                    $group_results[$rop3]['status'] = 'Fail';
+                    $group_results[$rop3]['message'] = 'ROP3 number not found in JP data.';
+
+                // Ensure group has no duplicates already installed.
+                } elseif ( self::duplicate_db_checker_by_rop3( $rop3 ) > 0 ){
+                    $group_results[$rop3]['status'] = 'Duplicate';
+                    $group_results[$rop3]['message'] = 'Duplicate found. Already installed.';
+
+                // Ensure a valid label has been specified.
+                } elseif ( empty( $group['label'] ) ){
+                    $group_results[$rop3]['status'] = 'Fail';
+                    $group_results[$rop3]['message'] = 'ROP3 title not found.';
+
+                } else {
+
+                    // Proceed with people group full installation.
+                    $post = [
+                        'post_title' => $jp_data_rop3_row[4] . ' (' . $jp_data_rop3_row[1] . ' | ' . $jp_data_rop3_row[3] . ')',
+                        'post_type' => 'peoplegroups',
+                        'post_status' => 'publish',
+                        'comment_status' => 'closed',
+                        'ping_status' => 'closed'
+                    ];
+                    foreach ( $jp_data_rop3_row as $key => $value ){
+                        $post['meta_input']['jp_' . $jp_columns[$key]] = $value;
+                    }
+                    if ( !empty( $imb_data_rop3_row ) ){ // adds only if match is found
+                        foreach ( $imb_data_rop3_row as $imb_key => $imb_value ){
+                            $post['meta_input']['imb_' . $imb_columns[$imb_key]] = $imb_value;
+                        }
+                    }
+
+                    // Proceed with actual post creation.
+                    $post_id = wp_insert_post( $post );
+
+                    // Package insert result accordingly.
+                    if ( !is_wp_error( $post_id ) ){
+
+                        // Capture corresponding location_grid_meta to above location_grid for newly created post id.
+                        self::add_location_grid_meta( 'peoplegroups', $post_id, $group['location_grid'] );
+
+                        // Package final result findings.
+                        $group_results[$rop3]['status'] = 'Success';
+                        $group_results[$rop3]['message'] = 'New people group has been added! ( <a href="' . admin_url() . 'post.php?post=' . $post_id . '&action=edit">View new record</a> )';
+
+                    } else {
+                        $group_results[$rop3]['status'] = 'Fail';
+                        $group_results[$rop3]['message'] = 'Unable to insert ' . $jp_data_rop3_row[4];
+                    }
+                }
+            }
+        }
+
+        return $group_results;
     }
 
     /**
@@ -310,13 +442,14 @@ class Disciple_Tools_People_Groups
             <tbody>
             <tr>
                 <td>
+                    <button class="button" id="import_all_button" onclick="import_all_people_groups()">Import All Country People Groups</button>
+                    <hr><br>
                     <select id="group-search">
                         <?php foreach ( $names as $name ) :
                             echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
                         endforeach; ?>
                     </select>
                     <button class="button" id="search_button" onclick="group_search()">Get List</button>
-                    <button class="button" id="import_all_button" onclick="import_all_people_groups()">Import All</button>
                     <br><br>
                     <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
                     <script>

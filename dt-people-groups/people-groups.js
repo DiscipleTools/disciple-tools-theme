@@ -37,7 +37,10 @@ function group_search(importing_all = false, callback = function () {
     let sval = jQuery('#group-search').val();
     let data = { "s": sval }
     let search_button = jQuery('#search_button')
-    search_button.append(' <img style="height:1em;" src="'+ dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
+
+    if (!importing_all) {
+      search_button.append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
+    }
 
     jQuery.ajax({
         type: "POST",
@@ -61,7 +64,7 @@ function group_search(importing_all = false, callback = function () {
           div.append(`<dl><dt><strong>` + sval + `</strong></dt>`)
           jQuery.each(data, function (i, v) {
             div.append(`
-                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
+                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `','` + v[32] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
                 `)
 
             // Check last element for duplicate flag to determine if group has already been installed.
@@ -75,8 +78,10 @@ function group_search(importing_all = false, callback = function () {
 
               // Only capture uninstalled groups, to be auto-imported.
               uninstalled_groups.push({
+                'country': v[1],
                 'rop3': v[3],
-                'country': v[1]
+                'label': v[4],
+                'location_grid': v[32]
               });
             }
 
@@ -105,13 +110,11 @@ function group_search(importing_all = false, callback = function () {
 }
 
 function import_all_people_groups() {
-  if (confirm("Import all people groups?")) {
+  if (confirm("Import all country people groups?")) {
     let group_search_select = jQuery('#group-search');
-    let search_button = jQuery('#search_button')
-    let import_all_button = jQuery('#import_all_button');
+    let search_button = jQuery('#search_button');
     let results_div = jQuery('#results');
-    import_all_button.append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />')
-    import_all_button.attr('disabled', 'disabled');
+    group_search_select.attr('disabled', 'disabled');
     search_button.attr('disabled', 'disabled');
     results_div.empty();
 
@@ -122,21 +125,58 @@ function import_all_people_groups() {
       group_search(true, function (uninstalled_groups) {
         let add_all_groups = jQuery('#add_all_groups');
         add_all_groups.hide();
-
-        // Then, auto-import all identified uninstalled groups.
-        jQuery.each(uninstalled_groups, function (idx, group) {
-          add_single_people_group(group.rop3, group.country);
-        });
+        add_bulk_people_groups(uninstalled_groups);
       });
     });
-
-    // Remove import all spinner, but maintain disabled state.
-    import_all_button.empty().text('Import All');
   }
 }
 
-function add_single_people_group( rop3, country ) {
-    let data = { "rop3": rop3, "country": country }
+function add_bulk_people_groups(people_groups) {
+  if (people_groups.length !== 0) {
+    let import_all_button = jQuery('#import_all_button');
+    import_all_button.attr('disabled', 'disabled');
+    import_all_button.empty().text('Import All Country People Groups').append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
+
+    jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify({'groups': people_groups}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/add_bulk_people_groups',
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+      }
+
+    }).done(function (data) {
+      console.log(data);
+
+      jQuery.each(data, function (rop3, group) {
+        let button = jQuery('#button-' + rop3);
+        if (button && group.status) {
+          button.attr('disabled', 'disabled');
+          if (group.status === 'Success') {
+            button.text('installed')
+          }
+          if (group.status === 'Duplicate') {
+            button.text('duplicate')
+          }
+          if (group.status === 'Fail') {
+            button.text('failed')
+          }
+        }
+      });
+      import_all_button.empty().text('Import All Country People Groups');
+
+    }).fail(function (err) {
+      console.log("error");
+      console.log(err);
+      import_all_button.empty().text('Import All Country People Groups');
+    });
+  }
+}
+
+function add_single_people_group( rop3, country, location_grid ) {
+    let data = { "rop3": rop3, "country": country, "location_grid": location_grid }
     let button = jQuery( '#button-' + rop3 )
     let message = jQuery('#message-' + rop3 )
 
