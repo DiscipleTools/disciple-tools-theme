@@ -190,19 +190,19 @@ jQuery(document).ready(function($) {
 
     function get_dt_custom_tiles_and_fields_ordered() {
         var dt_custom_tiles_and_fields_ordered = {};
-        var tiles = jQuery('.field-settings-table').sortable('toArray');
+        var tiles = $('.field-settings-table').sortable('toArray');
         var tile_priority = 10;
         tiles.pop(); // remove the 'add new tile' link
 
-        jQuery.each(tiles, function(tile_index, tile_key) {
+        $.each(tiles, function(tile_index, tile_key) {
             if (tile_key === '' ) {
                 return;
             }
             dt_custom_tiles_and_fields_ordered[tile_key] = {};
-            var tile_label = jQuery(`#tile-key-${tile_key}`).prop('innerText');
-            var fields = jQuery(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
+            var tile_label = $(`#tile-key-${tile_key}`).prop('innerText');
+            var fields = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             var field_order = [];
-            jQuery.each(fields, function(field_index, field_element) {
+            $.each(fields, function(field_index, field_element) {
                 var field_key = field_element.id;
                 field_order.push(field_key);
             });
@@ -216,11 +216,11 @@ jQuery(document).ready(function($) {
     }
 
     function get_field_defaults(tile_key, field_key) {
-        var field_options = jQuery(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`);
+        var field_options = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`);
         var field_default = [];
-        jQuery.each(field_options, function(field_index, field_element){
-            var field_option_key = jQuery(field_element).data('field-option-key');
-            var field_option_label = jQuery(field_element).prop('innerText');
+        $.each(field_options, function(field_index, field_element){
+            var field_option_key = $(field_element).data('field-option-key');
+            var field_option_label = $(field_element).prop('innerText');
             field_default[field_option_key] = {'label': field_option_label};
         });
         return field_default;
@@ -520,6 +520,11 @@ jQuery(document).ready(function($) {
                 hide_tile = 'checked';
             }
 
+            var delete_tile_html_content = '';
+            if (window.field_settings.custom_tiles.includes(tile_key)) {
+                delete_tile_html_content = `<a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>`;
+            }
+
             var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -567,19 +572,13 @@ jQuery(document).ready(function($) {
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td>
                     <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
+                <td class="delete-text">
+                    ${delete_tile_html_content}
+                </td>
             </tr>`;
-
-            if (window.field_settings.custom_tiles.includes(tile_key)) {
-                modal_html_content += `
-                <tr style="text-align: right;">
-                    <td class="delete-text" colspan="2">
-                        <a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>
-                    </td>
-                </tr>`;
-            }
 
             $('#modal-overlay-content-table').html(modal_html_content);
         });
@@ -588,6 +587,9 @@ jQuery(document).ready(function($) {
     // Delete Text Click
     $('#modal-overlay-form').on('click', '#delete-text', function(e) {
         $(this).blur();
+        if( $('#delete-confirmation-container').length > 0 ) {
+            return;
+        }
         var tile_key = $(this).closest('#delete-text').data('tile-key');
         $(this).parent().append(`
             <div id="delete-confirmation-container" style="cursor: pointer;">
@@ -609,6 +611,20 @@ jQuery(document).ready(function($) {
                 var tile_expand_icon = $(`.field-settings-table-tile-name[data-key="${tile_key}"]>span.expand-icon`);
                 tile_expand_icon.click();
             }
+
+            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no-tile-hidden"]');
+            if (no_tile_menu.is(':hidden')) {
+                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no-tile-hidden"]>span.expand-icon');
+                no_tile_expand_icon.click();
+            }
+
+            var deleted_tile_field_options =  $(`.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`).children().not('.add-new-item');
+            deleted_tile_field_options.each(function() {
+                $(this).removeClass('inset-shadow');
+                no_tile_menu.append($(this));
+                $(this).find('.field-settings-table-field-name').addClass('menu-highlight');
+            });
+
             tile_element.css('background', '#e14d43');
             tile_element.fadeOut(500, function(){
                 tile_element.parent().remove();

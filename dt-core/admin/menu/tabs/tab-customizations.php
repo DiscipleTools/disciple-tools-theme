@@ -449,7 +449,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <span id="tile-key-untiled" style="vertical-align: sub;">
                         <?php echo esc_html_e( 'No Tile / Hidden', 'disciple-tools' ); ?>
                     </span>
-                    <span class="edit-icon"></span>
                 </div>
                 <div class="tile-rundown-elements" data-parent-tile-key="no-tile-hidden" style="display: none;">
                     <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>

@@ -16,6 +16,9 @@
     from { background: #3f729b; }
     to { background: #d3d3d3; }
 }
+.delete-text {
+    text-align: right;
+}
 #delete-text {
     width: 100%;
     color: #e14d43;
