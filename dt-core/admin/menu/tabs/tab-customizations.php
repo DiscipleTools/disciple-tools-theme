@@ -149,8 +149,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     public static function get_default_tiles( $post_type ) {
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $default_tiles = [];
-        foreach ( $default_fields as $field) {
-            foreach( $field as $field_key => $field_value ) {
+        foreach ( $default_fields as $field ) {
+            foreach ( $field as $field_key => $field_value ) {
                 if ( $field_key === 'tile' && !in_array( $field_value, $default_tiles ) ) {
                     $default_tiles[] = $field_value;
                 }
