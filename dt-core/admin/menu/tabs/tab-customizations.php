@@ -366,7 +366,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <!-- END TILE -->
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                         <!-- START TOGGLED FIELD ITEMS -->
-                        <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                        <?php foreach ( $tile_value['order'] as $field_key ) :
+                            if (isset( $post_tiles['fields'][$field_key] ) ) {
+                                $field_settings = $post_tiles['fields'][$field_key];
+                            }
+                            ?>
                             <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) : ?>
                                 <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
