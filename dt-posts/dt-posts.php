@@ -92,24 +92,17 @@ class DT_Posts extends Disciple_Tools_Posts {
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'] );
 
-                //Avoid further duplication of pre-existing values.
-                $filtered_fields = [];
-                $duplicate_post   = self::get_post( $post_type, $duplicate_post_ids[0], false, false );
-                foreach ( $fields as $field_id => $value ) {
-                    if ( ! self::post_contains_field_value( $post_settings['fields'], $duplicate_post, $field_id, $value ) ) {
-                        $filtered_fields[ $field_id ] = $value;
-                    }
-                }
-
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post['ID'], $filtered_fields, $silent, false );
+                $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, false );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
                 //if update successful, comment and return.
                 $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
-                if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
-                    $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                if ( !$silent ){
+                    if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
+                        $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                    }
                 }
                 self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
 
