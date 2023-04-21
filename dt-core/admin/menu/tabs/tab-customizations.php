@@ -366,7 +366,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <!-- END TILE -->
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                         <!-- START TOGGLED FIELD ITEMS -->
-                        <?php 
+                        <?php
                         // If there is a custom field order, show fields in order
                         if ( isset( $tile_value['order'] ) ) {
                             $post_tiles['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_tiles['fields'] );
