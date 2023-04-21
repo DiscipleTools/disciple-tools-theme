@@ -740,6 +740,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         $tile_options[$post_type] = $dt_custom_tiles_and_fields_ordered;
         update_option( 'dt_custom_tiles', $tile_options );
+        return $tile_options;
     }
 
     public static function update_field_options_order( WP_REST_Request $request ) {

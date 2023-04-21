@@ -23,8 +23,6 @@ function makeRequest(type, url, data, base = "dt/v1/") {
 jQuery(document).ready(function($) {
 
     window.API = {};
-
-
     window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
         post_type: post_type,
         new_tile_name: new_tile_name,
@@ -163,6 +161,7 @@ jQuery(document).ready(function($) {
                 return;
             }
             var post_type = get_post_type();
+            var tile_key = $(event)[0].target.dataset.parentTileKey;
             var moved_element = $(event)[0].originalEvent.target.nextElementSibling;
 
             // Check if moved element is a field option
@@ -174,12 +173,15 @@ jQuery(document).ready(function($) {
                 $.each(field_options, function(option_index, option_element) {
                     sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
                 });
-                API.update_field_options_order(post_type, field_key, sortable_field_options_ordering);
                 return;
             }
 
             dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
-            API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(data) {});
+            API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
+                var new_order = result['contacts'][tile_key]['order'];
+                window['field_settings']['post_type_settings']['tiles'][tile_key]['order'] = new_order;
+                show_preview_tile(tile_key);
+            });
         },
     });
 
@@ -285,9 +287,10 @@ jQuery(document).ready(function($) {
                 </div>
                 <div class="section-body">`;
 
-        var all_fields = window['field_settings']['post_type_settings']['fields'];
-        $.each(all_fields, function(key, field) {
-            if( field['tile'] === tile_key ) {
+        field_order = window['field_settings']['post_type_settings']['tiles'][tile_key]['order'];
+        $.each(field_order, function(field_index, field_key) {
+            var field = window['field_settings']['post_type_settings']['fields'][field_key];
+
                 var icon_html = '';
                 if ( field['icon'] ) {
                     icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
@@ -398,7 +401,6 @@ jQuery(document).ready(function($) {
                     tile_html += `</select>`;
                 }
                 /*** KEY_SELECT - END ***/
-            }
         });
         tile_html += `
                 </div>
