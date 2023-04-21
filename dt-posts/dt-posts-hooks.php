@@ -161,8 +161,7 @@ class DT_Posts_Hooks {
                         case 'key_select':
                         case 'date':
                         case 'user_select':
-                        case 'number':
-                            $search_values[ $search_field ] = $fields[ $search_field ];
+                            $search_values[ $search_field ] = [ $fields[ $search_field ] ];
                             break;
                         case 'multi_select':
                         case 'links':
@@ -185,6 +184,9 @@ class DT_Posts_Hooks {
                                 $search_values[ $search_field ] = $values;
                             }
                             break;
+                        case 'number':
+                            //not supported
+                            break;
                     }
                 }
             }
@@ -192,9 +194,15 @@ class DT_Posts_Hooks {
             // Query system for duplicates, based on identified search values and status key.
             if ( ! empty( $search_values ) ) {
                 $status_key = isset( $post_settings['status_field']['status_key'] ) ? $post_settings['status_field']['status_key'] : null;
+                $fields = [
+                    $search_values,
+                ];
+                if ( $post_type === 'contacts' ){
+                    $fields[] =[ 'type' => [ '-personal', '-placeholder' ] ];
+                }
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
                     'sort'             => !empty( $status_key ) ? $status_key : '-post_date',
-                    'fields'           => [ $search_values, [ 'type' => [ '-personal', '-placeholder' ] ] ],
+                    'fields'           => $fields,
                     'fields_to_search' => array_keys( $search_values )
                 ], false );
 
