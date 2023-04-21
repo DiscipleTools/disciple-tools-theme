@@ -607,7 +607,6 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     <select id="new-field-type-${tile_key}" name="new-field-type" required>
-                        <option></option>
                         <option value="key_select">Dropdown</option>
                         <option value="multi_select">Multi Select</option>
                         <option value="tags">Tags</option>
@@ -676,6 +675,7 @@ jQuery(document).ready(function($) {
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
+        var field_type = field_settings['type'].replace('_', ' ');
 
         var name_is_custom = false;
         if ( field_settings['default_name'] ) {
@@ -722,6 +722,14 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     ${field_key}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label><b>Field Type</label></b>
+                </td>
+                <td style="text-transform:capitalize;">
+                    ${field_type}
                 </td>
             </tr>`;
 
