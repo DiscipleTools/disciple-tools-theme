@@ -1738,6 +1738,7 @@ class Disciple_Tools_Posts
             } else if ( isset( $fields[$details_key] ) && is_array( $fields[$details_key] ) ) {
                 $values = $fields[$details_key];
             }
+            //forces values to the giving array
             if ( $existing_contact && isset( $fields[$details_key] ) &&
                  isset( $fields[$details_key]['force_values'] ) &&
                  $fields[$details_key]['force_values'] == true ){
@@ -1761,6 +1762,9 @@ class Disciple_Tools_Posts
                     }
                 }
             }
+            $existing_values = array_map( function( $value ){
+                return $value['value'];
+            }, $existing_contact[$details_key] ?? [] );
             foreach ( $values as $field ){
                 if ( isset( $field['delete'] ) && $field['delete'] == true ){
                     if ( !isset( $field['key'] ) ){
@@ -1782,11 +1786,14 @@ class Disciple_Tools_Posts
                     $field['key'] = 'new-'.$details_key;
                     //create field
                     if ( ! empty( $field['value'] ) ) {
-                        // Geocode any identified addresses ahead of field creation
+                        if ( in_array( $field['value'], $existing_values, true ) ){
+                            continue;
+                        }
                         $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field['key'], $field['value'], $field );
                         if ( is_wp_error( $potential_error ) ){
                             return $potential_error;
                         }
+                        // Geocode any identified addresses ahead of field creation
                         if ( $details_key === 'contact_address' && isset( $field['geolocate'] ) && !empty( $field['geolocate'] ) ){
                             $potential_error = self::geolocate_addresses( $post_id, $post_settings['post_type'], $details_key, $field['value'] );
                         }
@@ -2073,7 +2080,6 @@ class Disciple_Tools_Posts
     }
 
     public static function add_post_contact_method( array $post_settings, int $post_id, string $key, string $value, array $field ) {
-//        @todo permissions
         if ( strpos( $key, 'new-' ) === 0 ) {
             $field_key = explode( '-', $key )[1];
             $type = str_replace( 'contact_', '', $field_key );
