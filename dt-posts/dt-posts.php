@@ -78,6 +78,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, 'Could not create this post. Maybe it already exists', [ 'status' => 409 ] );
         }
 
+        $args = apply_filters( 'dt_create_post_args', $args, $post_type, $fields );
+
         //if specified, check for actual duplicates.
         if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
@@ -104,7 +106,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
                     }
                 }
-                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
+                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false, $silent );
 
                 if ( $check_permissions && !self::can_view( $post_type, $updated_post['ID'] ) ){
                     return [ 'ID' => $updated_post['ID'] ];
