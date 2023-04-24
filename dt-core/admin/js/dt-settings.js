@@ -278,6 +278,9 @@ jQuery(document).ready(function($) {
     });
 
     function show_preview_tile(tile_key) {
+        if(tile_key == 'no_tile') {
+            return;
+        }
         var tile_html = `
             <div class="dt-tile-preview">
                 <div class="section-header">
