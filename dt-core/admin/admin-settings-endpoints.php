@@ -759,6 +759,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $field_customizations[$post_type][$field_key] = $custom_field;
         update_option( 'dt_field_customizations', $field_customizations );
         wp_cache_delete( $post_type . '_field_settings' );
+        return $sortable_field_options_ordering;
     }
 
     public static function remove_custom_field_name( WP_REST_Request $request ) {

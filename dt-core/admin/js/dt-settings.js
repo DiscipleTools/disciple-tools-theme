@@ -173,17 +173,31 @@ jQuery(document).ready(function($) {
                 $.each(field_options, function(option_index, option_element) {
                     sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
                 });
+                API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
+                    var old_order = window.field_settings.post_type_settings.fields[field_key].default;
+                    field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
+                    window.field_settings.post_type_settings.fields[field_key].default = field_options_in_new_order;
+
+                    tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
+                    show_preview_tile(tile_key);
+                });
                 return;
             }
-
             dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
             API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
-                var new_order = result['contacts'][tile_key]['order'];
-                window['field_settings']['post_type_settings']['tiles'][tile_key]['order'] = new_order;
+                var new_order = result[post_type][tile_key]['order'];
+                window.field_settings.post_type_settings.tiles[tile_key].order = new_order;
                 show_preview_tile(tile_key);
             });
         },
     });
+
+    function order_field_option_keys_by_array(old_order, new_order) {
+        var sorted_object = Object.fromEntries(
+            Object.entries(old_order).sort((a, b) => new_order.indexOf(a[0]) - new_order.indexOf(b[0]))
+            );
+        return sorted_object;
+    }
 
     function get_dt_custom_tiles_and_fields_ordered() {
         var dt_custom_tiles_and_fields_ordered = {};
@@ -287,8 +301,20 @@ jQuery(document).ready(function($) {
                 </div>
                 <div class="section-body">`;
 
-        field_order = window['field_settings']['post_type_settings']['tiles'][tile_key]['order'];
-        $.each(field_order, function(field_index, field_key) {
+        var fields = [];
+        var all_fields = window['field_settings']['post_type_settings']['fields'];
+        $.each(all_fields, function(field_index, field_value) {
+            if( field_value['tile'] === tile_key ) {
+                fields.push(field_index);
+            }
+        });
+
+        var field_order = window['field_settings']['post_type_settings']['tiles'][tile_key]['order'];
+        if (field_order) {
+            fields = field_order;
+        }
+
+        $.each(fields, function(field_index, field_key) {
             var field = window['field_settings']['post_type_settings']['fields'][field_key];
 
                 var icon_html = '';
