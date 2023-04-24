@@ -364,7 +364,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <span id="tile-key-<?php echo esc_attr( $tile_key ); ?>" style="vertical-align: sub;">
                             <?php echo esc_html( isset( $tile_value['label'] ) ? $tile_value['label'] : $tile_key ); ?>
                         </span>
+                        <?php if ( $tile_key !== 'no_tile' ) : ?>
                         <span class="edit-icon"></span>
+                        <?php endif; ?>
                     </div>
                     <!-- END TILE -->
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
