@@ -435,28 +435,30 @@ class DT_Contacts_Access extends DT_Module_Base {
                 return;
             }
             ?>
-                <div class="section-subheader">
-                    <img src="<?php echo esc_url( $contact_fields[$field_key]['icon'] ) ?>">
-                    <?php echo esc_html( $contact_fields[$field_key]['name'] ) ?>
-                </div>
                 <?php
-                $active_color = '#366184';
-                $current_key = $contact['overall_status']['key'] ?? '';
-                if ( isset( $contact_fields['overall_status']['default'][ $current_key ]['color'] ) ){
-                    $active_color = $contact_fields['overall_status']['default'][ $current_key ]['color'];
+                $options_array = $contact_fields[$field_key]['default'];
+                $options_array = array_map( function( $key, $value ) {
+                    return [
+                        'id' => $key,
+                        'label' => $value['label'],
+                        'color' => $value['color'] ?? null,
+                    ];
+                }, array_keys( $options_array ), $options_array );
+
+                if ( isset( $contact_fields[$field_key]['icon'] ) && !empty( $contact_fields[$field_key]['icon'] ) ) {
+                    $icon = 'icon=' . esc_attr( $contact_fields[$field_key]['icon'] );
                 }
                 ?>
-                <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>" <?php echo esc_html( $disabled ); ?>>
-                    <?php foreach ( $contact_fields['overall_status']['default'] as $key => $option ){
-                        $value = $option['label'] ?? '';
-                        if ( $current_key === $key ) {
-                            ?>
-                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                        <?php } else { ?>
-                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                        <?php } ?>
-                    <?php } ?>
-                </select>
+                <dt-single-select
+                    id="overall_status"
+                    name="overall_status"
+                    label="<?php echo esc_attr( $contact_fields[$field_key]['name'] )?>"
+                    <?php echo esc_html( $icon ) ?>
+                    options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
+                    value="<?php echo esc_attr( $post[$field_key] ? $post[$field_key]['key'] : '' ) ?>">
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-single-select>
+
                 <p>
                     <span id="reason">
                         <?php
