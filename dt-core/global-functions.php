@@ -553,7 +553,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                   ' . esc_html( $disabled ) . '
                   ' . ( $is_private ? 'private privateLabel=' . esc_attr( _x( "Private Field: Only I can see it\'s content", 'disciple_tools' ) ) : null ) . '
             ';
-            $supported_web_components = [ 'text', 'key_select' ];
+            $supported_web_components = [ 'text', 'key_select', 'date' ];
 
             ?>
             <?php if ( !in_array( $field_type, $supported_web_components ) ): ?>
@@ -790,13 +790,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
 
                 <?php elseif ( $field_type === 'date' ) :?>
-                <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
-                    <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
-                           value="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
-                    <div class="input-group-button">
-                        <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
-                    </div>
-                </div>
+                <dt-date
+                    <?php echo wp_kses_post( $shared_attributes ) ?> timestamp="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>">
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-date>
             <?php elseif ( $field_type === 'connection' ) :?>
                 <div id="<?php echo esc_attr( $display_field_id . '_connection' ) ?>" class="dt_typeahead <?php echo esc_html( $disabled ) ?>">
                     <span id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></span>
