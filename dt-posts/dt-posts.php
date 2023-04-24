@@ -101,12 +101,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
                 //if update successful, comment and return.
                 $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
-                if ( !$silent ){
-                    if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
-                        $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
-                    }
+                if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
+                    $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
                 }
-                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
+                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false, $silent );
 
                 if ( $check_permissions && !self::can_view( $post_type, $updated_post['ID'] ) ){
                     return [ 'ID' => $updated_post['ID'] ];

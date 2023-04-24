@@ -198,7 +198,7 @@ class DT_Posts_Hooks {
                     $search_values,
                 ];
                 if ( $post_type === 'contacts' ){
-                    $fields[] =[ 'type' => [ '-personal', '-placeholder' ] ];
+                    $fields[] = [ 'type' => [ '-personal', '-placeholder' ] ];
                 }
                 $search_result = DT_Posts::search_viewable_post( $post_type, [
                     'sort'             => !empty( $status_key ) ? $status_key : '-post_date',
