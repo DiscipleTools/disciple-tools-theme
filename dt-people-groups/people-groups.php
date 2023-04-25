@@ -293,8 +293,8 @@ class Disciple_Tools_People_Groups
                     // Create posts table values for direct sql inserts.
                     $posts_tb_id = ++$last_posts_tb_id;
                     $posts_tb_post_author = get_current_user_id();
-                    $posts_tb_post_date = date('Y-m-d H:i:s');
-                    $posts_tb_post_date_gmt = date('Y-m-d H:i:s');
+                    $posts_tb_post_date = gmdate( 'Y-m-d H:i:s' );
+                    $posts_tb_post_date_gmt = gmdate( 'Y-m-d H:i:s' );
                     $posts_tb_post_content = '';
                     $posts_tb_post_title = str_replace( "'", '-', $jp_data_rop3_row[4] . ' (' . $jp_data_rop3_row[1] . ' | ' . $jp_data_rop3_row[3] . ')' );
                     $posts_tb_post_excerpt = '';
@@ -305,8 +305,8 @@ class Disciple_Tools_People_Groups
                     $posts_tb_post_name = str_replace( "'", '-', strtolower( $jp_data_rop3_row[1] . '-' . $jp_data_rop3_row[3] ) );
                     $posts_tb_to_ping = '';
                     $posts_tb_pinged = '';
-                    $posts_tb_post_modified = date('Y-m-d H:i:s');
-                    $posts_tb_post_modified_gmt = date('Y-m-d H:i:s');
+                    $posts_tb_post_modified = gmdate( 'Y-m-d H:i:s' );
+                    $posts_tb_post_modified_gmt = gmdate( 'Y-m-d H:i:s' );
                     $posts_tb_post_content_filtered = '';
                     $posts_tb_post_parent = 0;
                     $posts_tb_guid = site_url( '/peoplegroups/' . $posts_tb_id . '/' );
@@ -384,7 +384,9 @@ class Disciple_Tools_People_Groups
             ) VALUES " . implode( ',', $posts_tb_values );
 
             // Insert new post records.
+            // phpcs:disable
             $posts_tb_insert_count = $wpdb->query( $wpdb->prepare( $posts_tb_insert_sql ) );
+            // phpcs:enable
 
             // Next, insert associated post meta records; assuming post creation went well
             if ( !empty( $postmeta_tb_values ) && ( $posts_tb_insert_count > 0 ) ){
@@ -396,7 +398,9 @@ class Disciple_Tools_People_Groups
                 ) VALUES " . implode( ',', $postmeta_tb_values );
 
                 // Insert new post meta records.
+                // phpcs:disable
                 $postmeta_tb_insert_count = $wpdb->query( $wpdb->prepare( $postmeta_tb_insert_sql ) );
+                // phpcs:enable
             }
 
             // Finally, insert location grid meta records; which simultaneously works across 3 tables!
