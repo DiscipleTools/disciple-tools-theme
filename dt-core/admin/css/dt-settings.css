@@ -141,8 +141,10 @@
 .field-settings-table-child-toggle {
     display:none;
 }
-.inset-shadow {
-    box-shadow: inset -5px 5px 5px -2px #0000001a;
+.outset-shadow {
+    box-shadow: 0px 5px 5px -2px #0000001a;
+    z-index: 1px;
+    position: relative;
 }
 .sortable {
     color: #000;
