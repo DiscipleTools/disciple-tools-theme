@@ -124,7 +124,7 @@ jQuery(document).ready(function($) {
     }
 
     function get_tile_from_uri() {
-        var tile = window.location.search.match('post_tile_key=(.*)');
+        var tile = window.location.search.match('tile=(.*)');
         if ( tile !== null ) {
             return tile[1];
         }
