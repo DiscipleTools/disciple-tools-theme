@@ -2628,4 +2628,24 @@
       })
   }
 
+  /**
+   * Split By Feature
+   */
+
+  $("#split_by_current_filter_button").on("click", function () {
+    let field_id = $("#split_by_current_filter_select").val();
+    if (field_id) {
+      console.log(field_id);
+      window.API.split_by(list_settings.post_type, field_id).then(
+        function (response) {
+          console.log(response);
+        }
+      );
+    }
+  });
+
+  /**
+   * Split By Feature
+   */
+
 })(window.jQuery, window.list_settings, window.Foundation);

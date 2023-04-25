@@ -788,6 +788,26 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $data;
     }
 
+    /**
+     * Get a list of split by summaries for given field.
+     *
+     * @param string $post_type
+     * @param array $args
+     * @param bool $check_permissions
+     *
+     * @return array|WP_Error
+     */
+    public static function split_by( string $post_type, array $args, bool $check_permissions = true ){
+        dt_write_log( $post_type );
+        dt_write_log( $args );
+
+        return [
+            'Contact Attempt Needed' => 58,
+            'Contact Attempted' => 5,
+            'Contact Established' => 3,
+            'First Meeting Scheduled' => 8
+        ];
+    }
 
     /**
      * Get viewable in compact form

@@ -208,6 +208,11 @@ window.API = {
     meta: filters['meta'],
     status: filters['status']
   }, 'dt-posts/v2/posts/search/'),
+
+  split_by: (post_type, field_id) =>
+    makeRequestOnPosts("POST", `${post_type}/split_by`, {
+      'field_id': field_id,
+    })
 };
 
 function handleAjaxError(err) {
