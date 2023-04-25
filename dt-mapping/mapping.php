@@ -521,7 +521,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $params = $request->get_params();
             if ( isset( $params['lng'], $params['lat'] ) ) {
                 $geocoder = new Location_Grid_Geocoder();
-                $grid = $geocoder->get_grid_id_by_lnglat( $params['lng'], $params['lat'] );
+                $grid = $geocoder->get_grid_id_by_lnglat( $params['lng'], $params['lat'], null, 0 ); // get country only
                 if ( $grid ) {
                     return $grid;
                 }

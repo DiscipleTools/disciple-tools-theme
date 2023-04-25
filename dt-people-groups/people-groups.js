@@ -113,36 +113,23 @@ function import_all_people_groups() {
   if (confirm("Import all country people groups?")) {
     let group_search_select = jQuery('#group-search');
     let search_button = jQuery('#search_button');
+    let import_all_button = jQuery('#import_all_button');
+    let add_all_groups = jQuery('#add_all_groups');
     let results_div = jQuery('#results');
     group_search_select.attr('disabled', 'disabled');
     search_button.attr('disabled', 'disabled');
-    results_div.empty();
-
-    // First, list all people groups and countries.
-    jQuery(group_search_select).find('option').each(function () {
-      let value = jQuery(this).val();
-      group_search_select.val(value);
-      group_search(true, function (uninstalled_groups) {
-        let add_all_groups = jQuery('#add_all_groups');
-        add_all_groups.hide();
-        add_bulk_people_groups(uninstalled_groups);
-      });
-    });
-  }
-}
-
-function add_bulk_people_groups(people_groups) {
-  if (people_groups.length !== 0) {
-    let import_all_button = jQuery('#import_all_button');
     import_all_button.attr('disabled', 'disabled');
     import_all_button.empty().text('Import All Country People Groups').append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
+    add_all_groups.hide();
+    results_div.empty();
 
+    // First, fetch bulk people groups import batches to be processed.
     jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify({'groups': people_groups}),
+      type: "GET",
+      data: JSON.stringify({}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/add_bulk_people_groups',
+      url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/get_bulk_people_groups_import_batches',
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
       }
@@ -150,29 +137,68 @@ function add_bulk_people_groups(people_groups) {
     }).done(function (data) {
       console.log(data);
 
-      jQuery.each(data, function (rop3, group) {
-        let button = jQuery('#button-' + rop3);
-        if (button && group.status) {
-          button.attr('disabled', 'disabled');
-          if (group.status === 'Success') {
-            button.text('installed')
-          }
-          if (group.status === 'Duplicate') {
-            button.text('duplicate')
-          }
-          if (group.status === 'Fail') {
-            button.text('failed')
-          }
-        }
-      });
-      import_all_button.empty().text('Import All Country People Groups');
+      // Ensure user is doubly sure they wish to proceed with import.
+      if (data['total_batches'] && data['total_records'] && data['batches'] && confirm("Are you sure you wish to import " + data['total_records'] + " records, across " + data['total_batches'] + " batches?")) {
 
+        // Iterate through each item and sequentially call the ajax function.
+        let looper = jQuery.Deferred().resolve();
+        jQuery.when.apply(jQuery, jQuery.map(data['batches'], function (batch, country) {
+          looper = looper.then(function () {
+            console.log(country);
+            console.log(batch);
+
+            // Trigger ajax call with batch data;
+            return add_bulk_people_groups(country, batch);
+          });
+          return looper;
+
+        })).then(function () {
+          // Once all batches have been processed, re-enable buttons and dropdowns.
+          import_all_button.prop('disabled', false);
+          import_all_button.empty().text('Import All Country People Groups');
+          group_search_select.prop('disabled', false);
+          search_button.prop('disabled', false);
+        });
+      } else {
+        import_all_button.prop('disabled', false);
+        import_all_button.empty().text('Import All Country People Groups');
+        group_search_select.prop('disabled', false);
+        search_button.prop('disabled', false);
+      }
     }).fail(function (err) {
       console.log("error");
       console.log(err);
-      import_all_button.empty().text('Import All Country People Groups');
     });
   }
+}
+
+function add_bulk_people_groups(country, people_groups) {
+  let deferred = jQuery.Deferred();
+
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify({'groups': people_groups}),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/add_bulk_people_groups',
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+    },
+    success: function (data) {
+      console.log(data);
+      deferred.resolve(data);
+
+      // Update table with batch import results.
+      let html = `<tr><td>${country}: Processed ${data['total_groups_insert_success']} of ${data['total_groups_count']}</td></tr>`;
+      jQuery('#import_people_group_table').find('tbody > tr').eq(0).after(html);
+
+    },
+    error: function (error) {
+      deferred.reject(error);
+    }
+  });
+
+  return deferred.promise();
 }
 
 function add_single_people_group( rop3, country, location_grid ) {

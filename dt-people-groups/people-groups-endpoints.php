@@ -94,6 +94,13 @@ class Disciple_Tools_People_Groups_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/people-groups/get_bulk_people_groups_import_batches', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_bulk_people_groups_import_batches' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/people-groups/link_or_update', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'link_or_update' ],
@@ -188,6 +195,19 @@ class Disciple_Tools_People_Groups_Endpoints
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter: groups' );
         }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|WP_Error
+     */
+    public function get_bulk_people_groups_import_batches( WP_REST_Request $request ){
+        if ( !current_user_can( 'manage_dt' ) ){
+            return new WP_Error( __METHOD__, 'You do not have permission to import people groups', [] );
+        }
+
+        return Disciple_Tools_People_Groups::get_bulk_people_groups_import_batches();
     }
 
     public function link_or_update( WP_REST_Request $request ) {

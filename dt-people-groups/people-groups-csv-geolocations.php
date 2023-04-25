@@ -6,6 +6,7 @@ $params = [
     'Ignore First Row',
     'Latitude CSV File Index',
     'Longitude CSV File Index',
+    'New Output CSV File Column Name',
     'DT Geo-Location API Endpoint',
     'DT Site-Link API Token'
 ];
@@ -19,7 +20,8 @@ function help( $expected_params ): void{
     }
 
     $example .= PHP_EOL . PHP_EOL;
-    echo esc_attr( $example );
+    // @phpcs:ignore
+    echo ( $example );
 }
 
 function get_csv_content( $csv_file ): array{
@@ -47,7 +49,8 @@ function save_csv_content( $csv_file, $content ): bool{
                 return true;
             }
         } catch ( Exception $e ) {
-            echo 'Caught exception: ', esc_attr( $e->getMessage() ), PHP_EOL;
+            // @phpcs:ignore
+            echo 'Caught exception: ', ( $e->getMessage() ), PHP_EOL;
             return false;
         }
     }
@@ -68,8 +71,9 @@ if ( ( count( $argv ) - 1 ) === count( $params ) ){
     $ignore_first_row = $argv[3];
     $latitude_idx = $argv[4];
     $longitude_idx = $argv[5];
-    $dt_url_endpoint = $argv[6];
-    $dt_api_token = $argv[7];
+    $output_csv_file_col_name = $argv[6];
+    $dt_url_endpoint = $argv[7];
+    $dt_api_token = $argv[8];
 
     $url_context = stream_context_create( [
         'http' => [
@@ -79,13 +83,14 @@ if ( ( count( $argv ) - 1 ) === count( $params ) ){
     ] );
 
     // Fetch input csv file contents and initial headings.
-    echo PHP_EOL . 'Loading contents of file: ' . esc_attr( $input_csv_file ) . PHP_EOL;
+    // @phpcs:ignore
+    echo PHP_EOL . 'Loading contents of file: ' . ( $input_csv_file ) . PHP_EOL;
     $input_csv_file_content = get_csv_content( $input_csv_file );
     $input_csv_file_headings = $input_csv_file_content[0];
 
     // Set output csv file headings.
     $output_csv_file_content[0] = $input_csv_file_headings;
-    $output_csv_file_content[0][] = 'location_grid';
+    $output_csv_file_content[0][] = $output_csv_file_col_name;
 
     // If required, remove input csv file headings.
     if ( $ignore_first_row ){
@@ -95,9 +100,12 @@ if ( ( count( $argv ) - 1 ) === count( $params ) ){
     // Iterate over input content, fetching location grid based on available lat/lng values.
     $input_csv_file_row_total = count( $input_csv_file_content );
     $input_csv_file_row_count = 0;
-    echo PHP_EOL . 'Processing loaded contents of file: ' . esc_attr( $input_csv_file ) . '; which contains ' . esc_attr( $input_csv_file_row_total ) . ' records.' . PHP_EOL . PHP_EOL;
+    // @phpcs:ignore
+    echo PHP_EOL . 'Processing loaded contents of file: ' . ( $input_csv_file ) . '; which contains ' . ( $input_csv_file_row_total ) . ' records.' . PHP_EOL . PHP_EOL;
     foreach ( $input_csv_file_content as $csv ){
-        echo 'Processing ' . esc_attr( ++$input_csv_file_row_count ) . ' of ' . esc_attr( $input_csv_file_row_total ) . PHP_EOL;
+        // @phpcs:ignore
+        echo 'Processing ' . ( ++$input_csv_file_row_count ) . ' of ' . ( $input_csv_file_row_total ) . PHP_EOL;
+
         $grid = [];
         if ( isset( $csv[$latitude_idx], $csv[$longitude_idx] ) ){
             $latitude = $csv[$latitude_idx];
@@ -114,8 +122,10 @@ if ( ( count( $argv ) - 1 ) === count( $params ) ){
     }
 
     // Save updated csv records into specified output file and report outcome.
-    echo PHP_EOL . 'Saving updated contents of file: ' . esc_attr( $input_csv_file ) . ' to ' . esc_attr( $output_csv_file ) . PHP_EOL;
-    echo PHP_EOL . esc_attr( $output_csv_file ) . ( save_csv_content( $output_csv_file, $output_csv_file_content ) ? ' successfully created.' : ' failed to create.' ) . PHP_EOL . PHP_EOL;
+    // @phpcs:ignore
+    echo PHP_EOL . 'Saving updated contents of file: ' . ( $input_csv_file ) . ' to ' . ( $output_csv_file ) . PHP_EOL;
+    // @phpcs:ignore
+    echo PHP_EOL . ( $output_csv_file ) . ( save_csv_content( $output_csv_file, $output_csv_file_content ) ? ' successfully created.' : ' failed to create.' ) . PHP_EOL . PHP_EOL;
 
 } else {
     help( $params );
