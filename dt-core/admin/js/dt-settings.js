@@ -1137,7 +1137,7 @@ jQuery(document).ready(function($) {
         var field_icon = $('#edit-field-icon').val();
 
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
-            window.field_settings.post_type_settings.fields[field_key] = result;
+            $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {
                 return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
