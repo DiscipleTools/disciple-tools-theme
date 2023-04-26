@@ -971,9 +971,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
             $group_by_join . "
             WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
-            (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . '
-            GROUP BY " . $group_by_sql . "
-        ', ARRAY_A );
+            (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
+            GROUP BY " . $group_by_sql
+        , ARRAY_A );
 
         //@todo maybe also return labels for each value
         return $posts;
