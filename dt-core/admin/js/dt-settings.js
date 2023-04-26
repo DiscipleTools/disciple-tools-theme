@@ -222,14 +222,12 @@ jQuery(document).ready(function($) {
     }
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
-
         var tile_key = $(this).data('key');
         if (!tile_key || tile_key === 'no-tile-hidden') {
             hide_preview_tile();
             return;
         }
             show_preview_tile(tile_key);
-        render_element_shadows();
     });
 
     $('.field-settings-table').on('click', '.edit-icon', function() {
@@ -260,11 +258,12 @@ jQuery(document).ready(function($) {
             $(this).next().slideToggle(333, 'swing');
             if ($(this).children('.expand-icon').text() === '+'){
                 $(this).children('.expand-icon').text('-');
+                $(this).addClass('outset-shadow');
             } else {
                 $(this).children('.expand-icon').text('+');
+                $(this).removeClass('outset-shadow');
             }
         }
-        render_element_shadows();
     });
 
     $('#add-new-tile-link').on('click', function(event){
@@ -1021,7 +1020,7 @@ jQuery(document).ready(function($) {
                     <span class="edit-icon"></span>
                 </div>
                 <div class="hidden">
-                    <div class="field-settings-table-field-name inset-shadow">
+                    <div class="field-settings-table-field-name">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
                             <a>add new field</a>
@@ -1095,7 +1094,7 @@ jQuery(document).ready(function($) {
                 </div>
                 <!-- START TOGGLED ITEMS -->
                 <div class="field-settings-table-child-toggle">
-                    <div class="field-settings-table-field-option inset-shadow">
+                    <div class="field-settings-table-field-option">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content"><i>default blank</i></span>
                     </div>
@@ -1117,7 +1116,6 @@ jQuery(document).ready(function($) {
             } else {
                 $('.add-new-field').parent().before(new_field_html);
             }
-            render_element_shadows();
             closeModal();
         });
     });
@@ -1515,15 +1513,6 @@ jQuery(document).ready(function($) {
         }
     });
 
-    function render_element_shadows() {
-        $('.field-settings-table-tile-name').next().children().removeClass('inset-shadow');
-        $('.tile-rundown-elements > div:first-child').addClass('inset-shadow');
-        $('.field-settings-table-field-name.expandable').next().children().removeClass('inset-shadow');
-        $('.field-settings-table-field-option:first-child').addClass('inset-shadow');
-
-    }
-
-    // Typeahead
     $.typeahead({
         input: '.js-typeahead-settings',
         order: "desc",
