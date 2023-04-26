@@ -414,6 +414,10 @@
     // Determine if default resets are required?
     if ( custom_filter ) {
       current_filter = custom_filter
+
+      // Ensure to uncheck all split by option filters, to avoid infinity loops!
+      $(".js-list-view-split-by").prop('checked', false);
+
     } else if (current_view === "custom_filter") {
       let filterId = checked.data("id")
       current_filter = window.lodash.find(custom_filters, {ID: filterId})
@@ -428,6 +432,12 @@
 
     // Conduct a deep copy (clone) of filter, so as to support future returns to default
     current_filter = $.extend(true, {}, current_filter);
+
+    // Determine if any split by filters are to be applied.
+    let checked_split_by = $(".js-list-view-split-by:checked");
+    if (checked_split_by && checked_split_by.length > 0) {
+      current_filter = apply_split_by_filters(current_filter, checked_split_by.data('field_id'), checked_split_by.data('field_option_id'));
+    }
 
     clear_search_query()
 
@@ -2633,16 +2643,81 @@
    */
 
   $("#split_by_current_filter_button").on("click", function () {
+    let split_by_results = $("#split_by_current_filter_results");
     let field_id = $("#split_by_current_filter_select").val();
     if (field_id) {
-      console.log(field_id);
-      window.API.split_by(list_settings.post_type, field_id).then(
-        function (response) {
-          console.log(response);
-        }
-      );
+      $(split_by_results).slideUp('fast', function () {
+        let filters = (current_filter.query !== undefined) ? current_filter.query:[];
+        window.API.split_by(list_settings.post_type, field_id, filters).then(
+          function (response) {
+            if (response && response.length > 0) {
+              let html = '';
+              let setting_fields = window.list_settings.post_type_settings.fields;
+              $.each(response, function (idx, result) {
+                if (result['value']) {
+
+                  let option_id = result['value'];
+                  let option_id_label = option_id;
+                  if (setting_fields[field_id] && setting_fields[field_id]['default'] && setting_fields[field_id]['default'][option_id] && setting_fields[field_id]['default'][option_id]['label']) {
+                    option_id_label = setting_fields[field_id]['default'][option_id]['label'];
+                  }
+
+                  html += `
+                      <label class="list-view">
+                        <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" autocomplete="off">
+                        <span>${window.lodash.escape(option_id_label)}</span>
+                        <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(option_id)}">${window.lodash.escape(result['count'])}</span>
+                      </label>
+                      `;
+                }
+              });
+              $(split_by_results).html(html);
+              $(split_by_results).slideDown('fast');
+            }
+          }
+        );
+      });
     }
   });
+
+  $(document).on('change', '.js-list-view-split-by', () => {
+    get_records_for_current_filter();
+  });
+
+  function apply_split_by_filters(filter, field_id, option_id) {
+    if (filter && field_id && option_id) {
+
+      // Fetch field and option display labels.
+      let field_id_label = field_id;
+      let option_id_label = option_id;
+      let setting_fields = window.list_settings.post_type_settings.fields;
+      if (setting_fields[field_id] && setting_fields[field_id]['name']) {
+        field_id_label = setting_fields[field_id]['name'];
+
+        if (setting_fields[field_id]['default'] && setting_fields[field_id]['default'][option_id] && setting_fields[field_id]['default'][option_id]['label']) {
+          option_id_label = setting_fields[field_id]['default'][option_id]['label'];
+        }
+      }
+
+      // Add new label.
+      filter['labels'].push({
+        'id': option_id,
+        'field': field_id,
+        'name': `${window.lodash.escape(field_id_label)}: ${window.lodash.escape(option_id_label)}`
+      });
+
+      // Ensure a fields array is available.
+      if (filter['query']['fields'] === undefined) {
+        filter['query']['fields'] = [];
+      }
+
+      let query_field_obj = {};
+      query_field_obj[field_id] = [option_id];
+      filter['query']['fields'].push(query_field_obj);
+    }
+
+    return filter;
+  }
 
   /**
    * Split By Feature

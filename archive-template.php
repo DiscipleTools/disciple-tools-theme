@@ -268,7 +268,6 @@ dt_please_log_in();
                             </tr>
                             </tbody>
                         </table>
-                        <br>
                         <div id="split_by_current_filter_results"></div>
                     </div>
                 </div>

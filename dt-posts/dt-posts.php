@@ -798,12 +798,6 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function split_by( string $post_type, array $args, bool $check_permissions = true ){
-        dt_write_log( $post_type );
-        dt_write_log( $args );
-
-        $query = $args['filters'] ?? []; //@todo
-        $field_key = 'sources'; //@todo
-
         if ( $check_permissions && !self::can_access( $post_type ) ){
             return new WP_Error( __FUNCTION__, 'You do not have access to these', [ 'status' => 403 ] );
         }
@@ -811,6 +805,13 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
         }
+
+        $field_key = $args['field_id'] ?? '';
+        if ( empty( $field_key ) ){
+            return new WP_Error( __FUNCTION__, "Empty field id detected", [ 'status' => 400 ] );
+        }
+
+        $query = $args['filters'] ?? [];
 
         //filter in to add or remove query parameters.
         $query = apply_filters( 'dt_search_viewable_posts_query', $query );
@@ -845,9 +846,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( isset( $query['combine'] ) ){
             unset( $query['combine'] ); //remove deprecated combine
         }
-
         if ( isset( $query['fields'] ) ){
             $query = $query['fields'];
+        }
+        if ( isset( $query['fields_to_return'] ) ){
+            unset( $query['fields_to_return'] );
         }
 
         $joins = '';
@@ -935,9 +938,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 ) ";
             }
             $post_query .= ' ) ';
-
         }
-
 
         $permissions = [
             'shared_with' => [ 'me' ]
@@ -975,9 +976,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             GROUP BY " . $group_by_sql
         , ARRAY_A );
 
-        //@todo maybe also return labels for each value
         return $posts;
-
     }
 
     /**

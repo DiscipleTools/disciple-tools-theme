@@ -209,9 +209,10 @@ window.API = {
     status: filters['status']
   }, 'dt-posts/v2/posts/search/'),
 
-  split_by: (post_type, field_id) =>
+  split_by: (post_type, field_id, filters) =>
     makeRequestOnPosts("POST", `${post_type}/split_by`, {
       'field_id': field_id,
+      'filters': filters
     })
 };
 
