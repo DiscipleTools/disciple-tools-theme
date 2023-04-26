@@ -801,12 +801,183 @@ class DT_Posts extends Disciple_Tools_Posts {
         dt_write_log( $post_type );
         dt_write_log( $args );
 
-        return [
-            'Contact Attempt Needed' => 58,
-            'Contact Attempted' => 5,
-            'Contact Established' => 3,
-            'First Meeting Scheduled' => 8
+        $query = $args['filters'] ?? []; //@todo
+        $field_key = 'sources'; //@todo
+
+        if ( $check_permissions && !self::can_access( $post_type ) ){
+            return new WP_Error( __FUNCTION__, 'You do not have access to these', [ 'status' => 403 ] );
+        }
+        $post_types = self::get_post_types();
+        if ( !in_array( $post_type, $post_types ) ){
+            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
+        }
+
+        //filter in to add or remove query parameters.
+        $query = apply_filters( 'dt_search_viewable_posts_query', $query );
+
+        global $wpdb;
+
+        $post_settings = self::get_post_settings( $post_type );
+        if ( !isset( $post_settings['fields'] ) || empty( $post_settings['fields'] ) ){
+            return new WP_Error( __FUNCTION__, "$post_type settings not yet loaded", [ 'status' => 400 ] );
+        }
+        $post_fields = $post_settings['fields'];
+
+        $search = '';
+        if ( isset( $query['text'] ) ){
+            $search = sanitize_text_field( $query['text'] );
+            unset( $query['text'] );
+        }
+        if ( isset( $query['offset'] ) ){
+            unset( $query['offset'] );
+        }
+        if ( isset( $query['limit'] ) ){
+            unset( $query['limit'] );
+        }
+        if ( isset( $query['sort'] ) ){
+            unset( $query['sort'] );
+        }
+        $fields_to_search = [];
+        if ( isset( $query['fields_to_search'] ) ){
+            $fields_to_search = $query['fields_to_search'];
+            unset( $query ['fields_to_search'] );
+        }
+        if ( isset( $query['combine'] ) ){
+            unset( $query['combine'] ); //remove deprecated combine
+        }
+
+        if ( isset( $query['fields'] ) ){
+            $query = $query['fields'];
+        }
+
+        $joins = '';
+        $post_query = '';
+
+        if ( !empty( $search ) ){
+
+            // Support wildcard searching between string tokens.
+            if ( !is_numeric( $search ) ){
+                $search = str_replace( ' ', '%', $search );
+            }
+
+            $other_search_fields = [];
+            if ( empty( $fields_to_search ) ){
+                $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
+                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                    OR p.ID IN ( SELECT post_id
+                                FROM $wpdb->postmeta
+                                WHERE meta_key LIKE 'contact_%'
+                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    )
+                ";
+            }
+            if ( !empty( $fields_to_search ) ){
+                if ( in_array( 'name', $fields_to_search ) ){
+                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )";
+                } else {
+                    $post_query .= 'AND ( ';
+                }
+
+                if ( in_array( 'comms', $fields_to_search ) ){
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                        $post_query .= 'OR ';
+                    }
+
+                    $post_query .= "p.ID IN ( SELECT post_id
+                                    FROM $wpdb->postmeta
+                                    WHERE meta_key LIKE 'contact_%'
+                                    AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        )
+                    ";
+                }
+
+                if ( in_array( 'all', $fields_to_search ) ){
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                        $post_query .= 'OR ';
+                    }
+                    $user_id = get_current_user_id();
+                    $post_query .= "p.ID IN ( SELECT comment_post_ID
+                    FROM $wpdb->comments
+                    WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->dt_post_user_meta
+                    WHERE user_id = $user_id
+                    AND meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) ";
+                } else {
+                    if ( in_array( 'comment', $fields_to_search ) ){
+                        if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                            $post_query .= 'OR ';
+                        }
+                        $post_query .= " p.ID IN ( SELECT comment_post_ID
+                        FROM $wpdb->comments
+                        WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
+                        ) ";
+                    }
+                    foreach ( $fields_to_search as $field ){
+                        if ( $field !== 'comment' ){
+                            array_push( $other_search_fields, $field );
+                        }
+                    }
+                }
+            }
+            foreach ( $other_search_fields as $field ){
+                if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                    $post_query .= 'OR ';
+                }
+                $post_query .= "p.ID IN ( SELECT post_id
+                             FROM $wpdb->postmeta
+                             WHERE meta_key LIKE '" . esc_sql( $field ) . "'
+                             AND meta_value LIKE '%" . esc_sql( $search ) . "%'
+                ) ";
+            }
+            $post_query .= ' ) ';
+
+        }
+
+
+        $permissions = [
+            'shared_with' => [ 'me' ]
         ];
+        $permissions = apply_filters( 'dt_filter_access_permissions', $permissions, $post_type );
+
+        if ( $check_permissions && !empty( $permissions ) ){
+            $query[] = $permissions;
+        }
+
+        $fields_sql = self::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $fields_sql ) ){
+            return $fields_sql;
+        }
+
+        $group_by_field_type = isset( $post_fields[$field_key]['type'] ) ? $post_fields[$field_key]['type'] : null;
+
+        $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
+        $group_by_sql = 'group_by.meta_value';
+
+        if ( $group_by_field_type === 'connection' ){
+            //@todo
+            $group_by_join = ''; //join p2p table
+            $group_by_sql = '';
+        }
+
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $posts = $wpdb->get_results( "
+            SELECT count( group_by.meta_value ) as count, group_by.meta_value as value
+            FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
+            $group_by_join . "
+            WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+            (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . '
+            GROUP BY " . $group_by_sql . "
+        ', ARRAY_A );
+
+        //@todo maybe also return labels for each value
+        return $posts;
+
     }
 
     /**
