@@ -162,7 +162,7 @@ jQuery(document).ready(function($) {
             }
             var post_type = get_post_type();
             var tile_key = $(event)[0].target.dataset.parentTileKey;
-            var moved_element = $(event)[0].originalEvent.target;
+            var moved_element = $(event)[0].originalEvent.target.parentNode;
 
             // Check if moved element is a field option
             if (moved_element.dataset['fieldOptionKey']) {
