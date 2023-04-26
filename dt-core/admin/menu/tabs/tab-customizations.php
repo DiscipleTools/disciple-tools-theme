@@ -407,7 +407,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         $option_key = $v['default'];
                                                     }
                                                     ?>
-                                                    <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>">
+                                                    <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
                                                         <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" ><?php echo esc_html( $label ); ?></span>
                                                         <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
