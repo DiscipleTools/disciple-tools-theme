@@ -157,12 +157,12 @@ jQuery(document).ready(function($) {
 
     $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
         update: function(event,ui) {
-            if (!$(event)[0].originalEvent.target.nextElementSibling.dataset) {
+            if (!$(event)[0].originalEvent.target.dataset) {
                 return;
             }
             var post_type = get_post_type();
             var tile_key = $(event)[0].target.dataset.parentTileKey;
-            var moved_element = $(event)[0].originalEvent.target.nextElementSibling;
+            var moved_element = $(event)[0].originalEvent.target;
 
             // Check if moved element is a field option
             if (moved_element.dataset['fieldOptionKey']) {
