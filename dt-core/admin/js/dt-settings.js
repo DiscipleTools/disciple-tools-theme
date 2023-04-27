@@ -161,8 +161,8 @@ jQuery(document).ready(function($) {
                 return;
             }
             var post_type = get_post_type();
-            var tile_key = $(event)[0].target.dataset.parentTileKey;
             var moved_element = ui.item[0];
+            var tile_key = moved_element.dataset.parentTileKey || moved_element.id;
 
             // Check if moved element is a field option
             if (moved_element.dataset['fieldOptionKey']) {
