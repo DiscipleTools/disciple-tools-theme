@@ -237,7 +237,7 @@ dt_please_log_in();
                                         <?php
                                         $split_by_fields = [];
                                         foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? [] as $key => $field ){
-                                            if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean' ] ) ){
+                                            if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection' ] ) ){
                                                 if ( !isset( $field['private'] ) || !$field['private'] ){
                                                     $split_by_fields[$key] = $field;
                                                 }
@@ -268,7 +268,18 @@ dt_please_log_in();
                             </tr>
                             </tbody>
                         </table>
-                        <div id="split_by_current_filter_results"></div>
+                        <ul id="list-filter-tabs" class="accordion split-by-current-filter-accordion"
+                            data-responsive-accordion-tabs="accordion medium-tabs large-accordion"
+                            style="display: none;">
+                            <li class="accordion-item is-active" data-accordion-item data-id="split_by">
+                                <a href="#" class="accordion-title" data-id="split_by">
+                                    <?php echo esc_attr( _x( 'Summary', 'disciple_tools' ) ) ?>
+                                </a>
+                                <div class="accordion-content" data-tab-content>
+                                    <div id="split_by_current_filter_results" class="list-views"></div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>

@@ -956,19 +956,21 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $group_by_field_type = isset( $post_fields[$field_key]['type'] ) ? $post_fields[$field_key]['type'] : null;
 
+        $select_sql = 'SELECT count( group_by.meta_value ) as count, group_by.meta_value as value';
         $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
         $group_by_sql = 'group_by.meta_value';
 
         if ( $group_by_field_type === 'connection' ){
-            //@todo
-            $group_by_join = ''; //join p2p table
-            $group_by_sql = '';
+            $p2p_key = $post_fields[$field_key]['p2p_key'] ?? '';
+            $p2p_direction = $post_fields[$field_key]['p2p_direction'] ?? '';
+            $select_sql = 'SELECT count( group_by.p2p_type ) as count, group_by.p2p_type as value';
+            $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( $p2p_direction == 'from' ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            $group_by_sql = 'group_by.p2p_type';
         }
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
-        $posts = $wpdb->get_results( "
-            SELECT count( group_by.meta_value ) as count, group_by.meta_value as value
+        $posts = $wpdb->get_results( $select_sql ."
             FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
             $group_by_join . "
             WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
@@ -980,20 +982,32 @@ class DT_Posts extends Disciple_Tools_Posts {
         $updated_posts = [];
         $geocoder = new Location_Grid_Geocoder();
         foreach ( $posts as $post ){
-            switch ($group_by_field_type){
-                case 'location':
-                    $grid = $geocoder->query_by_grid_id( $post['value'] );
-                    $post['label'] = $grid['name'] ?? $post['value'];
-                    $updated_posts[] = $post;
-                    break;
-                case 'location_meta':
-                    $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
-                    $updated_posts[] = $post;
-                    break;
-                default:
-                    $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
-                    $updated_posts[] = $post;
-                    break;
+            if ( $group_by_field_type == 'location' ){
+                $grid = $geocoder->query_by_grid_id( $post['value'] );
+                $post['label'] = $grid['name'] ?? $post['value'];
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'location_meta' ){
+                $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
+                $updated_posts[] = $post;
+                break;
+            } elseif ( $group_by_field_type == 'user_select' ){
+                $user_contact_id = Disciple_Tools_Users::get_contact_for_user( substr( $post['value'], 5 ) );
+                if ( is_int( $user_contact_id ) ){
+                    $user_contact = DT_Posts::get_post( 'contacts', $user_contact_id );
+                    $post['label'] = $user_contact['name'] ?? $post['value'];
+                } else {
+                    $post['label'] = $post['value'];
+                }
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'boolean' ){
+                $post['label'] = $post['value'] ? _x( 'True', 'disciple_tools' ) : _x( 'False', 'disciple_tools' );
+                if ( !$post['value'] && intval( $post['count'] ) > 0 ){
+                    $post['value'] = '0';
+                }
+                $updated_posts[] = $post;
+            } else {
+                $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
+                $updated_posts[] = $post;
             }
         }
 
