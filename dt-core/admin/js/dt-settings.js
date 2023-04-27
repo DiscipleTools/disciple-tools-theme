@@ -1085,7 +1085,7 @@ jQuery(document).ready(function($) {
             var field_key = response['key'];
             window['field_settings']['post_type_settings']['fields'][field_key] = response;
             var new_field_nonexpandable_html = `
-                <div class="sortable-fields" id="${field_key}">
+                <div class="sortable-field" id="${field_key}" data-parent-tile-key="${tile_key}">
                     <div class="field-settings-table-field-name submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content" data-parent-tile="${tile_key}" data-key="${field_key}">
@@ -1100,7 +1100,7 @@ jQuery(document).ready(function($) {
             `;
 
             var new_field_expandable_html = `
-            <div class="sortable-fields" id="${field_key}">
+            <div class="sortable-field" id="${field_key}" data-parent-tile-key="${tile_key}">
                 <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                    <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
