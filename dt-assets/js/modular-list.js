@@ -436,7 +436,7 @@
     // Determine if any split by filters are to be applied.
     let checked_split_by = $(".js-list-view-split-by:checked");
     if (checked_split_by && checked_split_by.length > 0) {
-      current_filter = apply_split_by_filters(current_filter, checked_split_by.data('field_id'), checked_split_by.data('field_option_id'));
+      current_filter = apply_split_by_filters(current_filter, checked_split_by.data('field_id'), checked_split_by.data('field_option_id'), checked_split_by.data('field_option_label'));
     }
 
     clear_search_query()
@@ -2652,19 +2652,14 @@
           function (response) {
             if (response && response.length > 0) {
               let html = '';
-              let setting_fields = window.list_settings.post_type_settings.fields;
               $.each(response, function (idx, result) {
                 if (result['value']) {
-
                   let option_id = result['value'];
-                  let option_id_label = option_id;
-                  if (setting_fields[field_id] && setting_fields[field_id]['default'] && setting_fields[field_id]['default'][option_id] && setting_fields[field_id]['default'][option_id]['label']) {
-                    option_id_label = setting_fields[field_id]['default'][option_id]['label'];
-                  }
+                  let option_id_label = result['label'];
 
                   html += `
                       <label class="list-view">
-                        <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" autocomplete="off">
+                        <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" data-field_option_label="${window.lodash.escape(option_id_label)}" autocomplete="off">
                         <span>${window.lodash.escape(option_id_label)}</span>
                         <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(option_id)}">${window.lodash.escape(result['count'])}</span>
                       </label>
@@ -2684,19 +2679,15 @@
     get_records_for_current_filter();
   });
 
-  function apply_split_by_filters(filter, field_id, option_id) {
-    if (filter && field_id && option_id) {
+  function apply_split_by_filters(filter, field_id, option_id, option_label) {
+    if (filter && field_id && option_id && option_label) {
 
       // Fetch field and option display labels.
       let field_id_label = field_id;
-      let option_id_label = option_id;
+      let option_id_label = option_label;
       let setting_fields = window.list_settings.post_type_settings.fields;
       if (setting_fields[field_id] && setting_fields[field_id]['name']) {
         field_id_label = setting_fields[field_id]['name'];
-
-        if (setting_fields[field_id]['default'] && setting_fields[field_id]['default'][option_id] && setting_fields[field_id]['default'][option_id]['label']) {
-          option_id_label = setting_fields[field_id]['default'][option_id]['label'];
-        }
       }
 
       // Add new label.

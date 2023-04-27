@@ -237,7 +237,7 @@ dt_please_log_in();
                                         <?php
                                         $split_by_fields = [];
                                         foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? [] as $key => $field ){
-                                            if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'location_meta', 'boolean' ] ) ){
+                                            if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean' ] ) ){
                                                 if ( !isset( $field['private'] ) || !$field['private'] ){
                                                     $split_by_fields[$key] = $field;
                                                 }
@@ -256,7 +256,7 @@ dt_please_log_in();
                                         foreach ( $split_by_fields as $split_by_field_key => $split_by_field ){
                                             ?>
                                             <option
-                                                value="<?php echo esc_attr( $split_by_field_key ) ?>"><?php echo esc_attr( sprintf( _x( '%s - (%s)', 'disciple_tools' ), $split_by_field['name'], $split_by_field_key ) ) ?></option>
+                                                value="<?php echo esc_attr( $split_by_field_key ) ?>"><?php echo esc_attr( sprintf( _x( '%1$s - (%2$s)', 'disciple_tools' ), $split_by_field['name'], $split_by_field_key ) ) ?></option>
                                             <?php
                                         }
                                         ?>

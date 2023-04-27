@@ -808,7 +808,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $field_key = $args['field_id'] ?? '';
         if ( empty( $field_key ) ){
-            return new WP_Error( __FUNCTION__, "Empty field id detected", [ 'status' => 400 ] );
+            return new WP_Error( __FUNCTION__, 'Empty field id detected', [ 'status' => 400 ] );
         }
 
         $query = $args['filters'] ?? [];
@@ -976,7 +976,29 @@ class DT_Posts extends Disciple_Tools_Posts {
             GROUP BY " . $group_by_sql
         , ARRAY_A );
 
-        return $posts;
+        // Determine appropriate labels to be used.
+        $updated_posts = [];
+        $geocoder = new Location_Grid_Geocoder();
+        foreach ( $posts as $post ){
+            switch ($group_by_field_type){
+                case 'location':
+                    $grid = $geocoder->query_by_grid_id( $post['value'] );
+                    $post['label'] = $grid['name'] ?? $post['value'];
+                    $updated_posts[] = $post;
+                    break;
+                case 'location_meta':
+                    $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
+                    $updated_posts[] = $post;
+                    break;
+                default:
+                    $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
+                    $updated_posts[] = $post;
+                    break;
+            }
+        }
+
+        // Return split by summary.
+        return $updated_posts;
     }
 
     /**
