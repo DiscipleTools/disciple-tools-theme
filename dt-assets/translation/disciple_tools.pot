@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.39.0\n"
+"Project-Id-Version: Disciple Tools 1.39.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-06T07:44:28+00:00\n"
+"POT-Creation-Date: 2023-04-26T07:39:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: disciple_tools\n"
@@ -308,7 +308,7 @@ msgstr ""
 #: archive-template.php:409
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-posts/dt-posts.php:2414
+#: dt-posts/dt-posts.php:2409
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520
 #: single-template.php:128
@@ -4076,38 +4076,38 @@ msgstr ""
 msgid "Un-Follow"
 msgstr ""
 
-#: dt-posts/dt-posts.php:110
+#: dt-posts/dt-posts.php:103
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1350
+#: dt-posts/dt-posts.php:1345
 msgid "Magic Link Submission"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1352
-#: dt-posts/dt-posts.php:1895
+#: dt-posts/dt-posts.php:1347
+#: dt-posts/dt-posts.php:1890
 msgid "Revert Bot"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1358
+#: dt-posts/dt-posts.php:1353
 msgid "D.T System"
 msgstr ""
 
-#: dt-posts/dt-posts.php:2135
+#: dt-posts/dt-posts.php:2130
 msgid "Post already shared with user."
 msgstr ""
 
-#: dt-posts/dt-posts.php:2415
+#: dt-posts/dt-posts.php:2410
 #: single-template.php:174
 msgid "Details"
 msgstr ""
 
-#: dt-posts/dt-posts.php:2479
+#: dt-posts/dt-posts.php:2474
 msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
 msgid "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
 msgstr ""
 
-#: dt-posts/dt-posts.php:2485
+#: dt-posts/dt-posts.php:2480
 msgid "Access Request"
 msgstr ""
 

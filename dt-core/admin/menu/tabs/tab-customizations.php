@@ -106,6 +106,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
                 'post_type_settings' => $post_settings,
                 'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
+                'default_tiles' => self::get_default_tiles( $post_type ),
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
                 'translations' => apply_filters( 'dt_list_js_translations', $translations ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
@@ -121,7 +122,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function content() {
-
         $this->load_overlay_modal();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
@@ -144,6 +144,19 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $all_post_types[$key] = DT_Posts::get_label_for_post_type( $key );
         }
         return $all_post_types;
+    }
+
+    public static function get_default_tiles( $post_type ) {
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $default_tiles = [];
+        foreach ( $default_fields as $field ) {
+            foreach ( $field as $field_key => $field_value ) {
+                if ( $field_key === 'tile' && !in_array( $field_value, $default_tiles ) ) {
+                    $default_tiles[] = $field_value;
+                }
+            }
+        }
+        return $default_tiles;
     }
 
     public static function load_overlay_modal() {
@@ -368,7 +381,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <span class="edit-icon"></span>
                         <?php endif; ?>
                     </div>
-                    <!-- END TILE -->
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                         <!-- START TOGGLED FIELD ITEMS -->
                         <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
@@ -433,6 +445,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         </div>
                     </div>
                 </div>
+                <!-- END TILE -->
             <?php endforeach; ?>
             <div class="add-new-link">
                 <a href="#" id="add-new-tile-link"><?php echo esc_html( 'add new tile', 'disciple_tools' ); ?></a>

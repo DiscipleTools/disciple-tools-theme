@@ -44,6 +44,11 @@ jQuery(document).ready(function($) {
         hide_tile: hide_tile,
     }, `dt-admin-settings/`);
 
+    window.API.delete_tile = (post_type, tile_key) => makeRequest("POST", `delete-tile`, {
+        post_type: post_type,
+        tile_key: tile_key,
+    }, `dt-admin-settings/`);
+
     window.API.edit_translations = (translation_type, post_type, tile_key, translations, field_key=null, field_option_key=null) => makeRequest("POST", `edit-translations`, {
         translation_type: translation_type,
         post_type: post_type,
@@ -124,7 +129,7 @@ jQuery(document).ready(function($) {
     }
 
     function get_tile_from_uri() {
-        var tile = window.location.search.match('post_tile_key=(.*)');
+        var tile = window.location.search.match('tile=(.*)');
         if ( tile !== null ) {
             return tile[1];
         }
@@ -185,19 +190,19 @@ jQuery(document).ready(function($) {
 
     function get_dt_custom_tiles_and_fields_ordered() {
         var dt_custom_tiles_and_fields_ordered = {};
-        var tiles = jQuery('.field-settings-table').sortable('toArray');
+        var tiles = $('.field-settings-table').sortable('toArray');
         var tile_priority = 10;
         tiles.pop(); // remove the 'add new tile' link
 
-        jQuery.each(tiles, function(tile_index, tile_key) {
+        $.each(tiles, function(tile_index, tile_key) {
             if (tile_key === '' ) {
                 return;
             }
             dt_custom_tiles_and_fields_ordered[tile_key] = {};
-            var tile_label = jQuery(`#tile-key-${tile_key}`).prop('innerText');
-            var fields = jQuery(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
+            var tile_label = $(`#tile-key-${tile_key}`).prop('innerText');
+            var fields = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             var field_order = [];
-            jQuery.each(fields, function(field_index, field_element) {
+            $.each(fields, function(field_index, field_element) {
                 var field_key = field_element.id;
                 field_order.push(field_key);
             });
@@ -211,25 +216,23 @@ jQuery(document).ready(function($) {
     }
 
     function get_field_defaults(tile_key, field_key) {
-        var field_options = jQuery(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`);
+        var field_options = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"]`);
         var field_default = [];
-        jQuery.each(field_options, function(field_index, field_element){
-            var field_option_key = jQuery(field_element).data('field-option-key');
-            var field_option_label = jQuery(field_element).prop('innerText');
+        $.each(field_options, function(field_index, field_element){
+            var field_option_key = $(field_element).data('field-option-key');
+            var field_option_label = $(field_element).prop('innerText');
             field_default[field_option_key] = {'label': field_option_label};
         });
         return field_default;
     }
 
     $('.field-settings-table').on('click', '.field-settings-table-tile-name', function() {
-
         var tile_key = $(this).data('key');
         if (!tile_key || tile_key === 'no-tile-hidden') {
             hide_preview_tile();
             return;
         }
             show_preview_tile(tile_key);
-        render_element_shadows();
     });
 
     $('.field-settings-table').on('click', '.edit-icon', function() {
@@ -260,11 +263,12 @@ jQuery(document).ready(function($) {
             $(this).next().slideToggle(333, 'swing');
             if ($(this).children('.expand-icon').text() === '+'){
                 $(this).children('.expand-icon').text('-');
+                $(this).addClass('outset-shadow');
             } else {
                 $(this).children('.expand-icon').text('+');
+                $(this).removeClass('outset-shadow');
             }
         }
-        render_element_shadows();
     });
 
     $('#add-new-tile-link').on('click', function(event){
@@ -518,6 +522,11 @@ jQuery(document).ready(function($) {
                 hide_tile = 'checked';
             }
 
+            var delete_tile_html_content = '';
+            if (window.field_settings.default_tiles.includes(tile_key) == false) {
+                delete_tile_html_content = `<a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>`;
+            }
+
             var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -565,13 +574,71 @@ jQuery(document).ready(function($) {
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td>
                     <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
+                <td class="delete-text">
+                    ${delete_tile_html_content}
+                </td>
             </tr>`;
+
             $('#modal-overlay-content-table').html(modal_html_content);
         });
     }
+
+    // Delete Text Click
+    $('#modal-overlay-form').on('click', '#delete-text', function(e) {
+        $(this).blur();
+        if( $('#delete-confirmation-container').length > 0 ) {
+            return;
+        }
+        var tile_key = $(this).closest('#delete-text').data('tile-key');
+        $(this).parent().append(`
+            <div id="delete-confirmation-container" style="cursor: pointer;">
+                <svg id="delete-confirmation-confirm" data-tile-key="${tile_key}" stroke="#e14d43" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg id="delete-confirmation-cancel" stroke="#e14d43" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+        `);
+    });
+
+    // Delete Confirmation Confirm
+    $('#modal-overlay-form').on('click', '#delete-confirmation-confirm', function(e) {
+        var post_type = get_post_type();
+        var tile_key = $(this).data('tile-key');
+        API.delete_tile(post_type, tile_key).promise().then(function() {
+            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
+            var tile_submenu = $(`div.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`);
+            closeModal();
+            if (tile_submenu.is(':visible')) {
+                var tile_expand_icon = $(`.field-settings-table-tile-name[data-key="${tile_key}"]>span.expand-icon`);
+                tile_expand_icon.click();
+            }
+
+            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no-tile-hidden"]');
+            if (no_tile_menu.is(':hidden')) {
+                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no-tile-hidden"]>span.expand-icon');
+                no_tile_expand_icon.click();
+            }
+
+            var deleted_tile_field_options =  $(`.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`).children().not('.add-new-item');
+            deleted_tile_field_options.each(function() {
+                $(this).removeClass('inset-shadow');
+                no_tile_menu.append($(this));
+                $(this).find('.field-settings-table-field-name').addClass('menu-highlight');
+            });
+
+            tile_element.css('background', '#e14d43');
+            tile_element.fadeOut(500, function(){
+                tile_element.parent().remove();
+                tile_submenu.remove();
+            });
+        });
+    });
+
+    // Delete Confirmation Cancel
+    $('#modal-overlay-form').on('click', '#delete-confirmation-cancel', function(e) {
+        $(this).parent().remove();
+    });
 
     // Add Field Modal
     function loadAddFieldContentBox(tile_key) {
@@ -1009,6 +1076,7 @@ jQuery(document).ready(function($) {
             var tile_key = data['key'];
             var tile_label = data['label'];
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
+            window.field_settings.custom_tiles = tile_key;
             closeModal();
             $('#add-new-tile-link').parent().before(`
             <div class="sortable-tile" id="${tile_key}">
@@ -1024,7 +1092,7 @@ jQuery(document).ready(function($) {
                     <span class="edit-icon"></span>
                 </div>
                 <div class="hidden">
-                    <div class="field-settings-table-field-name inset-shadow">
+                    <div class="field-settings-table-field-name">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
                             <a>add new field</a>
@@ -1098,7 +1166,7 @@ jQuery(document).ready(function($) {
                 </div>
                 <!-- START TOGGLED ITEMS -->
                 <div class="field-settings-table-child-toggle">
-                    <div class="field-settings-table-field-option inset-shadow">
+                    <div class="field-settings-table-field-option">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content"><i>default blank</i></span>
                     </div>
@@ -1115,12 +1183,11 @@ jQuery(document).ready(function($) {
                 new_field_html = new_field_expandable_html;
             }
             if (tile_key){
-                $(`.add-new-field[data-parent-tile-key='${tile_key}']`).parent().before(new_field_html); //todo
+                $(`.add-new-field[data-parent-tile-key='${tile_key}']`).parent().before(new_field_html);
                 show_preview_tile(tile_key);
             } else {
                 $('.add-new-field').parent().before(new_field_html);
             }
-            render_element_shadows();
             closeModal();
         });
     });
@@ -1518,15 +1585,6 @@ jQuery(document).ready(function($) {
         }
     });
 
-    function render_element_shadows() {
-        $('.field-settings-table-tile-name').next().children().removeClass('inset-shadow');
-        $('.tile-rundown-elements > div:first-child').addClass('inset-shadow');
-        $('.field-settings-table-field-name.expandable').next().children().removeClass('inset-shadow');
-        $('.field-settings-table-field-option:first-child').addClass('inset-shadow');
-
-    }
-
-    // Typeahead
     $.typeahead({
         input: '.js-typeahead-settings',
         order: "desc",
