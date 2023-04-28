@@ -23,8 +23,6 @@ function makeRequest(type, url, data, base = "dt/v1/") {
 jQuery(document).ready(function($) {
 
     window.API = {};
-
-
     window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
         post_type: post_type,
         new_tile_name: new_tile_name,
@@ -164,11 +162,12 @@ jQuery(document).ready(function($) {
 
     $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
         update: function(event,ui) {
-            if (!$(event)[0].originalEvent.target.nextElementSibling.dataset) {
+            if (!$(event)[0].originalEvent.target.dataset) {
                 return;
             }
             var post_type = get_post_type();
-            var moved_element = $(event)[0].originalEvent.target.nextElementSibling;
+            var moved_element = ui.item[0];
+            var tile_key = moved_element.dataset.parentTileKey || moved_element.id;
 
             // Check if moved element is a field option
             if (moved_element.dataset['fieldOptionKey']) {
@@ -179,14 +178,31 @@ jQuery(document).ready(function($) {
                 $.each(field_options, function(option_index, option_element) {
                     sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
                 });
-                API.update_field_options_order(post_type, field_key, sortable_field_options_ordering);
+                API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
+                    var old_order = window.field_settings.post_type_settings.fields[field_key].default;
+                    field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
+                    window.field_settings.post_type_settings.fields[field_key].default = field_options_in_new_order;
+
+                    tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
+                    show_preview_tile(tile_key);
+                });
                 return;
             }
-
             dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
-            API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(data) {});
+            API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
+                var new_order = result[post_type][tile_key]['order'];
+                window.field_settings.post_type_settings.tiles[tile_key].order = new_order;
+                show_preview_tile(tile_key);
+            });
         },
     });
+
+    function order_field_option_keys_by_array(old_order, new_order) {
+        var sorted_object = Object.fromEntries(
+            Object.entries(old_order).sort((a, b) => new_order.indexOf(a[0]) - new_order.indexOf(b[0]))
+            );
+        return sorted_object;
+    }
 
     function get_dt_custom_tiles_and_fields_ordered() {
         var dt_custom_tiles_and_fields_ordered = {};
@@ -290,9 +306,22 @@ jQuery(document).ready(function($) {
                 </div>
                 <div class="section-body">`;
 
+        var fields = [];
         var all_fields = window['field_settings']['post_type_settings']['fields'];
-        $.each(all_fields, function(key, field) {
-            if( field['tile'] === tile_key ) {
+        $.each(all_fields, function(field_index, field_value) {
+            if( field_value['tile'] === tile_key ) {
+                fields.push(field_index);
+            }
+        });
+
+        var field_order = window['field_settings']['post_type_settings']['tiles'][tile_key]['order'];
+        if (field_order) {
+            fields = field_order;
+        }
+
+        $.each(fields, function(field_index, field_key) {
+            var field = window['field_settings']['post_type_settings']['fields'][field_key];
+
                 var icon_html = '';
                 if ( field['icon'] ) {
                     icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
@@ -403,7 +432,6 @@ jQuery(document).ready(function($) {
                     tile_html += `</select>`;
                 }
                 /*** KEY_SELECT - END ***/
-            }
         });
         tile_html += `
                 </div>
@@ -1134,7 +1162,7 @@ jQuery(document).ready(function($) {
             var field_key = response['key'];
             window['field_settings']['post_type_settings']['fields'][field_key] = response;
             var new_field_nonexpandable_html = `
-                <div class="sortable-fields" id="${field_key}">
+                <div class="sortable-field" id="${field_key}" data-parent-tile-key="${tile_key}">
                     <div class="field-settings-table-field-name submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content" data-parent-tile="${tile_key}" data-key="${field_key}">
@@ -1149,7 +1177,7 @@ jQuery(document).ready(function($) {
             `;
 
             var new_field_expandable_html = `
-            <div class="sortable-fields" id="${field_key}">
+            <div class="sortable-field" id="${field_key}" data-parent-tile-key="${tile_key}">
                 <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                    <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
@@ -1255,17 +1283,11 @@ jQuery(document).ready(function($) {
         var field_option_icon = $('#edit-field-icon').val();
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
-                'label':field_option_name,
-            };
-
-            if (field_option_description) {
-                window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
-                    'label':field_option_name,
-                    'description':field_option_description,
-                    'icon':field_option_icon,
-                };
-            }
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'].push( new_field_option_key = {
+                label:field_option_name,
+                description:field_option_description,
+                icon:field_option_icon,
+            });
 
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
