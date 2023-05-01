@@ -31,16 +31,11 @@ function update_setting_options() {
   })
 }
 
-function group_search(importing_all = false, callback = function () {
-}) {
-    let uninstalled_groups = [];
+function group_search() {
     let sval = jQuery('#group-search').val();
     let data = { "s": sval }
     let search_button = jQuery('#search_button')
-
-    if (!importing_all) {
-      search_button.append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
-    }
+    search_button.append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
 
     jQuery.ajax({
         type: "POST",
@@ -54,17 +49,14 @@ function group_search(importing_all = false, callback = function () {
     })
         .done(function (data) {
           let div = jQuery('#results')
+          div.empty();
           search_button.empty().text('Get List')
 
-          // Maintain a long list of all people groups, when importing all.
-          if (!importing_all) {
-            div.empty();
-          }
-
           div.append(`<dl><dt><strong>` + sval + `</strong></dt>`)
+
           jQuery.each(data, function (i, v) {
             div.append(`
-                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `','` + v[32] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
+                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `','` + v[33] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
                 `)
 
             // Check last element for duplicate flag to determine if group has already been installed.
@@ -74,17 +66,7 @@ function group_search(importing_all = false, callback = function () {
                 jQuery(button).text('installed');
                 jQuery(button).attr('disabled', 'disabled');
               }
-            } else if (importing_all) {
-
-              // Only capture uninstalled groups, to be auto-imported.
-              uninstalled_groups.push({
-                'country': v[1],
-                'rop3': v[3],
-                'label': v[4],
-                'location_grid': v[32]
-              });
             }
-
           })
           div.append(`</dl>`)
 
@@ -98,14 +80,10 @@ function group_search(importing_all = false, callback = function () {
               }, 700 * i);
             })
           })
-
-          callback(uninstalled_groups);
         })
         .fail(function (err) {
           console.log("error");
           console.log(err);
-
-          callback(uninstalled_groups);
         })
 }
 
