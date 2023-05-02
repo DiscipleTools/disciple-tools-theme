@@ -70,9 +70,9 @@ function group_search() {
           })
           div.append(`</dl>`)
 
-          // add listener for select all button
-          jQuery('#add_all_groups').show().on('click', function () {
-            div.prepend('<span><strong>DO NOT NAVIGATE WAY FROM THIS PAGE UNTIL INSTALL IS COMPLETE!</strong></span><br>')
+          // Add listener for select all button, ensuring to delete all stale click listeners.
+          jQuery('#add_all_groups').show().off('click').on('click', function () {
+            div.prepend('<span><strong>DO NOT NAVIGATE AWAY FROM THIS PAGE UNTIL INSTALL IS COMPLETE!</strong></span><br>')
             jQuery.each(jQuery('#results button'), function (i, v) {
               setTimeout(function () {
                 console.log(v.id);
