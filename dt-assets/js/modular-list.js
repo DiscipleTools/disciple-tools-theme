@@ -125,7 +125,8 @@
 
   // get records when a filter is clicked
   $(document).on('change', '.js-list-view', () => {
-    get_records_for_current_filter()
+    reset_split_by_filters();
+    get_records_for_current_filter();
   });
 
   //load record for the first filter when a tile is clicked
@@ -430,7 +431,7 @@
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
 
-    // Conduct a deep copy (clone) of filter, so as to support future returns to default
+    // Conduct a deep copy (clone) of filter, to support future returns to default
     current_filter = $.extend(true, {}, current_filter);
 
     // Determine if any split by filters are to be applied.
@@ -2645,7 +2646,11 @@
   $("#split_by_current_filter_button").on("click", function () {
     let split_by_accordion = $(".split-by-current-filter-accordion");
     let split_by_results = $("#split_by_current_filter_results");
+    let split_by_no_results_msg = $("#split_by_current_filter_no_results_msg");
     let field_id = $("#split_by_current_filter_select").val();
+
+    $(split_by_no_results_msg).fadeOut('fast');
+
     if (field_id) {
       $(split_by_results).slideUp('fast', function () {
         let filters = (current_filter.query !== undefined) ? current_filter.query:[];
@@ -2658,7 +2663,7 @@
                 if (result['value']) {
                   summary_displayed = true;
                   let option_id = result['value'];
-                  let option_id_label = result['label'];
+                  let option_id_label = (result['label'] !== '') ? result['label'] : result['value'];
 
                   html += `
                       <label class="list-view">
@@ -2677,7 +2682,9 @@
             }
 
             if (!summary_displayed) {
-              $(split_by_accordion).slideUp('fast');
+              $(split_by_accordion).slideUp('fast', function () {
+                $(split_by_no_results_msg).fadeIn('fast');
+              });
             }
           }
         );
@@ -2714,10 +2721,25 @@
 
       let query_field_obj = {};
       query_field_obj[field_id] = [option_id];
-      filter['query']['fields'].push(query_field_obj);
+      if (filter['query']['fields'].push !== undefined) {
+        filter['query']['fields'].push(query_field_obj);
+      }
     }
 
     return filter;
+  }
+
+  function reset_split_by_filters() {
+    if (current_filter && (current_filter['query']['fields'] !== undefined)) {
+      let field_id = $("#split_by_current_filter_select").val();
+      $.each(current_filter['query']['fields'], function (field_idx, field) {
+
+        // Identify selected split by filters to be removed from main current global filter.
+        if (field[field_id] !== undefined) {
+          $('.current-filter-list.' + field_id).find('.current-filter-list-close').click();
+        }
+      });
+    }
   }
 
   /**

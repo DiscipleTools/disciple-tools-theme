@@ -280,6 +280,7 @@ dt_please_log_in();
                                 </div>
                             </li>
                         </ul>
+                        <span id="split_by_current_filter_no_results_msg" style="display: none;"><?php echo esc_attr( _x( 'No Summary Results Found', 'disciple_tools' ) ) ?></span>
                     </div>
                 </div>
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
