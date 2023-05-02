@@ -196,7 +196,7 @@ function dt_display_tile( $tile, $post ): bool {
                             //setup the order of the tile fields
                             $order = $tiles['details']['order'] ?? [];
                             foreach ( $post_settings['fields'] as $key => $option ){
-                                if ( isset( $option['tile'] ) && $option['tile'] === 'details' && $option['type'] === 'communication_channel' ){
+                                if ( isset( $option['tile'] ) && $option['tile'] === 'details' && ( $option['type'] === 'communication_channel' || $key === 'name' ) ){
                                     if ( !in_array( $key, $order ) ){
                                         $order[] = $key;
                                     }

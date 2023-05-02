@@ -722,6 +722,7 @@ window.SHAREDFUNCTIONS = {
   make_links_clickable( selector ){
     //make text links clickable in a section
     let elem_text = $(selector).html()
+    if ( !elem_text ) return
     let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
     elem_text = elem_text.replace(urlRegex, (match)=>{
       let url = match
