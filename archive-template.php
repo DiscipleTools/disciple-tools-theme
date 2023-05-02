@@ -607,7 +607,7 @@ dt_please_log_in();
                         </table>
                     </div>
                     <div class="center">
-                        <button id="load-more" class="button" style="display: none"><?php esc_html_e( 'Load More', 'disciple_tools' ) ?></button>
+                        <button id="load-more" class="button loader" style="display: none"><?php esc_html_e( 'Load More', 'disciple_tools' ) ?></button>
                     </div>
                 </div>
             </main>
