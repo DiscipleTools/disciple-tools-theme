@@ -923,6 +923,7 @@
     let query = current_filter.query
     if ( offset ){
       query["offset"] = offset
+      query['limit'] = 500
     }
     if ( sort ){
       query.sort = sort
@@ -938,7 +939,7 @@
     }
     query.fields_to_return = fields_to_show_in_table
     get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
-    get_records_promise.then(response=>{
+    return get_records_promise.then(response=>{
       if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
       } else {
@@ -977,7 +978,10 @@
   }
 
   $('#load-more').on('click', function () {
-    get_records( items.length )
+    $(this).addClass('loading')
+    get_records( items.length ).then(()=>{
+      $(this).removeClass('loading')
+    })
   })
 
 
