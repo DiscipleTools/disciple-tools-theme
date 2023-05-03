@@ -2654,12 +2654,6 @@
     if (field_id) {
       $(split_by_results).slideUp('fast', function () {
         let filters = (current_filter.query !== undefined) ? current_filter.query:[];
-
-        // Ensure unwanted filters are removed.
-        window.lodash.unset(filters, 'overall_status');
-        window.lodash.unset(filters, 'type');
-
-        // Proceed with plit-by request.
         window.API.split_by(list_settings.post_type, field_id, filters).then(
           function (response) {
             let summary_displayed = false;
