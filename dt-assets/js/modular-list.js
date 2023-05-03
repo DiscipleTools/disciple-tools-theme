@@ -443,13 +443,6 @@
     clear_search_query()
 
     get_records()
-
-    // Remove empty object properties of type array.
-    $.each(current_filter['query'], function (idx, property) {
-      if (Array.isArray(property) && ((property === undefined) || (property.length === 0))) {
-        window.lodash.unset(current_filter['query'], idx);
-      }
-    });
   }
 
   function clear_search_query() {
@@ -718,6 +711,11 @@
     if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
       const index = status.indexOf(filterOutArchivedItemsKey)
       status.splice(index, 1)
+
+      // Remove status property from query if empty.
+      if ( status.length === 0 ) {
+        window.lodash.unset(current_filter['query'], status_key);
+      }
     }
 
     if (!showArchived && (!status || status.length === 0)) {
