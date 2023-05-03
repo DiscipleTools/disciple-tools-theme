@@ -2654,6 +2654,12 @@
     if (field_id) {
       $(split_by_results).slideUp('fast', function () {
         let filters = (current_filter.query !== undefined) ? current_filter.query:[];
+
+        // Ensure unwanted filters are removed.
+        window.lodash.unset(filters, 'overall_status');
+        window.lodash.unset(filters, 'type');
+
+        // Proceed with plit-by request.
         window.API.split_by(list_settings.post_type, field_id, filters).then(
           function (response) {
             let summary_displayed = false;
@@ -2730,8 +2736,9 @@
   }
 
   function reset_split_by_filters() {
+    let split_by_filter_select = $("#split_by_current_filter_select");
     if (current_filter && (current_filter['query']['fields'] !== undefined)) {
-      let field_id = $("#split_by_current_filter_select").val();
+      let field_id = $(split_by_filter_select).val();
       $.each(current_filter['query']['fields'], function (field_idx, field) {
 
         // Identify selected split by filters to be removed from main current global filter.
@@ -2740,6 +2747,12 @@
         }
       });
     }
+
+    // Clear down split-by area.
+    $(split_by_filter_select).val('');
+    $("#split_by_current_filter_no_results_msg").fadeOut('fast');
+    $(".split-by-current-filter-accordion").slideUp('fast', function () {
+    });
   }
 
   /**

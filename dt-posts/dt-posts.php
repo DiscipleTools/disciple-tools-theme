@@ -957,58 +957,59 @@ class DT_Posts extends Disciple_Tools_Posts {
         $group_by_field_type = isset( $post_fields[$field_key]['type'] ) ? $post_fields[$field_key]['type'] : null;
 
         $posts = [];
+        $initial_results = [];
         if ( $group_by_field_type === 'connection' ){
             $p2p_key = $post_fields[$field_key]['p2p_key'] ?? '';
             $p2p_direction = $post_fields[$field_key]['p2p_direction'] ?? '';
-            $select_sql = 'SELECT count( group_by.p2p_type ) as count, group_by.p2p_type as value';
+            $select_sql = 'SELECT p.ID as id, group_by.p2p_type as value';
             $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( $p2p_direction == 'from' ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
-            $group_by_sql = 'group_by.p2p_type';
+            $group_by_sql = 'p.ID, group_by.p2p_type';
 
             // phpcs:disable
             // WordPress.WP.PreparedSQL.NotPrepared
-            $posts = $wpdb->get_results( $select_sql ."
+            $initial_results = $wpdb->get_results( $select_sql ."
             FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
                 $group_by_join . "
             WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
+            AND group_by.p2p_type IS NOT NULL
             GROUP BY " . $group_by_sql, ARRAY_A );
-
         } else {
-
             $select_sql = "SELECT summary.id, summary.value FROM (SELECT p.ID as id, group_by.meta_value as value";
             $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
-            $group_by_sql = 'group_by.meta_value';
+            $group_by_sql = 'p.ID, group_by.meta_value';
 
             // phpcs:disable
             // WordPress.WP.PreparedSQL.NotPrepared
-            $summaries = $wpdb->get_results( $select_sql . "
+            $initial_results = $wpdb->get_results( $select_sql . "
             FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
                 $group_by_join . "
             WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-            GROUP BY p.ID, " . $group_by_sql . ") AS summary", ARRAY_A );
+            AND group_by.meta_value IS NOT NULL
+            GROUP BY " . $group_by_sql . ") AS summary", ARRAY_A );
+        }
 
-            // Reshape summary findings.
-            $reshaped_summaries = [];
-            foreach ( $summaries as $summary ){
-                if ( !empty( $summary['value'] ) ){
-                    if ( !isset( $reshaped_summaries[$summary['value']] ) ){
-                        $reshaped_summaries[$summary['value']] = [
-                            'value' => $summary['value'],
-                            'count' => 0
-                        ];
-                    }
-                    $reshaped_summaries[$summary['value']]['count']++;
+        // Reshape initial results findings.
+        $reshaped_results = [];
+        foreach ( $initial_results as $result ){
+            if ( !empty( $result['value'] ) ){
+                if ( !isset( $reshaped_results[$result['value']] ) ){
+                    $reshaped_results[$result['value']] = [
+                        'value' => $result['value'],
+                        'count' => 0
+                    ];
                 }
+                $reshaped_results[$result['value']]['count']++;
             }
+        }
 
-            // Now, reshape into required posts structure.
-            foreach ( $reshaped_summaries as $summary ){
-                $posts[] = [
-                    'value' => $summary['value'],
-                    'count' => $summary['count']
-                ];
-            }
+        // Now, reshape into required posts structure.
+        foreach ( $reshaped_results as $result ){
+            $posts[] = [
+                'value' => $result['value'],
+                'count' => $result['count']
+            ];
         }
 
         // Determine appropriate labels to be used.
@@ -1022,7 +1023,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             } elseif ( $group_by_field_type == 'location_meta' ){
                 $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
                 $updated_posts[] = $post;
-                break;
             } elseif ( $group_by_field_type == 'user_select' ){
                 $user_contact_id = Disciple_Tools_Users::get_contact_for_user( substr( $post['value'], 5 ) );
                 if ( is_int( $user_contact_id ) ){
@@ -1037,6 +1037,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( !$post['value'] && intval( $post['count'] ) > 0 ){
                     $post['value'] = '0';
                 }
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type === 'connection' ) {
+                $post['value'] = '*';
+                $post['label'] = sprintf( esc_html_x( '%1$s [All]', 'disciple_tools' ), $post_fields[$field_key]['name'] ?? $field_key );
                 $updated_posts[] = $post;
             } else {
                 $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
