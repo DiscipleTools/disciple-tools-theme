@@ -443,6 +443,13 @@
     clear_search_query()
 
     get_records()
+
+    // Remove empty object properties of type array.
+    $.each(current_filter['query'], function (idx, property) {
+      if (Array.isArray(property) && ((property === undefined) || (property.length === 0))) {
+        window.lodash.unset(current_filter['query'], idx);
+      }
+    });
   }
 
   function clear_search_query() {
