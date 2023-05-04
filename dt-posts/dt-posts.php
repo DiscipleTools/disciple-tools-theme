@@ -959,21 +959,35 @@ class DT_Posts extends Disciple_Tools_Posts {
         $posts = [];
         $initial_results = [];
         if ( $group_by_field_type === 'connection' ){
+            $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
             $p2p_key = $post_fields[$field_key]['p2p_key'] ?? '';
             $p2p_direction = $post_fields[$field_key]['p2p_direction'] ?? '';
-            $select_sql = 'SELECT p.ID as id, group_by.p2p_type as value';
-            $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( $p2p_direction == 'from' ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
-            $group_by_sql = 'p.ID, group_by.p2p_type';
+            $select_sql = 'SELECT p.ID as id, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type as value';
+            $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            $group_by_sql = 'p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type';
 
             // phpcs:disable
             // WordPress.WP.PreparedSQL.NotPrepared
-            $initial_results = $wpdb->get_results( $select_sql ."
+            $connections = $wpdb->get_results( $select_sql ."
             FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
                 $group_by_join . "
             WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
             AND group_by.p2p_type IS NOT NULL
             GROUP BY " . $group_by_sql, ARRAY_A );
+
+            // Collate records accordingly based on from/to id target.
+            if ( !empty( $p2p_post_type ) ){
+                foreach ( $connections as $connection ){
+                    $p2p_target = ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_to' : 'p2p_from';
+                    if ( !empty( $connection[$p2p_target] ) ){
+                        $initial_results[] = [
+                            'id' => $connection[$p2p_target],
+                            'value' => $connection[$p2p_target]
+                        ];
+                    }
+                }
+            }
         } else {
             $select_sql = "SELECT summary.id, summary.value FROM (SELECT p.ID as id, group_by.meta_value as value";
             $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
@@ -1039,17 +1053,30 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
                 $updated_posts[] = $post;
             } elseif ( $group_by_field_type === 'connection' ) {
-                $post['value'] = '*';
-                $post['label'] = sprintf( esc_html_x( '%1$s [All]', 'disciple_tools' ), $post_fields[$field_key]['name'] ?? $field_key );
-                $updated_posts[] = $post;
+                $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
+                if ( !empty( $p2p_post_type ) ){
+                    $p2p_post = DT_Posts::get_post( $p2p_post_type, $post['value'], true, false );
+                    if ( !is_wp_error( $p2p_post ) ){
+                        $post['label'] = $p2p_post['title'] ?? $post['label'];
+                        $updated_posts[] = $post;
+                    }
+                }
             } else {
                 $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
                 $updated_posts[] = $post;
             }
         }
 
-        // Return split by summary.
-        return $updated_posts;
+        // Sort returning posts by count.
+        usort( $updated_posts, function ( $a, $b ){
+            if ( $a['count'] == $b['count'] ){
+                return 0;
+            }
+            return ( $a['count'] > $b['count'] ) ? -1 : 1;
+        } );
+
+        // Return split by summary based on specified limit.
+        return array_splice( $updated_posts, 0, 30 );
     }
 
     /**
