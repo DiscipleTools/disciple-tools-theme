@@ -606,31 +606,34 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         API.delete_tile(post_type, tile_key).promise().then(function() {
-            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
-            var tile_submenu = $(`div.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`);
+            var tile_submenu = $(`div.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             closeModal();
             if (tile_submenu.is(':visible')) {
                 var tile_expand_icon = $(`.field-settings-table-tile-name[data-key="${tile_key}"]>span.expand-icon`);
                 tile_expand_icon.click();
             }
 
-            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no-tile-hidden"]');
+            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no_tile"]');
             if (no_tile_menu.is(':hidden')) {
-                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no-tile-hidden"]>span.expand-icon');
+                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no_tile"] > span.expand-icon');
                 no_tile_expand_icon.click();
             }
 
             var deleted_tile_field_options =  $(`.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`).children().not('.add-new-item');
             deleted_tile_field_options.each(function() {
                 $(this).removeClass('inset-shadow');
-                no_tile_menu.append($(this));
+                var no_tile_menu_last_submenu = $('.tile-rundown-elements[data-parent-tile-key="no_tile"] > .add-new-item');
+                no_tile_menu_last_submenu.before($(this));
+                $(this).attr('data-parent-tile-key', 'no_tile');
+                $(this).find('.field-name-content').attr('data-parent-tile-key', 'no_tile');
+                $(this).find('.field-settings-table-field-name').attr('data-parent-tile-key', 'no_tile');
                 $(this).find('.field-settings-table-field-name').addClass('menu-highlight');
             });
 
+            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
             tile_element.css('background', '#e14d43');
             tile_element.fadeOut(500, function(){
                 tile_element.parent().remove();
-                tile_submenu.remove();
             });
         });
     });
