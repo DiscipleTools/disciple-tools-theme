@@ -322,13 +322,18 @@ class Disciple_Tools_Post_Type_Template {
         ];
         return $capabilities;
     }
-    public static function dt_filter_access_permissions( $permissions, $post_type ){
-        if ( DT_Posts::can_view_all( $post_type ) ){
-            $permissions = [];
-        }
-        return $permissions;
-    }
 }
+
+/**
+ * Set default list view permissions
+ * only need to register this hook once
+ */
+add_filter( 'dt_filter_access_permissions', function ( $permissions, $post_type ){
+    if ( DT_Posts::can_view_all( $post_type ) ){
+        $permissions = [];
+    }
+    return $permissions;
+}, 10, 2 );
 
 /**
  * Build default filter available on all post type list pages
