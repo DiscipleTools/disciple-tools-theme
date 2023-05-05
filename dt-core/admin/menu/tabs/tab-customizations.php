@@ -383,9 +383,14 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     </div>
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                         <!-- START TOGGLED FIELD ITEMS -->
-                        <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                        <?php
+                        // If there is a custom field order, show fields in order
+                        if ( isset( $tile_value['order'] ) ) {
+                            $post_tiles['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_tiles['fields'] );
+                        }
+                        foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                             <?php if ( self::field_option_in_tile( $field_key, $tile_key ) && self::field_is_customizable( $post_type, $field_key ) ) : ?>
-                                <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>">
+                                <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
                                     <div class="field-settings-table-field-name" id="<?php echo esc_attr( $field_key ); ?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
@@ -419,7 +424,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         $option_key = $v['default'];
                                                     }
                                                     ?>
-                                                    <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>">
+                                                    <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
                                                         <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" ><?php echo esc_html( $label ); ?></span>
                                                         <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>

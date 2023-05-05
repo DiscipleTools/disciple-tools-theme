@@ -784,6 +784,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         $tile_options[$post_type] = $dt_custom_tiles_and_fields_ordered;
         update_option( 'dt_custom_tiles', $tile_options );
+        return $tile_options;
     }
 
     public static function update_field_options_order( WP_REST_Request $request ) {
@@ -802,6 +803,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $field_customizations[$post_type][$field_key] = $custom_field;
         update_option( 'dt_field_customizations', $field_customizations );
         wp_cache_delete( $post_type . '_field_settings' );
+        return $sortable_field_options_ordering;
     }
 
     public static function remove_custom_field_name( WP_REST_Request $request ) {
