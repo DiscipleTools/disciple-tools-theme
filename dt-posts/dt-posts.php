@@ -962,19 +962,23 @@ class DT_Posts extends Disciple_Tools_Posts {
             $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
             $p2p_key = $post_fields[$field_key]['p2p_key'] ?? '';
             $p2p_direction = $post_fields[$field_key]['p2p_direction'] ?? '';
-            $select_sql = 'SELECT p.ID as id, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type as value';
+
             $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
-            $group_by_sql = 'p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type';
+            if ( $p2p_direction === 'any' ){
+                $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON ( group_by.p2p_from = p.ID OR group_by.p2p_to = p.ID ) AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            }
 
             // phpcs:disable
             // WordPress.WP.PreparedSQL.NotPrepared
-            $connections = $wpdb->get_results( $select_sql ."
-            FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
+            $connections = $wpdb->get_results( "
+                SELECT p.ID as id, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type as value
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
                 $group_by_join . "
-            WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
-            (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-            AND group_by.p2p_type IS NOT NULL
-            GROUP BY " . $group_by_sql, ARRAY_A );
+                WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
+                AND group_by.p2p_type IS NOT NULL
+                GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type"
+            , ARRAY_A );
 
             // Collate records accordingly based on from/to id target.
             if ( !empty( $p2p_post_type ) ){
@@ -986,22 +990,28 @@ class DT_Posts extends Disciple_Tools_Posts {
                             'value' => $connection[$p2p_target]
                         ];
                     }
+                    if ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
+                        $initial_results[] = [
+                            'id' => $connection['p2p_from'],
+                            'value' => $connection['p2p_from']
+                        ];
+                    }
                 }
             }
         } else {
-            $select_sql = "SELECT summary.id, summary.value FROM (SELECT p.ID as id, group_by.meta_value as value";
             $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
-            $group_by_sql = 'p.ID, group_by.meta_value';
 
             // phpcs:disable
             // WordPress.WP.PreparedSQL.NotPrepared
-            $initial_results = $wpdb->get_results( $select_sql . "
-            FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
+            $initial_results = $wpdb->get_results(
+                "SELECT summary.id, summary.value FROM (SELECT p.ID as id, group_by.meta_value as value
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
                 $group_by_join . "
-            WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
-            (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-            AND group_by.meta_value IS NOT NULL
-            GROUP BY " . $group_by_sql . ") AS summary", ARRAY_A );
+                WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
+                AND group_by.meta_value IS NOT NULL
+                GROUP BY p.ID, group_by.meta_value ) AS summary"
+            , ARRAY_A );
         }
 
         // Reshape initial results findings.
