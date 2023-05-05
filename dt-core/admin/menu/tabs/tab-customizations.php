@@ -384,7 +384,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                         <!-- START TOGGLED FIELD ITEMS -->
                         <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
-                            <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) : ?>
+                            <?php if ( self::field_option_in_tile( $field_key, $tile_key )  && self::field_is_customizable( $post_type, $field_key ) ) : ?>
                                 <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
                                     <div class="field-settings-table-field-name" id="<?php echo esc_attr( $field_key ); ?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
@@ -472,7 +472,18 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 return true;
             }
         }
+        if ( $tile_key === 'no_tile' && !isset( $post_tiles['fields'][$field_option_name]['tile'] ) ) {
+            return true;
+        }
         return false;
+    }
+
+    public static function field_is_customizable( $post_type, $field_key ) {
+        $post_tiles = DT_Posts::get_post_settings( $post_type, true );
+        if ( isset( $post_tiles['fields'][$field_key]['customizable'] ) && !is_null( $post_tiles['fields'][$field_key]['customizable'] ) ) {
+            return false;
+        }
+        return true;
     }
     public function save_settings(){
         if ( !empty( $_POST ) ){
