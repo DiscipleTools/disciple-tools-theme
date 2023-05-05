@@ -147,6 +147,19 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //list posts
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/list', [
+                [
+                    'methods'  => [ 'GET', 'POST' ],
+                    'callback' => [ $this, 'get_list' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                    ],
+                    'permission_callback' => '__return_true',
+                ]
+            ]
+        );
 
         //split_by
         register_rest_route(

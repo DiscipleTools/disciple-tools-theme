@@ -976,7 +976,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $group_by_join . "
                 WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
                 (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-                AND group_by.p2p_type IS NOT NULL
                 GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type"
             , ARRAY_A );
 
@@ -1009,7 +1008,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $group_by_join . "
                 WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
                 (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-                AND group_by.meta_value IS NOT NULL
                 GROUP BY p.ID, group_by.meta_value ) AS summary"
             , ARRAY_A );
         }
@@ -1017,15 +1015,14 @@ class DT_Posts extends Disciple_Tools_Posts {
         // Reshape initial results findings.
         $reshaped_results = [];
         foreach ( $initial_results as $result ){
-            if ( !empty( $result['value'] ) ){
-                if ( !isset( $reshaped_results[$result['value']] ) ){
-                    $reshaped_results[$result['value']] = [
-                        'value' => $result['value'],
-                        'count' => 0
-                    ];
-                }
-                $reshaped_results[$result['value']]['count']++;
+            $reshaped_keys = $result['value'] ?? 'NULL';
+            if ( !isset( $reshaped_results[$reshaped_keys] ) ){
+                $reshaped_results[$reshaped_keys] = [
+                    'value' => $reshaped_keys,
+                    'count' => 0
+                ];
             }
+            $reshaped_results[$reshaped_keys]['count']++;
         }
 
         // Now, reshape into required posts structure.

@@ -954,7 +954,7 @@
       get_records_promise.abort()
     }
     query.fields_to_return = fields_to_show_in_table
-    get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
+    get_records_promise = window.makeRequestOnPosts( 'POST', `${list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
     return get_records_promise.then(response=>{
       if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
@@ -1101,6 +1101,7 @@
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
     let filterName = window.lodash.escape( $('#new-filter-name').val() )
+    reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
@@ -2733,7 +2734,7 @@
       }
 
       let query_field_obj = {};
-      query_field_obj[field_id] = [option_id];
+      query_field_obj[field_id] = (option_id !== 'NULL') ? [option_id] : [];
       if (filter['query']['fields'].push !== undefined) {
         filter['query']['fields'].push(query_field_obj);
       }
