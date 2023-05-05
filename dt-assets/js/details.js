@@ -1403,7 +1403,8 @@ jQuery(document).ready(function($) {
       window.detailsSettings.post_type,
       window.detailsSettings.post_id,
       wpApiShare.nonce);
-    service.enableAutoSave();
+    service.initialize();
+    window.componentService = service;
   }
 })
 
