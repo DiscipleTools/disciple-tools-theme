@@ -954,7 +954,7 @@
       get_records_promise.abort()
     }
     query.fields_to_return = fields_to_show_in_table
-    get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
+    get_records_promise = window.makeRequestOnPosts( 'POST', `${list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
     return get_records_promise.then(response=>{
       if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
