@@ -78,6 +78,8 @@ class DT_Posts extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, 'Could not create this post. Maybe it already exists', [ 'status' => 409 ] );
         }
 
+        $args = apply_filters( 'dt_create_post_args', $args, $post_type, $fields );
+
         //if specified, check for actual duplicates.
         if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
@@ -92,26 +94,19 @@ class DT_Posts extends Disciple_Tools_Posts {
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'] );
 
-                //Avoid further duplication of pre-existing values.
-                $filtered_fields = [];
-                $duplicate_post   = self::get_post( $post_type, $duplicate_post_ids[0], false, false );
-                foreach ( $fields as $field_id => $value ) {
-                    if ( ! self::post_contains_field_value( $post_settings['fields'], $duplicate_post, $field_id, $value ) ) {
-                        $filtered_fields[ $field_id ] = $value;
-                    }
-                }
-
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post['ID'], $filtered_fields, $silent, false );
+                $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, false );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
                 //if update successful, comment and return.
                 $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
-                if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
-                    $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                if ( !$silent ){
+                    if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
+                        $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                    }
                 }
-                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
+                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false, $silent );
 
                 if ( $check_permissions && !self::can_view( $post_type, $updated_post['ID'] ) ){
                     return [ 'ID' => $updated_post['ID'] ];
@@ -793,6 +788,302 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $data;
     }
 
+    /**
+     * Get a list of split by summaries for given field.
+     *
+     * @param string $post_type
+     * @param array $args
+     * @param bool $check_permissions
+     *
+     * @return array|WP_Error
+     */
+    public static function split_by( string $post_type, array $args, bool $check_permissions = true ){
+        if ( $check_permissions && !self::can_access( $post_type ) ){
+            return new WP_Error( __FUNCTION__, 'You do not have access to these', [ 'status' => 403 ] );
+        }
+        $post_types = self::get_post_types();
+        if ( !in_array( $post_type, $post_types ) ){
+            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
+        }
+
+        $field_key = $args['field_id'] ?? '';
+        if ( empty( $field_key ) ){
+            return new WP_Error( __FUNCTION__, 'Empty field id detected', [ 'status' => 400 ] );
+        }
+
+        $query = $args['filters'] ?? [];
+
+        //filter in to add or remove query parameters.
+        $query = apply_filters( 'dt_search_viewable_posts_query', $query );
+
+        global $wpdb;
+
+        $post_settings = self::get_post_settings( $post_type );
+        if ( !isset( $post_settings['fields'] ) || empty( $post_settings['fields'] ) ){
+            return new WP_Error( __FUNCTION__, "$post_type settings not yet loaded", [ 'status' => 400 ] );
+        }
+        $post_fields = $post_settings['fields'];
+
+        $search = '';
+        if ( isset( $query['text'] ) ){
+            $search = sanitize_text_field( $query['text'] );
+            unset( $query['text'] );
+        }
+        if ( isset( $query['offset'] ) ){
+            unset( $query['offset'] );
+        }
+        if ( isset( $query['limit'] ) ){
+            unset( $query['limit'] );
+        }
+        if ( isset( $query['sort'] ) ){
+            unset( $query['sort'] );
+        }
+        $fields_to_search = [];
+        if ( isset( $query['fields_to_search'] ) ){
+            $fields_to_search = $query['fields_to_search'];
+            unset( $query ['fields_to_search'] );
+        }
+        if ( isset( $query['combine'] ) ){
+            unset( $query['combine'] ); //remove deprecated combine
+        }
+        if ( isset( $query['fields'] ) ){
+            $query = $query['fields'];
+        }
+        if ( isset( $query['fields_to_return'] ) ){
+            unset( $query['fields_to_return'] );
+        }
+
+        $joins = '';
+        $post_query = '';
+
+        if ( !empty( $search ) ){
+
+            // Support wildcard searching between string tokens.
+            if ( !is_numeric( $search ) ){
+                $search = str_replace( ' ', '%', $search );
+            }
+
+            $other_search_fields = [];
+            if ( empty( $fields_to_search ) ){
+                $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
+                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                    OR p.ID IN ( SELECT post_id
+                                FROM $wpdb->postmeta
+                                WHERE meta_key LIKE 'contact_%'
+                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    )
+                ";
+            }
+            if ( !empty( $fields_to_search ) ){
+                if ( in_array( 'name', $fields_to_search ) ){
+                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )";
+                } else {
+                    $post_query .= 'AND ( ';
+                }
+
+                if ( in_array( 'comms', $fields_to_search ) ){
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                        $post_query .= 'OR ';
+                    }
+
+                    $post_query .= "p.ID IN ( SELECT post_id
+                                    FROM $wpdb->postmeta
+                                    WHERE meta_key LIKE 'contact_%'
+                                    AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        )
+                    ";
+                }
+
+                if ( in_array( 'all', $fields_to_search ) ){
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                        $post_query .= 'OR ';
+                    }
+                    $user_id = get_current_user_id();
+                    $post_query .= "p.ID IN ( SELECT comment_post_ID
+                    FROM $wpdb->comments
+                    WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->dt_post_user_meta
+                    WHERE user_id = $user_id
+                    AND meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) ";
+                } else {
+                    if ( in_array( 'comment', $fields_to_search ) ){
+                        if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                            $post_query .= 'OR ';
+                        }
+                        $post_query .= " p.ID IN ( SELECT comment_post_ID
+                        FROM $wpdb->comments
+                        WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
+                        ) ";
+                    }
+                    foreach ( $fields_to_search as $field ){
+                        if ( $field !== 'comment' ){
+                            array_push( $other_search_fields, $field );
+                        }
+                    }
+                }
+            }
+            foreach ( $other_search_fields as $field ){
+                if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                    $post_query .= 'OR ';
+                }
+                $post_query .= "p.ID IN ( SELECT post_id
+                             FROM $wpdb->postmeta
+                             WHERE meta_key LIKE '" . esc_sql( $field ) . "'
+                             AND meta_value LIKE '%" . esc_sql( $search ) . "%'
+                ) ";
+            }
+            $post_query .= ' ) ';
+        }
+
+        $permissions = [
+            'shared_with' => [ 'me' ]
+        ];
+        $permissions = apply_filters( 'dt_filter_access_permissions', $permissions, $post_type );
+
+        if ( $check_permissions && !empty( $permissions ) ){
+            $query[] = $permissions;
+        }
+
+        $fields_sql = self::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $fields_sql ) ){
+            return $fields_sql;
+        }
+
+        $group_by_field_type = isset( $post_fields[$field_key]['type'] ) ? $post_fields[$field_key]['type'] : null;
+
+        $posts = [];
+        $initial_results = [];
+        if ( $group_by_field_type === 'connection' ){
+            $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
+            $p2p_key = $post_fields[$field_key]['p2p_key'] ?? '';
+            $p2p_direction = $post_fields[$field_key]['p2p_direction'] ?? '';
+
+            $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            if ( $p2p_direction === 'any' ){
+                $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON ( group_by.p2p_from = p.ID OR group_by.p2p_to = p.ID ) AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            }
+
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $connections = $wpdb->get_results( "
+                SELECT p.ID as id, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type as value
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
+                $group_by_join . "
+                WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
+                AND group_by.p2p_type IS NOT NULL
+                GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type"
+            , ARRAY_A );
+
+            // Collate records accordingly based on from/to id target.
+            if ( !empty( $p2p_post_type ) ){
+                foreach ( $connections as $connection ){
+                    $p2p_target = ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_to' : 'p2p_from';
+                    if ( !empty( $connection[$p2p_target] ) ){
+                        $initial_results[] = [
+                            'id' => $connection[$p2p_target],
+                            'value' => $connection[$p2p_target]
+                        ];
+                    }
+                    if ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
+                        $initial_results[] = [
+                            'id' => $connection['p2p_from'],
+                            'value' => $connection['p2p_from']
+                        ];
+                    }
+                }
+            }
+        } else {
+            $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
+
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $initial_results = $wpdb->get_results(
+                "SELECT summary.id, summary.value FROM (SELECT p.ID as id, group_by.meta_value as value
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
+                $group_by_join . "
+                WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
+                AND group_by.meta_value IS NOT NULL
+                GROUP BY p.ID, group_by.meta_value ) AS summary"
+            , ARRAY_A );
+        }
+
+        // Reshape initial results findings.
+        $reshaped_results = [];
+        foreach ( $initial_results as $result ){
+            if ( !empty( $result['value'] ) ){
+                if ( !isset( $reshaped_results[$result['value']] ) ){
+                    $reshaped_results[$result['value']] = [
+                        'value' => $result['value'],
+                        'count' => 0
+                    ];
+                }
+                $reshaped_results[$result['value']]['count']++;
+            }
+        }
+
+        // Now, reshape into required posts structure.
+        foreach ( $reshaped_results as $result ){
+            $posts[] = [
+                'value' => $result['value'],
+                'count' => $result['count']
+            ];
+        }
+
+        // Determine appropriate labels to be used.
+        $updated_posts = [];
+        $geocoder = new Location_Grid_Geocoder();
+        foreach ( $posts as $post ){
+            if ( $group_by_field_type == 'location' ){
+                $grid = $geocoder->query_by_grid_id( $post['value'] );
+                $post['label'] = $grid['name'] ?? $post['value'];
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'location_meta' ){
+                $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'user_select' ){
+                $user_id = dt_get_user_id_from_assigned_to( $post['value'] );
+                $post['label'] = dt_get_user_display_name( $user_id ) ?: $post['value'];
+                $post['value'] = $user_id;
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'boolean' ){
+                $post['label'] = $post['value'] ? _x( 'True', 'disciple_tools' ) : _x( 'False', 'disciple_tools' );
+                if ( !$post['value'] && intval( $post['count'] ) > 0 ){
+                    $post['value'] = '0';
+                }
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type === 'connection' ) {
+                $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
+                if ( !empty( $p2p_post_type ) ){
+                    $wp_post = get_post( $post['value'] );
+                    if ( !is_wp_error( $wp_post ) ){
+                        $post['label'] = $wp_post->post_title ?? $post['label'];
+                        $updated_posts[] = $post;
+                    }
+                }
+            } else {
+                $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
+                $updated_posts[] = $post;
+            }
+        }
+
+        // Sort returning posts by count.
+        usort( $updated_posts, function ( $a, $b ){
+            if ( $a['count'] == $b['count'] ){
+                return 0;
+            }
+            return ( $a['count'] > $b['count'] ) ? -1 : 1;
+        } );
+
+        // Return split by summary based on specified limit.
+        return array_splice( $updated_posts, 0, 30 );
+    }
 
     /**
      * Get viewable in compact form

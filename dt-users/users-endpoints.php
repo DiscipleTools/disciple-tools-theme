@@ -410,6 +410,7 @@ class Disciple_Tools_Users_Endpoints
                 'display_name' => $user->display_name,
                 'locale'       => get_user_locale( $user->ID ),
                 'locations'    => self::get_current_locations(),
+                'corresponds_to_contact' => Disciple_Tools_Users::get_contact_for_user( $user->ID ),
             ];
 
             // Append additional setting sections

@@ -3,18 +3,30 @@
     -moz-animation: menu-highlight-fadeout 1s ease-in alternate;
     animation: menu-highlight-fadeout 1s ease-in alternate;
 }
+@keyframes menu-highlight-fadeout {
+    from { background: #3f729b; }
+    to { background: #c2e0ff; }
+}
 .submenu-highlight {
     -webkit-animation: submenu-highlight-fadeout 1s ease-in alternate;
     -moz-animation: submenu-highlight-fadeout 1s ease-in alternate;
     animation: submenu-highlight-fadeout 1s ease-in alternate;
 }
-@keyframes menu-highlight-fadeout {
-    from { background: #3f729b; }
-    to { background: #c2e0ff; }
-}
 @keyframes submenu-highlight-fadeout {
     from { background: #3f729b; }
     to { background: #d3d3d3; }
+}
+.delete-text {
+    text-align: right;
+}
+#delete-text {
+    width: 100%;
+    color: #e14d43;
+    text-decoration: none;
+}
+#delete-confirmation-container {
+    display: contents;
+    cursor: pointer;
 }
 .modal-box-title {
     text-align: left;
@@ -141,8 +153,10 @@
 .field-settings-table-child-toggle {
     display:none;
 }
-.inset-shadow {
-    box-shadow: inset -5px 5px 5px -2px #0000001a;
+.outset-shadow {
+    box-shadow: 0px 5px 5px -2px #0000001a;
+    z-index: 1px;
+    position: relative;
 }
 .sortable {
     color: #000;

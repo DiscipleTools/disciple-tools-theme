@@ -325,7 +325,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $connection_fields = DT_Posts::get_field_settings_by_type( $p2p_from['post_type'], 'connection' );
         foreach ( $field_settings as $field_key => $field_setting ){
             if ( in_array( $field_key, $connection_fields ) && isset( $field_setting['p2p_direction'], $field_setting['p2p_key'] ) ){
-                if ( ( $field_setting['p2p_direction'] === 'from' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
+                if ( ( $field_setting['p2p_direction'] === 'from' || $field_setting['p2p_direction'] === 'any' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
                     $from_field_key = $field_key;
                 }
             }
@@ -337,7 +337,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $connection_fields = DT_Posts::get_field_settings_by_type( $p2p_to['post_type'], 'connection' );
         foreach ( $field_settings as $field_key => $field_setting ){
             if ( in_array( $field_key, $connection_fields ) && isset( $field_setting['p2p_direction'], $field_setting['p2p_key'] ) ){
-                if ( ( $field_setting['p2p_direction'] === 'to' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
+                if ( ( $field_setting['p2p_direction'] === 'to' || $field_setting['p2p_direction'] === 'any' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
                     $to_field_key = $field_key;
                 }
             }

@@ -548,12 +548,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                   id="' . esc_attr( $display_field_id ) . '"
                   name="' . esc_attr( $field_key ) .'"
                   label="' . esc_attr( $fields[$field_key]['name'] ) . '"
+                  postType="' . esc_attr( $post['post_type'] ) . '"
                   ' . esc_html( $icon ) . '
                   ' . esc_html( $required_tag ) . '
                   ' . esc_html( $disabled ) . '
                   ' . ( $is_private ? 'private privateLabel=' . esc_attr( _x( "Private Field: Only I can see it\'s content", 'disciple_tools' ) ) : null ) . '
             ';
-            $supported_web_components = [ 'text', 'key_select', 'date' ];
+            $supported_web_components = [ 'text', 'key_select', 'date', 'tags' ];
 
             ?>
             <?php if ( !in_array( $field_type, $supported_web_components ) ): ?>
@@ -651,31 +652,21 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php dt_render_icon_slot( $fields[$field_key] ) ?>
                 </dt-single-select>
             <?php elseif ( $field_type === 'tags' ) : ?>
-                <div id="<?php echo esc_html( $display_field_id ); ?>" class="tags">
-                    <var id="<?php echo json_encode( $display_field_id ); ?>-result-container" class="result-container"></var>
-                    <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $field_key );?>"
-                                           name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                           autocomplete="off"
-                                           data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
-                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>" <?php echo esc_html( $disabled ); ?>>
-                                </span>
-                                <?php if ( $show_extra_controls ) : ?>
-                                <span class="typeahead__button">
-                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>" <?php echo esc_html( $disabled ); ?>>
-                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                    </button>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php $value = array_map(function ( $value ) {
+                    return [
+                        'id' => $value,
+                        'label' => $value,
+                    ];
+                }, $post[$field_key] ?? []);
+                ?>
+                <dt-tags
+                    <?php echo wp_kses_post( $shared_attributes ) ?>
+                    value="<?php echo esc_attr( json_encode( $value ) ) ?>"
+                    placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                    allowAdd
+                >
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-tags>
             <?php elseif ( $field_type === 'multi_select' ) :
                 if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ){
                     ?>

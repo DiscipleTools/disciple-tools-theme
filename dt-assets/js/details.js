@@ -1135,7 +1135,7 @@ jQuery(document).ready(function($) {
 
       if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
 
-        if ( field_options.only_for_types && ( field_options.only_for_types === true || field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
+        if ( field_options.only_for_types && ( field_options.only_for_types !== true || field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
           return
         }
         let field_value = window.lodash.get( post, field_key, false )
@@ -1403,7 +1403,8 @@ jQuery(document).ready(function($) {
       window.detailsSettings.post_type,
       window.detailsSettings.post_id,
       wpApiShare.nonce);
-    service.enableAutoSave();
+    service.initialize();
+    window.componentService = service;
   }
 })
 

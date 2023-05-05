@@ -196,7 +196,7 @@ function dt_display_tile( $tile, $post ): bool {
                             //setup the order of the tile fields
                             $order = $tiles['details']['order'] ?? [];
                             foreach ( $post_settings['fields'] as $key => $option ){
-                                if ( isset( $option['tile'] ) && $option['tile'] === 'details' && $option['type'] === 'communication_channel' ){
+                                if ( isset( $option['tile'] ) && $option['tile'] === 'details' && ( $option['type'] === 'communication_channel' || $key === 'name' ) ){
                                     if ( !in_array( $key, $order ) ){
                                         $order[] = $key;
                                     }
@@ -208,7 +208,7 @@ function dt_display_tile( $tile, $post ): bool {
                                 }
 
                                 $field = $post_settings['fields'][$field_key];
-                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' ){
+                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' && ( $field['type'] === 'communication_channel' || $field_key === 'name' ) ){
                                     ?>
                                     <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                         <?php dt_render_field_icon( $field, 'dt-icon', true ); ?>
@@ -241,7 +241,7 @@ function dt_display_tile( $tile, $post ): bool {
                                     continue;
                                 }
 
-                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' ){
+                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' && $field['type'] !== 'communication_channel' && $field_key !== 'name' ){
                                     ?>
                                         <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                             <?php dt_render_field_icon( $field, 'dt-icon', true ); ?>

@@ -106,6 +106,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
                 'post_type_settings' => $post_settings,
                 'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
+                'default_tiles' => self::get_default_tiles( $post_type ),
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
                 'translations' => apply_filters( 'dt_list_js_translations', $translations ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
@@ -121,7 +122,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function content() {
-
         $this->load_overlay_modal();
         self::template( 'begin', 1 );
             $this->space_between_div_open();
@@ -144,6 +144,19 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $all_post_types[$key] = DT_Posts::get_label_for_post_type( $key );
         }
         return $all_post_types;
+    }
+
+    public static function get_default_tiles( $post_type ) {
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $default_tiles = [];
+        foreach ( $default_fields as $field ) {
+            foreach ( $field as $field_key => $field_value ) {
+                if ( $field_key === 'tile' && !in_array( $field_value, $default_tiles ) ) {
+                    $default_tiles[] = $field_value;
+                }
+            }
+        }
+        return $default_tiles;
     }
 
     public static function load_overlay_modal() {
@@ -363,12 +376,16 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         </span>
                         <span class="edit-icon"></span>
                     </div>
-                    <!-- END TILE -->
                     <div class="tile-rundown-elements" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" style="display: none;">
                         <!-- START TOGGLED FIELD ITEMS -->
-                        <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                        <?php
+                        // If there is a custom field order, show fields in order
+                        if ( isset( $tile_value['order'] ) ) {
+                            $post_tiles['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_tiles['fields'] );
+                        }
+                        foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                             <?php if ( self::field_option_in_tile( $field_key, $tile_key ) ) : ?>
-                                <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>">
+                                <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
                                     <div class="field-settings-table-field-name" id="<?php echo esc_attr( $field_key ); ?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
@@ -402,7 +419,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         $option_key = $v['default'];
                                                     }
                                                     ?>
-                                                    <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>">
+                                                    <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
                                                         <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" ><?php echo esc_html( $label ); ?></span>
                                                         <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
@@ -428,6 +445,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         </div>
                     </div>
                 </div>
+                <!-- END TILE -->
                 <?php endif; ?>
             <?php endforeach; ?>
             <!-- START UNTILED FIELDS -->
@@ -438,7 +456,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <span id="tile-key-untiled" style="vertical-align: sub;">
                         <?php echo esc_html_e( 'No Tile / Hidden', 'disciple-tools' ); ?>
                     </span>
-                    <span class="edit-icon"></span>
                 </div>
                 <div class="tile-rundown-elements" data-parent-tile-key="no-tile-hidden" style="display: none;">
                     <?php foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
