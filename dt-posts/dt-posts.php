@@ -1055,7 +1055,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $post['value'] = '0';
                 }
                 $updated_posts[] = $post;
-            } elseif ( $group_by_field_type === 'connection' ) {
+            } elseif ( $group_by_field_type === 'connection' ){
                 $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
                 if ( !empty( $p2p_post_type ) ){
                     $wp_post = get_post( $post['value'] );
@@ -1064,6 +1064,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                         $updated_posts[] = $post;
                     }
                 }
+            } elseif ( $post['value'] === 'NULL' ){
+                $post['label'] = __( 'None Set', 'disciple_tools' );
+                $updated_posts[] = $post;
             } else {
                 $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
                 $updated_posts[] = $post;
