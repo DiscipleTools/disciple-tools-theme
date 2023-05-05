@@ -1048,13 +1048,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
                 $updated_posts[] = $post;
             } elseif ( $group_by_field_type == 'user_select' ){
-                $user_contact_id = Disciple_Tools_Users::get_contact_for_user( substr( $post['value'], 5 ) );
-                if ( is_int( $user_contact_id ) ){
-                    $user_contact = DT_Posts::get_post( 'contacts', $user_contact_id );
-                    $post['label'] = $user_contact['name'] ?? $post['value'];
-                } else {
-                    $post['label'] = $post['value'];
-                }
+                $user_id = dt_get_user_id_from_assigned_to( $post['value'] );
+                $post['label'] = dt_get_user_display_name( $user_id ) ?: $post['value'];
+                $post['value'] = $user_id;
                 $updated_posts[] = $post;
             } elseif ( $group_by_field_type == 'boolean' ){
                 $post['label'] = $post['value'] ? _x( 'True', 'disciple_tools' ) : _x( 'False', 'disciple_tools' );
@@ -1065,9 +1061,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             } elseif ( $group_by_field_type === 'connection' ) {
                 $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
                 if ( !empty( $p2p_post_type ) ){
-                    $p2p_post = DT_Posts::get_post( $p2p_post_type, $post['value'], true, false );
-                    if ( !is_wp_error( $p2p_post ) ){
-                        $post['label'] = $p2p_post['title'] ?? $post['label'];
+                    $wp_post = get_post( $post['value'] );
+                    if ( !is_wp_error( $wp_post ) ){
+                        $post['label'] = $wp_post->post_title ?? $post['label'];
                         $updated_posts[] = $post;
                     }
                 }
