@@ -227,12 +227,11 @@ dt_please_log_in();
                         </button>
                     </div>
                     <div class="section-body">
-                        <br>
                         <table>
                             <tbody style="border: none;">
                             <tr style="border: none;">
-                                <td>
-                                    <select id="split_by_current_filter_select">
+                                <td style="padding:0">
+                                    <select id="split_by_current_filter_select" style="margin-bottom: 0">
                                         <option value="" disabled selected><?php echo esc_html( _x( 'select split by field', 'disciple_tools' ) ) ?></option>
                                         <?php
                                         $split_by_fields = [];
@@ -263,7 +262,7 @@ dt_please_log_in();
                                     </select>
                                 </td>
                                 <td>
-                                    <button id="split_by_current_filter_button" class="button"><?php echo esc_html( _x( 'Go', 'disciple_tools' ) ) ?></button>
+                                    <button id="split_by_current_filter_button" class="button loader" style='margin-bottom: 0'><?php echo esc_html( _x( 'Go', 'disciple_tools' ) ) ?></button>
                                 </td>
                             </tr>
                             </tbody>
@@ -280,7 +279,7 @@ dt_please_log_in();
                                 </div>
                             </li>
                         </ul>
-                        <span id="split_by_current_filter_no_results_msg" style="display: none;"><?php echo esc_attr( _x( 'No Summary Results Found', 'disciple_tools' ) ) ?></span>
+                        <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
                     </div>
                 </div>
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
