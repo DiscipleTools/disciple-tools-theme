@@ -119,6 +119,11 @@ jQuery(document).ready(function($) {
         field_option_key: field_option_key,
     }, `dt-admin-settings/`);
 
+    window.API.check_field_key_is_available = (post_type, field_name) => makeRequest("POST", `check-field-key-is-available`, {
+        post_type: post_type,
+        field_name: field_name,
+    }, `dt-admin-settings/`);
+
     function autonavigate_to_menu() {
         var tile_key = get_tile_from_uri();
         var field_key = get_field_from_uri();
@@ -690,10 +695,18 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="tile_label"><b>New Field Name</b></label>
+                    <label for="new-field-name"><b>New Field Name</b></label>
                 </td>
                 <td>
-                    <input name="edit-tile-label" id="new-field-name-${tile_key}" type="text" value="" required>
+                    <input name="new-field-name" id="new-field-name" type="text" value="" required>
+                </td>
+                <td class="spinner-box">
+                    <span style="" class="loading-spinner"></span>
+                </td>
+            </tr>
+            <tr id="field-exists-message" style="display:none;">
+                <td colspan="2" class="error-message">
+                    Field already exists
                 </td>
             </tr>
             <tr>
@@ -701,7 +714,7 @@ jQuery(document).ready(function($) {
                     <label for="tile_label"><b>Field Type</b></label>
                 </td>
                 <td>
-                    <select id="new-field-type-${tile_key}" name="new-field-type" required>
+                    <select id="new-field-type" name="new-field-type" required>
                         <option value="key_select">Dropdown</option>
                         <option value="multi_select">Multi Select</option>
                         <option value="tags">Tags</option>
@@ -752,7 +765,7 @@ jQuery(document).ready(function($) {
                     <label for="new_tile_name"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="new_field_private" id="new-field-private-${tile_key}" type="checkbox">
+                    <input name="new_field_private" id="new-field-private" type="checkbox">
                 </td>
             </tr>
             <tr>
@@ -1151,9 +1164,9 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-add-field', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
-        var new_field_name = $(`#new-field-name-${tile_key}`).val();
-        var new_field_type = $(`#new-field-type-${tile_key}`).val();
-        var new_field_private = $(`#new-field-private-${tile_key}`).is(':checked');
+        var new_field_name = $(`#new-field-name`).val();
+        var new_field_type = $(`#new-field-type`).val();
+        var new_field_private = $(`#new-field-private`).is(':checked');
         var connection_target = $('#connection-field-target').val();
         var multidirectional = $('#multidirectional_checkbox').is(':checked');
         var other_field_name = $('#other_field_name').val();
@@ -1602,6 +1615,28 @@ jQuery(document).ready(function($) {
             var selected_field_target_label = window.field_settings.all_post_types[selected_field_target];
             $('.connected_post_type').text(selected_field_target_label);
         }
+    });
+
+    $('.dt-admin-modal-box').on('input', '#new-field-name', function() {
+        $('.loading-spinner').addClass('active');
+        var post_type = get_post_type();
+        var field_name = $(this).val();
+        if ( field_name.length == 0 ) {
+            $('#field-exists-message').hide();
+            $('#js-add-field').prop('disabled', false);
+            $('.loading-spinner').removeClass('active');
+            return;
+        }
+        API.check_field_key_is_available( post_type, field_name ).promise().then(function(available) {
+            if (!available) {
+                $('#field-exists-message').show();
+                $('#js-add-field').prop('disabled', true);
+            } else {
+                $('#field-exists-message').hide();
+                $('#js-add-field').prop('disabled', false);
+            }
+            $('.loading-spinner').removeClass('active');
+        });
     });
 
     $.typeahead({

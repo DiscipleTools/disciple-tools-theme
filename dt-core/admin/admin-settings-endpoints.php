@@ -167,6 +167,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/check-field-key-is-available', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'check_field_key_is_available' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
     }
 
     public static function get_post_fields() {
@@ -839,6 +847,24 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             return $default_label;
         }
         return false;
+    }
+
+    public static function check_field_key_is_available( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['post_type'] ) && !empty( $params['post_type'] ) ) {
+            if ( isset( $params['field_name'] ) && !empty( $params['field_name'] )  ) {
+                $post_type = sanitize_text_Field( wp_unslash( $params['post_type'] ) );
+                $field_name = sanitize_text_field( wp_unslash( $params['field_name'] ) );
+                $field_key = dt_create_field_key( $field_name );
+                $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
+                if ( isset( $post_fields[$field_key] ) ) {
+                    return false;
+                }
+                return true;
+            }
+        }
+        return new WP_Error( __FUNCTION__, 'Parameters missing', [ 'status' => 422 ] );
+
     }
 
     public static function edit_field( WP_REST_Request $request ) {
