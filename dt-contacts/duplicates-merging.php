@@ -411,7 +411,7 @@ class DT_Duplicate_Checker_And_Merging {
             if ( $field_type === 'user_select' && empty( $primary_post[ $key ] ) && isset( $fields['id'] ) ) {
                 unset( $update[ $key ] );
                 if ( user_can( $fields['id'], 'access_' . $post_type ) ){
-                    $update[ $key ] = $fields;
+                    $update[ $key ] = $fields['assigned-to'];
                 }
             }
 

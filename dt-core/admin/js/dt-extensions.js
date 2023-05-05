@@ -226,7 +226,12 @@ jQuery(function($){
 
     function plugin_install(plugin_slug) {
         var download_url = get_plugin_download_url(plugin_slug);
-        window.API.plugin_install(download_url).promise().then(function() {
+        window.API.plugin_install(download_url).promise()
+        .then(function(response) {
+            if ( !response ) {
+                display_error_message(plugin_slug);
+                return;
+            }
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="activate" data-plugin-slug="${plugin_slug}">Activate</button>
@@ -240,7 +245,12 @@ jQuery(function($){
     }
 
     function plugin_delete(plugin_slug) {
-        window.API.plugin_delete(plugin_slug).promise().then(function() {
+        window.API.plugin_delete(plugin_slug).promise()
+        .then(function(response) {
+            if ( !response ) {
+                display_error_message(plugin_slug);
+                return;
+            }
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="install" data-plugin-slug="${plugin_slug}">Install</button>
@@ -251,7 +261,12 @@ jQuery(function($){
     }
 
     function plugin_activate(plugin_slug) {
-        window.API.plugin_activate(plugin_slug).promise().then(function() {
+        window.API.plugin_activate(plugin_slug).promise()
+        .then(function(response) {
+            if ( !response ) {
+                display_error_message(plugin_slug);
+                return;
+            }
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="deactivate" data-plugin-slug="${plugin_slug}">Deactivate</button>
@@ -262,7 +277,12 @@ jQuery(function($){
     }
     function plugin_deactivate(plugin_slug) {
         let can_install_plugins = window.plugins.can_install_plugins;
-        window.API.plugin_deactivate(plugin_slug).promise().then(function() {
+        window.API.plugin_deactivate(plugin_slug).promise()
+        .then(function(response) {
+            if ( !response ) {
+                display_error_message(plugin_slug);
+                return;
+            }
             $(`.plugin-card[data-slug="${plugin_slug}"] > .card-front > .action-links > .plugin-action-buttons`).html(`
             <li>
                 <button class="button" data-action="activate" data-plugin-slug="${plugin_slug}">Activate</button>
@@ -275,6 +295,13 @@ jQuery(function($){
             }
             $(`.plugin-card[data-slug="${plugin_slug}"]`).removeClass('flip-card');
         });
+        return;
+    }
+
+    function display_error_message(plugin_slug) {
+        var card_back = $(`.plugin-card[data-slug="${plugin_slug}"] > .card-back > .plugin-card-content-back`);
+        var error_message = window.plugins.translations['something_went_wrong'];
+        card_back.html(`<div class="error_message">${error_message}</div>`);
         return;
     }
 

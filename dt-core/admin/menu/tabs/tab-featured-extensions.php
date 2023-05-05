@@ -51,6 +51,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         'plugin_by' => __( 'By %s', 'disciple_tools' ),
                         'magic_links' => __( 'Magic Links', 'disciple_tools' ),
                         'laboratory' => __( 'Laboratory', 'disciple_tools' ),
+                        'something_went_wrong' => __( 'Something went wrong', 'disciple_tools' ),
                     ],
                 )
             );
@@ -131,6 +132,14 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 display: block;
                 margin: 10px auto;
             }
+            .error_message {
+                height: 120px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #e14d43;
+                font-style: italic;
+            }
             .dt-typeahead-extensions {
                 width: 100%;
                 padding: 0.5rem 0.75rem;
@@ -178,7 +187,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         // Page content goes here
 
         // Assign the 'current' class to the selected tab
-            $class_current_tab = '';
+        $class_current_tab = '';
         ?>
         <div>
             <p><?php esc_html_e( 'Plugins are ways of extending the Disciple.Tools system to meet the unique needs of your project, ministry, or movement.', 'disciple_tools' ); ?></p>
