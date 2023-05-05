@@ -852,7 +852,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function check_field_key_is_available( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['post_type'] ) && !empty( $params['post_type'] ) ) {
-            if ( isset( $params['field_name'] ) && !empty( $params['field_name'] )  ) {
+            if ( isset( $params['field_name'] ) && !empty( $params['field_name'] ) ) {
                 $post_type = sanitize_text_Field( wp_unslash( $params['post_type'] ) );
                 $field_name = sanitize_text_field( wp_unslash( $params['field_name'] ) );
                 $field_key = dt_create_field_key( $field_name );
