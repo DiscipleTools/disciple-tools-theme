@@ -983,16 +983,20 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !empty( $p2p_post_type ) ){
                 foreach ( $connections as $connection ){
                     $p2p_target = ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_to' : 'p2p_from';
-                    if ( !empty( $connection[$p2p_target] ) ){
+                    if ( empty( $connection['p2p_from'] ) && empty( $connection['p2p_to'] ) && empty( $connection['value'] ) ){
                         $initial_results[] = [
-                            'id' => $connection[$p2p_target],
-                            'value' => $connection[$p2p_target]
+                            'id' => null,
+                            'value' => null
                         ];
-                    }
-                    if ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
+                    }elseif ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
                         $initial_results[] = [
                             'id' => $connection['p2p_from'],
                             'value' => $connection['p2p_from']
+                        ];
+                    }elseif ( !empty( $connection[$p2p_target] ) ){
+                        $initial_results[] = [
+                            'id' => $connection[$p2p_target],
+                            'value' => $connection[$p2p_target]
                         ];
                     }
                 }
@@ -1037,7 +1041,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         $updated_posts = [];
         $geocoder = new Location_Grid_Geocoder();
         foreach ( $posts as $post ){
-            if ( $group_by_field_type == 'location' ){
+            if ( ( $post['value'] === 'NULL' ) || ( $post['value'] === null ) ){
+                $post['value'] = 'NULL';
+                $post['label'] = __( 'None Set', 'disciple_tools' );
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'location' ){
                 $grid = $geocoder->query_by_grid_id( $post['value'] );
                 $post['label'] = $grid['name'] ?? $post['value'];
                 $updated_posts[] = $post;
@@ -1064,9 +1072,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                         $updated_posts[] = $post;
                     }
                 }
-            } elseif ( $post['value'] === 'NULL' ){
-                $post['label'] = __( 'None Set', 'disciple_tools' );
-                $updated_posts[] = $post;
             } else {
                 $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
                 $updated_posts[] = $post;
