@@ -2649,52 +2649,56 @@
    */
 
   $("#split_by_current_filter_button").on("click", function () {
+    let field_id = $("#split_by_current_filter_select").val();
+    if ( !field_id ) {
+      return;
+    }
+    $(this).addClass('loading');
     let split_by_accordion = $(".split-by-current-filter-accordion");
     let split_by_results = $("#split_by_current_filter_results");
     let split_by_no_results_msg = $("#split_by_current_filter_no_results_msg");
-    let field_id = $("#split_by_current_filter_select").val();
 
     $(split_by_no_results_msg).fadeOut('fast');
 
-    if (field_id) {
-      $(split_by_results).slideUp('fast', function () {
-        let filters = (current_filter.query !== undefined) ? current_filter.query:[];
-        window.API.split_by(list_settings.post_type, field_id, filters).then(
-          function (response) {
-            let summary_displayed = false;
-            if (response && response.length > 0) {
-              let html = '';
-              $.each(response, function (idx, result) {
-                if (result['value']) {
-                  summary_displayed = true;
-                  let option_id = result['value'];
-                  let option_id_label = (result['label'] !== '') ? result['label'] : result['value'];
 
-                  html += `
-                      <label class="list-view">
-                        <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" data-field_option_label="${window.lodash.escape(option_id_label)}" autocomplete="off">
-                        <span>${window.lodash.escape(option_id_label)}</span>
-                        <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(option_id)}">${window.lodash.escape(result['count'])}</span>
-                      </label>
-                      `;
-                }
-              });
+    $(split_by_results).slideUp('fast', function () {
+      let filters = (current_filter.query !== undefined) ? current_filter.query:[];
+      window.API.split_by(list_settings.post_type, field_id, filters).then(
+        function (response) {
+          $('#split_by_current_filter_button').removeClass('loading');
+          let summary_displayed = false;
+          if (response && response.length > 0) {
+            let html = '';
+            $.each(response, function (idx, result) {
+              if (result['value']) {
+                summary_displayed = true;
+                let option_id = result['value'];
+                let option_id_label = (result['label'] !== '') ? result['label'] : result['value'];
 
-              $(split_by_accordion).slideDown('fast', function () {
-                $(split_by_results).html(html);
-                $(split_by_results).slideDown('fast');
-              });
-            }
+                html += `
+                    <label class="list-view">
+                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" data-field_option_label="${window.lodash.escape(option_id_label)}" autocomplete="off">
+                      <span>${window.lodash.escape(option_id_label)}</span>
+                      <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(option_id)}">${window.lodash.escape(result['count'])}</span>
+                    </label>
+                    `;
+              }
+            });
 
-            if (!summary_displayed) {
-              $(split_by_accordion).slideUp('fast', function () {
-                $(split_by_no_results_msg).fadeIn('fast');
-              });
-            }
+            $(split_by_accordion).slideDown('fast', function () {
+              $(split_by_results).html(html);
+              $(split_by_results).slideDown('fast');
+            });
           }
-        );
-      });
-    }
+
+          if (!summary_displayed) {
+            $(split_by_accordion).slideUp('fast', function () {
+              $(split_by_no_results_msg).fadeIn('fast');
+            });
+          }
+        }
+      );
+    });
   });
 
   $(document).on('change', '.js-list-view-split-by', () => {
