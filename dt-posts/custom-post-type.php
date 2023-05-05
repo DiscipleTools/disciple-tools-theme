@@ -27,7 +27,6 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
         add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
-        add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 5, 2 );
     }
 
     public function register_post_type(){
@@ -333,7 +332,7 @@ add_filter( 'dt_filter_access_permissions', function ( $permissions, $post_type 
         $permissions = [];
     }
     return $permissions;
-}, 10, 2 );
+}, 5, 2 );
 
 /**
  * Build default filter available on all post type list pages
