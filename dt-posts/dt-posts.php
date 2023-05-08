@@ -976,7 +976,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $group_by_join . "
                 WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
                 (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-                AND group_by.p2p_type IS NOT NULL
                 GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type"
             , ARRAY_A );
 
@@ -984,63 +983,69 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !empty( $p2p_post_type ) ){
                 foreach ( $connections as $connection ){
                     $p2p_target = ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_to' : 'p2p_from';
-                    if ( !empty( $connection[$p2p_target] ) ){
+                    if ( empty( $connection['p2p_from'] ) && empty( $connection['p2p_to'] ) && empty( $connection['value'] ) ){
+                        $initial_results[] = [
+                            'id' => null,
+                            'value' => null
+                        ];
+                    }elseif ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
+                        $initial_results[] = [
+                            'id' => $connection['p2p_from'],
+                            'value' => $connection['p2p_from']
+                        ];
+                    }elseif ( !empty( $connection[$p2p_target] ) ){
                         $initial_results[] = [
                             'id' => $connection[$p2p_target],
                             'value' => $connection[$p2p_target]
                         ];
                     }
-                    if ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
-                        $initial_results[] = [
-                            'id' => $connection['p2p_from'],
-                            'value' => $connection['p2p_from']
-                        ];
-                    }
                 }
+            }
+            // Reshape initial results findings.
+            $reshaped_results = [];
+            foreach ( $initial_results as $result ){
+                $reshaped_keys = $result['value'] ?? 'NULL';
+                if ( !isset( $reshaped_results[$reshaped_keys] ) ){
+                    $reshaped_results[$reshaped_keys] = [
+                        'value' => $reshaped_keys,
+                        'count' => 0
+                    ];
+                }
+                $reshaped_results[$reshaped_keys]['count']++;
+            }
+
+            // Now, reshape into required posts structure.
+            foreach ( $reshaped_results as $result ){
+                $posts[] = [
+                    'value' => $result['value'],
+                    'count' => $result['count']
+                ];
             }
         } else {
             $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
 
             // phpcs:disable
             // WordPress.WP.PreparedSQL.NotPrepared
-            $initial_results = $wpdb->get_results(
-                "SELECT summary.id, summary.value FROM (SELECT p.ID as id, group_by.meta_value as value
+            $posts = $wpdb->get_results( "
+                SELECT COUNT( DISTINCT( p.ID) ) as count, group_by.meta_value as value
                 FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
-                $group_by_join . "
-                WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
-                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-                AND group_by.meta_value IS NOT NULL
-                GROUP BY p.ID, group_by.meta_value ) AS summary"
+                    $group_by_join . '
+                WHERE ' . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . '
+                GROUP BY group_by.meta_value'
             , ARRAY_A );
-        }
-
-        // Reshape initial results findings.
-        $reshaped_results = [];
-        foreach ( $initial_results as $result ){
-            if ( !empty( $result['value'] ) ){
-                if ( !isset( $reshaped_results[$result['value']] ) ){
-                    $reshaped_results[$result['value']] = [
-                        'value' => $result['value'],
-                        'count' => 0
-                    ];
-                }
-                $reshaped_results[$result['value']]['count']++;
-            }
-        }
-
-        // Now, reshape into required posts structure.
-        foreach ( $reshaped_results as $result ){
-            $posts[] = [
-                'value' => $result['value'],
-                'count' => $result['count']
-            ];
+            // phpcs:enable
         }
 
         // Determine appropriate labels to be used.
         $updated_posts = [];
         $geocoder = new Location_Grid_Geocoder();
         foreach ( $posts as $post ){
-            if ( $group_by_field_type == 'location' ){
+            if ( ( $post['value'] === 'NULL' ) || ( $post['value'] === null ) ){
+                $post['value'] = 'NULL';
+                $post['label'] = __( 'None Set', 'disciple_tools' );
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'location' ){
                 $grid = $geocoder->query_by_grid_id( $post['value'] );
                 $post['label'] = $grid['name'] ?? $post['value'];
                 $updated_posts[] = $post;
@@ -1058,7 +1063,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $post['value'] = '0';
                 }
                 $updated_posts[] = $post;
-            } elseif ( $group_by_field_type === 'connection' ) {
+            } elseif ( $group_by_field_type === 'connection' ){
                 $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
                 if ( !empty( $p2p_post_type ) ){
                     $wp_post = get_post( $post['value'] );
