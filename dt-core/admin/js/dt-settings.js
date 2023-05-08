@@ -179,9 +179,9 @@ jQuery(document).ready(function($) {
                     sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
                 });
                 API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
-                    var old_order = window.field_settings.post_type_settings.fields[field_key].default;
+                    var old_order = window['field_settings']['post_type_settings']['fields'][field_key]['default'];
                     field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
-                    window.field_settings.post_type_settings.fields[field_key].default = field_options_in_new_order;
+                    window['field_settings']['post_type_settings']['fields'][field_key]['default'] = field_options_in_new_order;
 
                     tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
                     show_preview_tile(tile_key);
@@ -1201,7 +1201,7 @@ jQuery(document).ready(function($) {
                 <div class="field-settings-table-child-toggle">
                     <div class="field-settings-table-field-option">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
-                        <span class="field-name-content"><i>default blank</i></span>
+                        <span class="field-name-content">default blank</span>
                     </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
@@ -1291,11 +1291,11 @@ jQuery(document).ready(function($) {
         var field_option_icon = $('#edit-field-icon').val();
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'].push( new_field_option_key = {
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
                 label:field_option_name,
                 description:field_option_description,
                 icon:field_option_icon,
-            });
+            };
 
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
