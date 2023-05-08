@@ -485,7 +485,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public static function field_is_customizable( $post_type, $field_key ) {
         $post_tiles = DT_Posts::get_post_settings( $post_type, true );
-        if ( isset( $post_tiles['fields'][$field_key]['customizable'] ) && !is_null( $post_tiles['fields'][$field_key]['customizable'] ) ) {
+        if ( isset( $post_tiles['fields'][$field_key]['customizable'] ) && $post_tiles['fields'][$field_key]['customizable'] === false ) {
             return false;
         }
         return true;

@@ -317,7 +317,7 @@ jQuery(document).ready(function($) {
             }
         });
 
-        var field_order = window['field_settings']['post_type_settings']['tiles'][tile_key]['order'];
+        var field_order = window['field_settings']['post_type_tiles'][tile_key]['order'];
         if (field_order) {
             fields = field_order;
         }
