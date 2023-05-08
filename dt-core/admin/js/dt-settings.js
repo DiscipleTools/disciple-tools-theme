@@ -119,11 +119,6 @@ jQuery(document).ready(function($) {
         field_option_key: field_option_key,
     }, `dt-admin-settings/`);
 
-    window.API.check_field_key_is_available = (post_type, field_name) => makeRequest("POST", `check-field-key-is-available`, {
-        post_type: post_type,
-        field_name: field_name,
-    }, `dt-admin-settings/`);
-
     function autonavigate_to_menu() {
         var tile_key = get_tile_from_uri();
         var field_key = get_field_from_uri();
@@ -701,7 +696,7 @@ jQuery(document).ready(function($) {
                     <input name="new-field-name" id="new-field-name" type="text" value="" required>
                 </td>
                 <td class="spinner-box">
-                    <span style="" class="loading-spinner"></span>
+                    <span class="loading-spinner"></span>
                 </td>
             </tr>
             <tr id="field-exists-message" style="display:none;">
@@ -1619,7 +1614,6 @@ jQuery(document).ready(function($) {
 
     $('.dt-admin-modal-box').on('input', '#new-field-name', function() {
         $('.loading-spinner').addClass('active');
-        var post_type = get_post_type();
         var field_name = $(this).val();
         if ( field_name.length == 0 ) {
             $('#field-exists-message').hide();
@@ -1627,16 +1621,16 @@ jQuery(document).ready(function($) {
             $('.loading-spinner').removeClass('active');
             return;
         }
-        API.check_field_key_is_available( post_type, field_name ).promise().then(function(available) {
-            if (!available) {
-                $('#field-exists-message').show();
-                $('#js-add-field').prop('disabled', true);
-            } else {
-                $('#field-exists-message').hide();
-                $('#js-add-field').prop('disabled', false);
-            }
-            $('.loading-spinner').removeClass('active');
-        });
+        var field_key = field_name.toLowerCase().replace(' ', '_');
+
+        if (window.field_settings.post_type_settings.fields[field_key]) {
+            $('#field-exists-message').show();
+            $('#js-add-field').prop('disabled', true);
+        } else {
+            $('#field-exists-message').hide();
+            $('#js-add-field').prop('disabled', false);
+        }
+        $('.loading-spinner').removeClass('active');
     });
 
     $.typeahead({
