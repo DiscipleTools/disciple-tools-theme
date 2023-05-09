@@ -807,6 +807,8 @@
               values = [window.lodash.escape(field_value)]
             } else if (field_settings.type === 'date') {
               values = [window.lodash.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
+            } else if (field_settings.type === 'datetime') {
+              values = [window.lodash.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp, true))]
             } else if (field_settings.type === 'user_select') {
               values = [window.lodash.escape(field_value.display)]
             } else if (field_settings.type === 'key_select') {
@@ -1159,7 +1161,7 @@
 
     // Adjust accordingly, by field type
     if (window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta', 'key_select'], field_type) ||
-      !window.lodash.includes(['date', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
+      !window.lodash.includes(['date', 'datetime', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
 
       // Start adjustment of sarch query filters
       let adjusted_filters = window.lodash.map(filters, function (value) {

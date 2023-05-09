@@ -815,30 +815,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <?php endif; ?>
 
-        <?php if ( $field['type'] === 'date' ) : ?>
-
-            <?php
-                $custom_fields = dt_get_option( 'dt_field_customizations' );
-                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
-            ?>
-
-            <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
-            <table id="date_options">
-                <tr>
-                    <td style="vertical-align: middle">
-                        <?php esc_html_e( 'Enable Time picker', 'disciple_tools' ) ?>
-                    </td>
-                    <td>
-                        <input type="checkbox" name="enable_time_picker" <?php echo isset( $custom_field['enable_time_picker'] ) && $custom_field['enable_time_picker'] === 'on' ? 'checked' : '' ?> />
-                    </td>
-                </tr>
-            </table>
-
-            <br>
-            <button type="submit" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
-
-        <?php endif; ?>
-
         <?php if ( $field['type'] === 'key_select' || $field['type'] === 'multi_select' || $field['type'] === 'link' ){
             if ( in_array( $field_key, $core_fields ) ){
                 ?>
@@ -1245,13 +1221,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $custom_field['max_option'] = $post_submission['max_option'];
                 }
             }
-            if ( $field['type'] === 'date' ) {
-                if ( isset( $post_submission['enable_time_picker'] ) ) {
-                    $custom_field['enable_time_picker'] = $post_submission['enable_time_picker'];
-                } else {
-                    $custom_field['enable_time_picker'] = 'off';
-                }
-            }
 
             // key_select and multi_options
             if ( isset( $post_fields[$field_key]['default'] ) && ( $field['type'] === 'multi_select' || $field['type'] === 'key_select' || $field['type'] === 'link' ) ){
@@ -1427,6 +1396,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="number"><?php esc_html_e( 'Number', 'disciple_tools' ) ?></option>
                             <option value="link"><?php esc_html_e( 'Link', 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( 'Date', 'disciple_tools' ) ?></option>
+                            <option value="datetime"><?php esc_html_e( 'DateTime', 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( 'Connection', 'disciple_tools' ) ?></option>
                         </select>
                     </td>
@@ -1622,6 +1592,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'date',
+                    'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'datetime' ){
+                $new_field = [
+                    'name'        => $post_submission['new_field_name'],
+                    'type'        => 'datetime',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',

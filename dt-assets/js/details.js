@@ -138,9 +138,37 @@ jQuery(document).ready(function($) {
     })
   })
 
-  $('.dt_date_time_group').each(setTimePickers)
+  $('.dt_date_group .dt_date_picker').datepicker({
+    constrainInput: false,
+    dateFormat: 'yy-mm-dd',
+    onClose: function (date) {
+      date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
 
-  function setTimePickers() {
+      if (!$(this).val()) {
+        date = " ";//null;
+      }
+
+      let id = $(this).attr('id')
+      $(`#${id}-spinner`).addClass('active')
+      rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
+        $(`#${id}-spinner`).removeClass('active')
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, );
+        }
+        $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+      }).catch(handleAjaxError)
+    },
+    changeMonth: true,
+    changeYear: true,
+    yearRange: "1900:2050",
+  }).each(function() {
+    if (this.value && moment.unix(this.value).isValid()) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+    }
+  })
+
+
+  $('.dt_date_time_group').each(function setTimePickers() {
     const timestamp = this.dataset.timestamp
 
     const timePicker = $(this).children('.dt_time_picker')
@@ -148,14 +176,14 @@ jQuery(document).ready(function($) {
     if ( timePicker ) {
       timePicker.val(toTimeInputFormat(timestamp))
     }
-  }
+  })
 
   function toTimeInputFormat(timestamp) {
       const date = moment( Number(timestamp) * 1000 )
       return date.format('HH:mm')
   }
 
-  $('.dt_date_picker').datepicker({
+  $('.dt_date_time_group .dt_date_picker').datepicker({
     constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
@@ -182,7 +210,7 @@ jQuery(document).ready(function($) {
       rest_api.update_post( post_type, post_id, { [id]: updatedTimestamp }).then((resp)=>{
         $(`#${id}-spinner`).removeClass('active')
         if (this.value) {
-          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, );
         }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(handleAjaxError)
@@ -211,7 +239,7 @@ jQuery(document).ready(function($) {
     $(`#${fieldId}-spinner`).addClass('active')
     rest_api.update_post( post_type, post_id, { [fieldId]: updatedTimestamp }).then((resp)=>{
       $(`#${fieldId}-spinner`).removeClass('active')
-      //$( document ).trigger( "dt_date_picker-updated", [ resp, fieldId, date ] );
+      $( document ).trigger( "dt_date_picker-updated", [ resp, fieldId, date ] );
     }).catch(handleAjaxError)
 
   })
