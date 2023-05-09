@@ -210,7 +210,7 @@ jQuery(document).ready(function($) {
       rest_api.update_post( post_type, post_id, { [id]: updatedTimestamp }).then((resp)=>{
         $(`#${id}-spinner`).removeClass('active')
         if (this.value) {
-          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, );
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, true);
         }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(handleAjaxError)
@@ -220,7 +220,7 @@ jQuery(document).ready(function($) {
     yearRange: "1900:2050",
   }).each(function() {
     if (this.value && moment.unix(this.value).isValid()) {
-      this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value, false, false, true);
     }
   })
 

@@ -635,7 +635,7 @@ window.SHAREDFUNCTIONS = {
     const int_format = new Intl.DateTimeFormat(langcode, {month:format}).format;
     return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month, 1))));
   },
-  formatDate(date, with_time = false, short_month = false) {
+  formatDate(date, with_time = false, short_month = false, local_timezone = false) {
     let langcode = window.SHAREDFUNCTIONS.get_langcode();
     if (langcode === "fa-IR") {
       //This is a check so that we use the gergorian (Western) calendar if the users locale is Farsi. This is the calendar used primarily by Farsi speakers outside of Iran, and is easily understood by those inside.
@@ -645,7 +645,8 @@ window.SHAREDFUNCTIONS = {
     if (with_time) {
       options.hour = "numeric";
       options.minute = "numeric";
-    } else {
+    }
+    if (!(with_time || local_timezone)) {
       options.timeZone = "UTC";
     }
     if (short_month) {
