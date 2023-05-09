@@ -22,7 +22,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     );
 
     public static function get_post_types(){
-        return apply_filters( 'dt_registered_post_types', [] );
+        return array_unique( apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] ) );
     }
 
     /**
@@ -32,14 +32,14 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function get_post_settings( string $post_type, $return_cache = true ){
+    public static function get_post_settings( string $post_type, $return_cache = true, $load_tags = false ){
         $cached = wp_cache_get( $post_type . '_post_type_settings' );
         if ( $return_cache && $cached ){
             return $cached;
         }
         $settings = [];
         $settings['tiles'] = self::get_post_tiles( $post_type );
-        $settings = apply_filters( 'dt_get_post_type_settings', $settings, $post_type );
+        $settings = apply_filters( 'dt_get_post_type_settings', $settings, $post_type, $return_cache, $load_tags );
         wp_cache_set( $post_type . '_post_type_settings', $settings );
         return $settings;
     }
@@ -70,10 +70,15 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //check to see if we want to create this contact.
         //could be used to check for duplicates first
-        $continue = apply_filters( 'dt_create_post_check_proceed', true, $fields );
+        $continue = apply_filters( 'dt_create_post_check_proceed', true, $fields, $post_type );
+        if ( is_wp_error( $continue ) ){
+            return $continue;
+        }
         if ( !$continue ){
             return new WP_Error( __FUNCTION__, 'Could not create this post. Maybe it already exists', [ 'status' => 409 ] );
         }
+
+        $args = apply_filters( 'dt_create_post_args', $args, $post_type, $fields );
 
         //if specified, check for actual duplicates.
         if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
@@ -89,26 +94,19 @@ class DT_Posts extends Disciple_Tools_Posts {
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'] );
 
-                //Avoid further duplication of pre-existing values.
-                $filtered_fields = [];
-                $duplicate_post   = self::get_post( $post_type, $duplicate_post_ids[0], false, false );
-                foreach ( $fields as $field_id => $value ) {
-                    if ( ! self::post_contains_field_value( $post_settings['fields'], $duplicate_post, $field_id, $value ) ) {
-                        $filtered_fields[ $field_id ] = $value;
-                    }
-                }
-
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post['ID'], $filtered_fields, $silent, false );
+                $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, false );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
                 //if update successful, comment and return.
                 $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
-                if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
-                    $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                if ( !$silent ){
+                    if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
+                        $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
+                    }
                 }
-                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false );
+                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false, $silent );
 
                 if ( $check_permissions && !self::can_view( $post_type, $updated_post['ID'] ) ){
                     return [ 'ID' => $updated_post['ID'] ];
@@ -246,7 +244,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
-            if ( $field_type === 'number' && (
+            if ( $field_type === 'number' && $field_value !== '' && (
                 isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
                 $field_value < $post_settings['fields'][$field_key]['min_option'] ||
                 isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
@@ -397,6 +395,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ){
             return new WP_Error( __FUNCTION__, "You do not have permission to update $post_type with ID $post_id", [ 'status' => 403 ] );
         }
+        //check to see if we want to update this record.
+        $continue = apply_filters( 'dt_update_post_check_proceed', true, $fields, $post_type );
+        if ( is_wp_error( $continue ) ){
+            return $continue;
+        }
+        if ( !$continue ){
+            return new WP_Error( __FUNCTION__, 'Could not update this post.', [ 'status' => 409 ] );
+        }
+
         $post_settings = self::get_post_settings( $post_type );
         $initial_fields = $fields;
         $post = get_post( $post_id );
@@ -448,6 +455,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     'meta_key'          => 'name',
                     'meta_value'        => $title,
                     'old_value'         => $existing_post['name'],
+                    'field_type' => $post_settings['fields']['name']['type'] ?? 'text' // Always default to text!
                 ] );
             }
             if ( isset( $fields['name'] ) ){
@@ -508,14 +516,14 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_value = strtotime( $field_value );
                 }
 
-                if ( $field_type === 'number' && (
+                if ( $field_type === 'number' && $field_value !== '' && (
                     isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
                     $field_value < $post_settings['fields'][$field_key]['min_option'] ||
                     isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
                     $field_value > $post_settings['fields'][$field_key]['max_option']
                     )
                 ) {
-                    return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
+                     return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
 
                 if ( $field_type === 'key_select' && !is_string( $field_value ) ){
@@ -652,7 +660,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        self::adjust_post_custom_fields( $post_type, $post_id, $fields, [], null, $all_post_user_meta[$post_id] ?? null );
+        self::adjust_post_custom_fields( $post_type, $post_id, $fields, [], null, $all_post_user_meta[ $post_id ] ?? null );
         $fields['name'] = wp_specialchars_decode( $wp_post->post_title );
         $fields['title'] = wp_specialchars_decode( $wp_post->post_title );
 
@@ -731,7 +739,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 FROM $wpdb->postmeta pm
                 WHERE pm.post_id IN ( $ids_sql )
                 AND pm.meta_key LIKE 'contact_%'
-        ", ARRAY_A);
+        ", ARRAY_A );
         $user_id = get_current_user_id();
         $all_user_meta = $wpdb->get_results( $wpdb->prepare( "
             SELECT *
@@ -751,7 +759,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $all_posts[$meta_row['post_id']][$meta_row['meta_key']][] = $meta_row['meta_value'];
         }
-        $all_post_user_meta =[];
+        $all_post_user_meta = [];
         foreach ( $all_user_meta as $index => $meta_row ){
             if ( !isset( $all_post_user_meta[$meta_row['post_id']] ) ) {
                 $all_post_user_meta[$meta_row['post_id']] = [];
@@ -763,8 +771,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         $site_url = site_url();
         foreach ( $records as  &$record ){
 
-            self::adjust_post_custom_fields( $post_type, $record['ID'], $record, $fields_to_return, $all_posts[$record['ID']] ?? [], $all_post_user_meta[$record['ID']] ?? [] );
-            $record['permalink'] = $site_url . '/' . $post_type .'/' . $record['ID'];
+            self::adjust_post_custom_fields( $post_type, $record['ID'], $record, $fields_to_return, $all_posts[ $record['ID'] ] ?? [], $all_post_user_meta[ $record['ID'] ] ?? [] );
+            $record['permalink'] = $site_url . '/' . $post_type . '/' . $record['ID'];
             $record['name'] = wp_specialchars_decode( $record['post_title'] );
             if ( !isset( $record['post_date']['timestamp'], $record['post_date']['formatted'] ) ){
                 $record['post_date'] = [
@@ -780,6 +788,307 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $data;
     }
 
+    /**
+     * Get a list of split by summaries for given field.
+     *
+     * @param string $post_type
+     * @param array $args
+     * @param bool $check_permissions
+     *
+     * @return array|WP_Error
+     */
+    public static function split_by( string $post_type, array $args, bool $check_permissions = true ){
+        if ( $check_permissions && !self::can_access( $post_type ) ){
+            return new WP_Error( __FUNCTION__, 'You do not have access to these', [ 'status' => 403 ] );
+        }
+        $post_types = self::get_post_types();
+        if ( !in_array( $post_type, $post_types ) ){
+            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
+        }
+
+        $field_key = $args['field_id'] ?? '';
+        if ( empty( $field_key ) ){
+            return new WP_Error( __FUNCTION__, 'Empty field id detected', [ 'status' => 400 ] );
+        }
+
+        $query = $args['filters'] ?? [];
+
+        //filter in to add or remove query parameters.
+        $query = apply_filters( 'dt_search_viewable_posts_query', $query );
+
+        global $wpdb;
+
+        $post_settings = self::get_post_settings( $post_type );
+        if ( !isset( $post_settings['fields'] ) || empty( $post_settings['fields'] ) ){
+            return new WP_Error( __FUNCTION__, "$post_type settings not yet loaded", [ 'status' => 400 ] );
+        }
+        $post_fields = $post_settings['fields'];
+
+        $search = '';
+        if ( isset( $query['text'] ) ){
+            $search = sanitize_text_field( $query['text'] );
+            unset( $query['text'] );
+        }
+        if ( isset( $query['offset'] ) ){
+            unset( $query['offset'] );
+        }
+        if ( isset( $query['limit'] ) ){
+            unset( $query['limit'] );
+        }
+        if ( isset( $query['sort'] ) ){
+            unset( $query['sort'] );
+        }
+        $fields_to_search = [];
+        if ( isset( $query['fields_to_search'] ) ){
+            $fields_to_search = $query['fields_to_search'];
+            unset( $query ['fields_to_search'] );
+        }
+        if ( isset( $query['combine'] ) ){
+            unset( $query['combine'] ); //remove deprecated combine
+        }
+        if ( isset( $query['fields'] ) ){
+            $query = $query['fields'];
+        }
+        if ( isset( $query['fields_to_return'] ) ){
+            unset( $query['fields_to_return'] );
+        }
+
+        $joins = '';
+        $post_query = '';
+
+        if ( !empty( $search ) ){
+
+            // Support wildcard searching between string tokens.
+            if ( !is_numeric( $search ) ){
+                $search = str_replace( ' ', '%', $search );
+            }
+
+            $other_search_fields = [];
+            if ( empty( $fields_to_search ) ){
+                $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
+                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
+                    OR p.ID IN ( SELECT post_id
+                                FROM $wpdb->postmeta
+                                WHERE meta_key LIKE 'contact_%'
+                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                    )
+                ";
+            }
+            if ( !empty( $fields_to_search ) ){
+                if ( in_array( 'name', $fields_to_search ) ){
+                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )";
+                } else {
+                    $post_query .= 'AND ( ';
+                }
+
+                if ( in_array( 'comms', $fields_to_search ) ){
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                        $post_query .= 'OR ';
+                    }
+
+                    $post_query .= "p.ID IN ( SELECT post_id
+                                    FROM $wpdb->postmeta
+                                    WHERE meta_key LIKE 'contact_%'
+                                    AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
+                        )
+                    ";
+                }
+
+                if ( in_array( 'all', $fields_to_search ) ){
+                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                        $post_query .= 'OR ';
+                    }
+                    $user_id = get_current_user_id();
+                    $post_query .= "p.ID IN ( SELECT comment_post_ID
+                    FROM $wpdb->comments
+                    WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) OR p.ID IN ( SELECT post_id
+                    FROM $wpdb->dt_post_user_meta
+                    WHERE user_id = $user_id
+                    AND meta_value LIKE '%" . esc_sql( $search ) . "%'
+                    ) ";
+                } else {
+                    if ( in_array( 'comment', $fields_to_search ) ){
+                        if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                            $post_query .= 'OR ';
+                        }
+                        $post_query .= " p.ID IN ( SELECT comment_post_ID
+                        FROM $wpdb->comments
+                        WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
+                        ) ";
+                    }
+                    foreach ( $fields_to_search as $field ){
+                        if ( $field !== 'comment' ){
+                            array_push( $other_search_fields, $field );
+                        }
+                    }
+                }
+            }
+            foreach ( $other_search_fields as $field ){
+                if ( substr( $post_query, -6 ) !== 'AND ( ' ){
+                    $post_query .= 'OR ';
+                }
+                $post_query .= "p.ID IN ( SELECT post_id
+                             FROM $wpdb->postmeta
+                             WHERE meta_key LIKE '" . esc_sql( $field ) . "'
+                             AND meta_value LIKE '%" . esc_sql( $search ) . "%'
+                ) ";
+            }
+            $post_query .= ' ) ';
+        }
+
+        $permissions = [
+            'shared_with' => [ 'me' ]
+        ];
+        $permissions = apply_filters( 'dt_filter_access_permissions', $permissions, $post_type );
+
+        if ( $check_permissions && !empty( $permissions ) ){
+            $query[] = $permissions;
+        }
+
+        $fields_sql = self::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $fields_sql ) ){
+            return $fields_sql;
+        }
+
+        $group_by_field_type = isset( $post_fields[$field_key]['type'] ) ? $post_fields[$field_key]['type'] : null;
+
+        $posts = [];
+        $initial_results = [];
+        if ( $group_by_field_type === 'connection' ){
+            $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
+            $p2p_key = $post_fields[$field_key]['p2p_key'] ?? '';
+            $p2p_direction = $post_fields[$field_key]['p2p_direction'] ?? '';
+
+            $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            if ( $p2p_direction === 'any' ){
+                $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON ( group_by.p2p_from = p.ID OR group_by.p2p_to = p.ID ) AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            }
+
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $connections = $wpdb->get_results( "
+                SELECT p.ID as id, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type as value
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
+                $group_by_join . "
+                WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
+                GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type"
+            , ARRAY_A );
+
+            // Collate records accordingly based on from/to id target.
+            if ( !empty( $p2p_post_type ) ){
+                foreach ( $connections as $connection ){
+                    $p2p_target = ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_to' : 'p2p_from';
+                    if ( empty( $connection['p2p_from'] ) && empty( $connection['p2p_to'] ) && empty( $connection['value'] ) ){
+                        $initial_results[] = [
+                            'id' => null,
+                            'value' => null
+                        ];
+                    }elseif ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
+                        $initial_results[] = [
+                            'id' => $connection['p2p_from'],
+                            'value' => $connection['p2p_from']
+                        ];
+                    }elseif ( !empty( $connection[$p2p_target] ) ){
+                        $initial_results[] = [
+                            'id' => $connection[$p2p_target],
+                            'value' => $connection[$p2p_target]
+                        ];
+                    }
+                }
+            }
+            // Reshape initial results findings.
+            $reshaped_results = [];
+            foreach ( $initial_results as $result ){
+                $reshaped_keys = $result['value'] ?? 'NULL';
+                if ( !isset( $reshaped_results[$reshaped_keys] ) ){
+                    $reshaped_results[$reshaped_keys] = [
+                        'value' => $reshaped_keys,
+                        'count' => 0
+                    ];
+                }
+                $reshaped_results[$reshaped_keys]['count']++;
+            }
+
+            // Now, reshape into required posts structure.
+            foreach ( $reshaped_results as $result ){
+                $posts[] = [
+                    'value' => $result['value'],
+                    'count' => $result['count']
+                ];
+            }
+        } else {
+            $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
+
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $posts = $wpdb->get_results( "
+                SELECT COUNT( DISTINCT( p.ID) ) as count, group_by.meta_value as value
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
+                    $group_by_join . '
+                WHERE ' . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . '
+                GROUP BY group_by.meta_value'
+            , ARRAY_A );
+            // phpcs:enable
+        }
+
+        // Determine appropriate labels to be used.
+        $updated_posts = [];
+        $geocoder = new Location_Grid_Geocoder();
+        foreach ( $posts as $post ){
+            if ( ( $post['value'] === 'NULL' ) || ( $post['value'] === null ) ){
+                $post['value'] = 'NULL';
+                $post['label'] = __( 'None Set', 'disciple_tools' );
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'location' ){
+                $grid = $geocoder->query_by_grid_id( $post['value'] );
+                $post['label'] = $grid['name'] ?? $post['value'];
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'location_meta' ){
+                $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'user_select' ){
+                $user_id = dt_get_user_id_from_assigned_to( $post['value'] );
+                $post['label'] = dt_get_user_display_name( $user_id ) ?: $post['value'];
+                $post['value'] = $user_id;
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'boolean' ){
+                $post['label'] = $post['value'] ? _x( 'True', 'disciple_tools' ) : _x( 'False', 'disciple_tools' );
+                if ( !$post['value'] && intval( $post['count'] ) > 0 ){
+                    $post['value'] = '0';
+                }
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type === 'connection' ){
+                $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
+                if ( !empty( $p2p_post_type ) ){
+                    $wp_post = get_post( $post['value'] );
+                    if ( !is_wp_error( $wp_post ) ){
+                        $post['label'] = $wp_post->post_title ?? $post['label'];
+                        $updated_posts[] = $post;
+                    }
+                }
+            } else {
+                $post['label'] = $post_fields[$field_key]['default'][$post['value']]['label'] ?? $post['value'];
+                $updated_posts[] = $post;
+            }
+        }
+
+        // Sort returning posts by count.
+        usort( $updated_posts, function ( $a, $b ){
+            if ( $a['count'] == $b['count'] ){
+                return 0;
+            }
+            return ( $a['count'] > $b['count'] ) ? -1 : 1;
+        } );
+
+        // Return split by summary based on specified limit.
+        return array_splice( $updated_posts, 0, 30 );
+    }
 
     /**
      * Get viewable in compact form
@@ -791,7 +1100,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error|WP_Query
      */
     public static function get_viewable_compact( string $post_type, string $search_string, array $args = [] ) {
-        if ( !self::can_access( $post_type ) ) {
+        if ( !self::can_access( $post_type ) && !self::can_list_all( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( 'You do not have access to these %s', $post_type ), [ 'status' => 403 ] );
         }
         global $wpdb;
@@ -812,6 +1121,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        /**
+         * Empty Search String
+         * Return the most recent posts viewed by the user
+         * and recently chosen value for this field
+         */
         $send_quick_results = false;
         if ( empty( $search_string ) ){
             $field_settings = self::get_post_field_settings( $post_type );
@@ -851,7 +1165,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         FROM $wpdb->dt_activity_log log
                         INNER JOIN (
                             SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
-                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND l.field_type = %s
+                            WHERE l.user_id = %s  AND l.action = %s AND l.object_type = %s AND l.meta_key = %s AND (l.field_type = %s OR l.object_note = %s)
                             group by l.object_id
                         ) x on log.histid = x.maxid
                     ORDER BY log.histid desc
@@ -860,10 +1174,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                     ON log.object_id = p.ID
                     WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
 
-                ", $current_user->ID, $action, $post_type, $field_settings[$args['field_key']]['p2p_key'], $field_type, $post_type ), OBJECT );
+                ", $current_user->ID, $action, $post_type, $field_settings[$args['field_key']]['p2p_key'], $field_type, $field_type, $post_type ), OBJECT );
 
                 $post_ids = array_map(
-                    function( $post ) { return (int) $post->ID; }, $posts
+                    function ( $post ) { return (int) $post->ID; }, $posts
                 );
                 foreach ( $posts_2 as $p ){
                     if ( !in_array( (int) $p->ID, $post_ids, true ) ){
@@ -876,12 +1190,19 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+
+        /**
+         * Use the search string to find connections
+         */
         if ( !$send_quick_results ){
             $query = [ 'limit' => 50 ];
             if ( !empty( $search_string ) ){
                 $query['name'] = [ $search_string ];
             }
-            $posts_list = self::search_viewable_post( $post_type, $query );
+            $query = apply_filters( 'dt_get_viewable_compact_search_query', $query, $post_type, $search_string, $args );
+            // if user can't list_all_, check permissions so they don't get access to things they shouldn't
+            $check_permissions = !self::can_list_all( $post_type );
+            $posts_list = self::search_viewable_post( $post_type, $query, $check_permissions );
             if ( is_wp_error( $posts_list ) ){
                 return $posts_list;
             }
@@ -912,12 +1233,15 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //add in user results when searching contacts.
         if ( $post_type === 'contacts' && !self::can_view_all( $post_type )
-            && !( isset( $args['include-users'] ) && $args['include-users'] === 'false' )
+             && ! ( isset( $args['include-users'] ) && $args['include-users'] === 'false' )
         ) {
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             $users_interacted_with = array_slice( $users_interacted_with, 0, 5 );
-            if ( $current_user ){
-                array_unshift( $users_interacted_with, [ 'name' => $current_user->display_name, 'ID' => $current_user->ID ] );
+            if ( $current_user && ( empty( $search_string ) || strpos( strtolower( $current_user->display_name ), strtolower( $search_string ) ) !== false ) ){
+                array_unshift( $users_interacted_with, [
+                    'name' => $current_user->display_name,
+                    'ID'   => $current_user->ID
+                ] );
             }
             foreach ( $users_interacted_with as $user ) {
                 $post_id = Disciple_Tools_Users::get_contact_for_user( $user['ID'] );
@@ -961,11 +1285,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 //place user records first, then sort by name.
                 uasort( $compact, function ( $a, $b ) use ( $search_string ) {
                     if ( isset( $a['user'] ) && !empty( $a['user'] ) ){
-                        return -3;
+                        return - 3;
                     } else if ( isset( $b['user'] ) && !empty( $b['user'] ) ){
                         return 2;
                     } elseif ( $a['name'] === $search_string ){
-                        return -2;
+                        return - 2;
                     } else if ( $b['name'] === $search_string ){
                         return 1;
                     } else {
@@ -987,10 +1311,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $label = $post->post_title;
                 }
                 foreach ( $compact as $index => &$p ){
-                    if ( $compact[$index]['ID'] === $post->ID ) {
-                        $compact[$index] = [
-                            'ID' => $post->ID,
-                            'name' => $post->post_title,
+                    if ( $compact[ $index ]['ID'] === $post->ID ) {
+                        $compact[ $index ] = [
+                            'ID'    => $post->ID,
+                            'name'  => $post->post_title,
                             'label' => $label
                             ];
                     }
@@ -1120,7 +1444,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( in_array( $update, [ 0, 1 ] ) ) {
             return $comment_id;
         } else if ( is_wp_error( $update ) ) {
-              return $update;
+             return $update;
         } else {
             return new WP_Error( __FUNCTION__, 'Error updating comment with id: ' . $comment_id, [ 'status' => 500 ] );
         }
@@ -1137,10 +1461,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         return wp_delete_comment( $comment_id );
     }
 
-    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, int $user_id, string $reaction ){
+    public static function toggle_post_comment_reaction( string $post_type, int $post_id, int $comment_id, string $reaction ){
         if ( !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
         }
+        $user_id = get_current_user_id();
         // If the reaction exists for this user, then delete it
         $reactions = get_comment_meta( $comment_id, $reaction );
         foreach ( $reactions as $reaction_user_id ) {
@@ -1270,20 +1595,25 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
         }
-        $post_settings = self::get_post_settings( $post_type );
-        $fields = $post_settings['fields'];
-        $hidden_fields = [];
-        foreach ( $fields as $field_key => $field ){
-            if ( isset( $field['hidden'] ) && $field['hidden'] === true ){
-                $hidden_fields[] = $field_key;
-            }
-        }
 
-        $hidden_keys = empty( $hidden_fields ) ? "''" : dt_array_to_sql( $hidden_fields );
-        // phpcs:disable
-        // WordPress.WP.PreparedSQL.NotPrepared
-        $activity = $wpdb->get_results( $wpdb->prepare(
-            "SELECT
+        // Follow the appropriate activity retrieval path....
+        if ( isset( $args['revert'] ) && $args['revert'] ){
+            return self::list_revert_post_activity_history( $post_type, $post_id, $args );
+        } else {
+            $post_settings = self::get_post_settings( $post_type );
+            $fields = $post_settings['fields'];
+            $hidden_fields = [];
+            foreach ( $fields as $field_key => $field ){
+                if ( isset( $field['hidden'] ) && $field['hidden'] === true ){
+                    $hidden_fields[] = $field_key;
+                }
+            }
+
+            $hidden_keys = empty( $hidden_fields ) ? "''" : dt_array_to_sql( $hidden_fields );
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $activity = $wpdb->get_results( $wpdb->prepare(
+                "SELECT
                 *
             FROM
                 `$wpdb->dt_activity_log`
@@ -1292,52 +1622,596 @@ class DT_Posts extends Disciple_Tools_Posts {
                 AND `object_id` = %s
                 AND meta_key NOT IN ( $hidden_keys )
             ORDER BY hist_time DESC",
+                $post_type,
+                $post_id
+            ) );
+            //@phpcs:enable
+            $activity_simple = [];
+            foreach ( $activity as $a ){
+                $a->object_note = self::format_activity_message( $a, $post_settings );
+                $a->object_note = sanitize_text_field( $a->object_note );
+                if ( isset( $a->user_id ) && $a->user_id > 0 ){
+                    $user = get_user_by( 'id', $a->user_id );
+                    if ( $user ){
+                        $a->name = $user->display_name;
+                        $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                    }
+                } else if ( isset( $a->user_caps ) && strlen( $a->user_caps ) === 32 ){
+                    //get site-link name
+                    $site_link = Site_Link_System::get_post_id_by_site_key( $a->user_caps );
+                    if ( $site_link ){
+                        $a->name = get_the_title( $site_link );
+                    }
+                } else if ( isset( $a->user_caps ) && $a->user_caps === 'magic_link' ){
+                    $a->name = __( 'Magic Link Submission', 'disciple_tools' );
+                } else if ( isset( $a->user_caps ) && $a->user_caps === 'activity_revert' ){
+                    $a->name = __( 'Revert Bot', 'disciple_tools' );
+                }
+                if ( !empty( $a->object_note ) ){
+                    $activity_obj = [
+                        'meta_key' => $a->meta_key,
+                        'gravatar' => isset( $a->gravatar ) ? $a->gravatar : '',
+                        'name' => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( 'D.T System', 'disciple_tools' ),
+                        'object_note' => $a->object_note,
+                        'hist_time' => $a->hist_time,
+                        'meta_id' => $a->meta_id,
+                        'histid' => $a->histid,
+                    ];
+
+                    $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
+                }
+            }
+
+            $paged = array_slice( $activity_simple, $args['offset'] ?? 0, $args['number'] ?? 1000 );
+            return [
+                'activity' => $paged,
+                'total' => sizeof( $activity_simple )
+            ];
+        }
+    }
+
+    /**
+     * @param string $post_type
+     * @param int $post_id
+     * @param array $args
+     *
+     * @return array|null|object|WP_Error
+     */
+    private static function list_revert_post_activity_history( string $post_type, int $post_id, array $args = [] ) {
+        global $wpdb;
+
+        // Determine key query parameters
+        $supported_actions         = ( ! empty( $args['actions'] ) ) ? $args['actions'] : [
+            'field_update',
+            'connected to',
+            'disconnected from'
+        ];
+        $supported_actions_sql     = dt_array_to_sql( $supported_actions );
+        $supported_field_types     = ( ! empty( $args['field_types'] ) ) ? $args['field_types'] : [
+            'connection',
+            'user_select',
+            'multi_select',
+            'tags',
+            'link',
+            'location',
+            'location_meta',
+            'key_select',
+            'date',
+            'boolean',
+            'communication_channel',
+            'text',
+            'textarea',
+            'number',
+            'connection to',
+            'connection from',
+            ''
+        ];
+        $supported_field_types_sql = dt_array_to_sql( $supported_field_types );
+        $ts_start                  = ( ! empty( $args['ts_start'] ) ) ? $args['ts_start'] : 0;
+        $ts_end                    = ( ! empty( $args['ts_end'] ) ) ? $args['ts_end'] : time();
+        $result_order              = esc_sql( ( ! empty( $args['result_order'] ) ) ? $args['result_order'] : 'DESC' );
+        $extra_meta                = ! empty( $args['extra_meta'] ) && $args['extra_meta'];
+
+        // Fetch post activity history
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $activities = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                *
+            FROM
+                `$wpdb->dt_activity_log`
+            WHERE
+                `object_type` = %s
+                AND `object_id` = %s
+                AND `action` IN ( $supported_actions_sql )
+                AND `field_type` IN ( $supported_field_types_sql )
+                AND `hist_time` BETWEEN %d AND %d
+            ORDER BY hist_time $result_order",
             $post_type,
-            $post_id
+            $post_id,
+            $ts_start,
+            $ts_end
         ) );
         //@phpcs:enable
-        $activity_simple = [];
-        foreach ( $activity as $a ) {
-            $a->object_note = self::format_activity_message( $a, $post_settings );
-            $a->object_note = sanitize_text_field( $a->object_note );
-            if ( isset( $a->user_id ) && $a->user_id > 0 ) {
-                $user = get_user_by( 'id', $a->user_id );
-                if ( $user ){
-                    $a->name =$user->display_name;
-                    $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
-                }
-            } else if ( isset( $a->user_caps ) && strlen( $a->user_caps ) === 32 ){
-                //get site-link name
-                $site_link = Site_Link_System::get_post_id_by_site_key( $a->user_caps );
-                if ( $site_link ){
-                    $a->name = get_the_title( $site_link );
-                }
-            } else if ( isset( $a->user_caps ) && $a->user_caps === 'magic_link' ){
-                $a->name = __( 'Magic Link Submission', 'disciple_tools' );
-            }
-            if ( ! empty( $a->object_note ) ) {
-                $activity_obj = [
-                    'meta_key'    => $a->meta_key,
-                    'gravatar'    => isset( $a->gravatar ) ? $a->gravatar : '',
-                    'name'        => isset( $a->name ) ? wp_specialchars_decode( $a->name ) : __( 'D.T System', 'disciple_tools' ),
-                    'object_note' => $a->object_note,
-                    'hist_time'   => $a->hist_time,
-                    'meta_id'     => $a->meta_id,
-                    'histid'      => $a->histid,
-                ];
 
-                $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
+        // Format activity message
+        $post_settings = self::get_post_settings( $post_type );
+        foreach ( $activities as &$activity ) {
+            $activity->object_note_raw = $activity->object_note;
+            $activity->object_note = sanitize_text_field( self::format_activity_message( $activity, $post_settings ) );
+        }
+
+        // Determine if extra metadata has been requested
+        if ( $extra_meta ) {
+            foreach ( $activities as &$activity ) {
+                if ( isset( $activity->user_id ) && $activity->user_id > 0 ) {
+                    $user = get_user_by( 'id', $activity->user_id );
+                    if ( $user ) {
+                        $activity->name     = sanitize_text_field( $user->display_name );
+                        $activity->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                    }
+                }
             }
         }
 
-        $paged = array_slice( $activity_simple, $args['offset'] ?? 0, $args['number'] ?? 1000 );
-        return [
-            'activity' => $paged,
-            'total' => sizeof( $activity_simple )
-        ];
+        return $activities;
     }
 
-    public static function get_post_single_activity( string $post_type, int $post_id, int $activity_id ){
+    public static function revert_post_activity_history( string $post_type, int $post_id, array $args = [] ){
+        if ( !self::can_view( $post_type, $post_id ) ){
+            return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
+        }
+
+        /**
+         * Fetch all associated activities from current time to specified revert
+         * date. Ensure most recent activities are first in line.
+         */
+
+        $args['result_order'] = 'DESC';
+        $activities = self::list_revert_post_activity_history( $post_type, $post_id, $args );
+
+        /**
+         * March back in time to revert date, adjusting fields accordingly.
+         */
+
+        $reverted_start_ts_id = $args['ts_start_id'] ?? 0;
+        $reverted_start_ts_found = false;
+
+        $reverted_updates = [];
+        $post_type_fields = self::get_post_field_settings( $post_type, false );
+        foreach ( $activities ?? [] as &$activity ) {
+            $activity_id = $activity->histid;
+            $field_action = $activity->action;
+            $field_type = $activity->field_type;
+            $field_key = $activity->meta_key;
+            $field_value = $activity->meta_value;
+            $field_old_value = $activity->old_value;
+            $field_note_raw = $activity->object_note_raw;
+            $is_deleted = strtolower( trim( $field_value ) ) == 'value_deleted';
+
+            // Ensure to accommodate special case field types.
+            if ( in_array( $field_action, [ 'connected to', 'disconnected from' ] ) ) {
+
+                // Determine actual field key to be used.
+                $field_setting = self::get_post_field_settings_by_p2p( $post_type_fields, $field_key, ( $field_action == 'disconnected from' ) ? [ 'from', 'to', 'any' ] : [ 'to', 'from', 'any' ] );
+                if ( ! empty( $field_setting ) ) {
+                    $field_key = $field_setting['key'];
+                    $field_type = $field_action;
+
+                } else {
+                    $field_key  = null;
+                    $field_type = null;
+                }
+            } elseif ( ( empty( $field_type ) || $field_type === 'communication_channel' ) && substr( $field_key, 0, strlen( 'contact_' ) ) == 'contact_' ){
+                $field_type = 'communication_channel';
+
+                // Determine actual field key.
+                $determined_field_key = null;
+                foreach ( self::get_field_settings_by_type( $post_type, $field_type ) ?? [] as $potential_field_key ){
+                    if ( strpos( $field_key, $potential_field_key ) !== false ){
+                        $determined_field_key = $potential_field_key;
+                    }
+                }
+                $field_key = $determined_field_key ?? substr( $field_key, 0, strpos( $field_key, '_', strlen( 'contact_' ) ) );
+
+                // Void if key is empty.
+                if ( empty( $field_key ) ){
+                    $field_key = null;
+                    $field_type = null;
+                }
+            } elseif ( $field_type === 'link' ) {
+                foreach ( self::get_field_settings_by_type( $post_type, $field_type ) ?? [] as $link_field ) {
+                    if ( strpos( $field_key, $link_field ) !== false ) {
+                        $field_key = $link_field;
+                    }
+                }
+            }
+
+            /**
+             * Ensure processing is halted once target start activity id has
+             * been found.
+             */
+
+            if ( $reverted_start_ts_id === $activity_id ){
+                $reverted_start_ts_found = true;
+            }
+
+            if ( !$reverted_start_ts_found ){
+
+                // If needed, prepare reverted updates array element.
+                if ( ! empty( $field_key ) && ! empty( $field_type ) && ! isset( $reverted_updates[ $field_key ] ) ) {
+                    $reverted_updates[ $field_key ] = [
+                        'field_type' => $field_type,
+                        'values'     => []
+                    ];
+                }
+
+                /**
+                 * As we walk back in time, need to operate in the inverse; so, delete is
+                 * actually an add and add, is actually, delete!
+                 * Also, ensure inverse logic is not carried out once we've reached our
+                 * specified revert start point.
+                 */
+
+                switch ( $field_type ){
+                    case 'connected to':
+                    case 'disconnected from':
+                        $is_deleted = strtolower( trim( $field_action ) ) == 'disconnected from';
+
+                        $reverted_updates[$field_key]['values'][$field_value] = [
+                            'value' => $field_value,
+                            'keep' => $is_deleted
+                        ];
+                        break;
+                    case 'tags':
+                    case 'date':
+                    case 'link':
+                    case 'location':
+                    case 'multi_select':
+                    case 'location_meta':
+                    case 'communication_channel':
+
+                        // Capture any additional metadata, by field type.
+                        $meta = [];
+                        if ( $field_type === 'communication_channel' ) {
+                            $meta = [
+                                'meta_key' => $activity->meta_key,
+                                'value_key_prefix' => $activity->meta_key . '-'
+                            ];
+                        }elseif ( $field_type === 'link' ) {
+                            $meta = [
+                                'meta_id' => $activity->meta_id,
+                                'value_key_prefix' => $activity->meta_id . '-'
+                            ];
+                        } elseif ( $field_type === 'location' ){
+                            $meta = [
+                                'meta_id' => $activity->meta_id,
+                                'value_key_prefix' => $activity->meta_id . '-'
+                            ];
+                        }
+
+                        // Proceed with capturing reverted updates.
+                        $value = $is_deleted ? $field_old_value : $field_value;
+                        $reverted_updates[$field_key]['values'][( $meta['value_key_prefix'] ?? '' ) . $value] = [
+                            'value' => $value,
+                            'keep' => $is_deleted,
+                            'note' => $field_note_raw,
+                            'meta' => $meta
+                        ];
+
+                        // Ensure any detected old values are reinstated!
+                        if ( !$is_deleted && !empty( $field_old_value ) ){
+                            unset( $reverted_updates[$field_key]['values'][( $meta['value_key_prefix'] ?? '' ) . $field_value] );
+
+                            $reverted_updates[$field_key]['values'][( $meta['value_key_prefix'] ?? '' ) . $field_old_value] = [
+                                'value' => $field_old_value,
+                                'keep' => true,
+                                'note' => $field_note_raw,
+                                'meta' => $meta
+                            ];
+                        }
+                        break;
+                    case 'text':
+                    case 'number':
+                    case 'boolean':
+                    case 'textarea':
+                    case 'key_select':
+                    case 'user_select':
+                        $reverted_updates[$field_key]['values'][0] = $field_old_value;
+                        break;
+                }
+            }
+        }
+
+        /**
+         * Package revert findings ahead of final post update; ensuring to remove any
+         * field values not present within reverted updates.
+         */
+
+        $post_updates = [];
+        $post = self::get_post( $post_type, $post_id, false );
+        foreach ( $reverted_updates as $field_key => $reverted ) {
+            switch ( $reverted['field_type'] ){
+                case 'connected to':
+                case 'disconnected from':
+                    $values = [];
+                    foreach ( $reverted['values'] as $revert_key => $revert_obj ){
+
+                        // Keep existing values or add if needed.
+                        if ( $revert_obj['keep'] ){
+                            $found_existing_option = false;
+                            if ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+                                foreach ( $post[$field_key] as $option ){
+                                    if ( $revert_key == $option['ID'] ){
+                                        $found_existing_option = true;
+                                    }
+                                }
+                            }
+
+                            if ( !$found_existing_option ){
+                                $values[] = [
+                                    'value' => $revert_obj['value']
+                                ];
+                            }
+                        }elseif ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+
+                            // Remove any flagged existing values.
+                            foreach ( $post[$field_key] as $option ){
+                                $id = $option['ID'];
+                                if ( $revert_key == $id ){
+                                    $values[] = [
+                                        'value' => $id,
+                                        'delete' => true
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                    // Package any available values to be updated.
+                    if ( !empty( $values ) ){
+                        $post_updates[$field_key] = [
+                            'values' => $values
+                        ];
+                    }
+                    break;
+                case 'tags':
+                case 'link':
+                case 'location':
+                case 'multi_select':
+                case 'location_meta':
+                case 'communication_channel':
+                    $values = [];
+                    foreach ( $reverted['values'] as $revert_key => $revert_obj ){
+
+                        // Remove any detected revert value key prefixes.
+                        if ( isset( $revert_obj['meta'], $revert_obj['meta']['value_key_prefix'] ) && strpos( $revert_key, $revert_obj['meta']['value_key_prefix'] ) !== false ){
+                            $revert_key = substr( $revert_key, strlen( $revert_obj['meta']['value_key_prefix'] ) );
+                        }
+
+                        // Keep existing values or add if needed.
+                        if ( $revert_obj['keep'] ){
+                            $found_existing_option = false;
+                            if ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+                                foreach ( $post[$field_key] as $option ){
+
+                                    // Determine id to be used, based on field type
+                                    if ( $reverted['field_type'] == 'location' ) {
+                                        $id = $option['id'];
+
+                                    } elseif ( $reverted['field_type'] == 'location_meta' ) {
+                                        $id = $option['grid_meta_id'];
+
+                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                        $id = $option['value'];
+
+                                    } elseif ( $reverted['field_type'] == 'link' ) {
+                                        $id = $option['value'];
+
+                                    } else {
+                                        $id = $option;
+                                    }
+
+                                    if ( $revert_key == $id ){
+                                        $found_existing_option = true;
+                                    }
+                                }
+                            }
+
+                            if ( !$found_existing_option ){
+
+                                // Structure value accordingly based on field type.
+                                if ( $reverted['field_type'] == 'location_meta' ){
+
+                                    /**
+                                     * Assuming suitable mapping APIs are available, execute a lookup query, based on
+                                     * specified location. Construct update value package based on returned hits.
+                                     */
+
+                                    if ( !empty( $revert_obj['note'] ) ){
+                                        $note = $revert_obj['note'];
+
+                                        if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && !empty( Disciple_Tools_Google_Geocode_API::get_key() ) && Disciple_Tools_Google_Geocode_API::get_key() ){
+                                            $location = Disciple_Tools_Google_Geocode_API::query_google_api( $note, 'coordinates_only' );
+                                            if ( !empty( $location ) ){
+                                                $values[] = [
+                                                    'lng' => $location['lng'],
+                                                    'lat' => $location['lat'],
+                                                    'label' => $note
+                                                ];
+                                            }
+                                        } elseif ( class_exists( 'DT_Mapbox_API' ) && !empty( DT_Mapbox_API::get_key() ) && DT_Mapbox_API::get_key() ){
+                                            $location = DT_Mapbox_API::lookup( $note );
+                                            if ( !empty( $location ) ){
+                                                $values[] = [
+                                                    'lng' => DT_Mapbox_API::parse_raw_result( $location, 'lng', true ),
+                                                    'lat' => DT_Mapbox_API::parse_raw_result( $location, 'lat', true ),
+                                                    'label' => DT_Mapbox_API::parse_raw_result( $location, 'place_name', true )
+                                                ];
+                                            }
+                                        }
+                                    }
+                                } elseif ( $reverted['field_type'] == 'communication_channel' ){
+                                    $values[] = [
+                                        'key' => $revert_obj['meta']['meta_key'] ?? null,
+                                        'value' => $revert_obj['value']
+                                    ];
+                                } elseif ( $reverted['field_type'] == 'link' ) {
+                                    $values[] = [
+                                        'type' => 'default',
+                                        'value' => $revert_obj['value']
+                                    ];
+                                } else {
+                                    $values[] = [
+                                        'value' => $revert_obj['value']
+                                    ];
+                                }
+                            }
+                        }elseif ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
+
+                            // Remove any flagged existing values.
+                            foreach ( $post[$field_key] as $option ){
+
+                                // Determine id to be used, based on field type
+                                if ( $reverted['field_type'] == 'location' ) {
+                                    $id = $option['id'];
+
+                                } elseif ( $reverted['field_type'] == 'location_meta' ) {
+                                    $id = $option['grid_meta_id'];
+
+                                } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+
+                                    // Force a match if key is found.
+                                    if ( $option['key'] === ( $revert_obj['meta']['meta_key'] ?? '' ) ){
+                                        $id = $revert_key;
+                                    } else {
+                                        $id = '';
+                                    }
+                                } elseif ( $reverted['field_type'] == 'link' ) {
+
+                                    // Force a match if key is found.
+                                    if ( $option['meta_id'] === ( $revert_obj['meta']['meta_id'] ?? '' ) ){
+                                        $id = $revert_key;
+                                    } else {
+                                        $id = '';
+                                    }
+                                } else {
+                                    $id = $option;
+                                }
+
+                                if ( $revert_key == $id ){
+
+                                    // Determine correct value label to be used.
+                                    if ( $reverted['field_type'] == 'location_meta' ) {
+                                        $key = 'grid_meta_id';
+
+                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                        $key = 'key';
+                                        $id = $revert_obj['meta']['meta_key'] ?? $revert_key;
+                                    } elseif ( $reverted['field_type'] == 'link' ) {
+                                        $key = 'meta_id';
+                                        $id = $revert_obj['meta']['meta_id'] ?? $revert_key;
+                                    } else {
+                                        $key = 'value';
+                                    }
+
+                                    // Package....
+                                    $values[] = [
+                                        $key => $id,
+                                        'delete' => true
+                                    ];
+                                }
+                            }
+                        }
+                    }
+
+                    // Package any available values to be updated, accordingly; by field type.
+                    if ( !empty( $values ) ){
+                        if ( $reverted['field_type'] == 'communication_channel' ){
+                            $post_updates[$field_key] = $values;
+                        } else {
+                            $post_updates[$field_key] = [
+                                'values' => $values
+                            ];
+                        }
+                    }
+                    break;
+                case 'date':
+                    $revert_obj = array_values( $reverted['values'] )[0] ?? null;
+                    $post_updates[$field_key] = ( !empty( $revert_obj ) && $revert_obj['keep'] ) ? $revert_obj['value'] : '';
+                    break;
+                case 'number':
+                    $number_update_allowed = true;
+
+                    // Ensure to adhere with any min/max bounds, to avoid exceptions!
+                    $number = !empty( $reverted['values'][0] ) ? $reverted['values'][0] : 0;
+                    if ( isset( $post_type_fields[$field_key], $post_type_fields[$field_key]['min_option'] ) && $post_type_fields[$field_key]['min_option'] > $number ){
+                        $number_update_allowed = false;
+                    }
+                    if ( isset( $post_type_fields[$field_key], $post_type_fields[$field_key]['max_option'] ) && $post_type_fields[$field_key]['max_option'] < $number ){
+                        $number_update_allowed = false;
+                    }
+
+                    // Only update if number format is valid.
+                    if ( $number_update_allowed ){
+                        $post_updates[$field_key] = $number;
+                    }
+                    break;
+                case 'user_select':
+                    $user_select_value = $reverted['values'][0];
+                    if ( $user_select_value != 'user-' ){
+                        $post_updates[$field_key] = $user_select_value;
+                    } else {
+                        $post_updates[$field_key] = '';
+                    }
+                    break;
+                case 'text':
+                case 'boolean':
+                case 'textarea':
+                case 'key_select':
+                    $post_updates[$field_key] = $reverted['values'][0] ?? '';
+                    break;
+            }
+        }
+
+        /**
+         * Final home-straight - Submit updates to revert post back to specified state.
+         * Simply return blank, if no updates are to be made.
+         */
+
+        if ( empty( $post_updates ) ){
+            return [];
+        }
+
+        // Ensure revert activity carried out by Revert Bot, with sufficient permissions.
+        $current_user_id = get_current_user_id();
+        wp_set_current_user( 0 );
+        $revert_bot = wp_get_current_user();
+        $revert_bot->add_cap( 'activity_revert' );
+        $revert_bot->display_name = __( 'Revert Bot', 'disciple_tools' );
+
+        // Update post based on reverted values.
+        $updated_post = self::update_post( $post_type, $post_id, $post_updates, true, false );
+
+        // Revert back to previous user and return.
+        wp_set_current_user( $current_user_id );
+        return $updated_post;
+    }
+
+    public static function get_post_field_settings_by_p2p( $fields, $p2p_key, $p2p_direction ): array {
+        foreach ( $fields as $key => $field ) {
+            if ( isset( $field['p2p_key'], $field['p2p_direction'] ) && $field['p2p_key'] == $p2p_key && in_array( $field['p2p_direction'], $p2p_direction ) ){
+                return [
+                    'key' => $key,
+                    'settings' => $field
+                ];
+            }
+        }
+
+        return [];
+    }
+
+    public static function get_post_single_activity( string $post_type, int $post_id, int $activity_id ) {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'No permissions to read group', [ 'status' => 403 ] );
@@ -1434,8 +2308,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $assigned_to_meta = get_post_meta( $post_id, 'assigned_to', true );
         if ( !( self::can_update( $post_type, $post_id ) ||
-                get_current_user_id() === $user_id ||
-                dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
+                 get_current_user_id() === $user_id ||
+                 dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
         ){
             $name = dt_get_user_display_name( $user_id );
             return new WP_Error( __FUNCTION__, 'You do not have permission to unshare with ' . $name, [ 'status' => 403 ] );
@@ -1585,7 +2459,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $users_follow = get_post_meta( $post_id, 'follow', false );
         foreach ( $users_follow as $follow ){
-            if ( !in_array( $follow, $users ) && user_can( $follow, 'view_any_'. $post_type ) ){
+            if ( !in_array( $follow, $users ) && user_can( $follow, 'view_any_' . $post_type ) ){
                 $users[] = $follow;
             }
         }
@@ -1649,12 +2523,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $sorted_meta;
     }
 
-    public static function get_post_field_settings( $post_type, $load_from_cache = true, $with_deleted_options = false ){
+    public static function get_post_field_settings( $post_type, $load_from_cache = true, $with_deleted_options = false, $load_tags = false ){
         $cached = wp_cache_get( $post_type . '_field_settings' );
         if ( $load_from_cache && $cached ){
             return $cached;
         }
-        $post_types = apply_filters( 'dt_registered_post_types', [] );
+        $post_types = self::get_post_types();
         $fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, $post_type );
 
@@ -1674,7 +2548,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             foreach ( $custom_field_options[$post_type] as $key => $field ){
                 $field_type = $field['type'] ?? $fields[$key]['type'] ?? '';
                 if ( $field_type ) {
-                    if ( !isset( $fields[ $key ] ) ) {
+                    if ( ! isset( $fields[ $key ] ) ){
                         $fields[ $key ] = $field;
                     } else {
                         foreach ( $field as $custom_option_key => $custom_option_value ){
@@ -1686,6 +2560,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                                 }
                                 if ( is_array( $fields[$key][$custom_option_key] ) ){
                                     $fields[$key][$custom_option_key] = dt_array_merge_recursive_distinct( $fields[$key][$custom_option_key], $custom_option_value );
+                                } else if ( !empty( $custom_option_value ) ){
+                                    $fields[$key][$custom_option_key] = $custom_option_value;
                                 }
                             }
                         }
@@ -1753,6 +2629,31 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
+        //load all tags on for each field
+        if ( $load_tags ){
+            global $wpdb;
+            //get tag fields
+            $tag_fields = array_keys( array_filter( $fields, function ( $field ){
+                return $field['type'] === 'tags';
+            } ) );
+
+            $tags_sql = dt_array_to_sql( $tag_fields );
+
+            //phpcs:disable
+            //WordPress.WP.PreparedSQL.NotPrepared
+            $tag_values = $wpdb->get_results("
+                SELECT meta_key, meta_value
+                FROM $wpdb->postmeta pm
+                WHERE pm.meta_key IN ( $tags_sql )
+                GROUP BY meta_key, meta_value
+            ", ARRAY_A );
+            //phpcs:enable
+
+            foreach ( $tag_values as $tag_value ){
+                $fields[$tag_value['meta_key']]['default'][] = $tag_value['meta_value'];
+            }
+        }
+
         foreach ( $fields as $field_key => $field ){
             //make sure each field has the name filed out
             if ( !isset( $field['name'] ) || empty( $field['name'] ) ){
@@ -1779,7 +2680,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     public static function get_default_list_column_order( $post_type ){
         $fields = self::get_post_field_settings( $post_type );
         $columns = [];
-        uasort( $fields, function( $a, $b ){
+        uasort( $fields, function ( $a, $b ){
             $a_order = 0;
             if ( isset( $a['show_in_table'] ) ){
                 $a_order = is_numeric( $a['show_in_table'] ) ? $a['show_in_table'] : 90;
@@ -1799,7 +2700,6 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
 
-
     public static function get_post_tiles( $post_type, $return_cache = true ){
         $cached = wp_cache_get( $post_type . '_tile_options' );
         if ( $return_cache && $cached ){
@@ -1817,12 +2717,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         $tile_options[$post_type] = dt_array_merge_recursive_distinct( $sections, $tile_options[$post_type] );
         $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
         foreach ( $sections as $section_id ){
-            if ( !isset( $tile_options[$post_type][$section_id] ) ) {
+            if ( ! isset( $tile_options[ $post_type ][ $section_id ] ) ) {
                 $tile_options[$post_type][$section_id] = [];
             }
         }
 
-        uasort($tile_options[$post_type], function( $a, $b ) {
+        uasort( $tile_options[ $post_type ], function ( $a, $b ){
             return ( $a['tile_priority'] ?? 100 ) <=> ( $b['tile_priority'] ?? 100 );
         });
         foreach ( $tile_options[$post_type] as $tile_key => &$tile_value ){
@@ -1892,11 +2792,11 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
 
-    public static function advanced_search( string $query, string $post_type, int $offset, array $filters = [] ): array {
-        return self::advanced_search_query_exec( $query, $post_type, $offset, $filters );
+    public static function advanced_search( string $query, string $post_type, int $offset, array $filters = [], bool $check_permissions = true ): array {
+        return self::advanced_search_query_exec( $query, $post_type, $offset, $filters, $check_permissions );
     }
 
-    private static function advanced_search_query_exec( $query, $post_type, $offset, $filters ): array {
+    private static function advanced_search_query_exec( $query, $post_type, $offset, $filters, $check_permissions ): array {
 
         $query_results = array();
         $total_hits    = 0;
@@ -1908,12 +2808,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             try {
                 if ( $post_type !== 'peoplegroups' ) {
                     $type_results = self::advanced_search_by_post( $post_type, [
-                            'text'             => $query,
-                            'offset'           => $offset
+                            'text'              => $query,
+                            'offset'            => $offset
                         ],
-                        $filters
+                        $filters,
+                        $check_permissions
                     );
-                    if ( ! empty( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ) {
+
+                    if ( !empty( $type_results ) && !is_wp_error( $type_results ) && ( intval( $type_results['total'] ) > 0 ) ){
                         array_push( $query_results, $type_results );
                         $total_hits += intval( $type_results['total'] );
                     }
@@ -1929,8 +2831,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
     }
 
-    private static function advanced_search_by_post( string $post_type, array $query, array $filters ) {
-        if ( ! self::can_access( $post_type ) ) {
+    private static function advanced_search_by_post( string $post_type, array $query, array $filters, bool $check_permissions ) {
+        if ( $check_permissions && ! self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have access to these', [ 'status' => 403 ] );
         }
         $post_types = self::get_post_types();
@@ -1971,9 +2873,9 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Prepare sql and execute search query
-        $esc_like_search_sql = "'%" . esc_sql( $search ) . "%'";
+        $esc_like_search_sql = "'%" . str_replace( ' ', '%', esc_sql( $search ) ) . "%'";
         $extra_fields = '';
-        $extra_joins  = '';
+        $extra_joins = '';
         $extra_where = '';
         if ( $filters['post'] ){
             $extra_where .= 'p.post_title LIKE ' . $esc_like_search_sql;
@@ -2102,13 +3004,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'location_meta':
                 case 'connection':
                 case 'communication_channel':
-                    $value_array = ( $field_type == 'communication_channel' ) ? $post[ $field_id ] : ( $post[ $field_id ]['values'] ?? [] );
+                    $value_array = $post[$field_id]['values'] ?? $post[$field_id];
                     foreach ( $value_array ?? [] as $entry ) {
                         if ( isset( $entry['value'] ) ) {
 
                             // Attempt to find match within incoming value array.
                             if ( ! empty( $value ) && is_array( $value ) ) {
-                                foreach ( $value as $val ) {
+                                foreach ( $value['values'] ?? $value as $val ) {
                                     if ( $entry['value'] == $val['value'] ) {
                                         return true;
                                     }

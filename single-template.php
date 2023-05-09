@@ -71,18 +71,14 @@ function dt_display_tile( $tile, $post ): bool {
     $post_settings = DT_Posts::get_post_settings( $post_type );
     $dt_post = DT_Posts::get_post( $post_type, $post_id );
     $tiles = DT_Posts::get_post_tiles( $post_type );
-    $following = DT_Posts::get_users_following_post( $post_type, $post_id );
+
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
+    add_action( 'dt_nav_add_after', function ( $desktop = true ){
+        dt_print_details_bar( $desktop );
+
+    }, 10, 1);
     get_header();
-    dt_print_details_bar(
-        true,
-        true,
-        isset( $post_settings['fields']['requires_update'] ) && current_user_can( 'assign_any_contacts' ),
-        isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true,
-        in_array( $current_user_id, $following ),
-        isset( $dt_post['assigned_to']['id'] ) ? $dt_post['assigned_to']['id'] == $current_user_id : false,
-        true
-    );
+
     ?>
     <div id="content" class="single-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
@@ -126,7 +122,11 @@ function dt_display_tile( $tile, $post ): bool {
                     <?php if ( isset( $tiles['status'] ) && empty( $tiles['status']['hidden'] ) ) : ?>
                     <section id="contact-status" class="small-12 cell bordered-box">
                         <h3 class="section-header">
-                            <?php echo esc_html__( 'Status', 'disciple_tools' )?>
+                            <?php if ( isset( $tiles['status']['label'] ) && !empty( $tiles['status']['label'] ) ) {
+                                echo esc_html( $tiles['status']['label'] );
+                            } else {
+                                echo esc_html__( 'Status', 'disciple_tools' );
+                            }?>
                             <button class="help-button-tile" data-tile="status">
                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                             </button>
@@ -158,7 +158,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <?php }
                         }
                         ?>
-                        <?php do_action( 'dt_details_additional_section', 'status', $post_type ); ?>
+                        <?php do_action( 'dt_details_additional_section', 'status', $post_type, $post_id ); ?>
                         </div>
                     </section>
                     <?php endif; ?>
@@ -168,7 +168,11 @@ function dt_display_tile( $tile, $post ): bool {
                     -->
                     <section id="details-tile" class="small-12 cell bordered-box collapsed" >
                         <h3 class="section-header">
-                            <?php echo esc_html__( 'Details', 'disciple_tools' )?>
+                            <?php if ( isset( $tiles['details']['label'] ) && !empty( $tiles['details']['label'] ) ) {
+                                echo esc_html( $tiles['details']['label'] );
+                            } else {
+                                echo esc_html__( 'Details', 'disciple_tools' );
+                            }?>
                             <button class="help-button-tile" data-tile="details">
                                 <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                             </button>
@@ -192,7 +196,7 @@ function dt_display_tile( $tile, $post ): bool {
                             //setup the order of the tile fields
                             $order = $tiles['details']['order'] ?? [];
                             foreach ( $post_settings['fields'] as $key => $option ){
-                                if ( isset( $option['tile'] ) && $option['tile'] === 'details' && $option['type'] === 'communication_channel' ){
+                                if ( isset( $option['tile'] ) && $option['tile'] === 'details' && ( $option['type'] === 'communication_channel' || $key === 'name' ) ){
                                     if ( !in_array( $key, $order ) ){
                                         $order[] = $key;
                                     }
@@ -204,7 +208,7 @@ function dt_display_tile( $tile, $post ): bool {
                                 }
 
                                 $field = $post_settings['fields'][$field_key];
-                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' ){
+                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' && ( $field['type'] === 'communication_channel' || $field_key === 'name' ) ){
                                     ?>
                                     <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                         <?php dt_render_field_icon( $field, 'dt-icon', true ); ?>
@@ -237,7 +241,7 @@ function dt_display_tile( $tile, $post ): bool {
                                     continue;
                                 }
 
-                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' ){
+                                if ( isset( $field['tile'] ) && $field['tile'] === 'details' && $field['type'] !== 'communication_channel' && $field_key !== 'name' ){
                                     ?>
                                         <div class="detail-snippet" id="collapsed-detail-<?php echo esc_html( $field_key ); ?>">
                                             <?php dt_render_field_icon( $field, 'dt-icon', true ); ?>
@@ -284,7 +288,7 @@ function dt_display_tile( $tile, $post ): bool {
                                     <?php }
                                 }
                                 // let the plugin add section content
-                                do_action( 'dt_details_additional_section', 'details', $post_type );
+                                do_action( 'dt_details_additional_section', 'details', $post_type, $post_id );
                                 ?>
                             </div>
                         </div>
@@ -359,7 +363,7 @@ function dt_display_tile( $tile, $post ): bool {
                                                     }
                                                 }
                                             }, 20, 2 );
-                                            do_action( 'dt_details_additional_section', $tile_key, $post_type );
+                                            do_action( 'dt_details_additional_section', $tile_key, $post_type, $post_id );
                                             ?>
                                         </div>
                                     </div>
@@ -413,7 +417,7 @@ function dt_display_tile( $tile, $post ): bool {
             <button class="button" data-close type="button" id="create-tag-return">
                 <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -430,11 +434,13 @@ function dt_display_tile( $tile, $post ): bool {
             <button class="button alert loader" type="button" id="delete-record">
                 <?php esc_html_e( 'Delete', 'disciple_tools' ); ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     </div>
+
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'record-history' ); ?>
 
     <?php do_action( 'dt_record_footer', $post_type, $post_id ) ?>
 

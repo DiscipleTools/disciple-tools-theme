@@ -40,15 +40,8 @@
                 ></textarea>
 
                 <?php if ( is_singular( 'contacts' ) ) :
-                     $sections = [
-                         [
-                             'key' => 'comment',
-                             'label' => __( 'Comment', 'disciple_tools' ),
-                             'selected_by_default' => true
-                         ]
-                     ];
                      $post_type = get_post_type();
-                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+                     $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
 
                         <div class="grid-x">
                             <div class="section-subheader cell shrink">
@@ -56,12 +49,12 @@
                             </div>
                             <select id="comment_type_selector" class="cell auto">
                                 <?php
-                                $section_keys = [];
+                                $section_keys = [ 'activity' ];
                                 foreach ( $sections as $section ) {
-                                    if ( !in_array( $section['key'], $section_keys ) ) {
+                                    if ( ! in_array( $section['key'], $section_keys ) && ( ! isset( $section['is_comment_type'] ) || ( isset( $section['enabled'] ) && $section['enabled'] ) ) ) {
                                         $section_keys[] = $section['key'] ?>
                                         <option value="<?php echo esc_html( $section['key'] ); ?>">
-                                        <?php echo esc_html( $section['label'] );
+                                            <?php echo esc_html( $section['label'] );
                                     }
                                 } ?>
                             </select>
@@ -87,22 +80,8 @@
                 <ul id="comment-activity-tabs" style="display: inline-block; margin: 0">
 
                     <?php
-                    $sections = [
-                        [
-                            'key' => 'comment',
-                            'label' => __( 'Comments', 'disciple_tools' ),
-                            'selected_by_default' => true,
-                            'always_show' => true,
-                        ],
-                        [
-                            'key' => 'activity',
-                            'label' => __( 'Activity', 'disciple_tools' ),
-                            'selected_by_default' => true,
-                            'always_show' => true,
-                        ]
-                    ];
                     $post_type = get_post_type();
-                    $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
+                    $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );
                     $section_keys = [];
                     foreach ( $sections as $section ) :
                         if ( isset( $section['key'] ) && isset( $section['label'] ) && !in_array( $section['key'], $section_keys ) ) :
@@ -155,7 +134,7 @@
             <button class="button alert loader" aria-label="confirm" type="button" id="confirm-comment-delete">
                 <?php esc_html_e( 'Delete', 'disciple_tools' ) ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -171,15 +150,8 @@
         <div class="grid-x">
             <div class="cell small-12" id="edit_typeOfComment">
                 <?php if ( is_singular( 'contacts' ) ) :
-                     $sections = [
-                         [
-                             'key' => 'comment',
-                             'label' => __( 'Comments', 'disciple_tools' ),
-                             'selected_by_default' => true
-                         ]
-                     ];
                      $post_type = get_post_type();
-                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+                     $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
                         <div class="section-subheader">
                             <?php esc_html_e( 'Type of Comment', 'disciple_tools' ) ?>
                         </div>
@@ -202,7 +174,7 @@
             <button class="button loader" aria-label="confirm" type="button" id="confirm-comment-edit">
                 <?php esc_html_e( 'Update', 'disciple_tools' ) ?>
             </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
+            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>

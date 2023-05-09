@@ -28,6 +28,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
     public static function setupBeforeClass(): void  {
         $user_id = wp_create_user( 'dispatcher1', 'test', 'test2@example.com' );
+        update_option( 'dt_base_user', $user_id, false );
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
@@ -37,6 +38,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      * @testdox Expected fields
      */
     public function test_expected_fields() {
+        $base_user = get_option( 'dt_base_user' );
+        $this->sample_contact['assigned_to'] = $base_user;
         $group1 = DT_Posts::create_post( 'groups', $this->sample_group );
         $this->sample_contact['groups'] = [ 'values' => [ [ 'value' => $group1['ID'] ] ] ];
         $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
@@ -46,7 +49,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertSame( 'France', $contact1['location_grid'][0]['label'] );
         $this->assertSame( (int) '1546214400', (int) $contact1['baptism_date']['timestamp'] );
         $this->assertSame( '798456780', $contact1['contact_phone'][0]['value'] );
-        $this->assertSame( '1', $contact1['assigned_to']['id'] );
+        $this->assertSame( $base_user, $contact1['assigned_to']['id'] );
         $this->assertSame( "Bob's group", $contact1['groups'][0]['post_title'] );
         $this->assertSame( 'tag1', $contact1['tags'][0] );
     }
@@ -54,7 +57,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     public function test_create_on_custom_fields(){
         $user_id = wp_create_user( 'dispatcher3', 'test', 'test3@example.com' );
         wp_set_current_user( $user_id );
-        $create_values = dt_test_get_sample_record_fields();
+        $current_user = wp_get_current_user();
+        $current_user->set_role( 'dispatcher' );
+        $create_values = dt_test_get_sample_record_fields( get_option( 'dt_base_user' ) );
         $result = DT_Posts::create_post( 'contacts', $create_values, true, false );
         $this->assertNotWPError( $result );
 
@@ -87,6 +92,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      */
     public function test_user_select_field(){
         $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        $user = get_user_by( 'ID', $user_id );
+        $user->set_role( 'multiplier' );
         $contact_fields = $this->sample_contact;
         $contact_fields['assigned_to'] = $user_id;
         $contact = DT_Posts::create_post( 'contacts', $contact_fields, true, false );
@@ -110,6 +117,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         //test contact update
         $user_2 = wp_create_user( 'multiplier_user_select2', 'test', 'multiplier_user_select2@example.com' );
+        $user2 = get_user_by( 'ID', $user_2 );
+        $user2->set_role( 'multiplier' );
         $update = DT_Posts::update_post( 'contacts', $contact['ID'], [ 'assigned_to' => $user_2 ], true, false );
         $this->assertNotWPError( $update );
         $contact_shared_with = DT_Posts::get_shared_with( 'contacts', $contact['ID'], false );
@@ -145,12 +154,20 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
     public function test_custom_number_field_min_max_error() {
         // test that lower than the minimum creates an error
-        $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => 0 ], true, false );
+        $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => -1 ], true, false );
         $this->assertWPError( $contact1 );
 
-        // test that higher than the maximum creates an error
-        $contact2 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test_private' => 300 ], true, false );
+        // test that lower than the minimum creates an error
+        $contact2 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => 0 ], true, false );
         $this->assertWPError( $contact2 );
+
+        // test that higher than the maximum creates an error
+        $contact3 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test_private' => 300 ], true, false );
+        $this->assertWPError( $contact3 );
+
+        // test that clearing the field is not an error
+        $contact4 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => '' ], true, false );
+        $this->assertNotWPError( $contact4 );
 
     }
 

@@ -67,7 +67,7 @@ function makeRequest(type, url, data, base = "dt/v1/") {
     },
   };
 
-  if (data) {
+  if (data && !window.lodash.isEmpty(data)) {
     options.data = type === "GET" ? data : JSON.stringify(data);
   }
 
@@ -131,16 +131,19 @@ window.API = {
   get_comments: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/comments`),
 
-  toggle_comment_reaction: (postType, postId, commentId, userId, reaction) => {
+  toggle_comment_reaction: (postType, postId, commentId, reaction) => {
     makeRequestOnPosts(
       "POST",
       `${postType}/${postId}/comments/${commentId}/react`,
-      { user_id: userId, reaction: reaction }
+      { reaction: reaction }
     )
   },
 
-  get_activity: (post_type, postId) =>
-    makeRequestOnPosts("GET", `${post_type}/${postId}/activity`),
+  get_activity: (post_type, postId, data = {}) =>
+    makeRequestOnPosts("GET", `${post_type}/${postId}/activity`, data),
+
+  revert_activity_history: (post_type, post_id, data = {}) =>
+    makeRequestOnPosts("POST", `${post_type}/${post_id}/revert_activity_history`, data),
 
   get_single_activity: (post_type, postId, activityId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/activity/${activityId}`),
@@ -204,7 +207,13 @@ window.API = {
     comment: filters['comment'],
     meta: filters['meta'],
     status: filters['status']
-  }, 'dt-posts/v2/posts/search/')
+  }, 'dt-posts/v2/posts/search/'),
+
+  split_by: (post_type, field_id, filters) =>
+    makeRequestOnPosts("POST", `${post_type}/split_by`, {
+      'field_id': field_id,
+      'filters': filters
+    })
 };
 
 function handleAjaxError(err) {
@@ -272,7 +281,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
       ) {
         let field_name = `<h2>${window.lodash.escape(field.name)}</h2>`;
         if ( window.wpApiShare.can_manage_dt ){
-          let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
+          let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
           field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
         }
         html += field_name
@@ -719,6 +728,7 @@ window.SHAREDFUNCTIONS = {
   make_links_clickable( selector ){
     //make text links clickable in a section
     let elem_text = $(selector).html()
+    if ( !elem_text ) return
     let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
     elem_text = elem_text.replace(urlRegex, (match)=>{
       let url = match

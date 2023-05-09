@@ -27,8 +27,8 @@ class DT_Magic_URL_Setup {
             }
             if ( $post_types_has_registered_apps ){
                 $tiles['apps'] = [
-                    'label' => __( 'Apps', 'disciple_tools' ),
-                    'description' => __( 'Apps available on this record.', 'disciple_tools' )
+                    'label' => __( 'Magic Links', 'disciple_tools' ),
+                    'description' => __( 'Magic Links available on this record.', 'disciple_tools' )
                 ];
             }
         }
@@ -83,14 +83,14 @@ class DT_Magic_URL_Setup {
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
         <div class="section-app-links <?php echo esc_attr( $meta_key ); ?>">
-            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Copy to clipboard', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
+            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Copy to clipboard', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
                data-value="<?php echo esc_url( site_url() . '/' . $app['root'] . '/' . $app['type'] . '/' . $key ) ?>">
                 <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
             </a>
-            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple-tools' ) ?>" type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
         </div>
         <script>
             jQuery(document).ready(function($){

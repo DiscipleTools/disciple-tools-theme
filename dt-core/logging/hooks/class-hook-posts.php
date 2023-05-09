@@ -202,6 +202,12 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         if ( ! empty( $fields ) && isset( $fields[ $meta_key ]['type'] ) ) {
             $field_type = $fields[ $meta_key ]['type'];
+        } elseif ( empty( $field_type ) && ( !empty( $fields ) && ( strpos( $meta_key, 'contact_' ) !== false ) ) ){
+            foreach ( $fields as $field_key => $field ){
+                if ( ( strpos( $field_key, 'contact_' ) !== false ) && ( strpos( $meta_key, $field_key ) !== false ) ){
+                    $field_type = $field['type'];
+                }
+            }
         }
 
         if ( ! empty( $fields ) && ! $object_note ) { // Build object note if contact, group, location, else ignore object note
@@ -228,6 +234,17 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         if ( $deleted ) {
             $prev_value = empty( $prev_value ) ? ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) : $prev_value;
             $meta_value = 'value_deleted';
+        }
+
+        // Ensure the best efforts are made to avoid blank field types.
+        if ( empty( $field_type ) ) {
+
+            // Handle any potential link field types.
+            foreach ( DT_Posts::get_field_settings_by_type( $parent_post['post_type'], 'link' ) ?? [] as $link_field ) {
+                if ( strpos( $meta_key, $link_field ) !== false ) {
+                    $field_type = $fields[$link_field]['type'] ?? '';
+                }
+            }
         }
 
         dt_activity_insert( // insert activity record
@@ -302,36 +319,60 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $p2p_to     = get_post( $p2p_record->p2p_to, ARRAY_A );
         $p2p_type   = $p2p_record->p2p_type;
 
+        // Determine actual [from] field key.
+        $from_field_key = '';
+        $field_settings = DT_Posts::get_post_field_settings( $p2p_from['post_type'], false );
+        $connection_fields = DT_Posts::get_field_settings_by_type( $p2p_from['post_type'], 'connection' );
+        foreach ( $field_settings as $field_key => $field_setting ){
+            if ( in_array( $field_key, $connection_fields ) && isset( $field_setting['p2p_direction'], $field_setting['p2p_key'] ) ){
+                if ( ( $field_setting['p2p_direction'] === 'from' || $field_setting['p2p_direction'] === 'any' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
+                    $from_field_key = $field_key;
+                }
+            }
+        }
+
+        // Determine actual [to] field key.
+        $to_field_key = '';
+        $field_settings = DT_Posts::get_post_field_settings( $p2p_to['post_type'], false );
+        $connection_fields = DT_Posts::get_field_settings_by_type( $p2p_to['post_type'], 'connection' );
+        foreach ( $field_settings as $field_key => $field_setting ){
+            if ( in_array( $field_key, $connection_fields ) && isset( $field_setting['p2p_direction'], $field_setting['p2p_key'] ) ){
+                if ( ( $field_setting['p2p_direction'] === 'to' || $field_setting['p2p_direction'] === 'any' ) && ( $field_setting['p2p_key'] === $p2p_type ) ){
+                    $to_field_key = $field_key;
+                }
+            }
+        }
+
         // Log for both records
-        dt_activity_insert(
+        dt_activity_insert( // From
             [
                 'action'         => $action,
                 'object_type'    => $p2p_from['post_type'],
-                'object_subtype' => 'p2p',
+                'object_subtype' => $from_field_key,
                 'object_id'      => $p2p_from['ID'],
                 'object_name'    => $p2p_from['post_title'],
                 'meta_id'        => $p2p_id,
                 'meta_key'       => $p2p_type,
                 'meta_value'     => $p2p_to['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
-                'object_note'    => '',
-                'field_type'     => 'connection from'
+                'object_note'    => 'connection from',
+                'field_type'     => 'connection'
             ]
         );
 
-        dt_activity_insert(
+        dt_activity_insert( // To
             [
                 'action'         => $action,
                 'object_type'    => $p2p_to['post_type'],
-                'object_subtype' => 'p2p',
+                'object_subtype' => $to_field_key,
                 'object_id'      => $p2p_to['ID'],
                 'object_name'    => $p2p_to['post_title'],
                 'meta_id'        => $p2p_id,
                 'meta_key'       => $p2p_type,
                 'meta_value'     => $p2p_from['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
-                'object_note'    => '',
-                'field_type'     => 'connection to',
+                'object_note'    => 'connection to',
+                'field_type'     => 'connection',
             ]
         );
 

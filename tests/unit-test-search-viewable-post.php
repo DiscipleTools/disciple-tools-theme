@@ -8,7 +8,7 @@
 
 class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
 
-    public $sample_contact = [
+    public static $sample_contact = [
         'title' => 'Bob',
         'overall_status' => 'active',
         'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'milestone_baptizing' ] ] ],
@@ -36,12 +36,20 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         }, $posts );
     }
 
+    public static function setupBeforeClass(): void  {
+        $user_id = wp_create_user( 'unittestsearch', 'test', 'unittestsearch@example.com' );
+        $user = get_user_by( 'id', $user_id );
+        $user->set_role( 'dispatcher' );
+        self::$sample_contact['assigned_to'] = $user_id;
+        update_option( 'dt_base_user', $user_id );
+    }
+
     public function test_search_fields_structure(){
         $group1 = DT_Posts::create_post( 'groups', $this->sample_group, true, false );
         $this->assertNotWPError( $group1 );
         $group2 = DT_Posts::create_post( 'groups', $this->sample_group, true, false );
         $this->assertNotWPError( $group2 );
-        $sample_contact = DT_Posts::create_post( 'contacts', $this->sample_contact, true, false );
+        $sample_contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
         $this->assertNotWPError( $sample_contact );
         $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'a', 'groups' => [ 'values' => [ [ 'value' => $group1['ID'] ] ] ] ], true, false );
         $this->assertNotWPError( $contact1 );
@@ -401,9 +409,9 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          */
         $group = DT_Posts::create_post( 'groups', [ 'name' => 'this_is_a_group1' ], true, false );
         $this->assertNotWPError( $group );
-        $c1 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test1', 'assigned_to' => 1, 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
+        $c1 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test1', 'assigned_to' => self::$sample_contact['assigned_to'], 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
         $this->assertNotWPError( $c1 );
-        $c2 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test2', 'assigned_to' => 1, 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
+        $c2 = DT_Posts::create_post( 'contacts', [ 'name' => 'this_is_a_test2', 'assigned_to' => self::$sample_contact['assigned_to'], 'gender' => 'male', 'groups' => [ 'values' => [ [ 'value' => $group['ID'] ] ] ] ], true, false );
         $this->assertNotWPError( $c2 );
         //name1 and name 2
         $res1 = DT_Posts::search_viewable_post( 'contacts', [ [ 'name' => [ 'this_is_a_test1' ] ], [ 'name' => [ 'this_is_a_test2' ] ] ], false );

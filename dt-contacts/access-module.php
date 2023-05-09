@@ -29,7 +29,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         //display tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
         add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
-        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 5 );
+        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 6 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -415,7 +415,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         return $sections;
     }
 
-    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id ){
+    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display = false ){
         $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
             $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
@@ -427,7 +427,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $disabled = '';
         }
         if ( isset( $post['post_type'] ) && $post['post_type'] === 'contacts' && $field_key === 'overall_status'
-            && isset( $contact_fields[$field_key] ) && !empty( $contact_fields[$field_key]['custom_display'] )
+            && isset( $contact_fields[$field_key] ) && $custom_display
             && empty( $contact_fields[$field_key]['hidden'] )
             ){
             $contact = $post;
@@ -507,7 +507,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <button class="button loader confirm-reason-button" type="button" id="confirm-pause" data-field="paused">
                     <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                 </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -538,7 +538,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <button class="button loader confirm-reason-button" type="button" id="confirm-unassignable" data-field="unassignable">
                     <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                 </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -566,7 +566,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <button class="button loader confirm-reason-button" type="button" id="confirm-close" data-field="closed">
                     <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                 </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -657,7 +657,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                         </div>
                     </div>
                 </section>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
+                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -796,7 +796,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                         }
                     }
                 }
-                $fields['assigned_to'] = sprintf( 'user-%d', $base_id );
+                if ( !empty( $base_id ) ){
+                    $fields['assigned_to'] = sprintf( 'user-%d', $base_id );
+                }
             }
         }
         if ( !isset( $fields['overall_status'] ) ){
@@ -970,29 +972,31 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 'subfilter' => 2
                             ];
                         }
-                        foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
-                            if ( isset( $active_counts[$seeker_path_key] ) ) {
-                                $filters['filters'][] = [
-                                    'ID' => 'my_' . $seeker_path_key,
-                                    'tab' => 'default',
-                                    'name' => $seeker_path_value['label'],
-                                    'query' => [
-                                        'assigned_to' => [ 'me' ],
-                                        'subassigned' => [ 'me' ],
-                                        'combine' => [ 'subassigned' ],
-                                        'overall_status' => [ 'active' ],
-                                        'seeker_path' => [ $seeker_path_key ],
-                                        'type' => [ 'access' ],
-                                        'sort' => 'name'
-                                    ],
-                                    'labels' => [
-                                        [ 'name' => $seeker_path_value['label'] ],
-                                        [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
-                                        [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
-                                    ],
-                                    'count' => $active_counts[$seeker_path_key],
-                                    'subfilter' => 2
-                                ];
+                        if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ){
+                            foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ){
+                                if ( isset( $active_counts[$seeker_path_key] ) ){
+                                    $filters['filters'][] = [
+                                        'ID' => 'my_' . $seeker_path_key,
+                                        'tab' => 'default',
+                                        'name' => $seeker_path_value['label'],
+                                        'query' => [
+                                            'assigned_to' => [ 'me' ],
+                                            'subassigned' => [ 'me' ],
+                                            'combine' => [ 'subassigned' ],
+                                            'overall_status' => [ 'active' ],
+                                            'seeker_path' => [ $seeker_path_key ],
+                                            'type' => [ 'access' ],
+                                            'sort' => 'name'
+                                        ],
+                                        'labels' => [
+                                            [ 'name' => $seeker_path_value['label'] ],
+                                            [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
+                                            [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
+                                        ],
+                                        'count' => $active_counts[$seeker_path_key],
+                                        'subfilter' => 2
+                                    ];
+                                }
                             }
                         }
                     }
@@ -1070,21 +1074,23 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     'subfilter' => true
                                 ];
                             }
-                            foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
-                                if ( isset( $all_active_counts[$seeker_path_key] ) ) {
-                                    $filters['filters'][] = [
-                                        'ID' => 'all_' . $seeker_path_key,
-                                        'tab' => 'all_dispatch',
-                                        'name' => $seeker_path_value['label'],
-                                        'query' => [
-                                            'overall_status' => [ 'active' ],
-                                            'seeker_path' => [ $seeker_path_key ],
-                                            'type' => [ 'access' ],
-                                            'sort' => 'name'
-                                        ],
-                                        'count' => $all_active_counts[$seeker_path_key],
-                                        'subfilter' => true
-                                    ];
+                            if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ) {
+                                foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
+                                    if ( isset( $all_active_counts[$seeker_path_key] ) ) {
+                                        $filters['filters'][] = [
+                                            'ID' => 'all_' . $seeker_path_key,
+                                            'tab' => 'all_dispatch',
+                                            'name' => $seeker_path_value['label'],
+                                            'query' => [
+                                                'overall_status' => [ 'active' ],
+                                                'seeker_path' => [ $seeker_path_key ],
+                                                'type' => [ 'access' ],
+                                                'sort' => 'name'
+                                            ],
+                                            'count' => $all_active_counts[$seeker_path_key],
+                                            'subfilter' => true
+                                        ];
+                                    }
                                 }
                             }
                         }

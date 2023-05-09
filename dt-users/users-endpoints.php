@@ -403,13 +403,14 @@ class Disciple_Tools_Users_Endpoints
 
     public function get_my_info( WP_REST_Request $request ) {
         $user = wp_get_current_user();
-        if ( $user ) {
+        if ( isset( $user->ID ) && !empty( $user->ID ) ) {
             $info = [
                 'ID'           => $user->ID,
                 'user_email'   => $user->user_email,
                 'display_name' => $user->display_name,
                 'locale'       => get_user_locale( $user->ID ),
                 'locations'    => self::get_current_locations(),
+                'corresponds_to_contact' => Disciple_Tools_Users::get_contact_for_user( $user->ID ),
             ];
 
             // Append additional setting sections
@@ -420,6 +421,9 @@ class Disciple_Tools_Users_Endpoints
             return $info;
 
         } else {
+            wp_destroy_current_session();
+            wp_clear_auth_cookie();
+            wp_set_current_user( 0 );
             return new WP_Error( 'get_my_info', 'Something went wrong. Are you a user?', [ 'status' => 400 ] );
         }
     }

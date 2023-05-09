@@ -39,8 +39,280 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
+        add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
+        add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
+        add_filter( 'dt_import_services', [ $this, 'export_import_services' ], 10, 1 );
+        add_filter( 'dt_import_services_details', [ $this, 'import_services_details' ], 10, 2 );
+        add_action( 'dt_import_payload', [ $this, 'import_payload' ], 10, 2 );
+
         parent::__construct();
     } // End __construct()
+
+    private static $export_import_id = 'dt_custom_tile_settings';
+    private static $import_config_json_id = 'dt_settings';
+    public function export_import_services( $services ){
+        $services[self::$export_import_id] = [
+            'id' => self::$export_import_id,
+            'config_json_id' => self::$import_config_json_id,
+            'enabled' => true,
+            'label' => __( 'D.T Custom Tile Settings', 'disciple_tools' ),
+            'description' => __( 'Export/Import custom D.T tile settings.', 'disciple_tools' )
+        ];
+
+        return $services;
+    }
+
+    public function export_payload( $export_payload ){
+        if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ){
+
+            $payload = [];
+            $existing_custom_options = dt_get_option( 'dt_custom_tiles' );
+            $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
+
+            foreach ( DT_Posts::get_post_types() as $post_type ){
+
+                // Extract accordingly, based on export type.
+                switch ( $export_type ){
+                    case 'full':
+                        $payload[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
+                        break;
+                    case 'partial':
+                        if ( !empty( $existing_custom_options[$post_type] ) ){
+                            $payload[$post_type] = $existing_custom_options[$post_type];
+                        }
+                        break;
+                }
+            }
+
+            if ( !empty( $payload ) ){
+                $export_payload['payload'][self::$export_import_id]['values'] = $payload;
+            }
+        }
+
+        return $export_payload;
+    }
+
+    public function import_services_details( $details, $imported_config ){
+
+        // Ensure imported config makes reference to corresponding id.
+        if ( !isset( $imported_config[self::$import_config_json_id], $imported_config[self::$import_config_json_id][self::$export_import_id] ) ){
+            return $details;
+        }
+
+        // First, construct details html.
+        ob_start();
+        ?>
+        <p><?php echo esc_attr( __( 'D.T Custom Tile Settings', 'disciple_tools' ) ) ?></p>
+        <p>
+            Tiles not already installed on the system, will be enabled and available for selection.
+        </p>
+        <table class="widefat striped" id="<?php echo esc_attr( self::$export_import_id ) ?>_details_table">
+            <thead>
+                <tr>
+                    <th style="text-align: right; padding-right: 14px;">
+                        <input type="checkbox" id="dt_import_tile_settings_service_enable_overwrite_checkbox" checked/>
+                    </th>
+                    <th>Enable Overwrite</th>
+                </tr>
+                <tr>
+                    <th style="text-align: right; padding-right: 14px;">
+                        <input type="checkbox" id="dt_import_tile_settings_service_select_all_checkbox" checked/>
+                    </th>
+                    <th>Select All</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+
+            // Fetch list of existing instance post types.
+            $existing_post_types = DT_Posts::get_post_types() ?? [];
+
+            // Ensure displayed post types are driven by incoming config.
+            $existing_tiles = [];
+            foreach ( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'] ?? [] as $post_type => $tile_config ) {
+
+                // Target instance, must contain corresponding post type, in order for incoming tiles to be set.
+                if ( in_array( $post_type, $existing_post_types ) ){
+
+                    // Fetch existing instance post type settings.
+                    $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+
+                    // Display post type heading.
+                    ?>
+                    <tr>
+                        <td colspan="2">
+                        <span style="font-weight: bold;"><?php echo esc_attr( $post_type_settings['label_plural'] ); ?></span>
+                        </td>
+                    </tr>
+                    <?php
+
+                    // Next, display tiles available for import; disabling those already installed within target instance.
+                    foreach ( $tile_config ?? [] as $tile_id => $tile ) {
+                        $already_has_tile = isset( $post_type_settings['tiles'], $post_type_settings['tiles'][$tile_id] );
+                        ?>
+                        <tr>
+                            <td style="text-align: right;">
+                                <input type="checkbox" class="dt-import-tile-settings-details-table-checkbox"
+                                       data-post_type="<?php echo esc_attr( $post_type ) ?>"
+                                       data-tile_id="<?php echo esc_attr( $tile_id ) ?>"
+                                       checked/>
+                            </td>
+                            <td>
+                                <span><?php echo esc_attr( $tile['label'] ?? $tile_id ) ?></span>
+                            </td>
+                        </tr>
+                        <?php
+
+                        // Keep a record of pre-existing tiles.
+                        if ( $already_has_tile ){
+                            if ( !isset( $existing_tiles[$post_type] ) ){
+                                $existing_tiles[$post_type] = [];
+                            }
+                            $existing_tiles[$post_type][] = $tile_id;
+                        }
+                    }
+                }
+            }
+            ?>
+            </tbody>
+        </table>
+        <script>
+            let existing_tiles = [<?php echo json_encode( $existing_tiles ) ?>][0];
+            jQuery('#dt_import_tile_settings_service_enable_overwrite_checkbox').on('click', function (e) {
+                if (jQuery(e.currentTarget).prop('checked')) {
+                    jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox').prop('disabled', false);
+                    jQuery('#dt_import_tile_settings_service_select_all_checkbox').prop('checked', false);
+                } else {
+                    jQuery.each(existing_tiles, function (post_type, post_type_array) {
+                        jQuery.each(post_type_array, function (idx, tile_id) {
+                            let checkbox = jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox[data-post_type="' + post_type + '"][data-tile_id="' + tile_id + '"]');
+                            if (checkbox) {
+                                jQuery(checkbox).prop('checked', false);
+                                jQuery(checkbox).prop('disabled', true);
+                            }
+                        });
+                    });
+                }
+            });
+
+            jQuery('#dt_import_tile_settings_service_select_all_checkbox').on('click', function (e) {
+                jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox:not(:disabled)').each(function (idx, checkbox) {
+                    jQuery(checkbox).prop('checked', jQuery(e.currentTarget).prop('checked'));
+                });
+            });
+        </script>
+        <?php
+
+        // Retrieve all buffered html output.
+        $html = ob_get_clean();
+
+        // Next, capture details handler js function logic.
+        ob_start();
+        ?>
+
+        let tiles = [];
+        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox:checked').each(function (idx, checkbox) {
+            if( !jQuery(checkbox).attr('disabled') ) {
+                let post_type = jQuery(checkbox).data('post_type');
+                let tile_id = jQuery(checkbox).data('tile_id');
+                if(post_type && tile_id) {
+                    tiles.push({
+                        'post_type' : post_type,
+                        'tile_id' : tile_id
+                    });
+                }
+            }
+        });
+        return tiles;
+
+        <?php
+        $html_js_handler_func = ob_get_clean();
+
+        // Next, capture selection handler js function logic.
+        ob_start();
+        ?>
+
+        jQuery('#dt_import_tile_settings_service_select_all_checkbox').prop('checked', (select_type == 'all'));
+        jQuery('#<?php echo esc_attr( self::$export_import_id ) ?>_details_table').find('.dt-import-tile-settings-details-table-checkbox:not(:disabled)').each(function (idx, checkbox) {
+            switch (select_type) {
+                case 'all': {
+                    jQuery(checkbox).prop('checked', true);
+                    break;
+                }
+                case 'some': {
+                    break;
+                }
+                case 'none': {
+                    jQuery(checkbox).prop('checked', false);
+                    break;
+                }
+            }
+        });
+        <?php
+        $html_js_selection_handler_func = ob_get_clean();
+
+        // Finally, package detail parts and return.
+        $details[self::$export_import_id] = [
+            'id' => self::$export_import_id,
+            'enabled' => true,
+            'html' => $html,
+            'html_js_handler_func' => $html_js_handler_func,
+            'html_js_selection_handler_func' => $html_js_selection_handler_func
+        ];
+
+        return $details;
+    }
+
+    public function import_payload( $selected_services, $imported_config ){
+
+        // Ensure service has been selected, before proceeding!
+        if ( !isset( $selected_services[self::$export_import_id] ) ) {
+            return;
+        }
+
+        // Ensure imported config makes reference to corresponding id and has required settings.
+        $service_label = __( 'D.T Custom Tile Settings', 'disciple_tools' );
+        if ( !isset( $selected_services[self::$export_import_id], $selected_services[self::$export_import_id]['details'], $imported_config[self::$import_config_json_id], $imported_config[self::$import_config_json_id][self::$export_import_id] ) || empty( $selected_services[self::$export_import_id]['details'] ) ){
+            echo '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( __( 'Unable to detect suitable configuration settings!', 'disciple_tools' ) ) . '</p>';
+            return;
+        }
+
+        $import_count = 0;
+        $existing_tile_settings = [];
+        $existing_tile_options = dt_get_option( 'dt_custom_tiles' );
+
+        // Process selected service tiles accordingly, based on instance existence.
+        foreach ( $selected_services[self::$export_import_id]['details'] as $selected_tile ) {
+            $tile_post_type = $selected_tile['post_type'];
+            $tile_id = $selected_tile['tile_id'];
+
+            // If required, load corresponding post type tile settings.
+            if ( !isset( $existing_tile_settings[$tile_post_type] ) ) {
+                $existing_tile_settings[$tile_post_type] = DT_Posts::get_post_tiles( $tile_post_type );
+            }
+
+            // Fetch corresponding imported tile config.
+            if ( isset( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$tile_post_type], $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$tile_post_type][$tile_id] ) ) {
+
+                // Make tile options provision if needed, before committing.
+                if ( !isset( $existing_tile_options[$tile_post_type] ) ){
+                    $existing_tile_options[$tile_post_type] = [];
+                }
+                $existing_tile_options[$tile_post_type][$tile_id] = $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$tile_post_type][$tile_id];
+
+                // Keep count of number of imported tiles.
+                $import_count++;
+            }
+        }
+
+        // Only update options if valid imports have taken place.
+        if ( $import_count > 0 ) {
+            update_option( 'dt_custom_tiles', $existing_tile_options );
+        }
+
+        // Echo tile import summary.
+        echo '<p>' . esc_attr( $service_label ) . ': ' . esc_attr( sprintf( __( '[%d] Tile(s) Imported.', 'disciple_tools' ), $import_count ) ) . '</p>';
+    }
 
     public function add_submenu() {
         add_submenu_page( 'dt_options', __( 'Tiles', 'disciple_tools' ), __( 'Tiles', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-tiles', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
@@ -197,7 +469,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
     private function post_type_select( $selected_post_type ){
         global $wp_post_types;
-        $post_types = DT_Posts::get_post_types();
+        $post_types = array_unique( DT_Posts::get_post_types() );
         ?>
         <form method="post">
             <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
@@ -438,7 +710,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         $form_name = 'tile_edit_form';
         ?>
-        <form method="post" name="<?php echo esc_html( $form_name ) ?>" onkeydown="return event.key != 'Enter';">
+        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="<?php echo esc_html( $form_name ) ?>" onkeydown="return event.key != 'Enter';">
         <input type="hidden" name="tile_key" value="<?php echo esc_html( $tile_key )?>">
         <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
         <input type="hidden" name="post_type_select_nonce" id="post_type_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'post_type_select' ) ) ?>" />
@@ -544,7 +816,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
                         foreach ( $options ?? [] as $option_id => $option ) {
                             $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
-                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'];
+                            $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'] ?? $option_id;
                             ?>
                                 <option value="<?php echo esc_html( $html_val )?>"><?php echo esc_html( $html_label )?></option>
                             <?php
@@ -572,10 +844,15 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         $tile['display_conditions']['conditions'] = [];
                     }
                     foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
+                        $key_label = $fields[$condition['key']]['name'] ?? $condition['key'];
+                        $value_label = $condition['value'];
+                        if ( isset( $fields[$condition['key']]['default'][$condition['value']]['label'] ) ){
+                            $value_label = $fields[$condition['key']]['default'][$condition['value']]['label'];
+                        }
                         ?>
                         <tr>
-                            <td><?php echo esc_html( $condition['key_label'] ) ?></td>
-                            <td><?php echo esc_html( $condition['value_label'] ) ?></td>
+                            <td><?php echo esc_html( $key_label ) ?></td>
+                            <td><?php echo esc_html( $value_label ) ?></td>
                             <td>
                                 <span style="float: right;">
                                     <button class="button" type="submit" id="tile_display_custom_condition_remove_but" name="tile_display_custom_condition_remove_but" value="<?php echo esc_html( $condition['key'].'___'.$condition['value'] ) ?>">Remove</button>
@@ -602,8 +879,36 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <br>
         </div>
 
-        <button class="button" type="submit">Save Settings</button>
+        <div>
+            <button class="button" name="save" type="submit">Save Settings</button>
+            <button type="button" id="open-delete-confirm-modal" class="button button-primary">Delete Customizations</button>
+        </div>
+        </form>
+        <div id='dt-delete-tile-alert' title='Delete Tile'>
+            <p>Are you sure you want to delete this Tile?</p>
+            <p>Note: Only user added tiles can fully be deleted.</p>
+            <button class='button button-primary' id='confirm-tile-delete' name='delete' type="submit">Delete</button>
+            <button class='button' type="button" id='tile-close-delete'>Cancel</button>
+        </div>
 
+
+        <script type="application/javascript">
+            jQuery(document).ready(function ($){
+                $('#dt-delete-tile-alert').dialog({ autoOpen: false });
+
+                $('#open-delete-confirm-modal').click(function(){
+                    $('#dt-delete-tile-alert').dialog('open');
+                });
+
+                $('#tile-close-delete').click(function(){
+                    $('#dt-delete-tile-alert').dialog('close');
+                });
+                $('#confirm-tile-delete').click(function(){
+                    let input = $("<input>").attr("type", "hidden").attr("name", "delete")
+                    $('#tile_edit_form').append(input).submit();
+                });
+            })
+        </script>
     <?php }
 
 
@@ -612,6 +917,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         $post_type = $post_submission['post_type'];
         $tile_options = dt_get_option( 'dt_custom_tiles' );
         $tile_key = $post_submission['tile_key'];
+
+        if ( isset( $post_submission['delete'] ) ){
+            unset( $tile_options[$post_type][$tile_key] );
+            update_option( 'dt_custom_tiles', $tile_options );
+            return;
+        }
+
         if ( !isset( $tile_options[$post_type][$tile_key] ) ){
             $tile_options[$post_type][$tile_key] = [];
         }
@@ -657,23 +969,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
                         // Append latest entry, ensuring uniqueness.
                         if ( isset( $field_id, $option_id ) ) {
-                            $field_id_label = $field_id;
-                            $option_id_label = $option_id;
-
-                            // Determine respective labels.
-                            if ( isset( $post_fields[ $field_id ] ) ) {
-                                $field_id_label = $post_fields[ $field_id ]['name'] ?? $field_id;
-                                if ( isset( $post_fields[ $field_id ]['default'], $post_fields[ $field_id ]['default'][ $option_id ] ) ) {
-                                    $option_id_label = $post_fields[ $field_id ]['default'][ $option_id ]['label'] ?? $option_id;
-                                }
-                            }
-
                             // Package and return....
                             $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] = [
                                 'key' => $field_id,
-                                'key_label' => $field_id_label,
                                 'value' => $option_id,
-                                'value_label' => $option_id_label
                             ];
                         }
                     }

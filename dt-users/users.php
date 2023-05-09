@@ -258,10 +258,12 @@ class Disciple_Tools_Users
             }
         }
 
-        function asc_meth( $a, $b ){
-            $a['name'] = strtolower( $a['name'] );
-            $b['name'] = strtolower( $b['name'] );
-            return strcmp( $a['name'], $b['name'] );
+        if ( !function_exists( 'asc_meth' ) ){
+            function asc_meth( $a, $b ){
+                $a['name'] = strtolower( $a['name'] );
+                $b['name'] = strtolower( $b['name'] );
+                return strcmp( $a['name'], $b['name'] );
+            }
         }
 
         $list = apply_filters( 'dt_assignable_users_compact', $list, $search_string, $get_all );
@@ -741,6 +743,10 @@ class Disciple_Tools_Users
             }
         }
         if ( !empty( $body['locale'] ) ){
+            if ( empty( get_user_meta( $user->ID, 'dt_user_initial_setup_default_language', true ) ) ){
+                update_user_meta( $user->ID, 'dt_user_initial_setup_default_language', $body['locale'] );
+            }
+
             return self::update_user_locale( $user->ID, $body['locale'] );
         }
         if ( !empty( $body['add_languages'] ) ){
@@ -922,6 +928,9 @@ class Disciple_Tools_Users
         } else {
             $args['locale'] = 'en_US';
         }
+        if ( !empty( $args['locale'] ) && empty( get_user_meta( $current_user->ID, 'dt_user_initial_setup_default_language', true ) ) ){
+            update_user_meta( $current_user->ID, 'dt_user_initial_setup_default_language', $args['locale'] );
+        }
         // _user table defaults
         $result = wp_update_user( $args );
 
@@ -1040,19 +1049,21 @@ class Disciple_Tools_Users
         global $wpdb;
         if ( DT_Mapbox_API::get_key() ) {
             $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid_meta' );
-            $grid['location_grid_meta'] = [];
-            foreach ( $location_grid as $meta ) {
-                $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
-                if ( $location_grid_meta ) {
-                    $grid['location_grid_meta'][] = $location_grid_meta;
+            if ( ! empty( $location_grid ) ) {
+                $grid['location_grid_meta'] = [];
+                foreach ( $location_grid as $meta ) {
+                    $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
+                    if ( $location_grid_meta ) {
+                        $grid['location_grid_meta'][] = $location_grid_meta;
+                    }
                 }
-            }
-            $grid['location_grid'] = [];
-            foreach ( $grid['location_grid_meta'] as $meta ) {
-                $grid['location_grid'][] = [
-                    'id' => (int) $meta['grid_id'],
-                    'label' => $meta['label']
-                ];
+                $grid['location_grid'] = [];
+                foreach ( $grid['location_grid_meta'] as $meta ) {
+                    $grid['location_grid'][] = [
+                        'id' => (int) $meta['grid_id'],
+                        'label' => $meta['label']
+                    ];
+                }
             }
         } else {
             $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid' );
@@ -1197,12 +1208,15 @@ class Disciple_Tools_Users
     }
 
     private static function get_user_settings_profile_field( $user, $field_key, $entries = [] ): array {
-        foreach ( dt_build_user_fields_display( get_user_meta( $user->ID ) ) ?? [] as $field ) {
-            if ( $field['type'] == $field_key && ! empty( $field['value'] ) ) {
-                $entries[] = [
-                    'value' => $field['value'],
-                    'label' => $field['label']
-                ];
+        $user_array = get_user_meta( $user->ID );
+        if ( is_array( $user_array ) ) {
+            foreach ( dt_build_user_fields_display( $user_array ) ?? [] as $field ) {
+                if ( $field['type'] == $field_key && ! empty( $field['value'] ) ) {
+                    $entries[] = [
+                        'value' => $field['value'],
+                        'label' => $field['label']
+                    ];
+                }
             }
         }
 

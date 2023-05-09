@@ -328,43 +328,44 @@ class DT_Duplicate_Checker_And_Merging {
         // Merge other hidden fields & types not previously captured during manual field selections
         $update_for_duplicate = [];
         foreach ( $archiving_post as $key => $fields ) {
+            $field_type = $field_settings[ $key ]['type'] ?? null;
             if ( ! isset( $update[ $key ] ) && ! empty( $fields ) && isset( $field_settings[ $key ] ) ) {
-                if ( $field_settings[ $key ]['type'] === 'multi_select' ) {
+                if ( $field_type === 'multi_select' ) {
                     $update[ $key ]['values'] = [];
                     foreach ( $fields as $field_value ) {
                         $update[ $key ]['values'][] = [ 'value' => $field_value ];
                     }
                 }
-                if ( $field_settings[ $key ]['type'] === 'key_select' && ( ! isset( $primary_post[ $key ] ) || $primary_post[ $key ]['key'] === 'none' || $primary_post[ $key ]['key'] === 'not-set' || $primary_post[ $key ]['key'] === '' ) ) {
+                if ( $field_type === 'key_select' && ( ! isset( $primary_post[ $key ] ) || $primary_post[ $key ]['key'] === 'none' || $primary_post[ $key ]['key'] === 'not-set' || $primary_post[ $key ]['key'] === '' ) ) {
                     $update[ $key ] = $fields['key'];
                 }
-                if ( $field_settings[ $key ]['type'] === 'text' && empty( $primary_post[ $key ] ) ) {
+                if ( $field_type === 'text' && empty( $primary_post[ $key ] ) ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $field_settings[ $key ]['type'] === 'textarea' && empty( $primary_post[ $key ] ) ) {
+                if ( $field_type === 'textarea' && empty( $primary_post[ $key ] ) ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $field_settings[ $key ]['type'] === 'number' && empty( $primary_post[ $key ] ) ) {
+                if ( $field_type === 'number' && empty( $primary_post[ $key ] ) ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $field_settings[ $key ]['type'] === 'date' && empty( $primary_post[ $key ] ) ) {
+                if ( $field_type === 'date' && empty( $primary_post[ $key ] ) ) {
                     $update[ $key ] = $fields['timestamp'] ?? '';
                 }
-                if ( $field_settings[ $key ]['type'] === 'array' && empty( $primary_post[ $key ] ) ) {
+                if ( $field_type === 'array' && empty( $primary_post[ $key ] ) ) {
                     if ( $key != 'duplicate_data' ) {
                         $update[ $key ] = $fields;
                     }
                 }
-                if ( $field_settings[ $key ]['type'] === 'boolean' && empty( $primary_post[ $key ] ) ) {
+                if ( $field_type === 'boolean' && empty( $primary_post[ $key ] ) ) {
                     $update[ $key ] = $fields;
                 }
-                if ( $field_settings[ $key ]['type'] === 'tags' ) {
+                if ( $field_type === 'tags' ) {
                     $update[ $key ]['values'] = [];
                     foreach ( $fields as $field_value ) {
                         $update[ $key ]['values'][] = [ 'value' => $field_value ];
                     }
                 }
-                if ( $field_settings[ $key ]['type'] === 'location_meta' ) {
+                if ( $field_type === 'location_meta' ) {
                     $update[ $key ]['values'] = [];
                     foreach ( $fields as $field_value ) {
                         if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) && isset( $field_value['level'] ) && isset( $field_value['label'] ) && isset( $field_value['source'] ) ) {
@@ -380,13 +381,13 @@ class DT_Duplicate_Checker_And_Merging {
                         }
                     }
                 }
-                if ( $field_settings[ $key ]['type'] === 'location' ) {
+                if ( $field_type === 'location' ) {
                     $update[ $key ]['values'] = [];
                     foreach ( $fields as $field_value ) {
                         $update[ $key ]['values'][] = [ 'value' => $field_value['id'] ];
                     }
                 }
-                if ( $field_settings[ $key ]['type'] === 'connection' ) {
+                if ( $field_type === 'connection' ) {
                     $update[ $key ]['values']               = [];
                     $update_for_duplicate[ $key ]['values'] = [];
                     foreach ( $fields as $field_value ) {
@@ -397,13 +398,20 @@ class DT_Duplicate_Checker_And_Merging {
                         ];
                     }
                 }
-                if ( $field_settings[ $key ]['type'] === 'communication_channel' ) {
+                if ( $field_type === 'communication_channel' ) {
                     $update[ $key ] = [
                         'values' => []
                     ];
                     foreach ( $fields as $values ) {
                         $update[ $key ]['values'][] = [ 'value' => $values['value'] ];
                     }
+                }
+            }
+            //don't merge assigned_to if the user no longer has access
+            if ( $field_type === 'user_select' && empty( $primary_post[ $key ] ) && isset( $fields['id'] ) ) {
+                unset( $update[ $key ] );
+                if ( user_can( $fields['id'], 'access_' . $post_type ) ){
+                    $update[ $key ] = $fields['assigned-to'];
                 }
             }
 
@@ -531,7 +539,9 @@ class DT_Duplicate_Checker_And_Merging {
         }
 
         if ( $post_type === 'contacts' ) {
-            $updates['reason_closed'] = 'duplicate';
+            if ( isset( $post_settings['fields']['reason_closed'] ) ){
+                $updates['reason_closed'] = 'duplicate';
+            }
             $updates['duplicate_of']  = $contact_id;
         }
 

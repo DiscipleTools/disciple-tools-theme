@@ -147,6 +147,34 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //list posts
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/list', [
+                [
+                    'methods'  => [ 'GET', 'POST' ],
+                    'callback' => [ $this, 'get_list' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                    ],
+                    'permission_callback' => '__return_true',
+                ]
+            ]
+        );
+
+        //split_by
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/split_by', [
+                [
+                    'methods' => 'POST',
+                    'callback' => [ $this, 'split_by' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                    ],
+                    'permission_callback' => '__return_true',
+                ]
+            ]
+        );
+
         //get_posts_for_typeahead
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/compact', [
@@ -261,6 +289,20 @@ class Disciple_Tools_Posts_Endpoints {
                 [
                     'methods'  => 'GET',
                     'callback' => [ $this, 'get_activity' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                        'id' => $arg_schemas['id'],
+                    ],
+                    'permission_callback' => '__return_true',
+                ]
+            ]
+        );
+        //revert_activity_history
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/revert_activity_history', [
+                [
+                    'methods'  => 'POST',
+                    'callback' => [ $this, 'revert_activity_history' ],
                     'args' => [
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
@@ -528,6 +570,12 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::list_posts( $url_params['post_type'], $get_params );
     }
 
+    public function split_by( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $get_params = $request->get_json_params() ?? $request->get_query_params();
+        return DT_Posts::split_by( $url_params['post_type'], $get_params );
+    }
+
     public function get_posts_for_typeahead( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
@@ -535,11 +583,16 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::get_viewable_compact( $url_params['post_type'], $search, $get_params );
     }
 
-
     public function get_activity( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         return DT_Posts::get_post_activity( $url_params['post_type'], $url_params['id'], $get_params );
+    }
+
+    public function revert_activity_history( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $data = $request->get_json_params() ?? $request->get_body_params();
+        return DT_Posts::revert_post_activity_history( $url_params['post_type'], $url_params['id'], $data );
     }
 
     public function get_single_activity( WP_REST_Request $request ){
@@ -619,7 +672,7 @@ class Disciple_Tools_Posts_Endpoints {
     public function toggle_comment_reaction( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $post_params = $request->get_json_params();
-        $result = DT_Posts::toggle_post_comment_reaction( $url_params['post_type'], $url_params['id'], $url_params['comment_id'], $post_params['user_id'], $post_params['reaction'] );
+        $result = DT_Posts::toggle_post_comment_reaction( $url_params['post_type'], $url_params['id'], $url_params['comment_id'], $post_params['reaction'] );
         return $result;
     }
 

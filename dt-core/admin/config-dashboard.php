@@ -189,6 +189,9 @@ final class Disciple_Tools_Dashboard
 
             ?>
                 <style>
+                    .news-feed {
+                        overflow-wrap: anywhere;
+                    }
                     .news-feed img {
                         max-width: 100%;
                         height: auto;
@@ -449,8 +452,8 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     }
     $items['donation'] = [
         'label' => 'Consider donating to Disciple.Tools',
-        'description' => "Would you like to be part of the development and maintenance of Disciple Tools? We would love your help! \r\n\r\n Donation portal: https://gospelambition.org/donate/",
-        'link' => 'https://gospelambition.org/donate/',
+        'description' => "Would you like to be part of the development and maintenance of Disciple Tools? We would love your help! \r\n\r\n Donation portal: https://disciple.tools/give/",
+        'link' => 'https://disciple.tools/give/',
         'complete' => false,
         'hide_mark_done' => false
     ];

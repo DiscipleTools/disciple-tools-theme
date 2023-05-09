@@ -139,6 +139,10 @@ jQuery(function ($) {
       handle_workflow_save_request();
     });
 
+    $(document).on('click', '#workflows_design_section_delete_but', function () {
+      handle_workflow_delete_request();
+    });
+
     /*** Event Listeners ***/
 
     /*** Event Listeners - Header Functions ***/
@@ -468,6 +472,10 @@ jQuery(function ($) {
       set_elements_step4(workflow, function () {
         adjust_elements_step4_locked_state(unlocked, handle_workflow_step3_next_request);
       });
+
+      // Only show workflow-delete option for custom workflows
+      let delete_but = $('#workflows_design_section_delete_but');
+      unlocked ? delete_but.show() : delete_but.hide();
     }
 
     function adjust_elements_step1_locked_state(unlock, callback) {
@@ -963,6 +971,26 @@ jQuery(function ($) {
 
       // strings must be equal
       return 0;
+    }
+
+    function handle_workflow_delete_request() {
+      let post_type_id = $('#workflows_design_section_hidden_selected_post_type_id').val();
+      let hidden_workflow_id = $('#workflows_design_section_hidden_workflow_id');
+      let is_regular_workflow = !hidden_workflow_id.val().startsWith('default_');
+      let workflow_id = is_regular_workflow ? hidden_workflow_id.val():hidden_workflow_id.val().split('default_')[1];
+      let workflow_name = $('#workflows_design_section_step4_title').val();
+
+      if (confirm("Are you sure you wish to delete workflow: " + workflow_name)) {
+        let delete_payload = {
+          'post_type_id': post_type_id,
+          'is_regular_workflow': is_regular_workflow,
+          'workflow_id': workflow_id
+        };
+
+        // Package and post delete payload.
+        $('#workflows_design_section_delete_form_payload').val(JSON.stringify(delete_payload));
+        $('#workflows_design_section_delete_form').submit();
+      }
     }
 
     function handle_workflow_save_request() {

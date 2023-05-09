@@ -18,9 +18,6 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
     public $namespace = 'dt-metrics/combined';
 
     public function __construct() {
-        if ( ! DT_Mapbox_API::get_key() ) {
-            return;
-        }
         parent::__construct();
         if ( !$this->has_permission() ){
             return;
@@ -62,6 +59,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
                 'translations' => [],
                 'settings' => [
                     'map_key' => DT_Mapbox_API::get_key(),
+                    'no_map_key_msg' => _x( 'To view this map, a mapbox key is needed; click here to add.', 'install mapbox key to view map', 'disciple_tools' ),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
                     'menu_slug' => $this->base_slug,
                     'post_type' => 'contacts',

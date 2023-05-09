@@ -26,16 +26,17 @@ class Disciple_Tools_Core_Endpoints {
      */
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/settings', [
-                'methods'  => 'GET',
-                'callback' => [ $this, 'get_settings' ],
-                'permission_callback' => '__return_true',
-            ]
-        );
-        register_rest_route(
             $this->public_namespace, '/settings', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'get_public_settings' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/settings', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_settings' ],
                 'permission_callback' => '__return_true',
             ]
         );
@@ -47,9 +48,7 @@ class Disciple_Tools_Core_Endpoints {
                 'permission_callback' => '__return_true',
             ]
         );
-
     }
-
 
     /**
      * These are settings available to any logged in user.
@@ -63,12 +62,16 @@ class Disciple_Tools_Core_Endpoints {
         $post_types = DT_Posts::get_post_types();
         $post_types_settings = [];
         foreach ( $post_types as $post_type ){
-            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type );
+            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type, false, true );
         }
         return [
             'available_translations' => $available_translations,
             'post_types' => $post_types_settings,
             'plugins' => apply_filters( 'dt_plugins', [] ),
+            'mapping' => [
+                'mapbox_api_key' => DT_Mapbox_API::get_key(),
+                'google_api_key' => Disciple_Tools_Google_Geocode_API::get_key(),
+            ]
         ];
     }
 
@@ -107,7 +110,7 @@ class Disciple_Tools_Core_Endpoints {
         // If logging for a post, validate user has permission
         if ( isset( $params['object_type'] ) && !empty( $params['object_type'] ) ) {
             $type = $params['object_type'];
-            $post_types = apply_filters( 'dt_registered_post_types', [ 'contacts', 'groups' ] );
+            $post_types = DT_Posts::get_post_types();
             if ( array_search( $type, $post_types ) !== false ) {
                 $post_id = isset( $params['object_id'] ) ? $params['object_id'] : null;
 

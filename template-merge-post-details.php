@@ -121,7 +121,7 @@ get_header();
                             value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
 
                     <br>
-                    <span id="merge_errors"></span>
+                    <span class="merge_errors"></span>
                 </div>
             </main>
             <br>
@@ -176,6 +176,8 @@ get_header();
                 <div class="bordered-box">
                     <button class='button loader submit-merge' type='button'
                             value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
+                    <br>
+                    <span class='merge_errors'></span>
                 </div>
             </main>
 

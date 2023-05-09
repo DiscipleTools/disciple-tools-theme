@@ -4,6 +4,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
     public function up() {
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 14 ){
+            return;
+        }
+
 //        get all miltestones grouped by contact
         global $wpdb;
         $milestones = $wpdb->get_results("
