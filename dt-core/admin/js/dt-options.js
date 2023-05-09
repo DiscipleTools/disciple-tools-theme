@@ -558,4 +558,65 @@ jQuery(document).ready(function ($) {
   /**
    * Tile Display Help Modal - [END]
    */
+
+  /**
+   * User Notifications Email Management Modal - [START]
+   */
+
+  $(document).on('click', '#manage_user_email_notifications_but', function (e) {
+    event.preventDefault();
+    handle_manage_user_email_notifications_modal($(e.currentTarget));
+  });
+
+  $(document).on('click', '#manage_user_email_notifications_mute_all', function (e) {
+    handle_mute_all_selection();
+  });
+
+  function handle_manage_user_email_notifications_modal(button) {
+    let dialog = $('#' + $(button).data('dialog_id'));
+    if (dialog) {
+      dialog.dialog({
+        modal: true,
+        autoOpen: false,
+        hide: 'fade',
+        show: 'fade',
+        height: 600,
+        width: 450,
+        resizable: true,
+        title: 'Manage User Email Notifications',
+        buttons: [
+          {
+            text: 'OK',
+            icon: 'ui-icon-check',
+            click: function () {
+              $(this).dialog('close');
+
+              // Capture all muted users for subsequent storage.
+              let muted = [];
+              $('.manage-user-email-notifications_muted:checked').each(function () {
+                muted.push($(this).data('user_id'));
+              });
+              $('#email_notifications_muted_users').val(JSON.stringify(muted));
+            }
+          }
+        ],
+        open: function (event, ui) {
+        }
+      });
+
+      // Display help dialog
+      dialog.dialog('open');
+
+    } else {
+      console.log('Unable to reference a valid: [dialog]');
+    }
+  }
+
+  function handle_mute_all_selection() {
+    $('.manage-user-email-notifications_muted').prop('checked', $('#manage_user_email_notifications_mute_all').prop('checked'));
+  }
+
+  /**
+   * User Notifications Email Management Modal - [END]
+   */
 })

@@ -39,6 +39,9 @@ class DT_User_Hooks_And_Configuration {
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
         add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
+
+        // email short-circuit validation
+        add_filter( 'pre_wp_mail', [ $this, 'user_pre_wp_mail_mute_notifications' ], 10, 2 );
     }
 
 
@@ -576,5 +579,32 @@ class DT_User_Hooks_And_Configuration {
             </table>
 
         <?php endif;
+    }
+
+    /**
+     * Determine if and which user notifications have been muted and short-circuit
+     * email flow accordingly.
+     *
+     * @param $return
+     * @param $atts
+     */
+    public function user_pre_wp_mail_mute_notifications( $return, $atts ){
+
+        // Determine if email notifications should be muted for any new users.
+        // TODO: Hhmmm, might need to deep-test/rethink the following logic; which might still be a valid shape for existing users!
+        if ( get_option( 'dt_mute_new_user_email_notifications', false ) ){
+            return ( isset( $atts['to'] ) && !( get_user_by( 'email', $atts['to'] ) ) ) ? true : $return;
+        }
+
+        // Determine if specific user email notifications should be muted!
+        $user_email_notification_settings = get_option( 'dt_manage_user_email_notification_settings', [] );
+        if ( !empty( $user_email_notification_settings ) && isset( $atts['to'] ) ){
+            $user = get_user_by( 'email', $atts['to'] );
+            if ( $user ){
+                return ( isset( $user_email_notification_settings['user_' . $user->ID] ) && $user_email_notification_settings['user_' . $user->ID]['muted'] ) ? true : $return;
+            }
+        }
+
+        return $return;
     }
 }

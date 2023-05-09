@@ -153,6 +153,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
         $site_options = dt_get_option( 'dt_site_options' );
         $notifications = $site_options['notifications']['types'];
+        $mute_new_user_email_notifications = get_option( 'dt_mute_new_user_email_notifications', false );
+        $manage_user_email_notification_settings = get_option( 'dt_manage_user_email_notification_settings', [] );
 
         ?>
         <form method="post" name="notifications-form">
@@ -178,6 +180,56 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <?php endforeach; ?>
 
             </table>
+
+            <br>
+            <p>
+                <label><?php esc_html_e( 'Mute new user email notifications:' ) ?>
+                    <input type="checkbox" name="mute_new_user_email_notifications" id="mute_new_user_email_notifications" <?php echo $mute_new_user_email_notifications ? 'checked' : '' ?> />
+                </label>
+            </p>
+
+            <p>
+                <label><?php esc_html_e( 'Manage all user email notifications:' ) ?>
+                    <button id="manage_user_email_notifications_but" class="button"
+                            data-dialog_id="manage_user_email_notifications_dialog"><?php esc_html_e( 'Manage Notifications' ) ?></button>
+                </label>
+            </p>
+            <dialog id="manage_user_email_notifications_dialog" style="display: none;">
+                <table class="widefat striped">
+                    <thead>
+                    <tr>
+                        <th><?php esc_html_e( 'User' ) ?></th>
+                        <th style="text-align: right;"><?php esc_html_e( 'Mute All' ) ?></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th style="text-align: right;"><input type="checkbox" id="manage_user_email_notifications_mute_all" /></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    foreach ( DT_User_Management::get_users() ?? [] as $user ){
+                        $user_muted = isset( $manage_user_email_notification_settings['user_' . $user['ID']] ) && $manage_user_email_notification_settings['user_' . $user['ID']]['muted'] ?? false;
+                        ?>
+                        <tr>
+                            <td>
+                                <?php esc_html_e( sprintf( '%s', $user['display_name'] ) ) ?>
+                            </td>
+                            <td style="text-align: right;">
+                                <input type="checkbox" class="manage-user-email-notifications_muted"
+                                       data-user_id="<?php esc_html_e( sprintf( '%s', $user['ID'] ) ) ?>"
+                                    <?php echo $user_muted ? 'checked' : '' ?>
+                                />
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </dialog>
+            <input type="hidden" id="email_notifications_muted_users" name="email_notifications_muted_users" value="[]"/>
+
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
         </form>
@@ -205,6 +257,19 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
 
             update_option( 'dt_site_options', $site_options, true );
+
+            // Handle muting of user email notifications.
+            $updated_user_notification_settings = [];
+            if ( isset( $_POST['email_notifications_muted_users'] ) ){
+                $muted_users = json_decode( sanitize_text_field( wp_unslash( $_POST['email_notifications_muted_users'] ) ), true );
+                foreach ( $muted_users ?? [] as $user_id ){
+                    $updated_user_notification_settings['user_' . $user_id] = [
+                        'muted' => true
+                    ];
+                }
+            }
+            update_option( 'dt_manage_user_email_notification_settings', $updated_user_notification_settings );
+            update_option( 'dt_mute_new_user_email_notifications', ( isset( $_POST['mute_new_user_email_notifications'] ) && $_POST['mute_new_user_email_notifications'] ) );
         }
     }
 
@@ -663,13 +728,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
             <br>
             <p>
-                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?>
+                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role:' ) ?>
                     <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
                 </label>
             </p>
 
             <p>
-                <label><?php esc_html_e( 'Default user language' ) ?>
+                <label><?php esc_html_e( 'Default user language:' ) ?>
                     <select id="user_default_language" name="user_default_language">
                         <?php
                         $languages = dt_get_available_languages();
