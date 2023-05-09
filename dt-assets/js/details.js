@@ -138,6 +138,28 @@ jQuery(document).ready(function($) {
     })
   })
 
+  $('.dt_date_time_group').each(setTimePickers)
+
+  function setTimePickers() {
+    const timestamp = this.dataset.timestamp
+
+    const timePicker = $(this).children('.dt_time_picker')
+
+    if ( timePicker ) {
+      timePicker.val(toTimeInputFormat(timestamp))
+    }
+  }
+
+  function toTimeInputFormat(timestamp) {
+      const date = new Date( Number(timestamp) * 1000 )
+      let timeString
+      try {
+          timeString = date.toTimeString().split(':').slice(0,2).join(':')
+      } catch (error) {
+          timeString = ''
+      }
+      return timeString
+  }
 
   $('.dt_date_picker').datepicker({
     constrainInput: false,
@@ -165,6 +187,29 @@ jQuery(document).ready(function($) {
     if (this.value && moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
     }
+  })
+
+  $('.dt_time_picker').on('blur' ,function() {
+    const fieldId = this.dataset.fieldId
+
+    const dateTimeGroup = $(`.${fieldId}.dt_date_time_group`)
+
+    const timestamp = dateTimeGroup.data('timestamp')
+    const [ hours, minutes ] = this.value.split(':')
+
+    const localDateTime = moment(timestamp * 1000)
+    localDateTime.set({ h: hours, m: minutes })
+
+    const updatedTimestamp = localDateTime.unix()
+
+    dateTimeGroup.data('timestamp', updatedTimestamp)
+
+    $(`#${fieldId}-spinner`).addClass('active')
+    rest_api.update_post( post_type, post_id, { [fieldId]: updatedTimestamp }).then((resp)=>{
+      $(`#${fieldId}-spinner`).removeClass('active')
+      //$( document ).trigger( "dt_date_picker-updated", [ resp, fieldId, date ] );
+    }).catch(handleAjaxError)
+
   })
 
 

@@ -758,13 +758,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
 
                 <?php elseif ( $field_type === 'date' ) :?>
-                <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
+                    <?php $timestamp = $post[$field_key]['timestamp'] ?? '' ?>
+                <div class="<?php echo esc_html( $display_field_id ); ?> input-group dt_date_time_group" data-timestamp="<?php echo esc_html( $timestamp ) ?>">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
-                           value="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
+                           value="<?php echo esc_html( $timestamp ) ?>" <?php echo esc_html( $disabled ); ?> >
 
                     <?php if ( isset( $fields[$field_key]['enable_time_picker'] ) && $fields[$field_key]['enable_time_picker'] === 'on' ) : ?>
 
-                        <input type="time" class="input-group-field" id="<?php echo esc_html( $display_field_id ) . '_time_picker'; ?>">
+                        <input type="time" class="input-group-field dt_time_picker" id="<?php echo esc_html( $display_field_id ) . '_time_picker'; ?>"
+                                data-field-id="<?php echo esc_attr( $display_field_id ) ?>">
 
                     <?php endif; ?>
 
