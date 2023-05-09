@@ -151,14 +151,8 @@ jQuery(document).ready(function($) {
   }
 
   function toTimeInputFormat(timestamp) {
-      const date = new Date( Number(timestamp) * 1000 )
-      let timeString
-      try {
-          timeString = date.toTimeString().split(':').slice(0,2).join(':')
-      } catch (error) {
-          timeString = ''
-      }
-      return timeString
+      const date = moment( Number(timestamp) * 1000 )
+      return date.format('HH:mm')
   }
 
   $('.dt_date_picker').datepicker({
