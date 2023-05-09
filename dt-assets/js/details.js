@@ -170,9 +170,22 @@ jQuery(document).ready(function($) {
       if (!$(this).val()) {
         date = " ";//null;
       }
+
       let id = $(this).attr('id')
+
+      const dateTimeGroup = $(`.${id}.dt_date_time_group`)
+      const currentTimestamp = dateTimeGroup.data('timestamp')
+
+      const currentDateTime = moment(currentTimestamp * 1000)
+      const hours = currentDateTime.get('h')
+      const minutes = currentDateTime.get('m')
+
+      const updatedTimestamp = moment(date).set({ h: hours, m: minutes }).unix()
+
+      dateTimeGroup.data('timestamp', updatedTimestamp)
+
       $(`#${id}-spinner`).addClass('active')
-      rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
+      rest_api.update_post( post_type, post_id, { [id]: updatedTimestamp }).then((resp)=>{
         $(`#${id}-spinner`).removeClass('active')
         if (this.value) {
           this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
@@ -197,10 +210,7 @@ jQuery(document).ready(function($) {
     const timestamp = dateTimeGroup.data('timestamp')
     const [ hours, minutes ] = this.value.split(':')
 
-    const localDateTime = moment(timestamp * 1000)
-    localDateTime.set({ h: hours, m: minutes })
-
-    const updatedTimestamp = localDateTime.unix()
+    const updatedTimestamp = moment(timestamp * 1000).set({ h: hours, m: minutes }).unix()
 
     dateTimeGroup.data('timestamp', updatedTimestamp)
 
