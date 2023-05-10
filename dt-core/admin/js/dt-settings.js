@@ -298,6 +298,9 @@ jQuery(document).ready(function($) {
     });
 
     function show_preview_tile(tile_key) {
+        if(tile_key == 'no_tile') {
+            return;
+        }
         var tile_html = `
             <div class="dt-tile-preview">
                 <div class="section-header">
@@ -314,7 +317,7 @@ jQuery(document).ready(function($) {
             }
         });
 
-        var field_order = window['field_settings']['post_type_settings']['tiles'][tile_key]['order'];
+        var field_order = window['field_settings']['post_type_tiles'][tile_key]['order'];
         if (field_order) {
             fields = field_order;
         }
@@ -631,31 +634,34 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         API.delete_tile(post_type, tile_key).promise().then(function() {
-            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
-            var tile_submenu = $(`div.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`);
+            var tile_submenu = $(`div.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             closeModal();
             if (tile_submenu.is(':visible')) {
                 var tile_expand_icon = $(`.field-settings-table-tile-name[data-key="${tile_key}"]>span.expand-icon`);
                 tile_expand_icon.click();
             }
 
-            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no-tile-hidden"]');
+            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no_tile"]');
             if (no_tile_menu.is(':hidden')) {
-                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no-tile-hidden"]>span.expand-icon');
+                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no_tile"] > span.expand-icon');
                 no_tile_expand_icon.click();
             }
 
             var deleted_tile_field_options =  $(`.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`).children().not('.add-new-item');
             deleted_tile_field_options.each(function() {
                 $(this).removeClass('inset-shadow');
-                no_tile_menu.append($(this));
+                var no_tile_menu_last_submenu = $('.tile-rundown-elements[data-parent-tile-key="no_tile"] > .add-new-item');
+                no_tile_menu_last_submenu.before($(this));
+                $(this).attr('data-parent-tile-key', 'no_tile');
+                $(this).find('.field-name-content').attr('data-parent-tile-key', 'no_tile');
+                $(this).find('.field-settings-table-field-name').attr('data-parent-tile-key', 'no_tile');
                 $(this).find('.field-settings-table-field-name').addClass('menu-highlight');
             });
 
+            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
             tile_element.css('background', '#e14d43');
             tile_element.fadeOut(500, function(){
                 tile_element.parent().remove();
-                tile_submenu.remove();
             });
         });
     });
@@ -1229,7 +1235,7 @@ jQuery(document).ready(function($) {
         var field_icon = $('#edit-field-icon').val();
 
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
-            window.field_settings.post_type_settings.fields[field_key] = result;
+            $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {
                 return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
