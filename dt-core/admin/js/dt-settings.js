@@ -179,9 +179,9 @@ jQuery(document).ready(function($) {
                     sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
                 });
                 API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
-                    var old_order = window.field_settings.post_type_settings.fields[field_key].default;
+                    var old_order = window['field_settings']['post_type_settings']['fields'][field_key]['default'];
                     field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
-                    window.field_settings.post_type_settings.fields[field_key].default = field_options_in_new_order;
+                    window['field_settings']['post_type_settings']['fields'][field_key]['default'] = field_options_in_new_order;
 
                     tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
                     show_preview_tile(tile_key);
@@ -324,117 +324,120 @@ jQuery(document).ready(function($) {
 
         $.each(fields, function(field_index, field_key) {
             var field = window['field_settings']['post_type_settings']['fields'][field_key];
+            if( !field?.type ){
+              return;
+            }
 
-                var icon_html = '';
-                if ( field['icon'] ) {
-                    icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
-                }
+            var icon_html = '';
+            if ( field['icon'] ) {
+                icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
+            }
 
+            tile_html += `
+                    <div class="section-subheader">
+                        ${icon_html}
+                        ${field['name']}
+                    </div>
+            `;
+
+
+            /*** TEXT - START ***/
+            if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
                 tile_html += `
-                        <div class="section-subheader">
-                            ${icon_html}
-                            ${field['name']}
-                        </div>
+                    <input type="text" class="text-input">
                 `;
-
-
-                /*** TEXT - START ***/
-                if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
-                    tile_html += `
-                        <input type="text" class="text-input">
-                    `;
-                }
-                /*** TEXT - END ***/
+            }
+            /*** TEXT - END ***/
 
 
 
-                /*** NUMBER - START ***/
-                if ( field['type'] === 'number' ) {
-                    tile_html += `
-                        <input type="number" class="text-input" value="1" min="" max=""></input>
-                    `;
-                }
-                /*** NUMBER - END ***/
-
-
-                /*** DATE - START ***/
-                if ( field['type'] === 'date' ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <input class="typeahead-input">
-                            <button class="typeahead-delete-button">x</button>
-                        </div>
-                    `;
-                }
-                /*** DATE - END ***/
-
-
-
-               /*** USER_SELECT - START ***/
-               if ( field['type'] === 'user_select' ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <span class="typeahead-cancel-button">×</span>
-                            <input class="typeahead-input" placeholder="Search Users">
-                            <button class="typeahead-button">
-                                <img src="${window.field_settings.template_dir}/dt-assets/images/search.svg">
-                            </button>
-                        </div>
+            /*** NUMBER - START ***/
+            if ( field['type'] === 'number' ) {
+                tile_html += `
+                    <input type="number" class="text-input" value="1" min="" max=""></input>
                 `;
-               }
-               /*** USER_SELECT - END ***/
+            }
+            /*** NUMBER - END ***/
+
+
+            /*** DATE - START ***/
+            if ( field['type'] === 'date' ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <input class="typeahead-input">
+                        <button class="typeahead-delete-button">x</button>
+                    </div>
+                `;
+            }
+            /*** DATE - END ***/
 
 
 
-               /*** CONNECTION - START ***/
-                if ( ['connection', 'tags'].indexOf(field['type'] ) > -1 ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <input class="typeahead-input" placeholder="Search ${field['name']}">
-                            <button class="typeahead-button">
-                                <img src="${window.field_settings.template_dir}/dt-assets/images/add-contact.svg">
-                            </button>
-                        </div>
-                    `;
-                }
-                /*** CONNECTION - END ***/
+           /*** USER_SELECT - START ***/
+           if ( field['type'] === 'user_select' ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <span class="typeahead-cancel-button">×</span>
+                        <input class="typeahead-input" placeholder="Search Users">
+                        <button class="typeahead-button">
+                            <img src="${window.field_settings.template_dir}/dt-assets/images/search.svg">
+                        </button>
+                    </div>
+            `;
+           }
+           /*** USER_SELECT - END ***/
 
 
 
-                /*** MULTISELECT - START ***/
-                if ( field['type'] === 'multi_select' ) {
-                    tile_html += `<div class="button-group" style="display: inline-flex;">`;
-                        var multi_select_icon_html = '';
-                        $.each( field['default'], function(k,f) {
-                            if ( f['icon'] ) {
-                                multi_select_icon_html = `<img src="${f['icon']}" class="dt-icon">`;
-                            }
-                            tile_html += `
-                            <button>
-                                ${multi_select_icon_html}
-                                ${f['label']}
-                            </button>
-                            `;
-                        });
-                    tile_html += `</div>`;
-                }
-                /*** MULTISELECT - START ***/
+           /*** CONNECTION - START ***/
+            if ( ['connection', 'tags'].indexOf(field['type'] ) > -1 ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <input class="typeahead-input" placeholder="Search ${field['name']}">
+                        <button class="typeahead-button">
+                            <img src="${window.field_settings.template_dir}/dt-assets/images/add-contact.svg">
+                        </button>
+                    </div>
+                `;
+            }
+            /*** CONNECTION - END ***/
 
 
 
-                /*** KEY_SELECT - START ***/
-                if ( field['type'] === 'key_select' ) {
-                    var color_select = '';
-                    if ( field['custom_display'] ) {
-                        color_select = 'color-select';
-                    }
-                    tile_html += `<select class="select-field ${color_select}" style="width: 100%;">`;
+            /*** MULTISELECT - START ***/
+            if ( field['type'] === 'multi_select' ) {
+                tile_html += `<div class="button-group" style="display: inline-flex;">`;
+                    var multi_select_icon_html = '';
                     $.each( field['default'], function(k,f) {
-                        tile_html += `<option>${f['label']}</option>`;
+                        if ( f['icon'] ) {
+                            multi_select_icon_html = `<img src="${f['icon']}" class="dt-icon">`;
+                        }
+                        tile_html += `
+                        <button>
+                            ${multi_select_icon_html}
+                            ${f['label']}
+                        </button>
+                        `;
                     });
-                    tile_html += `</select>`;
+                tile_html += `</div>`;
+            }
+            /*** MULTISELECT - START ***/
+
+
+
+            /*** KEY_SELECT - START ***/
+            if ( field['type'] === 'key_select' ) {
+                var color_select = '';
+                if ( field['custom_display'] ) {
+                    color_select = 'color-select';
                 }
-                /*** KEY_SELECT - END ***/
+                tile_html += `<select class="select-field ${color_select}" style="width: 100%;">`;
+                $.each( field['default'], function(k,f) {
+                    tile_html += `<option>${f['label']}</option>`;
+                });
+                tile_html += `</select>`;
+            }
+            /*** KEY_SELECT - END ***/
         });
         tile_html += `
                 </div>
@@ -696,10 +699,18 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="tile_label"><b>New Field Name</b></label>
+                    <label for="new-field-name"><b>New Field Name</b></label>
                 </td>
                 <td>
-                    <input name="edit-tile-label" id="new-field-name-${tile_key}" type="text" value="" required>
+                    <input name="new-field-name" id="new-field-name" type="text" value="" required>
+                </td>
+                <td class="spinner-box">
+                    <span class="loading-spinner"></span>
+                </td>
+            </tr>
+            <tr id="field-exists-message" style="display:none;">
+                <td colspan="2" class="error-message">
+                    Field already exists
                 </td>
             </tr>
             <tr>
@@ -707,7 +718,7 @@ jQuery(document).ready(function($) {
                     <label for="tile_label"><b>Field Type</b></label>
                 </td>
                 <td>
-                    <select id="new-field-type-${tile_key}" name="new-field-type" required>
+                    <select id="new-field-type" name="new-field-type" required>
                         <option value="key_select">Dropdown</option>
                         <option value="multi_select">Multi Select</option>
                         <option value="tags">Tags</option>
@@ -758,7 +769,7 @@ jQuery(document).ready(function($) {
                     <label for="new_tile_name"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="new_field_private" id="new-field-private-${tile_key}" type="checkbox">
+                    <input name="new_field_private" id="new-field-private" type="checkbox">
                 </td>
             </tr>
             <tr>
@@ -1157,9 +1168,9 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-add-field', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
-        var new_field_name = $(`#new-field-name-${tile_key}`).val();
-        var new_field_type = $(`#new-field-type-${tile_key}`).val();
-        var new_field_private = $(`#new-field-private-${tile_key}`).is(':checked');
+        var new_field_name = $(`#new-field-name`).val();
+        var new_field_type = $(`#new-field-type`).val();
+        var new_field_private = $(`#new-field-private`).is(':checked');
         var connection_target = $('#connection-field-target').val();
         var multidirectional = $('#multidirectional_checkbox').is(':checked');
         var other_field_name = $('#other_field_name').val();
@@ -1199,7 +1210,7 @@ jQuery(document).ready(function($) {
                 <div class="field-settings-table-child-toggle">
                     <div class="field-settings-table-field-option">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
-                        <span class="field-name-content"><i>default blank</i></span>
+                        <span class="field-name-content">default blank</span>
                     </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
@@ -1289,11 +1300,11 @@ jQuery(document).ready(function($) {
         var field_option_icon = $('#edit-field-icon').val();
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'].push( new_field_option_key = {
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
                 label:field_option_name,
                 description:field_option_description,
                 icon:field_option_icon,
-            });
+            };
 
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
@@ -1608,6 +1619,27 @@ jQuery(document).ready(function($) {
             var selected_field_target_label = window.field_settings.all_post_types[selected_field_target];
             $('.connected_post_type').text(selected_field_target_label);
         }
+    });
+
+    $('.dt-admin-modal-box').on('input', '#new-field-name', function() {
+        $('.loading-spinner').addClass('active');
+        var field_name = $(this).val();
+        if ( field_name.length == 0 ) {
+            $('#field-exists-message').hide();
+            $('#js-add-field').prop('disabled', false);
+            $('.loading-spinner').removeClass('active');
+            return;
+        }
+        var field_key = field_name.toLowerCase().replace(' ', '_');
+
+        if (window.field_settings.post_type_settings.fields[field_key]) {
+            $('#field-exists-message').show();
+            $('#js-add-field').prop('disabled', true);
+        } else {
+            $('#field-exists-message').hide();
+            $('#js-add-field').prop('disabled', false);
+        }
+        $('.loading-spinner').removeClass('active');
     });
 
     $.typeahead({

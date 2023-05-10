@@ -415,13 +415,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                             <?php if ( $key === 'default' && !empty( $field_settings['default'] ) && is_array( $field_settings['default'] ) ) : ?>
                                                 <?php foreach ( $value as $k => $v ) {
                                                     $label = 'default blank';
-                                                    if ( isset( $v['label'] ) || !empty( $v['label'] ) ) {
-                                                        // $option_key = $value;
+                                                    if ( isset( $v['label'] ) && !empty( $v['label'] ) ) {
                                                         $label = $v['label'];
-                                                    }
-
-                                                    if ( isset( $v['default'] ) || !empty( $v['default'] ) ) {
-                                                        $option_key = $v['default'];
                                                     }
                                                     ?>
                                                     <div class="field-settings-table-field-option" id="<?php echo esc_attr( $k ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
