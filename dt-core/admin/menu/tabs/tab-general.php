@@ -208,16 +208,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </thead>
                     <tbody>
                     <?php
-                    foreach ( DT_User_Management::get_users() ?? [] as $user ){
+                    foreach ( DT_User_Management::get_users( true ) ?? [] as $user ){
                         $user_muted = isset( $manage_user_email_notification_settings['user_' . $user['ID']] ) && $manage_user_email_notification_settings['user_' . $user['ID']]['muted'] ?? false;
                         ?>
                         <tr>
                             <td>
-                                <?php esc_html_e( sprintf( '%s', $user['display_name'] ) ) ?>
+                                <?php echo esc_html( sprintf( '%s', $user['display_name'] ) ) ?>
                             </td>
                             <td style="text-align: right;">
                                 <input type="checkbox" class="manage-user-email-notifications_muted"
-                                       data-user_id="<?php esc_html_e( sprintf( '%s', $user['ID'] ) ) ?>"
+                                       data-user_id="<?php echo esc_html( sprintf( '%s', $user['ID'] ) ) ?>"
                                     <?php echo $user_muted ? 'checked' : '' ?>
                                 />
                             </td>
@@ -269,7 +269,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             update_option( 'dt_manage_user_email_notification_settings', $updated_user_notification_settings );
-            update_option( 'dt_mute_new_user_email_notifications', ( isset( $_POST['mute_new_user_email_notifications'] ) && $_POST['mute_new_user_email_notifications'] ) );
+            update_option( 'dt_mute_new_user_email_notifications', ( isset( $_POST['mute_new_user_email_notifications'] ) && boolval( wp_unslash( $_POST['mute_new_user_email_notifications'] ) ) ) );
         }
     }
 

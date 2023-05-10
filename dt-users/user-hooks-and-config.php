@@ -105,6 +105,7 @@ class DT_User_Hooks_And_Configuration {
      * @param $user_id
      */
     public static function user_register_hook( $user_id ) {
+        self::handle_new_user_registering_muted_notifications( $user_id );
         if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
             check_admin_referer( 'create-user', '_wpnonce_create-user' );
         }
@@ -590,12 +591,6 @@ class DT_User_Hooks_And_Configuration {
      */
     public function user_pre_wp_mail_mute_notifications( $return, $atts ){
 
-        // Determine if email notifications should be muted for any new users.
-        // TODO: Hhmmm, might need to deep-test/rethink the following logic; which might still be a valid shape for existing users!
-        if ( get_option( 'dt_mute_new_user_email_notifications', false ) ){
-            return ( isset( $atts['to'] ) && !( get_user_by( 'email', $atts['to'] ) ) ) ? true : $return;
-        }
-
         // Determine if specific user email notifications should be muted!
         $user_email_notification_settings = get_option( 'dt_manage_user_email_notification_settings', [] );
         if ( !empty( $user_email_notification_settings ) && isset( $atts['to'] ) ){
@@ -606,5 +601,15 @@ class DT_User_Hooks_And_Configuration {
         }
 
         return $return;
+    }
+
+    public static function handle_new_user_registering_muted_notifications( $user_id ){
+        if ( get_option( 'dt_mute_new_user_email_notifications', false ) ){
+            $user_email_notification_settings = get_option( 'dt_manage_user_email_notification_settings', [] );
+            $user_email_notification_settings['user_' . $user_id] = [
+                'muted' => true
+            ];
+            update_option( 'dt_manage_user_email_notification_settings', $user_email_notification_settings );
+        }
     }
 }
