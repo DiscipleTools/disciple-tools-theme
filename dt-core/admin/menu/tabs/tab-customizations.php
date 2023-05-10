@@ -491,6 +491,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         if ( isset( $post_tiles['fields'][$field_key]['customizable'] ) && $post_tiles['fields'][$field_key]['customizable'] === false ) {
             return false;
         }
+        $field_type = $post_tiles['fields'][$field_key]['type'];
+        if ( in_array( $field_type, [ 'hash', 'array' ] ) ){
+            return false;
+        }
         return true;
     }
     public function save_settings(){
