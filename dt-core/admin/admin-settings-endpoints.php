@@ -309,7 +309,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $field_customizations = dt_get_option( 'dt_field_customizations' );
             foreach ( $field_customizations[$post_type] as  $field_key => $field_settings ) {
                 if ( $field_customizations[$post_type][$field_key]['tile'] === $tile_key ) {
-                    unset( $field_customizations[$post_type][$field_key]['tile'] );
+                    $field_customizations[$post_type][$field_key]['tile'] = 'no_tile';
                 }
             }
             update_option( 'dt_field_customizations', $field_customizations );
