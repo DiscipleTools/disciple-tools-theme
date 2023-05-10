@@ -20,6 +20,7 @@ class DT_User_Hooks_And_Configuration {
         add_action( 'signup_user_meta', [ $this, 'signup_user_meta' ], 10, 1 );
         add_action( 'wpmu_activate_user', [ $this, 'wpmu_activate_user' ], 10, 3 );
         add_action( 'dt_user_created', [ $this, 'dt_user_created' ], 10, 1 );
+        add_filter( 'wp_send_new_user_notification_to_user', [ $this, 'wp_send_new_user_notification' ], 10, 2 );
 
         //invite user and edit user page modifications
         add_action( 'user_new_form', [ &$this, 'custom_user_profile_fields' ] );
@@ -39,9 +40,6 @@ class DT_User_Hooks_And_Configuration {
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
         add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
-
-        // email short-circuit validation
-        add_filter( 'pre_wp_mail', [ $this, 'user_pre_wp_mail_mute_notifications' ], 10, 2 );
     }
 
 
@@ -105,7 +103,6 @@ class DT_User_Hooks_And_Configuration {
      * @param $user_id
      */
     public static function user_register_hook( $user_id ) {
-        self::handle_new_user_registering_muted_notifications( $user_id );
         if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
             check_admin_referer( 'create-user', '_wpnonce_create-user' );
         }
@@ -168,8 +165,12 @@ class DT_User_Hooks_And_Configuration {
         if ( !empty( $contact_id ) && ! is_wp_error( $contact_id ) ){
             $mention = dt_get_user_mention_syntax( $user_id );
             $comment_html = sprintf( __( 'Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users', 'disciple_tools' ), $mention );
-            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false );
+            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false, get_option( 'dt_disable_dt_new_user_email_notifications', false ) );
         }
+    }
+
+    public function wp_send_new_user_notification( $send, $user ){
+        return !get_option( 'dt_disable_wp_new_user_email_notifications', !$send );
     }
 
     /**
@@ -580,36 +581,5 @@ class DT_User_Hooks_And_Configuration {
             </table>
 
         <?php endif;
-    }
-
-    /**
-     * Determine if and which user notifications have been muted and short-circuit
-     * email flow accordingly.
-     *
-     * @param $return
-     * @param $atts
-     */
-    public function user_pre_wp_mail_mute_notifications( $return, $atts ){
-
-        // Determine if specific user email notifications should be muted!
-        $user_email_notification_settings = get_option( 'dt_manage_user_email_notification_settings', [] );
-        if ( !empty( $user_email_notification_settings ) && isset( $atts['to'] ) ){
-            $user = get_user_by( 'email', $atts['to'] );
-            if ( $user ){
-                return ( isset( $user_email_notification_settings['user_' . $user->ID] ) && $user_email_notification_settings['user_' . $user->ID]['muted'] ) ? true : $return;
-            }
-        }
-
-        return $return;
-    }
-
-    public static function handle_new_user_registering_muted_notifications( $user_id ){
-        if ( get_option( 'dt_mute_new_user_email_notifications', false ) ){
-            $user_email_notification_settings = get_option( 'dt_manage_user_email_notification_settings', [] );
-            $user_email_notification_settings['user_' . $user_id] = [
-                'muted' => true
-            ];
-            update_option( 'dt_manage_user_email_notification_settings', $user_email_notification_settings );
-        }
     }
 }
