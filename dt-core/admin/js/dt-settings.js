@@ -321,117 +321,120 @@ jQuery(document).ready(function($) {
 
         $.each(fields, function(field_index, field_key) {
             var field = window['field_settings']['post_type_settings']['fields'][field_key];
+            if( !field?.type ){
+              return;
+            }
 
-                var icon_html = '';
-                if ( field['icon'] ) {
-                    icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
-                }
+            var icon_html = '';
+            if ( field['icon'] ) {
+                icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
+            }
 
+            tile_html += `
+                    <div class="section-subheader">
+                        ${icon_html}
+                        ${field['name']}
+                    </div>
+            `;
+
+
+            /*** TEXT - START ***/
+            if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
                 tile_html += `
-                        <div class="section-subheader">
-                            ${icon_html}
-                            ${field['name']}
-                        </div>
+                    <input type="text" class="text-input">
                 `;
-
-
-                /*** TEXT - START ***/
-                if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
-                    tile_html += `
-                        <input type="text" class="text-input">
-                    `;
-                }
-                /*** TEXT - END ***/
+            }
+            /*** TEXT - END ***/
 
 
 
-                /*** NUMBER - START ***/
-                if ( field['type'] === 'number' ) {
-                    tile_html += `
-                        <input type="number" class="text-input" value="1" min="" max=""></input>
-                    `;
-                }
-                /*** NUMBER - END ***/
-
-
-                /*** DATE - START ***/
-                if ( field['type'] === 'date' ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <input class="typeahead-input">
-                            <button class="typeahead-delete-button">x</button>
-                        </div>
-                    `;
-                }
-                /*** DATE - END ***/
-
-
-
-               /*** USER_SELECT - START ***/
-               if ( field['type'] === 'user_select' ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <span class="typeahead-cancel-button">×</span>
-                            <input class="typeahead-input" placeholder="Search Users">
-                            <button class="typeahead-button">
-                                <img src="${window.field_settings.template_dir}/dt-assets/images/search.svg">
-                            </button>
-                        </div>
+            /*** NUMBER - START ***/
+            if ( field['type'] === 'number' ) {
+                tile_html += `
+                    <input type="number" class="text-input" value="1" min="" max=""></input>
                 `;
-               }
-               /*** USER_SELECT - END ***/
+            }
+            /*** NUMBER - END ***/
+
+
+            /*** DATE - START ***/
+            if ( field['type'] === 'date' ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <input class="typeahead-input">
+                        <button class="typeahead-delete-button">x</button>
+                    </div>
+                `;
+            }
+            /*** DATE - END ***/
 
 
 
-               /*** CONNECTION - START ***/
-                if ( ['connection', 'tags'].indexOf(field['type'] ) > -1 ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <input class="typeahead-input" placeholder="Search ${field['name']}">
-                            <button class="typeahead-button">
-                                <img src="${window.field_settings.template_dir}/dt-assets/images/add-contact.svg">
-                            </button>
-                        </div>
-                    `;
-                }
-                /*** CONNECTION - END ***/
+           /*** USER_SELECT - START ***/
+           if ( field['type'] === 'user_select' ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <span class="typeahead-cancel-button">×</span>
+                        <input class="typeahead-input" placeholder="Search Users">
+                        <button class="typeahead-button">
+                            <img src="${window.field_settings.template_dir}/dt-assets/images/search.svg">
+                        </button>
+                    </div>
+            `;
+           }
+           /*** USER_SELECT - END ***/
 
 
 
-                /*** MULTISELECT - START ***/
-                if ( field['type'] === 'multi_select' ) {
-                    tile_html += `<div class="button-group" style="display: inline-flex;">`;
-                        var multi_select_icon_html = '';
-                        $.each( field['default'], function(k,f) {
-                            if ( f['icon'] ) {
-                                multi_select_icon_html = `<img src="${f['icon']}" class="dt-icon">`;
-                            }
-                            tile_html += `
-                            <button>
-                                ${multi_select_icon_html}
-                                ${f['label']}
-                            </button>
-                            `;
-                        });
-                    tile_html += `</div>`;
-                }
-                /*** MULTISELECT - START ***/
+           /*** CONNECTION - START ***/
+            if ( ['connection', 'tags'].indexOf(field['type'] ) > -1 ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <input class="typeahead-input" placeholder="Search ${field['name']}">
+                        <button class="typeahead-button">
+                            <img src="${window.field_settings.template_dir}/dt-assets/images/add-contact.svg">
+                        </button>
+                    </div>
+                `;
+            }
+            /*** CONNECTION - END ***/
 
 
 
-                /*** KEY_SELECT - START ***/
-                if ( field['type'] === 'key_select' ) {
-                    var color_select = '';
-                    if ( field['custom_display'] ) {
-                        color_select = 'color-select';
-                    }
-                    tile_html += `<select class="select-field ${color_select}" style="width: 100%;">`;
+            /*** MULTISELECT - START ***/
+            if ( field['type'] === 'multi_select' ) {
+                tile_html += `<div class="button-group" style="display: inline-flex;">`;
+                    var multi_select_icon_html = '';
                     $.each( field['default'], function(k,f) {
-                        tile_html += `<option>${f['label']}</option>`;
+                        if ( f['icon'] ) {
+                            multi_select_icon_html = `<img src="${f['icon']}" class="dt-icon">`;
+                        }
+                        tile_html += `
+                        <button>
+                            ${multi_select_icon_html}
+                            ${f['label']}
+                        </button>
+                        `;
                     });
-                    tile_html += `</select>`;
+                tile_html += `</div>`;
+            }
+            /*** MULTISELECT - START ***/
+
+
+
+            /*** KEY_SELECT - START ***/
+            if ( field['type'] === 'key_select' ) {
+                var color_select = '';
+                if ( field['custom_display'] ) {
+                    color_select = 'color-select';
                 }
-                /*** KEY_SELECT - END ***/
+                tile_html += `<select class="select-field ${color_select}" style="width: 100%;">`;
+                $.each( field['default'], function(k,f) {
+                    tile_html += `<option>${f['label']}</option>`;
+                });
+                tile_html += `</select>`;
+            }
+            /*** KEY_SELECT - END ***/
         });
         tile_html += `
                 </div>
