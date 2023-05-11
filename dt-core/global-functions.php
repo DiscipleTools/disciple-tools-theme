@@ -641,7 +641,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <dt-single-select
                     <?php echo wp_kses_post( $shared_attributes ) ?>
                     options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
-                    value="<?php echo esc_attr( $post[$field_key] ? $post[$field_key]['key'] : '' ) ?>">
+                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? $post[$field_key]['key'] : '' ) ?>">
                     <?php dt_render_icon_slot( $fields[$field_key] ) ?>
                 </dt-single-select>
             <?php elseif ( $field_type === 'tags' ) : ?>
