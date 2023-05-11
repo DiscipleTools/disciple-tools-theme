@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-03-30T15:54:40+00:00\n"
+"POT-Creation-Date: 2023-05-05T09:31:33+00:00\n"
 "PO-Revision-Date: 2023-03-15 16:07+0000\n"
 "Last-Translator: Dmitry <dmitry_cherednikov@wycliffe.ru>\n"
 "Language-Team: Russian <https://translate.disciple.tools/projects/disciple-"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Отправить запрос"
 
-#: 403.php:55 archive-template.php:780 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:847 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -85,8 +85,8 @@ msgstr "Отправить запрос"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: 403.php:59 archive-template.php:321 archive-template.php:363
-#: archive-template.php:804 dt-assets/parts/loop-activity-comment.php:132
+#: 403.php:59 archive-template.php:388 archive-template.php:430
+#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:132
 #: dt-assets/parts/loop-activity-comment.php:137
 #: dt-assets/parts/loop-activity-comment.php:172
 #: dt-assets/parts/loop-activity-comment.php:177
@@ -141,7 +141,7 @@ msgstr "Создать новую %s"
 msgid "Filters"
 msgstr "Фильтры"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:471
+#: archive-template.php:36 archive-template.php:126 archive-template.php:538
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:634
 #: dt-core/global-functions.php:662 dt-core/global-functions.php:780
 #: dt-core/global-functions.php:824 dt-posts/custom-post-type.php:18
@@ -151,7 +151,7 @@ msgid "Search %s"
 msgstr "Искать %s"
 
 #: archive-template.php:37 archive-template.php:127
-#: dt-mapping/geocode-api/mapbox-api.php:291
+#: dt-mapping/geocode-api/mapbox-api.php:293
 msgid "Clear"
 msgstr "Очистить"
 
@@ -181,12 +181,12 @@ msgstr "Поиск по всем полям"
 msgid "Communication Channels"
 msgstr "Каналы связи"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:358
+#: archive-template.php:106 archive-template.php:193 archive-template.php:425
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Применить"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:359
+#: archive-template.php:107 archive-template.php:194 archive-template.php:426
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "восстановление значений по умолчанию"
@@ -200,205 +200,216 @@ msgstr "Фильтры %s"
 msgid "Create custom filter"
 msgstr "Создать пользовательский фильтр"
 
-#: archive-template.php:225
+#: archive-template.php:221
+msgctxt "Split By"
+msgid "Split By"
+msgstr ""
+
+#: archive-template.php:282
+#, fuzzy
+#| msgid "No duplicates found."
+msgid "No results found"
+msgstr "Дубликатов не найдено."
+
+#: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "Список %s"
 
-#: archive-template.php:232
+#: archive-template.php:299
 msgid "Sort"
 msgstr "Сортировать"
 
-#: archive-template.php:236
+#: archive-template.php:303
 msgid "Newest"
 msgstr "Новые"
 
-#: archive-template.php:240
+#: archive-template.php:307
 msgid "Oldest"
 msgstr "Старые"
 
-#: archive-template.php:244
+#: archive-template.php:311
 msgid "Most recently modified"
 msgstr "Измененные недавно"
 
-#: archive-template.php:248
+#: archive-template.php:315
 msgid "Least recently modified"
 msgstr "Измененные давно"
 
-#: archive-template.php:258 template-new-bulk-post.php:89
+#: archive-template.php:325 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Поля"
 
-#: archive-template.php:265
+#: archive-template.php:332
 msgid "Bulk Edit"
 msgstr "Массовое редактирование"
 
-#: archive-template.php:278 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:184
 msgid "More"
 msgstr "Больше"
 
-#: archive-template.php:300 dt-contacts/base-setup.php:356
+#: archive-template.php:367 dt-contacts/base-setup.php:356
 #: dt-users/users.php:439
 msgid "Archived"
 msgstr "Отправлено в архив"
 
-#: archive-template.php:301
+#: archive-template.php:368
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Показать %s"
 
-#: archive-template.php:324
+#: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
 msgstr "Выберите, какие поля отображать как столбцы в списке"
 
-#: archive-template.php:367
+#: archive-template.php:434
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "Выберите из списка все %1$s, которые хотите обновить, и обновите их ниже"
 
-#: archive-template.php:385 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:862
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Искать пользователей"
 
-#: archive-template.php:409 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2389
+#: archive-template.php:476 dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2705
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:128
 msgid "Status"
 msgstr "Статус"
 
-#: archive-template.php:459
+#: archive-template.php:526
 msgid "Share with:"
 msgstr "Поделиться с:"
 
-#: archive-template.php:487 dt-assets/functions/details-bar.php:168
+#: archive-template.php:554 dt-assets/functions/details-bar.php:168
 #: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "Подписаться"
 
-#: archive-template.php:492 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:559 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Комментарии и активность"
 
-#: archive-template.php:497 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:564 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Оставьте свой комментарий"
 
-#: archive-template.php:505 dt-assets/parts/loop-activity-comment.php:48
+#: archive-template.php:572 dt-assets/parts/loop-activity-comment.php:48
 msgid "Type:"
 msgstr "Тип:"
 
-#: archive-template.php:525 dt-users/template-new-user.php:129
+#: archive-template.php:592 dt-users/template-new-user.php:129
 #: dt-users/template-new-user.php:242
 msgid "See More Options"
 msgstr "Посмотреть больше вариантов"
 
-#: archive-template.php:526 dt-users/template-new-user.php:132
+#: archive-template.php:593 dt-users/template-new-user.php:132
 #: dt-users/template-new-user.php:245
 msgid "See Fewer Options"
 msgstr "Посмотреть меньше вариантов"
 
-#: archive-template.php:562 dt-assets/parts/loop-activity-comment.php:175
+#: archive-template.php:629 dt-assets/parts/loop-activity-comment.php:175
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Обновить"
 
-#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:323
+#: archive-template.php:630 dt-assets/functions/enqueue-scripts.php:323
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "Сделайте выбор ниже"
 
-#: archive-template.php:594 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:661 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "Имя"
 
-#: archive-template.php:605
+#: archive-template.php:672
 msgid "Loading..."
 msgstr "Загрузка..."
 
-#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:367
+#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:367
 msgid "Load More"
 msgstr "Загрузить еще"
 
-#: archive-template.php:622
+#: archive-template.php:689
 msgid "Field Name"
 msgstr "Имя поля"
 
-#: archive-template.php:678
+#: archive-template.php:745
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Начните печатать для поиска"
 
-#: archive-template.php:687
+#: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Все %1$s с %2$s"
 
-#: archive-template.php:690
+#: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Все %1$s без%2$s"
 
-#: archive-template.php:697
+#: archive-template.php:764
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Фильтровать как подчиненного или назначить для"
 
-#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:314
+#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:314
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "Дата создания"
 
-#: archive-template.php:713 archive-template.php:720
+#: archive-template.php:780 archive-template.php:787
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76
 msgid "None Set"
 msgstr "Ничего не установлено"
 
-#: archive-template.php:734 archive-template.php:735
-#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:441
+#: archive-template.php:801 archive-template.php:802
+#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "Нет"
 
-#: archive-template.php:741 archive-template.php:742
-#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:439
+#: archive-template.php:808 archive-template.php:809
+#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "Да"
 
-#: archive-template.php:746
+#: archive-template.php:813
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Начало периода"
 
-#: archive-template.php:749 archive-template.php:760
+#: archive-template.php:816 archive-template.php:827
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Очистить"
 
-#: archive-template.php:756
+#: archive-template.php:823
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Конец периода"
 
-#: archive-template.php:788
+#: archive-template.php:855
 msgid "Filter Name"
 msgstr "Название фильтра"
 
-#: archive-template.php:793
+#: archive-template.php:860
 msgid "Filter Records"
 msgstr "Фильтр записей"
 
-#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:274
+#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:274
 #: dt-assets/functions/enqueue-scripts.php:309
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -668,7 +679,7 @@ msgid "No records found matching your filter."
 msgstr "Не найдено ни одной записи, соответствующей вашему фильтру."
 
 #: dt-assets/functions/enqueue-scripts.php:318 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:360
 msgctxt "All records"
 msgid "All %s"
 msgstr "Все %s"
@@ -1842,8 +1853,8 @@ msgstr "Пол"
 msgid "This record might be a duplicate of: "
 msgstr "Эта запись может быть дубликатом: "
 
-#: dt-contacts/access-module.php:1482 dt-contacts/duplicates-merging.php:465
-#: dt-contacts/duplicates-merging.php:545
+#: dt-contacts/access-module.php:1482 dt-contacts/duplicates-merging.php:473
+#: dt-contacts/duplicates-merging.php:555
 msgid "Duplicate Checker"
 msgstr "Проверка дубликатов"
 
@@ -2064,7 +2075,7 @@ msgid "Other"
 msgstr "Другой"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:351
+#: dt-posts/custom-post-type.php:339
 msgid "Default Filters"
 msgstr "Фильтры по умолчанию"
 
@@ -2074,23 +2085,23 @@ msgid "All %s I can view"
 msgstr "Все %s, которые я могу просматривать"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:384
+#: dt-posts/custom-post-type.php:372
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Избранные %s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:390
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:378
 msgid "Favorite"
 msgstr "Избранные"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:399
+#: dt-posts/custom-post-type.php:387
 msgid "My Recently Viewed"
 msgstr "Недавно просмотренные"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:404
+#: dt-posts/custom-post-type.php:392
 msgid "Last 30 viewed"
 msgstr "Последние 30 просмотренных"
 
@@ -2407,23 +2418,23 @@ msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "Поиск множителей и контактов"
 
-#: dt-contacts/duplicates-merging.php:422
+#: dt-contacts/duplicates-merging.php:430
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Из дубликата): %s"
 
-#: dt-contacts/duplicates-merging.php:541
+#: dt-contacts/duplicates-merging.php:551
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Эта запись является дубликатом и была объединена с %2$s"
 
-#: dt-contacts/duplicates-merging.php:554
+#: dt-contacts/duplicates-merging.php:564
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s объединил(а) %2$s в эту запись"
 
 #. Template Name of the theme
-#: dt-contacts/duplicates-merging.php:566
+#: dt-contacts/duplicates-merging.php:576
 msgid "View Duplicates"
 msgstr "Просмотреть дубликаты"
 
@@ -2628,7 +2639,7 @@ msgid "prayer"
 msgstr "молитва"
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:573
+#: dt-login/login-template.php:574
 msgid "Home"
 msgstr "Домашний"
 
@@ -3192,7 +3203,7 @@ msgstr ""
 msgid "Get New Password"
 msgstr "Получить новый пароль"
 
-#: dt-login/login-template.php:104 dt-login/login-template.php:532
+#: dt-login/login-template.php:104 dt-login/login-template.php:533
 msgid "Email Address"
 msgstr "Адрес эл. почты"
 
@@ -3223,7 +3234,7 @@ msgid "Re-enter Password"
 msgstr "Введите пароль повторно"
 
 #: dt-login/login-template.php:340 dt-login/login-template.php:409
-#: dt-login/login-template.php:589
+#: dt-login/login-template.php:590
 msgid "Register"
 msgstr "Регистрация"
 
@@ -3239,8 +3250,8 @@ msgstr "Показывать имя (необязательно)"
 msgid "User action confirmed."
 msgstr "Действие пользователя подтверждено."
 
-#: dt-login/login-template.php:509 dt-login/login-template.php:535
-#: dt-login/login-template.php:581
+#: dt-login/login-template.php:509 dt-login/login-template.php:536
+#: dt-login/login-template.php:582
 msgid "Login"
 msgstr "Войти"
 
@@ -3248,16 +3259,16 @@ msgstr "Войти"
 msgid "Username or password does not match. Try again."
 msgstr "Имя пользователя или пароль не совпадают. Попробуйте еще раз."
 
-#: dt-login/login-template.php:533 dt-users/template-new-user.php:123
+#: dt-login/login-template.php:534 dt-users/template-new-user.php:123
 #: dt-users/template-new-user.php:124 template-settings.php:600
 msgid "Password"
 msgstr "Пароль"
 
-#: dt-login/login-template.php:534
+#: dt-login/login-template.php:535
 msgid "Remember Me"
 msgstr "Запомнить меня"
 
-#: dt-login/login-template.php:596
+#: dt-login/login-template.php:597
 msgid "Lost your password?"
 msgstr "Забыли пароль?"
 
@@ -3267,28 +3278,28 @@ msgstr "Забыли пароль?"
 msgid "Churches"
 msgstr "Церкви"
 
-#: dt-mapping/geocode-api/mapbox-api.php:286
-#: dt-mapping/geocode-api/mapbox-api.php:321
+#: dt-mapping/geocode-api/mapbox-api.php:288
+#: dt-mapping/geocode-api/mapbox-api.php:323
 #: dt-users/template-user-management.php:268 template-settings.php:322
 msgid "add"
 msgstr "добавить"
 
-#: dt-mapping/geocode-api/mapbox-api.php:287 template-merge-post-details.php:88
+#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:88
 msgid "Use"
 msgstr "Использовать"
 
-#: dt-mapping/geocode-api/mapbox-api.php:288 template-merge-post-details.php:86
+#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:86
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "Искать местоположение"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:87
+#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:87
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Удалить местоположение"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290
+#: dt-mapping/geocode-api/mapbox-api.php:292
 msgid "Open Mapping"
 msgstr "Открытое картографирование"
 
@@ -4128,33 +4139,33 @@ msgstr "Полезный способ группировать связанны�
 msgid "Un-Follow"
 msgstr "Отписаться"
 
-#: dt-posts/dt-posts.php:110
+#: dt-posts/dt-posts.php:103
 msgid "Updated existing record instead of creating a new record."
 msgstr "Обновлена существующая запись вместо создания новой."
 
-#: dt-posts/dt-posts.php:1350
+#: dt-posts/dt-posts.php:1641
 msgid "Magic Link Submission"
 msgstr "Отправка магической ссылки"
 
-#: dt-posts/dt-posts.php:1352 dt-posts/dt-posts.php:1895
+#: dt-posts/dt-posts.php:1643 dt-posts/dt-posts.php:2186
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "Отменить действие"
 
-#: dt-posts/dt-posts.php:1358
+#: dt-posts/dt-posts.php:1649
 msgid "D.T System"
 msgstr "Система D.T"
 
-#: dt-posts/dt-posts.php:2135
+#: dt-posts/dt-posts.php:2426
 msgid "Post already shared with user."
 msgstr "Запись уже предоставлена пользователю."
 
-#: dt-posts/dt-posts.php:2390 single-template.php:174
+#: dt-posts/dt-posts.php:2706 single-template.php:174
 msgid "Details"
 msgstr "Сведения"
 
-#: dt-posts/dt-posts.php:2454
+#: dt-posts/dt-posts.php:2770
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4166,7 +4177,7 @@ msgstr ""
 "@[%1$s](%2$s) — пользователь %3$s запросил доступ к %4$s [%5$s](%6$s). Если "
 "хотите, поделитесь этой записью с пользователем, чтобы предоставить доступ."
 
-#: dt-posts/dt-posts.php:2460
+#: dt-posts/dt-posts.php:2776
 msgid "Access Request"
 msgstr "Запрос доступа"
 
@@ -4340,132 +4351,148 @@ msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
 msgstr "%s удалена из одноранговых (пир) групп"
 
-#: dt-posts/posts.php:355 dt-posts/posts.php:356 dt-posts/posts.php:363
-#: dt-posts/posts.php:364
+#: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
+#: dt-posts/posts.php:369
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "Связан с %s"
 
-#: dt-posts/posts.php:358 dt-posts/posts.php:359 dt-posts/posts.php:366
-#: dt-posts/posts.php:367
+#: dt-posts/posts.php:360 dt-posts/posts.php:361
+#, fuzzy
+#| msgctxt "Milestone1 added to Milestones"
+#| msgid "%1$s added to %2$s"
+msgctxt "Contact1 added to [field]"
+msgid "%1$s added to %2$s"
+msgstr "%1$s добавлен к %2$s"
+
+#: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
+#: dt-posts/posts.php:386
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "Связь с %s удалена"
 
-#: dt-posts/posts.php:395
+#: dt-posts/posts.php:377 dt-posts/posts.php:378
+#, fuzzy
+#| msgctxt "Milestone1 removed from Milestones"
+#| msgid "%1$s removed from %2$s"
+msgctxt "contact1 removed from [field]"
+msgid "%1$s removed from %2$s"
+msgstr "%1$s удалено из %2$s"
+
+#: dt-posts/posts.php:416
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
 msgstr "Назначеное лицо: %s"
 
-#: dt-posts/posts.php:395
+#: dt-posts/posts.php:416
 msgid "Nobody"
 msgstr "Никто"
 
-#: dt-posts/posts.php:400 dt-posts/posts.php:405
+#: dt-posts/posts.php:421 dt-posts/posts.php:426
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s изменен на %2$s"
 
-#: dt-posts/posts.php:413 dt-posts/posts.php:424
+#: dt-posts/posts.php:434 dt-posts/posts.php:445
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s удалено из %2$s"
 
-#: dt-posts/posts.php:416 dt-posts/posts.php:427
+#: dt-posts/posts.php:437 dt-posts/posts.php:448
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "%1$s добавлен к %2$s"
 
-#: dt-posts/posts.php:449
+#: dt-posts/posts.php:470
 msgid "%s removed"
 msgstr "%s удален"
 
-#: dt-posts/posts.php:457 dt-posts/posts.php:470
+#: dt-posts/posts.php:478 dt-posts/posts.php:491
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "%1$s удалено из местоположений"
 
-#: dt-posts/posts.php:460 dt-posts/posts.php:477
+#: dt-posts/posts.php:481 dt-posts/posts.php:498
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s добавлено в местоположения"
 
-#: dt-posts/posts.php:491
+#: dt-posts/posts.php:512
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
 msgstr "%1$s удален из %2$s"
 
-#: dt-posts/posts.php:494
+#: dt-posts/posts.php:515
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
 msgstr "%1$s добавлен к %2$s"
 
-#: dt-posts/posts.php:515
+#: dt-posts/posts.php:536
 msgctxt "message"
 msgid "verified"
 msgstr "подтверждено"
 
-#: dt-posts/posts.php:515
+#: dt-posts/posts.php:536
 msgctxt "message"
 msgid "not verified"
 msgstr "не подтверждено"
 
-#: dt-posts/posts.php:518
+#: dt-posts/posts.php:539
 msgctxt "message"
 msgid "invalidated"
 msgstr "аннулированно"
 
-#: dt-posts/posts.php:518
+#: dt-posts/posts.php:539
 msgctxt "message"
 msgid "not invalidated"
 msgstr "не анулировано"
 
-#: dt-posts/posts.php:545
+#: dt-posts/posts.php:566
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "Добавлен %1$s: %2$s"
 
-#: dt-posts/posts.php:547
+#: dt-posts/posts.php:568
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "Изменен %1$s: с %2$s на %3$s"
 
-#: dt-posts/posts.php:549
+#: dt-posts/posts.php:570
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "Удален %1$s: %2$s"
 
-#: dt-posts/posts.php:553
+#: dt-posts/posts.php:574
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "Имя изменено на: %s"
 
-#: dt-posts/posts.php:555
+#: dt-posts/posts.php:576
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "Создано из Demo Plugin"
 
-#: dt-posts/posts.php:562
+#: dt-posts/posts.php:583
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s задание отклонено"
 
-#: dt-posts/posts.php:562 dt-posts/posts.php:565
+#: dt-posts/posts.php:583 dt-posts/posts.php:586
 msgctxt "message"
 msgid "A user"
 msgstr "Пользователь"
 
-#: dt-posts/posts.php:565
+#: dt-posts/posts.php:586
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "%s принял задание"
 
-#: dt-posts/posts.php:570
+#: dt-posts/posts.php:591
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "Поделился с %s"
 
-#: dt-posts/posts.php:572
+#: dt-posts/posts.php:593
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Отменил \"поделиться\" с %s"
