@@ -739,7 +739,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
                 <tr>
                     <th>
-                        <button type="submit" name="save" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+                        <button type="submit" name="save" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
                     </th>
                     <td>
                     <?php
@@ -811,7 +811,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <button type="submit" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            <button type="submit" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
 
         <?php endif; ?>
 
@@ -1016,7 +1016,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                    value="[]"/>
 
             <br>
-            <button type="submit" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            <button type="submit" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
 
         <?php } ?>
         </form>
@@ -1026,9 +1026,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         /**
          * Visibility controls
          */
+        $field_extras_form_name = 'field_extras_form';
         ?>
         <?php if ( isset( $post_fields['type']['default'] ) ) : ?>
-            <form method="post" name="field_extras_form">
+            <form method="post" name="<?php echo esc_attr( $field_extras_form_name )?>" id="<?php echo esc_attr( $field_extras_form_name )?>">
             <input type="hidden" name="field_key" value="<?php echo esc_html( $field_key )?>">
             <input type="hidden" name="post_type" value="<?php echo esc_html( $post_type )?>">
             <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . '_' . $field_key )?>">
@@ -1048,7 +1049,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <?php endforeach; ?>
             <br>
             <br>
-            <button type="submit" name="save_types" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            <button type="submit" name="save_types" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $field_extras_form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
 
             <!-- create record form -->
             <h3><?php echo esc_html( sprintf( __( 'Visible when creating %s', 'disciple_tools' ), strtolower( $post_settings['label_plural'] ) ) ) ?></h3>
@@ -1066,7 +1067,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <?php endforeach; ?>
             <br>
             <br>
-            <button type="submit" name="save_create_form" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            <button type="submit" name="save_create_form" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $field_extras_form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
             </form>
         <?php endif; ?>
     <?php }
@@ -1222,22 +1223,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
 
-            // key_select and multi_options
+            // key_select, multi_options & links
             if ( isset( $post_fields[$field_key]['default'] ) && ( $field['type'] === 'multi_select' || $field['type'] === 'key_select' || $field['type'] === 'link' ) ){
                 $field_options = $field['default'];
                 foreach ( $post_submission as $key => $val ){
                     if ( strpos( $key, 'field_option_' ) === 0 ) {
                         if ( strpos( $key, 'translation' ) !== false ) {
-                            $option_key           = substr( $key, 13, strpos( $key, 'translation' ) - 14 );
-                            $translation_langcode = substr( $key, strpos( $key, 'translation' ) + strlen( 'translation-' ) );
-                            if ( strpos( $translation_langcode, '-' ) !== false ) {
-                                $translation_langcode = substr( $translation_langcode, 3 );
-                            }
-                            if ( empty( $val ) && isset( $custom_field['default'][ $option_key ]['translations'][ $translation_langcode ] ) ) {
-                                unset( $custom_field['default'][ $option_key ]['translations'][ $translation_langcode ] );
-                            } elseif ( ! empty( $val ) ) {
-                                $custom_field['default'][ $option_key ]['translations'][ $translation_langcode ] = $val;
-                            }
+                            continue;
                         } elseif ( strpos( $key, 'icon' ) !== false ) {
                             $option_key = substr( $key, 18 );
 
@@ -1268,16 +1260,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
                     if ( strpos( $key, 'option_description_' ) === 0 ) {
                         if ( strpos( $key, 'translation' ) !== false ) {
-                            $option_key = substr( $key, strlen( 'option_description_' ), strpos( $key, 'translation' ) - ( strlen( 'option_description_' ) + 1 ) );
-                            $translation_langcode = substr( $key, strpos( $key, 'translation' ) + strlen( 'translation-' ) );
-                            if ( strpos( $translation_langcode, '-' ) !== false ) {
-                                $translation_langcode = substr( $translation_langcode, 3 );
-                            }
-                            if ( empty( $val ) && isset( $custom_field['default'][$option_key]['description_translations'][$translation_langcode] ) ){
-                                unset( $custom_field['default'][$option_key]['description_translations'][$translation_langcode] );
-                            } elseif ( !empty( $val ) ) {
-                                $custom_field['default'][$option_key]['description_translations'][$translation_langcode] = $val;
-                            }
+                            continue;
                         } else {
                             $option_key = substr( $key, strlen( 'option_description_' ) );
                             //if the description isn't set and the value is not empty, or if the value changed.

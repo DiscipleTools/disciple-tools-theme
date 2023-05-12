@@ -25,6 +25,15 @@ class DT_Admin_Endpoints {
                 },
             ]
         );
+        register_rest_route(
+            $this->namespace, '/scripts/update_custom_field_option_translations', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'update_custom_field_option_translations' ],
+                'permission_callback' => function(){
+                    return current_user_can( 'manage_dt' );
+                },
+            ]
+        );
     }
 
     public function reset_count_field( WP_REST_Request $request ){
@@ -58,6 +67,67 @@ class DT_Admin_Endpoints {
             ];
         } else {
             return new WP_Error( __FILE__, 'Missing Params post_type or field_key' );
+        }
+    }
+
+    public function update_custom_field_option_translations( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( isset( $params['post_type'], $params['field_id'], $params['field_type'], $params['translations'] ) ){
+            $post_type = $params['post_type'];
+            $field_id = $params['field_id'];
+            $field_type = $params['field_type'];
+            $option_translations = $params['translations'];
+
+            // Fetch existing field customizations and if needed, create relevant spaces!
+            $field_customizations = dt_get_option( 'dt_field_customizations' );
+            if ( !isset( $field_customizations[$post_type][$field_id] ) ){
+                $field_customizations[$post_type][$field_id] = [];
+            }
+
+            $custom_field = $field_customizations[$post_type][$field_id];
+            if ( !isset( $custom_field['default'] ) ){
+                $custom_field['default'] = [];
+            }
+
+            // Update custom field default options.
+            $defaults = [];
+            foreach ( $option_translations as $option ){
+                $option_key = $option['option_key'];
+
+                if ( !empty( $option_key ) ){
+                    $defaults[$option_key] = [];
+                    $defaults[$option_key]['translations'] = [];
+                    $defaults[$option_key]['description_translations'] = [];
+
+                    // Capture option translations.
+                    foreach ( $option['option_translations'] ?? [] as $option_translation ){
+                        if ( !empty( $option_translation['locale'] ) && !empty( $option_translation['value'] ) ){
+                            $defaults[$option_key]['translations'][$option_translation['locale']] = $option_translation['value'];
+                        }
+                    }
+
+                    // Capture option description translations.
+                    foreach ( $option['option_description_translations'] ?? [] as $option_description_translations ){
+                        if ( !empty( $option_description_translations['locale'] ) && !empty( $option_description_translations['value'] ) ){
+                            $defaults[$option_key]['description_translations'][$option_description_translations['locale']] = $option_description_translations['value'];
+                        }
+                    }
+                }
+            }
+            $custom_field['default'] = $defaults;
+
+            // Persist updated custom field option translations.
+            $field_customizations[$post_type][$field_id] = $custom_field;
+            update_option( 'dt_field_customizations', $field_customizations );
+
+            // For completeness, return updated shape!
+            return [
+                'translations' => $option_translations,
+                'field' => $custom_field
+            ];
+
+        } else {
+            return new WP_Error( __FILE__, 'Missing required parameters.' );
         }
     }
 

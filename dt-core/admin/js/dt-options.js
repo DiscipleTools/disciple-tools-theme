@@ -69,7 +69,7 @@ jQuery(document).ready(function ($) {
             $(this).dialog('close');
 
             // Finally, auto save changes
-            $('form[name="' + form_name + '"]').submit();
+            $('.dt-custom-fields-save-button')[0].click();
 
           }
         }
@@ -558,4 +558,112 @@ jQuery(document).ready(function ($) {
   /**
    * Tile Display Help Modal - [END]
    */
+
+  /**
+   * Alternative Save Flow - [START]
+   */
+
+  $(document).on('click', '.dt-custom-fields-save-button', function (e) {
+    handle_custom_field_save_request(e, $(e.currentTarget));
+  });
+
+  function handle_custom_field_save_request(event, save_button) {
+
+    // Determine if save flow should adopt an ajax approach for larger translation based payloads.
+    if (window.lodash.includes(['key_select', 'multi_select', 'link'], $(save_button).data('field_type'))) {
+
+      // Short-circuit save flow and adopt an ajax approach.
+      event.preventDefault();
+
+      // Prep ajax data payload.
+      let payload = {
+        'post_type': $(save_button).data('post_type'),
+        'field_id': $(save_button).data('field_id'),
+        'field_type': $(save_button).data('field_type'),
+        'translations': package_custom_field_option_translations()
+      };
+
+      // Have core endpoint process field option translations.
+      $.ajax({
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(payload),
+        url: `${window.dt_admin_scripts.rest_root}dt-admin/scripts/update_custom_field_option_translations`,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+        }
+      }).done(function (response) {
+        console.log(response);
+
+        // Submit parent form to handle non-translation based attribute updates.
+        $('form[name="' + $(save_button).data('form_id') + '"]').submit();
+
+      }).fail(function (error) {
+        console.log("error");
+        console.log(error);
+
+        // Submit parent form to handle non-translation based attribute updates.
+        $('form[name="' + $(save_button).data('form_id') + '"]').submit();
+
+      });
+
+    } else {
+      $('form[name="' + $(save_button).data('form_id') + '"]').submit();
+    }
+  }
+
+  function package_custom_field_option_translations() {
+    let packaged_translations = [];
+
+    $('.sortable-field-options').find('tr.ui-sortable-handle').each(function (idx, tr) {
+      let translations = {
+        'option_key': '',
+        'option_translations': [],
+        'option_description_translations': []
+      };
+
+      // Determine option key.
+      let option_key = $(tr).find('.sortable-field-options-key').text().trim();
+      if (option_key) {
+        translations['option_key'] = option_key;
+
+        // Locate option key translations.
+        let option_key_prefix = 'field_option_' + option_key + '_translation-';
+        $(tr).find("input[name^='" + option_key_prefix + "']").each(function (okt_idx, okt_input) {
+          let locale = window.lodash.split($(okt_input).attr('name'), '-')[1];
+          if (locale) {
+            translations['option_translations'].push({
+              'locale': locale,
+              'value': $(okt_input).val()
+            });
+          }
+        });
+
+
+        // Locate option key description translations.
+        let option_key_description_prefix = 'option_description_' + option_key + '_translation-';
+        $(tr).find("input[name^='" + option_key_description_prefix + "']").each(function (okdt_idx, okdt_input) {
+          let locale = window.lodash.split($(okdt_input).attr('name'), '-')[1];
+          if (locale) {
+            translations['option_description_translations'].push({
+              'locale': locale,
+              'value': $(okdt_input).val()
+            });
+          }
+        });
+
+        // Package recent translations.
+        packaged_translations.push(translations);
+      }
+    });
+
+    return packaged_translations;
+  }
+
+  /**
+   * Alternative Save Flow - [END]
+   */
+
+
 })
