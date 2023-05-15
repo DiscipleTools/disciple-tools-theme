@@ -1221,7 +1221,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 continue;
             }
             $compact[] = [
-                'ID' => $post->ID,
+                'ID' => (string) $post->ID,
                 'name' => wp_specialchars_decode( $post->post_title )
             ];
         }
@@ -1244,7 +1244,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     if ( !in_array( $post_id, $post_ids, true ) ) {
                         $post_ids[] = $post_id;
                         $compact[] = [
-                            'ID' => $post_id,
+                            'ID' => (string) $post_id,
                             'name' => $user['name'],
                             'user' => true
                         ];
@@ -1308,7 +1308,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 foreach ( $compact as $index => &$p ){
                     if ( $compact[ $index ]['ID'] === $post->ID ) {
                         $compact[ $index ] = [
-                            'ID'    => $post->ID,
+                            'ID'    => (string) $post->ID,
                             'name'  => $post->post_title,
                             'label' => $label
                             ];

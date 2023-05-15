@@ -559,7 +559,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                   ' . esc_html( $disabled ) . '
                   ' . ( $is_private ? 'private privateLabel=' . esc_attr( _x( "Private Field: Only I can see it\'s content", 'disciple_tools' ) ) : null ) . '
             ';
-            $supported_web_components = [ 'text', 'key_select', 'date', 'tags', 'connection' ];
+            $supported_web_components = [ 'text', 'key_select', 'date', 'tags', 'connection', 'multi_select' ];
 
             ?>
             <?php if ( !in_array( $field_type, $supported_web_components ) ): ?>
@@ -641,7 +641,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <dt-single-select
                     <?php echo wp_kses_post( $shared_attributes ) ?>
                     options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
-                    value="<?php echo esc_attr( $post[$field_key] ? $post[$field_key]['key'] : '' ) ?>">
+                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? $post[$field_key]['key'] : '' ) ?>">
                     <?php dt_render_icon_slot( $fields[$field_key] ) ?>
                 </dt-single-select>
             <?php elseif ( $field_type === 'tags' ) : ?>
@@ -661,24 +661,23 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <?php dt_render_icon_slot( $fields[$field_key] ) ?>
                 </dt-tags>
             <?php elseif ( $field_type === 'multi_select' ) :
-                if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ){
+                if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ){ ?>
+                    <?php
+                        $options_array = $fields[$field_key]['default'];
+                        $options_array = array_map( function( $key, $value ) {
+                            return [
+                                'id' => $key,
+                                'label' => $value['label'],
+                                'color' => $value['color'] ?? null,
+                            ];
+                        }, array_keys( $options_array ), $options_array );
                     ?>
-                    <div class="multi_select" id="<?php echo esc_html( $display_field_id ); ?>" >
-                        <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
-                        <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-multi_select" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                               data-field="<?php echo esc_html( $field_key );?>"
-                                               name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                               placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                               autocomplete="off" <?php echo esc_html( $disabled ); ?>>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <dt-multi-select <?php echo wp_kses_post( $shared_attributes ) ?>
+                    options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
+                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>"
+                    >
+                        <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                    </dt-multi-select>
                 <?php } else { ?>
                     <div class="small button-group" style="display: inline-block">
                         <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
