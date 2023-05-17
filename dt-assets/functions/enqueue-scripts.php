@@ -220,6 +220,8 @@ function dt_site_scripts() {
                     'transfer_update_success' => __( 'Transfer update successful.', 'disciple_tools' ),
                     'created_on' => _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ),
                     'Open_with' => __( 'Open With', 'disciple_tools' ),
+                    'yes' => __( 'Yes', 'disciple_tools' ),
+                    'no' => __( 'No', 'disciple_tools' ),
                 ]
             ]);
 
