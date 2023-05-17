@@ -20,6 +20,7 @@ class DT_User_Hooks_And_Configuration {
         add_action( 'signup_user_meta', [ $this, 'signup_user_meta' ], 10, 1 );
         add_action( 'wpmu_activate_user', [ $this, 'wpmu_activate_user' ], 10, 3 );
         add_action( 'dt_user_created', [ $this, 'dt_user_created' ], 10, 1 );
+        add_filter( 'wp_send_new_user_notification_to_user', [ $this, 'wp_send_new_user_notification' ], 10, 2 );
 
         //invite user and edit user page modifications
         add_action( 'user_new_form', [ &$this, 'custom_user_profile_fields' ] );
@@ -164,8 +165,12 @@ class DT_User_Hooks_And_Configuration {
         if ( !empty( $contact_id ) && ! is_wp_error( $contact_id ) ){
             $mention = dt_get_user_mention_syntax( $user_id );
             $comment_html = sprintf( __( 'Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users', 'disciple_tools' ), $mention );
-            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false );
+            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false, get_option( 'dt_disable_dt_new_user_email_notifications', false ) );
         }
+    }
+
+    public function wp_send_new_user_notification( $send, $user ){
+        return !get_option( 'dt_disable_wp_new_user_email_notifications', !$send );
     }
 
     /**
