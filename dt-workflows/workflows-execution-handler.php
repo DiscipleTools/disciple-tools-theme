@@ -137,6 +137,10 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 switch ( $condition ) {
                     case 'not_set':
                         return self::condition_not_set( $field_type, null );
+                    case 'not_equals':
+                    case 'not_contain':
+                        // if $post[$field_id] is not set, not_contain and not_equals are true
+                        return true;
                 }
             }
         }
