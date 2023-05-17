@@ -599,7 +599,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 $selected = !empty( $post[$field_key] ) ? 'selected' : '';
                 ?>
                 <select class="select-field" id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $disabled ); ?>>
-                    <option value="0" <?php echo esc_html( !$selected ); ?>><?php esc_html_e( 'No', 'disciple_tools' ); ?></option>
+                    <option value="0"><?php esc_html_e( 'No', 'disciple_tools' ); ?></option>
                     <option value="1" <?php echo esc_html( $selected ); ?>><?php esc_html_e( 'Yes', 'disciple_tools' ); ?></option>
                 </select>
                 <?php
