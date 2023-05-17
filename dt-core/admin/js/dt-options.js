@@ -573,53 +573,54 @@ jQuery(document).ready(function ($) {
 
   function handle_custom_field_save_request(event, save_button, translate_update_only) {
 
-    // If defined, short-circuit default save flow and adopt ajax approach.
+    // If defined, short-circuit default save flow and adopt ajax approach if needed.
     if (event) {
       event.preventDefault();
     }
 
-    // Always capture field parent level name & description translations; which is present across all fields.
-    let payload = {
-      'post_type': $(save_button).data('post_type'),
-      'field_id': $(save_button).data('field_id'),
-      'field_type': $(save_button).data('field_type'),
-      'translations': package_custom_field_translations($(save_button).data('field_id')),
-      'option_translations': window.lodash.includes(['key_select', 'multi_select', 'link'], $(save_button).data('field_type')) ? package_custom_field_option_translations():[]
-    };
+    // Determine which save path is to be taken.
+    if (!translate_update_only) {
+      $('form[name="' + $(save_button).data('form_id') + '"]').submit();
+    } else {
 
-    // Have core endpoint process field translations accordingly.
-    $.ajax({
-      type: 'POST',
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      data: JSON.stringify(payload),
-      url: `${window.dt_admin_scripts.rest_root}dt-admin/scripts/update_custom_field_translations`,
-      beforeSend: (xhr) => {
-        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
-      }
-    }).done(function (response) {
-      console.log(response);
+      // Always capture field parent level name & description translations; which is present across all fields.
+      let payload = {
+        'post_type': $(save_button).data('post_type'),
+        'field_id': $(save_button).data('field_id'),
+        'field_type': $(save_button).data('field_type'),
+        'translations': package_custom_field_translations($(save_button).data('field_id')),
+        'option_translations': window.lodash.includes(['key_select', 'multi_select', 'link'], $(save_button).data('field_type')) ? package_custom_field_option_translations():[]
+      };
 
-      // Update translation counts.
-      $('#custom_name_translation_count').html((response['translations']) ? Object.keys(response['translations']).length : 0);
-      $('#custom_description_translation_count').html((response['description_translations']) ? Object.keys(response['description_translations']).length : 0);
-      if ((response['defaults']) && window.lodash.includes(['key_select', 'multi_select', 'link'], $(save_button).data('field_type'))) {
-        $('.sortable-field-options').find('tr.ui-sortable-handle').each(function (idx, tr) {
-          let option_key = $(tr).find('.sortable-field-options-key').text().trim();
-          $(tr).find('#option_name_translation_count').html((response['defaults'] && response['defaults'][option_key] && response['defaults'][option_key]['translations']) ? Object.keys(response['defaults'][option_key]['translations']).length : 0);
-          $(tr).find('#option_description_translation_count').html((response['defaults'] && response['defaults'][option_key] && response['defaults'][option_key]['description_translations']) ? Object.keys(response['defaults'][option_key]['description_translations']).length : 0);
-        });
-      }
+      // Have core endpoint process field translations accordingly.
+      $.ajax({
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(payload),
+        url: `${window.dt_admin_scripts.rest_root}dt-admin/scripts/update_custom_field_translations`,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+        }
+      }).done(function (response) {
+        console.log(response);
 
-      // Submit parent form to handle non-translation based attribute updates, if needed!
-      if (!translate_update_only) {
-        $('form[name="' + $(save_button).data('form_id') + '"]').submit();
-      }
+        // Update translation counts.
+        $('#custom_name_translation_count').html((response['translations']) ? Object.keys(response['translations']).length:0);
+        $('#custom_description_translation_count').html((response['description_translations']) ? Object.keys(response['description_translations']).length:0);
+        if ((response['defaults']) && window.lodash.includes(['key_select', 'multi_select', 'link'], $(save_button).data('field_type'))) {
+          $('.sortable-field-options').find('tr.ui-sortable-handle').each(function (idx, tr) {
+            let option_key = $(tr).find('.sortable-field-options-key').text().trim();
+            $(tr).find('#option_name_translation_count').html((response['defaults'] && response['defaults'][option_key] && response['defaults'][option_key]['translations']) ? Object.keys(response['defaults'][option_key]['translations']).length:0);
+            $(tr).find('#option_description_translation_count').html((response['defaults'] && response['defaults'][option_key] && response['defaults'][option_key]['description_translations']) ? Object.keys(response['defaults'][option_key]['description_translations']).length:0);
+          });
+        }
 
-    }).fail(function (error) {
-      console.log("error");
-      console.log(error);
-    });
+      }).fail(function (error) {
+        console.log("error");
+        console.log(error);
+      });
+    }
   }
 
   function package_custom_field_translations(field_id) {
