@@ -1133,7 +1133,7 @@ jQuery(document).ready(function($) {
   function resetDetailsFields(){
     window.lodash.forOwn( field_settings, (field_options, field_key)=>{
 
-      if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
+      if ( field_options.tile === 'details' && !field_options.hidden && ( post[field_key] || field_options.type === 'boolean' ) ){
 
         if ( field_options.only_for_types && field_options.only_for_types !== true && ( field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
           return
@@ -1146,6 +1146,8 @@ jQuery(document).ready(function($) {
           values_html = window.lodash.escape( field_value )
         } else if ( field_options.type === 'date' ){
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
+        } else if ( field_options.type === 'boolean' ){
+          values_html = window.lodash.escape( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
         } else if ( field_options.type === 'key_select' ){
           values_html = window.lodash.escape( field_value.label )
         } else if ( field_options.type === 'multi_select' || field_options.type === 'tags' ){
