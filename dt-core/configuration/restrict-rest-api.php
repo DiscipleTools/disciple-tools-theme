@@ -62,6 +62,9 @@ function dt_dra_disable_via_filters() {
 add_filter( 'rest_endpoints', function( $endpoints ){
     $allowed_wp_v2_paths = apply_filters( 'allowed_wp_v2_paths', [ '/wp/v2/users/me' ] ); // enable wp/v2 endpoints in certain circumstances
     foreach ( $endpoints as $path => $endpoint ){
+        if ( trailingslashit( $path ) === '/wp/v2/' ){
+            continue;
+        }
         if ( strpos( $path, 'wp/v2' ) !== false ){
             $allowed = false;
             foreach ( $allowed_wp_v2_paths as $allowed_path ){
