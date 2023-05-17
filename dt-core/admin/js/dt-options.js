@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
-  $('.expand_translations').click(function () {
-    event.preventDefault();
-    display_translation_dialog($(this).siblings(), $(this).data('form_name'));
+  $('.expand_translations').click(function (e) {
+    e.preventDefault();
+    display_translation_dialog($(this).siblings(), $(this).data('form_name'), $(this).data('source'));
   });
 
   $('.change-icon-button').click(function (e) {
@@ -42,7 +42,7 @@ jQuery(document).ready(function ($) {
    * Translation modal dialog
    */
 
-  function display_translation_dialog(container, form_name) {
+  function display_translation_dialog(container, form_name, source = '') {
     let dialog = $('#dt_translation_dialog');
     if (container && form_name && dialog) {
 
@@ -68,8 +68,12 @@ jQuery(document).ready(function ($) {
             // Close dialog
             $(this).dialog('close');
 
-            // Finally, auto save changes
-            handle_custom_field_save_request(null, $('.dt-custom-fields-save-button')[0], true);
+            // Finally, auto save changes, accordingly, based on source.
+            if (window.lodash.includes(['fields'], source)) {
+              handle_custom_field_save_request(null, $('.dt-custom-fields-save-button')[0], true);
+            } else {
+              $('form[name="' + form_name + '"]').submit();
+            }
 
           }
         }
@@ -630,7 +634,6 @@ jQuery(document).ready(function ($) {
       let locale = window.lodash.split($(input).attr('id'), '-')[1];
       let value = $(input).val();
       if (locale && value) {
-        console.log(input);
         packaged_translations['translations'].push({
           'locale': locale,
           'value': value

@@ -597,7 +597,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
                         <!--Custom Name Translations-->
                         <button class='button small expand_translations'
-                                data-form_name="<?php echo esc_html( $form_name ) ?>">
+                                data-form_name="<?php echo esc_html( $form_name ) ?>"
+                                data-source="fields">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
@@ -669,7 +670,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td style="display: flex">
                         <textarea style="flex-grow: 1" type="text" name="field_description" value="<?php echo esc_html( $field['description'] ?? '' )?>"></textarea>
                         <button class='button small expand_translations'
-                                data-form_name="<?php echo esc_html( $form_name ) ?>">
+                                data-form_name="<?php echo esc_html( $form_name ) ?>"
+                                data-source="fields">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){
@@ -934,7 +936,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 </td>
                             <?php endif; ?>
                             <td>
-                                <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
+                                <button class="button small expand_translations"
+                                        data-form_name="<?php echo esc_html( $form_name ) ?>"
+                                        data-source="fields">
                                     <?php
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ){
@@ -968,7 +972,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 <input name="option_description_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $description ) ?>">
                             </td>
                             <td>
-                                <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
+                                <button class="button small expand_translations"
+                                        data-form_name="<?php echo esc_html( $form_name ) ?>"
+                                        data-source="fields">
                                     <?php
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ){
