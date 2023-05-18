@@ -181,6 +181,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'post_tile' => null,
                 'post_setting' => null,
             ];
+            $no_tile_elements = [];
 
             $post_tiles = DT_Posts::get_post_tiles( $post_type );
             foreach ( $post_tiles as $tile_key => $tile_value ) {
@@ -192,6 +193,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 ];
 
                 $post_settings = DT_Posts::get_post_settings( $post_type, false );
+
                 foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
                     if ( isset( $setting_value['tile'] ) && $setting_value['tile'] === $tile_key ) {
                         $output[] = [
@@ -201,6 +203,19 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                             'post_setting' => $setting_key,
                         ];
                     }
+                    if ( !isset( $setting_value['tile'] ) || $setting_value['tile'] === 'no_tile' ) {
+                        if ( in_array( $post_label . ' > ' . $setting_value['name'], $no_tile_elements ) ) {
+                            continue;
+                        }
+                        $setting_value['label'] = '(No Tile)';
+                            $output[] = [
+                                'label' => $post_label . ' > ' . $setting_value['label'] . ' > ' . $setting_value['name'],
+                                'post_type' => $post_type,
+                                'post_tile' => 'no-tile-hidden',
+                                'post_setting' => $setting_key,
+                            ];
+                            $no_tile_elements[] = $post_label . ' > ' . $setting_value['name'];
+                     }
                 }
             }
         }

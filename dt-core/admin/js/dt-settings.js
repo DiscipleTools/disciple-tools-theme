@@ -1610,7 +1610,7 @@ jQuery(document).ready(function($) {
         cancelButton: false,
         dynamic: false,
         emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
-        template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&post_tile_key={{post_tile}}#{{post_setting}}">{{label}}</a>',
+        template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&tile={{post_tile}}#{{post_setting}}">{{label}}</a>',
         correlativeTemplate: true,
         source: {
             ajax: {
