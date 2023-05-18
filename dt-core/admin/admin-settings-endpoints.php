@@ -215,7 +215,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                                 'post_setting' => $setting_key,
                             ];
                             $no_tile_elements[] = $post_label . ' > ' . $setting_value['name'];
-                     }
+                    }
                 }
             }
         }
