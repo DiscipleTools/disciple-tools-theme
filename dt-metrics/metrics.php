@@ -77,6 +77,7 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
                 }
                 require_once( get_template_directory() . '/dt-metrics/combined/time-charts.php' );
+                require_once( get_template_directory() . '/dt-metrics/combined/date-range-activity.php' );
             }, 1000);
 
             // default menu order
