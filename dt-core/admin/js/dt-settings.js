@@ -1257,13 +1257,13 @@ jQuery(document).ready(function($) {
             var edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
 
             var edited_field_submenu_element = edited_field_menu_element.find('.field-settings-table-child-toggle')
+            var edited_field_menu_name_element = edited_field_menu_element.find('.field-settings-table-field-name');
 
-            var edited_field_menu_name_element = edited_field_menu_element.find('.field-name-content');
             edited_field_menu_element.removeClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
 
             if ( custom_name != '' ) {
-                edited_field_menu_name_element[0].innerText = custom_name;
+              $(`.sortable-field[data-key=${field_key}] .field-settings-table-field-name .field-name-content`).html(custom_name);
             }
 
             // Check if rundown element and sub element need to be moved to another tile
