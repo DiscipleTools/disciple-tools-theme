@@ -215,7 +215,7 @@
 #modal-overlay-content-table td {
     padding: 0.1rem 0.5rem;
 }
-#modal-overlay-content-table input[type="text"] {
+#modal-overlay-content-table input[type="text"],select {
     width: 100%;
 }
 #modal-overlay-content-table .input-group {
@@ -425,7 +425,8 @@
     text-decoration: none;
     cursor: default;
 }
-select {
+
+.fields-table-right select {
     background-repeat: no-repeat;
     margin-bottom: 1rem;
 }
