@@ -20,6 +20,7 @@
     text-align: right;
 }
 #delete-text {
+    cursor: pointer;
     width: 100%;
     color: #e14d43;
     text-decoration: none;
