@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-05-05T09:31:33+00:00\n"
+"POT-Creation-Date: 2023-05-17T11:37:29+00:00\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -136,9 +136,9 @@ msgid "Filters"
 msgstr "फ़िल्टर"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:538
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:634
-#: dt-core/global-functions.php:662 dt-core/global-functions.php:780
-#: dt-core/global-functions.php:824 dt-posts/custom-post-type.php:18
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:642
+#: dt-core/global-functions.php:670 dt-core/global-functions.php:788
+#: dt-core/global-functions.php:832 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -266,13 +266,13 @@ msgstr "सूची से अपडेट करने के लिए सभ
 
 #: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:862
+#: dt-core/global-functions.php:870
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "उपयोगकर्ता को खोजें"
 
 #: archive-template.php:476 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2705
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2710
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:128
 msgid "Status"
@@ -316,7 +316,7 @@ msgstr "कम विकल्प देखें"
 msgid "Update"
 msgstr "सुधार"
 
-#: archive-template.php:630 dt-assets/functions/enqueue-scripts.php:323
+#: archive-template.php:630 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "नीचे सिलेक्शंस करें"
@@ -331,7 +331,7 @@ msgstr "नाम"
 msgid "Loading..."
 msgstr "लोड हो रहा है..."
 
-#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:367
+#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:369
 msgid "Load More"
 msgstr "और लोड करें"
 
@@ -358,24 +358,26 @@ msgstr "सभी %2$s के बिना %1$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "किसी के साथ या किसी को नियुक्त करने के लिए फ़िल्टर"
 
-#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:314
+#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "निर्माण की तिथि"
 
 #: archive-template.php:780 archive-template.php:787
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "कोई सेट नहीं"
 
 #: archive-template.php:801 archive-template.php:802
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:602
 #: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "नही"
 
 #: archive-template.php:808 archive-template.php:809
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:603
 #: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -404,8 +406,8 @@ msgstr "फ़िल्टर का नाम"
 msgid "Filter Records"
 msgstr "रिकॉर्ड फ़िल्टर करें"
 
-#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:274
-#: dt-assets/functions/enqueue-scripts.php:309
+#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:276
+#: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "बचाना"
@@ -513,7 +515,7 @@ msgstr "आयितम दिखा रहा है"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:310 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:312 template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
 msgstr "सम्पादन"
@@ -528,8 +530,8 @@ msgstr "आप पास कोई भी नोटिफिकेशन नह�
 
 #: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:271
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:313
 #: dt-assets/parts/loop-activity-comment.php:135 single-template.php:435
 msgid "Delete"
 msgstr "डिलीट"
@@ -613,79 +615,79 @@ msgstr "%s पर बनाया गया"
 msgid "Open With"
 msgstr "से ओपन करें"
 
-#: dt-assets/functions/enqueue-scripts.php:240
+#: dt-assets/functions/enqueue-scripts.php:242
 msgid "Revert Record Back To This Point"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:241
+#: dt-assets/functions/enqueue-scripts.php:243
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "क्या आप वाकई$s हटाना चाहते हैं?"
 
-#: dt-assets/functions/enqueue-scripts.php:272
+#: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
 msgstr "जिन स्थानों के लिए आप जिम्मेदार हैं"
 
-#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:275
 msgid "Add"
 msgstr "जोडें"
 
-#: dt-assets/functions/enqueue-scripts.php:275 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:277 template-settings.php:285
 msgid "link"
 msgstr "लिंक"
 
-#: dt-assets/functions/enqueue-scripts.php:276 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:278 template-settings.php:286
 msgid "copy"
 msgstr "कॉपी करें"
 
-#: dt-assets/functions/enqueue-scripts.php:292
+#: dt-assets/functions/enqueue-scripts.php:294
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "मिला मिलान:"
 
-#: dt-assets/functions/enqueue-scripts.php:293
+#: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "%s के लिए सभी मैचों को खारिज करें"
 
-#: dt-assets/functions/enqueue-scripts.php:312
+#: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "-TOTAL_की _START_दिखा रहा है"
 
-#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/functions/enqueue-scripts.php:315
 msgid "Sorting By"
 msgstr "छंटाई"
 
-#: dt-assets/functions/enqueue-scripts.php:315
+#: dt-assets/functions/enqueue-scripts.php:317
 msgid "Date Modified"
 msgstr "बदली गयी तारीख़"
 
-#: dt-assets/functions/enqueue-scripts.php:316
+#: dt-assets/functions/enqueue-scripts.php:318
 msgid "No filters, create one below"
 msgstr "कोई फ़िल्टर नहीं, नीचे एक बनाएँँ"
 
-#: dt-assets/functions/enqueue-scripts.php:317
+#: dt-assets/functions/enqueue-scripts.php:319
 msgid "No records found matching your filter."
 msgstr "आपके फ़िल्टर से मेल खाते कोई रिकॉर्ड नहीं मिले।"
 
-#: dt-assets/functions/enqueue-scripts.php:318 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:360
+#: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:537
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
 msgstr "सभी %s"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:321
 msgid "start"
 msgstr "शुरू"
 
-#: dt-assets/functions/enqueue-scripts.php:320
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "end"
 msgstr "समाप्त"
 
-#: dt-assets/functions/enqueue-scripts.php:321
+#: dt-assets/functions/enqueue-scripts.php:323
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
@@ -693,30 +695,30 @@ msgstr "समाप्त"
 msgid "All"
 msgstr "सब"
 
-#: dt-assets/functions/enqueue-scripts.php:322
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "Without"
 msgstr "बिना"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:326
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "भेज दिए गए है"
 
-#: dt-assets/functions/enqueue-scripts.php:325
+#: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "भेजे नहीं है ( वैलिड ईमेल मिसिंग होने की सम्भावना है)"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:328
 msgid "Exclude Item"
 msgstr "आइटम को बाहर करें"
 
-#: dt-assets/functions/enqueue-scripts.php:347 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:349 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "संपर्क करे"
 
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:350
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1710,7 +1712,7 @@ msgid ""
 msgstr "टूल्स साईट"
 
 #: dt-contacts/access-module.php:325 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:536
+#: dt-users/user-hooks-and-config.php:541
 msgid "Sources"
 msgstr "स्रोत"
 
@@ -2055,7 +2057,7 @@ msgid "Other"
 msgstr "अन्य"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:339
+#: dt-posts/custom-post-type.php:350
 msgid "Default Filters"
 msgstr "डिफ़ॉल्ट फ़िल्टर"
 
@@ -2065,23 +2067,23 @@ msgid "All %s I can view"
 msgstr "सभी$s मैं देख सकता हूँ"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:372
+#: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "पसंदीदा %s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:378
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
 msgid "Favorite"
 msgstr "पसंदीदा"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:387
+#: dt-posts/custom-post-type.php:398
 msgid "My Recently Viewed"
 msgstr "मेरा हाल ही में देखा गया"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:392
+#: dt-posts/custom-post-type.php:403
 msgid "Last 30 viewed"
 msgstr "अंतिम 30 को देखा"
 
@@ -2654,7 +2656,7 @@ msgstr "डीटी साइट का नाम:"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:356
+#: dt-users/user-hooks-and-config.php:361
 msgid "Username: %s"
 msgstr "यूज़रनेम: %s"
 
@@ -2672,11 +2674,11 @@ msgstr "अपना पासवर्ड बदलने के लिए द�
 msgid "This is required"
 msgstr "यह ज़रूरी है"
 
-#: dt-core/global-functions.php:636
+#: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
 msgstr "नया टैग \"%s\" जोड़ें"
 
-#: dt-core/global-functions.php:637
+#: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
 msgstr "टैग \"%s\" का उपयोग पहले से ही किया जा रहा है"
 
@@ -4089,29 +4091,29 @@ msgstr "अनफॉलो"
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1641
+#: dt-posts/dt-posts.php:1646
 msgid "Magic Link Submission"
 msgstr "Magic link की सबमिशन"
 
-#: dt-posts/dt-posts.php:1643 dt-posts/dt-posts.php:2186
+#: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2191
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "एक्टिविटी को उलट दें"
 
-#: dt-posts/dt-posts.php:1649
+#: dt-posts/dt-posts.php:1654
 msgid "D.T System"
 msgstr "D.T. सिस्टम"
 
-#: dt-posts/dt-posts.php:2426
+#: dt-posts/dt-posts.php:2431
 msgid "Post already shared with user."
 msgstr "पोस्ट पहले ही यूजर के साथ साझा हो चुकी है"
 
-#: dt-posts/dt-posts.php:2706 single-template.php:174
+#: dt-posts/dt-posts.php:2711 single-template.php:174
 msgid "Details"
 msgstr "विवरण"
 
-#: dt-posts/dt-posts.php:2770
+#: dt-posts/dt-posts.php:2775
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4123,7 +4125,7 @@ msgstr ""
 "@[%1$s](%2$s) - उपयोगकर्ता %3$s ने %4$s [%5$s] (%6$s) तक एक्सेस का अनुरोध किया है। "
 "यदि आप चाहे तो उपयोगकर्ता को एक्सेस प्रदान करने के लिए इस रिकॉर्ड को शेयर करें।"
 
-#: dt-posts/dt-posts.php:2776
+#: dt-posts/dt-posts.php:2781
 msgid "Access Request"
 msgstr "एक्सेस का निवेदन"
 
@@ -4765,7 +4767,7 @@ msgid "User Profile"
 msgstr "यूज़र की प्रोफाइल"
 
 #: dt-users/template-user-management.php:345
-#: dt-users/user-hooks-and-config.php:374
+#: dt-users/user-hooks-and-config.php:379
 msgid "View contact record"
 msgstr "संपर्क के रिकॉर्ड देखें"
 
@@ -4786,19 +4788,19 @@ msgid "Access by Source"
 msgstr "स्रोत द्वारा अभिगम करें"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:543
+#: dt-users/user-hooks-and-config.php:548
 msgid "All Sources - gives access to all contacts"
 msgstr "सभी स्रोत - सभी संपर्कों तक पहुँच प्रदान करता है"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:550
+#: dt-users/user-hooks-and-config.php:555
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
 msgstr "कस्टम - नीचे दिए गए स्रोतों के सभी संपर्कों और अपने सभी संपर्कों तक पहुँँचें"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:557
+#: dt-users/user-hooks-and-config.php:562
 msgid "No Sources - only own contacts"
 msgstr "कोई स्रोत नहीं - केवल स्वयं के संपर्क हैं"
 
@@ -4854,7 +4856,7 @@ msgstr "१० सबसे पुराने अपडेट की जरू�
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "पिछले 10 संपर्कों का समय - संपर्क करने से प्रयास करने तक"
 
-#: dt-users/user-hooks-and-config.php:166
+#: dt-users/user-hooks-and-config.php:167
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
@@ -4862,51 +4864,51 @@ msgstr ""
 "वेलकम %1$s , यह आपका पर्सनल कॉन्टैक्ट रिकॉर्ड है । निश्चिंत हो कर फील्ड्स को अपडेट करें और "
 "@मुझे या दूसरे यूजर्स को मेनशन करें"
 
-#: dt-users/user-hooks-and-config.php:278
-#: dt-users/user-hooks-and-config.php:316
+#: dt-users/user-hooks-and-config.php:283
+#: dt-users/user-hooks-and-config.php:321
 msgid "[%s] Login Details"
 msgstr "[%s] लॉगिन की डिटेल्स"
 
-#: dt-users/user-hooks-and-config.php:289
+#: dt-users/user-hooks-and-config.php:294
 msgid "To set your password, visit the following address:"
 msgstr "अपना पासवर्ड सेट करने के लिए , निम्नलिखित एड्रेस पर विज़िट करें :"
 
-#: dt-users/user-hooks-and-config.php:312
+#: dt-users/user-hooks-and-config.php:317
 msgid "To log in click here: %s"
 msgstr "लॉग इन करने के लिए यहां क्लिक करें :%s"
 
-#: dt-users/user-hooks-and-config.php:354
+#: dt-users/user-hooks-and-config.php:359
 msgid "Hi %s,"
 msgstr "हैलो %s"
 
-#: dt-users/user-hooks-and-config.php:355
+#: dt-users/user-hooks-and-config.php:360
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "आपको %2$s में %1$s से जुड़ने के लिए आपको इनवाइट किया गया है"
 
-#: dt-users/user-hooks-and-config.php:501
+#: dt-users/user-hooks-and-config.php:506
 msgid "Extra Disciple.Tools Information"
 msgstr "अतिरिक्त Disciple.Tools की जानकारी"
 
-#: dt-users/user-hooks-and-config.php:504
+#: dt-users/user-hooks-and-config.php:509
 msgid "Corresponds to Contact"
 msgstr "संपर्क के अनुकूल है"
 
-#: dt-users/user-hooks-and-config.php:512 dt-users/user-management.php:183
+#: dt-users/user-hooks-and-config.php:517 dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "संपर्क देखें"
 
-#: dt-users/user-hooks-and-config.php:514
+#: dt-users/user-hooks-and-config.php:519
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "यह उपयोगकर्ता जिस संपर्क रिकॉर्ड के अनुरूप है उसका नाम जोड़ें।"
 
-#: dt-users/user-hooks-and-config.php:515
+#: dt-users/user-hooks-and-config.php:520
 msgid "Learn more."
 msgstr "और जानें।"
 
-#: dt-users/user-hooks-and-config.php:522
+#: dt-users/user-hooks-and-config.php:527
 msgid "User Language"
 msgstr "यूज़र की भाषा"
 

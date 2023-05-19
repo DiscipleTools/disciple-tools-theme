@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-05-05T09:31:33+00:00\n"
+"POT-Creation-Date: 2023-05-17T11:37:29+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Arabic <https://translate.disciple.tools/projects/disciple-"
@@ -141,9 +141,9 @@ msgid "Filters"
 msgstr "تصفيات"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:538
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:634
-#: dt-core/global-functions.php:662 dt-core/global-functions.php:780
-#: dt-core/global-functions.php:824 dt-posts/custom-post-type.php:18
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:642
+#: dt-core/global-functions.php:670 dt-core/global-functions.php:788
+#: dt-core/global-functions.php:832 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -271,13 +271,13 @@ msgstr "حَدِّد جميع%1$s التي تريد تحديثها من القا
 
 #: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:862
+#: dt-core/global-functions.php:870
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "البحث عن مستخدمين"
 
 #: archive-template.php:476 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2705
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2710
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:128
 msgid "Status"
@@ -321,7 +321,7 @@ msgstr "انظر خيارات أَقَل"
 msgid "Update"
 msgstr "تحديث"
 
-#: archive-template.php:630 dt-assets/functions/enqueue-scripts.php:323
+#: archive-template.php:630 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "قم بإجراء التحديدات أدناه"
@@ -336,7 +336,7 @@ msgstr "الاسم"
 msgid "Loading..."
 msgstr "جار التحميل"
 
-#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:367
+#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:369
 msgid "Load More"
 msgstr "تحميل المزيد"
 
@@ -363,24 +363,26 @@ msgstr "جميع %1$s من دون %2$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "تصفية الجهات المسندة لي أو المسندة لي فرعيا"
 
-#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:314
+#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "تاريخ الانشاء"
 
 #: archive-template.php:780 archive-template.php:787
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "لم يتم إعداد شيء"
 
 #: archive-template.php:801 archive-template.php:802
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:602
 #: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "لا"
 
 #: archive-template.php:808 archive-template.php:809
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:603
 #: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -409,8 +411,8 @@ msgstr "اسم التصفية"
 msgid "Filter Records"
 msgstr "تصفية السجلات"
 
-#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:274
-#: dt-assets/functions/enqueue-scripts.php:309
+#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:276
+#: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "تسجيل"
@@ -518,7 +520,7 @@ msgstr "إظهار العناصر 3D التي تطابق BOB"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:310 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:312 template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
 msgstr "تغيير"
@@ -533,8 +535,8 @@ msgstr "ليس لديك أيّ إشعارات"
 
 #: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:271
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:313
 #: dt-assets/parts/loop-activity-comment.php:135 single-template.php:435
 msgid "Delete"
 msgstr "إزالة"
@@ -618,79 +620,79 @@ msgstr "أضيف على %s"
 msgid "Open With"
 msgstr "الفتح بواسطة"
 
-#: dt-assets/functions/enqueue-scripts.php:240
+#: dt-assets/functions/enqueue-scripts.php:242
 msgid "Revert Record Back To This Point"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:241
+#: dt-assets/functions/enqueue-scripts.php:243
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "هل أنت متأكد أنك تريد حذف %s؟"
 
-#: dt-assets/functions/enqueue-scripts.php:272
+#: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
 msgstr "المواقع التي أنت مسؤول عنها"
 
-#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:275
 msgid "Add"
 msgstr "إضافة"
 
-#: dt-assets/functions/enqueue-scripts.php:275 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:277 template-settings.php:285
 msgid "link"
 msgstr "الرابط"
 
-#: dt-assets/functions/enqueue-scripts.php:276 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:278 template-settings.php:286
 msgid "copy"
 msgstr "نسخ"
 
-#: dt-assets/functions/enqueue-scripts.php:292
+#: dt-assets/functions/enqueue-scripts.php:294
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "التطابقات التي تم العثور عليها:"
 
-#: dt-assets/functions/enqueue-scripts.php:293
+#: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "رفض كل تطابقات %s"
 
-#: dt-assets/functions/enqueue-scripts.php:312
+#: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "عرض _START_ of _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/functions/enqueue-scripts.php:315
 msgid "Sorting By"
 msgstr "الفرز حسب"
 
-#: dt-assets/functions/enqueue-scripts.php:315
+#: dt-assets/functions/enqueue-scripts.php:317
 msgid "Date Modified"
 msgstr "تغيير التاريخ"
 
-#: dt-assets/functions/enqueue-scripts.php:316
+#: dt-assets/functions/enqueue-scripts.php:318
 msgid "No filters, create one below"
 msgstr "لا يوجد تصفيات ، قم بإنشاء واحد أدناه"
 
-#: dt-assets/functions/enqueue-scripts.php:317
+#: dt-assets/functions/enqueue-scripts.php:319
 msgid "No records found matching your filter."
 msgstr "لا توجد سجلات مطابقة التصفية الخاص بك."
 
-#: dt-assets/functions/enqueue-scripts.php:318 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:360
+#: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:537
+#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
 msgstr "الكل %s"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:321
 msgid "start"
 msgstr "ابدأ"
 
-#: dt-assets/functions/enqueue-scripts.php:320
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "end"
 msgstr "أنهِ"
 
-#: dt-assets/functions/enqueue-scripts.php:321
+#: dt-assets/functions/enqueue-scripts.php:323
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
 #: dt-metrics/personal/activity-highlights.php:56
@@ -698,30 +700,30 @@ msgstr "أنهِ"
 msgid "All"
 msgstr "الكل"
 
-#: dt-assets/functions/enqueue-scripts.php:322
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "Without"
 msgstr "من دون"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:326
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "المُرسلة"
 
-#: dt-assets/functions/enqueue-scripts.php:325
+#: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "غير المُرسلة ( لا يوجد بريد إلكتروني صالح على الأرجح)"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:328
 msgid "Exclude Item"
 msgstr "استبعاد العنصر"
 
-#: dt-assets/functions/enqueue-scripts.php:347 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:349 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "جهة اتصال"
 
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:350
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1714,7 +1716,7 @@ msgid ""
 msgstr "تم نقل جهات الاتصال من شراكة مع تابع آخر.موقع الأدوات."
 
 #: dt-contacts/access-module.php:325 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:536
+#: dt-users/user-hooks-and-config.php:541
 msgid "Sources"
 msgstr "المصادر"
 
@@ -2056,7 +2058,7 @@ msgid "Other"
 msgstr "أخرى"
 
 #: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:339
+#: dt-posts/custom-post-type.php:350
 msgid "Default Filters"
 msgstr "المُرَشِّحَات الافتراضية"
 
@@ -2066,23 +2068,23 @@ msgid "All %s I can view"
 msgstr "كل %s التي أستطيع عرضها"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:372
+#: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "%s المفضلة"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:378
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
 msgid "Favorite"
 msgstr "المُفضل"
 
 #: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:387
+#: dt-posts/custom-post-type.php:398
 msgid "My Recently Viewed"
 msgstr "المعروض حديثًا"
 
 #: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:392
+#: dt-posts/custom-post-type.php:403
 msgid "Last 30 viewed"
 msgstr "آخر 30 عرض"
 
@@ -2651,7 +2653,7 @@ msgstr "المترجمون:٪ s: اسم الموقع."
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:356
+#: dt-users/user-hooks-and-config.php:361
 msgid "Username: %s"
 msgstr "اسم المستخدم  %s"
 
@@ -2669,11 +2671,11 @@ msgstr "من أجل تغيير كلمة السر يمكنك زيارة هذا ا
 msgid "This is required"
 msgstr "هذا مطلوب"
 
-#: dt-core/global-functions.php:636
+#: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
 msgstr "أضف بطاقة شعار جديدة \"%s\""
 
-#: dt-core/global-functions.php:637
+#: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
 msgstr "بطاقة شعار  \"%s\" مستخدمة مسبقًا"
 
@@ -4114,29 +4116,29 @@ msgstr "عدم المتابعة"
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1641
+#: dt-posts/dt-posts.php:1646
 msgid "Magic Link Submission"
 msgstr "إرسال الرابط السحري"
 
-#: dt-posts/dt-posts.php:1643 dt-posts/dt-posts.php:2186
+#: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2191
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "إعادة النشاط"
 
-#: dt-posts/dt-posts.php:1649
+#: dt-posts/dt-posts.php:1654
 msgid "D.T System"
 msgstr "نظام D.T"
 
-#: dt-posts/dt-posts.php:2426
+#: dt-posts/dt-posts.php:2431
 msgid "Post already shared with user."
 msgstr "تمت مشاركة المنشور مع المستخدم"
 
-#: dt-posts/dt-posts.php:2706 single-template.php:174
+#: dt-posts/dt-posts.php:2711 single-template.php:174
 msgid "Details"
 msgstr "التفاصيل"
 
-#: dt-posts/dt-posts.php:2770
+#: dt-posts/dt-posts.php:2775
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4148,7 +4150,7 @@ msgstr ""
 "@[%1$s](%2$s) - User %3$s طلب الوصول إلى  %4$s [%5$s](%6$s). إذا كنت ترغب، "
 "شارك هذا التسجيل مع المستخدم لضمان الوصول."
 
-#: dt-posts/dt-posts.php:2776
+#: dt-posts/dt-posts.php:2781
 msgid "Access Request"
 msgstr "طلب الوصول"
 
@@ -4792,7 +4794,7 @@ msgid "User Profile"
 msgstr "الملف التعريفي للمستخدم"
 
 #: dt-users/template-user-management.php:345
-#: dt-users/user-hooks-and-config.php:374
+#: dt-users/user-hooks-and-config.php:379
 msgid "View contact record"
 msgstr "عرض سجل جهة الاتصال"
 
@@ -4813,12 +4815,12 @@ msgid "Access by Source"
 msgstr "الدخول عن طريق المصدر"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:543
+#: dt-users/user-hooks-and-config.php:548
 msgid "All Sources - gives access to all contacts"
 msgstr "كل المصادر - تتيح الدخول إلى كافة جهات الاتصال"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:550
+#: dt-users/user-hooks-and-config.php:555
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
@@ -4827,7 +4829,7 @@ msgstr ""
 "المحددة أدناه"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:557
+#: dt-users/user-hooks-and-config.php:562
 msgid "No Sources - only own contacts"
 msgstr "لا توجد مصادر - جهات الاتصال الخاصة فقط"
 
@@ -4883,7 +4885,7 @@ msgstr "مطلوب أقدم 10 تحديثات"
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "الوقت من تعيين محاولة الاتصال لآخر 10 جهات اتصال"
 
-#: dt-users/user-hooks-and-config.php:166
+#: dt-users/user-hooks-and-config.php:167
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
@@ -4891,51 +4893,51 @@ msgstr ""
 "مرحبًا يا %1$s، هذا هو سجل الاتصال الشخصي الخاص بك. لا تتردد في تحديث الخانات "
 "والإشارة إليّ أو الإشارة إلى مستخدمين آخرين"
 
-#: dt-users/user-hooks-and-config.php:278
-#: dt-users/user-hooks-and-config.php:316
+#: dt-users/user-hooks-and-config.php:283
+#: dt-users/user-hooks-and-config.php:321
 msgid "[%s] Login Details"
 msgstr "تفاصيل تسجيل الدخول [%s]"
 
-#: dt-users/user-hooks-and-config.php:289
+#: dt-users/user-hooks-and-config.php:294
 msgid "To set your password, visit the following address:"
 msgstr "لتعيين كلمة المرور الخاصة بك، قم بزيارة العنوان التالي:"
 
-#: dt-users/user-hooks-and-config.php:312
+#: dt-users/user-hooks-and-config.php:317
 msgid "To log in click here: %s"
 msgstr "لتسجيل الدخول، انقر هنا: %s"
 
-#: dt-users/user-hooks-and-config.php:354
+#: dt-users/user-hooks-and-config.php:359
 msgid "Hi %s,"
 msgstr "مرحبًا يا %s،"
 
-#: dt-users/user-hooks-and-config.php:355
+#: dt-users/user-hooks-and-config.php:360
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "تمت دعوتك للانضمام إلى %1$s في %2$s"
 
-#: dt-users/user-hooks-and-config.php:501
+#: dt-users/user-hooks-and-config.php:506
 msgid "Extra Disciple.Tools Information"
 msgstr "معلومات إضافية عن Disciple.Tools"
 
-#: dt-users/user-hooks-and-config.php:504
+#: dt-users/user-hooks-and-config.php:509
 msgid "Corresponds to Contact"
 msgstr "يتوافق مع جهة الاتصال"
 
-#: dt-users/user-hooks-and-config.php:512 dt-users/user-management.php:183
+#: dt-users/user-hooks-and-config.php:517 dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "عرض جهة الاتصال"
 
-#: dt-users/user-hooks-and-config.php:514
+#: dt-users/user-hooks-and-config.php:519
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "أضف اسم سجل جهة الاتصال الذي يتوافق معه هذا المستخدم."
 
-#: dt-users/user-hooks-and-config.php:515
+#: dt-users/user-hooks-and-config.php:520
 msgid "Learn more."
 msgstr "اعرف المزيد."
 
-#: dt-users/user-hooks-and-config.php:522
+#: dt-users/user-hooks-and-config.php:527
 msgid "User Language"
 msgstr "لغة المستخدم"
 
