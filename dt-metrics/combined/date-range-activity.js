@@ -45,9 +45,6 @@ function project_activity_during_date_range() {
         <select class="select-field" id="post-field-select">
             ${buildFieldSelectOptions()}
         </select>
-        <select class="select-field" id="post-field-condition-select">
-            ${buildFieldConditionSelectOptions()}
-        </select>
         <div id="post-field-value-entry-div"></div>
 
         <label class="section-subheader" for="date-select">${date_select_label}</label>
@@ -123,7 +120,6 @@ function project_activity_during_date_range() {
     getDateRangeActivity({
       'post_type': $('#post-type-select').val(),
       'field': $('#post-field-select').val(),
-      'condition': $('#post-field-condition-select').val(),
       'value': $('#post-field-value').val(),
       'ts_start': (date_range_picker.startDate.unix() > 0) ? date_range_picker.startDate.unix() : 0,
       'ts_end': date_range_picker.endDate.unix()
@@ -149,12 +145,12 @@ function project_activity_during_date_range() {
           tbody.empty();
 
           posts.forEach(function (post) {
-            if (post['ID'] && post['post_title'] && post['post_date']) {
-              let post_url = dtMetricsProject.site_url + '/' + post['post_type'] + '/' + post['ID'];
+            if (post['id'] && post['name'] && post['timestamp']) {
+              let post_url = dtMetricsProject.site_url + '/' + post['post_type'] + '/' + post['id'];
               tbody.append(`
                 <tr>
-                    <td><a href="${post_url}" target="_blank">${window.lodash.escape(post['post_title'])}</a></td>
-                    <td>${window.lodash.escape(post['post_date']['formatted'])}</td>
+                    <td><a href="${post_url}" target="_blank">${window.lodash.escape(post['name'])}</a></td>
+                    <td>${window.lodash.escape(moment.unix(post['timestamp']).format('dddd, MMMM Do YYYY, h:mm:ss A'))}</td>
                 </tr>
               `);
             }
@@ -194,21 +190,6 @@ function buildFieldSelectOptions() {
     `)
 }
 
-function buildFieldConditionSelectOptions() {
-  let conditions = Object.entries(dtMetricsProject.field_conditions)
-  .reduce((options, [key, label]) => {
-    options[key] = label
-    return options
-  }, {});
-
-  let html = ``;
-  Object.entries(conditions).forEach(([key, label]) => {
-    html += `<option value="${key}">${label}</option>`;
-  });
-
-  return html;
-}
-
 function refreshFieldValueEntryElement() {
 
   // Empty any previous entries.
@@ -220,15 +201,15 @@ function refreshFieldValueEntryElement() {
   let field_id = jQuery('#post-field-select').val();
   if (field_id && field_settings[field_id]) {
 
-    // Based on field type, determine html element style to be adopted.
-    if (window.lodash.includes(['key_select', 'multi_select', 'link'], field_settings[field_id]['type'])) {
-      let options_html = ``;
+    // Based on field type & associated defaults, determine html element style to be adopted.
+    if (field_settings[field_id]['default'] && Object.keys(field_settings[field_id]['default']).length > 0) {
+      let options_html = `<option value="">[ ${window.lodash.escape(dtMetricsProject.translations['post_field_select_any_activity_label'])} ]</option>`;
       Object.entries(field_settings[field_id]['default']).forEach(([key, option]) => {
         options_html += `<option value="${key}">${option['label']}</option>`;
       });
       entry_div.html(`<select class="select-field" id="post-field-value">${options_html}</select>`);
     } else {
-      entry_div.html('<input type="text" id="post-field-value" />');
+      entry_div.html('<input type="hidden" id="post-field-value" value="" />');
     }
   }
 }

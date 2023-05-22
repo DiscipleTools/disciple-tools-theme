@@ -19,9 +19,16 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
     public $post_type_select_options = [];
     public $post_field_select_options = [];
     public $post_field_types_filter = [
-        'tags',
         'multi_select',
-        'key_select'
+        'key_select',
+        'tags',
+        'communication_channel',
+        'text',
+        'textarea',
+        'link',
+        'date',
+        'number',
+        'boolean'
     ];
 
     public function __construct() {
@@ -90,8 +97,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'title_date_range_activity' => $this->title,
                     'post_type_select_label' => __( 'Post Type', 'disciple_tools' ),
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
+                    'post_field_select_any_activity_label' => __( 'Any Activity', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
-                    'date_select_label' => __( 'Date', 'disciple_tools' ),
+                    'date_select_label' => __( 'Date Range', 'disciple_tools' ),
                     'submit_button_label' => __( 'Reload', 'disciple_tools' ),
                     'results_table_head_title_label' => __( 'Title', 'disciple_tools' ),
                     'results_table_head_date_label' => __( 'Date', 'disciple_tools' )
@@ -100,11 +108,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'post_type_select_options' => $this->post_type_select_options,
                     'post_field_select_options' => $this->post_field_select_options,
                 ],
-                'field_settings' => $this->field_settings,
-                'field_conditions' => [
-                    'equal' => __( 'Equal To', 'disciple_tools' ),
-                    'not_equal' => __( 'Not Equal To', 'disciple_tools' )
-                ]
+                'field_settings' => $this->field_settings
             ]
         );
     }
@@ -162,20 +166,52 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         }
 
         $params = $request->get_params();
+        if ( isset( $params['post_type'], $params['field'], $params['ts_start'], $params['ts_end'] ) ){
 
-        if ( !empty( $params['value'] ) ){
-            $value = ( ( $params['condition'] == 'not_equal' ) ? '-' : '' ) . trim( $params['value'] );
+            // Fetch associated field settings.
+            $settings = $this->get_field_settings( $params['post_type'] )[$params['field']];
+            $field_type = $settings['type'];
 
-            return DT_Posts::list_posts( $params['post_type'], [
-                'assigned_to' => [ 'me' ],
-                'post_date' => [
-                    'start' => $params['ts_start'],
-                    'end' => $params['ts_end']
-                ],
-                'sort' => '-post_date',
-                $params['field'] => [ $value ]
-            ], false );
+            // Proceed with generating corresponding select SQL parts.
+            $field_type_sql = "AND field_type = '" . esc_sql( $field_type ) . "'";
+            $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
+            $meta_value_sql = "AND meta_value LIKE '" . ( empty( $params['value'] ) ? '%' : esc_sql( $params['value'] ) ) . "'";
 
+            // Accommodate special cases.
+            if ( $field_type == 'communication_channel' ){
+                $field_type_sql = "AND (field_type = '' OR field_type = '" . esc_sql( $field_type ) . "')";
+                $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "%'";
+            }
+
+            // Execute sql query.
+            global $wpdb;
+            $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT *
+            FROM $wpdb->dt_activity_log
+            WHERE action = 'field_update'
+            AND object_type = %s
+            AND hist_time BETWEEN %d AND %d
+            $field_type_sql
+            $meta_key_sql
+            $meta_value_sql
+            ORDER BY hist_time DESC;
+            ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
+
+            // Package result findings and return.
+            $posts = [];
+            foreach ( $results ?? [] as $activity ){
+                $posts[] = [
+                    'id' => $activity['object_id'],
+                    'post_type' => $activity['object_type'],
+                    'name' => $activity['object_name'],
+                    'timestamp' => $activity['hist_time']
+                ];
+            }
+
+            return [
+                'total' => count( $posts ),
+                'posts' => $posts
+            ];
         }
 
         return [];
@@ -188,6 +224,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
 
         foreach ( $post_field_settings as $key => $setting ) {
             if ( array_key_exists( 'hidden', $setting ) && $setting['hidden'] === true ) {
+                continue;
+            }
+            if ( array_key_exists( 'private', $setting ) && $setting['private'] === true ) {
                 continue;
             }
             if ( in_array( $setting['type'], $this->post_field_types_filter ) ) {
