@@ -754,7 +754,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        if ( $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] == trim( $custom_label ) ) {
+        if ( $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] ?? '' == trim( $custom_label ) ) {
             return false;
         }
         return true;
@@ -772,7 +772,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'];
+        $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] ?? '';
         return $default_name;
     }
 

@@ -66,10 +66,20 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
         dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [ 'jquery', 'jquery-ui-js', 'dt_shared_scripts' ], true );
+        dt_theme_enqueue_script( 'dt-options', 'dt-core/admin/js/dt-options.js', [
+            'jquery',
+            'jquery-ui-core',
+            'jquery-ui-sortable',
+            'jquery-ui-dialog',
+            'lodash',
+            'jquery-ui-js'
+        ], true );
+
+        dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
+        wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css' );
 
         wp_register_style( 'dt_settings_css', disciple_tools()->admin_css_url . 'dt-settings.css', [], filemtime( disciple_tools()->admin_css_path . 'dt-settings.css' ) );
         wp_enqueue_style( 'dt_settings_css' );
-
 
         $post_type = self::get_parameter( 'post_type' );
         if ( !isset( $post_type ) || is_null( $post_type ) ) {
@@ -129,6 +139,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $this->fields_typeahead_box();
             $this->space_between_div_close();
         self::template( 'end' );
+
+        /* Icon Selector Dialog */
+        include 'dialog-icon-selector.php';
 
         self::template( 'begin', 1 );
             $this->show_tabs();

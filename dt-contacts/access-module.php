@@ -436,7 +436,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
             ?>
                 <div class="section-subheader">
-                    <img src="<?php echo esc_url( $contact_fields[$field_key]['icon'] ) ?>">
+                    <?php dt_render_field_icon( $contact_fields[$field_key] ) ?>
                     <?php echo esc_html( $contact_fields[$field_key]['name'] ) ?>
                 </div>
                 <?php

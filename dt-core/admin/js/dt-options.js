@@ -15,6 +15,33 @@ jQuery(document).ready(function ($) {
     display_icon_selector_dialog(parent_form, icon_input);
   });
 
+  // Support DT customization icon picker requests.
+  $('#modal-overlay-form').on('click', '.change-icon-button', function (e) {
+    e.preventDefault();
+
+    let icon_input = $("input[name='" + $(e.currentTarget).data('icon-input') + "']");
+
+    // Hide parent modal overlay, but, do not delete content, as we'll be reverting back!
+    $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
+    $('.dt-admin-modal-box').slideUp(150, 'swing');
+
+    // Display icon selector dialog
+    display_icon_selector_dialog(null, icon_input, function (source) {
+
+      // Refresh icon image accordingly, to capture any changes.
+      let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
+      if (icon_img_wrapper) {
+        let icon = $(icon_input).val();
+        $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
+      }
+
+      // Reinstate parent modal overlay.
+      $('.dt-admin-modal-overlay').fadeIn(150);
+      $('.dt-admin-modal-box').slideDown(150);
+
+    });
+  });
+
   /**
    * Icon selector modal dialog - Process icon selection filter queries & selections
    */
@@ -91,7 +118,9 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog
    */
 
-  function display_icon_selector_dialog(parent_form, icon_input) {
+  function display_icon_selector_dialog(parent_form, icon_input, callback = function (source) {
+    console.log(source);
+  }) {
     let dialog = $('#dt_icon_selector_dialog');
     if (dialog) {
 
@@ -111,20 +140,21 @@ jQuery(document).ready(function ($) {
             icon: 'ui-icon-close',
             click: function () {
               $(this).dialog('close');
+              callback('cancel');
             }
           },
           {
             text: 'Save',
             icon: 'ui-icon-copy',
             click: function () {
-              handle_icon_save(this, parent_form, icon_input);
+              handle_icon_save(this, parent_form, icon_input, callback);
             }
           },
           {
             text: 'Upload Custom Icon',
             icon: 'ui-icon-circle-zoomout',
             click: function () {
-              handle_icon_upload(this, parent_form, icon_input);
+              handle_icon_upload(this, parent_form, icon_input, callback);
             }
           }
         ],
@@ -132,6 +162,9 @@ jQuery(document).ready(function ($) {
 
           // Display some initial icons
           execute_icon_selection_filter_query();
+        },
+        close: function (event, ui) {
+          callback('dialogclose');
         }
       });
 
@@ -313,7 +346,9 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Handle Icon Save
    */
 
-  function handle_icon_save(dialog, parent_form, icon_input) {
+  function handle_icon_save(dialog, parent_form, icon_input, callback = function (source) {
+    console.log(source);
+  }) {
 
     // Determine if there is a valid selection
     let selected_icon = $('#dialog_icon_selector_icon_selection_div').find('.dialog-icon-selector-icon-selected');
@@ -325,8 +360,13 @@ jQuery(document).ready(function ($) {
       // Close dialog
       $(dialog).dialog('close');
 
-      // Auto-submit so as to refresh changes
-      parent_form.submit();
+      // If present, auto-submit; to refresh changes
+      if (parent_form) {
+        parent_form.submit();
+      }
+
+      // Execute callback with relevant source flag.
+      callback('save');
     }
   }
 
@@ -334,7 +374,9 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Handle Icon Uploads
    */
 
-  function handle_icon_upload(dialog, parent_form, icon_input) {
+  function handle_icon_upload(dialog, parent_form, icon_input, callback = function (source) {
+    console.log(source);
+  }) {
 
     // Build media uploader modal
     let mediaFrame = wp.media({
@@ -384,8 +426,13 @@ jQuery(document).ready(function ($) {
       // Close dialog
       $(dialog).dialog('close');
 
-      // Auto-submit so as to refresh changes
-      parent_form.submit();
+      // If present, auto-submit; to refresh changes
+      if (parent_form) {
+        parent_form.submit();
+      }
+
+      // Execute callback with relevant source flag.
+      callback('upload');
 
     });
 

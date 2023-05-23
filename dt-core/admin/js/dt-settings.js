@@ -329,8 +329,9 @@ jQuery(document).ready(function($) {
             }
 
             var icon_html = '';
-            if ( field['icon'] ) {
-                icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
+            let icon = (field['icon'] && field['icon'] !== '') ? field['icon'] : field['font-icon'];
+            if (icon) {
+              icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
             }
 
             tile_html += `
@@ -805,8 +806,9 @@ jQuery(document).ready(function($) {
         }
 
         var field_icon_image_html = '';
-        if ( field_settings['icon'] ) {
-            field_icon_image_html = `<img src="${field_settings['icon']}" class="field-icon">`;
+        let icon = (field_settings['icon'] && field_settings['icon'] !== '') ? field_settings['icon'] : field_settings['font-icon'];
+        if ( icon ) {
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
         }
 
         var private_field = '';
@@ -929,7 +931,9 @@ jQuery(document).ready(function($) {
                 </td>
                 <td>
                     ${field_icon_image_html}
-                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_settings['icon']}">
+                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${icon}" style="vertical-align: middle;">
+                    <button class="button change-icon-button" style="vertical-align: middle;"
+                            data-icon-input="edit-field-icon">Change Icon</button>
                 </td>
             </tr>
             <tr>
@@ -971,7 +975,9 @@ jQuery(document).ready(function($) {
                 <label for="edit-field-icon"><b>Icon</b></label>
             </td>
             <td>
-                <input name="edit-field-icon" id="edit-field-icon" type="text">
+                <input name="edit-field-icon" id="edit-field-icon" type="text" style="vertical-align: middle;">
+                <button class="button change-icon-button" style="vertical-align: middle;"
+                        data-icon-input="edit-field-icon">Change Icon</button>
             </td>
         </tr>
         <tr>
@@ -1015,8 +1021,8 @@ jQuery(document).ready(function($) {
         var field_icon_image_html = '';
 
         if ( field_settings['default'][field_option_key]['icon'] ) {
-            field_icon_url = field_settings['default'][field_option_key]['icon'];
-            field_icon_image_html = `<img src="${field_icon_url}" class="field-icon">`;
+          field_icon_url = field_settings['default'][field_option_key]['icon'];
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 40px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
         }
         var modal_html_content = `
         <tr>
@@ -1092,7 +1098,9 @@ jQuery(document).ready(function($) {
             </td>
             <td>
                 ${field_icon_image_html}
-                <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}">
+                <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}" style="vertical-align: middle;">
+                <button class="button change-icon-button" style="vertical-align: middle;"
+                        data-icon-input="edit-field-icon">Change Icon</button>
             </td>
         </tr>
         <tr>
@@ -1246,6 +1254,7 @@ jQuery(document).ready(function($) {
         var field_icon = $('#edit-field-icon').val();
 
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
+            console.log(result);
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {
