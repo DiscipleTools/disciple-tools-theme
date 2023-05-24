@@ -136,7 +136,7 @@ jQuery(document).ready(function ($) {
         let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
         if (icon_img_wrapper) {
           let icon = $(icon_input).val();
-          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
+          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
         }
 
         $('.dt-admin-modal-icon-picker-box-close-button').click();
@@ -150,7 +150,7 @@ jQuery(document).ready(function ($) {
         let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
         if (icon_img_wrapper) {
           let icon = $(icon_input).val();
-          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
+          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
         }
 
         $('.dt-admin-modal-icon-picker-box-close-button').click();

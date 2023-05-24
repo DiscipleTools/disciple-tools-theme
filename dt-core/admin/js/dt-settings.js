@@ -833,7 +833,7 @@ jQuery(document).ready(function($) {
         var field_icon_image_html = '';
         let icon = (field_settings['icon'] && field_settings['icon'] !== '') ? field_settings['icon'] : field_settings['font-icon'];
         if ( icon ) {
-          field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
         }
 
         var private_field = '';
@@ -1057,7 +1057,7 @@ jQuery(document).ready(function($) {
 
         if ( field_settings['default'][field_option_key]['icon'] ) {
           field_icon_url = field_settings['default'][field_option_key]['icon'];
-          field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 40px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
         }
         var modal_html_content = `
         <tr>
