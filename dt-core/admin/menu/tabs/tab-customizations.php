@@ -407,9 +407,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         }
                         foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
                             <?php if ( self::field_option_in_tile( $field_key, $tile_key ) && self::field_is_customizable( $post_type, $field_key ) ) : ?>
-                                <div class="sortable-field" id="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                <div class="sortable-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
-                                    <div class="field-settings-table-field-name" id="<?php echo esc_attr( $field_key ); ?>" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
+                                    <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                                         <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">
                                             <?php echo esc_html( $field_settings['name'] ); ?>
@@ -446,7 +446,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                             endif; ?>
                                         <?php endforeach; ?>
                                         <div class="field-settings-table-field-option new-field-option add-new-item" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
-                                           <span><?php echo esc_html( 'new field option', 'disciple_tools' ); ?></span>
+                                           <span><?php esc_html_e( 'new field option', 'disciple_tools' ); ?></span>
                                         </div>
                                     </div>
                                     <!-- END TOGGLED ITEMS -->
@@ -457,7 +457,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <!-- END TOGGLED FIELD ITEMS -->
                         <div class="field-settings-table-field-name expandable add-new-item">
                             <span class="add-new-field" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
-                                <a><?php echo esc_html( 'add new field', 'disciple_tools' ); ?></a>
+                                <a><?php esc_html_e( 'add new field', 'disciple_tools' ); ?></a>
                             </span>
                         </div>
                     </div>
@@ -465,7 +465,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <!-- END TILE -->
             <?php endforeach; ?>
             <div class="add-new-link">
-                <a href="#" id="add-new-tile-link"><?php echo esc_html( 'add new tile', 'disciple_tools' ); ?></a>
+                <a href="#" id="add-new-tile-link"><?php esc_html_e( 'add new tile', 'disciple_tools' ); ?></a>
             </div>
         </div>
         <!-- END TABLE -->

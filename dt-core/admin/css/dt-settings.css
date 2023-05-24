@@ -16,10 +16,8 @@
     from { background: #3f729b; }
     to { background: #d3d3d3; }
 }
-.delete-text {
-    text-align: right;
-}
 #delete-text {
+    cursor: pointer;
     width: 100%;
     color: #e14d43;
     text-decoration: none;
@@ -28,8 +26,15 @@
     display: contents;
     cursor: pointer;
 }
+#delete-confirmation-container svg {
+    width: 15px;
+    height: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
 .modal-box-title {
     text-align: left;
+    padding: 0 0.5rem;
     margin-bottom: 28px;
 }
 .modal-translations-box-title{
@@ -61,7 +66,7 @@
     perspective: 1000px;
 }
 .dt-admin-modal-box-inner {
-    margin-top: 15%;
+    margin-top: 5%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -85,7 +90,7 @@
     transform: rotateY(180deg);
 }
 .dt-admin-modal-box-content {
-    padding: 8px;
+    padding: 1rem;
 }
 .tile-rundown-elements {
     margin-top: -1px;
@@ -183,12 +188,12 @@
 }
 .dt-admin-modal-box-close-button {
     text-align: right;
-    color: #cacaca;
+    color: #676767;
     font-weight: 200;
     font-size: 1.75rem;
     position: absolute;
     right: 0;
-    padding: 0.5rem;
+    padding: 1.5rem;
     cursor: pointer;
 }
 .dt-admin-modal-translations-box-close-button {
@@ -201,6 +206,7 @@
     padding: 0.5rem;
     cursor: pointer;
 }
+
 .dt-admin-modal-icon-picker-box-close-button {
     text-align: right;
     color: #cacaca;
@@ -211,6 +217,36 @@
     padding: 0.5rem;
     cursor: pointer;
 }
+
+#modal-overlay-content-table {
+    width: 100%;
+    width: -moz-available;          /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
+}
+
+#modal-overlay-content-table td {
+    padding: 0.1rem 0.5rem;
+}
+#modal-overlay-content-table input[type="text"],select {
+    width: 100%;
+}
+#modal-overlay-content-table .input-group {
+    display: flex;
+}
+
+#modal-overlay-content-table .last-row td {
+    padding-top: 1rem;
+}
+#modal-overlay-content-table .last-row td:last-child {
+    text-align: right;
+}
+
+#modal-overlay-content-table .last-row button {
+    margin-left: 1rem;
+}
+
+>>>>>>> 6a4c0922d5e2fd47208930dbcc97d074789d46da
 .modal-overlay-content-table, .modal-translations-overlay-content-table {
     margin: 6px 10px 10px 10px;
     line-height: 2.5;
@@ -403,7 +439,8 @@
     text-decoration: none;
     cursor: default;
 }
-select {
+
+.fields-table-right select {
     background-repeat: no-repeat;
     margin-bottom: 1rem;
 }

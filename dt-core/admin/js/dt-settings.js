@@ -160,42 +160,44 @@ jQuery(document).ready(function($) {
         return window.field_settings.post_type;
     }
 
-    $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
-        update: function(event,ui) {
-            if (!$(event)[0].originalEvent.target.dataset) {
-                return;
-            }
-            var post_type = get_post_type();
-            var moved_element = ui.item[0];
-            var tile_key = moved_element.dataset.parentTileKey || moved_element.id;
+    let sortable_options = {
+      update: function(event,ui) {
+        if (!$(event)[0].originalEvent.target.dataset) {
+          return;
+        }
+        var post_type = get_post_type();
+        var moved_element = ui.item[0];
+        var tile_key = moved_element.dataset.parentTileKey || moved_element.id;
 
-            // Check if moved element is a field option
-            if (moved_element.dataset['fieldOptionKey']) {
-                var field_key = moved_element.dataset['fieldKey'];
-                var sortable_field_options_ordering = [];
-                var field_options = $(`.field-name-content[data-field-key=${field_key}]`);
+        // Check if moved element is a field option
+        if (moved_element.dataset['fieldOptionKey']) {
+          var field_key = moved_element.dataset['fieldKey'];
+          var sortable_field_options_ordering = [];
+          var field_options = $(`.field-name-content[data-field-key=${field_key}]`);
 
-                $.each(field_options, function(option_index, option_element) {
-                    sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
-                });
-                API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
-                    var old_order = window['field_settings']['post_type_settings']['fields'][field_key]['default'];
-                    field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
-                    window['field_settings']['post_type_settings']['fields'][field_key]['default'] = field_options_in_new_order;
+          $.each(field_options, function(option_index, option_element) {
+            sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
+          });
+          API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
+            var old_order = window['field_settings']['post_type_settings']['fields'][field_key]['default'];
+            field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'] = field_options_in_new_order;
 
-                    tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
-                    show_preview_tile(tile_key);
-                });
-                return;
-            }
-            dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
-            API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
-                var new_order = result[post_type][tile_key]['order'];
-                window.field_settings.post_type_settings.tiles[tile_key].order = new_order;
-                show_preview_tile(tile_key);
-            });
-        },
-    });
+            tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
+            show_preview_tile(tile_key);
+          });
+          return;
+        }
+        dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
+        API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
+          if ( result[post_type][tile_key] ){
+            window.field_settings.post_type_settings.tiles[tile_key].order = result[post_type][tile_key]['order'];
+          }
+          show_preview_tile(tile_key);
+        });
+      },
+    }
+    $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options);
 
     function order_field_option_keys_by_array(old_order, new_order) {
         var sorted_object = Object.fromEntries(
@@ -206,9 +208,11 @@ jQuery(document).ready(function($) {
 
     function get_dt_custom_tiles_and_fields_ordered() {
         var dt_custom_tiles_and_fields_ordered = {};
-        var tiles = $('.field-settings-table').sortable('toArray');
+        let tiles = $('.field-settings-table-tile-name').map((index, tile)=>{
+          return tile.dataset.key;
+        })
+
         var tile_priority = 10;
-        tiles.pop(); // remove the 'add new tile' link
 
         $.each(tiles, function(tile_index, tile_key) {
             if (tile_key === '' ) {
@@ -216,7 +220,7 @@ jQuery(document).ready(function($) {
             }
             dt_custom_tiles_and_fields_ordered[tile_key] = {};
             var tile_label = $(`#tile-key-${tile_key}`).prop('innerText');
-            var fields = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
+            var fields = $(document).find(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             var field_order = [];
             $.each(fields, function(field_index, field_element) {
                 var field_key = field_element.id;
@@ -522,9 +526,10 @@ jQuery(document).ready(function($) {
                 <input name="new_tile_description" id="new_tile_description" type="text">
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" type="submit" id="js-add-tile">Create Tile</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-add-tile">Create Tile</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -556,7 +561,7 @@ jQuery(document).ready(function($) {
 
             var delete_tile_html_content = '';
             if (window.field_settings.default_tiles.includes(tile_key) == false) {
-                delete_tile_html_content = `<a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>`;
+                delete_tile_html_content = `<a id="delete-text" data-tile-key="${tile_key}">Delete Tile</a>`;
             }
 
             var modal_html_content = `
@@ -578,11 +583,13 @@ jQuery(document).ready(function($) {
                     <label for="edit-tile-label"><b>Label</b></label>
                 </td>
                 <td>
-                    <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
-                    <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
+                    <div class="input-group">
+                        <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
+                        <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${translations_count})
+                        </button>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -590,12 +597,14 @@ jQuery(document).ready(function($) {
                     <label for="edit-tile-description"><b>Description</b></label>
                 </td>
                 <td>
-                <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
-                <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${description_translations_count})
-                </button>
-            </td>
+                    <div class="input-group">
+                        <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
+                        <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${description_translations_count})
+                        </button>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -605,12 +614,13 @@ jQuery(document).ready(function($) {
                     <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
-                </td>
+            <tr class="last-row">
                 <td class="delete-text">
                     ${delete_tile_html_content}
+                </td>
+                <td>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
             </tr>`;
 
@@ -694,7 +704,7 @@ jQuery(document).ready(function($) {
         post_type = get_post_type();
         all_post_types = window.field_settings.all_post_types;
         selected_post_type_label = all_post_types[post_type];
-        var tile_key_label = tile_key;
+        var tile_key_label = window.field_settings.post_type_tiles[tile_key].label || tile_key;
         if (!tile_key) {
             tile_key_label = `<i>This post type doesn't have any tiles</i>`;
         }
@@ -787,9 +797,10 @@ jQuery(document).ready(function($) {
                     <input name="new_field_private" id="new-field-private" type="checkbox">
                 </td>
             </tr>
-            <tr>
+            <tr class="last-row">
                 <td colspan="2">
-                    <button class="button" type="submit" id="js-add-field" data-tile-key="${tile_key}">Save</button>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-add-field" data-tile-key="${tile_key}">Save</button>
                 </td>
             </tr>
         `;
@@ -867,11 +878,13 @@ jQuery(document).ready(function($) {
                         <label for="edit-field-custom-name"><b>Name</b></label>
                     </td>
                     <td>
-                        <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
-                        <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                            (${translations_count})
-                        </button>
+                        <div class="input-group">
+                            <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                            <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                                <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                                (${translations_count})
+                            </button>
+                        </div>
                     </td>
                 </tr>`;
 
@@ -890,12 +903,14 @@ jQuery(document).ready(function($) {
                             <label for="edit-field-custom-name"><b>Custom Name</b></label>
                         </td>
                         <td>
-                            <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
-                            <button class="button small" id="remove-custom-name" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Remove Custom Name</button>
-                            <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                                <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                                (${translations_count})
-                            </button>
+                            <div class="input-group">
+                                <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                                <button class="button small" id="remove-custom-name" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Remove Custom Name</button>
+                                <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                                    (${translations_count})
+                                </button>
+                              </div>
                         </td>
                     </tr>`;
             }
@@ -906,11 +921,13 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-description"><b>Description</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
-                    <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${description_translations_count})
-                    </button>
+                    <div class="input-group">
+                        <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
+                        <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${description_translations_count})
+                        </button>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -944,15 +961,18 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-icon"><b>Icon</b></label>
                 </td>
                 <td>
-                    ${field_icon_image_html}
-                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${icon}" style="vertical-align: middle;">
-                    <button class="button change-icon-button" style="vertical-align: middle;"
-                            data-icon-input="edit-field-icon">Change Icon</button>
+                    <div class="input-group">
+                        ${field_icon_image_html}
+                        <input name="edit-field-icon" id="edit-field-icon" type="text" value="${icon}" style="vertical-align: middle;">
+                        <button class="button change-icon-button" style="vertical-align: middle;"
+                                data-icon-input="edit-field-icon">Change Icon</button>
+                    </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="last-row">
                 <td colspan="2">
-                    <button class="button" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
                 </td>
             </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -994,9 +1014,10 @@ jQuery(document).ready(function($) {
                         data-icon-input="edit-field-icon">Change Icon</button>
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" style="margin-top: 12px;" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -1059,11 +1080,13 @@ jQuery(document).ready(function($) {
                 <label><b>Name</b></label>
             </td>
             <td>
-                <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
-                <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${translations_count})
-                </button>
+                <div class="input-group">
+                  <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
+                  <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                      <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                      (${translations_count})
+                  </button>
+                </div>
             </td>
         </tr>`;
 
@@ -1082,12 +1105,14 @@ jQuery(document).ready(function($) {
                     <label><b>Custom Label</b></label>
                 </td>
                 <td>
-                    <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
-                    <button class="button small" id="remove-custom-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Remove Custom Label</button>
-                    <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
+                    <div class="input-group">
+                      <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
+                      <button class="button small" id="remove-custom-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Remove Custom Label</button>
+                      <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                          <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                          (${translations_count})
+                      </button>
+                    </div>
                 </td>
             </tr>`;
         }
@@ -1099,11 +1124,13 @@ jQuery(document).ready(function($) {
                 <label><b>Description</b></label>
             </td>
             <td>
-                <input name="edit-option-description" id="new-option-description" type="text" value="${option_description}">
-                <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${description_translations_count})
-                </button>
+                <div class="input-group">
+                    <input name="edit-option-description" id="new-option-description" type="text" value="${option_description}">
+                    <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                        (${description_translations_count})
+                    </button>
+                </div>
             </td>
         </tr>
         <tr>
@@ -1111,15 +1138,18 @@ jQuery(document).ready(function($) {
                 <label for="edit-field-icon"><b>Icon</b></label>
             </td>
             <td>
-                ${field_icon_image_html}
-                <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}" style="vertical-align: middle;">
-                <button class="button change-icon-button" style="vertical-align: middle;"
-                        data-icon-input="edit-field-icon">Change Icon</button>
+                <div class="input-group">
+                    ${field_icon_image_html}
+                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}" style="vertical-align: middle;">
+                    <button class="button change-icon-button" style="vertical-align: middle;"
+                            data-icon-input="edit-field-icon">Change Icon</button>
+                  </div>
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -1155,10 +1185,9 @@ jQuery(document).ready(function($) {
                     </span>
                     <span class="edit-icon"></span>
                 </div>
-                <div class="hidden">
-                    <div class="field-settings-table-field-name">
-                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
-                        <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
+                <div class="tile-rundown-elements" data-parent-tile-key="${tile_key}">
+                    <div class="field-settings-table-field-name expandable add-new-item">
+                        <span class="add-new-field" data-parent-tile-key="${tile_key}">
                             <a>add new field</a>
                         </span>
                     </div>
@@ -1166,6 +1195,8 @@ jQuery(document).ready(function($) {
             </div>
             `);
             $(`.field-settings-table-tile-name`).eq(-2).attr('style', 'border-bottom: 0;');
+
+            $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options);
         });
     });
 
@@ -1216,8 +1247,8 @@ jQuery(document).ready(function($) {
             `;
 
             var new_field_expandable_html = `
-            <div class="sortable-field" id="${field_key}" data-parent-tile-key="${tile_key}">
-                <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
+            <div class="sortable-field" data-parent-tile-key="${tile_key}" data-key="${field_key}">
+                <div class="field-settings-table-field-name expandable submenu-highlight" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                    <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
                     <span class="field-name-content" data-parent-tile="${tile_key}" data-key="${field_key}">
@@ -1253,6 +1284,7 @@ jQuery(document).ready(function($) {
                 $('.add-new-field').parent().before(new_field_html);
             }
             closeModal();
+            $(document).find('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options)
         });
     });
 
@@ -1270,20 +1302,16 @@ jQuery(document).ready(function($) {
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
-            var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {
-                return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
-            });
+            var edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
 
-            var edited_field_submenu_element = $('.field-settings-table-child-toggle').filter(function(){
-                return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
-            });
+            var edited_field_submenu_element = edited_field_menu_element.find('.field-settings-table-child-toggle')
+            var edited_field_menu_name_element = edited_field_menu_element.find('.field-settings-table-field-name');
 
-            var edited_field_menu_name_element = edited_field_menu_element.children('.field-name-content');
-            edited_field_menu_element.removeClass('menu-highlight');
+            edited_field_menu_name_element.removeClass('submenu-highlight').removeClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
 
             if ( custom_name != '' ) {
-                edited_field_menu_name_element[0].innerText = custom_name;
+              $(`.sortable-field[data-key=${field_key}] .field-settings-table-field-name .field-name-content`).html(custom_name);
             }
 
             // Check if rundown element and sub element need to be moved to another tile
@@ -1296,7 +1324,6 @@ jQuery(document).ready(function($) {
                 }
 
                 target_tile_submenu.prepend(edited_field_menu_element);
-                edited_field_menu_element.after(edited_field_submenu_element);
 
                 scrollTo(target_tile_menu, -32);
 
@@ -1306,8 +1333,9 @@ jQuery(document).ready(function($) {
             }
             show_preview_tile(tile_key);
             closeModal();
-            edited_field_menu_element.addClass('menu-highlight');
+            edited_field_menu_name_element.addClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').addClass('submenu-highlight');
+            $(document).find('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options)
         });
         return;
     });
@@ -1599,6 +1627,9 @@ jQuery(document).ready(function($) {
 
     $('.dt-admin-modal-box-close-button').on('click', function() {
         closeModal();
+    });
+    $(document).on( 'click', '.dt-admin-modal-box-close', function() {
+      closeModal();
     });
 
     $('.dt-admin-modal-overlay').on('click', function(e) {
