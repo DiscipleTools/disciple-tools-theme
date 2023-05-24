@@ -1199,8 +1199,8 @@ jQuery(document).ready(function($) {
             `;
 
             var new_field_expandable_html = `
-            <div class="sortable-field" id="${field_key}" data-parent-tile-key="${tile_key}">
-                <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
+            <div class="sortable-field" data-parent-tile-key="${tile_key}" data-key="${field_key}">
+                <div class="field-settings-table-field-name expandable submenu-highlight" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                    <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
                     <span class="field-name-content" data-parent-tile="${tile_key}" data-key="${field_key}">
@@ -1259,7 +1259,7 @@ jQuery(document).ready(function($) {
             var edited_field_submenu_element = edited_field_menu_element.find('.field-settings-table-child-toggle')
             var edited_field_menu_name_element = edited_field_menu_element.find('.field-settings-table-field-name');
 
-            edited_field_menu_name_element.removeClass('menu-highlight');
+            edited_field_menu_name_element.removeClass('submenu-highlight').removeClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
 
             if ( custom_name != '' ) {
