@@ -201,6 +201,16 @@
     padding: 0.5rem;
     cursor: pointer;
 }
+.dt-admin-modal-icon-picker-box-close-button {
+    text-align: right;
+    color: #cacaca;
+    font-weight: 200;
+    font-size: 1.75rem;
+    position: absolute;
+    right: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+}
 .modal-overlay-content-table, .modal-translations-overlay-content-table {
     margin: 6px 10px 10px 10px;
     line-height: 2.5;

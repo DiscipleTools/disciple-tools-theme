@@ -16,30 +16,149 @@ jQuery(document).ready(function ($) {
   });
 
   // Support DT customization icon picker requests.
-  $('#modal-overlay-form').on('click', '.change-icon-button', function (e) {
-    e.preventDefault();
-
+  $('.dt-admin-modal-box').on('click', '.change-icon-button', function (e) {
     let icon_input = $("input[name='" + $(e.currentTarget).data('icon-input') + "']");
+    let dialog = $('#dt_icon_selector_dialog');
 
-    // Hide parent modal overlay, but, do not delete content, as we'll be reverting back!
-    $('.dt-admin-modal-overlay').fadeOut(150, 'swing');
-    $('.dt-admin-modal-box').slideUp(150, 'swing');
+    if (dialog) {
 
-    // Display icon selector dialog
-    display_icon_selector_dialog(null, icon_input, function (source) {
+      dialog.dialog({
+        modal: false,
+        autoOpen: false,
+        hide: 0,
+        show: 0,
+        height: 'auto',
+        width: 'auto',
+        resizable: false,
+        title: 'Icon Selector Dialog',
+        buttons: [
+          {
+            text: 'Cancel',
+            icon: 'ui-icon-close',
+            click: function () {
+              $(this).dialog('close');
+            }
+          },
+          {
+            text: 'Save',
+            icon: 'ui-icon-copy',
+            click: function () {
+            }
+          },
+          {
+            text: 'Upload Custom Icon',
+            icon: 'ui-icon-circle-zoomout',
+            click: function () {
+            }
+          }
+        ],
+        open: function (event, ui) {
+          let ui_dialog = $(document).find('.ui-dialog')[0];
 
-      // Refresh icon image accordingly, to capture any changes.
-      let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
-      if (icon_img_wrapper) {
-        let icon = $(icon_input).val();
-        $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
-      }
+          // Fetch and set font icon picker dialog contents.
+          if (ui_dialog) {
 
-      // Reinstate parent modal overlay.
-      $('.dt-admin-modal-overlay').fadeIn(150);
-      $('.dt-admin-modal-box').slideDown(150);
+            let cloned = $(ui_dialog).clone();
+            let html = `
+              <table>
+                <tbody>
+                    <tr>
+                        <td>
+                        ${$(cloned).find('.ui-dialog-titlebar').html()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <br>
+                        ${$(cloned).find('.ui-dialog-content').html()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <br>
+                        ${$(cloned).find('.ui-dialog-buttonpane').html()}
+                        </td>
+                    </tr>
+                </tbody>
+              </table>
+            `;
 
-    });
+            // Set some initial defaults to aid downstream processing.
+            let content = $('.dt-admin-modal-icon-picker-box-content');
+            content.html(html);
+            content.find('button.ui-dialog-titlebar-close').hide();
+            content.find('span.ui-dialog-title').css('font-weight', 'bold');
+            content.find('button.ui-button').data('icon-input', icon_input.attr('name'));
+
+          }
+
+          // Force an immediate close, to draw attention to flipped content!
+          $(this).dialog('close');
+
+          // Display some initial icons
+          execute_icon_selection_filter_query(false);
+        },
+        close: function (event, ui) {
+        }
+      });
+
+      // Insert selection area div, within dialog button footer
+      $('.ui-dialog-buttonset').prepend($('<span>')
+        .attr('id', 'dialog_icon_selector_icon_selection_div')
+        .css('display', 'inline-block')
+        .css('vertical-align', 'middle')
+        .css('padding', '0')
+        .css('margin-right', '175px')
+      );
+
+      // Display updated dialog
+      dialog.dialog('open');
+
+    }
+  });
+
+  $('.dt-admin-modal-box').on('click', '.ui-button', function (e) {
+
+    // Determine action to be taken.
+    let button = $(e.currentTarget);
+    let icon_input = $("input[name='" + $(button).data('icon-input') + "']");
+    let close_button = button.find('span.ui-icon-close');
+    let save_button = button.find('span.ui-icon-copy');
+    let upload_button = button.find('span.ui-icon-circle-zoomout');
+
+    if (close_button && close_button.length > 0) {
+      $('.dt-admin-modal-icon-picker-box-close-button').click();
+
+    } else if (save_button && save_button.length > 0) {
+      handle_icon_save(null, null, icon_input, function (source) {
+
+        // Refresh icon image accordingly, to capture any changes.
+        let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
+        if (icon_img_wrapper) {
+          let icon = $(icon_input).val();
+          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
+        }
+
+        $('.dt-admin-modal-icon-picker-box-close-button').click();
+
+      });
+
+    } else if (upload_button && upload_button.length > 0) {
+      handle_icon_upload(null, null, icon_input, function (source) {
+
+        // Refresh icon image accordingly, to capture any changes.
+        let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
+        if (icon_img_wrapper) {
+          let icon = $(icon_input).val();
+          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 40px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
+        }
+
+        $('.dt-admin-modal-icon-picker-box-close-button').click();
+
+      });
+
+    }
+
   });
 
   /**
@@ -226,7 +345,7 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Execute Filtering Request
    */
 
-  function execute_icon_selection_filter_query() {
+  function execute_icon_selection_filter_query(enable_tooltips = true) {
 
     // Always default to a somewhat wildcard search if input text is blank
     let query = $('#dialog_icon_selector_filter_input').val().trim();
@@ -268,12 +387,14 @@ jQuery(document).ready(function ($) {
           }
         });
 
-        // Activate icon tooltips
-        $('#dialog_icon_selector_icons_table > tbody').find('.mdi').each(function (idx, icon) {
-          $(icon).tooltip({
-            show: {effect: 'fade', duration: 100}
+        // If requested, activate icon tooltips
+        if (enable_tooltips) {
+          $('#dialog_icon_selector_icons_table > tbody').find('.mdi').each(function (idx, icon) {
+            $(icon).tooltip({
+              show: {effect: 'fade', duration: 100}
+            });
           });
-        });
+        }
 
         $('#dialog_icon_selector_icons_search_spinner').removeClass('active').fadeOut('fast', function () {
 
@@ -357,8 +478,10 @@ jQuery(document).ready(function ($) {
       // Update form icon class input
       icon_input.val('mdi ' + $(selected_icon).data('icon_class'));
 
-      // Close dialog
-      $(dialog).dialog('close');
+      // If present, close dialog
+      if (dialog) {
+        $(dialog).dialog('close');
+      }
 
       // If present, auto-submit; to refresh changes
       if (parent_form) {
@@ -423,8 +546,10 @@ jQuery(document).ready(function ($) {
       // Update form icon link
       icon_input.val(selected.url);
 
-      // Close dialog
-      $(dialog).dialog('close');
+      // If present, close dialog
+      if (dialog) {
+        $(dialog).dialog('close');
+      }
 
       // If present, auto-submit; to refresh changes
       if (parent_form) {

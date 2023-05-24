@@ -140,9 +140,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $this->space_between_div_close();
         self::template( 'end' );
 
-        /* Icon Selector Dialog */
-        include 'dialog-icon-selector.php';
-
         self::template( 'begin', 1 );
             $this->show_tabs();
             $this->show_tab_content();
@@ -193,10 +190,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         </div>
                     </div>
                     <div class="modal-back">
-                        <div class="dt-admin-modal-translations-box-close-button">×</div>
-                        <div class="dt-admin-modal-translations-box-content">
-                            <form id="modal-translations-overlay-form">
-                            </form>
+                        <div id="modal-back-translations" class="modal-back-div" style="display: none;">
+                            <div class="dt-admin-modal-translations-box-close-button">×</div>
+                            <div class="dt-admin-modal-translations-box-content">
+                                <form id="modal-translations-overlay-form">
+                                </form>
+                            </div>
+                        </div>
+                        <?php include 'dialog-icon-selector.php'; ?>
+                        <div id="modal-back-icon-picker" class="modal-back-div" style="display: none;">
+                            <div class="dt-admin-modal-icon-picker-box-close-button">×</div>
+                            <div class="dt-admin-modal-icon-picker-box-content"></div>
                         </div>
                     </div>
                 </div>

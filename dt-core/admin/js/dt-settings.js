@@ -618,6 +618,20 @@ jQuery(document).ready(function($) {
         });
     }
 
+    function enableModalBackDiv(divId) {
+      $('.modal-back-div').fadeOut('fast');
+      $('#' + divId).fadeIn('fast');
+    }
+
+    $('.dt-admin-modal-box').on('click', '.change-icon-button', function (e) {
+      enableModalBackDiv('modal-back-icon-picker');
+      flip_card();
+    });
+
+    $('.dt-admin-modal-icon-picker-box-close-button').on('click', function () {
+      unflip_card();
+    });
+
     // Delete Text Click
     $('#modal-overlay-form').on('click', '#delete-text', function(e) {
         $(this).blur();
@@ -1254,7 +1268,6 @@ jQuery(document).ready(function($) {
         var field_icon = $('#edit-field-icon').val();
 
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
-            console.log(result);
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {
@@ -1503,6 +1516,7 @@ jQuery(document).ready(function($) {
             <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
         </div>`;
 
+        enableModalBackDiv('modal-back-translations');
         $('#modal-translations-overlay-form').html(translations_html);
         flip_card();
 
