@@ -525,9 +525,10 @@ jQuery(document).ready(function($) {
                 <input name="new_tile_description" id="new_tile_description" type="text">
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" type="submit" id="js-add-tile">Create Tile</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-add-tile">Create Tile</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -559,7 +560,7 @@ jQuery(document).ready(function($) {
 
             var delete_tile_html_content = '';
             if (window.field_settings.default_tiles.includes(tile_key) == false) {
-                delete_tile_html_content = `<a id="delete-text" data-tile-key="${tile_key}">Delete</a>`;
+                delete_tile_html_content = `<a id="delete-text" data-tile-key="${tile_key}">Delete Tile</a>`;
             }
 
             var modal_html_content = `
@@ -581,11 +582,13 @@ jQuery(document).ready(function($) {
                     <label for="edit-tile-label"><b>Label</b></label>
                 </td>
                 <td>
-                    <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
-                    <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
+                    <div class="input-group">
+                        <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
+                        <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${translations_count})
+                        </button>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -593,12 +596,14 @@ jQuery(document).ready(function($) {
                     <label for="edit-tile-description"><b>Description</b></label>
                 </td>
                 <td>
-                <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
-                <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${description_translations_count})
-                </button>
-            </td>
+                    <div class="input-group">
+                        <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
+                        <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${description_translations_count})
+                        </button>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -608,12 +613,13 @@ jQuery(document).ready(function($) {
                     <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
-                </td>
+            <tr class="last-row">
                 <td class="delete-text">
                     ${delete_tile_html_content}
+                </td>
+                <td>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
             </tr>`;
 
@@ -683,7 +689,7 @@ jQuery(document).ready(function($) {
         post_type = get_post_type();
         all_post_types = window.field_settings.all_post_types;
         selected_post_type_label = all_post_types[post_type];
-        var tile_key_label = tile_key;
+        var tile_key_label = window.field_settings.post_type_tiles[tile_key].label || tile_key;
         if (!tile_key) {
             tile_key_label = `<i>This post type doesn't have any tiles</i>`;
         }
@@ -776,9 +782,10 @@ jQuery(document).ready(function($) {
                     <input name="new_field_private" id="new-field-private" type="checkbox">
                 </td>
             </tr>
-            <tr>
+            <tr class="last-row">
                 <td colspan="2">
-                    <button class="button" type="submit" id="js-add-field" data-tile-key="${tile_key}">Save</button>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-add-field" data-tile-key="${tile_key}">Save</button>
                 </td>
             </tr>
         `;
@@ -855,11 +862,13 @@ jQuery(document).ready(function($) {
                         <label for="edit-field-custom-name"><b>Name</b></label>
                     </td>
                     <td>
-                        <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
-                        <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                            (${translations_count})
-                        </button>
+                        <div class="input-group">
+                            <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                            <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                                <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                                (${translations_count})
+                            </button>
+                        </div>
                     </td>
                 </tr>`;
 
@@ -878,12 +887,14 @@ jQuery(document).ready(function($) {
                             <label for="edit-field-custom-name"><b>Custom Name</b></label>
                         </td>
                         <td>
-                            <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
-                            <button class="button small" id="remove-custom-name" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Remove Custom Name</button>
-                            <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                                <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                                (${translations_count})
-                            </button>
+                            <div class="input-group">
+                                <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                                <button class="button small" id="remove-custom-name" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Remove Custom Name</button>
+                                <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                                    (${translations_count})
+                                </button>
+                              </div>
                         </td>
                     </tr>`;
             }
@@ -894,11 +905,13 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-description"><b>Description</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
-                    <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${description_translations_count})
-                    </button>
+                    <div class="input-group">
+                        <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
+                        <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${description_translations_count})
+                        </button>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -932,13 +945,16 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-icon"><b>Icon</b></label>
                 </td>
                 <td>
-                    ${field_icon_image_html}
-                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_settings['icon']}">
+                    <div class="input-group">
+                        ${field_icon_image_html}
+                        <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_settings['icon']}">
+                    </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="last-row">
                 <td colspan="2">
-                    <button class="button" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>                    
+                    <button class="button button-primary" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
                 </td>
             </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -978,9 +994,10 @@ jQuery(document).ready(function($) {
                 <input name="edit-field-icon" id="edit-field-icon" type="text">
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" style="margin-top: 12px;" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -1043,11 +1060,13 @@ jQuery(document).ready(function($) {
                 <label><b>Name</b></label>
             </td>
             <td>
-                <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
-                <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${translations_count})
-                </button>
+                <div class="input-group">
+                  <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
+                  <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                      <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                      (${translations_count})
+                  </button>
+                </div>
             </td>
         </tr>`;
 
@@ -1066,12 +1085,14 @@ jQuery(document).ready(function($) {
                     <label><b>Custom Label</b></label>
                 </td>
                 <td>
-                    <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
-                    <button class="button small" id="remove-custom-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Remove Custom Label</button>
-                    <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
+                    <div class="input-group">
+                      <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
+                      <button class="button small" id="remove-custom-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Remove Custom Label</button>
+                      <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                          <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                          (${translations_count})
+                      </button>
+                    </div>
                 </td>
             </tr>`;
         }
@@ -1083,11 +1104,13 @@ jQuery(document).ready(function($) {
                 <label><b>Description</b></label>
             </td>
             <td>
-                <input name="edit-option-description" id="new-option-description" type="text" value="${option_description}">
-                <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${description_translations_count})
-                </button>
+                <div class="input-group">
+                    <input name="edit-option-description" id="new-option-description" type="text" value="${option_description}">
+                    <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                        (${description_translations_count})
+                    </button>
+                </div>
             </td>
         </tr>
         <tr>
@@ -1095,13 +1118,16 @@ jQuery(document).ready(function($) {
                 <label for="edit-field-icon"><b>Icon</b></label>
             </td>
             <td>
-                ${field_icon_image_html}
-                <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}">
+                <div class="input-group">
+                    ${field_icon_image_html}
+                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}">
+                  </div>
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -1579,6 +1605,9 @@ jQuery(document).ready(function($) {
     $('.dt-admin-modal-box-close-button').on('click', function() {
         closeModal();
     });
+    $(document).on( 'click', '.dt-admin-modal-box-close', function() {
+      closeModal();
+    });
 
     $('.dt-admin-modal-overlay').on('click', function(e) {
         if (e.target == this) {
@@ -1650,7 +1679,7 @@ jQuery(document).ready(function($) {
         cancelButton: false,
         dynamic: false,
         emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
-        template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&post_tile_key={{post_tile}}#{{post_setting}}">{{label}}</a>',
+        template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&tile={{post_tile}}#{{post_setting}}">{{label}}</a>',
         correlativeTemplate: true,
         source: {
             ajax: {
