@@ -1259,7 +1259,7 @@ jQuery(document).ready(function($) {
             var edited_field_submenu_element = edited_field_menu_element.find('.field-settings-table-child-toggle')
             var edited_field_menu_name_element = edited_field_menu_element.find('.field-settings-table-field-name');
 
-            edited_field_menu_element.removeClass('menu-highlight');
+            edited_field_menu_name_element.removeClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
 
             if ( custom_name != '' ) {
@@ -1285,9 +1285,9 @@ jQuery(document).ready(function($) {
             }
             show_preview_tile(tile_key);
             closeModal();
-            edited_field_menu_element.addClass('menu-highlight');
+            edited_field_menu_name_element.addClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').addClass('submenu-highlight');
-          $(document).find('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options)
+            $(document).find('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options)
         });
         return;
     });
