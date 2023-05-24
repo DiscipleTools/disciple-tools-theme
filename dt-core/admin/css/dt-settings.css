@@ -17,6 +17,7 @@
     to { background: #d3d3d3; }
 }
 #delete-text {
+    cursor: pointer;
     width: 100%;
     color: #e14d43;
     text-decoration: none;
