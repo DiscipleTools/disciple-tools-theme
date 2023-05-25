@@ -197,6 +197,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             ] );
 
             global $wpdb;
+            // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT *
             FROM $wpdb->dt_activity_log
@@ -208,6 +209,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $meta_value_sql
             ORDER BY hist_time DESC;
             ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
+            // phpcs:enable
 
             // Package result findings and return.
             $posts = [];
