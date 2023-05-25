@@ -23,12 +23,15 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         'key_select',
         'tags',
         'communication_channel',
+        'connection',
+        'user_select',
         'text',
         'textarea',
         'link',
         'date',
         'number',
-        'boolean'
+        'boolean',
+        'location'
     ];
 
     public function __construct() {
@@ -182,13 +185,22 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 $field_type_sql = "AND (field_type = '' OR field_type = '" . esc_sql( $field_type ) . "')";
                 $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "%'";
             }
+            if ( $field_type == 'connection' ){
+                $meta_key_sql = "AND meta_key LIKE '%'";
+            }
 
             // Execute sql query.
+            $supported_actions_sql = dt_array_to_sql( [
+                'field_update',
+                'connected to',
+                'disconnected from'
+            ] );
+
             global $wpdb;
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT *
             FROM $wpdb->dt_activity_log
-            WHERE action = 'field_update'
+            WHERE action IN ( $supported_actions_sql )
             AND object_type = %s
             AND hist_time BETWEEN %d AND %d
             $field_type_sql
