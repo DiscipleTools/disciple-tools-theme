@@ -1296,13 +1296,21 @@ class Disciple_Tools_Posts
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
-        $posts = $wpdb->get_results("
-            SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
+        $has_joins = strlen( $fields_sql["joins_sql"] ) > 0 || strlen( $joins ) > 0;
+        $sql = "
+            SELECT p.ID, p.post_title, p.post_type, p.post_date
             FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
-            GROUP BY p.ID " . $group_by_sql . "
+            " . ( $has_joins ? "GROUP BY p.ID " . $group_by_sql : "" ) . "
             ORDER BY " . $sort_sql . "
             LIMIT " . esc_sql( $offset ) .", " . $limit . "
+        ";
+        $posts = $wpdb->get_results($sql, OBJECT);
+
+        $total_rows = $wpdb->get_var("
+            SELECT count(distinct p.ID)
+            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
+            (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
         ", OBJECT );
 
         if ( empty( $posts ) && !empty( $wpdb->last_error )){
@@ -1311,7 +1319,7 @@ class Disciple_Tools_Posts
 
 
         // phpcs:enable
-        $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
+        // $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
 
         //search by post_id
         if ( is_numeric( $search ) ){
