@@ -190,7 +190,7 @@ jQuery(document).ready(function($) {
         }
         dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
         API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
-          if ( result[post_type][tile_key] ){
+          if ( result[post_type][tile_key] ) {
             window.field_settings.post_type_settings.tiles[tile_key].order = result[post_type][tile_key]['order'];
           }
           show_preview_tile(tile_key);
@@ -326,6 +326,7 @@ jQuery(document).ready(function($) {
             fields = field_order;
         }
 
+
         $.each(fields, function(field_index, field_key) {
             var field = window['field_settings']['post_type_settings']['fields'][field_key];
             if( !field?.type ){
@@ -355,6 +356,16 @@ jQuery(document).ready(function($) {
 
 
 
+            /*** TEXTAREA - START ***/
+            if ( field['type'] === 'textarea' ) {
+                tile_html += `
+                    <textarea style="width: 100%;" class="textarea dt_textarea"></textarea>
+                `;
+            }
+            /*** TEXTAREA - END ***/
+
+
+
             /*** NUMBER - START ***/
             if ( field['type'] === 'number' ) {
                 tile_html += `
@@ -362,6 +373,7 @@ jQuery(document).ready(function($) {
                 `;
             }
             /*** NUMBER - END ***/
+
 
 
             /*** DATE - START ***/
@@ -1148,7 +1160,6 @@ jQuery(document).ready(function($) {
             var tile_key = data['key'];
             var tile_label = data['label'];
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
-            window.field_settings.custom_tiles = tile_key;
             closeModal();
             $('#add-new-tile-link').parent().before(`
             <div class="sortable-tile" id="${tile_key}">
@@ -1173,8 +1184,8 @@ jQuery(document).ready(function($) {
             </div>
             `);
             $(`.field-settings-table-tile-name`).eq(-2).attr('style', 'border-bottom: 0;');
-
             $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options);
+            show_preview_tile(tile_key);
         });
     });
 
