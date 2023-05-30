@@ -26,7 +26,8 @@ function project_activity_during_date_range() {
     submit_button_label,
     total_label,
     results_table_head_title_label,
-    results_table_head_date_label
+    results_table_head_date_label,
+    results_table_head_new_value_label
   } = escapeObject(dtMetricsProject.translations);
 
   const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options);
@@ -70,6 +71,7 @@ function project_activity_during_date_range() {
                 <tr>
                     <th>${results_table_head_title_label}</th>
                     <th>${results_table_head_date_label}</th>
+                    <th>${results_table_head_new_value_label}</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -179,6 +181,7 @@ function project_activity_during_date_range() {
                 <tr>
                     <td><a href="${post_url}" target="_blank">${window.lodash.escape(post['name'])}</a></td>
                     <td>${window.lodash.escape(moment.unix(post['timestamp']).format('dddd, MMMM Do YYYY, h:mm:ss A'))}</td>
+                    <td>${window.lodash.escape(post['new_value'])}</td>
                 </tr>
               `);
             }

@@ -107,6 +107,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'submit_button_label' => __( 'Reload', 'disciple_tools' ),
                     'results_table_head_title_label' => __( 'Title', 'disciple_tools' ),
                     'results_table_head_date_label' => __( 'Date', 'disciple_tools' ),
+                    'results_table_head_new_value_label' => __( 'New Value', 'disciple_tools' ),
                     'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                     'all_locations' => __( 'All Locations', 'disciple_tools' )
                 ],
@@ -268,11 +269,48 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             // Package result findings and return.
             $posts = [];
             foreach ( $results ?? [] as $activity ){
+
+                // Determine new value label to be returned.
+                $new_value = $activity['meta_value'] ?? '';
+                if ( $field_type == 'connection' ){
+                    if ( isset( $settings['post_type'], $new_value ) ){
+                        $post = DT_Posts::get_post( $settings['post_type'], $new_value, true, false );
+                        if ( !is_wp_error( $post ) ){
+                            $new_value = $post['name'] ?? $new_value;
+                        }
+                    }
+
+                } elseif ( $field_type == 'location' ){
+                    $geocoder = new Location_Grid_Geocoder();
+                    $new_value = $geocoder->_format_full_name( [ 'grid_id' => $new_value ] );
+
+                } elseif ( $field_type == 'user_select' ){
+                    if ( strpos( $new_value, 'user-' ) == 0 ){
+                        $post = DT_Posts::get_post( 'contacts', Disciple_Tools_Users::get_contact_for_user( substr( $new_value, 5 ) ), true, false );
+                        if ( !is_wp_error( $post ) ){
+                            $new_value = $post['name'] ?? $new_value;
+                        }
+                    }
+
+                } elseif ( $field_type == 'date' ){
+                    $new_value = ( $new_value != 'value_deleted' ) ? gmdate( 'F j, Y, g:i A', $new_value ) : '';
+
+                } elseif ( $field_type == 'boolean' ){
+                    $new_value = ( $new_value == 1 ) ? __( 'True', 'disciple_tools' ) : __( 'False', 'disciple_tools' );
+
+                } elseif ( isset( $settings['default'], $settings['default'][$new_value], $settings['default'][$new_value]['label'] ) ){
+                    $new_value = $settings['default'][$new_value]['label'];
+
+                } elseif ( $new_value == 'value_deleted' ){
+                    $new_value = '';
+                }
+
                 $posts[] = [
                     'id' => $activity['object_id'],
                     'post_type' => $activity['object_type'],
                     'name' => $activity['object_name'],
-                    'timestamp' => $activity['hist_time']
+                    'timestamp' => $activity['hist_time'],
+                    'new_value' => $new_value
                 ];
             }
 
