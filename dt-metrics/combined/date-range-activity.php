@@ -234,7 +234,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                         $values[] = $value['ID'];
                     }
                 }
-                $meta_value_sql = ( !empty( $values ) ? "AND meta_value IN (" . dt_array_to_sql( $values ) . ")" : "AND meta_value LIKE '%'" );
+                $meta_value_sql = ( !empty( $values ) ? 'AND meta_value IN (' . dt_array_to_sql( $values ) . ')' : "AND meta_value LIKE '%'" );
 
             } elseif ( $field_type == 'user_select' ){
                 $value = $params['value'];
@@ -279,7 +279,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                             $new_value = $post['name'] ?? $new_value;
                         }
                     }
-
                 } elseif ( $field_type == 'location' ){
                     $geocoder = new Location_Grid_Geocoder();
                     $new_value = $geocoder->_format_full_name( [ 'grid_id' => $new_value ] );
@@ -291,7 +290,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                             $new_value = $post['name'] ?? $new_value;
                         }
                     }
-
                 } elseif ( $field_type == 'date' ){
                     $new_value = ( $new_value != 'value_deleted' ) ? gmdate( 'F j, Y, g:i A', $new_value ) : '';
 
