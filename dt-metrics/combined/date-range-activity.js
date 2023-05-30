@@ -7,8 +7,11 @@ jQuery(function () {
 const getFieldSettings = (postType) =>
   makeRequest('GET', `metrics/field_settings/${postType}`)
 
+const renderFieldHtml = (data) =>
+  makeRequest('GET', `metrics/render_field_html`, data)
+
 const getDateRangeActivity = (data) =>
-  makeRequest('GET', `metrics/date_range_activity`, data)
+  makeRequest('POST', `metrics/date_range_activity`, data)
 
 const escapeObject = window.SHAREDFUNCTIONS.escapeObject
 
@@ -112,15 +115,40 @@ function project_activity_during_date_range() {
 
   // Add submit button event listener.
   document.querySelector('#post-field-submit-button').addEventListener('click', (e) => {
+    let field_settings = dtMetricsProject.field_settings;
     let date_range_picker = $('.date_range_picker').data('daterangepicker');
+    let post_type = $('#post-type-select').val();
+    let field_id =  $('#post-field-select').val();
+    let field_type = field_settings[field_id]['type'];
+    let value = $('#post-field-value').val();
     let loadingSpinner = document.querySelector('#chart-loading-spinner');
     loadingSpinner.classList.add('active');
 
+    // Capture Typeahead values if special field type is selected.
+    if (window.lodash.includes(['connection', 'user_select', 'location'], field_type)) {
+      let typeahead = window.Typeahead['.js-typeahead-' + field_id];
+      if (typeahead) {
+        switch (field_type) {
+          case 'connection':
+          case 'location': {
+            value = typeahead.items;
+            break;
+          }
+          case 'user_select': {
+            value = typeahead.item;
+            break;
+          }
+        }
+      } else {
+        value = {};
+      }
+    }
+
     // Fetch records matching activity within specified date range.
     getDateRangeActivity({
-      'post_type': $('#post-type-select').val(),
-      'field': $('#post-field-select').val(),
-      'value': $('#post-field-value').val(),
+      'post_type': post_type,
+      'field': field_id,
+      'value': value,
       'ts_start': (date_range_picker.startDate.unix() > 0) ? date_range_picker.startDate.unix() : 0,
       'ts_end': date_range_picker.endDate.unix()
     })
@@ -208,8 +236,186 @@ function refreshFieldValueEntryElement() {
         options_html += `<option value="${key}">${option['label']}</option>`;
       });
       entry_div.html(`<select class="select-field" id="post-field-value">${options_html}</select>`);
+
+    } else if (window.lodash.includes(['connection', 'user_select', 'location'], field_settings[field_id]['type'])) {
+
+      // Fetch html rendering for selected field.
+      renderFieldHtml({
+        'post_type': $('#post-type-select').val(),
+        'field_id': field_id
+      }).promise()
+      .then((response) => {
+        if (response['html']) {
+          entry_div.html(response['html']);
+          activateSpecialFieldValueControls(field_id, field_settings[field_id]);
+        }
+
+      }).catch((error) => {
+        console.log(error);
+      });
+
     } else {
       entry_div.html('<input type="hidden" id="post-field-value" value="" />');
+    }
+  }
+}
+
+function activateSpecialFieldValueControls(field_id, field_settings) {
+  let post_type = field_settings['post_type'];
+  let field_type = field_settings['type'];
+
+  switch (field_type) {
+    case 'connection': {
+      let connection_typeahead_field_input = '.js-typeahead-' + field_id;
+      jQuery('#post-field-value-entry-div').find(connection_typeahead_field_input).typeahead({
+          input: connection_typeahead_field_input,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          template: window.TYPEAHEADS.contactListRowTemplate,
+          source: TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
+          display: ["name", "label"],
+          templateValue: function () {
+            if (this.items[this.items.length - 1].label) {
+              return "{{label}}"
+            } else {
+              return "{{name}}"
+            }
+          },
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: [],
+            callback: {
+              onCancel: function (node, item) {
+              }
+            }
+          },
+          callback: {
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
+              $(`#${field_id}-result-container`).html(text);
+            },
+            onHideLayout: function () {
+              $(`#${field_id}-result-container`).html("");
+            },
+            onClick: function (node, a, item, event) {
+              // Stop list from opening again
+              this.addMultiselectItemLayout(item)
+              event.preventDefault()
+              this.hideLayout();
+              this.resetInput();
+            }
+          }
+        });
+      break;
+    }
+    case 'location': {
+      let location_typeahead_field_input = '.js-typeahead-' + field_id;
+      jQuery('#post-field-value-entry-div').find(location_typeahead_field_input).typeahead({
+          input: location_typeahead_field_input,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          dropdownFilter: [{
+            key: 'group',
+            value: 'focus',
+            template: window.lodash.escape(dtMetricsProject['translations']['regions_of_focus']),
+            all: window.lodash.escape(dtMetricsProject['translations']['all_locations'])
+          }],
+          source: {
+            focus: {
+              display: "name",
+              ajax: {
+                url: dtMetricsProject['root'] + 'dt/v1/mapping_module/search_location_grid_by_name',
+                data: {
+                  s: "{{query}}",
+                  filter: function () {
+                    return window.lodash.get(window.Typeahead[location_typeahead_field_input].filters.dropdown, 'value', 'all');
+                  }
+                },
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject['nonce']);
+                },
+                callback: {
+                  done: function (data) {
+                    return data.location_grid;
+                  }
+                }
+              }
+            }
+          },
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: function () {
+              return [];
+            }, callback: {
+              onCancel: function (node, item) {
+              }
+            }
+          },
+          callback: {
+            onClick: function (node, a, item, event) {
+            },
+            onReady() {
+              this.filters.dropdown = {
+                key: "group",
+                value: "focus",
+                template: window.lodash.escape(dtMetricsProject['translations']['regions_of_focus'])
+              };
+              this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html(window.lodash.escape(dtMetricsProject['translations']['regions_of_focus']));
+            }
+          }
+        });
+      break;
+    }
+    case 'user_select': {
+      let user_select_typeahead_field_input = '.js-typeahead-' + field_id;
+      jQuery('#post-field-value-entry-div').find(user_select_typeahead_field_input).typeahead({
+        input: user_select_typeahead_field_input,
+        minLength: 0,
+        maxItem: 0,
+        accent: true,
+        searchOnFocus: true,
+        source: TYPEAHEADS.typeaheadUserSource(),
+        templateValue: "{{name}}",
+        template: function (query, item) {
+          return `<div class="assigned-to-row" dir="auto">
+                  <span>
+                      <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                      ${window.lodash.escape(item.name)}
+                  </span>
+                  ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : ''}
+                  ${item.update_needed && item.update_needed > 0 ? `<span>
+                    <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+                    <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+                  </span>` : ''}
+                </div>`;
+        },
+        dynamic: true,
+        hint: true,
+        emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+        callback: {
+          onClick: function (node, a, item) {
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $(`#${field_id}-result-container`).html(text);
+          },
+          onHideLayout: function () {
+            $(`.${field_id}-result-container`).html("");
+          }
+        }
+      });
+      break;
     }
   }
 }

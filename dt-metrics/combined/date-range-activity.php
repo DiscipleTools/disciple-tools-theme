@@ -90,7 +90,8 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
-                'root'               => esc_url_raw( rest_url() ),
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
                 'site_url' => site_url(),
                 'state'              => [
                     'post_type' => $post_type,
@@ -105,7 +106,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'date_select_label' => __( 'Date Range', 'disciple_tools' ),
                     'submit_button_label' => __( 'Reload', 'disciple_tools' ),
                     'results_table_head_title_label' => __( 'Title', 'disciple_tools' ),
-                    'results_table_head_date_label' => __( 'Date', 'disciple_tools' )
+                    'results_table_head_date_label' => __( 'Date', 'disciple_tools' ),
+                    'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
+                    'all_locations' => __( 'All Locations', 'disciple_tools' )
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
@@ -131,6 +134,16 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         );
 
         register_rest_route(
+            $namespace, '/metrics/render_field_html', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'render_field_html' ],
+                    'permission_callback' => '__return_true'
+                ]
+            ]
+        );
+
+        register_rest_route(
             $namespace, '/metrics/dummy_endpoint', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
@@ -143,7 +156,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         register_rest_route(
             $namespace, '/metrics/date_range_activity', [
                 [
-                    'methods'  => WP_REST_Server::READABLE,
+                    'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'date_range_activity' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -157,6 +170,32 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         }
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
+    }
+
+    public function render_field_html( WP_REST_Request $request ){
+        if ( !$this->has_permission() ){
+            wp_send_json_error( new WP_Error( 'render_field_html', 'Missing Permissions', [ 'status' => 400 ] ) );
+        }
+        $params = $request->get_params();
+        if ( isset( $params['post_type'], $params['field_id'] ) ){
+
+            $post_type = $params['post_type'];
+            $field_id = $params['field_id'];
+
+            // Capture rendered field html.
+            ob_start();
+            $field_settings = DT_Posts::get_post_field_settings( $post_type );
+            $field_settings[$field_id]['custom_display'] = false;
+            render_field_for_display( $field_id, $field_settings, null );
+            $rendered_field_html = ob_get_contents();
+            ob_end_clean();
+
+            return [
+                'html' => $rendered_field_html
+            ];
+        }
+
+        return [];
     }
 
     public function dummy_endpoint( WP_REST_Request $request ){
@@ -178,15 +217,30 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             // Proceed with generating corresponding select SQL parts.
             $field_type_sql = "AND field_type = '" . esc_sql( $field_type ) . "'";
             $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
-            $meta_value_sql = "AND meta_value LIKE '" . ( empty( $params['value'] ) ? '%' : esc_sql( $params['value'] ) ) . "'";
 
             // Accommodate special cases.
             if ( $field_type == 'communication_channel' ){
                 $field_type_sql = "AND (field_type = '' OR field_type = '" . esc_sql( $field_type ) . "')";
                 $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "%'";
-            }
-            if ( $field_type == 'connection' ){
-                $meta_key_sql = "AND meta_key LIKE '%'";
+                $meta_value_sql = "AND meta_value LIKE '" . ( empty( $params['value'] ) ? '%' : esc_sql( $params['value'] ) ) . "'";
+
+            } elseif ( ( $field_type == 'connection' ) || ( $field_type == 'location' ) ){
+                $meta_key_sql = ( $field_type == 'connection' ) ? "AND meta_key LIKE '%'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
+
+                $values = [];
+                foreach ( $params['value'] ?? [] as $value ){
+                    if ( isset( $value['ID'] ) ){
+                        $values[] = $value['ID'];
+                    }
+                }
+                $meta_value_sql = ( !empty( $values ) ? "AND meta_value IN (" . dt_array_to_sql( $values ) . ")" : "AND meta_value LIKE '%'" );
+
+            } elseif ( $field_type == 'user_select' ){
+                $value = $params['value'];
+                $meta_value_sql = ( !empty( $value ) ? "AND meta_value LIKE 'user-" . $value['ID'] . "'" : "AND meta_value LIKE '%'" );
+
+            } else {
+                $meta_value_sql = "AND meta_value LIKE '" . ( empty( $params['value'] ) ? '%' : esc_sql( $params['value'] ) ) . "'";
             }
 
             // Execute sql query.
