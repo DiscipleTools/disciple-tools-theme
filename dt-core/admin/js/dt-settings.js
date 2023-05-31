@@ -1153,15 +1153,19 @@ jQuery(document).ready(function($) {
     // Process Add Tile
     $('#modal-overlay-form').on('click', '#js-add-tile', function(e) {
         var post_type = get_post_type();
-        var new_tile_name = $('#new_tile_name').val();
-        var new_tile_description = $('#new_tile_description').val();
+        var new_tile_name = $('#new_tile_name').val().trim();
+        if (new_tile_name === "") {
+            $('#new_tile_name').css('border', '2px solid #e14d43');
+            return false;
+          }
+        var new_tile_description = $('#new_tile_description').val().trim();
 
         API.create_new_tile(post_type, new_tile_name, new_tile_description).promise().then(function(data) {
             var tile_key = data['key'];
             var tile_label = data['label'];
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
             closeModal();
-            $('#add-new-tile-link').parent().before(`
+            $('#no_tile').before(`
             <div class="sortable-tile" id="${tile_key}">
                 <div class="field-settings-table-tile-name expandable menu-highlight" data-modal="edit-tile" data-key="${tile_key}">
                     <span class="sortable ui-icon ui-icon-arrow-4"></span>
@@ -1183,7 +1187,6 @@ jQuery(document).ready(function($) {
                 </div>
             </div>
             `);
-            $(`.field-settings-table-tile-name`).eq(-2).attr('style', 'border-bottom: 0;');
             $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options);
             show_preview_tile(tile_key);
         });
