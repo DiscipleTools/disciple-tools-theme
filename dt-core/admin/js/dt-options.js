@@ -103,7 +103,9 @@ jQuery(document).ready(function ($) {
       });
 
       // Insert selection area div, within dialog button footer
-      $('.ui-dialog-buttonset').prepend($('<span>')
+      let ui_dialog_buttonset = $('.ui-dialog-buttonset');
+      ui_dialog_buttonset.css('margin', '1.5em');
+      ui_dialog_buttonset.prepend($('<span>')
         .attr('id', 'dialog_icon_selector_icon_selection_div')
         .css('display', 'inline-block')
         .css('vertical-align', 'middle')
