@@ -965,7 +965,7 @@ jQuery(document).ready(function($) {
             </tr>
             <tr class="last-row">
                 <td colspan="2">
-                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>                    
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
                     <button class="button button-primary" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
                 </td>
             </tr>`;
@@ -1154,10 +1154,10 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-add-tile', function(e) {
         var post_type = get_post_type();
         var new_tile_name = $('#new_tile_name').val().trim();
-        if (new_tile_name === "") {
+        if (new_tile_name === '') {
             $('#new_tile_name').css('border', '2px solid #e14d43');
             return false;
-          }
+        }
         var new_tile_description = $('#new_tile_description').val().trim();
 
         API.create_new_tile(post_type, new_tile_name, new_tile_description).promise().then(function(data) {
@@ -1196,9 +1196,15 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-edit-tile', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
-        var tile_label = $(`#edit-tile-label-${tile_key}`).val();
-        var tile_description = $(`#edit-tile-description-${tile_key}`).val();
+        var tile_label = $(`#edit-tile-label-${tile_key}`).val().trim();
+        var tile_description = $(`#edit-tile-description-${tile_key}`).val().trim();
         var hide_tile = $(`#hide-tile-${tile_key}`).is(':checked');
+
+        if (tile_label === '') {
+            $(`#edit-tile-label-${tile_key}`).css('border', '2px solid #e14d43');
+            return false;
+        }
+
         API.edit_tile(post_type, tile_key, tile_label, tile_description, hide_tile).promise().then(function(response) {
             $(`#tile-key-${tile_key}`).parent().removeClass('menu-highlight');
             window['field_settings']['post_type_tiles'][tile_key] = response;
@@ -1213,12 +1219,17 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-add-field', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
-        var new_field_name = $(`#new-field-name`).val();
-        var new_field_type = $(`#new-field-type`).val();
+        var new_field_name = $(`#new-field-name`).val().trim();
+        var new_field_type = $(`#new-field-type`).val().trim();
         var new_field_private = $(`#new-field-private`).is(':checked');
-        var connection_target = $('#connection-field-target').val();
+        var connection_target = $('#connection-field-target').val().trim();
         var multidirectional = $('#multidirectional_checkbox').is(':checked');
-        var other_field_name = $('#other_field_name').val();
+        var other_field_name = $('#other_field_name').val().trim();
+
+        if (new_field_name === '') {
+            $('#new-field-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.new_field(post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(response) {
             var field_key = response['key'];
@@ -1285,11 +1296,16 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
-        var custom_name = $('#edit-field-custom-name').val();
+        var custom_name = $('#edit-field-custom-name').val().trim();
         var field_private = $('#edit-field-private').is(':checked');
-        var tile_select = $('#tile_select').val();
-        var field_description = $('#edit-field-description').val();
-        var field_icon = $('#edit-field-icon').val();
+        var tile_select = $('#tile_select').val().trim();
+        var field_description = $('#edit-field-description').val().trim();
+        var field_icon = $('#edit-field-icon').val().trim();
+
+        if (custom_name === '') {
+            $('#edit-field-custom-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
@@ -1337,9 +1353,14 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
-        var field_option_name = $('.new-field-option-name').val();
-        var field_option_description = $('.new-field-option-description').val();
-        var field_option_icon = $('#edit-field-icon').val();
+        var field_option_name = $('.new-field-option-name').val().trim();
+        var field_option_description = $('.new-field-option-description').val().trim();
+        var field_option_icon = $('#edit-field-icon').val().trim();
+
+        if (field_option_name === '') {
+            $('.new-field-option-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
             window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
@@ -1371,9 +1392,14 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
         var field_option_key = $(this).data('field-option-key');
-        var new_field_option_label = $('#new-option-name').val();
-        var new_field_option_description = $('#new-option-description').val();
-        var field_option_icon = $('#edit-field-icon').val();
+        var new_field_option_label = $('#new-option-name').val().trim();
+        var new_field_option_description = $('#new-option-description').val().trim();
+        var field_option_icon = $('#edit-field-icon').val().trim();
+
+        if (new_field_option_label === '') {
+            $('#new-option-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function(result) {
             window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = result;
