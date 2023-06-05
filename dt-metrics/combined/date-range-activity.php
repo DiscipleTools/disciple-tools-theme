@@ -218,6 +218,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             // Proceed with generating corresponding select SQL parts.
             $field_type_sql = "AND field_type = '" . esc_sql( $field_type ) . "'";
             $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
+            $obj_subtype_sql = '';
 
             // Accommodate special cases.
             if ( $field_type == 'communication_channel' ){
@@ -235,6 +236,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     }
                 }
                 $meta_value_sql = ( !empty( $values ) ? 'AND meta_value IN (' . dt_array_to_sql( $values ) . ')' : "AND meta_value LIKE '%'" );
+                $obj_subtype_sql = ( $field_type == 'connection' ) ? "AND object_subtype = '" . esc_sql( $params['field'] ) . "'" : '';
 
             } elseif ( $field_type == 'user_select' ){
                 $value = $params['value'];
@@ -262,6 +264,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $field_type_sql
             $meta_key_sql
             $meta_value_sql
+            $obj_subtype_sql
             ORDER BY hist_time DESC;
             ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
             // phpcs:enable
@@ -285,14 +288,20 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
 
                 } elseif ( $field_type == 'user_select' ){
                     if ( strpos( $new_value, 'user-' ) == 0 ){
-                        $post = DT_Posts::get_post( 'contacts', Disciple_Tools_Users::get_contact_for_user( substr( $new_value, 5 ) ), true, false );
-                        if ( !is_wp_error( $post ) ){
-                            $new_value = $post['name'] ?? $new_value;
+                        $user_id = Disciple_Tools_Users::get_contact_for_user( substr( $new_value, 5 ) );
+                        if ( !empty( $user_id ) ){
+                            $post = DT_Posts::get_post( 'contacts', $user_id, true, false );
+                            if ( !is_wp_error( $post ) ){
+                                $new_value = $post['name'] ?? $new_value;
+                            }
                         }
                     }
                 } elseif ( $field_type == 'date' ){
-                    $new_value = ( $new_value != 'value_deleted' ) ? gmdate( 'F j, Y, g:i A', $new_value ) : '';
-
+                    if ( is_numeric( $new_value ) ){
+                        $new_value = ( $new_value != 'value_deleted' ) ? gmdate( 'F j, Y, g:i A', $new_value ) : '';
+                    } elseif ( $new_value == 'value_deleted' ){
+                        $new_value = '';
+                    }
                 } elseif ( $field_type == 'boolean' ){
                     $new_value = ( $new_value == 1 ) ? __( 'True', 'disciple_tools' ) : __( 'False', 'disciple_tools' );
 
