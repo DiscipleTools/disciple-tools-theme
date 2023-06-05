@@ -325,11 +325,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 } else {
                     $alt_tag = '';
                 }
-                ?>
 
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
-
-                <?php
+                // Determine icon html element shape to be adopted.
+                $icon = strtolower( trim( $field['icon'] ) );
+                if ( strpos( $icon, 'mdi' ) !== 0 ){
+                    ?>
+                    <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
+                    <?php
+                } else {
+                    ?>
+                    <i class="<?php echo esc_html( $field['icon'] ); ?> <?php echo esc_html( $class ); ?>" style="font-size: 15px;"></i>
+                    <?php
+                }
             } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
                 $icon_rendered = true;
                 ?>
