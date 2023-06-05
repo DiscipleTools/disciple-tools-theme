@@ -412,10 +412,11 @@ jQuery(document).ready(function($) {
             /*** MULTISELECT - START ***/
             if ( field['type'] === 'multi_select' ) {
                 tile_html += `<div class="button-group" style="display: inline-flex;">`;
-                    var multi_select_icon_html = '';
                     $.each( field['default'], function(k,f) {
-                        if ( f['icon'] ) {
-                            multi_select_icon_html = `<img src="${f['icon']}" class="dt-icon">`;
+                        var multi_select_icon_html = '';
+                        let multi_icon = (f['icon'] && f['icon'] !== '') ? f['icon'] : f['font-icon'];
+                        if (multi_icon) {
+                          multi_select_icon_html = '<span class="field-icon-wrapper">' + (multi_icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${multi_icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${multi_icon}" class="dt-icon lightgray">`) + '</span>';
                         }
                         tile_html += `
                         <button>
