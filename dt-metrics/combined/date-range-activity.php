@@ -275,12 +275,16 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
 
                 // Determine new value label to be returned.
                 $new_value = $activity['meta_value'] ?? '';
+                $deleted = false;
                 if ( $field_type == 'connection' ){
                     if ( isset( $settings['post_type'], $new_value ) ){
                         $post = DT_Posts::get_post( $settings['post_type'], $new_value, true, false );
                         if ( !is_wp_error( $post ) ){
                             $new_value = $post['name'] ?? $new_value;
                         }
+                    }
+                    if ( $activity['action'] == 'disconnected from' ){
+                        $deleted = true;
                     }
                 } elseif ( $field_type == 'location' ){
                     $geocoder = new Location_Grid_Geocoder();
@@ -301,6 +305,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                         $new_value = ( $new_value != 'value_deleted' ) ? gmdate( 'F j, Y, g:i A', $new_value ) : '';
                     } elseif ( $new_value == 'value_deleted' ){
                         $new_value = '';
+                        $deleted = true;
                     }
                 } elseif ( $field_type == 'boolean' ){
                     $new_value = ( $new_value == 1 ) ? __( 'True', 'disciple_tools' ) : __( 'False', 'disciple_tools' );
@@ -310,6 +315,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
 
                 } elseif ( $new_value == 'value_deleted' ){
                     $new_value = '';
+                    $deleted = true;
                 }
 
                 $posts[] = [
@@ -317,7 +323,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'post_type' => $activity['object_type'],
                     'name' => $activity['object_name'],
                     'timestamp' => $activity['hist_time'],
-                    'new_value' => $new_value
+                    'new_value' => $new_value,
+                    'deleted' => $deleted,
+                    'field_type' => $field_type
                 ];
             }
 

@@ -177,11 +177,18 @@ function project_activity_during_date_range() {
           posts.forEach(function (post) {
             if (post['id'] && post['name'] && post['timestamp']) {
               let post_url = dtMetricsProject.site_url + '/' + post['post_type'] + '/' + post['id'];
+              let new_value = window.lodash.escape(post['new_value']);
+
+              // Apply custom styling.
+              if ((post['field_type'] && post['field_type'] === 'connection') && (post['deleted'] && post['deleted'] === true)) {
+                new_value = `<s>${window.lodash.escape(post['new_value'])}</s>`;
+              }
+
               tbody.append(`
                 <tr>
                     <td><a href="${post_url}" target="_blank">${window.lodash.escape(post['name'])}</a></td>
                     <td>${window.lodash.escape(moment.unix(post['timestamp']).format('dddd, MMMM Do YYYY, h:mm:ss A'))}</td>
-                    <td>${window.lodash.escape(post['new_value'])}</td>
+                    <td>${new_value}</td>
                 </tr>
               `);
             }
