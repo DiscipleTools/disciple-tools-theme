@@ -1053,13 +1053,9 @@ jQuery(document).ready(function($) {
             description_translations_count = Object.values(field_settings['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
         }
 
-        var field_icon_url = '';
-        var field_icon_image_html = '';
+        var field_icon_url = (field_settings['default'][field_option_key]['font-icon']) ? field_settings['default'][field_option_key]['font-icon']:field_settings['default'][field_option_key]['icon'];
+        var field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
 
-        if ( field_settings['default'][field_option_key]['icon'] ) {
-          field_icon_url = field_settings['default'][field_option_key]['icon'];
-          field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
-        }
         var modal_html_content = `
         <tr>
             <th colspan="2">

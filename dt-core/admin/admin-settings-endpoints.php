@@ -686,8 +686,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'description' => $new_field_option_description,
                 ];
 
-            if ( $field_option_icon ) {
-                $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key]['icon'] = $field_option_icon;
+            if ( $field_option_icon ){
+                $field_option_icon = strtolower( trim( $field_option_icon ) );
+                $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
+                $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key][$icon_key] = $field_option_icon;
+
+                if ( $icon_key == 'font-icon' ){
+                    $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key]['icon'] = '';
+                }
             }
 
             update_option( 'dt_field_customizations', $custom_field_options );
@@ -712,8 +718,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'description' => $new_field_option_description,
             ];
 
-            if ( $field_option_icon ) {
-                $custom_field_option['icon'] = $field_option_icon;
+            if ( $field_option_icon ){
+                $field_option_icon = strtolower( trim( $field_option_icon ) );
+                $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
+                $custom_field_option[$icon_key] = $field_option_icon;
+
+                if ( $icon_key == 'font-icon' ){
+                    $custom_field_option['icon'] = '';
+                }
             }
 
             // Create default_name to store the default field option label if it changed

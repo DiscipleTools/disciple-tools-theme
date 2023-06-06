@@ -316,7 +316,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( !function_exists( 'dt_render_field_icon' ) ){
         function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
             $icon_rendered = false;
-            if ( isset( $field['icon'] ) && !empty( $field['icon'] ) ){
+            if ( !empty( $field['icon'] ) ){
                 $icon_rendered = true;
                 if ( isset( $field['name'] ) ) {
                     $alt_tag = $field['name'];
@@ -325,19 +325,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 } else {
                     $alt_tag = '';
                 }
+                ?>
 
-                // Determine icon html element shape to be adopted.
-                $icon = strtolower( trim( $field['icon'] ) );
-                if ( strpos( $icon, 'mdi' ) !== 0 ){
-                    ?>
-                    <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
-                    <?php
-                } else {
-                    ?>
-                    <i class="<?php echo esc_html( $field['icon'] ); ?> <?php echo esc_html( $class ); ?>" style="font-size: 15px;"></i>
-                    <?php
-                }
-            } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
+
+                <?php
+            } else if ( !empty( $field['font-icon'] ) ){
                 $icon_rendered = true;
                 ?>
 
