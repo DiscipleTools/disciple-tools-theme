@@ -149,18 +149,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         );
 
         register_rest_route(
-            $namespace, '/metrics/dummy_endpoint', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'dummy_endpoint' ],
-                    'permission_callback' => function(){
-                        return $this->has_permission();
-                    },
-                ],
-            ]
-        );
-
-        register_rest_route(
             $namespace, '/metrics/date_range_activity', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
@@ -199,10 +187,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         }
 
         return [];
-    }
-
-    public function dummy_endpoint( WP_REST_Request $request ){
-        return new WP_REST_Response( [] );
     }
 
     public function date_range_activity( WP_REST_Request $request ){

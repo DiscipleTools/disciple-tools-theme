@@ -80,9 +80,8 @@ function project_activity_during_date_range() {
   `;
 
   // Activate date range picker element.
-  window.METRICS.setupDatePicker(
-    `${dtMetricsProject.root}dt/v1/metrics/dummy_endpoint`,
-    function (data, label) {
+  window.METRICS.setupDatePickerWithoutEndpoint(
+    function (start, end, label) {
       $('.date_range_picker span').html(label);
       $('#post-field-submit-button').click();
     },
