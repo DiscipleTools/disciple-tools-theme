@@ -240,7 +240,6 @@ jQuery(document).ready(function ($) {
    */
 
   function display_icon_selector_dialog(parent_form, icon_input, callback = function (source) {
-    console.log(source);
   }) {
     let dialog = $('#dt_icon_selector_dialog');
     if (dialog) {
@@ -470,7 +469,6 @@ jQuery(document).ready(function ($) {
    */
 
   function handle_icon_save(dialog, parent_form, icon_input, callback = function (source) {
-    console.log(source);
   }) {
 
     // Determine if there is a valid selection
@@ -500,7 +498,6 @@ jQuery(document).ready(function ($) {
    */
 
   function handle_icon_upload(dialog, parent_form, icon_input, callback = function (source) {
-    console.log(source);
   }) {
 
     // Build media uploader modal
@@ -777,7 +774,6 @@ jQuery(document).ready(function ($) {
           xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
         }
       }).done(function (response) {
-        console.log(response);
 
         // Update translation counts.
         $('#custom_name_translation_count').html((response['translations']) ? Object.keys(response['translations']).length:0);
