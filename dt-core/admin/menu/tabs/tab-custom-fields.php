@@ -1055,7 +1055,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <?php endforeach; ?>
             <br>
             <br>
-            <button type="submit" name="save_types" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $field_extras_form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            <button type="submit" name="save_types" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
 
             <!-- create record form -->
             <h3><?php echo esc_html( sprintf( __( 'Visible when creating %s', 'disciple_tools' ), strtolower( $post_settings['label_plural'] ) ) ) ?></h3>
@@ -1073,7 +1073,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <?php endforeach; ?>
             <br>
             <br>
-            <button type="submit" name="save_create_form" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $field_extras_form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            <button type="submit" name="save_create_form" class="button"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
             </form>
         <?php endif; ?>
     <?php }
