@@ -129,7 +129,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'field_settings' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function(){
+                        return $this->has_permission();
+                    },
                 ],
             ]
         );
@@ -139,7 +141,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'render_field_html' ],
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => function(){
+                        return $this->has_permission();
+                    },
                 ]
             ]
         );
@@ -149,7 +153,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'dummy_endpoint' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function(){
+                        return $this->has_permission();
+                    },
                 ],
             ]
         );
@@ -159,24 +165,20 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'date_range_activity' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function(){
+                        return $this->has_permission();
+                    },
                 ],
             ]
         );
     }
 
     public function field_settings( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( 'get_field_settings', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
     }
 
     public function render_field_html( WP_REST_Request $request ){
-        if ( !$this->has_permission() ){
-            wp_send_json_error( new WP_Error( 'render_field_html', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
         $params = $request->get_params();
         if ( isset( $params['post_type'], $params['field_id'] ) ){
 
@@ -204,9 +206,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
     }
 
     public function date_range_activity( WP_REST_Request $request ){
-        if ( !$this->has_permission() ){
-            wp_send_json_error( new WP_Error( 'date_range_activity', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
 
         $params = $request->get_params();
         if ( isset( $params['post_type'], $params['field'], $params['ts_start'], $params['ts_end'] ) ){
