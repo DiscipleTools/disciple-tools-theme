@@ -235,7 +235,7 @@ class DT_Login_Email {
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
         if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
-            wp_die( esc_html__( 'The email could not be sent.' ) . "<br />\n" . esc_html__( 'Possible reason: your host may have disabled the mail() function.', 'disciple_tools' ) );
+            wp_die( esc_html__( 'The email could not be sent.', 'disciple_tools' ) . "<br />\n" . esc_html__( 'Possible reason: your host may have disabled the mail() function.', 'disciple_tools' ) );
         }
 
         return true;
