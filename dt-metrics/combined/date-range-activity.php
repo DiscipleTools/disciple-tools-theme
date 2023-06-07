@@ -226,6 +226,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 $meta_value_sql = "AND meta_value LIKE '" . ( empty( $params['value'] ) ? '%' : esc_sql( $params['value'] ) ) . "'";
 
             } elseif ( ( $field_type == 'connection' ) || ( $field_type == 'location' ) ){
+                if ( $field_type == 'connection' ){
+                    $field_type_sql = "AND field_type IN ('" . esc_sql( $field_type ) . "', 'connection to', 'connection from')";
+                }
                 $meta_key_sql = ( $field_type == 'connection' ) ? "AND meta_key LIKE '%'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
 
                 $values = [];
@@ -235,7 +238,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     }
                 }
                 $meta_value_sql = ( !empty( $values ) ? 'AND meta_value IN (' . dt_array_to_sql( $values ) . ')' : "AND meta_value LIKE '%'" );
-                $obj_subtype_sql = ( $field_type == 'connection' ) ? "AND object_subtype = '" . esc_sql( $params['field'] ) . "'" : '';
+                $obj_subtype_sql = ( $field_type == 'connection' ) ? "AND object_subtype IN ('" . esc_sql( $params['field'] ) . "','p2p')" : '';
 
             } elseif ( $field_type == 'user_select' ){
                 $value = $params['value'];
