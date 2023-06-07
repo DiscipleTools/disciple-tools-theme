@@ -4,10 +4,10 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-05-17T11:37:29+00:00\n"
-"PO-Revision-Date: 2023-04-06 06:14+0000\n"
-"Last-Translator: Micah Mills <micahmills@gmail.com>\n"
-"Language-Team: Turkish <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/tr_TR/>\n"
+"PO-Revision-Date: 2023-05-31 16:20+0000\n"
+"Last-Translator: Luke Baumgartner <baumgartner.luke@gmail.com>\n"
+"Language-Team: Turkish <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/tr_TR/>\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -191,10 +191,9 @@ msgid "reset to default"
 msgstr "Standarta Sıfırla"
 
 #: archive-template.php:202
-#, fuzzy
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "Filtreler %s"
+msgstr "%s Filtreler"
 
 #: archive-template.php:213
 msgid "Create custom filter"
@@ -203,18 +202,16 @@ msgstr "Özel filtre oluştur"
 #: archive-template.php:221
 msgctxt "Split By"
 msgid "Split By"
-msgstr ""
+msgstr "Öğeye Göre Böl"
 
 #: archive-template.php:282
-#, fuzzy
-#| msgid "No duplicates found."
 msgid "No results found"
-msgstr "Yinelenen kişi bulunamadı."
+msgstr "Sonuç bulunamadı"
 
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Liste"
+msgstr "%s Listesi"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -257,11 +254,11 @@ msgstr "Arşivlendi"
 #: archive-template.php:368
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "Göster %s"
+msgstr "%s Göster"
 
 #: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
-msgstr "Listede Hangi Alanların Sütun Olarak Görüntüleneceğini Seçin"
+msgstr "Listede hangi alanların sütun olarak görüntüleneceğini seçin"
 
 #: archive-template.php:434
 msgid ""
@@ -285,7 +282,7 @@ msgstr "Durum"
 
 #: archive-template.php:526
 msgid "Share with:"
-msgstr "Şununla Paylaş"
+msgstr "Şununla Paylaş:"
 
 #: archive-template.php:554 dt-assets/functions/details-bar.php:168
 #: dt-posts/custom-post-type.php:190
@@ -352,10 +349,9 @@ msgstr "Aramak için buraya yaz"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "%2$s içeren tüm %2$s öğeleri"
+msgstr "%2$s içeren tüm %1$s"
 
 #: archive-template.php:757
-#, fuzzy
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s olmadan tüm %1$s"
@@ -438,7 +434,7 @@ msgstr "Sil %s"
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
 msgid "View %s History"
-msgstr ""
+msgstr "%s geçmişini görüntüle"
 
 #: dt-assets/functions/details-bar.php:80
 msgctxt "Merge with another record"
@@ -623,14 +619,11 @@ msgstr "Aracıyla Aç"
 
 #: dt-assets/functions/enqueue-scripts.php:242
 msgid "Revert Record Back To This Point"
-msgstr ""
+msgstr "Kaydı Bu Noktaya Geri Döndür"
 
 #: dt-assets/functions/enqueue-scripts.php:243
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "%s'i Silmek İstediğinize Emin misiniz?"
+msgstr "%s haline yeniden döndürmek istediğinize emin misiniz?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -651,7 +644,7 @@ msgstr "kopyala"
 #: dt-assets/functions/enqueue-scripts.php:294
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
-msgstr "Bulunan Eşleşmeler"
+msgstr "Bulunan Eşleşmeler:"
 
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
@@ -702,9 +695,8 @@ msgid "All"
 msgstr "Hepsi"
 
 #: dt-assets/functions/enqueue-scripts.php:324
-#, fuzzy
 msgid "Without"
-msgstr "Dışında/Olmadan"
+msgstr "İçermeyen"
 
 #: dt-assets/functions/enqueue-scripts.php:326
 msgctxt "Number of emails sent. i.e. 20 sent!"
@@ -728,7 +720,7 @@ msgstr "Kişi"
 #: dt-assets/functions/enqueue-scripts.php:350
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s zaten var"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:25
 msgid "Menu"
@@ -903,17 +895,9 @@ msgid ""
 "record faster and keep a count of how many times each action has be done."
 msgstr ""
 "Bu hızlı işlem düğmeleri, kişi kaydını daha hızlı güncellemenize yardımcı "
-"olmak  ve her eylemin kaç kez yapıldığını saymak için buradadır."
+"olmak ve her eylemin kaç kez yapıldığını saymak için buradadır."
 
 #: dt-assets/parts/modals/modal-help.php:15
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid ""
-#| "For example, If you click the 'No Answer' button 4 times, we will log "
-#| "that you attempted to reach this contact 4 times, but they did not "
-#| "answer.\n"
-#| "                This action will also change the 'Seeker Path' to "
-#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
@@ -921,10 +905,8 @@ msgid ""
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
 "Örneğin, 'Cevap Yok' butona 4 sefer tıklarsanız bu kişiyle 4 sefer iletişim "
-"denendi  ama cevap vermedi diye kaydedilecektir.\n"
-"\n"
-"Bu eylem 'Arayanın Yolu' statüsünü de 'İletişim Denendi' olarak "
-"değiştirecektir."
+"denendi ama cevap vermedi diye kaydedilecektir. Bu eylem 'Arayanın Yolu' "
+"statüsünü de 'İletişim Denendi' olarak değiştirecektir."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1113,12 +1095,12 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:111
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
-msgstr "Bildirimler Açık: Anahtar mavı olacak"
+msgstr "Bildirimler Açık: Anahtar mavi olacak."
 
 #: dt-assets/parts/modals/modal-help.php:112
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
-msgstr "Bildirimler Kapalı: Anahtar gri olacak"
+msgstr "Bildirimler Kapalı: Anahtar gri olacak."
 
 #: dt-assets/parts/modals/modal-help.php:114
 msgctxt "Optional Documentation"
@@ -1240,14 +1222,12 @@ msgid "Read the documentation"
 msgstr "Belgeleri oku"
 
 #: dt-assets/parts/modals/modal-help.php:179
-#, fuzzy
-#| msgid "Open With"
 msgid "Open the link"
-msgstr "Aracıyla Aç"
+msgstr "Bağlantıyı aç"
 
 #: dt-assets/parts/modals/modal-help.php:183
 msgid "Copy the link to the clipboard"
-msgstr ""
+msgstr "Bağlantıyı panoya kopyala"
 
 #: dt-assets/parts/modals/modal-help.php:187 dt-reports/magic-url-setup.php:113
 msgid "Send the link via email."
@@ -1285,23 +1265,17 @@ msgid "Back to %s"
 msgstr "%s e geri dön"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "Rekor Tıklamalar:"
+msgstr "%s Kayıt Geçmişi"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filter To Date"
-msgstr "Filtre Adı"
+msgstr "Tarihe Göre Filtrele"
 
 #: dt-assets/parts/modals/modal-record-history.php:22
-#, fuzzy
-#| msgid "Create custom filter"
 msgid "select date to filter by"
-msgstr "Özel filtre oluştur"
+msgstr "filtrelemek için tarihi seçin"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
@@ -1737,7 +1711,7 @@ msgstr "Aktarım Robotu"
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr ""
-"Kişi aktarma ortaklıkla olan başka bir Disciple.Tools siteden gelen kişiler"
+"Kişi aktarma ortaklıkla olan başka bir Disciple.Tools siteden gelen kişiler."
 
 #: dt-contacts/access-module.php:325 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:541
@@ -1932,7 +1906,7 @@ msgstr "Özel Kişi"
 
 #: dt-contacts/base-setup.php:171
 msgid "A friend, family member or acquaintance"
-msgstr "Bir Aile, Aile Üyesi veya Tanıdık"
+msgstr "Bir arkadaş, aile üyesi veya tanıdık"
 
 #: dt-contacts/base-setup.php:172 dt-contacts/dmm-module.php:54
 msgid "Only me"
@@ -1955,10 +1929,8 @@ msgid "Viber"
 msgstr "Viber"
 
 #: dt-contacts/base-setup.php:223
-#, fuzzy
-#| msgid "Whatsapp"
 msgid "WhatsApp"
-msgstr "Whatsapp"
+msgstr "WhatsApp"
 
 #: dt-contacts/base-setup.php:230
 #: dt-core/configuration/config-site-defaults.php:341
@@ -2285,7 +2257,6 @@ msgid "Sharing Gospel/Testimony"
 msgstr "Müjdeyi/Tanıklığını Paylaşıyor"
 
 #: dt-contacts/dmm-module.php:89 dt-contacts/dmm-module.php:202
-#, fuzzy
 msgid "Baptized"
 msgstr "Vaftiz Oldu"
 
@@ -2374,7 +2345,7 @@ msgstr "Bu kişiyi kim vaftiz etti"
 #: dt-contacts/dmm-module.php:203
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
-msgstr "Bu kişinin vaftiz ettiği kişi(ler)."
+msgstr "Bu kişinin vaftiz ettiği kişi(ler)"
 
 #: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:404
 #: dt-people-groups/people-groups-base.php:95
@@ -2385,7 +2356,7 @@ msgstr "İnsan Grupları"
 #: dt-contacts/dmm-module.php:213
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
-msgstr "Bu Kişinin Temsil Ettiği Gruplar"
+msgstr "Bu Kişinin Temsil Ettiği Gruplar."
 
 #: dt-contacts/dmm-module.php:223
 msgid "No Answer"
@@ -2469,10 +2440,8 @@ msgid "Please update contact details on your profile page instead of here."
 msgstr "Lütfen burada değil profil sayfanda kişi bilgilerini düzenle."
 
 #: dt-contacts/user-module.php:73
-#, fuzzy
-#| msgid "Settings"
 msgid "Profile Settings"
-msgstr "Ayarlar"
+msgstr "Profil Ayarları"
 
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
@@ -2739,7 +2708,7 @@ msgstr "Katılın"
 
 #: dt-core/release-notifications.php:63
 msgid "Other news not available."
-msgstr "Diğer haberler yok"
+msgstr "Diğer haberler yok."
 
 #: dt-core/release-notifications.php:78
 msgid "Give"
@@ -2932,7 +2901,7 @@ msgstr "Paydaşlık"
 #: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr "Grup birlikte geliyor (kardeşlik var)"
+msgstr "Grup birlikte geliyor (kardeşlik var)."
 
 #: dt-groups/base-setup.php:222
 msgid "Giving"
@@ -2959,7 +2928,7 @@ msgstr "Tapınma/Övme"
 #: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr "Grup tapınıyor (Övgü/Şükretme)"
+msgstr "Grup tapınıyor (Övgü/Şükretme)."
 
 #: dt-groups/base-setup.php:237
 msgid "Sharing the Gospel"
@@ -3015,7 +2984,7 @@ msgstr "Bitiş Tarihi"
 #: dt-groups/base-setup.php:276
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
-msgstr "Bu grubun görüşmeye bıraktığı tarih (mevcut ise)"
+msgstr "Bu grubun görüşmeye bıraktığı tarih (mevcut ise)."
 
 #: dt-groups/base-setup.php:286
 msgid "Member Count"
@@ -3055,7 +3024,7 @@ msgstr "Üst Nesil Grubu"
 #: dt-groups/base-setup.php:324
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
-msgstr "Bu grubun başlatan/kuran grubu"
+msgstr "Bu grubun başlatan grubu."
 
 #: dt-groups/base-setup.php:335
 msgid "Peer Group"
@@ -3082,7 +3051,7 @@ msgstr "Bu gruptan gelen başka bir grup."
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
-msgstr "Bu grupta olan insan grupları"
+msgstr "Bu grupta olan insan grupları."
 
 #: dt-groups/base-setup.php:418
 msgid "Unbelievers"
@@ -3130,7 +3099,7 @@ msgstr "Başka grupları başlatmaya yardım eden kişi sayısı. Kaç kişi ço
 #: dt-groups/base-setup.php:468
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
-msgstr "Bu kişinin mensup olduğu grupları"
+msgstr "Bu kişinin mensup olduğu grupları."
 
 #: dt-groups/base-setup.php:480
 msgid "Leader of Group"
@@ -3185,82 +3154,74 @@ msgid ""
 "Your password reset link appears to be invalid. Please request a new link "
 "below."
 msgstr ""
+"Şifre sıfırlama bağlantınız geçersiz görünüyor. Lütfen aşağıdan yeni bir "
+"bağlantı isteyin."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
+"Parola sıfırlama bağlantınızın süresi doldu. Lütfen aşağıdan yeni bir "
+"bağlantı isteyin."
 
 #: dt-login/login-template.php:89 dt-login/login-template.php:115
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
-msgstr "Şifre"
+msgstr "Yeni Şifre Al"
 
 #: dt-login/login-template.php:104 dt-login/login-template.php:533
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "E-posta adresi ekle"
+msgstr "E-posta Adresi"
 
 #: dt-login/login-template.php:118
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
+"Şifre sıfırlama e-postanız gönderildi. Şifrenizi sıfırlama bağlantısı için e-"
+"postanızı veya önemsiz postalarınızı kontrol edin."
 
 #: dt-login/login-template.php:171 dt-login/login-template.php:261
 #: dt-login/login-template.php:400
 msgid "Passwords do not match. Please, try again."
-msgstr ""
+msgstr "Parolalar uyuşmuyor. Lütfen tekrar deneyin."
 
 #: dt-login/login-template.php:233 dt-login/login-template.php:282
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
-msgstr "Şifreni sıfırla"
+msgstr "Şifreni Sıfırla"
 
 #: dt-login/login-template.php:248 dt-login/login-template.php:251
 #: dt-login/login-template.php:388 dt-login/login-template.php:391
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
-msgstr "Şifre"
+msgstr "Şifre Gereklidir"
 
 #: dt-login/login-template.php:258 dt-login/login-template.php:397
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
-msgstr "Şifreni sıfırla"
+msgstr "Şifreyi Tekrar Girin"
 
 #: dt-login/login-template.php:340 dt-login/login-template.php:409
 #: dt-login/login-template.php:590
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
-msgstr "Kayıtlı"
+msgstr "Kayıt Ol"
 
 #: dt-login/login-template.php:375 dt-users/template-new-user.php:90
 msgid "There are some errors in your form."
 msgstr "Formunuzda bazı hatalar var."
 
 #: dt-login/login-template.php:380
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "Görünen Ad"
+msgstr "Görünen Ad (İsteğe bağlı)"
 
 #: dt-login/login-template.php:493
 msgid "User action confirmed."
-msgstr ""
+msgstr "Kullanıcı işlemi onaylandı."
 
 #: dt-login/login-template.php:509 dt-login/login-template.php:536
 #: dt-login/login-template.php:582
 msgid "Login"
-msgstr ""
+msgstr "Oturum açın"
 
 #: dt-login/login-template.php:516
 msgid "Username or password does not match. Try again."
-msgstr ""
+msgstr "Kullanıcı adı veya şifre eşleşmiyor. Tekrar deneyin."
 
 #: dt-login/login-template.php:534 dt-users/template-new-user.php:123
 #: dt-users/template-new-user.php:124 template-settings.php:600
@@ -3269,13 +3230,11 @@ msgstr "Şifre"
 
 #: dt-login/login-template.php:535
 msgid "Remember Me"
-msgstr ""
+msgstr "Beni Hatırla"
 
 #: dt-login/login-template.php:597
-#, fuzzy
-#| msgid "Lost your password"
 msgid "Lost your password?"
-msgstr "Şifrenizi Unuttun mu?"
+msgstr "Şifrenizi unuttun mu?"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
@@ -3410,7 +3369,7 @@ msgid ""
 "connection"
 msgstr ""
 "Bu zaman aralığında vaftiz tarihi olan kişi sayısı ve onlara bağlı vaftiz "
-"eden kişi."
+"eden kişi"
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
@@ -3463,7 +3422,7 @@ msgid ""
 "church coach"
 msgstr ""
 "Kiliseyi başlatan ve kilisenin koçu olarak tanımlanan kişi ve kullanıcı "
-"sayısı."
+"sayısı"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -3549,6 +3508,8 @@ msgstr "Birleştirilmiş Haritalar"
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
+"Bu haritayı görüntülemek için bir harita kutusu anahtarı gereklidir; eklemek "
+"için buraya tıklayın."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3840,7 +3801,6 @@ msgid "Activity Highlights"
 msgstr "Etkinlik Öne Çıkanları"
 
 #: dt-metrics/personal/activity-highlights.php:59
-#, fuzzy
 msgid "None"
 msgstr "Hiçbiri"
 
@@ -3951,7 +3911,6 @@ msgid "Do not reply directly to this email."
 msgstr "Bu e-postayı yanıtlamayın."
 
 #: dt-notifications/notifications-scheduler.php:140 template-settings.php:482
-#, fuzzy
 msgid "Hourly Digest"
 msgstr "Saatlik Özeti"
 
@@ -4132,11 +4091,11 @@ msgstr "Takibi Bırak"
 
 #: dt-posts/dt-posts.php:103
 msgid "Updated existing record instead of creating a new record."
-msgstr ""
+msgstr "Yeni bir kayıt oluşturmak yerine mevcut kayıt güncellendi."
 
 #: dt-posts/dt-posts.php:1646
 msgid "Magic Link Submission"
-msgstr "Magic Link Submission"
+msgstr "Sihirli Bağlantı Gönderimi"
 
 #: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2191
 #, fuzzy
@@ -4230,7 +4189,7 @@ msgstr "Artık %s e koçluk yapmıyor"
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "%s tarafından artık koçluk almıyor."
+msgstr "%s tarafından artık koçluk almıyor"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
@@ -4250,7 +4209,7 @@ msgstr "%s ikincil atanılanlardan kaldırıldı"
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "Artık %s de ikincil atanılmış değil."
+msgstr "Artık %s de ikincil atanılmış değil"
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
@@ -4349,9 +4308,6 @@ msgid "Connected to %s"
 msgstr "%s ile bağlantısı var"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
 msgstr "%1$s, %2$s e eklendi"
@@ -4363,9 +4319,6 @@ msgid "Removed connection to %s"
 msgstr "%s ile bağlantısı kaldırıldı"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s, %2$s dan kaldırıldı"
@@ -4409,20 +4362,14 @@ msgid "%1$s added to locations"
 msgstr "%1$s konumlara eklendi"
 
 #: dt-posts/posts.php:512
-#, fuzzy
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "%1$s, %2$s dan kaldırıldı"
+msgstr "%1$s, %2$s bağlantılarından kaldırıldı"
 
 #: dt-posts/posts.php:515
-#, fuzzy
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "%1$s, %2$s e eklendi"
+msgstr "%1$s, %2$s bağlantılarına eklendi"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -4536,52 +4483,44 @@ msgstr "Bağlantılar"
 
 #: dt-reports/magic-url-landing-page.php:54
 #: dt-reports/magic-url-landing-page.php:58
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "Magic Link Submission"
+msgstr "Geçersiz Link"
 
 #: dt-reports/magic-url-landing-page.php:63
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "Bağlantı anahtarı artık geçerli değil veya süresi dolmuş."
 
 #: dt-reports/magic-url-landing-page.php:64
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "Lütfen %s veya daha yeni bir anahtar bulun veya yeni bir tane isteyin."
 
 #: dt-reports/magic-url-landing-page.php:64
 msgid "login"
-msgstr ""
+msgstr "giriş yap"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
-msgstr "Magic Link Submission"
+msgstr "Sihirli Bağlantılar"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
-msgstr "Bu kayıtta bulunan uygulamalar."
+msgstr "Sihirli Bağlantılar bu kayıtta mevcuttur."
 
 #: dt-reports/magic-url-setup.php:86
-#, fuzzy
-#| msgid "View User"
 msgid "View"
-msgstr "Kullanıcıyı Görüntüle"
+msgstr "Görüntüle"
 
 #: dt-reports/magic-url-setup.php:87
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Panoya kopyala"
 
 #: dt-reports/magic-url-setup.php:92
 msgid "QR code"
-msgstr ""
+msgstr "QR kod"
 
 #: dt-reports/magic-url-setup.php:93
 msgid "Reset"
-msgstr ""
+msgstr "Sıfırla"
 
 #: dt-reports/magic-url-setup.php:113
 msgid "Add email address"
@@ -4707,7 +4646,6 @@ msgid "Biography"
 msgstr "Özgeçmiş"
 
 #: dt-users/template-new-user.php:265
-#, fuzzy
 msgid "Upgrading a contact"
 msgstr "Kişi üst seviyeye geçiriliyor"
 
@@ -4888,11 +4826,11 @@ msgstr "Hızı"
 
 #: dt-users/template-user-management.php:583
 msgid "Assigned and not accepted"
-msgstr "Atanılması kabul edildi."
+msgstr "Atandı ve kabul edilmedi"
 
 #: dt-users/template-user-management.php:585
 msgid "Time from assigned to contact accepted for the last 10 contacts"
-msgstr "Son 10 kişi için Atandığından kabul olduğuna zaman aralığı."
+msgstr "Son 10 kişi için atandığından kabul olduğuna zaman aralığı"
 
 #: dt-users/template-user-management.php:587
 msgid "Accepted with no contact attempt"
@@ -4904,14 +4842,14 @@ msgstr "En eski 10 güncelleme gerekiyor"
 
 #: dt-users/template-user-management.php:591
 msgid "Time from assigned to contact attempt for the last 10 contacts"
-msgstr "Son 10 kişi için Atandığından İletişim Geçildiğine zaman aralığı."
+msgstr "Son 10 kişi için atandığından iletişim geçildiğine zaman aralığı"
 
 #: dt-users/user-hooks-and-config.php:167
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
 msgstr ""
-"%1$s hoşgeldiniz, bu senin özel kişi kaydın. Veri alanları günceleyebilir "
+"Hoşgeldiniz %1$s, bu senin özel kişi kaydın. Veri alanları günceleyebilir "
 "veya bana yada başka kullanıcılara @mention olarak etiketlersen bizi dahil "
 "edebilirsiniz - güle güle kullan"
 
@@ -4937,7 +4875,7 @@ msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
-msgstr "%2$s websitesinde %1$s 'ye katılmaya davet edildiniz."
+msgstr "%2$s websitesinde %1$s 'ye katılmaya davet edildiniz"
 
 #: dt-users/user-hooks-and-config.php:506
 msgid "Extra Disciple.Tools Information"
@@ -4964,16 +4902,12 @@ msgid "User Language"
 msgstr "Kullanıcı Dili"
 
 #: dt-users/user-initial-setup.php:44
-#, fuzzy
-#| msgid "Invite User"
 msgid "Initial User Setup!"
-msgstr "Kullancı Davet Et"
+msgstr "İlk Kullanıcı Kurulumu!"
 
 #: dt-users/user-initial-setup.php:52
-#, fuzzy
-#| msgid "User Language"
 msgid "Default Language"
-msgstr "Kullanıcı Dili"
+msgstr "Varsayılan Dil"
 
 #: dt-users/user-management.php:110
 msgid "Add User"
@@ -4995,12 +4929,12 @@ msgstr "%1$s, %2$s de yorum yaptı, şöyle dedi: %3$s"
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "%1$s, %2$s gündür İletişime Geçilmesi için beklemekte."
+msgstr "%1$s, %2$s gündür İletişime Geçilmesi için beklemekte"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "%2$s de, %3$s gün geçtikten sonra, %1$s ile iletişim denendi."
+msgstr "%2$s de, %3$s gün geçtikten sonra, %1$s ile iletişim denendi"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"
@@ -5096,7 +5030,7 @@ msgstr "Sistem E-postası"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "%1$s için bugün bir hatırlatma bilirledin."
+msgstr "%1$s için bugün bir hatırlatma bilirledin"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"

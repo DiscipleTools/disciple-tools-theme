@@ -4,10 +4,10 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2023-05-17T11:37:29+00:00\n"
-"PO-Revision-Date: 2023-03-18 14:13+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Spanish <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/es_ES/>\n"
+"PO-Revision-Date: 2023-05-31 16:20+0000\n"
+"Last-Translator: Gabo Ayala <ayala.gabo@gmail.com>\n"
+"Language-Team: Spanish <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/es_ES/>\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -203,13 +203,11 @@ msgstr "Crear filtro personalizado"
 #: archive-template.php:221
 msgctxt "Split By"
 msgid "Split By"
-msgstr ""
+msgstr "Dividido por"
 
 #: archive-template.php:282
-#, fuzzy
-#| msgid "No duplicates found."
 msgid "No results found"
-msgstr "No se encontraron duplicados."
+msgstr "No se encontrarón resultados"
 
 #: archive-template.php:292
 msgctxt "Contacts List"
@@ -1272,11 +1270,9 @@ msgid "Back to %s"
 msgstr "Volver a %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "Historia del récord %s"
+msgstr "Historia del registro %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
 msgid "Filter To Date"
@@ -3200,16 +3196,12 @@ msgstr ""
 "enlace a continuación."
 
 #: dt-login/login-template.php:89 dt-login/login-template.php:115
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
-msgstr "Contraseña"
+msgstr "Obtener una contraseña nueva"
 
 #: dt-login/login-template.php:104 dt-login/login-template.php:533
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "Agregar dirección de correo electrónico"
+msgstr "Dirección de correo electrónico"
 
 #: dt-login/login-template.php:118
 msgid ""
@@ -3226,28 +3218,20 @@ msgid "Passwords do not match. Please, try again."
 msgstr "Las contraseñas no coinciden. Inténtalo de nuevo."
 
 #: dt-login/login-template.php:233 dt-login/login-template.php:282
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
 msgstr "Restablecer la contraseña"
 
 #: dt-login/login-template.php:248 dt-login/login-template.php:251
 #: dt-login/login-template.php:388 dt-login/login-template.php:391
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
-msgstr "Contraseña"
+msgstr "Contraseña Requerida"
 
 #: dt-login/login-template.php:258 dt-login/login-template.php:397
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
-msgstr "Restablecer la contraseña"
+msgstr "Reintroduce la contraseña"
 
 #: dt-login/login-template.php:340 dt-login/login-template.php:409
 #: dt-login/login-template.php:590
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
 msgstr "Registrado"
 
@@ -3256,10 +3240,8 @@ msgid "There are some errors in your form."
 msgstr "Hay errores en el llenado del formulario."
 
 #: dt-login/login-template.php:380
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "Nombre para mostrar"
+msgstr "Nombre para mostrar (opcional="
 
 #: dt-login/login-template.php:493
 msgid "User action confirmed."
@@ -4151,10 +4133,8 @@ msgid "Magic Link Submission"
 msgstr "Envío de Enlace Mágico"
 
 #: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2191
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
-msgstr "Revertir Actividad"
+msgstr "Revertir Actividad del Bot"
 
 #: dt-posts/dt-posts.php:1654
 msgid "D.T System"
@@ -4361,9 +4341,6 @@ msgid "Connected to %s"
 msgstr "Conectado a %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
 msgstr "%1$s agregado a %2$s"
@@ -4375,9 +4352,6 @@ msgid "Removed connection to %s"
 msgstr "Se quitó la conexión a %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s eliminado de %2$s"
@@ -4544,36 +4518,28 @@ msgstr "Links"
 
 #: dt-reports/magic-url-landing-page.php:54
 #: dt-reports/magic-url-landing-page.php:58
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "Envío de Enlace Mágico"
+msgstr "Envío de Enlace Mágico invalido"
 
 #: dt-reports/magic-url-landing-page.php:63
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "El enlace clave no es valido o a expirado."
 
 #: dt-reports/magic-url-landing-page.php:64
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "Por favor %s, o encuentra una key mas frecuente, ó solicita una nueva."
 
 #: dt-reports/magic-url-landing-page.php:64
-#, fuzzy
-#| msgid "Login"
 msgid "login"
 msgstr "Acceso"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
-msgstr "Envío de Enlace Mágico"
+msgstr "Enviar Enlace Mágico"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
-msgstr "Aplicaciones disponibles en este registro."
+msgstr "Enlace Mágico disponible para este registro."
 
 #: dt-reports/magic-url-setup.php:86
 msgid "View"
