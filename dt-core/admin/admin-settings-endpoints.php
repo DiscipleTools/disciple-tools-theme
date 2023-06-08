@@ -718,7 +718,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'description' => $new_field_option_description,
             ];
 
-            if ( $field_option_icon ){
+            if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
                 $field_option_icon = strtolower( trim( $field_option_icon ) );
                 $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
                 $custom_field_option[$icon_key] = $field_option_icon;
@@ -757,7 +757,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        if ( $all_non_custom_fields[$field_key]['name'] === trim( $custom_name ) ) {
+        if ( ( $all_non_custom_fields[$field_key]['name'] ?? '' ) === trim( $custom_name ) ) {
             return false;
         }
         return true;
@@ -776,7 +776,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        $default_name = $all_non_custom_fields[$field_key]['name'];
+        $default_name = $all_non_custom_fields[$field_key]['name'] ?? '';
         return $default_name;
     }
 
@@ -916,7 +916,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
 
             // Field icon
-            if ( isset( $post_submission['field_icon'] ) ) {
+            if ( isset( $post_submission['field_icon'] ) && strpos( $post_submission['field_icon'], 'undefined' ) === false ) {
                 $field_icon                           = $post_submission['field_icon'];
                 $field_icon_key                       = ( ! empty( $field_icon ) && strpos( $field_icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
                 $field_null_icon_key                  = ( $field_icon_key === 'font-icon' ) ? 'icon' : 'font-icon';

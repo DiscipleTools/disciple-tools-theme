@@ -334,7 +334,7 @@ jQuery(document).ready(function($) {
 
             var icon_html = '';
             let icon = (field['icon'] && field['icon'] !== '') ? field['icon'] : field['font-icon'];
-            if (icon) {
+            if (icon && (typeof icon !== 'undefined') && (icon !== 'undefined')) {
               icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
             }
 
@@ -415,7 +415,7 @@ jQuery(document).ready(function($) {
                     $.each( field['default'], function(k,f) {
                         var multi_select_icon_html = '';
                         let multi_icon = (f['icon'] && f['icon'] !== '') ? f['icon'] : f['font-icon'];
-                        if (multi_icon) {
+                        if (multi_icon && (typeof multi_icon !== 'undefined') && (multi_icon !== 'undefined')) {
                           multi_select_icon_html = '<span class="field-icon-wrapper">' + (multi_icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${multi_icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${multi_icon}" class="dt-icon lightgray">`) + '</span>';
                         }
                         tile_html += `
@@ -833,9 +833,10 @@ jQuery(document).ready(function($) {
 
         var field_icon_image_html = '';
         let icon = (field_settings['icon'] && field_settings['icon'] !== '') ? field_settings['icon'] : field_settings['font-icon'];
-        if ( icon ) {
+        if ( icon && (typeof icon !== 'undefined') && (icon !== 'undefined') ) {
           field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
-        }
+
+        } else icon = '';
 
         var private_field = '';
         if ( field_settings['private'] ) {
@@ -1054,7 +1055,11 @@ jQuery(document).ready(function($) {
         }
 
         var field_icon_url = (field_settings['default'][field_option_key]['font-icon']) ? field_settings['default'][field_option_key]['font-icon']:field_settings['default'][field_option_key]['icon'];
-        var field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+        var field_icon_image_html = '';
+        if( field_icon_url && (typeof field_icon_url !== 'undefined') && (field_icon_url !== 'undefined') ){
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+
+        } else field_icon_url = '';
 
         var modal_html_content = `
         <tr>

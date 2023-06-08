@@ -316,7 +316,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( !function_exists( 'dt_render_field_icon' ) ){
         function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
             $icon_rendered = false;
-            if ( !empty( $field['icon'] ) ){
+            if ( !empty( $field['icon'] ) && strpos( $field['icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 if ( isset( $field['name'] ) ) {
                     $alt_tag = $field['name'];
@@ -330,7 +330,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
 
                 <?php
-            } else if ( !empty( $field['font-icon'] ) ){
+            } else if ( !empty( $field['font-icon'] ) && strpos( $field['font-icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 ?>
 
