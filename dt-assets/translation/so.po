@@ -4171,7 +4171,8 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s] (%2$s) - Isticmaalaha %3$s wuxuu codsaday marin u helka %4$s [%5$s] "
+"@[%1$s](%2$s) - Isticmaalaha %3$s wuxuu codsaday marin u helka %4$s "
+"[%5$s]"
 "(%6$s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha si aad u siiso "
 "marin."
 
@@ -5408,7 +5409,7 @@ msgstr "Nuqullada la helay:"
 
 #~ msgctxt "My records"
 #~ msgid "My %s"
-#~ msgstr "My% s"
+#~ msgstr "My %s"
 
 #~ msgid "Sub-assigned"
 #~ msgstr "Qeyb-hoosaad"

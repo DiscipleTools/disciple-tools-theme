@@ -4015,7 +4015,7 @@ msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr ""
 "@%1$s, \n"
-" %2$s वर अपडेटसाठी विनंती केली आहे."
+"%2$s वर अपडेटसाठी विनंती केली आहे."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."

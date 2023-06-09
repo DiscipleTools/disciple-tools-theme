@@ -40,7 +40,7 @@ msgstr "Ti kọ iyọọda"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "Ma binu, o ko ni igbanilaaye lati wo% 1 $ s pẹlu id% 2 $ s."
+msgstr "Ma binu, o ko ni igbanilaaye lati wo %1$s pẹlu id %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -214,7 +214,7 @@ msgstr "A ko rii awọn ẹda-ẹda."
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Akojọ% s"
+msgstr "Akojọ%s"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -259,7 +259,7 @@ msgstr "Gbepamo"
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "Titun% s"
+msgstr "Titun %s"
 
 #: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
@@ -269,7 +269,7 @@ msgstr "Yan awọn aaye wo lati han bi awọn ọwọn ninu atokọ naa"
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"Yan gbogbo% 1 $ s ti o fẹ ṣe imudojuiwọn lati atokọ naa, ki o ṣe imudojuiwọn "
+"Yan gbogbo %1$s ti o fẹ ṣe imudojuiwọn lati atokọ naa, ki o ṣe imudojuiwọn "
 "wọn ni isalẹ"
 
 #: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
@@ -355,7 +355,7 @@ msgstr "Tẹ lati wa"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "Gbogbo% 1 $ s pẹlu% 2 $ s"
+msgstr "Gbogbo %1$s pẹlu %2$s"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -435,7 +435,7 @@ msgstr "Awọn iṣe Abojuto"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Paarẹ% s"
+msgstr "Paarẹ%s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -515,12 +515,12 @@ msgstr "A ko rii awọn abajade ti o baamu \"{{query}}\""
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Nfihan awọn ohun kan% s. Tẹ lati wa diẹ sii."
+msgstr "Nfihan awọn ohun kan %s. Tẹ lati wa diẹ sii."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "Nfihan awọn ohun kan% 1 $ s ti o baamu% 2 $ s"
+msgstr "Nfihan awọn ohun kan %1$s ti o baamu %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
@@ -556,12 +556,12 @@ msgstr "Tọju Itumọ"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "Idahun% 1 $ s pẹlu% 2 $ s emoji"
+msgstr "Idahun %1$s pẹlu %2$s emoji"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s ati% 1 $ s ṣe pẹlu emoji% 2 $ s"
+msgstr "%3$s ati %1$s ṣe pẹlu emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -601,7 +601,7 @@ msgstr "Awọn Duplicates ti a Ti Ko"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "Awọn ẹda ẹda lori:% s"
+msgstr "Awọn ẹda ẹda lori:%s"
 
 #: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
@@ -618,7 +618,7 @@ msgstr "Imudojuiwọn gbigbe ni aṣeyọri."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Ti ṣẹda lori% s"
+msgstr "Ti ṣẹda lori %s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -633,7 +633,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Ṣe o da ọ loju pe o fẹ paarẹ% s?"
+msgstr "Ṣe o da ọ loju pe o fẹ paarẹ%s?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -659,7 +659,7 @@ msgstr "Awọn ipele ti a rii:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Ṣe gbogbo awọn ere-kere kuro fun% s"
+msgstr "Ṣe gbogbo awọn ere-kere kuro fun %s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -686,7 +686,7 @@ msgstr "Ko si awọn igbasilẹ ti a rii ni ibamu pẹlu àlẹmọ rẹ."
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
-msgstr "Gbogbo% s"
+msgstr "Gbogbo %s"
 
 #: dt-assets/functions/enqueue-scripts.php:321
 msgid "start"
@@ -1276,7 +1276,7 @@ msgstr "Ṣatunkọ Igbasilẹ Tuntun"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "Pada si% s"
+msgstr "Pada si %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
 #, fuzzy
@@ -1813,7 +1813,7 @@ msgstr "Iha-sọtọ fun mi"
 #: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "Tẹle-Up% s"
+msgstr "Tẹle-Up %s"
 
 #: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
@@ -1983,7 +1983,7 @@ msgstr "Awọn ọna asopọ Awujọ miiran"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Awọn isopọ si% s miiran"
+msgstr "Awọn isopọ si %s miiran"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2051,12 +2051,12 @@ msgstr ""
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "Ṣe igbasilẹ% s"
+msgstr "Ṣe igbasilẹ%s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Yi% s Iru"
+msgstr "Yi %s Iru"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2065,7 +2065,7 @@ msgstr "Wo awọn ẹda-ẹda"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Ṣe o da ọ loju pe o fẹ lati ṣe akosile% s?"
+msgstr "Ṣe o da ọ loju pe o fẹ lati ṣe akosile %s?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2085,13 +2085,13 @@ msgstr "Awọn Ajọ Aifọwọyi"
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Gbogbo% s Mo le wo"
+msgstr "Gbogbo %s Mo le wo"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Ayanfẹ% s"
+msgstr "Ayanfẹ%s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2123,7 +2123,7 @@ msgstr "Ọrọìwòye"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "% S yii ni iwe-ipamọ"
+msgstr "%s yii ni iwe-ipamọ"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2175,7 +2175,7 @@ msgstr "miiran ojula"
 
 #: dt-contacts/contacts-transfer.php:276
 msgid "Already transfered to %s"
-msgstr "Ti gbe tẹlẹ si% s"
+msgstr "Ti gbe tẹlẹ si %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
@@ -2208,7 +2208,7 @@ msgstr "Aṣiṣe gbigbe kekere."
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Olubasọrọ yii ti gbe si% s fun atẹle siwaju."
+msgstr "Olubasọrọ yii ti gbe si %s fun atẹle siwaju."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -2400,7 +2400,7 @@ msgstr "Igbagbọ"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Ti sopọ% s"
+msgstr "Ti sopọ%s"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -2424,17 +2424,17 @@ msgstr "Wa awọn onilọpo ati awọn olubasọrọ"
 #: dt-contacts/duplicates-merging.php:430
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(Lati Ẹda):% s"
+msgstr "(Lati Ẹda):%s"
 
 #: dt-contacts/duplicates-merging.php:551
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "Igbasilẹ yii jẹ ẹda ẹda kan ati pe o ti dapọ si% 2 $ s"
+msgstr "Igbasilẹ yii jẹ ẹda ẹda kan ati pe o ti dapọ si %2$s"
 
 #: dt-contacts/duplicates-merging.php:564
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "% 1 $ s dapọ% 2 $ s sinu igbasilẹ yii"
+msgstr "%1$s dapọ %2$s sinu igbasilẹ yii"
 
 #. Template Name of the theme
 #: dt-contacts/duplicates-merging.php:576
@@ -2672,13 +2672,13 @@ msgstr "Ẹnikan ti beere atunto ọrọ igbaniwọle fun akọọlẹ atẹle:"
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "Orukọ Aaye DT:% s"
+msgstr "Orukọ Aaye DT:%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:361
 msgid "Username: %s"
-msgstr "Orukọ olumulo:% s"
+msgstr "Orukọ olumulo:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -2696,11 +2696,11 @@ msgstr "Eyi nilo"
 
 #: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "Ṣafikun tag tuntun \"% s\""
+msgstr "Ṣafikun tag tuntun \"%s\""
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "Tag \"% s\" ti wa ni lilo tẹlẹ"
+msgstr "Tag \"%s\" ti wa ni lilo tẹlẹ"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3380,11 +3380,11 @@ msgstr "Nọmba awọn olubasọrọ ti o ni ipo ti nṣiṣe lọwọ"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Nọmba awọn olubasoro lori% s ni opin opin akoko"
+msgstr "Nọmba awọn olubasoro lori %s ni opin opin akoko"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Nọmba awọn olubasọrọ nibiti a ti ṣeto% s lori ọna oluwa naa"
+msgstr "Nọmba awọn olubasọrọ nibiti a ti ṣeto %s lori ọna oluwa naa"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3401,7 +3401,7 @@ msgstr ""
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "Iran% s Baptismu"
+msgstr "Iran %s Baptismu"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
@@ -3434,11 +3434,11 @@ msgstr "Awọn ile ijọsin ti n ṣiṣẹ ni opin opin akoko"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Iran% s Awọn ile ijọsin"
+msgstr "Iran %s Awọn ile ijọsin"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Nọmba ti awọn iran% s awọn ijọsin ni opin opin akoko naa"
+msgstr "Nọmba ti awọn iran %s awọn ijọsin ni opin opin akoko naa"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -3486,7 +3486,7 @@ msgstr "Osu to koja"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "% s oṣu sẹyin"
+msgstr[0] "%s oṣu sẹyin"
 msgstr[1] ""
 
 #: dt-metrics/combined/daily-activity.php:85
@@ -3512,7 +3512,7 @@ msgstr "Ko si Iṣẹ-ṣiṣe ti a rii!"
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
-msgstr "Titun% s"
+msgstr "Titun %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3597,7 +3597,7 @@ msgstr "Afikun"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 1 $ s ni% 2 $ s"
+msgstr "%1$s ni %2$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -3929,7 +3929,7 @@ msgstr "Tẹ ibi lati wo tabi fesi"
 #: dt-notifications/notifications-email.php:131
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "Imudojuiwọn lori% 1 $ s #% 2 $ s"
+msgstr "Imudojuiwọn lori %1$s # %2$s"
 
 #: dt-notifications/notifications-email.php:135
 msgid "Do not reply directly to this email."
@@ -3946,53 +3946,53 @@ msgstr "Daily Digest"
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "Iṣẹju% s sẹhin"
+msgstr[0] "Iṣẹju %s sẹhin"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "Wakati% s sẹhin"
+msgstr[0] "Wakati %s sẹhin"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "% s ọjọ sẹhin"
+msgstr[0] "%s ọjọ sẹhin"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "% s ọsẹ sẹyin"
+msgstr[0] "%s ọsẹ sẹyin"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "% s ọdun sẹyin"
+msgstr[0] "%s ọdun sẹyin"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "lori% s ọdun sẹyin"
+msgstr[0] "lori %s ọdun sẹyin"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "Ti ṣẹda% s ati sọtọ si ọ."
+msgstr "Ti ṣẹda %s ati sọtọ si ọ."
 
 #: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "A ti yan ọ:% 1 $ s."
+msgstr "A ti yan ọ: %1$s."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "% 1 $ s sọtọ% 2 $ s si% 3 $ s."
+msgstr "%1$s sọtọ %2$s si %3$s."
 
 #: dt-notifications/notifications.php:922
 #: dt-notifications/notifications.php:929
@@ -4006,42 +4006,42 @@ msgstr "Eto"
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "% 1 $ s pín% 2 $ s pẹlu rẹ."
+msgstr "%1$s pín %2$s pẹlu rẹ."
 
 #: dt-notifications/notifications.php:930
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "% 1 $ s mẹnuba ọ lori% 2 $ s sọ pe:% 3 $ s"
+msgstr "%1$s mẹnuba ọ lori %2$s sọ pe: %3$s"
 
 #: dt-notifications/notifications.php:937
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "% 1 $ s ṣe asọye lori% 2 $ s sọ pe:% 3 $ s"
+msgstr "%1$s ṣe asọye lori %2$s sọ pe: %3$s"
 
 #: dt-notifications/notifications.php:941
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "% 1 $ s ti a fiwejuwe% 2 $ s si ọ."
+msgstr "%1$s ti a fiwejuwe %2$s si ọ."
 
 #: dt-notifications/notifications.php:951
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "% 1 $ s ṣafikun aami-aṣẹ% 2 $ s lori% 3 $ s."
+msgstr "%1$s ṣafikun aami-aṣẹ %2$s lori %3$s."
 
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@% 1 $ s, a beere imudojuiwọn kan lori% 2 $ s."
+msgstr "@%1$s, a beere imudojuiwọn kan lori %2$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "Awọn alaye olubasọrọ ti a tunṣe% 1 $ s lori% 2 $ s."
+msgstr "Awọn alaye olubasọrọ ti a tunṣe %1$s lori %2$s."
 
 #: dt-notifications/notifications.php:961
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "% 1 $ s kọ iṣẹ iyansilẹ lori:% 2 $ s."
+msgstr "%1$s kọ iṣẹ iyansilẹ lori: %2$s."
 
 #: dt-people-groups/people-groups-base.php:94
 #: dt-people-groups/people-groups-base.php:104
@@ -4150,8 +4150,8 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [%1$s] (% 2 $ s) - Olumulo% 3 $ s ti beere wiwọle si% 4 $ s [% 5 $ s] (% 6 "
-"$ s). Ti o ba fẹ, pin igbasilẹ yii pẹlu olumulo lati fun iraye si."
+"@[%1$s](%2$s) - Olumulo %3$s ti beere wiwọle si %4$s [%5$s]"
+"(%6$s). Ti o ba fẹ, pin igbasilẹ yii pẹlu olumulo lati fun iraye si."
 
 #: dt-posts/dt-posts.php:2781
 msgid "Access Request"
@@ -4160,7 +4160,7 @@ msgstr "Beere Wiwọle"
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "Baptisi% s"
+msgstr "Baptisi %s"
 
 #: dt-posts/posts.php:282
 #, fuzzy
@@ -4171,168 +4171,168 @@ msgstr "Baptisi nipasẹ %s"
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "Ko baptisi% s"
+msgstr "Ko baptisi %s"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "Ko baptisi nipasẹ% s"
+msgstr "Ko baptisi nipasẹ%s"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "% s fi kun si awọn ọmọ ẹgbẹ"
+msgstr "%s fi kun si awọn ọmọ ẹgbẹ"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "Ṣafikun si ẹgbẹ% s"
+msgstr "Ṣafikun si ẹgbẹ%s"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "Ti yọ% s kuro ninu ẹgbẹ"
+msgstr "Ti yọ%s kuro ninu ẹgbẹ"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "Yọ kuro lati ẹgbẹ% s"
+msgstr "Yọ kuro lati ẹgbẹ%s"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "Kooshi% s"
+msgstr "Kooshi %s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "Olukọ nipasẹ% s"
+msgstr "Olukọ nipasẹ%s"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "Ko ṣe olukọni mọ% s"
+msgstr "Ko ṣe olukọni mọ%s"
 
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "Ko ṣe olukọni mọ nipasẹ% s"
+msgstr "Ko ṣe olukọni mọ nipasẹ%s"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "Apakan-ipin% s"
+msgstr "Apakan-ipin %s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "Ipin-ipin lori% s"
+msgstr "Ipin-ipin lori %s"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "Ti yọ ipin-ipin% s kuro"
+msgstr "Ti yọ ipin-ipin %s kuro"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "Ko si ipin-ipin mọ lori% s"
+msgstr "Ko si ipin-ipin mọ lori %s"
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "% 1 $ s ṣafikun bi ẹgbẹ eniyan lori% 2 $ s"
+msgstr "%1$s ṣafikun bi ẹgbẹ eniyan lori %2$s"
 
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "% s ṣafikun si awọn ẹgbẹ eniyan"
+msgstr "%s ṣafikun si awọn ẹgbẹ eniyan"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "Yọ% 1 $ s kuro ninu awọn ẹgbẹ eniyan lori% 2 $ s"
+msgstr "Yọ %1$s kuro ninu awọn ẹgbẹ eniyan lori %2$s"
 
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "yọ% s kuro awọn ẹgbẹ eniyan"
+msgstr "yọ%s kuro awọn ẹgbẹ eniyan"
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "% 1 $ s ṣafikun bi adari lori% 2 $ s"
+msgstr "%1$s ṣafikun bi adari lori %2$s"
 
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "% s ṣafikun si awọn adari"
+msgstr "%s ṣafikun si awọn adari"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "Yọ% 1 $ s kuro awọn adari lori% 2 $ s"
+msgstr "Yọ %1$s kuro awọn adari lori %2$s"
 
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "yọ% s kuro awọn adari"
+msgstr "yọ%s kuro awọn adari"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "% 1 $ s ṣafikun bi olukọni lori% 2 $ s"
+msgstr "%1$s ṣafikun bi olukọni lori %2$s"
 
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "% s ṣafikun awọn olukọni"
+msgstr "%s ṣafikun awọn olukọni"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "Yọ% 1 $ s kuro awọn olukọni lori% 2 $ s"
+msgstr "Yọ %1$s kuro awọn olukọni lori %2$s"
 
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "% s yọ kuro ninu awọn olukọni"
+msgstr "%s yọ kuro ninu awọn olukọni"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "% s ṣafikun si awọn ẹgbẹ ọmọde"
+msgstr "%s ṣafikun si awọn ẹgbẹ ọmọde"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "fi kun% s si awọn ẹgbẹ obi"
+msgstr "fi kun %s si awọn ẹgbẹ obi"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "yọ% s kuro awọn ẹgbẹ ọmọde"
+msgstr "yọ%s kuro awọn ẹgbẹ ọmọde"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "yọ% s kuro awọn ẹgbẹ obi"
+msgstr "yọ%s kuro awọn ẹgbẹ obi"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "% s ṣafikun si awọn ẹgbẹ ẹlẹgbẹ"
+msgstr "%s ṣafikun si awọn ẹgbẹ ẹlẹgbẹ"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "% s yọ kuro ninu awọn ẹgbẹ ẹlẹgbẹ"
+msgstr "%s yọ kuro ninu awọn ẹgbẹ ẹlẹgbẹ"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "Ti sopọ si% s"
+msgstr "Ti sopọ si %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
 #, fuzzy
@@ -4340,13 +4340,13 @@ msgstr "Ti sopọ si% s"
 #| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
-msgstr "Fi kun% 1 $ s si% 2 $ s"
+msgstr "Fi kun %1$s si %2$s"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "Yiyọ asopọ si% s"
+msgstr "Yiyọ asopọ si %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
 #, fuzzy
@@ -4354,12 +4354,12 @@ msgstr "Yiyọ asopọ si% s"
 #| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
-msgstr "Yọ% 1 $ s kuro% 2 $ s"
+msgstr "Yọ %1$s kuro %2$s"
 
 #: dt-posts/posts.php:416
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "Ti firanṣẹ si:% s"
+msgstr "Ti firanṣẹ si:%s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -4368,31 +4368,31 @@ msgstr "Ko si ẹnikan"
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "% 1 $ s yipada si% 2 $ s"
+msgstr "%1$s yipada si %2$s"
 
 #: dt-posts/posts.php:434 dt-posts/posts.php:445
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "Yọ% 1 $ s kuro% 2 $ s"
+msgstr "Yọ %1$s kuro %2$s"
 
 #: dt-posts/posts.php:437 dt-posts/posts.php:448
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "Fi kun% 1 $ s si% 2 $ s"
+msgstr "Fi kun %1$s si %2$s"
 
 #: dt-posts/posts.php:470
 msgid "%s removed"
-msgstr "yọ% s kuro"
+msgstr "yọ%s kuro"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "Yọ% 1 $ s kuro awọn ipo"
+msgstr "Yọ %1$s kuro awọn ipo"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "Fi kun% 1 $ s si awọn ipo"
+msgstr "Fi kun %1$s si awọn ipo"
 
 #: dt-posts/posts.php:512
 #, fuzzy
@@ -4400,7 +4400,7 @@ msgstr "Fi kun% 1 $ s si awọn ipo"
 #| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "Yọ% 1 $ s kuro% 2 $ s"
+msgstr "Yọ %1$s kuro %2$s"
 
 #: dt-posts/posts.php:515
 #, fuzzy
@@ -4408,7 +4408,7 @@ msgstr "Yọ% 1 $ s kuro% 2 $ s"
 #| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "Fi kun% 1 $ s si% 2 $ s"
+msgstr "Fi kun %1$s si %2$s"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -4433,22 +4433,22 @@ msgstr "ko wulo"
 #: dt-posts/posts.php:566
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "Ṣafikun% 1 $ s:% 2 $ s"
+msgstr "Ṣafikun %1$s: %2$s"
 
 #: dt-posts/posts.php:568
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "Imudojuiwọn% 1 $ s lati% 2 $ s si% 3 $ s"
+msgstr "Imudojuiwọn %1$s lati %2$s si %3$s"
 
 #: dt-posts/posts.php:570
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "Ti paarẹ% 1 $ s:% 2 $ s"
+msgstr "Ti paarẹ %1$s: %2$s"
 
 #: dt-posts/posts.php:574
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "Orukọ yipada si:% s"
+msgstr "Orukọ yipada si:%s"
 
 #: dt-posts/posts.php:576
 msgctxt "message"
@@ -4458,7 +4458,7 @@ msgstr "Ti a ṣẹda lati Itanna Demo"
 #: dt-posts/posts.php:583
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "% s kọ iṣẹ iyansilẹ"
+msgstr "%s kọ iṣẹ iyansilẹ"
 
 #: dt-posts/posts.php:583 dt-posts/posts.php:586
 msgctxt "message"
@@ -4468,17 +4468,17 @@ msgstr "Olumulo kan"
 #: dt-posts/posts.php:586
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "Iṣẹ iyansilẹ% s gba"
+msgstr "Iṣẹ iyansilẹ%s gba"
 
 #: dt-posts/posts.php:591
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "Pinpin pẹlu% s"
+msgstr "Pinpin pẹlu %s"
 
 #: dt-posts/posts.php:593
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "Pinpin pẹlu% s"
+msgstr "Pinpin pẹlu %s"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -4617,7 +4617,7 @@ msgstr "Ipo Olumulo"
 #: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "Ṣafikun olumulo si:% s"
+msgstr "Ṣafikun olumulo si:%s"
 
 #: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
@@ -4972,17 +4972,17 @@ msgstr "Aisedede"
 #: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "Ti gba% 1 $ s ni% 2 $ s lẹhin ọjọ 3 3 $ s"
+msgstr "Ti gba %1$s ni %2$s lẹhin ọjọ 3 3 $ s"
 
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "% 1 $ s nduro fun Igbiyanju Olubasọrọ fun awọn ọjọ% 2 $ s"
+msgstr "%1$s nduro fun Igbiyanju Olubasọrọ fun awọn ọjọ %2$s"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "Olubasọrọ pẹlu% 1 $ s ni igbidanwo lori% 2 $ s lẹhin ọjọ% 3 $ s"
+msgstr "Olubasọrọ pẹlu %1$s ni igbidanwo lori %2$s lẹhin ọjọ %3$s"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"
@@ -5018,7 +5018,7 @@ msgstr "Wo Olumulo"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr "% s ọjọ lati igbẹhin to kẹhin"
+msgstr "%s ọjọ lati igbẹhin to kẹhin"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -5043,7 +5043,7 @@ msgstr "Wọle"
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "Iṣẹ iyansilẹ lori% s"
+msgstr "Iṣẹ iyansilẹ lori %s"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
@@ -5078,12 +5078,12 @@ msgstr "Imeeli Eto"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "O ṣeto olurannileti kan fun oni lori% 1 $ s"
+msgstr "O ṣeto olurannileti kan fun oni lori %1$s"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "O ṣeto iṣẹ yii lori% 1 $ s:% 2 $ s"
+msgstr "O ṣeto iṣẹ yii lori %1$s: %2$s"
 
 #: dt-workflows/workflows-triggers.php:63
 msgid "D.T Workflow"
@@ -5113,7 +5113,7 @@ msgstr "Wo iru aṣawakiri ti o nlo."
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "% S yii nilo imudojuiwọn kan."
+msgstr "%s yii nilo imudojuiwọn kan."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5151,7 +5151,7 @@ msgstr "Ṣẹda ati lo tag"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Ṣe o da ọ loju pe o fẹ paarẹ% s?"
+msgstr "Ṣe o da ọ loju pe o fẹ paarẹ%s?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5201,7 +5201,7 @@ msgstr "Yan iru awọn aaye lati ṣafihan kọja awọn igbasilẹ olopobobo tu
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "Yan iru% s:"
+msgstr "Yan iru %s:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
@@ -5409,7 +5409,7 @@ msgstr "Awọn ẹda ti a ri:"
 
 #~ msgctxt "My records"
 #~ msgid "My %s"
-#~ msgstr "Mi% s"
+#~ msgstr "Mi %s"
 
 #~ msgid "Sub-assigned"
 #~ msgstr "Iha-sọtọ"

@@ -359,7 +359,7 @@ msgstr "Geben Sie etwas ein, um danach zu suchen"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "Alle% 1 $ s mit% 2 $ s"
+msgstr "Alle %1$s mit %2$s"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -2134,7 +2134,7 @@ msgstr "Alle %s, die ich sehen kann"
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Favorit% s"
+msgstr "Favorit %s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -3678,7 +3678,7 @@ msgstr "Hinzugefügt"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 1 $ s in% 2 $ s"
+msgstr "%1$s in %2$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67

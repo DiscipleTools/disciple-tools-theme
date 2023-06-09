@@ -5189,7 +5189,7 @@ msgstr "Phương thức mở"
 
 #: template-merge-post-details.php:111
 msgid "Merge Duplicate %s"
-msgstr "Hợp nhất Bản sao%s"
+msgstr "Hợp nhất Bản sao %s"
 
 #: template-merge-post-details.php:113
 msgid ""

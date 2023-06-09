@@ -192,7 +192,7 @@ msgstr "weka upya kuwa chaguo-msingi"
 #: archive-template.php:202
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "Vichujio vya%s"
+msgstr "Vichujio vya %s"
 
 #: archive-template.php:213
 msgid "Create custom filter"
@@ -212,7 +212,7 @@ msgstr "Hakuna nakala zilizopatikana."
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Orodha ya%s"
+msgstr "Orodha ya %s"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -433,7 +433,7 @@ msgstr "Vitendo vya Usimamizi"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Futa%s"
+msgstr "Futa %s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -512,7 +512,7 @@ msgstr "Hakuna matokeo yaliyopatikana yanayofanana na \"{{query}}\""
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Inaonyesha vipengee%s. Andika ili kupata zaidi."
+msgstr "Inaonyesha vipengee %s. Andika ili kupata zaidi."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
@@ -558,7 +558,7 @@ msgstr "%1$s imejibu na emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr " %3$s na %1$s wamejibu na emoji %2$s"
+msgstr "%3$s na %1$s wamejibu na emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -615,7 +615,7 @@ msgstr "Usasishaji umefaulu."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Iliundwa mnamo%s"
+msgstr "Iliundwa mnamo %s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -630,7 +630,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Je! Una uhakika unataka kufuta%s?"
+msgstr "Je! Una uhakika unataka kufuta %s?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -656,7 +656,7 @@ msgstr "Mechi Zilizopatikana:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Ondoa mechi zote kwa%s"
+msgstr "Ondoa mechi zote kwa %s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -1275,7 +1275,7 @@ msgstr "Hariri Rekodi Mpya"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "Rudi kwa%s"
+msgstr "Rudi kwa %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
 #, fuzzy
@@ -1810,7 +1810,7 @@ msgstr "Nimeshapewa"
 #: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "Ufuatiliaji%s"
+msgstr "Ufuatiliaji %s"
 
 #: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
@@ -1980,7 +1980,7 @@ msgstr "Viungo Vingine vya Kijamii"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Miunganisho kwa%s nyingine"
+msgstr "Miunganisho kwa %s nyingine"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2047,12 +2047,12 @@ msgstr "Mwasiliani huyu hataki kuendelea au wewe umeamua kutokuendelea naye."
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "Jalada%s"
+msgstr "Jalada %s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Badilisha Aina ya%s"
+msgstr "Badilisha Aina ya %s"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2061,7 +2061,7 @@ msgstr "Tazama marudio"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Je! Una uhakika unataka kuweka kumbukumbu%s?"
+msgstr "Je! Una uhakika unataka kuweka kumbukumbu %s?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2204,7 +2204,7 @@ msgstr "Kosa dogo katika uhamisho."
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Anwani hii ilihamishiwa kwa%s kwa ufuatiliaji zaidi."
+msgstr "Anwani hii ilihamishiwa kwa %s kwa ufuatiliaji zaidi."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -2396,7 +2396,7 @@ msgstr "Imani"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Imeunganishwa%s"
+msgstr "Imeunganishwa %s"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -3377,11 +3377,11 @@ msgstr "Idadi ya anwani ambazo zilikuwa na hali ya kazi"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Idadi ya anwani kwenye%s mwisho wa muda"
+msgstr "Idadi ya anwani kwenye %s mwisho wa muda"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Idadi ya anwani ambapo%s iliwekwa kwenye njia ya mtafuta"
+msgstr "Idadi ya anwani ambapo %s iliwekwa kwenye njia ya mtafuta"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3402,7 +3402,7 @@ msgstr "Kanisa la Kizazi cha %s"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "Idadi ya ubatizo%s wa kizazi"
+msgstr "Idadi ya ubatizo %s wa kizazi"
 
 #: dt-metrics/combined/critical-path.php:288
 msgid "Baptizers"
@@ -3431,11 +3431,11 @@ msgstr "Makanisa yanafanya kazi mwishoni mwa nyakati"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Makanisa ya kizazi%s"
+msgstr "Makanisa ya kizazi %s"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Idadi ya makanisa%s ya kizazi mwishoni mwa safu ya saa"
+msgstr "Idadi ya makanisa %s ya kizazi mwishoni mwa safu ya saa"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -3944,25 +3944,25 @@ msgstr "Digest ya Kila siku"
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "Dakika%s iliyopita"
+msgstr[0] "Dakika %s iliyopita"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "Saa%s iliyopita"
+msgstr[0] "Saa %s iliyopita"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "Siku%s iliyopita"
+msgstr[0] "Siku %s iliyopita"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "Wiki%s iliyopita"
+msgstr[0] "Wiki %s iliyopita"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:511
@@ -3974,7 +3974,7 @@ msgstr[1] ""
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "zaidi ya%s mwaka uliopita"
+msgstr[0] "zaidi ya %s mwaka uliopita"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:911
@@ -4029,7 +4029,7 @@ msgstr "%1$s aliongeza hatua muhimu wa %2$s juu ya %3$s."
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s, sasisho linaombwa kwa %2$s."
+msgstr "@%1$s, sasisho linaombwa kwa %2$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
@@ -4147,7 +4147,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s] ( %2$s) - Mtumiaji %3$s ameomba idhini ya kufikia %4$s [%5$s] "
+"@  [%1$s]( %2$s) - Mtumiaji %3$s ameomba idhini ya kufikia %4$s [%5$s] "
 "(%6$s). Ikiwa inataka, shiriki rekodi hii na mtumiaji ili upe ufikiaji."
 
 #: dt-posts/dt-posts.php:2781
@@ -4252,7 +4252,7 @@ msgstr "%1$s imeondolewa kwenye vikundi vya watu kwa %2$s"
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr " %s iliondolewa kwenye vikundi vya watu "
+msgstr "%s iliondolewa kwenye vikundi vya watu "
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
@@ -5016,7 +5016,7 @@ msgstr "Angalia Mtumiaji"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr "Siku%s tangu sasisho la mwisho"
+msgstr "Siku %s tangu sasisho la mwisho"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -5041,7 +5041,7 @@ msgstr "Umeingia"
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "Kazi iliyokataliwa kwa%s"
+msgstr "Kazi iliyokataliwa kwa %s"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
@@ -5149,7 +5149,7 @@ msgstr "Unda na tumia lebo"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Je! Una uhakika unataka kufuta%s?"
+msgstr "Je! Una uhakika unataka kufuta %s?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5199,7 +5199,7 @@ msgstr "Chagua ni sehemu zipi za kuonyesha kwenye rekodi mpya nyingi"
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "Chagua aina ya%s:"
+msgstr "Chagua aina ya %s:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"

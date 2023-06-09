@@ -349,7 +349,7 @@ msgstr "ለመፈለግ ይተይቡ"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "ሁሉም% 1 $ s ከ% 2 $ s ጋር"
+msgstr "ሁሉም %1$s ከ %2$s ጋር"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -509,7 +509,7 @@ msgstr "ከ \"{{query}}\" ጋር የሚዛመድ ምንም ውጤቶች አል�
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "% S ንጥሎችን በማሳየት ላይ። የበለጠ ለማግኘት ይተይቡ።"
+msgstr "%s ንጥሎችን በማሳየት ላይ። የበለጠ ለማግኘት ይተይቡ።"
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
@@ -550,12 +550,12 @@ msgstr "ትርጉም ደብቅ"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "% 1 $ s ከ% 2 $ s ስሜት ገላጭ ምስል ጋር ምላሽ ተሰጥቷል"
+msgstr "%1$s ከ %2$s ስሜት ገላጭ ምስል ጋር ምላሽ ተሰጥቷል"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s እና% 1 $ s ከ% 2 $ s ገላጭ ምስል ጋር ምላሽ ሰጥተዋል"
+msgstr "%3$s እና %1$s ከ %2$s ገላጭ ምስል ጋር ምላሽ ሰጥተዋል"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -653,7 +653,7 @@ msgstr "ግጥሚያዎች ተገኝተዋል"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "ሁሉንም ተዛማጆች ለ% s ያሰናብቱ"
+msgstr "ሁሉንም ተዛማጆች ለ%s ያሰናብቱ"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -2013,7 +2013,7 @@ msgstr ""
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "% S ን በማህደር ያስቀምጡ"
+msgstr "%s ን በማህደር ያስቀምጡ"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
@@ -2027,7 +2027,7 @@ msgstr "ብዜቶችን ይመልከቱ"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "እርግጠኛ ነዎት% s ን በማህደር ማስቀመጥ ይፈልጋሉ?"
+msgstr "እርግጠኛ ነዎት%s ን በማህደር ማስቀመጥ ይፈልጋሉ?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2053,7 +2053,7 @@ msgstr "ሁሉንም$s ማየት እችላለሁ"
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "ተወዳጅ% s"
+msgstr "ተወዳጅ%s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2085,7 +2085,7 @@ msgstr "አስተያየት"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "ይህ% s በማህደር ተቀምጧል"
+msgstr "ይህ%s በማህደር ተቀምጧል"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2648,11 +2648,11 @@ msgstr "ይህ ያስፈልጋል"
 
 #: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "አዲስ መለያ \"% s\" ያክሉ"
+msgstr "አዲስ መለያ \"%s\" ያክሉ"
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "መለያ \"% s\" አስቀድሞ ጥቅም ላይ ውሏል"
+msgstr "መለያ \"%s\" አስቀድሞ ጥቅም ላይ ውሏል"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3535,7 +3535,7 @@ msgstr "ታክሏል"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 1 $ s በ% 2 $ s ውስጥ"
+msgstr "%1$s በ %2$s ውስጥ"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -3914,7 +3914,7 @@ msgstr[1] ""
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "ከዓመት በፊት ከ% s በላይ"
+msgstr[0] "ከዓመት በፊት ከ%s በላይ"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:911
@@ -3969,7 +3969,7 @@ msgstr "%1$s በ %3$s ላይ ጉልበቱን አክሏል %2$s"
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s ፣ ዝመና በ %2$s ላይ ተጠይቋል።"
+msgstr "@%1$s ፣ ዝመና በ %2$s ላይ ተጠይቋል።"
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
@@ -4088,8 +4088,8 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [%1$s] (% 2 $ s) - ተጠቃሚ% 3 $ s% 4 $ s [% 5 $ s] (% 6 $ s) መዳረሻ ጠይቋል። ከተፈለገ "
-"ለመድረስ ይህንን መዝገብ ለተጠቃሚው ያጋሩ ፡፡"
+"@[%1$s](%2$s) - ተጠቃሚ %3$s %4$s [%5$s](%6$s) መዳረሻ ጠይቋል። "
+"ከተፈለገ ለመድረስ ይህንን መዝገብ ለተጠቃሚው ያጋሩ ፡፡"
 
 #: dt-posts/dt-posts.php:2781
 msgid "Access Request"

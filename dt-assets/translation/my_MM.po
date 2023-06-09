@@ -352,7 +352,7 @@ msgstr "ရှာဖွေရန်ရိုက်ပါ"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "% 2 $ s ဖြင့်% 1 $ s အားလုံး"
+msgstr "%2$s ဖြင့် %1$s အားလုံး"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -555,12 +555,12 @@ msgstr "ဘာသာပြန်ကိုဖျောက်ထားပါ"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "% 1 $ s သည်% 2 $ s ရုပ်ပြောင်ဖြင့်တုံ့ပြန်ခဲ့သည်"
+msgstr "%1$s သည် %2$s ရုပ်ပြောင်ဖြင့်တုံ့ပြန်ခဲ့သည်"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s နှင့်% 1 $ s သည်% 2 $ s ရုပ်ပြောင်ဖြင့်တုံ့ပြန်မှု"
+msgstr "%3$s နှင့် %1$s သည် %2$s ရုပ်ပြောင်ဖြင့်တုံ့ပြန်မှု"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -2079,7 +2079,7 @@ msgstr "%s အားလုံးကျွန်ုပ်ကြည့်နို
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "အကြိုက်ဆုံး% s"
+msgstr "အကြိုက်ဆုံး%s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2686,11 +2686,11 @@ msgstr "ဒါလိုအပ်တယ်"
 
 #: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "\"% s\" အညွှန်းအသစ်ထည့်ပါ"
+msgstr "\"%s\" အညွှန်းအသစ်ထည့်ပါ"
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "Tag% s ကိုအသုံးပြုပြီးဖြစ်သည်"
+msgstr "Tag %s ကိုအသုံးပြုပြီးဖြစ်သည်"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3581,7 +3581,7 @@ msgstr "ထည့်သည်"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 2 $ s တွင်% 1 $ s"
+msgstr "%2$s တွင် %1$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -4020,7 +4020,7 @@ msgstr "%3$s တွင် %1$s မှတ်တိုင် %2$s ထည့်သ�
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s၊ %2$s ကိုအသစ်တင်ရန်တောင်းခံသည်။"
+msgstr "@%1$s၊ %2$s ကိုအသစ်တင်ရန်တောင်းခံသည်။"
 
 #: dt-notifications/notifications.php:958
 #, fuzzy
@@ -4141,9 +4141,8 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [%1$s] (% 2 $ s) - သုံးစွဲသူ% 3 $ s က% 4 $ s [% 5 $ s] (% 6 $ s) "
-"ကိုဝင်ရောက်ခွင့်တောင်းခံထားတယ်။ "
-"လိုချင်ပါကအသုံးပြုရန်ခွင့်ပြုရန်အသုံးပြုသူနှင့်ဤမှတ်တမ်းကိုမျှဝေပါ။"
+"@[%1$s](%2$s) - သုံးစွဲသူ %3$s က %4$s [%5$s](%6$s) "
+"ကိုဝင်ရောက်ခွင့်တောင်းခံထားတယ်။ လိုချင်ပါကအသုံးပြုရန်ခွင့်ပြုရန်အသုံးပြုသူနှင့်ဤမှတ်တမ်းကိုမျှဝေပါ။"
 
 #: dt-posts/dt-posts.php:2781
 msgid "Access Request"

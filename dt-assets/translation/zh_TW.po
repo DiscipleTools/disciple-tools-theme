@@ -3945,7 +3945,7 @@ msgstr "%1$s 在%3$s上添加了里程碑%2$s。"
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s ，請求對%2$s進行更新。"
+msgstr "@%1$s ，請求對%2$s進行更新。"
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."

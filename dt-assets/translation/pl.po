@@ -2220,7 +2220,7 @@ msgstr "Drobny błąd transferu."
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Ten kontakt został przeniesiony do% s w celu dalszej obserwacji."
+msgstr "Ten kontakt został przeniesiony do %s w celu dalszej obserwacji."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -3984,7 +3984,7 @@ msgstr[3] "%s godzin temu"
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "% s dzień temu"
+msgstr[0] "%s dzień temu"
 msgstr[1] "%s dni temu"
 msgstr[2] "%s dni temu"
 msgstr[3] "%s dni temu"
@@ -4183,7 +4183,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [%1$s] (%2$s) - użytkownik %3$s zażądał dostępu do %4$s [%5$s] (%6$s). W "
+"@[%1$s](%2$s) - użytkownik %3$s zażądał dostępu do %4$s [%5$s](%6$s). W "
 "razie potrzeby udostępnij ten rekord użytkownikowi, aby przyznać mu dostęp."
 
 #: dt-posts/dt-posts.php:2781
@@ -4278,7 +4278,7 @@ msgstr "%1$s została dodana jako grupa osób w %2$s"
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "% s zostało dodane do grup osób"
+msgstr "%s zostało dodane do grup osób"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"

@@ -431,7 +431,7 @@ msgstr "Acciones de administrador"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Eliminar%s"
+msgstr "Eliminar %s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -615,7 +615,7 @@ msgstr "Actualización de transferencia exitosa."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Creado el%s"
+msgstr "Creado el %s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -653,7 +653,7 @@ msgstr "Unas parejas encontradas:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Descartar todas las coincidencias de%s"
+msgstr "Descartar todas las coincidencias de %s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -2084,7 +2084,7 @@ msgstr "Filtros predeterminados"
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Todos los%s que puedo ver"
+msgstr "Todos los %s que puedo ver"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:383
@@ -2122,7 +2122,7 @@ msgstr "Comentar"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "Este%s está archivado"
+msgstr "Este %s está archivado"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -4160,7 +4160,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s): el usuario %3$s ha solicitado acceso a %4$s [%5$s] (%6$s). Si "
+"@[%1$s](%2$s): el usuario %3$s ha solicitado acceso a %4$s [%5$s](%6$s). Si "
 "lo desea, comparta este registro con el usuario para otorgar acceso."
 
 #: dt-posts/dt-posts.php:2781
@@ -5106,7 +5106,7 @@ msgstr "Ver qué navegador está utilizando."
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "Este%s necesita una actualización."
+msgstr "Este %s necesita una actualización."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5144,7 +5144,7 @@ msgstr "Crear etiqueta y aplicarla"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "¿Estás seguro de que deseas eliminar%s?"
+msgstr "¿Estás seguro de que deseas eliminar %s?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"

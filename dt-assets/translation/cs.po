@@ -4159,7 +4159,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s] ( %2$s) - Uživatel %3$s požádal o přístup k %4$s [%5$s] (%6$s). "
+"@  [%1$s]( %2$s) - Uživatel %3$s požádal o přístup k %4$s [%5$s](%6$s). "
 "Pokud chcete, sdílejte tento záznam s uživatelem a udělejte přístup."
 
 #: dt-posts/dt-posts.php:2781

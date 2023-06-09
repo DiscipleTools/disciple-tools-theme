@@ -4162,7 +4162,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [٪ 1 $ s] (٪ 2 $ s) - صارف٪ 3 $ s نے٪ 4 $ s [٪ 5 $ s] (٪ 6 $ s) تک رسائی "
+"@[٪ 1 $ s](٪ 2 $ s) - صارف٪ 3 $ s نے٪ 4 $ s [٪ 5 $ s](٪ 6 $ s) تک رسائی "
 "کی درخواست کی ہے۔ اگر مطلوب ہو تو ، اس ریکارڈ کو صارف کے ساتھ شیئر کریں تاکہ "
 "رسائی کی اجازت دی جاسکے۔"
 

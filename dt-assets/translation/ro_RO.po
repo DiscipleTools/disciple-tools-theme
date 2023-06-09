@@ -620,7 +620,7 @@ msgstr "Actualizarea transferului a fost finalizată cu succes."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Creat la%s"
+msgstr "Creat la %s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -661,7 +661,7 @@ msgstr "Asemănări găsite:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Respingeți toate asemănprile pentru%s"
+msgstr "Respingeți toate asemănprile pentru %s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -3429,11 +3429,11 @@ msgstr "Numărul de contacte care aveau starea activă"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Numărul de contacte de pe%s la sfârșitul intervalului de timp"
+msgstr "Numărul de contacte de pe %s la sfârșitul intervalului de timp"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Numărul de contacte unde%s a fost pus pe Calea Căutătorului"
+msgstr "Numărul de contacte unde %s a fost pus pe Calea Căutătorului"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -4090,7 +4090,7 @@ msgstr "%1$s a adăugat reperul %2$s pe %3$s."
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s, este necesară o actualizare pe %2$s."
+msgstr "@%1$s, este necesară o actualizare pe %2$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."

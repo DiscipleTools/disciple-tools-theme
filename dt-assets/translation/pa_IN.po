@@ -350,7 +350,7 @@ msgstr "ਖੋਜ ਕਰਨ ਲਈ ਟਾਈਪ ਕਰੋ"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr " %2$s ਨਾਲ ਸਾਰੇ %1$s"
+msgstr "%2$s ਨਾਲ ਸਾਰੇ %1$s"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -555,7 +555,7 @@ msgstr "%1$s ਨੇ %2$s ਇਮੋਜੀ ਨਾਲ ਪ੍ਰਤੀਕ੍ਰਿ�
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr " %3$s ਅਤੇ %1$s ਨੇ %2$s ਇਮੋਜੀ ਨਾਲ ਪ੍ਰਤੀਕ੍ਰਿਆ ਕੀਤੀ"
+msgstr "%3$s ਅਤੇ %1$s ਨੇ %2$s ਇਮੋਜੀ ਨਾਲ ਪ੍ਰਤੀਕ੍ਰਿਆ ਕੀਤੀ"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -3566,7 +3566,7 @@ msgstr "ਜੋੜਿਆ ਗਿਆ"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr " %2$s ਵਿੱਚ %1$s"
+msgstr "%2$s ਵਿੱਚ %1$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -4000,7 +4000,7 @@ msgstr "%1$s ਨੇ %3$s ਤੇ ਮੀਲਪੱਥਰ %2$s ਜੋੜਿਆ."
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s, %2$s ਤੇ ਅਪਡੇਟ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ."
+msgstr "@%1$s, %2$s ਤੇ ਅਪਡੇਟ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
@@ -4118,7 +4118,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s] ( %2$s) - ਉਪਭੋਗਤਾ %3$s ਨੇ %4$s [%5$s] (%6$s) ਤੱਕ ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ. "
+"@  [%1$s]( %2$s) - ਉਪਭੋਗਤਾ %3$s ਨੇ %4$s [%5$s](%6$s) ਤੱਕ ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ. "
 "ਜੇ ਲੋੜੀਂਦਾ ਹੈ, ਤਾਂ ਇਸ ਰਿਕਾਰਡ ਨੂੰ ਉਪਭੋਗਤਾ ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਲਈ ਪਹੁੰਚ ਦਿਓ."
 
 #: dt-posts/dt-posts.php:2781
