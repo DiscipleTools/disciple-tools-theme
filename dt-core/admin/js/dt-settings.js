@@ -1011,9 +1011,11 @@ jQuery(document).ready(function($) {
                 <label for="edit-field-icon"><b>Icon</b></label>
             </td>
             <td>
-                <input name="edit-field-icon" id="edit-field-icon" type="text" style="vertical-align: middle;">
-                <button class="button change-icon-button" style="vertical-align: middle;"
-                        data-icon-input="edit-field-icon">Change Icon</button>
+              <div class="input-group">
+                  <input name="edit-field-icon" id="edit-field-icon" type="text" style="vertical-align: middle;">
+                  <button class="button change-icon-button" style="vertical-align: middle;"
+                          data-icon-input="edit-field-icon">Change Icon</button>
+              </div>
             </td>
         </tr>
         <tr class="last-row">
