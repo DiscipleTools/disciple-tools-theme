@@ -635,6 +635,7 @@ jQuery(document).ready(function($) {
     }
 
     $('.dt-admin-modal-box').on('click', '.change-icon-button', function (e) {
+      e.preventDefault();
       enableModalBackDiv('modal-back-icon-picker');
       flip_card();
     });
