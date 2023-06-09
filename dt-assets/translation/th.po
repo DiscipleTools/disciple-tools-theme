@@ -3373,7 +3373,7 @@ msgstr "คริสตจักรเปิดใช้งานเมื่อ
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Generation%s คริสตจักร"
+msgstr "Generation %s คริสตจักร"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"

@@ -195,7 +195,7 @@ msgstr "restaurar ao padrão"
 #: archive-template.php:202
 msgctxt "Contacts Filters"
 msgid "%s Filters"
-msgstr "Filtros%s"
+msgstr "Filtros %s"
 
 #: archive-template.php:213
 msgid "Create custom filter"
@@ -215,7 +215,7 @@ msgstr "Nenhuma duplicidade encontrada."
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Lista%s"
+msgstr "Lista %s"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -437,7 +437,7 @@ msgstr "Ações de Admin"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Apagar%s"
+msgstr "Apagar %s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -620,7 +620,7 @@ msgstr "Transferência de atualização concluída."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Criado em%s"
+msgstr "Criado em %s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -635,7 +635,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Tem certeza de que deseja excluir%s?"
+msgstr "Tem certeza de que deseja excluir %s?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -2003,7 +2003,7 @@ msgstr "Outros links sociais"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Conexões para outro%s"
+msgstr "Conexões para outro %s"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2076,7 +2076,7 @@ msgstr "Arquivo %s"
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Alterar o tipo de%s"
+msgstr "Alterar o tipo de %s"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2105,7 +2105,7 @@ msgstr "Filtros padrão"
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Todos os%s que posso ver"
+msgstr "Todos os %s que posso ver"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:383
@@ -2421,7 +2421,7 @@ msgstr "Fé"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Conectado%s"
+msgstr "Conectado %s"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -5174,7 +5174,7 @@ msgstr "Veja qual navegador você está usando."
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "Este%s precisa de uma atualização."
+msgstr "Este %s precisa de uma atualização."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5212,7 +5212,7 @@ msgstr "Criar e aplicar etiqueta"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Tem certeza de que deseja excluir%s?"
+msgstr "Tem certeza de que deseja excluir %s?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5262,7 +5262,7 @@ msgstr "Escolha quais campos visualizar no novo volume de registros"
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "Selecione o tipo%s:"
+msgstr "Selecione o tipo %s:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"

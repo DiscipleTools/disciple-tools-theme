@@ -2690,7 +2690,7 @@ msgstr "\"%s\" အညွှန်းအသစ်ထည့်ပါ"
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "Tag%s ကိုအသုံးပြုပြီးဖြစ်သည်"
+msgstr "Tag %s ကိုအသုံးပြုပြီးဖြစ်သည်"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"

@@ -216,7 +216,7 @@ msgstr "Dûbare nehat dîtin."
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Lîsteya%s"
+msgstr "Lîsteya %s"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -621,7 +621,7 @@ msgstr "Nûvekirina veguheztinê serketî bû."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Di%s de hate afirandin"
+msgstr "Di %s de hate afirandin"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -636,7 +636,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Ma hûn pê ewle ne ku hûn dixwazin%s jêbirin?"
+msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s jêbirin?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -662,7 +662,7 @@ msgstr "Maçên Dîtin:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Ji bo%s hemî maçan hilînin"
+msgstr "Ji bo %s hemî maçan hilînin"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -1287,7 +1287,7 @@ msgstr "Tomara Nû biguherînin"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "Vegere%s"
+msgstr "Vegere %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
 #, fuzzy
@@ -1829,7 +1829,7 @@ msgstr "Ji min re hatî şandin"
 #: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "-Opandina%s"
+msgstr "-Opandina %s"
 
 #: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
@@ -1999,7 +1999,7 @@ msgstr "Zencîreyên Civakî yên Din"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Girêdanên bi%s yên din re"
+msgstr "Girêdanên bi %s yên din re"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2072,7 +2072,7 @@ msgstr "%s arşîv bike"
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Tîpa%s biguherîne"
+msgstr "Tîpa %s biguherîne"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2081,7 +2081,7 @@ msgstr "Dubareyan bibînin"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Ma hûn pê ewle ne ku hûn dixwazin%s arşîv bikin?"
+msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s arşîv bikin?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2107,7 +2107,7 @@ msgstr "Hemî%s dikarim bibînim"
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Favorite%s"
+msgstr "Favorite %s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2139,7 +2139,7 @@ msgstr "Agahkişî"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "Ev%s hatî arşîv kirin"
+msgstr "Ev %s hatî arşîv kirin"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2191,7 +2191,7 @@ msgstr "malperek din"
 
 #: dt-contacts/contacts-transfer.php:276
 msgid "Already transfered to %s"
-msgstr "Jixwe veguhastin%s"
+msgstr "Jixwe veguhastin %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
@@ -2225,7 +2225,7 @@ msgstr "Çewtiya veguheztina piçûk."
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Ev têkilî ji bo şopandina bêtir ji%s re hate veguheztin."
+msgstr "Ev têkilî ji bo şopandina bêtir ji %s re hate veguheztin."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -2416,7 +2416,7 @@ msgstr "Bawerî"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Bi%s ve girêdayî ye"
+msgstr "Bi %s ve girêdayî ye"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -3394,11 +3394,11 @@ msgstr "Hejmara têkiliyên ku rewşa wan a çalak hebû"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Di dawiya dirêjahiya demê de hejmara têkiliyên li ser%s"
+msgstr "Di dawiya dirêjahiya demê de hejmara têkiliyên li ser %s"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Hejmara têkiliyên ku%s li ser riya lêgerînê hate saz kirin"
+msgstr "Hejmara têkiliyên ku %s li ser riya lêgerînê hate saz kirin"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3448,11 +3448,11 @@ msgstr "Dêrên ku di dawiya demjimêrê de çalak in"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Nifşên%s Dêran"
+msgstr "Nifşên %s Dêran"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Hejmara nifşên%s dêrên di dawiya dirêjahiya demê de"
+msgstr "Hejmara nifşên %s dêrên di dawiya dirêjahiya demê de"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -4187,12 +4187,12 @@ msgstr "Ji hêla %s ve hat imad kirin"
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "Ma%s imad nekirin"
+msgstr "Ma %s imad nekirin"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "Ji hêla%s ve nayê imad kirin"
+msgstr "Ji hêla %s ve nayê imad kirin"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
@@ -4202,7 +4202,7 @@ msgstr "%s li endaman zêde kir"
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "Di koma%s de hate zêdekirin"
+msgstr "Di koma %s de hate zêdekirin"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
@@ -4212,37 +4212,37 @@ msgstr "%s ji komê hate derxistin"
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "Ji koma%s hate rakirin"
+msgstr "Ji koma %s hate rakirin"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "Coaching%s"
+msgstr "Coaching %s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "Ji hêla%s ve tê rahênan"
+msgstr "Ji hêla %s ve tê rahênan"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "Coachdî rahêneriya%s nake"
+msgstr "Coachdî rahêneriya %s nake"
 
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "%Dî bi%s rahênan nayê kirin"
+msgstr "%Dî bi %s rahênan nayê kirin"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "Ji%s veqetandî"
+msgstr "Ji %s veqetandî"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "Di%s de hate veqetandin"
+msgstr "Di %s de hate veqetandin"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
@@ -4252,7 +4252,7 @@ msgstr "%s-ya jêrîn hate rakirin"
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "Ondî li%s nehatî binavkirin"
+msgstr "Ondî li %s nehatî binavkirin"
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
@@ -4348,7 +4348,7 @@ msgstr "%s ji komên peer hat rakirin"
 #: dt-posts/posts.php:369
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "Bi%s ve hat girêdan"
+msgstr "Bi %s ve hat girêdan"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
 #, fuzzy
@@ -4362,7 +4362,7 @@ msgstr "%1$s li %2$s zêde kir"
 #: dt-posts/posts.php:386
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "Girêdana bi%s re hate rakirin"
+msgstr "Girêdana bi %s re hate rakirin"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
 #, fuzzy
@@ -4489,12 +4489,12 @@ msgstr "%s erk qebûl kir"
 #: dt-posts/posts.php:591
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "Bi%s re parve kirin"
+msgstr "Bi %s re parve kirin"
 
 #: dt-posts/posts.php:593
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "Bi%s re nayê parve kirin"
+msgstr "Bi %s re nayê parve kirin"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -5038,7 +5038,7 @@ msgstr "Bikarhêner Bibînin"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr "Ji nûvekirina dawîn ve%s roj"
+msgstr "Ji nûvekirina dawîn ve %s roj"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -5063,7 +5063,7 @@ msgstr "Têketî"
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "Li%s peywir red kirin"
+msgstr "Li %s peywir red kirin"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
@@ -5171,7 +5171,7 @@ msgstr "Tag çêkin û bikar bînin"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Ma hûn pê ewle ne ku hûn dixwazin%s jêbirin?"
+msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s jêbirin?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"

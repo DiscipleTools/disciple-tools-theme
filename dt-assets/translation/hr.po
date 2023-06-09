@@ -512,7 +512,7 @@ msgstr "Nisu pronađeni rezultati koji se podudaraju \"{{query}}\""
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Prikazuju se%s stavke. Upišite da biste pronašli više."
+msgstr "Prikazuju se %s stavke. Upišite da biste pronašli više."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
@@ -657,7 +657,7 @@ msgstr "Pronađene utakmice:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Odbaci sva podudaranja za%s"
+msgstr "Odbaci sva podudaranja za %s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -2086,7 +2086,7 @@ msgstr "Svi %s koje mogu vidjeti"
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Omiljeni%s"
+msgstr "Omiljeni %s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -3982,7 +3982,7 @@ msgstr[2] "-"
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "prije više od%s godinu dana"
+msgstr[0] "prije više od %s godinu dana"
 msgstr[1] ""
 msgstr[2] ""
 

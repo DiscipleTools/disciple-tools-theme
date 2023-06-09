@@ -3545,7 +3545,7 @@ msgstr "日付範囲で転送された連絡先"
 #: dt-metrics/combined/site-links.php:80
 msgctxt "Seeker Path of contacts created in date range"
 msgid "%s of contacts created in date range"
-msgstr "日付範囲で作成された連絡先の %s%s"
+msgstr "日付範囲で作成された連絡先の %s"
 
 #: dt-metrics/combined/site-links.php:81 dt-metrics/combined/site-links.php:82
 #: dt-metrics/combined/site-links.php:83

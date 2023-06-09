@@ -2220,7 +2220,7 @@ msgstr "Drobny błąd transferu."
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Ten kontakt został przeniesiony do%s w celu dalszej obserwacji."
+msgstr "Ten kontakt został przeniesiony do %s w celu dalszej obserwacji."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"

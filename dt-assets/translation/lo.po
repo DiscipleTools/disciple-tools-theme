@@ -3906,7 +3906,7 @@ msgstr[0] "%s ປີກ່ອນ"
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "over%s ປີທີ່ຜ່ານມາ"
+msgstr[0] "over %s ປີທີ່ຜ່ານມາ"
 
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."

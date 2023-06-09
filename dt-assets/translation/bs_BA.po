@@ -434,7 +434,7 @@ msgstr "Administratorske akcije"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Izbriši%s"
+msgstr "Izbriši %s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -513,7 +513,7 @@ msgstr "Nisu pronađeni rezultati koji se podudaraju sa \"{{query}}\""
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Prikazuju se%s stavke. Upišite kako biste pronašli više."
+msgstr "Prikazuju se %s stavke. Upišite kako biste pronašli više."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
@@ -617,7 +617,7 @@ msgstr "Prenos ažuriranja je uspješan."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Napravljeno%s"
+msgstr "Napravljeno %s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -632,7 +632,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Jeste li sigurni da želite izbrisati%s?"
+msgstr "Jeste li sigurni da želite izbrisati %s?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -658,7 +658,7 @@ msgstr "Pronađene utakmice:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Odbaci sva podudaranja za%s"
+msgstr "Odbaci sva podudaranja za %s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -1816,7 +1816,7 @@ msgstr "Pododijeljeno meni"
 #: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "Nastavak%s"
+msgstr "Nastavak %s"
 
 #: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
@@ -1986,7 +1986,7 @@ msgstr "Ostale društvene veze"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Veze s drugim%s"
+msgstr "Veze s drugim %s"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2054,12 +2054,12 @@ msgstr ""
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "Arhiva%s"
+msgstr "Arhiva %s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Promijenite%s tip"
+msgstr "Promijenite %s tip"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2068,7 +2068,7 @@ msgstr "Pogledajte duplikate\n"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Jeste li sigurni da želite arhivirati%s?"
+msgstr "Jeste li sigurni da želite arhivirati %s?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2088,13 +2088,13 @@ msgstr "Zadani filtri"
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Sve%s mogu vidjeti"
+msgstr "Sve %s mogu vidjeti"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Omiljeni%s"
+msgstr "Omiljeni %s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2126,7 +2126,7 @@ msgstr "Komentar"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "Ovaj%s je arhiviran"
+msgstr "Ovaj %s je arhiviran"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2404,7 +2404,7 @@ msgstr "Vjera"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Povezano%s"
+msgstr "Povezano %s"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -3436,11 +3436,11 @@ msgstr "Aktivne crkve na kraju vremenskog raspona"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Crkve generacije%s"
+msgstr "Crkve generacije %s"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Broj crkava generacije%s na kraju vremenskog raspona"
+msgstr "Broj crkava generacije %s na kraju vremenskog raspona"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -3997,7 +3997,7 @@ msgstr[2] "Prije %s (2,3,4) godine/a"
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "prije više od%s godinu dana"
+msgstr[0] "prije više od %s godinu dana"
 msgstr[1] ""
 msgstr[2] ""
 
@@ -5138,7 +5138,7 @@ msgstr "Vidite koji pretraživač koristite"
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "Ovaj%s treba ažurirati."
+msgstr "Ovaj %s treba ažurirati."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5176,7 +5176,7 @@ msgstr "Stvorite i primjenite oznaku"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Jeste li sigurni da želite izbrisati%s?"
+msgstr "Jeste li sigurni da želite izbrisati %s?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5226,7 +5226,7 @@ msgstr "Odaberite koja polja će se prikazati u novim grupnim zapisima"
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "Odaberite tip%s:"
+msgstr "Odaberite tip %s:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
