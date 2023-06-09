@@ -213,7 +213,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 if ( $field_type == 'connection' ){
                     $field_type_sql = "AND field_type IN ('" . esc_sql( $field_type ) . "', 'connection to', 'connection from')";
                 }
-                $meta_key_sql = ( $field_type == 'connection' ) ? "AND meta_key LIKE '%'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
+                $meta_key_sql = ( $field_type == 'connection' ) ? "AND meta_key LIKE '". esc_sql( !empty( $settings['p2p_key'] ) ? $settings['p2p_key'] : '%' ) ."'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
 
                 $values = [];
                 foreach ( $params['value'] ?? [] as $value ){
