@@ -3958,7 +3958,7 @@ msgstr "%1$s เพิ่มเป้าหมาย %2$s เมื่อ %3$s"
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s ขอให้อัปเดตเมื่อ %2$s"
+msgstr "@%1$s ขอให้อัปเดตเมื่อ %2$s"
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."

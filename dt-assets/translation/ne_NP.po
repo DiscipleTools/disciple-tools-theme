@@ -2625,7 +2625,7 @@ msgstr "काम "
 
 #: dt-core/configuration/config-site-defaults.php:552
 msgid "Accepting new contacts"
-msgstr "@ %1$s, %2$s मा अपडेट अनुरोध गरिएको छ।"
+msgstr "@%1$s, %2$s मा अपडेट अनुरोध गरिएको छ।"
 
 #: dt-core/configuration/config-site-defaults.php:556
 msgid "I'm only investing in existing contacts"
@@ -4148,7 +4148,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s] ( %2$s) - प्रयोगकर्ता %3$s ले %4$s [%5$s] (%6$s) मा पहुँच अनुरोध गर्यो। "
+"@  [%1$s]( %2$s) - प्रयोगकर्ता %3$s ले %4$s [%5$s](%6$s) मा पहुँच अनुरोध गर्यो। "
 "यदि चाहानुहुन्छ भने यस रेकर्डलाई प्रयोगकर्तासँग पहुँच प्रदान गर्न साझेदारी गर्नुहोस्।"
 
 #: dt-posts/dt-posts.php:2781

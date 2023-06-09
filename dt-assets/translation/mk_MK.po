@@ -5037,7 +5037,7 @@ msgstr "Види корисник"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr " %s дена од последното ажурирање"
+msgstr "%s дена од последното ажурирање"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"

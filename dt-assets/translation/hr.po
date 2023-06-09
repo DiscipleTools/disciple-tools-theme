@@ -349,7 +349,7 @@ msgstr "Upiši za pretraživanje"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "Svi% 1 $ s s% 2 $ s"
+msgstr "Svi %1$s s %2$s"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -508,7 +508,7 @@ msgstr "Nisu pronađeni rezultati koji se podudaraju \"{{query}}\""
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Prikazuju se% s stavke. Upišite da biste pronašli više."
+msgstr "Prikazuju se%s stavke. Upišite da biste pronašli više."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
@@ -549,12 +549,12 @@ msgstr "Sakrij prijevod"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "% 1 $ s reagirao je s% 2 $ s emoji sličicama"
+msgstr "%1$s reagirao je s %2$s emoji sličicama"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s i% 1 $ s reagirali su s% 2 $ s emoji"
+msgstr "%3$s i %1$s reagirali su s %2$s emoji"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -653,7 +653,7 @@ msgstr "Pronađene utakmice:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Odbaci sva podudaranja za% s"
+msgstr "Odbaci sva podudaranja za%s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -2082,7 +2082,7 @@ msgstr "Svi %s koje mogu vidjeti"
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Omiljeni% s"
+msgstr "Omiljeni%s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2691,11 +2691,11 @@ msgstr "Obavezno"
 
 #: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "Dodaj novu oznaku \"% s\""
+msgstr "Dodaj novu oznaku \"%s\""
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "Oznaka \"% s\" već se koristi"
+msgstr "Oznaka \"%s\" već se koristi"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3593,7 +3593,7 @@ msgstr "Dodano"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 1 $ s u% 2 $ s"
+msgstr "%1$s u %2$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -3978,7 +3978,7 @@ msgstr[2] "-"
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "prije više od% s godinu dana"
+msgstr[0] "prije više od%s godinu dana"
 msgstr[1] ""
 msgstr[2] ""
 
@@ -4152,8 +4152,8 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [% 1 $ s] (% 2 $ s) - Korisnik% 3 $ s zatražio je pristup% 4 $ s [% 5 $ s] "
-"(% 6 $ s). Ako želite, podijelite ovaj zapis s korisnikom kako biste "
+"@[%1$s](%2$s) - Korisnik %3$s zatražio je pristup %4$s [%5$s] "
+"(%6$s). Ako želite, podijelite ovaj zapis s korisnikom kako biste "
 "odobrili pristup."
 
 #: dt-posts/dt-posts.php:2781

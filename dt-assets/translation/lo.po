@@ -39,7 +39,7 @@ msgstr "ການອະນຸຍາດຖືກປະຕິເສດ"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "ຂໍອະໄພ, ທ່ານບໍ່ມີສິດທີ່ຈະເບິ່ງ% 1 $ s ດ້ວຍ id% 2 $ s."
+msgstr "ຂໍອະໄພ, ທ່ານບໍ່ມີສິດທີ່ຈະເບິ່ງ %1$s ດ້ວຍ id %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -212,7 +212,7 @@ msgstr "ບໍ່ພົບສິ່ງທີ່ຊໍ້າຊ້ອນ."
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "ບັນຊີ% s"
+msgstr "ບັນຊີ%s"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -257,7 +257,7 @@ msgstr "ເກັບໄວ້"
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "ໃໝ່% s"
+msgstr "ໃໝ່%s"
 
 #: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
@@ -266,7 +266,7 @@ msgstr "ເລືອກຊ່ອງໃດທີ່ຈະສະແດງເປັ
 #: archive-template.php:434
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
-msgstr "ເລືອກທຸກ% 1 $ s ທີ່ທ່ານຕ້ອງການປັບປຸງຈາກບັນຊີລາຍຊື່, ແລະປັບປຸງພວກມັນຢູ່ດ້ານລຸ່ມ"
+msgstr "ເລືອກທຸກ %1$s ທີ່ທ່ານຕ້ອງການປັບປຸງຈາກບັນຊີລາຍຊື່, ແລະປັບປຸງພວກມັນຢູ່ດ້ານລຸ່ມ"
 
 #: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
@@ -351,7 +351,7 @@ msgstr "ພິມເພື່ອຄົ້ນຫາ"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "ທັງ ໝົດ% 1 $ s ກັບ% 2 $ s"
+msgstr "ທັງ ໝົດ %1$s ກັບ %2$s"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -431,7 +431,7 @@ msgstr "ການກະ ທຳ ຂອງຜູ້ບໍລິຫານ"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "ລົບ% s"
+msgstr "ລົບ%s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -510,12 +510,12 @@ msgstr "ບໍ່ພົບຜົນໄດ້ຮັບທີ່ກົງກັບ
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "ສະແດງລາຍການ% s. ພິມເພື່ອຊອກຫາເພີ່ມເຕີມ."
+msgstr "ສະແດງລາຍການ%s. ພິມເພື່ອຊອກຫາເພີ່ມເຕີມ."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "ສະແດງລາຍການ% 1 $ s ກົງກັບ% 2 $ s"
+msgstr "ສະແດງລາຍການ %1$s ກົງກັບ %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
@@ -551,12 +551,12 @@ msgstr "ເຊື່ອງການແປພາສາ"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "% 1 $ s ປະຕິກິລິຍາກັບ emoji% 2 $ s"
+msgstr "%1$s ປະຕິກິລິຍາກັບ emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s ແລະ% 1 $ s reacted ກັບ emoji% 2 $ s"
+msgstr "%3$s ແລະ %1$s reacted ກັບ emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -596,7 +596,7 @@ msgstr "ຍົກເລີກການຊໍ້າຊ້ອນ"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "ສິ່ງທີ່ຊ້ ຳ ຊ້ອນໃນ:% s"
+msgstr "ສິ່ງທີ່ຊ້ ຳ ຊ້ອນໃນ:%s"
 
 #: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
@@ -613,7 +613,7 @@ msgstr "ອັບເດດການໂອນສຳເລັດແລ້ວ."
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "ສ້າງຂື້ນໃນ% s"
+msgstr "ສ້າງຂື້ນໃນ%s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -628,7 +628,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ% s?"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ%s?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -654,7 +654,7 @@ msgstr "ພົບການແຂ່ງຂັນ:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "ປະຖິ້ມການຈັບຄູ່ທັງ ໝົດ ສຳ ລັບ% s"
+msgstr "ປະຖິ້ມການຈັບຄູ່ທັງ ໝົດ ສຳ ລັບ%s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -681,7 +681,7 @@ msgstr "ບໍ່ພົບບັນທຶກທີ່ກົງກັບຕົວ
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
-msgstr "ທັງ ໝົດ% s"
+msgstr "ທັງ ໝົດ%s"
 
 #: dt-assets/functions/enqueue-scripts.php:321
 msgid "start"
@@ -1246,7 +1246,7 @@ msgstr "ແກ້ໄຂບັນທຶກ ໃໝ່"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "ກັບໄປທີ່% s"
+msgstr "ກັບໄປທີ່%s"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
 #, fuzzy
@@ -1775,7 +1775,7 @@ msgstr "ມອບ ໝາຍ ໃຫ້ຂ້ອຍ"
 #: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "ຕິດຕາມ% s"
+msgstr "ຕິດຕາມ%s"
 
 #: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
@@ -1945,7 +1945,7 @@ msgstr "ການເຊື່ອມຕໍ່ທາງສັງຄົມອື່
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "ເຊື່ອມຕໍ່ກັບ% s ອື່ນ"
+msgstr "ເຊື່ອມຕໍ່ກັບ%s ອື່ນ"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2011,12 +2011,12 @@ msgstr "ການຕິດຕໍ່ນີ້ໄດ້ເຮັດໃຫ້ມັ
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "ເກັບ% s"
+msgstr "ເກັບ%s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "ປ່ຽນ% s ປະເພດ"
+msgstr "ປ່ຽນ%s ປະເພດ"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2025,7 +2025,7 @@ msgstr "ເບິ່ງຊໍ້າ"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "ທ່ານແນ່ໃຈບໍວ່າທ່ານຕ້ອງການທີ່ຈະເກັບ% s?"
+msgstr "ທ່ານແນ່ໃຈບໍວ່າທ່ານຕ້ອງການທີ່ຈະເກັບ%s?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2045,13 +2045,13 @@ msgstr "ຕົວກອງເລີ່ມຕົ້ນ"
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "ທັງ ໝົດ% s ທີ່ຂ້ອຍສາມາດເບິ່ງໄດ້"
+msgstr "ທັງ ໝົດ%s ທີ່ຂ້ອຍສາມາດເບິ່ງໄດ້"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "ມັກ% s"
+msgstr "ມັກ%s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2083,7 +2083,7 @@ msgstr "ຄຳ ເຫັນ"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "% s ນີ້ຖືກເກັບໄວ້"
+msgstr "%s ນີ້ຖືກເກັບໄວ້"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2135,7 +2135,7 @@ msgstr "ເວັບໄຊທ໌ອື່ນ"
 
 #: dt-contacts/contacts-transfer.php:276
 msgid "Already transfered to %s"
-msgstr "ໂອນໄປແລ້ວ% s ແລ້ວ"
+msgstr "ໂອນໄປແລ້ວ%s ແລ້ວ"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
@@ -2168,7 +2168,7 @@ msgstr "ຂໍ້ຜິດພາດໃນການໂອນເລັກນ້ອ
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "ການຕິດຕໍ່ນີ້ຖືກໂອນເຂົ້າ% s ເພື່ອຕິດຕາມຕໍ່ໄປ."
+msgstr "ການຕິດຕໍ່ນີ້ຖືກໂອນເຂົ້າ%s ເພື່ອຕິດຕາມຕໍ່ໄປ."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -2358,7 +2358,7 @@ msgstr "ສັດທາ"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "ເຊື່ອມຕໍ່% s"
+msgstr "ເຊື່ອມຕໍ່%s"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -2382,17 +2382,17 @@ msgstr "ຄົ້ນຫາຕົວຄູນແລະລາຍຊື່ຜູ້
 #: dt-contacts/duplicates-merging.php:430
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(ຈາກຊ້ ຳ):% s"
+msgstr "(ຈາກຊ້ ຳ):%s"
 
 #: dt-contacts/duplicates-merging.php:551
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "ບັນທຶກນີ້ຊ້ ຳ ກັນແລະຖືກລວມເຂົ້າເປັນ% 2 $ s"
+msgstr "ບັນທຶກນີ້ຊ້ ຳ ກັນແລະຖືກລວມເຂົ້າເປັນ %2$s"
 
 #: dt-contacts/duplicates-merging.php:564
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "% 1 $ s ຮວມເຂົ້າ% 2 $ s ໃສ່ບັນທຶກນີ້"
+msgstr "%1$s ຮວມເຂົ້າ %2$s ໃສ່ບັນທຶກນີ້"
 
 #. Template Name of the theme
 #: dt-contacts/duplicates-merging.php:576
@@ -2623,13 +2623,13 @@ msgstr "ມີບາງຄົນໄດ້ຂໍການຕັ້ງຄ່າລ
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "ຊື່ເວັບໄຊທ໌ DT:% s"
+msgstr "ຊື່ເວັບໄຊທ໌ DT:%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:361
 msgid "Username: %s"
-msgstr "ຊື່ຜູ້ໃຊ້:% s"
+msgstr "ຊື່ຜູ້ໃຊ້:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -2647,11 +2647,11 @@ msgstr "ນີ້ແມ່ນຕ້ອງການ"
 
 #: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "ເພີ່ມແທັກ ໃໝ່ \"% s\""
+msgstr "ເພີ່ມແທັກ ໃໝ່ \"%s\""
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "ແທັກ \"% s\" ກຳ ລັງຖືກ ນຳ ໃຊ້ຢູ່ແລ້ວ"
+msgstr "ແທັກ \"%s\" ກຳ ລັງຖືກ ນຳ ໃຊ້ຢູ່ແລ້ວ"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3322,11 +3322,11 @@ msgstr "ຈຳ ນວນລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່�
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "ຈຳ ນວນລາຍຊື່ຜູ້ຕິດຕໍ່ໃນ% s ໃນຕອນທ້າຍຂອງຊ່ວງເວລາ"
+msgstr "ຈຳ ນວນລາຍຊື່ຜູ້ຕິດຕໍ່ໃນ%s ໃນຕອນທ້າຍຂອງຊ່ວງເວລາ"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "ຈຳ ນວນລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່% s ກຳ ນົດຢູ່ໃນເສັ້ນທາງຊອກຫາ"
+msgstr "ຈຳ ນວນລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່%s ກຳ ນົດຢູ່ໃນເສັ້ນທາງຊອກຫາ"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3341,11 +3341,11 @@ msgstr "ຈຳ ນວນການຕິດຕໍ່ທີ່ຮັບບັບ�
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "ລຸ້ນ% s ການບັບຕິສະມາ"
+msgstr "ລຸ້ນ%s ການບັບຕິສະມາ"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "ຈຳ ນວນລຸ້ນ% s ການບັບຕິສະມາ"
+msgstr "ຈຳ ນວນລຸ້ນ%s ການບັບຕິສະມາ"
 
 #: dt-metrics/combined/critical-path.php:288
 msgid "Baptizers"
@@ -3374,11 +3374,11 @@ msgstr "ໂບດມີການເຄື່ອນໄຫວໃນຕອນທ້
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "ລຸ້ນ% s ໂບດ"
+msgstr "ລຸ້ນ%s ໂບດ"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "ຈຳ ນວນລຸ້ນ% s ໂບດໃນຊ່ວງເວລາສິ້ນສຸດ"
+msgstr "ຈຳ ນວນລຸ້ນ%s ໂບດໃນຊ່ວງເວລາສິ້ນສຸດ"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -3424,7 +3424,7 @@ msgstr "ເດືອນທີ່ຜ່ານມາ"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "% s ເດືອນກ່ອນ"
+msgstr[0] "%s ເດືອນກ່ອນ"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -3448,7 +3448,7 @@ msgstr "ບໍ່ພົບການເຄື່ອນໄຫວ!"
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
-msgstr "ໃໝ່% s"
+msgstr "ໃໝ່%s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3533,7 +3533,7 @@ msgstr "ເພີ່ມແລ້ວ"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 1 $ s ໃນ% 2 $ s"
+msgstr "%1$s ໃນ %2$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -3864,7 +3864,7 @@ msgstr "ກົດບ່ອນນີ້ເພື່ອເບິ່ງຫລືຕ
 #: dt-notifications/notifications-email.php:131
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "ອັບເດດໃນ% 1 $ s #% 2 $ s"
+msgstr "ອັບເດດໃນ %1$s # %2$s"
 
 #: dt-notifications/notifications-email.php:135
 msgid "Do not reply directly to this email."
@@ -3881,47 +3881,47 @@ msgstr "ສະຫຼຸບປະຈຳວັນ"
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "% s ນາທີທີ່ຜ່ານມາ"
+msgstr[0] "%s ນາທີທີ່ຜ່ານມາ"
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "% s ຊົ່ວໂມງກ່ອນ"
+msgstr[0] "%s ຊົ່ວໂມງກ່ອນ"
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "% s ມື້ກ່ອນ"
+msgstr[0] "%s ມື້ກ່ອນ"
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "% s ອາທິດຜ່ານມາ"
+msgstr[0] "%s ອາທິດຜ່ານມາ"
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "% s ປີກ່ອນ"
+msgstr[0] "%s ປີກ່ອນ"
 
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "over% s ປີທີ່ຜ່ານມາ"
+msgstr[0] "over%s ປີທີ່ຜ່ານມາ"
 
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "% s ຖືກສ້າງຂື້ນແລະຖືກມອບ ໝາຍ ໃຫ້ທ່ານ."
+msgstr "%s ຖືກສ້າງຂື້ນແລະຖືກມອບ ໝາຍ ໃຫ້ທ່ານ."
 
 #: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "ທ່ານໄດ້ຖືກມອບ ໝາຍ:% 1 $ s."
+msgstr "ທ່ານໄດ້ຖືກມອບ ໝາຍ: %1$s."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "% 1 $ s ມອບ ໝາຍ% 2 $ s ເຖິງ% 3 $ s."
+msgstr "%1$s ມອບ ໝາຍ %2$s ເຖິງ %3$s."
 
 #: dt-notifications/notifications.php:922
 #: dt-notifications/notifications.php:929
@@ -3935,42 +3935,42 @@ msgstr "ລະບົບ"
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "% 1 $ s ແບ່ງປັນ% 2 $ s ກັບທ່ານ."
+msgstr "%1$s ແບ່ງປັນ %2$s ກັບທ່ານ."
 
 #: dt-notifications/notifications.php:930
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "% 1 $ s ໄດ້ກ່າວເຖິງທ່ານກ່ຽວກັບ% 2 $ s ທີ່ກ່າວວ່າ:% 3 $ s"
+msgstr "%1$s ໄດ້ກ່າວເຖິງທ່ານກ່ຽວກັບ %2$s ທີ່ກ່າວວ່າ: %3$s"
 
 #: dt-notifications/notifications.php:937
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "% 1 $ s ໃຫ້ ຄຳ ເຫັນກ່ຽວກັບ% 2 $ s ທີ່ກ່າວວ່າ:% 3 $ s"
+msgstr "%1$s ໃຫ້ ຄຳ ເຫັນກ່ຽວກັບ %2$s ທີ່ກ່າວວ່າ: %3$s"
 
 #: dt-notifications/notifications.php:941
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "% 1 $ s ຈັດສົ່ງ% 2 $ s ໃຫ້ທ່ານ."
+msgstr "%1$s ຈັດສົ່ງ %2$s ໃຫ້ທ່ານ."
 
 #: dt-notifications/notifications.php:951
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "% 1 $ s ເພີ່ມຈຸດ ສຳ ຄັນ% 2 $ s ໃນ% 3 $ s."
+msgstr "%1$s ເພີ່ມຈຸດ ສຳ ຄັນ %2$s ໃນ %3$s."
 
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@% 1 $ s, ຕ້ອງຂໍການປັບປຸງໃນ% 2 $ s."
+msgstr "@%1$s, ຕ້ອງຂໍການປັບປຸງໃນ %2$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "% 1 $ s ລາຍລະອຽດການຕິດຕໍ່ທີ່ຖືກແກ້ໄຂໃນ% 2 $ s."
+msgstr "%1$s ລາຍລະອຽດການຕິດຕໍ່ທີ່ຖືກແກ້ໄຂໃນ %2$s."
 
 #: dt-notifications/notifications.php:961
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "% 1 $ s ປະຕິເສດການມອບ ໝາຍ ທີ່:% 2 $ s."
+msgstr "%1$s ປະຕິເສດການມອບ ໝາຍ ທີ່: %2$s."
 
 #: dt-people-groups/people-groups-base.php:94
 #: dt-people-groups/people-groups-base.php:104
@@ -4078,7 +4078,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [% 1 $ s] (% 2 $ s) - ຜູ້ໃຊ້% 3 $ s ໄດ້ຂໍການເຂົ້າເຖິງ% 4 $ s [% 5 $ s] (% 6 $ s). "
+"@[%1$s](%2$s) - ຜູ້ໃຊ້ %3$s ໄດ້ຂໍການເຂົ້າເຖິງ %4$s [%5$s](%6$s). "
 "ຖ້າຕ້ອງການ, ແບ່ງປັນບັນທຶກນີ້ກັບຜູ້ໃຊ້ເພື່ອອະນຸຍາດການເຂົ້າເຖິງ."
 
 #: dt-posts/dt-posts.php:2781
@@ -4088,7 +4088,7 @@ msgstr "ການເຂົ້າເຖິງການຮ້ອງຂໍ"
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "ຮັບບັບເຕມາ% s"
+msgstr "ຮັບບັບເຕມາ%s"
 
 #: dt-posts/posts.php:282
 #, fuzzy
@@ -4099,168 +4099,168 @@ msgstr "ບັບຕິສະມາໂດຍ %s"
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "ບໍ່ໄດ້ໃຫ້ບັບຕິສະມາ% s"
+msgstr "ບໍ່ໄດ້ໃຫ້ບັບຕິສະມາ%s"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "ບໍ່ໄດ້ຮັບບັບຕິສະມາໂດຍ% s"
+msgstr "ບໍ່ໄດ້ຮັບບັບຕິສະມາໂດຍ%s"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "% s ເພີ່ມເຂົ້າສະມາຊິກ"
+msgstr "%s ເພີ່ມເຂົ້າສະມາຊິກ"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "ເພີ່ມໃສ່ກຸ່ມ% s"
+msgstr "ເພີ່ມໃສ່ກຸ່ມ%s"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "ລຶບ% s ອອກຈາກກຸ່ມ"
+msgstr "ລຶບ%s ອອກຈາກກຸ່ມ"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "ຖືກລຶບອອກຈາກກຸ່ມ% s"
+msgstr "ຖືກລຶບອອກຈາກກຸ່ມ%s"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "ການສອນ% s"
+msgstr "ການສອນ%s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "ສອນໂດຍ% s"
+msgstr "ສອນໂດຍ%s"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "ບໍ່ຕ້ອງເປັນຄູຝຶກອີກ% s"
+msgstr "ບໍ່ຕ້ອງເປັນຄູຝຶກອີກ%s"
 
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "ບໍ່ໄດ້ຮັບການສອນໂດຍ% s ອີກຕໍ່ໄປ"
+msgstr "ບໍ່ໄດ້ຮັບການສອນໂດຍ%s ອີກຕໍ່ໄປ"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "ການມອບ ໝາຍ ຍ່ອຍ% s"
+msgstr "ການມອບ ໝາຍ ຍ່ອຍ%s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "ມອບ ໝາຍ ຍ່ອຍໃສ່% s"
+msgstr "ມອບ ໝາຍ ຍ່ອຍໃສ່%s"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "ກຳ ຈັດການຍ່ອຍທີ່ຖືກ ກຳ ຈັດອອກແລ້ວ% s"
+msgstr "ກຳ ຈັດການຍ່ອຍທີ່ຖືກ ກຳ ຈັດອອກແລ້ວ%s"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "ບໍ່ໄດ້ຮັບການມອບ ໝາຍ ໃນ% s ອີກຕໍ່ໄປ"
+msgstr "ບໍ່ໄດ້ຮັບການມອບ ໝາຍ ໃນ%s ອີກຕໍ່ໄປ"
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "% 1 $ s ຖືກເພີ່ມເປັນກຸ່ມຄົນໃນ% 2 $ s"
+msgstr "%1$s ຖືກເພີ່ມເປັນກຸ່ມຄົນໃນ %2$s"
 
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "% s ເພີ່ມເຂົ້າກຸ່ມຄົນ"
+msgstr "%s ເພີ່ມເຂົ້າກຸ່ມຄົນ"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "% 1 $ s ຖືກລຶບອອກຈາກກຸ່ມຄົນໃນ% 2 $ s"
+msgstr "%1$s ຖືກລຶບອອກຈາກກຸ່ມຄົນໃນ %2$s"
 
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "% s ຖືກຍ້າຍອອກຈາກກຸ່ມຄົນ"
+msgstr "%s ຖືກຍ້າຍອອກຈາກກຸ່ມຄົນ"
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "% 1 $ s ຖືກເພີ່ມເປັນຜູ້ ນຳ ໃນ% 2 $ s"
+msgstr "%1$s ຖືກເພີ່ມເປັນຜູ້ ນຳ ໃນ %2$s"
 
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "% s ເພີ່ມໃສ່ຜູ້ ນຳ"
+msgstr "%s ເພີ່ມໃສ່ຜູ້ ນຳ"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "% 1 $ s ຖືກລຶບອອກຈາກຜູ້ ນຳ ໃນ% 2 $ s"
+msgstr "%1$s ຖືກລຶບອອກຈາກຜູ້ ນຳ ໃນ %2$s"
 
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "% s ຖືກປົດອອກຈາກຜູ້ ນຳ"
+msgstr "%s ຖືກປົດອອກຈາກຜູ້ ນຳ"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "% 1 $ s ເພີ່ມເປັນຄູຝຶກໃນ% 2 $ s"
+msgstr "%1$s ເພີ່ມເປັນຄູຝຶກໃນ %2$s"
 
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "% s ເພີ່ມເປັນຄູຝຶກສອນ"
+msgstr "%s ເພີ່ມເປັນຄູຝຶກສອນ"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "% 1 $ s ຖືກຍ້າຍອອກຈາກຄູຝຶກສອນໃນ% 2 $ s"
+msgstr "%1$s ຖືກຍ້າຍອອກຈາກຄູຝຶກສອນໃນ %2$s"
 
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "% s ຖືກຍ້າຍອອກຈາກຄູຝຶກສອນ"
+msgstr "%s ຖືກຍ້າຍອອກຈາກຄູຝຶກສອນ"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "% s ເພີ່ມເຂົ້າໃນກຸ່ມເດັກ"
+msgstr "%s ເພີ່ມເຂົ້າໃນກຸ່ມເດັກ"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "% s ຖືກເພີ່ມເຂົ້າກຸ່ມພໍ່ແມ່"
+msgstr "%s ຖືກເພີ່ມເຂົ້າກຸ່ມພໍ່ແມ່"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "% s ຖືກຍ້າຍອອກຈາກກຸ່ມເດັກ"
+msgstr "%s ຖືກຍ້າຍອອກຈາກກຸ່ມເດັກ"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "% s ຖືກຍ້າຍອອກຈາກກຸ່ມພໍ່ແມ່"
+msgstr "%s ຖືກຍ້າຍອອກຈາກກຸ່ມພໍ່ແມ່"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "% s ຖືກເພີ່ມເຂົ້າໃນກຸ່ມ ໝູ່ ເພື່ອນ"
+msgstr "%s ຖືກເພີ່ມເຂົ້າໃນກຸ່ມ ໝູ່ ເພື່ອນ"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "% s ຖືກຍ້າຍອອກຈາກກຸ່ມ ໝູ່"
+msgstr "%s ຖືກຍ້າຍອອກຈາກກຸ່ມ ໝູ່"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "ເຊື່ອມຕໍ່ກັບ% s"
+msgstr "ເຊື່ອມຕໍ່ກັບ%s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
 #, fuzzy
@@ -4268,13 +4268,13 @@ msgstr "ເຊື່ອມຕໍ່ກັບ% s"
 #| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
-msgstr "ເພີ່ມ% 1 $ s ໃສ່% 2 $ s"
+msgstr "ເພີ່ມ %1$s ໃສ່ %2$s"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "ອອກການເຊື່ອມຕໍ່ໄປ% s"
+msgstr "ອອກການເຊື່ອມຕໍ່ໄປ%s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
 #, fuzzy
@@ -4282,12 +4282,12 @@ msgstr "ອອກການເຊື່ອມຕໍ່ໄປ% s"
 #| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s ຖືກລຶບອອກຈາກ% 2 $ s"
+msgstr "%1$s ຖືກລຶບອອກຈາກ %2$s"
 
 #: dt-posts/posts.php:416
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "ມອບ ໝາຍ ໃຫ້:% s"
+msgstr "ມອບ ໝາຍ ໃຫ້:%s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -4296,31 +4296,31 @@ msgstr "ບໍ່ມີໃຜ"
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "% 1 $ s ປ່ຽນເປັນ% 2 $ s"
+msgstr "%1$s ປ່ຽນເປັນ %2$s"
 
 #: dt-posts/posts.php:434 dt-posts/posts.php:445
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s ຖືກລຶບອອກຈາກ% 2 $ s"
+msgstr "%1$s ຖືກລຶບອອກຈາກ %2$s"
 
 #: dt-posts/posts.php:437 dt-posts/posts.php:448
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "ເພີ່ມ% 1 $ s ໃສ່% 2 $ s"
+msgstr "ເພີ່ມ %1$s ໃສ່ %2$s"
 
 #: dt-posts/posts.php:470
 msgid "%s removed"
-msgstr "% s ຖືກລຶບອອກແລ້ວ"
+msgstr "%s ຖືກລຶບອອກແລ້ວ"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "% 1 $ s ຖືກຍ້າຍອອກຈາກສະຖານທີ່ຕ່າງໆ"
+msgstr "%1$s ຖືກຍ້າຍອອກຈາກສະຖານທີ່ຕ່າງໆ"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "% 1 $ s ຖືກເພີ່ມເຂົ້າສະຖານທີ່ແລ້ວ"
+msgstr "%1$s ຖືກເພີ່ມເຂົ້າສະຖານທີ່ແລ້ວ"
 
 #: dt-posts/posts.php:512
 #, fuzzy
@@ -4328,7 +4328,7 @@ msgstr "% 1 $ s ຖືກເພີ່ມເຂົ້າສະຖານທີ່�
 #| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "% 1 $ s ຖືກລຶບອອກຈາກ% 2 $ s"
+msgstr "%1$s ຖືກລຶບອອກຈາກ %2$s"
 
 #: dt-posts/posts.php:515
 #, fuzzy
@@ -4336,7 +4336,7 @@ msgstr "% 1 $ s ຖືກລຶບອອກຈາກ% 2 $ s"
 #| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "ເພີ່ມ% 1 $ s ໃສ່% 2 $ s"
+msgstr "ເພີ່ມ %1$s ໃສ່ %2$s"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -4361,22 +4361,22 @@ msgstr "ບໍ່ຖືກ ນຳ ໃຊ້"
 #: dt-posts/posts.php:566
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "ເພີ່ມ% 1 $ s:% 2 $ s"
+msgstr "ເພີ່ມ %1$s: %2$s"
 
 #: dt-posts/posts.php:568
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "ອັບເດດ% 1 $ s ຈາກ% 2 $ s ເປັນ% 3 $ s"
+msgstr "ອັບເດດ %1$s ຈາກ %2$s ເປັນ %3$s"
 
 #: dt-posts/posts.php:570
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "ລຶບ% 1 $ s:% 2 $ s"
+msgstr "ລຶບ %1$s: %2$s"
 
 #: dt-posts/posts.php:574
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "ຊື່ໄດ້ຖືກປ່ຽນເປັນ:% s"
+msgstr "ຊື່ໄດ້ຖືກປ່ຽນເປັນ:%s"
 
 #: dt-posts/posts.php:576
 msgctxt "message"
@@ -4386,7 +4386,7 @@ msgstr "ສ້າງຂື້ນຈາກ Demo Plugin"
 #: dt-posts/posts.php:583
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "% s ປະຕິເສດການມອບ ໝາຍ"
+msgstr "%s ປະຕິເສດການມອບ ໝາຍ"
 
 #: dt-posts/posts.php:583 dt-posts/posts.php:586
 msgctxt "message"
@@ -4396,17 +4396,17 @@ msgstr "ຜູ້ໃຊ້"
 #: dt-posts/posts.php:586
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "% s ຮັບການມອບ ໝາຍ"
+msgstr "%s ຮັບການມອບ ໝາຍ"
 
 #: dt-posts/posts.php:591
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "ແບ່ງປັນກັບ% s"
+msgstr "ແບ່ງປັນກັບ%s"
 
 #: dt-posts/posts.php:593
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "ແບ່ງປັນກັບ% s"
+msgstr "ແບ່ງປັນກັບ%s"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -4545,7 +4545,7 @@ msgstr "ສະຖານະພາບຂອງຜູ້ໃຊ້"
 #: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "ເພີ່ມຜູ້ໃຊ້ເຂົ້າໃນ:% s"
+msgstr "ເພີ່ມຜູ້ໃຊ້ເຂົ້າໃນ:%s"
 
 #: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
@@ -4894,17 +4894,17 @@ msgstr "ບໍ່ສອດຄ່ອງ"
 #: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "% 1 $ s ຖືກຍອມຮັບໃນ% 2 $ s ຫຼັງ% 3 $ s ມື້"
+msgstr "%1$s ຖືກຍອມຮັບໃນ %2$s ຫຼັງ %3$s ມື້"
 
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "% 1 $ s ລໍຖ້າການຕິດຕໍ່ພະຍາຍາມ ສຳ ລັບ% 2 $ s ມື້"
+msgstr "%1$s ລໍຖ້າການຕິດຕໍ່ພະຍາຍາມ ສຳ ລັບ %2$s ມື້"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "ການຕິດຕໍ່ກັບ% 1 $ s ໄດ້ຖືກພະຍາຍາມໃນ% 2 $ s ຫຼັງຈາກ% 3 $ s ມື້"
+msgstr "ການຕິດຕໍ່ກັບ %1$s ໄດ້ຖືກພະຍາຍາມໃນ %2$s ຫຼັງຈາກ %3$s ມື້"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"
@@ -4940,7 +4940,7 @@ msgstr "ເບິ່ງຜູ້ໃຊ້"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr "% s ມື້ນັບຕັ້ງແຕ່ການປັບປຸງຄັ້ງສຸດທ້າຍ"
+msgstr "%s ມື້ນັບຕັ້ງແຕ່ການປັບປຸງຄັ້ງສຸດທ້າຍ"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -4965,7 +4965,7 @@ msgstr "ເຂົ້າ​ສູ່​ລະ​ບົບ"
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "ການປະຕິເສດການມອບ ໝາຍ ໃນ% s"
+msgstr "ການປະຕິເສດການມອບ ໝາຍ ໃນ%s"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
@@ -5000,12 +5000,12 @@ msgstr "ລະບົບອີເມວ"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "ທ່ານຕັ້ງ ຄຳ ເຕືອນ ສຳ ລັບມື້ນີ້ໃນ% 1 $ s"
+msgstr "ທ່ານຕັ້ງ ຄຳ ເຕືອນ ສຳ ລັບມື້ນີ້ໃນ %1$s"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "ທ່ານຕັ້ງ ໜ້າ ວຽກນີ້ໃສ່% 1 $ s:% 2 $ s"
+msgstr "ທ່ານຕັ້ງ ໜ້າ ວຽກນີ້ໃສ່ %1$s: %2$s"
 
 #: dt-workflows/workflows-triggers.php:63
 msgid "D.T Workflow"
@@ -5035,7 +5035,7 @@ msgstr "ເບິ່ງໂປແກຼມທ່ອງເວັບທີ່ທ່
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "ນີ້% s ຕ້ອງການການປັບປຸງ."
+msgstr "ນີ້%s ຕ້ອງການການປັບປຸງ."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5073,7 +5073,7 @@ msgstr "ສ້າງແລະ ນຳ ໃຊ້ tag"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ% s?"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ%s?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5122,7 +5122,7 @@ msgstr "ເລືອກຊ່ອງຂໍ້ມູນໃດນຶ່ງເພື
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "ເລືອກປະເພດ% s:"
+msgstr "ເລືອກປະເພດ%s:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
@@ -5327,7 +5327,7 @@ msgstr "ພົບວ່າຊໍ້າກັນ:"
 
 #~ msgctxt "My records"
 #~ msgid "My %s"
-#~ msgstr "% s ຂອງຂ້ອຍ"
+#~ msgstr "%s ຂອງຂ້ອຍ"
 
 #~ msgid "Sub-assigned"
 #~ msgstr "ມອບ ໝາຍ ຍ່ອຍ"

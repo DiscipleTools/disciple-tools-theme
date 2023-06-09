@@ -39,7 +39,7 @@ msgstr "Ogolaanshaha waa ladiiday"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "Waan ka xumahay, fasax uma lihid inaad ku aragto% 1 $ s id% 2 $ s."
+msgstr "Waan ka xumahay, fasax uma lihid inaad ku aragto %1$s id %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -212,7 +212,7 @@ msgstr "Lama helin nuqullo."
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Liiska% s"
+msgstr "Liiska%s"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -257,7 +257,7 @@ msgstr "Kaydiyay"
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "Cusub% s"
+msgstr "Cusub%s"
 
 #: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
@@ -267,7 +267,7 @@ msgstr "Xulo meelaha ay tahay inaad ku muujiso tiirarka liiska"
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"Xulo dhammaan% 1 $ s ee aad rabto inaad ka cusbooneysiiso liiska, oo ku "
+"Xulo dhammaan %1$s ee aad rabto inaad ka cusbooneysiiso liiska, oo ku "
 "cusbooneysii hoosta"
 
 #: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
@@ -353,7 +353,7 @@ msgstr "Ku qor si aad u raadiso"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "Dhamaan% 1 $ s oo leh% 2 $ s"
+msgstr "Dhamaan %1$s oo leh %2$s"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -433,7 +433,7 @@ msgstr "Waxqabadka Maamulka"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Tirtir% s"
+msgstr "Tirtir%s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -513,12 +513,12 @@ msgstr "Lama helin natiijooyin u dhigma \"{{query}}\""
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Muujinaya walxaha% s Ku qor si aad u hesho wax badan."
+msgstr "Muujinaya walxaha%s Ku qor si aad u hesho wax badan."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "Muujinaya walxaha% 1 $ s ee u dhigma% 2 $ s"
+msgstr "Muujinaya walxaha %1$s ee u dhigma %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
@@ -554,12 +554,12 @@ msgstr "Qari Tarjumaadda"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "% 1 $ s ayaa lagu falceliyay emoji% 2 $ s"
+msgstr "%1$s ayaa lagu falceliyay emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s iyo% 1 $ s ayaa lagu falceliyay emoji% 2 $ s"
+msgstr "%3$s iyo %1$s ayaa lagu falceliyay emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -599,7 +599,7 @@ msgstr "Nuqullo la eryey"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "Nuqullada ku saabsan:% s"
+msgstr "Nuqullada ku saabsan: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
@@ -616,7 +616,7 @@ msgstr ""
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "Lagu sameeyay% s"
+msgstr "Lagu sameeyay %s"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -631,7 +631,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Ma hubtaa inaad rabto inaad tirtirto% s?"
+msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -657,7 +657,7 @@ msgstr "Kulamada la helay:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "Kala dir dhamaan tartamada% s"
+msgstr "Kala dir dhamaan tartamada %s"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -684,7 +684,7 @@ msgstr "Lama helin diiwaanno u dhigma miirahaaga."
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
-msgstr "Dhamaan% s"
+msgstr "Dhamaan %s"
 
 #: dt-assets/functions/enqueue-scripts.php:321
 msgid "start"
@@ -1286,7 +1286,7 @@ msgstr "Tafatir Diiwaan Cusub"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "Ku noqo% s"
+msgstr "Ku noqo %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
 #, fuzzy
@@ -1828,7 +1828,7 @@ msgstr "Hoosaad la ii magacaabay"
 #: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "La Soco% s"
+msgstr "La Soco %s"
 
 #: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
@@ -1998,7 +1998,7 @@ msgstr "Xiriirrada kale ee Bulshada"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Isku xirnaanta% s"
+msgstr "Isku xirnaanta %s"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2066,12 +2066,12 @@ msgstr ""
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "Kaydso% s"
+msgstr "Kaydso %s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "Beddel Nooca% s"
+msgstr "Beddel Nooca %s"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2080,7 +2080,7 @@ msgstr "Eeg nuqullada"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "Ma hubtaa inaad rabto inaad keydiso% s?"
+msgstr "Ma hubtaa inaad rabto inaad keydiso %s?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2100,13 +2100,13 @@ msgstr "Shaandheeyeyaasha Default"
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "Dhamaan% s waan arki karaa"
+msgstr "Dhamaan %s waan arki karaa"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "Ugu jecel% s"
+msgstr "Ugu jecel %s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2138,7 +2138,7 @@ msgstr "Faallo"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "% Skan ayaa la keydiyay"
+msgstr "%skan ayaa la keydiyay"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2190,7 +2190,7 @@ msgstr "goob kale"
 
 #: dt-contacts/contacts-transfer.php:276
 msgid "Already transfered to %s"
-msgstr "Horaa loogu wareejiyay% s"
+msgstr "Horaa loogu wareejiyay %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
@@ -2224,7 +2224,7 @@ msgstr "Khalad wareejin yar"
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Xiriirkan waxaa loo wareejiyay% s si loola socdo dabagal dheeraad ah."
+msgstr "Xiriirkan waxaa loo wareejiyay %s si loola socdo dabagal dheeraad ah."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -2416,7 +2416,7 @@ msgstr "Iimaanka"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "Kuxiran% s"
+msgstr "Kuxiran %s"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -2440,17 +2440,17 @@ msgstr "Raadi isku dhufashada iyo xiriirada"
 #: dt-contacts/duplicates-merging.php:430
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(Laga soo qaatay Nuqul):% s"
+msgstr "(Laga soo qaatay Nuqul): %s"
 
 #: dt-contacts/duplicates-merging.php:551
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "Rikoodhkani waa nuqul oo waxaa lagu daray% 2 $ s"
+msgstr "Rikoodhkani waa nuqul oo waxaa lagu daray %2$s"
 
 #: dt-contacts/duplicates-merging.php:564
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "% 1 $ s waxay ku milmeen% 2 $ s diiwaankan"
+msgstr "%1$s waxay ku milmeen %2$s diiwaankan"
 
 #. Template Name of the theme
 #: dt-contacts/duplicates-merging.php:576
@@ -2695,13 +2695,13 @@ msgstr "Qof ayaa codsaday dib-u-dejinta ereyga koontada soo socota:"
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "Magaca Goobta DT:% s"
+msgstr "Magaca Goobta DT: %s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:361
 msgid "Username: %s"
-msgstr "Magaca isticmaalaha:% s"
+msgstr "Magaca isticmaalaha: %s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -2719,11 +2719,11 @@ msgstr "Tan ayaa loo baahan yahay"
 
 #: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "Kudar sumad cusub \"% s\""
+msgstr "Kudar sumad cusub \"%s\""
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "Calaamadda \"% s\" horay ayaa loo isticmaalay"
+msgstr "Calaamadda \"%s\" horay ayaa loo isticmaalay"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3407,11 +3407,11 @@ msgstr "Tirada dadka lala xiriiray ee lahaa xaalada firfircoon"
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "Tirada dadka lala xiriiro% s dhamaadka waqtiga"
+msgstr "Tirada dadka lala xiriiro %s dhamaadka waqtiga"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Tirada xiriirada halka% s lagu dejiyay wadada raadinta"
+msgstr "Tirada xiriirada halka %s lagu dejiyay wadada raadinta"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3428,11 +3428,11 @@ msgstr ""
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "Jiil% s Baabtiisyada"
+msgstr "Jiil %s Baabtiisyada"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "Tirada jiilka% s baabtiisyada"
+msgstr "Tirada jiilka %s baabtiisyada"
 
 #: dt-metrics/combined/critical-path.php:288
 msgid "Baptizers"
@@ -3461,11 +3461,11 @@ msgstr "Kaniisadaha firfircoon dhamaadka waqtiga"
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "Jiilka% s Kaniisadaha"
+msgstr "Jiilka %s Kaniisadaha"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "Tirada jiilalka% s kaniisadaha dhamaadka waqtiga"
+msgstr "Tirada jiilalka %s kaniisadaha dhamaadka waqtiga"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -3513,7 +3513,7 @@ msgstr "Bishii Ugu Dambeysay"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "% s bil kahor"
+msgstr[0] "%s bil kahor"
 msgstr[1] ""
 
 #: dt-metrics/combined/daily-activity.php:85
@@ -3538,7 +3538,7 @@ msgstr ""
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
-msgstr "Cusub% s"
+msgstr "Cusub %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3623,7 +3623,7 @@ msgstr "Lagu daray"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 1 $ s% 2 $ s"
+msgstr "%1$s %2$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -3956,7 +3956,7 @@ msgstr "Halkan guji si aad u aragto ama aad uga jawaabto"
 #: dt-notifications/notifications-email.php:131
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "Cusboonaysii% 1 $ s #% 2 $ s"
+msgstr "Cusboonaysii %1$s #%2$s"
 
 #: dt-notifications/notifications-email.php:135
 msgid "Do not reply directly to this email."
@@ -3973,53 +3973,53 @@ msgstr ""
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "% s daqiiqo kahor"
+msgstr[0] "%s daqiiqo kahor"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "% s saacad kahor"
+msgstr[0] "%s saacad kahor"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "% s maalin kahor"
+msgstr[0] "%s maalin kahor"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "% s usbuuc ka hor"
+msgstr[0] "%s usbuuc ka hor"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "% s sanad kahor"
+msgstr[0] "%s sanad kahor"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "in ka badan% s sanad kahor"
+msgstr[0] "in ka badan %s sanad kahor"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "% s ayaa la abuuray oo adiga laguu xilsaaray."
+msgstr "%s ayaa la abuuray oo adiga laguu xilsaaray."
 
 #: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "Waa laguu qoray:% 1 $ s."
+msgstr "Waa laguu qoray: %1$s."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "% 1 $ s loo qoondeeyay% 2 $ s ilaa% 3 $ s."
+msgstr "%1$s loo qoondeeyay %2$s ilaa %3$s."
 
 #: dt-notifications/notifications.php:922
 #: dt-notifications/notifications.php:929
@@ -4033,42 +4033,42 @@ msgstr "Nidaamka"
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "% 1 $ s ayaa kula wadaagay% 2 $ s"
+msgstr "%1$s ayaa kula wadaagay %2$s"
 
 #: dt-notifications/notifications.php:930
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "% 1 $ s wuxuu kugu xusay% 2 $ s isagoo leh:% 3 $ s"
+msgstr "%1$s wuxuu kugu xusay %2$s isagoo leh: %3$s"
 
 #: dt-notifications/notifications.php:937
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "% 1 $ s waxay faallo ka bixisay% 2 $ s iyadoo leh:% 3 $ s"
+msgstr "%1$s waxay faallo ka bixisay %2$s iyadoo leh: %3$s"
 
 #: dt-notifications/notifications.php:941
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "% 1 $ s adiga lagugu subkay% 2 $ s"
+msgstr "%1$s adiga lagugu subkay %2$s"
 
 #: dt-notifications/notifications.php:951
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "% 1 $ s waxaa lagu daray taariikhi% 2 $ s oo ah% 3 $ s."
+msgstr "%1$s waxaa lagu daray taariikhi %2$s oo ah %3$s."
 
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@% 1 $ s, cusboonaysiin ayaa laga codsaday% 2 $ s."
+msgstr "@%1$s, cusboonaysiin ayaa laga codsaday %2$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "Faahfaahinta xiriirka% 1 $ s wax laga beddelay% 2 $ s."
+msgstr "Faahfaahinta xiriirka %1$s wax laga beddelay %2$s."
 
 #: dt-notifications/notifications.php:961
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "% 1 $ s wuu diiday meeleyntii:% 2 $ s."
+msgstr "%1$s wuu diiday meeleyntii: %2$s."
 
 #: dt-people-groups/people-groups-base.php:94
 #: dt-people-groups/people-groups-base.php:104
@@ -4176,8 +4176,8 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [% 1 $ s] (% 2 $ s) - Isticmaalaha% 3 $ s wuxuu codsaday marin u helka% 4 "
-"$ s [% 5 $ s] (% 6 $ s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha "
+"@[%1$s](%2$s) - Isticmaalaha %3$s wuxuu codsaday marin u helka %4$s "
+"[%5$s](%6$s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha "
 "si aad u siiso marin."
 
 #: dt-posts/dt-posts.php:2781
@@ -4187,7 +4187,7 @@ msgstr "Codsi Helitaan"
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "Baabtiis% s"
+msgstr "Baabtiis %s"
 
 #: dt-posts/posts.php:282
 #, fuzzy
@@ -4198,168 +4198,168 @@ msgstr "Waxaa lagu baabtiisay %s"
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "Ma baabtiisay% s"
+msgstr "Ma baabtiisay %s"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "Lama baabtiisiin% s"
+msgstr "Lama baabtiisiin %s"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "% s ayaa lagu daray xubnaha"
+msgstr "%s ayaa lagu daray xubnaha"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "Lagu daray kooxda% s"
+msgstr "Lagu daray kooxda %s"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "Laga saaray% s kooxda"
+msgstr "Laga saaray %s kooxda"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "Laga saaray kooxda% s"
+msgstr "Laga saaray kooxda %s"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "Tababarida% s"
+msgstr "Tababarida %s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "Waxaa tababaray% s"
+msgstr "Waxaa tababaray %s"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "Ma sii tababari doono% s"
+msgstr "Ma sii tababari doono %s"
 
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "Lama sii tababari doono% s"
+msgstr "Lama sii tababari doono %s"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "Qayb hoosaad% s"
+msgstr "Qayb hoosaad %s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "Hoosaad loo qoondeeyay% s"
+msgstr "Hoosaad loo qoondeeyay %s"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "Laga saaray qayb hoosaad loo qoondeeyay% s"
+msgstr "Laga saaray qayb hoosaad loo qoondeeyay %s"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "Mar dambe looma qoondeyn doono% s"
+msgstr "Mar dambe looma qoondeyn doono %s"
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "% 1 $ s ayaa lagu daray koox koox ahaan% 2 $ s"
+msgstr "%1$s ayaa lagu daray koox koox ahaan %2$s"
 
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "% s ayaa lagu daray kooxaha dadka"
+msgstr "%s ayaa lagu daray kooxaha dadka"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "% 1 $ s ayaa laga saaray kooxaha dadka% 2 $ s"
+msgstr "%1$s ayaa laga saaray kooxaha dadka %2$s"
 
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "% s ayaa laga saaray kooxaha dadka"
+msgstr "%s ayaa laga saaray kooxaha dadka"
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "% 1 $ s ayaa lagu daray hogaamiye% 2 $ s"
+msgstr "%1$s ayaa lagu daray hogaamiye %2$s"
 
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "% s ayaa lagu daray hogaamiyaasha"
+msgstr "%s ayaa lagu daray hogaamiyaasha"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "% 1 $ s waxaa laga saaray hogaamiyaasha% 2 $ s"
+msgstr "%1$s waxaa laga saaray hogaamiyaasha %2$s"
 
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "% s waxaa laga saaray hogaamiyaasha"
+msgstr "%s waxaa laga saaray hogaamiyaasha"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "% 1 $ s oo lagu daray macalin ahaan% 2 $ s"
+msgstr "%1$s oo lagu daray macalin ahaan %2$s"
 
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "% s ayaa lagu daray tababarayaasha"
+msgstr "%s ayaa lagu daray tababarayaasha"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "% 1 $ s tababarayaasha ayaa laga saaray% 2 $ s"
+msgstr "%1$s tababarayaasha ayaa laga saaray %2$s"
 
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "% s ayaa laga saaray tababarayaasha"
+msgstr "%s ayaa laga saaray tababarayaasha"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "% s ayaa lagu daray kooxaha carruurta"
+msgstr "%s ayaa lagu daray kooxaha carruurta"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "% s ayaa lagu daray kooxaha waalidiinta"
+msgstr "%s ayaa lagu daray kooxaha waalidiinta"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "% s ayaa laga saaray kooxaha carruurta"
+msgstr "%s ayaa laga saaray kooxaha carruurta"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "% s ayaa laga saaray kooxaha waalidiinta"
+msgstr "%s ayaa laga saaray kooxaha waalidiinta"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "% s ayaa lagu daray kooxaha asaaga ah"
+msgstr "%s ayaa lagu daray kooxaha asaaga ah"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "% s ayaa laga saaray kooxaha asaaga ah"
+msgstr "%s ayaa laga saaray kooxaha asaaga ah"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "Kuxiran% s"
+msgstr "Kuxiran %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
 #, fuzzy
@@ -4367,13 +4367,13 @@ msgstr "Kuxiran% s"
 #| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
-msgstr "% 1 $ s ayaa lagu daray% 2 $ s"
+msgstr "%1$s ayaa lagu daray %2$s"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "Xiriirkii laga jaray% s"
+msgstr "Xiriirkii laga jaray %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
 #, fuzzy
@@ -4381,12 +4381,12 @@ msgstr "Xiriirkii laga jaray% s"
 #| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s laga saaray% 2 $ s"
+msgstr "%1$s laga saaray %2$s"
 
 #: dt-posts/posts.php:416
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "Loogu talagalay:% s"
+msgstr "Loogu talagalay: %s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -4395,31 +4395,31 @@ msgstr "Qofna"
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "% 1 $ s waxaa loo badalay% 2 $ s"
+msgstr "%1$s waxaa loo badalay %2$s"
 
 #: dt-posts/posts.php:434 dt-posts/posts.php:445
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s laga saaray% 2 $ s"
+msgstr "%1$s laga saaray %2$s"
 
 #: dt-posts/posts.php:437 dt-posts/posts.php:448
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "% 1 $ s ayaa lagu daray% 2 $ s"
+msgstr "%1$s ayaa lagu daray %2$s"
 
 #: dt-posts/posts.php:470
 msgid "%s removed"
-msgstr "% s waa laga saaray"
+msgstr "%s waa laga saaray"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "% 1 $ s ayaa laga saaray goobaha"
+msgstr "%1$s ayaa laga saaray goobaha"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "% 1 $ s ayaa lagu daray goobaha"
+msgstr "%1$s ayaa lagu daray goobaha"
 
 #: dt-posts/posts.php:512
 #, fuzzy
@@ -4427,7 +4427,7 @@ msgstr "% 1 $ s ayaa lagu daray goobaha"
 #| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "% 1 $ s laga saaray% 2 $ s"
+msgstr "%1$s laga saaray %2$s"
 
 #: dt-posts/posts.php:515
 #, fuzzy
@@ -4435,7 +4435,7 @@ msgstr "% 1 $ s laga saaray% 2 $ s"
 #| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "% 1 $ s ayaa lagu daray% 2 $ s"
+msgstr "%1$s ayaa lagu daray %2$s"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -4460,22 +4460,22 @@ msgstr "aan ansax ahayn"
 #: dt-posts/posts.php:566
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "Lagu daray% 1 $ s:% 2 $ s"
+msgstr "Lagu daray %1$s: %2$s"
 
 #: dt-posts/posts.php:568
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "La cusbooneysiiyay% 1 $ s laga bilaabo% 2 $ s ilaa% 3 $ s"
+msgstr "La cusbooneysiiyay %1$s laga bilaabo %2$s ilaa %3$s"
 
 #: dt-posts/posts.php:570
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "La tirtiray% 1 $ s:% 2 $ s"
+msgstr "La tirtiray %1$s: %2$s"
 
 #: dt-posts/posts.php:574
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "Magaca waxaa loo beddelay:% s"
+msgstr "Magaca waxaa loo beddelay: %s"
 
 #: dt-posts/posts.php:576
 msgctxt "message"
@@ -4485,7 +4485,7 @@ msgstr "Laga abuuray Demo Plugin"
 #: dt-posts/posts.php:583
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "% s wuu diidey meeleynta"
+msgstr "%s wuu diidey meeleynta"
 
 #: dt-posts/posts.php:583 dt-posts/posts.php:586
 msgctxt "message"
@@ -4495,17 +4495,17 @@ msgstr "Isticmaalaha"
 #: dt-posts/posts.php:586
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "% s shaqada la aqbalay"
+msgstr "%s shaqada la aqbalay"
 
 #: dt-posts/posts.php:591
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "La wadaagay% s"
+msgstr "La wadaagay %s"
 
 #: dt-posts/posts.php:593
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "Lama wadaagin% s"
+msgstr "Lama wadaagin %s"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -4638,7 +4638,7 @@ msgstr "Xaaladda Isticmaalaha"
 #: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "Kudar isticmaale:% s"
+msgstr "Kudar isticmaale: %s"
 
 #: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
@@ -4988,17 +4988,17 @@ msgstr "Iswaafajin la'aan"
 #: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "% 1 $ s waxaa laga aqbalay% 2 $ s kadib% 3 $ s maalmood"
+msgstr "%1$s waxaa laga aqbalay %2$s kadib %3$s maalmood"
 
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "% 1 $ s sugaya Isku day Xiriir% 2 $ s maalmood"
+msgstr "%1$s sugaya Isku day Xiriir %2$s maalmood"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "La xiriirka% 1 $ s waxaa la isku dayay% 2 $ s kadib% 3 $ s maalmood"
+msgstr "La xiriirka %1$s waxaa la isku dayay %2$s kadib %3$s maalmood"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"
@@ -5034,7 +5034,7 @@ msgstr "Arag isticmaale"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr "% s maalmood ilaa cusboonaysiintii ugu dambaysay"
+msgstr "%s maalmood ilaa cusboonaysiintii ugu dambaysay"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -5059,7 +5059,7 @@ msgstr "Gudaha"
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "Shaqada oo hoos u dhacday% s"
+msgstr "Shaqada oo hoos u dhacday %s"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
@@ -5094,12 +5094,12 @@ msgstr "Emailka Nidaamka"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "Waxaad dejisaa xusuusin maanta ah% 1 $ s"
+msgstr "Waxaad dejisaa xusuusin maanta ah %1$s"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "Waxaad ku dejisay hawshan% 1 $ s:% 2 $ s"
+msgstr "Waxaad ku dejisay hawshan %1$s: %2$s"
 
 #: dt-workflows/workflows-triggers.php:63
 msgid "D.T Workflow"
@@ -5130,7 +5130,7 @@ msgstr "Eeg nooca biraawsarka aad isticmaaleyso."
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "Tani% s waxay ubaahantahay cusbooneysiin."
+msgstr "Tani %s waxay ubaahantahay cusbooneysiin."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5168,7 +5168,7 @@ msgstr "Abuur oo codso sumadda"
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "Ma hubtaa inaad rabto inaad tirtirto% s?"
+msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5215,7 +5215,7 @@ msgstr ""
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "Xulo nooca% s:"
+msgstr "Xulo nooca %s:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
@@ -5425,7 +5425,7 @@ msgstr "Nuqullada la helay:"
 
 #~ msgctxt "My records"
 #~ msgid "My %s"
-#~ msgstr "My% s"
+#~ msgstr "My %s"
 
 #~ msgid "Sub-assigned"
 #~ msgstr "Qeyb-hoosaad"

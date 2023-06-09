@@ -40,7 +40,7 @@ msgstr "அனுமதி மறுக்கப்பட்டது"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "மன்னிக்கவும்,% 1 $ s ஐடி% 2 with s உடன் பார்க்க உங்களுக்கு அனுமதி இல்லை."
+msgstr "மன்னிக்கவும், %1$s ஐடி% 2 with s உடன் பார்க்க உங்களுக்கு அனுமதி இல்லை."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -213,7 +213,7 @@ msgstr "நகல்கள் எதுவும் கிடைக்கவி�
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "% s பட்டியல்"
+msgstr "%s பட்டியல்"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -258,7 +258,7 @@ msgstr "காப்பகப்படுத்தப்பட்டது"
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "புதிய% s"
+msgstr "புதிய%s"
 
 #: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
@@ -354,7 +354,7 @@ msgstr "தேட தட்டச்சு செய்க"
 #: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "% 2 $ s உடன் அனைத்து% 1 $ s"
+msgstr "%2$s உடன் அனைத்து %1$s"
 
 #: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
@@ -434,7 +434,7 @@ msgstr "நிர்வாக செயல்கள்"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "% S ஐ நீக்கு"
+msgstr "%s ஐ நீக்கு"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -514,12 +514,12 @@ msgstr "\"{{வினவல்}}\" உடன் பொருந்தக்க�
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "% S உருப்படிகளைக் காட்டுகிறது. மேலும் கண்டுபிடிக்க தட்டச்சு செய்க."
+msgstr "%s உருப்படிகளைக் காட்டுகிறது. மேலும் கண்டுபிடிக்க தட்டச்சு செய்க."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "% 2 $ s உடன் பொருந்தக்கூடிய% 1 $ s உருப்படிகளைக் காட்டுகிறது"
+msgstr "%2$s உடன் பொருந்தக்கூடிய %1$s உருப்படிகளைக் காட்டுகிறது"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
@@ -555,12 +555,12 @@ msgstr "மொழிபெயர்ப்பை மறை"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "% 1 $ s% 2 $ s ஈமோஜிகளுடன் வினைபுரிந்தது"
+msgstr "%1$s %2$s ஈமோஜிகளுடன் வினைபுரிந்தது"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s மற்றும்% 1 $ s% 2 $ s ஈமோஜிகளுடன் வினைபுரிந்தன"
+msgstr "%3$s மற்றும் %1$s %2$s ஈமோஜிகளுடன் வினைபுரிந்தன"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -600,7 +600,7 @@ msgstr "நிராகரிக்கப்பட்ட நகல்கள்"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "நகல்கள்:% s"
+msgstr "நகல்கள்:%s"
 
 #: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
@@ -618,7 +618,7 @@ msgstr "பரிமாற்ற புதுப்பிப்பு வெற�
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "% S இல் உருவாக்கப்பட்டது"
+msgstr "%s இல் உருவாக்கப்பட்டது"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
@@ -633,7 +633,7 @@ msgstr ""
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "% S ஐ நீக்க விரும்புகிறீர்களா?"
+msgstr "%s ஐ நீக்க விரும்புகிறீர்களா?"
 
 #: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
@@ -659,7 +659,7 @@ msgstr "போட்டிகள் கிடைத்தன:"
 #: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "% S க்கான அனைத்து போட்டிகளையும் நிராகரிக்கவும்"
+msgstr "%s க்கான அனைத்து போட்டிகளையும் நிராகரிக்கவும்"
 
 #: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
@@ -686,7 +686,7 @@ msgstr "உங்கள் வடிப்பானுடன் பொருந�
 #: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
-msgstr "அனைத்து% s"
+msgstr "அனைத்து%s"
 
 #: dt-assets/functions/enqueue-scripts.php:321
 msgid "start"
@@ -1274,7 +1274,7 @@ msgstr "புதிய பதிவைத் திருத்து"
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "% S க்குத் திரும்பு"
+msgstr "%s க்குத் திரும்பு"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
 #, fuzzy
@@ -1981,7 +1981,7 @@ msgstr "பிற சமூக இணைப்புகள்"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "பிற% s க்கான இணைப்புகள்"
+msgstr "பிற%s க்கான இணைப்புகள்"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2049,12 +2049,12 @@ msgstr ""
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "காப்பகம்% s"
+msgstr "காப்பகம்%s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "% S வகையை மாற்றவும்"
+msgstr "%s வகையை மாற்றவும்"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2063,7 +2063,7 @@ msgstr "நகல்களைக் காண்க"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "% S ஐ காப்பகப்படுத்த விரும்புகிறீர்களா?"
+msgstr "%s ஐ காப்பகப்படுத்த விரும்புகிறீர்களா?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2083,13 +2083,13 @@ msgstr "இயல்புநிலை வடிப்பான்கள்"
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "நான் பார்க்கக்கூடிய அனைத்து% s"
+msgstr "நான் பார்க்கக்கூடிய அனைத்து%s"
 
 #: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "பிடித்த% s"
+msgstr "பிடித்த%s"
 
 #: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
@@ -2121,7 +2121,7 @@ msgstr "கருத்து"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "இந்த% s காப்பகப்படுத்தப்பட்டுள்ளது"
+msgstr "இந்த%s காப்பகப்படுத்தப்பட்டுள்ளது"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2173,7 +2173,7 @@ msgstr "மற்றொரு தளம்"
 
 #: dt-contacts/contacts-transfer.php:276
 msgid "Already transfered to %s"
-msgstr "ஏற்கனவே% s க்கு மாற்றப்பட்டது"
+msgstr "ஏற்கனவே%s க்கு மாற்றப்பட்டது"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
@@ -2206,7 +2206,7 @@ msgstr "சிறிய பரிமாற்ற பிழை."
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "இந்த தொடர்பு மேலும் பின்தொடர்வதற்காக% s க்கு மாற்றப்பட்டது."
+msgstr "இந்த தொடர்பு மேலும் பின்தொடர்வதற்காக%s க்கு மாற்றப்பட்டது."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -2395,7 +2395,7 @@ msgstr "நம்பிக்கை"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "இணைக்கப்பட்ட% s"
+msgstr "இணைக்கப்பட்ட%s"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -2419,17 +2419,17 @@ msgstr "பெருக்கிகள் மற்றும் தொடர்�
 #: dt-contacts/duplicates-merging.php:430
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(நகலிலிருந்து):% s"
+msgstr "(நகலிலிருந்து):%s"
 
 #: dt-contacts/duplicates-merging.php:551
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "இந்த பதிவு ஒரு நகல் மற்றும்% 2 $ s இல் இணைக்கப்பட்டது"
+msgstr "இந்த பதிவு ஒரு நகல் மற்றும் %2$s இல் இணைக்கப்பட்டது"
 
 #: dt-contacts/duplicates-merging.php:564
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "% 1 $ s இந்த பதிவில்% 2 $ s ஐ இணைத்தது"
+msgstr "%1$s இந்த பதிவில் %2$s ஐ இணைத்தது"
 
 #. Template Name of the theme
 #: dt-contacts/duplicates-merging.php:576
@@ -2667,13 +2667,13 @@ msgstr "பின்வரும் கணக்கிற்கான கடவ�
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "டிடி தள பெயர்:% s"
+msgstr "டிடி தள பெயர்:%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
 #: dt-users/user-hooks-and-config.php:361
 msgid "Username: %s"
-msgstr "பயனர்பெயர்:% s"
+msgstr "பயனர்பெயர்:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -2691,11 +2691,11 @@ msgstr "இது தேவை"
 
 #: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "\"% S\" என்ற புதிய குறிச்சொல்லைச் சேர்க்கவும்"
+msgstr "\"%s\" என்ற புதிய குறிச்சொல்லைச் சேர்க்கவும்"
 
 #: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "\"% S\" குறிச்சொல் ஏற்கனவே பயன்படுத்தப்படுகிறது"
+msgstr "\"%s\" குறிச்சொல் ஏற்கனவே பயன்படுத்தப்படுகிறது"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3377,11 +3377,11 @@ msgstr "செயலில் உள்ள தொடர்புகளின் 
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "நேர வரம்பின் முடிவில்% s இல் உள்ள தொடர்புகளின் எண்ணிக்கை"
+msgstr "நேர வரம்பின் முடிவில்%s இல் உள்ள தொடர்புகளின் எண்ணிக்கை"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "தேடுபவரின் பாதையில்% s அமைக்கப்பட்ட தொடர்புகளின் எண்ணிக்கை"
+msgstr "தேடுபவரின் பாதையில்%s அமைக்கப்பட்ட தொடர்புகளின் எண்ணிக்கை"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3398,11 +3398,11 @@ msgstr ""
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "தலைமுறை% s ஞானஸ்நானம்"
+msgstr "தலைமுறை%s ஞானஸ்நானம்"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "தலைமுறை% s ஞானஸ்நானங்களின் எண்ணிக்கை"
+msgstr "தலைமுறை%s ஞானஸ்நானங்களின் எண்ணிக்கை"
 
 #: dt-metrics/combined/critical-path.php:288
 msgid "Baptizers"
@@ -3431,11 +3431,11 @@ msgstr "நேர வரம்பின் முடிவில் தேவா
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "தலைமுறை% s தேவாலயங்கள்"
+msgstr "தலைமுறை%s தேவாலயங்கள்"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "நேர வரம்பின் முடிவில் தலைமுறை% s தேவாலயங்களின் எண்ணிக்கை"
+msgstr "நேர வரம்பின் முடிவில் தலைமுறை%s தேவாலயங்களின் எண்ணிக்கை"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -3483,7 +3483,7 @@ msgstr "கடந்த மாதம்"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "% s மாதத்திற்கு முன்பு"
+msgstr[0] "%s மாதத்திற்கு முன்பு"
 msgstr[1] ""
 
 #: dt-metrics/combined/daily-activity.php:85
@@ -3510,7 +3510,7 @@ msgstr "செயல்பாடு எதுவும் கண்டறிய�
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
-msgstr "புதிய% s"
+msgstr "புதிய%s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3595,7 +3595,7 @@ msgstr "சேர்க்கப்பட்டது"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 2 $ s இல்% 1 $ s"
+msgstr "%2$s இல் %1$s"
 
 #: dt-metrics/combined/time-charts.php:113
 #: dt-metrics/personal/activity-highlights.php:67
@@ -3927,7 +3927,7 @@ msgstr "காண அல்லது பதிலளிக்க இங்கே
 #: dt-notifications/notifications-email.php:131
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "% 1 $ s #% 2 $ s இல் புதுப்பிக்கவும்"
+msgstr "%1$s # %2$s இல் புதுப்பிக்கவும்"
 
 #: dt-notifications/notifications-email.php:135
 msgid "Do not reply directly to this email."
@@ -3944,53 +3944,53 @@ msgstr "தினசரி டைஜஸ்ட்"
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "% s நிமிடத்திற்கு முன்பு"
+msgstr[0] "%s நிமிடத்திற்கு முன்பு"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "% s மணி நேரத்திற்கு முன்பு"
+msgstr[0] "%s மணி நேரத்திற்கு முன்பு"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "% s நாள் முன்பு"
+msgstr[0] "%s நாள் முன்பு"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "% s வாரத்திற்கு முன்பு"
+msgstr[0] "%s வாரத்திற்கு முன்பு"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "% s வருடம் முன்பு"
+msgstr[0] "%s வருடம் முன்பு"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "ஆண்டுக்கு முன்பு% s க்கு மேல்"
+msgstr[0] "ஆண்டுக்கு முன்பு%s க்கு மேல்"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "% s உருவாக்கப்பட்டது மற்றும் உங்களுக்கு ஒதுக்கப்பட்டுள்ளது."
+msgstr "%s உருவாக்கப்பட்டது மற்றும் உங்களுக்கு ஒதுக்கப்பட்டுள்ளது."
 
 #: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "உங்களுக்கு ஒதுக்கப்பட்டுள்ளது:% 1 $ s."
+msgstr "உங்களுக்கு ஒதுக்கப்பட்டுள்ளது: %1$s."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "% 1 $ s% 3 $ s க்கு% 2 $ s ஒதுக்கப்பட்டுள்ளது."
+msgstr "%1$s %3$s க்கு %2$s ஒதுக்கப்பட்டுள்ளது."
 
 #: dt-notifications/notifications.php:922
 #: dt-notifications/notifications.php:929
@@ -4004,42 +4004,42 @@ msgstr "அமைப்பு"
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "% 1 $ s உங்களுடன்% 2 $ s பகிரப்பட்டது."
+msgstr "%1$s உங்களுடன் %2$s பகிரப்பட்டது."
 
 #: dt-notifications/notifications.php:930
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "% 1 $ கள் உங்களை% 2 $ s இல் குறிப்பிட்டுள்ளனர்:% 3 $ s"
+msgstr "% 1 $ கள் உங்களை %2$s இல் குறிப்பிட்டுள்ளனர்: %3$s"
 
 #: dt-notifications/notifications.php:937
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "% 1 $ s% 2 $ s இல் கருத்து தெரிவித்தது:% 3 $ s"
+msgstr "%1$s %2$s இல் கருத்து தெரிவித்தது: %3$s"
 
 #: dt-notifications/notifications.php:941
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "% 1 $ s உங்களுக்கு ஒதுக்கப்பட்ட% 2 $ s."
+msgstr "%1$s உங்களுக்கு ஒதுக்கப்பட்ட %2$s."
 
 #: dt-notifications/notifications.php:951
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "% 1 $ s% 3 $ s இல் மைல்கல்லை% 2 $ s சேர்த்தது."
+msgstr "%1$s %3$s இல் மைல்கல்லை %2$s சேர்த்தது."
 
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "1% 1 $ s, புதுப்பிப்பு% 2 $ s இல் கோரப்படுகிறது."
+msgstr "1 %1$s, புதுப்பிப்பு %2$s இல் கோரப்படுகிறது."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "% 2 $ s இல்% 1 $ s மாற்றியமைக்கப்பட்ட தொடர்பு விவரங்கள்."
+msgstr "%2$s இல் %1$s மாற்றியமைக்கப்பட்ட தொடர்பு விவரங்கள்."
 
 #: dt-notifications/notifications.php:961
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "% 1 $ s மறுக்கப்பட்ட பணி:% 2 $ s."
+msgstr "%1$s மறுக்கப்பட்ட பணி: %2$s."
 
 #: dt-people-groups/people-groups-base.php:94
 #: dt-people-groups/people-groups-base.php:104
@@ -4147,7 +4147,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [% 1 $ s] (% 2 $ s) -% 3 $ s பயனர்% 4 $ s [% 5 $ s] (% 6 $ s) ஐ அணுகுமாறு "
+"@[%1$s](%2$s) - %3$s பயனர் %4$s [%5$s](%6$s) ஐ அணுகுமாறு "
 "கோரியுள்ளார். விரும்பினால், அணுகலை வழங்க இந்த பதிவை பயனருடன் பகிரவும்."
 
 #: dt-posts/dt-posts.php:2781
@@ -4157,7 +4157,7 @@ msgstr "அணுகல் கோரிக்கை"
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "முழுக்காட்டுதல்% s"
+msgstr "முழுக்காட்டுதல்%s"
 
 #: dt-posts/posts.php:282
 #, fuzzy
@@ -4168,168 +4168,168 @@ msgstr "%s ஆல் முழுக்காட்டுதல் பெற்�
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "% S ஞானஸ்நானம் பெறவில்லை"
+msgstr "%s ஞானஸ்நானம் பெறவில்லை"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "% S ஆல் முழுக்காட்டுதல் பெறவில்லை"
+msgstr "%s ஆல் முழுக்காட்டுதல் பெறவில்லை"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "உறுப்பினர்களுக்கு% s சேர்க்கப்பட்டது"
+msgstr "உறுப்பினர்களுக்கு%s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "குழு% s இல் சேர்க்கப்பட்டது"
+msgstr "குழு%s இல் சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "குழுவிலிருந்து% s அகற்றப்பட்டது"
+msgstr "குழுவிலிருந்து%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "குழு% s இலிருந்து அகற்றப்பட்டது"
+msgstr "குழு%s இலிருந்து அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "பயிற்சி% s"
+msgstr "பயிற்சி%s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "% S ஆல் பயிற்றுவிக்கப்படுகிறது"
+msgstr "%s ஆல் பயிற்றுவிக்கப்படுகிறது"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "இனி% s பயிற்சி"
+msgstr "இனி%s பயிற்சி"
 
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "இனி% s ஆல் பயிற்றுவிக்கப்படுவதில்லை"
+msgstr "இனி%s ஆல் பயிற்றுவிக்கப்படுவதில்லை"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "துணை ஒதுக்கப்பட்ட% s"
+msgstr "துணை ஒதுக்கப்பட்ட%s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "% S இல் துணை ஒதுக்கப்பட்டுள்ளது"
+msgstr "%s இல் துணை ஒதுக்கப்பட்டுள்ளது"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "துணை ஒதுக்கப்பட்ட% s அகற்றப்பட்டது"
+msgstr "துணை ஒதுக்கப்பட்ட%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "இனி% s இல் துணை ஒதுக்கப்படவில்லை"
+msgstr "இனி%s இல் துணை ஒதுக்கப்படவில்லை"
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "% 2 $ s இல் மக்கள் குழுவாக% 1 $ s சேர்க்கப்பட்டது"
+msgstr "%2$s இல் மக்கள் குழுவாக %1$s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "மக்கள் குழுக்களில்% s சேர்க்கப்பட்டது"
+msgstr "மக்கள் குழுக்களில்%s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "% 2 $ s இல் மக்கள் குழுக்களிடமிருந்து% 1 $ s அகற்றப்பட்டது"
+msgstr "%2$s இல் மக்கள் குழுக்களிடமிருந்து %1$s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "மக்கள் குழுக்களிடமிருந்து% s அகற்றப்பட்டது"
+msgstr "மக்கள் குழுக்களிடமிருந்து%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "% 1 $ s% 2 $ s இல் தலைவராக சேர்க்கப்பட்டது"
+msgstr "%1$s %2$s இல் தலைவராக சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "தலைவர்களில்% s சேர்க்கப்பட்டது"
+msgstr "தலைவர்களில்%s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "% 2 $ s இல் தலைவர்களிடமிருந்து% 1 $ s அகற்றப்பட்டது"
+msgstr "%2$s இல் தலைவர்களிடமிருந்து %1$s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "தலைவர்களிடமிருந்து% s நீக்கப்பட்டது"
+msgstr "தலைவர்களிடமிருந்து%s நீக்கப்பட்டது"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "% 2 $ s இல் பயிற்சியாளராக% 1 $ s சேர்க்கப்பட்டது"
+msgstr "%2$s இல் பயிற்சியாளராக %1$s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "பயிற்சியாளர்களில்% s சேர்க்கப்பட்டது"
+msgstr "பயிற்சியாளர்களில்%s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "% 2 $ s இல் பயிற்சியாளர்களிடமிருந்து% 1 $ s அகற்றப்பட்டது"
+msgstr "%2$s இல் பயிற்சியாளர்களிடமிருந்து %1$s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "பயிற்சியாளர்களிடமிருந்து% s அகற்றப்பட்டது"
+msgstr "பயிற்சியாளர்களிடமிருந்து%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "குழந்தை குழுக்களில்% s சேர்க்கப்பட்டது"
+msgstr "குழந்தை குழுக்களில்%s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "பெற்றோர் குழுக்களில்% s சேர்க்கப்பட்டது"
+msgstr "பெற்றோர் குழுக்களில்%s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "குழந்தை குழுக்களிடமிருந்து% s அகற்றப்பட்டது"
+msgstr "குழந்தை குழுக்களிடமிருந்து%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "பெற்றோர் குழுக்களிடமிருந்து% s அகற்றப்பட்டது"
+msgstr "பெற்றோர் குழுக்களிடமிருந்து%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "சக குழுக்களில்% s சேர்க்கப்பட்டது"
+msgstr "சக குழுக்களில்%s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "சக குழுக்களிடமிருந்து% s அகற்றப்பட்டது"
+msgstr "சக குழுக்களிடமிருந்து%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "% S உடன் இணைக்கப்பட்டுள்ளது"
+msgstr "%s உடன் இணைக்கப்பட்டுள்ளது"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
 #, fuzzy
@@ -4337,13 +4337,13 @@ msgstr "% S உடன் இணைக்கப்பட்டுள்ளது"
 #| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
-msgstr "% 1 $ s% 2 $ s இல் சேர்க்கப்பட்டது"
+msgstr "%1$s %2$s இல் சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "% S க்கான இணைப்பு நீக்கப்பட்டது"
+msgstr "%s க்கான இணைப்பு நீக்கப்பட்டது"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
 #, fuzzy
@@ -4351,12 +4351,12 @@ msgstr "% S க்கான இணைப்பு நீக்கப்பட்
 #| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s% 2 $ s இலிருந்து அகற்றப்பட்டது"
+msgstr "%1$s %2$s இலிருந்து அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:416
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "ஒதுக்கப்பட்டுள்ளது:% s"
+msgstr "ஒதுக்கப்பட்டுள்ளது:%s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -4365,31 +4365,31 @@ msgstr "யாரும் இல்லை"
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "% 1 $ s% 2 $ s ஆக மாற்றப்பட்டது"
+msgstr "%1$s %2$s ஆக மாற்றப்பட்டது"
 
 #: dt-posts/posts.php:434 dt-posts/posts.php:445
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s% 2 $ s இலிருந்து அகற்றப்பட்டது"
+msgstr "%1$s %2$s இலிருந்து அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:437 dt-posts/posts.php:448
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "% 1 $ s% 2 $ s இல் சேர்க்கப்பட்டது"
+msgstr "%1$s %2$s இல் சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:470
 msgid "%s removed"
-msgstr "% s அகற்றப்பட்டது"
+msgstr "%s அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "% 1 $ s இடங்களிலிருந்து அகற்றப்பட்டது"
+msgstr "%1$s இடங்களிலிருந்து அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "% 1 $ s இருப்பிடங்களில் சேர்க்கப்பட்டது"
+msgstr "%1$s இருப்பிடங்களில் சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:512
 #, fuzzy
@@ -4397,7 +4397,7 @@ msgstr "% 1 $ s இருப்பிடங்களில் சேர்க்
 #| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "% 1 $ s% 2 $ s இலிருந்து அகற்றப்பட்டது"
+msgstr "%1$s %2$s இலிருந்து அகற்றப்பட்டது"
 
 #: dt-posts/posts.php:515
 #, fuzzy
@@ -4405,7 +4405,7 @@ msgstr "% 1 $ s% 2 $ s இலிருந்து அகற்றப்பட�
 #| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "% 1 $ s% 2 $ s இல் சேர்க்கப்பட்டது"
+msgstr "%1$s %2$s இல் சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -4430,22 +4430,22 @@ msgstr "செல்லாது"
 #: dt-posts/posts.php:566
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "% 1 $ s:% 2 $ s சேர்க்கப்பட்டது"
+msgstr "%1$s: %2$s சேர்க்கப்பட்டது"
 
 #: dt-posts/posts.php:568
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "% 1 $ s% 2 $ s இலிருந்து% 3 $ s க்கு புதுப்பிக்கப்பட்டது"
+msgstr "%1$s %2$s இலிருந்து %3$s க்கு புதுப்பிக்கப்பட்டது"
 
 #: dt-posts/posts.php:570
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "% 1 $ s நீக்கப்பட்டது:% 2 $ s"
+msgstr "%1$s நீக்கப்பட்டது: %2$s"
 
 #: dt-posts/posts.php:574
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "பெயர் மாற்றப்பட்டது:% s"
+msgstr "பெயர் மாற்றப்பட்டது:%s"
 
 #: dt-posts/posts.php:576
 msgctxt "message"
@@ -4455,7 +4455,7 @@ msgstr "டெமோ செருகுநிரலில் இருந்த�
 #: dt-posts/posts.php:583
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "% s பணி மறுக்கப்பட்டது"
+msgstr "%s பணி மறுக்கப்பட்டது"
 
 #: dt-posts/posts.php:583 dt-posts/posts.php:586
 msgctxt "message"
@@ -4465,17 +4465,17 @@ msgstr "ஒரு பயனர்"
 #: dt-posts/posts.php:586
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "% s ஏற்றுக்கொள்ளப்பட்ட பணி"
+msgstr "%s ஏற்றுக்கொள்ளப்பட்ட பணி"
 
 #: dt-posts/posts.php:591
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "% S உடன் பகிரப்பட்டது"
+msgstr "%s உடன் பகிரப்பட்டது"
 
 #: dt-posts/posts.php:593
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "% S உடன் பகிரப்படவில்லை"
+msgstr "%s உடன் பகிரப்படவில்லை"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -4614,7 +4614,7 @@ msgstr "பயனர் நிலை"
 #: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "இதற்கு பயனரைச் சேர்க்கவும்:% s"
+msgstr "இதற்கு பயனரைச் சேர்க்கவும்:%s"
 
 #: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
@@ -4969,17 +4969,17 @@ msgstr "சீரற்றது"
 #: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "% 1 $ s% 3 $ s நாட்களுக்குப் பிறகு% 2 $ s இல் ஏற்றுக்கொள்ளப்பட்டது"
+msgstr "%1$s %3$s நாட்களுக்குப் பிறகு %2$s இல் ஏற்றுக்கொள்ளப்பட்டது"
 
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "% 1 $ s% 2 $ s நாட்களுக்கு தொடர்பு முயற்சிக்கு காத்திருக்கிறது"
+msgstr "%1$s %2$s நாட்களுக்கு தொடர்பு முயற்சிக்கு காத்திருக்கிறது"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "% 1 $ s உடன் தொடர்பு% 3 $ s நாட்களுக்குப் பிறகு% 2 $ s இல் முயற்சிக்கப்பட்டது"
+msgstr "%1$s உடன் தொடர்பு %3$s நாட்களுக்குப் பிறகு %2$s இல் முயற்சிக்கப்பட்டது"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"
@@ -5015,7 +5015,7 @@ msgstr "பயனரைக் காண்க"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr "கடைசி புதுப்பிப்பிலிருந்து% s நாட்கள்"
+msgstr "கடைசி புதுப்பிப்பிலிருந்து%s நாட்கள்"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -5040,7 +5040,7 @@ msgstr "உள்நுழையப்பட்டது"
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "% S இல் ஒதுக்கப்பட்ட பணி"
+msgstr "%s இல் ஒதுக்கப்பட்ட பணி"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
@@ -5075,12 +5075,12 @@ msgstr "கணினி மின்னஞ்சல்"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "இன்று ஒரு நினைவூட்டலை% 1 $ s இல் அமைத்துள்ளீர்கள்"
+msgstr "இன்று ஒரு நினைவூட்டலை %1$s இல் அமைத்துள்ளீர்கள்"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "இந்த பணியை% 1 $ s:% 2 $ s இல் அமைத்துள்ளீர்கள்"
+msgstr "இந்த பணியை %1$s: %2$s இல் அமைத்துள்ளீர்கள்"
 
 #: dt-workflows/workflows-triggers.php:63
 msgid "D.T Workflow"
@@ -5110,7 +5110,7 @@ msgstr "நீங்கள் எந்த உலாவியைப் பயன
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "இந்த% s க்கு புதுப்பிப்பு தேவை."
+msgstr "இந்த%s க்கு புதுப்பிப்பு தேவை."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5148,7 +5148,7 @@ msgstr "குறிச்சொல்லை உருவாக்கி வி�
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "% S ஐ நீக்க விரும்புகிறீர்களா?"
+msgstr "%s ஐ நீக்க விரும்புகிறீர்களா?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5198,7 +5198,7 @@ msgstr "புதிய மொத்தப் பதிவுகளில் எ
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "% S வகையைத் தேர்ந்தெடுக்கவும்:"
+msgstr "%s வகையைத் தேர்ந்தெடுக்கவும்:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
@@ -5405,7 +5405,7 @@ msgstr "நகல்கள் காணப்படுகின்றன:"
 
 #~ msgctxt "My records"
 #~ msgid "My %s"
-#~ msgstr "எனது% s"
+#~ msgstr "எனது%s"
 
 #~ msgid "Sub-assigned"
 #~ msgstr "துணை ஒதுக்கப்பட்டுள்ளது"

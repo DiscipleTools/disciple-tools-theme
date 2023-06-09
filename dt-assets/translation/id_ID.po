@@ -4173,7 +4173,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s] (%2$s) - Pengguna %3$s telah meminta akses atas %4$s [%5$s] (%6$s). "
+"@[%1$s](%2$s) - Pengguna %3$s telah meminta akses atas %4$s [%5$s](%6$s). "
 "Bila diinginkan, bagi rekod ini dengan pengguna tersebut untuk memberikan "
 "akses."
 

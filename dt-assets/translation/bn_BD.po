@@ -4966,7 +4966,7 @@ msgstr "%1$s যোগাযোগের অপেক্ষায় ছিল %2$s
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr " %1$s সঙ্গে যোগাযোগের চেষ্টা করা হয়েছিল %2$s পরবর্তী %3$s দিনের পরে"
+msgstr "%1$s সঙ্গে যোগাযোগের চেষ্টা করা হয়েছিল %2$s পরবর্তী %3$s দিনের পরে"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"

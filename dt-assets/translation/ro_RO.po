@@ -4090,7 +4090,7 @@ msgstr "%1$s a adăugat reperul %2$s pe %3$s."
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s, este necesară o actualizare pe %2$s."
+msgstr "@%1$s, este necesară o actualizare pe %2$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."

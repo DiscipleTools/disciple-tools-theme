@@ -558,7 +558,7 @@ msgstr "%1$s imejibu na emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr " %3$s na %1$s wamejibu na emoji %2$s"
+msgstr "%3$s na %1$s wamejibu na emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -4029,7 +4029,7 @@ msgstr "%1$s aliongeza hatua muhimu wa %2$s juu ya %3$s."
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@ %1$s, sasisho linaombwa kwa %2$s."
+msgstr "@%1$s, sasisho linaombwa kwa %2$s."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
@@ -4147,7 +4147,7 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s] ( %2$s) - Mtumiaji %3$s ameomba idhini ya kufikia %4$s [%5$s] "
+"@  [%1$s]( %2$s) - Mtumiaji %3$s ameomba idhini ya kufikia %4$s [%5$s] "
 "(%6$s). Ikiwa inataka, shiriki rekodi hii na mtumiaji ili upe ufikiaji."
 
 #: dt-posts/dt-posts.php:2781
@@ -4252,7 +4252,7 @@ msgstr "%1$s imeondolewa kwenye vikundi vya watu kwa %2$s"
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr " %s iliondolewa kwenye vikundi vya watu "
+msgstr "%s iliondolewa kwenye vikundi vya watu "
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
