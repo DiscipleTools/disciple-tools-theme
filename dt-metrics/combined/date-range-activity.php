@@ -223,7 +223,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                             $field_types[] = 'connection ' . $p2p_direction;
                         }
                     }
-                    $field_type_sql = "AND field_type IN (" . dt_array_to_sql( $field_types ) . ")";
+                    $field_type_sql = 'AND field_type IN (' . dt_array_to_sql( $field_types ) . ')';
                 }
                 $meta_key_sql = ( $field_type == 'connection' ) ? "AND meta_key LIKE '". esc_sql( !empty( $settings['p2p_key'] ) ? $settings['p2p_key'] : '%' ) ."'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
 
