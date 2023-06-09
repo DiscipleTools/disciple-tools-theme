@@ -334,8 +334,9 @@ jQuery(document).ready(function($) {
             }
 
             var icon_html = '';
-            if ( field['icon'] ) {
-                icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
+            let icon = (field['icon'] && field['icon'] !== '') ? field['icon'] : field['font-icon'];
+            if (icon && (typeof icon !== 'undefined') && (icon !== 'undefined')) {
+              icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
             }
 
             tile_html += `
@@ -423,10 +424,11 @@ jQuery(document).ready(function($) {
             /*** MULTISELECT - START ***/
             if ( field['type'] === 'multi_select' ) {
                 tile_html += `<div class="button-group" style="display: inline-flex;">`;
-                    var multi_select_icon_html = '';
                     $.each( field['default'], function(k,f) {
-                        if ( f['icon'] ) {
-                            multi_select_icon_html = `<img src="${f['icon']}" class="dt-icon">`;
+                        var multi_select_icon_html = '';
+                        let multi_icon = (f['icon'] && f['icon'] !== '') ? f['icon'] : f['font-icon'];
+                        if (multi_icon && (typeof multi_icon !== 'undefined') && (multi_icon !== 'undefined')) {
+                          multi_select_icon_html = '<span class="field-icon-wrapper">' + (multi_icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${multi_icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${multi_icon}" class="dt-icon lightgray">`) + '</span>';
                         }
                         tile_html += `
                         <button>
@@ -639,6 +641,21 @@ jQuery(document).ready(function($) {
         });
     }
 
+    function enableModalBackDiv(divId) {
+      $('.modal-back-div').fadeOut('fast');
+      $('#' + divId).fadeIn('fast');
+    }
+
+    $('.dt-admin-modal-box').on('click', '.change-icon-button', function (e) {
+      e.preventDefault();
+      enableModalBackDiv('modal-back-icon-picker');
+      flip_card();
+    });
+
+    $('.dt-admin-modal-icon-picker-box-close-button').on('click', function () {
+      unflip_card();
+    });
+
     // Delete Text Click
     $('#modal-overlay-form').on('click', '#delete-text', function(e) {
         $(this).blur();
@@ -828,9 +845,11 @@ jQuery(document).ready(function($) {
         }
 
         var field_icon_image_html = '';
-        if ( field_settings['icon'] ) {
-            field_icon_image_html = `<img src="${field_settings['icon']}" class="field-icon">`;
-        }
+        let icon = (field_settings['icon'] && field_settings['icon'] !== '') ? field_settings['icon'] : field_settings['font-icon'];
+        if ( icon && (typeof icon !== 'undefined') && (icon !== 'undefined') ) {
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+
+        } else icon = '';
 
         var private_field = '';
         if ( field_settings['private'] ) {
@@ -959,7 +978,9 @@ jQuery(document).ready(function($) {
                 <td>
                     <div class="input-group">
                         ${field_icon_image_html}
-                        <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_settings['icon']}">
+                        <input name="edit-field-icon" id="edit-field-icon" type="text" value="${icon}" style="vertical-align: middle;">
+                        <button class="button change-icon-button" style="vertical-align: middle;"
+                                data-icon-input="edit-field-icon">Change Icon</button>
                     </div>
                 </td>
             </tr>
@@ -1003,7 +1024,11 @@ jQuery(document).ready(function($) {
                 <label for="edit-field-icon"><b>Icon</b></label>
             </td>
             <td>
-                <input name="edit-field-icon" id="edit-field-icon" type="text">
+              <div class="input-group">
+                  <input name="edit-field-icon" id="edit-field-icon" type="text" style="vertical-align: middle;">
+                  <button class="button change-icon-button" style="vertical-align: middle;"
+                          data-icon-input="edit-field-icon">Change Icon</button>
+              </div>
             </td>
         </tr>
         <tr class="last-row">
@@ -1044,13 +1069,13 @@ jQuery(document).ready(function($) {
             description_translations_count = Object.values(field_settings['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
         }
 
-        var field_icon_url = '';
+        var field_icon_url = (field_settings['default'][field_option_key]['font-icon']) ? field_settings['default'][field_option_key]['font-icon']:field_settings['default'][field_option_key]['icon'];
         var field_icon_image_html = '';
+        if( field_icon_url && (typeof field_icon_url !== 'undefined') && (field_icon_url !== 'undefined') ){
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
 
-        if ( field_settings['default'][field_option_key]['icon'] ) {
-            field_icon_url = field_settings['default'][field_option_key]['icon'];
-            field_icon_image_html = `<img src="${field_icon_url}" class="field-icon">`;
-        }
+        } else field_icon_url = '';
+
         var modal_html_content = `
         <tr>
             <th colspan="2">
@@ -1132,7 +1157,9 @@ jQuery(document).ready(function($) {
             <td>
                 <div class="input-group">
                     ${field_icon_image_html}
-                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}">
+                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}" style="vertical-align: middle;">
+                    <button class="button change-icon-button" style="vertical-align: middle;"
+                            data-icon-input="edit-field-icon">Change Icon</button>
                   </div>
             </td>
         </tr>
@@ -1562,6 +1589,7 @@ jQuery(document).ready(function($) {
             <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
         </div>`;
 
+        enableModalBackDiv('modal-back-translations');
         $('#modal-translations-overlay-form').html(translations_html);
         flip_card();
 
