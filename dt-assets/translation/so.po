@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-05-17T11:37:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:32+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Somali <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/so/>\n"
+"POT-Creation-Date: 2023-06-07T08:14:59+00:00\n"
+"PO-Revision-Date: 2023-06-09 07:28+0000\n"
+"Last-Translator: Corsac <corsacca+muggle@gmail.com>\n"
+"Language-Team: Somali <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/so/>\n"
 "Language: so\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -212,7 +212,7 @@ msgstr "Lama helin nuqullo."
 #: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "Liiska%s"
+msgstr "Liiska %s"
 
 #: archive-template.php:299
 msgid "Sort"
@@ -253,11 +253,9 @@ msgid "Archived"
 msgstr "Kaydiyay"
 
 #: archive-template.php:368
-#, fuzzy
-#| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "Cusub%s"
+msgstr "Cusub %s"
 
 #: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
@@ -433,7 +431,7 @@ msgstr "Waxqabadka Maamulka"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "Tirtir%s"
+msgstr "Tirtir %s"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -513,7 +511,7 @@ msgstr "Lama helin natiijooyin u dhigma \"{{query}}\""
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "Muujinaya walxaha%s Ku qor si aad u hesho wax badan."
+msgstr "Muujinaya walxaha %s Ku qor si aad u hesho wax badan."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
@@ -627,9 +625,6 @@ msgid "Revert Record Back To This Point"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:243
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
 
@@ -1293,7 +1288,7 @@ msgstr "Ku noqo %s"
 #| msgid "Record Hits:"
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "Diiwaanada Diiwaangelinta:"
+msgstr "%s Taariikhda Diiwaanka"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
 #, fuzzy
@@ -4177,8 +4172,9 @@ msgid ""
 "desired, share this record with the user to grant access."
 msgstr ""
 "@[%1$s](%2$s) - Isticmaalaha %3$s wuxuu codsaday marin u helka %4$s "
-"[%5$s](%6$s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha "
-"si aad u siiso marin."
+"[%5$s]"
+"(%6$s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha si aad u siiso "
+"marin."
 
 #: dt-posts/dt-posts.php:2781
 msgid "Access Request"
@@ -4362,9 +4358,6 @@ msgid "Connected to %s"
 msgstr "Kuxiran %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
 msgstr "%1$s ayaa lagu daray %2$s"
@@ -4376,9 +4369,6 @@ msgid "Removed connection to %s"
 msgstr "Xiriirkii laga jaray %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s laga saaray %2$s"
@@ -4422,20 +4412,14 @@ msgid "%1$s added to locations"
 msgstr "%1$s ayaa lagu daray goobaha"
 
 #: dt-posts/posts.php:512
-#, fuzzy
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "%1$s laga saaray %2$s"
+msgstr ""
 
 #: dt-posts/posts.php:515
-#, fuzzy
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "%1$s ayaa lagu daray %2$s"
+msgstr ""
 
 #: dt-posts/posts.php:536
 msgctxt "message"
