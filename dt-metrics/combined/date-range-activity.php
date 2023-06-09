@@ -211,7 +211,19 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
 
             } elseif ( ( $field_type == 'connection' ) || ( $field_type == 'location' ) ){
                 if ( $field_type == 'connection' ){
-                    $field_type_sql = "AND field_type IN ('" . esc_sql( $field_type ) . "', 'connection to', 'connection from')";
+
+                    // Determine field types to be expected, based on p2p_direction.
+                    $field_types = [ $field_type ];
+                    if ( !empty( $settings['p2p_direction'] ) ){
+                        $p2p_direction = $settings['p2p_direction'];
+                        if ( $p2p_direction == 'any' ){
+                            $field_types[] = 'connection to';
+                            $field_types[] = 'connection from';
+                        } else {
+                            $field_types[] = 'connection ' . $p2p_direction;
+                        }
+                    }
+                    $field_type_sql = "AND field_type IN (" . dt_array_to_sql( $field_types ) . ")";
                 }
                 $meta_key_sql = ( $field_type == 'connection' ) ? "AND meta_key LIKE '". esc_sql( !empty( $settings['p2p_key'] ) ? $settings['p2p_key'] : '%' ) ."'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
 
