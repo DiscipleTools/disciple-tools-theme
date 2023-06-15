@@ -63,6 +63,7 @@ class Disciple_Tools_Metrics{
                     }
 
                     /* Groups */
+                    require_once( get_template_directory() . '/dt-metrics/groups/genmap.php' );
                     require_once( get_template_directory() . '/dt-metrics/groups/tree.php' );
                     require_once( get_template_directory() . '/dt-metrics/groups/mapbox-maps.php' );
                     require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
