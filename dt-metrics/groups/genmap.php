@@ -13,6 +13,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/groups/genmap.js'; // should be full file name plus extension
+    public $css_file_name = '/dt-metrics/common/jquery.orgchart.css'; // should be full file name plus extension
     public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
     public $namespace = null;
 
@@ -41,7 +42,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             $namespace, '/metrics/group/genmap', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'tree' ],
+                    'callback' => [ $this, 'get_genmap' ],
                     'permission_callback' => '__return_true',
                 ],
             ]
@@ -66,7 +67,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             'jquery',
         ], '3.7.0', true );
 
-        wp_enqueue_style( 'orgchart_css', 'https://cdnjs.cloudflare.com/ajax/libs/orgchart/3.7.0/css/jquery.orgchart.min.css', [], '3.7.0' );
+        wp_enqueue_style( 'orgchart_css', get_template_directory_uri() . $this->css_file_name, [], filemtime( get_theme_file_path() . $this->css_file_name ) );
 
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
@@ -95,7 +96,145 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'view_group' => __( 'View Group', 'disciple_tools' ),
 
             ],
-            'group_generation_tree' => $this->get_group_generations_tree(),
+//            'group_generation_tree' => $this->get_group_generations_tree(),
+//            'genmap' => $this->get_genmap(),
+        ];
+    }
+
+    public function get_genmap() {
+        return [
+            'name' => 'All Groups',
+            'title' => 'These are all the groups in the database.',
+            'children' => [
+                [
+                    'name' => 'Churches',
+                    'title' => 'Churches',
+                    'children' => [
+                        [
+                            'name' => 'Church 1',
+                            'title' => 'Church 1',
+                            'children' => [
+                                [
+                                    'name' => 'Church 1.1',
+                                    'title' => 'Church 1.1',
+                                    'children' => [
+                                        [
+                                            'name' => 'Church 1.1.1',
+                                            'title' => 'Church 1.1.1',
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'name' => 'Church 1.2',
+                                    'title' => 'Church 1.2',
+                                    'children' => [
+                                        [
+                                            'name' => 'Church 1.2.1',
+                                            'title' => 'Church 1.2.1',
+
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            'name' => 'Church 2',
+                            'title' => 'Church 2',
+                            'children' => [
+                                [
+                                    'name' => 'Church 2.1',
+                                    'title' => 'Church 2.1',
+                                    'children' => [
+                                        [
+                                            'name' => 'Church 2.1.1',
+                                            'title' => 'Church 2.1.1',
+
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'name' => 'Church 2.2',
+                                    'title' => 'Church 2.2',
+                                    'children' => [
+                                        [
+                                            'name' => 'Church 2.2.1',
+                                            'title' => 'Church 2.2.1',
+
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            'name' => 'Church 3',
+                            'title' => 'Church 3',
+                            'children' => [
+                                [
+                                    'name' => 'Church 3.1',
+                                    'title' => 'Church 3.1',
+                                    'children' => [
+                                        [
+                                            'name' => 'Church 3.1.1',
+                                            'title' => 'Church 3.1.1',
+
+                                        ]
+                                    ]
+                                ],
+                                [
+                                    'name' => 'Church 3.2',
+                                    'title' => 'Church 3.2',
+                                    'children' => [
+                                        [
+                                            'name' => 'Church 3.2.1',
+                                            'title' => 'Church 3.2.1',
+
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'Church 1',
+                    'title' => 'Church 1'
+                ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+                [ 'name' => 'Church', 'title' => 'Description' ],
+            ]
         ];
     }
 
@@ -131,18 +270,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         if ( isset( $menu_data['parents'][$parent_id] ) )
         {
-            $first_section = '';
-            if ( $gen === 0 ) {
-                $first_section = 'first-section';
-            }
-
             $html = '<ul >';
             $gen++;
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
-                $html .= '<li>';
-                $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . esc_html( $gen ) . ') ';
-                $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ')">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
+                $html .= '<li>'. esc_html( $menu_data['items'][ $item_id ]['name'] );
 
                 $html .= $this->build_group_tree( $item_id, $menu_data, $gen );
 
