@@ -30,10 +30,19 @@ jQuery(document).ready(function($) {
       .then(response => {
         console.log(response)
         let container = jQuery('#genmap')
+
+        var nodeTemplate = function(data) {
+          return `
+        <div class="title" data-item-id="${data.id}">${data.name}</div>
+        <div class="content">${data.content}</div>
+      `;
+        };
+
         container.orgchart({
           'data': response,
-          'nodeContent': 'title',
+          'nodeContent': 'content',
           'direction': 'l2r',
+          'nodeTemplate': nodeTemplate,
         });
 
         let container_height = jQuery('.orgchart').width() // because it is rotated

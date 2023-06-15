@@ -268,7 +268,7 @@
 }
 
 .orgchart .node .title .parentNodeSymbol {
-  float: left;
+  float: right;
 }
 
 .orgchart .node .title .parentNodeSymbol::before {
@@ -290,6 +290,7 @@
   text-align: center;
   background-color: #fff;
   color: #333;
+    overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

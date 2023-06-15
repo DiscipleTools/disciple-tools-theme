@@ -108,7 +108,10 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             return $this->_no_results();
         }
         $menu_data = $this->prepare_menu_array( $query );
-        return $this->build_group_array( 0, $menu_data, 0 );
+        dt_write_log( $menu_data );
+        $group_array = $this->build_group_array( 0, $menu_data, 0 );
+        dt_write_log( $group_array );
+        return $group_array;
     }
     public function prepare_menu_array( $query ) {
         // prepare special array with parent-child relations
@@ -126,26 +129,22 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     }
     public function build_group_array( $parent_id, $menu_data, $gen ) {
         $html = [];
-
+        $children = [];
         if ( isset( $menu_data['parents'][$parent_id] ) )
         {
-            $children = [];
             $next_gen = $gen + 1;
 
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
-                if ( isset( $menu_data['parents'][$item_id] ) )
-                {
-                    $children[] = $this->build_group_array( $item_id, $menu_data, $next_gen );
-                }
+                $children[] = $this->build_group_array( $item_id, $menu_data, $next_gen );
             }
-            $html = [
-                'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'All Groups' ,
-                'title' => '(' . $gen . ') ' . ( $menu_data['items'][ $parent_id ]['name'] ?? 'All Groups' ),
-                'children' => $children,
-            ];
-
         }
+        $html = [
+            'id' => $parent_id,
+            'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM' ,
+            'content' => ( $parent_id ) ? 'Gen ' . $gen . ' - ' . $menu_data['items'][ $parent_id ]['group_type'] : '',
+            'children' => $children,
+        ];
         return $html;
     }
 
