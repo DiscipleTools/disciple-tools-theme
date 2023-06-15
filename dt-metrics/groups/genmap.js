@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
   if (window.wpApiShare.url_path.startsWith('metrics/groups/genmap')) {
     project_group_genmap()
   }
@@ -23,6 +23,7 @@ jQuery(document).ready(function() {
 
            <div id="modal" class="reveal" data-reveal></div>
            <br><br>
+
        `)
 
     makeRequest('POST', 'metrics/group/genmap')
@@ -47,159 +48,7 @@ jQuery(document).ready(function() {
         new Foundation.Reveal(jQuery('#modal'))
       })
 
-    /*
-    let datasource = {
-      'name': 'Lao Lao',
-      'title': 'general manager',
-      'children': [
-        { 'name': 'Bo Miao', 'title': 'department manager',
-          'children': [
-            { 'name': 'Pang Pang', 'title': 'engineer' },
-            { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-            { 'name': 'Yu Jie', 'title': 'department manager' },
-            { 'name': 'Yu Li', 'title': 'department manager' },
-            { 'name': 'Hong Miao', 'title': 'department manager',
-              'children': [
-                { 'name': 'Pang Pang', 'title': 'engineer' },
-                { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-                { 'name': 'Yu Jie', 'title': 'department manager' },
-                { 'name': 'Yu Li', 'title': 'department manager' },
-                { 'name': 'Hong Miao', 'title': 'department manager' },
-                { 'name': 'Yu Wei', 'title': 'department manager' },
-                { 'name': 'Chun Miao', 'title': 'department manager',
-                  'children': [
-                    { 'name': 'Pang Pang', 'title': 'engineer' },
-                    { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-                    { 'name': 'Yu Jie', 'title': 'department manager' },
-                    { 'name': 'Yu Li', 'title': 'department manager' },
-                    { 'name': 'Hong Miao', 'title': 'department manager' },
-                    { 'name': 'Yu Wei', 'title': 'department manager' },
-                    { 'name': 'Chun Miao', 'title': 'department manager',
-                      'children': [
-                        { 'name': 'Pang Pang', 'title': 'engineer' },
-                        { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-                        { 'name': 'Yu Jie', 'title': 'department manager' },
-                        { 'name': 'Yu Li', 'title': 'department manager' },
-                        { 'name': 'Hong Miao', 'title': 'department manager' },
-                        { 'name': 'Yu Wei', 'title': 'department manager' },
-                        { 'name': 'Chun Miao', 'title': 'department manager' },
-                        { 'name': 'Yu Tie', 'title': 'department manager' }
-                      ]  },
-                    { 'name': 'Yu Tie', 'title': 'department manager' }
-                  ]  },
-                { 'name': 'Yu Tie', 'title': 'department manager' }
-              ]  },
-            { 'name': 'Yu Wei', 'title': 'department manager' },
-            { 'name': 'Chun Miao', 'title': 'department manager' },
-            { 'name': 'Yu Tie', 'title': 'department manager' }
-          ]  },
-        { 'name': 'Su Miao', 'title': 'department manager',
-          'children': [
-            { 'name': 'Tie Hua', 'title': 'senior engineer' },
-            { 'name': 'Hei Hei', 'title': 'senior engineer',
-              'children': [
-                { 'name': 'Pang Pang', 'title': 'engineer' },
-                { 'name': 'Xiang Xiang', 'title': 'UE engineer',
-                  'children': [
-                    { 'name': 'Pang Pang', 'title': 'engineer' },
-                    { 'name': 'Xiang Xiang', 'title': 'UE engineer',
-                      'children': [
-                        { 'name': 'Pang Pang', 'title': 'engineer' },
-                        { 'name': 'Xiang Xiang', 'title': 'UE engineer',
-                          'children': [
-                            { 'name': 'Pang Pang', 'title': 'engineer' },
-                            { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-                            { 'name': 'Yu Jie', 'title': 'department manager' },
-                            { 'name': 'Yu Li', 'title': 'department manager' },
-                            { 'name': 'Hong Miao', 'title': 'department manager' },
-                            { 'name': 'Yu Wei', 'title': 'department manager' },
-                            { 'name': 'Chun Miao', 'title': 'department manager' },
-                            { 'name': 'Yu Tie', 'title': 'department manager' }
-                          ] }
-                      ] }
-                  ] }
-              ]
-            }
-          ]
-        },
-        { 'name': 'Yu Jie', 'title': 'department manager' },
-        { 'name': 'Yu Li', 'title': 'department manager' },
-        { 'name': 'Hong Miao', 'title': 'department manager',
-          'children': [
-            { 'name': 'Pang Pang', 'title': 'engineer' },
-            { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-            { 'name': 'Yu Jie', 'title': 'department manager' },
-            { 'name': 'Yu Li', 'title': 'department manager' },
-            { 'name': 'Hong Miao', 'title': 'department manager',
-              'children': [
-                { 'name': 'Pang Pang', 'title': 'engineer' },
-                { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-                { 'name': 'Yu Jie', 'title': 'department manager' },
-                { 'name': 'Yu Li', 'title': 'department manager' },
-                { 'name': 'Hong Miao', 'title': 'department manager',
-                  'children': [
-                    { 'name': 'Pang Pang', 'title': 'engineer' },
-                    { 'name': 'Xiang Xiang', 'title': 'UE engineer' },
-                    { 'name': 'Yu Jie', 'title': 'department manager' },
-                    { 'name': 'Yu Li', 'title': 'department manager' },
-                    { 'name': 'Hong Miao', 'title': 'department manager' },
-                    { 'name': 'Yu Wei', 'title': 'department manager' },
-                    { 'name': 'Chun Miao', 'title': 'department manager' },
-                    { 'name': 'Yu Tie', 'title': 'department manager' }
-                  ]  },
-                { 'name': 'Yu Wei', 'title': 'department manager' },
-                { 'name': 'Chun Miao', 'title': 'department manager' },
-                { 'name': 'Yu Tie', 'title': 'department manager' }
-              ]  },
-            { 'name': 'Yu Wei', 'title': 'department manager' },
-            { 'name': 'Chun Miao', 'title': 'department manager' },
-            { 'name': 'Yu Tie', 'title': 'department manager' }
-          ]  },
-        { 'name': 'Yu Wei', 'title': 'department manager' },
-        { 'name': 'Chun Miao', 'title': 'department manager' },
-        { 'name': 'Yu Tie', 'title': 'department manager' }
-      ]
-    }
-
-    var ch = jQuery('#genmap').orgchart({
-      'data' : datasource,
-      'nodeContent': 'title',
-      // 'pan': true,
-      // 'zoom': true,
-      'direction': 'l2r',
-      // 'createNode': function($node, data) {
-      //   $node.on('click', function(event) {
-      //     if (!$(event.target).is('.edge, .toggleBtn')) {
-      //       var $this = $(this);
-      //       var $chart = $this.closest('.orgchart');
-      //       var newX = window.parseInt(($chart.outerWidth(true)/2) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true)/2));
-      //       var newY = window.parseInt(($chart.outerHeight(true)/2) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true)/2));
-      //       $chart.css('transform', 'matrix(1, 0, 0, 1, ' + newX + ', ' + newY + ')');
-      //     }
-      //   }
-      //   );
-      // }
-    });
-
-    let container_height = jQuery('.orgchart').width() // because it is rotated
-    jQuery('#genmap').height(container_height + 200 + 'px')
-
-    ch.$chartContainer.on('touchmove', function(event) {
-      event.preventDefault();
-    });
-
-    // makeRequest('POST', 'metrics/group/genmap' )
-    //   .then(response => {
-    //     // console.log(response)
-    //     jQuery('#generation_map').empty().html(response)
-    //     jQuery('#generation_map li:last-child').addClass('last');
-    //     new Foundation.Reveal(jQuery('#modal'))
-    //
-    //     jQuery('#genmap').empty().orgchart({ 'data': jQuery('#generation_map')})
-    //   })
-
-     */
-
+    console.log( dtMetricsProject.data.genmap )
   }
 
   function open_modal_details(id) {
@@ -243,4 +92,4 @@ jQuery(document).ready(function() {
       })
   }
 
-})(jQuery)
+})

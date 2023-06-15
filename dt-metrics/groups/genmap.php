@@ -102,9 +102,45 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     }
 
     public function get_genmap() {
+        $query = dt_queries()->tree( 'multiplying_groups_only' );
+        if ( is_wp_error( $query ) ){
+            return $this->_circular_structure_error( $query );
+        }
+        if ( empty( $query ) ) {
+            return $this->_no_results();
+        }
+        $menu_data = $this->prepare_menu_array( $query );
+        return $this->build_group_array( 0, $menu_data, 0 );
+    }
+    public function build_group_array( $parent_id, $menu_data, $gen ) {
+        $html = [];
+
+        if ( isset( $menu_data['parents'][$parent_id] ) )
+        {
+            $children = [];
+            $next_gen = $gen + 1;
+
+            foreach ( $menu_data['parents'][$parent_id] as $item_id )
+            {
+                if ( isset( $menu_data['parents'][$item_id] ) )
+                {
+                    $children[] = $this->build_group_array( $item_id, $menu_data, $next_gen );
+                }
+            }
+            $html = [
+                'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'All Groups' ,
+                'title' => '(' . $gen . ') ' . ( $menu_data['items'][ $parent_id ]['name'] ?? 'All Groups' ),
+                'children' => $children,
+            ];
+
+        }
+        return $html;
+    }
+
+    public function sample() {
         return [
             'name' => 'All Groups',
-            'title' => 'These are all the groups in the database.',
+            'title' => 'These are all the groups',
             'children' => [
                 [
                     'name' => 'Churches',
@@ -238,6 +274,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         ];
     }
 
+
     public function get_group_generations_tree(){
         $query = dt_queries()->tree( 'multiplying_groups_only' );
         if ( is_wp_error( $query ) ){
@@ -285,34 +322,6 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
         return $html;
     }
-
-//    public function build_group_tree( $parent_id, $menu_data, $gen ) {
-//        $html = '';
-//
-//        if ( isset( $menu_data['parents'][$parent_id] ) )
-//        {
-//            $first_section = '';
-//            if ( $gen === 0 ) {
-//                $first_section = 'first-section';
-//            }
-//
-//            $html = '<ul class="ul-gen-'.esc_html( $gen ).'">';
-//            $gen++;
-//            foreach ( $menu_data['parents'][$parent_id] as $item_id )
-//            {
-//                $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_html( $first_section ) . '">';
-//                $html .= '<span class="' . esc_html( $menu_data['items'][ $item_id ]['group_status'] ) . ' ' . esc_html( $menu_data['items'][ $item_id ]['group_type'] ) . '">(' . esc_html( $gen ) . ') ';
-//                $html .= '<a onclick="open_modal_details(' . esc_html( $item_id ) . ')">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></span>';
-//
-//                $html .= $this->build_group_tree( $item_id, $menu_data, $gen );
-//
-//                $html .= '</li>';
-//            }
-//            $html .= '</ul>';
-//
-//        }
-//        return $html;
-//    }
 
 
 }

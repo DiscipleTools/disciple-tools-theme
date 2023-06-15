@@ -249,6 +249,7 @@
   background-color: var(--dt-blue-o);
   color: #fff;
   border-radius: 4px 4px 0 0;
+    padding: 0 5px;
 }
 
 .orgchart.b2t .node .title {
