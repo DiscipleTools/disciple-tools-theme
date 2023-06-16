@@ -51,15 +51,12 @@ function dt_release_modal() {
                         <a href="#" id="release-modal-get-involved-tab" data-content="get-involved-content" class="dt-tab"><?php esc_html_e( 'Get Involved', 'disciple_tools' ); ?></a>
                     </div>
                     <div class="dt-tab-content" id="theme-news-content">
-                        <h3>Community Support</h3>
+                        <h3>Freely given, but not cheap</h3>
                         <p>
-                            Disciple.Tools is given freely, but it isn't cheap/free to maintain and develop. These improvements were brought by developer contributions and generous donors, users, as well as the funds from Gospel Ambition.
-                        </p>
-                        <p>
-                            Would you help us raise $100,000 to assure the continued sustainability, maintenance and quality of Disciple.Tools?
+                            Disciple.Tools relies on contributions for continued development and maintenance.  Will you join the team?
                         </p>
                         <p class="center">
-                            <a class="button" href="https://disciple.tools/donate/" target="_blank">Donate here</a>
+                            <a class="button" href="https://disciple.tools/donate/" target="_blank">Give</a>
                         </p>
                         <p>
                             <?php echo wp_kses_post( dt_load_github_release_markdown( $show_notification_for_theme_version ) ); ?>
