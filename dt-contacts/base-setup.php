@@ -695,43 +695,6 @@ class DT_Contacts_Base {
                 }
             }
 
-            // Handle default comment types, only adding if not already assigned.
-            $default_types = [
-                [
-                    'key' => 'activity',
-                    'label' => __( 'Activity', 'disciple_tools' ),
-                    'selected_by_default' => true,
-                    'always_show' => true,
-                    'enabled' => true
-                ],
-                [
-                    'key' => 'comment',
-                    'label' => __( 'Comment', 'disciple_tools' ),
-                    'selected_by_default' => true,
-                    'enabled' => true
-                ]
-            ];
-            foreach ( $default_types as $type ){
-                if ( $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] ) === false ){
-                    array_unshift( $sections, $type );
-                }
-
-                // Force default comment types to top spots!
-                $type_idx = $this->comm_channel_comment_section_already_assigned( $sections, $type['key'] );
-                if ( $type_idx !== false ){
-                    $unshift_type = $sections[$type_idx];
-
-                    // Adjust enabled state accordingly; defaulting to configured, if not specified.
-                    if ( !isset( $unshift_type['enabled'] ) ){
-                        $unshift_type['enabled'] = $type['enabled'];
-                    }
-
-                    // Proceed with element unshift.
-                    unset( $sections[$type_idx] );
-                    array_unshift( $sections, $unshift_type );
-                }
-            }
-
             // Finally, move all original custom comment types to bottom spots!
             foreach ( $sections ?? [] as $section ){
                 if ( isset( $section['is_comment_type'] ) && $section['is_comment_type'] && ( substr( $section['key'], 0, strlen( $section['key_prefix'] ) ) === $section['key_prefix'] ) ){
