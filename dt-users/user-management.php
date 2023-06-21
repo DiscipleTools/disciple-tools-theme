@@ -96,6 +96,15 @@ class DT_User_Management
                 ],
             ]
         );
+        register_rest_route(
+            $namespace, '/send_pwd_reset_email', [
+                [
+                    'methods' => 'POST',
+                    'callback' => [ $this, 'send_pwd_reset_email' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
     }
 
     public function dt_templates_for_urls( $template_for_url ) {
@@ -183,6 +192,8 @@ class DT_User_Management
                         'view_contact' => __( 'View Contact', 'disciple_tools' ),
                         'more' => __( 'More', 'disciple_tools' ),
                         'less' => __( 'Less', 'disciple_tools' ),
+                        'pwd_reset_default' => __( 'Email Password Reset', 'disciple_tools' ),
+                        'pwd_reset_sent' => __( 'Password Reset Sent', 'disciple_tools' )
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                     'default_language' => get_option( 'dt_user_default_language', 'en_US' ),
@@ -513,6 +524,14 @@ class DT_User_Management
             return Disciple_Tools_Users::update_settings_on_user( $get_params['user'], $body );
         }
         return false;
+    }
+
+    public function send_pwd_reset_email( WP_REST_Request $request ){
+        $params = $request->get_json_params() ?? $request->get_body_params();
+
+        return [
+            'sent' => isset( $params['email'] ) ? retrieve_password( $params['email'] ) : false
+        ];
     }
 
 

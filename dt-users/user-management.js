@@ -209,6 +209,26 @@ jQuery(document).ready(function($) {
       window.open(window.wpApiShare.site_url + "/wp-admin/user-edit.php?user_id=" + user_details.user_id, '_blank');
     }
   })
+  $('#reset_user_pwd_email').on("click", function (e) {
+    e.preventDefault();
+
+    $('#reset_user_pwd_email_spinner').addClass('active');
+    $('#reset_user_pwd_email_text').html(`${window.lodash.escape(escaped_translations['pwd_reset_default'])}`);
+    send_user_pwd_reset_email(user_details['user_id'], user_details['user_email']).then((response) => {
+      if (response && response['sent']) {
+        $('#reset_user_pwd_email_text').html(`${window.lodash.escape(escaped_translations['pwd_reset_sent'])}`);
+      }
+      $('#reset_user_pwd_email_spinner').removeClass('active');
+    });
+  });
+
+  let send_user_pwd_reset_email = (user_id, user_email) => {
+    let data = {
+      'id': user_id,
+      'email': user_email
+    }
+    return makeRequest('POST', `send_pwd_reset_email`, data, 'user-management/v1/');
+  }
 
   /**
    * Locations
