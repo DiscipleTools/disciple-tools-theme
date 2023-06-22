@@ -101,7 +101,9 @@ class DT_User_Management
                 [
                     'methods' => 'POST',
                     'callback' => [ $this, 'send_pwd_reset_email' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function(){
+                        return $this->has_permission();
+                    },
                 ],
             ]
         );
@@ -191,9 +193,7 @@ class DT_User_Management
                         'view_user' => __( 'View User', 'disciple_tools' ),
                         'view_contact' => __( 'View Contact', 'disciple_tools' ),
                         'more' => __( 'More', 'disciple_tools' ),
-                        'less' => __( 'Less', 'disciple_tools' ),
-                        'pwd_reset_default' => __( 'Email Password Reset', 'disciple_tools' ),
-                        'pwd_reset_sent' => __( 'Password Reset Sent', 'disciple_tools' )
+                        'less' => __( 'Less', 'disciple_tools' )
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                     'default_language' => get_option( 'dt_user_default_language', 'en_US' ),

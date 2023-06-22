@@ -212,13 +212,24 @@ jQuery(document).ready(function($) {
   $('#reset_user_pwd_email').on("click", function (e) {
     e.preventDefault();
 
-    $('#reset_user_pwd_email_spinner').addClass('active');
-    $('#reset_user_pwd_email_text').html(`${window.lodash.escape(escaped_translations['pwd_reset_default'])}`);
+    let button_icon = $('#reset_user_pwd_email_icon');
+    button_icon.css('margin-left', '10px');
+    button_icon.addClass('active');
+    button_icon.addClass('loading-spinner');
+
     send_user_pwd_reset_email(user_details['user_id'], user_details['user_email']).then((response) => {
+      button_icon.removeClass('active');
+      button_icon.removeClass('loading-spinner');
+      button_icon.css('font-size', '20px');
+
       if (response && response['sent']) {
-        $('#reset_user_pwd_email_text').html(`${window.lodash.escape(escaped_translations['pwd_reset_sent'])}`);
+        button_icon.addClass('mdi mdi-email-check-outline');
+        button_icon.css('color', '#01d701');
+
+      } else {
+        button_icon.addClass('mdi mdi-email-remove-outline');
+        button_icon.css('color', '#d70101');
       }
-      $('#reset_user_pwd_email_spinner').removeClass('active');
     });
   });
 
@@ -357,6 +368,16 @@ jQuery(document).ready(function($) {
   })
 
   function open_user_modal( user_id ) {
+
+    // Reset email password button.
+    let button_icon = $('#reset_user_pwd_email_icon');
+    button_icon.removeClass('active');
+    button_icon.removeClass('loading-spinner');
+    button_icon.removeClass('mdi mdi-email-check-outline');
+    button_icon.removeClass('mdi mdi-email-remove-outline');
+    button_icon.css('color', '');
+    button_icon.css('margin-left', '');
+
     $('#user_modal').foundation('open');
     /**
      * Set availability dates

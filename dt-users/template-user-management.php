@@ -353,7 +353,7 @@ function fetch_user_locations( $user_id ): array {
                                         <?php endif; ?>
                                         <button id="reset_user_pwd_email" class="button" type="button">
                                             <span id="reset_user_pwd_email_text"><?php esc_html_e( 'Email Password Reset', 'disciple_tools' ); ?></span>
-                                            <span id="reset_user_pwd_email_spinner" class="loading-spinner"></span>
+                                            <span id="reset_user_pwd_email_icon"></span>
                                         </button>
                                         <p>
                                             <?php esc_html_e( 'Email', 'disciple_tools' ); ?>: <span id="user_email"></span>
