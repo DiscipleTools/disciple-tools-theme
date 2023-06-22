@@ -148,7 +148,7 @@ final class Disciple_Tools_Admin_User_Edit {
         $user = new WP_User( $user_id );
 
         $can_not_promote_to_roles = [];
-        if ( dt_is_administrator() ){
+        if ( !dt_is_administrator() ){
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
         }
         if ( !current_user_can( 'manage_dt' ) ){
