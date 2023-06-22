@@ -94,6 +94,17 @@ function dt_current_user_has_role( $role ) {
     return is_user_logged_in() ? dt_user_has_role( get_current_user_id(), $role ) : false;
 }
 
+
+function dt_is_administrator(){
+    if ( dt_current_user_has_role( 'administrator' ) ){
+        return true;
+    }
+    if ( is_multisite() && is_super_admin() ){
+        return true;
+    }
+    return false;
+}
+
 /**
  * Returns an array of the role names a user has.
  *

@@ -551,7 +551,7 @@ class Disciple_Tools_Users
         }
 
         $can_not_promote_to_roles = [];
-        if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
+        if ( !dt_is_administrator() ){
             $can_not_promote_to_roles = [ 'administrator' ];
         }
         if ( !current_user_can( 'manage_dt' ) ){

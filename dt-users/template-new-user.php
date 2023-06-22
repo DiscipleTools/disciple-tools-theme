@@ -142,7 +142,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                     $user_roles = [ 'multiplier' ];
                                                     $dt_roles = dt_multi_role_get_editable_role_names();
                                                     $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
-                                                    $upgrade_to_admin_disabled = !is_super_admin() && !dt_current_user_has_role( 'administrator' );
+                                                    $upgrade_to_admin_disabled = !dt_is_administrator();
                                                     $admin_roles = [ 'administrator', 'dt_admin' ];
                                                     uasort( $expected_roles, function ( $item1, $item2 ){
                                                         return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
