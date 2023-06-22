@@ -40,8 +40,25 @@ class DT_User_Hooks_And_Configuration {
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
         add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
+
+        add_filter( 'editable_roles', [ $this, 'editable_roles' ] );
     }
 
+    public function editable_roles( $roles ){
+        $can_not_promote_to_roles = [];
+        if ( !dt_is_administrator() ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
+        }
+        if ( !current_user_can( 'manage_dt' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+        }
+        foreach ( $can_not_promote_to_roles as $role ){
+            if ( isset( $roles[$role] ) ){
+                unset( $roles[$role] );
+            }
+        }
+        return $roles;
+    }
 
 
 
