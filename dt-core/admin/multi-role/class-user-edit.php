@@ -76,18 +76,7 @@ final class Disciple_Tools_Admin_User_Edit {
 
         $user_roles = (array) $user->roles;
 
-        $editable_roles = dt_multi_role_get_editable_role_names();
-
-        $can_not_promote_to_roles = [];
-        if ( !dt_is_administrator() ){
-            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
-        }
-        if ( !current_user_can( 'manage_dt' ) ){
-            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
-        }
-
-
-//        asort( $editable_roles );
+        $roles = dt_list_roles();
 
         wp_nonce_field( 'new_user_roles', 'dt_multi_role_new_user_roles_nonce' ); ?>
 
@@ -102,26 +91,25 @@ final class Disciple_Tools_Admin_User_Edit {
                 <td>
                     <ul>
                     <?php
-                    $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
-                    foreach ( $editable_roles as $role => $name ) : ?>
+                    foreach ( $roles as $role_key => $role ) : ?>
                         <li>
                             <label>
                                 <input type="checkbox" name="dt_multi_role_user_roles[]"
-                                       value="<?php echo esc_attr( $role ); ?>"
-                                       <?php checked( in_array( $role, $user_roles ) ); ?>
-                                       <?php echo esc_html( in_array( $role, $can_not_promote_to_roles ) ? 'disabled' : '' ) ?>/>
+                                       value="<?php echo esc_attr( $role_key ); ?>"
+                                       <?php checked( in_array( $role_key, $user_roles ) ); ?>
+                                       <?php disabled( $role['disabled'] ) ?>/>
                                 <strong>
                                 <?php
-                                if ( isset( $expected_roles[$role]['label'] ) && !empty( $expected_roles[$role]['label'] ) ){
-                                    echo esc_html( $expected_roles[$role]['label'] );
+                                if ( !empty( $role['label'] ) ){
+                                    echo esc_html( $role['label'] );
                                 } else {
-                                    echo esc_html( $name );
+                                    echo esc_html( $role_key );
                                 }
                                 ?>
                                 </strong>
                                 <?php
-                                if ( isset( $expected_roles[$role]['description'] ) ){
-                                    echo ' - ' . esc_html( $expected_roles[$role]['description'] );
+                                if ( isset( $role['description'] ) ){
+                                    echo ' - ' . esc_html( $role['description'] );
                                 }
                                 ?>
                             </label>

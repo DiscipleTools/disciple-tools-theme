@@ -125,3 +125,26 @@ function dt_get_user_role_names( $user_id ) {
 
     return $names;
 }
+
+
+function dt_list_roles(){
+    $can_not_promote_to_roles = [];
+    if ( !dt_is_administrator() ){
+        $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
+    }
+    if ( !current_user_can( 'manage_dt' ) ){
+        $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+    }
+
+    $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+
+    uasort( $expected_roles, function ( $item1, $item2 ){
+        return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
+    } );
+
+    foreach ( $expected_roles as $role_key => $role ){
+        $expected_roles[$role_key]['disabled'] = in_array( $role_key, $can_not_promote_to_roles );
+    }
+
+    return $expected_roles;
+}

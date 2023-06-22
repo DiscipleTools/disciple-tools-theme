@@ -44,6 +44,7 @@ class DT_User_Hooks_And_Configuration {
         add_filter( 'editable_roles', [ $this, 'editable_roles' ] );
     }
 
+    /** Remove admin roles from editable roles if user is not an admin. */
     public function editable_roles( $roles ){
         $can_not_promote_to_roles = [];
         if ( !dt_is_administrator() ){
