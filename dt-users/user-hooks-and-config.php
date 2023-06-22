@@ -219,7 +219,7 @@ class DT_User_Hooks_And_Configuration {
             ], true, false );
         }
 
-        if ( !empty( $_POST['allowed_sources'] ) ) {
+        if ( !empty( $_POST['allowed_sources'] ) && current_user_can( 'promote_users' ) ) {
             if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
                 check_admin_referer( 'update-user_' . $user_id );
             }
@@ -548,7 +548,7 @@ class DT_User_Hooks_And_Configuration {
                 </td>
             </tr>
         </table>
-        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
+        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) && current_user_can( 'promote_users' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
             $post_settings = DT_Posts::get_post_settings( 'contacts' );
             $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : [];
