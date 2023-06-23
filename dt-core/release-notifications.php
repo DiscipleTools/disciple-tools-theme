@@ -31,6 +31,18 @@ function dt_release_modal() {
     require_once( get_template_directory().'/dt-core/libraries/parsedown/Parsedown.php' );
 
     update_user_meta( get_current_user_id(), 'dt_release_notification', $show_notification_for_theme_version );
+
+    $dt_summit = '';
+    if ( time() < strtotime( '2023-10-01' ) ) {
+        $dt_summit = '
+            <h3>Disciple.Tools Summit 2023</h3>
+            <p>Coming in October. Learn and grow with other Disciple.Tools users to up-skill yourself and better understand the software.</p>
+            <p class="center">
+                <a class="button" href="https://disciple.tools/summit/" target="_blank">Find out more</a>
+            </p>
+        ';
+    }
+
     ?>
     <script>
       jQuery(document).ready(function() {
@@ -51,6 +63,7 @@ function dt_release_modal() {
                         <a href="#" id="release-modal-get-involved-tab" data-content="get-involved-content" class="dt-tab"><?php esc_html_e( 'Get Involved', 'disciple_tools' ); ?></a>
                     </div>
                     <div class="dt-tab-content" id="theme-news-content">
+                        <?php echo $dt_summit; //phpcs:ignore ?>
                         <h3>Freely given, but not cheap</h3>
                         <p>
                             Disciple.Tools relies on contributions for continued development and maintenance.  Will you join the team?

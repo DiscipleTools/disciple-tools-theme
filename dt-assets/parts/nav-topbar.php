@@ -90,7 +90,15 @@ if ( !empty( $custom_logo_url ) ) {
                             </li>
                         <?php endif;
                     }
-                    ?>
+
+                    // D.T Summit
+                    if ( time() < strtotime( '2023-10-01' ) ) : ?>
+                        <li class="image-menu-nav" style="display: flex; align-items: center">
+                            <a href="https://disciple.tools/summit" target="_blank">
+                                D.T Summit?
+                            </a>
+                        </li>
+                    <?php endif; ?>
 
 
                     <!-- profile name -->
