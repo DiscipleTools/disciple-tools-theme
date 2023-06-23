@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-06-07T08:14:59+00:00\n"
+"POT-Creation-Date: 2023-06-12T10:59:34+00:00\n"
 "PO-Revision-Date: 2023-05-31 16:20+0000\n"
 "Last-Translator: Luke Baumgartner <baumgartner.luke@gmail.com>\n"
 "Language-Team: Turkish <https://translate.disciple.tools/projects/disciple-"
@@ -113,7 +113,7 @@ msgstr "İptal"
 #: dt-contacts/access-module.php:660 dt-contacts/base-setup.php:432
 #: dt-contacts/base-setup.php:467 dt-contacts/dmm-module.php:523
 #: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
-#: dt-groups/base-setup.php:618 dt-groups/base-setup.php:623
+#: dt-groups/base-setup.php:628 dt-groups/base-setup.php:633
 #: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
 #: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
 #: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
@@ -487,11 +487,13 @@ msgid "Share"
 msgstr "Paylaş"
 
 #: dt-assets/functions/enqueue-scripts.php:112
+#: dt-metrics/combined/date-range-activity.php:111
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "Hedef Bölgeler"
 
 #: dt-assets/functions/enqueue-scripts.php:113
+#: dt-metrics/combined/date-range-activity.php:112
 #: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "Tüm Konumlar"
@@ -673,7 +675,7 @@ msgid "No records found matching your filter."
 msgstr "Filtreye eşleşen bir kaydı bulunmamaktadır."
 
 #: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:371
+#: dt-groups/base-setup.php:1076 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
 msgstr "Tüm %s"
@@ -688,7 +690,7 @@ msgstr "Son"
 
 #: dt-assets/functions/enqueue-scripts.php:323
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
+#: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:995
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
@@ -1282,6 +1284,7 @@ msgid "Revert Activity"
 msgstr "İşlemi Geri Al"
 
 #: dt-assets/parts/modals/modal-revert.php:5
+#: dt-metrics/combined/date-range-activity.php:103
 #: dt-metrics/combined/time-charts.php:109
 msgid "Field"
 msgstr "Alan"
@@ -1682,7 +1685,7 @@ msgid "Accepted"
 msgstr "Kabul Edildi"
 
 #: dt-contacts/access-module.php:294 dt-contacts/base-setup.php:575
-#: dt-metrics/metrics.php:86 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:87 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1783,7 +1786,7 @@ msgstr "Takiplerim"
 
 #: dt-contacts/access-module.php:924 dt-contacts/access-module.php:945
 #: dt-contacts/access-module.php:968 dt-contacts/access-module.php:993
-#: dt-groups/base-setup.php:977
+#: dt-groups/base-setup.php:987
 msgid "Assigned to me"
 msgstr "Bana Atananlar"
 
@@ -1852,7 +1855,7 @@ msgstr "Yinelenen Denetleyici"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:95
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:96
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
@@ -2054,11 +2057,11 @@ msgstr "Arşiv"
 
 #: dt-contacts/base-setup.php:489
 #: dt-core/configuration/config-site-defaults.php:543
-#: dt-groups/base-setup.php:642 template-settings.php:202
+#: dt-groups/base-setup.php:652 template-settings.php:202
 msgid "Other"
 msgstr "Diğer"
 
-#: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
+#: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1068
 #: dt-posts/custom-post-type.php:350
 msgid "Default Filters"
 msgstr "Standart Filtreler"
@@ -2068,23 +2071,23 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Görüntüleyebilen tüm %s"
 
-#: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
+#: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1085
 #: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Favori %s"
 
-#: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
+#: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1091
 #: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
 msgid "Favorite"
 msgstr "Favori"
 
-#: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
+#: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1097
 #: dt-posts/custom-post-type.php:398
 msgid "My Recently Viewed"
 msgstr "Son Görüntülemem"
 
-#: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
+#: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1102
 #: dt-posts/custom-post-type.php:403
 msgid "Last 30 viewed"
 msgstr "Son 30 Görüntülemem"
@@ -2762,14 +2765,14 @@ msgid "Group"
 msgstr "Grup"
 
 #: dt-groups/base-setup.php:51 dt-groups/base-setup.php:64
-#: dt-groups/base-setup.php:467 dt-groups/base-setup.php:641
+#: dt-groups/base-setup.php:467 dt-groups/base-setup.php:651
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:166
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:99
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:100
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
@@ -2858,7 +2861,7 @@ msgid ""
 msgstr ""
 "Kilise olarak görüşmeyen (ve kilise olmaya hedeflenmeyen) özel bir grup."
 
-#: dt-groups/base-setup.php:197 dt-groups/base-setup.php:634
+#: dt-groups/base-setup.php:197 dt-groups/base-setup.php:644
 msgid "Church Health"
 msgstr "Kilise Sağlığı"
 
@@ -3003,8 +3006,8 @@ msgstr ""
 "zamanda grubun üyesi olan kişileri de dahil etmek için bu numarayı manuel "
 "olarak değiştirin."
 
-#: dt-groups/base-setup.php:295 dt-groups/base-setup.php:589
-#: dt-groups/base-setup.php:633
+#: dt-groups/base-setup.php:295 dt-groups/base-setup.php:599
+#: dt-groups/base-setup.php:643
 msgid "Member List"
 msgstr "Üye Listesi"
 
@@ -3109,24 +3112,24 @@ msgstr "Grubun lideri"
 msgid "Coach of Group"
 msgstr "Grubun Koçluk Yapan"
 
-#: dt-groups/base-setup.php:592
+#: dt-groups/base-setup.php:602
 msgid "Create"
 msgstr "Oluştur"
 
-#: dt-groups/base-setup.php:597
+#: dt-groups/base-setup.php:607
 msgid "Select"
 msgstr "Seç"
 
-#: dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:612
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Yeni üyeleri eklemek için \"Oluştur\" veya \"Seç\" tıklayınız."
 
-#: dt-groups/base-setup.php:608
+#: dt-groups/base-setup.php:618
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Varolan kişilerden üye ekle"
 
-#: dt-groups/base-setup.php:609
+#: dt-groups/base-setup.php:619
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3135,11 +3138,11 @@ msgstr ""
 "'Üye Listesi\" alanında mevcut olan kişinin adını yazarak onu bu gruba dahil "
 "edebilirsin."
 
-#: dt-groups/base-setup.php:637
+#: dt-groups/base-setup.php:647
 msgid "Four Fields"
 msgstr "Dört Alanı"
 
-#: dt-groups/base-setup.php:638
+#: dt-groups/base-setup.php:648
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3304,10 +3307,11 @@ msgstr "En Önemli Yol"
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/daily-activity.php:23
+#: dt-metrics/combined/date-range-activity.php:44
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:91
+#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:92
 msgid "Project"
 msgstr "Proje"
 
@@ -3469,7 +3473,7 @@ msgstr ""
 "çizelgesine tıklayın."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:116
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:117
 msgid "Metrics"
 msgstr "Ölçümler"
 
@@ -3486,6 +3490,60 @@ msgstr "İşlem Bulunmuyor!"
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "Yeni %s"
+
+#: dt-metrics/combined/date-range-activity.php:43
+msgid "Activity During Date Range"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:102
+#: dt-metrics/combined/time-charts.php:108
+msgid "Post Type"
+msgstr "Gönderi Türü"
+
+#: dt-metrics/combined/date-range-activity.php:104
+#, fuzzy
+#| msgid "Activity"
+msgid "Any Activity"
+msgstr "İşlemler"
+
+#: dt-metrics/combined/date-range-activity.php:105
+#: dt-metrics/combined/time-charts.php:110
+msgid "Total"
+msgstr "Toplam"
+
+#: dt-metrics/combined/date-range-activity.php:106
+#, fuzzy
+#| msgid "Date Ranges"
+msgid "Date Range"
+msgstr "Tarih Aralıkları"
+
+#: dt-metrics/combined/date-range-activity.php:107
+msgid "Reload"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:108
+msgid "Title"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:109
+#: dt-metrics/combined/time-charts.php:113
+#: dt-metrics/personal/activity-highlights.php:67
+msgid "Date"
+msgstr "Tarih"
+
+#: dt-metrics/combined/date-range-activity.php:110
+#, fuzzy
+#| msgid "Old Value"
+msgid "New Value"
+msgstr "Eski Değer"
+
+#: dt-metrics/combined/date-range-activity.php:309
+msgid "True"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:309
+msgid "False"
+msgstr ""
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3557,14 +3615,6 @@ msgstr "Veri Mevcut Değil"
 msgid "Fields over Time Charts"
 msgstr "Zaman Çizelgelerindeki Alanlar"
 
-#: dt-metrics/combined/time-charts.php:108
-msgid "Post Type"
-msgstr "Gönderi Türü"
-
-#: dt-metrics/combined/time-charts.php:110
-msgid "Total"
-msgstr "Toplam"
-
 #: dt-metrics/combined/time-charts.php:111
 msgid "Added"
 msgstr "Eklenen"
@@ -3573,11 +3623,6 @@ msgstr "Eklenen"
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "%2$s içinde %2$s"
-
-#: dt-metrics/combined/time-charts.php:113
-#: dt-metrics/personal/activity-highlights.php:67
-msgid "Date"
-msgstr "Tarih"
 
 #: dt-metrics/combined/time-charts.php:114
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
