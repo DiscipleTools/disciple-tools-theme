@@ -41,7 +41,9 @@ class DT_User_Hooks_And_Configuration {
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
         add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
 
+        //permissions when editing user roles
         add_filter( 'editable_roles', [ $this, 'editable_roles' ] );
+        add_action( 'remove_user_role', [ $this, 'remove_user_role' ], 10, 2 );
     }
 
     /** Remove admin roles from editable roles if user is not an admin. */
@@ -59,6 +61,14 @@ class DT_User_Hooks_And_Configuration {
             }
         }
         return $roles;
+    }
+
+    /** Administrator can not be downgraded by non administrator. */
+    public function remove_user_role( $user_id, $old_role ){
+        if ( $old_role === 'administrator' && !dt_is_administrator() ){
+            $user = get_user_by( 'id', $user_id );
+            $user->add_role( 'administrator' );
+        }
     }
 
 
