@@ -95,7 +95,8 @@ if ( !empty( $custom_logo_url ) ) {
                     if ( time() < strtotime( '2023-10-01' ) ) : ?>
                         <li class="image-menu-nav" style="display: flex; align-items: center">
                             <a href="https://disciple.tools/summit" target="_blank">
-                                D.T Summit?
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/summit.png' )?>" />
+                                Summit
                             </a>
                         </li>
                     <?php endif; ?>
