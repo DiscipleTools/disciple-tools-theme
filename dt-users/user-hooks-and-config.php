@@ -40,8 +40,36 @@ class DT_User_Hooks_And_Configuration {
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
         add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
+
+        //permissions when editing user roles
+        add_filter( 'editable_roles', [ $this, 'editable_roles' ] );
+        add_action( 'remove_user_role', [ $this, 'remove_user_role' ], 10, 2 );
     }
 
+    /** Remove admin roles from editable roles if user is not an admin. */
+    public function editable_roles( $roles ){
+        $can_not_promote_to_roles = [];
+        if ( !dt_is_administrator() ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
+        }
+        if ( !current_user_can( 'manage_dt' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+        }
+        foreach ( $can_not_promote_to_roles as $role ){
+            if ( isset( $roles[$role] ) ){
+                unset( $roles[$role] );
+            }
+        }
+        return $roles;
+    }
+
+    /** Administrator can not be downgraded by non administrator. */
+    public function remove_user_role( $user_id, $old_role ){
+        if ( $old_role === 'administrator' && !dt_is_administrator() ){
+            $user = get_user_by( 'id', $user_id );
+            $user->add_role( 'administrator' );
+        }
+    }
 
 
 
@@ -201,7 +229,7 @@ class DT_User_Hooks_And_Configuration {
             ], true, false );
         }
 
-        if ( !empty( $_POST['allowed_sources'] ) ) {
+        if ( !empty( $_POST['allowed_sources'] ) && current_user_can( 'promote_users' ) ) {
             if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
                 check_admin_referer( 'update-user_' . $user_id );
             }
@@ -530,7 +558,7 @@ class DT_User_Hooks_And_Configuration {
                 </td>
             </tr>
         </table>
-        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
+        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) && current_user_can( 'promote_users' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
             $post_settings = DT_Posts::get_post_settings( 'contacts' );
             $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : [];

@@ -417,16 +417,7 @@ function fetch_user_locations( $user_id ): array {
                                         <div class="bordered-box">
                                             <h4><?php esc_html_e( 'Roles', 'disciple_tools' ); ?></h4>
                                             <?php
-                                            $user_roles = [];
-
-                                            $dt_roles = dt_multi_role_get_editable_role_names();
-                                            $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
-                                            $upgrade_to_admin_disabled = !is_super_admin() && !dt_current_user_has_role( 'administrator' );
-                                            $admin_roles = [ 'administrator', 'dt_admin' ];
-
-                                            uasort( $expected_roles, function ( $item1, $item2 ){
-                                                return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
-                                            } );
+                                            $expected_roles = dt_list_roles();
                                             ?>
 
                                             <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
@@ -434,11 +425,10 @@ function fetch_user_locations( $user_id ): array {
                                             <ul id="user_roles_list" class="no-bullet">
                                                 <?php foreach ( $expected_roles as $role_key => $role_value ) : ?>
                                                     <li>
-                                                        <label style="color:<?php echo esc_html( $role_key === 'administrator' && $upgrade_to_admin_disabled ? 'grey' : 'inherit' ); ?>">
+                                                        <label style="color:<?php echo esc_html( $role_key === 'administrator' && $role_value['disabled'] ? 'grey' : 'inherit' ); ?>">
                                                             <input type="checkbox" name="dt_multi_role_user_roles[]"
                                                                    value="<?php echo esc_attr( $role_key ); ?>"
-                                                                <?php checked( in_array( $role_key, $user_roles ) ); ?>
-                                                                <?php disabled( $upgrade_to_admin_disabled && in_array( $role_key, $admin_roles, true ) ); ?> />
+                                                                <?php disabled( $role_value['disabled'] ); ?> />
                                                             <strong>
                                                                 <?php
                                                                 if ( isset( $role_value['label'] ) && !empty( $role_value['label'] ) ){
