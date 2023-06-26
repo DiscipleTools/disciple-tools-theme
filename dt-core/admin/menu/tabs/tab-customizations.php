@@ -228,6 +228,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <div id="post-type-buttons">
             <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a record type:', 'disciple_tools' ); ?></b></div>
+            <div class="latest-post-type-buttons">
         <?php
         $post_types = DT_Posts::get_post_types();
         foreach ( $post_types as $post_type ) :
@@ -239,6 +240,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             ?>
             <a href="<?php echo esc_url( admin_url() . $pill_link ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
         <?php endforeach; ?>
+            </div>
+            <p>
+                <a id="add_new_post_type" href="#" class="button"><?php esc_html_e( 'Add New Post Type', 'disciple_tools' ); ?></a>
+            </p>
         </div>
         <?php
     }

@@ -23,6 +23,13 @@ function makeRequest(type, url, data, base = "dt/v1/") {
 jQuery(document).ready(function($) {
 
     window.API = {};
+    window.API.create_new_post_type = (new_key, new_name_single, new_name_plural, new_description) => makeRequest("POST", `create-new-post-type`, {
+      key: new_key,
+      single: new_name_single,
+      plural: new_name_plural,
+      description: new_description
+    }, `dt-admin-settings/`);
+
     window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
         post_type: post_type,
         new_tile_name: new_tile_name,
@@ -296,6 +303,11 @@ jQuery(document).ready(function($) {
         showOverlayModal('add-new-tile');
     });
 
+    $('#add_new_post_type').on('click', function(event){
+      event.preventDefault();
+      showOverlayModal('add-new-post-type');
+    });
+
     $('.field-settings-table').on('click', '.add-new-field', function() {
         var tile_key = $(this).data('parent-tile-key');
         showOverlayModal('add-new-field', tile_key);
@@ -475,6 +487,9 @@ jQuery(document).ready(function($) {
     }
 
     function showOverlayModalContentBox(modalName, data=null) {
+        if ( modalName == 'add-new-post-type') {
+          loadAddPostTypeContentBox();
+        }
         if ( modalName == 'add-new-tile' ) {
             loadAddTileContentBox();
         }
@@ -513,6 +528,55 @@ jQuery(document).ready(function($) {
         $([document.documentElement, document.body]).animate({
             scrollTop: target_element.offset().top + offset
         }, 500);
+    }
+
+    // Add Post Type Modal
+    function loadAddPostTypeContentBox() {
+      let modal_html_content = `
+          <tr>
+              <th colspan="2">
+                  <h3 class="modal-box-title">Add New Post Type</h3>
+              </th>
+          </tr>
+          <tr>
+              <td>
+                  <label for="new_post_type_name_single"><b>Single Name</b></label>
+              </td>
+              <td>
+                  <input name="new_post_type_name_single" id="new_post_type_name_single" type="text" required>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <label for="new_post_type_key"><b>Key</b></label>
+              </td>
+              <td>
+                  <input name="new_post_type_key" id="new_post_type_key" type="text" required>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <label for="new_post_type_name_plural"><b>Plural Name</b></label>
+              </td>
+              <td>
+                  <input name="new_post_type_name_plural" id="new_post_type_name_plural" type="text" required>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <label for="new_post_type_description"><b>Description</b></label>
+              </td>
+              <td>
+                  <input name="new_post_type_description" id="new_post_type_description" type="text">
+              </td>
+          </tr>
+          <tr class="last-row">
+              <td colspan="2">
+                  <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                  <button class="button button-primary" type="submit" id="js-add-post-type">Create Post Type</button>
+              </td>
+          </tr>`;
+      $('#modal-overlay-content-table').html(modal_html_content);
     }
 
     // Add Tile Modal
@@ -1175,6 +1239,70 @@ jQuery(document).ready(function($) {
 
     $('#modal-overlay-form').on('submit', function(event){
         event.preventDefault();
+    });
+
+    // Process Add Post Type - Single Name Events
+    $('#modal-overlay-form').on('keyup', '#new_post_type_name_single', function (e) {
+
+      // Generate corresponding key.
+      let single_name = $('#new_post_type_name_single').val().trim();
+      let key = single_name.toLowerCase().replaceAll(/[!-\/:-@[-`{-~\s*]/ig, '_');
+      $('#new_post_type_key').val(key);
+
+      // Generate corresponding plural name.
+      $('#new_post_type_name_plural').val(single_name + 's');
+    });
+
+    // Process Add Post Type
+    $('#modal-overlay-form').on('click', '#js-add-post-type', function (e) {
+      let new_post_type_key = $('#new_post_type_key');
+      let new_post_type_name_single = $('#new_post_type_name_single');
+      let new_post_type_name_plural = $('#new_post_type_name_plural');
+      let new_post_type_description = $('#new_post_type_description');
+
+      // Reset any previous failed validation highlights.
+      $(new_post_type_name_single).css('border', '');
+      $(new_post_type_key).css('border', '');
+      $(new_post_type_name_plural).css('border', '');
+
+      // Validate initial field entries.
+      let key = $(new_post_type_key).val().trim();
+      let single_name = $(new_post_type_name_single).val().trim();
+      let plural_name = $(new_post_type_name_plural).val().trim();
+      let description = $(new_post_type_description).val().trim();
+
+      if(single_name === '') {
+        $(new_post_type_name_single).css('border', '2px solid #e14d43');
+        return false;
+
+      } else if (key === '') {
+        $(new_post_type_key).css('border', '2px solid #e14d43');
+        return false;
+
+      } else if(plural_name === '') {
+        $(new_post_type_name_plural).css('border', '2px solid #e14d43');
+        return false;
+
+      } else {
+
+        // Submit post type creation request.
+        API.create_new_post_type(key, single_name, plural_name, description).promise().then(function (data) {
+          if (data && data['success'] && data['post_type'] && data['post_type_label']) {
+
+            // Unselect all/any primary buttons.
+            let latest_post_type_buttons = $('.latest-post-type-buttons');
+            $(latest_post_type_buttons).find('.button').removeClass('button-primary');
+
+            // Generate new post type button.
+            let pill_link = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=' + data['post_type'] + '&tab=tiles';
+            let pill_link_html = `<a href="${pill_link}" class="button button-primary">${data['post_type_label']}</a>`;
+            $(latest_post_type_buttons).append(pill_link_html);
+
+            // Refresh page with new post type selected
+            window.location.href = pill_link;
+          }
+        });
+      }
     });
 
     // Process Add Tile

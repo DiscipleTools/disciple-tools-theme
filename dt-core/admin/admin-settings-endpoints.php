@@ -65,6 +65,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/create-new-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'create_new_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/create-new-tile', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'create_new_tile' ],
@@ -220,6 +228,43 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
         }
         return $output;
+    }
+
+    public static function create_new_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $response = [];
+        if ( isset( $params['key'], $params['single'], $params['plural'] ) ){
+            $key = $params['key'];
+            $single = $params['single'];
+            $plural = $params['plural'];
+
+            // Create new post type.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            if ( !isset( $custom_post_types[$key] ) ){
+                $custom_post_types[$key] = [
+                    'single_name' => $single,
+                    'plural_name' => $plural,
+                    'description' => $params['description'] ?? ''
+                ];
+
+                update_option( 'dt_custom_post_types', $custom_post_types );
+                $response = [
+                    'success' => true,
+                    'post_type' => $key,
+                    'post_type_label' => $plural
+                ];
+            } else {
+                $response = [
+                    'success' => false
+                ];
+            }
+        } else {
+            $response = [
+                'success' => false
+            ];
+        }
+
+        return $response;
     }
 
     public static function create_new_tile( WP_REST_Request $request ) {
