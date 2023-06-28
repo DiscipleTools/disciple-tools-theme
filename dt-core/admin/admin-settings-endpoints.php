@@ -18,6 +18,16 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public function __construct() {
         $this->namespace = $this->context;
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+
+        add_action( 'after_setup_theme', function (){
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+
+            foreach ( $custom_post_types as $post_type_key => $post_type ){
+                if ( class_exists( 'Disciple_Tools_Post_Type_Template' ) ){
+                    new Disciple_Tools_Post_Type_Template( $post_type_key, $post_type['single_name'] ?? $post_type_key, $post_type['plural_name'] ?? $post_type_key );
+                }
+            }
+        }, 100 );
     }
 
     /**
@@ -68,6 +78,22 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/create-new-post-type', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'create_new_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/update-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/delete-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'delete_post_type' ],
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
@@ -244,10 +270,18 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $custom_post_types[$key] = [
                     'single_name' => $single,
                     'plural_name' => $plural,
-                    'description' => $params['description'] ?? ''
+                    'hidden' => false
                 ];
 
                 update_option( 'dt_custom_post_types', $custom_post_types );
+
+                // Ensure admin is given all the permissions on new post type.
+                $admin = get_role( 'administrator' );
+                $admin->add_cap( 'dt_all_admin_' . $key );
+                $admin->add_cap( 'access_' . $key );
+                $admin->add_cap( 'create_' . $key );
+
+                // Return successful response.
                 $response = [
                     'success' => true,
                     'post_type' => $key,
@@ -265,6 +299,71 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         }
 
         return $response;
+    }
+
+    public static function update_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $updated = false;
+        if ( isset( $params['key'], $params['single'], $params['plural'], $params['displayed'] ) ){
+            $post_type = $params['key'];
+            $single = $params['single'];
+            $plural = $params['plural'];
+            $displayed = $params['displayed'];
+
+            // Fetch existing post type settings and associated updates.
+            $post_type_updates = get_option( 'dt_post_type_custom_updates', [] );
+
+            // Proceed with storing updates.
+            $post_type_updates[$post_type] = [
+                'label_singular' => $single,
+                'label_plural' => $plural,
+                'hidden' => ! $displayed
+            ];
+
+            update_option( 'dt_post_type_custom_updates', $post_type_updates );
+
+            $updated = true;
+        }
+
+        return [
+            'updated' => $updated
+        ];
+    }
+
+    public static function delete_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $deleted = false;
+        if ( isset( $params['key'] ) ){
+            $post_type = $params['key'];
+
+            // Only process custom post types.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            if ( isset( $custom_post_types[$post_type] ) ){
+
+                // Remove custom post type.
+                unset( $custom_post_types[$post_type] );
+                update_option( 'dt_custom_post_types', $custom_post_types );
+
+                // Remove custom post type updates.
+                $post_type_updates = get_option( 'dt_post_type_custom_updates', [] );
+                if ( isset( $post_type_updates[$post_type] ) ){
+                    unset( $post_type_updates[$post_type] );
+                    update_option( 'dt_post_type_custom_updates', $post_type_updates );
+                }
+
+                // Remove custom post type admin capabilities.
+                $admin = get_role( 'administrator' );
+                $admin->remove_cap( 'dt_all_admin_' . $post_type );
+                $admin->remove_cap( 'access_' . $post_type );
+                $admin->remove_cap( 'create_' . $post_type );
+
+                $deleted = true;
+            }
+        }
+
+        return [
+            'deleted' => $deleted
+        ];
     }
 
     public static function create_new_tile( WP_REST_Request $request ) {

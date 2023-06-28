@@ -10,12 +10,14 @@ class Disciple_Tools_Post_Type_Template {
     public $singular;
     public $plural;
     public $search_items;
+    public $hidden;
 
-    public function __construct( string $post_type, string $singular, string $plural ) {
+    public function __construct( string $post_type, string $singular, string $plural, bool $hidden = false ) {
         $this->post_type = $post_type;
         $this->singular = $singular;
         $this->plural = $plural;
         $this->search_items = sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $this->plural );
+        $this->hidden = $hidden;
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
@@ -86,7 +88,12 @@ class Disciple_Tools_Post_Type_Template {
         add_rewrite_rule( $this->post_type . '/([0-9]+)?$', 'index.php?post_type=' . $this->post_type . '&p=$matches[1]', 'top' );
     }
 
-
+    public function refresh_custom_post_type_settings(){
+        $post_type_updates = get_option( 'dt_post_type_custom_updates', [] );
+        $this->singular = $post_type_updates[$this->post_type]['label_singular'] ?? $this->singular;
+        $this->plural = $post_type_updates[$this->post_type]['label_plural'] ?? $this->plural;
+        $this->hidden = $post_type_updates[$this->post_type]['hidden'] ?? $this->hidden;
+    }
 
     /**
      * Run on activation.
@@ -113,11 +120,12 @@ class Disciple_Tools_Post_Type_Template {
 
     public function add_navigation_links( $tabs ) {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
+            $this->refresh_custom_post_type_settings();
             $tabs[$this->post_type] = [
                 'link' => site_url( "/$this->post_type/" ),
                 'label' => $this->plural,
                 'icon' => '',
-                'hidden' => false,
+                'hidden' => $this->hidden,
                 'submenu' => []
             ];
         }
@@ -126,11 +134,12 @@ class Disciple_Tools_Post_Type_Template {
 
     public function dt_nav_add_post_menu( $links ){
         if ( current_user_can( 'create_' . $this->post_type ) ){
+            $this->refresh_custom_post_type_settings();
             $links[] = [
                 'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
                 'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg',
-                'hidden' => false,
+                'hidden' => $this->hidden,
             ];
         }
         return $links;
@@ -227,6 +236,7 @@ class Disciple_Tools_Post_Type_Template {
                     $channels[str_replace( 'contact_', '', $field_key )] = $field_value;
                 }
             }
+            $this->refresh_custom_post_type_settings();
             $s = [
                 'fields' => $fields,
                 'channels' => $channels,
@@ -235,7 +245,8 @@ class Disciple_Tools_Post_Type_Template {
                 } ) ),
                 'label_singular' => $this->singular,
                 'label_plural' => $this->plural,
-                'post_type' => $this->post_type
+                'post_type' => $this->post_type,
+                'hidden' => $this->hidden
             ];
             $settings = dt_array_merge_recursive_distinct( $settings, $s );
 
@@ -295,6 +306,7 @@ class Disciple_Tools_Post_Type_Template {
      * Declare Default D.T post roles
      */
     public function dt_capabilities( $capabilities ){
+        $this->refresh_custom_post_type_settings();
         $capabilities['access_' . $this->post_type] = [
             'source' => $this->plural,
             'description' => 'The user can access the UI for ' . $this->plural,

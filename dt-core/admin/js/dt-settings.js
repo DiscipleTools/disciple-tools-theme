@@ -23,11 +23,21 @@ function makeRequest(type, url, data, base = "dt/v1/") {
 jQuery(document).ready(function($) {
 
     window.API = {};
-    window.API.create_new_post_type = (new_key, new_name_single, new_name_plural, new_description) => makeRequest("POST", `create-new-post-type`, {
+    window.API.create_new_post_type = (new_key, new_name_single, new_name_plural) => makeRequest("POST", `create-new-post-type`, {
       key: new_key,
       single: new_name_single,
-      plural: new_name_plural,
-      description: new_description
+      plural: new_name_plural
+    }, `dt-admin-settings/`);
+
+    window.API.update_post_type = (key, name_singular, name_plural, displayed) => makeRequest("POST", `update-post-type`, {
+      key: key,
+      single: name_singular,
+      plural: name_plural,
+      displayed: displayed
+    }, `dt-admin-settings/`);
+
+    window.API.delete_post_type = (key) => makeRequest("POST", `delete-post-type`, {
+      key: key
     }, `dt-admin-settings/`);
 
     window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
@@ -560,14 +570,6 @@ jQuery(document).ready(function($) {
               </td>
               <td>
                   <input name="new_post_type_name_plural" id="new_post_type_name_plural" type="text" required>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <label for="new_post_type_description"><b>Description</b></label>
-              </td>
-              <td>
-                  <input name="new_post_type_description" id="new_post_type_description" type="text">
               </td>
           </tr>
           <tr class="last-row">
@@ -1253,12 +1255,59 @@ jQuery(document).ready(function($) {
       $('#new_post_type_name_plural').val(single_name + 's');
     });
 
+    // Delete Post Type
+    $(document).on('click', '#post_type_settings_delete_but', function (e) {
+      e.preventDefault();
+
+      let post_type = $('#post_type_settings_key').html();
+      if (post_type && confirm(`Are you sure you want to delete ${post_type}?`)) {
+        API.delete_post_type(post_type).promise().then(function (data) {
+
+          // Reload page, reverting back to default contacts post type.
+          let contacts_link = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
+          window.location.href = contacts_link;
+        });
+      }
+    });
+
+    // Update Post Type
+    $(document).on('click', '#post_type_settings_update_but', function (e) {
+      e.preventDefault();
+
+      let post_type_settings_singular = $('#post_type_settings_singular');
+      let post_type_settings_plural = $('#post_type_settings_plural');
+
+      let post_type = $('#post_type_settings_key').html();
+      let singular = $(post_type_settings_singular).val();
+      let plural = $(post_type_settings_plural).val();
+      let displayed = $('#post_type_settings_frontend_displayed').prop('checked');
+
+      // Reset any previous failed validation highlights.
+      $(post_type_settings_singular).css('border', '');
+      $(post_type_settings_plural).css('border', '');
+
+      // Ensure we have valid entries.
+      if (singular.trim() === '') {
+        alert('Please ensure to enter a valid Singular value.');
+        $(post_type_settings_singular).css('border', '2px solid #e14d43');
+
+      } else if (plural.trim() === '') {
+        alert('Please ensure to enter a valid Plural value.');
+        $(post_type_settings_plural).css('border', '2px solid #e14d43');
+
+      } else {
+
+        API.update_post_type(post_type, singular, plural, displayed).promise().then(function (data) {
+          alert(plural + ' settings updated.');
+        });
+      }
+    });
+
     // Process Add Post Type
     $('#modal-overlay-form').on('click', '#js-add-post-type', function (e) {
       let new_post_type_key = $('#new_post_type_key');
       let new_post_type_name_single = $('#new_post_type_name_single');
       let new_post_type_name_plural = $('#new_post_type_name_plural');
-      let new_post_type_description = $('#new_post_type_description');
 
       // Reset any previous failed validation highlights.
       $(new_post_type_name_single).css('border', '');
@@ -1269,7 +1318,6 @@ jQuery(document).ready(function($) {
       let key = $(new_post_type_key).val().trim();
       let single_name = $(new_post_type_name_single).val().trim();
       let plural_name = $(new_post_type_name_plural).val().trim();
-      let description = $(new_post_type_description).val().trim();
 
       if(single_name === '') {
         $(new_post_type_name_single).css('border', '2px solid #e14d43');
@@ -1286,7 +1334,7 @@ jQuery(document).ready(function($) {
       } else {
 
         // Submit post type creation request.
-        API.create_new_post_type(key, single_name, plural_name, description).promise().then(function (data) {
+        API.create_new_post_type(key, single_name, plural_name).promise().then(function (data) {
           if (data && data['success'] && data['post_type'] && data['post_type_label']) {
 
             // Unselect all/any primary buttons.

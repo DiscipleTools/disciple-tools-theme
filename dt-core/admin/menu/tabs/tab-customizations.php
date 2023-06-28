@@ -44,7 +44,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
 
         // Check if field is not a default field and add a note in the array
-        foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
+        foreach ( $post_settings['fields'] ?? [] as $field_key => $field_settings ) {
             if ( !array_key_exists( $field_key, $all_non_custom_fields ) ) {
                 $post_settings['fields'][$field_key]['is_custom'] = true;
                 continue;
@@ -98,7 +98,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'date_modified' => __( 'Date Modified', 'disciple_tools' ),
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
-            'filter_all' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_settings['label_plural'] ),
+            'filter_all' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_settings['label_plural'] ?? $post_type ),
             'range_start' => __( 'start', 'disciple_tools' ),
             'range_end' => __( 'end', 'disciple_tools' ),
             'all' => __( 'All', 'disciple_tools' ),
@@ -170,10 +170,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public static function load_overlay_modal() {
-        $post_type = self::get_parameter( 'post_type' );
-        if ( !isset( $post_type ) || is_null( $post_type ) ) {
-            return;
-        }
         ?>
         <div class="dt-admin-modal-overlay hidden">
             <div class="dt-admin-modal-box hidden">
@@ -262,6 +258,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <h2 class="nav-tab-wrapper" style="padding: 0;">
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=tiles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'tiles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Tiles', 'disciple_tools' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=settings" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'settings' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Settings', 'disciple_tools' ); ?></a>
         </h2>
         <?php
     }
@@ -276,6 +273,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         switch ( $tab ) {
             case 'tiles':
                 self::tile_settings_box();
+                break;
+            case 'settings':
+                self::post_type_settings_box();
                 break;
             default:
                 self::tile_settings_box();
@@ -336,6 +336,75 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function get_post_fields( $post_type ){
         return DT_Posts::get_post_field_settings( $post_type, false, true );
+    }
+
+    private function post_type_settings_box(){
+        $request_post_type = self::get_parameter( 'post_type' );
+        if ( is_null( $request_post_type ) ){
+            return;
+        }
+
+        // Build array containing both custom and default post types.
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
+        $post_types_settings = [];
+        foreach ( $post_types as $post_type ){
+            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type, false );
+            if ( empty( $post_types_settings[$post_type] ) && isset( $custom_post_types[$post_type] ) ){
+                $post_types_settings[$post_type] = $custom_post_types[$post_type];
+            }
+        }
+        $this->display_post_type_settings( $request_post_type, $post_types_settings[$request_post_type] ?? [], isset( $custom_post_types[$request_post_type] ) );
+    }
+
+    private function display_post_type_settings( $post_type, $settings, $is_custom_post_type ){
+        if ( !empty( $settings ) ){
+            ?>
+            <table class="widefat striped" style="margin-top: 12px;">
+                <thead>
+                    <th colspan="2"><?php echo esc_html( 'Post Type Settings' ); ?></th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><label><b><?php echo esc_html( 'Key' ); ?></b></label></td>
+                        <td id="post_type_settings_key"><?php echo esc_html( $post_type ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><label><b><?php echo esc_html( 'Type' ); ?></b></label></td>
+                        <td><?php echo esc_html( $is_custom_post_type ? 'Custom' : 'Default' ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Singular' ); ?></b></label></td>
+                        <td><input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $settings['label_singular'] ?? $post_type ); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_type_settings_plural"><b><?php echo esc_html( 'Plural' ); ?></b></label></td>
+                        <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $settings['label_plural'] ?? $post_type ); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_type_settings_frontend_displayed"><b><?php echo esc_html( 'Display In Frontend?' ); ?></b></label></td>
+                        <td><input id="post_type_settings_frontend_displayed" name="post_type_settings_frontend_displayed" type="checkbox" <?php echo esc_attr( ( isset( $settings['hidden'] ) && $settings['hidden'] ) ? '' : 'checked' ); ?> /></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <span style="float: right;">
+                            <?php
+                            if ( $is_custom_post_type ){
+                                ?>
+                                <button type="submit" class="button button-primary" name="post_type_settings_delete_but" id="post_type_settings_delete_but" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( 'Delete' ); ?></button>
+                                <?php
+                            }
+                            ?>
+                            <button type="submit" class="button button-primary" name="post_type_settings_update_but" id="post_type_settings_update_but" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( 'Update' ); ?></button>
+                        </span>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <?php
+        }
     }
 
     private function tile_settings_box() {
@@ -410,7 +479,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         if ( isset( $tile_value['order'] ) ) {
                             $post_tiles['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_tiles['fields'] );
                         }
-                        foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                        foreach ( $post_tiles['fields'] ?? [] as $field_key => $field_settings ) : ?>
                             <?php if ( self::field_option_in_tile( $field_key, $tile_key ) && self::field_is_customizable( $post_type, $field_key ) ) : ?>
                                 <div class="sortable-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
