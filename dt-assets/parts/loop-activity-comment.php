@@ -40,8 +40,16 @@
                 ></textarea>
 
                 <?php if ( is_singular( 'contacts' ) ) :
-                     $post_type = get_post_type();
-                     $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
+                    $post_type = get_post_type();
+                    $sections = [
+                        [
+                            'key' => 'comment',
+                            'label' => __( 'Comments', 'disciple_tools' ),
+                            'selected_by_default' => true,
+                            'always_show' => true,
+                        ]
+                    ];
+                    $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
 
                         <div class="grid-x">
                             <div class="section-subheader cell shrink">
@@ -81,7 +89,21 @@
 
                     <?php
                     $post_type = get_post_type();
-                    $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );
+                    $sections = [
+                        [
+                            'key' => 'comment',
+                            'label' => __( 'Comments', 'disciple_tools' ),
+                            'selected_by_default' => true,
+                            'always_show' => true,
+                        ],
+                        [
+                            'key' => 'activity',
+                            'label' => __( 'Activity', 'disciple_tools' ),
+                            'selected_by_default' => true,
+                            'always_show' => true,
+                        ]
+                    ];
+                    $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
                     $section_keys = [];
                     foreach ( $sections as $section ) :
                         if ( isset( $section['key'] ) && isset( $section['label'] ) && !in_array( $section['key'], $section_keys ) ) :
@@ -150,8 +172,16 @@
         <div class="grid-x">
             <div class="cell small-12" id="edit_typeOfComment">
                 <?php if ( is_singular( 'contacts' ) ) :
-                     $post_type = get_post_type();
-                     $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
+                    $post_type = get_post_type();
+                    $sections = [
+                        [
+                            'key' => 'comment',
+                            'label' => __( 'Comments', 'disciple_tools' ),
+                            'selected_by_default' => true,
+                            'always_show' => true,
+                        ]
+                    ];
+                    $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
                         <div class="section-subheader">
                             <?php esc_html_e( 'Type of Comment', 'disciple_tools' ) ?>
                         </div>

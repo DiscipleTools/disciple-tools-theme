@@ -100,7 +100,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     return $updated_post;
                 }
                 //if update successful, comment and return.
-                $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
+                $update_comment = __( 'This record was automatically updated rather than creating a new record.', 'disciple_tools' );
                 if ( !$silent ){
                     if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
                         $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
@@ -1113,7 +1113,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $post = get_post( $search_string );
             if ( $post && self::can_view( $post_type, $post->ID ) ){
                 $compact[] = [
-                    'ID' => (string) $post->ID,
+                    'ID' => (int) $post->ID,
                     'name' => $post->post_title,
                     'user' => false,
                     'status' => null
@@ -1226,7 +1226,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 continue;
             }
             $compact[] = [
-                'ID' => $post->ID,
+                'ID' => (int) $post->ID,
                 'name' => wp_specialchars_decode( $post->post_title )
             ];
         }
@@ -1249,7 +1249,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     if ( !in_array( $post_id, $post_ids, true ) ) {
                         $post_ids[] = $post_id;
                         $compact[] = [
-                            'ID' => $post_id,
+                            'ID' => (int) $post_id,
                             'name' => $user['name'],
                             'user' => true
                         ];
@@ -1313,7 +1313,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 foreach ( $compact as $index => &$p ){
                     if ( $compact[ $index ]['ID'] === $post->ID ) {
                         $compact[ $index ] = [
-                            'ID'    => $post->ID,
+                            'ID'    => (int) $post->ID,
                             'name'  => $post->post_title,
                             'label' => $label
                             ];

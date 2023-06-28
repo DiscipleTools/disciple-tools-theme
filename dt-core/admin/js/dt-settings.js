@@ -160,42 +160,44 @@ jQuery(document).ready(function($) {
         return window.field_settings.post_type;
     }
 
-    $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable({
-        update: function(event,ui) {
-            if (!$(event)[0].originalEvent.target.dataset) {
-                return;
-            }
-            var post_type = get_post_type();
-            var moved_element = ui.item[0];
-            var tile_key = moved_element.dataset.parentTileKey || moved_element.id;
+    let sortable_options = {
+      update: function(event,ui) {
+        if (!$(event)[0].originalEvent.target.dataset) {
+          return;
+        }
+        var post_type = get_post_type();
+        var moved_element = ui.item[0];
+        var tile_key = moved_element.dataset.parentTileKey || moved_element.id;
 
-            // Check if moved element is a field option
-            if (moved_element.dataset['fieldOptionKey']) {
-                var field_key = moved_element.dataset['fieldKey'];
-                var sortable_field_options_ordering = [];
-                var field_options = $(`.field-name-content[data-field-key=${field_key}]`);
+        // Check if moved element is a field option
+        if (moved_element.dataset['fieldOptionKey']) {
+          var field_key = moved_element.dataset['fieldKey'];
+          var sortable_field_options_ordering = [];
+          var field_options = $(`.field-name-content[data-field-key=${field_key}]`);
 
-                $.each(field_options, function(option_index, option_element) {
-                    sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
-                });
-                API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
-                    var old_order = window.field_settings.post_type_settings.fields[field_key].default;
-                    field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
-                    window.field_settings.post_type_settings.fields[field_key].default = field_options_in_new_order;
+          $.each(field_options, function(option_index, option_element) {
+            sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
+          });
+          API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
+            var old_order = window['field_settings']['post_type_settings']['fields'][field_key]['default'];
+            field_options_in_new_order = order_field_option_keys_by_array(old_order, new_order);
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'] = field_options_in_new_order;
 
-                    tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
-                    show_preview_tile(tile_key);
-                });
-                return;
-            }
-            dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
-            API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
-                var new_order = result[post_type][tile_key]['order'];
-                window.field_settings.post_type_settings.tiles[tile_key].order = new_order;
-                show_preview_tile(tile_key);
-            });
-        },
-    });
+            tile_key = window.field_settings.post_type_settings.fields[field_key].tile;
+            show_preview_tile(tile_key);
+          });
+          return;
+        }
+        dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
+        API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
+          if ( result[post_type][tile_key] ) {
+            window.field_settings.post_type_settings.tiles[tile_key].order = result[post_type][tile_key]['order'];
+          }
+          show_preview_tile(tile_key);
+        });
+      },
+    }
+    $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options);
 
     function order_field_option_keys_by_array(old_order, new_order) {
         var sorted_object = Object.fromEntries(
@@ -206,9 +208,11 @@ jQuery(document).ready(function($) {
 
     function get_dt_custom_tiles_and_fields_ordered() {
         var dt_custom_tiles_and_fields_ordered = {};
-        var tiles = $('.field-settings-table').sortable('toArray');
+        let tiles = $('.field-settings-table-tile-name').map((index, tile)=>{
+          return tile.dataset.key;
+        })
+
         var tile_priority = 10;
-        tiles.pop(); // remove the 'add new tile' link
 
         $.each(tiles, function(tile_index, tile_key) {
             if (tile_key === '' ) {
@@ -216,7 +220,7 @@ jQuery(document).ready(function($) {
             }
             dt_custom_tiles_and_fields_ordered[tile_key] = {};
             var tile_label = $(`#tile-key-${tile_key}`).prop('innerText');
-            var fields = $(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
+            var fields = $(document).find(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             var field_order = [];
             $.each(fields, function(field_index, field_element) {
                 var field_key = field_element.id;
@@ -298,6 +302,9 @@ jQuery(document).ready(function($) {
     });
 
     function show_preview_tile(tile_key) {
+        if(tile_key == 'no_tile') {
+            return;
+        }
         var tile_html = `
             <div class="dt-tile-preview">
                 <div class="section-header">
@@ -314,124 +321,141 @@ jQuery(document).ready(function($) {
             }
         });
 
-        var field_order = window['field_settings']['post_type_settings']['tiles'][tile_key]['order'];
+        var field_order = window['field_settings']['post_type_tiles'][tile_key]['order'];
         if (field_order) {
             fields = field_order;
         }
 
+
         $.each(fields, function(field_index, field_key) {
             var field = window['field_settings']['post_type_settings']['fields'][field_key];
+            if( !field?.type ){
+              return;
+            }
 
-                var icon_html = '';
-                if ( field['icon'] ) {
-                    icon_html = `<img src="${field['icon']}" class="dt-icon lightgray"></img>`
-                }
+            var icon_html = '';
+            let icon = (field['icon'] && field['icon'] !== '') ? field['icon'] : field['font-icon'];
+            if (icon && (typeof icon !== 'undefined') && (icon !== 'undefined')) {
+              icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
+            }
 
+            tile_html += `
+                    <div class="section-subheader">
+                        ${icon_html}
+                        ${field['name']}
+                    </div>
+            `;
+
+
+            /*** TEXT - START ***/
+            if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
                 tile_html += `
-                        <div class="section-subheader">
-                            ${icon_html}
-                            ${field['name']}
-                        </div>
+                    <input type="text" class="text-input">
                 `;
-
-
-                /*** TEXT - START ***/
-                if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
-                    tile_html += `
-                        <input type="text" class="text-input">
-                    `;
-                }
-                /*** TEXT - END ***/
+            }
+            /*** TEXT - END ***/
 
 
 
-                /*** NUMBER - START ***/
-                if ( field['type'] === 'number' ) {
-                    tile_html += `
-                        <input type="number" class="text-input" value="1" min="" max=""></input>
-                    `;
-                }
-                /*** NUMBER - END ***/
-
-
-                /*** DATE - START ***/
-                if ( field['type'] === 'date' ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <input class="typeahead-input">
-                            <button class="typeahead-delete-button">x</button>
-                        </div>
-                    `;
-                }
-                /*** DATE - END ***/
-
-
-
-               /*** USER_SELECT - START ***/
-               if ( field['type'] === 'user_select' ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <span class="typeahead-cancel-button">×</span>
-                            <input class="typeahead-input" placeholder="Search Users">
-                            <button class="typeahead-button">
-                                <img src="${window.field_settings.template_dir}/dt-assets/images/search.svg">
-                            </button>
-                        </div>
+            /*** TEXTAREA - START ***/
+            if ( field['type'] === 'textarea' ) {
+                tile_html += `
+                    <textarea style="width: 100%;" class="textarea dt_textarea"></textarea>
                 `;
-               }
-               /*** USER_SELECT - END ***/
+            }
+            /*** TEXTAREA - END ***/
 
 
 
-               /*** CONNECTION - START ***/
-                if ( ['connection', 'tags'].indexOf(field['type'] ) > -1 ) {
-                    tile_html += `
-                        <div class="typeahead-container">
-                            <input class="typeahead-input" placeholder="Search ${field['name']}">
-                            <button class="typeahead-button">
-                                <img src="${window.field_settings.template_dir}/dt-assets/images/add-contact.svg">
-                            </button>
-                        </div>
-                    `;
-                }
-                /*** CONNECTION - END ***/
+            /*** NUMBER - START ***/
+            if ( field['type'] === 'number' ) {
+                tile_html += `
+                    <input type="number" class="text-input" value="1" min="" max=""></input>
+                `;
+            }
+            /*** NUMBER - END ***/
 
 
 
-                /*** MULTISELECT - START ***/
-                if ( field['type'] === 'multi_select' ) {
-                    tile_html += `<div class="button-group" style="display: inline-flex;">`;
-                        var multi_select_icon_html = '';
-                        $.each( field['default'], function(k,f) {
-                            if ( f['icon'] ) {
-                                multi_select_icon_html = `<img src="${f['icon']}" class="dt-icon">`;
-                            }
-                            tile_html += `
-                            <button>
-                                ${multi_select_icon_html}
-                                ${f['label']}
-                            </button>
-                            `;
-                        });
-                    tile_html += `</div>`;
-                }
-                /*** MULTISELECT - START ***/
+            /*** DATE - START ***/
+            if ( field['type'] === 'date' ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <input class="typeahead-input">
+                        <button class="typeahead-delete-button">x</button>
+                    </div>
+                `;
+            }
+            /*** DATE - END ***/
 
 
 
-                /*** KEY_SELECT - START ***/
-                if ( field['type'] === 'key_select' ) {
-                    var color_select = '';
-                    if ( field['custom_display'] ) {
-                        color_select = 'color-select';
-                    }
-                    tile_html += `<select class="select-field ${color_select}" style="width: 100%;">`;
+           /*** USER_SELECT - START ***/
+           if ( field['type'] === 'user_select' ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <span class="typeahead-cancel-button">×</span>
+                        <input class="typeahead-input" placeholder="Search Users">
+                        <button class="typeahead-button">
+                            <img src="${window.field_settings.template_dir}/dt-assets/images/search.svg">
+                        </button>
+                    </div>
+            `;
+           }
+           /*** USER_SELECT - END ***/
+
+
+
+           /*** CONNECTION - START ***/
+            if ( ['connection', 'tags'].indexOf(field['type'] ) > -1 ) {
+                tile_html += `
+                    <div class="typeahead-container">
+                        <input class="typeahead-input" placeholder="Search ${field['name']}">
+                        <button class="typeahead-button">
+                            <img src="${window.field_settings.template_dir}/dt-assets/images/add-contact.svg">
+                        </button>
+                    </div>
+                `;
+            }
+            /*** CONNECTION - END ***/
+
+
+
+            /*** MULTISELECT - START ***/
+            if ( field['type'] === 'multi_select' ) {
+                tile_html += `<div class="button-group" style="display: inline-flex;">`;
                     $.each( field['default'], function(k,f) {
-                        tile_html += `<option>${f['label']}</option>`;
+                        var multi_select_icon_html = '';
+                        let multi_icon = (f['icon'] && f['icon'] !== '') ? f['icon'] : f['font-icon'];
+                        if (multi_icon && (typeof multi_icon !== 'undefined') && (multi_icon !== 'undefined')) {
+                          multi_select_icon_html = '<span class="field-icon-wrapper">' + (multi_icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${multi_icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${multi_icon}" class="dt-icon lightgray">`) + '</span>';
+                        }
+                        tile_html += `
+                        <button>
+                            ${multi_select_icon_html}
+                            ${f['label']}
+                        </button>
+                        `;
                     });
-                    tile_html += `</select>`;
+                tile_html += `</div>`;
+            }
+            /*** MULTISELECT - START ***/
+
+
+
+            /*** KEY_SELECT - START ***/
+            if ( field['type'] === 'key_select' ) {
+                var color_select = '';
+                if ( field['custom_display'] ) {
+                    color_select = 'color-select';
                 }
-                /*** KEY_SELECT - END ***/
+                tile_html += `<select class="select-field ${color_select}" style="width: 100%;">`;
+                $.each( field['default'], function(k,f) {
+                    tile_html += `<option>${f['label']}</option>`;
+                });
+                tile_html += `</select>`;
+            }
+            /*** KEY_SELECT - END ***/
         });
         tile_html += `
                 </div>
@@ -515,9 +539,10 @@ jQuery(document).ready(function($) {
                 <input name="new_tile_description" id="new_tile_description" type="text">
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" type="submit" id="js-add-tile">Create Tile</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-add-tile">Create Tile</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -549,7 +574,7 @@ jQuery(document).ready(function($) {
 
             var delete_tile_html_content = '';
             if (window.field_settings.default_tiles.includes(tile_key) == false) {
-                delete_tile_html_content = `<a href="#" id="delete-text" data-tile-key="${tile_key}">Delete</a>`;
+                delete_tile_html_content = `<a id="delete-text" data-tile-key="${tile_key}">Delete Tile</a>`;
             }
 
             var modal_html_content = `
@@ -571,11 +596,13 @@ jQuery(document).ready(function($) {
                     <label for="edit-tile-label"><b>Label</b></label>
                 </td>
                 <td>
-                    <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
-                    <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
+                    <div class="input-group">
+                        <input name="edit-tile-label" id="edit-tile-label-${tile_key}" type="text" value="${data['label']}" required>
+                        <button class="button expand_translations" name="translate-label-button" data-translation-type="tile-label" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${translations_count})
+                        </button>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -583,12 +610,14 @@ jQuery(document).ready(function($) {
                     <label for="edit-tile-description"><b>Description</b></label>
                 </td>
                 <td>
-                <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
-                <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${description_translations_count})
-                </button>
-            </td>
+                    <div class="input-group">
+                        <input name="edit-tile-description" id="edit-tile-description-${tile_key}" type="text" value="${tile_description}">
+                        <button class="button expand_translations" name="translate-description-button" data-translation-type="tile-description" data-post-type="${post_type}" data-tile-key="${tile_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${description_translations_count})
+                        </button>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -598,18 +627,34 @@ jQuery(document).ready(function($) {
                     <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <button class="button" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
-                </td>
+            <tr class="last-row">
                 <td class="delete-text">
                     ${delete_tile_html_content}
+                </td>
+                <td>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-edit-tile" data-tile-key="${tile_key}">Save</button>
                 </td>
             </tr>`;
 
             $('#modal-overlay-content-table').html(modal_html_content);
         });
     }
+
+    function enableModalBackDiv(divId) {
+      $('.modal-back-div').fadeOut('fast');
+      $('#' + divId).fadeIn('fast');
+    }
+
+    $('.dt-admin-modal-box').on('click', '.change-icon-button', function (e) {
+      e.preventDefault();
+      enableModalBackDiv('modal-back-icon-picker');
+      flip_card();
+    });
+
+    $('.dt-admin-modal-icon-picker-box-close-button').on('click', function () {
+      unflip_card();
+    });
 
     // Delete Text Click
     $('#modal-overlay-form').on('click', '#delete-text', function(e) {
@@ -631,31 +676,34 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         API.delete_tile(post_type, tile_key).promise().then(function() {
-            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
-            var tile_submenu = $(`div.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`);
+            var tile_submenu = $(`div.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             closeModal();
             if (tile_submenu.is(':visible')) {
                 var tile_expand_icon = $(`.field-settings-table-tile-name[data-key="${tile_key}"]>span.expand-icon`);
                 tile_expand_icon.click();
             }
 
-            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no-tile-hidden"]');
+            var no_tile_menu = $('.tile-rundown-elements[data-parent-tile-key="no_tile"]');
             if (no_tile_menu.is(':hidden')) {
-                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no-tile-hidden"]>span.expand-icon');
+                var no_tile_expand_icon = $('.field-settings-table-tile-name[data-key="no_tile"] > span.expand-icon');
                 no_tile_expand_icon.click();
             }
 
             var deleted_tile_field_options =  $(`.tile-rundown-elements[data-parent-tile-key="${tile_key}"]`).children().not('.add-new-item');
             deleted_tile_field_options.each(function() {
                 $(this).removeClass('inset-shadow');
-                no_tile_menu.append($(this));
+                var no_tile_menu_last_submenu = $('.tile-rundown-elements[data-parent-tile-key="no_tile"] > .add-new-item');
+                no_tile_menu_last_submenu.before($(this));
+                $(this).attr('data-parent-tile-key', 'no_tile');
+                $(this).find('.field-name-content').attr('data-parent-tile-key', 'no_tile');
+                $(this).find('.field-settings-table-field-name').attr('data-parent-tile-key', 'no_tile');
                 $(this).find('.field-settings-table-field-name').addClass('menu-highlight');
             });
 
+            var tile_element = $(`.field-settings-table-tile-name[data-key="${tile_key}"]`);
             tile_element.css('background', '#e14d43');
             tile_element.fadeOut(500, function(){
                 tile_element.parent().remove();
-                tile_submenu.remove();
             });
         });
     });
@@ -670,7 +718,7 @@ jQuery(document).ready(function($) {
         post_type = get_post_type();
         all_post_types = window.field_settings.all_post_types;
         selected_post_type_label = all_post_types[post_type];
-        var tile_key_label = tile_key;
+        var tile_key_label = window.field_settings.post_type_tiles[tile_key].label || tile_key;
         if (!tile_key) {
             tile_key_label = `<i>This post type doesn't have any tiles</i>`;
         }
@@ -690,10 +738,18 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="tile_label"><b>New Field Name</b></label>
+                    <label for="new-field-name"><b>New Field Name</b></label>
                 </td>
                 <td>
-                    <input name="edit-tile-label" id="new-field-name-${tile_key}" type="text" value="" required>
+                    <input name="new-field-name" id="new-field-name" type="text" value="" required>
+                </td>
+                <td class="spinner-box">
+                    <span class="loading-spinner"></span>
+                </td>
+            </tr>
+            <tr id="field-exists-message" style="display:none;">
+                <td colspan="2" class="error-message">
+                    Field already exists
                 </td>
             </tr>
             <tr>
@@ -701,7 +757,7 @@ jQuery(document).ready(function($) {
                     <label for="tile_label"><b>Field Type</b></label>
                 </td>
                 <td>
-                    <select id="new-field-type-${tile_key}" name="new-field-type" required>
+                    <select id="new-field-type" name="new-field-type" required>
                         <option value="key_select">Dropdown</option>
                         <option value="multi_select">Multi Select</option>
                         <option value="tags">Tags</option>
@@ -752,12 +808,13 @@ jQuery(document).ready(function($) {
                     <label for="new_tile_name"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="new_field_private" id="new-field-private-${tile_key}" type="checkbox">
+                    <input name="new_field_private" id="new-field-private" type="checkbox">
                 </td>
             </tr>
-            <tr>
+            <tr class="last-row">
                 <td colspan="2">
-                    <button class="button" type="submit" id="js-add-field" data-tile-key="${tile_key}">Save</button>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-add-field" data-tile-key="${tile_key}">Save</button>
                 </td>
             </tr>
         `;
@@ -788,9 +845,11 @@ jQuery(document).ready(function($) {
         }
 
         var field_icon_image_html = '';
-        if ( field_settings['icon'] ) {
-            field_icon_image_html = `<img src="${field_settings['icon']}" class="field-icon">`;
-        }
+        let icon = (field_settings['icon'] && field_settings['icon'] !== '') ? field_settings['icon'] : field_settings['font-icon'];
+        if ( icon && (typeof icon !== 'undefined') && (icon !== 'undefined') ) {
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+
+        } else icon = '';
 
         var private_field = '';
         if ( field_settings['private'] ) {
@@ -834,11 +893,13 @@ jQuery(document).ready(function($) {
                         <label for="edit-field-custom-name"><b>Name</b></label>
                     </td>
                     <td>
-                        <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
-                        <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                            (${translations_count})
-                        </button>
+                        <div class="input-group">
+                            <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                            <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                                <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                                (${translations_count})
+                            </button>
+                        </div>
                     </td>
                 </tr>`;
 
@@ -857,12 +918,14 @@ jQuery(document).ready(function($) {
                             <label for="edit-field-custom-name"><b>Custom Name</b></label>
                         </td>
                         <td>
-                            <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
-                            <button class="button small" id="remove-custom-name" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Remove Custom Name</button>
-                            <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                                <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                                (${translations_count})
-                            </button>
+                            <div class="input-group">
+                                <input name="edit-field-custom-name" id="edit-field-custom-name" type="text" value="${field_settings['name']}">
+                                <button class="button small" id="remove-custom-name" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">Remove Custom Name</button>
+                                <button class="button small expand_translations" name="translate-label-button" data-translation-type="field-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                                    (${translations_count})
+                                </button>
+                              </div>
                         </td>
                     </tr>`;
             }
@@ -873,11 +936,13 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-description"><b>Description</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
-                    <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${description_translations_count})
-                    </button>
+                    <div class="input-group">
+                        <input name="edit-field-description" id="edit-field-description" type="text" value="${field_settings['description']}">
+                        <button class="button small expand_translations" name="translate-description-button" data-translation-type="field-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}">
+                            <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                            (${description_translations_count})
+                        </button>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -911,13 +976,18 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-icon"><b>Icon</b></label>
                 </td>
                 <td>
-                    ${field_icon_image_html}
-                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_settings['icon']}">
+                    <div class="input-group">
+                        ${field_icon_image_html}
+                        <input name="edit-field-icon" id="edit-field-icon" type="text" value="${icon}" style="vertical-align: middle;">
+                        <button class="button change-icon-button" style="vertical-align: middle;"
+                                data-icon-input="edit-field-icon">Change Icon</button>
+                    </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="last-row">
                 <td colspan="2">
-                    <button class="button" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-edit-field" data-tile-key="${tile_key}" data-field-key="${field_key}">Save</button>
                 </td>
             </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -954,12 +1024,17 @@ jQuery(document).ready(function($) {
                 <label for="edit-field-icon"><b>Icon</b></label>
             </td>
             <td>
-                <input name="edit-field-icon" id="edit-field-icon" type="text">
+              <div class="input-group">
+                  <input name="edit-field-icon" id="edit-field-icon" type="text" style="vertical-align: middle;">
+                  <button class="button change-icon-button" style="vertical-align: middle;"
+                          data-icon-input="edit-field-icon">Change Icon</button>
+              </div>
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" style="margin-top: 12px;" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-add-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}">Add</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -994,13 +1069,13 @@ jQuery(document).ready(function($) {
             description_translations_count = Object.values(field_settings['default'][field_option_key]['description_translations']).filter(function(t) {return t;}).length;
         }
 
-        var field_icon_url = '';
+        var field_icon_url = (field_settings['default'][field_option_key]['font-icon']) ? field_settings['default'][field_option_key]['font-icon']:field_settings['default'][field_option_key]['icon'];
         var field_icon_image_html = '';
+        if( field_icon_url && (typeof field_icon_url !== 'undefined') && (field_icon_url !== 'undefined') ){
+          field_icon_image_html = '<span class="field-icon-wrapper">' + (field_icon_url.trim().toLowerCase().startsWith('mdi') ? `<i class="${field_icon_url} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${field_icon_url}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
 
-        if ( field_settings['default'][field_option_key]['icon'] ) {
-            field_icon_url = field_settings['default'][field_option_key]['icon'];
-            field_icon_image_html = `<img src="${field_icon_url}" class="field-icon">`;
-        }
+        } else field_icon_url = '';
+
         var modal_html_content = `
         <tr>
             <th colspan="2">
@@ -1022,11 +1097,13 @@ jQuery(document).ready(function($) {
                 <label><b>Name</b></label>
             </td>
             <td>
-                <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
-                <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${translations_count})
-                </button>
+                <div class="input-group">
+                  <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
+                  <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                      <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                      (${translations_count})
+                  </button>
+                </div>
             </td>
         </tr>`;
 
@@ -1045,12 +1122,14 @@ jQuery(document).ready(function($) {
                     <label><b>Custom Label</b></label>
                 </td>
                 <td>
-                    <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
-                    <button class="button small" id="remove-custom-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Remove Custom Label</button>
-                    <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                        (${translations_count})
-                    </button>
+                    <div class="input-group">
+                      <input name="edit-option-label" id="new-option-name" type="text" value="${field_option['label']}" required>
+                      <button class="button small" id="remove-custom-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Remove Custom Label</button>
+                      <button class="button expand_translations" name="translate-label-button" data-translation-type="field-option-label" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                          <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                          (${translations_count})
+                      </button>
+                    </div>
                 </td>
             </tr>`;
         }
@@ -1062,11 +1141,13 @@ jQuery(document).ready(function($) {
                 <label><b>Description</b></label>
             </td>
             <td>
-                <input name="edit-option-description" id="new-option-description" type="text" value="${option_description}">
-                <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
-                    <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
-                    (${description_translations_count})
-                </button>
+                <div class="input-group">
+                    <input name="edit-option-description" id="new-option-description" type="text" value="${option_description}">
+                    <button class="button expand_translations" name="translate-description-button" data-translation-type="field-option-description" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">
+                        <img style="height: 15px; vertical-align: middle" src="${window.field_settings.template_dir}/dt-assets/images/languages.svg">
+                        (${description_translations_count})
+                    </button>
+                </div>
             </td>
         </tr>
         <tr>
@@ -1074,13 +1155,18 @@ jQuery(document).ready(function($) {
                 <label for="edit-field-icon"><b>Icon</b></label>
             </td>
             <td>
-                ${field_icon_image_html}
-                <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}">
+                <div class="input-group">
+                    ${field_icon_image_html}
+                    <input name="edit-field-icon" id="edit-field-icon" type="text" value="${field_icon_url}" style="vertical-align: middle;">
+                    <button class="button change-icon-button" style="vertical-align: middle;"
+                            data-icon-input="edit-field-icon">Change Icon</button>
+                  </div>
             </td>
         </tr>
-        <tr>
+        <tr class="last-row">
             <td colspan="2">
-                <button class="button" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
+                <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                <button class="button button-primary" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
             </td>
         </tr>`;
         $('#modal-overlay-content-table').html(modal_html_content);
@@ -1094,16 +1180,19 @@ jQuery(document).ready(function($) {
     // Process Add Tile
     $('#modal-overlay-form').on('click', '#js-add-tile', function(e) {
         var post_type = get_post_type();
-        var new_tile_name = $('#new_tile_name').val();
-        var new_tile_description = $('#new_tile_description').val();
+        var new_tile_name = $('#new_tile_name').val().trim();
+        if (new_tile_name === '') {
+            $('#new_tile_name').css('border', '2px solid #e14d43');
+            return false;
+        }
+        var new_tile_description = $('#new_tile_description').val().trim();
 
         API.create_new_tile(post_type, new_tile_name, new_tile_description).promise().then(function(data) {
             var tile_key = data['key'];
             var tile_label = data['label'];
             window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
-            window.field_settings.custom_tiles = tile_key;
             closeModal();
-            $('#add-new-tile-link').parent().before(`
+            $('#no_tile').before(`
             <div class="sortable-tile" id="${tile_key}">
                 <div class="field-settings-table-tile-name expandable menu-highlight" data-modal="edit-tile" data-key="${tile_key}">
                     <span class="sortable ui-icon ui-icon-arrow-4"></span>
@@ -1116,17 +1205,17 @@ jQuery(document).ready(function($) {
                     </span>
                     <span class="edit-icon"></span>
                 </div>
-                <div class="hidden">
-                    <div class="field-settings-table-field-name">
-                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
-                        <span class="field-name-content add-new-field" data-parent-tile-key="${tile_key}">
+                <div class="tile-rundown-elements" data-parent-tile-key="${tile_key}">
+                    <div class="field-settings-table-field-name expandable add-new-item">
+                        <span class="add-new-field" data-parent-tile-key="${tile_key}">
                             <a>add new field</a>
                         </span>
                     </div>
                 </div>
             </div>
             `);
-            $(`.field-settings-table-tile-name`).eq(-2).attr('style', 'border-bottom: 0;');
+            $('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options);
+            show_preview_tile(tile_key);
         });
     });
 
@@ -1134,9 +1223,15 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-edit-tile', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
-        var tile_label = $(`#edit-tile-label-${tile_key}`).val();
-        var tile_description = $(`#edit-tile-description-${tile_key}`).val();
+        var tile_label = $(`#edit-tile-label-${tile_key}`).val().trim();
+        var tile_description = $(`#edit-tile-description-${tile_key}`).val().trim();
         var hide_tile = $(`#hide-tile-${tile_key}`).is(':checked');
+
+        if (tile_label === '') {
+            $(`#edit-tile-label-${tile_key}`).css('border', '2px solid #e14d43');
+            return false;
+        }
+
         API.edit_tile(post_type, tile_key, tile_label, tile_description, hide_tile).promise().then(function(response) {
             $(`#tile-key-${tile_key}`).parent().removeClass('menu-highlight');
             window['field_settings']['post_type_tiles'][tile_key] = response;
@@ -1151,12 +1246,17 @@ jQuery(document).ready(function($) {
     $('#modal-overlay-form').on('click', '#js-add-field', function(e) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
-        var new_field_name = $(`#new-field-name-${tile_key}`).val();
-        var new_field_type = $(`#new-field-type-${tile_key}`).val();
-        var new_field_private = $(`#new-field-private-${tile_key}`).is(':checked');
-        var connection_target = $('#connection-field-target').val();
+        var new_field_name = $(`#new-field-name`).val().trim();
+        var new_field_type = $(`#new-field-type`).val().trim();
+        var new_field_private = $(`#new-field-private`).is(':checked');
+        var connection_target = $('#connection-field-target').val().trim();
         var multidirectional = $('#multidirectional_checkbox').is(':checked');
-        var other_field_name = $('#other_field_name').val();
+        var other_field_name = $('#other_field_name').val().trim();
+
+        if (new_field_name === '') {
+            $('#new-field-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.new_field(post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(response) {
             var field_key = response['key'];
@@ -1177,8 +1277,8 @@ jQuery(document).ready(function($) {
             `;
 
             var new_field_expandable_html = `
-            <div class="sortable-field" id="${field_key}" data-parent-tile-key="${tile_key}">
-                <div class="field-settings-table-field-name expandable submenu-highlight" id="${field_key}" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
+            <div class="sortable-field" data-parent-tile-key="${tile_key}" data-key="${field_key}">
+                <div class="field-settings-table-field-name expandable submenu-highlight" data-parent-tile-key="${tile_key}" data-key="${field_key}" data-modal="edit-field">
                    <span class="sortable ui-icon ui-icon-arrow-4"></span>
                     <span class="expand-icon">+</span>
                     <span class="field-name-content" data-parent-tile="${tile_key}" data-key="${field_key}">
@@ -1193,7 +1293,7 @@ jQuery(document).ready(function($) {
                 <div class="field-settings-table-child-toggle">
                     <div class="field-settings-table-field-option">
                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
-                        <span class="field-name-content"><i>default blank</i></span>
+                        <span class="field-name-content">default blank</span>
                     </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
                         <span class="sortable ui-icon ui-icon-arrow-4"></span>
@@ -1214,6 +1314,7 @@ jQuery(document).ready(function($) {
                 $('.add-new-field').parent().before(new_field_html);
             }
             closeModal();
+            $(document).find('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options)
         });
     });
 
@@ -1222,29 +1323,30 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
-        var custom_name = $('#edit-field-custom-name').val();
+        var custom_name = $('#edit-field-custom-name').val().trim();
         var field_private = $('#edit-field-private').is(':checked');
-        var tile_select = $('#tile_select').val();
-        var field_description = $('#edit-field-description').val();
-        var field_icon = $('#edit-field-icon').val();
+        var tile_select = $('#tile_select').val().trim();
+        var field_description = $('#edit-field-description').val().trim();
+        var field_icon = $('#edit-field-icon').val().trim();
+
+        if (custom_name === '') {
+            $('#edit-field-custom-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
-            window.field_settings.post_type_settings.fields[field_key] = result;
+            $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
-            var edited_field_menu_element = $('.field-settings-table-field-name').filter(function() {
-                return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
-            });
+            var edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
 
-            var edited_field_submenu_element = $('.field-settings-table-child-toggle').filter(function(){
-                return $(this).data('parent-tile-key') == tile_key && $(this).data('key') == field_key;
-            });
+            var edited_field_submenu_element = edited_field_menu_element.find('.field-settings-table-child-toggle')
+            var edited_field_menu_name_element = edited_field_menu_element.find('.field-settings-table-field-name');
 
-            var edited_field_menu_name_element = edited_field_menu_element.children('.field-name-content');
-            edited_field_menu_element.removeClass('menu-highlight');
+            edited_field_menu_name_element.removeClass('submenu-highlight').removeClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
 
             if ( custom_name != '' ) {
-                edited_field_menu_name_element[0].innerText = custom_name;
+              $(`.sortable-field[data-key=${field_key}] .field-settings-table-field-name .field-name-content`).html(custom_name);
             }
 
             // Check if rundown element and sub element need to be moved to another tile
@@ -1257,7 +1359,6 @@ jQuery(document).ready(function($) {
                 }
 
                 target_tile_submenu.prepend(edited_field_menu_element);
-                edited_field_menu_element.after(edited_field_submenu_element);
 
                 scrollTo(target_tile_menu, -32);
 
@@ -1267,8 +1368,9 @@ jQuery(document).ready(function($) {
             }
             show_preview_tile(tile_key);
             closeModal();
-            edited_field_menu_element.addClass('menu-highlight');
+            edited_field_menu_name_element.addClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').addClass('submenu-highlight');
+            $(document).find('.field-settings-table, .tile-rundown-elements, .field-settings-table-child-toggle').sortable(sortable_options)
         });
         return;
     });
@@ -1278,16 +1380,21 @@ jQuery(document).ready(function($) {
         var post_type = get_post_type();
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
-        var field_option_name = $('.new-field-option-name').val();
-        var field_option_description = $('.new-field-option-description').val();
-        var field_option_icon = $('#edit-field-icon').val();
+        var field_option_name = $('.new-field-option-name').val().trim();
+        var field_option_description = $('.new-field-option-description').val().trim();
+        var field_option_icon = $('#edit-field-icon').val().trim();
+
+        if (field_option_name === '') {
+            $('.new-field-option-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
-            window['field_settings']['post_type_settings']['fields'][field_key]['default'].push( new_field_option_key = {
+            window['field_settings']['post_type_settings']['fields'][field_key]['default'][new_field_option_key] = {
                 label:field_option_name,
                 description:field_option_description,
                 icon:field_option_icon,
-            });
+            };
 
             var new_field_option_html = `
             <div class="field-settings-table-field-option">
@@ -1312,9 +1419,14 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
         var field_option_key = $(this).data('field-option-key');
-        var new_field_option_label = $('#new-option-name').val();
-        var new_field_option_description = $('#new-option-description').val();
-        var field_option_icon = $('#edit-field-icon').val();
+        var new_field_option_label = $('#new-option-name').val().trim();
+        var new_field_option_description = $('#new-option-description').val().trim();
+        var field_option_icon = $('#edit-field-icon').val().trim();
+
+        if (new_field_option_label === '') {
+            $('#new-option-name').css('border', '2px solid #e14d43');
+            return false;
+        }
 
         API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function(result) {
             window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = result;
@@ -1477,6 +1589,7 @@ jQuery(document).ready(function($) {
             <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
         </div>`;
 
+        enableModalBackDiv('modal-back-translations');
         $('#modal-translations-overlay-form').html(translations_html);
         flip_card();
 
@@ -1560,6 +1673,9 @@ jQuery(document).ready(function($) {
     $('.dt-admin-modal-box-close-button').on('click', function() {
         closeModal();
     });
+    $(document).on( 'click', '.dt-admin-modal-box-close', function() {
+      closeModal();
+    });
 
     $('.dt-admin-modal-overlay').on('click', function(e) {
         if (e.target == this) {
@@ -1604,13 +1720,34 @@ jQuery(document).ready(function($) {
         }
     });
 
+    $('.dt-admin-modal-box').on('input', '#new-field-name', function() {
+        $('.loading-spinner').addClass('active');
+        var field_name = $(this).val();
+        if ( field_name.length == 0 ) {
+            $('#field-exists-message').hide();
+            $('#js-add-field').prop('disabled', false);
+            $('.loading-spinner').removeClass('active');
+            return;
+        }
+        var field_key = field_name.toLowerCase().replace(' ', '_');
+
+        if (window.field_settings.post_type_settings.fields[field_key]) {
+            $('#field-exists-message').show();
+            $('#js-add-field').prop('disabled', true);
+        } else {
+            $('#field-exists-message').hide();
+            $('#js-add-field').prop('disabled', false);
+        }
+        $('.loading-spinner').removeClass('active');
+    });
+
     $.typeahead({
         input: '.js-typeahead-settings',
         order: "desc",
         cancelButton: false,
         dynamic: false,
         emptyTemplate: '<em style="padding-left:12px;">No results for "{{query}}"</em>',
-        template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&post_tile_key={{post_tile}}#{{post_setting}}">{{label}}</a>',
+        template: '<a href="' + window.location.origin + window.location.pathname + '?page=dt_customizations&post_type={{post_type}}&tab=tiles&tile={{post_tile}}#{{post_setting}}">{{label}}</a>',
         correlativeTemplate: true,
         source: {
             ajax: {

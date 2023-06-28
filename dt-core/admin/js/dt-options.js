@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
-  $('.expand_translations').click(function () {
-    event.preventDefault();
-    display_translation_dialog($(this).siblings(), $(this).data('form_name'));
+  $('.expand_translations').click(function (e) {
+    e.preventDefault();
+    display_translation_dialog($(this).siblings(), $(this).data('form_name'), $(this).data('source'));
   });
 
   $('.change-icon-button').click(function (e) {
@@ -13,6 +13,154 @@ jQuery(document).ready(function ($) {
 
     // Display icon selector dialog
     display_icon_selector_dialog(parent_form, icon_input);
+  });
+
+  // Support DT customization icon picker requests.
+  $('.dt-admin-modal-box').on('click', '.change-icon-button', function (e) {
+    let icon_input = $("input[name='" + $(e.currentTarget).data('icon-input') + "']");
+    let dialog = $('#dt_icon_selector_dialog');
+
+    if (dialog) {
+
+      dialog.dialog({
+        modal: false,
+        autoOpen: false,
+        hide: 0,
+        show: 0,
+        height: 'auto',
+        width: 'auto',
+        resizable: false,
+        title: 'Icon Selector Dialog',
+        buttons: [
+          {
+            text: 'Cancel',
+            icon: 'ui-icon-close',
+            click: function () {
+              $(this).dialog('close');
+            }
+          },
+          {
+            text: 'Save',
+            icon: 'ui-icon-copy',
+            click: function () {
+            }
+          },
+          {
+            text: 'Upload Custom Icon',
+            icon: 'ui-icon-circle-zoomout',
+            click: function () {
+            }
+          }
+        ],
+        open: function (event, ui) {
+          let ui_dialog = $(document).find('.ui-dialog')[0];
+
+          // Fetch and set font icon picker dialog contents.
+          if (ui_dialog) {
+
+            let cloned = $(ui_dialog).clone();
+            let html = `
+              <table>
+                <tbody>
+                    <tr>
+                        <td>
+                        ${$(cloned).find('.ui-dialog-titlebar').html()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <br>
+                        ${$(cloned).find('.ui-dialog-content').html()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <br>
+                        ${$(cloned).find('.ui-dialog-buttonpane').html()}
+                        </td>
+                    </tr>
+                </tbody>
+              </table>
+            `;
+
+            // Set some initial defaults to aid downstream processing.
+            let content = $('.dt-admin-modal-icon-picker-box-content');
+            content.html(html);
+            content.find('button.ui-dialog-titlebar-close').hide();
+            content.find('span.ui-dialog-title').css('font-weight', 'bold');
+            content.find('button.ui-button').data('icon-input', icon_input.attr('name'));
+
+          }
+
+          // Force an immediate close, to draw attention to flipped content!
+          $(this).dialog('close');
+
+          // Display some initial icons
+          execute_icon_selection_filter_query(false);
+        },
+        close: function (event, ui) {
+        }
+      });
+
+      // Insert selection area div, within dialog button footer
+      let ui_dialog_buttonset = $('.ui-dialog-buttonset');
+      ui_dialog_buttonset.css('margin', '1.5em');
+      ui_dialog_buttonset.prepend($('<span>')
+        .attr('id', 'dialog_icon_selector_icon_selection_div')
+        .css('display', 'inline-block')
+        .css('vertical-align', 'middle')
+        .css('padding', '0')
+        .css('margin-right', '175px')
+      );
+
+      // Display updated dialog
+      dialog.dialog('open');
+
+    }
+  });
+
+  $('.dt-admin-modal-box').on('click', '.ui-button', function (e) {
+
+    // Determine action to be taken.
+    let button = $(e.currentTarget);
+    let icon_input = $("input[name='" + $(button).data('icon-input') + "']");
+    let close_button = button.find('span.ui-icon-close');
+    let save_button = button.find('span.ui-icon-copy');
+    let upload_button = button.find('span.ui-icon-circle-zoomout');
+
+    if (close_button && close_button.length > 0) {
+      $('.dt-admin-modal-icon-picker-box-close-button').click();
+
+    } else if (save_button && save_button.length > 0) {
+      handle_icon_save(null, null, icon_input, function (source) {
+
+        // Refresh icon image accordingly, to capture any changes.
+        let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
+        if (icon_img_wrapper) {
+          let icon = $(icon_input).val();
+          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
+        }
+
+        $('.dt-admin-modal-icon-picker-box-close-button').click();
+
+      });
+
+    } else if (upload_button && upload_button.length > 0) {
+      handle_icon_upload(null, null, icon_input, function (source) {
+
+        // Refresh icon image accordingly, to capture any changes.
+        let icon_img_wrapper = $(icon_input).parent().find('.field-icon-wrapper');
+        if (icon_img_wrapper) {
+          let icon = $(icon_input).val();
+          $(icon_img_wrapper).html((icon && icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>`:`<img src="${icon}" class="field-icon" style="vertical-align: middle;">`));
+        }
+
+        $('.dt-admin-modal-icon-picker-box-close-button').click();
+
+      });
+
+    }
+
   });
 
   /**
@@ -42,12 +190,12 @@ jQuery(document).ready(function ($) {
    * Translation modal dialog
    */
 
-  function display_translation_dialog(container, form_name) {
+  function display_translation_dialog(container, form_name, source = '') {
     let dialog = $('#dt_translation_dialog');
     if (container && form_name && dialog) {
 
       // Update dialog div
-      $(dialog).empty().append($(container).find('table').clone());
+      $(dialog).empty().append($($(container).find('table')[0]).clone());
 
       // Refresh dialog config
       dialog.dialog({
@@ -68,8 +216,12 @@ jQuery(document).ready(function ($) {
             // Close dialog
             $(this).dialog('close');
 
-            // Finally, auto save changes
-            $('form[name="' + form_name + '"]').submit();
+            // Finally, auto save changes, accordingly, based on source.
+            if (window.lodash.includes(['fields'], source)) {
+              handle_custom_field_save_request(null, $('.dt-custom-fields-save-button')[0], true);
+            } else {
+              $('form[name="' + form_name + '"]').submit();
+            }
 
           }
         }
@@ -87,7 +239,8 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog
    */
 
-  function display_icon_selector_dialog(parent_form, icon_input) {
+  function display_icon_selector_dialog(parent_form, icon_input, callback = function (source) {
+  }) {
     let dialog = $('#dt_icon_selector_dialog');
     if (dialog) {
 
@@ -107,20 +260,21 @@ jQuery(document).ready(function ($) {
             icon: 'ui-icon-close',
             click: function () {
               $(this).dialog('close');
+              callback('cancel');
             }
           },
           {
             text: 'Save',
             icon: 'ui-icon-copy',
             click: function () {
-              handle_icon_save(this, parent_form, icon_input);
+              handle_icon_save(this, parent_form, icon_input, callback);
             }
           },
           {
             text: 'Upload Custom Icon',
             icon: 'ui-icon-circle-zoomout',
             click: function () {
-              handle_icon_upload(this, parent_form, icon_input);
+              handle_icon_upload(this, parent_form, icon_input, callback);
             }
           }
         ],
@@ -128,6 +282,9 @@ jQuery(document).ready(function ($) {
 
           // Display some initial icons
           execute_icon_selection_filter_query();
+        },
+        close: function (event, ui) {
+          callback('dialogclose');
         }
       });
 
@@ -189,7 +346,7 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Execute Filtering Request
    */
 
-  function execute_icon_selection_filter_query() {
+  function execute_icon_selection_filter_query(enable_tooltips = true) {
 
     // Always default to a somewhat wildcard search if input text is blank
     let query = $('#dialog_icon_selector_filter_input').val().trim();
@@ -231,12 +388,14 @@ jQuery(document).ready(function ($) {
           }
         });
 
-        // Activate icon tooltips
-        $('#dialog_icon_selector_icons_table > tbody').find('.mdi').each(function (idx, icon) {
-          $(icon).tooltip({
-            show: {effect: 'fade', duration: 100}
+        // If requested, activate icon tooltips
+        if (enable_tooltips) {
+          $('#dialog_icon_selector_icons_table > tbody').find('.mdi').each(function (idx, icon) {
+            $(icon).tooltip({
+              show: {effect: 'fade', duration: 100}
+            });
           });
-        });
+        }
 
         $('#dialog_icon_selector_icons_search_spinner').removeClass('active').fadeOut('fast', function () {
 
@@ -309,7 +468,8 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Handle Icon Save
    */
 
-  function handle_icon_save(dialog, parent_form, icon_input) {
+  function handle_icon_save(dialog, parent_form, icon_input, callback = function (source) {
+  }) {
 
     // Determine if there is a valid selection
     let selected_icon = $('#dialog_icon_selector_icon_selection_div').find('.dialog-icon-selector-icon-selected');
@@ -318,11 +478,18 @@ jQuery(document).ready(function ($) {
       // Update form icon class input
       icon_input.val('mdi ' + $(selected_icon).data('icon_class'));
 
-      // Close dialog
-      $(dialog).dialog('close');
+      // If present, close dialog
+      if (dialog) {
+        $(dialog).dialog('close');
+      }
 
-      // Auto-submit so as to refresh changes
-      parent_form.submit();
+      // If present, auto-submit; to refresh changes
+      if (parent_form) {
+        parent_form.submit();
+      }
+
+      // Execute callback with relevant source flag.
+      callback('save');
     }
   }
 
@@ -330,7 +497,8 @@ jQuery(document).ready(function ($) {
    * Icon selector modal dialog - Handle Icon Uploads
    */
 
-  function handle_icon_upload(dialog, parent_form, icon_input) {
+  function handle_icon_upload(dialog, parent_form, icon_input, callback = function (source) {
+  }) {
 
     // Build media uploader modal
     let mediaFrame = wp.media({
@@ -377,11 +545,18 @@ jQuery(document).ready(function ($) {
       // Update form icon link
       icon_input.val(selected.url);
 
-      // Close dialog
-      $(dialog).dialog('close');
+      // If present, close dialog
+      if (dialog) {
+        $(dialog).dialog('close');
+      }
 
-      // Auto-submit so as to refresh changes
-      parent_form.submit();
+      // If present, auto-submit; to refresh changes
+      if (parent_form) {
+        parent_form.submit();
+      }
+
+      // Execute callback with relevant source flag.
+      callback('upload');
 
     });
 
@@ -558,4 +733,153 @@ jQuery(document).ready(function ($) {
   /**
    * Tile Display Help Modal - [END]
    */
+
+  /**
+   * Alternative Save Flow - [START]
+   */
+
+  $(document).on('click', '.dt-custom-fields-save-button', function (e) {
+    handle_custom_field_save_request(e, $(e.currentTarget), false);
+  });
+
+  function handle_custom_field_save_request(event, save_button, translate_update_only) {
+
+    // If defined, short-circuit default save flow and adopt ajax approach if needed.
+    if (event) {
+      event.preventDefault();
+    }
+
+    // Determine which save path is to be taken.
+    if (!translate_update_only) {
+      $('form[name="' + $(save_button).data('form_id') + '"]').submit();
+    } else {
+
+      // Always capture field parent level name & description translations; which is present across all fields.
+      let payload = {
+        'post_type': $(save_button).data('post_type'),
+        'field_id': $(save_button).data('field_id'),
+        'field_type': $(save_button).data('field_type'),
+        'translations': package_custom_field_translations($(save_button).data('field_id')),
+        'option_translations': window.lodash.includes(['key_select', 'multi_select', 'link'], $(save_button).data('field_type')) ? package_custom_field_option_translations():[]
+      };
+
+      // Have core endpoint process field translations accordingly.
+      $.ajax({
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(payload),
+        url: `${window.dt_admin_scripts.rest_root}dt-admin/scripts/update_custom_field_translations`,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+        }
+      }).done(function (response) {
+
+        // Update translation counts.
+        $('#custom_name_translation_count').html((response['translations']) ? Object.keys(response['translations']).length:0);
+        $('#custom_description_translation_count').html((response['description_translations']) ? Object.keys(response['description_translations']).length:0);
+        if ((response['defaults']) && window.lodash.includes(['key_select', 'multi_select', 'link'], $(save_button).data('field_type'))) {
+          $('.sortable-field-options').find('tr.ui-sortable-handle').each(function (idx, tr) {
+            let option_key = $(tr).find('.sortable-field-options-key').text().trim();
+            $(tr).find('#option_name_translation_count').html((response['defaults'] && response['defaults'][option_key] && response['defaults'][option_key]['translations']) ? Object.keys(response['defaults'][option_key]['translations']).length:0);
+            $(tr).find('#option_description_translation_count').html((response['defaults'] && response['defaults'][option_key] && response['defaults'][option_key]['description_translations']) ? Object.keys(response['defaults'][option_key]['description_translations']).length:0);
+          });
+        }
+
+      }).fail(function (error) {
+        console.log("error");
+        console.log(error);
+      });
+    }
+  }
+
+  function package_custom_field_translations(field_id) {
+    let packaged_translations = {
+      'translations': [],
+      'description_translations': []
+    };
+
+    // Locate field name translations.
+    let field_name_prefix = 'field_key_' + field_id + '_translation-';
+    $("input[id^='" + field_name_prefix + "']").each(function (idx, input) {
+      let locale = window.lodash.split($(input).attr('id'), '-')[1];
+      let value = $(input).val();
+      if (locale && value) {
+        packaged_translations['translations'].push({
+          'locale': locale,
+          'value': value
+        });
+      }
+    });
+
+    // Locate field description translations.
+    let field_description_prefix = 'field_description_translation-';
+    $("input[id^='" + field_description_prefix + "']").each(function (idx, input) {
+      let locale = window.lodash.split($(input).attr('id'), '-')[1];
+      let value = $(input).val();
+      if (locale && value) {
+        packaged_translations['description_translations'].push({
+          'locale': locale,
+          'value': value
+        });
+      }
+    });
+
+    return packaged_translations;
+  }
+
+  function package_custom_field_option_translations() {
+    let packaged_translations = [];
+
+    $('.sortable-field-options').find('tr.ui-sortable-handle').each(function (idx, tr) {
+      let translations = {
+        'option_key': '',
+        'option_translations': [],
+        'option_description_translations': []
+      };
+
+      // Determine option key.
+      let option_key = $(tr).find('.sortable-field-options-key').text().trim();
+      if (option_key) {
+        translations['option_key'] = option_key;
+
+        // Locate option key translations.
+        let option_key_prefix = 'field_option_' + option_key + '_translation-';
+        $(tr).find("input[id^='" + option_key_prefix + "']").each(function (okt_idx, okt_input) {
+          let locale = window.lodash.split($(okt_input).attr('id'), '-')[1];
+          let value = $(okt_input).val();
+          if (locale && value) {
+            translations['option_translations'].push({
+              'locale': locale,
+              'value': $(okt_input).val()
+            });
+          }
+        });
+
+        // Locate option key description translations.
+        let option_key_description_prefix = 'option_description_' + option_key + '_translation-';
+        $(tr).find("input[id^='" + option_key_description_prefix + "']").each(function (okdt_idx, okdt_input) {
+          let locale = window.lodash.split($(okdt_input).attr('id'), '-')[1];
+          let value = $(okdt_input).val();
+          if (locale && value) {
+            translations['option_description_translations'].push({
+              'locale': locale,
+              'value': $(okdt_input).val()
+            });
+          }
+        });
+
+        // Package recent translations.
+        packaged_translations.push(translations);
+      }
+    });
+
+    return packaged_translations;
+  }
+
+  /**
+   * Alternative Save Flow - [END]
+   */
+
+
 })

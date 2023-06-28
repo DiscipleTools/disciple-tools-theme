@@ -316,7 +316,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( !function_exists( 'dt_render_field_icon' ) ){
         function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
             $icon_rendered = false;
-            if ( isset( $field['icon'] ) && !empty( $field['icon'] ) ){
+            if ( !empty( $field['icon'] ) && strpos( $field['icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 if ( isset( $field['name'] ) ) {
                     $alt_tag = $field['name'];
@@ -327,14 +327,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 }
                 ?>
 
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
 
                 <?php
-            } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
+            } else if ( !empty( $field['font-icon'] ) && strpos( $field['font-icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 ?>
 
-                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>" style="font-size: 15px;"></i>
 
                 <?php
             } else if ( $default_to_name && !empty( $field['name'] ) ){
@@ -523,7 +523,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         if ( isset( $fields[$field_key]['type'] ) && !$custom_display && empty( $fields[$field_key]['hidden'] ) ) {
             /* breadrcrumb: new-field-type Add allowed field types */
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'boolean', 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -595,7 +595,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif ?>
             </div>
             <?php
-            if ( $field_type === 'key_select' ) :
+            if ( $field_type === 'boolean' ) {
+                $selected = !empty( $post[$field_key] ) ? 'selected' : '';
+                ?>
+                <select class="select-field" id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $disabled ); ?>>
+                    <option value="0"><?php esc_html_e( 'No', 'disciple_tools' ); ?></option>
+                    <option value="1" <?php echo esc_html( $selected ); ?>><?php esc_html_e( 'Yes', 'disciple_tools' ); ?></option>
+                </select>
+                <?php
+            } else if ( $field_type === 'key_select' ) :
                 $color_select = false;
                 $active_color = '';
                 if ( isset( $fields[$field_key]['default_color'] ) ) {

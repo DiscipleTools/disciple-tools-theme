@@ -57,6 +57,7 @@ jQuery(document).ready(function($) {
         }
         /* Toggle church health circle item color */
         $( this ).children( 'img' ).toggleClass( 'practiced-item' );
+        $( this ).children( 'i' ).toggleClass( 'practiced-item' );
       }).catch( err=>{
         console.log( err );
     });
