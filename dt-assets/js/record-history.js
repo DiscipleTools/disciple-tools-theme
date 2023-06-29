@@ -160,11 +160,16 @@ jQuery(document).ready(function ($) {
         }
 
         // Convert activity heading epoch timestamps to readable dates.
-        if (activity['field_type']==='date') {
+        if (['date', 'datetime'].includes(activity['field_type'])) {
           let timestamps = activity_heading.match(/\d{10}/g);
           if (timestamps!=null) {
             $.each(timestamps, function (ts_idx, ts) {
-              activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), moment.unix(parseInt(ts)).format(date_format_pretty_short));
+              if (activity['field_type'] === 'date') {
+                activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), moment.unix(parseInt(ts)).format(date_format_pretty_short));
+              }
+              if (activity['field_type'] === 'datetime') {
+                activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), window.SHAREDFUNCTIONS.formatDate(ts, true));
+              }
             });
           }
         }

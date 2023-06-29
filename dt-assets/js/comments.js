@@ -357,7 +357,6 @@ jQuery(document).ready(function($) {
 
     displayed.forEach(d=>{
       baptismDateRegex = /\{(\d+)\}+/;
-      console.log(JSON.stringify(d, null,4))
       if (baptismDateRegex.test(d.object_note)) {
         if (d.field_type === 'datetime') {
           d.object_note = d.object_note.replace(baptismDateRegex, formatTimestampToDateTime);
