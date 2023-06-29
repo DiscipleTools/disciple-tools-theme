@@ -165,10 +165,10 @@ jQuery(document).ready(function ($) {
           if (timestamps!=null) {
             $.each(timestamps, function (ts_idx, ts) {
               if (activity['field_type'] === 'date') {
-                activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), moment.unix(parseInt(ts)).format(date_format_pretty_short));
+                activity_heading = window.lodash.replace(activity_heading, new RegExp(`\{?${ts}\}?`, 'g'), moment.unix(parseInt(ts)).format(date_format_pretty_short));
               }
               if (activity['field_type'] === 'datetime') {
-                activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), window.SHAREDFUNCTIONS.formatDate(ts, true));
+                activity_heading = window.lodash.replace(activity_heading, new RegExp(`\{?${ts}\}?`, 'g'), window.SHAREDFUNCTIONS.formatDate(ts, true));
               }
             });
           }
