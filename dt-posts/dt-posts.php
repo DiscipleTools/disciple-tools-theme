@@ -1656,6 +1656,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         'hist_time' => $a->hist_time,
                         'meta_id' => $a->meta_id,
                         'histid' => $a->histid,
+                        'field_type' => $a->field_type,
                     ];
 
                     $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
