@@ -106,6 +106,9 @@ class DT_Login_Endpoints {
         }
 
         if ( DT_Login_Methods::MOBILE === $login_method ) {
+            /* Make sure that any WP login tokens are cleared before logging in with JWT */
+            wp_logout();
+
             require_once( get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php' );
             $response = Jwt_Auth_Public::validate_token( $request );
 
