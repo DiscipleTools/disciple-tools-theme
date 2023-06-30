@@ -82,7 +82,16 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         wp_enqueue_style( 'dt_settings_css' );
 
         $post_type = self::get_parameter( 'post_type' );
-        if ( !isset( $post_type ) || is_null( $post_type ) ) {
+        if ( !isset( $post_type ) || is_null( $post_type ) ){
+
+            // Generate the minimum field_settings object required to create new record types.
+            wp_localize_script(
+                'dt-settings', 'field_settings', array(
+                    'root' => esc_url_raw( rest_url() ),
+                    'nonce' => wp_create_nonce( 'wp_rest' )
+                )
+            );
+
             return;
         }
 
@@ -238,7 +247,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <?php endforeach; ?>
             </div>
             <p>
-                <a id="add_new_post_type" href="#" class="button"><?php esc_html_e( 'Add New Post Type', 'disciple_tools' ); ?></a>
+                <a id="add_new_post_type" href="#" class="button"><?php esc_html_e( 'Add New Record Type', 'disciple_tools' ); ?></a>
             </p>
         </div>
         <?php
@@ -354,7 +363,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 $post_types_settings[$post_type] = $custom_post_types[$post_type];
             }
         }
-        $this->display_post_type_settings( $request_post_type, $post_types_settings[$request_post_type] ?? [], isset( $custom_post_types[$request_post_type] ) );
+        $this->display_post_type_settings( $request_post_type, $post_types_settings[$request_post_type] ?? [], ( isset( $custom_post_types[$request_post_type]['is_custom'] ) && $custom_post_types[$request_post_type]['is_custom'] ) );
     }
 
     private function display_post_type_settings( $post_type, $settings, $is_custom_post_type ){
@@ -362,16 +371,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             ?>
             <table class="widefat striped" style="margin-top: 12px;">
                 <thead>
-                    <th colspan="2"><?php echo esc_html( 'Post Type Settings' ); ?></th>
+                    <th colspan="2"><?php echo esc_html( 'Record Type Settings' ); ?></th>
                 </thead>
                 <tbody>
                     <tr>
                         <td><label><b><?php echo esc_html( 'Key' ); ?></b></label></td>
                         <td id="post_type_settings_key"><?php echo esc_html( $post_type ); ?></td>
-                    </tr>
-                    <tr>
-                        <td><label><b><?php echo esc_html( 'Type' ); ?></b></label></td>
-                        <td><?php echo esc_html( $is_custom_post_type ? 'Custom' : 'Default' ); ?></td>
                     </tr>
                     <tr>
                         <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Singular' ); ?></b></label></td>
@@ -382,7 +387,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $settings['label_plural'] ?? $post_type ); ?>" /></td>
                     </tr>
                     <tr>
-                        <td><label for="post_type_settings_frontend_displayed"><b><?php echo esc_html( 'Display In Frontend?' ); ?></b></label></td>
+                        <td><label
+                                for="post_type_settings_frontend_displayed"><b><?php echo esc_html( sprintf( 'Display %s Tab in Navigation Bar', $settings['label_plural'] ?? $post_type ) ); ?></b></label>
+                        </td>
                         <td><input id="post_type_settings_frontend_displayed" name="post_type_settings_frontend_displayed" type="checkbox" <?php echo esc_attr( ( isset( $settings['hidden'] ) && $settings['hidden'] ) ? '' : 'checked' ); ?> /></td>
                     </tr>
                 </tbody>
@@ -392,12 +399,20 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <span style="float: right;">
                             <?php
                             if ( $is_custom_post_type ){
+
+                                // Ensure current user has correct permissions to action deletion.
+                                $disabled = current_user_can( 'delete_any_' . $post_type ) ? '' : 'disabled';
                                 ?>
-                                <button type="submit" class="button button-primary" name="post_type_settings_delete_but" id="post_type_settings_delete_but" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( 'Delete' ); ?></button>
+                                <button type="submit" class="button button-primary"
+                                        name="post_type_settings_delete_but" id="post_type_settings_delete_but"
+                                        value="<?php echo esc_html( $post_type ); ?>"
+                                        <?php echo esc_html( $disabled ); ?>><?php echo esc_html( 'Delete' ); ?></button>
                                 <?php
                             }
                             ?>
-                            <button type="submit" class="button button-primary" name="post_type_settings_update_but" id="post_type_settings_update_but" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( 'Update' ); ?></button>
+                            <button type="submit" class="button button-primary" name="post_type_settings_update_but" id="post_type_settings_update_but" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( 'Update' ); ?>
+                                <span id="post_type_settings_update_but_icon"></span>
+                            </button>
                         </span>
                     </td>
                 </tr>

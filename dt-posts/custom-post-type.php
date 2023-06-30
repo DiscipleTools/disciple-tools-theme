@@ -24,7 +24,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
-        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 4 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 1000, 4 ); // Called last within chain to ensure custom updates are applied last.
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
@@ -89,7 +89,7 @@ class Disciple_Tools_Post_Type_Template {
     }
 
     public function refresh_custom_post_type_settings(){
-        $post_type_updates = get_option( 'dt_post_type_custom_updates', [] );
+        $post_type_updates = get_option( 'dt_custom_post_types', [] );
         $this->singular = $post_type_updates[$this->post_type]['label_singular'] ?? $this->singular;
         $this->plural = $post_type_updates[$this->post_type]['label_plural'] ?? $this->plural;
         $this->hidden = $post_type_updates[$this->post_type]['hidden'] ?? $this->hidden;

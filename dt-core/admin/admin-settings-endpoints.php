@@ -24,7 +24,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             foreach ( $custom_post_types as $post_type_key => $post_type ){
                 if ( class_exists( 'Disciple_Tools_Post_Type_Template' ) ){
-                    new Disciple_Tools_Post_Type_Template( $post_type_key, $post_type['single_name'] ?? $post_type_key, $post_type['plural_name'] ?? $post_type_key );
+                    new Disciple_Tools_Post_Type_Template( $post_type_key, $post_type['label_singular'] ?? $post_type_key, $post_type['label_plural'] ?? $post_type_key );
                 }
             }
         }, 100 );
@@ -266,11 +266,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             // Create new post type.
             $custom_post_types = get_option( 'dt_custom_post_types', [] );
-            if ( !isset( $custom_post_types[$key] ) ){
+            if ( !isset( $custom_post_types[$key] ) && !in_array( $key, DT_Posts::get_post_types() ) ){
                 $custom_post_types[$key] = [
-                    'single_name' => $single,
-                    'plural_name' => $plural,
-                    'hidden' => false
+                    'label_singular' => $single,
+                    'label_plural' => $plural,
+                    'hidden' => false,
+                    'is_custom' => true
                 ];
 
                 update_option( 'dt_custom_post_types', $custom_post_types );
@@ -280,6 +281,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $admin->add_cap( 'dt_all_admin_' . $key );
                 $admin->add_cap( 'access_' . $key );
                 $admin->add_cap( 'create_' . $key );
+                $admin->add_cap( 'delete_any_' . $key );
 
                 // Return successful response.
                 $response = [
@@ -289,12 +291,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 ];
             } else {
                 $response = [
-                    'success' => false
+                    'success' => false,
+                    'msg' => 'Unable to create '. $key .' record type; which already exists.'
                 ];
             }
         } else {
             $response = [
-                'success' => false
+                'success' => false,
+                'msg' => 'Unable to create record type; due to missing parameters.'
             ];
         }
 
@@ -310,17 +314,17 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $plural = $params['plural'];
             $displayed = $params['displayed'];
 
-            // Fetch existing post type settings and associated updates.
-            $post_type_updates = get_option( 'dt_post_type_custom_updates', [] );
+            // Fetch existing post type settings and update.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
 
             // Proceed with storing updates.
-            $post_type_updates[$post_type] = [
-                'label_singular' => $single,
-                'label_plural' => $plural,
-                'hidden' => ! $displayed
-            ];
+            $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
+            $post_type_settings['label_singular'] = $single;
+            $post_type_settings['label_plural'] = $plural;
+            $post_type_settings['hidden'] = ! $displayed;
+            $custom_post_types[$post_type] = $post_type_settings;
 
-            update_option( 'dt_post_type_custom_updates', $post_type_updates );
+            update_option( 'dt_custom_post_types', $custom_post_types );
 
             $updated = true;
         }
@@ -333,8 +337,17 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function delete_post_type( WP_REST_Request $request ){
         $params = $request->get_params();
         $deleted = false;
+        $deleted_msg = '';
         if ( isset( $params['key'] ) ){
             $post_type = $params['key'];
+
+            // Ensure current user has the ability to delete post type;
+            if ( !current_user_can( 'delete_any_' . $post_type ) ){
+                return [
+                    'deleted' => false,
+                    'msg' => 'Current user unable to delete '. $post_type .' record type.'
+                ];
+            }
 
             // Only process custom post types.
             $custom_post_types = get_option( 'dt_custom_post_types', [] );
@@ -344,11 +357,27 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 unset( $custom_post_types[$post_type] );
                 update_option( 'dt_custom_post_types', $custom_post_types );
 
-                // Remove custom post type updates.
-                $post_type_updates = get_option( 'dt_post_type_custom_updates', [] );
-                if ( isset( $post_type_updates[$post_type] ) ){
-                    unset( $post_type_updates[$post_type] );
-                    update_option( 'dt_post_type_custom_updates', $post_type_updates );
+                // Remove field settings.
+                $field_customizations = dt_get_option( 'dt_field_customizations' );
+                if ( isset( $field_customizations[$post_type] ) ){
+                    unset( $field_customizations[$post_type] );
+
+                    update_option( 'dt_field_customizations', $field_customizations );
+                    wp_cache_delete( $post_type . '_field_settings' );
+                }
+
+                // If specified, proceed with deletion of all associated records.
+                $deleted_post_count = 0;
+                $deleted_post_counter = 0;
+                if ( isset( $params['delete_all_records'] ) && $params['delete_all_records'] ){
+                    global $wpdb;
+                    $posts = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", $post_type ), ARRAY_A );
+                    $deleted_post_count = count( $posts ?? [] );
+                    foreach ( $posts ?? [] as $post ){
+                        if ( DT_Posts::delete_post( $post_type, $post['ID'] ) === true ){
+                            $deleted_post_counter++;
+                        }
+                    }
                 }
 
                 // Remove custom post type admin capabilities.
@@ -356,13 +385,20 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $admin->remove_cap( 'dt_all_admin_' . $post_type );
                 $admin->remove_cap( 'access_' . $post_type );
                 $admin->remove_cap( 'create_' . $post_type );
+                $admin->remove_cap( 'delete_any_' . $post_type );
 
                 $deleted = true;
+                $deleted_msg = 'Deleted ' . $deleted_post_counter . ' out of ' . $deleted_post_count .' posts.';
+            } else {
+                $deleted_msg = $post_type . ' does not appear to be a custom record type.';
             }
+        } else {
+            $deleted_msg = 'Unable to delete record type; due to missing parameters.';
         }
 
         return [
-            'deleted' => $deleted
+            'deleted' => $deleted,
+            'msg' => $deleted_msg
         ];
     }
 

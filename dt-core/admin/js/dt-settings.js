@@ -36,8 +36,9 @@ jQuery(document).ready(function($) {
       displayed: displayed
     }, `dt-admin-settings/`);
 
-    window.API.delete_post_type = (key) => makeRequest("POST", `delete-post-type`, {
-      key: key
+    window.API.delete_post_type = (key, delete_all_records) => makeRequest("POST", `delete-post-type`, {
+      key: key,
+      delete_all_records: delete_all_records
     }, `dt-admin-settings/`);
 
     window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
@@ -497,8 +498,11 @@ jQuery(document).ready(function($) {
     }
 
     function showOverlayModalContentBox(modalName, data=null) {
+        if ( modalName == 'delete-post-type') {
+            loadDeletePostTypeContentBox(data);
+        }
         if ( modalName == 'add-new-post-type') {
-          loadAddPostTypeContentBox();
+            loadAddPostTypeContentBox();
         }
         if ( modalName == 'add-new-tile' ) {
             loadAddTileContentBox();
@@ -540,12 +544,44 @@ jQuery(document).ready(function($) {
         }, 500);
     }
 
+    // Delete Post Type Modal
+    function loadDeletePostTypeContentBox(data) {
+      let modal_html_content = `
+            <tr>
+                <th colspan="2">
+                    <h3 class="modal-box-title">Delete Record Type</h3>
+                </th>
+            </tr>
+            <tr colspan="2">
+                <td>
+                    Are you sure you want to delete ${data['post_type']} and field settings?
+                </td>
+            </tr>
+            <tr colspan="2">
+                <td>
+                    <input name="delete_post_type_records" id="delete_post_type_records" type="checkbox">
+                    <label for="delete_post_type_records"><b>Delete all records of type ${data['post_type']}?</b></label>
+                </td>
+            </tr>
+            <tr class="last-row">
+                <td colspan="2">
+                    <div id="delete_post_type_msg"></div><br>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-delete-post-type" data-post_type="${data['post_type']}">
+                    Delete Record Type
+                    <span id="js_delete_post_type_icon"></span>
+                    </button>
+                </td>
+            </tr>`;
+      $('#modal-overlay-content-table').html(modal_html_content);
+    }
+
     // Add Post Type Modal
     function loadAddPostTypeContentBox() {
       let modal_html_content = `
           <tr>
               <th colspan="2">
-                  <h3 class="modal-box-title">Add New Post Type</h3>
+                  <h3 class="modal-box-title">Add New Record Type</h3>
               </th>
           </tr>
           <tr>
@@ -574,8 +610,12 @@ jQuery(document).ready(function($) {
           </tr>
           <tr class="last-row">
               <td colspan="2">
+                  <div id="new_post_type_msg"></div><br>
                   <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
-                  <button class="button button-primary" type="submit" id="js-add-post-type">Create Post Type</button>
+                  <button class="button button-primary" type="submit" id="js-add-post-type">
+                  Create Record Type
+                  <span id="js_add_post_type_icon"></span>
+                  </button>
               </td>
           </tr>`;
       $('#modal-overlay-content-table').html(modal_html_content);
@@ -1255,19 +1295,52 @@ jQuery(document).ready(function($) {
       $('#new_post_type_name_plural').val(single_name + 's');
     });
 
-    // Delete Post Type
+    // Delete Post Type - Show Modal
     $(document).on('click', '#post_type_settings_delete_but', function (e) {
       e.preventDefault();
 
-      let post_type = $('#post_type_settings_key').html();
-      if (post_type && confirm(`Are you sure you want to delete ${post_type}?`)) {
-        API.delete_post_type(post_type).promise().then(function (data) {
+      showOverlayModal('delete-post-type', {
+        'post_type': $('#post_type_settings_key').html()
+      });
 
-          // Reload page, reverting back to default contacts post type.
-          let contacts_link = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
-          window.location.href = contacts_link;
-        });
-      }
+      //let post_type = $('#post_type_settings_key').html();
+      /*if (post_type && confirm(`Are you sure you want to delete ${post_type}?`)) {
+              API.delete_post_type(post_type).promise().then(function (data) {
+
+                // Reload page, reverting back to default contacts post type.
+                let contacts_link = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
+                window.location.href = contacts_link;
+              });
+            }*/
+    });
+
+    // Delete Post Type
+    $(document).on('click', '#js-delete-post-type', function (e) {
+      e.preventDefault();
+
+      let post_type = $(e.currentTarget).data('post_type');
+      let delete_all_records = $('#delete_post_type_records').prop('checked');
+      let delete_post_type_msg = $('#delete_post_type_msg');
+      $(delete_post_type_msg).html('');
+
+      // Activate spinner.
+      let button_icon = $('#js_delete_post_type_icon');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
+
+      API.delete_post_type(post_type, delete_all_records).promise().then(function (data) {
+        console.log(data);
+
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+
+        if(data && data['deleted']) {
+          window.location.href = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
+
+        } else {
+          $(delete_post_type_msg).html(window.lodash.escape(data['msg']));
+        }
+      });
     });
 
     // Update Post Type
@@ -1286,19 +1359,39 @@ jQuery(document).ready(function($) {
       $(post_type_settings_singular).css('border', '');
       $(post_type_settings_plural).css('border', '');
 
+      // Activate spinner.
+      let button_icon = $('#post_type_settings_update_but_icon');
+      button_icon.removeClass('mdi mdi-comment-check-outline');
+      button_icon.removeClass('mdi mdi-comment-remove-outline');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
+
       // Ensure we have valid entries.
       if (singular.trim() === '') {
         alert('Please ensure to enter a valid Singular value.');
         $(post_type_settings_singular).css('border', '2px solid #e14d43');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
 
       } else if (plural.trim() === '') {
         alert('Please ensure to enter a valid Plural value.');
         $(post_type_settings_plural).css('border', '2px solid #e14d43');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
 
       } else {
 
         API.update_post_type(post_type, singular, plural, displayed).promise().then(function (data) {
-          alert(plural + ' settings updated.');
+          button_icon.removeClass('active');
+          button_icon.removeClass('loading-spinner');
+          button_icon.css('color', '#ffffff');
+
+          if (data && data['updated']) {
+            button_icon.addClass('mdi mdi-comment-check-outline');
+
+          } else {
+            button_icon.addClass('mdi mdi-comment-remove-outline');
+          }
         });
       }
     });
@@ -1308,11 +1401,19 @@ jQuery(document).ready(function($) {
       let new_post_type_key = $('#new_post_type_key');
       let new_post_type_name_single = $('#new_post_type_name_single');
       let new_post_type_name_plural = $('#new_post_type_name_plural');
+      let new_post_type_msg = $('#new_post_type_msg');
 
       // Reset any previous failed validation highlights.
       $(new_post_type_name_single).css('border', '');
       $(new_post_type_key).css('border', '');
       $(new_post_type_name_plural).css('border', '');
+      $(new_post_type_msg).html('');
+
+      // Activate spinner.
+      let button_icon = $('#js_add_post_type_icon');
+      button_icon.css('margin', '2px 0px 4px  10px');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
 
       // Validate initial field entries.
       let key = $(new_post_type_key).val().trim();
@@ -1321,20 +1422,34 @@ jQuery(document).ready(function($) {
 
       if(single_name === '') {
         $(new_post_type_name_single).css('border', '2px solid #e14d43');
+        button_icon.css('margin', '');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
         return false;
 
       } else if (key === '') {
         $(new_post_type_key).css('border', '2px solid #e14d43');
+        button_icon.css('margin', '');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
         return false;
 
       } else if(plural_name === '') {
         $(new_post_type_name_plural).css('border', '2px solid #e14d43');
+        button_icon.css('margin', '');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
         return false;
 
       } else {
 
         // Submit post type creation request.
         API.create_new_post_type(key, single_name, plural_name).promise().then(function (data) {
+
+          button_icon.css('margin', '');
+          button_icon.removeClass('active');
+          button_icon.removeClass('loading-spinner');
+
           if (data && data['success'] && data['post_type'] && data['post_type_label']) {
 
             // Unselect all/any primary buttons.
@@ -1348,6 +1463,8 @@ jQuery(document).ready(function($) {
 
             // Refresh page with new post type selected
             window.location.href = pill_link;
+          } else {
+            $(new_post_type_msg).html(window.lodash.escape(data['msg']));
           }
         });
       }
