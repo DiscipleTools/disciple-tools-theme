@@ -282,6 +282,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $admin->add_cap( 'access_' . $key );
                 $admin->add_cap( 'create_' . $key );
                 $admin->add_cap( 'delete_any_' . $key );
+                $admin->add_cap( 'view_any_' . $key );
+                $admin->add_cap( 'update_any_' . $key );
 
                 // Return successful response.
                 $response = [
@@ -386,6 +388,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $admin->remove_cap( 'access_' . $post_type );
                 $admin->remove_cap( 'create_' . $post_type );
                 $admin->remove_cap( 'delete_any_' . $post_type );
+                $admin->remove_cap( 'view_any_' . $post_type );
+                $admin->remove_cap( 'update_any_' . $post_type );
 
                 $deleted = true;
                 $deleted_msg = 'Deleted ' . $deleted_post_counter . ' out of ' . $deleted_post_count .' posts.';

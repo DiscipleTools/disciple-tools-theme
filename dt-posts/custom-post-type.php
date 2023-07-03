@@ -29,6 +29,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
         add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
     }
 
     public function register_post_type(){
@@ -93,6 +94,22 @@ class Disciple_Tools_Post_Type_Template {
         $this->singular = $post_type_updates[$this->post_type]['label_singular'] ?? $this->singular;
         $this->plural = $post_type_updates[$this->post_type]['label_plural'] ?? $this->plural;
         $this->hidden = $post_type_updates[$this->post_type]['hidden'] ?? $this->hidden;
+    }
+
+    public function dt_set_roles_and_permissions( $expected_roles ){
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+        if ( isset( $custom_post_types[$this->post_type]['is_custom'] ) && $custom_post_types[$this->post_type]['is_custom'] ){
+            if ( isset( $expected_roles['administrator'] ) ){
+                $expected_roles['administrator']['permissions']['access_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['view_any_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['update_any_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['dt_all_admin_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['delete_any_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['create_' . $this->post_type] = true;
+            }
+        }
+
+        return $expected_roles;
     }
 
     /**
