@@ -67,6 +67,10 @@ class DT_Login_Endpoints {
             return new WP_Error( 'bad_token', $th->getMessage(), [ 'status' => 401 ] );
         }
 
+        if ( !isset( $payload['name'] ) ) {
+            $payload['name'] = $body->user->displayName;
+        }
+
         $user_manager = new DT_Login_User_Manager( $payload );
 
         try {
