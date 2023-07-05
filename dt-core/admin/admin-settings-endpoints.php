@@ -99,6 +99,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/update-roles', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_roles' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/create-new-tile', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'create_new_tile' ],
@@ -403,6 +411,39 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         return [
             'deleted' => $deleted,
             'msg' => $deleted_msg
+        ];
+    }
+
+    public static function update_roles( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $updated = false;
+        if ( isset( $params['post_type'], $params['roles'] ) ){
+            $post_type = $params['post_type'];
+            $roles = $params['roles'];
+
+            // Fetch existing post type settings and update.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+
+            // Proceed with storing updates, overwriting existing roles.
+            $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
+            $post_type_settings['roles'] = [];
+
+            foreach ( $roles as $role => $capabilities ){
+                foreach ( $capabilities ?? [] as $capability ){
+                    if ( $capability['enabled'] ){
+                        $post_type_settings['roles'][$role][$capability['key']] = true;
+                    }
+                }
+            }
+            $custom_post_types[$post_type] = $post_type_settings;
+
+            update_option( 'dt_custom_post_types', $custom_post_types );
+
+            $updated = true;
+        }
+
+        return [
+            'updated' => $updated
         ];
     }
 

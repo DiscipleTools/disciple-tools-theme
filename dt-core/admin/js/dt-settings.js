@@ -41,6 +41,11 @@ jQuery(document).ready(function($) {
       delete_all_records: delete_all_records
     }, `dt-admin-settings/`);
 
+    window.API.update_roles = (post_type, roles) => makeRequest("POST", `update-roles`, {
+      post_type: post_type,
+      roles: roles
+    }, `dt-admin-settings/`);
+
     window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
         post_type: post_type,
         new_tile_name: new_tile_name,
@@ -1281,6 +1286,49 @@ jQuery(document).ready(function($) {
 
     $('#modal-overlay-form').on('submit', function(event){
         event.preventDefault();
+    });
+
+    // Update Roles & Permissions
+    $(document).on('click', '#roles_settings_update_but', function (e) {
+      e.preventDefault();
+      let post_type = $(e.currentTarget).data('post_type');
+
+      // Activate spinner.
+      let button_icon = $('#roles_settings_update_but_icon');
+      button_icon.removeClass('mdi mdi-comment-check-outline');
+      button_icon.removeClass('mdi mdi-comment-remove-outline');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
+
+      let roles = {};
+      $('.roles-settings-capability').each(function (idx, capability) {
+        let enabled = $(capability).prop('checked');
+        let role_key = $(capability).data('role_key');
+        let capability_key = $(capability).data('capability_key');
+
+        // Assign to specific role.
+        if (roles[role_key] === undefined) {
+          roles[role_key] = [];
+        }
+        roles[role_key].push({
+          'key': capability_key,
+          'enabled': enabled
+        });
+      });
+
+      // Dispatch update endpoint api request.
+      API.update_roles(post_type, roles).promise().then(function (data) {
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+        button_icon.css('color', '#ffffff');
+
+        if (data && data['updated']) {
+          button_icon.addClass('mdi mdi-comment-check-outline');
+
+        } else {
+          button_icon.addClass('mdi mdi-comment-remove-outline');
+        }
+      });
     });
 
     // Process Add Post Type - Single Name Events

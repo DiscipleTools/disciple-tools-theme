@@ -394,6 +394,9 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                 <tbody>
                 <?php foreach ( $roles as $key => $role ): ?>
                     <?php
+                    if ( !isset( $role['label'], $role['description'] ) ){
+                        continue;
+                    }
                     $is_active = $key === $view_role;
                     $editable = !empty( $role['custom'] ) && current_user_can( 'edit_roles' );
                     ?>

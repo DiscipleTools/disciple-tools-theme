@@ -98,7 +98,7 @@ class Disciple_Tools_Post_Type_Template {
 
     public function dt_set_roles_and_permissions( $expected_roles ){
         $custom_post_types = get_option( 'dt_custom_post_types', [] );
-        if ( isset( $custom_post_types[$this->post_type]['is_custom'] ) && $custom_post_types[$this->post_type]['is_custom'] ){
+        if ( empty( $custom_post_types[$this->post_type]['roles'] ) && isset( $custom_post_types[$this->post_type]['is_custom'] ) && $custom_post_types[$this->post_type]['is_custom'] ){
             if ( isset( $expected_roles['administrator'] ) ){
                 $expected_roles['administrator']['permissions']['access_' . $this->post_type] = true;
                 $expected_roles['administrator']['permissions']['view_any_' . $this->post_type] = true;
@@ -106,6 +106,14 @@ class Disciple_Tools_Post_Type_Template {
                 $expected_roles['administrator']['permissions']['dt_all_admin_' . $this->post_type] = true;
                 $expected_roles['administrator']['permissions']['delete_any_' . $this->post_type] = true;
                 $expected_roles['administrator']['permissions']['create_' . $this->post_type] = true;
+            }
+        } else if ( !empty( $custom_post_types[$this->post_type]['roles'] ) ){
+            foreach ( $custom_post_types[$this->post_type]['roles'] as $role => $capabilities ){
+                foreach ( $capabilities ?? [] as $capability => $enabled ){
+                    if ( $enabled ){
+                        $expected_roles[$role]['permissions'][$capability] = true;
+                    }
+                }
             }
         }
 

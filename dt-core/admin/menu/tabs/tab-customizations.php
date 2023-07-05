@@ -134,6 +134,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'site_url' => get_site_url(),
                 'template_dir' => get_template_directory_uri(),
+                'roles' => apply_filters( 'dt_set_roles_and_permissions', [] )
             )
         );
 
@@ -268,6 +269,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <h2 class="nav-tab-wrapper" style="padding: 0;">
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=tiles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'tiles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Tiles', 'disciple_tools' ); ?></a>
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=settings" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'settings' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Settings', 'disciple_tools' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=roles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'roles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Roles', 'disciple_tools' ); ?></a>
         </h2>
         <?php
     }
@@ -285,6 +287,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 break;
             case 'settings':
                 self::post_type_settings_box();
+                break;
+            case 'roles':
+                self::roles_settings_box();
                 break;
             default:
                 self::tile_settings_box();
@@ -345,6 +350,88 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function get_post_fields( $post_type ){
         return DT_Posts::get_post_field_settings( $post_type, false, true );
+    }
+
+    private function roles_settings_box(){
+        $post_type = self::get_parameter( 'post_type' );
+        if ( isset( $post_type ) ){
+            $capability_factory = Disciple_Tools_Capability_Factory::get_instance();
+            $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+            ksort( $roles );
+            ?>
+            <table class="widefat striped" style="margin-top: 12px;">
+                <thead>
+                <th colspan="2"><?php echo esc_html( 'Roles & Permissions' ); ?></th>
+                </thead>
+                <tbody>
+                <?php
+                foreach ( $roles as $key => $role ){
+                    ?>
+                    <tr>
+                        <td>
+                            <span style="font-weight: bold;"><?php echo esc_html( $role['label'] ?? $key ); ?></span>
+                        </td>
+                        <td>
+                            <fieldset style="display: grid; grid-template-columns: repeat(4, 1fr);">
+                                <?php
+                                $capabilities = apply_filters( 'dt_capabilities', [] );
+                                foreach ( $capabilities as $capability_key => $capability ){
+                                    $is_post_type_capability = strpos( $capability_key, '_' . $post_type ) !== false;
+                                    if ( $is_post_type_capability ){
+                                        $is_capability_selected = isset( $role['permissions'][$capability_key] ) && $role['permissions'][$capability_key];
+                                        $capability_name = $capability_factory->get_capability( $capability_key )->name ?? $capability_key;
+                                        ?>
+                                        <div class="capability">
+                                            <label>
+                                                <input  type="checkbox"
+                                                        class="roles-settings-capability"
+                                                        data-role_key="<?php echo esc_attr( $key ) ?>"
+                                                        data-capability_key="<?php echo esc_attr( $capability_key ) ?>"
+                                                        <?php echo esc_attr( $is_capability_selected ? 'checked' : '' ) ?>
+                                                />
+                                                <?php
+                                                echo esc_attr( $capability_name );
+                                                if ( isset( $capability['description'] ) ){
+                                                    ?>
+                                                    <span
+                                                        data-tooltip="<?php echo esc_attr( $capability['description'] ); ?>">
+                                                        <span class="dashicons dashicons-editor-help"></span>
+                                                    </span>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </label>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <span style="float: right;">
+                            <button type="submit"
+                                    class="button button-primary"
+                                    name="roles_settings_update_but"
+                                    id="roles_settings_update_but"
+                                    value="<?php echo esc_html( $post_type ); ?>"
+                                    data-post_type="<?php echo esc_attr( $post_type ) ?>"><?php echo esc_html( 'Update' ); ?>
+                                <span id="roles_settings_update_but_icon"></span>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <?php
+        }
     }
 
     private function post_type_settings_box(){
