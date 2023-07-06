@@ -1350,16 +1350,6 @@ jQuery(document).ready(function($) {
       showOverlayModal('delete-post-type', {
         'post_type': $('#post_type_settings_key').html()
       });
-
-      //let post_type = $('#post_type_settings_key').html();
-      /*if (post_type && confirm(`Are you sure you want to delete ${post_type}?`)) {
-              API.delete_post_type(post_type).promise().then(function (data) {
-
-                // Reload page, reverting back to default contacts post type.
-                let contacts_link = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
-                window.location.href = contacts_link;
-              });
-            }*/
     });
 
     // Delete Post Type

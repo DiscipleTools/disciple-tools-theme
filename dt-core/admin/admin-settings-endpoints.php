@@ -284,15 +284,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
                 update_option( 'dt_custom_post_types', $custom_post_types );
 
-                // Ensure admin is given all the permissions on new post type.
-                $admin = get_role( 'administrator' );
-                $admin->add_cap( 'dt_all_admin_' . $key );
-                $admin->add_cap( 'access_' . $key );
-                $admin->add_cap( 'create_' . $key );
-                $admin->add_cap( 'delete_any_' . $key );
-                $admin->add_cap( 'view_any_' . $key );
-                $admin->add_cap( 'update_any_' . $key );
-
                 // Return successful response.
                 $response = [
                     'success' => true,
@@ -377,30 +368,20 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 }
 
                 // If specified, proceed with deletion of all associated records.
-                $deleted_post_count = 0;
-                $deleted_post_counter = 0;
                 if ( isset( $params['delete_all_records'] ) && $params['delete_all_records'] ){
                     global $wpdb;
-                    $posts = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", $post_type ), ARRAY_A );
-                    $deleted_post_count = count( $posts ?? [] );
-                    foreach ( $posts ?? [] as $post ){
-                        if ( DT_Posts::delete_post( $post_type, $post['ID'] ) === true ){
-                            $deleted_post_counter++;
-                        }
-                    }
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p LEFT JOIN $wpdb->p2pmeta pm ON pm.p2p_id = p.p2p_id WHERE ( p.p2p_to IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) OR p.p2p_from IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) )", $post_type, $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c LEFT JOIN $wpdb->commentmeta cm ON cm.comment_id = c.comment_ID WHERE c.comment_post_ID IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = %s", $post_type ) );
                 }
 
-                // Remove custom post type admin capabilities.
-                $admin = get_role( 'administrator' );
-                $admin->remove_cap( 'dt_all_admin_' . $post_type );
-                $admin->remove_cap( 'access_' . $post_type );
-                $admin->remove_cap( 'create_' . $post_type );
-                $admin->remove_cap( 'delete_any_' . $post_type );
-                $admin->remove_cap( 'view_any_' . $post_type );
-                $admin->remove_cap( 'update_any_' . $post_type );
-
                 $deleted = true;
-                $deleted_msg = 'Deleted ' . $deleted_post_counter . ' out of ' . $deleted_post_count .' posts.';
+                $deleted_msg = 'Deleted post type ' . $post_type;
             } else {
                 $deleted_msg = $post_type . ' does not appear to be a custom record type.';
             }
