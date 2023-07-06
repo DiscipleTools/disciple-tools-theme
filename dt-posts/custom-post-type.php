@@ -12,19 +12,20 @@ class Disciple_Tools_Post_Type_Template {
     public $search_items;
     public $hidden;
 
-    public function __construct( string $post_type, string $singular, string $plural, bool $hidden = false ) {
+    public function __construct( string $post_type, string $singular, string $plural ) {
+        $post_type_updates = get_option( 'dt_custom_post_types', [] );
         $this->post_type = $post_type;
-        $this->singular = $singular;
-        $this->plural = $plural;
+        $this->singular = $post_type_updates[$this->post_type]['label_singular'] ?? $singular;
+        $this->plural = $post_type_updates[$this->post_type]['label_plural'] ?? $plural;
         $this->search_items = sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $this->plural );
-        $this->hidden = $hidden;
+        $this->hidden = $post_type_updates[$this->post_type]['hidden'] ?? false;
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
         add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
-        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 1000, 4 ); // Called last within chain to ensure custom updates are applied last.
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 4 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
@@ -89,13 +90,6 @@ class Disciple_Tools_Post_Type_Template {
         add_rewrite_rule( $this->post_type . '/([0-9]+)?$', 'index.php?post_type=' . $this->post_type . '&p=$matches[1]', 'top' );
     }
 
-    public function refresh_custom_post_type_settings(){
-        $post_type_updates = get_option( 'dt_custom_post_types', [] );
-        $this->singular = $post_type_updates[$this->post_type]['label_singular'] ?? $this->singular;
-        $this->plural = $post_type_updates[$this->post_type]['label_plural'] ?? $this->plural;
-        $this->hidden = $post_type_updates[$this->post_type]['hidden'] ?? $this->hidden;
-    }
-
     public function dt_set_roles_and_permissions( $expected_roles ){
         $custom_post_types = get_option( 'dt_custom_post_types', [] );
         if ( isset( $custom_post_types[$this->post_type]['is_custom'] ) && $custom_post_types[$this->post_type]['is_custom'] ){
@@ -137,7 +131,6 @@ class Disciple_Tools_Post_Type_Template {
 
     public function add_navigation_links( $tabs ) {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
-            $this->refresh_custom_post_type_settings();
             $tabs[$this->post_type] = [
                 'link' => site_url( "/$this->post_type/" ),
                 'label' => $this->plural,
@@ -151,7 +144,6 @@ class Disciple_Tools_Post_Type_Template {
 
     public function dt_nav_add_post_menu( $links ){
         if ( current_user_can( 'create_' . $this->post_type ) ){
-            $this->refresh_custom_post_type_settings();
             $links[] = [
                 'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
                 'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
@@ -253,7 +245,6 @@ class Disciple_Tools_Post_Type_Template {
                     $channels[str_replace( 'contact_', '', $field_key )] = $field_value;
                 }
             }
-            $this->refresh_custom_post_type_settings();
             $s = [
                 'fields' => $fields,
                 'channels' => $channels,
@@ -323,7 +314,6 @@ class Disciple_Tools_Post_Type_Template {
      * Declare Default D.T post roles
      */
     public function dt_capabilities( $capabilities ){
-        $this->refresh_custom_post_type_settings();
         $capabilities['access_' . $this->post_type] = [
             'source' => $this->plural,
             'description' => 'The user can access the UI for ' . $this->plural,
