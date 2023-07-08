@@ -119,6 +119,14 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Contact Setup */
 
+
+            /* API Auth Whitelist  */
+            $this->box( 'top', 'API Whitelist' );
+            $this->process_dt_api_whitelist();
+            $this->show_dt_api_whitelist();
+            $this->box( 'bottom' );
+            /* Contact Setup */
+
             /* Custom Logo */
             $this->box( 'top', 'Custom Logo' );
             $this->process_custom_logo();
@@ -705,7 +713,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
-    /** Group Preferences */
+    /** Contact Preferences */
     public function process_dt_contact_preferences(){
 
         if ( isset( $_POST['dt_contact_preferences_nonce'] ) &&
@@ -737,6 +745,55 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
                 <?php wp_nonce_field( 'dt_contact_preferences' . get_current_user_id(), 'dt_contact_preferences_nonce' )?>
             </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
+    }
+
+    /** API Whitelist */
+    public function process_dt_api_whitelist(){
+
+        if ( isset( $_POST['dt_api_whitelist'] ) && isset( $_POST['dt_api_whitelist_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_api_whitelist_nonce'] ) ), 'dt_api_whitelist' . get_current_user_id() ) ) {
+
+            $api_whitelist = sanitize_textarea_field( wp_unslash( $_POST['dt_api_whitelist'] ) );
+
+            // normalize all URLs to start with "wp-json/"
+            // Regex handles:
+            // - /wp-json/endpoint/v1
+            // - wp-json/endpoint/v1
+            // - /endpoint/v1
+            // - endpoint/v1
+            $api_whitelist = array_map( function( $path ) {
+                $re = '/^[\/]?(?:wp-json)?[\/]?(.*)$/m';
+
+                preg_match_all( $re, $path, $matches, PREG_SET_ORDER, 0 );
+
+                if ( count( $matches ) ) {
+                    $path = 'wp-json/' . $matches[0][1];
+                }
+                return $path;
+            }, explode( PHP_EOL, $api_whitelist ) );
+
+            update_option( 'dt_api_whitelist', $api_whitelist, true );
+        }
+
+    }
+
+    public function show_dt_api_whitelist(){
+        $api_whitelist = get_option( 'dt_api_whitelist', [] );
+        $textarea_value = join( PHP_EOL, $api_whitelist );
+        ?>
+        <form method="post" >
+            <p><?php esc_html_e( 'Add the API endpoints that should not require authentication (1 per line).', 'disciple_tools' ) ?></p>
+
+            <textarea
+                name="dt_api_whitelist"
+                style="width: 100%"
+                rows="10"
+            ><?php echo esc_html( $textarea_value ) ?></textarea>
+            <?php wp_nonce_field( 'dt_api_whitelist' . get_current_user_id(), 'dt_api_whitelist_nonce' )?>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
         </form>

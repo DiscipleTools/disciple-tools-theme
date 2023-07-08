@@ -103,6 +103,12 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
         $authorized = true;
     }
 
+    $allowed_paths = get_option( 'dt_api_whitelist', [] );
+
+    if ( in_array( $path, $allowed_paths ) ) {
+        $authorized = true;
+    }
+
     $authorized = apply_filters( 'dt_allow_rest_access', $authorized );
 
     // validate site to site transfer token
