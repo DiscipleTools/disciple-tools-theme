@@ -59,9 +59,8 @@ class DT_Contacts_Base {
      */
     public function dt_get_post_type_settings( $settings, $post_type ){
         if ( $post_type === $this->post_type ){
-            $post_type_updates = get_option( 'dt_custom_post_types', [] );
-            $settings['label_singular'] = $post_type_updates[$this->post_type]['label_singular'] ?? __( 'Contact', 'disciple_tools' );
-            $settings['label_plural'] = $post_type_updates[$this->post_type]['label_plural'] ?? __( 'Contacts', 'disciple_tools' );
+            $settings['label_singular'] = __( 'Contact', 'disciple_tools' );
+            $settings['label_plural'] = __( 'Contacts', 'disciple_tools' );
             $settings['status_field'] = [
                 'status_key' => 'overall_status',
                 'archived_key' => 'closed',

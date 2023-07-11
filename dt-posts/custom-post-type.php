@@ -25,7 +25,8 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
-        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 4 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 4 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings_after' ], 1000, 4 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
@@ -267,6 +268,19 @@ class Disciple_Tools_Post_Type_Template {
             $settings = dt_array_merge_recursive_distinct( $settings, $s );
 
             wp_cache_set( $post_type . '_type_settings', $settings );
+        }
+        return $settings;
+    }
+
+    public function dt_get_post_type_settings_after( $settings, $post_type ){
+        if ( $post_type === $this->post_type ){
+            $post_type_updates = get_option( 'dt_custom_post_types', [] );
+            if ( !empty( $post_type_updates[$post_type]['label_singular'] ) ){
+                $settings['label_singular'] = $post_type_updates[$post_type]['label_singular'];
+            }
+            if ( !empty( $post_type_updates[$post_type]['label_plural'] ) ){
+                $settings['label_plural'] = $post_type_updates[$post_type]['label_plural'];
+            }
         }
         return $settings;
     }
