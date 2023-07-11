@@ -82,20 +82,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         wp_enqueue_style( 'dt_settings_css' );
 
         $post_type = self::get_parameter( 'post_type' );
-        if ( !isset( $post_type ) || is_null( $post_type ) ){
-
-            // Generate the minimum field_settings object required to create new record types.
-            wp_localize_script(
-                'dt-settings', 'field_settings', array(
-                    'root' => esc_url_raw( rest_url() ),
-                    'nonce' => wp_create_nonce( 'wp_rest' )
-                )
-            );
-
-            return;
-        }
-
-        $post_settings = self::get_post_settings_with_customization_status( $post_type );
 
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),
@@ -118,23 +104,32 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'exclude_item' => __( 'Exclude Item', 'disciple_tools' )
         ];
 
-        wp_localize_script(
-            'dt-settings', 'field_settings', array(
-                'all_post_types' => self::get_all_post_types(),
+        $localized_array = [
+            'all_post_types' => self::get_all_post_types(),
+            'translations' => apply_filters( 'dt_list_js_translations', $translations ),
+            'languages' => dt_get_available_languages( true ),
+            'root' => esc_url_raw( rest_url() ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+            'site_url' => get_site_url(),
+            'template_dir' => get_template_directory_uri(),
+        ];
+
+        if ( !empty( $post_type ) ) {
+            $post_settings = self::get_post_settings_with_customization_status( $post_type );
+            $localized_array = array_merge( $localized_array, [
+                'post_type_settings' => $post_settings,
                 'post_type' => $post_type,
                 'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
-                'post_type_settings' => $post_settings,
+
                 'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
                 'default_tiles' => self::get_default_tiles( $post_type ),
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
-                'translations' => apply_filters( 'dt_list_js_translations', $translations ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
-                'languages' => dt_get_available_languages( true ),
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'site_url' => get_site_url(),
-                'template_dir' => get_template_directory_uri(),
-            )
+            ]);
+        }
+
+        wp_localize_script(
+            'dt-settings', 'field_settings', $localized_array
         );
 
         wp_enqueue_script( 'jquery' );
