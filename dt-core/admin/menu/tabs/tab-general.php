@@ -705,7 +705,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
-    /** Group Preferences */
+    /** Contact Preferences */
     public function process_dt_contact_preferences(){
 
         if ( isset( $_POST['dt_contact_preferences_nonce'] ) &&

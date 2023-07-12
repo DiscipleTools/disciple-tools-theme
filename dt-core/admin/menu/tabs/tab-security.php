@@ -63,6 +63,13 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
 
             self::template( 'end' );
+
+
+            /* API Auth Whitelist  */
+            self::template( 'begin', 1 );
+            $this->process_dt_api_whitelist();
+            $this->show_dt_api_whitelist();
+            self::template( 'end' );
         }
     }
 
@@ -174,6 +181,58 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
             <button type="submit" class="button button-primary">Save Changes</button>
         </form>
 
+        <?php
+        $this->box( 'bottom' );
+    }
+
+    /** API Whitelist */
+    public function process_dt_api_whitelist(){
+
+        if ( isset( $_POST['dt_api_whitelist'] ) && isset( $_POST['dt_api_whitelist_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_api_whitelist_nonce'] ) ), 'dt_api_whitelist' . get_current_user_id() ) ) {
+
+            $api_whitelist = sanitize_textarea_field( wp_unslash( $_POST['dt_api_whitelist'] ) );
+
+            // normalize all URLs to start with "wp-json/"
+            // Regex handles:
+            // - /wp-json/endpoint/v1
+            // - wp-json/endpoint/v1
+            // - /endpoint/v1
+            // - endpoint/v1
+            $api_whitelist = array_map( function( $path ) {
+                $re = '/^[\/]?(?:wp-json)?[\/]?(.*)$/m';
+
+                preg_match_all( $re, $path, $matches, PREG_SET_ORDER, 0 );
+
+                if ( count( $matches ) ) {
+                    $path = 'wp-json/' . $matches[0][1];
+                }
+                return $path;
+            }, explode( PHP_EOL, $api_whitelist ) );
+
+            update_option( 'dt_api_whitelist', $api_whitelist, true );
+        }
+
+    }
+
+    public function show_dt_api_whitelist(){
+        $this->box( 'top', 'API Whitelist' );
+
+        $api_whitelist = get_option( 'dt_api_whitelist', [] );
+        $textarea_value = join( PHP_EOL, $api_whitelist );
+        ?>
+        <form method="post" >
+            <p><?php esc_html_e( 'Add the API endpoints that should not require authentication (1 per line).', 'disciple_tools' ) ?></p>
+
+            <textarea
+                name="dt_api_whitelist"
+                style="width: 100%"
+                rows="10"
+            ><?php echo esc_html( $textarea_value ) ?></textarea>
+            <?php wp_nonce_field( 'dt_api_whitelist' . get_current_user_id(), 'dt_api_whitelist_nonce' )?>
+            <br>
+            <button type="submit" class="button button-primary"><?php esc_html_e( 'Save Changes', 'disciple_tools' ) ?></button>
+        </form>
         <?php
         $this->box( 'bottom' );
     }
