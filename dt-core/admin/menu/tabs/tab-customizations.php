@@ -349,7 +349,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     private function roles_settings_box(){
         $post_type = self::get_parameter( 'post_type' );
         if ( isset( $post_type ) ){
-            $capability_factory = Disciple_Tools_Capability_Factory::get_instance();
             $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
             ksort( $roles );
             ?>
@@ -373,7 +372,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     $is_post_type_capability = strpos( $capability_key, '_' . $post_type ) !== false;
                                     if ( $is_post_type_capability ){
                                         $is_capability_selected = isset( $role['permissions'][$capability_key] ) && $role['permissions'][$capability_key];
-                                        $capability_name = $capability_factory->get_capability( $capability_key )->name ?? $capability_key;
+                                        $capability_name = $capability['label'] ?? $capability_key;
                                         ?>
                                         <div class="capability">
                                             <label>
@@ -382,6 +381,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         data-role_key="<?php echo esc_attr( $key ) ?>"
                                                         data-capability_key="<?php echo esc_attr( $capability_key ) ?>"
                                                         <?php echo esc_attr( $is_capability_selected ? 'checked' : '' ) ?>
+                                                        <?php echo esc_attr( ( $key == 'administrator' ) && !dt_is_administrator() ? 'disabled' : '' ) ?>
                                                 />
                                                 <?php
                                                 echo esc_attr( $capability_name );

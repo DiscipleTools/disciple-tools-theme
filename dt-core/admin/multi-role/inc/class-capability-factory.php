@@ -161,7 +161,13 @@ final class Disciple_Tools_Capability_Factory {
      */
     public function add_capability( $slug, $options ) {
         $source = $options['source'];
-        $name = isset( $options['name'] ) ? $options['name'] : dt_label_from_slug( $slug );
+        if ( isset( $options['name'] ) ){
+            $name = $options['name'];
+        } elseif ( isset( $options['label'] ) ){
+            $name = $options['label'];
+        } else {
+            $name = dt_label_from_slug( $slug );
+        }
         $description = isset( $options['description'] ) ? $options['description'] : '';
 
         $capability = $this->get_capability( $slug );

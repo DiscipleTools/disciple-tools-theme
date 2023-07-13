@@ -412,7 +412,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             foreach ( $roles as $role => $capabilities ){
                 foreach ( $capabilities ?? [] as $capability ){
                     if ( $capability['enabled'] ){
-                        $post_type_settings['roles'][$role][$capability['key']] = true;
+                        if ( ( $role == 'administrator' && dt_is_administrator() ) || ( $role != 'administrator' ) ){
+                            $post_type_settings['roles'][$role][$capability['key']] = true;
+                        }
                     }
                 }
             }

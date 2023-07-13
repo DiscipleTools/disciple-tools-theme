@@ -339,6 +339,7 @@ class Disciple_Tools_Post_Type_Template {
         $capabilities['access_' . $this->post_type] = [
             'source' => $this->plural,
             'description' => 'The user can access the UI for ' . $this->plural,
+            'label' => sprintf( _x( 'Access %s', 'disciple_tools' ), $this->plural )
         ];
 //        $capabilities['update_'  . $this->post_type] = [
 //            'source' => $this->plural,
@@ -346,19 +347,23 @@ class Disciple_Tools_Post_Type_Template {
 //        ];
         $capabilities['create_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can create ' . $this->plural
+            'description' => 'The user can create ' . $this->plural,
+            'label' => sprintf( _x( 'Create %s', 'disciple_tools' ), $this->plural )
         ];
         $capabilities['view_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can view any ' . $this->singular
+            'description' => 'The user can view any ' . $this->singular,
+            'label' => sprintf( _x( 'View Any %s', 'disciple_tools' ), $this->plural )
         ];
         $capabilities['update_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can update any ' . $this->singular
+            'description' => 'The user can update any ' . $this->singular,
+            'label' => sprintf( _x( 'Update Any %s', 'disciple_tools' ), $this->plural )
         ];
         $capabilities['delete_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can delete any ' . $this->singular
+            'description' => 'The user can delete any ' . $this->singular,
+            'label' => sprintf( _x( 'Delete Any %s', 'disciple_tools' ), $this->plural )
         ];
         return $capabilities;
     }
