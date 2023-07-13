@@ -53,7 +53,7 @@ function dt_setup_roles_and_permissions(){
                     }
                 }
             }
-            //remove permissions if they are set by the $expected_roles
+            //remove permissions if they are not set by the $expected_roles
             foreach ( $role->capabilities as $cap_key => $cap_grant ){
                 if ( $cap_grant === true && !isset( $expected_roles[$role_key]['permissions'][$cap_key] ) ){
                     $wp_capabilities = dt_multi_role_get_wp_capabilities();
