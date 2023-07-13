@@ -199,6 +199,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+
+    /*
+     * deprecated
+     */
     if ( ! function_exists( 'dt_sanitize_array_html' ) ) {
         function dt_sanitize_array_html( $array ) {
             array_walk_recursive($array, function ( &$v ) {

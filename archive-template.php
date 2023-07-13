@@ -47,7 +47,7 @@ dt_please_log_in();
                         if ( isset( $_COOKIE['fields_to_search'] ) ) {
                             $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                             if ( $fields_to_search ){
-                                $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                                $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
                             }
                         }
                         //order fields alphabetically by Name
@@ -137,7 +137,7 @@ dt_please_log_in();
                     if ( isset( $_COOKIE['fields_to_search'] ) ) {
                         $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                         if ( $fields_to_search ){
-                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                            $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
                         }
                     }
                     //order fields alphabetically by Name
@@ -394,7 +394,7 @@ dt_please_log_in();
                         if ( isset( $_COOKIE['fields_to_show_in_table'] ) ) {
                             $fields_to_show_in_table = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_show_in_table'] ) ) ) );
                             if ( $fields_to_show_in_table ){
-                                $fields_to_show_in_table = dt_sanitize_array_html( $fields_to_show_in_table );
+                                $fields_to_show_in_table = dt_recursive_sanitize_array( $fields_to_show_in_table );
                             }
                         }
 
