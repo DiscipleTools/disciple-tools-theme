@@ -163,8 +163,8 @@ final class Disciple_Tools_Capability_Factory {
         $source = $options['source'];
         if ( isset( $options['name'] ) ){
             $name = $options['name'];
-        } elseif ( isset( $options['label'] ) ){
-            $name = $options['label'];
+        } elseif ( isset( $options['post_type'], $options['label_plural'] ) ){
+            $name = ucwords( str_replace( strtolower( $options['post_type'] ), $options['label_plural'], strtolower( dt_label_from_slug( $slug ) ) ) );
         } else {
             $name = dt_label_from_slug( $slug );
         }
@@ -285,7 +285,6 @@ final class Disciple_Tools_Capability_Factory {
         }, ARRAY_FILTER_USE_KEY);
 
         $capabilities = apply_filters( 'dt_capabilities', $capabilities );
-
         foreach ( $capabilities as $capability => $options ) {
             //There are some random capabilities registered that are just numbers?
             if ( !is_numeric( $capability ) ) {

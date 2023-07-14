@@ -349,6 +349,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     private function roles_settings_box(){
         $post_type = self::get_parameter( 'post_type' );
         if ( isset( $post_type ) ){
+            $capability_factory = Disciple_Tools_Capability_Factory::get_instance();
             $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
             ksort( $roles );
             ?>
@@ -367,12 +368,13 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <td>
                             <fieldset style="display: grid; grid-template-columns: repeat(4, 1fr);">
                                 <?php
-                                $capabilities = apply_filters( 'dt_capabilities', [] );
+                                $capabilities = $capability_factory->get_capabilities();
                                 foreach ( $capabilities as $capability_key => $capability ){
-                                    $is_post_type_capability = strpos( $capability_key, '_' . $post_type ) !== false;
+                                    $length = strlen( '_' . $post_type );
+                                    $is_post_type_capability = substr( $capability_key, -$length ) === '_' . $post_type;
                                     if ( $is_post_type_capability ){
                                         $is_capability_selected = isset( $role['permissions'][$capability_key] ) && $role['permissions'][$capability_key];
-                                        $capability_name = $capability['label'] ?? $capability_key;
+                                        $capability_name = $capability->name ?? $capability_key;
                                         ?>
                                         <div class="capability">
                                             <label>
@@ -385,10 +387,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                 />
                                                 <?php
                                                 echo esc_attr( $capability_name );
-                                                if ( isset( $capability['description'] ) ){
+                                                if ( isset( $capability->description ) ){
                                                     ?>
                                                     <span
-                                                        data-tooltip="<?php echo esc_attr( $capability['description'] ); ?>">
+                                                        data-tooltip="<?php echo esc_attr( $capability->description ); ?>">
                                                         <span class="dashicons dashicons-editor-help"></span>
                                                     </span>
                                                     <?php
