@@ -120,6 +120,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
         $ignore_fields = [ '_edit_lock', '_edit_last', 'last_modified', 'follow', 'unfollow' ];
+        $ignore_fields = apply_filters( 'dt_ignore_fields_logging', $ignore_fields );
 
         if ( in_array( $meta_key, $ignore_fields ) ) {
             return;
