@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-06-12T10:59:34+00:00\n"
+"POT-Creation-Date: 2023-07-14T10:46:35+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.disciple.tools/"
@@ -49,7 +49,7 @@ msgstr "向管理員請求權限。"
 msgid "Request Record Access Permission"
 msgstr "要求紀錄存取授權"
 
-#: 403.php:39 dt-users/template-new-user.php:273
+#: 403.php:39 dt-users/template-new-user.php:267
 msgid "Back"
 msgstr "背部"
 
@@ -82,10 +82,10 @@ msgid "Cancel"
 msgstr "取消"
 
 #: 403.php:59 archive-template.php:388 archive-template.php:430
-#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:132
-#: dt-assets/parts/loop-activity-comment.php:137
-#: dt-assets/parts/loop-activity-comment.php:172
-#: dt-assets/parts/loop-activity-comment.php:177
+#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:154
+#: dt-assets/parts/loop-activity-comment.php:159
+#: dt-assets/parts/loop-activity-comment.php:202
+#: dt-assets/parts/loop-activity-comment.php:207
 #: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
 #: dt-assets/parts/merge-details.php:75
 #: dt-assets/parts/modals/modal-advanced-search.php:65
@@ -111,8 +111,8 @@ msgstr "取消"
 #: dt-contacts/base-setup.php:467 dt-contacts/dmm-module.php:523
 #: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
 #: dt-groups/base-setup.php:628 dt-groups/base-setup.php:633
-#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
-#: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:272
+#: dt-users/template-new-user.php:293 dt-users/template-new-user.php:297
 #: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
 #: single-template.php:420 single-template.php:437
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
@@ -138,9 +138,9 @@ msgid "Filters"
 msgstr "篩選器"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:538
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:642
-#: dt-core/global-functions.php:670 dt-core/global-functions.php:788
-#: dt-core/global-functions.php:832 dt-posts/custom-post-type.php:18
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
+#: dt-core/global-functions.php:674 dt-core/global-functions.php:792
+#: dt-core/global-functions.php:836 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -157,7 +157,10 @@ msgstr "清除"
 msgid "Advanced Search"
 msgstr "進階搜尋"
 
-#: archive-template.php:46 dt-assets/parts/modals/modal-advanced-search.php:96
+#: archive-template.php:46 dt-assets/parts/loop-activity-comment.php:47
+#: dt-assets/parts/loop-activity-comment.php:95
+#: dt-assets/parts/loop-activity-comment.php:179
+#: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "註釋"
 
@@ -241,7 +244,7 @@ msgid "Bulk Edit"
 msgstr "大量編輯"
 
 #: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
-#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:184
+#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:195
 msgid "More"
 msgstr "更多的"
 
@@ -268,7 +271,7 @@ msgstr "從列表中選擇想要更新的所有 %1$s，並在下方進行更新"
 
 #: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:870
+#: dt-core/global-functions.php:874
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "搜索用戶"
@@ -276,7 +279,7 @@ msgstr "搜索用戶"
 #: archive-template.php:476 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2710
 #: dt-users/template-user-management.php:88
-#: dt-users/template-user-management.php:520 single-template.php:128
+#: dt-users/template-user-management.php:514 single-template.php:128
 msgid "Status"
 msgstr "狀態"
 
@@ -299,21 +302,21 @@ msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "在這裡寫下您的評論或註釋"
 
-#: archive-template.php:572 dt-assets/parts/loop-activity-comment.php:48
+#: archive-template.php:572 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "類型："
 
 #: archive-template.php:592 dt-users/template-new-user.php:129
-#: dt-users/template-new-user.php:242
+#: dt-users/template-new-user.php:236
 msgid "See More Options"
 msgstr "查看更多選項"
 
 #: archive-template.php:593 dt-users/template-new-user.php:132
-#: dt-users/template-new-user.php:245
+#: dt-users/template-new-user.php:239
 msgid "See Fewer Options"
 msgstr "查看較少選項"
 
-#: archive-template.php:629 dt-assets/parts/loop-activity-comment.php:175
+#: archive-template.php:629 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "更新資料"
@@ -372,14 +375,14 @@ msgid "None Set"
 msgstr "沒有設置"
 
 #: archive-template.php:801 archive-template.php:802
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:602
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
 #: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "沒有"
 
 #: archive-template.php:808 archive-template.php:809
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:603
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
 #: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -536,7 +539,7 @@ msgstr "您沒有任何通知"
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
-#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:435
+#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
 msgid "Delete"
 msgstr "刪除"
 
@@ -581,7 +584,7 @@ msgstr "已偵測到重覆項目"
 
 #: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:301 template-merge-post-details.php:121
+#: dt-users/template-new-user.php:295 template-merge-post-details.php:121
 #: template-merge-post-details.php:178
 msgid "Merge"
 msgstr "合併"
@@ -745,14 +748,14 @@ msgstr "添新"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:148 template-notifications.php:33
+#: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
 #: template-settings.php:60 template-settings.php:467
 msgid "Notifications"
 msgstr "通知事項"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:274
+#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:283
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "設定值"
@@ -763,8 +766,8 @@ msgstr "管理員"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:258
-#: dt-users/template-user-management.php:76 dt-users/user-management.php:108
+#: dt-metrics/combined/locations-list.php:260
+#: dt-users/template-user-management.php:76 dt-users/user-management.php:119
 msgid "Users"
 msgstr "用戶數"
 
@@ -772,47 +775,52 @@ msgstr "用戶數"
 msgid "Help"
 msgstr "救命"
 
-#: dt-assets/parts/loop-activity-comment.php:71
+#: dt-assets/parts/loop-activity-comment.php:79
 msgid "Submit comment"
 msgstr "提交評論"
 
-#: dt-assets/parts/loop-activity-comment.php:79
+#: dt-assets/parts/loop-activity-comment.php:87
 msgid "Showing:"
 msgstr "顯示："
 
-#: dt-assets/parts/loop-activity-comment.php:112
+#: dt-assets/parts/loop-activity-comment.php:101
+#: dt-users/template-user-management.php:235
+msgid "Activity"
+msgstr "活動"
+
+#: dt-assets/parts/loop-activity-comment.php:134
 #: dt-assets/parts/modals/modal-record-history.php:28
 #: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "顯示所有"
 
-#: dt-assets/parts/loop-activity-comment.php:116
+#: dt-assets/parts/loop-activity-comment.php:138
 msgid "hide all"
 msgstr "全部藏起來"
 
-#: dt-assets/parts/loop-activity-comment.php:128
+#: dt-assets/parts/loop-activity-comment.php:150
 msgid "Delete Comment:"
 msgstr "刪除評論："
 
-#: dt-assets/parts/loop-activity-comment.php:142
-#: dt-assets/parts/loop-activity-comment.php:182
+#: dt-assets/parts/loop-activity-comment.php:164
+#: dt-assets/parts/loop-activity-comment.php:212
 #: template-merge-post-details.php:95
 msgid "Sorry, something went wrong"
 msgstr "抱歉，出了一些問題"
 
-#: dt-assets/parts/loop-activity-comment.php:143
+#: dt-assets/parts/loop-activity-comment.php:165
 msgid "The comment could not be deleted."
 msgstr "無法刪除評論。"
 
-#: dt-assets/parts/loop-activity-comment.php:148
+#: dt-assets/parts/loop-activity-comment.php:170
 msgid "Edit Comment:"
 msgstr "編輯評論："
 
-#: dt-assets/parts/loop-activity-comment.php:156
+#: dt-assets/parts/loop-activity-comment.php:186
 msgid "Type of Comment"
 msgstr "評論類型"
 
-#: dt-assets/parts/loop-activity-comment.php:183
+#: dt-assets/parts/loop-activity-comment.php:213
 msgid "The comment could not be updated."
 msgstr "該評論無法更新。"
 
@@ -1142,7 +1150,7 @@ msgid ""
 "notifications."
 msgstr "點擊“未讀”按鈕以顯示所有未讀通知的列表。"
 
-#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:272
+#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:281
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "標記為已讀"
@@ -1321,7 +1329,7 @@ msgstr "創建任務"
 msgid "Existing tasks for this record:"
 msgstr "該記錄的現有任務："
 
-#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:178
+#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:187
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "登出"
@@ -1330,24 +1338,24 @@ msgstr "登出"
 msgid "Theme Update Available!"
 msgstr "主題更新可用！"
 
-#: dt-assets/parts/nav-topbar.php:242 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:251 template-notifications.php:43
 msgid "New"
 msgstr "新"
 
-#: dt-assets/parts/nav-topbar.php:248 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:257 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "所有"
 
-#: dt-assets/parts/nav-topbar.php:252 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:261 template-notifications.php:54
 msgid "Unread"
 msgstr "未讀"
 
-#: dt-assets/parts/nav-topbar.php:259
+#: dt-assets/parts/nav-topbar.php:268
 msgid "See All"
 msgstr "查看全部"
 
-#: dt-assets/parts/nav-topbar.php:278 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:287 template-notifications.php:72
 msgid "Mark All"
 msgstr "全部標記"
 
@@ -1690,7 +1698,7 @@ msgid ""
 msgstr "從與其他門徒的合作關係中轉介的聯絡人。工具網站。"
 
 #: dt-contacts/access-module.php:325 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:541
+#: dt-users/user-hooks-and-config.php:569
 msgid "Sources"
 msgstr "資料來源"
 
@@ -1801,7 +1809,7 @@ msgid "Language"
 msgstr "語言"
 
 #: dt-contacts/access-module.php:1303 dt-contacts/base-setup.php:314
-#: dt-users/template-new-user.php:193 dt-users/template-user-management.php:363
+#: dt-users/template-new-user.php:187 dt-users/template-user-management.php:367
 #: template-settings.php:653
 msgid "Gender"
 msgstr "性別"
@@ -1819,7 +1827,7 @@ msgstr "重複檢查工具"
 #: dt-contacts/base-setup.php:302 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:121
+#: dt-metrics/combined/locations-list.php:123
 #: dt-metrics/contacts/baptism-tree.php:25
 #: dt-metrics/contacts/coaching-tree.php:25
 #: dt-metrics/contacts/mapbox-maps.php:28
@@ -1830,7 +1838,7 @@ msgstr "重複檢查工具"
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
-#: dt-users/template-user-management.php:602
+#: dt-users/template-user-management.php:596
 msgid "Contacts"
 msgstr "聯絡人"
 
@@ -1911,7 +1919,7 @@ msgstr "Whatsapp"
 #: dt-contacts/base-setup.php:230
 #: dt-core/configuration/config-site-defaults.php:341
 #: dt-login/login-template.php:384 dt-users/template-new-user.php:118
-#: dt-users/template-new-user.php:119 dt-users/template-user-management.php:355
+#: dt-users/template-new-user.php:119 dt-users/template-user-management.php:359
 #: template-settings.php:156
 msgid "Email"
 msgstr "電子郵件"
@@ -1946,11 +1954,11 @@ msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "該聯繫人與系統中另一個聯繫人的關係。"
 
-#: dt-contacts/base-setup.php:317 dt-users/template-user-management.php:367
+#: dt-contacts/base-setup.php:317 dt-users/template-user-management.php:371
 msgid "Male"
 msgstr "男"
 
-#: dt-contacts/base-setup.php:318 dt-users/template-user-management.php:368
+#: dt-contacts/base-setup.php:318 dt-users/template-user-management.php:372
 msgid "Female"
 msgstr "女"
 
@@ -1986,7 +1994,7 @@ msgid ""
 msgstr "聯繫人狀態描述了我們與聯繫人交流的進展"
 
 #: dt-contacts/base-setup.php:351 dt-groups/base-setup.php:125
-#: dt-users/template-user-management.php:94 dt-users/user-management.php:118
+#: dt-users/template-user-management.php:94 dt-users/user-management.php:129
 msgid "Active"
 msgstr "活性"
 
@@ -2067,19 +2075,11 @@ msgstr "最近 30 個查看過的"
 msgid "Shared with me"
 msgstr "與我分享"
 
-#: dt-contacts/base-setup.php:702 dt-users/template-user-management.php:235
-msgid "Activity"
-msgstr "活動"
-
-#: dt-contacts/base-setup.php:709
-msgid "Comment"
-msgstr "評論"
-
-#: dt-contacts/base-setup.php:772
+#: dt-contacts/base-setup.php:735
 msgid "This %s is archived"
 msgstr "此 %s 已封存"
 
-#: dt-contacts/base-setup.php:774
+#: dt-contacts/base-setup.php:737
 msgid "Restore"
 msgstr "恢復"
 
@@ -2620,7 +2620,7 @@ msgstr "DT 網站名稱：%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:361
+#: dt-users/user-hooks-and-config.php:389
 msgid "Username: %s"
 msgstr "用戶名：％s"
 
@@ -2632,17 +2632,17 @@ msgstr "如果這是一個錯誤，請忽略此電子郵件，將不會發生任
 msgid "To reset your password, visit the following address:"
 msgstr "要重置密碼，請訪問以下地址："
 
-#: dt-core/global-functions.php:486 single-template.php:410
+#: dt-core/global-functions.php:490 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
 msgstr "這是必需的"
 
-#: dt-core/global-functions.php:644
+#: dt-core/global-functions.php:648
 msgid "Add new tag \"%s\""
 msgstr "新增標籤「%s」"
 
-#: dt-core/global-functions.php:645
+#: dt-core/global-functions.php:649
 msgid "Tag \"%s\" is already being used"
 msgstr "「%s」標籤已被使用"
 
@@ -2650,68 +2650,66 @@ msgstr "「%s」標籤已被使用"
 msgid "(no title)"
 msgstr "（無題）"
 
-#: dt-core/release-notifications.php:43
+#: dt-core/release-notifications.php:58
 msgid "Release Announcement!"
 msgstr ""
 
-#: dt-core/release-notifications.php:44
+#: dt-core/release-notifications.php:59
 msgid "Disciple.Tools Theme Version %1$s"
 msgstr ""
 
-#: dt-core/release-notifications.php:49
+#: dt-core/release-notifications.php:65
 msgid "Theme News"
 msgstr ""
 
-#: dt-core/release-notifications.php:50 dt-core/release-notifications.php:59
+#: dt-core/release-notifications.php:68 dt-core/release-notifications.php:77
 msgid "Other News"
 msgstr ""
 
-#: dt-core/release-notifications.php:51
+#: dt-core/release-notifications.php:69
 msgid "Get Involved"
 msgstr ""
 
-#: dt-core/release-notifications.php:63
+#: dt-core/release-notifications.php:81
 msgid "Other news not available."
 msgstr ""
 
-#: dt-core/release-notifications.php:78
+#: dt-core/release-notifications.php:96
+msgid "Freely given, but not cheap"
+msgstr ""
+
+#: dt-core/release-notifications.php:98
+msgid ""
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
+msgstr ""
+
+#: dt-core/release-notifications.php:100
 msgid "Give"
 msgstr ""
 
-#: dt-core/release-notifications.php:80
-msgid "Make Disciple.Tools better by joining us financially."
-msgstr ""
-
-#: dt-core/release-notifications.php:80
-msgid "Join us here"
-msgstr ""
-
-#: dt-core/release-notifications.php:86
+#: dt-core/release-notifications.php:104 dt-core/release-notifications.php:108
 msgid "Translate"
 msgstr ""
 
-#: dt-core/release-notifications.php:88 dt-users/user-initial-setup.php:68
+#: dt-core/release-notifications.php:106 dt-users/user-initial-setup.php:68
 #: template-settings.php:674
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
 
-#: dt-core/release-notifications.php:88
-msgid "Click here"
-msgstr ""
-
-#: dt-core/release-notifications.php:94
+#: dt-core/release-notifications.php:113
 msgid "Build or Document"
 msgstr ""
 
-#: dt-core/release-notifications.php:96
+#: dt-core/release-notifications.php:115
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
 
-#: dt-core/release-notifications.php:96
+#: dt-core/release-notifications.php:117
 msgid "Find out more"
 msgstr ""
 
@@ -2726,7 +2724,7 @@ msgstr "組"
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:166
+#: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:100
@@ -2750,7 +2748,7 @@ msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "該小組正在積極開會。"
 
-#: dt-groups/base-setup.php:130 dt-users/user-management.php:121
+#: dt-groups/base-setup.php:130 dt-users/user-management.php:132
 msgid "Inactive"
 msgstr "不活躍"
 
@@ -3197,7 +3195,7 @@ msgstr "忘記密碼"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:211
+#: dt-metrics/combined/locations-list.php:213
 msgid "Churches"
 msgstr "教堂"
 
@@ -3302,7 +3300,7 @@ msgstr "指定進行面對面訪問的聯繫人數量"
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:524
+#: dt-users/template-user-management.php:518
 msgid "Active Contacts"
 msgstr "活動聯繫人"
 
@@ -3397,12 +3395,12 @@ msgid "This Week"
 msgstr "本星期"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:554
+#: dt-users/template-user-management.php:548
 msgid "This Month"
 msgstr "這個月"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:558
+#: dt-users/template-user-management.php:552
 msgid "Last Month"
 msgstr "上個月"
 
@@ -3575,7 +3573,7 @@ msgstr "在％2 $ s中的％1 $ s"
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
-#: dt-users/template-user-management.php:568
+#: dt-users/template-user-management.php:562
 msgid "All Time"
 msgstr "整天"
 
@@ -3831,7 +3829,7 @@ msgstr "%1$d %2$s 已創建"
 msgid "Activity Log"
 msgstr "活動日誌"
 
-#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:185
+#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:196
 msgid "Less"
 msgstr "較少的"
 
@@ -4074,7 +4072,8 @@ msgid "Un-Follow"
 msgstr "取消關注"
 
 #: dt-posts/dt-posts.php:103
-msgid "Updated existing record instead of creating a new record."
+msgid ""
+"This record was automatically updated rather than creating a new record."
 msgstr ""
 
 #: dt-posts/dt-posts.php:1646
@@ -4478,22 +4477,22 @@ msgstr "發送"
 msgid "Links"
 msgstr "鏈接"
 
-#: dt-reports/magic-url-landing-page.php:54
-#: dt-reports/magic-url-landing-page.php:58
+#: dt-reports/magic-url-landing-page.php:29
+#: dt-reports/magic-url-landing-page.php:33
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Invalid Link"
 msgstr "魔術鏈接提交"
 
-#: dt-reports/magic-url-landing-page.php:63
+#: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
 msgstr ""
 
-#: dt-reports/magic-url-landing-page.php:64
+#: dt-reports/magic-url-landing-page.php:39
 msgid "Please %s, or locate a more recent key, or request a new one."
 msgstr ""
 
-#: dt-reports/magic-url-landing-page.php:64
+#: dt-reports/magic-url-landing-page.php:39
 msgid "login"
 msgstr ""
 
@@ -4599,7 +4598,7 @@ msgid "Search multipliers and contacts"
 msgstr "搜尋倍數與聯絡人"
 
 #: dt-users/template-new-user.php:116 dt-users/template-user-management.php:87
-#: dt-users/template-user-management.php:358
+#: dt-users/template-user-management.php:362
 msgid "Display Name"
 msgstr "顯示名稱"
 
@@ -4617,42 +4616,42 @@ msgstr "用戶名"
 msgid "Role"
 msgstr "角色"
 
-#: dt-users/template-new-user.php:177 dt-users/template-user-management.php:428
+#: dt-users/template-new-user.php:171 dt-users/template-user-management.php:423
 msgid "Click here to see roles documentation"
 msgstr "單擊此處查看角色文檔"
 
-#: dt-users/template-new-user.php:181
+#: dt-users/template-new-user.php:175
 msgid "Create User"
 msgstr "建立使用者"
 
-#: dt-users/template-new-user.php:186 dt-users/template-new-user.php:188
+#: dt-users/template-new-user.php:180 dt-users/template-new-user.php:182
 #: template-settings.php:610
 msgid "First Name"
 msgstr "名字"
 
-#: dt-users/template-new-user.php:186 dt-users/template-new-user.php:190
-#: dt-users/template-new-user.php:193 dt-users/template-new-user.php:212
-#: dt-users/template-new-user.php:226
+#: dt-users/template-new-user.php:180 dt-users/template-new-user.php:184
+#: dt-users/template-new-user.php:187 dt-users/template-new-user.php:206
+#: dt-users/template-new-user.php:220
 msgid "optional"
 msgstr "可選的"
 
-#: dt-users/template-new-user.php:190 dt-users/template-new-user.php:191
+#: dt-users/template-new-user.php:184 dt-users/template-new-user.php:185
 #: template-settings.php:616
 msgid "Last Name"
 msgstr "姓"
 
-#: dt-users/template-new-user.php:226 dt-users/template-new-user.php:230
-#: dt-users/template-user-management.php:395
-#: dt-users/template-user-management.php:402 template-settings.php:226
+#: dt-users/template-new-user.php:220 dt-users/template-new-user.php:224
+#: dt-users/template-user-management.php:399
+#: dt-users/template-user-management.php:406 template-settings.php:226
 #: template-settings.php:645
 msgid "Biography"
 msgstr "傳"
 
-#: dt-users/template-new-user.php:265
+#: dt-users/template-new-user.php:259
 msgid "Upgrading a contact"
 msgstr "升級聯繫人"
 
-#: dt-users/template-new-user.php:268
+#: dt-users/template-new-user.php:262
 msgid ""
 "The new user will have access to all the fields and comments on this contact "
 "record. We suggest archiving the comments if they contain sensitive data."
@@ -4660,27 +4659,27 @@ msgstr ""
 "新用戶將有權訪問此聯繫人記錄上的所有字段和評論。如果評論包含敏感數據，我們建"
 "議將其歸檔。"
 
-#: dt-users/template-new-user.php:275
+#: dt-users/template-new-user.php:269
 msgid "Continue and archive comments"
 msgstr "繼續並存檔評論"
 
-#: dt-users/template-new-user.php:276
+#: dt-users/template-new-user.php:270
 msgid "Continue, keeping comments"
 msgstr "繼續，保留評論"
 
-#: dt-users/template-new-user.php:285
+#: dt-users/template-new-user.php:279
 msgid "Merge Contact Details"
 msgstr "合併聯繫人詳細信息"
 
-#: dt-users/template-new-user.php:287
+#: dt-users/template-new-user.php:281
 msgid "A new contact record has been created."
 msgstr "已創建新的聯繫人記錄。"
 
-#: dt-users/template-new-user.php:290
+#: dt-users/template-new-user.php:284
 msgid "The old one is now closed."
 msgstr "舊的現已關閉。"
 
-#: dt-users/template-new-user.php:293
+#: dt-users/template-new-user.php:287
 msgid "Do you wish to merge fields from the old record to the new one?"
 msgstr "您希望將舊記錄中的字段合併到新記錄嗎？"
 
@@ -4752,7 +4751,7 @@ msgid "User Profile"
 msgstr "用戶資料"
 
 #: dt-users/template-user-management.php:345
-#: dt-users/user-hooks-and-config.php:379
+#: dt-users/user-hooks-and-config.php:407
 msgid "View contact record"
 msgstr "查看聯繫記錄"
 
@@ -4760,138 +4759,144 @@ msgstr "查看聯繫記錄"
 msgid "Edit User"
 msgstr "編輯用戶"
 
-#: dt-users/template-user-management.php:414 template-settings.php:149
+#: dt-users/template-user-management.php:355
+#, fuzzy
+#| msgid "Password"
+msgid "Email Password Reset"
+msgstr "密碼"
+
+#: dt-users/template-user-management.php:418 template-settings.php:149
 msgid "Roles"
 msgstr "的角色"
 
-#: dt-users/template-user-management.php:456
+#: dt-users/template-user-management.php:450
 msgid "Save Roles"
 msgstr "保存角色"
 
-#: dt-users/template-user-management.php:464
+#: dt-users/template-user-management.php:458
 msgid "Access by Source"
 msgstr "依來源存取"
 
-#: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:548
+#: dt-users/template-user-management.php:464
+#: dt-users/user-hooks-and-config.php:576
 msgid "All Sources - gives access to all contacts"
 msgstr "所有來源 - 將存取權給予所有聯絡人"
 
-#: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:555
+#: dt-users/template-user-management.php:470
+#: dt-users/user-hooks-and-config.php:583
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
 msgstr "自訂 - 存取自有聯絡人及下方所有選定來源的聯絡人"
 
-#: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:562
+#: dt-users/template-user-management.php:476
+#: dt-users/user-hooks-and-config.php:590
 msgid "No Sources - only own contacts"
 msgstr "沒有來源 - 僅限自有聯絡人"
 
-#: dt-users/template-user-management.php:488
+#: dt-users/template-user-management.php:482
 msgid "Sources List"
 msgstr "來源清單"
 
-#: dt-users/template-user-management.php:500
+#: dt-users/template-user-management.php:494
 msgid "Save Allowed Sources"
 msgstr "儲存允許的來源"
 
-#: dt-users/template-user-management.php:530
+#: dt-users/template-user-management.php:524
 msgid "Updates Needed"
 msgstr "需要更新"
 
-#: dt-users/template-user-management.php:536
+#: dt-users/template-user-management.php:530
 msgid "Pending"
 msgstr "待定"
 
-#: dt-users/template-user-management.php:543
+#: dt-users/template-user-management.php:537
 msgid "Unread Notifications"
 msgstr "未讀通知"
 
-#: dt-users/template-user-management.php:550
+#: dt-users/template-user-management.php:544
 msgid "Assignments"
 msgstr "指派項目"
 
-#: dt-users/template-user-management.php:564
+#: dt-users/template-user-management.php:558
 msgid "This Year"
 msgstr "今年"
 
-#: dt-users/template-user-management.php:582
+#: dt-users/template-user-management.php:576
 msgid "Pace"
 msgstr "步調"
 
-#: dt-users/template-user-management.php:583
+#: dt-users/template-user-management.php:577
 msgid "Assigned and not accepted"
 msgstr "已指派但未接受"
 
-#: dt-users/template-user-management.php:585
+#: dt-users/template-user-management.php:579
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "最近 10 位聯絡人從受到指派到接受聯絡的時間"
 
-#: dt-users/template-user-management.php:587
+#: dt-users/template-user-management.php:581
 msgid "Accepted with no contact attempt"
 msgstr "已接受，但沒有嘗試聯絡"
 
-#: dt-users/template-user-management.php:589
+#: dt-users/template-user-management.php:583
 msgid "Oldest 10 update needed"
 msgstr "需要最早的 10 次更新"
 
-#: dt-users/template-user-management.php:591
+#: dt-users/template-user-management.php:585
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "最近 10 位聯絡人從受到指派到嘗試聯絡的時間"
 
-#: dt-users/user-hooks-and-config.php:167
+#: dt-users/user-hooks-and-config.php:195
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
 msgstr "歡迎 %1$s，這是您的個人聯繫記錄。隨時更新字段並@提及我或其他用戶"
 
-#: dt-users/user-hooks-and-config.php:283
-#: dt-users/user-hooks-and-config.php:321
+#: dt-users/user-hooks-and-config.php:311
+#: dt-users/user-hooks-and-config.php:349
 msgid "[%s] Login Details"
 msgstr "[%s] 登錄詳情"
 
-#: dt-users/user-hooks-and-config.php:294
+#: dt-users/user-hooks-and-config.php:322
 msgid "To set your password, visit the following address:"
 msgstr "要設置您的密碼，請訪問以下地址："
 
-#: dt-users/user-hooks-and-config.php:317
+#: dt-users/user-hooks-and-config.php:345
 msgid "To log in click here: %s"
 msgstr "要登錄，請單擊此處：%s"
 
-#: dt-users/user-hooks-and-config.php:359
+#: dt-users/user-hooks-and-config.php:387
 msgid "Hi %s,"
 msgstr "他的，"
 
-#: dt-users/user-hooks-and-config.php:360
+#: dt-users/user-hooks-and-config.php:388
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "您已受邀在 %2$s 加入 %1$s"
 
-#: dt-users/user-hooks-and-config.php:506
+#: dt-users/user-hooks-and-config.php:534
 msgid "Extra Disciple.Tools Information"
 msgstr "額外的門徒工具信息"
 
-#: dt-users/user-hooks-and-config.php:509
+#: dt-users/user-hooks-and-config.php:537
 msgid "Corresponds to Contact"
 msgstr "對應聯繫人"
 
-#: dt-users/user-hooks-and-config.php:517 dt-users/user-management.php:183
+#: dt-users/user-hooks-and-config.php:545 dt-users/user-management.php:194
 msgid "View Contact"
 msgstr "查看聯絡人"
 
-#: dt-users/user-hooks-and-config.php:519
+#: dt-users/user-hooks-and-config.php:547
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "添加該用戶對應的聯繫人記錄的名稱。"
 
-#: dt-users/user-hooks-and-config.php:520
+#: dt-users/user-hooks-and-config.php:548
 msgid "Learn more."
 msgstr "學到更多。"
 
-#: dt-users/user-hooks-and-config.php:527
+#: dt-users/user-hooks-and-config.php:555
 msgid "User Language"
 msgstr "用戶語言"
 
@@ -4907,66 +4912,66 @@ msgstr "邀請用戶"
 msgid "Default Language"
 msgstr "用戶語言"
 
-#: dt-users/user-management.php:110
+#: dt-users/user-management.php:121
 msgid "Add User"
 msgstr "新增使用者"
 
-#: dt-users/user-management.php:119
+#: dt-users/user-management.php:130
 msgid "Away"
 msgstr "遠"
 
-#: dt-users/user-management.php:120
+#: dt-users/user-management.php:131
 msgid "Inconsistent"
 msgstr "前後不一致"
 
-#: dt-users/user-management.php:172
+#: dt-users/user-management.php:183
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%3$s天后，%2$s接受了 %1$s "
 
-#: dt-users/user-management.php:173
+#: dt-users/user-management.php:184
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s 等待%2$s天的聯繫嘗試"
 
-#: dt-users/user-management.php:174
+#: dt-users/user-management.php:185
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "%3$s天后嘗試在%2$s與 %1$s 聯繫"
 
-#: dt-users/user-management.php:175
+#: dt-users/user-management.php:186
 msgid "Unable to update"
 msgstr "無法更新"
 
-#: dt-users/user-management.php:176
+#: dt-users/user-management.php:187
 msgid "View New User"
 msgstr "檢視新使用者"
 
-#: dt-users/user-management.php:177
+#: dt-users/user-management.php:188
 msgid "View New Contact"
 msgstr "查看新聯繫人"
 
-#: dt-users/user-management.php:178
+#: dt-users/user-management.php:189
 msgid "Email address is already in the system as a user!"
 msgstr "電子郵件地址已在系統中設為使用者！"
 
-#: dt-users/user-management.php:179
+#: dt-users/user-management.php:190
 msgid "Username is already in the system as a user!"
 msgstr "使用者名稱已在系統中設為使用者！"
 
-#: dt-users/user-management.php:180
+#: dt-users/user-management.php:191
 msgid "Remove"
 msgstr "移除"
 
-#: dt-users/user-management.php:181
+#: dt-users/user-management.php:192
 msgid "This contact is already a user."
 msgstr "這個聯絡人已是使用者。"
 
-#: dt-users/user-management.php:182
+#: dt-users/user-management.php:193
 msgid "View User"
 msgstr "檢視使用者"
 
-#: dt-users/user-management.php:290
+#: dt-users/user-management.php:301
 msgid "%s days since last update"
 msgstr "自上次更新以來的％s天"
 
@@ -5039,15 +5044,15 @@ msgstr "您在 %1$s 上設置了此任務：%2$s"
 msgid "D.T Workflow"
 msgstr "D.T 工作流程"
 
-#: header.php:42
+#: header.php:19
 msgid "D.T Record"
 msgstr "D.T 紀錄"
 
-#: header.php:78
+#: header.php:55
 msgid "Javascript must be enabled for this site to function correctly."
 msgstr "必須啟用Javascript，此網站才能正常運行。"
 
-#: header.php:84
+#: header.php:61
 msgid ""
 "You seem to be using an out-of-date web browser. Without the most up-to-date "
 "version of your browser, this may site may not function correctly. Please "
@@ -5056,7 +5061,7 @@ msgstr ""
 "您似乎正在使用過時的Web瀏覽器。如果沒有最新版本的瀏覽器，則該網站可能無法正常"
 "運行。請注意，不支持Internet Explorer。"
 
-#: header.php:86
+#: header.php:63
 msgid "See what browser you are using."
 msgstr "查看您使用的瀏覽器。"
 
@@ -5346,6 +5351,9 @@ msgstr "已掃描存取聯絡人："
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "找到的重複項目："
+
+#~ msgid "Comment"
+#~ msgstr "評論"
 
 #~ msgid "Select All"
 #~ msgstr "全選"
