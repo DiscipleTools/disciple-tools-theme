@@ -125,7 +125,8 @@
 
   // get records when a filter is clicked
   $(document).on('change', '.js-list-view', () => {
-    get_records_for_current_filter()
+    reset_split_by_filters();
+    get_records_for_current_filter();
   });
 
   //load record for the first filter when a tile is clicked
@@ -414,6 +415,10 @@
     // Determine if default resets are required?
     if ( custom_filter ) {
       current_filter = custom_filter
+
+      // Ensure to uncheck all split by option filters, to avoid infinity loops!
+      $(".js-list-view-split-by").prop('checked', false);
+
     } else if (current_view === "custom_filter") {
       let filterId = checked.data("id")
       current_filter = window.lodash.find(custom_filters, {ID: filterId})
@@ -426,8 +431,14 @@
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
 
-    // Conduct a deep copy (clone) of filter, so as to support future returns to default
+    // Conduct a deep copy (clone) of filter, to support future returns to default
     current_filter = $.extend(true, {}, current_filter);
+
+    // Determine if any split by filters are to be applied.
+    let checked_split_by = $(".js-list-view-split-by:checked");
+    if (checked_split_by && checked_split_by.length > 0) {
+      current_filter = apply_split_by_filters(current_filter, checked_split_by.data('field_id'), checked_split_by.data('field_option_id'), checked_split_by.data('field_option_label'));
+    }
 
     clear_search_query()
 
@@ -700,6 +711,11 @@
     if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
       const index = status.indexOf(filterOutArchivedItemsKey)
       status.splice(index, 1)
+
+      // Remove status property from query if empty.
+      if ( status.length === 0 ) {
+        window.lodash.unset(current_filter['query'], status_key);
+      }
     }
 
     if (!showArchived && (!status || status.length === 0)) {
@@ -923,6 +939,7 @@
     let query = current_filter.query
     if ( offset ){
       query["offset"] = offset
+      query['limit'] = 500
     }
     if ( sort ){
       query.sort = sort
@@ -937,8 +954,8 @@
       get_records_promise.abort()
     }
     query.fields_to_return = fields_to_show_in_table
-    get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
-    get_records_promise.then(response=>{
+    get_records_promise = window.makeRequestOnPosts( 'POST', `${list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+    return get_records_promise.then(response=>{
       if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
       } else {
@@ -977,7 +994,10 @@
   }
 
   $('#load-more').on('click', function () {
-    get_records( items.length )
+    $(this).addClass('loading')
+    get_records( items.length ).then(()=>{
+      $(this).removeClass('loading')
+    })
   })
 
 
@@ -1081,6 +1101,7 @@
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
     let filterName = window.lodash.escape( $('#new-filter-name').val() )
+    reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
@@ -2627,5 +2648,123 @@
         console.log( e )
       })
   }
+
+  /**
+   * Split By Feature
+   */
+
+  $("#split_by_current_filter_button").on("click", function () {
+    let field_id = $("#split_by_current_filter_select").val();
+    if ( !field_id ) {
+      return;
+    }
+    $(this).addClass('loading');
+    let split_by_accordion = $(".split-by-current-filter-accordion");
+    let split_by_results = $("#split_by_current_filter_results");
+    let split_by_no_results_msg = $("#split_by_current_filter_no_results_msg");
+
+    $(split_by_no_results_msg).fadeOut('fast');
+
+
+    $(split_by_results).slideUp('fast', function () {
+      let filters = (current_filter.query !== undefined) ? current_filter.query:[];
+      window.API.split_by(list_settings.post_type, field_id, filters).then(
+        function (response) {
+          $('#split_by_current_filter_button').removeClass('loading');
+          let summary_displayed = false;
+          if (response && response.length > 0) {
+            let html = '';
+            $.each(response, function (idx, result) {
+              if (result['value']) {
+                summary_displayed = true;
+                let option_id = result['value'];
+                let option_id_label = (result['label'] !== '') ? result['label'] : result['value'];
+
+                html += `
+                    <label class="list-view">
+                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" data-field_option_label="${window.lodash.escape(option_id_label)}" autocomplete="off">
+                      <span>${window.lodash.escape(option_id_label)}</span>
+                      <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(option_id)}">${window.lodash.escape(result['count'])}</span>
+                    </label>
+                    `;
+              }
+            });
+
+            $(split_by_accordion).slideDown('fast', function () {
+              $(split_by_results).html(html);
+              $(split_by_results).slideDown('fast');
+            });
+          }
+
+          if (!summary_displayed) {
+            $(split_by_accordion).slideUp('fast', function () {
+              $(split_by_no_results_msg).fadeIn('fast');
+            });
+          }
+        }
+      );
+    });
+  });
+
+  $(document).on('change', '.js-list-view-split-by', () => {
+    get_records_for_current_filter();
+  });
+
+  function apply_split_by_filters(filter, field_id, option_id, option_label) {
+    if (filter && field_id && option_id && option_label) {
+
+      // Fetch field and option display labels.
+      let field_id_label = field_id;
+      let option_id_label = option_label;
+      let setting_fields = window.list_settings.post_type_settings.fields;
+      if (setting_fields[field_id] && setting_fields[field_id]['name']) {
+        field_id_label = setting_fields[field_id]['name'];
+      }
+
+      // Add new label.
+      filter['labels'].push({
+        'id': option_id,
+        'field': field_id,
+        'name': `${window.lodash.escape(field_id_label)}: ${window.lodash.escape(option_id_label)}`
+      });
+
+      // Ensure a fields array is available.
+      if (filter['query']['fields'] === undefined) {
+        filter['query']['fields'] = [];
+      }
+
+      let query_field_obj = {};
+      query_field_obj[field_id] = (option_id !== 'NULL') ? [option_id] : [];
+      if (filter['query']['fields'].push !== undefined) {
+        filter['query']['fields'].push(query_field_obj);
+      }
+    }
+
+    return filter;
+  }
+
+  function reset_split_by_filters() {
+    let split_by_filter_select = $("#split_by_current_filter_select");
+    if (current_filter && (current_filter['query']['fields'] !== undefined)) {
+      let field_id = $(split_by_filter_select).val();
+      $.each(current_filter['query']['fields'], function (field_idx, field) {
+
+        // Identify selected split by filters to be removed from main current global filter.
+        if (field[field_id] !== undefined) {
+          $('.current-filter-list.' + field_id).find('.current-filter-list-close').click();
+        }
+      });
+    }
+
+    // Clear down split-by area.
+    $(split_by_filter_select).val('');
+    $("#split_by_current_filter_no_results_msg").fadeOut('fast');
+    $(".split-by-current-filter-accordion").slideUp('fast', function () {
+    });
+  }
+
+  /**
+   * Split By Feature
+   */
 
 })(window.jQuery, window.list_settings, window.Foundation);

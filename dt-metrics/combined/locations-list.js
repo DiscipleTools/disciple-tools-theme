@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
   `)
 
 
-  if( window.wpApiShare.url_path.startsWith( 'metrics/combined/locations_list' )) {
+  if( window.wpApiShare.url_path.startsWith( window.wp_js_object.load_url )) {
     LISTDATA = window.wp_js_object.mapping_module
     page_mapping_list()
   }
@@ -69,7 +69,7 @@ function page_mapping_list() {
         <span id="current_level" class="current_level"></span>
       </div>
 
-      <div id="location_list" class="location_list"></div>
+      <div id="location_list" class="location_list"><span class="loading-spinner active"></span></div>
       <hr id="map_hr_2" class="map_hr">
     </div> <!-- end widget -->
   `);
@@ -95,7 +95,7 @@ function get_data( force_refresh = false ) {
     type: "GET",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: `${window.wp_js_object.rest_endpoints_base}/data?refresh=${force_refresh}`,
+    url: `${window.wp_js_object.rest_endpoint}?refresh=${force_refresh}`,
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', window.wp_js_object.nonce );
     },

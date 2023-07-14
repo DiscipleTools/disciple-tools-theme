@@ -147,6 +147,34 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+        //list posts
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/list', [
+                [
+                    'methods'  => [ 'GET', 'POST' ],
+                    'callback' => [ $this, 'get_list' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                    ],
+                    'permission_callback' => '__return_true',
+                ]
+            ]
+        );
+
+        //split_by
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/split_by', [
+                [
+                    'methods' => 'POST',
+                    'callback' => [ $this, 'split_by' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                    ],
+                    'permission_callback' => '__return_true',
+                ]
+            ]
+        );
+
         //get_posts_for_typeahead
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/compact', [
@@ -540,6 +568,12 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $get_params = $request->get_json_params() ?? $request->get_query_params();
         return DT_Posts::list_posts( $url_params['post_type'], $get_params );
+    }
+
+    public function split_by( WP_REST_Request $request ){
+        $url_params = $request->get_url_params();
+        $get_params = $request->get_json_params() ?? $request->get_query_params();
+        return DT_Posts::split_by( $url_params['post_type'], $get_params );
     }
 
     public function get_posts_for_typeahead( WP_REST_Request $request ){

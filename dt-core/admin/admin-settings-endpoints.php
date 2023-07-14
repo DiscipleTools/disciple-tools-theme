@@ -181,6 +181,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'post_tile' => null,
                 'post_setting' => null,
             ];
+            $no_tile_elements = [];
 
             $post_tiles = DT_Posts::get_post_tiles( $post_type );
             foreach ( $post_tiles as $tile_key => $tile_value ) {
@@ -192,6 +193,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 ];
 
                 $post_settings = DT_Posts::get_post_settings( $post_type, false );
+
                 foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
                     if ( isset( $setting_value['tile'] ) && $setting_value['tile'] === $tile_key ) {
                         $output[] = [
@@ -200,6 +202,19 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                             'post_tile' => $tile_key,
                             'post_setting' => $setting_key,
                         ];
+                    }
+                    if ( !isset( $setting_value['tile'] ) || $setting_value['tile'] === 'no_tile' ) {
+                        if ( in_array( $post_label . ' > ' . $setting_value['name'], $no_tile_elements ) ) {
+                            continue;
+                        }
+                        $setting_value['label'] = '(No Tile)';
+                            $output[] = [
+                                'label' => $post_label . ' > ' . $setting_value['label'] . ' > ' . $setting_value['name'],
+                                'post_type' => $post_type,
+                                'post_tile' => 'no-tile-hidden',
+                                'post_setting' => $setting_key,
+                            ];
+                            $no_tile_elements[] = $post_label . ' > ' . $setting_value['name'];
                     }
                 }
             }
@@ -309,7 +324,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $field_customizations = dt_get_option( 'dt_field_customizations' );
             foreach ( $field_customizations[$post_type] as  $field_key => $field_settings ) {
                 if ( $field_customizations[$post_type][$field_key]['tile'] === $tile_key ) {
-                    unset( $field_customizations[$post_type][$field_key]['tile'] );
+                    $field_customizations[$post_type][$field_key]['tile'] = 'no_tile';
                 }
             }
             update_option( 'dt_field_customizations', $field_customizations );
@@ -671,8 +686,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'description' => $new_field_option_description,
                 ];
 
-            if ( $field_option_icon ) {
-                $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key]['icon'] = $field_option_icon;
+            if ( $field_option_icon ){
+                $field_option_icon = strtolower( trim( $field_option_icon ) );
+                $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
+                $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key][$icon_key] = $field_option_icon;
+
+                if ( $icon_key == 'font-icon' ){
+                    $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key]['icon'] = '';
+                }
             }
 
             update_option( 'dt_field_customizations', $custom_field_options );
@@ -697,8 +718,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'description' => $new_field_option_description,
             ];
 
-            if ( $field_option_icon ) {
-                $custom_field_option['icon'] = $field_option_icon;
+            if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
+                $field_option_icon = strtolower( trim( $field_option_icon ) );
+                $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
+                $custom_field_option[$icon_key] = $field_option_icon;
+
+                if ( $icon_key == 'font-icon' ){
+                    $custom_field_option['icon'] = '';
+                }
             }
 
             // Create default_name to store the default field option label if it changed
@@ -730,7 +757,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        if ( $all_non_custom_fields[$field_key]['name'] === trim( $custom_name ) ) {
+        if ( ( $all_non_custom_fields[$field_key]['name'] ?? '' ) === trim( $custom_name ) ) {
             return false;
         }
         return true;
@@ -739,7 +766,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        if ( $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] == trim( $custom_label ) ) {
+        if ( $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] ?? '' == trim( $custom_label ) ) {
             return false;
         }
         return true;
@@ -749,7 +776,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        $default_name = $all_non_custom_fields[$field_key]['name'];
+        $default_name = $all_non_custom_fields[$field_key]['name'] ?? '';
         return $default_name;
     }
 
@@ -757,7 +784,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
-        $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'];
+        $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] ?? '';
         return $default_name;
     }
 
@@ -889,7 +916,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
 
             // Field icon
-            if ( isset( $post_submission['field_icon'] ) ) {
+            if ( isset( $post_submission['field_icon'] ) && strpos( $post_submission['field_icon'], 'undefined' ) === false ) {
                 $field_icon                           = $post_submission['field_icon'];
                 $field_icon_key                       = ( ! empty( $field_icon ) && strpos( $field_icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
                 $field_null_icon_key                  = ( $field_icon_key === 'font-icon' ) ? 'icon' : 'font-icon';

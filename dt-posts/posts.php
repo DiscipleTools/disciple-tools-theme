@@ -1198,7 +1198,7 @@ class Disciple_Tools_Posts
 
                 $locale = get_user_locale();
 
-                $post_query = " OR p.ID IN ( SELECT post_id
+                $post_query .= " OR p.ID IN ( SELECT post_id
                                   FROM $wpdb->postmeta
                                   WHERE meta_key LIKE '" . esc_sql( $locale ) . "'
                                   AND meta_value LIKE '%" . esc_sql( $search ) . "%' )";
@@ -2916,7 +2916,7 @@ class Disciple_Tools_Posts
      */
     public static function filter_wp_post_object_fields( $post, $meta = null ){
         $filtered_post = [
-            'ID'            => $post['ID'],
+            'ID'            => (int) $post['ID'],
             'post_type'     => $post['post_type'],
             'post_date_gmt' => $post['post_date_gmt'],
             'post_date'     => $post['post_date'],

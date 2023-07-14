@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-03-30T15:54:40+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:32+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"POT-Creation-Date: 2023-06-12T10:59:34+00:00\n"
+"PO-Revision-Date: 2023-06-09 07:28+0000\n"
+"Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Telugu <https://translate.disciple.tools/projects/disciple-"
 "tools/disciple-tools-theme/te/>\n"
 "Language: te\n"
@@ -39,7 +39,7 @@ msgstr "అనుమతి నిరాకరించబడింది"
 
 #: 403.php:35
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "క్షమించండి,% 1 $ s ని id% 2 $ s తో చూడటానికి మీకు అనుమతి లేదు."
+msgstr "క్షమించండి, %1$s ని id %2$s తో చూడటానికి మీకు అనుమతి లేదు."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -66,7 +66,7 @@ msgstr "ప్రాప్యత అభ్యర్థన గురించి 
 msgid "Submit Request"
 msgstr "అభ్యర్థనను సమర్పించండి"
 
-#: 403.php:55 archive-template.php:780 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:847 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -81,8 +81,8 @@ msgstr "అభ్యర్థనను సమర్పించండి"
 msgid "Cancel"
 msgstr "రద్దు చేయండి"
 
-#: 403.php:59 archive-template.php:321 archive-template.php:363
-#: archive-template.php:804 dt-assets/parts/loop-activity-comment.php:132
+#: 403.php:59 archive-template.php:388 archive-template.php:430
+#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:132
 #: dt-assets/parts/loop-activity-comment.php:137
 #: dt-assets/parts/loop-activity-comment.php:172
 #: dt-assets/parts/loop-activity-comment.php:177
@@ -110,7 +110,7 @@ msgstr "రద్దు చేయండి"
 #: dt-contacts/access-module.php:660 dt-contacts/base-setup.php:432
 #: dt-contacts/base-setup.php:467 dt-contacts/dmm-module.php:523
 #: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
-#: dt-groups/base-setup.php:618 dt-groups/base-setup.php:623
+#: dt-groups/base-setup.php:628 dt-groups/base-setup.php:633
 #: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
 #: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
 #: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
@@ -138,17 +138,17 @@ msgstr "క్రొత్త%s ను సృష్టించండి"
 msgid "Filters"
 msgstr "ఫిల్టర్లు"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:471
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:634
-#: dt-core/global-functions.php:662 dt-core/global-functions.php:780
-#: dt-core/global-functions.php:824 dt-posts/custom-post-type.php:18
+#: archive-template.php:36 archive-template.php:126 archive-template.php:538
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:642
+#: dt-core/global-functions.php:670 dt-core/global-functions.php:788
+#: dt-core/global-functions.php:832 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "%s శోధించండి"
 
 #: archive-template.php:37 archive-template.php:127
-#: dt-mapping/geocode-api/mapbox-api.php:291
+#: dt-mapping/geocode-api/mapbox-api.php:293
 msgid "Clear"
 msgstr "క్లియర్"
 
@@ -178,12 +178,12 @@ msgstr "అన్ని ఫీల్డ్‌లను శోధించండ�
 msgid "Communication Channels"
 msgstr "కమ్యూనికేషన్ ఛానెల్‌లు"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:358
+#: archive-template.php:106 archive-template.php:193 archive-template.php:425
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "వర్తించు"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:359
+#: archive-template.php:107 archive-template.php:194 archive-template.php:426
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "డిఫాల్ట్ రీసెట్"
@@ -197,207 +197,220 @@ msgstr "%s ఫిల్టర్లు"
 msgid "Create custom filter"
 msgstr "అనుకూల ఫిల్టర్‌ని సృష్టించండి"
 
-#: archive-template.php:225
+#: archive-template.php:221
+msgctxt "Split By"
+msgid "Split By"
+msgstr ""
+
+#: archive-template.php:282
+#, fuzzy
+#| msgid "No duplicates found."
+msgid "No results found"
+msgstr "నకిలీలు కనుగొనబడలేదు."
+
+#: archive-template.php:292
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "% s జాబితా"
+msgstr "%s జాబితా"
 
-#: archive-template.php:232
+#: archive-template.php:299
 msgid "Sort"
 msgstr "క్రమబద్ధీకరించు"
 
-#: archive-template.php:236
+#: archive-template.php:303
 msgid "Newest"
 msgstr "సరికొత్త"
 
-#: archive-template.php:240
+#: archive-template.php:307
 msgid "Oldest"
 msgstr "పురాతన"
 
-#: archive-template.php:244
+#: archive-template.php:311
 msgid "Most recently modified"
 msgstr "ఇటీవల సవరించబడింది"
 
-#: archive-template.php:248
+#: archive-template.php:315
 msgid "Least recently modified"
 msgstr "తక్కువ ఇటీవల సవరించబడింది"
 
-#: archive-template.php:258 template-new-bulk-post.php:89
+#: archive-template.php:325 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "క్షేత్రాలు"
 
-#: archive-template.php:265
+#: archive-template.php:332
 msgid "Bulk Edit"
 msgstr "బల్క్ ఎడిట్"
 
-#: archive-template.php:278 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:184
 msgid "More"
 msgstr "మరింత"
 
-#: archive-template.php:300 dt-contacts/base-setup.php:356
+#: archive-template.php:367 dt-contacts/base-setup.php:356
 #: dt-users/users.php:439
 msgid "Archived"
 msgstr "ఆర్కైవ్ చేయబడింది"
 
-#: archive-template.php:301
+#: archive-template.php:368
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "క్రొత్త% s"
+msgstr "క్రొత్త%s"
 
-#: archive-template.php:324
+#: archive-template.php:391
 msgid "Choose which fields to display as columns in the list"
 msgstr "జాబితాలో నిలువు వరుసలుగా ప్రదర్శించాల్సిన ఫీల్డ్‌లను ఎంచుకోండి"
 
-#: archive-template.php:367
+#: archive-template.php:434
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
-msgstr "మీరు జాబితా నుండి అప్‌డేట్ చేయదలిచిన అన్ని% 1 $ s ని ఎంచుకోండి మరియు వాటిని క్రింద నవీకరించండి"
+msgstr "మీరు జాబితా నుండి అప్‌డేట్ చేయదలిచిన అన్ని %1$s ని ఎంచుకోండి మరియు వాటిని క్రింద నవీకరించండి"
 
-#: archive-template.php:385 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:862
+#: dt-core/global-functions.php:870
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "వినియోగదారులను శోధించండి"
 
-#: archive-template.php:409 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2389
+#: archive-template.php:476 dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2710
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:520 single-template.php:128
 msgid "Status"
 msgstr "స్థితి"
 
-#: archive-template.php:459
+#: archive-template.php:526
 msgid "Share with:"
 msgstr "తో పంచు:"
 
-#: archive-template.php:487 dt-assets/functions/details-bar.php:168
+#: archive-template.php:554 dt-assets/functions/details-bar.php:168
 #: dt-posts/custom-post-type.php:190
 msgid "Follow"
 msgstr "అనుసరించండి"
 
-#: archive-template.php:492 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:559 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "వ్యాఖ్యలు మరియు కార్యాచరణ"
 
-#: archive-template.php:497 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:564 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "మీ వ్యాఖ్య లేదా గమనికను ఇక్కడ వ్రాయండి"
 
-#: archive-template.php:505 dt-assets/parts/loop-activity-comment.php:48
+#: archive-template.php:572 dt-assets/parts/loop-activity-comment.php:48
 msgid "Type:"
 msgstr "రకం:"
 
-#: archive-template.php:525 dt-users/template-new-user.php:129
+#: archive-template.php:592 dt-users/template-new-user.php:129
 #: dt-users/template-new-user.php:242
 msgid "See More Options"
 msgstr "మరిన్ని ఎంపికలు చూడండి"
 
-#: archive-template.php:526 dt-users/template-new-user.php:132
+#: archive-template.php:593 dt-users/template-new-user.php:132
 #: dt-users/template-new-user.php:245
 msgid "See Fewer Options"
 msgstr "తక్కువ ఎంపికలు చూడండి"
 
-#: archive-template.php:562 dt-assets/parts/loop-activity-comment.php:175
+#: archive-template.php:629 dt-assets/parts/loop-activity-comment.php:175
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "నవీకరణ"
 
-#: archive-template.php:563 dt-assets/functions/enqueue-scripts.php:323
+#: archive-template.php:630 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "దిగువ ఎంపికలు చేయండి"
 
-#: archive-template.php:594 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:661 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "పేరు"
 
-#: archive-template.php:605
+#: archive-template.php:672
 msgid "Loading..."
 msgstr "లోడ్..."
 
-#: archive-template.php:610 dt-assets/functions/enqueue-scripts.php:367
+#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:369
 msgid "Load More"
 msgstr "మరిన్ని లోడ్ చేయండి"
 
-#: archive-template.php:622
+#: archive-template.php:689
 msgid "Field Name"
 msgstr "క్షేత్రనామం"
 
-#: archive-template.php:678
+#: archive-template.php:745
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "శోధించడానికి టైప్ చేయండి"
 
-#: archive-template.php:687
+#: archive-template.php:754
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "% 2 $ s తో అన్ని% 1 $ s"
+msgstr "%2$s తో అన్ని %1$s"
 
-#: archive-template.php:690
+#: archive-template.php:757
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s లేకుండా మొత్తం %1$s"
 
-#: archive-template.php:697
+#: archive-template.php:764
 msgid "Filter for subassigned OR Assigned To"
 msgstr "కేటాయించిన లేదా కేటాయించిన వాటి కోసం ఫిల్టర్ చేయండి"
 
-#: archive-template.php:706 dt-assets/functions/enqueue-scripts.php:314
+#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "సృష్టి తేదీ"
 
-#: archive-template.php:713 archive-template.php:720
+#: archive-template.php:780 archive-template.php:787
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "ఏదీ సెట్ చేయబడలేదు"
 
-#: archive-template.php:734 archive-template.php:735
-#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:441
+#: archive-template.php:801 archive-template.php:802
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:602
+#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "లేదు"
 
-#: archive-template.php:741 archive-template.php:742
-#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:439
+#: archive-template.php:808 archive-template.php:809
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:603
+#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "అవును"
 
-#: archive-template.php:746
+#: archive-template.php:813
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "పరిధి ప్రారంభం"
 
-#: archive-template.php:749 archive-template.php:760
+#: archive-template.php:816 archive-template.php:827
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "క్లియర్"
 
-#: archive-template.php:756
+#: archive-template.php:823
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "రేంజ్ ఎండ్"
 
-#: archive-template.php:788
+#: archive-template.php:855
 msgid "Filter Name"
 msgstr "పేరును ఫిల్టర్ చేయండి"
 
-#: archive-template.php:793
+#: archive-template.php:860
 msgid "Filter Records"
 msgstr "రికార్డులను ఫిల్టర్ చేయండి"
 
-#: archive-template.php:797 dt-assets/functions/enqueue-scripts.php:274
-#: dt-assets/functions/enqueue-scripts.php:309
+#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:276
+#: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "సేవ్ చేయండి"
@@ -417,7 +430,7 @@ msgstr "నిర్వాహక చర్యలు"
 #: dt-assets/functions/details-bar.php:67 single-template.php:427
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "% S ను తొలగించండి"
+msgstr "%s ను తొలగించండి"
 
 #: dt-assets/functions/details-bar.php:72
 msgctxt "View Contact History"
@@ -476,11 +489,13 @@ msgid "Share"
 msgstr "భాగస్వామ్యం చేయండి"
 
 #: dt-assets/functions/enqueue-scripts.php:112
+#: dt-metrics/combined/date-range-activity.php:111
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "ఫోకస్ యొక్క ప్రాంతాలు"
 
 #: dt-assets/functions/enqueue-scripts.php:113
+#: dt-metrics/combined/date-range-activity.php:112
 #: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "అన్ని స్థానాలు"
@@ -497,16 +512,16 @@ msgstr "\"{{ప్రశ్న}}\" కు సరిపోయే ఫలితా�
 #: dt-assets/functions/enqueue-scripts.php:116
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "% S అంశాలను చూపుతోంది. మరింత కనుగొనడానికి టైప్ చేయండి."
+msgstr "%s అంశాలను చూపుతోంది. మరింత కనుగొనడానికి టైప్ చేయండి."
 
 #: dt-assets/functions/enqueue-scripts.php:117
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "% 2 $ s కు సరిపోయే% 1 $ s అంశాలను చూపుతోంది"
+msgstr "%2$s కు సరిపోయే %1$s అంశాలను చూపుతోంది"
 
 #: dt-assets/functions/enqueue-scripts.php:118
 #: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:310 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:312 template-settings.php:119
 #: template-settings.php:566
 msgid "Edit"
 msgstr "సవరించండి"
@@ -521,8 +536,8 @@ msgstr "మీకు నోటిఫికేషన్‌లు లేవు"
 
 #: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:271
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:313
 #: dt-assets/parts/loop-activity-comment.php:135 single-template.php:435
 msgid "Delete"
 msgstr "తొలగించు"
@@ -538,12 +553,12 @@ msgstr "అనువాదం దాచు"
 #: dt-assets/functions/enqueue-scripts.php:177
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
-msgstr "% 1 $ s% 2 $ s ఎమోజీలతో స్పందించారు"
+msgstr "%1$s %2$s ఎమోజీలతో స్పందించారు"
 
 #: dt-assets/functions/enqueue-scripts.php:178
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
-msgstr "% 3 $ s మరియు% 1 $ s% 2 $ s ఎమోజీలతో ప్రతిస్పందించాయి"
+msgstr "%3$s మరియు %1$s %2$s ఎమోజీలతో ప్రతిస్పందించాయి"
 
 #: dt-assets/functions/enqueue-scripts.php:209
 msgid "Mark as complete"
@@ -583,7 +598,7 @@ msgstr "తొలగించిన నకిలీలు"
 
 #: dt-assets/functions/enqueue-scripts.php:217
 msgid "Duplicates on: %s"
-msgstr "నకిలీలు:% s"
+msgstr "నకిలీలు:%s"
 
 #: dt-assets/functions/enqueue-scripts.php:218
 msgid "Transfer failed. Check site-to-site configuration."
@@ -600,116 +615,116 @@ msgstr "బదిలీ అప్‌డేట్ విజయవంతమైం�
 #: dt-assets/functions/enqueue-scripts.php:221
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
-msgstr "% S లో సృష్టించబడింది"
+msgstr "%s లో సృష్టించబడింది"
 
 #: dt-assets/functions/enqueue-scripts.php:222
 msgid "Open With"
 msgstr "దీనితో తెరవండి"
 
-#: dt-assets/functions/enqueue-scripts.php:240
+#: dt-assets/functions/enqueue-scripts.php:242
 msgid "Revert Record Back To This Point"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:241
+#: dt-assets/functions/enqueue-scripts.php:243
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "మీరు ఖచ్చితంగా% s ను తొలగించాలనుకుంటున్నారా?"
+msgstr "మీరు ఖచ్చితంగా%s ను తొలగించాలనుకుంటున్నారా?"
 
-#: dt-assets/functions/enqueue-scripts.php:272
+#: dt-assets/functions/enqueue-scripts.php:274
 msgid "Locations you are responsible for"
 msgstr "మీరు బాధ్యత వహించే స్థానాలు"
 
-#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:275
 msgid "Add"
 msgstr "జోడించు"
 
-#: dt-assets/functions/enqueue-scripts.php:275 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:277 template-settings.php:285
 msgid "link"
 msgstr "లింక్"
 
-#: dt-assets/functions/enqueue-scripts.php:276 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:278 template-settings.php:286
 msgid "copy"
 msgstr "కాపీ"
 
-#: dt-assets/functions/enqueue-scripts.php:292
+#: dt-assets/functions/enqueue-scripts.php:294
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "సరిపోలికలు కనుగొనబడ్డాయి:"
 
-#: dt-assets/functions/enqueue-scripts.php:293
+#: dt-assets/functions/enqueue-scripts.php:295
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
-msgstr "% S కోసం అన్ని మ్యాచ్‌లను తొలగించండి"
+msgstr "%s కోసం అన్ని మ్యాచ్‌లను తొలగించండి"
 
-#: dt-assets/functions/enqueue-scripts.php:312
+#: dt-assets/functions/enqueue-scripts.php:314
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "_TOTAL_ యొక్క _START_ ని చూపుతోంది"
 
-#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/functions/enqueue-scripts.php:315
 msgid "Sorting By"
 msgstr "ద్వారా క్రమబద్ధీకరించడం"
 
-#: dt-assets/functions/enqueue-scripts.php:315
+#: dt-assets/functions/enqueue-scripts.php:317
 msgid "Date Modified"
 msgstr "తేదీ సవరించబడింది"
 
-#: dt-assets/functions/enqueue-scripts.php:316
+#: dt-assets/functions/enqueue-scripts.php:318
 msgid "No filters, create one below"
 msgstr "ఫిల్టర్లు లేవు, క్రింద ఒకదాన్ని సృష్టించండి"
 
-#: dt-assets/functions/enqueue-scripts.php:317
+#: dt-assets/functions/enqueue-scripts.php:319
 msgid "No records found matching your filter."
 msgstr "మీ ఫిల్టర్‌కు సరిపోయే రికార్డులు ఏవీ కనుగొనబడలేదు."
 
-#: dt-assets/functions/enqueue-scripts.php:318 dt-contacts/base-setup.php:537
-#: dt-groups/base-setup.php:1066 dt-posts/custom-post-type.php:372
+#: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:537
+#: dt-groups/base-setup.php:1076 dt-posts/custom-post-type.php:371
 msgctxt "All records"
 msgid "All %s"
-msgstr "అన్ని% s"
+msgstr "అన్ని%s"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:321
 msgid "start"
 msgstr "ప్రారంభం"
 
-#: dt-assets/functions/enqueue-scripts.php:320
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "end"
 msgstr "ముగింపు"
 
-#: dt-assets/functions/enqueue-scripts.php:321
+#: dt-assets/functions/enqueue-scripts.php:323
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:985
+#: dt-contacts/access-module.php:1297 dt-groups/base-setup.php:995
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "అన్నీ"
 
-#: dt-assets/functions/enqueue-scripts.php:322
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "Without"
 msgstr "లేకుండా"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:326
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "పంపారు"
 
-#: dt-assets/functions/enqueue-scripts.php:325
+#: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "పంపబడలేదు (చెల్లుబాటు అయ్యే ఇమెయిల్ మిస్ అయ్యే అవకాశం ఉంది)"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:328
 msgid "Exclude Item"
 msgstr "అంశాన్ని మినహాయించండి"
 
-#: dt-assets/functions/enqueue-scripts.php:347 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:349 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "సంప్రదించండి"
 
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:350
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1238,7 +1253,7 @@ msgstr "క్రొత్త రికార్డ్‌ను సవరిం�
 #: dt-assets/parts/modals/modal-new-contact.php:30
 msgctxt "back to record"
 msgid "Back to %s"
-msgstr "% S కి తిరిగి వెళ్ళు"
+msgstr "%s కి తిరిగి వెళ్ళు"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
 #, fuzzy
@@ -1264,6 +1279,7 @@ msgid "Revert Activity"
 msgstr "కార్యాచరణను మార్చండి"
 
 #: dt-assets/parts/modals/modal-revert.php:5
+#: dt-metrics/combined/date-range-activity.php:103
 #: dt-metrics/combined/time-charts.php:109
 msgid "Field"
 msgstr "ఫీల్డ్"
@@ -1657,7 +1673,7 @@ msgid "Accepted"
 msgstr "ఆమోదించబడిన"
 
 #: dt-contacts/access-module.php:294 dt-contacts/base-setup.php:575
-#: dt-metrics/metrics.php:86 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:87 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1688,7 +1704,7 @@ msgid ""
 msgstr "పరిచయాలు మరొక శిష్యుడితో భాగస్వామ్యం నుండి బదిలీ చేయబడ్డాయి. టూల్స్ సైట్."
 
 #: dt-contacts/access-module.php:325 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:536
+#: dt-users/user-hooks-and-config.php:541
 msgid "Sources"
 msgstr "మూలాలు"
 
@@ -1755,7 +1771,7 @@ msgstr "నా ఫాలో-అప్"
 
 #: dt-contacts/access-module.php:924 dt-contacts/access-module.php:945
 #: dt-contacts/access-module.php:968 dt-contacts/access-module.php:993
-#: dt-groups/base-setup.php:977
+#: dt-groups/base-setup.php:987
 msgid "Assigned to me"
 msgstr "నాకు కేటాయించబడింది"
 
@@ -1767,7 +1783,7 @@ msgstr "నాకు ఉప-కేటాయించబడింది"
 #: dt-contacts/access-module.php:1031
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "ఫాలో-అప్% s"
+msgstr "ఫాలో-అప్%s"
 
 #: dt-contacts/access-module.php:1039
 msgid "All Follow-Up"
@@ -1808,8 +1824,8 @@ msgstr "లింగం"
 msgid "This record might be a duplicate of: "
 msgstr "ఈ రికార్డ్ దీని నకిలీ కావచ్చు: "
 
-#: dt-contacts/access-module.php:1482 dt-contacts/duplicates-merging.php:465
-#: dt-contacts/duplicates-merging.php:545
+#: dt-contacts/access-module.php:1482 dt-contacts/duplicates-merging.php:473
+#: dt-contacts/duplicates-merging.php:555
 msgid "Duplicate Checker"
 msgstr "నకిలీ చెకర్"
 
@@ -1824,7 +1840,7 @@ msgstr "నకిలీ చెకర్"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:95
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:96
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
@@ -1937,7 +1953,7 @@ msgstr "ఇతర సామాజిక లింకులు"
 #: dt-contacts/base-setup.php:302
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "ఇతర% s కు కనెక్షన్లు"
+msgstr "ఇతర%s కు కనెక్షన్లు"
 
 #: dt-contacts/base-setup.php:303
 msgctxt "Optional Documentation"
@@ -2004,12 +2020,12 @@ msgstr ""
 #: dt-contacts/base-setup.php:393 dt-contacts/base-setup.php:422
 msgctxt "Archive Contact"
 msgid "Archive %s"
-msgstr "ఆర్కైవ్% s"
+msgstr "ఆర్కైవ్%s"
 
 #: dt-contacts/base-setup.php:400
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "% S రకాన్ని మార్చండి"
+msgstr "%s రకాన్ని మార్చండి"
 
 #: dt-contacts/base-setup.php:406
 msgid "See duplicates"
@@ -2018,7 +2034,7 @@ msgstr "నకిలీలను చూడండి"
 #: dt-contacts/base-setup.php:423
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "మీరు ఖచ్చితంగా% s ను ఆర్కైవ్ చేయాలనుకుంటున్నారా?"
+msgstr "మీరు ఖచ్చితంగా%s ను ఆర్కైవ్ చేయాలనుకుంటున్నారా?"
 
 #: dt-contacts/base-setup.php:430
 msgid "Archive"
@@ -2026,38 +2042,38 @@ msgstr "ఆర్కైవ్"
 
 #: dt-contacts/base-setup.php:489
 #: dt-core/configuration/config-site-defaults.php:543
-#: dt-groups/base-setup.php:642 template-settings.php:202
+#: dt-groups/base-setup.php:652 template-settings.php:202
 msgid "Other"
 msgstr "ఇతర"
 
-#: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1058
-#: dt-posts/custom-post-type.php:351
+#: dt-contacts/base-setup.php:531 dt-groups/base-setup.php:1068
+#: dt-posts/custom-post-type.php:350
 msgid "Default Filters"
 msgstr "డిఫాల్ట్ ఫిల్టర్లు"
 
 #: dt-contacts/base-setup.php:541
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "నేను చూడగలిగే అన్ని% s"
+msgstr "నేను చూడగలిగే అన్ని%s"
 
-#: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1075
-#: dt-posts/custom-post-type.php:384
+#: dt-contacts/base-setup.php:552 dt-groups/base-setup.php:1085
+#: dt-posts/custom-post-type.php:383
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
-msgstr "ఇష్టమైన% s"
+msgstr "ఇష్టమైన%s"
 
-#: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1081
-#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:390
+#: dt-contacts/base-setup.php:558 dt-groups/base-setup.php:1091
+#: dt-posts/custom-post-type.php:174 dt-posts/custom-post-type.php:389
 msgid "Favorite"
 msgstr "ఇష్టమైన"
 
-#: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:399
+#: dt-contacts/base-setup.php:564 dt-groups/base-setup.php:1097
+#: dt-posts/custom-post-type.php:398
 msgid "My Recently Viewed"
 msgstr "నా ఇటీవల వీక్షించారు"
 
-#: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:404
+#: dt-contacts/base-setup.php:569 dt-groups/base-setup.php:1102
+#: dt-posts/custom-post-type.php:403
 msgid "Last 30 viewed"
 msgstr "చివరి 30 మంది వీక్షించారు"
 
@@ -2076,7 +2092,7 @@ msgstr "వ్యాఖ్య"
 
 #: dt-contacts/base-setup.php:772
 msgid "This %s is archived"
-msgstr "ఈ% s ఆర్కైవ్ చేయబడింది"
+msgstr "ఈ%s ఆర్కైవ్ చేయబడింది"
 
 #: dt-contacts/base-setup.php:774
 msgid "Restore"
@@ -2128,7 +2144,7 @@ msgstr "మరొక సైట్"
 
 #: dt-contacts/contacts-transfer.php:276
 msgid "Already transfered to %s"
-msgstr "ఇప్పటికే% s కి బదిలీ చేయబడింది"
+msgstr "ఇప్పటికే%s కి బదిలీ చేయబడింది"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
@@ -2161,7 +2177,7 @@ msgstr "చిన్న బదిలీ లోపం."
 
 #: dt-contacts/contacts-transfer.php:435
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "తదుపరి అనుసరణ కోసం ఈ పరిచయం% s కు బదిలీ చేయబడింది."
+msgstr "తదుపరి అనుసరణ కోసం ఈ పరిచయం%s కు బదిలీ చేయబడింది."
 
 #: dt-contacts/contacts-transfer.php:569
 msgid "Contact transferred from site"
@@ -2351,7 +2367,7 @@ msgstr "విశ్వాసం"
 #: dt-contacts/dmm-module.php:360
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "% S కనెక్ట్ చేయబడింది"
+msgstr "%s కనెక్ట్ చేయబడింది"
 
 #: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
 #: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
@@ -2372,23 +2388,23 @@ msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "మల్టిప్లైయర్‌లు మరియు పరిచయాలను శోధించండి"
 
-#: dt-contacts/duplicates-merging.php:422
+#: dt-contacts/duplicates-merging.php:430
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
-msgstr "(నకిలీ నుండి):% s"
+msgstr "(నకిలీ నుండి):%s"
 
-#: dt-contacts/duplicates-merging.php:541
+#: dt-contacts/duplicates-merging.php:551
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "ఈ రికార్డ్ నకిలీ మరియు ఇది% 2 $ s లో విలీనం చేయబడింది"
+msgstr "ఈ రికార్డ్ నకిలీ మరియు ఇది %2$s లో విలీనం చేయబడింది"
 
-#: dt-contacts/duplicates-merging.php:554
+#: dt-contacts/duplicates-merging.php:564
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "% 1 $ s ఈ రికార్డులో% 2 $ s ని విలీనం చేసింది"
+msgstr "%1$s ఈ రికార్డులో %2$s ని విలీనం చేసింది"
 
 #. Template Name of the theme
-#: dt-contacts/duplicates-merging.php:566
+#: dt-contacts/duplicates-merging.php:576
 msgid "View Duplicates"
 msgstr "నకిలీలను చూడండి"
 
@@ -2579,7 +2595,7 @@ msgid "prayer"
 msgstr "ప్రార్థన"
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:573
+#: dt-login/login-template.php:574
 msgid "Home"
 msgstr "హోమ్"
 
@@ -2618,13 +2634,13 @@ msgstr "కింది ఖాతా కోసం ఎవరో పాస్‌�
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:292
 msgid "DT Site Name: %s"
-msgstr "DT సైట్ పేరు:% s"
+msgstr "DT సైట్ పేరు:%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:356
+#: dt-users/user-hooks-and-config.php:361
 msgid "Username: %s"
-msgstr "వినియోగదారు పేరు:% s"
+msgstr "వినియోగదారు పేరు:%s"
 
 #: dt-core/configuration/restrict-site-access.php:295
 msgid "If this was a mistake, just ignore this email and nothing will happen."
@@ -2640,13 +2656,13 @@ msgstr "మీ పాస్‌వర్డ్‌ను రీసెట్ చే
 msgid "This is required"
 msgstr "ఇది అవసరం"
 
-#: dt-core/global-functions.php:636
+#: dt-core/global-functions.php:644
 msgid "Add new tag \"%s\""
-msgstr "క్రొత్త ట్యాగ్ \"% s\" ను జోడించండి"
+msgstr "క్రొత్త ట్యాగ్ \"%s\" ను జోడించండి"
 
-#: dt-core/global-functions.php:637
+#: dt-core/global-functions.php:645
 msgid "Tag \"%s\" is already being used"
-msgstr "ట్యాగ్ \"% s\" ఇప్పటికే ఉపయోగించబడుతోంది"
+msgstr "ట్యాగ్ \"%s\" ఇప్పటికే ఉపయోగించబడుతోంది"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -2724,14 +2740,14 @@ msgid "Group"
 msgstr "సమూహం"
 
 #: dt-groups/base-setup.php:51 dt-groups/base-setup.php:64
-#: dt-groups/base-setup.php:467 dt-groups/base-setup.php:641
+#: dt-groups/base-setup.php:467 dt-groups/base-setup.php:651
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:166
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:99
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:100
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
@@ -2816,7 +2832,7 @@ msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr "చర్చిగా కలవని ప్రత్యేక సమూహం (లేదా చర్చిగా మారడానికి ప్రయత్నిస్తుంది)."
 
-#: dt-groups/base-setup.php:197 dt-groups/base-setup.php:634
+#: dt-groups/base-setup.php:197 dt-groups/base-setup.php:644
 msgid "Church Health"
 msgstr "చర్చి ఆరోగ్యం"
 
@@ -2960,8 +2976,8 @@ msgstr ""
 "స్వయంచాలకంగా నవీకరించబడుతుంది. వ్యవస్థలో ఉండకపోవచ్చు కాని సమూహంలో సభ్యులను కూడా చేర్చడానికి ఈ "
 "సంఖ్యను మానవీయంగా మార్చండి."
 
-#: dt-groups/base-setup.php:295 dt-groups/base-setup.php:589
-#: dt-groups/base-setup.php:633
+#: dt-groups/base-setup.php:295 dt-groups/base-setup.php:599
+#: dt-groups/base-setup.php:643
 msgid "Member List"
 msgstr "సభ్యుల జాబితా"
 
@@ -3066,35 +3082,35 @@ msgstr "గ్రూప్ లీడర్"
 msgid "Coach of Group"
 msgstr "కోచ్ ఆఫ్ గ్రూప్"
 
-#: dt-groups/base-setup.php:592
+#: dt-groups/base-setup.php:602
 msgid "Create"
 msgstr "సృష్టించండి"
 
-#: dt-groups/base-setup.php:597
+#: dt-groups/base-setup.php:607
 msgid "Select"
 msgstr "ఎంచుకోండి"
 
-#: dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:612
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "క్రొత్త సభ్యులను జోడించడానికి, 'సృష్టించు' లేదా 'ఎంచుకోండి' పై క్లిక్ చేయండి."
 
-#: dt-groups/base-setup.php:608
+#: dt-groups/base-setup.php:618
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "ఇప్పటికే ఉన్న పరిచయాల నుండి సభ్యులను జోడించండి"
 
-#: dt-groups/base-setup.php:609
+#: dt-groups/base-setup.php:619
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr "'సభ్యుల జాబితా' ఫీల్డ్‌లో, ఈ గుంపుకు జోడించడానికి ఇప్పటికే ఉన్న పరిచయం పేరును టైప్ చేయండి."
 
-#: dt-groups/base-setup.php:637
+#: dt-groups/base-setup.php:647
 msgid "Four Fields"
 msgstr "నాలుగు ఫీల్డ్స్"
 
-#: dt-groups/base-setup.php:638
+#: dt-groups/base-setup.php:648
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3120,7 +3136,7 @@ msgstr ""
 msgid "Get New Password"
 msgstr "పాస్వర్డ్"
 
-#: dt-login/login-template.php:104 dt-login/login-template.php:532
+#: dt-login/login-template.php:104 dt-login/login-template.php:533
 #, fuzzy
 #| msgid "Add email address"
 msgid "Email Address"
@@ -3157,7 +3173,7 @@ msgid "Re-enter Password"
 msgstr "రహస్యపదాన్ని మార్చుకోండి"
 
 #: dt-login/login-template.php:340 dt-login/login-template.php:409
-#: dt-login/login-template.php:589
+#: dt-login/login-template.php:590
 #, fuzzy
 #| msgid "Registered"
 msgid "Register"
@@ -3177,8 +3193,8 @@ msgstr "ప్రదర్శన పేరు"
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:509 dt-login/login-template.php:535
-#: dt-login/login-template.php:581
+#: dt-login/login-template.php:509 dt-login/login-template.php:536
+#: dt-login/login-template.php:582
 msgid "Login"
 msgstr ""
 
@@ -3186,16 +3202,16 @@ msgstr ""
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:533 dt-users/template-new-user.php:123
+#: dt-login/login-template.php:534 dt-users/template-new-user.php:123
 #: dt-users/template-new-user.php:124 template-settings.php:600
 msgid "Password"
 msgstr "పాస్వర్డ్"
 
-#: dt-login/login-template.php:534
+#: dt-login/login-template.php:535
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:596
+#: dt-login/login-template.php:597
 #, fuzzy
 #| msgid "Lost your password"
 msgid "Lost your password?"
@@ -3207,28 +3223,28 @@ msgstr "మీ పాస్‌వర్డ్ కోల్పోయింది"
 msgid "Churches"
 msgstr "చర్చిలు"
 
-#: dt-mapping/geocode-api/mapbox-api.php:286
-#: dt-mapping/geocode-api/mapbox-api.php:321
+#: dt-mapping/geocode-api/mapbox-api.php:288
+#: dt-mapping/geocode-api/mapbox-api.php:323
 #: dt-users/template-user-management.php:268 template-settings.php:322
 msgid "add"
 msgstr "జోడించు"
 
-#: dt-mapping/geocode-api/mapbox-api.php:287 template-merge-post-details.php:88
+#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:88
 msgid "Use"
 msgstr "వా డు"
 
-#: dt-mapping/geocode-api/mapbox-api.php:288 template-merge-post-details.php:86
+#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:86
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "శోధన స్థానం"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:87
+#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:87
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "స్థానాన్ని తొలగించండి"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290
+#: dt-mapping/geocode-api/mapbox-api.php:292
 msgid "Open Mapping"
 msgstr "ఓపెన్ మ్యాపింగ్"
 
@@ -3269,10 +3285,11 @@ msgstr "క్లిష్టమైన మార్గం"
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/daily-activity.php:23
+#: dt-metrics/combined/date-range-activity.php:44
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:91
+#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:92
 msgid "Project"
 msgstr "ప్రాజెక్ట్"
 
@@ -3317,11 +3334,11 @@ msgstr "క్రియాశీల స్థితిని కలిగి ఉ
 
 #: dt-metrics/combined/critical-path.php:241
 msgid "Number of contacts on %s at the end of the time range"
-msgstr "సమయ పరిధి చివరిలో% s లో పరిచయాల సంఖ్య"
+msgstr "సమయ పరిధి చివరిలో%s లో పరిచయాల సంఖ్య"
 
 #: dt-metrics/combined/critical-path.php:243
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "అన్వేషకుల మార్గంలో% s సెట్ చేయబడిన పరిచయాల సంఖ్య"
+msgstr "అన్వేషకుల మార్గంలో%s సెట్ చేయబడిన పరిచయాల సంఖ్య"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3336,11 +3353,11 @@ msgstr "తేదీ పరిధిలో బాప్టిజం తేదీ
 
 #: dt-metrics/combined/critical-path.php:277
 msgid "Generation %s Baptisms"
-msgstr "తరం% s బాప్టిజం"
+msgstr "తరం%s బాప్టిజం"
 
 #: dt-metrics/combined/critical-path.php:278
 msgid "Number of generation %s baptisms"
-msgstr "తరం% s బాప్టిజం సంఖ్య"
+msgstr "తరం%s బాప్టిజం సంఖ్య"
 
 #: dt-metrics/combined/critical-path.php:288
 msgid "Baptizers"
@@ -3369,11 +3386,11 @@ msgstr "సమయ శ్రేణి చివరిలో చర్చిలు
 
 #: dt-metrics/combined/critical-path.php:321
 msgid "Generation %s Churches"
-msgstr "తరం% s చర్చిలు"
+msgstr "తరం%s చర్చిలు"
 
 #: dt-metrics/combined/critical-path.php:322
 msgid "Number of generation %s churches at the end of the time range"
-msgstr "సమయ శ్రేణి చివరిలో తరం% s చర్చిల సంఖ్య"
+msgstr "సమయ శ్రేణి చివరిలో తరం%s చర్చిల సంఖ్య"
 
 #: dt-metrics/combined/critical-path.php:332 dt-metrics/counter.php:186
 msgid "Church Planters"
@@ -3419,7 +3436,7 @@ msgstr "పోయిన నెల"
 #: dt-notifications/notifications.php:497
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "% s నెల క్రితం"
+msgstr[0] "%s నెల క్రితం"
 msgstr[1] ""
 
 #: dt-metrics/combined/daily-activity.php:85
@@ -3428,7 +3445,7 @@ msgid ""
 msgstr "దిగువ కొలమానాల వివరణాత్మక జాబితాను ప్రదర్శించడానికి టైమ్‌లైన్ రోజు సారాంశంపై క్లిక్ చేయండి."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:116
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:117
 msgid "Metrics"
 msgstr "కొలతలు"
 
@@ -3444,7 +3461,61 @@ msgstr "కార్యాచరణ ఏదీ కనుగొనబడలేద�
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:130
 #: template-new-post.php:38
 msgid "New %s"
-msgstr "క్రొత్త% s"
+msgstr "క్రొత్త%s"
+
+#: dt-metrics/combined/date-range-activity.php:43
+msgid "Activity During Date Range"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:102
+#: dt-metrics/combined/time-charts.php:108
+msgid "Post Type"
+msgstr "పోస్ట్ రకం"
+
+#: dt-metrics/combined/date-range-activity.php:104
+#, fuzzy
+#| msgid "Activity"
+msgid "Any Activity"
+msgstr "కార్యాచరణ"
+
+#: dt-metrics/combined/date-range-activity.php:105
+#: dt-metrics/combined/time-charts.php:110
+msgid "Total"
+msgstr "మొత్తం"
+
+#: dt-metrics/combined/date-range-activity.php:106
+#, fuzzy
+#| msgid "Date Ranges"
+msgid "Date Range"
+msgstr "తేదీ పరిధులు"
+
+#: dt-metrics/combined/date-range-activity.php:107
+msgid "Reload"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:108
+msgid "Title"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:109
+#: dt-metrics/combined/time-charts.php:113
+#: dt-metrics/personal/activity-highlights.php:67
+msgid "Date"
+msgstr "తేదీ"
+
+#: dt-metrics/combined/date-range-activity.php:110
+#, fuzzy
+#| msgid "Old Value"
+msgid "New Value"
+msgstr "పాత విలువ"
+
+#: dt-metrics/combined/date-range-activity.php:309
+msgid "True"
+msgstr ""
+
+#: dt-metrics/combined/date-range-activity.php:309
+msgid "False"
+msgstr ""
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3514,14 +3585,6 @@ msgstr "సమాచారం అందుబాటులో లేదు"
 msgid "Fields over Time Charts"
 msgstr "టైమ్ చార్టులలో ఫీల్డ్స్"
 
-#: dt-metrics/combined/time-charts.php:108
-msgid "Post Type"
-msgstr "పోస్ట్ రకం"
-
-#: dt-metrics/combined/time-charts.php:110
-msgid "Total"
-msgstr "మొత్తం"
-
 #: dt-metrics/combined/time-charts.php:111
 msgid "Added"
 msgstr "చేర్చబడింది"
@@ -3529,12 +3592,7 @@ msgstr "చేర్చబడింది"
 #: dt-metrics/combined/time-charts.php:112
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "% 2 $ s లో% 1 $ s"
-
-#: dt-metrics/combined/time-charts.php:113
-#: dt-metrics/personal/activity-highlights.php:67
-msgid "Date"
-msgstr "తేదీ"
+msgstr "%2$s లో %1$s"
 
 #: dt-metrics/combined/time-charts.php:114
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
@@ -3861,7 +3919,7 @@ msgstr "వీక్షించడానికి లేదా ప్రత్�
 #: dt-notifications/notifications-email.php:131
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "% 1 $ s #% 2 $ s లో నవీకరించండి"
+msgstr "%1$s # %2$s లో నవీకరించండి"
 
 #: dt-notifications/notifications-email.php:135
 msgid "Do not reply directly to this email."
@@ -3878,53 +3936,53 @@ msgstr "డైలీ డైజెస్ట్"
 #: dt-notifications/notifications.php:477
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "% s నిమిషం క్రితం"
+msgstr[0] "%s నిమిషం క్రితం"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:482
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "% s గంట క్రితం"
+msgstr[0] "%s గంట క్రితం"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:487
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "% s రోజు క్రితం"
+msgstr[0] "%s రోజు క్రితం"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:492
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "% s వారం క్రితం"
+msgstr[0] "%s వారం క్రితం"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:511
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "% s సంవత్సరం క్రితం"
+msgstr[0] "%s సంవత్సరం క్రితం"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:515
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "సంవత్సరం క్రితం% s కంటే ఎక్కువ"
+msgstr[0] "సంవత్సరం క్రితం%s కంటే ఎక్కువ"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:911
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "% s సృష్టించబడింది మరియు మీకు కేటాయించబడింది."
+msgstr "%s సృష్టించబడింది మరియు మీకు కేటాయించబడింది."
 
 #: dt-notifications/notifications.php:913
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "మీకు కేటాయించబడింది:% 1 $ s."
+msgstr "మీకు కేటాయించబడింది: %1$s."
 
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr "% 1 $ s% 2 $ s నుండి% 3 $ s కు కేటాయించబడింది."
+msgstr "%1$s %2$s నుండి %3$s కు కేటాయించబడింది."
 
 #: dt-notifications/notifications.php:922
 #: dt-notifications/notifications.php:929
@@ -3938,42 +3996,42 @@ msgstr "సిస్టమ్"
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "% 1 $ s మీతో% 2 $ s పంచుకున్నారు."
+msgstr "%1$s మీతో %2$s పంచుకున్నారు."
 
 #: dt-notifications/notifications.php:930
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
-msgstr "% 1 $ లు మిమ్మల్ని% 2 $ s లో పేర్కొన్నారు:% 3 $ s"
+msgstr "% 1 $ లు మిమ్మల్ని %2$s లో పేర్కొన్నారు: %3$s"
 
 #: dt-notifications/notifications.php:937
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "% 1 $ s% 2 $ s పై వ్యాఖ్యానించారు:% 3 $ s"
+msgstr "%1$s %2$s పై వ్యాఖ్యానించారు: %3$s"
 
 #: dt-notifications/notifications.php:941
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "% 1 $ s మీకు కేటాయించిన% 2 $ s."
+msgstr "%1$s మీకు కేటాయించిన %2$s."
 
 #: dt-notifications/notifications.php:951
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "% 1 $ s% 3 $ s లో% 2 $ s మైలురాయిని జోడించారు."
+msgstr "%1$s %3$s లో %2$s మైలురాయిని జోడించారు."
 
 #: dt-notifications/notifications.php:954
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
-msgstr "@% 1 $ s,% 2 $ s లో నవీకరణ అభ్యర్థించబడుతుంది."
+msgstr "@%1$s, %2$s లో నవీకరణ అభ్యర్థించబడుతుంది."
 
 #: dt-notifications/notifications.php:958
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "% 2 $ s లో% 1 $ s సవరించిన సంప్రదింపు వివరాలు."
+msgstr "%2$s లో %1$s సవరించిన సంప్రదింపు వివరాలు."
 
 #: dt-notifications/notifications.php:961
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "% 1 $ s దీనిపై అసైన్‌మెంట్ తిరస్కరించబడింది:% 2 $ s."
+msgstr "%1$s దీనిపై అసైన్‌మెంట్ తిరస్కరించబడింది: %2$s."
 
 #: dt-people-groups/people-groups-base.php:94
 #: dt-people-groups/people-groups-base.php:104
@@ -4046,33 +4104,34 @@ msgstr "సంబంధిత అంశాలను సమూహపరచడా�
 msgid "Un-Follow"
 msgstr "అన్-ఫాలో"
 
-#: dt-posts/dt-posts.php:110
+#: dt-posts/dt-posts.php:103
 msgid "Updated existing record instead of creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1350
+#: dt-posts/dt-posts.php:1646
 msgid "Magic Link Submission"
 msgstr "మ్యాజిక్ లింక్ సమర్పణ"
 
-#: dt-posts/dt-posts.php:1352 dt-posts/dt-posts.php:1895
+#: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2191
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "కార్యాచరణను మార్చండి"
 
-#: dt-posts/dt-posts.php:1358
+#: dt-posts/dt-posts.php:1654
 msgid "D.T System"
 msgstr "D.T వ్యవస్థ"
 
-#: dt-posts/dt-posts.php:2135
+#: dt-posts/dt-posts.php:2431
 msgid "Post already shared with user."
 msgstr "పోస్ట్ ఇప్పటికే వినియోగదారుతో భాగస్వామ్యం చేయబడింది."
 
-#: dt-posts/dt-posts.php:2390 single-template.php:174
+#: dt-posts/dt-posts.php:2711 single-template.php:174
 msgid "Details"
 msgstr "వివరాలు"
 
-#: dt-posts/dt-posts.php:2454
+#: dt-posts/dt-posts.php:2775
+#, fuzzy
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4081,17 +4140,17 @@ msgid ""
 "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
 "desired, share this record with the user to grant access."
 msgstr ""
-"@ [% 1 $ s] (% 2 $ s) -% 3 $ s వినియోగదారు% 4 $ s [% 5 $ s] (% 6 $ s) కు ప్రాప్యత "
-"అభ్యర్థించారు. కావాలనుకుంటే, ప్రాప్యతను మంజూరు చేయడానికి ఈ రికార్డ్‌ను వినియోగదారుతో పంచుకోండి."
+"@[%1$s](%2$s) - %3$s వినియోగదారు %4$s [%5$s](%6$s) కు ప్రాప్యత అభ్యర్థించారు. "
+"కావాలనుకుంటే, ప్రాప్యతను మంజూరు చేయడానికి ఈ రికార్డ్‌ను వినియోగదారుతో పంచుకోండి."
 
-#: dt-posts/dt-posts.php:2460
+#: dt-posts/dt-posts.php:2781
 msgid "Access Request"
 msgstr "ప్రాప్యత అభ్యర్థన"
 
 #: dt-posts/posts.php:281
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
-msgstr "బాప్టిజం% s"
+msgstr "బాప్టిజం%s"
 
 #: dt-posts/posts.php:282
 #, fuzzy
@@ -4102,298 +4161,314 @@ msgstr "%s చేత బాప్తిస్మం తీసుకున్న�
 #: dt-posts/posts.php:284
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
-msgstr "% S బాప్టిజం ఇవ్వలేదు"
+msgstr "%s బాప్టిజం ఇవ్వలేదు"
 
 #: dt-posts/posts.php:285
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
-msgstr "% S చేత బాప్టిజం పొందలేదు"
+msgstr "%s చేత బాప్టిజం పొందలేదు"
 
 #: dt-posts/posts.php:289
 msgctxt "contact1 added to members"
 msgid "%s added to members"
-msgstr "సభ్యులకు% s జోడించబడింది"
+msgstr "సభ్యులకు%s జోడించబడింది"
 
 #: dt-posts/posts.php:290
 msgctxt "Added to group group1"
 msgid "Added to group %s"
-msgstr "సమూహం% s కు జోడించబడింది"
+msgstr "సమూహం%s కు జోడించబడింది"
 
 #: dt-posts/posts.php:292
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
-msgstr "సమూహం నుండి% s తొలగించబడింది"
+msgstr "సమూహం నుండి%s తొలగించబడింది"
 
 #: dt-posts/posts.php:293
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
-msgstr "సమూహం% s నుండి తొలగించబడింది"
+msgstr "సమూహం%s నుండి తొలగించబడింది"
 
 #: dt-posts/posts.php:298
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
-msgstr "కోచింగ్% s"
+msgstr "కోచింగ్%s"
 
 #: dt-posts/posts.php:299
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "% S చేత శిక్షణ ఇవ్వబడింది"
+msgstr "%s చేత శిక్షణ ఇవ్వబడింది"
 
 #: dt-posts/posts.php:301
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
-msgstr "ఇకపై% s కోచింగ్ లేదు"
+msgstr "ఇకపై%s కోచింగ్ లేదు"
 
 #: dt-posts/posts.php:302
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "ఇకపై% s చేత శిక్షణ ఇవ్వబడదు"
+msgstr "ఇకపై%s చేత శిక్షణ ఇవ్వబడదు"
 
 #: dt-posts/posts.php:306
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
-msgstr "ఉప-కేటాయించిన% s"
+msgstr "ఉప-కేటాయించిన%s"
 
 #: dt-posts/posts.php:307
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
-msgstr "% S లో ఉప-కేటాయించబడింది"
+msgstr "%s లో ఉప-కేటాయించబడింది"
 
 #: dt-posts/posts.php:309
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
-msgstr "ఉప-కేటాయించిన% s తొలగించబడింది"
+msgstr "ఉప-కేటాయించిన%s తొలగించబడింది"
 
 #: dt-posts/posts.php:310
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
-msgstr "ఇకపై% s లో ఉప-కేటాయించబడదు"
+msgstr "ఇకపై%s లో ఉప-కేటాయించబడదు"
 
 #: dt-posts/posts.php:314
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
-msgstr "% 1 $ s% 2 $ s లో ప్రజల సమూహంగా జోడించబడింది"
+msgstr "%1$s %2$s లో ప్రజల సమూహంగా జోడించబడింది"
 
 #: dt-posts/posts.php:315
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
-msgstr "ప్రజల సమూహాలకు% s జోడించబడ్డాయి"
+msgstr "ప్రజల సమూహాలకు%s జోడించబడ్డాయి"
 
 #: dt-posts/posts.php:317
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
-msgstr "% 2 $ s లో ప్రజల సమూహాల నుండి% 1 $ s తొలగించబడింది"
+msgstr "%2$s లో ప్రజల సమూహాల నుండి %1$s తొలగించబడింది"
 
 #: dt-posts/posts.php:318
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
-msgstr "ప్రజల సమూహాల నుండి% s తొలగించబడింది"
+msgstr "ప్రజల సమూహాల నుండి%s తొలగించబడింది"
 
 #: dt-posts/posts.php:322
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
-msgstr "% 1 $ s% 2 $ s లో నాయకుడిగా జోడించబడింది"
+msgstr "%1$s %2$s లో నాయకుడిగా జోడించబడింది"
 
 #: dt-posts/posts.php:323
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
-msgstr "నాయకులకు% s జోడించబడింది"
+msgstr "నాయకులకు%s జోడించబడింది"
 
 #: dt-posts/posts.php:325
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
-msgstr "% 2 $ s లో నాయకుల నుండి% 1 $ s తొలగించబడింది"
+msgstr "%2$s లో నాయకుల నుండి %1$s తొలగించబడింది"
 
 #: dt-posts/posts.php:326
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
-msgstr "నాయకుల నుండి% s తొలగించబడింది"
+msgstr "నాయకుల నుండి%s తొలగించబడింది"
 
 #: dt-posts/posts.php:330
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
-msgstr "% 1 $ s ను కోచ్ 2% s లో చేర్చారు"
+msgstr "%1$s ను కోచ్ 2%s లో చేర్చారు"
 
 #: dt-posts/posts.php:331
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
-msgstr "కోచ్‌లకు% s జోడించబడింది"
+msgstr "కోచ్‌లకు%s జోడించబడింది"
 
 #: dt-posts/posts.php:333
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
-msgstr "% 2 $ s లో కోచ్‌ల నుండి% 1 $ s తొలగించబడింది"
+msgstr "%2$s లో కోచ్‌ల నుండి %1$s తొలగించబడింది"
 
 #: dt-posts/posts.php:334
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
-msgstr "కోచ్‌ల నుండి% s తొలగించబడ్డాయి"
+msgstr "కోచ్‌ల నుండి%s తొలగించబడ్డాయి"
 
 #: dt-posts/posts.php:338
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
-msgstr "పిల్లల సమూహాలకు% s జోడించబడ్డాయి"
+msgstr "పిల్లల సమూహాలకు%s జోడించబడ్డాయి"
 
 #: dt-posts/posts.php:339
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
-msgstr "మాతృ సమూహాలకు% s జోడించబడ్డాయి"
+msgstr "మాతృ సమూహాలకు%s జోడించబడ్డాయి"
 
 #: dt-posts/posts.php:341
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
-msgstr "పిల్లల సమూహాల నుండి% s తొలగించబడ్డాయి"
+msgstr "పిల్లల సమూహాల నుండి%s తొలగించబడ్డాయి"
 
 #: dt-posts/posts.php:342
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
-msgstr "మాతృ సమూహాల నుండి% s తొలగించబడింది"
+msgstr "మాతృ సమూహాల నుండి%s తొలగించబడింది"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "తోటి సమూహాలకు% s జోడించబడ్డాయి"
+msgstr "తోటి సమూహాలకు%s జోడించబడ్డాయి"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
-msgstr "తోటి సమూహాల నుండి% s తొలగించబడింది"
+msgstr "తోటి సమూహాల నుండి%s తొలగించబడింది"
 
-#: dt-posts/posts.php:355 dt-posts/posts.php:356 dt-posts/posts.php:363
-#: dt-posts/posts.php:364
+#: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
+#: dt-posts/posts.php:369
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
-msgstr "% S కి కనెక్ట్ చేయబడింది"
+msgstr "%s కి కనెక్ట్ చేయబడింది"
 
-#: dt-posts/posts.php:358 dt-posts/posts.php:359 dt-posts/posts.php:366
-#: dt-posts/posts.php:367
+#: dt-posts/posts.php:360 dt-posts/posts.php:361
+#, fuzzy
+#| msgctxt "Milestone1 added to Milestones"
+#| msgid "%1$s added to %2$s"
+msgctxt "Contact1 added to [field]"
+msgid "%1$s added to %2$s"
+msgstr "%1$s %2$s కు జోడించబడింది"
+
+#: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
+#: dt-posts/posts.php:386
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
-msgstr "% S కు కనెక్షన్ తొలగించబడింది"
+msgstr "%s కు కనెక్షన్ తొలగించబడింది"
 
-#: dt-posts/posts.php:395
+#: dt-posts/posts.php:377 dt-posts/posts.php:378
+#, fuzzy
+#| msgctxt "Milestone1 removed from Milestones"
+#| msgid "%1$s removed from %2$s"
+msgctxt "contact1 removed from [field]"
+msgid "%1$s removed from %2$s"
+msgstr "%1$s %2$s నుండి తొలగించబడింది"
+
+#: dt-posts/posts.php:416
 msgctxt "Assigned to: User1"
 msgid "Assigned to: %s"
-msgstr "దీనికి కేటాయించబడింది:% s"
+msgstr "దీనికి కేటాయించబడింది:%s"
 
-#: dt-posts/posts.php:395
+#: dt-posts/posts.php:416
 msgid "Nobody"
 msgstr "ఎవరూ"
 
-#: dt-posts/posts.php:400 dt-posts/posts.php:405
+#: dt-posts/posts.php:421 dt-posts/posts.php:426
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
-msgstr "% 1 $ s% 2 $ s కు మార్చబడింది"
+msgstr "%1$s %2$s కు మార్చబడింది"
 
-#: dt-posts/posts.php:413 dt-posts/posts.php:424
+#: dt-posts/posts.php:434 dt-posts/posts.php:445
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
-msgstr "% 1 $ s% 2 $ s నుండి తొలగించబడింది"
+msgstr "%1$s %2$s నుండి తొలగించబడింది"
 
-#: dt-posts/posts.php:416 dt-posts/posts.php:427
+#: dt-posts/posts.php:437 dt-posts/posts.php:448
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "% 1 $ s% 2 $ s కు జోడించబడింది"
+msgstr "%1$s %2$s కు జోడించబడింది"
 
-#: dt-posts/posts.php:449
+#: dt-posts/posts.php:470
 msgid "%s removed"
-msgstr "% s తొలగించబడింది"
+msgstr "%s తొలగించబడింది"
 
-#: dt-posts/posts.php:457 dt-posts/posts.php:470
+#: dt-posts/posts.php:478 dt-posts/posts.php:491
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "స్థానాల నుండి% 1 $ s తొలగించబడ్డాయి"
+msgstr "స్థానాల నుండి %1$s తొలగించబడ్డాయి"
 
-#: dt-posts/posts.php:460 dt-posts/posts.php:477
+#: dt-posts/posts.php:481 dt-posts/posts.php:498
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
-msgstr "స్థానాలకు% 1 $ s జోడించబడ్డాయి"
+msgstr "స్థానాలకు %1$s జోడించబడ్డాయి"
 
-#: dt-posts/posts.php:491
+#: dt-posts/posts.php:512
 #, fuzzy
 #| msgctxt "Milestone1 removed from Milestones"
 #| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "% 1 $ s% 2 $ s నుండి తొలగించబడింది"
+msgstr "%1$s %2$s నుండి తొలగించబడింది"
 
-#: dt-posts/posts.php:494
+#: dt-posts/posts.php:515
 #, fuzzy
 #| msgctxt "Milestone1 added to Milestones"
 #| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "% 1 $ s% 2 $ s కు జోడించబడింది"
+msgstr "%1$s %2$s కు జోడించబడింది"
 
-#: dt-posts/posts.php:515
+#: dt-posts/posts.php:536
 msgctxt "message"
 msgid "verified"
 msgstr "ధృవీకరించబడింది"
 
-#: dt-posts/posts.php:515
+#: dt-posts/posts.php:536
 msgctxt "message"
 msgid "not verified"
 msgstr "తనిఖీ చెయ్యబడలేదు"
 
-#: dt-posts/posts.php:518
+#: dt-posts/posts.php:539
 msgctxt "message"
 msgid "invalidated"
 msgstr "చెల్లదు"
 
-#: dt-posts/posts.php:518
+#: dt-posts/posts.php:539
 msgctxt "message"
 msgid "not invalidated"
 msgstr "చెల్లదు"
 
-#: dt-posts/posts.php:545
+#: dt-posts/posts.php:566
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
-msgstr "% 1 $ s జోడించబడింది:% 2 $ s"
+msgstr "%1$s జోడించబడింది: %2$s"
 
-#: dt-posts/posts.php:547
+#: dt-posts/posts.php:568
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "% 1 $ s ను% 2 $ s నుండి% 3 $ s కు నవీకరించబడింది"
+msgstr "%1$s ను %2$s నుండి %3$s కు నవీకరించబడింది"
 
-#: dt-posts/posts.php:549
+#: dt-posts/posts.php:570
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
-msgstr "% 1 $ s తొలగించబడింది:% 2 $ s"
+msgstr "%1$s తొలగించబడింది: %2$s"
 
-#: dt-posts/posts.php:553
+#: dt-posts/posts.php:574
 msgctxt "message"
 msgid "Name changed to: %s"
-msgstr "పేరు దీనికి మార్చబడింది:% s"
+msgstr "పేరు దీనికి మార్చబడింది:%s"
 
-#: dt-posts/posts.php:555
+#: dt-posts/posts.php:576
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "డెమో ప్లగిన్ నుండి సృష్టించబడింది"
 
-#: dt-posts/posts.php:562
+#: dt-posts/posts.php:583
 msgctxt "message"
 msgid "%s declined assignment"
-msgstr "% s అసైన్‌మెంట్ తిరస్కరించబడింది"
+msgstr "%s అసైన్‌మెంట్ తిరస్కరించబడింది"
 
-#: dt-posts/posts.php:562 dt-posts/posts.php:565
+#: dt-posts/posts.php:583 dt-posts/posts.php:586
 msgctxt "message"
 msgid "A user"
 msgstr "వినియోగదారు"
 
-#: dt-posts/posts.php:565
+#: dt-posts/posts.php:586
 msgctxt "message"
 msgid "%s accepted assignment"
-msgstr "% s అంగీకరించిన నియామకం"
+msgstr "%s అంగీకరించిన నియామకం"
 
-#: dt-posts/posts.php:570
+#: dt-posts/posts.php:591
 msgctxt "message"
 msgid "Shared with %s"
-msgstr "% S తో భాగస్వామ్యం చేయబడింది"
+msgstr "%s తో భాగస్వామ్యం చేయబడింది"
 
-#: dt-posts/posts.php:572
+#: dt-posts/posts.php:593
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "% S తో భాగస్వామ్యం చేయబడలేదు"
+msgstr "%s తో భాగస్వామ్యం చేయబడలేదు"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -4532,7 +4607,7 @@ msgstr "వినియోగదారు స్థితి"
 #: dt-users/mapbox-coverage-map.php:75
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "దీనికి వినియోగదారుని జోడించండి:% s"
+msgstr "దీనికి వినియోగదారుని జోడించండి:%s"
 
 #: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
@@ -4712,7 +4787,7 @@ msgid "User Profile"
 msgstr "వినియోగదారు వివరాలు"
 
 #: dt-users/template-user-management.php:345
-#: dt-users/user-hooks-and-config.php:374
+#: dt-users/user-hooks-and-config.php:379
 msgid "View contact record"
 msgstr "సంప్రదింపు రికార్డును చూడండి"
 
@@ -4733,12 +4808,12 @@ msgid "Access by Source"
 msgstr "మూలం ద్వారా ప్రాప్యత"
 
 #: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:543
+#: dt-users/user-hooks-and-config.php:548
 msgid "All Sources - gives access to all contacts"
 msgstr "అన్ని వనరులు - అన్ని పరిచయాలకు ప్రాప్తిని ఇస్తుంది"
 
 #: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:550
+#: dt-users/user-hooks-and-config.php:555
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
@@ -4746,7 +4821,7 @@ msgstr ""
 "అనుకూల - స్వంత పరిచయాలను మరియు క్రింద ఎంచుకున్న మూలాల యొక్క అన్ని పరిచయాలను యాక్సెస్ చేయండి"
 
 #: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:557
+#: dt-users/user-hooks-and-config.php:562
 msgid "No Sources - only own contacts"
 msgstr "మూలాలు లేవు - సొంత పరిచయాలు మాత్రమే"
 
@@ -4802,7 +4877,7 @@ msgstr "పాత 10 నవీకరణ అవసరం"
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "చివరి 10 పరిచయాల కోసం సంప్రదింపు ప్రయత్నానికి కేటాయించిన సమయం"
 
-#: dt-users/user-hooks-and-config.php:166
+#: dt-users/user-hooks-and-config.php:167
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
@@ -4810,51 +4885,51 @@ msgstr ""
 "%1$sకి స్వాగతం, ఇది మీ వ్యక్తిగత పరిచయ రికార్డు. ఫీల్డ్‌లను అప్‌డేట్ చేయడానికి సంకోచించకండి మరియు నన్ను "
 "లేదా ఇతర వినియోగదారులను @ప్రస్తావించండి"
 
-#: dt-users/user-hooks-and-config.php:278
-#: dt-users/user-hooks-and-config.php:316
+#: dt-users/user-hooks-and-config.php:283
+#: dt-users/user-hooks-and-config.php:321
 msgid "[%s] Login Details"
 msgstr "[%s] లాగిన్ వివరాలు"
 
-#: dt-users/user-hooks-and-config.php:289
+#: dt-users/user-hooks-and-config.php:294
 msgid "To set your password, visit the following address:"
 msgstr "మీ పాస్‌వర్డ్‌ను సెట్ చేయడానికి, కింది చిరునామాను సందర్శించండి:"
 
-#: dt-users/user-hooks-and-config.php:312
+#: dt-users/user-hooks-and-config.php:317
 msgid "To log in click here: %s"
 msgstr "లాగిన్ అవ్వడానికి ఇక్కడ క్లిక్ చేయండి: %s"
 
-#: dt-users/user-hooks-and-config.php:354
+#: dt-users/user-hooks-and-config.php:359
 msgid "Hi %s,"
 msgstr "తన,"
 
-#: dt-users/user-hooks-and-config.php:355
+#: dt-users/user-hooks-and-config.php:360
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "మీరు %2$sలో %1$sలో చేరడానికి ఆహ్వానించబడ్డారు"
 
-#: dt-users/user-hooks-and-config.php:501
+#: dt-users/user-hooks-and-config.php:506
 msgid "Extra Disciple.Tools Information"
 msgstr "అదనపు శిష్యుడు.టూల్స్ సమాచారం"
 
-#: dt-users/user-hooks-and-config.php:504
+#: dt-users/user-hooks-and-config.php:509
 msgid "Corresponds to Contact"
 msgstr "పరిచయానికి అనుగుణంగా ఉంటుంది"
 
-#: dt-users/user-hooks-and-config.php:512 dt-users/user-management.php:183
+#: dt-users/user-hooks-and-config.php:517 dt-users/user-management.php:183
 msgid "View Contact"
 msgstr "పరిచయాన్ని చూడండి"
 
-#: dt-users/user-hooks-and-config.php:514
+#: dt-users/user-hooks-and-config.php:519
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "ఈ వినియోగదారు అనుగుణంగా ఉన్న కాంటాక్ట్ రికార్డ్ పేరును జోడించండి."
 
-#: dt-users/user-hooks-and-config.php:515
+#: dt-users/user-hooks-and-config.php:520
 msgid "Learn more."
 msgstr "ఇంకా నేర్చుకో."
 
-#: dt-users/user-hooks-and-config.php:522
+#: dt-users/user-hooks-and-config.php:527
 msgid "User Language"
 msgstr "వాడుకరి భాష"
 
@@ -4885,17 +4960,17 @@ msgstr "అస్థిరమైనది"
 #: dt-users/user-management.php:172
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "% 1 $ s% 3 $ s రోజుల తర్వాత% 2 $ s లో అంగీకరించబడింది"
+msgstr "%1$s %3$s రోజుల తర్వాత %2$s లో అంగీకరించబడింది"
 
 #: dt-users/user-management.php:173
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "% 1 $ s సంప్రదింపు ప్రయత్నం కోసం% 2 $ s రోజులు వేచి ఉన్నాయి"
+msgstr "%1$s సంప్రదింపు ప్రయత్నం కోసం %2$s రోజులు వేచి ఉన్నాయి"
 
 #: dt-users/user-management.php:174
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "% 1 $ s తో పరిచయం% 3 $ s రోజుల తర్వాత% 2 $ s లో ప్రయత్నించారు"
+msgstr "%1$s తో పరిచయం %3$s రోజుల తర్వాత %2$s లో ప్రయత్నించారు"
 
 #: dt-users/user-management.php:175
 msgid "Unable to update"
@@ -4931,7 +5006,7 @@ msgstr "వినియోగదారుని చూడండి"
 
 #: dt-users/user-management.php:290
 msgid "%s days since last update"
-msgstr "చివరి నవీకరణ నుండి% s రోజులు"
+msgstr "చివరి నవీకరణ నుండి%s రోజులు"
 
 #: dt-users/user-metrics.php:106
 msgid "Updated fields"
@@ -4956,7 +5031,7 @@ msgstr "లాగిన్ అయ్యారు"
 #: dt-users/user-metrics.php:120
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
-msgstr "% S లో అసైన్మెంట్ క్షీణించింది"
+msgstr "%s లో అసైన్మెంట్ క్షీణించింది"
 
 #: dt-users/users.php:122
 msgid "No permissions to assign"
@@ -4991,12 +5066,12 @@ msgstr "సిస్టమ్ ఇమెయిల్"
 #: dt-workflows/tasks.php:82
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
-msgstr "మీరు ఈ రోజు రిమైండర్‌ను% 1 $ s లో సెట్ చేసారు"
+msgstr "మీరు ఈ రోజు రిమైండర్‌ను %1$s లో సెట్ చేసారు"
 
 #: dt-workflows/tasks.php:86
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "మీరు ఈ పనిని% 1 $ s:% 2 $ s లో సెట్ చేసారు"
+msgstr "మీరు ఈ పనిని %1$s: %2$s లో సెట్ చేసారు"
 
 #: dt-workflows/workflows-triggers.php:63
 msgid "D.T Workflow"
@@ -5025,7 +5100,7 @@ msgstr "మీరు ఏ బ్రౌజర్‌ని ఉపయోగిస్
 
 #: single-template.php:100 single-template.php:108
 msgid "This %s needs an update."
-msgstr "ఈ% s కి నవీకరణ అవసరం."
+msgstr "ఈ%s కి నవీకరణ అవసరం."
 
 #: single-template.php:102 single-template.php:110
 msgid "Please provide an update by posting a comment."
@@ -5063,7 +5138,7 @@ msgstr "ట్యాగ్‌ను సృష్టించండి మరి�
 #: single-template.php:428
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "మీరు ఖచ్చితంగా% s ను తొలగించాలనుకుంటున్నారా?"
+msgstr "మీరు ఖచ్చితంగా%s ను తొలగించాలనుకుంటున్నారా?"
 
 #: template-merge-post-details.php:89
 msgid "Open Modal"
@@ -5112,7 +5187,7 @@ msgstr "కొత్త బల్క్ రికార్డ్‌లలో ఏ
 
 #: template-new-bulk-post.php:145 template-new-post.php:57
 msgid "Select the %s type:"
-msgstr "% S రకాన్ని ఎంచుకోండి:"
+msgstr "%s రకాన్ని ఎంచుకోండి:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"

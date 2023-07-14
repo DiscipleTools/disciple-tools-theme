@@ -453,7 +453,9 @@ jQuery(document).ready(function($) {
       matcher: function (item) {
         return parseInt(item.ID) !== parseInt(post_id)
       },
-      filter: false,
+      filter: function (item) {
+        return parseInt(item.ID) !== parseInt(post_id)
+      },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
       display: ["name", "label"],
       templateValue: function() {
@@ -1067,9 +1069,9 @@ jQuery(document).ready(function($) {
         },
         href: function (item) {
           const postType = window.wpApiShare.post_type
-          const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name])
+          const query =  window.SHAREDFUNCTIONS.createCustomFilter(field, [item.name])
           const field_label = field_settings[field].name || field
-          const labels = [{ id: `tags_${item.name}`, name: `${field_label}: ${item.name}`}]
+          const labels = [{ id: `${field}_${item.name}`, name: `${field_label}: ${item.name}`}]
           return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
         }
       },
@@ -1133,9 +1135,9 @@ jQuery(document).ready(function($) {
   function resetDetailsFields(){
     window.lodash.forOwn( field_settings, (field_options, field_key)=>{
 
-      if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
+      if ( field_options.tile === 'details' && !field_options.hidden && ( post[field_key] || field_options.type === 'boolean' ) ){
 
-        if ( field_options.only_for_types && ( field_options.only_for_types === true || field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
+        if ( field_options.only_for_types && field_options.only_for_types !== true && ( field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
           return
         }
         let field_value = window.lodash.get( post, field_key, false )
@@ -1146,6 +1148,8 @@ jQuery(document).ready(function($) {
           values_html = window.lodash.escape( field_value )
         } else if ( field_options.type === 'date' ){
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
+        } else if ( field_options.type === 'boolean' ){
+          values_html = window.lodash.escape( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
         } else if ( field_options.type === 'key_select' ){
           values_html = window.lodash.escape( field_value.label )
         } else if ( field_options.type === 'multi_select' || field_options.type === 'tags' ){

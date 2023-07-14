@@ -15,7 +15,7 @@ function dt_print_details_bar(
     $share_button = true;
     $comment_button = true;
     $task = true;
-    $show_update_needed = isset( $post_settings['fields']['requires_update'] );
+    $show_update_needed = isset( $post_settings['fields']['requires_update'] ) && current_user_can( 'assign_any_contacts' );
     $update_needed = isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true;
     $following = in_array( $current_user_id, $following );
     $is_assigned = isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == $current_user_id;

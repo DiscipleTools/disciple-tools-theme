@@ -738,7 +738,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <?php $langs = dt_get_available_languages(); ?>
-                        <button class="button small expand_translations" data-form_name="<?php echo esc_html( $form_name ) ?>">
+                        <button class="button small expand_translations"
+                                data-form_name="<?php echo esc_html( $form_name ) ?>"
+                                data-source="tiles">
                             <?php
                             $number_of_translations = 0;
                             foreach ( $langs as $lang => $val ){

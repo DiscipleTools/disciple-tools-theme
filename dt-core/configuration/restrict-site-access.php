@@ -166,7 +166,7 @@ function disciple_tools_get_private_feed_message() {
 
 // Calling your own login css so you can style it
 function disciple_tools_login_css() {
-    dt_theme_enqueue_style( 'disciple_tools_login_css', 'dt-assets/build/css/login.min.css' );
+    dt_theme_enqueue_style( 'theme_login_css', 'dt-assets/build/css/login.min.css' );
 }
 
 // changing the logo link from wordpress.org to your site
