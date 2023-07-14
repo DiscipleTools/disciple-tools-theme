@@ -7,7 +7,7 @@ $dt_login = DT_Login_Fields::all_values();
 if ( isset( $_GET['action'] ) && 'logout' === $_GET['action'] ) {
     wp_destroy_current_session();
     wp_clear_auth_cookie();
-    wp_safe_redirect( dt_login_url( 'login' ) );
+    wp_safe_redirect( dt_login_url( 'home' ) );
     exit;
 }
 if ( is_user_logged_in() ) {
