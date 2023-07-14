@@ -387,7 +387,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                 />
                                                 <?php
                                                 echo esc_attr( $capability_name );
-                                                if ( isset( $capability->description ) ){
+                                                if ( !empty( $capability->description ) ){
                                                     ?>
                                                     <span
                                                         data-tooltip="<?php echo esc_attr( $capability->description ); ?>">

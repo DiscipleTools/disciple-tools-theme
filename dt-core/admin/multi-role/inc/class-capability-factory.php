@@ -163,12 +163,15 @@ final class Disciple_Tools_Capability_Factory {
         $source = $options['source'];
         if ( isset( $options['name'] ) ){
             $name = $options['name'];
-        } elseif ( isset( $options['post_type'], $options['label_plural'] ) ){
-            $name = ucwords( str_replace( strtolower( $options['post_type'] ), $options['label_plural'], strtolower( dt_label_from_slug( $slug ) ) ) );
+        } elseif ( isset( $options['label'] ) ) {
+            $name = $options['label'];
+        } elseif ( isset( $options['post_type'] ) ){
+            $label = DT_Posts::get_label_for_post_type( $options['post_type'], false, false );
+            $name = ucwords( str_replace( strtolower( $options['post_type'] ), $label, strtolower( dt_label_from_slug( $slug ) ) ) );
         } else {
             $name = dt_label_from_slug( $slug );
         }
-        $description = isset( $options['description'] ) ? $options['description'] : '';
+        $description = $options['description'] ?? '';
 
         $capability = $this->get_capability( $slug );
 

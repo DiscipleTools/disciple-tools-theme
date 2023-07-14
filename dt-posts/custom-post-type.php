@@ -338,8 +338,8 @@ class Disciple_Tools_Post_Type_Template {
     public function dt_capabilities( $capabilities ){
         $capabilities['access_' . $this->post_type] = [
             'source' => $this->plural,
-            'label_plural' => $this->plural,
-            'description' => 'The user can access the UI for ' . $this->plural,
+            'label' => __( 'Access UI', 'disciple_tools' ),
+            'description' => sprintf( __( 'The user can access the UI for %s', 'disciple_tools' ), $this->plural ),
             'post_type' => $this->post_type
         ];
 //        $capabilities['update_'  . $this->post_type] = [
@@ -348,47 +348,34 @@ class Disciple_Tools_Post_Type_Template {
 //        ];
         $capabilities['create_'  . $this->post_type] = [
             'source' => $this->plural,
-            'label_plural' => $this->plural,
-            'description' => 'The user can create ' . $this->plural,
+            'label' => __( 'Create Records', 'disciple_tools' ),
+            'description' => sprintf( __( 'The user can create %s', 'disciple_tools' ), $this->plural ),
             'post_type' => $this->post_type
         ];
         $capabilities['view_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'label_plural' => $this->plural,
-            'description' => 'The user can view any ' . $this->singular,
+            'label' => __( 'View Any Record', 'disciple_tools' ),
+            'description' => sprintf( __( 'The user can view any %s', 'disciple_tools' ), $this->singular ),
             'post_type' => $this->post_type
         ];
         $capabilities['update_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'label_plural' => $this->plural,
-            'description' => 'The user can update any ' . $this->singular,
+            'label' => __( 'Update Any Record', 'disciple_tools' ),
+            'description' => sprintf( __( 'The user can update any %s', 'disciple_tools' ), $this->singular ),
             'post_type' => $this->post_type
         ];
         $capabilities['delete_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'label_plural' => $this->plural,
-            'description' => 'The user can delete any ' . $this->singular,
+            'label' => __( 'Delete Any Record', 'disciple_tools' ),
+            'description' => sprintf( __( 'The user can delete any %s', 'disciple_tools' ), $this->singular ),
             'post_type' => $this->post_type
         ];
-
-        // Fetch additional post type custom permissions.
-        $roles_and_permissions = apply_filters( 'dt_set_roles_and_permissions', [] );
-        foreach ( $roles_and_permissions as $role => $role_settings ){
-            foreach ( $role_settings['permissions'] ?? [] as $permission_key => $permission_enabled ){
-                $length = strlen( '_' . $this->post_type );
-                $is_post_type_permission = substr( $permission_key, -$length ) === '_' . $this->post_type;
-                if ( $is_post_type_permission && $permission_enabled ){
-                    $capability = $capabilities[$permission_key] ?? [];
-                    if ( !isset( $capability['source'] ) ){
-                        $capability['source'] = $this->plural;
-                    }
-                    $capability['label_plural'] = $this->plural;
-                    $capability['post_type'] = $this->post_type;
-                    $capability['bob'] = $capability['description'] ?? '';
-                    $capabilities[$permission_key] = $capability;
-                }
-            }
-        }
+        $capabilities['dt_all_admin_' . $this->post_type] = [
+            'source' => $this->plural,
+            'label' => __( 'Wordpress Admin Access', 'disciple_tools' ),
+            'description' => sprintf( __( 'Full wordpress admin %s access', 'disciple_tools' ), $this->plural ),
+            'post_type' => $this->post_type
+        ];
 
         return $capabilities;
     }
