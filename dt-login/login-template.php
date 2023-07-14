@@ -446,6 +446,11 @@ switch ( $request_action ) {
                                     </div>
                                 </div>
                             </div>
+                            <div class="cell">
+
+                                <?php do_shortcode( '[dt_firebase_login_ui]' ) ?>
+
+                            </div>
                         </div>
                     </div>
                     <div class="cell medium-3 large-4"></div>
