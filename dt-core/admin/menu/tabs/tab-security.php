@@ -199,16 +199,14 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
             // - wp-json/endpoint/v1
             // - /endpoint/v1
             // - endpoint/v1
-            $api_whitelist = array_map( function( $path ) {
-                $re = '/^[\/]?(?:wp-json)?[\/]?(.*)$/m';
+            $re = '/^[\/]?(?:wp-json)?[\/]?([^\r\n]*)[\r]?$/m';
 
-                preg_match_all( $re, $path, $matches, PREG_SET_ORDER, 0 );
-
-                if ( count( $matches ) ) {
-                    $path = 'wp-json/' . $matches[0][1];
-                }
-                return $path;
-            }, explode( PHP_EOL, $api_whitelist ) );
+            preg_match_all( $re, $api_whitelist, $matches, PREG_SET_ORDER, 0 );
+            if ( isset( $matches ) && count( $matches ) ) {
+                $api_whitelist = array_map( function( $match ) {
+                    return 'wp-json/' . $match[1];
+                }, $matches );
+            }
 
             update_option( 'dt_api_whitelist', $api_whitelist, true );
         }
