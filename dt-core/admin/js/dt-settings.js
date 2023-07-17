@@ -1696,8 +1696,8 @@ jQuery(document).ready(function($) {
     });
 
     // Display 'connected to' dropdown if 'connection' post type field is selected
-    $('.dt-admin-modal-box').on('change', '[id^=new-field-type-]', function() {
-        if ( $(this).val() === 'connection' ) {
+    $('.dt-admin-modal-box').on('change', '[id^=new-field-type]', function() {
+      if ( $(this).val() === 'connection' ) {
             $('.connection_field_target_row').show();
         } else {
             $('.connection_field_target_row').hide();

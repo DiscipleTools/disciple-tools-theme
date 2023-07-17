@@ -132,7 +132,9 @@ class DT_Login_User_Manager {
      */
     private function mobile_login() {
         /* Force logout of any logged in admin user with WP cookies set */
-        wp_logout();
+        if ( is_user_logged_in() ) {
+            wp_logout();
+        }
 
         add_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );    // hook in earlier than other callbacks to short-circuit them
 
