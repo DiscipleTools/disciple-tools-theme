@@ -849,6 +849,14 @@
               } else if ( field_value === true ) {
                 values = ['&check;']
               }
+            } else if ( field_settings.type === 'task' ) {
+              values = field_value
+              .filter(v => {
+                return (v.value && v.value.note && v.value.note !== '');
+              })
+              .map(v => {
+                return `${window.lodash.escape(v.value.note)}`;
+              });
             }
           } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
