@@ -31,7 +31,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
         add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 50, 1 );
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 );
     }
 
     public function register_post_type(){
