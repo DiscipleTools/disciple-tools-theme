@@ -360,6 +360,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 <tbody>
                 <?php
                 foreach ( $roles as $key => $role ){
+                    if ( $role['label'] === 'Registered' ){
+                        continue;
+                    }
                     ?>
                     <tr>
                         <td>
