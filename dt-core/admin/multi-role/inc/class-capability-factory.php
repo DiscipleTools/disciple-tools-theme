@@ -161,6 +161,7 @@ final class Disciple_Tools_Capability_Factory {
      */
     public function add_capability( $slug, $options ) {
         $source = $options['source'];
+        $post_type = $options['post_type'] ?? null;
         if ( isset( $options['name'] ) ){
             $name = $options['name'];
         } elseif ( isset( $options['label'] ) ) {
@@ -180,12 +181,14 @@ final class Disciple_Tools_Capability_Factory {
                 $slug,
                 $source,
                 $name,
-                $description
+                $description,
+                $post_type
             );
         } else {
             $capability->source = $source;
             $capability->slug = $slug;
             $capability->description = $description;
+            $capability->post_type = $post_type;
         }
         $this->capabilities[ $slug ] = $capability;
 

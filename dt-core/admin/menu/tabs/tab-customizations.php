@@ -370,9 +370,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 <?php
                                 $capabilities = $capability_factory->get_capabilities();
                                 foreach ( $capabilities as $capability_key => $capability ){
-                                    $length = strlen( '_' . $post_type );
-                                    $is_post_type_capability = substr( $capability_key, -$length ) === '_' . $post_type;
-                                    if ( $is_post_type_capability ){
+                                    if ( isset( $capability->post_type ) && $capability->post_type === $post_type ){
                                         $is_capability_selected = isset( $role['permissions'][$capability_key] ) && $role['permissions'][$capability_key];
                                         $capability_name = $capability->name ?? $capability_key;
                                         ?>

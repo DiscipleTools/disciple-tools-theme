@@ -73,10 +73,12 @@ class DT_Contacts_Base {
     public function dt_capabilities( $capabilities ){
         $capabilities['dt_all_access_' . $this->post_type] = [
             'source' => DT_Posts::get_label_for_post_type( $this->post_type, false, false ),
-            'label' => __( 'Access All Records', 'disciple_tools' ),
-            'description' => sprintf( __( 'Access all %s records created by any user', 'disciple_tools' ), DT_Posts::get_label_for_post_type( $this->post_type, true, false ) ),
+            'label' => 'Manage all access and media contacts',
+            'description' => 'View and update all access and media contacts',
             'post_type' => $this->post_type
         ];
+        $capabilities['view_any_contacts']['label'] = 'View all, including private';
+        $capabilities['view_any_contacts']['description'] = 'The user can view any contact, including private contacts';
 
         return $capabilities;
     }
