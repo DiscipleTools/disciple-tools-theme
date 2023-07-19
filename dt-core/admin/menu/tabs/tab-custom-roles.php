@@ -220,7 +220,6 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         $label = isset( $_POST['label'] ) ? sanitize_text_field( wp_unslash( $_POST['label'] ) ) : null;
         $slug = isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : null;
         $description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : null;
-        $capabilities_source_filter = isset( $_POST['capabilities_source_filter'] ) ? sanitize_text_field( wp_unslash( $_POST['capabilities_source_filter'] ) ) : null;
 
         // phpcs:ignore
         $capabilities = isset( $_POST['capabilities'] ) ? wp_unslash( (array)$_POST['capabilities'] ) : [];
@@ -248,43 +247,6 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         ];
 
         $success = update_option( self::OPTION_NAME, $option );
-
-        // Ensure global custom capabilities are also kept in sync.
-        if ( $success ){
-
-            $updated_custom_post_types = [];
-            $custom_post_types = get_option( 'dt_custom_post_types', [] );
-            foreach ( $custom_post_types as $post_type => $settings ){
-
-                // Attempt to match on plural labels.
-                if ( isset( $settings['label_plural'] ) && $capabilities_source_filter === $settings['label_plural'] ){
-
-                    // Ensure user can execute admin updates.
-                    if ( ( $slug == 'administrator' && dt_is_administrator() ) || ( $slug != 'administrator' ) ){
-
-                        // Capture existing settings ensure roles array is available.
-                        $updated_custom_post_types[$post_type] = $settings;
-                        if ( !isset( $updated_custom_post_types[$post_type]['roles'] ) ){
-                            $updated_custom_post_types[$post_type]['roles'] = [];
-                        }
-
-                        // Reset roles for given slug and re-populate.
-                        $updated_custom_post_types[$post_type]['roles'][$slug] = [];
-                        foreach ( $capabilities as $capability ){
-                            $updated_custom_post_types[$post_type]['roles'][$slug][$capability] = true;
-                        }
-                    }
-                }
-            }
-
-            // Persist any changes to custom post types.
-            if ( !empty( $updated_custom_post_types ) ){
-                foreach ( $updated_custom_post_types as $post_type => $settings ){
-                    $custom_post_types[$post_type] = $settings;
-                }
-                update_option( 'dt_custom_post_types', $custom_post_types );
-            }
-        }
 
         if ( !$success ) {
             $this->show_error( new WP_Error( 400, __( 'The role could not be saved.', 'disciple_tools' ) ) );
@@ -524,7 +486,13 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
     private function view_role( $key, $role ) {
         $label = $role['label'];
         $description = $role['description'];
-        $role_capabilities = get_role( $key )->capabilities;
+        $role_capabilities = array_keys( get_role( $key )->capabilities );
+
+        // Ensure latest capability updates are used.
+        $existing_custom_roles = get_option( self::OPTION_NAME, [] );
+        if ( isset( $existing_custom_roles[$key]['capabilities'] ) ){
+            $role_capabilities = $existing_custom_roles[$key]['capabilities'];
+        }
         ?>
         <div class="alert alert-warning"
              id="role-<?php esc_attr( $key ); ?>">
@@ -573,7 +541,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                     </div>
                 </td>
                 <td>
-                    <?php $this->view_capabilities( array_keys( $role_capabilities ), false ) ?>
+                    <?php $this->view_capabilities( $role_capabilities, false ) ?>
                 </td>
             </tr>
         </table>
@@ -586,22 +554,6 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      */
     private function view_edit_role( $key ) {
         $role = get_option( self::OPTION_NAME, [] )[ $key ];
-
-        // Capture additional global custom capabilities.
-        $roles_permissions = apply_filters( 'dt_set_roles_and_permissions', [] );
-        foreach ( $roles_permissions as $role_permission_key => $role_permission ){
-            if ( ( $key === $role_permission_key ) && is_array( $role_permission['permissions'] ) ){
-
-                // Overwrite with latest global capabilities.
-                $role['capabilities'] = [];
-                foreach ( $role_permission['permissions'] as $permission_key => $permission ){
-                    if ( $permission === true ){
-                        $role['capabilities'][] = $permission_key;
-                    }
-                }
-            }
-        }
-
         $label = $role['label'];
         $description = $role['description'];
         $role_capabilities = $role['capabilities'];

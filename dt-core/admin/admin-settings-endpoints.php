@@ -398,29 +398,68 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function update_roles( WP_REST_Request $request ){
         $params = $request->get_params();
         $updated = false;
-        if ( isset( $params['post_type'], $params['roles'] ) ){
-            $post_type = $params['post_type'];
+        if ( isset( $params['roles'] ) && current_user_can( 'edit_roles' ) ){
             $roles = $params['roles'];
 
-            // Fetch existing post type settings and update.
-            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            // Fetch existing roles and permissions.
+            $existing_roles_permissions = apply_filters( 'dt_set_roles_and_permissions', [] );
 
-            // Proceed with storing updates, overwriting existing roles.
-            $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
-            $post_type_settings['roles'] = [];
+            // Fetch existing custom roles.
+            $existing_custom_roles = get_option( 'dt_custom_roles', [] );
 
+            // Proceed with storing updates, accordingly overwriting existing roles.
             foreach ( $roles as $role => $capabilities ){
+
+                // Sync updated custom role with existing settings.
+                $updated_custom_role = [];
+                if ( isset( $existing_roles_permissions[$role] ) ){
+                    $existing_role = $existing_roles_permissions[$role];
+                    $updated_custom_role['label'] = $existing_role['label'] ?? '';
+                    $updated_custom_role['description'] = $existing_role['description'] ?? '';
+                    $updated_custom_role['slug'] = $role;
+                    $updated_custom_role['capabilities'] = array_keys( $existing_role['permissions'] ?? [] );
+                    $updated_custom_role['is_editable'] = $existing_role['is_editable'] ?? false;
+                    $updated_custom_role['custom'] = $existing_role['custom'] ?? false;
+                } else {
+                    $updated_custom_role['label'] = $role;
+                    $updated_custom_role['description'] = '';
+                    $updated_custom_role['slug'] = $role;
+                    $updated_custom_role['capabilities'] = [];
+                    $updated_custom_role['is_editable'] = true;
+                    $updated_custom_role['custom'] = true;
+                }
+
+                // Identify capabilities to be added/removed.
+                $added_capabilities = [];
+                $removed_capabilities = [];
                 foreach ( $capabilities ?? [] as $capability ){
-                    if ( $capability['enabled'] ){
-                        if ( ( $role == 'administrator' && dt_is_administrator() ) || ( $role != 'administrator' ) ){
-                            $post_type_settings['roles'][$role][$capability['key']] = true;
+                    if ( $capability['enabled'] && ( ( $role == 'administrator' && dt_is_administrator() ) || ( $role != 'administrator' ) ) ){
+                        $added_capabilities[] = $capability['key'];
+                    } else {
+                        $removed_capabilities[] = $capability['key'];
+                    }
+                }
+
+                // Update capabilities list accordingly, based on identified additions/removals.
+                $updated_capabilities = [];
+                if ( empty( $updated_custom_role['capabilities'] ) ){
+                    $updated_capabilities = $added_capabilities;
+                } else {
+                    $merged_capabilities = array_merge( $updated_custom_role['capabilities'], $added_capabilities );
+                    foreach ( $merged_capabilities as $capability ){
+                        if ( !in_array( $capability, $removed_capabilities ) ){
+                            $updated_capabilities[] = $capability;
                         }
                     }
                 }
-            }
-            $custom_post_types[$post_type] = $post_type_settings;
+                $updated_custom_role['capabilities'] = array_unique( $updated_capabilities );
 
-            update_option( 'dt_custom_post_types', $custom_post_types );
+                // Save updates to custom roles option.
+                $existing_custom_roles[$role] = $updated_custom_role;
+            }
+
+            // Persist updated custom roles.
+            update_option( 'dt_custom_roles', $existing_custom_roles );
 
             $updated = true;
         }

@@ -76,8 +76,8 @@ class Disciple_Tools_Roles
                 'label' => $role['label'],
                 'permissions' => $permissions,
                 'description' => $role['description'],
-                'is_editable' => true,
-                'custom' => true
+                'is_editable' => $role['is_editable'] ?? true,
+                'custom' => $role['custom'] ?? true
             ];
         }
 
