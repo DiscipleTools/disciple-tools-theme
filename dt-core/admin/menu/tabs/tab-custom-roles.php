@@ -488,11 +488,6 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         $description = $role['description'];
         $role_capabilities = array_keys( get_role( $key )->capabilities );
 
-        // Ensure latest capability updates are used.
-        $existing_custom_roles = get_option( self::OPTION_NAME, [] );
-        if ( isset( $existing_custom_roles[$key]['capabilities'] ) ){
-            $role_capabilities = $existing_custom_roles[$key]['capabilities'];
-        }
         ?>
         <div class="alert alert-warning"
              id="role-<?php esc_attr( $key ); ?>">

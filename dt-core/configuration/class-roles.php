@@ -57,7 +57,7 @@ class Disciple_Tools_Roles
      * @since  0.1.0
      */
     public function __construct() {
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_custom_roles_and_permissions' ], 11, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_custom_roles_and_permissions' ], 12, 1 );
     } // End __construct()
 
     public static function dt_setup_custom_roles_and_permissions( $roles ) {
@@ -72,13 +72,18 @@ class Disciple_Tools_Roles
             } else {
                 $permissions = [];
             }
-            $roles[$role['slug']] = [
-                'label' => $role['label'],
-                'permissions' => $permissions,
-                'description' => $role['description'],
-                'is_editable' => $role['is_editable'] ?? true,
-                'custom' => $role['custom'] ?? true
-            ];
+            if ( !isset( $roles[$role['slug']] ) ){
+                $roles[$role['slug']] = [
+                    'label' => $role['label'],
+                    'permissions' => $permissions,
+                    'description' => $role['description'],
+                    'is_editable' => $role['is_editable'] ?? true,
+                    'custom' => $role['custom'] ?? true
+                ];
+            } else {
+                // merge permissions
+                $roles[$role['slug']]['permissions'] = array_merge( $roles[$role['slug']]['permissions'], $permissions );
+            }
         }
 
         return $roles;

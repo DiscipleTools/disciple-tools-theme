@@ -352,7 +352,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             $capability_factory = Disciple_Tools_Capability_Factory::get_instance();
             $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
             ksort( $roles );
-            $existing_custom_roles = get_option( 'dt_custom_roles', [] );
             ?>
             <table class="widefat striped" style="margin-top: 12px;">
                 <thead>
@@ -375,7 +374,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                 $capabilities = $capability_factory->get_capabilities();
                                 foreach ( $capabilities as $capability_key => $capability ){
                                     if ( isset( $capability->post_type ) && $capability->post_type === $post_type ){
-                                        $is_capability_selected = isset( $existing_custom_roles[$key]['capabilities'] ) && in_array( $capability_key, $existing_custom_roles[$key]['capabilities'] );
+                                        $is_capability_selected = isset( $role['permissions'][$capability_key] ) && $role['permissions'][$capability_key] === true;
                                         $capability_name = $capability->name ?? $capability_key;
                                         ?>
                                         <div class="capability">
