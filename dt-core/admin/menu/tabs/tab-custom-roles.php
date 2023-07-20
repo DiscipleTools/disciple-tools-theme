@@ -239,11 +239,15 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         $option = get_option( self::OPTION_NAME, [] );
 
+        $updated_capabilities = array_reduce( $capabilities, function ( $updated_capabilities, $capability ){
+            $updated_capabilities[$capability] = true;
+            return $updated_capabilities;
+        }, [] );
         $option[ $slug ] = [
             'description'  => $description,
             'label'        => $label,
             'slug'         => $slug,
-            'capabilities' => array_values( $capabilities )
+            'capabilities' => $updated_capabilities
         ];
 
         $success = update_option( self::OPTION_NAME, $option );
@@ -486,8 +490,16 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
     private function view_role( $key, $role ) {
         $label = $role['label'];
         $description = $role['description'];
-        $role_capabilities = array_keys( get_role( $key )->capabilities );
 
+        // Extract accordingly, based on incoming role availability.
+        if ( !empty( $role['permissions'] ) ){
+            $role_capabilities = array_keys( array_filter( $role['permissions'], function ( $v, $k ){
+                return is_bool( $v ) && ( $v === true );
+            }, ARRAY_FILTER_USE_BOTH ) );
+        } else {
+            $role_capabilities = array_keys( get_role( $key )->capabilities );
+        }
+        dt_write_log( $role_capabilities );
         ?>
         <div class="alert alert-warning"
              id="role-<?php esc_attr( $key ); ?>">
@@ -551,7 +563,15 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         $role = get_option( self::OPTION_NAME, [] )[ $key ];
         $label = $role['label'];
         $description = $role['description'];
-        $role_capabilities = $role['capabilities'];
+
+        // Extract accordingly, based on array storage type.
+        if ( !empty( $role['capabilities'] ) && is_int( array_keys( $role['capabilities'] )[0] ) ){
+            $role_capabilities = $role['capabilities'];
+        } else {
+            $role_capabilities = array_keys( array_filter( $role['capabilities'], function ( $v, $k ){
+                return is_bool( $v ) && ( $v === true );
+            }, ARRAY_FILTER_USE_BOTH ) );
+        }
         ?>
 
         <form id="role-manager"
@@ -683,6 +703,11 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         <fieldset class="capabilities"
                   id="capabilities">
             <?php foreach ( $capabilities as $capability ): ?>
+                <?php
+                dt_write_log( $capability->slug );
+                $bob = in_array( $capability->slug, $selected );
+                dt_write_log( $bob );
+                ?>
                 <div class="capability hide"
                      data-capability="<?php echo esc_attr( $capability->slug ); ?>"
                      data-source="<?php echo esc_attr( $capability->source ); ?>">

@@ -63,15 +63,7 @@ class Disciple_Tools_Roles
     public static function dt_setup_custom_roles_and_permissions( $roles ) {
         $custom_roles = get_option( 'dt_custom_roles', [] );
         foreach ( $custom_roles as $role ) {
-            $permission_keys = $role['capabilities'];
-            if ( is_array( $permission_keys ) ) {
-                $permissions = array_reduce($permission_keys, function( $permissions, $key ) {
-                    $permissions[$key] = true;
-                    return $permissions;
-                }, []);
-            } else {
-                $permissions = [];
-            }
+            $permissions = is_array( $role['capabilities'] ) ? $role['capabilities'] : [];
             if ( !isset( $roles[$role['slug']] ) ){
                 $roles[$role['slug']] = [
                     'label' => $role['label'],

@@ -412,47 +412,21 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
                 // Sync updated custom role with existing settings.
                 $updated_custom_role = [];
-                if ( isset( $existing_roles_permissions[$role] ) ){
-                    $existing_role = $existing_roles_permissions[$role];
-                    $updated_custom_role['label'] = $existing_role['label'] ?? '';
-                    $updated_custom_role['description'] = $existing_role['description'] ?? '';
-                    $updated_custom_role['slug'] = $role;
-                    $updated_custom_role['capabilities'] = array_keys( $existing_role['permissions'] ?? [] );
-                    $updated_custom_role['is_editable'] = $existing_role['is_editable'] ?? false;
-                    $updated_custom_role['custom'] = $existing_role['custom'] ?? false;
-                } else {
-                    $updated_custom_role['label'] = $role;
-                    $updated_custom_role['description'] = '';
-                    $updated_custom_role['slug'] = $role;
-                    $updated_custom_role['capabilities'] = [];
-                    $updated_custom_role['is_editable'] = true;
-                    $updated_custom_role['custom'] = true;
-                }
+                $existing_role = $existing_roles_permissions[$role] ?? [];
+                $updated_custom_role['label'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['label'] ?? '' ) : $role;
+                $updated_custom_role['description'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['description'] ?? '' ) : '';
+                $updated_custom_role['slug'] = $role;
+                $updated_custom_role['is_editable'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['is_editable'] ?? false ) : true;
+                $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
 
-                // Identify capabilities to be added/removed.
-                $added_capabilities = [];
-                $removed_capabilities = [];
-                foreach ( $capabilities ?? [] as $capability ){
-                    if ( $capability['enabled'] && ( ( $role == 'administrator' && dt_is_administrator() ) || ( $role != 'administrator' ) ) ){
-                        $added_capabilities[] = $capability['key'];
-                    } else {
-                        $removed_capabilities[] = $capability['key'];
-                    }
-                }
-
-                // Update capabilities list accordingly, based on identified additions/removals.
+                // Identify capabilities selection states.
                 $updated_capabilities = [];
-                if ( empty( $updated_custom_role['capabilities'] ) ){
-                    $updated_capabilities = $added_capabilities;
-                } else {
-                    $merged_capabilities = array_merge( $updated_custom_role['capabilities'], $added_capabilities );
-                    foreach ( $merged_capabilities as $capability ){
-                        if ( !in_array( $capability, $removed_capabilities ) ){
-                            $updated_capabilities[] = $capability;
-                        }
-                    }
+                foreach ( $capabilities ?? [] as $capability ){
+                    $updated_capabilities[$capability['key']] = ( $capability['enabled'] && ( ( $role == 'administrator' && dt_is_administrator() ) || ( $role != 'administrator' ) ) );
                 }
-                $updated_custom_role['capabilities'] = array_unique( $updated_capabilities );
+
+                // Capture capability updates.
+                $updated_custom_role['capabilities'] = $updated_capabilities;
 
                 // Save updates to custom roles option.
                 $existing_custom_roles[$role] = $updated_custom_role;
