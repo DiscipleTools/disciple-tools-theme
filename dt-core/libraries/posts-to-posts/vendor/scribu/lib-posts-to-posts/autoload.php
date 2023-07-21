@@ -2,8 +2,8 @@
 
 class P2P_Autoload {
 
-    private mixed $basedir;
-    private mixed $prefix;
+    private string $basedir;
+    private string $prefix;
 
     protected function __construct( $prefix, $basedir ) {
 		$this->prefix = $prefix;
