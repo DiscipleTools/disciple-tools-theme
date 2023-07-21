@@ -8,7 +8,7 @@ if ( !class_exists('Puc_v4p10_Metadata', false) ):
 	 * @copyright 2016
 	 * @access public
 	 */
-	abstract class Puc_v4p10_Metadata {
+    #[AllowDynamicProperties] abstract class Puc_v4p10_Metadata {
 
 		/**
 		 * Create an instance of this class from a JSON document.

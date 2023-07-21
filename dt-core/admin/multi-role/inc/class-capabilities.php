@@ -6,6 +6,8 @@
  * @access public
  */
 final class Disciple_Tools_Capabilities {
+    private mixed $factory;
+
     /**
      * Returns the instance.
      *
