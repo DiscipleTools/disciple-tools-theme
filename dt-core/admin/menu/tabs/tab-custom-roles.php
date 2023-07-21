@@ -499,7 +499,6 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         } else {
             $role_capabilities = array_keys( get_role( $key )->capabilities );
         }
-        dt_write_log( $role_capabilities );
         ?>
         <div class="alert alert-warning"
              id="role-<?php esc_attr( $key ); ?>">
@@ -703,11 +702,6 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         <fieldset class="capabilities"
                   id="capabilities">
             <?php foreach ( $capabilities as $capability ): ?>
-                <?php
-                dt_write_log( $capability->slug );
-                $bob = in_array( $capability->slug, $selected );
-                dt_write_log( $bob );
-                ?>
                 <div class="capability hide"
                      data-capability="<?php echo esc_attr( $capability->slug ); ?>"
                      data-source="<?php echo esc_attr( $capability->source ); ?>">
@@ -715,7 +709,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                         <input type="checkbox"
                                name="capabilities[]"
                                value="<?php echo esc_attr( $capability->slug ); ?>" <?php if ( !$editable ): ?> readonly onclick="return false;" <?php endif; ?>
-                            <?php if ( in_array( $capability->slug, $selected ) ): ?> checked <?php endif; ?>
+                            <?php if ( in_array( $capability->slug, $selected, true ) ): ?> checked <?php endif; ?>
                         >
                         <?php echo esc_attr( $capability->name ); ?>
                         <?php if ( $capability->description ): ?>
