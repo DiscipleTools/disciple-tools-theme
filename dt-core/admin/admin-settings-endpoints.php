@@ -398,6 +398,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function update_roles( WP_REST_Request $request ){
         $params = $request->get_params();
         $updated = false;
+
         if ( isset( $params['roles'] ) && current_user_can( 'edit_roles' ) ){
             $roles = $params['roles'];
 
@@ -409,6 +410,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             // Proceed with storing updates, accordingly overwriting existing roles.
             foreach ( $roles as $role => $capabilities ){
+
+                // Skip administrator roles, whilst not currently an administrator.
+                if ( $role == 'administrator' && !dt_is_administrator() ){
+                    continue;
+                }
 
                 // Sync updated custom role with existing settings.
                 $updated_custom_role = [];
@@ -422,7 +428,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 // Identify capabilities selection states.
                 $updated_capabilities = [];
                 foreach ( $capabilities ?? [] as $capability ){
-                    $updated_capabilities[$capability['key']] = ( $capability['enabled'] && ( ( $role == 'administrator' && dt_is_administrator() ) || ( $role != 'administrator' ) ) );
+                    $updated_capabilities[$capability['key']] = $capability['enabled'];
                 }
 
                 // Capture capability updates.
