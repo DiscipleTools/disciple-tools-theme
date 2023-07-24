@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-06-12T10:59:34+00:00\n"
+"POT-Creation-Date: 2023-07-14T10:46:35+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Swahili <https://translate.disciple.tools/projects/disciple-"
@@ -51,7 +51,7 @@ msgstr "Omba ruhusa kutoka kwa msimamizi wako."
 msgid "Request Record Access Permission"
 msgstr "Omba Ruhusa ya Upataji Rekodi"
 
-#: 403.php:39 dt-users/template-new-user.php:273
+#: 403.php:39 dt-users/template-new-user.php:267
 msgid "Back"
 msgstr "Rudi nyuma"
 
@@ -84,10 +84,10 @@ msgid "Cancel"
 msgstr "Katisha"
 
 #: 403.php:59 archive-template.php:388 archive-template.php:430
-#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:132
-#: dt-assets/parts/loop-activity-comment.php:137
-#: dt-assets/parts/loop-activity-comment.php:172
-#: dt-assets/parts/loop-activity-comment.php:177
+#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:154
+#: dt-assets/parts/loop-activity-comment.php:159
+#: dt-assets/parts/loop-activity-comment.php:202
+#: dt-assets/parts/loop-activity-comment.php:207
 #: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
 #: dt-assets/parts/merge-details.php:75
 #: dt-assets/parts/modals/modal-advanced-search.php:65
@@ -113,8 +113,8 @@ msgstr "Katisha"
 #: dt-contacts/base-setup.php:467 dt-contacts/dmm-module.php:523
 #: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
 #: dt-groups/base-setup.php:628 dt-groups/base-setup.php:633
-#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:278
-#: dt-users/template-new-user.php:299 dt-users/template-new-user.php:303
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:272
+#: dt-users/template-new-user.php:293 dt-users/template-new-user.php:297
 #: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
 #: single-template.php:420 single-template.php:437
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
@@ -140,9 +140,9 @@ msgid "Filters"
 msgstr "Vichujio"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:538
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:642
-#: dt-core/global-functions.php:670 dt-core/global-functions.php:788
-#: dt-core/global-functions.php:832 dt-posts/custom-post-type.php:18
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
+#: dt-core/global-functions.php:674 dt-core/global-functions.php:792
+#: dt-core/global-functions.php:836 dt-posts/custom-post-type.php:18
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -159,7 +159,10 @@ msgstr "Wazi"
 msgid "Advanced Search"
 msgstr "Utafutaji wa Juu"
 
-#: archive-template.php:46 dt-assets/parts/modals/modal-advanced-search.php:96
+#: archive-template.php:46 dt-assets/parts/loop-activity-comment.php:47
+#: dt-assets/parts/loop-activity-comment.php:95
+#: dt-assets/parts/loop-activity-comment.php:179
+#: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "Maoni"
 
@@ -243,7 +246,7 @@ msgid "Bulk Edit"
 msgstr "Hariri kwa Wingi"
 
 #: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
-#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:184
+#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:195
 msgid "More"
 msgstr "Zaidi"
 
@@ -272,7 +275,7 @@ msgstr ""
 
 #: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:593 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:870
+#: dt-core/global-functions.php:874
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Tafuta Watumiaji"
@@ -280,7 +283,7 @@ msgstr "Tafuta Watumiaji"
 #: archive-template.php:476 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2710
 #: dt-users/template-user-management.php:88
-#: dt-users/template-user-management.php:520 single-template.php:128
+#: dt-users/template-user-management.php:514 single-template.php:128
 msgid "Status"
 msgstr "Hali"
 
@@ -303,21 +306,21 @@ msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Andika maoni yako hapa"
 
-#: archive-template.php:572 dt-assets/parts/loop-activity-comment.php:48
+#: archive-template.php:572 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "Aina"
 
 #: archive-template.php:592 dt-users/template-new-user.php:129
-#: dt-users/template-new-user.php:242
+#: dt-users/template-new-user.php:236
 msgid "See More Options"
 msgstr "Angalia Chaguzi Zaidi"
 
 #: archive-template.php:593 dt-users/template-new-user.php:132
-#: dt-users/template-new-user.php:245
+#: dt-users/template-new-user.php:239
 msgid "See Fewer Options"
 msgstr "Angalia Chaguzi chache"
 
-#: archive-template.php:629 dt-assets/parts/loop-activity-comment.php:175
+#: archive-template.php:629 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Sasisha"
@@ -376,14 +379,14 @@ msgid "None Set"
 msgstr "Hakuna Iliyowekwa"
 
 #: archive-template.php:801 archive-template.php:802
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:602
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
 #: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "La"
 
 #: archive-template.php:808 archive-template.php:809
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:603
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
 #: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -540,7 +543,7 @@ msgstr "Huna taarifa yoyote"
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
-#: dt-assets/parts/loop-activity-comment.php:135 single-template.php:435
+#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
 msgid "Delete"
 msgstr "Futa"
 
@@ -585,7 +588,7 @@ msgstr "Nakala Ziligunduliwa"
 
 #: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:301 template-merge-post-details.php:121
+#: dt-users/template-new-user.php:295 template-merge-post-details.php:121
 #: template-merge-post-details.php:178
 msgid "Merge"
 msgstr "Unganisha"
@@ -749,14 +752,14 @@ msgstr "Ongeza Mpya:"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:148 template-notifications.php:33
+#: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
 #: template-settings.php:60 template-settings.php:467
 msgid "Notifications"
 msgstr "Taarifa"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:274
+#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:283
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Mipangilio"
@@ -767,8 +770,8 @@ msgstr "Usimamizi"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:258
-#: dt-users/template-user-management.php:76 dt-users/user-management.php:108
+#: dt-metrics/combined/locations-list.php:260
+#: dt-users/template-user-management.php:76 dt-users/user-management.php:119
 msgid "Users"
 msgstr "Mtumiaji"
 
@@ -776,47 +779,52 @@ msgstr "Mtumiaji"
 msgid "Help"
 msgstr "Msaada"
 
-#: dt-assets/parts/loop-activity-comment.php:71
+#: dt-assets/parts/loop-activity-comment.php:79
 msgid "Submit comment"
 msgstr "Wasilisha maoni"
 
-#: dt-assets/parts/loop-activity-comment.php:79
+#: dt-assets/parts/loop-activity-comment.php:87
 msgid "Showing:"
 msgstr "Kuonyesha:"
 
-#: dt-assets/parts/loop-activity-comment.php:112
+#: dt-assets/parts/loop-activity-comment.php:101
+#: dt-users/template-user-management.php:235
+msgid "Activity"
+msgstr "Shughuli"
+
+#: dt-assets/parts/loop-activity-comment.php:134
 #: dt-assets/parts/modals/modal-record-history.php:28
 #: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "onyesha yote"
 
-#: dt-assets/parts/loop-activity-comment.php:116
+#: dt-assets/parts/loop-activity-comment.php:138
 msgid "hide all"
 msgstr "ficha yote"
 
-#: dt-assets/parts/loop-activity-comment.php:128
+#: dt-assets/parts/loop-activity-comment.php:150
 msgid "Delete Comment:"
 msgstr "Futa Maoni:"
 
-#: dt-assets/parts/loop-activity-comment.php:142
-#: dt-assets/parts/loop-activity-comment.php:182
+#: dt-assets/parts/loop-activity-comment.php:164
+#: dt-assets/parts/loop-activity-comment.php:212
 #: template-merge-post-details.php:95
 msgid "Sorry, something went wrong"
 msgstr "Samahani, shida ilitokea"
 
-#: dt-assets/parts/loop-activity-comment.php:143
+#: dt-assets/parts/loop-activity-comment.php:165
 msgid "The comment could not be deleted."
 msgstr "Maoni hayakuweza kufutika."
 
-#: dt-assets/parts/loop-activity-comment.php:148
+#: dt-assets/parts/loop-activity-comment.php:170
 msgid "Edit Comment:"
 msgstr "Hariri Maoni:"
 
-#: dt-assets/parts/loop-activity-comment.php:156
+#: dt-assets/parts/loop-activity-comment.php:186
 msgid "Type of Comment"
 msgstr "Jina la mwasiliani"
 
-#: dt-assets/parts/loop-activity-comment.php:183
+#: dt-assets/parts/loop-activity-comment.php:213
 msgid "The comment could not be updated."
 msgstr "Maoni hayakuweza kusasishwa."
 
@@ -1173,7 +1181,7 @@ msgstr ""
 "Bonyeza kitufe cha 'Haijasomwa' ili kuonyesha orodha ya arifa zako zote "
 "ambazo hazijasomwa."
 
-#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:272
+#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:281
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Tia alama Zote kuwa Zimesomwa"
@@ -1358,7 +1366,7 @@ msgstr "Unda Lebo"
 msgid "Existing tasks for this record:"
 msgstr "Kazi zilizopo za rekodi hii:"
 
-#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:178
+#: dt-assets/parts/nav-offcanvas.php:81 dt-assets/parts/nav-topbar.php:187
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "Toka nje"
@@ -1367,24 +1375,24 @@ msgstr "Toka nje"
 msgid "Theme Update Available!"
 msgstr "Sasisho la Mandhari Linapatikana!"
 
-#: dt-assets/parts/nav-topbar.php:242 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:251 template-notifications.php:43
 msgid "New"
 msgstr "Wapya"
 
-#: dt-assets/parts/nav-topbar.php:248 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:257 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Wote"
 
-#: dt-assets/parts/nav-topbar.php:252 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:261 template-notifications.php:54
 msgid "Unread"
 msgstr "Haijasomwa"
 
-#: dt-assets/parts/nav-topbar.php:259
+#: dt-assets/parts/nav-topbar.php:268
 msgid "See All"
 msgstr "Ona yote"
 
-#: dt-assets/parts/nav-topbar.php:278 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:287 template-notifications.php:72
 msgid "Mark All"
 msgstr "Tia alama Zote"
 
@@ -1732,7 +1740,7 @@ msgstr ""
 "Vifaa."
 
 #: dt-contacts/access-module.php:325 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:541
+#: dt-users/user-hooks-and-config.php:569
 msgid "Sources"
 msgstr "Vyanzo"
 
@@ -1845,7 +1853,7 @@ msgid "Language"
 msgstr "Lugha"
 
 #: dt-contacts/access-module.php:1303 dt-contacts/base-setup.php:314
-#: dt-users/template-new-user.php:193 dt-users/template-user-management.php:363
+#: dt-users/template-new-user.php:187 dt-users/template-user-management.php:367
 #: template-settings.php:653
 msgid "Gender"
 msgstr "Jinsia"
@@ -1863,7 +1871,7 @@ msgstr "Kikagua nakala"
 #: dt-contacts/base-setup.php:302 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:121
+#: dt-metrics/combined/locations-list.php:123
 #: dt-metrics/contacts/baptism-tree.php:25
 #: dt-metrics/contacts/coaching-tree.php:25
 #: dt-metrics/contacts/mapbox-maps.php:28
@@ -1874,7 +1882,7 @@ msgstr "Kikagua nakala"
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
-#: dt-users/template-user-management.php:602
+#: dt-users/template-user-management.php:596
 msgid "Contacts"
 msgstr "Waasiliani"
 
@@ -1955,7 +1963,7 @@ msgstr "Whatsapp"
 #: dt-contacts/base-setup.php:230
 #: dt-core/configuration/config-site-defaults.php:341
 #: dt-login/login-template.php:384 dt-users/template-new-user.php:118
-#: dt-users/template-new-user.php:119 dt-users/template-user-management.php:355
+#: dt-users/template-new-user.php:119 dt-users/template-user-management.php:359
 #: template-settings.php:156
 msgid "Email"
 msgstr "Barua pepe"
@@ -1990,11 +1998,11 @@ msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Unganisha mwasiliani huyu na mwasiliani mwingine"
 
-#: dt-contacts/base-setup.php:317 dt-users/template-user-management.php:367
+#: dt-contacts/base-setup.php:317 dt-users/template-user-management.php:371
 msgid "Male"
 msgstr "Kiume"
 
-#: dt-contacts/base-setup.php:318 dt-users/template-user-management.php:368
+#: dt-contacts/base-setup.php:318 dt-users/template-user-management.php:372
 msgid "Female"
 msgstr "Kike"
 
@@ -2031,7 +2039,7 @@ msgstr ""
 "Hali ya Mawasiliano inaelezea maendeleo katika kuwasiliana na mawasiliano."
 
 #: dt-contacts/base-setup.php:351 dt-groups/base-setup.php:125
-#: dt-users/template-user-management.php:94 dt-users/user-management.php:118
+#: dt-users/template-user-management.php:94 dt-users/user-management.php:129
 msgid "Active"
 msgstr "Walio Amilifu"
 
@@ -2112,19 +2120,11 @@ msgstr "Mara 30 zilizotazamwa"
 msgid "Shared with me"
 msgstr "Walioshirikishwa kwangu"
 
-#: dt-contacts/base-setup.php:702 dt-users/template-user-management.php:235
-msgid "Activity"
-msgstr "Shughuli"
-
-#: dt-contacts/base-setup.php:709
-msgid "Comment"
-msgstr "Maoni"
-
-#: dt-contacts/base-setup.php:772
+#: dt-contacts/base-setup.php:735
 msgid "This %s is archived"
 msgstr "%s hii imehifadhiwa"
 
-#: dt-contacts/base-setup.php:774
+#: dt-contacts/base-setup.php:737
 msgid "Restore"
 msgstr "Rejesha"
 
@@ -2677,7 +2677,7 @@ msgstr "DT Jina la Tovuti:%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:361
+#: dt-users/user-hooks-and-config.php:389
 msgid "Username: %s"
 msgstr "Jina la mtumiaji: %s"
 
@@ -2689,17 +2689,17 @@ msgstr "Ikiwa hii ilikuwa kosa, upuuze tu na hakuna kitakachotokea. "
 msgid "To reset your password, visit the following address:"
 msgstr "Ili kuweka upya nywila yako, tembelea anwani ifuatayo:"
 
-#: dt-core/global-functions.php:486 single-template.php:410
+#: dt-core/global-functions.php:490 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
 msgstr "Hii inahitajika"
 
-#: dt-core/global-functions.php:644
+#: dt-core/global-functions.php:648
 msgid "Add new tag \"%s\""
 msgstr "Ongeza lebo mpya \"%s\""
 
-#: dt-core/global-functions.php:645
+#: dt-core/global-functions.php:649
 msgid "Tag \"%s\" is already being used"
 msgstr "Lebo \"%s\" tayari inatumika"
 
@@ -2707,68 +2707,66 @@ msgstr "Lebo \"%s\" tayari inatumika"
 msgid "(no title)"
 msgstr "(hakuna cheo)"
 
-#: dt-core/release-notifications.php:43
+#: dt-core/release-notifications.php:58
 msgid "Release Announcement!"
 msgstr ""
 
-#: dt-core/release-notifications.php:44
+#: dt-core/release-notifications.php:59
 msgid "Disciple.Tools Theme Version %1$s"
 msgstr ""
 
-#: dt-core/release-notifications.php:49
+#: dt-core/release-notifications.php:65
 msgid "Theme News"
 msgstr ""
 
-#: dt-core/release-notifications.php:50 dt-core/release-notifications.php:59
+#: dt-core/release-notifications.php:68 dt-core/release-notifications.php:77
 msgid "Other News"
 msgstr ""
 
-#: dt-core/release-notifications.php:51
+#: dt-core/release-notifications.php:69
 msgid "Get Involved"
 msgstr ""
 
-#: dt-core/release-notifications.php:63
+#: dt-core/release-notifications.php:81
 msgid "Other news not available."
 msgstr ""
 
-#: dt-core/release-notifications.php:78
+#: dt-core/release-notifications.php:96
+msgid "Freely given, but not cheap"
+msgstr ""
+
+#: dt-core/release-notifications.php:98
+msgid ""
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
+msgstr ""
+
+#: dt-core/release-notifications.php:100
 msgid "Give"
 msgstr ""
 
-#: dt-core/release-notifications.php:80
-msgid "Make Disciple.Tools better by joining us financially."
-msgstr ""
-
-#: dt-core/release-notifications.php:80
-msgid "Join us here"
-msgstr ""
-
-#: dt-core/release-notifications.php:86
+#: dt-core/release-notifications.php:104 dt-core/release-notifications.php:108
 msgid "Translate"
 msgstr ""
 
-#: dt-core/release-notifications.php:88 dt-users/user-initial-setup.php:68
+#: dt-core/release-notifications.php:106 dt-users/user-initial-setup.php:68
 #: template-settings.php:674
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
 
-#: dt-core/release-notifications.php:88
-msgid "Click here"
-msgstr ""
-
-#: dt-core/release-notifications.php:94
+#: dt-core/release-notifications.php:113
 msgid "Build or Document"
 msgstr ""
 
-#: dt-core/release-notifications.php:96
+#: dt-core/release-notifications.php:115
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
 
-#: dt-core/release-notifications.php:96
+#: dt-core/release-notifications.php:117
 msgid "Find out more"
 msgstr ""
 
@@ -2783,7 +2781,7 @@ msgstr "Kikundi"
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:166
+#: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:100
@@ -2807,7 +2805,7 @@ msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "Kikundi kinakutana kikamilifu."
 
-#: dt-groups/base-setup.php:130 dt-users/user-management.php:121
+#: dt-groups/base-setup.php:130 dt-users/user-management.php:132
 msgid "Inactive"
 msgstr "Sio amilifu"
 
@@ -3266,7 +3264,7 @@ msgstr "Umepoteza nywila yako"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:211
+#: dt-metrics/combined/locations-list.php:213
 msgid "Churches"
 msgstr "Makanisa"
 
@@ -3371,7 +3369,7 @@ msgstr "Idadi ya anwani zilizopewa kwa ziara ya ana kwa ana"
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:524
+#: dt-users/template-user-management.php:518
 msgid "Active Contacts"
 msgstr "Waasiliani Amilifu"
 
@@ -3470,12 +3468,12 @@ msgid "This Week"
 msgstr "Wiki hii"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:554
+#: dt-users/template-user-management.php:548
 msgid "This Month"
 msgstr "Mwezi huu"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:558
+#: dt-users/template-user-management.php:552
 msgid "Last Month"
 msgstr "Kurekebishwa mara ya mwisho"
 
@@ -3651,7 +3649,7 @@ msgstr "%1$s katika %2$s"
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
-#: dt-users/template-user-management.php:568
+#: dt-users/template-user-management.php:562
 msgid "All Time"
 msgstr "Muda Wote"
 
@@ -3909,7 +3907,7 @@ msgstr "%1$d %2$s imeundwa"
 msgid "Activity Log"
 msgstr "Kumbukumbu ya Shughuli"
 
-#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:185
+#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:196
 msgid "Less"
 msgstr "Chini"
 
@@ -4158,7 +4156,8 @@ msgid "Un-Follow"
 msgstr "Usifuate"
 
 #: dt-posts/dt-posts.php:103
-msgid "Updated existing record instead of creating a new record."
+msgid ""
+"This record was automatically updated rather than creating a new record."
 msgstr ""
 
 #: dt-posts/dt-posts.php:1646
@@ -4561,22 +4560,22 @@ msgstr "Tuma"
 msgid "Links"
 msgstr "Viungo"
 
-#: dt-reports/magic-url-landing-page.php:54
-#: dt-reports/magic-url-landing-page.php:58
+#: dt-reports/magic-url-landing-page.php:29
+#: dt-reports/magic-url-landing-page.php:33
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Invalid Link"
 msgstr "Uwasilishaji wa Kiungo cha Uchawi"
 
-#: dt-reports/magic-url-landing-page.php:63
+#: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
 msgstr ""
 
-#: dt-reports/magic-url-landing-page.php:64
+#: dt-reports/magic-url-landing-page.php:39
 msgid "Please %s, or locate a more recent key, or request a new one."
 msgstr ""
 
-#: dt-reports/magic-url-landing-page.php:64
+#: dt-reports/magic-url-landing-page.php:39
 msgid "login"
 msgstr ""
 
@@ -4684,7 +4683,7 @@ msgid "Search multipliers and contacts"
 msgstr "Tafuta kuzidisha na anwani"
 
 #: dt-users/template-new-user.php:116 dt-users/template-user-management.php:87
-#: dt-users/template-user-management.php:358
+#: dt-users/template-user-management.php:362
 msgid "Display Name"
 msgstr "Jina Linaloonekana"
 
@@ -4702,42 +4701,42 @@ msgstr "Jina la mtumiaji"
 msgid "Role"
 msgstr "Jukumu"
 
-#: dt-users/template-new-user.php:177 dt-users/template-user-management.php:428
+#: dt-users/template-new-user.php:171 dt-users/template-user-management.php:423
 msgid "Click here to see roles documentation"
 msgstr "Bonyeza hapa kuona nyaraka za majukumu"
 
-#: dt-users/template-new-user.php:181
+#: dt-users/template-new-user.php:175
 msgid "Create User"
 msgstr "Unda Mtumiaji"
 
-#: dt-users/template-new-user.php:186 dt-users/template-new-user.php:188
+#: dt-users/template-new-user.php:180 dt-users/template-new-user.php:182
 #: template-settings.php:610
 msgid "First Name"
 msgstr "Jina la Kwanza"
 
-#: dt-users/template-new-user.php:186 dt-users/template-new-user.php:190
-#: dt-users/template-new-user.php:193 dt-users/template-new-user.php:212
-#: dt-users/template-new-user.php:226
+#: dt-users/template-new-user.php:180 dt-users/template-new-user.php:184
+#: dt-users/template-new-user.php:187 dt-users/template-new-user.php:206
+#: dt-users/template-new-user.php:220
 msgid "optional"
 msgstr "hiari"
 
-#: dt-users/template-new-user.php:190 dt-users/template-new-user.php:191
+#: dt-users/template-new-user.php:184 dt-users/template-new-user.php:185
 #: template-settings.php:616
 msgid "Last Name"
 msgstr "Jina la Mwisho"
 
-#: dt-users/template-new-user.php:226 dt-users/template-new-user.php:230
-#: dt-users/template-user-management.php:395
-#: dt-users/template-user-management.php:402 template-settings.php:226
+#: dt-users/template-new-user.php:220 dt-users/template-new-user.php:224
+#: dt-users/template-user-management.php:399
+#: dt-users/template-user-management.php:406 template-settings.php:226
 #: template-settings.php:645
 msgid "Biography"
 msgstr "Biografia"
 
-#: dt-users/template-new-user.php:265
+#: dt-users/template-new-user.php:259
 msgid "Upgrading a contact"
 msgstr "Inaboresha anwani"
 
-#: dt-users/template-new-user.php:268
+#: dt-users/template-new-user.php:262
 msgid ""
 "The new user will have access to all the fields and comments on this contact "
 "record. We suggest archiving the comments if they contain sensitive data."
@@ -4746,27 +4745,27 @@ msgstr ""
 "mawasiliano. Tunapendekeza kuweka maoni kwenye kumbukumbu ikiwa yana data "
 "nyeti."
 
-#: dt-users/template-new-user.php:275
+#: dt-users/template-new-user.php:269
 msgid "Continue and archive comments"
 msgstr "Endelea na uhifadhi maoni"
 
-#: dt-users/template-new-user.php:276
+#: dt-users/template-new-user.php:270
 msgid "Continue, keeping comments"
 msgstr "Endelea, kuweka maoni"
 
-#: dt-users/template-new-user.php:285
+#: dt-users/template-new-user.php:279
 msgid "Merge Contact Details"
 msgstr "Unganisha Maelezo ya Mawasiliano"
 
-#: dt-users/template-new-user.php:287
+#: dt-users/template-new-user.php:281
 msgid "A new contact record has been created."
 msgstr "Rekodi mpya ya anwani imeundwa."
 
-#: dt-users/template-new-user.php:290
+#: dt-users/template-new-user.php:284
 msgid "The old one is now closed."
 msgstr "Ya zamani sasa imefungwa."
 
-#: dt-users/template-new-user.php:293
+#: dt-users/template-new-user.php:287
 msgid "Do you wish to merge fields from the old record to the new one?"
 msgstr "Je, ungependa kuunganisha sehemu kutoka rekodi ya zamani hadi mpya?"
 
@@ -4840,7 +4839,7 @@ msgid "User Profile"
 msgstr "Wasifu wa Mtumiaji"
 
 #: dt-users/template-user-management.php:345
-#: dt-users/user-hooks-and-config.php:379
+#: dt-users/user-hooks-and-config.php:407
 msgid "View contact record"
 msgstr "Tazama rekodi ya mwasiliani"
 
@@ -4848,25 +4847,31 @@ msgstr "Tazama rekodi ya mwasiliani"
 msgid "Edit User"
 msgstr "Badilisha Mtumiaji"
 
-#: dt-users/template-user-management.php:414 template-settings.php:149
+#: dt-users/template-user-management.php:355
+#, fuzzy
+#| msgid "Password"
+msgid "Email Password Reset"
+msgstr "Nywila"
+
+#: dt-users/template-user-management.php:418 template-settings.php:149
 msgid "Roles"
 msgstr "Majukumu"
 
-#: dt-users/template-user-management.php:456
+#: dt-users/template-user-management.php:450
 msgid "Save Roles"
 msgstr "Majukumu ya Watumiaji"
 
-#: dt-users/template-user-management.php:464
+#: dt-users/template-user-management.php:458
 msgid "Access by Source"
 msgstr "Upatikanaji na Chanzo"
 
-#: dt-users/template-user-management.php:470
-#: dt-users/user-hooks-and-config.php:548
+#: dt-users/template-user-management.php:464
+#: dt-users/user-hooks-and-config.php:576
 msgid "All Sources - gives access to all contacts"
 msgstr "Vyanzo vyote - hutoa ufikiaji wa anwani zote"
 
-#: dt-users/template-user-management.php:476
-#: dt-users/user-hooks-and-config.php:555
+#: dt-users/template-user-management.php:470
+#: dt-users/user-hooks-and-config.php:583
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
@@ -4874,64 +4879,64 @@ msgstr ""
 "Desturi - Fikia anwani mwenyewe na anwani zote za vyanzo vilivyochaguliwa "
 "hapa chini"
 
-#: dt-users/template-user-management.php:482
-#: dt-users/user-hooks-and-config.php:562
+#: dt-users/template-user-management.php:476
+#: dt-users/user-hooks-and-config.php:590
 msgid "No Sources - only own contacts"
 msgstr "Hakuna Vyanzo - mawasiliano tu mwenyewe"
 
-#: dt-users/template-user-management.php:488
+#: dt-users/template-user-management.php:482
 msgid "Sources List"
 msgstr "Orodha ya Vyanzo"
 
-#: dt-users/template-user-management.php:500
+#: dt-users/template-user-management.php:494
 msgid "Save Allowed Sources"
 msgstr "Hifadhi Vyanzo Vilivyoruhusiwa"
 
-#: dt-users/template-user-management.php:530
+#: dt-users/template-user-management.php:524
 msgid "Updates Needed"
 msgstr "Wanaohitaji Sasisho"
 
-#: dt-users/template-user-management.php:536
+#: dt-users/template-user-management.php:530
 msgid "Pending"
 msgstr "Inasubiri"
 
-#: dt-users/template-user-management.php:543
+#: dt-users/template-user-management.php:537
 msgid "Unread Notifications"
 msgstr "Taarifa"
 
-#: dt-users/template-user-management.php:550
+#: dt-users/template-user-management.php:544
 msgid "Assignments"
 msgstr "Nani amepewa?"
 
-#: dt-users/template-user-management.php:564
+#: dt-users/template-user-management.php:558
 msgid "This Year"
 msgstr "Mwaka huu"
 
-#: dt-users/template-user-management.php:582
+#: dt-users/template-user-management.php:576
 msgid "Pace"
 msgstr "Kasi"
 
-#: dt-users/template-user-management.php:583
+#: dt-users/template-user-management.php:577
 msgid "Assigned and not accepted"
 msgstr "Waasiliani Waliopewa Kwa Mtu"
 
-#: dt-users/template-user-management.php:585
+#: dt-users/template-user-management.php:579
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "Muda kutoka kwa anwani uliyopewa unakubaliwa kwa anwani 10 za mwisho"
 
-#: dt-users/template-user-management.php:587
+#: dt-users/template-user-management.php:581
 msgid "Accepted with no contact attempt"
 msgstr "Mawasiliano Yamejaribiwa"
 
-#: dt-users/template-user-management.php:589
+#: dt-users/template-user-management.php:583
 msgid "Oldest 10 update needed"
 msgstr "Sasisho Inahitajika"
 
-#: dt-users/template-user-management.php:591
+#: dt-users/template-user-management.php:585
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "Muda kutoka kwa jaribio la kuwasiliana na anwani 10 za mwisho"
 
-#: dt-users/user-hooks-and-config.php:167
+#: dt-users/user-hooks-and-config.php:195
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
@@ -4939,52 +4944,52 @@ msgstr ""
 "Karibu %1$s, hii ni rekodi yako ya kibinafsi ya mawasiliano. Jisikie huru "
 "kusasisha sehemu na @mention me au watumiaji wengine"
 
-#: dt-users/user-hooks-and-config.php:283
-#: dt-users/user-hooks-and-config.php:321
+#: dt-users/user-hooks-and-config.php:311
+#: dt-users/user-hooks-and-config.php:349
 msgid "[%s] Login Details"
 msgstr "[%s] Maelezo ya Kuingia"
 
-#: dt-users/user-hooks-and-config.php:294
+#: dt-users/user-hooks-and-config.php:322
 msgid "To set your password, visit the following address:"
 msgstr "Ili kuweka nenosiri lako, tembelea anwani ifuatayo:"
 
-#: dt-users/user-hooks-and-config.php:317
+#: dt-users/user-hooks-and-config.php:345
 msgid "To log in click here: %s"
 msgstr "Ili kuingia bofya hapa: %s"
 
-#: dt-users/user-hooks-and-config.php:359
+#: dt-users/user-hooks-and-config.php:387
 msgid "Hi %s,"
 msgstr "Habari %s,"
 
-#: dt-users/user-hooks-and-config.php:360
+#: dt-users/user-hooks-and-config.php:388
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Umealikwa kujiunga na %1$s katika %2$s"
 
-#: dt-users/user-hooks-and-config.php:506
+#: dt-users/user-hooks-and-config.php:534
 msgid "Extra Disciple.Tools Information"
 msgstr "Taarifa Zaidi Juu Ya Disciple.Tools"
 
-#: dt-users/user-hooks-and-config.php:509
+#: dt-users/user-hooks-and-config.php:537
 msgid "Corresponds to Contact"
 msgstr "Inahusiana na Mwasiliani"
 
-#: dt-users/user-hooks-and-config.php:517 dt-users/user-management.php:183
+#: dt-users/user-hooks-and-config.php:545 dt-users/user-management.php:194
 msgid "View Contact"
 msgstr "Tazama mwasiliani"
 
-#: dt-users/user-hooks-and-config.php:519
+#: dt-users/user-hooks-and-config.php:547
 msgid "Add the name of the contact record this user corresponds to."
 msgstr ""
 "Ongeza jina la rekodi ya mawasiliano ambayo mtumiaji huyu analingana nayo."
 
-#: dt-users/user-hooks-and-config.php:520
+#: dt-users/user-hooks-and-config.php:548
 msgid "Learn more."
 msgstr "Jifunze zaidi."
 
-#: dt-users/user-hooks-and-config.php:527
+#: dt-users/user-hooks-and-config.php:555
 msgid "User Language"
 msgstr "Lugha ya Mtumiaji"
 
@@ -5000,66 +5005,66 @@ msgstr "Alika Mtumiaji"
 msgid "Default Language"
 msgstr "Lugha ya Mtumiaji"
 
-#: dt-users/user-management.php:110
+#: dt-users/user-management.php:121
 msgid "Add User"
 msgstr "Ongeza Mtumiaji"
 
-#: dt-users/user-management.php:119
+#: dt-users/user-management.php:130
 msgid "Away"
 msgstr "Weka kama Hayupo"
 
-#: dt-users/user-management.php:120
+#: dt-users/user-management.php:131
 msgid "Inconsistent"
 msgstr "Haiendani"
 
-#: dt-users/user-management.php:172
+#: dt-users/user-management.php:183
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s alisema juu ya %2$s akisema: %3$s"
 
-#: dt-users/user-management.php:173
+#: dt-users/user-management.php:184
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s inasubiri Jaribio la Anwani kwa siku %2$s"
 
-#: dt-users/user-management.php:174
+#: dt-users/user-management.php:185
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "Kuwasiliana na %1$s kulijaribiwa kwa %2$s baada ya siku %3$s"
 
-#: dt-users/user-management.php:175
+#: dt-users/user-management.php:186
 msgid "Unable to update"
 msgstr "Imeshindwa kusasisha"
 
-#: dt-users/user-management.php:176
+#: dt-users/user-management.php:187
 msgid "View New User"
 msgstr "Angalia Mtumiaji Mpya"
 
-#: dt-users/user-management.php:177
+#: dt-users/user-management.php:188
 msgid "View New Contact"
 msgstr "Tazama Anwani Mpya"
 
-#: dt-users/user-management.php:178
+#: dt-users/user-management.php:189
 msgid "Email address is already in the system as a user!"
 msgstr "Anwani ya barua pepe tayari iko kwenye mfumo kama mtumiaji!"
 
-#: dt-users/user-management.php:179
+#: dt-users/user-management.php:190
 msgid "Username is already in the system as a user!"
 msgstr "Jina la mtumiaji tayari liko kwenye mfumo kama mtumiaji!"
 
-#: dt-users/user-management.php:180
+#: dt-users/user-management.php:191
 msgid "Remove"
 msgstr "Ondoa"
 
-#: dt-users/user-management.php:181
+#: dt-users/user-management.php:192
 msgid "This contact is already a user."
 msgstr "Anwani hii tayari ni mtumiaji."
 
-#: dt-users/user-management.php:182
+#: dt-users/user-management.php:193
 msgid "View User"
 msgstr "Angalia Mtumiaji"
 
-#: dt-users/user-management.php:290
+#: dt-users/user-management.php:301
 msgid "%s days since last update"
 msgstr "Siku %s tangu sasisho la mwisho"
 
@@ -5132,15 +5137,15 @@ msgstr "Unaweka kazi hii kwa %1$s: %2$s"
 msgid "D.T Workflow"
 msgstr "Mtiririko wa kazi wa D.T"
 
-#: header.php:42
+#: header.php:19
 msgid "D.T Record"
 msgstr "Rekodi ya D.T"
 
-#: header.php:78
+#: header.php:55
 msgid "Javascript must be enabled for this site to function correctly."
 msgstr "Javascript lazima iwezeshwe ili tovuti hii ifanye kazi sahihi."
 
-#: header.php:84
+#: header.php:61
 msgid ""
 "You seem to be using an out-of-date web browser. Without the most up-to-date "
 "version of your browser, this may site may not function correctly. Please "
@@ -5150,7 +5155,7 @@ msgstr ""
 "zaidi la kivinjari, inawezekana kuwa tovuti hii isifanye kazi sahihi. "
 "Tafadhali, kumbuka kwamba Internet Explorer haiauniwi."
 
-#: header.php:86
+#: header.php:63
 msgid "See what browser you are using."
 msgstr "Angalia kivinjari gani unatumia."
 
@@ -5445,6 +5450,9 @@ msgstr "Anwani za ufikiaji zimechanganuliwa:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Nakala zimepatikana:"
+
+#~ msgid "Comment"
+#~ msgstr "Maoni"
 
 #~ msgid "Select All"
 #~ msgstr "Teua Yote"
