@@ -10,6 +10,7 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 /**
  * Test for minimum required PHP version
@@ -422,11 +423,9 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              */
             if ( is_admin() || wp_doing_cron() ){
 
-                if ( !class_exists( 'Puc_v4_Factory' ) ){
-                    require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
-                }
+                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
                 $theme_folder_name = basename( dirname( __FILE__ ) );
-                Puc_v4_Factory::buildUpdateChecker(
+                PucFactory::buildUpdateChecker(
                     'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
                     __FILE__,
                     $theme_folder_name
