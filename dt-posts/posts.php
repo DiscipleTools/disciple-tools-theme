@@ -2729,7 +2729,7 @@ class Disciple_Tools_Posts
 
         foreach ( $link_keys as $link_info ) {
             if ( strpos( $key, $link_info['stub'] ) === 0 ) {
-                $link_info['type'] = substr( $key, strlen( utf8_decode( $link_info['stub'] ) ) );
+                $link_info['type'] = substr( $key, strlen( $link_info['stub'] ) );
                 return $link_info;
             }
         }

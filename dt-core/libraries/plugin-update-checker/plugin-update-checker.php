@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Update Checker Library 4.10
+ * Plugin Update Checker Library 5.1
  * http://w-shadow.com/
  *
- * Copyright 2020 Janis Elsts
+ * Copyright 2022 Janis Elsts
  * Released under the MIT license. See license.txt for details.
  */
 
-require dirname(__FILE__) . '/load-v4p10.php';
+require dirname(__FILE__) . '/load-v5p1.php';
