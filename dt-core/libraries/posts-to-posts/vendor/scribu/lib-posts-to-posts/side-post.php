@@ -3,7 +3,7 @@
 class P2P_Side_Post extends P2P_Side {
 
 	protected $item_type = 'P2P_Item_Post';
-    private mixed $query_vars;
+    private array $query_vars;
 
     function __construct( $query_vars ) {
 		$this->query_vars = $query_vars;
