@@ -1,6 +1,6 @@
 <?php
 
-#[AllowDynamicProperties] class P2P_Connection_Type {
+class P2P_Connection_Type {
 
 	public $side;
 
@@ -9,6 +9,20 @@
 	public $labels;
 
 	protected $title;
+
+    public $fields;
+
+    public $name;
+
+    public $data;
+
+    public $duplicate_connections;
+
+    public $self_connections;
+
+    public $sortable;
+
+    public $reciprocal;
 
 	public function __construct( $args, $sides ) {
 		$this->side = $sides;

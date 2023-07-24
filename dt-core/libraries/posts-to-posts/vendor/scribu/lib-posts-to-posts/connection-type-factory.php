@@ -4,6 +4,8 @@ class P2P_Connection_Type_Factory {
 
 	private static $instances = array();
 
+    public $strategy;
+
 	public static function register( $args ) {
 		$defaults = array(
 			'name' => false,
