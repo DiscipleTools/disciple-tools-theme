@@ -24,6 +24,8 @@ class P2P_Connection_Type {
 
     public $reciprocal;
 
+    public $strategy;
+
 	public function __construct( $args, $sides ) {
 		$this->side = $sides;
 

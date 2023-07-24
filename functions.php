@@ -15,7 +15,7 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 /**
  * Test for minimum required PHP version
  */
-if ( version_compare( phpversion(), '7.0', '<' ) ) {
+if ( version_compare( phpversion(), '7.4', '<' ) ) {
 
     /* We only support PHP >= 7.0, however, we want to support allowing users
      * to install this theme even on old versions of PHP, without showing a
@@ -154,7 +154,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.42.3';
+            $this->version = '1.43.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -560,7 +560,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
 function dt_theme_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
-        <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.0 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
+        <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.4 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
     </div>
     <?php
 }
