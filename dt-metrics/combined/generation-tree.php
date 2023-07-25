@@ -73,6 +73,7 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
+        $all_settings = Disciple_Tools_Core_Endpoints::get_settings();
 
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
@@ -95,7 +96,8 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
                     'post_type_select_options' => $this->post_type_select_options,
                     'post_field_select_options' => $this->post_field_select_options,
                 ],
-                'field_settings' => $this->field_settings
+                'field_settings' => $this->field_settings,
+                'all_post_types' => $all_settings['post_types'],
             ]
         );
     }
