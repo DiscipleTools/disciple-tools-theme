@@ -434,42 +434,6 @@ class Disciple_Tools_Queries
                 ", $args['post_type'], $args['p2p_key'], $args['p2p_key'], $args['p2p_key'] ), ARRAY_A );
                 break;
 
-            case 'generation_tree_multiplying_groups_only':
-                $query = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT
-                      a.ID         as id,
-                      0            as parent_id,
-                      a.post_title as name,
-                      gs1.meta_value as group_status
-                    FROM $wpdb->posts as a
-                     LEFT JOIN $wpdb->postmeta as gs1
-                      ON gs1.post_id=a.ID
-                      AND gs1.meta_key = 'group_status'
-                    WHERE a.post_status = 'publish'
-                    AND a.post_type = %s
-                    AND a.ID NOT IN (
-                      SELECT DISTINCT (p2p_from)
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = %s
-                      GROUP BY p2p_from
-                    )
-                      AND a.ID IN (
-                      SELECT DISTINCT (p2p_to)
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = %s
-                      GROUP BY p2p_to
-                    )
-                    UNION
-                    SELECT
-                      p.p2p_from  as id,
-                      p.p2p_to    as parent_id,
-                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name,
-                      (SELECT gsmeta.meta_value FROM $wpdb->postmeta as gsmeta WHERE gsmeta.post_id = p.p2p_from AND gsmeta.meta_key = 'group_status' LIMIT 1 ) as group_status
-                    FROM $wpdb->p2p as p
-                    WHERE p.p2p_type = %s
-                ", $args['post_type'], $args['p2p_key'], $args['p2p_key'], $args['p2p_key'] ), ARRAY_A );
-                break;
-
             case 'baptisms_all':
                 /**
                  * Query returns a generation tree with all baptisms in the system, whether multiplying or not.

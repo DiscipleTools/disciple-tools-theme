@@ -107,18 +107,6 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
         $namespace = 'dt/v' . $version;
 
         register_rest_route(
-            $namespace, '/metrics/field_settings/(?P<post_type>\w+)', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'field_settings' ],
-                    'permission_callback' => function(){
-                        return $this->has_permission();
-                    },
-                ],
-            ]
-        );
-
-        register_rest_route(
             $namespace, '/metrics/generation_tree', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
@@ -131,11 +119,6 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
         );
     }
 
-    public function field_settings( WP_REST_Request $request ): array{
-        $url_params = $request->get_url_params();
-        return $this->get_field_settings( $url_params['post_type'] );
-    }
-
     public function generation_tree( WP_REST_Request $request ): string{
 
         $params = $request->get_params();
@@ -144,24 +127,27 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
             $field = $params['field'];
             $field_settings = $this->get_field_settings( $post_type );
 
-            // Determine query name to adopt; groups or other?
-            $query_name = ( $post_type === 'groups' ) ? 'generation_tree_multiplying_groups_only' : 'generation_tree_multiplying_only';
-            $query = dt_queries()->tree( $query_name, [
-                'post_type' => $post_type,
-                'p2p_key' => $field_settings[$field]['p2p_key'] ?? ''
-            ] );
+            // Ensure post types match.
+            if ( $field_settings[$field]['post_type'] === $post_type ){
 
-            // Capture and encode circular errors + no results.
-            if ( is_wp_error( $query ) ){
-                return $this->_circular_structure_error( $query );
-            }
-            if ( empty( $query ) ){
-                return $this->_no_results();
-            }
+                // Determine query name to adopt; groups or other?
+                $query = dt_queries()->tree( 'generation_tree_multiplying_only', [
+                    'post_type' => $post_type,
+                    'p2p_key' => $field_settings[$field]['p2p_key'] ?? ''
+                ] );
 
-            // Build generation tree html.
-            $menu_data = $this->prepare_menu_array( $query );
-            return $this->build_menu( $post_type, 0, $menu_data, -1 );
+                // Capture and encode circular errors + no results.
+                if ( is_wp_error( $query ) ){
+                    return $this->_circular_structure_error( $query );
+                }
+                if ( empty( $query ) ){
+                    return $this->_no_results();
+                }
+
+                // Build generation tree html.
+                $menu_data = $this->prepare_menu_array( $query );
+                return $this->build_menu( $post_type, 0, $menu_data, -1 );
+            }
         }
 
         return '';
