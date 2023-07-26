@@ -48,15 +48,15 @@ let mapbox_library_api = {
                 ${window.lodash.escape( this.title )}
             </div>
             <div id="map-type" class="border-left">
-              <button class="button small ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
                 id="cluster">
                 <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dots.svg">
               </button>
-              <button class="button small ${mapbox_library_api.current_map_type === 'points' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'points' ? 'selected-select-button': ' empty-select-button' }"
                 id="points">
                 <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
               </button>
-              <button class="button small ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
                 id="area">
                 <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/location_shape.svg">
               </button>
@@ -95,7 +95,7 @@ let mapbox_library_api = {
       window.lodash.forOwn( mapbox_library_api.obj.settings.split_by, (field_values, field_key)=>{
         let options_html = ``
         window.lodash.forOwn(field_values.default, (option, option_key)=>{
-          options_html += `<button class="button small selected-select-button" data-key="${window.lodash.escape(option_key)}" id=${window.lodash.escape(field_key)}_${window.lodash.escape(option_key)}>
+          options_html += `<button class="button small select-button selected-select-button" data-key="${window.lodash.escape(option_key)}" id=${window.lodash.escape(field_key)}_${window.lodash.escape(option_key)}>
             ${window.lodash.escape(option.label)}
           </button>`
         })
