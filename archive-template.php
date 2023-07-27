@@ -543,7 +543,7 @@ dt_please_log_in();
                                     </div>
                                     <label>
                                         <input type="checkbox" id="bulk_share_unshare">
-                                        <?php esc_html_e( 'Unshare', 'disciple_tools' ); ?>
+                                        <?php esc_html_e( 'Unshare users', 'disciple_tools' ); ?>
                                     </label>
                                 </div>
                             </div>
