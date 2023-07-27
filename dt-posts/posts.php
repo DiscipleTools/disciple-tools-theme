@@ -1312,14 +1312,11 @@ class Disciple_Tools_Posts
             FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
         " );
+        // phpcs:enable
 
-        if ( empty( $posts ) && !empty( $wpdb->last_error )){
+        if ( empty( $posts ) && !empty( $wpdb->last_error ) ){
             return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
         }
-
-
-        // phpcs:enable
-        // $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
 
         //search by post_id
         if ( is_numeric( $search ) ){
