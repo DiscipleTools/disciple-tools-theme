@@ -70,6 +70,7 @@ class Disciple_Tools_Metrics{
                     // Combined
                     require_once( get_template_directory() . '/dt-metrics/combined/site-links.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/daily-activity.php' );
+                    require_once( get_template_directory() . '/dt-metrics/combined/generation-tree.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
                 }
