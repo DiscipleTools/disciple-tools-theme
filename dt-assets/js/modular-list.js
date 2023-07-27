@@ -2106,18 +2106,14 @@
       updatePayload[key] = multiSelectUpdatePayload[key];
     });
 
-    console.log(shareInput);
     shareInput.each(function () {
-      console.log($(this));
       sharePayload = $(this).data('bulk_key_share');
-      console.log(sharePayload);
     })
 
     let shares = {
       'users': sharePayload,
       'unshare': $('#bulk_share_unshare').prop('checked')
     };
-    console.log(shares);
 
     let queue =  [];
     let count = 0;
@@ -2231,7 +2227,6 @@
             }) : API.add_shared(list_settings.post_type, item, value).catch(err => {
               console.error(err)
             });
-            console.log(promise);
             promises.push(promise);
           });
         }
@@ -2253,9 +2248,9 @@
         break;
       }
     }
-    /*Promise.all(promises).then( function() {
+    Promise.all(promises).then( function() {
         done();
-    });*/
+    });
   }
 
   function do_done() {
