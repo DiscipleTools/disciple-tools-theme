@@ -70,15 +70,17 @@ class Disciple_Tools_Metrics{
                     // Combined
                     require_once( get_template_directory() . '/dt-metrics/combined/site-links.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/daily-activity.php' );
-                    require_once( get_template_directory() . '/dt-metrics/combined/generation-tree.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
+
+                    /* Record Types */
+                    require_once( get_template_directory() . '/dt-metrics/records/generation-tree.php' );
                 }
                 if ( !empty( $modules['access_module']['enabled'] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
                 }
-                require_once( get_template_directory() . '/dt-metrics/combined/time-charts.php' );
-                require_once( get_template_directory() . '/dt-metrics/combined/date-range-activity.php' );
+                require_once( get_template_directory() . '/dt-metrics/records/time-charts.php' );
+                require_once( get_template_directory() . '/dt-metrics/records/date-range-activity.php' );
             }, 1000);
 
             // default menu order
@@ -100,6 +102,9 @@ class Disciple_Tools_Metrics{
                         }
                         $content .= '<li><a>' . __( 'Groups', 'disciple_tools' ) . '</a>
                                 <ul class="menu vertical nested" id="groups-menu"></ul>
+                            </li>';
+                        $content .= '<li><a>' . __( 'Record Type Metrics', 'disciple_tools' ) . '</a>
+                                <ul class="menu vertical nested" id="records-menu"></ul>
                             </li>';
                     } // permission check
                 }

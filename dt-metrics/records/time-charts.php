@@ -7,12 +7,12 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'records'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'time_charts'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = '/dt-metrics/combined/time-charts.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/records/time-charts.js'; // should be full file name plus extension
     public $permissions = [ 'view_project_metrics', 'dt_all_access_contacts' ];
     public $post_types = [];
     public $field_settings = [];
