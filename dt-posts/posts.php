@@ -1311,7 +1311,7 @@ class Disciple_Tools_Posts
             SELECT count(distinct p.ID)
             FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
-        ", OBJECT );
+        " );
 
         if ( empty( $posts ) && !empty( $wpdb->last_error )){
             return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
