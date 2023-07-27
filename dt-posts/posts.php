@@ -1315,7 +1315,7 @@ class Disciple_Tools_Posts
         // phpcs:enable
 
         if ( empty( $posts ) && !empty( $wpdb->last_error ) ){
-            return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
+            return new WP_Error( __FUNCTION__, 'Sorry, we had a query issue.', [ 'status' => 500 ] );
         }
 
         //search by post_id
