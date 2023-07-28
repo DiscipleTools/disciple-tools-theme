@@ -26,10 +26,6 @@ jQuery(document).ready(function () {
     }
   });
 
-  jQuery(document).ready(function () {
-    get_notifications(false, true, dropdown = true, limit = 5);
-  });
-
 });
 
 /**

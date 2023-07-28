@@ -2167,10 +2167,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
 
-        public function dt_sanitize_array_html( $array ) {
-            array_walk_recursive($array, function ( &$v ) {
-                $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
-            });
+        public function dt_recursive_sanitize_array( array $array ) : array {
+            foreach ( $array as $key => &$value ) {
+                if ( is_array( $value ) ) {
+                    $value = dt_recursive_sanitize_array( $value );
+                }
+                else {
+                    $value = sanitize_text_field( wp_unslash( $value ) );
+                }
+            }
             return $array;
         }
 
@@ -2178,7 +2183,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $wpdb;
             if ( isset( $_POST['location_migrate_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['location_migrate_nonce'] ), 'save' ) ) {
                 if ( isset( $_POST['run-migration'], $_POST['selected_location_grid'] ) ){
-                    $select_location_grid = $this->dt_sanitize_array_html( $_POST["selected_location_grid"] ); //phpcs:ignore
+                    $select_location_grid = $this->dt_recursive_sanitize_array( $_POST["selected_location_grid"] ); //phpcs:ignore
                     $saved_for_migration = get_option( 'dt_mapping_migration_list', [] );
                     foreach ( $select_location_grid as $location_id => $migration_values ){
                         if ( !empty( $location_id ) && !empty( $migration_values['migration_type'] ) ) {

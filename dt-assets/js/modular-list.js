@@ -849,6 +849,14 @@
               } else if ( field_value === true ) {
                 values = ['&check;']
               }
+            } else if ( field_settings.type === 'task' ) {
+              values = field_value
+              .filter(v => {
+                return (v.value && v.value.note && v.value.note !== '');
+              })
+              .map(v => {
+                return `${window.lodash.escape(v.value.note)}`;
+              });
             }
           } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
@@ -2005,6 +2013,43 @@
           bulk_edit_count();
     })
   })
+
+  /***
+   * Bulk Delete
+   */
+
+  let bulk_edit_delete_submit_button = $('#bulk_edit_delete_submit');
+  bulk_edit_delete_submit_button.on('click', function (e) {
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
+
+    if (bulk_edit_total_checked > 0) {
+      let bulk_edit_delete_submit_button_span = $('.bulk_edit_delete_submit_text');
+      let confirm_text = `${$(bulk_edit_delete_submit_button_span).data('pretext')} ${bulk_edit_total_checked} ${$(bulk_edit_delete_submit_button_span).data('posttext')}`
+      let confirm_text_capitalise = window.lodash.startCase(window.lodash.toLower(confirm_text));
+
+      if (list_settings.permissions.delete_any && confirm(confirm_text_capitalise)) {
+        bulk_delete_submit();
+      } else {
+        window.location.reload();
+      }
+    } else {
+      window.location.reload();
+    }
+  });
+
+  function bulk_delete_submit() {
+
+    // Build queue of post ids.
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id!=='bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push(postId);
+      }
+    });
+    process(queue, 10, do_each, do_done, {}, null, {}, 'delete');
+  }
+
   /**
    * Bulk_Assigned_to
    */
@@ -2079,15 +2124,28 @@
   function bulk_edit_count() {
     let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
     let bulk_edit_submit_button_text = $('.bulk_edit_submit_text')
+    let bulk_edit_delete_submit_button_text = $('.bulk_edit_delete_submit_text')
 
     if (bulk_edit_total_checked == 0) {
       bulk_edit_submit_button_text.text(`${list_settings.translations.make_selections_below}`)
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.text(`${list_settings.translations.delete_selections_below}`);
+      }
     } else {
       bulk_edit_submit_button_text.each(function( index ) {
         let pretext = $( this ).data('pretext')
         let posttext = $( this ).data('posttext')
         $( this ).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`)
       })
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.each(function (index) {
+          let pretext = $(this).data('pretext');
+          let posttext = $(this).data('posttext');
+          $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
+        });
+      }
     }
   }
 
@@ -2119,7 +2177,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share, comment ) {
+  function process( q, num, fn, done, update, share, comment, event_type = 'update' ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -2139,36 +2197,49 @@
         fn(items[i], function() {
           // when done, decrement counter and
           // if counter is 0, process next batch
-          --count || process(q, num, fn, done, update, share, comment);
-        }, update, share, comment);
+          --count || process(q, num, fn, done, update, share, comment, event_type);
+        }, update, share, comment, event_type);
 
     }
   }
 
   // a per-item action
-  function do_each( item, done, update, share, comment ) {
+  function do_each( item, done, update, share, comment, event_type ) {
     let promises = [];
 
-    if (Object.keys(update).length) {
-      promises.push(API.update_post(list_settings.post_type, item, update).catch(err => {
-        console.error(err);
-      }));
-    }
+    switch (event_type) {
+      case 'update': {
+        if (Object.keys(update).length) {
+          promises.push(API.update_post(list_settings.post_type, item, update).catch(err => {
+            console.error(err);
+          }));
+        }
 
-    if (share) {
-      share.forEach(function (value) {
-        promises.push(API.add_shared(list_settings.post_type, item, value).catch(err => {
-          console.error(err)
-        }));
-      })
-    }
+        if (share) {
+          share.forEach(function (value) {
+            promises.push(API.add_shared(list_settings.post_type, item, value).catch(err => {
+              console.error(err)
+            }));
+          })
+        }
 
-    if (comment.commentText) {
-      promises.push(API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
-        console.error(err);
-      }));
-    }
+        if (comment.commentText) {
+          promises.push(API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
+            console.error(err);
+          }));
+        }
 
+        break;
+      }
+      case 'delete': {
+        if (list_settings.permissions.delete_any) {
+          promises.push(API.delete_post(list_settings.post_type, item).catch(err => {
+            console.error(err);
+          }));
+        }
+        break;
+      }
+    }
     Promise.all(promises).then( function() {
         done();
     });
@@ -2176,6 +2247,7 @@
 
   function do_done() {
     $('#bulk_edit_submit-spinner').removeClass('active');
+    $('#bulk_edit_delete_submit-spinner').removeClass('active');
     window.location.reload();
   }
 

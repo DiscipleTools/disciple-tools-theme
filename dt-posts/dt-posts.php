@@ -100,7 +100,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     return $updated_post;
                 }
                 //if update successful, comment and return.
-                $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
+                $update_comment = __( 'This record was automatically updated rather than creating a new record.', 'disciple_tools' );
                 if ( !$silent ){
                     if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
                         $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;

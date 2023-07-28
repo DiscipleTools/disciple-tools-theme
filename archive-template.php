@@ -47,7 +47,7 @@ dt_please_log_in();
                         if ( isset( $_COOKIE['fields_to_search'] ) ) {
                             $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                             if ( $fields_to_search ){
-                                $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                                $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
                             }
                         }
                         //order fields alphabetically by Name
@@ -137,7 +137,7 @@ dt_please_log_in();
                     if ( isset( $_COOKIE['fields_to_search'] ) ) {
                         $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                         if ( $fields_to_search ){
-                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                            $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
                         }
                     }
                     //order fields alphabetically by Name
@@ -394,7 +394,7 @@ dt_please_log_in();
                         if ( isset( $_COOKIE['fields_to_show_in_table'] ) ) {
                             $fields_to_show_in_table = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_show_in_table'] ) ) ) );
                             if ( $fields_to_show_in_table ){
-                                $fields_to_show_in_table = dt_sanitize_array_html( $fields_to_show_in_table );
+                                $fields_to_show_in_table = dt_recursive_sanitize_array( $fields_to_show_in_table );
                             }
                         }
 
@@ -629,8 +629,22 @@ dt_please_log_in();
                             <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>" style="text-transform:capitalize;">
                                 <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
                             </span>
-                        <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
+                            <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
                         </button>
+                        <span class="list-action-event-buttons">
+                            <?php if ( current_user_can( 'delete_any_' . $post_type ) ){ ?>
+                                <button class="button" id="bulk_edit_delete_submit">
+                                    <span class="bulk_edit_delete_submit_text"
+                                          data-pretext="<?php echo esc_html__( 'Delete', 'disciple_tools' ); ?>"
+                                          data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>"
+                                          style="text-transform:capitalize;">
+                                        <?php echo esc_html( __( 'Delete Selections Below', 'disciple_tools' ) ); ?>
+                                    </span>
+                                    <span id="bulk_edit_delete_submit-spinner" style="display: inline-block;"
+                                          class="loading-spinner"></span>
+                                </button>
+                            <?php } ?>
+                        </span>
                     </div>
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>

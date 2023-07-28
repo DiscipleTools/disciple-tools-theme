@@ -67,6 +67,10 @@ class DT_Login_Endpoints {
             return new WP_Error( 'bad_token', $th->getMessage(), [ 'status' => 401 ] );
         }
 
+        if ( !isset( $payload['name'] ) ) {
+            $payload['name'] = $body->user->displayName;
+        }
+
         $user_manager = new DT_Login_User_Manager( $payload );
 
         try {
@@ -106,6 +110,9 @@ class DT_Login_Endpoints {
         }
 
         if ( DT_Login_Methods::MOBILE === $login_method ) {
+            /* Make sure that any WP login tokens are cleared before logging in with JWT */
+            wp_logout();
+
             require_once( get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php' );
             $response = Jwt_Auth_Public::validate_token( $request );
 

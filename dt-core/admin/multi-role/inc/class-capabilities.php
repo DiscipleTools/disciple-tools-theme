@@ -6,6 +6,8 @@
  * @access public
  */
 final class Disciple_Tools_Capabilities {
+    private $factory;
+
     /**
      * Returns the instance.
      *

@@ -254,3 +254,6 @@ window.fiveMinuteTimer = setInterval(function () {
     window.location.reload();
   });
 }, 300000); //300000 = five minutes
+jQuery(document).ready(function () {
+  get_notifications(false, true, dropdown = true, limit = 5);
+});
