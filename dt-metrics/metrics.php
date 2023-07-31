@@ -103,7 +103,7 @@ class Disciple_Tools_Metrics{
                         $content .= '<li><a>' . __( 'Groups', 'disciple_tools' ) . '</a>
                                 <ul class="menu vertical nested" id="groups-menu"></ul>
                             </li>';
-                        $content .= '<li><a>' . __( 'Record Type Metrics', 'disciple_tools' ) . '</a>
+                        $content .= '<li><a>' . __( 'Dynamic Metrics', 'disciple_tools' ) . '</a>
                                 <ul class="menu vertical nested" id="records-menu"></ul>
                             </li>';
                     } // permission check
