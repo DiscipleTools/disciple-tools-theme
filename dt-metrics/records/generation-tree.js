@@ -1,5 +1,5 @@
 jQuery(function () {
-  if (window.wpApiShare.url_path.startsWith('metrics/combined/generation_tree')) {
+  if (window.wpApiShare.url_path.startsWith('metrics/records/generation_tree')) {
     project_generation_tree();
   }
 });
@@ -21,7 +21,7 @@ function project_generation_tree() {
 
   const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options);
 
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
+  jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
 
   // Display initial controls.
   chartDiv.innerHTML = `
