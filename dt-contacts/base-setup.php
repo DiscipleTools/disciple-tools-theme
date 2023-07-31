@@ -77,9 +77,10 @@ class DT_Contacts_Base {
             'description' => 'View and update all access and media contacts',
             'post_type' => $this->post_type
         ];
-        $capabilities['view_any_contacts']['label'] = 'View all, including private';
-        $capabilities['view_any_contacts']['description'] = 'The user can view any contact, including private contacts';
-
+        if ( isset( $capabilities['view_any_contacts'] ) ){
+            $capabilities['view_any_contacts']['label'] = 'View all, including private';
+            $capabilities['view_any_contacts']['description'] = 'The user can view any contact, including private contacts';
+        }
         return $capabilities;
     }
 
