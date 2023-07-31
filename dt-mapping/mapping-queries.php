@@ -1297,6 +1297,20 @@ class Disciple_Tools_Mapping_Queries {
         return $new_data;
     }
 
+    public static function post_type_geojson( $post_type, $query = [] ){
+        global $wpdb;
+
+        //phpcs:disable
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+            FROM $wpdb->dt_location_grid_meta AS lgm
+            JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+            WHERE lgm.post_type = %s", $post_type ), ARRAY_A );
+        //phpcs:enable
+
+        return self::format_results( $results, $post_type );
+    }
+
     public static function cluster_geojson( $post_type, $query = [] ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
