@@ -84,76 +84,13 @@ class DT_Contacts_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        $expected_roles['registered'] = [
-            'label' => __( 'Registered', 'disciple_tools' ),
-            'description' => 'Has no permissions',
-            'permissions' => [],
-            'order' => 4
-        ];
 
-        $expected_roles['multiplier'] = [
-            'label' => __( 'Multiplier', 'disciple_tools' ),
-            'description' => 'Interacts with Contacts and Groups',
-            'permissions' => [],
-            'order' => 5
-        ];
-        $expected_roles['strategist'] = [
-            'label' => __( 'Strategist', 'disciple_tools' ),
-            'description' => 'View project metrics',
-            'permissions' => [],
-            'order' => 40
-        ];
-        $expected_roles['user_manager'] = [
-            'label' => __( 'User Manager', 'disciple_tools' ),
-            'description' => 'List, invite, promote and demote users',
-            'permissions' => [],
-            'order' => 95
-        ];
-        $expected_roles['dt_admin'] = [
-            'label' => __( 'Disciple.Tools Admin', 'disciple_tools' ),
-            'description' => 'All D.T permissions',
-            'permissions' => [],
-            'order' => 98
-        ];
-        $expected_roles['administrator'] = [
-            'label' => __( 'Administrator', 'disciple_tools' ),
-            'description' => 'All D.T permissions plus the ability to manage plugins.',
-            'permissions' => [],
-            'order' => 100
-        ];
+        $default_roles = Disciple_Tools_Roles::default_dt_role_keys();
+        foreach ( $default_roles as $role ){
+            $expected_roles[$role]['permissions']['access_contacts'] = true;
+            $expected_roles[$role]['permissions']['create_contacts'] = true;
+        }
 
-        $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();
-
-        $user_management_permissions = Disciple_Tools_Roles::default_user_management_caps();
-
-        $role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function( $caps, $slug ) {
-            $caps[$slug] = true;
-            return $caps;
-        }, []);
-
-        // Multiplier
-        $expected_roles['multiplier']['permissions'] = array_merge( $expected_roles['multiplier']['permissions'], $multiplier_permissions );
-
-        // User Manager
-        $expected_roles['user_manager']['permissions'] = array_merge( $expected_roles['user_manager']['permissions'], $multiplier_permissions );
-        $expected_roles['user_manager']['permissions'] = array_merge( $expected_roles['user_manager']['permissions'], $user_management_permissions );
-
-        // D.T Admin
-        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles['dt_admin']['permissions'], $multiplier_permissions );
-        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles['dt_admin']['permissions'], $user_management_permissions );
-        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles['dt_admin']['permissions'], $role_caps );
-        $expected_roles['dt_admin']['permissions']['manage_dt'] = true;
-        $expected_roles['dt_admin']['permissions']['view_project_metrics'] = true;
-
-        //strategist
-        $expected_roles['strategist']['permissions']['view_project_metrics'] = true;
-        $expected_roles['strategist']['permissions']['access_disciple_tools'] = true;
-
-        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles['administrator']['permissions'], $multiplier_permissions );
-        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles['administrator']['permissions'], $user_management_permissions );
-        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles['administrator']['permissions'], $role_caps );
-        $expected_roles['administrator']['permissions']['manage_dt'] = true;
-        $expected_roles['administrator']['permissions']['view_project_metrics'] = true;
         $expected_roles['administrator']['permissions']['dt_all_admin_contacts'] = true;
 
         return $expected_roles;

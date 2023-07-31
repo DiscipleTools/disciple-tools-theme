@@ -71,12 +71,6 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        if ( !isset( $expected_roles['multiplier'] ) ){
-            $expected_roles['multiplier'] = [
-                'label' => __( 'Multiplier', 'disciple_tools' ),
-                'permissions' => []
-            ];
-        }
         // if the user can access contact they also can access group
         foreach ( $expected_roles as $role => $role_value ){
             if ( isset( $expected_roles[$role]['permissions']['access_contacts'] ) && $expected_roles[$role]['permissions']['access_contacts'] ){
