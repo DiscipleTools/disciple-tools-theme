@@ -121,7 +121,7 @@ class Disciple_Tools_Roles
         $expected_roles['strategist'] = [
             'label' => __( 'Strategist', 'disciple_tools' ),
             'description' => 'View project metrics',
-            'permissions' => array_merge( $all_user_caps, $metrics_caps ),
+            'permissions' => array_merge( [ 'access_disciple_tools' ], $metrics_caps ),
             'order' => 40
         ];
         $expected_roles['marketer'] = [
@@ -201,7 +201,6 @@ class Disciple_Tools_Roles
             'create_contacts' => true,
             'read_location' => true,
             'access_peoplegroups' => true,
-            'list_peoplegroups' => true,
             'access_groups' => true,
             'create_groups' => true,
         ];
@@ -227,7 +226,7 @@ class Disciple_Tools_Roles
 
     public static function default_all_metrics_caps(){
         return [
-            'view_project_metrics'
+            'view_project_metrics' => true
         ];
     }
 
