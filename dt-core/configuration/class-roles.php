@@ -61,7 +61,7 @@ class Disciple_Tools_Roles
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_permissions' ], 100, 1 );
     } // End __construct()
 
-    public static function get_roles_and_permissions(){
+    public static function get_dt_roles_and_permissions(){
         return apply_filters( 'dt_set_roles_and_permissions', [] );
     }
 

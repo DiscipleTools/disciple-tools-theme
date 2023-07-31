@@ -124,7 +124,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'default_tiles' => self::get_default_tiles( $post_type ),
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
-                'roles' => apply_filters( 'dt_set_roles_and_permissions', [] )
+                'roles' => Disciple_Tools_Roles::get_dt_roles_and_permissions(),
             ]);
         }
 
@@ -350,7 +350,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $post_type = self::get_parameter( 'post_type' );
         if ( isset( $post_type ) ){
             $capability_factory = Disciple_Tools_Capability_Factory::get_instance();
-            $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+            $roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
             ksort( $roles );
             ?>
             <table class="widefat striped" style="margin-top: 12px;">
