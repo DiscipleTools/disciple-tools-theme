@@ -18,6 +18,16 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public function __construct() {
         $this->namespace = $this->context;
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+
+        add_action( 'after_setup_theme', function (){
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+
+            foreach ( $custom_post_types as $post_type_key => $post_type ){
+                if ( class_exists( 'Disciple_Tools_Post_Type_Template' ) ){
+                    new Disciple_Tools_Post_Type_Template( $post_type_key, $post_type['label_singular'] ?? $post_type_key, $post_type['label_plural'] ?? $post_type_key );
+                }
+            }
+        }, 100 );
     }
 
     /**
@@ -60,6 +70,38 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/get-post-fields', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'get_post_fields' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/create-new-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'create_new_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/update-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/delete-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'delete_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/update-roles', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_roles' ],
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
@@ -220,6 +262,191 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
         }
         return $output;
+    }
+
+    public static function create_new_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $response = [];
+        if ( isset( $params['key'], $params['single'], $params['plural'] ) ){
+            $key = $params['key'];
+            $single = $params['single'];
+            $plural = $params['plural'];
+
+            // Create new post type.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            if ( !isset( $custom_post_types[$key] ) && !in_array( $key, DT_Posts::get_post_types() ) ){
+                $custom_post_types[$key] = [
+                    'label_singular' => $single,
+                    'label_plural' => $plural,
+                    'hidden' => false,
+                    'is_custom' => true
+                ];
+
+                update_option( 'dt_custom_post_types', $custom_post_types );
+
+                // Return successful response.
+                $response = [
+                    'success' => true,
+                    'post_type' => $key,
+                    'post_type_label' => $plural
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'msg' => 'Unable to create '. $key .' record type; which already exists.'
+                ];
+            }
+        } else {
+            $response = [
+                'success' => false,
+                'msg' => 'Unable to create record type; due to missing parameters.'
+            ];
+        }
+
+        return $response;
+    }
+
+    public static function update_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $updated = false;
+        if ( isset( $params['key'], $params['single'], $params['plural'], $params['displayed'] ) ){
+            $post_type = $params['key'];
+            $single = $params['single'];
+            $plural = $params['plural'];
+            $displayed = $params['displayed'];
+
+            // Fetch existing post type settings and update.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+
+            // Proceed with storing updates.
+            $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
+            $post_type_settings['label_singular'] = $single;
+            $post_type_settings['label_plural'] = $plural;
+            $post_type_settings['hidden'] = ! $displayed;
+            $custom_post_types[$post_type] = $post_type_settings;
+
+            update_option( 'dt_custom_post_types', $custom_post_types );
+
+            $updated = true;
+        }
+
+        return [
+            'updated' => $updated
+        ];
+    }
+
+    public static function delete_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $deleted = false;
+        $deleted_msg = '';
+        if ( isset( $params['key'] ) ){
+            $post_type = $params['key'];
+
+            // Ensure current user has the ability to delete post type;
+            if ( !current_user_can( 'delete_any_' . $post_type ) ){
+                return [
+                    'deleted' => false,
+                    'msg' => 'Current user unable to delete '. $post_type .' record type.'
+                ];
+            }
+
+            // Only process custom post types.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            if ( isset( $custom_post_types[$post_type] ) ){
+
+                // Remove custom post type.
+                unset( $custom_post_types[$post_type] );
+                update_option( 'dt_custom_post_types', $custom_post_types );
+
+                // Remove field settings.
+                $field_customizations = dt_get_option( 'dt_field_customizations' );
+                if ( isset( $field_customizations[$post_type] ) ){
+                    unset( $field_customizations[$post_type] );
+
+                    update_option( 'dt_field_customizations', $field_customizations );
+                    wp_cache_delete( $post_type . '_field_settings' );
+                }
+
+                // If specified, proceed with deletion of all associated records.
+                if ( isset( $params['delete_all_records'] ) && $params['delete_all_records'] ){
+                    global $wpdb;
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p LEFT JOIN $wpdb->p2pmeta pm ON pm.p2p_id = p.p2p_id WHERE ( p.p2p_to IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) OR p.p2p_from IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) )", $post_type, $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c LEFT JOIN $wpdb->commentmeta cm ON cm.comment_id = c.comment_ID WHERE c.comment_post_ID IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = %s", $post_type ) );
+                }
+
+                $deleted = true;
+                $deleted_msg = 'Deleted post type ' . $post_type;
+            } else {
+                $deleted_msg = $post_type . ' does not appear to be a custom record type.';
+            }
+        } else {
+            $deleted_msg = 'Unable to delete record type; due to missing parameters.';
+        }
+
+        return [
+            'deleted' => $deleted,
+            'msg' => $deleted_msg
+        ];
+    }
+
+    public static function update_roles( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $updated = false;
+
+        if ( isset( $params['roles'] ) && current_user_can( 'edit_roles' ) ){
+            $roles = $params['roles'];
+
+            // Fetch existing roles and permissions.
+            $existing_roles_permissions = apply_filters( 'dt_set_roles_and_permissions', [] );
+
+            // Fetch existing custom roles.
+            $existing_custom_roles = get_option( 'dt_custom_roles', [] );
+
+            // Proceed with storing updates, accordingly overwriting existing roles.
+            foreach ( $roles as $role => $capabilities ){
+
+                // Skip administrator roles, whilst not currently an administrator.
+                if ( $role == 'administrator' && !dt_is_administrator() ){
+                    continue;
+                }
+
+                // Sync updated custom role with existing settings.
+                $updated_custom_role = [];
+                $existing_role = $existing_roles_permissions[$role] ?? [];
+                $updated_custom_role['label'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['label'] ?? '' ) : $role;
+                $updated_custom_role['description'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['description'] ?? '' ) : '';
+                $updated_custom_role['slug'] = $role;
+                $updated_custom_role['is_editable'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['is_editable'] ?? false ) : true;
+                $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
+
+                // Identify capabilities selection states.
+                $updated_capabilities = [];
+                foreach ( $capabilities ?? [] as $capability ){
+                    $updated_capabilities[$capability['key']] = $capability['enabled'];
+                }
+
+                // Capture capability updates.
+                $updated_custom_role['capabilities'] = $updated_capabilities;
+
+                // Save updates to custom roles option.
+                $existing_custom_roles[$role] = $updated_custom_role;
+            }
+
+            // Persist updated custom roles.
+            update_option( 'dt_custom_roles', $existing_custom_roles );
+
+            $updated = true;
+        }
+
+        return [
+            'updated' => $updated
+        ];
     }
 
     public static function create_new_tile( WP_REST_Request $request ) {

@@ -16,6 +16,7 @@ class DT_Contacts_Base {
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
+        add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
 
         //setup tiles and fields
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -67,6 +68,19 @@ class DT_Contacts_Base {
             ];
         }
         return $settings;
+    }
+
+    public function dt_capabilities( $capabilities ){
+        $capabilities['dt_all_access_' . $this->post_type] = [
+            'source' => DT_Posts::get_label_for_post_type( $this->post_type, false, false ),
+            'label' => 'Manage all access and media contacts',
+            'description' => 'View and update all access and media contacts',
+            'post_type' => $this->post_type
+        ];
+        $capabilities['view_any_contacts']['label'] = 'View all, including private';
+        $capabilities['view_any_contacts']['description'] = 'The user can view any contact, including private contacts';
+
+        return $capabilities;
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){

@@ -57,28 +57,47 @@ class Disciple_Tools_Roles
      * @since  0.1.0
      */
     public function __construct() {
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_custom_roles_and_permissions' ], 11, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_custom_roles_and_permissions' ], 12, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_permissions' ], 100, 1 );
     } // End __construct()
 
+    public static function get_roles_and_permissions(){
+        return apply_filters( 'dt_set_roles_and_permissions', [] );
+    }
+
+    /**
+     * Add custom roles to the roles array.
+     * @param $roles
+     * @return mixed
+     */
     public static function dt_setup_custom_roles_and_permissions( $roles ) {
         $custom_roles = get_option( 'dt_custom_roles', [] );
         foreach ( $custom_roles as $role ) {
-            $permission_keys = $role['capabilities'];
-            if ( is_array( $permission_keys ) ) {
-                $permissions = array_reduce($permission_keys, function( $permissions, $key ) {
-                    $permissions[$key] = true;
-                    return $permissions;
-                }, []);
-            } else {
-                $permissions = [];
+            $permissions = is_array( $role['capabilities'] ) ? $role['capabilities'] : [];
+            if ( !isset( $roles[$role['slug']] ) ){
+                $roles[$role['slug']] = [
+                    'label' => $role['label'],
+                    'permissions' => $permissions,
+                    'description' => $role['description'],
+                    'is_editable' => $role['is_editable'] ?? true,
+                    'custom' => $role['custom'] ?? true
+                ];
             }
-            $roles[$role['slug']] = [
-                'label' => $role['label'],
-                'permissions' => $permissions,
-                'description' => $role['description'],
-                'is_editable' => true,
-                'custom' => true
-            ];
+        }
+
+        return $roles;
+    }
+
+    /**
+     * Add custom permissions to the roles array.
+     * @param $roles
+     * @return array
+     */
+    public function dt_setup_permissions( $roles ) {
+        $custom_roles = get_option( 'dt_custom_roles', [] );
+        foreach ( $custom_roles as $custom_role ) {
+            $custom_permissions = is_array( $custom_role['capabilities'] ) ? $custom_role['capabilities'] : [];
+            $roles[$custom_role['slug']]['permissions'] = array_merge( $roles[$custom_role['slug']]['permissions'], $custom_permissions );
         }
 
         return $roles;
