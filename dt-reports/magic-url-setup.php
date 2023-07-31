@@ -74,7 +74,7 @@ class DT_Magic_URL_Setup {
 
         $record = DT_Posts::get_post( $post_type, get_the_ID() );
         $meta_key = $app['meta_key'];
-        if ( isset( $record[$meta_key] ) ) {
+        if ( !is_wp_error( $record ) && isset( $record[$meta_key] ) ){
             $key = $record[$meta_key];
         } else {
             $key = dt_create_unique_key();

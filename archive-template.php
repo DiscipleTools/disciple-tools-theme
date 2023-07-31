@@ -528,7 +528,7 @@ dt_please_log_in();
                                 <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
                                     <span id="<?php echo esc_html( 'share' ); ?>-result-container" class="result-container"></span>
                                     <div id="<?php echo esc_html( 'share' ); ?>_t" name="form-<?php echo esc_html( 'share' ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container">
+                                        <div class="typeahead__container" style="margin-bottom: 0">
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input id = "bulk_share" class="input-height" data-field="<?php echo esc_html( 'share' ); ?>"
@@ -541,6 +541,10 @@ dt_please_log_in();
                                             </div>
                                         </div>
                                     </div>
+                                    <label style="display: inline-block">
+                                        <input type="checkbox" id="bulk_share_unshare">
+                                        <?php esc_html_e( 'Unshare with selected user', 'disciple_tools' ); ?>
+                                    </label>
                                 </div>
                             </div>
                             <?php if ( isset( $field_options['requires_update'] ) ) : ?>
