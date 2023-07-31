@@ -127,7 +127,7 @@ class Disciple_Tools_Roles
         $expected_roles['strategist'] = [
             'label' => __( 'Strategist', 'disciple_tools' ),
             'description' => 'View project metrics',
-            'permissions' => array_merge( [ 'access_disciple_tools' ], $metrics_caps ),
+            'permissions' => array_merge( [ 'access_disciple_tools' => true ], $metrics_caps ),
             'order' => 40
         ];
         $expected_roles['marketer'] = [
