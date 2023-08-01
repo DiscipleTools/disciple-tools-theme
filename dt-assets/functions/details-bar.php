@@ -118,7 +118,7 @@ function dt_print_details_bar(
                                 <?php if ( $type_icon ) : ?>
                                     <img class="dt-record-type-icon" src="<?php echo esc_html( $type_icon ) ?>"/>
                                 <?php endif; ?>
-                                <?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                                <?php echo esc_html( $dt_post['type']['label'] ?? '' )?></a>
                             <?php endif; ?>
                                 <span class="details-bar-created-on"></span>
                                 <?php if ( $dt_post['post_author_display_name'] ):
@@ -273,7 +273,7 @@ function dt_print_details_bar(
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span class="record-name-tagline">
                             <?php if ( isset( $dt_post['type']['label'] ) ) : ?>
-                                <a data-open="contact-type-modal"><?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                                <a data-open="contact-type-modal"><?php echo esc_html( $dt_post['type']['label'] ?? '' )?></a>
                             <?php endif; ?>
                             <span class="details-bar-created-on"></span>
                                 <?php if ( $dt_post['post_author_display_name'] ):
