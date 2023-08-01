@@ -389,13 +389,8 @@ class DT_Duplicate_Checker_And_Merging {
                 }
                 if ( $field_type === 'connection' ) {
                     $update[ $key ]['values']               = [];
-                    $update_for_duplicate[ $key ]['values'] = [];
                     foreach ( $fields as $field_value ) {
                         $update[ $key ]['values'][]               = [ 'value' => $field_value['ID'] ];
-                        $update_for_duplicate[ $key ]['values'][] = [
-                            'value'  => $field_value['ID'],
-                            'delete' => true
-                        ];
                     }
                 }
                 if ( $field_type === 'communication_channel' ) {
