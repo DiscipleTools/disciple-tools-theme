@@ -9,11 +9,13 @@ if ( !defined( 'ABSPATH' ) ) {
  * @since 0.1.0
  *
  * @param array $args
+ * @param bool $save_hash
+ * @param bool $duplicate_check
  *
- * @return mixed
+ * @return false|int
  */
-function dt_report_insert( $args = [] ) {
-    return Disciple_Tools_Reports::insert( $args );
+function dt_report_insert( array $args = [], bool $save_hash = true, bool $duplicate_check = true ) {
+    return Disciple_Tools_Reports::insert( $args, $save_hash, $duplicate_check );
 }
 
 /**
@@ -27,9 +29,11 @@ class Disciple_Tools_Reports
      * Insert Report into _reports and _reportmeta tables
      *
      * @param array $args
+     * @param bool $save_hash
+     * @param bool $duplicate_check
      * @return false|int
      */
-    public static function insert( array $args ) {
+    public static function insert( array $args, bool $save_hash = true, bool $duplicate_check = true ) {
         global $wpdb;
         if ( ! isset( $args['type'] ) ){
             return false;
@@ -58,23 +62,33 @@ class Disciple_Tools_Reports
             ]
         );
 
-        $args['hash'] = hash( 'sha256', maybe_serialize( $args ) );
-        $args['timestamp'] = time();
+        if ( $save_hash ) {
+            if ( empty( $args['hash'] ) ) {
+                $args['hash'] = hash( 'sha256', maybe_serialize( $args ) );
+            }
 
-        // Make sure for non duplicate.
-        $check_duplicate = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT
+            if ( $duplicate_check ) {
+                // Make sure no duplicate is found.
+                $duplicate_found = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT
                     `id`
                 FROM
                     `$wpdb->dt_reports`
-                WHERE hash = %s;",
-                $args['hash']
-            )
-        );
+                WHERE hash = %s AND hash IS NOT NULL;",
+                        $args['hash']
+                    )
+                );
+                if ( $duplicate_found ) {
+                    return false;
+                }
+            }
+        }
 
-        if ( $check_duplicate ) {
-            return false;
+        $args['timestamp'] = time();
+
+        if ( is_array( $args['payload'] ) || is_object( $args['payload'] ) ) {
+            $args['payload'] = serialize( $args['payload'] );
         }
 
         $wpdb->insert(
@@ -86,7 +100,7 @@ class Disciple_Tools_Reports
                 'post_type' => $args['post_type'],
                 'type' => $args['type'],
                 'subtype' => $args['subtype'],
-                'payload' => maybe_serialize( $args['payload'] ),
+                'payload' => $args['payload'],
                 'value' => $args['value'],
                 'lng' => $args['lng'],
                 'lat' => $args['lat'],
@@ -349,7 +363,7 @@ class Disciple_Tools_Reports
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $wpdb->dt_reportmeta WHERE report_id = %s", $report_id ), ARRAY_A );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ){
-                $meta[$result['meta_key']] = $result[$result['meta_value']];
+                $meta[$result['meta_key']] = $result['meta_value'];
             }
         }
         return $meta;

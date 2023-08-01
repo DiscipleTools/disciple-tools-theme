@@ -3,7 +3,28 @@
  * Name: User Management
 */
 
-$current_user_can_manage_users = current_user_can( 'list_users' ) || current_user_can( 'manage_dt' );
+// Ensure Add New Users' admin setting has been enabled on multi-sites
+if ( current_user_can( 'manage_dt' ) && !current_user_can( 'create_users' ) && is_multisite() && empty( get_site_option( 'add_new_users' ) ) ){
+    get_header();
+    ?>
+    <div class="large-6 medium-6 small-6"
+         style="max-width: 50% !important; margin-left: auto !important; margin-right: auto !important; margin-top: 50px; margin-bottom: 50px;">
+
+        <div class="bordered-box">
+            <h3><?php esc_html_e( 'Permission denied', 'disciple_tools' ); ?></h3>
+            <p>
+                <?php esc_html_e( 'Administrator must enable "Add New Users" option in multisite settings:', 'disciple_tools' ); ?>
+                <a href="<?php echo esc_html( site_url( '/wp-admin/network/settings.php' ) ); ?>"
+                   target="_blank">Network Admin Settings</a>
+            </p>
+        </div>
+    </div>
+    <?php
+    get_footer();
+    exit();
+}
+
+$current_user_can_manage_users = current_user_can( 'create_users' ) || current_user_can( 'manage_dt' );
 if ( !$current_user_can_manage_users && !DT_User_Management::non_admins_can_make_users() ) {
     wp_safe_redirect( '/registered' );
     exit();
@@ -14,7 +35,7 @@ $user_management_options = DT_User_Management::user_management_options();
 
 /* Build variables for page */
 $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
-$gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
+$gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
 ?>
 
 <?php get_header(); ?>
@@ -52,7 +73,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
         <?php endif; ?>
 
         <!-- List Section -->
-        <div class="<?php echo ( $current_user_can_manage_users ) ? "large-10 medium-9 small-12" : "" ?> cell ">
+        <div class="<?php echo ( $current_user_can_manage_users ) ? 'large-10 medium-9 small-12' : '' ?> cell ">
             <section id="metrics-container" class="medium-12 cell">
                 <div class="bordered-box">
                     <div id="chart">
@@ -119,34 +140,28 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                 <dd>
                                                     <?php
                                                     $user_roles = [ 'multiplier' ];
-                                                    $dt_roles = dt_multi_role_get_editable_role_names();
-                                                    $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
-                                                    $upgrade_to_admin_disabled = !is_super_admin() && !dt_current_user_has_role( 'administrator' );
-                                                    $admin_roles = [ "administrator", "dt_admin" ];
-                                                    uasort( $expected_roles, function ( $item1, $item2 ){
-                                                        return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
-                                                    } );
+                                                    $roles = dt_list_roles();
                                                     ?>
                                                     <ul id="user_roles_list" class="no-bullet">
-                                                        <?php foreach ( $expected_roles as $role_key => $role_value ) : ?>
+                                                        <?php foreach ( $roles as $role_key => $role_value ) : ?>
                                                             <li>
-                                                                <label style="color:<?php echo esc_html( $role_key === 'administrator' && $upgrade_to_admin_disabled ? 'grey' : 'inherit' ); ?>">
+                                                                <label style="color:<?php echo esc_html( $role_value['disabled'] ? 'grey' : 'inherit' ); ?>">
                                                                     <input type="checkbox" name="dt_multi_role_user_roles[]"
                                                                            value="<?php echo esc_attr( $role_key ); ?>"
                                                                         <?php checked( in_array( $role_key, $user_roles ) ); ?>
-                                                                        <?php disabled( $upgrade_to_admin_disabled && in_array( $role_key, $admin_roles, true ) ); ?> />
+                                                                        <?php disabled( $role_value['disabled'] ); ?> />
                                                                     <strong>
                                                                         <?php
-                                                                        if ( isset( $role_value["label"] ) && !empty( $role_value["label"] ) ){
-                                                                            echo esc_html( $role_value["label"] );
+                                                                        if ( isset( $role_value['label'] ) && !empty( $role_value['label'] ) ){
+                                                                            echo esc_html( $role_value['label'] );
                                                                         } else {
                                                                             echo esc_html( $role_key );
                                                                         }
                                                                         ?>
                                                                     </strong>
                                                                     <?php
-                                                                    if ( isset( $role_value["description"] ) ){
-                                                                        echo ' - ' . esc_html( $role_value["description"] );
+                                                                    if ( isset( $role_value['description'] ) ){
+                                                                        echo ' - ' . esc_html( $role_value['description'] );
                                                                     }
                                                                     ?>
                                                                 </label>
@@ -173,9 +188,9 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                                                     </label></dt>
                                                 <dd>
                                                     <select class="select-field" id="gender" style="width:auto; display: block" data-optional>
-                                                        <?php foreach ( $gender_fields["default"] as $option_key => $option_value ): ?>
+                                                        <?php foreach ( $gender_fields['default'] as $option_key => $option_value ): ?>
                                                             <option value="<?php echo esc_html( $option_key )?>">
-                                                                <?php echo esc_html( $option_value["label"] ) ?>
+                                                                <?php echo esc_html( $option_value['label'] ) ?>
                                                             </option>
                                                         <?php endforeach; ?>
                                                     </select>
@@ -183,7 +198,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
 
                                                 <?php // site defined fields
                                                 foreach ( $dt_user_fields as $dt_field ) {
-                                                    if ( empty( $dt_field["enabled"] ) ){
+                                                    if ( empty( $dt_field['enabled'] ) ){
                                                         continue;
                                                     }
                                                     ?>
@@ -244,7 +259,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
         <h3><?php esc_html_e( 'Upgrading a contact', 'disciple_tools' ); ?></h3>
         <p>
             <img class="dt-icon dt-red-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>"/>
-            <?php esc_html_e( "The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data.", "disciple_tools" ); ?>
+            <?php esc_html_e( 'The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data.', 'disciple_tools' ); ?>
         </p>
         <div class="grid-x">
             <div class="button-group">
@@ -254,7 +269,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                  <button class="button clear" id="continue-archive-comments" data-close><?php esc_html_e( 'Continue and archive comments', 'disciple_tools' ); ?></button>
                  <button class="button" id="continue-user-creation" data-close><?php esc_html_e( 'Continue, keeping comments', 'disciple_tools' ); ?></button>
             </div>
-             <button class="close-button" data-close aria-label="Close modal" type="button">
+             <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                  <span aria-hidden="true">&times;</span>
              </button>
          </div>
@@ -279,7 +294,7 @@ $gender_fields = DT_Posts::get_post_settings( "contacts" )["fields"]["gender"];
                  </button>
                 <a class="button" href="" id="merge-new-contact-link" data-close><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></a>
             </div>
-             <button class="close-button" data-close aria-label="Close modal" type="button">
+             <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                  <span aria-hidden="true">&times;</span>
              </button>
          </div>

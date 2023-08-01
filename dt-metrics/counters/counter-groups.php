@@ -48,16 +48,20 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             case 'church_generations':
                 $generations = self::get_group_generations( $start, $end );
                 $church_generations = [];
-                foreach ( $generations as $gen_key => $gen_val ){
-                    $church_generations[$gen_val["generation"]] = $gen_val["church"];
+                foreach ( $generations as $gen_key => $gen_val ) {
+                    if ( isset( $gen_val['church'] ) ) {
+                        $church_generations[ $gen_val['generation'] ] = $gen_val['church'];
+                    }
                 }
                 return $church_generations;
                 break;
             case 'churches_and_groups':
                 $generations = self::get_group_generations( $start, $end );
                 $total = 0;
-                foreach ( $generations as $gen ){
-                    $total += $gen["group"] + $gen["church"];
+                foreach ( $generations as $gen ) {
+                    if ( isset( $gen['group'], $gen['church'] ) ) {
+                        $total += $gen['group'] + $gen['church'];
+                    }
                 }
                 return $total;
                 break;
@@ -65,8 +69,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             case 'active_churches':
                 $generations = self::get_group_generations( $start, $end );
                 $total = 0;
-                foreach ( $generations as $gen ){
-                    $total += $gen["church"];
+                foreach ( $generations as $gen ) {
+                    if ( isset( $gen['church'] ) ) {
+                        $total += $gen['church'];
+                    }
                 }
                 return $total;
                 break;
@@ -74,8 +80,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             case 'active_groups':
                 $generations = self::get_group_generations( $start, $end );
                 $total = 0;
-                foreach ( $generations as $gen ){
-                    $total += $gen["group"];
+                foreach ( $generations as $gen ) {
+                    if ( isset( $gen['group'] ) ) {
+                        $total += $gen['group'];
+                    }
                 }
                 return $total;
                 break;
@@ -100,6 +108,13 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
      */
     public static function get_group_generations( $start, $end, $args = [] ){
         if ( !isset( self::$generations[$start.$end] ) ){
+            global $wpdb;
+            $groups_count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts where post_type = 'groups'" );
+
+            if ( (int) $groups_count > 10000 ){
+                //bail for now because generation counting on a huge number of groups is limited
+                return [];
+            }
             $raw_connections = self::query_get_all_group_connections();
             if ( is_wp_error( $raw_connections ) ){
                 return $raw_connections;
@@ -125,37 +140,42 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         //first get groups with no parent as parent_id 0
         $results = $wpdb->get_results( "
             SELECT
-              a.ID         as id,
-              0            as parent_id,
-              d.meta_value as group_type,
-              c.meta_value as group_status
+                a.ID         as id,
+                0            as parent_id,
+                d.meta_value as group_type,
+                c.meta_value as group_status,
+                (SELECT COUNT(p2p_from) FROM $wpdb->p2p
+                    WHERE p2p_to = a.ID
+                    AND p2p_type = 'groups_to_groups')
+                as children
             FROM $wpdb->posts as a
-              JOIN $wpdb->postmeta as c
-                ON a.ID = c.post_id
-                   AND c.meta_key = 'group_status'
-              LEFT JOIN $wpdb->postmeta as d
-                ON a.ID = d.post_id
-                   AND d.meta_key = 'group_type'
+            JOIN $wpdb->postmeta as c      ON a.ID = c.post_id AND c.meta_key = 'group_status'
+            LEFT JOIN $wpdb->postmeta as d ON a.ID = d.post_id AND d.meta_key = 'group_type'
             WHERE a.post_status = 'publish'
-                  AND a.post_type = 'groups'
-                  AND a.ID NOT IN (
-                      SELECT DISTINCT (p2p_from)
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = 'groups_to_groups'
-                      GROUP BY p2p_from
-                  )
+                AND a.post_type = 'groups'
+                AND a.ID NOT IN (
+                    SELECT DISTINCT (p2p_from)
+                    FROM $wpdb->p2p
+                    WHERE p2p_type = 'groups_to_groups'
+                )
             UNION
             SELECT
-              p.p2p_from                          as id,
-              p.p2p_to                            as parent_id,
-              (SELECT meta_value
-               FROM $wpdb->postmeta
-               WHERE post_id = p.p2p_from
-                     AND meta_key = 'group_type') as group_type,
-               (SELECT meta_value
-               FROM $wpdb->postmeta
-               WHERE post_id = p.p2p_from
-                     AND meta_key = 'group_status') as group_status
+                p.p2p_from as id,
+                p.p2p_to as parent_id,
+                (SELECT meta_value
+                    FROM $wpdb->postmeta
+                    WHERE post_id = p.p2p_from
+                    AND meta_key = 'group_type')
+                as group_type,
+                (SELECT meta_value
+                    FROM $wpdb->postmeta
+                    WHERE post_id = p.p2p_from
+                    AND meta_key = 'group_status')
+                as group_status,
+                (SELECT COUNT(p2p_from) FROM $wpdb->p2p
+                    WHERE p2p_to = p.p2p_from
+                    AND p2p_type = 'groups_to_groups')
+                as children
             FROM $wpdb->p2p as p
             WHERE p.p2p_type = 'groups_to_groups'
         ", ARRAY_A );
@@ -202,14 +222,11 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
               AND a.post_status = 'publish'
               AND (
                 type.meta_value = 'pre-group'
-                OR ( type.meta_value = 'group'
+                OR ( type.meta_value != 'team'
                   AND c.meta_value < %d
                   AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
-                OR ( type.meta_value = 'church'
-                  AND e.meta_value < %d
-                  AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
               )
-        ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date, $end_date, $start_date ) );
+        ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date ) );
 
         return $results;
     }
@@ -231,27 +248,27 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         $generation++;
         if ( !isset( $counts[$generation] ) ){
             $counts[$generation] = [
-                "generation" => (string) $generation,
-                "pre-group" => 0,
-                "group" => 0,
-                "church" => 0,
-                "total" => 0
+                'generation' => (string) $generation,
+                'total' => 0
             ];
         }
         foreach ( $elements as $element ) {
 
             if ( $element['parent_id'] == $parent_id ) {
                 if ( in_array( $element['id'], $ids_to_include ) ) {
-                    if ( $element["group_type"] === "pre-group" ) {
-                        $counts[ $generation ]["pre-group"] ++;
-                    } elseif ( $element["group_type"] === "group" ) {
-                        $counts[ $generation ]["group"] ++;
-                    } elseif ( $element["group_type"] === "church" ) {
-                        $counts[ $generation ]["church"] ++;
+
+                    // Initialise group type
+                    if ( ! isset( $counts[ $generation ][ $element['group_type'] ] ) ) {
+                        $counts[ $generation ][ $element['group_type'] ] = 0;
                     }
-                    $counts[ $generation ]["total"] ++;
+
+                    // Increment counts
+                    $counts[ $generation ][ $element['group_type'] ]++;
+                    $counts[ $generation ]['total'] ++;
                 }
-                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );
+                if ( !isset( $element['children'] ) || !empty( $element['children'] ) ){
+                    $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );
+                }
             }
         }
 

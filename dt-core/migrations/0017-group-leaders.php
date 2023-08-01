@@ -4,6 +4,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0017 extends Disciple_Tools_Migration {
     public function up() {
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 17 ){
+            return;
+        }
+
         //find leaders that are not members of a group and add them.
         global $wpdb;
         $wpdb->query( "

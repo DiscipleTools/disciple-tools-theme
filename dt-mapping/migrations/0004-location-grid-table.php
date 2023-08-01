@@ -1,7 +1,8 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
- * Class DT_Mapping_Module_Migration_0000
+ * Class DT_Mapping_Module_Migration_0004
+ * @version_added 0.22.1
  */
 class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
 
@@ -62,8 +63,8 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
                   `latitude` float DEFAULT NULL,
                   `north_latitude` float DEFAULT NULL,
                   `south_latitude` float DEFAULT NULL,
-                  `west_longitude` float DEFAULT NULL,
                   `east_longitude` float DEFAULT NULL,
+                  `west_longitude` float DEFAULT NULL,
                   `population` bigint(20) NOT NULL DEFAULT '0',
                   `modification_date` date DEFAULT NULL,
                   `alt_name` varchar(200) DEFAULT NULL,

@@ -105,8 +105,16 @@ jQuery(function ($) {
         action_value_name = action_value_element.find('option:selected').text();
 
       } else if (action_value_element.hasClass('dt-datepicker')) { // Date Range Picker
-        action_value_id = $('#workflows_design_section_step3_action_value_object_id').val();
-        action_value_name = action_value_element.val();
+
+        // No need for value entry if unset action!
+        if (action_id === 'unset') {
+          action_value_id = '--';
+          action_value_name = '--';
+
+        } else {
+          action_value_id = $('#workflows_design_section_step3_action_value_object_id').val();
+          action_value_name = action_value_id === 'current' ? 'Current' : action_value_element.val();
+        }
 
       } else { // Regular Textfield
         action_value_id = action_value_name = action_value_element.val();
@@ -129,6 +137,10 @@ jQuery(function ($) {
 
     $(document).on('click', '#workflows_design_section_save_but', function () {
       handle_workflow_save_request();
+    });
+
+    $(document).on('click', '#workflows_design_section_delete_but', function () {
+      handle_workflow_delete_request();
     });
 
     /*** Event Listeners ***/
@@ -460,6 +472,10 @@ jQuery(function ($) {
       set_elements_step4(workflow, function () {
         adjust_elements_step4_locked_state(unlocked, handle_workflow_step3_next_request);
       });
+
+      // Only show workflow-delete option for custom workflows
+      let delete_but = $('#workflows_design_section_delete_but');
+      unlocked ? delete_but.show() : delete_but.hide();
     }
 
     function adjust_elements_step1_locked_state(unlock, callback) {
@@ -789,7 +805,6 @@ jQuery(function ($) {
       switch (field_type) {
         case "text":
         case "number":
-        case "date":
         case "boolean":
         case "key_select":
         case "user_select":
@@ -797,6 +812,18 @@ jQuery(function ($) {
             {
               'id': 'update',
               'name': 'Update To'
+            }
+          );
+          break;
+        case "date":
+          actions.push(
+            {
+              'id': 'update',
+              'name': 'Update To'
+            },
+            {
+              'id': 'unset',
+              'name': 'Unset'
             }
           );
           break;
@@ -813,6 +840,10 @@ jQuery(function ($) {
             {
               'id': 'append',
               'name': 'Appended With'
+            },
+            {
+              'id': 'remove',
+              'name': 'Removal Of'
             }
           );
           break;
@@ -940,6 +971,26 @@ jQuery(function ($) {
 
       // strings must be equal
       return 0;
+    }
+
+    function handle_workflow_delete_request() {
+      let post_type_id = $('#workflows_design_section_hidden_selected_post_type_id').val();
+      let hidden_workflow_id = $('#workflows_design_section_hidden_workflow_id');
+      let is_regular_workflow = !hidden_workflow_id.val().startsWith('default_');
+      let workflow_id = is_regular_workflow ? hidden_workflow_id.val():hidden_workflow_id.val().split('default_')[1];
+      let workflow_name = $('#workflows_design_section_step4_title').val();
+
+      if (confirm("Are you sure you wish to delete workflow: " + workflow_name)) {
+        let delete_payload = {
+          'post_type_id': post_type_id,
+          'is_regular_workflow': is_regular_workflow,
+          'workflow_id': workflow_id
+        };
+
+        // Package and post delete payload.
+        $('#workflows_design_section_delete_form_payload').val(JSON.stringify(delete_payload));
+        $('#workflows_design_section_delete_form').submit();
+      }
     }
 
     function handle_workflow_save_request() {
@@ -1120,7 +1171,7 @@ jQuery(function ($) {
           if (field['id'] === field_id) {
 
             // Once field id has been found, determine value field state to be adopted
-            let event_value_field = fetch_event_value_field(post_type['base_url'], field);
+            let event_value_field = fetch_event_value_field(post_type['base_url'], field, event_value_object_id);
             if (event_value_field) {
 
               // Capture generated event value field's id; to be used during event add request
@@ -1156,8 +1207,7 @@ jQuery(function ($) {
 
         // Instantiate the typeahead element
         let dynamic_field = $('#' + field['id']);
-        dynamic_field.typeahead({
-          order: "asc",
+        let config = {
           accent: true,
           minLength: 0,
           maxItem: 10,
@@ -1172,13 +1222,25 @@ jQuery(function ($) {
               }
             }
           }
-        });
+        };
+
+        // Determine which item results ordering is to be adopted; if any.
+        if (typeahead['general'] && typeahead['general']['order'] && !window.lodash.isEmpty(typeahead['general']['order'])) {
+          config['order'] = typeahead['general']['order'];
+
+        } else if ((typeahead['general'] === undefined) || (typeahead['general']['order'] === undefined)) {
+          config['order'] = 'asc';
+        }
+
+        // Instantiate...!
+        dynamic_field.typeahead(config);
       }
     }
 
     function handle_event_value_field_datepickers(field, event_value_object_id) {
 
       let dynamic_field = $('#' + field['id']);
+      let checkbox_field = $('#' + field['id'] + '_current');
 
       // Instantiate date range picker dynamic field.
       dynamic_field.daterangepicker({
@@ -1202,14 +1264,22 @@ jQuery(function ($) {
       // Bind to apply and cancel events and reset
       dynamic_field.on('apply.daterangepicker', function (ev, picker) {
         event_value_object_id.val(picker.startDate.unix());
+        checkbox_field.prop('checked', false);
       });
 
       dynamic_field.on('cancel.daterangepicker', function (ev, picker) {
         dynamic_field.val('');
       });
+
+      checkbox_field.on('change', function () {
+        if ($(this).is(':checked')) {
+          dynamic_field.val(''); // clear datepicker value
+        }
+        event_value_object_id.val('current');
+      })
     }
 
-    function fetch_event_value_field(base_url, field) {
+    function fetch_event_value_field(base_url, field, event_value_object_id) {
       switch (field['type']) {
         case "text":
         case "number":
@@ -1225,13 +1295,14 @@ jQuery(function ($) {
           return generate_event_value_defaults(field['defaults']);
         case "location":
           return generate_event_value_locations(base_url);
+        case "location_meta":
+          return generate_event_value_location_meta(event_value_object_id);
         case "connection":
           return generate_event_value_connections(base_url, field);
         case "user_select":
           return generate_event_value_user_select(base_url);
         case "array":
         case "task":
-        case "location_meta":
         case "post_user_meta":
         case "datetime_series":
         case "hash":
@@ -1254,6 +1325,7 @@ jQuery(function ($) {
       let response = {};
       response['id'] = Date.now();
       response['html'] = `<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
+      response['html'] += `<label><input type="checkbox" id="${window.lodash.escape(response['id'])}_current" > Use current date`;
       response['datepicker'] = {};
 
       return response;
@@ -1284,9 +1356,7 @@ jQuery(function ($) {
 
         // Iterate over field defaults...
         for (const [key, value] of Object.entries(defaults)) {
-          //if (value['label']) { // As an empty label string is actually a valid entry!
           html += `<option value="${window.lodash.escape(key)}">${window.lodash.escape(value['label'])}</option>`;
-          //}
         }
 
         html += '</select>';
@@ -1296,6 +1366,209 @@ jQuery(function ($) {
         return response;
       }
       return null;
+    }
+
+    function generate_event_value_location_meta(event_value_object_id) {
+      let response = {};
+      response['id'] = Date.now();
+
+      let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
+      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="${window.lodash.escape(response['id'])}">`;
+      html += '</div></div></div>';
+      response['html'] = html;
+
+      // Determine mapping configuration to be used.
+      let config = {};
+      let mappings = window.dt_workflows.mappings;
+
+      // -- Google
+      let google_predictions = [];
+      if (mappings['google']['enabled']) {
+        config['endpoint'] = {
+          'filter': false,
+          'display': ['description'],
+          'template': '<span>{{description}}</span>',
+          'by_ajax': false,
+          'ajax': null,
+          'by_data': true,
+          'data': function () {
+
+            // Obtain handle to input locations search field.
+            let input = $('#' + response['id']);
+            if (input) {
+
+              // Execute predictions google api search.
+              let auto_complete_service = new google.maps.places.AutocompleteService();
+              let promise = auto_complete_service.getPlacePredictions({'input': input.val()}, function (predictions, status) {
+                if (status === 'OK') {
+                  google_predictions = predictions;
+                }
+              });
+            }
+
+            // Return current location predictions.
+            return google_predictions;
+          }
+        };
+
+        config['id_func'] = function (item) {
+          if (item && item['place_id']) {
+
+            // Geocode item place details, for further information extraction; E.g. Lat/Lng.
+            let geocode_service = new google.maps.Geocoder()
+            geocode_service.geocode({'placeId': item['place_id']}, function (results, status) {
+              if (status === 'OK' && results && results.length > 0) {
+
+                // Ensure we can get a handle on lat/lng values.
+                if (results[0]['geometry']['location']) {
+                  let location = results[0]['geometry']['location'];
+                  let lat = location['lat']();
+                  let lng = location['lng']();
+                  let label = results[0]['formatted_address'];
+                  let level = results[0]['types'][0];
+
+                  /**
+                   * Convert first type to appropriate level.
+                   * NB: Keep following switch-block in sync with
+                   *  mapbox-users-search-widget.js -> convert_level()
+                   */
+
+                  switch (level) {
+                    case 'administrative_area_level_0':
+                      level = 'admin0';
+                      break;
+                    case 'administrative_area_level_1':
+                      level = 'admin1';
+                      break;
+                    case 'administrative_area_level_2':
+                      level = 'admin2';
+                      break;
+                    case 'administrative_area_level_3':
+                      level = 'admin3';
+                      break;
+                    case 'administrative_area_level_4':
+                      level = 'admin4';
+                      break;
+                    case 'administrative_area_level_5':
+                      level = 'admin5';
+                      break;
+                  }
+
+                  // Package findings within json object, for downstream processing.
+                  let location_pkg = {
+                    'label': label,
+                    'level': level,
+                    'lat': lat,
+                    'lng': lng
+                  };
+
+                  // Stringify and persist location package.
+                  event_value_object_id.val(JSON.stringify(location_pkg).replaceAll("\"", "'"));
+                }
+              }
+            });
+          }
+
+          /**
+           * Return null, to halt flow; as actual update will occur within geocode service callback
+           * function.
+           */
+
+          return null;
+        };
+
+        config['general'] = {
+          'order': ''
+        };
+
+      // -- Mapbox
+      } else if (mappings['mapbox']['enabled']) {
+        config['endpoint'] = {
+          'filter': false,
+          'display': ['place_name', 'id'],
+          'template': '<span>{{place_name}}</span>',
+          'by_ajax': true,
+          'ajax': {
+            url: mappings['mapbox']['endpoint'] + '{{query}}' + mappings['mapbox']['settings'] + mappings['mapbox']['key'],
+            callback: {
+              done: function (response) {
+                return (response['features']) ? response['features'] : [];
+              }
+            }
+          },
+          'by_data': false,
+          'data': null
+        };
+
+        config['id_func'] = function (item) {
+          if (item && item['place_name'] && item['place_type'] && item['center']) {
+
+            // Package findings within json object, for downstream processing.
+            let location_pkg = {
+              'label': item['place_name'],
+              'level': item['place_type'][0],
+              'lat': item['center'][1],
+              'lng': item['center'][0]
+            };
+
+            // Stringify and persist location package.
+            return JSON.stringify(location_pkg).replaceAll("\"", "'");
+          }
+          return null;
+        };
+
+        config['general'] = {
+          'order': ''
+        };
+
+      // -- Default
+      } else {
+        config['endpoint'] = {
+          'filter': false,
+          'display': [],
+          'template': '<span></span>',
+          'by_ajax': false,
+          'ajax': null,
+          'by_data': false,
+          'data': null
+        };
+
+        config['id_func'] = function (item) {
+          return null;
+        };
+
+        config['general'] = {
+          'order': ''
+        };
+      }
+
+      // Typeahead object
+      response['typeahead'] = {
+        endpoint: function (wp_nonce) {
+          let source = {
+            locations: {
+              filter: config['endpoint']['filter'],
+              display: config['endpoint']['display'],
+              template: config['endpoint']['template']
+            }
+          }
+
+          // Determine additional bolt-ons.
+          if (config['endpoint']['by_ajax']) {
+            source['locations']['ajax'] = config['endpoint']['ajax'];
+          }
+          if (config['endpoint']['by_data']) {
+            source['locations']['data'] = config['endpoint']['data'];
+          }
+
+          // Return final source config shape.
+          return source;
+        },
+        id_func: config['id_func'],
+        general: config['general']
+      };
+
+      return response;
     }
 
     function generate_event_value_locations(base_url) {

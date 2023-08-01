@@ -29,6 +29,105 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
      * Return count of posts by date field with stats counted by
      * month
      */
+    public static function get_number_field_by_month( string $post_type, string $field, int $year ) {
+        global $wpdb;
+
+        $start = mktime( 0, 0, 0, 1, 1, $year );
+        $end = mktime( 24, 60, 60, 12, 31, $year );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month,
+                    SUM( log.meta_value ) AS count
+                FROM $wpdb->posts AS p
+                JOIN $wpdb->postmeta AS pm
+                    ON p.ID = pm.post_id
+                JOIN $wpdb->dt_activity_log AS log
+                    ON log.object_id = p.ID
+                    AND log.meta_key = %s
+                WHERE p.post_type = %s
+                    AND pm.meta_key = %s
+                    AND log.meta_value = pm.meta_value
+                    AND log.hist_time = (
+                        SELECT MAX( log2.hist_time )
+                        FROM $wpdb->dt_activity_log AS log2
+                        WHERE log.meta_value = log2.meta_value
+                        AND log.object_id = log2.object_id
+                        AND log2.hist_time >= %s
+                        AND log2.hist_time <= %s
+                        AND log2.meta_key = %s
+                    )
+                    AND log.object_type = %s
+                    AND log.hist_time >= %s
+                    AND log.hist_time <= %s
+                GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
+        );
+
+        $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
+
+
+        return [
+            'data' => $results,
+            'cumulative_offset' => $cumulative_offset,
+        ];
+    }
+
+
+
+    public static function get_number_field_by_year( string $post_type, string $field ) {
+        global $wpdb;
+
+        $current_year = gmdate( 'Y' );
+        $start = 0;
+        $end = mktime( 24, 60, 60, 12, 31, $current_year );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
+                    SUM( log.meta_value ) AS count
+                FROM $wpdb->posts AS p
+                JOIN $wpdb->postmeta AS pm
+                    ON p.ID = pm.post_id
+                JOIN $wpdb->dt_activity_log AS log
+                    ON log.object_id = p.ID
+                    AND log.meta_key = %s
+                WHERE p.post_type = %s
+                    AND pm.meta_key = %s
+                    AND log.meta_value = pm.meta_value
+                    AND log.hist_time = (
+                        SELECT MAX( log2.hist_time )
+                        FROM $wpdb->dt_activity_log AS log2
+                        WHERE log.meta_value = log2.meta_value
+                        AND log.object_id = log2.object_id
+                        AND log2.hist_time >= %s
+                        AND log2.hist_time <= %s
+                        AND log2.meta_key = %s
+                    )
+                    AND log.object_type = %s
+                    AND log.hist_time >= %s
+                    AND log.hist_time <= %s
+                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
+        );
+
+        $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
+
+
+        return [
+            'data' => $results,
+            'cumulative_offset' => $cumulative_offset,
+        ];
+    }
+
+    /**
+     * Return count of posts by date field with stats counted by
+     * month
+     */
     public static function get_date_field_by_month( string $post_type, string $field, int $year ) {
         global $wpdb;
 
@@ -95,7 +194,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_date_field_by_year( string $post_type, string $field ) {
         global $wpdb;
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
@@ -162,7 +261,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         // Build dynamic sql for counting meta_values
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
         if ( strlen( $count_dynamic_values_query ) !== 0 ) {
@@ -213,7 +312,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_multi_field_by_year( $post_type, $field ) {
         global $wpdb;
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
@@ -232,7 +331,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
         if ( strlen( $count_dynamic_values_query ) !== 0 ) {
@@ -311,7 +410,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_connection_field_by_year( $connection_type ) {
         global $wpdb;
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
@@ -362,7 +461,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ) AS subQuery
             " );
 
-        $current_year = gmdate( "Y" );
+        $current_year = gmdate( 'Y' );
         $year = $result ? intval( $result ) : intval( $current_year );
 
         return $year;
@@ -429,7 +528,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         global $wpdb;
 
         $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . "`";
+            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
         }, $multi_values);
         $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
 
@@ -438,6 +537,39 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             $wpdb->prepare( "
                 SELECT
                     $count_dynamic_values_query
+                FROM $wpdb->posts AS p
+                JOIN $wpdb->postmeta AS pm
+                    ON p.ID = pm.post_id
+                JOIN $wpdb->dt_activity_log AS log
+                    ON log.object_id = p.ID
+                    AND log.meta_key = %s
+                WHERE p.post_type = %s
+                    AND pm.meta_key = %s
+                    AND log.meta_value = pm.meta_value
+                    AND log.hist_time = (
+                        SELECT MAX( log2.hist_time )
+                        FROM $wpdb->dt_activity_log AS log2
+                        WHERE log.meta_value = log2.meta_value
+                        AND log.object_id = log2.object_id
+                        AND log2.hist_time <= %s
+                        AND log2.meta_key = %s
+                    )
+                    AND log.object_type = %s
+                    AND log.hist_time <= %s
+            ", $field, $post_type, $field, $timestamp, $field, $post_type, $timestamp )
+            // phpcs:enable
+        );
+
+        return $results;
+    }
+
+    private static function get_number_field_cumulative_offsets( $post_type, $field, $timestamp, $multi_values ) {
+        global $wpdb;
+
+        $results = $wpdb->get_row(
+            // phpcs:disable
+            $wpdb->prepare( "
+                SELECT SUM( log.meta_value ) AS count
                 FROM $wpdb->posts AS p
                 JOIN $wpdb->postmeta AS pm
                     ON p.ID = pm.post_id

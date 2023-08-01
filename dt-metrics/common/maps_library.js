@@ -9,9 +9,18 @@ let mapbox_library_api = {
   spinner: null,
   setup_container: function (){
     if ( this.container_set_up ){ return; }
-    if ( typeof window.dt_mapbox_metrics.settings === undefined ) { return; }
+    if ( typeof window.dt_mapbox_metrics.settings === 'undefined' ) { return; }
 
-    let chart = jQuery('#chart')
+    let chart = jQuery('#chart');
+
+    // Ensure a valid mapbox key has been specified.
+    if (!window.dt_mapbox_metrics.settings.map_key) {
+      chart.empty();
+      let mapping_settings_url = window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_mapping_module&tab=geocoding';
+      chart.empty().html(`<a href="${window.lodash.escape(mapping_settings_url)}">${window.lodash.escape(window.dt_mapbox_metrics.settings.no_map_key_msg)}</a>`);
+
+      return;
+    }
 
     chart.empty().html(spinner_html)
 
@@ -39,15 +48,15 @@ let mapbox_library_api = {
                 ${window.lodash.escape( this.title )}
             </div>
             <div id="map-type" class="border-left">
-              <button class="button small ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
                 id="cluster">
                 <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dots.svg">
               </button>
-              <button class="button small ${mapbox_library_api.current_map_type === 'points' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'points' ? 'selected-select-button': ' empty-select-button' }"
                 id="points">
                 <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
               </button>
-              <button class="button small ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
                 id="area">
                 <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/location_shape.svg">
               </button>
@@ -86,7 +95,7 @@ let mapbox_library_api = {
       window.lodash.forOwn( mapbox_library_api.obj.settings.split_by, (field_values, field_key)=>{
         let options_html = ``
         window.lodash.forOwn(field_values.default, (option, option_key)=>{
-          options_html += `<button class="button small selected-select-button" data-key="${window.lodash.escape(option_key)}" id=${window.lodash.escape(field_key)}_${window.lodash.escape(option_key)}>
+          options_html += `<button class="button small select-button selected-select-button" data-key="${window.lodash.escape(option_key)}" id=${window.lodash.escape(field_key)}_${window.lodash.escape(option_key)}>
             ${window.lodash.escape(option.label)}
           </button>`
         })
@@ -471,8 +480,8 @@ let area_map = {
             // add data to geojson properties
             let highest_value = 1
             jQuery.each(geojson.features, function (i, v) {
-              if (area_map.grid_data[geojson.features[i].properties.id]) {
-                geojson.features[i].properties.value = parseInt(area_map.grid_data[geojson.features[i].properties.id].count)
+              if (area_map.grid_data[geojson.features[i].properties.grid_id]) {
+                geojson.features[i].properties.value = parseInt(area_map.grid_data[geojson.features[i].properties.grid_id].count)
               } else {
                 geojson.features[i].properties.value = 0
               }

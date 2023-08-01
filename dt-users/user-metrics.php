@@ -19,10 +19,10 @@ class DT_User_Metrics {
         $can_view_user_stats = function ( WP_REST_Request $request ){
             $params = $request->get_params();
             $user_id = get_current_user_id();
-            if ( isset( $params["user_id"] ) && !empty( $params["user_id"] ) ){
-                $user_id = (int) $params["user_id"];
+            if ( isset( $params['user_id'] ) && !empty( $params['user_id'] ) ){
+                $user_id = (int) $params['user_id'];
             }
-            return Disciple_Tools_Users::can_view( $user_id );
+            return current_user_can( 'access_disciple_tools' ) && Disciple_Tools_Users::can_view( $user_id );
         };
 
         $namespace = 'dt-users/v1';
@@ -38,8 +38,8 @@ class DT_User_Metrics {
     public function get_activity_endpoint( WP_REST_Request $request ){
         $params = $request->get_params();
         $user_id = get_current_user_id();
-        if ( isset( $params["user_id"] ) && !empty( $params["user_id"] ) ){
-            $user_id = (int) $params["user_id"];
+        if ( isset( $params['user_id'] ) && !empty( $params['user_id'] ) ){
+            $user_id = (int) $params['user_id'];
         }
         $include = [ 'comment', 'field_update', 'created' ];
         return self::get_user_activity( $user_id, $include );
@@ -67,6 +67,7 @@ class DT_User_Metrics {
         $allowed_field_types = [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ];
         array_push( $allowed_field_types, '' );
         $allowed_field_types_sql = dt_array_to_sql( $allowed_field_types );
+        $allowed_post_statuses_sql = dt_array_to_sql( [ 'publish' ] );
 
         //phpcs:disable
         $user_activity = $wpdb->get_results( $wpdb->prepare( "
@@ -77,6 +78,7 @@ class DT_User_Metrics {
             WHERE user_id = %s
             AND action IN ( $allowed_actions_sql )
             AND p.post_type IN ( $allowed_post_types_sql )
+            AND p.post_status IN ( $allowed_post_statuses_sql )
             AND a.field_type IN ( $allowed_field_types_sql )
             ORDER BY `hist_time` DESC
             LIMIT 100
@@ -96,26 +98,26 @@ class DT_User_Metrics {
                 if ( $a->object_name ){
                     $a->object_name = wp_specialchars_decode( $a->object_name );
                 }
-                if ( $a->object_subtype === "title" ){
-                    $a->object_subtype = "name";
+                if ( $a->object_subtype === 'title' ){
+                    $a->object_subtype = 'name';
                 }
 
                 if ( $a->action === 'field_update' || $a->action === 'connected to' || $a->action === 'disconnected from' ) {
-                    $a->object_note_short = __( "Updated fields", 'disciple_tools' );
-                    $a->field = $a->action === 'field_update' ? $post_fields[ $a->object_subtype ]["name"] : null;
+                    $a->object_note_short = __( 'Updated fields', 'disciple_tools' );
+                    $a->field = $a->action === 'field_update' ? $post_fields[ $a->object_subtype ]['name'] : null;
                 }
                 if ( $a->action == 'comment' ) {
-                    $a->object_note_short = __( "Made %n comments", "disciple_tools" );
+                    $a->object_note_short = __( 'Made %n comments', 'disciple_tools' );
                 }
                 if ( $a->action == 'created' ) {
                     $a->object_note = __( 'Created record', 'disciple_tools' );
                 }
-                if ( $a->action === "logged_in" ) {
-                    $a->object_note_short = __( "Logged In %n times", 'disciple_tools' );
-                    $a->object_note = __( "Logged In", 'disciple_tools' );
+                if ( $a->action === 'logged_in' ) {
+                    $a->object_note_short = __( 'Logged In %n times', 'disciple_tools' );
+                    $a->object_note = __( 'Logged In', 'disciple_tools' );
                 }
                 if ( $a->action === 'assignment_decline' ) {
-                    $a->object_note = sprintf( _x( "Declined assignment on %s", 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
+                    $a->object_note = sprintf( _x( 'Declined assignment on %s', 'Declined assignment on Bob', 'disciple_tools' ), $a->object_name );
                 }
             }
         }
@@ -138,7 +140,7 @@ class DT_User_Metrics {
         global $wpdb;
         $month_start = strtotime( gmdate( 'Y-m-01' ) );
         $last_month_start = strtotime( 'first day of last month' );
-        $this_year = strtotime( "first day of january this year" );
+        $this_year = strtotime( 'first day of january this year' );
         return $wpdb->get_results($wpdb->prepare("
             SELECT
             COUNT( CASE WHEN date_assigned.hist_time >= %d THEN 1 END ) as this_month,
@@ -374,7 +376,7 @@ class DT_User_Metrics {
         ), ARRAY_A );
         $days_active = [];
         foreach ( $days_active_results as $a ) {
-            $days_active[$a["day"]] = $a;
+            $days_active[$a['day']] = $a;
         }
         $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
         $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first ) . ' days', $first ) );
@@ -382,15 +384,15 @@ class DT_User_Metrics {
         $daily_activity = [];
         while ( $current < time() ) {
 
-            $activity = $days_active[gmdate( 'Y-m-d', $current )]["activity_count"] ?? 0;
+            $activity = $days_active[gmdate( 'Y-m-d', $current )]['activity_count'] ?? 0;
 
             $daily_activity[] = [
-                "day" => dt_format_date( $current ),
-                "weekday" => gmdate( 'l', $current ),
-                "weekday_number" => gmdate( 'N', $current ),
-                "week_start" => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
-                "activity_count" => $activity,
-                "activity" => $activity > 0 ? 1 : 0
+                'day' => dt_format_date( $current ),
+                'weekday' => gmdate( 'l', $current ),
+                'weekday_number' => gmdate( 'N', $current ),
+                'week_start' => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
+                'activity_count' => $activity,
+                'activity' => $activity > 0 ? 1 : 0
             ];
 
             $current += 24 * 60 * 60;

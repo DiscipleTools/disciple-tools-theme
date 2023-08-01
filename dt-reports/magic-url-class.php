@@ -201,7 +201,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             // get url, create parts array and sanitize
             $url_path = dt_get_url_path( true );
             $parts = explode( '/', $url_path );
-            $parts = array_map( 'sanitize_key', wp_unslash( $parts ) );
 
             // test :
             // correct root
@@ -246,7 +245,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         // if user
                         $user_id = self::get_user_id( $elements['meta_key'], $parts[2] );
                         if ( ! $user_id ){ // fail if no post id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $user_id;
                         }
@@ -254,7 +253,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         // get post_id
                         $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
                         if ( ! $post_id ){ // fail if no post id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $post_id;
                         }
@@ -280,7 +279,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return false;
         }
 
-        public function parse_wp_rest_url_parts( $public_key ){
+        public function parse_wp_rest_url_parts( $params ){
             // get required url elements
             $all_types = $this->registered_types();
             $root = $this->root;
@@ -294,7 +293,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             // test :
             // correct root
             // approved type
-            if ( isset( $parts[0] ) && "wp-json" === $parts[0] && isset( $parts[1] ) && $root === $parts[1] && isset( $parts[3] ) && isset( $types[$parts[3]] ) ){
+            if ( isset( $parts[0] ) && 'wp-json' === $parts[0] && isset( $parts[1] ) && $root === $parts[1] && isset( $parts[3] ) && isset( $types[$parts[3]] ) ){
                 $elements = [
                     'root' => '',
                     'type' => '',
@@ -320,6 +319,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         return false;
                     }
                 }
+                $public_key = $params['parts']['public_key'];
                 if ( !empty( $public_key ) ){
                     $elements['public_key'] = $public_key;
 
@@ -327,13 +327,13 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     if ( ! isset( $types[$elements['type']]['meta_key'] ) ) {
                         return false;
                     }
-                    $elements['meta_key'] = self::determine_meta_key( $types[ $elements['type'] ]['meta_key'] );
+                    $elements['meta_key'] = $params['parts']['meta_key'];
 
                     if ( 'user' === $types[$elements['type']]['post_type'] ) {
                         // if user
                         $user_id = self::get_user_id( $elements['meta_key'], $public_key );
                         if ( ! $user_id ){ // fail if no user id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $user_id;
                         }
@@ -341,7 +341,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         // get post_id
                         $post_id = self::get_post_id( $elements['meta_key'], $public_key );
                         if ( ! $post_id ){ // fail if no post id for public key
-                            return false;
+                            self::redirect_to_expired_landing_page();
                         } else {
                             $elements['post_id'] = $post_id;
                         }
@@ -356,14 +356,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return false;
         }
 
-        public function determine_meta_key( $current_key ) {
-            if ( ! empty( $_REQUEST['parts']['instance_id'] ) && ! empty( $_REQUEST['parts']['meta_key'] ) ) {
-                return sanitize_text_field( wp_unslash( $_REQUEST['parts']['meta_key'] ) );
-            }
-
-            return $current_key;
-        }
-
         /**
          * Verify that a rest endpoint has all the needed magic link values set
          * and that they match the expected values
@@ -373,20 +365,20 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          */
         public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request ){
             $params = $request->get_params();
-            if ( !isset( $params["parts"]["meta_key"], $params["parts"]["public_key"], $params["parts"]["post_id"], $params["parts"]["type"], $params["parts"]["root"] ) ){
+            if ( !isset( $params['parts']['meta_key'], $params['parts']['public_key'], $params['parts']['post_id'], $params['parts']['type'], $params['parts']['root'] ) ){
                 return false;
             }
-            $parts = $this->parse_wp_rest_url_parts( $params["parts"]["public_key"] );
+            $parts = $this->parse_wp_rest_url_parts( $params );
             if ( empty( $parts ) ){
                 return false;
             }
-            if ( $parts["root"] !== $params["parts"]["root"] || $parts["type"] !== $params["parts"]["type"] ){
+            if ( $parts['root'] !== $params['parts']['root'] || $parts['type'] !== $params['parts']['type'] ){
                 return false;
             }
-            if ( $parts["meta_key"] !== $params["parts"]["meta_key"] || $parts["public_key"] !== $params["parts"]["public_key"] ){
+            if ( $parts['meta_key'] !== $params['parts']['meta_key'] || $parts['public_key'] !== $params['parts']['public_key'] ){
                 return false;
             }
-            if ( (int) $parts["post_id"] !== (int) $params["parts"]["post_id"] ){
+            if ( (int) $parts['post_id'] !== (int) $params['parts']['post_id'] ){
                 return false;
             }
             return true;
@@ -547,12 +539,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Filters and returns registered types that allow bulk send.
          * @return array
          */
-        public static function list_bulk_send() {
+        public static function list_bulk_send( $post_type = null ) {
             $registered_list = self::registered_types_static();
             $bulk_send_list = [];
             foreach ( $registered_list as $root_key => $root_values ) {
                 foreach ( $root_values as $type_key => $type_values ) {
-                    if ( isset( $type_values['show_bulk_send'] ) && $type_values['show_bulk_send'] ) {
+                    if ( isset( $type_values['show_bulk_send'] ) && $type_values['show_bulk_send'] && ( !$post_type || $type_values['post_type'] === $post_type ) ){
                         if ( ! isset( $bulk_send_list[$root_key] ) ) {
                             $bulk_send_list[$root_key] = [];
                         }
@@ -561,6 +553,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 }
             }
             return $bulk_send_list;
+        }
+
+        public function redirect_to_expired_landing_page(){
+            $path = get_theme_file_path( 'dt-reports/magic-url-landing-page.php' );
+            include( $path );
+            die();
         }
     }
 }

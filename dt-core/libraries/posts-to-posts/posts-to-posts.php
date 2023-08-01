@@ -35,8 +35,9 @@ function _p2p_load() {
 
     register_uninstall_hook( __FILE__, array( 'P2P_Storage', 'uninstall' ) );
 
-    if ( is_admin() )
-        _p2p_load_admin();
+//    if ( is_admin() ){
+//        _p2p_load_admin();
+//    }
 }
 
 function _p2p_load_admin() {

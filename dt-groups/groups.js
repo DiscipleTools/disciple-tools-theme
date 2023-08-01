@@ -57,6 +57,7 @@ jQuery(document).ready(function($) {
         }
         /* Toggle church health circle item color */
         $( this ).children( 'img' ).toggleClass( 'practiced-item' );
+        $( this ).children( 'i' ).toggleClass( 'practiced-item' );
       }).catch( err=>{
         console.log( err );
     });
@@ -129,6 +130,7 @@ jQuery(document).ready(function($) {
   }
   /* End Health Metrics*/
 
+  let { template_dir } = window.wpApiShare
 
   /* Member List*/
   let memberList = $('.member-list')
@@ -142,12 +144,17 @@ jQuery(document).ready(function($) {
         m.leader = true
       }
     })
-    post.members = window.lodash.sortBy( post.members, ["leader"])
+    post.members = window.lodash.sortBy(post.members, ["leader", member => member.post_title.toLowerCase()]);
     post.members.forEach(member=>{
       let leaderHTML = '';
+      let leaderStatus = 'not-leader';
+      let leaderStyle = '';
       if( member.leader ){
-        leaderHTML = `<i class="fi-foot small leader"></i>`
+        leaderStatus = 'leader';
+        leaderStyle = 'color:black;';
       }
+
+
       const contactStatusHTML = ( member.data && member.data.overall_status )
         ? `<i class="fi-torso small" style="color: ${window.lodash.escape( member.data.overall_status.color )}" title="${window.lodash.escape( member.data.overall_status.label )}"></i>`
         : '<i class="fi-torso small"></i>'
@@ -164,7 +171,7 @@ jQuery(document).ready(function($) {
               ${leaderHTML}
               ${milestonesHTML}
           </div>
-          <button class="button clear make-leader member-row-actions" data-id="${window.lodash.escape( member.ID )}">
+          <button class="button clear make-leader member-row-actions ${leaderStatus}" style="${leaderStyle}" data-id="${window.lodash.escape( member.ID )}">
             <i class="fi-foot small"></i>
           </button>
           <button class="button clear delete-member member-row-actions" data-id="${window.lodash.escape( member.ID )}">
@@ -204,14 +211,14 @@ jQuery(document).ready(function($) {
     }
   })
   $(document).on("click", ".make-leader", function () {
+    $(this).children('i').attr('class', 'small')
+    let spinner = `<img src="${template_dir}/dt-assets/images/ajax-loader.gif" width="15px">`
+    $(this).append(spinner)
     let id = $(this).data('id')
     let remove = false
     let existingLeaderIcon = $(`.member-row[data-id="${id}"] .leader`)
     if( window.lodash.find( post.leaders || [], {ID: id}) || existingLeaderIcon.length !== 0){
       remove = true
-      existingLeaderIcon.remove()
-    } else {
-      $(`.member-row[data-id="${id}"] .member-status`).append(`<i class="fi-foot small leader"></i>`)
     }
     API.update_post( post_type, post_id, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
       post=groupRes

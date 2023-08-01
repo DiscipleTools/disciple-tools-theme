@@ -74,10 +74,9 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             if ( empty( self::get_key() ) ) {
                 return [];
             }
-            $string = self::url_get_contents( self::make_url( 'check' ) );
-            $response = json_decode( $string, true );
+            $response = self::geocode_ip_address( self::get_real_ip_address() );
 
-            if ( isset( $response['success'] ) && empty( $response['success'] ) ) {
+            if ( ! isset( $response['longitude'] ) || empty( $response['longitude'] ) ) {
                 return [];
             }
             return $response ?? [];
@@ -190,7 +189,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
                 $ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
             }
 
-            return $ip;
+            return apply_filters( 'get_real_ip_address', $ip );
         }
 
         public static function url_get_contents( $url ) {
@@ -347,13 +346,13 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             // prioritize the smallest unit
             if ( !empty( $ip_result['city'] ) ) {
                 $label = $ip_result['city'] . ', ' . $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "district";
+                $level = 'district';
             } elseif ( !empty( $ip_result['region_name'] ) ) {
                 $label = $ip_result['region_name'] . ', ' . $ip_result['country_name'];
-                $level = "region";
+                $level = 'region';
             } elseif ( !empty( $ip_result['country_name'] ) ) {
                 $label = $ip_result['country_name'];
-                $level = "country";
+                $level = 'country';
             } elseif ( !empty( $ip_result['continent_name'] ) ) {
                 $label = $ip_result['continent_name'];
                 $level = 'world';
@@ -383,7 +382,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
         }
 
         public static function get_location_grid_meta_from_current_visitor() {
-            return self::convert_ip_result_to_location_grid_meta( self::geocode_current_visitor() );
+            return self::convert_ip_result_to_location_grid_meta( self::geocode_ip_address( self::get_real_ip_address() ) );
         }
     }
 }

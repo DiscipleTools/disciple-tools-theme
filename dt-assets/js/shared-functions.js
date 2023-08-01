@@ -67,7 +67,7 @@ function makeRequest(type, url, data, base = "dt/v1/") {
     },
   };
 
-  if (data) {
+  if (data && !window.lodash.isEmpty(data)) {
     options.data = type === "GET" ? data : JSON.stringify(data);
   }
 
@@ -131,16 +131,19 @@ window.API = {
   get_comments: (post_type, postId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/comments`),
 
-  toggle_comment_reaction: (postType, postId, commentId, userId, reaction) => {
+  toggle_comment_reaction: (postType, postId, commentId, reaction) => {
     makeRequestOnPosts(
       "POST",
       `${postType}/${postId}/comments/${commentId}/react`,
-      { user_id: userId, reaction: reaction }
+      { reaction: reaction }
     )
   },
 
-  get_activity: (post_type, postId) =>
-    makeRequestOnPosts("GET", `${post_type}/${postId}/activity`),
+  get_activity: (post_type, postId, data = {}) =>
+    makeRequestOnPosts("GET", `${post_type}/${postId}/activity`, data),
+
+  revert_activity_history: (post_type, post_id, data = {}) =>
+    makeRequestOnPosts("POST", `${post_type}/${post_id}/revert_activity_history`, data),
 
   get_single_activity: (post_type, postId, activityId) =>
     makeRequestOnPosts("GET", `${post_type}/${postId}/activity/${activityId}`),
@@ -203,7 +206,14 @@ window.API = {
     post: filters['post'],
     comment: filters['comment'],
     meta: filters['meta'],
-  }, 'dt-posts/v2/posts/search/')
+    status: filters['status']
+  }, 'dt-posts/v2/posts/search/'),
+
+  split_by: (post_type, field_id, filters) =>
+    makeRequestOnPosts("POST", `${post_type}/split_by`, {
+      'field_id': field_id,
+      'filters': filters
+    })
 };
 
 function handleAjaxError(err) {
@@ -220,8 +230,8 @@ function handleAjaxError(err) {
 jQuery(document)
   .ajaxComplete((event, xhr, settings) => {
     if ( xhr && xhr.responseJSON && settings.type === "POST" ) {
-      // Event that a contact record has been updated
-      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type ) {
+      // Event that a contact record has been updated, check to make sure the post type that is being updated is the same as the current page post type.
+      if ( xhr.responseJSON.ID && xhr.responseJSON.post_type &&  xhr.responseJSON.post_type === window.detailsSettings?.post_type ) {
         let request = settings.data ? JSON.parse(settings.data) : {};
         $(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
       }
@@ -269,15 +279,19 @@ jQuery(document).on("click", ".help-button-tile", function () {
         field && field.tile === section && !field.hidden &&
         (field.description || window.lodash.isObject(field.default))
       ) {
-        let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
-        html += `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
+        let field_name = `<h2>${window.lodash.escape(field.name)}</h2>`;
+        if ( window.wpApiShare.can_manage_dt ){
+          let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
+          field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
+        }
+        html += field_name
         html += `<p>${window.lodash.escape(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
           let list_html = ``;
           let first_field_option = true;
           window.lodash.forOwn(field.default, (field_options, field_key) => {
-            if( field_options.hasOwnProperty('icon') ) {
+            if (Object.prototype.hasOwnProperty.call(field_options, 'icon')) {
               if ( first_field_option ) {
                 list_html += `<ul class="help-modal-icon">`;
                 first_field_option = false;
@@ -303,6 +317,8 @@ jQuery(document).on("click", ".help-button-tile", function () {
     });
     $("#help-modal-field-body").html(html);
   }
+  /* #apps for example was the tile id, so this is the new more unique id to show relevant help text */
+  jQuery(`#tile-help-section-${section}`).show();
   jQuery(`#${section}`).show();
 });
 jQuery(document).on("click", ".help-button-field", function () {
@@ -445,14 +461,18 @@ window.TYPEAHEADS = {
     return text;
   },
   contactListRowTemplate: function (query, item) {
+    let status_color = `<span class="vertical-line" ${ item.status ? `style="border-left: 3px solid ${window.lodash.escape(item.status.color)}"` : '' }></span>`
+    let status_label = item.status ? `[ <span><i>${ window.lodash.escape(item.status.label).toLowerCase() } </i></span> ]` : '';
     let img = item.user
-      ? `<img class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
+      ? `<img style="margin: 0 5px;" class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
-      return `<span dir="auto" ${statusStyle}>
-        <span class="typeahead-user-row" style="width:20px">${img}</span>
+      return `<span style="display: inline-block; vertical-align: middle;" dir="auto" ${statusStyle}>
+        ${status_color}
         ${window.lodash.escape((item.label ? item.label : item.name))}
         <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
+        ${status_label}
+        <span class="typeahead-user-row" style="width:20px">${img}</span>
     </span>`;
   },
   share(post_type, id) {
@@ -568,9 +588,35 @@ window.SHAREDFUNCTIONS = {
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
-  uriEncodeFilter(field, id, name) {
-    const filterLabel = { field, id, name }
-    return encodeURIComponent(JSON.stringify(filterLabel))
+  createCustomFilter(field, value) {
+    return ({
+      fields: [
+        {
+          [field]: value,
+        }
+      ]
+    })
+  },
+  create_url_for_list_query(postType, query, labels) {
+    const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(query);
+    const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(labels);
+    return window.wpApiShare.site_url + `/${postType}?query=${encodedQuery}&labels=${encodedLabels}`;
+  },
+  encodeJSON(json) {
+    return this.b64encode(JSON.stringify(json))
+  },
+  decodeJSON(encodedJSON) {
+    try {
+      return JSON.parse(this.b64decode(encodedJSON))
+    } catch (error) {
+      return null
+    }
+  },
+  b64encode(string) {
+    return Base64.encode(string)
+  },
+  b64decode(string) {
+    return Base64.decode(string)
   },
   get_langcode() {
     let langcode = document.querySelector("html").getAttribute("lang")
@@ -635,11 +681,8 @@ window.SHAREDFUNCTIONS = {
           if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
             url = match
           }
-          else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+          else if (match.indexOf("http") === -1) {
             url = "http://" + match
-          }
-          else if (match.indexOf("www.") === -1) {
-            url = "http://www." + match
           }
           return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
         }
@@ -685,6 +728,7 @@ window.SHAREDFUNCTIONS = {
   make_links_clickable( selector ){
     //make text links clickable in a section
     let elem_text = $(selector).html()
+    if ( !elem_text ) return
     let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
     elem_text = elem_text.replace(urlRegex, (match)=>{
       let url = match
@@ -704,6 +748,26 @@ window.SHAREDFUNCTIONS = {
     })
     $(selector).html(elem_text)
   },
+  addLink(e) {
+    let fieldKey = e.target.dataset['fieldKey']
+    let linkType = e.target.dataset['linkType']
+    let onlyOneOption = e.target.dataset['onlyOneOption']
+
+    const linkList = document.querySelector(`.link-list-${fieldKey} .link-section--${linkType}`)
+
+    const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`).querySelector('.input-group')
+
+    const newInputGroup = $(template).clone(true);
+    const newInput = newInputGroup[0].querySelector('input')
+    $(linkList).append(newInputGroup)
+    newInput.focus()
+
+    if ( onlyOneOption !== '' ) {
+      linkList.querySelector('.section-subheader').style.display = 'block'
+    }
+
+    $(".grid").masonry("layout"); //resize or reorder tile
+  }
 };
 
 let date_ranges = {
@@ -927,4 +991,146 @@ window.make_magic_link = ( site, root, type, hash, action ) => {
     link = link + action
   }
   return link
+}
+
+/**
+*
+*  Base64 encode / decode
+*  http://www.webtoolkit.info/javascript-base64.html
+**/
+
+var Base64 = {
+
+  // private property
+  _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+  // public method for encoding
+  encode : function (input) {
+      var output = "";
+      var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+      var i = 0;
+
+      input = Base64._utf8_encode(input);
+
+      while (i < input.length) {
+
+          chr1 = input.charCodeAt(i++);
+          chr2 = input.charCodeAt(i++);
+          chr3 = input.charCodeAt(i++);
+
+          enc1 = chr1 >> 2;
+          enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+          enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+          enc4 = chr3 & 63;
+
+          if (isNaN(chr2)) {
+              enc3 = enc4 = 64;
+          } else if (isNaN(chr3)) {
+              enc4 = 64;
+          }
+
+          output = output +
+          this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+          this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+
+      }
+
+      return output;
+  },
+
+  // public method for decoding
+  decode : function (input) {
+      var output = "";
+      var chr1, chr2, chr3;
+      var enc1, enc2, enc3, enc4;
+      var i = 0;
+
+      input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+      while (i < input.length) {
+
+          enc1 = this._keyStr.indexOf(input.charAt(i++));
+          enc2 = this._keyStr.indexOf(input.charAt(i++));
+          enc3 = this._keyStr.indexOf(input.charAt(i++));
+          enc4 = this._keyStr.indexOf(input.charAt(i++));
+
+          chr1 = (enc1 << 2) | (enc2 >> 4);
+          chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+          chr3 = ((enc3 & 3) << 6) | enc4;
+
+          output = output + String.fromCharCode(chr1);
+
+          if (enc3 != 64) {
+              output = output + String.fromCharCode(chr2);
+          }
+          if (enc4 != 64) {
+              output = output + String.fromCharCode(chr3);
+          }
+
+      }
+
+      output = Base64._utf8_decode(output);
+
+      return output;
+
+  },
+
+  // private method for UTF-8 encoding
+  _utf8_encode : function (string) {
+      string = string.replace(/\r\n/g,"\n");
+      var utftext = "";
+
+      for (var n = 0; n < string.length; n++) {
+
+          var c = string.charCodeAt(n);
+
+          if (c < 128) {
+              utftext += String.fromCharCode(c);
+          }
+          else if((c > 127) && (c < 2048)) {
+              utftext += String.fromCharCode((c >> 6) | 192);
+              utftext += String.fromCharCode((c & 63) | 128);
+          }
+          else {
+              utftext += String.fromCharCode((c >> 12) | 224);
+              utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+              utftext += String.fromCharCode((c & 63) | 128);
+          }
+
+      }
+
+      return utftext;
+  },
+
+  // private method for UTF-8 decoding
+  _utf8_decode : function (utftext) {
+      var string = "";
+      var i = 0;
+      var c = c1 = c2 = 0;
+
+      while ( i < utftext.length ) {
+
+          c = utftext.charCodeAt(i);
+
+          if (c < 128) {
+              string += String.fromCharCode(c);
+              i++;
+          }
+          else if((c > 191) && (c < 224)) {
+              c2 = utftext.charCodeAt(i+1);
+              string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+              i += 2;
+          }
+          else {
+              c2 = utftext.charCodeAt(i+1);
+              c3 = utftext.charCodeAt(i+2);
+              string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+              i += 3;
+          }
+
+      }
+
+      return string;
+  }
+
 }

@@ -42,10 +42,8 @@ class Disciple_Tools_Activity_Hooks {
         // Load all our hooks.
         include( 'hooks/class-hook-user.php' );
         include( 'hooks/class-hook-posts.php' );
-        include( 'hooks/class-hook-comments.php' );
 
         new Disciple_Tools_Hook_User();
         new Disciple_Tools_Hook_Posts();
-        new Disciple_Tools_Hook_Comments();
     }
 }

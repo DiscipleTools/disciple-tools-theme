@@ -8,15 +8,18 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Migration_0024 extends Disciple_Tools_Migration
 {
     public function up() {
-        global $wpdb;
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 24 ){
+            return;
+        }
 
         //get users with saved filters
         //save those filters to options instead
         $users = get_users( [ 'meta_key' => 'saved_filters' ] );
         foreach ( $users as $user ) {
-            $filters = get_user_meta( $user->ID, "saved_filters", true );
-            update_user_option( $user->ID, "saved_filters", $filters );
-            delete_user_meta( $user->ID, "saved_filters" );
+            $filters = get_user_meta( $user->ID, 'saved_filters', true );
+            update_user_option( $user->ID, 'saved_filters', $filters );
+            delete_user_meta( $user->ID, 'saved_filters' );
         }
     }
 

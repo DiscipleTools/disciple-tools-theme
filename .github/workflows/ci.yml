@@ -1,0 +1,134 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: ["7.4", "8.2"]
+
+    name: PHP ${{ matrix.php }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+    - run: npm install -g gulp-cli eslint @babel/eslint-parser
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
+
+    - name: Report PHP version
+      run: php -v
+
+    - name: Cache Composer dependencies
+      id: cache-composer-dependencies
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-composer-dependencies-${{ matrix.php }}
+      with:
+        # caching node_modules
+        path: vendor
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Install Composer dependencies
+      if: steps.cache-composer-dependencies.outputs.cache-hit != 'true'
+      run: |
+        composer install -o
+        export PATH="$HOME/.composer/vendor/bin:$PATH"
+
+    - name: Cache node modules
+      id: cache-nodemodules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        # caching node_modules
+        path: node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install npm Dependencies
+      if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+      run: |
+        npm install
+
+    - name: Test Syntax
+      run: ./tests/test_for_syntax_errors.sh
+
+    - name: Test Installation
+      run: ./tests/test_installation.sh
+
+    - name: Get changed PHP files
+      id: changed-php-files
+      uses: tj-actions/changed-files@v35
+      with:
+        files: |
+          **/*.php
+
+    - name: Run PHPCS on changed PHP files
+      if: steps.changed-php-files.outputs.all_changed_files != ''
+      run: |
+        ./tests/test_phpcs.sh ${{ steps.changed-php-files.outputs.all_changed_files }}
+
+    - name: Test eslint
+      run: ./tests/test_eslint.sh
+
+    - name: Get changed CSS & JS files
+      id: changed-css-js-files
+      uses: tj-actions/changed-files@v35
+      with:
+        files: |
+          **/*.css
+          **/*.js
+
+    - name: Test minification
+      if: steps.changed-css-js-files.outputs.all_changed_and_modified_files != ''
+      run : |
+        find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
+        gulp
+        git diff --exit-code -- . ':(exclude)package-lock.json'
+
+    - name: PHPunitSetup
+      run: ./tests/install-wp-tests.sh wordpress_test root rootpassword 127.0.0.0 latest
+      shell: bash
+
+    - name: PHPunit
+      run: |
+        composer require "phpunit/phpunit=8.*"
+        composer require "yoast/phpunit-polyfills"
+        vendor/phpunit/phpunit/phpunit --version
+        WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
+

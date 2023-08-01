@@ -105,7 +105,13 @@ jQuery(document).ready(function($) {
   let commentTemplate = window.lodash.template(`
   <div class="activity-block">
     <div>
-        <span class="gravatar"><img src="<%- gravatar  %>"/></span>
+        <span class="gravatar">
+        <% if( $.trim( gravatar ) ) { %>
+            <img src="<%- gravatar  %>"/>
+        <% } else { %>
+            <i class="mdi mdi-robot-outline"></i>
+        <% } %>
+        </span>
         <span><strong><%- name %></strong></span>
         <span class="comment-date"> <%- date %> </span>
       </div>
@@ -115,7 +121,7 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
-              <div class="comment-text" title="<%- date %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
+              <div class="comment-text" title="<%- a.date_formatted %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
@@ -166,7 +172,7 @@ jQuery(document).ready(function($) {
               </div>
 
         <% } else { %>
-            <p class="activity-bubble" title="<%- date %>" dir="auto"><%= a.text %> <% print(a.action) /* not escaped on purpose */ %></p>
+            <p class="activity-bubble" title="<%- a.date_formatted %>" dir="auto"><%= a.text %> <% print(a.action) /* not escaped on purpose */ %></p>
         <%  }
     }); %>
     <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
@@ -365,6 +371,7 @@ jQuery(document).ready(function($) {
       let obj = {
         name: name,
         date: d.date,
+        date_formatted: window.SHAREDFUNCTIONS.formatDate(moment(d.date).unix(), true),
         gravatar,
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
@@ -382,7 +389,7 @@ jQuery(document).ready(function($) {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
           gravatar: array[0].gravatar,
-          date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
+          date: array[0].date_formatted,
           activity: array
         }))
         array = [obj]
@@ -392,7 +399,7 @@ jQuery(document).ready(function($) {
       commentsWrapper.append(commentTemplate({
         gravatar: array[0].gravatar,
         name: array[0].name,
-        date:window.SHAREDFUNCTIONS.formatDate(moment(array[0].date).unix(), true),
+        date: array[0].date_formatted,
         activity: array
       }))
     }
@@ -410,8 +417,7 @@ jQuery(document).ready(function($) {
         const entries = Array.from(formDataEntries);
         //event submitter data is not available in Safari/Webkit browsers only in Chrome/Blink browsers. This checks if that data exists and falls back to the formDataEntries data if it doesn't exists.
         const reaction = e.submitter ? e.submitter.value : entries[0][1];
-        const userId = commentsSettings.current_user_id
-        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
+        rest_api.toggle_comment_reaction(postType, postId, commentId, reaction)
       })
       element.appendChild(reactionForm)
     })
@@ -433,9 +439,8 @@ jQuery(document).ready(function($) {
     document.querySelectorAll('.comment-reaction').forEach((element) => {
       element.addEventListener('click', (e) => {
         const commentId = e.target.dataset.commentId
-        const userId = commentsSettings.current_user_id
         const reaction = e.target.dataset.reactionValue
-        rest_api.toggle_comment_reaction(postType, postId, commentId, userId, reaction)
+        rest_api.toggle_comment_reaction(postType, postId, commentId, reaction)
       })
     })
   }
@@ -535,7 +540,7 @@ jQuery(document).ready(function($) {
       }
       typesCount[comment.comment_type]++;
     })
-    $('#comment-activity-tabs .tabs-title').addClass('hide')
+    $('#comment-activity-tabs .tabs-title[data-always-show!="true"]').addClass('hide')
     window.lodash.forOwn(typesCount, (val, key)=>{
       let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()

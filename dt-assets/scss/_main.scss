@@ -75,6 +75,13 @@ object {
     width: 100%;
     height: 100%;
 }
+
+.vertical-line {
+    display: inline-block;
+    margin-right: 5px;
+    height: 15px;
+}
+
 /*********************
 LINK STYLES
 *********************/
@@ -122,6 +129,7 @@ NAVIGATION STYLES
     margin-top: 0 !important;
     padding: 0 20px;
     z-index: 999;
+    border: none;
 
     .logo-link {
         padding-inline-start:0;
@@ -422,7 +430,7 @@ nav.second-bar .advanced_search {
 }
 
 html[dir='rtl'] nav.second-bar .advanced_search {
-    transform: translateX(14px);
+    transform: translateX(5px);
 }
 
 .advancedSearch-count {
@@ -434,10 +442,8 @@ html[dir='rtl'] nav.second-bar .advanced_search {
     left: 1.15rem;
 }
 
-#second-bar-small{
-    // transition: all .2s;
-    border-top: none;
-    &.is-stuck {
+.is-stuck {
+    #second-bar-small {
         border-top: .5rem solid $primary-color;
         .mobile-nav-actions {
             display: none;
@@ -447,6 +453,13 @@ html[dir='rtl'] nav.second-bar .advanced_search {
             height: 0;
         }
     }
+    .hide-on-scroll {
+        display: none;
+    }
+}
+
+#second-bar-small{
+    border-top: none;
     .grid-x {
         margin-bottom: .3rem;
     }
@@ -1375,24 +1388,36 @@ label.dt-switch:active:after {
     border-radius: 2px;
 }
 
+/**
+DT Icons. See https://developers.disciple.tools/style-guide for more on colors
+ */
 img.dt-icon {
     height: 15px;
     width: 15px;
     filter:invert(18%) sepia(0%) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
-
-
 }
-img.dt-blue-icon {
+i.dt-icon {
+    font-size: 15px;
+    filter:invert(18%) sepia(0%) saturate(19%) hue-rotate(170deg) brightness(108%) contrast(98%);
+}
+img.dt-blue-icon, i.dt-blue-icon {
     filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg) brightness(94%) contrast(100%);
 }
-img.dt-white-icon {
+img.dt-white-icon, i.dt-white-icon {
     filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
 }
-img.dt-green-icon {
+img.dt-green-icon, i.dt-green-icon {
     filter: invert(52%) sepia(77%) saturate(383%) hue-rotate(73deg) brightness(98%) contrast(83%);
 }
-img.dt-red-icon {
+img.dt-red-icon, i.dt-red-icon {
     filter: invert(23%) sepia(34%) saturate(4972%) hue-rotate(343deg) brightness(121%) contrast(92%);
+}
+img.dt-black-icon, i.dt-black-icon {
+    filter: invert(0%) sepia(0%) saturate(17%) hue-rotate(193deg) brightness(99%) contrast(101%);
+}
+
+.error-text {
+    color: red;
 }
 
 .template-new-post {
@@ -1444,12 +1469,74 @@ img.dt-red-icon {
 
         }
     }
+    .error-text {
+        text-align: center;
+    }
 }
 @media screen and (max-width : 640px) {
     .template-new-post .type-option {
         flex-basis: 100%;
         margin-bottom: 1.25em;
     }
+}
+
+/*
+ * Record History
+ */
+
+#record_history_activities {
+    min-height: 500px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 20px;
+}
+
+.record-history-activity-block {
+    border-radius: 5px;
+    border: 1px solid #e8e8e8;
+    margin-bottom: 10px;
+    min-height: 70px;
+    max-height: 70px;
+    padding: 10px;
+
+    .record-history-activity-block-body {
+        font-family: Arial, Helvetica, sans-serif;
+
+        .record-history-activity-heading {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .record-history-activity-gravatar {
+            display: flex;
+            align-items: center;
+
+            img {
+                margin-right: 10px;
+            }
+        }
+
+        .record-history-activity-owner {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .record-history-activity-date {
+            font-weight: normal;
+            font-size: 13px;
+            color: #989898;
+        }
+    }
+
+    .record-history-activity-block-controls {
+
+    }
+}
+
+.record-history-activity-block:hover {
+    cursor: pointer;
+    color: #989898;
+    border: 1px solid #000000;
 }
 
 /*
@@ -1518,8 +1605,8 @@ img.dt-red-icon {
 }
 
 .advanced-search-modal-results-div-col-results-list {
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 450px;
+    max-width: 450px;
     vertical-align: top;
 }
 
@@ -1536,7 +1623,7 @@ img.dt-red-icon {
 }
 
 .advanced-search-modal-results {
-    height: 300px;
+    height: 400px;
     overflow-x: hidden;
     overflow-y: scroll;
     text-align: center;
@@ -1854,9 +1941,155 @@ img.dt-red-icon {
         margin: auto;
     }
     outline: transparent;
+
+    .release-banner {
+        display: block;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        color: white;
+        border-bottom: 1px solid #cacaca;
+        background: linear-gradient(0deg, rgba(121,162,194,1) 0%, rgba(62,114,154,1) 100%);
+    }
+    .release-banner-text {
+        margin: 8px;
+    }
+    #release-modal-content {
+        margin-top: 75px;
+    }
+    .white-button {
+        color: #f4f4f4;
+    }
+}
+
+.dt-tab-wrapper {
+    border-bottom: 1px solid lightgray;
+}
+.dt-tab {
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 5px 10px;
+    line-height: 1.71428571;
+}
+.dt-tab:hover {
+    background-color: lightgray;
+}
+.dt-tab-active {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid white;
+}
+.dt-tab-active:hover {
+    background-color: white;
+}
+.dt-tab-content {
+    margin: 20px 10px 0px 10px;
+}
+.dt-tab-content-heading {
+    font-weight: bolder;
+}
+.dt-hide-content {
+    display: none;
 }
 
 // Selected side menu item highlights
 .side-menu-item-highlight {
     font-weight: bold;
+}
+
+.communication-channel-error {
+    color: red;
+    font-style: italic;
+    margin: -12px 0 12px 0;
+}
+
+/**
+ * Bulk Record Adding
+ */
+#form_fields_records {
+    overflow-x: auto !important;
+
+    .form-fields-record {
+        display: flex;
+        //justify-content: center;
+    }
+
+    .record-divider {
+        display: none;
+        background-color:rgb(236, 245, 252);
+        margin: 3px -15px 15px -15px;
+        text-align: center;
+        span {
+            padding: 0;
+            margin: 0;
+        }
+    }
+    .record-removal-button {
+        margin: 5px;
+        min-width: 25px !important;
+    }
+
+    .landscape-record-removal-button {
+        display: block;
+        .record-removal-button {
+            margin: 10px 0 0 0;
+        }
+    }
+
+    .form-field {
+        margin-inline-end: 10px;
+        flex-basis: 200px;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    .form-fields-record-subsequent {
+        .section-subheader {
+            display: none !important;
+        }
+        .help-text {
+            display: none !important;
+        }
+        .field-value-copy-controls {
+            display: none !important;
+        }
+    }
+    .dt_location_grid .typeahead__container button{
+        width: 65px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    @media only screen and (max-width: 782px) {
+        .form-fields-record {
+            flex-direction: column;
+        }
+
+        .form-field {
+            flex-basis: 50px;
+        }
+
+        .record-divider {
+            display: block;
+        }
+
+        .landscape-record-removal-button {
+            display: none;
+        }
+
+        .form-fields-record-subsequent {
+            .section-subheader {
+                display: block !important;
+            }
+            .help-text {
+                display: block !important;
+            }
+            .field-value-copy-controls {
+                display: none !important;
+            }
+        }
+        .dt_location_grid .typeahead__container button{
+            width: auto;
+        }
+    }
 }

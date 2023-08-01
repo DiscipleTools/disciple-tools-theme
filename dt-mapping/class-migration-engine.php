@@ -15,7 +15,7 @@ class DT_Mapping_Module_Migration_Engine
      * Current Migration number for the mapping system
      * @var int
      */
-    public static $migration_number = 12;
+    public static $migration_number = 19;
     /** End Current Migration Number */
 
     protected static $migrations = null;
@@ -30,23 +30,23 @@ class DT_Mapping_Module_Migration_Engine
         if ( self::$migrations !== null ) {
             return self::$migrations;
         }
-        require_once( plugin_dir_path( __FILE__ ) . "migrations/abstract.php" );
-        $filenames = scandir( plugin_dir_path( __FILE__ ) . "migrations/", SCANDIR_SORT_ASCENDING );
+        require_once( plugin_dir_path( __FILE__ ) . 'migrations/abstract.php' );
+        $filenames = scandir( plugin_dir_path( __FILE__ ) . 'migrations/', SCANDIR_SORT_ASCENDING );
 
         if ( $filenames === false ) {
-            throw new Exception( "Could not scan migrations directory" );
+            throw new Exception( 'Could not scan migrations directory' );
         }
         $expected_migration_number = 0;
         $rv = [];
         foreach ( $filenames as $filename ) {
-            if ( $filename[0] !== "." && $filename !== "abstract.php" ){
+            if ( $filename[0] !== '.' && $filename !== 'abstract.php' ){
                 if ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
                     $got_migration_number = intval( $matches[1] );
                     if ( $expected_migration_number !== $got_migration_number ) {
-                        throw new Exception( sprintf( "Expected to find migration number %04d", $expected_migration_number ) );
+                        throw new Exception( sprintf( 'Expected to find migration number %04d', $expected_migration_number ) );
                     }
                     require_once( plugin_dir_path( __FILE__ ) . "migrations/$filename" );
-                    $migration_name = sprintf( "DT_Mapping_Module_Migration_%04d", $got_migration_number );
+                    $migration_name = sprintf( 'DT_Mapping_Module_Migration_%04d', $got_migration_number );
                     $rv[] = new $migration_name();
                     $expected_migration_number++;
                 } else {
@@ -87,7 +87,8 @@ class DT_Mapping_Module_Migration_Engine
             if ( $target_migration_number === $current_migration_number ) {
                 break;
             } elseif ( $target_migration_number < $current_migration_number ) {
-                throw new Exception( "Trying to migrate backwards, aborting" );
+//                throw new Exception( "Trying to migrate backwards, aborting" );
+                break;
             }
 
             $activating_migration_number = $current_migration_number + 1;
@@ -95,12 +96,12 @@ class DT_Mapping_Module_Migration_Engine
 
             self::sanity_check_expected_tables( $migration->get_expected_tables() );
 
-            if ( (int) get_option( 'dt_mapping_module_migration_lock', 0 ) ) {
+            if ( !empty( get_transient( 'dt_mapping_module_migration_lock' ) ) ) {
                 throw new DT_Mapping_Module_Migration_Lock_Exception();
             }
-            update_option( 'dt_mapping_module_migration_lock', '1' );
+            set_transient( 'dt_mapping_module_migration_lock', '1', DAY_IN_SECONDS );
 
-            error_log( gmdate( " Y-m-d H:i:s T" ) . " Starting mapping migrating to number $activating_migration_number" );
+            error_log( gmdate( 'Y-m-d H:i:s T' ) . " Starting mapping migrating to number $activating_migration_number" );
             try {
                 $migration->up();
             } catch ( Throwable $e ) {
@@ -113,9 +114,9 @@ class DT_Mapping_Module_Migration_Engine
                 throw $e;
             }
             update_option( 'dt_mapping_module_migration_number', (string) $activating_migration_number );
-            error_log( gmdate( " Y-m-d H:i:s T" ) . " Done mapping migrating to number $activating_migration_number" );
+            error_log( gmdate( 'Y-m-d H:i:s T' ) . " Done mapping migrating to number $activating_migration_number" );
 
-            update_option( 'dt_mapping_module_migration_lock', '0' );
+            delete_transient( 'dt_mapping_module_migration_lock' );
 
             $migration->test();
         }
@@ -154,10 +155,10 @@ class DT_Mapping_Module_Migration_Lock_Exception extends Exception
         $last_migration_error = get_option( 'dt_mapping_module_migrate_last_error' );
         if ( $message === null ) {
             if ( $last_migration_error === false ) {
-                $message = "Cannot migrate, as migration lock is held";
+                $message = 'Cannot migrate, as migration lock is held';
             } else {
                 $message =
-                    "Cannot migrate, as migration lock is held. This is the previous stored migration error: "
+                    'Cannot migrate, as migration lock is held. This is the previous stored migration error: '
                     . var_export( $last_migration_error, true );
             }
         }

@@ -7,13 +7,13 @@ if ( ! function_exists( 'dt_write_log' ) ) {
             global $dt_write_log_microtime;
             $now = microtime( true );
             if ( $dt_write_log_microtime > 0 ) {
-                $elapsed_log = sprintf( "[elapsed:%5dms]", ( $now - $dt_write_log_microtime ) * 1000 );
+                $elapsed_log = sprintf( '[elapsed:%5dms]', ( $now - $dt_write_log_microtime ) * 1000 );
             } else {
-                $elapsed_log = "[elapsed:-------]";
+                $elapsed_log = '[elapsed:-------]';
             }
             $dt_write_log_microtime = $now;
             if ( is_array( $log ) || is_object( $log ) ) {
-                error_log( $elapsed_log . " " . print_r( $log, true ) );
+                error_log( $elapsed_log . ' ' . print_r( $log, true ) );
             } else {
                 error_log( "$elapsed_log $log" );
             }
@@ -27,7 +27,7 @@ if ( ! function_exists( 'dt_get_theme_data_url' ) ) {
          * The filter can be used to override the default GitHub location and move this to a custom mirror or fork.
          * @return string
          */
-        return apply_filters( 'disciple_tools_theme_data_url', 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme-data/master/' );
+        return apply_filters( 'disciple_tools_theme_data_url', 'https://storage.googleapis.com/location-grid-source-data-v2/' );
     }
 }
 if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
@@ -41,7 +41,7 @@ if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
             $array = [
                 'key'   => 'google',
                 'label' => 'Google',
-                'url'   => 'https://storage.googleapis.com/location-grid-mirror/',
+                'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
             ];
             update_option( 'dt_location_grid_mirror', $array, true );
             $mirror = $array;

@@ -3,6 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Migration_0010 extends Disciple_Tools_Migration {
     public function up() {
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 10 ){
+            return;
+        }
+
         global $wpdb;
         $dates_meta = $wpdb->get_results( "
             SELECT * FROM $wpdb->postmeta pm
@@ -12,9 +17,9 @@ class Disciple_Tools_Migration_0010 extends Disciple_Tools_Migration {
         ", ARRAY_A);
 
         foreach ( $dates_meta as $meta ){
-            if ( !is_numeric( $meta["meta_value"] ) ){
-                $date = strtotime( $meta["meta_value"] );
-                update_post_meta( $meta["post_id"], $meta["meta_key"], $date );
+            if ( !is_numeric( $meta['meta_value'] ) ){
+                $date = strtotime( $meta['meta_value'] );
+                update_post_meta( $meta['post_id'], $meta['meta_key'], $date );
             }
         }
 

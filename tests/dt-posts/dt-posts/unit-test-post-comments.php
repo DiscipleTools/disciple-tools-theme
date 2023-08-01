@@ -7,30 +7,31 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
         'title'           => 'Bob',
         'overall_status'  => 'active',
         'milestones'      => [
-            "values" => [
-                [ "value" => 'milestone_has_bible' ],
-                [ "value" => "milestone_baptizing" ]
+            'values' => [
+                [ 'value' => 'milestone_has_bible' ],
+                [ 'value' => 'milestone_baptizing' ]
             ]
         ],
-        'baptism_date'    => "2022-01-13",
-        "location_grid"   => [ "values" => [ [ "value" => '100089589' ] ] ],
-        "assigned_to"     => "1",
-        "requires_update" => true,
-        "nickname"        => "Bob the builder",
-        "contact_phone"   => [ "values" => [ [ "value" => "798456780" ] ] ],
-        "contact_email"   => [ "values" => [ [ "value" => "bob@example.com" ] ] ],
-        "tags"            => [ "values" => [ [ "value" => "tag1" ], [ "value" => "tagToDelete" ] ] ],
+        'baptism_date'    => '2022-01-13',
+        'location_grid'   => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'assigned_to'     => '1',
+        'requires_update' => true,
+        'nickname'        => 'Bob the builder',
+        'contact_phone'   => [ 'values' => [ [ 'value' => '798456780' ] ] ],
+        'contact_email'   => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
+        'tags'            => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tagToDelete' ] ] ],
     ];
     public static $contact = null;
 
-    public static function setupBeforeClass() {
+    public static function setupBeforeClass(): void {
         //setup custom fields for each field type and custom tile.
-        $user_id = wp_create_user( "dispatcher1", "test", "test2@example.com" );
+        $user_id = wp_create_user( 'dispatcher1', 'test', 'test2@example.com' );
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
+        self::$sample_contact['assigned_to'] = $user_id;
 
-        self::$contact = DT_Posts::create_post( "contacts", self::$sample_contact, true, false );
+        self::$contact = DT_Posts::create_post( 'contacts', self::$sample_contact, true, false );
     }
 
     /**
@@ -53,7 +54,8 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
     public function valid_dates_data_provider(): array {
         return [
             [ '' ],
-            [ '2022-01-13 12:00:00' ]
+            [ '2022-01-13 12:00:00' ],
+            [ '2019-12-25T15:54:55+0000' ],
         ];
     }
 
@@ -76,9 +78,9 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
     public function invalid_dates_data_provider(): array {
         return [
             [ 'null' ],
-            [ '0000-00-00 00:00:00' ],
             [ '7/6/2009 14:16' ],
-            [ 'Y-m-d H:i:s' ]
+            [ 'Y-m-d H:i:s' ],
+            [ '0000-00-00 00:00:00' ]
         ];
     }
 

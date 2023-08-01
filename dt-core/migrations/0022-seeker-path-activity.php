@@ -7,9 +7,14 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Migration_0022 extends Disciple_Tools_Migration
 {
     public function up() {
+        //skip this migration on a new install
+        if ( dt_get_initial_install_meta( 'migration_number' ) > 22 ){
+            return;
+        }
+
         global $wpdb;
-        $field_settings = DT_Posts::get_post_field_settings( "contacts" );
-        $seeker_path_options = $field_settings["seeker_path"]["default"];
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $seeker_path_options = $field_settings['seeker_path']['default'];
         $option_keys = array_keys( $seeker_path_options );
 
         foreach ( array_reverse( $seeker_path_options ) as $option_key => $option_value ){
@@ -34,10 +39,10 @@ class Disciple_Tools_Migration_0022 extends Disciple_Tools_Migration
                         ( action, object_type, object_subtype, object_id, user_id, hist_time, meta_id, meta_key, meta_value, field_type )
                         VALUES ";
                     foreach ( $res as $r ){
-                        $query .= $wpdb->prepare( "( 'field_update', 'contacts', 'seeker_path', %s, %d, %d, %d, 'seeker_path', %s, 'key_select' ), ", $r["object_id"], $r["user_id"], $r["hist_time"] - 1, $r["meta_id"], $prev_key );
+                        $query .= $wpdb->prepare( "( 'field_update', 'contacts', 'seeker_path', %s, %d, %d, %d, 'seeker_path', %s, 'key_select' ), ", $r['object_id'], $r['user_id'], $r['hist_time'] - 1, $r['meta_id'], $prev_key );
                     }
                     $query .= ';';
-                    $query = str_replace( ", ;", ";", $query ); //remove last comma
+                    $query = str_replace( ', ;', ';', $query ); //remove last comma
                     $wpdb->query( $query ); //phpcs:ignore
                 }
             }

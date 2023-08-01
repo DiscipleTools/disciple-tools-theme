@@ -11,9 +11,13 @@
         opacity: .5;
         color: white;
     }
+    &[disabled] {
+        background-color: #eee;
+        color: black;
+    }
 }
 //unselected options
-.empty-select-button {
+.button.select-button.empty-select-button {
     background-color: #eee;
     color: black;
     &:focus {
@@ -21,7 +25,7 @@
         color:black;
     }
 }
-.selected-select-button {
+.button.select-button.selected-select-button {
     background-color: #4CAF50;
     color: white;
     &:focus {
@@ -618,8 +622,7 @@ select.color-select {
         background-color: white;
         color: black;
     }
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
-    border:none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white;stroke:black;stroke-width:1;'></polygon></svg>");
     text-shadow: rgba(0, 0, 0, 0.45) 0 0 6px;
 }
 
@@ -652,6 +655,9 @@ select.color-select {
         }
     }
 
+}
+.hidden-grid-item {
+    display: none
 }
 
 //don't have typeaheads cover other elements
@@ -716,8 +722,68 @@ select.color-select {
     margin-bottom:15px;
 }
 
+// link field
+.add-link-dropdown {
+    position: absolute;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.add-link-dropdown::before {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 25px;
+    transform: translate(-18px, -3px);
+    cursor: pointer;
+}
+
+.add-link-dropdown__content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border: solid 1px #cacaca;
+  z-index: 1;
+  transform: translateX(-15%);
+}
+html[dir="rtl"] .add-link-dropdown__content {
+  transform: translateX(15%);
+}
+
+.add-link-dropdown:hover .add-link-dropdown__content {
+    display: block;
+}
+
+.add-link-dropdown__content:hover {
+    display: block;
+}
+
+.add-link__option {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.add-link__option:hover {
+    background-color: #3f729b;
+    color: #fff;
+}
+
+.link-section .section-subheader {
+    display: none;
+}
+
+.link-section .section-subheader:has(+ div) {
+    display: block;
+}
+
+.link-section .input-group {
+    margin-bottom: 5px;
+}
+
 //assign to modal
-#filter-tabs img {
+#assigned_to_user_modal #filter-tabs img {
     height: 20px;
     width: 20px;
     display: inline-block;
@@ -759,6 +825,10 @@ select.color-select {
     height: 50px;
     width: 50px;
     filter: grayscale(1) opacity(0.75);
+}
+.health-item i {
+    font-size: 50px;
+    filter: grayscale(1) opacity(0.2);
 }
 .practiced-item {
     filter: none !important;
@@ -807,57 +877,125 @@ select.color-select {
 }
 
 /**
- *   Merge Duplicate Contacts Section
+ *  Merge Duplicate Post Types
  */
-#content.template-merge-details {
-    .blueBackground {
-        background-color: #30c2ff;
-        border-radius: 7px;
+#content.template-merge-post-details {
+
+    table, tbody, tr, td {
+        border: none;
     }
-    .merge-column {
-        width: 33%;
-        float: left;
-        min-height: 45px;
+
+    #main_header {
+        margin-bottom: 10px;
+
+        .bordered-box {
+            text-align: center;
+        }
+
+        #select_current_primary_record {
+            min-width: 60%;
+            max-width: 60%;
+        }
     }
-    .bold {
-        font-weight: bold;
+
+    #main_archiving {
+        margin-bottom: 10px;
+
+        .main-archiving-primary-switch-but-div {
+            text-align: center;
+        }
+
+        #main_archiving_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
     }
-    .line-wrap {
-        overflow: hidden;
-        border-bottom: 1px solid grey;
-        clear: both;
+
+    #main_primary {
+        margin-bottom: 10px;
+
+        #main_primary_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
     }
-    .line-wrap:last-of-type {
-        margin-bottom: 20px;
+
+    #main_updated {
+        margin-bottom: 10px;
+
+        #main_updated_fields_div {
+            min-height: 500px !important;
+            max-height: 800px !important;
+            overflow: auto;
+        }
     }
-    .merge-column input {
-        margin-top: 15px;
+
+    #main_footer {
+        .bordered-box {
+            text-align: center;
+        }
     }
-    .merge-column .bold {
-        position: relative;
-        top: 10px;
-    }
-    #merge-form {
-        display: inline-block;
-        width: 100%;
-    }
-    #merge-form button {
-        margin-top: 20px;
-        display: inline-block;
-    }
-    #merge_errors {
-        margin-top: 30px;
-        color: red;
-        text-align: right;
-    }
-    .shortText {
-        max-width: 250px;
-    }
-    .row-edit a {
-        margin-left: 10px;
-    }
-    .empty {
-        display: inline-block;
-        visibility: hidden;
-    }
+}
+
+.merge-modal {
+    border-radius:10px;
+    padding:0px;
+    border: 1px solid #3f729b;
+}
+.merge-modal-header {
+    background-color:#3f729b;
+    color:white;
+    text-align:center;
+}
+.merge-modal-heading {
+    font-size:1.5rem;
+    padding:10px 0px;
+}
+.merge-modal-subheading {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding:10px 0px 10px 0px;
+    margin-bottom: 0px;
+    display: inline-block;
+    width: 100%;
+}
+.merge-modal-spinner{
+    display: inline-block;
+}
+.merge-modal-no-dups-message {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+.merge-modal-close {
+    float: right;
+    margin-top: 15px;
+}
+.merge-modal-contact-row {
+    background-color: #f2f2f2;
+    padding:2%;
+    overflow: hidden;
+}
+.merge-modal-contact-name {
+    color: #3f729b;
+    font-weight: bold;
+}
+.merge-modal-contact-info {
+    font-size:16px;
+    font-weight: normal;
+}
+.merge-modal-contact-row img{
+    max-height: 1em;
+    max-width: 1em;
+}
+.merge-modal-button {
+    float: right;
+    padding-left: 10%;
+}
+.duplicates-detected-button {
+    margin-bottom: 0;
+    padding: .5em .5em;
 }

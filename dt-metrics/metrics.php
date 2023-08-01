@@ -31,10 +31,10 @@ class Disciple_Tools_Metrics{
 
     public function __construct(){
         $url_path = dt_get_url_path();
-        if ( strpos( $url_path, "metrics" ) !== false ){
+        if ( strpos( $url_path, 'metrics' ) !== false ){
             // wait for D.T post type classes to be set up before building metrics for them
             add_action( 'after_setup_theme', function (){
-                $modules = dt_get_option( "dt_post_type_modules" );
+                $modules = dt_get_option( 'dt_post_type_modules' );
                 // Personal
                 require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
@@ -50,13 +50,13 @@ class Disciple_Tools_Metrics{
 
                 if ( dt_has_permissions( [ 'dt_all_access_contacts', 'view_project_metrics' ] ) ){ // tests if project level permissions
                     /* Contacts */
-                    if ( !empty( $modules["dmm_module"]["enabled"] ) ){
+                    if ( !empty( $modules['dmm_module']['enabled'] ) ){
                         require_once( get_template_directory() . '/dt-metrics/contacts/baptism-tree.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/coaching-tree.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/milestones.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/milestones-map.php' );
                     }
-                    if ( !empty( $modules["access_module"]["enabled"] ) ){
+                    if ( !empty( $modules['access_module']['enabled'] ) ){
                         require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-maps.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
@@ -72,32 +72,39 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/combined/daily-activity.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
+
+                    /* Record Types */
+                    require_once( get_template_directory() . '/dt-metrics/records/generation-tree.php' );
                 }
-                if ( !empty( $modules["access_module"]["enabled"] ) ){
+                if ( !empty( $modules['access_module']['enabled'] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
-                    require_once( get_template_directory() . '/dt-metrics/combined/time-charts.php' );
                 }
+                require_once( get_template_directory() . '/dt-metrics/records/time-charts.php' );
+                require_once( get_template_directory() . '/dt-metrics/records/date-range-activity.php' );
             }, 1000);
 
             // default menu order
             add_filter( 'dt_metrics_menu', function ( $content ){
-                $modules = dt_get_option( "dt_post_type_modules" );
-                if ( $content === "" ){
-                    $content .= '<li><a>' . __( "Personal", "disciple_tools" ) . '</a>
+                $modules = dt_get_option( 'dt_post_type_modules' );
+                if ( $content === '' ){
+                    $content .= '<li><a>' . __( 'Personal', 'disciple_tools' ) . '</a>
                                 <ul class="menu vertical nested" id="personal-menu"></ul>
                             </li>';
 
                     if ( dt_has_permissions( [ 'dt_all_access_contacts', 'view_project_metrics' ] ) ){
-                        $content .= '<li><a>' . __( "Project", "disciple_tools" ) . '</a>
+                        $content .= '<li><a>' . __( 'Project', 'disciple_tools' ) . '</a>
                                 <ul class="menu vertical nested" id="combined-menu"></ul>
                             </li>';
-                        if ( !empty( $modules["dmm_module"]["enabled"] ) ){
-                            $content .= '<li><a>' . __( "Contacts", "disciple_tools" ) . '</a>
+                        if ( !empty( $modules['dmm_module']['enabled'] ) ){
+                            $content .= '<li><a>' . __( 'Contacts', 'disciple_tools' ) . '</a>
                                 <ul class="menu vertical nested" id="contacts-menu"></ul>
                             </li>';
                         }
-                        $content .= '<li><a>' . __( "Groups", "disciple_tools" ) . '</a>
+                        $content .= '<li><a>' . __( 'Groups', 'disciple_tools' ) . '</a>
                                 <ul class="menu vertical nested" id="groups-menu"></ul>
+                            </li>';
+                        $content .= '<li><a>' . __( 'Dynamic Metrics', 'disciple_tools' ) . '</a>
+                                <ul class="menu vertical nested" id="records-menu"></ul>
                             </li>';
                     } // permission check
                 }
@@ -112,8 +119,8 @@ class Disciple_Tools_Metrics{
         if ( current_user_can( 'access_disciple_tools' ) ) {
             add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
                 $tabs['metrics'] = [
-                    "link" => site_url( '/metrics/' ),
-                    "label" => __( "Metrics", "disciple_tools" )
+                    'link' => site_url( '/metrics/' ),
+                    'label' => __( 'Metrics', 'disciple_tools' )
                 ];
                 return $tabs;
             }, 25 );

@@ -20,10 +20,8 @@ define( 'DOING_AJAX', true );
 define( 'SHORTINIT', 1 );
 
 // Setup
-if ( ! isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
-    exit( 'missing server info' );
-}
-require_once $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php'; //@phpcs:ignore
+$wordpress_root_path = preg_replace( '/wp-content(?!.*wp-content).*/', '', __DIR__ );
+require_once( $wordpress_root_path . 'wp-load.php' );
 
 if ( ! defined( 'WP_CONTENT_URL' ) ) {
     define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );

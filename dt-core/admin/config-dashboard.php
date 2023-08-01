@@ -189,6 +189,9 @@ final class Disciple_Tools_Dashboard
 
             ?>
                 <style>
+                    .news-feed {
+                        overflow-wrap: anywhere;
+                    }
                     .news-feed img {
                         max-width: 100%;
                         height: auto;
@@ -230,13 +233,13 @@ final class Disciple_Tools_Dashboard
 
         wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
 
-            $setup_options = get_option( "dt_setup_wizard_options", [] );
+            $setup_options = get_option( 'dt_setup_wizard_options', [] );
             $default = [
-                "base_email" => [
-                    "label" => "Base User",
-                    "complete" => false,
-                    "link" => admin_url( "admin.php?page=dt_options&tab=general" ),
-                    "description" => "Default Assigned to for new contacts"
+                'base_email' => [
+                    'label' => 'Base User',
+                    'complete' => false,
+                    'link' => admin_url( 'admin.php?page=dt_options&tab=general' ),
+                    'description' => 'Default Assigned to for new contacts'
                 ],
             ];
 
@@ -246,7 +249,7 @@ final class Disciple_Tools_Dashboard
 
             foreach ( $dt_setup_wizard_items as $item_key => $item_value ){
                 // Treat dismissed items as complete
-                if ( isset( $setup_options[$item_key]["dismissed"] ) && ! empty( $setup_options[$item_key]["dismissed"] ) ) {
+                if ( isset( $setup_options[$item_key]['dismissed'] ) && ! empty( $setup_options[$item_key]['dismissed'] ) ) {
                     $dt_setup_wizard_items[$item_key]['complete'] = true;
                 }
 
@@ -280,10 +283,10 @@ final class Disciple_Tools_Dashboard
                     foreach ( $dt_setup_wizard_items as $item_key => $item_value ) : ?>
                         <tr>
                             <td><?php echo esc_html( array_search( $item_key, array_keys( $dt_setup_wizard_items ) ) +1 ); ?>.</td>
-                            <td><?php echo esc_html( $item_value["label"] ); ?></td>
+                            <td><?php echo esc_html( $item_value['label'] ); ?></td>
                             <td>
-                                <?php if ( !empty( $item_value["link"] ) ) : ?>
-                                    <a href="<?php echo esc_html( $item_value["link"] ); ?>" target="_blank">See</a>
+                                <?php if ( !empty( $item_value['link'] ) ) : ?>
+                                    <a href="<?php echo esc_html( $item_value['link'] ); ?>" target="_blank">See</a>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -294,8 +297,8 @@ final class Disciple_Tools_Dashboard
                                     <?php
                                 }
                                 // Logic for displaying the 'dismiss' button
-                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
-                                    if ( !isset( $item_value["complete"] ) || empty( $item_value["complete"] ) ) {
+                                if ( !isset( $item_value['hide_mark_done'] ) || empty( $item_value['hide_mark_done'] ) ){
+                                    if ( !isset( $item_value['complete'] ) || empty( $item_value['complete'] ) ) {
                                         ?>
                                             <button name="dismiss" class="button" value="<?php echo esc_attr( $item_key ); ?>">Dismiss</button>
                                         <?php
@@ -318,9 +321,9 @@ final class Disciple_Tools_Dashboard
                                 </p>
                                 <?php
                                 // Logic for displaying the 'un-dismiss' button
-                                if ( !isset( $item_value["hide_mark_done"] ) || empty( $item_value["hide_mark_done"] ) ){
+                                if ( !isset( $item_value['hide_mark_done'] ) || empty( $item_value['hide_mark_done'] ) ){
 
-                                    if ( isset( $item_value["complete"] ) && !empty( $item_value["complete"] ) ) {
+                                    if ( isset( $item_value['complete'] ) && !empty( $item_value['complete'] ) ) {
                                         ?>
                                         <button name="undismiss" class="button" value="<?php echo esc_attr( $item_key ); ?>">Un-dismiss</button>
                                         <?php
@@ -364,27 +367,27 @@ final class Disciple_Tools_Dashboard
 add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     $mapbox_key = DT_Mapbox_API::get_key();
 
-    $items["https_check"] = [
-        "label" => "Upgrade HTTP to HTTPS",
-        "description" => "Encrypt your traffic from network sniffers",
-        "link" => esc_url( "https://wordpress.org/support/article/https-for-wordpress/" ),
-        "complete" => is_ssl(),
-        "hide_mark_done" => true
+    $items['https_check'] = [
+        'label' => 'Upgrade HTTP to HTTPS',
+        'description' => 'Encrypt your traffic from network sniffers',
+        'link' => esc_url( 'https://wordpress.org/support/article/https-for-wordpress/' ),
+        'complete' => is_ssl(),
+        'hide_mark_done' => true
     ];
-    $items["mapbox_key"] = [
-        "label" => "Upgrade Mapping",
-        "description" => "Better results when search locations and better mapping",
-        "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
-        "complete" => (bool) $mapbox_key,
+    $items['mapbox_key'] = [
+        'label' => 'Upgrade Mapping',
+        'description' => 'Better results when search locations and better mapping',
+        'link' => admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ),
+        'complete' => (bool) $mapbox_key,
     ];
     if ( $mapbox_key ) {
         $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
-        $items["upgraded_mapbox_records"] = [
-            "label" => "Upgrade Users and Record Mapping",
-            "description" => " Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.",
-            "link" => admin_url( "admin.php?page=dt_mapping_module&tab=geocoding" ),
-            "complete" => $mapbox_upgraded,
-            "hide_mark_done" => true
+        $items['upgraded_mapbox_records'] = [
+            'label' => 'Upgrade Users and Record Mapping',
+            'description' => ' Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.',
+            'link' => admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ),
+            'complete' => $mapbox_upgraded,
+            'hide_mark_done' => true
         ];
     }
 
@@ -438,19 +441,19 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'complete' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON === true,
         'hide_mark_done' => true
     ];
-    if ( version_compare( phpversion(), '7.3.0', "<=" ) ){
+    if ( version_compare( phpversion(), '7.3.0', '<=' ) ){
         $items['update_php'] = [
             'label' => 'Update PHP',
-            'description' => "You are using an old version of PHP, please consider contacting your hosting provider to upgrade it",
+            'description' => 'You are using an old version of PHP, please consider contacting your hosting provider to upgrade it',
             'link' => '',
-            'complete' => version_compare( phpversion(), '7.3.0', ">=" ),
+            'complete' => version_compare( phpversion(), '7.3.0', '>=' ),
             'hide_mark_done' => true
         ];
     }
     $items['donation'] = [
         'label' => 'Consider donating to Disciple.Tools',
-        'description' => "Would you like to be part of the development and maintenance of Disciple Tools? We would love your help! \r\n\r\n Donation portal: https://gospelambition.org/donate/",
-        'link' => 'https://gospelambition.org/donate/',
+        'description' => "Would you like to be part of the development and maintenance of Disciple Tools? We would love your help! \r\n\r\n Donation portal: https://disciple.tools/give/",
+        'link' => 'https://disciple.tools/give/',
         'complete' => false,
         'hide_mark_done' => false
     ];
