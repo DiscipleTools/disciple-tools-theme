@@ -420,6 +420,21 @@ class DT_Duplicate_Checker_And_Merging {
                 unset( $update[ $key ] );
             }
         }
+        //remove merged connection fields from archived
+        foreach ( $update as $key => $value ){
+            $field_type = $field_settings[ $key ]['type'] ?? null;
+            if ( $field_type === 'connection' ){
+                $update_for_duplicate[ $key ]['values'] = [];
+                foreach ( $value['values'] as $update_value ) {
+                    if ( empty( $update_value['deleted'] ) ){
+                        $update_for_duplicate[ $key ]['values'][] = [
+                            'value'  => $update_value['value'],
+                            'delete' => true
+                        ];
+                    }
+                }
+            }
+        }
 
         if ( $merge_comments ) {
             //copy over comments
