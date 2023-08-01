@@ -31,7 +31,7 @@
                                 src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>">
                         </a>
                         <div class="advanced-search-modal-results-post-types-view-at-top-collapsible-content">
-                            <?php build_post_types_option_list_html( "advanced-search-modal-post-types-at-top" ); ?>
+                            <?php build_post_types_option_list_html( 'advanced-search-modal-post-types-at-top' ); ?>
                             <hr>
                             <?php build_filters_option_list_html( 'top' ); ?>
                         </div>
@@ -48,7 +48,7 @@
                 </td>
                 <td class="advanced-search-modal-results-div-col-post-type">
                     <div class="advanced-search-modal-results-post-types-view-at-side">
-                        <?php build_post_types_option_list_html( "advanced-search-modal-post-types-at-side" ); ?>
+                        <?php build_post_types_option_list_html( 'advanced-search-modal-post-types-at-side' ); ?>
                         <hr>
                         <?php build_filters_option_list_html( 'side' ); ?>
                     </div>
@@ -62,7 +62,7 @@
         <?php echo esc_html__( 'Cancel', 'disciple_tools' ) ?>
     </button>
 
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>

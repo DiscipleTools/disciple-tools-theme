@@ -27,7 +27,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
@@ -94,7 +94,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         register_rest_route(
             $this->namespace, '/data', [
                 [
-                    'methods'  => "GET",
+                    'methods'  => 'GET',
                     'callback' => [ $this, 'system_map_endpoint' ],
                     'permission_callback' => '__return_true',
                 ],
@@ -104,11 +104,11 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 
     public function system_map_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( "hover_map", "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( 'hover_map', 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = $request->get_params();
 
-        return $this->data( isset( $params["refresh"] ) && $params["refresh"] === "true" );
+        return $this->data( isset( $params['refresh'] ) && $params['refresh'] === 'true' );
     }
 
 

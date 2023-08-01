@@ -46,18 +46,18 @@ final class Disciple_Tools_Capability_Factory {
      */
     private function default_descriptions() {
         return [
-            'access_contacts'         => __( 'In Disciple.Tools, allows user to access contacts.', 'disciple-tools' ),
-            'access_disciple_tools'   => __( 'In Disicple.Tools, allows user to login to Disciple.Tools.', 'disciple-tools' ),
-            'access_groups'           => __( 'In Disciple.Tools, allows user to access groups.', 'disciple-tools' ),
-            'access_peoplegroups'     => __( 'In WordPress, allows user to access People Groups to add or edit imported people groups.', 'disciple-tools' ),
+            'access_contacts'         => __( 'In Disciple.Tools, allows user to access contacts.', 'disciple_tools' ),
+            'access_disciple_tools'   => __( 'In Disicple.Tools, allows user to login to Disciple.Tools.', 'disciple_tools' ),
+            'access_groups'           => __( 'In Disciple.Tools, allows user to access groups.', 'disciple_tools' ),
+            'access_peoplegroups'     => __( 'In WordPress, allows user to access People Groups to add or edit imported people groups.', 'disciple_tools' ),
             'access_specific_sources' => '',
-            'activate_plugins'        => __( 'In WordPress, allows user to activate installed plugins.', 'disciple-tools' ),
-            'add_users'               => __( 'In WordPress, allows user to change the role on an existing user.', 'disciple-tools' ),
-            'assign_any_contacts'     => __( 'In Disciple.Tools, allows user to assign any contact to another user.', 'disciple-tools' ),
-            'create_contacts'         => __( 'In Disciple.Tools, allows user to create new contacts.', 'disciple-tools' ),
-            'create_groups'           => __( 'In Disciple.Tools, allows user to create new groups.', 'disciple-tools' ),
-            'create_roles'            => __( 'In Disciple.Tools, allows user to create new roles.', 'disciple-tools' ),
-            'create_users'            => __( 'In WordPress, allows user to create new users.', 'disciple-tools' ),
+            'activate_plugins'        => __( 'In WordPress, allows user to activate installed plugins.', 'disciple_tools' ),
+            'add_users'               => __( 'In WordPress, allows user to change the role on an existing user.', 'disciple_tools' ),
+            'assign_any_contacts'     => __( 'In Disciple.Tools, allows user to assign any contact to another user.', 'disciple_tools' ),
+            'create_contacts'         => __( 'In Disciple.Tools, allows user to create new contacts.', 'disciple_tools' ),
+            'create_groups'           => __( 'In Disciple.Tools, allows user to create new groups.', 'disciple_tools' ),
+            'create_roles'            => __( 'In Disciple.Tools, allows user to create new roles.', 'disciple_tools' ),
+            'create_users'            => __( 'In WordPress, allows user to create new users.', 'disciple_tools' ),
             'delete_others_pages'     => '',
             'delete_others_posts'     => '',
             'delete_pages'            => '',
@@ -67,26 +67,26 @@ final class Disciple_Tools_Capability_Factory {
             'delete_private_posts'    => '',
             'delete_published_pages'  => '',
             'delete_published_posts'  => '',
-            'delete_roles'            => __( 'In Disciple.Tools, allows user to remove roles', 'disciple-tools' ),
+            'delete_roles'            => __( 'In Disciple.Tools, allows user to remove roles', 'disciple_tools' ),
             'delete_themes'           => '',
             'delete_users'            => '',
-            'dt_all_access_contacts'  => __( 'In Disciple.Tools, allows user to view all contacts regardless of who they are assigned to', 'disciple-tools' ),
-            'dt_all_admin_contacts'   => __( 'In Disciple.Tools, allows user to edit all contacts regardless of who they are assigned to', 'disciple-tools' ),
-            'dt_all_admin_groups'     => __( 'In Disciple.Tools, allows user to edit all contacts regardless of who they are assigned to', 'disciple-tools' ),
-            'dt_list_users'           => __( 'In Disciple.Tools, allows user to see list of users', 'disciple-tools' ),
+            'dt_all_access_contacts'  => __( 'In Disciple.Tools, allows user to view all contacts regardless of who they are assigned to', 'disciple_tools' ),
+            'dt_all_admin_contacts'   => __( 'In Disciple.Tools, allows user to edit all contacts regardless of who they are assigned to', 'disciple_tools' ),
+            'dt_all_admin_groups'     => __( 'In Disciple.Tools, allows user to edit all contacts regardless of who they are assigned to', 'disciple_tools' ),
+            'dt_list_users'           => __( 'In Disciple.Tools, allows user to see list of users', 'disciple_tools' ),
             'edit_dashboard'          => '',
             'edit_files'              => '',
             'edit_others_pages'       => '',
             'edit_others_posts'       => '',
             'edit_pages'              => '',
-            'edit_peoplegroups'       => __( 'In Wordpress, allows user to edit People Groups', 'disciple-tools' ),
+            'edit_peoplegroups'       => __( 'In Wordpress, allows user to edit People Groups', 'disciple_tools' ),
             'edit_plugins'            => '',
             'edit_posts'              => '',
             'edit_private_pages'      => '',
             'edit_private_posts'      => '',
             'edit_published_pages'    => '',
             'edit_published_posts'    => '',
-            'edit_roles'              => __( 'In Disciple.Tools,  allows user to make changes to roles', 'disciple-tools' ),
+            'edit_roles'              => __( 'In Disciple.Tools,  allows user to make changes to roles', 'disciple_tools' ),
             'edit_theme_options'      => '',
             'edit_themes'             => '',
             'edit_users'              => '',
@@ -106,10 +106,10 @@ final class Disciple_Tools_Capability_Factory {
             'level_8'                 => '',
             'level_9'                 => '',
             'list_peoplegroups'       => '',
-            'list_roles'              => __( 'In Disciple.Tools, allows user to see a list of the roles', 'disciple-tools' ),
+            'list_roles'              => __( 'In Disciple.Tools, allows user to see a list of the roles', 'disciple_tools' ),
             'list_users'              => '',
             'manage_categories'       => '',
-            'manage_dt'               => __( 'In Disciple.Tools, allows user to administer Disciple.Tools application', 'disciple-tools' ),
+            'manage_dt'               => __( 'In Disciple.Tools, allows user to administer Disciple.Tools application', 'disciple_tools' ),
             'manage_links'            => '',
             'manage_options'          => '',
             'moderate_comments'       => '',
@@ -117,7 +117,7 @@ final class Disciple_Tools_Capability_Factory {
             'publish_pages'           => '',
             'publish_posts'           => '',
             'read'                    => '',
-            'read_location'           => __( 'In Disciple.Tools, allows user to read a users location', 'disciple-tools' ),
+            'read_location'           => __( 'In Disciple.Tools, allows user to read a users location', 'disciple_tools' ),
             'read_private_pages'      => '',
             'read_private_posts'      => '',
             'remove_users'            => '',
@@ -161,8 +161,18 @@ final class Disciple_Tools_Capability_Factory {
      */
     public function add_capability( $slug, $options ) {
         $source = $options['source'];
-        $name = isset( $options['name'] ) ? $options['name'] : dt_label_from_slug( $slug );
-        $description = isset( $options['description'] ) ? $options['description'] : '';
+        $post_type = $options['post_type'] ?? null;
+        if ( isset( $options['name'] ) ){
+            $name = $options['name'];
+        } elseif ( isset( $options['label'] ) ) {
+            $name = $options['label'];
+        } elseif ( isset( $options['post_type'] ) ){
+            $label = DT_Posts::get_label_for_post_type( $options['post_type'], false, false );
+            $name = ucwords( str_replace( strtolower( $options['post_type'] ), $label, strtolower( dt_label_from_slug( $slug ) ) ) );
+        } else {
+            $name = dt_label_from_slug( $slug );
+        }
+        $description = $options['description'] ?? '';
 
         $capability = $this->get_capability( $slug );
 
@@ -171,12 +181,14 @@ final class Disciple_Tools_Capability_Factory {
                 $slug,
                 $source,
                 $name,
-                $description
+                $description,
+                $post_type
             );
         } else {
             $capability->source = $source;
             $capability->slug = $slug;
             $capability->description = $description;
+            $capability->post_type = $post_type;
         }
         $this->capabilities[ $slug ] = $capability;
 
@@ -279,7 +291,6 @@ final class Disciple_Tools_Capability_Factory {
         }, ARRAY_FILTER_USE_KEY);
 
         $capabilities = apply_filters( 'dt_capabilities', $capabilities );
-
         foreach ( $capabilities as $capability => $options ) {
             //There are some random capabilities registered that are just numbers?
             if ( !is_numeric( $capability ) ) {

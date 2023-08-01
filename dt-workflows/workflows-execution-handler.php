@@ -137,6 +137,10 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 switch ( $condition ) {
                     case 'not_set':
                         return self::condition_not_set( $field_type, null );
+                    case 'not_equals':
+                    case 'not_contain':
+                        // if $post[$field_id] is not set, not_contain and not_equals are true
+                        return true;
                 }
             }
         }
@@ -248,6 +252,18 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 }
 
                 return $found;
+            case 'location_meta':
+                $found        = false;
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( is_array( $field ) && isset( $location_pkg, $location_pkg['label'] ) ) {
+                    foreach ( $field as $item ) {
+                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $location_pkg['label'] ) ) {
+                            $found = true;
+                        }
+                    }
+                }
+
+                return $found;
             case 'connection':
                 $found = false;
                 if ( is_array( $field ) ) {
@@ -263,7 +279,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return isset( $field['assigned-to'] ) && strval( $field['assigned-to'] ) === strval( $value );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -304,6 +319,18 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 }
 
                 return ! $found;
+            case 'location_meta':
+                $found        = false;
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( is_array( $field ) && isset( $location_pkg, $location_pkg['label'] ) ) {
+                    foreach ( $field as $item ) {
+                        if ( ! $found && isset( $item['label'] ) && strval( $item['label'] ) === strval( $location_pkg['label'] ) ) {
+                            $found = true;
+                        }
+                    }
+                }
+
+                return ! $found;
             case 'connection':
                 $found = false;
                 if ( is_array( $field ) ) {
@@ -319,7 +346,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return isset( $field['assigned-to'] ) && strval( $field['assigned-to'] ) !== strval( $value );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -338,6 +364,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'multi_select':
             case 'communication_channel':
             case 'location':
+            case 'location_meta':
             case 'connection':
                 return isset( $field ) && ! empty( $field );
             case 'date':
@@ -348,7 +375,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return isset( $field['assigned-to'] ) && ! empty( $field['assigned-to'] );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -367,6 +393,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'multi_select':
             case 'communication_channel':
             case 'location':
+            case 'location_meta':
             case 'connection':
                 return empty( $field );
             case 'date':
@@ -377,7 +404,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 return empty( $field['assigned-to'] );
             case 'array':
             case 'task':
-            case 'location_meta':
             case 'post_user_meta':
             case 'datetime_series':
             case 'hash':
@@ -388,7 +414,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
     }
 
     public static function exec_actions( $workflow, $post, $post_type_settings ) {
-
         // Ensure to check action updates have not already been executed, as part of infinite post update loops!
         if ( ! empty( $workflow ) && isset( $workflow->actions ) && ! self::already_executed_actions( $workflow->actions, $post, $post_type_settings ) ) {
 
@@ -412,7 +437,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
     private static function already_executed_actions( $actions, $post, $post_type_settings ): bool {
 
-        $already_executed = false;
+        $already_executed = [];
         foreach ( $actions as $action ) {
 
             // Determine current field state
@@ -433,6 +458,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     case 'key_select':
                     case 'communication_channel':
                     case 'location':
+                    case 'location_meta':
                     case 'connection':
                     case 'user_select':
                         $current_state = self::condition_contains( $field_type, $field, $action->value );
@@ -445,23 +471,19 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 case 'update':
                 case 'append':
                 case 'connect':
-                    if ( $current_state ) {
-                        $already_executed = true;
-                    }
+                    $already_executed[] = $current_state;
                     break;
                 case 'remove':
-                    if ( ! $current_state ) {
-                        $already_executed = true;
-                    }
+                    $already_executed[] = ! $current_state;
                     break;
             }
         }
 
-        return $already_executed;
+        // Still continue with execution if any fields are still in need of updating.
+        return ! in_array( false, $already_executed );
     }
 
     private static function process_action( $field_id, $action, $value, $post, $post_type_settings ) {
-
         if ( ! empty( $field_id ) && ! empty( $action ) && ! empty( $value ) ) {
 
             if ( isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {
@@ -479,7 +501,10 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         $updated_fields = self::action_connect( $field_type, $field_id, $value );
                         break;
                     case 'remove':
-                        $updated_fields = self::action_remove( $field_type, $field_id, $value );
+                        $updated_fields = self::action_remove( $field_type, $field_id, $value, $post );
+                        break;
+                    case 'unset':
+                        $updated_fields = self::action_unset( $field_type, $field_id, $value );
                         break;
                     case 'custom':
                         do_action( strval( $value ), $post, $field_id, $value );
@@ -520,7 +545,32 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'communication_channel':
             case 'location': // $value to be location id
                 $updated[ $field_id ]['values']   = [];
-                $updated[ $field_id ]['values'][] = [ "value" => $value ];
+                $updated[ $field_id ]['values'][] = [ 'value' => $value ];
+                break;
+            case 'location_meta':
+                $location = null;
+
+                // Extract required location values from packaged json string.
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( isset( $location_pkg, $location_pkg['label'], $location_pkg['level'], $location_pkg['lat'], $location_pkg['lng'] ) ) {
+                    $location = [
+                        'label' => $location_pkg['label'],
+                        'lng'   => $location_pkg['lng'],
+                        'lat'   => $location_pkg['lat'],
+                        'level' => $location_pkg['level']
+                    ];
+                }
+
+                // If valid lookup, then continue with update.
+                if ( ! empty( $location ) ) {
+                    $updated[ $field_id ]['values']   = [];
+                    $updated[ $field_id ]['values'][] = [
+                        'label' => $location['label'],
+                        'lng'   => $location['lng'],
+                        'lat'   => $location['lat'],
+                        'level' => $location['level'] ?? null
+                    ];
+                }
                 break;
         }
 
@@ -532,23 +582,103 @@ class Disciple_Tools_Workflows_Execution_Handler {
         switch ( $field_type ) {
             case 'connection': // $value to be connection ID
                 $updated[ $field_id ]['values']   = [];
-                $updated[ $field_id ]['values'][] = [ "value" => $value ];
+                $updated[ $field_id ]['values'][] = [ 'value' => $value ];
                 break;
         }
 
         return $updated;
     }
 
-    private static function action_remove( $field_type, $field_id, $value ): array {
+    private static function action_remove( $field_type, $field_id, $value, $post ): array {
         $updated = [];
         switch ( $field_type ) {
+            case 'tags':
             case 'multi_select':
             case 'connection':
                 $updated[ $field_id ]['values']   = [];
                 $updated[ $field_id ]['values'][] = [
-                    "value"  => $value,
-                    "delete" => true
+                    'value'  => $value,
+                    'delete' => true
                 ];
+                break;
+            case 'communication_channel':
+                $updated_channels = [];
+
+                // Attempt to locate corresponding value key.
+                if ( isset( $post[ $field_id ] ) ) {
+                    foreach ( $post[ $field_id ] ?? [] as $channel ) {
+                        if ( isset( $channel['value'], $channel['key'] ) ) {
+                            if ( $channel['value'] == $value ) {
+                                $updated_channels[] = [
+                                    'key'    => $channel['key'],
+                                    'delete' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Package updates accordingly.
+                if ( ! empty( $updated_channels ) ) {
+                    $updated[ $field_id ] = $updated_channels;
+                }
+                break;
+            case 'location':
+                $updated_locations = [];
+
+                // Attempt to locate corresponding value id.
+                if ( isset( $post[ $field_id ] ) ) {
+                    foreach ( $post[ $field_id ] ?? [] as $location ) {
+                        if ( isset( $location['label'], $location['id'], $location['matched_search'] ) ) {
+                            if ( in_array( $value, [ $location['label'], $location['matched_search'] ] ) ) {
+                                $updated_locations[] = [
+                                    'value'  => $location['id'],
+                                    'delete' => true
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Package updates accordingly.
+                if ( ! empty( $updated_locations ) ) {
+                    $updated[ $field_id ]['values'] = $updated_locations;
+                }
+                break;
+            case 'location_meta':
+                $updated_location_metas = [];
+
+                // Attempt to locate corresponding label id.
+                $location_pkg = json_decode( str_replace( "'", '"', $value ), true );
+                if ( isset( $post[ $field_id ], $location_pkg, $location_pkg['label'] ) ) {
+                    foreach ( $post[ $field_id ] ?? [] as $meta ) {
+                        if ( isset( $meta['label'], $meta['grid_meta_id'] ) ) {
+                            if ( $meta['label'] == $location_pkg['label'] ) {
+                                $updated_location_metas[] = [
+                                    'grid_meta_id' => $meta['grid_meta_id'],
+                                    'delete'       => true
+                                ];
+                            }
+                        }
+                    }
+                }
+
+                // Package updates accordingly.
+                if ( ! empty( $updated_location_metas ) ) {
+                    $updated[ $field_id ]['values'] = $updated_location_metas;
+                }
+                break;
+
+        }
+
+        return $updated;
+    }
+
+    private static function action_unset( $field_type, $field_id, $value ): array {
+        $updated = [];
+        switch ( $field_type ) {
+            case 'date':
+                $updated[ $field_id ] = null;
                 break;
         }
 

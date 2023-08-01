@@ -31,6 +31,12 @@
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
 
+  <!--
+  Prevent errors caused by WordPress Coding Standards not supporting PHP 8.0+.
+  See https://github.com/WordPress/WordPress-Coding-Standards/issues/2035
+  -->
+  <ini name="error_reporting" value="E_ALL &#38; ~E_DEPRECATED" />
+
   <!-- To get a list of all currently enabled sniffs, run: phpcs -e -->
 
   <!-- To get a list of all available standards, run phpcs -i. To get a list of
@@ -123,7 +129,7 @@
     <exclude name="Squiz.PHP.EmbeddedPhp.NoSemicolon" />
     <exclude name="Squiz.PHP.EmbeddedPhp.SpacingBeforeClose" />
     <exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
-    <exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" />
+    <!-- <exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" /> -->
     <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines" />
     <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile" />
     <!-- <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" /> -->

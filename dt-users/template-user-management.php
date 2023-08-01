@@ -8,8 +8,8 @@ if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
 }
 $dt_url_path = dt_get_url_path();
 $user_management_options = DT_User_Management::user_management_options();
-$contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
-$default_user_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+$contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
+$default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
 
 function fetch_user_locations( $user_id ): array {
     global $wpdb;
@@ -72,7 +72,7 @@ function fetch_user_locations( $user_id ): array {
 
                         <!-- Title Section-->
                         <div id="page-title" style="display:none;">
-                            <?php if ( current_user_can( "list_users" ) ) :?>
+                            <?php if ( current_user_can( 'list_users' ) ) :?>
                                 <h3><?php esc_html_e( 'Users', 'disciple_tools' ); ?></h3>
                             <?php else : ?>
                                 <h3><?php esc_html_e( 'Multipliers', 'disciple_tools' ); ?></h3>
@@ -98,14 +98,14 @@ function fetch_user_locations( $user_id ): array {
                             </thead>
                             <tbody>
                             <?php
-                            $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+                            $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
                             $index = 0;
                             foreach ( $users as $user_i => $user ) : ?>
-                            <tr class="user_row"  data-user="<?php echo esc_html( $user["ID"] ) ?>">
+                            <tr class="user_row"  data-user="<?php echo esc_html( $user['ID'] ) ?>">
                                 <td></td>
-                                <td data-user="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user["display_name"] ) ?></td>
-                                <td><?php echo esc_html( ( isset( $user["user_status"] ) && isset( $user_management_options["user_status_options"][$user["user_status"]] ) ) ? $user_management_options["user_status_options"][$user["user_status"]] : "" ) ?></td>
-                                <td><?php echo esc_html( isset( $user["workload_status"], $workload_status_options[ $user["workload_status"] ] ) ? $workload_status_options[ $user["workload_status"] ]["label"] : "" ) ?></td>
+                                <td data-user="<?php echo esc_html( $user['ID'] ) ?>"><?php echo esc_html( $user['display_name'] ) ?></td>
+                                <td><?php echo esc_html( ( isset( $user['user_status'] ) && isset( $user_management_options['user_status_options'][$user['user_status']] ) ) ? $user_management_options['user_status_options'][$user['user_status']] : '' ) ?></td>
+                                <td><?php echo esc_html( isset( $user['workload_status'], $workload_status_options[ $user['workload_status'] ] ) ? $workload_status_options[ $user['workload_status'] ]['label'] : '' ) ?></td>
                                 <td>
                                     <?php
                                     if ( isset( $user['roles'] ) ) {
@@ -128,10 +128,10 @@ function fetch_user_locations( $user_id ): array {
                                 </td>
                                 <td>
                                     <?php
-                                    $user_languages = get_user_option( "user_languages", $user["ID"] );
+                                    $user_languages = get_user_option( 'user_languages', $user['ID'] );
                                     if ( ! empty( $user_languages ) ) {
                                         $languages = [];
-                                        foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ) {
+                                        foreach ( $contact_fields['languages']['default'] as $option_key => $option_value ) {
                                             if ( in_array( $option_key, $user_languages ) ) {
                                                 $languages[] = $option_value['label'];
                                             }
@@ -143,18 +143,18 @@ function fetch_user_locations( $user_id ): array {
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo esc_html( $user["number_new_assigned"] ) ?></td>
+                                <td><?php echo esc_html( $user['number_new_assigned'] ) ?></td>
                                 <td>
-                                    <?php if ( $user["number_update"] > 5 ) : ?>
+                                    <?php if ( $user['number_update'] > 5 ) : ?>
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" alt="alert" />
                                     <?php endif; ?>
-                                    <?php echo esc_html( $user["number_update"] ) ?>
+                                    <?php echo esc_html( $user['number_update'] ) ?>
                                 </td>
-                                <td><?php echo esc_html( $user["number_active"] ) ?></td>
+                                <td><?php echo esc_html( $user['number_active'] ) ?></td>
                                 <td>
                                     <?php
 
-                                    $user_locations = fetch_user_locations( $user["ID"] );
+                                    $user_locations = fetch_user_locations( $user['ID'] );
                                     if ( ! empty( $user_locations ) ) {
                                         $locations = [];
                                         foreach ( $user_locations as $location ) {
@@ -167,21 +167,21 @@ function fetch_user_locations( $user_id ): array {
                                     } else {
 
                                         if ( DT_Mapbox_API::get_key() ) {
-                                            if ( isset( $user["location_grid_meta"] ) && ! empty( $user["location_grid_meta"] ) ) {
+                                            if ( isset( $user['location_grid_meta'] ) && ! empty( $user['location_grid_meta'] ) ) {
                                                 echo '<span style="color:limegreen">&#10004;</span>';
                                             }
                                         } else {
-                                            if ( isset( $user["location_grid"] ) && ! empty( $user["location_grid"] ) ) {
+                                            if ( isset( $user['location_grid'] ) && ! empty( $user['location_grid'] ) ) {
                                                 echo '<span style="color:limegreen">&#10004;</span>';
                                             }
                                         }
                                     }
                                     ?>
                                 </td>
-                                <td class="last_activity" data-sort="<?php echo esc_html( $user["last_activity"] ?? "" ) ?>">
-                                    <?php if ( !isset( $user["last_activity"] ) ) :
-                                        esc_html_e( "No activity", 'disciple_tools' );
-                                    elseif ( $user["last_activity"] < time() - 60 * 60 * 24 * 90 ) : ?>
+                                <td class="last_activity" data-sort="<?php echo esc_html( $user['last_activity'] ?? '' ) ?>">
+                                    <?php if ( !isset( $user['last_activity'] ) ) :
+                                        esc_html_e( 'No activity', 'disciple_tools' );
+                                    elseif ( $user['last_activity'] < time() - 60 * 60 * 24 * 90 ) : ?>
                                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" alt="alert" />
                                     <?php endif; ?>
                                 </td>
@@ -204,7 +204,7 @@ function fetch_user_locations( $user_id ): array {
                 <div id="user_modal_content">
                     <div id="user-name-wrapper">
                         <h3 style="display: inline-block; margin-right:20px">
-                            <span id="user_name"><?php esc_html_e( "Multiplier Name", 'disciple_tools' ) ?></span>
+                            <span id="user_name"><?php esc_html_e( 'Multiplier Name', 'disciple_tools' ) ?></span>
                             (#<span id="user-id-reveal"></span>)
                         </h3>
                         <ul class="tabs" data-tabs id="example-tabs" style="display: inline-block; vertical-align: bottom">
@@ -248,7 +248,7 @@ function fetch_user_locations( $user_id ): array {
                                         <h4><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h4>
                                         <select id="user_status" class="select-field">
                                             <option></option>
-                                            <?php foreach ( $user_management_options["user_status_options"] as $status_key => $status_value ) : ?>
+                                            <?php foreach ( $user_management_options['user_status_options'] as $status_key => $status_value ) : ?>
                                                 <option value="<?php echo esc_html( $status_key ); ?>"><?php echo esc_html( $status_value ); ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -256,19 +256,19 @@ function fetch_user_locations( $user_id ): array {
                                         <!-- Workload Status -->
                                         <h4><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></h4>
                                         <select id="workload_status" class="select-field">
-                                            <?php $workload_status_options = dt_get_site_custom_lists()["user_workload_status"] ?? [] ?>
+                                            <?php $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [] ?>
                                             <option></option>
                                             <?php foreach ( $workload_status_options as $key => $val ) : ?>
-                                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $val["label"] ) ?></option>
+                                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $val['label'] ) ?></option>
                                             <?php endforeach; ?>
                                         </select>
 
                                         <!-- Locations -->
                                         <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></h4>
+                                            <h4><?php esc_html_e( 'Location Responsibility', 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( 'add', 'disciple_tools' ) ?></a></h4>
                                             <div id="mapbox-wrapper"></div>
                                         <?php else : ?>
-                                            <h4><?php esc_html_e( "Location Responsibility", 'disciple_tools' ) ?></h4>
+                                            <h4><?php esc_html_e( 'Location Responsibility', 'disciple_tools' ) ?></h4>
                                             <div class="location_grid">
                                                 <var id="location_grid-result-container" class="result-container"></var>
                                                 <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
@@ -277,7 +277,7 @@ function fetch_user_locations( $user_id ): array {
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-location_grid input-height"
                                                                name="location_grid[query]"
-                                                               placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                               placeholder="<?php esc_html_e( 'Search Locations', 'disciple_tools' ) ?>"
                                                                autocomplete="off">
                                                     </span>
                                                         </div>
@@ -287,15 +287,15 @@ function fetch_user_locations( $user_id ): array {
                                         <?php endif; ?>
 
                                         <h4 class="" style="margin-top:30px">
-                                            <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/languages.svg" ?>">
+                                            <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/languages.svg' ?>">
                                             <span style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></span>
                                             <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
                                         </h4>
                                         <div class="small button-group" style="display: inline-block" id="languages_multi_select">
-                                            <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
-                                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( "languages" ) ?>"
+                                            <?php foreach ( $contact_fields['languages']['default'] as $option_key => $option_value ): ?>
+                                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( 'languages' ) ?>"
                                                         class="dt_multi_select empty-select-button select-button button ">
-                                                    <?php echo esc_html( $contact_fields["languages"]["default"][$option_key]["label"] ) ?>
+                                                    <?php echo esc_html( $contact_fields['languages']['default'][$option_key]['label'] ) ?>
                                                 </button>
                                             <?php endforeach; ?>
                                         </div>
@@ -304,8 +304,8 @@ function fetch_user_locations( $user_id ): array {
 
                                     <!-- Availability -->
                                     <div class="bordered-box">
-                                        <h4><?php esc_html_e( "Availability", 'disciple_tools' ) ?></h4>
-                                        <p><?php esc_html_e( "Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
+                                        <h4><?php esc_html_e( 'Availability', 'disciple_tools' ) ?></h4>
+                                        <p><?php esc_html_e( 'Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts', 'disciple_tools' ) ?></p>
                                         <div>
                                             <?php esc_html_e( 'Schedule Unavailability', 'disciple_tools' )?>:
                                         </div>
@@ -316,13 +316,13 @@ function fetch_user_locations( $user_id ): array {
                                         </div>
                                         <div id="add_unavailable_dates_spinner" class="loading-spinner"></div>
 
-                                        <div><?php esc_html_e( "Travel or Away Dates", 'disciple_tools' ) ?></div>
+                                        <div><?php esc_html_e( 'Travel or Away Dates', 'disciple_tools' ) ?></div>
                                         <div>
                                             <table>
                                                 <thead>
                                                 <tr>
-                                                    <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
-                                                    <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
+                                                    <th><?php esc_html_e( 'Start Date', 'disciple_tools' ) ?></th>
+                                                    <th><?php esc_html_e( 'End Date', 'disciple_tools' ) ?></th>
                                                     <th></th>
                                                 </tr>
                                                 </thead>
@@ -345,23 +345,27 @@ function fetch_user_locations( $user_id ): array {
                                             <?php esc_html_e( 'View contact record', 'disciple_tools' ); ?>
                                             <img class="dt-icon dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/>
                                         </button>
-                                        <?php if ( current_user_can( "promote_users" ) ) : ?>
+                                        <?php if ( current_user_can( 'promote_users' ) ) : ?>
                                             <button id="wp_admin_edit_user" class="button" type="button">
                                                 <?php esc_html_e( 'Edit User', 'disciple_tools' ); ?>
                                                 <img class="dt-icon dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/open-link.svg' ) ?>"/>
                                             </button>
                                         <?php endif; ?>
+                                        <button id="reset_user_pwd_email" class="button" type="button">
+                                            <span id="reset_user_pwd_email_text"><?php esc_html_e( 'Email Password Reset', 'disciple_tools' ); ?></span>
+                                            <span id="reset_user_pwd_email_icon"></span>
+                                        </button>
                                         <p>
                                             <?php esc_html_e( 'Email', 'disciple_tools' ); ?>: <span id="user_email"></span>
                                         </p>
                                         <p>
                                             <?php esc_html_e( 'Display Name', 'disciple_tools' ); ?>
-                                            <span id="<?php echo esc_html( "update_display_name" ); ?>-spinner" class="loading-spinner"></span>
+                                            <span id="<?php echo esc_html( 'update_display_name' ); ?>-spinner" class="loading-spinner"></span>
                                             <input type="text" id="update_display_name" class="text-input">
                                         </p>
 
                                         <?php esc_html_e( 'Gender', 'disciple_tools' ); ?>
-                                        <span id="<?php echo esc_html( "gender" ); ?>-spinner" class="loading-spinner"></span>
+                                        <span id="<?php echo esc_html( 'gender' ); ?>-spinner" class="loading-spinner"></span>
                                         <select class="select-field" id="gender">
                                             <option></option>
                                             <option value="male"><?php esc_html_e( 'Male', 'disciple_tools' ); ?></option>
@@ -371,7 +375,7 @@ function fetch_user_locations( $user_id ): array {
                                         <?php // site defined fields
                                         $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
                                         foreach ( $dt_user_fields as $dt_field ) {
-                                            if ( empty( $dt_field["enabled"] ) ){
+                                            if ( empty( $dt_field['enabled'] ) ){
                                                 continue;
                                             }
                                             ?>
@@ -393,7 +397,7 @@ function fetch_user_locations( $user_id ): array {
                                         ?>
                                         <dt>
                                             <label for="description"><?php esc_html_e( 'Biography', 'disciple_tools' )?>
-                                                <span id="<?php echo esc_html( "description" ); ?>-spinner" class="loading-spinner"></span>
+                                                <span id="<?php echo esc_html( 'description' ); ?>-spinner" class="loading-spinner"></span>
                                             </label>
                                         </dt>
                                             <dd><textarea
@@ -409,20 +413,11 @@ function fetch_user_locations( $user_id ): array {
                                     </div>
 
                                     <!-- Roles -->
-                                    <?php if ( current_user_can( "promote_users" ) ) : ?>
+                                    <?php if ( current_user_can( 'promote_users' ) ) : ?>
                                         <div class="bordered-box">
                                             <h4><?php esc_html_e( 'Roles', 'disciple_tools' ); ?></h4>
                                             <?php
-                                            $user_roles = [];
-
-                                            $dt_roles = dt_multi_role_get_editable_role_names();
-                                            $expected_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
-                                            $upgrade_to_admin_disabled = !is_super_admin() && !dt_current_user_has_role( 'administrator' );
-                                            $admin_roles = [ "administrator", "dt_admin" ];
-
-                                            uasort( $expected_roles, function ( $item1, $item2 ){
-                                                return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
-                                            } );
+                                            $expected_roles = dt_list_roles();
                                             ?>
 
                                             <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
@@ -430,23 +425,22 @@ function fetch_user_locations( $user_id ): array {
                                             <ul id="user_roles_list" class="no-bullet">
                                                 <?php foreach ( $expected_roles as $role_key => $role_value ) : ?>
                                                     <li>
-                                                        <label style="color:<?php echo esc_html( $role_key === 'administrator' && $upgrade_to_admin_disabled ? 'grey' : 'inherit' ); ?>">
+                                                        <label style="color:<?php echo esc_html( $role_key === 'administrator' && $role_value['disabled'] ? 'grey' : 'inherit' ); ?>">
                                                             <input type="checkbox" name="dt_multi_role_user_roles[]"
                                                                    value="<?php echo esc_attr( $role_key ); ?>"
-                                                                <?php checked( in_array( $role_key, $user_roles ) ); ?>
-                                                                <?php disabled( $upgrade_to_admin_disabled && in_array( $role_key, $admin_roles, true ) ); ?> />
+                                                                <?php disabled( $role_value['disabled'] ); ?> />
                                                             <strong>
                                                                 <?php
-                                                                if ( isset( $role_value["label"] ) && !empty( $role_value["label"] ) ){
-                                                                    echo esc_html( $role_value["label"] );
+                                                                if ( isset( $role_value['label'] ) && !empty( $role_value['label'] ) ){
+                                                                    echo esc_html( $role_value['label'] );
                                                                 } else {
                                                                     echo esc_html( $role_key );
                                                                 }
                                                                 ?>
                                                             </strong>
                                                             <?php
-                                                            if ( isset( $role_value["description"] ) ){
-                                                                echo ' - ' . esc_html( $role_value["description"] );
+                                                            if ( isset( $role_value['description'] ) ){
+                                                                echo ' - ' . esc_html( $role_value['description'] );
                                                             }
                                                             ?>
                                                         </label>
@@ -458,8 +452,8 @@ function fetch_user_locations( $user_id ): array {
                                             <!--                                    <div style="display: none">-->
                                             <div id="allowed_sources_options" style="display: none">
                                                 <?php
-                                                $post_settings = DT_Posts::get_post_settings( "contacts" );
-                                                $sources = isset( $post_settings["fields"]["sources"]["default"] ) ? $post_settings["fields"]["sources"]["default"] : [];
+                                                $post_settings = DT_Posts::get_post_settings( 'contacts' );
+                                                $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : [];
                                                 ?>
                                                 <h3><?php esc_html_e( 'Access by Source', 'disciple_tools' ); ?></h3>
 
@@ -485,14 +479,14 @@ function fetch_user_locations( $user_id ): array {
                                                 </ul>
 
                                                 <strong style="margin-top:30px">
-                                                    <?php esc_html_e( "Sources List", 'disciple_tools' ) ?>
+                                                    <?php esc_html_e( 'Sources List', 'disciple_tools' ) ?>
                                                 </strong>
                                                 <ul id="allowed_sources" class="ul-no-bullets">
                                                     <?php foreach ( $sources as $source_key => $source_value ) : ?>
                                                         <li>
                                                             <label>
                                                                 <input type="checkbox" name="allowed_sources[]" value="<?php echo esc_html( $source_key ) ?>"/>
-                                                                <?php echo esc_html( $source_value["label"] ) ?>
+                                                                <?php echo esc_html( $source_value['label'] ) ?>
                                                             </label>
                                                         </li>
                                                     <?php endforeach; ?>

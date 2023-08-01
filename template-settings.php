@@ -28,7 +28,7 @@ $translations = dt_get_available_languages( true );
 
 $dt_user_locale = get_user_locale( $dt_user->ID );
 
-$contact_fields = DT_Posts::get_post_settings( "contacts" )["fields"];
+$contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
 
 /**
  * Filter for adding user apps to the settings area.
@@ -71,7 +71,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                         <?php endif; ?>
 
-                        <?php if ( $dt_user_contact_id && DT_Posts::can_view( "contacts", $dt_user_contact_id ) ): ?>
+                        <?php if ( $dt_user_contact_id && DT_Posts::can_view( 'contacts', $dt_user_contact_id ) ): ?>
 
                             <li>
                                 <a href="<?php echo esc_html( home_url( '/contacts/' . $dt_user_contact_id ) ); ?>"><?php esc_html_e( 'View Contact Record', 'disciple_tools' ) ?>
@@ -147,7 +147,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                                 <p>
                                     <strong><?php esc_html_e( 'Roles', 'disciple_tools' ); ?></strong><br>
-                                    <?php echo esc_html( implode( ", ", dt_get_user_role_names( get_current_user_id() ) ) ); ?>
+                                    <?php echo esc_html( implode( ', ', dt_get_user_role_names( get_current_user_id() ) ) ); ?>
                                 </p>
 
                             </div>
@@ -231,8 +231,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 ?>
 
                                 <!-- gender -->
-                                <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]["name"] ) ?></strong>
-                                <p><?php echo esc_html( isset( $contact_fields[$field_key]["default"][$user_field]["label"] ) ? $contact_fields[$field_key]["default"][$user_field]["label"] : $user_field ); ?></p>
+                                <strong style="display: inline-block"><?php echo esc_html( $contact_fields[$field_key]['name'] ) ?></strong>
+                                <p><?php echo esc_html( isset( $contact_fields[$field_key]['default'][$user_field]['label'] ) ? $contact_fields[$field_key]['default'][$user_field]['label'] : $user_field ); ?></p>
                             </div>
                         </div>
 
@@ -278,8 +278,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                         }
                                         ?>
                                         <tr>
-                                            <td class="tall-3"><?php echo esc_html( $app_value["label"] )?></td>
-                                            <td class="tall-3"><?php echo esc_html( $app_value["description"] )?></td>
+                                            <td class="tall-3"><?php echo esc_html( $app_value['label'] )?></td>
+                                            <td class="tall-3"><?php echo esc_html( $app_value['description'] )?></td>
                                             <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
                                                 <?php if ( $app_link ) { ?>
                                                     <a class="button small"  href="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"><i class="fi-link"></i></a>
@@ -319,12 +319,12 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                             <!-- Locations -->
                             <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                <strong><?php esc_html_e( "Locations you are willing to be responsible for", 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( "add", 'disciple_tools' ) ?></a></strong>
+                                <strong><?php esc_html_e( 'Locations you are willing to be responsible for', 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( 'add', 'disciple_tools' ) ?></a></strong>
                                 <div id="mapbox-wrapper"></div>
                             <?php else : ?>
                                 <div class="section-subheader cell">
-                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/location.svg" ?>">
-                                    <?php esc_html_e( "Locations you are willing to be responsible for", 'disciple_tools' ) ?>
+                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                                    <?php esc_html_e( 'Locations you are willing to be responsible for', 'disciple_tools' ) ?>
                                 </div>
                                 <div class="location_grid">
                                     <var id="location_grid-result-container" class="result-container"></var>
@@ -334,7 +334,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-location_grid input-height"
                                                            name="location_grid[query]"
-                                                           placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                           placeholder="<?php esc_html_e( 'Search Locations', 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>
@@ -346,28 +346,28 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                             <!-- Languages -->
                             <div class="section-subheader cell" style="margin-top:30px">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/languages.svg" ?>">
+                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/languages.svg' ?>">
                                 <strong style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></strong>
                                 <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
                             </div>
                             <div class="small button-group" style="display: inline-block">
-                                <?php foreach ( $contact_fields["languages"]["default"] as $option_key => $option_value ): ?>
+                                <?php foreach ( $contact_fields['languages']['default'] as $option_key => $option_value ): ?>
                                     <?php
                                     $user_languages = get_user_option( 'user_languages', get_current_user_id() );
                                     $class = ( in_array( $option_key, $user_languages ?: [] ) ) ?
-                                        "selected-select-button" : "empty-select-button"; ?>
-                                    <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( "languages" ) ?>"
+                                        'selected-select-button' : 'empty-select-button'; ?>
+                                    <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( 'languages' ) ?>"
                                             class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                        <?php echo esc_html( $contact_fields["languages"]["default"][$option_key]["label"] ) ?>
+                                        <?php echo esc_html( $contact_fields['languages']['default'][$option_key]['label'] ) ?>
                                     </button>
                                 <?php endforeach; ?>
                             </div>
 
 
                             <!-- People Groups -->
-                            <?php if ( isset( $contact_fields["people_groups"]["name"] ) ): ?>
+                            <?php if ( isset( $contact_fields['people_groups']['name'] ) ): ?>
                             <div class="section-subheader cell" style="margin-top:20px">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
+                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/people-group.svg' ?>">
                                 <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
                             </div>
                             <div class="people_groups full-width">
@@ -378,7 +378,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                             <span class="typeahead__query">
                                                 <input class="js-typeahead-people_groups"
                                                        name="people_groups[query]"
-                                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $contact_fields["people_groups"]["name"] ) )?>"
+                                                       placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $contact_fields['people_groups']['name'] ) )?>"
                                                        autocomplete="off">
                                             </span>
                                         </div>
@@ -391,15 +391,15 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <div class="small-12 medium-6 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
                             <!-- Workload -->
                             <div class="section-subheader cell">
-                                <?php esc_html_e( "Availability to receive contacts from the Dispatcher", 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Availability to receive contacts from the Dispatcher', 'disciple_tools' ) ?>
                                 <span id="workload-spinner" style="display: inline-block" class="loading-spinner"></span>
                             </div>
 
-                            <?php $options = dt_get_site_custom_lists()["user_workload_status"] ?? [];
+                            <?php $options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
                             foreach ( $options as $option_key => $option_val ) :
-                                $icon = $option_key === "active" ? "play" : ( $option_key === "existing" ? "pause" : "stop" ); ?>
+                                $icon = $option_key === 'active' ? 'play' : ( $option_key === 'existing' ? 'pause' : 'stop' ); ?>
                                 <button style="display: block" class="button hollow status-button" name="<?php echo esc_html( $option_key ) ?>">
-                                    <i class="fi-<?php echo esc_html( $icon ) ?>"></i> <?php echo esc_html( $option_val["label"] )?>
+                                    <i class="fi-<?php echo esc_html( $icon ) ?>"></i> <?php echo esc_html( $option_val['label'] )?>
                                 </button>
                             <?php endforeach; ?>
                         </div>
@@ -413,11 +413,11 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>
                         <hr/>
 
-                        <p><?php esc_html_e( "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts", 'disciple_tools' ) ?></p>
+                        <p><?php esc_html_e( 'Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts', 'disciple_tools' ) ?></p>
 
                         <p>
                             <strong>
-                                <?php esc_html_e( "Schedule Travel or Dates Unavailable", 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Schedule Travel or Dates Unavailable', 'disciple_tools' ) ?>
                             </strong>
                         </p>
                         <div style="display: flex; justify-content: flex-start; align-items: center">
@@ -434,7 +434,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <div class="end_date"><input type="text" class="date-picker" id="end_date" autocomplete="off"></div>
                             </div>
                             <div style="display: flex;">
-                                <button id="add_unavailable_dates" class="button" disabled style="margin: 0;"><?php esc_html_e( "Add Unavailable dates", 'disciple_tools' ) ?></button>
+                                <button id="add_unavailable_dates" class="button" disabled style="margin: 0;"><?php esc_html_e( 'Add Unavailable dates', 'disciple_tools' ) ?></button>
                                 <div id="add_unavailable_dates_spinner" style="display: inline-block" class="loading-spinner"></div>
                             </div>
                         </div>
@@ -442,13 +442,13 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             <table class="hover stack-for-small striped">
                                 <thead>
                                 <tr>
-                                    <th><?php esc_html_e( "Start Date", 'disciple_tools' ) ?></th>
-                                    <th><?php esc_html_e( "End Date", 'disciple_tools' ) ?></th>
+                                    <th><?php esc_html_e( 'Start Date', 'disciple_tools' ) ?></th>
+                                    <th><?php esc_html_e( 'End Date', 'disciple_tools' ) ?></th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody id="unavailable-list">
-                                <tr><td><?php esc_html_e( "No Travel Scheduled", 'disciple_tools' ) ?></td></tr>
+                                <tr><td><?php esc_html_e( 'No Travel Scheduled', 'disciple_tools' ) ?></td></tr>
                                 </tbody>
 
                             </table>
@@ -491,19 +491,19 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             <thead>
                             <tr>
                                 <td><?php esc_html_e( 'Type of Notification', 'disciple_tools' )?></td>
-                                <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
-                                    <td><?php echo esc_html( $channel_value["label"] )?></td>
+                                <?php foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ) : ?>
+                                    <td><?php echo esc_html( $channel_value['label'] )?></td>
                                 <?php endforeach; ?>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ( $dt_site_notification_defaults["types"] as $dt_notification_key => $dt_notification_default ) : ?>
+                            <?php foreach ( $dt_site_notification_defaults['types'] as $dt_notification_key => $dt_notification_default ) : ?>
                                 <tr>
-                                    <td class="tall-4"><?php echo esc_html( $dt_notification_default["label"] )?></td>
-                                    <?php foreach ( $dt_site_notification_defaults["channels"] as $channel_key => $channel_value ) : ?>
+                                    <td class="tall-4"><?php echo esc_html( $dt_notification_default['label'] )?></td>
+                                    <?php foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ) : ?>
                                         <td>
                                             <?php if ( $dt_notification_default[$channel_key] ) : ?>
-                                                <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
+                                                <div style="height:2em;"><?php esc_html_e( 'required', 'disciple_tools' ) ?></div>
                                             <?php else :
                                                 $channel_notification_key = $dt_notification_key . '_' . $channel_key;
                                                 ?>
@@ -524,11 +524,11 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             </tbody>
                         </table>
 
-                        <?php if ( current_user_can( "dt_all_access_contacts" ) ): ?>
+                        <?php if ( current_user_can( 'dt_all_access_contacts' ) ): ?>
                             <p>
                                 <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
                             </p>
-                            <p><?php esc_html_e( "You will receive a notification for any update that happens in the system.", 'disciple_tools' ) ?></p>
+                            <p><?php esc_html_e( 'You will receive a notification for any update that happens in the system.', 'disciple_tools' ) ?></p>
                             <div class="switch large">
                                 <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
                                        onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
@@ -560,7 +560,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                 ?>
 
                 <div class="reveal" id="edit-profile-modal" data-reveal>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h2><?php esc_html_e( 'Edit', 'disciple_tools' )?></h2>
@@ -569,7 +569,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                         <form method="post">
 
-                            <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", "user_update_nonce", false, true ); ?>
+                            <?php wp_nonce_field( 'user_' . $dt_user->ID . '_update', 'user_update_nonce', false, true ); ?>
 
                             <table class="table">
 
@@ -654,10 +654,10 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </label></td>
                                     <td>
                                         <select class="select-field" id="<?php echo esc_html( $field_key ); ?>" style="width:auto; display: block">
-                                            <?php foreach ( $contact_fields[$field_key]["default"] as $option_key => $option_value ):
+                                            <?php foreach ( $contact_fields[$field_key]['default'] as $option_key => $option_value ):
                                                 $selected = $user_field === $option_key; ?>
-                                                <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
-                                                <?php echo esc_html( $option_value["label"] ) ?>
+                                                <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? 'selected' : '' )?>>
+                                                <?php echo esc_html( $option_value['label'] ) ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -669,6 +669,9 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                         <?php
                                         dt_language_select()
                                         ?>
+                                        <br>
+                                        <a href="https://disciple.tools/translation/"
+                                           target="_blank"><?php esc_html_e( 'Translate Disciple.Tools into your language or help make a translation better.', 'disciple_tools' ) ?></a>
                                     </td>
                                 </tr>
 

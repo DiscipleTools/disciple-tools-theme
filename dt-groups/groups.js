@@ -57,6 +57,7 @@ jQuery(document).ready(function($) {
         }
         /* Toggle church health circle item color */
         $( this ).children( 'img' ).toggleClass( 'practiced-item' );
+        $( this ).children( 'i' ).toggleClass( 'practiced-item' );
       }).catch( err=>{
         console.log( err );
     });
@@ -143,7 +144,7 @@ jQuery(document).ready(function($) {
         m.leader = true
       }
     })
-    post.members = window.lodash.sortBy( post.members, ["leader"])
+    post.members = window.lodash.sortBy(post.members, ["leader", member => member.post_title.toLowerCase()]);
     post.members.forEach(member=>{
       let leaderHTML = '';
       let leaderStatus = 'not-leader';
@@ -152,7 +153,7 @@ jQuery(document).ready(function($) {
         leaderStatus = 'leader';
         leaderStyle = 'color:black;';
       }
-      
+
 
       const contactStatusHTML = ( member.data && member.data.overall_status )
         ? `<i class="fi-torso small" style="color: ${window.lodash.escape( member.data.overall_status.color )}" title="${window.lodash.escape( member.data.overall_status.label )}"></i>`

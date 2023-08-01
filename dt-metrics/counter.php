@@ -126,65 +126,65 @@ class Disciple_Tools_Counter
 //                    }
 //                }
                 $data[] = [
-                    "key" => "new_contacts",
-                    "label" => __( "New Contacts", "disciple_tools" ),
-                    "value" => self::critical_path( 'new_contacts', $start, $end )
+                    'key' => 'new_contacts',
+                    'label' => __( 'New Contacts', 'disciple_tools' ),
+                    'value' => self::critical_path( 'new_contacts', $start, $end )
                 ];
                 $data[] = [
-                    "key" => "first_meetings",
-                    "label" => __( "First Meetings", "disciple_tools" ),
-                    "value" => self::critical_path( 'first_meetings', $start, $end )
+                    'key' => 'first_meetings',
+                    'label' => __( 'First Meetings', 'disciple_tools' ),
+                    'value' => self::critical_path( 'first_meetings', $start, $end )
                     ];
                 $data[] = [
-                    "key" => "ongoing_meetings",
-                    "label" => __( "Ongoing Meetings", "disciple_tools" ),
-                    "value" => self::critical_path( 'ongoing_meetings', $start, $end )
+                    'key' => 'ongoing_meetings',
+                    'label' => __( 'Ongoing Meetings', 'disciple_tools' ),
+                    'value' => self::critical_path( 'ongoing_meetings', $start, $end )
                     ];
                 $data[] = [
-                    "key" => "baptisms",
-                    "label" => __( "Total Baptisms", "disciple_tools" ),
-                    "value" => self::critical_path( 'baptisms', $start, $end )
+                    'key' => 'baptisms',
+                    'label' => __( 'Total Baptisms', 'disciple_tools' ),
+                    'value' => self::critical_path( 'baptisms', $start, $end )
                 ];
                 $data[] = [
-                    "key" => "baptizers",
-                    "label" => __( "Total Baptizers", "disciple_tools" ),
-                    "value" => self::critical_path( 'baptizers', $start, $end )
+                    'key' => 'baptizers',
+                    'label' => __( 'Total Baptizers', 'disciple_tools' ),
+                    'value' => self::critical_path( 'baptizers', $start, $end )
                 ];
                 $baptism_generations = self::critical_path( 'baptism_generations', $start, $end );
                 foreach ( $baptism_generations as $generation => $num ){
                     $data[] = [
-                        "key" => "baptism_generation_$generation",
-                        "label" => __( "Baptism Generation", "disciple_tools" ) . ' ' . $generation,
-                        "value" => $num
+                        'key' => "baptism_generation_$generation",
+                        'label' => __( 'Baptism Generation', 'disciple_tools' ) . ' ' . $generation,
+                        'value' => $num
                     ];
                 }
                 $data[] = [
-                    "key" => "churches_and_groups",
-                    "label" => __( "Total Churches and Groups", "disciple_tools" ),
-                    "value" => self::critical_path( 'churches_and_groups', $start, $end )
+                    'key' => 'churches_and_groups',
+                    'label' => __( 'Total Churches and Groups', 'disciple_tools' ),
+                    'value' => self::critical_path( 'churches_and_groups', $start, $end )
                 ];
                 $data[] = [
-                    "key" => "active_groups",
-                    "label" => __( "Active Groups", "disciple_tools" ),
-                    "value" => self::critical_path( 'active_groups', $start, $end )
+                    'key' => 'active_groups',
+                    'label' => __( 'Active Groups', 'disciple_tools' ),
+                    'value' => self::critical_path( 'active_groups', $start, $end )
                 ];
                 $data[] = [
-                    "key" => "active_churches",
-                    "label" => __( "Active Churches", "disciple_tools" ),
-                    "value" => self::critical_path( 'active_churches', $start, $end )
+                    'key' => 'active_churches',
+                    'label' => __( 'Active Churches', 'disciple_tools' ),
+                    'value' => self::critical_path( 'active_churches', $start, $end )
                 ];
                 $church_generations = self::critical_path( 'church_generations', $start, $end );
                 foreach ( $church_generations as $generation => $num ){
                     $data[] = [
-                        "key" => "church_generation_$generation",
-                        "label" => __( "Church Generation", "disciple_tools" ) . ' ' . $generation,
-                        "value" => $num
+                        'key' => "church_generation_$generation",
+                        'label' => __( 'Church Generation', 'disciple_tools' ) . ' ' . $generation,
+                        'value' => $num
                     ];
                 }
                 $data[] = [
-                    "key" => "church_planters",
-                    "label" => __( "Church Planters", "disciple_tools" ),
-                    "value" => self::critical_path( 'church_planters', $start, $end )
+                    'key' => 'church_planters',
+                    'label' => __( 'Church Planters', 'disciple_tools' ),
+                    'value' => self::critical_path( 'church_planters', $start, $end )
                 ];
 //                @todo ppl groups
 //                foreach ( $manual_additions as $addition ){
@@ -402,6 +402,37 @@ class Disciple_Tools_Queries
         $query = [];
 
         switch ( $query_name ) {
+
+            case 'generation_tree_multiplying_only':
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = %s
+                    AND a.ID NOT IN (
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = %s
+                      GROUP BY p2p_from
+                    )
+                      AND a.ID IN (
+                      SELECT DISTINCT (p2p_to)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = %s
+                      GROUP BY p2p_to
+                    )
+                    UNION
+                    SELECT
+                      p.p2p_from  as id,
+                      p.p2p_to    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = %s
+                ", $args['post_type'], $args['p2p_key'], $args['p2p_key'], $args['p2p_key'] ), ARRAY_A );
+                break;
 
             case 'baptisms_all':
                 /**
@@ -674,11 +705,11 @@ class Disciple_Tools_Queries
         $nodes = $tree;
         $not_circular = $this->check_circular_logic( $nodes );
         if ( is_numeric( $not_circular ) ){
-            return new WP_Error( 500, "Circular tree structure detected with record: " . $not_circular . ".", [ "record" => $not_circular, "link" => get_permalink( $not_circular ) ] );
+            return new WP_Error( 500, 'Circular tree structure detected with record: ' . $not_circular . '.', [ 'record' => $not_circular, 'link' => get_permalink( $not_circular ) ] );
         }
         foreach ( $nodes as $node ){
-            if ( !isset( $node["done"] ) ){
-                return new WP_Error( 500, "Orphaned tree structure detected with record: " . $node['id'] . ".", [ "record" => $node["id"], "link" => get_permalink( $node["id"] ) ] );
+            if ( !isset( $node['done'] ) ){
+                return new WP_Error( 500, 'Orphaned tree structure detected with record: ' . $node['id'] . '.', [ 'record' => $node['id'], 'link' => get_permalink( $node['id'] ) ] );
             }
         }
         return $tree;
@@ -695,17 +726,19 @@ class Disciple_Tools_Queries
     private function check_circular_logic( &$nodes, $node_ids = [ 0 ], $parents = [] ){
 
         foreach ( $nodes as &$node ){
-            $parent_id = $node["parent_id"] ?? $node["parentId"];
+            $parent_id = $node['parent_id'] ?? $node['parentId'];
             if ( in_array( (int) $parent_id, $node_ids ) ){
                 //if the node is already in the tree
-                if ( in_array( (int) $node["id"], $parents, true ) ){
-                    return (int) $node["id"]; //return the ID of the node
+                if ( in_array( (int) $node['id'], $parents, true ) ){
+                    return (int) $node['id']; //return the ID of the node
                 }
-                $node["done"] = true; //lets us look at what nodes where not processed later
+                $node['done'] = true; //lets us look at what nodes where not processed later
                 //continue with children
-                $d = $this->check_circular_logic( $nodes, [ (int) $node["id"] ], array_merge( $parents, [ (int) $node["id"] ] ) );
-                if ( is_numeric( $d ) ){
-                    return $d;
+                if ( !isset( $node['children'] ) || !empty( $node['children'] ) ){
+                    $d = $this->check_circular_logic( $nodes, [ (int) $node['id'] ], array_merge( $parents, [ (int) $node['id'] ] ) );
+                    if ( is_numeric( $d ) ){
+                        return $d;
+                    }
                 }
             }
         }
@@ -717,10 +750,10 @@ class Disciple_Tools_Queries
         $descendants = [];
         $children = [];
         foreach ( $nodes as $node ){
-            $parent_id = $node["parent_id"] ?? $node["parentId"];
+            $parent_id = $node['parent_id'] ?? $node['parentId'];
             if ( in_array( $parent_id, $node_ids ) ){
                 $descendants[] = $node;
-                $children[] = $node["id"];
+                $children[] = $node['id'];
             }
         }
         if ( sizeof( $children ) > 0 ){

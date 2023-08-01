@@ -24,7 +24,7 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
         $this->title = __( 'Coaching Tree', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
-        $url_path = dt_get_url_path();
+        $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
@@ -76,7 +76,7 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
 
     public function tree( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         return $this->get_baptism_generations_tree();
     }
@@ -110,7 +110,7 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
             {
                 $html .= '<li class="gen-node li-gen-' . esc_attr( $gen ) . ' ' . esc_attr( $first_section ) . '">';
                 $html .= '(' . esc_attr( $gen ) . ') ';
-                $html .= '<strong><a href="' . esc_url( site_url( "/contacts/" ) ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
+                $html .= '<strong><a href="' . esc_url( site_url( '/contacts/' ) ) . esc_html( $item_id ) . '">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
 
                 // find child items recursively
                 if ( !in_array( $item_id, $unique_check ) ){

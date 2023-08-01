@@ -125,7 +125,8 @@
 
   // get records when a filter is clicked
   $(document).on('change', '.js-list-view', () => {
-    get_records_for_current_filter()
+    reset_split_by_filters();
+    get_records_for_current_filter();
   });
 
   //load record for the first filter when a tile is clicked
@@ -414,6 +415,10 @@
     // Determine if default resets are required?
     if ( custom_filter ) {
       current_filter = custom_filter
+
+      // Ensure to uncheck all split by option filters, to avoid infinity loops!
+      $(".js-list-view-split-by").prop('checked', false);
+
     } else if (current_view === "custom_filter") {
       let filterId = checked.data("id")
       current_filter = window.lodash.find(custom_filters, {ID: filterId})
@@ -424,10 +429,16 @@
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
     sort = sort || current_filter.query.sort;
-    current_filter.query.sort = (typeof sort === "string") ? sort : "name"
+    current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
 
-    // Conduct a deep copy (clone) of filter, so as to support future returns to default
+    // Conduct a deep copy (clone) of filter, to support future returns to default
     current_filter = $.extend(true, {}, current_filter);
+
+    // Determine if any split by filters are to be applied.
+    let checked_split_by = $(".js-list-view-split-by:checked");
+    if (checked_split_by && checked_split_by.length > 0) {
+      current_filter = apply_split_by_filters(current_filter, checked_split_by.data('field_id'), checked_split_by.data('field_option_id'), checked_split_by.data('field_option_label'));
+    }
 
     clear_search_query()
 
@@ -700,6 +711,11 @@
     if (showArchived && status && status.includes(filterOutArchivedItemsKey)) {
       const index = status.indexOf(filterOutArchivedItemsKey)
       status.splice(index, 1)
+
+      // Remove status property from query if empty.
+      if ( status.length === 0 ) {
+        window.lodash.unset(current_filter['query'], status_key);
+      }
     }
 
     if (!showArchived && (!status || status.length === 0)) {
@@ -833,6 +849,14 @@
               } else if ( field_value === true ) {
                 values = ['&check;']
               }
+            } else if ( field_settings.type === 'task' ) {
+              values = field_value
+              .filter(v => {
+                return (v.value && v.value.note && v.value.note !== '');
+              })
+              .map(v => {
+                return `${window.lodash.escape(v.value.note)}`;
+              });
             }
           } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
@@ -923,6 +947,7 @@
     let query = current_filter.query
     if ( offset ){
       query["offset"] = offset
+      query['limit'] = 500
     }
     if ( sort ){
       query.sort = sort
@@ -937,8 +962,8 @@
       get_records_promise.abort()
     }
     query.fields_to_return = fields_to_show_in_table
-    get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
-    get_records_promise.then(response=>{
+    get_records_promise = window.makeRequestOnPosts( 'POST', `${list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+    return get_records_promise.then(response=>{
       if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
       } else {
@@ -977,7 +1002,10 @@
   }
 
   $('#load-more').on('click', function () {
-    get_records( items.length )
+    $(this).addClass('loading')
+    get_records( items.length ).then(()=>{
+      $(this).removeClass('loading')
+    })
   })
 
 
@@ -1081,6 +1109,7 @@
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
     let filterName = window.lodash.escape( $('#new-filter-name').val() )
+    reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
@@ -1475,82 +1504,86 @@
       key = 'location_grid_meta';
     }
     if ( !window.Typeahead[`.js-typeahead-${key}`]) {
-      $.typeahead({
-        input: `.js-typeahead-${window.lodash.escape(key)}`,
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        dropdownFilter: [{
-          key: 'group',
-          value: 'used',
-          template: window.lodash.escape(window.wpApiShare.translations.used_locations),
-          all: window.lodash.escape(window.wpApiShare.translations.all_locations)
-        }],
-        source: {
-          used: {
-            display: "name",
-            ajax: {
-              url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
-              data: {
-                s: "{{query}}",
-                filter: function () {
-                  return window.lodash.get(window.Typeahead[`.js-typeahead-${key}`].filters.dropdown, 'value', 'all')
-                }
-              },
-              beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-              },
-              callback: {
-                done: function (data) {
-                  if (typeof typeaheadTotals !== "undefined") {
-                    typeaheadTotals.field = data.total
+
+      // Ensure element is present before proceeding!
+      if ($('.js-typeahead-' + window.lodash.escape(key)).length > 0) {
+        $.typeahead({
+          input: `.js-typeahead-${window.lodash.escape(key)}`,
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 20,
+          dropdownFilter: [{
+            key: 'group',
+            value: 'used',
+            template: window.lodash.escape(window.wpApiShare.translations.used_locations),
+            all: window.lodash.escape(window.wpApiShare.translations.all_locations)
+          }],
+          source: {
+            used: {
+              display: "name",
+              ajax: {
+                url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+                data: {
+                  s: "{{query}}",
+                  filter: function () {
+                    return window.lodash.get(window.Typeahead[`.js-typeahead-${key}`].filters.dropdown, 'value', 'all')
                   }
-                  return data.location_grid
+                },
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+                },
+                callback: {
+                  done: function (data) {
+                    if (typeof typeaheadTotals!=="undefined") {
+                      typeaheadTotals.field = data.total
+                    }
+                    return data.location_grid
+                  }
                 }
               }
             }
-          }
-        },
-        display: "name",
-        templateValue: "{{name}}",
-        dynamic: true,
-        multiselect: {
-          matchOn: ["ID"],
-          data: [],
+          },
+          display: "name",
+          templateValue: "{{name}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["ID"],
+            data: [],
+            callback: {
+              onCancel: function (node, item) {
+                $(`.current-filter[data-id="${item.ID}"].location_grid`).remove()
+                window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+              }
+            }
+          },
           callback: {
-            onCancel: function (node, item) {
-              $(`.current-filter[data-id="${item.ID}"].location_grid`).remove()
-              window.lodash.pullAllBy(new_filter_labels, [{id: item.ID}], "id")
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $('#location_grid-result-container').html(text);
+            },
+            onReady() {
+              this.filters.dropdown = {
+                key: "group",
+                value: "used",
+                template: window.lodash.escape(window.wpApiShare.translations.used_locations)
+              }
+              this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
+            },
+            onHideLayout: function () {
+              $('#location_grid-result-container').html("");
+            },
+            onClick: function (node, a, item) {
+              const {name, newLabel} = create_location_label(key, item.ID, item.name, list_settings)
+              new_filter_labels.push(newLabel)
+              selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape(item.ID)}">${window.lodash.escape(name)}:${window.lodash.escape(item.name)}</span>`)
             }
           }
-        },
-        callback: {
-          onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#location_grid-result-container').html(text);
-          },
-          onReady() {
-            this.filters.dropdown = {
-              key: "group",
-              value: "used",
-              template: window.lodash.escape(window.wpApiShare.translations.used_locations)
-            }
-            this.container
-            .removeClass("filter")
-            .find("." + this.options.selector.filterButton)
-            .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
-          },
-          onHideLayout: function () {
-            $('#location_grid-result-container').html("");
-          },
-          onClick: function (node, a, item) {
-            const { name, newLabel } = create_location_label(key, item.ID, item.name, list_settings)
-            new_filter_labels.push(newLabel)
-            selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( name )}:${window.lodash.escape( item.name )}</span>`)
-          }
-        }
-      });
+        });
+      }
     }
   }
 
@@ -1868,6 +1901,7 @@
     }
 
     let query = {text:searchText}
+    query.sort = current_filter?.query?.sort || '-post_date'
 
     if (fieldsToSearch.length !== 0) {
       query.fields_to_search = fieldsToSearch;
@@ -1979,6 +2013,43 @@
           bulk_edit_count();
     })
   })
+
+  /***
+   * Bulk Delete
+   */
+
+  let bulk_edit_delete_submit_button = $('#bulk_edit_delete_submit');
+  bulk_edit_delete_submit_button.on('click', function (e) {
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
+
+    if (bulk_edit_total_checked > 0) {
+      let bulk_edit_delete_submit_button_span = $('.bulk_edit_delete_submit_text');
+      let confirm_text = `${$(bulk_edit_delete_submit_button_span).data('pretext')} ${bulk_edit_total_checked} ${$(bulk_edit_delete_submit_button_span).data('posttext')}`
+      let confirm_text_capitalise = window.lodash.startCase(window.lodash.toLower(confirm_text));
+
+      if (list_settings.permissions.delete_any && confirm(confirm_text_capitalise)) {
+        bulk_delete_submit();
+      } else {
+        window.location.reload();
+      }
+    } else {
+      window.location.reload();
+    }
+  });
+
+  function bulk_delete_submit() {
+
+    // Build queue of post ids.
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id!=='bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push(postId);
+      }
+    });
+    process(queue, 10, do_each, do_done, {}, null, {}, 'delete');
+  }
+
   /**
    * Bulk_Assigned_to
    */
@@ -2039,6 +2110,11 @@
       sharePayload = $(this).data('bulk_key_share');
     })
 
+    let shares = {
+      'users': sharePayload,
+      'unshare': $('#bulk_share_unshare').prop('checked')
+    };
+
     let queue =  [];
     let count = 0;
     $('.bulk_edit_checkbox input').each(function () {
@@ -2047,21 +2123,34 @@
         queue.push( postId );
       }
     });
-    process(queue, 10, do_each, do_done, updatePayload, sharePayload, commentPayload);
+    process(queue, 10, do_each, do_done, updatePayload, shares, commentPayload);
   }
 
   function bulk_edit_count() {
     let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
     let bulk_edit_submit_button_text = $('.bulk_edit_submit_text')
+    let bulk_edit_delete_submit_button_text = $('.bulk_edit_delete_submit_text')
 
     if (bulk_edit_total_checked == 0) {
       bulk_edit_submit_button_text.text(`${list_settings.translations.make_selections_below}`)
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.text(`${list_settings.translations.delete_selections_below}`);
+      }
     } else {
       bulk_edit_submit_button_text.each(function( index ) {
         let pretext = $( this ).data('pretext')
         let posttext = $( this ).data('posttext')
         $( this ).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`)
       })
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.each(function (index) {
+          let pretext = $(this).data('pretext');
+          let posttext = $(this).data('posttext');
+          $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
+        });
+      }
     }
   }
 
@@ -2093,7 +2182,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share, comment ) {
+  function process( q, num, fn, done, update, share, comment, event_type = 'update' ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -2113,36 +2202,52 @@
         fn(items[i], function() {
           // when done, decrement counter and
           // if counter is 0, process next batch
-          --count || process(q, num, fn, done, update, share, comment);
-        }, update, share, comment);
+          --count || process(q, num, fn, done, update, share, comment, event_type);
+        }, update, share, comment, event_type);
 
     }
   }
 
   // a per-item action
-  function do_each( item, done, update, share, comment ) {
+  function do_each( item, done, update, share, comment, event_type ) {
     let promises = [];
 
-    if (Object.keys(update).length) {
-      promises.push(API.update_post(list_settings.post_type, item, update).catch(err => {
-        console.error(err);
-      }));
-    }
+    switch (event_type) {
+      case 'update': {
+        if (Object.keys(update).length) {
+          promises.push(API.update_post(list_settings.post_type, item, update).catch(err => {
+            console.error(err);
+          }));
+        }
 
-    if (share) {
-      share.forEach(function (value) {
-        promises.push(API.add_shared(list_settings.post_type, item, value).catch(err => {
-          console.error(err)
-        }));
-      })
-    }
+        if (share && share['users']) {
+          share['users'].forEach(function (value) {
+            let promise = share['unshare'] ? API.remove_shared(list_settings.post_type, item, value).catch(err => {
+              console.error(err)
+            }) : API.add_shared(list_settings.post_type, item, value).catch(err => {
+              console.error(err)
+            });
+            promises.push(promise);
+          });
+        }
 
-    if (comment.commentText) {
-      promises.push(API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
-        console.error(err);
-      }));
-    }
+        if (comment.commentText) {
+          promises.push(API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
+            console.error(err);
+          }));
+        }
 
+        break;
+      }
+      case 'delete': {
+        if (list_settings.permissions.delete_any) {
+          promises.push(API.delete_post(list_settings.post_type, item).catch(err => {
+            console.error(err);
+          }));
+        }
+        break;
+      }
+    }
     Promise.all(promises).then( function() {
         done();
     });
@@ -2150,6 +2255,7 @@
 
   function do_done() {
     $('#bulk_edit_submit-spinner').removeClass('active');
+    $('#bulk_edit_delete_submit-spinner').removeClass('active');
     window.location.reload();
   }
 
@@ -2622,5 +2728,123 @@
         console.log( e )
       })
   }
+
+  /**
+   * Split By Feature
+   */
+
+  $("#split_by_current_filter_button").on("click", function () {
+    let field_id = $("#split_by_current_filter_select").val();
+    if ( !field_id ) {
+      return;
+    }
+    $(this).addClass('loading');
+    let split_by_accordion = $(".split-by-current-filter-accordion");
+    let split_by_results = $("#split_by_current_filter_results");
+    let split_by_no_results_msg = $("#split_by_current_filter_no_results_msg");
+
+    $(split_by_no_results_msg).fadeOut('fast');
+
+
+    $(split_by_results).slideUp('fast', function () {
+      let filters = (current_filter.query !== undefined) ? current_filter.query:[];
+      window.API.split_by(list_settings.post_type, field_id, filters).then(
+        function (response) {
+          $('#split_by_current_filter_button').removeClass('loading');
+          let summary_displayed = false;
+          if (response && response.length > 0) {
+            let html = '';
+            $.each(response, function (idx, result) {
+              if (result['value']) {
+                summary_displayed = true;
+                let option_id = result['value'];
+                let option_id_label = (result['label'] !== '') ? result['label'] : result['value'];
+
+                html += `
+                    <label class="list-view">
+                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" data-field_option_label="${window.lodash.escape(option_id_label)}" autocomplete="off">
+                      <span>${window.lodash.escape(option_id_label)}</span>
+                      <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(option_id)}">${window.lodash.escape(result['count'])}</span>
+                    </label>
+                    `;
+              }
+            });
+
+            $(split_by_accordion).slideDown('fast', function () {
+              $(split_by_results).html(html);
+              $(split_by_results).slideDown('fast');
+            });
+          }
+
+          if (!summary_displayed) {
+            $(split_by_accordion).slideUp('fast', function () {
+              $(split_by_no_results_msg).fadeIn('fast');
+            });
+          }
+        }
+      );
+    });
+  });
+
+  $(document).on('change', '.js-list-view-split-by', () => {
+    get_records_for_current_filter();
+  });
+
+  function apply_split_by_filters(filter, field_id, option_id, option_label) {
+    if (filter && field_id && option_id && option_label) {
+
+      // Fetch field and option display labels.
+      let field_id_label = field_id;
+      let option_id_label = option_label;
+      let setting_fields = window.list_settings.post_type_settings.fields;
+      if (setting_fields[field_id] && setting_fields[field_id]['name']) {
+        field_id_label = setting_fields[field_id]['name'];
+      }
+
+      // Add new label.
+      filter['labels'].push({
+        'id': option_id,
+        'field': field_id,
+        'name': `${window.lodash.escape(field_id_label)}: ${window.lodash.escape(option_id_label)}`
+      });
+
+      // Ensure a fields array is available.
+      if (filter['query']['fields'] === undefined) {
+        filter['query']['fields'] = [];
+      }
+
+      let query_field_obj = {};
+      query_field_obj[field_id] = (option_id !== 'NULL') ? [option_id] : [];
+      if (filter['query']['fields'].push !== undefined) {
+        filter['query']['fields'].push(query_field_obj);
+      }
+    }
+
+    return filter;
+  }
+
+  function reset_split_by_filters() {
+    let split_by_filter_select = $("#split_by_current_filter_select");
+    if (current_filter && (current_filter['query']['fields'] !== undefined)) {
+      let field_id = $(split_by_filter_select).val();
+      $.each(current_filter['query']['fields'], function (field_idx, field) {
+
+        // Identify selected split by filters to be removed from main current global filter.
+        if (field[field_id] !== undefined) {
+          $('.current-filter-list.' + field_id).find('.current-filter-list-close').click();
+        }
+      });
+    }
+
+    // Clear down split-by area.
+    $(split_by_filter_select).val('');
+    $("#split_by_current_filter_no_results_msg").fadeOut('fast');
+    $(".split-by-current-filter-accordion").slideUp('fast', function () {
+    });
+  }
+
+  /**
+   * Split By Feature
+   */
 
 })(window.jQuery, window.list_settings, window.Foundation);

@@ -10,7 +10,7 @@ global $post;
     <form class="js-add-task-form">
         <p style="color: red" class="error-text"></p>
         <p><?php echo esc_html__( 'Set a reminder or a task with a note and receive a notification on the due date.', 'disciple_tools' ); ?></p>
-        <strong><?php echo esc_html__( "Task Type", "disciple_tools" ); ?></strong>
+        <strong><?php echo esc_html__( 'Task Type', 'disciple_tools' ); ?></strong>
         <ul class="ul-no-bullets">
             <li>
                 <label>
@@ -25,7 +25,7 @@ global $post;
             </li>
         </ul>
 
-        <label><strong><?php echo esc_html__( "Due Date", "disciple_tools" ); ?></strong></label>
+        <label><strong><?php echo esc_html__( 'Due Date', 'disciple_tools' ); ?></strong></label>
         <input id="create-task-date" name="task-date" type="text" class="" required autocomplete="off" >
 
         <button class="button loader" type="submit" id="create-task">
@@ -45,13 +45,13 @@ global $post;
         <button class="button clear" data-close aria-label="Close reveal" type="button">
             <?php echo esc_html__( 'Close', 'disciple_tools' )?>
         </button>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
 
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
 

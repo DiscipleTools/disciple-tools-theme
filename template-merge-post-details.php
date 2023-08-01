@@ -15,7 +15,7 @@ if ( empty( $post_type ) ) {
 
 // Determine permission status for given post type
 if ( ! current_user_can( 'access_' . $post_type ) ) {
-    wp_die( esc_html( sprintf( 'You do not have permission to access %s', $post_type ) ), "Permission denied", 403 );
+    wp_die( esc_html( sprintf( 'You do not have permission to access %s', $post_type ) ), 'Permission denied', 403 );
 }
 
 // Ensure required parameter ids are present
@@ -29,14 +29,14 @@ $dt_dupe_id    = sanitize_text_field( wp_unslash( $_GET['dupeid'] ) );
 
 // Ensure this is not a self-merge
 if ( $dt_current_id === $dt_dupe_id ) {
-    wp_die( esc_html( 'Self-merges not allowed!' ), "Self-merge denied", 403 );
+    wp_die( esc_html( 'Self-merges not allowed!' ), 'Self-merge denied', 403 );
 }
 
 // Grab handles to various objects and test validity
 $dt_current_post   = DT_Posts::get_post( $post_type, $dt_current_id );
 $dt_duplicate_post = DT_Posts::get_post( $post_type, $dt_dupe_id );
 if ( is_wp_error( $dt_current_post ) || is_wp_error( $dt_duplicate_post ) ) {
-    get_template_part( "403", null, is_wp_error( $dt_current_post ) ? $dt_current_post : $dt_duplicate_post );
+    get_template_part( '403', null, is_wp_error( $dt_current_post ) ? $dt_current_post : $dt_duplicate_post );
     die();
 }
 
@@ -108,20 +108,20 @@ get_header();
             <!-- Merge Header-->
             <main id="main_header" class="large-12 medium-12 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php echo esc_html( sprintf( __( "Merge Duplicate %s", 'disciple_tools' ), $post_settings['label_plural'] ) )?></h2>
+                    <h2 class="center"><?php echo esc_html( sprintf( __( 'Merge Duplicate %s', 'disciple_tools' ), $post_settings['label_plural'] ) )?></h2>
                     <p class="center"
-                       style="max-width: 75%; margin-left:auto; margin-right:auto;"><?php esc_html_e( "When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below.", 'disciple_tools' ) ?></p>
+                       style="max-width: 75%; margin-left:auto; margin-right:auto;"><?php esc_html_e( 'When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below.', 'disciple_tools' ) ?></p>
 
                     <label>
                         <strong><?php esc_html_e( 'Copy comments to updated primary record', 'disciple_tools' ); ?></strong>
                         <input type="checkbox" id="merge_comments"
-                               name="merge_comments" <?php checked( ! isset( $_GET["comments"] ) ) ?>>
+                               name="merge_comments" <?php checked( ! isset( $_GET['comments'] ) ) ?>>
                     </label>
                     <button class='button loader submit-merge' type='button'
                             value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
 
                     <br>
-                    <span id="merge_errors"></span>
+                    <span class="merge_errors"></span>
                 </div>
             </main>
             <br>
@@ -129,7 +129,7 @@ get_header();
             <!-- Archiving Post Record -->
             <main id="main_archiving" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( "Archiving", 'disciple_tools' ) ?> - <a
+                    <h2 class="center"><?php esc_html_e( 'Archiving', 'disciple_tools' ) ?> - <a
                             id="main_archiving_post_id_title_link" target="_blank"><span
                                 id="main_archiving_post_id_title"></span></a>
                     </h2>
@@ -137,7 +137,7 @@ get_header();
                     <div class="main-archiving-primary-switch-but-div">
                         <button id="main_archiving_primary_switch_but"
                                 style="text-align: center;"
-                                class="button center"><?php esc_html_e( "Use as Primary", 'disciple_tools' ) ?>
+                                class="button center"><?php esc_html_e( 'Use as Primary', 'disciple_tools' ) ?>
                         </button>
                     </div>
 
@@ -150,7 +150,7 @@ get_header();
             <!-- Primary Post Record -->
             <main id="main_primary" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( "Primary", 'disciple_tools' ) ?> - <a
+                    <h2 class="center"><?php esc_html_e( 'Primary', 'disciple_tools' ) ?> - <a
                             id="main_primary_post_id_title_link" target="_blank"><span
                                 id="main_primary_post_id_title"></span></a>
                     </h2>
@@ -164,7 +164,7 @@ get_header();
             <!-- Updated Post Record -->
             <main id="main_updated" class="large-4 medium-4 cell" role="main">
                 <div class="bordered-box">
-                    <h2 class="center"><?php esc_html_e( "Updated", 'disciple_tools' ) ?> - #<span
+                    <h2 class="center"><?php esc_html_e( 'Updated', 'disciple_tools' ) ?> - #<span
                             id="main_updated_post_id_title"></span></h2>
 
                     <div id="main_updated_fields_div" style="margin-top: 60px;"></div>
@@ -176,6 +176,8 @@ get_header();
                 <div class="bordered-box">
                     <button class='button loader submit-merge' type='button'
                             value='Merge'><?php esc_html_e( 'Merge', 'disciple_tools' ); ?></button>
+                    <br>
+                    <span class='merge_errors'></span>
                 </div>
             </main>
 

@@ -55,6 +55,10 @@ function open_modal_details( id ) {
       if( data ) {
         let list = '<dt>'+window.lodash.escape( translations.members )+'</dt><ul>'
         jQuery.each(data.members, function(i, v)  { list += `<li><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape( data.members[i].ID )}">${window.lodash.escape( data.members[i].post_title )}</a></li>` } )
+        let assigned_to = ''
+        if (typeof data.assigned_to !== 'undefined') {
+          assigned_to = data.assigned_to['display']
+        }
         list += '</ul>'
         let content = `
                 <div class="grid-x">
@@ -62,7 +66,7 @@ function open_modal_details( id ) {
                     <div class="cell">
                         <dl>
                             <dd><strong>${window.lodash.escape( translations.status ) /*Status*/}: </strong>${window.lodash.escape( data.group_status.label )}</dd>
-                      <dd><strong>${window.lodash.escape( translations.assigned_to )/*Assigned to*/}: </strong>${window.lodash.escape( data.assigned_to['display'] )}</dd>
+                      <dd><strong>${window.lodash.escape( translations.assigned_to )/*Assigned to*/}: </strong>${window.lodash.escape( assigned_to )}</dd>
                       <dd><strong>${window.lodash.escape( translations.total_members ) /*Total Members*/}: </strong>${window.lodash.escape( data.member_count )}</dd>
                             ${list}
                         </dl>

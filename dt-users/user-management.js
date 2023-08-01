@@ -209,6 +209,37 @@ jQuery(document).ready(function($) {
       window.open(window.wpApiShare.site_url + "/wp-admin/user-edit.php?user_id=" + user_details.user_id, '_blank');
     }
   })
+  $('#reset_user_pwd_email').on("click", function (e) {
+    e.preventDefault();
+
+    let button_icon = $('#reset_user_pwd_email_icon');
+    button_icon.css('margin-left', '10px');
+    button_icon.addClass('active');
+    button_icon.addClass('loading-spinner');
+
+    send_user_pwd_reset_email(user_details['user_id'], user_details['user_email']).then((response) => {
+      button_icon.removeClass('active');
+      button_icon.removeClass('loading-spinner');
+      button_icon.css('font-size', '20px');
+
+      if (response && response['sent']) {
+        button_icon.addClass('mdi mdi-email-check-outline');
+        button_icon.css('color', '#01d701');
+
+      } else {
+        button_icon.addClass('mdi mdi-email-remove-outline');
+        button_icon.css('color', '#d70101');
+      }
+    });
+  });
+
+  let send_user_pwd_reset_email = (user_id, user_email) => {
+    let data = {
+      'id': user_id,
+      'email': user_email
+    }
+    return makeRequest('POST', `send_pwd_reset_email`, data, 'user-management/v1/');
+  }
 
   /**
    * Locations
@@ -337,6 +368,16 @@ jQuery(document).ready(function($) {
   })
 
   function open_user_modal( user_id ) {
+
+    // Reset email password button.
+    let button_icon = $('#reset_user_pwd_email_icon');
+    button_icon.removeClass('active');
+    button_icon.removeClass('loading-spinner');
+    button_icon.removeClass('mdi mdi-email-check-outline');
+    button_icon.removeClass('mdi mdi-email-remove-outline');
+    button_icon.css('color', '');
+    button_icon.css('margin-left', '');
+
     $('#user_modal').foundation('open');
     /**
      * Set availability dates
@@ -852,7 +893,7 @@ jQuery(document).ready(function($) {
       optionalFields.addClass('show-for-medium')
     })
 
-    $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown))
+    $('#new-user-language-dropdown').html(write_language_dropdown(dt_user_management_localized.language_dropdown, dt_user_management_localized.default_language))
 
     let result_div = $('#result-link')
     let submit_button = $('#create-user')
@@ -1029,10 +1070,10 @@ jQuery(document).ready(function($) {
     }
   }
 
-  function write_language_dropdown(translations) {
+  function write_language_dropdown(translations, default_language) {
       let select = '<select name="locale" id="locale">';
       for ( const translation in translations ) {
-        select += `<option value="${window.lodash.escape(translations[translation].language )}" ${translations[translation].site_default ? 'selected' : '' } >${window.lodash.escape( translations[translation].native_name )}</option>`
+        select += `<option value="${window.lodash.escape(translations[translation].language )}" ${(translations[translation].language === default_language) ? 'selected' : '' } > ${(translations[translation].flag ? translations[translation].flag + ' ' : '')} ${window.lodash.escape( translations[translation].native_name )}</option>`
       }
       select += '</select>'
       return select;

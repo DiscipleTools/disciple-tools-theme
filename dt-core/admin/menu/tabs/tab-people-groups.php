@@ -33,7 +33,7 @@ class Disciple_Tools_Tab_People_Groups extends Disciple_Tools_Abstract_Menu_Base
 
     public function add_submenu() {
         add_submenu_page( 'edit.php?post_type=peoplegroups', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=people-groups', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
-        add_submenu_page( 'dt_utilities', __( 'Import People Groups', 'disciple_tools' ), __( 'Import People Groups', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=people-groups', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_utilities', __( 'People Groups', 'disciple_tools' ), __( 'People Groups', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=people-groups', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
@@ -41,7 +41,7 @@ class Disciple_Tools_Tab_People_Groups extends Disciple_Tools_Abstract_Menu_Base
         if ( $tab == 'people-groups' ) {
             echo 'nav-tab-active';
         }
-        echo '">' . esc_attr__( 'Import People Groups' ) . '</a>';
+        echo '">' . esc_attr__( 'People Groups' ) . '</a>';
     }
 
     public function content( $tab ) {

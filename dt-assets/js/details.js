@@ -14,6 +14,11 @@ jQuery(document).ready(function($) {
 
 
   window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
+  window.masonGrid.masonry({
+    itemSelector: '.grid-item',
+    columnWidth: '.grid-item:not(.hidden-grid-item)',
+    percentPosition: true
+  });
 
   const detailsBarCreatedOnElements = document.querySelectorAll('.details-bar-created-on')
   detailsBarCreatedOnElements.forEach((element) => {
@@ -104,10 +109,10 @@ jQuery(document).ready(function($) {
 
   $('button.dt_multi_select').on('click',function () {
     let fieldKey = $(this).data("field-key")
-    let optionKey = $(this).attr('id')
+    let optionKey = $(this).val()
     let fieldValue = {}
     let data = {}
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
+    let field = jQuery(`[data-field-key="${fieldKey}"][value="${optionKey}"]`)
     field.addClass("submitting-select-button")
     let action = "add"
     if (field.hasClass("selected-select-button")){
@@ -214,22 +219,25 @@ jQuery(document).ready(function($) {
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', e => {
     const field = $(e.currentTarget).data('list-class')
-    const fieldType = $(e.currentTarget).data('field-type')
     const $list = $(`#edit-${field}`)
 
-    if (fieldType === 'link') {
-      const addLinkForm = $(`.add-link-${field}`)
-      addLinkForm.show()
+    $list.append(`<div class="input-group">
+          <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
+          <div class="input-group-button">
+          <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
+          </div></div>`)
+   })
 
-      $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
-    } else {
-      $list.append(`<div class="input-group">
-            <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
-            <div class="input-group-button">
-            <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
-            </div></div>`)
-    }
+  $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
+
+  $('.add-link__option').on('click', (event) => {
+    SHAREDFUNCTIONS.addLink(event)
+    $(event.target).parent().hide()
+    setTimeout(() => {
+      event.target.parentElement.removeAttribute('style')
+    }, 100)
   })
+
   $(document).on('click', '.channel-delete-button', function(){
     let field = $(this).data('field')
     let key = $(this).data('key')
@@ -258,7 +266,7 @@ jQuery(document).ready(function($) {
     let metaId = $(this).data('meta-id')
     let fieldKey = $(this).data('field-key')
 
-    $(this).closest('.link-section').remove()
+    $(this).closest('.input-group').remove()
 
     if (!metaId || metaId === "") {
       return
@@ -365,7 +373,6 @@ jQuery(document).ready(function($) {
   /**
    * Links
    */
-  $('.add-link-button').on('click', SHAREDFUNCTIONS.addLink)
 
   /**
    * user select typeahead
@@ -446,6 +453,9 @@ jQuery(document).ready(function($) {
       matcher: function (item) {
         return parseInt(item.ID) !== parseInt(post_id)
       },
+      filter: function (item) {
+        return parseInt(item.ID) !== parseInt(post_id)
+      },
       source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {field_key:field_id}),
       display: ["name", "label"],
       templateValue: function() {
@@ -477,11 +487,7 @@ jQuery(document).ready(function($) {
           }
         },
         href: function (item) {
-          if (listing_post_type === 'peoplegroups') {
-            return null;
-          } else {
-            return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
-          }
+          return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
         }
       },
       callback: {
@@ -634,6 +640,13 @@ jQuery(document).ready(function($) {
               $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
             }).catch(err => { console.error(err) })
           }
+        },
+        href: function (item) {
+          const postType = window.wpApiShare.post_type
+          const query =  window.SHAREDFUNCTIONS.createCustomFilter(field, [item.value])
+          const field_label = field_settings[field].name || field
+          const labels = [{ id: `${field}_${item.value}`, name: `${field_label}: ${item.value}`}]
+          return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
         }
       },
       callback: {
@@ -1056,10 +1069,11 @@ jQuery(document).ready(function($) {
         },
         href: function (item) {
           const postType = window.wpApiShare.post_type
-          const query =  window.SHAREDFUNCTIONS.createCustomFilter('tags', [item.name])
-          const labels = [{ id: `tags_${item.name}`, name: `Tags: ${item.name}`}]
+          const query =  window.SHAREDFUNCTIONS.createCustomFilter(field, [item.name])
+          const field_label = field_settings[field].name || field
+          const labels = [{ id: `${field}_${item.name}`, name: `${field_label}: ${item.name}`}]
           return window.SHAREDFUNCTIONS.create_url_for_list_query(postType, query, labels);
-        },
+        }
       },
       callback: {
         onClick: function (node, a, item, event) {
@@ -1121,9 +1135,9 @@ jQuery(document).ready(function($) {
   function resetDetailsFields(){
     window.lodash.forOwn( field_settings, (field_options, field_key)=>{
 
-      if ( field_options.tile === 'details' && !field_options.hidden && post[field_key]){
+      if ( field_options.tile === 'details' && !field_options.hidden && ( post[field_key] || field_options.type === 'boolean' ) ){
 
-        if ( field_options.only_for_types && ( field_options.only_for_types === true || field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
+        if ( field_options.only_for_types && field_options.only_for_types !== true && ( field_options.only_for_types.length > 0 && ( post["type"] && !field_options.only_for_types.includes(post["type"].key) ) ) ){
           return
         }
         let field_value = window.lodash.get( post, field_key, false )
@@ -1134,6 +1148,8 @@ jQuery(document).ready(function($) {
           values_html = window.lodash.escape( field_value )
         } else if ( field_options.type === 'date' ){
           values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
+        } else if ( field_options.type === 'boolean' ){
+          values_html = window.lodash.escape( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
         } else if ( field_options.type === 'key_select' ){
           values_html = window.lodash.escape( field_value.label )
         } else if ( field_options.type === 'multi_select' || field_options.type === 'tags' ){
@@ -1299,13 +1315,6 @@ jQuery(document).ready(function($) {
     $(document).find('.navigation-next').removeAttr('style').attr('style', 'display: none;');
   }
 
-  //leave at the end of this file
-  masonGrid.masonry({
-    itemSelector: '.grid-item',
-    percentPosition: true
-  });
-  //leave at the end of this file
-
   /**
    * Merging
    */
@@ -1348,6 +1357,50 @@ jQuery(document).ready(function($) {
     })
     $('#merge-with-post-modal').foundation('open');
   });
+
+  /**
+   * Custom Tile Display - [START]
+   */
+
+  $(document).on('click', '#hidden_tiles_section_show_but', function (e) {
+    $('.hidden-grid-item').removeClass('hidden-grid-item')
+    window.masonGrid.masonry('layout');
+
+    // Hide show hidden tiles section.
+    $('#hidden_tiles_section').fadeOut('fast');
+  });
+
+  init_hidden_tiles_section();
+
+  function init_hidden_tiles_section() {
+    let hidden_count = 0;
+    let hidden_tiles_section = $('#hidden_tiles_section');
+    let hidden_tiles_section_count = $('#hidden_tiles_section_count');
+
+    // First, determine the total number of hidden sections.
+    $('.custom-tile-section').each(function (idx, section) {
+      if ($(section).is(':hidden')) {
+
+        // Increment count accordingly, ensuring certain sections are ignored.
+        if (!window.lodash.includes(['details', 'status'], $(section).attr('id'))) {
+          hidden_count++;
+        }
+      }
+    });
+
+    // Display show hidden tiles option accordingly based on count.
+    hidden_tiles_section_count.html((hidden_count > 0) ? hidden_count : 0);
+    if (hidden_count === 0) {
+      hidden_tiles_section.fadeOut('fast');
+
+    } else {
+      hidden_tiles_section.fadeIn('fast');
+    }
+  }
+
+  /**
+   * Custom Tile Display - [END]
+   */
 
 })
 

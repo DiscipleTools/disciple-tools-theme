@@ -95,6 +95,39 @@ class Disciple_Tools_Workflows_Defaults {
     }
 
     private function build_default_workflows_contacts( &$workflows ) {
+        $dt_fields = DT_Posts::get_post_field_settings( 'contacts' );
+        if ( !isset( $dt_fields['milestones'] ) || !isset( $dt_fields['groups'] ) ) {
+            return;
+        }
+
+        $workflows[] = (object) [
+            'id'         => 'contacts_220808',
+            'name'       => 'Select In Church/Group Following Group Addition',
+            'enabled'    => false, // Can be enabled via admin view
+            'trigger'    => self::$trigger_updated['id'],
+            'conditions' => [
+                self::new_condition( self::$condition_is_set,
+                    [
+                        'id'    => 'groups',
+                        'label' => $dt_fields['groups']['name']
+                    ], [
+                        'id'    => '',
+                        'label' => ''
+                    ]
+                )
+            ],
+            'actions'    => [
+                self::new_action( self::$action_append,
+                    [
+                        'id'    => 'milestones',
+                        'label' => $dt_fields['milestones']['name']
+                    ], [
+                        'id'    => 'milestone_in_group',
+                        'label' => $dt_fields['milestones']['default']['milestone_in_group']['label']
+                    ]
+                )
+            ]
+        ];
     }
 
     private function build_default_workflows_groups( &$workflows ) {
@@ -223,7 +256,7 @@ class Disciple_Tools_Workflows_Defaults {
                             if ( ! $this->already_assigned_people_group( $post['people_groups'] ?? [], $connection['ID'] ) ) {
 
                                 // Prepare new people group for parent group addition
-                                $new_people_groups['people_groups']['values'][] = [ "value" => $connection['ID'] ];
+                                $new_people_groups['people_groups']['values'][] = [ 'value' => $connection['ID'] ];
                             }
                         }
                     }
