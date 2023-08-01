@@ -1,5 +1,5 @@
 jQuery(function () {
-  if (window.wpApiShare.url_path.startsWith('metrics/combined/date_range_activity')) {
+  if (window.wpApiShare.url_path.startsWith('metrics/records/date_range_activity')) {
     project_activity_during_date_range();
   }
 });
@@ -32,7 +32,7 @@ function project_activity_during_date_range() {
 
   const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options);
 
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
+  jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
 
   // Display initial controls.
   chartDiv.innerHTML = `

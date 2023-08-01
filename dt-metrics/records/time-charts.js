@@ -1,5 +1,5 @@
 jQuery(function() {
-    if (window.wpApiShare.url_path.startsWith( 'metrics/combined/time_charts' )) {
+    if (window.wpApiShare.url_path.startsWith( 'metrics/records/time_charts' )) {
         projectTimeCharts()
     }
 })
@@ -34,7 +34,7 @@ function projectTimeCharts() {
 
     const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options)
 
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
 
     chartDiv.innerHTML = `
         <div class="section-header"> ${title_time_charts} </div>
