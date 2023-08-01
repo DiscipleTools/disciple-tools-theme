@@ -146,7 +146,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
         /**
          * Set the base url for the mapping links to respond to.
          *
-         * @param $base_url (default is '
+         * @param $base_url
          *
          * @return string
          */

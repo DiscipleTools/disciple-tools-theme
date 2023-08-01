@@ -110,17 +110,6 @@ class Disciple_Tools_People_Groups_Base {
 
     public function dt_set_roles_and_permissions( $expected_roles ) {
 
-        if ( ! isset( $expected_roles['multiplier'] ) ) {
-            $expected_roles['multiplier'] = [
-                'label'       => __( 'Multiplier', 'disciple-tools-plugin-starter-template' ),
-                'description' => 'Interacts with Contacts and Groups',
-                'permissions' => [
-                    'list_all_' . $this->post_type => true,
-                    'view_any_' . $this->post_type => true
-                ]
-            ];
-        }
-
         // if the user can access contact they also can access this post type
         foreach ( $expected_roles as $role => $role_value ) {
             if ( isset( $role_value['permissions']['access_contacts'] ) && $role_value['permissions']['access_contacts'] ) {

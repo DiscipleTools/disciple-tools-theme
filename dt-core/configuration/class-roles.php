@@ -61,13 +61,13 @@ class Disciple_Tools_Roles
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_permissions' ], 100, 1 );
     } // End __construct()
 
-    public static function get_dt_roles_and_permissions(){
-        $cache = wp_cache_get( 'dt_roles_and_permissions', 'disciple_tools' );
-        if ( $cache ){
+    public static function get_dt_roles_and_permissions( $use_cache = true ){
+        $cache = wp_cache_get( 'dt_roles_and_permissions' );
+        if ( $cache && $use_cache ){
             return $cache;
         }
         $cache = apply_filters( 'dt_set_roles_and_permissions', [] );
-        wp_cache_set( 'dt_roles_and_permissions', $cache, 'disciple_tools' );
+        wp_cache_set( 'dt_roles_and_permissions', $cache );
         return $cache;
     }
 

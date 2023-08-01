@@ -16,7 +16,7 @@ function dt_setup_roles_and_permissions(){
     }
 
     $expected_roles_options = get_option( 'dt_options_roles_and_permissions', [] );
-    $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+    $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );
     $expected_roles = dt_array_merge_recursive_distinct( $expected_roles, $expected_roles_options );
     $dt_roles = array_map( function ( $a ){
         return array_keys( $a['permissions'] );
