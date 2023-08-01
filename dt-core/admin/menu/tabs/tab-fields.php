@@ -67,7 +67,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
     }
 
     public function post_type_select( $type ){
-        $this->box( 'top', 'Select Post type' );
+        $this->box( 'top', 'Select Record type' );
         global $wp_post_types;
         $post_types = DT_Posts::get_post_types();
         ?>

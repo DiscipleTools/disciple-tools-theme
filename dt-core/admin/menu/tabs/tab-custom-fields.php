@@ -1333,7 +1333,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <table>
                 <tr>
                     <td style="vertical-align: middle; min-width:250px">
-                        <?php esc_html_e( 'Post type', 'disciple_tools' ) ?>
+                        <?php esc_html_e( 'Record type', 'disciple_tools' ) ?>
                     </td>
                     <td>
                         <strong><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></strong>
