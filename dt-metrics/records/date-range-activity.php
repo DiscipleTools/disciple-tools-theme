@@ -40,7 +40,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             return;
         }
 
-        $this->title = __( 'Activity During Date Range', 'disciple_tools' );
+        $this->title = __( 'Field Activity', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
@@ -99,14 +99,14 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 ],
                 'translations'       => [
                     'title_date_range_activity' => $this->title,
-                    'post_type_select_label' => __( 'Post Type', 'disciple_tools' ),
+                    'post_type_select_label' => __( 'Record Type', 'disciple_tools' ),
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'post_field_select_any_activity_label' => __( 'Any Activity', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
                     'date_select_label' => __( 'Date Range', 'disciple_tools' ),
                     'submit_button_label' => __( 'Reload', 'disciple_tools' ),
                     'results_table_head_title_label' => __( 'Title', 'disciple_tools' ),
-                    'results_table_head_date_label' => __( 'Date', 'disciple_tools' ),
+                    'results_table_head_date_label' => __( 'Time Activity Recorded', 'disciple_tools' ),
                     'results_table_head_new_value_label' => __( 'New Value', 'disciple_tools' ),
                     'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                     'all_locations' => __( 'All Locations', 'disciple_tools' )
