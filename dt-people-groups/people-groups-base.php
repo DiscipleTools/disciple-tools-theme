@@ -135,6 +135,7 @@ class Disciple_Tools_People_Groups_Base {
             $expected_roles['administrator']['permissions'][ 'create_' . $this->post_type ]     = true;
             $expected_roles['administrator']['permissions'][ 'view_any_' . $this->post_type ]   = true;
             $expected_roles['administrator']['permissions'][ 'update_any_' . $this->post_type ] = true;
+            $expected_roles['administrator']['permissions'][ 'delete_any_' . $this->post_type ] = true;
             $expected_roles['administrator']['permissions']['edit_peoplegroups']                = true;
         }
         if ( isset( $expected_roles['dt_admin'] ) ) {
@@ -142,6 +143,7 @@ class Disciple_Tools_People_Groups_Base {
             $expected_roles['dt_admin']['permissions'][ 'create_' . $this->post_type ]     = true;
             $expected_roles['dt_admin']['permissions'][ 'view_any_' . $this->post_type ]   = true;
             $expected_roles['dt_admin']['permissions'][ 'update_any_' . $this->post_type ] = true;
+            $expected_roles['dt_admin']['permissions'][ 'delete_any_' . $this->post_type ] = true;
             $expected_roles['dt_admin']['permissions']['edit_peoplegroups']                = true;
         }
 
