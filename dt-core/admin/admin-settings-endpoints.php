@@ -403,7 +403,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $roles = $params['roles'];
 
             // Fetch existing roles and permissions.
-            $existing_roles_permissions = apply_filters( 'dt_set_roles_and_permissions', [] );
+            $existing_roles_permissions = Disciple_Tools_Roles::get_dt_roles_and_permissions();
 
             // Fetch existing custom roles.
             $existing_custom_roles = get_option( 'dt_custom_roles', [] );

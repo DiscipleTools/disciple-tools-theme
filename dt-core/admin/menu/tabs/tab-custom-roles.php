@@ -277,7 +277,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
             $this->show_error( $error );
             return false;
         }
-        $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+        $roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );
         $label = isset( $_POST['label'] ) ? sanitize_text_field( wp_unslash( $_POST['label'] ) ) : null;
         $description = isset( $_POST['description'] ) ? sanitize_text_field( wp_unslash( $_POST['description'] ) ) : null;
 
@@ -375,7 +375,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * Main view
      */
     private function show() {
-        $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+        $roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );
         ksort( $roles );
         $view_role = isset( $_GET['role'] ) ? sanitize_text_field( wp_unslash( $_GET['role'] ) ) : null;
         $this->box( 'top', __( 'Add or edit custom user roles.', 'disciple_tools' ) );
@@ -655,7 +655,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         $key = sanitize_text_field( wp_unslash( $_GET['role'] ) );
 
-        $roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+        $roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );
         if ( isset( $role[ $key ] ) ) {
             $this->show_error( new WP_Error( 400, 'Role not found.' ) );
             return;

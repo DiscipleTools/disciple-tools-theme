@@ -368,7 +368,7 @@ class Disciple_Tools_Post_Type_Template {
 //            'description' => sprintf( 'Access and update %s on the WP Admin site.', $this->plural ),
 //            'post_type' => $this->post_type
 //        ];
-        $capabilities['list_' .$this->post_type ] = [
+        $capabilities['list_all_' .$this->post_type ] = [
             'source' => $this->plural,
             'label' => 'Preview All',
             'description' => sprintf( 'The user can list all %s records, but not view record details. Useful in typeahead searches.', $this->singular ),
