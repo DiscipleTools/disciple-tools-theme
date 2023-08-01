@@ -71,19 +71,6 @@ class Disciple_Tools_Roles
         return $cache;
     }
 
-    public static function default_dt_role_keys(){
-        return [
-            'multiplier',
-            'user_manager',
-            'dt_admin',
-            'administrator',
-            'marketer',
-            'dispatcher',
-            'partner',
-            'strategist',
-        ];
-    }
-
     /**
      * Add custom roles to the roles array.
      * @param $expected_roles
@@ -110,48 +97,56 @@ class Disciple_Tools_Roles
             'label' => __( 'Multiplier', 'disciple_tools' ),
             'description' => 'Interacts with Contacts and Groups',
             'permissions' => array_merge( $all_user_caps ),
+            'type' => [ 'base' ],
             'order' => 5
         ];
         $expected_roles['dispatcher'] = [
             'label' => __( 'Dispatcher', 'disciple_tools' ),
             'description' => 'Monitor new D.T contacts and assign them to waiting Multipliers',
             'permissions' => array_merge( $all_user_caps, $metrics_caps ),
+            'type' => [ 'base', 'access' ],
             'order' => 20
         ];
         $expected_roles['partner'] = [
             'label' => __( 'Partner', 'disciple_tools' ),
             'description' => 'Allow access to a specific contact source so a partner can see progress',
             'permissions' => array_merge( $all_user_caps ),
+            'type' => [ 'base', 'access' ],
             'order' => 35
         ];
         $expected_roles['strategist'] = [
             'label' => __( 'Strategist', 'disciple_tools' ),
             'description' => 'View project metrics',
             'permissions' => array_merge( [ 'access_disciple_tools' => true ], $metrics_caps ),
+            'type' => [ 'support' ],
             'order' => 40
         ];
         $expected_roles['marketer'] = [
             'label' => __( 'Digital Responder', 'disciple_tools' ),
             'description' => 'Talk to leads online and report in D.T when Contacts are ready for follow-up',
             'permissions' => array_merge( $all_user_caps, $metrics_caps ),
+            'type' => [ 'base', 'access' ],
             'order' => 50
         ];
         $expected_roles['user_manager'] = [
             'label' => __( 'User Manager', 'disciple_tools' ),
             'description' => 'List, invite, promote and demote users',
             'permissions' => array_merge( $all_user_caps, $user_management_caps ),
+            'type' => [ 'base' ],
             'order' => 95
         ];
         $expected_roles['dt_admin'] = [
             'label' => __( 'Disciple.Tools Admin', 'disciple_tools' ),
             'description' => 'All D.T permissions',
             'permissions' => array_merge( $all_user_caps, $user_management_caps, $manage_dt_caps, $metrics_caps, $manage_role_caps ),
+            'type' => [ 'base' ],
             'order' => 98
         ];
         $expected_roles['administrator'] = [
             'label' => __( 'Administrator', 'disciple_tools' ),
             'description' => 'All D.T permissions plus the ability to manage plugins.',
             'permissions' => array_merge( $all_user_caps, $user_management_caps, $manage_dt_caps, $metrics_caps, $manage_role_caps ),
+            'type' => [ 'base' ],
             'order' => 100
         ];
 
@@ -168,7 +163,8 @@ class Disciple_Tools_Roles
                     'permissions' => $permissions,
                     'description' => $role['description'],
                     'is_editable' => $role['is_editable'] ?? true,
-                    'custom' => $role['custom'] ?? true
+                    'custom' => $role['custom'] ?? true,
+                    'type' => [ 'custom' ]
                 ];
             }
         }

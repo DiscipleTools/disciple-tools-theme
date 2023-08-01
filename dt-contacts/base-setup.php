@@ -85,11 +85,11 @@ class DT_Contacts_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-
-        $default_roles = Disciple_Tools_Roles::default_dt_role_keys();
-        foreach ( $default_roles as $role ){
-            $expected_roles[$role]['permissions']['access_contacts'] = true;
-            $expected_roles[$role]['permissions']['create_contacts'] = true;
+        foreach ( $expected_roles as $role_key => $role ){
+            if ( isset( $role['type'] ) && in_array( 'base', $role['type'], true ) ){
+                $expected_roles[$role_key]['permissions']['access_contacts'] = true;
+                $expected_roles[$role_key]['permissions']['create_contacts'] = true;
+            }
         }
 
         $expected_roles['administrator']['permissions']['dt_all_admin_contacts'] = true;

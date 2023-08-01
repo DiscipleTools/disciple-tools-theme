@@ -72,10 +72,10 @@ class DT_Groups_Base extends DT_Module_Base {
 
     public function dt_set_roles_and_permissions( $expected_roles ){
         // if the user can access contact they also can access group
-        foreach ( $expected_roles as $role => $role_value ){
-            if ( isset( $expected_roles[$role]['permissions']['access_contacts'] ) && $expected_roles[$role]['permissions']['access_contacts'] ){
-                $expected_roles[$role]['permissions']['access_' . $this->post_type] = true;
-                $expected_roles[$role]['permissions']['create_' . $this->post_type] = true;
+        foreach ( $expected_roles as $role_key => $role ){
+            if ( isset( $role['type'] ) && in_array( 'base', $role['type'], true ) ){
+                $expected_roles[$role_key]['permissions']['access_' . $this->post_type] = true;
+                $expected_roles[$role_key]['permissions']['create_' . $this->post_type] = true;
             }
         }
 
