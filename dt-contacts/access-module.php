@@ -49,6 +49,31 @@ class DT_Contacts_Access extends DT_Module_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
+        $base_contacts_permissions = [ 'access_contacts' => true, 'create_contacts' => true ];
+        $all_user_caps = Disciple_Tools_Roles::default_user_caps();
+        $metrics_caps = Disciple_Tools_Roles::default_all_metrics_caps();
+        $expected_roles['dispatcher'] = [
+            'label' => __( 'Dispatcher', 'disciple_tools' ),
+            'description' => 'Monitor new D.T contacts and assign them to waiting Multipliers',
+            'permissions' => array_merge( $base_contacts_permissions, $all_user_caps, $metrics_caps ),
+            'type' => [ 'base', 'access' ],
+            'order' => 20
+        ];
+        $expected_roles['partner'] = [
+            'label' => __( 'Partner', 'disciple_tools' ),
+            'description' => 'Allow access to a specific contact source so a partner can see progress',
+            'permissions' => array_merge( $base_contacts_permissions, $all_user_caps ),
+            'type' => [ 'base', 'access' ],
+            'order' => 35
+        ];
+        $expected_roles['marketer'] = [
+            'label' => __( 'Digital Responder', 'disciple_tools' ),
+            'description' => 'Talk to leads online and report in D.T when Contacts are ready for follow-up',
+            'permissions' => array_merge( $base_contacts_permissions, $all_user_caps, $metrics_caps ),
+            'type' => [ 'base', 'access' ],
+            'order' => 50
+        ];
+
         $expected_roles['marketer']['permissions']['access_specific_sources'] = true;
         $expected_roles['marketer']['permissions']['assign_any_contacts'] = true;
         $expected_roles['partner']['permissions']['access_specific_sources'] = true;

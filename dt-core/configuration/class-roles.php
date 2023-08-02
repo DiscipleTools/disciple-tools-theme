@@ -100,33 +100,12 @@ class Disciple_Tools_Roles
             'type' => [ 'base' ],
             'order' => 5
         ];
-        $expected_roles['dispatcher'] = [
-            'label' => __( 'Dispatcher', 'disciple_tools' ),
-            'description' => 'Monitor new D.T contacts and assign them to waiting Multipliers',
-            'permissions' => array_merge( $all_user_caps, $metrics_caps ),
-            'type' => [ 'base', 'access' ],
-            'order' => 20
-        ];
-        $expected_roles['partner'] = [
-            'label' => __( 'Partner', 'disciple_tools' ),
-            'description' => 'Allow access to a specific contact source so a partner can see progress',
-            'permissions' => array_merge( $all_user_caps ),
-            'type' => [ 'base', 'access' ],
-            'order' => 35
-        ];
         $expected_roles['strategist'] = [
             'label' => __( 'Strategist', 'disciple_tools' ),
             'description' => 'View project metrics',
             'permissions' => array_merge( [ 'access_disciple_tools' => true ], $metrics_caps ),
             'type' => [ 'support' ],
             'order' => 40
-        ];
-        $expected_roles['marketer'] = [
-            'label' => __( 'Digital Responder', 'disciple_tools' ),
-            'description' => 'Talk to leads online and report in D.T when Contacts are ready for follow-up',
-            'permissions' => array_merge( $all_user_caps, $metrics_caps ),
-            'type' => [ 'base', 'access' ],
-            'order' => 50
         ];
         $expected_roles['user_manager'] = [
             'label' => __( 'User Manager', 'disciple_tools' ),
