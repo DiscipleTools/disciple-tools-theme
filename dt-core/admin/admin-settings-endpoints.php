@@ -1126,12 +1126,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $custom_field['default_name'] = self::get_default_field_name( $post_type, $field_key );
             }
 
-            // Field privacy
-            $custom_field['private'] = false;
-            if ( isset( $post_submission['field_private'] ) && $post_submission['field_private'] ) {
-                $custom_field['private'] = true;
-            }
-
             // Field tile
             if ( isset( $post_submission['tile_select'] ) ) {
                 $custom_field['tile'] = $post_submission['tile_select'];
