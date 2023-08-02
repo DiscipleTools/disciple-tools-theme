@@ -58,7 +58,6 @@ class Disciple_Tools_Metrics{
                     }
                     if ( !empty( $modules['access_module']['enabled'] ) ){
                         require_once( get_template_directory() . '/dt-metrics/contacts/mapbox-maps.php' );
-                        require_once( get_template_directory() . '/dt-metrics/contacts/dynamic-records-map.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/sources.php' );
                         require_once( get_template_directory() . '/dt-metrics/contacts/overview.php' );
                     }
@@ -76,6 +75,7 @@ class Disciple_Tools_Metrics{
 
                     /* Record Types */
                     require_once( get_template_directory() . '/dt-metrics/records/generation-tree.php' );
+                    require_once( get_template_directory() . '/dt-metrics/records/dynamic-records-map.php' );
                 }
                 if ( !empty( $modules['access_module']['enabled'] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );

@@ -7,7 +7,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'contacts'; // lowercase
+    public $base_slug = 'records'; // lowercase
     public $base_title;
     public $post_type = 'contacts';
     public $post_types = [];
@@ -16,9 +16,9 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public $title;
     public $slug = 'dynamic_records_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = '/dt-metrics/contacts/dynamic-records-map.js'; // should be full file name plus extension
+    public $js_file_name = '/dt-metrics/records/dynamic-records-map.js'; // should be full file name plus extension
     public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
-    public $namespace = 'dt-metrics/contacts';
+    public $namespace = 'dt-metrics/records';
     public $base_filter = [ 'type' => [ 'access' ] ];
 
     public function __construct() {
@@ -26,17 +26,37 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Dynamic Records Map', 'disciple_tools' );
+        $this->title = __( 'Records Map', 'disciple_tools' );
         $this->base_title = __( 'Contacts', 'disciple_tools' );
 
         // Build post types array, ignoring some for now.
         // TODO: Only select post types with valid location field types!
         $post_types = DT_Posts::get_post_types();
-        $post_types = array_values( array_diff( $post_types, [ 'contacts', 'peoplegroups' ] ) );
+        $post_types = array_values( array_diff( $post_types, [ 'peoplegroups' ] ) );
         $this->post_types = $post_types;
         $this->post_type_options = [];
         foreach ( $post_types as $post_type ){
-            $this->post_type_options[$post_type] = DT_Posts::get_label_for_post_type( $post_type );
+            $field_settings = [];
+            foreach ( DT_Posts::get_post_field_settings( $post_type ) ?? [] as $field_key => $field_setting ){
+                if ( isset( $field_setting['type'] ) && in_array( $field_setting['type'], [ 'key_select', 'multi_select', 'user_select' ] ) ){
+                    if ( ( isset( $field_setting['hidden'] ) && $field_setting['hidden'] ) || ( isset( $field_setting['private'] ) && $field_setting['private'] ) ){
+                        continue;
+                    } else {
+                        $field_settings[$field_key] = [
+                            'key' => $field_key,
+                            'type' => $field_setting['type'],
+                            'name' => $field_setting['name'],
+                            'default' => $field_setting['default'] ?? []
+                        ];
+                    }
+                }
+            }
+
+            $this->post_type_options[$post_type] = [
+                'post_type' => $post_type,
+                'label' => DT_Posts::get_label_for_post_type( $post_type ),
+                'fields' => $field_settings
+            ];
         }
 
         $url_path = dt_get_url_path( true );
@@ -58,13 +78,13 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
         );
-        $field_settings = DT_Posts::get_post_field_settings( $this->post_type );
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'translations' => [
                     'add_records' => [
                         'title' => __( 'Add Records', 'disciple_tools' ),
-                        'post_types_title' => __( 'Post Types', 'disciple_tools' )
+                        'post_types_title' => __( 'Post Types', 'disciple_tools' ),
+                        'layer_tab_button_title' => __( 'Layer', 'disciple_tools' )
                     ]
                 ],
                 'settings' => [
@@ -82,8 +102,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                     'post_type_rest_url' => 'post_type_geojson',
                     'totals_rest_url' => 'get_grid_totals',
                     'list_by_grid_rest_url' => 'get_list_by_grid_id',
-                    'points_rest_url' => 'points_geojson',
-                    'split_by' => [ 'overall_status' => $field_settings['overall_status'] ],
+                    'points_rest_url' => 'points_geojson'
                 ],
             ]
         );
@@ -142,12 +161,16 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
 
+        $response = [];
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( !empty( $params['post_type'] ) ){
-            return Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'] );
+            $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params );
         }
 
-        return [ 'hello-world' ];
+        return [
+            'request' => $params,
+            'response' => $response
+        ];
     }
 
     public function cluster_geojson( WP_REST_Request $request ) {

@@ -7,6 +7,7 @@ let mapbox_library_api = {
   title: window.dt_mapbox_metrics.settings.title,
   map: null,
   spinner: null,
+  map_query_layer_payloads: {},
   setup_container: function (){
     if ( this.container_set_up ){ return; }
     if ( typeof window.dt_mapbox_metrics.settings === 'undefined' ) { return; }
@@ -21,13 +22,6 @@ let mapbox_library_api = {
 
       return;
     }
-
-    // Auto-generate and map colours to identified post types.
-    mapbox_library_api.post_type_colors = {}
-    jQuery.each(this.obj.settings.post_types, function (idx, post_type) {
-      mapbox_library_api.post_type_colors[idx] = '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
-    });
-    console.log(mapbox_library_api.post_type_colors);
 
     // Proceed with html generation.
     chart.empty().html(spinner_html);
@@ -67,10 +61,6 @@ let mapbox_library_api = {
                 id="area">
                 <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/location_shape.svg">
               </button>
-              <button class="button small select-button ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
-                id="add_records" style="width: 36px !important; height: 36px !important;">
-                <i class="mdi mdi-earth-plus" style="font-size: 25px;"></i>
-              </button>
             </div>
           </div>
         </div>
@@ -93,12 +83,18 @@ let mapbox_library_api = {
 
                               let html = ``;
                               jQuery.each(obj.settings.post_types, function(idx, post_type){
-                                html += `<option value="${window.lodash.escape(idx)}">${window.lodash.escape(post_type)}</option>`;
+                                html += `<option value="${window.lodash.escape(idx)}">${window.lodash.escape(post_type['label'])}</option>`;
                               });
 
                               return html;
                             })(this.obj)}
                           </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="add_records_div_content_post_type_fields"></select>
+                            <div id="add_records_div_content_post_type_field_values" style="overflow: auto; max-height: 200px;"></div>
                         </td>
                     </tr>
                 </tbody>
@@ -112,8 +108,34 @@ let mapbox_library_api = {
           </div>
         </div>
       </div>
-    `)
-    this.spinner = $("#spinner")
+    `);
+
+    // Setup add records div content initial field states.
+    let add_records_div_content_post_type = $('#add_records_div_content_post_type');
+    let add_records_div_content_post_type_fields = $('#add_records_div_content_post_type_fields');
+    let add_records_div_content_post_type_field_values = $('#add_records_div_content_post_type_field_values');
+    $(add_records_div_content_post_type_fields).empty().html(mapbox_library_api.add_records_build_post_type_field_select_options($(add_records_div_content_post_type).val()));
+    mapbox_library_api.add_records_refresh_post_type_field_value_entry_element($(add_records_div_content_post_type).val(), $(add_records_div_content_post_type_fields).val());
+
+    // Assign add records div content initial field event listeners.
+    $(add_records_div_content_post_type).on('change', function (e) {
+      let selected_post_type = $(this).val();
+      $(add_records_div_content_post_type_field_values).fadeOut('fast', function () {
+        $(add_records_div_content_post_type_fields).fadeOut('fast', function () {
+          $(add_records_div_content_post_type_fields).empty().html(mapbox_library_api.add_records_build_post_type_field_select_options(selected_post_type));
+          $(add_records_div_content_post_type_fields).fadeIn('fast', function () {
+            $(add_records_div_content_post_type_fields).trigger('change');
+          });
+        });
+      });
+    });
+
+    $(add_records_div_content_post_type_fields).on('change', function (e) {
+      mapbox_library_api.add_records_refresh_post_type_field_value_entry_element($(add_records_div_content_post_type).val(), $(this).val());
+    });
+
+    // Reference map spinner.
+    this.spinner = $("#spinner");
 
     //set_info_boxes
     let map_wrapper = jQuery('#map-wrapper')
@@ -122,16 +144,11 @@ let mapbox_library_api = {
       jQuery('.legend').css( 'width', map_wrapper.innerWidth() - 20 )
     });
 
-    mapbox_library_api.setup_map_type()
-
+    mapbox_library_api.setup_map_type();
 
     $('#map-type button').on('click', function (e) {
       let id = $(this).attr('id');
       switch (id) {
-        case 'add_records': {
-          jQuery('#add_records_div').show();
-          break;
-        }
         default: {
           $('#map-type button').removeClass("selected-select-button").addClass("empty-select-button");
           $(this).addClass("selected-select-button");
@@ -147,46 +164,71 @@ let mapbox_library_api = {
       let id = $(this).attr('id');
       switch (id) {
         case 'add_records_request': {
-          let post_type = $('#add_records_div_content_post_type').val();
-          console.log(post_type);
-          makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, {
-            'post_type': post_type
-          }, mapbox_library_api.obj.settings.rest_base_url)
+          let payload = mapbox_library_api.add_records_capture_state_snapshot_payload();
+          console.log(payload);
+
+          makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, payload, mapbox_library_api.obj.settings.rest_base_url)
           .done(response => {
-            if (response && mapbox_library_api.map) {
+            if (response && response.request && response.response && mapbox_library_api.map) {
 
               console.log(response);
               console.log(mapbox_library_api.map);
 
-              // Remove existing post type layer source.
-              let post_type_source_key = `dt-maps-${post_type}-source`;
-              let post_type_source = mapbox_library_api.map.getSource(post_type_source_key);
-              if (typeof post_type_source !== 'undefined') {
-                mapbox_library_api.map.removeSource(post_type_source_key);
+              // Remove existing query layer sources.
+              let query_source_key = `dt-maps-${response.request.id}-source`;
+              let query_layer_key = `dt-maps-${response.request.id}-layer`;
+
+              let query_layer = mapbox_library_api.map.getLayer(query_layer_key);
+              if (typeof query_layer !== 'undefined') {
+                mapbox_library_api.map.removeLayer(query_layer_key);
               }
 
-              // Refresh post type layer source.
-              mapbox_library_api.map.addSource(post_type_source_key, {
+              let query_source = mapbox_library_api.map.getSource(query_source_key);
+              if (typeof query_source !== 'undefined') {
+                mapbox_library_api.map.removeSource(query_source_key);
+              }
+
+              // TODO: Maybe only capture if we have features to display!
+
+              // Refresh query layer source.
+              mapbox_library_api.map.addSource(query_source_key, {
                 type: 'geojson',
-                data: response,
+                data: response.response,
                 cluster: true,
                 clusterMaxZoom: 14,
                 clusterRadius: 50
               });
 
-              // Add corresponding post type layers.
+              // Add corresponding query layer.
+              let layer_color = mapbox_library_api.add_records_generate_hex_color();
               mapbox_library_api.map.addLayer({
-                id: 'dt-maps-unclustered-' + post_type,
+                id: query_layer_key,
                 type: 'circle',
-                source: post_type_source_key,
+                source: query_source_key,
                 filter: ['!', ['has', 'point_count']],
                 paint: {
-                  'circle-color': mapbox_library_api.post_type_colors[post_type] ? mapbox_library_api.post_type_colors[post_type] : '#005700',
+                  'circle-color': layer_color,
                   'circle-radius': 12,
                   'circle-stroke-width': 1,
                   'circle-stroke-color': '#fff'
                 }
               });
+
+              // Create a corresponding layers tab button.
+              let map_layers_tab = $('#map_layers_tab');
+              let map_layers_tab_button_html = `
+              <button
+                class="button map-layers-tab-button"
+                style="background-color: ${layer_color} !important;"
+                data-query_id="${response.request.id}">
+                ${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${$(map_layers_tab).children().length + 1}
+              </button>`;
+              $(map_layers_tab).append(map_layers_tab_button_html);
+
+              // Persist query layer payload details.
+              mapbox_library_api.map_query_layer_payloads[response.request.id] = response.request;
+              // TODO: Persist query payload id and query payload within cookies.....
+              // Ensure payload query body is captured, to ensure it persists beyond browser refreshes.
             }
           });
           break;
@@ -197,38 +239,157 @@ let mapbox_library_api = {
       }
     });
 
-    if ( mapbox_library_api.obj.settings.split_by ){
-      window.lodash.forOwn( mapbox_library_api.obj.settings.split_by, (field_values, field_key)=>{
-        let options_html = ``
-        window.lodash.forOwn(field_values.default, (option, option_key)=>{
-          options_html += `<button class="button small select-button selected-select-button" data-key="${window.lodash.escape(option_key)}" id=${window.lodash.escape(field_key)}_${window.lodash.escape(option_key)}>
-            ${window.lodash.escape(option.label)}
-          </button>`
-        })
-        let split_by_html = `
-          <div id="${field_key}" class="border-left map-option-buttons">
-            ${window.lodash.escape(field_values.name)}:
-            ${options_html}
-          </div>
-        `
-        $('#legend-bar').append(split_by_html)
-        $(`#${field_key} button`).on('click', function (e){
-          $(this).toggleClass("selected-select-button")
-          $(this).toggleClass("empty-select-button")
+    // Create query layers placeholder div.
+    let legend_bar = $('#legend-bar');
+    $(legend_bar).append(`<div id="map_layers_tab" class="border-left"></div>`);
 
-          let ar = [];
-          $(`#${field_key} button`).each((index, button)=>{
-            if ( !$(button).hasClass("empty-select-button")){
-              ar.push($(button).data('key'))
-            }
-          })
-          let query = { [field_key]: ar}
-          mapbox_library_api.query_args = query
-          mapbox_library_api.setup_map_type()
-        })
-      })
+    // Append additional map controls.
+    let map_controls_html = `
+    <div id="map_controls" class="border-left">
+        <button class="button small select-button empty-select-button"
+          id="add_records" style="width: 36px !important; height: 36px !important; padding-top: 5px !important; padding-left: 5px !important;">
+          <i class="mdi mdi-earth-plus" style="font-size: 25px;"></i>
+        </button>
+    </div>`;
+    $(legend_bar).append(map_controls_html);
+
+    // Activate click event listeners for map controls.
+    $('#map_controls button').on('click', function (e) {
+      let id = $(this).attr('id');
+      switch (id) {
+        case 'add_records': {
+          jQuery('#add_records_div').show();
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+
+    // Activate click event listeners for map layer tab buttons.
+    $(document).on('click', '.map-layers-tab-button', function (e) {
+      let query_payload_id = $(this).data('query_id');
+      let query_payload = mapbox_library_api.map_query_layer_payloads[query_payload_id];
+
+      console.log(query_payload_id);
+      console.log(query_payload);
+
+      // TODO: Display Add Records modal window in edit mode with required functionality.
+    });
+
+  },
+  add_records_build_post_type_field_select_options: function (post_type) {
+    console.log(post_type);
+    let field_setting = mapbox_library_api.obj.settings.post_types[post_type]['fields'];
+    console.log(field_setting);
+    if (field_setting) {
+      const unescapedOptions = Object.entries(field_setting)
+      .reduce((options, [key, setting]) => {
+        options[key] = setting.name
+        return options
+      }, {});
+
+      const postFieldOptions = window.SHAREDFUNCTIONS.escapeObject(unescapedOptions);
+      const sortedOptions = Object.entries(postFieldOptions).sort(([key1, value1], [key2, value2]) => {
+        if (value1 < value2) return -1
+        if (value1 === value2) return 0
+        if (value1 > value2) return 1
+      });
+
+      return sortedOptions.map(([value, label]) => `
+        <option value="${value}"> ${window.lodash.escape(label)} </option>
+    `);
+    } else {
+      return '';
+    }
+  },
+  add_records_refresh_post_type_field_value_entry_element: function (post_type, field_key) {
+    let field_settings = mapbox_library_api.obj.settings.post_types[post_type]['fields'][field_key];
+    if (field_settings && field_settings['type']) {
+      let field_type = field_settings['type'];
+      let field_default = field_settings['default'] ? field_settings['default'] : [];
+      let entry_div = $('#add_records_div_content_post_type_field_values');
+      $(entry_div).empty();
+
+      // Generate entry element accordingly based on field type.
+      $(entry_div).fadeOut('fast', function () {
+        switch (field_type) {
+          case 'key_select':
+          case 'multi_select': {
+            let option_html = ``;
+            $.each(field_default, function (key, option) {
+              option_html += `
+              <label>
+                <input type="checkbox" value="${key}" class="add-records-div-content-post-type-field-values-checkbox" />
+                ${window.lodash.escape(option['label'])}
+              </label>`;
+            });
+
+            $(entry_div).html(option_html);
+            $(entry_div).fadeIn('fast');
+            break;
+          }
+          case 'user_select': {
+            // TODO.........
+            break;
+          }
+        }
+      });
+    }
+  },
+  add_records_capture_state_snapshot_payload: function () {
+    let post_type = $('#add_records_div_content_post_type').val();
+    let field_key = $('#add_records_div_content_post_type_fields').val();
+    let field_values_div = $('#add_records_div_content_post_type_field_values');
+    let field_settings = mapbox_library_api.obj.settings.post_types[post_type]['fields'][field_key];
+
+    let payload = {
+      'post_type': post_type,
+      'field_key': field_key
+    };
+
+    if (field_settings && field_settings['type']) {
+      let field_type = field_settings['type'];
+
+      payload['field_type'] = field_type;
+      payload['field_values'] = [];
+
+      // Accordingly extract field values.
+      switch (field_type) {
+        case 'key_select':
+        case 'multi_select': {
+          $(field_values_div).find('.add-records-div-content-post-type-field-values-checkbox:checked').each(function () {
+            payload['field_values'].push($(this).val());
+          });
+          break;
+        }
+      }
     }
 
+    // Generate unique id, based on payload shape.
+    payload['id'] = mapbox_library_api.add_records_generate_captured_state_snapshot_payload_id(payload);
+
+    return payload;
+  },
+  add_records_generate_captured_state_snapshot_payload_id: function (payload) {
+    let seed = payload.post_type + payload.field_key;
+    $.each(payload.field_values, function (idx, value) {
+      seed += value;
+    });
+
+    // Hash seed id.
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      let char = seed.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+
+    return '' + hash;
+  },
+  add_records_generate_hex_color: function () {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
   },
   setup_map_type: function (){
     // init map
@@ -392,8 +553,6 @@ jQuery(document).on('click', '.close-details', function() {
 jQuery(document).on('click', '.close-add-records-div', function () {
   jQuery('#add_records_div').hide();
 });
-
-
 
 let cluster_map = {
   default_setup: async function (){
@@ -758,7 +917,6 @@ let area_map = {
 mapbox_library_api.cluster_map = cluster_map
 mapbox_library_api.area_map = area_map
 window.mapbox_library_api = mapbox_library_api;
-
 
 jQuery(document).ready(function($) {
   window.mapbox_library_api.setup_container()

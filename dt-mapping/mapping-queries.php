@@ -1297,15 +1297,42 @@ class Disciple_Tools_Mapping_Queries {
         return $new_data;
     }
 
-    public static function post_type_geojson( $post_type, $query = [] ){
+    public static function post_type_geojson( $post_type, $args = [] ){
         global $wpdb;
 
         //phpcs:disable
-        $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
-            FROM $wpdb->dt_location_grid_meta AS lgm
-            JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
-            WHERE lgm.post_type = %s", $post_type ), ARRAY_A );
+        if ( !empty( $args['field_key'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
+            $prepared_query = $wpdb->prepare( "
+                SELECT DISTINCT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                  FROM $wpdb->dt_location_grid_meta AS lgm
+                  JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+                  LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
+                  WHERE lgm.post_type = %s
+                  AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ),
+                $post_type, $args['field_key'] );
+
+        } elseif ( $args['field_type'] == 'user_select' ){
+            $prepared_query = $wpdb->prepare("
+                SELECT DISTINCT lgm.label AS address, u.display_name AS name, lgm.post_id, lgm.lng, lgm.lat
+                  FROM $wpdb->dt_location_grid_meta AS lgm
+                  JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
+                  WHERE lgm.post_type = %s", 'users');
+
+            /*
+             * TODO:
+             *  - Maybe filter on current workload statuses?
+             *  - Convert user id to actual corresponding post id.
+             */
+
+        } else {
+            $prepared_query = $wpdb->prepare( "
+                SELECT DISTINCT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                    FROM $wpdb->dt_location_grid_meta AS lgm
+                    JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+                    WHERE lgm.post_type = %s", $post_type );
+        }
+
+        $results = $wpdb->get_results( $prepared_query, ARRAY_A );
         //phpcs:enable
 
         return self::format_results( $results, $post_type );
