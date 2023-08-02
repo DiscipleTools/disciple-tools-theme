@@ -402,7 +402,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                         continue;
                     }
                     $is_active = $key === $view_role;
-                    $editable = !empty( $role['custom'] ) && current_user_can( 'edit_roles' );
+                    $editable = ( !isset( $role['is_editable'] ) || !empty( $role['is_editable'] ) ) && current_user_can( 'edit_roles' );
                     ?>
                     <tr class="<?php echo $is_active ? 'active' : '' ?>"
                         id="role-<?php echo esc_attr( $key ) ?>">
@@ -559,7 +559,12 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * @param $key
      */
     private function view_edit_role( $key ) {
-        $role = get_option( self::OPTION_NAME, [] )[ $key ];
+        $role = get_option( self::OPTION_NAME, [] )[ $key ] ?? null;
+        if ( empty( $role ) ) {
+            $all_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+            $role = $all_roles[$key];
+            $role['capabilities'] = array_keys( $role['permissions'] );
+        }
         $label = $role['label'];
         $description = $role['description'];
 
