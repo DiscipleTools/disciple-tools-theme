@@ -495,3 +495,13 @@
     height: 3em;
     padding-left: 12px;
 }
+
+.help-icon {
+    width: 15px;
+}
+.ui-tooltip {
+    z-index: 100000000;
+}
+.ui-tooltip {
+    white-space: pre-line;
+}
