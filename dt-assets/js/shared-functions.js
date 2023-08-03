@@ -574,6 +574,23 @@ window.SHAREDFUNCTIONS = {
     }
     return "";
   },
+  get_json_cookies_by_regex(regex) {
+    let decoded_cookies = decodeURIComponent(document.cookie);
+    let cookies = [];
+    jQuery.each(decoded_cookies.split(";"), function (idx, ca) {
+      try {
+        let cookie = ca.trim();
+        if (regex.test(cookie)) {
+          let json = cookie.substring((cookie.match(regex)[0] + '=').length);
+          cookies.push(JSON.parse(json));
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+
+    return cookies;
+  },
   get_json_cookie(cname, default_val = []) {
     let cookie = this.getCookie(cname);
     try {
@@ -581,12 +598,18 @@ window.SHAREDFUNCTIONS = {
     } catch (e) {}
     return default_val;
   },
-  save_json_cookie(cname, json, path = "") {
+  save_json_cookie(cname, json, path = "", expires = "") {
     if (path) {
       path = window.location.pathname.split(path)[0] + path;
       path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
     }
-    document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
+
+    let args = ``;
+    if (expires) {
+      args += `;expires=${expires}`;
+    }
+
+    document.cookie = `${cname}=${JSON.stringify(json)};path=${path}${args}`;
   },
   createCustomFilter(field, value) {
     return ({

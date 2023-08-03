@@ -84,7 +84,8 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                     'add_records' => [
                         'title' => __( 'Add Records', 'disciple_tools' ),
                         'post_types_title' => __( 'Post Types', 'disciple_tools' ),
-                        'layer_tab_button_title' => __( 'Layer', 'disciple_tools' )
+                        'layer_tab_button_title' => __( 'Layer', 'disciple_tools' ),
+                        'confirm_delete_layer' => __( 'Are you sure you wish to delete layer?', 'disciple_tools' )
                     ]
                 ],
                 'settings' => [
