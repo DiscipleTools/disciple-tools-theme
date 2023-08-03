@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-07-14T10:46:35+00:00\n"
+"POT-Creation-Date: 2023-07-31T11:38:38+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Tamil <https://translate.disciple.tools/projects/disciple-"
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "கோரிக்கையைச் சமர்ப்பிக்கவும்"
 
-#: 403.php:55 archive-template.php:847 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:861 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -85,7 +85,7 @@ msgid "Cancel"
 msgstr "ரத்துசெய்"
 
 #: 403.php:59 archive-template.php:388 archive-template.php:430
-#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:154
+#: archive-template.php:885 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -331,92 +331,106 @@ msgstr "புதுப்பிப்பு"
 msgid "Make Selections Below"
 msgstr "கீழே தேர்வு செய்யவும்"
 
-#: archive-template.php:661 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:638 dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:208
+#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
+msgid "Delete"
+msgstr "அழி"
+
+#: archive-template.php:641 dt-assets/functions/enqueue-scripts.php:326
+#, fuzzy
+#| msgid "Make Selections Below"
+msgid "Delete Selections Below"
+msgstr "கீழே தேர்வு செய்யவும்"
+
+#: archive-template.php:675 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "பெயர்"
 
-#: archive-template.php:672
+#: archive-template.php:686
 msgid "Loading..."
 msgstr "ஏற்றுகிறது ..."
 
-#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:369
+#: archive-template.php:691 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "அதிகமாக ஏற்று"
 
-#: archive-template.php:689
+#: archive-template.php:703
 msgid "Field Name"
 msgstr "புலத்தின் பெயர்"
 
-#: archive-template.php:745
+#: archive-template.php:759
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "தேட தட்டச்சு செய்க"
 
-#: archive-template.php:754
+#: archive-template.php:768
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s உடன் அனைத்து %1$s"
 
-#: archive-template.php:757
+#: archive-template.php:771
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s இல்லாமல் அனைத்து %1$s"
 
-#: archive-template.php:764
+#: archive-template.php:778
 msgid "Filter for subassigned OR Assigned To"
 msgstr "நியமிக்கப்பட்ட அல்லது ஒதுக்கப்பட்டவருக்கான வடிகட்டி"
 
-#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:787 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "உருவாக்கும் தேதி"
 
-#: archive-template.php:780 archive-template.php:787
+#: archive-template.php:794 archive-template.php:801
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "எதுவும் அமைக்கப்படவில்லை"
 
-#: archive-template.php:801 archive-template.php:802
+#: archive-template.php:815 archive-template.php:816
 #: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
-#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
+#: dt-metrics/records/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "இல்லை"
 
-#: archive-template.php:808 archive-template.php:809
+#: archive-template.php:822 archive-template.php:823
 #: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
-#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
+#: dt-metrics/records/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "ஆம்"
 
-#: archive-template.php:813
+#: archive-template.php:827
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "வரம்பு தொடக்கம்"
 
-#: archive-template.php:816 archive-template.php:827
+#: archive-template.php:830 archive-template.php:841
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "அழி"
 
-#: archive-template.php:823
+#: archive-template.php:837
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "வரம்பு முடிவு"
 
-#: archive-template.php:855
+#: archive-template.php:869
 msgid "Filter Name"
 msgstr "வடிகட்டி பெயர்"
 
-#: archive-template.php:860
+#: archive-template.php:874
 msgid "Filter Records"
 msgstr "பதிவுகளை வடிகட்டவும்"
 
-#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:878 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -496,13 +510,13 @@ msgid "Share"
 msgstr "பகிர்"
 
 #: dt-assets/functions/enqueue-scripts.php:112
-#: dt-metrics/combined/date-range-activity.php:111
+#: dt-metrics/records/date-range-activity.php:111
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "கவனம் செலுத்தும் பகுதிகள்"
 
 #: dt-assets/functions/enqueue-scripts.php:113
-#: dt-metrics/combined/date-range-activity.php:112
+#: dt-metrics/records/date-range-activity.php:112
 #: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "எல்லா இடங்களும்"
@@ -540,14 +554,6 @@ msgstr "உங்களிடம் படிக்காத அறிவிப�
 #: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "உங்களிடம் எந்த அறிவிப்புகளும் இல்லை"
-
-#: dt-assets/functions/enqueue-scripts.php:174
-#: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:273
-#: dt-assets/functions/enqueue-scripts.php:313
-#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
-msgid "Delete"
-msgstr "அழி"
 
 #: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
@@ -713,26 +719,26 @@ msgstr "அனைத்தும்"
 msgid "Without"
 msgstr "இல்லாமல்"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "அனுப்பப்பட்டது"
 
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "அனுப்பப்படவில்லை (செல்லுபடியாகும் மின்னஞ்சல் விடுபட்டிருக்கலாம்)"
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "Exclude Item"
 msgstr "உருப்படியை விலக்கு"
 
-#: dt-assets/functions/enqueue-scripts.php:349 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:354 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "தொடர்பு கொள்ளுங்கள்"
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:355
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1310,8 +1316,9 @@ msgid "Revert Activity"
 msgstr "செயல்பாட்டை மாற்றவும்"
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/combined/date-range-activity.php:103
-#: dt-metrics/combined/time-charts.php:109
+#: dt-metrics/records/date-range-activity.php:103
+#: dt-metrics/records/generation-tree.php:92
+#: dt-metrics/records/time-charts.php:109
 msgid "Field"
 msgstr "புலம்"
 
@@ -1712,7 +1719,7 @@ msgid "Accepted"
 msgstr "ஏற்றுக்கொள்ளப்பட்டது"
 
 #: dt-contacts/access-module.php:294 dt-contacts/base-setup.php:575
-#: dt-metrics/metrics.php:87 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:90 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1879,7 +1886,7 @@ msgstr "நகல் சரிபார்ப்பு"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:96
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
@@ -2631,7 +2638,7 @@ msgid "prayer"
 msgstr "பிரார்த்தனை"
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:574
+#: dt-login/login-template.php:579
 msgid "Home"
 msgstr "வீடு"
 
@@ -2781,7 +2788,7 @@ msgstr "குழு"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:100
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:103
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
@@ -3181,7 +3188,7 @@ msgstr ""
 msgid "Get New Password"
 msgstr "கடவுச்சொல்"
 
-#: dt-login/login-template.php:104 dt-login/login-template.php:533
+#: dt-login/login-template.php:104 dt-login/login-template.php:538
 #, fuzzy
 #| msgid "Add email address"
 msgid "Email Address"
@@ -3218,7 +3225,7 @@ msgid "Re-enter Password"
 msgstr "கடவுச்சொல்லை மீட்டமைக்க"
 
 #: dt-login/login-template.php:340 dt-login/login-template.php:409
-#: dt-login/login-template.php:590
+#: dt-login/login-template.php:595
 #, fuzzy
 #| msgid "Registered"
 msgid "Register"
@@ -3234,29 +3241,29 @@ msgstr "உங்கள் வடிவத்தில் சில பிழை
 msgid "Display Name (optional)"
 msgstr "காட்சி பெயர்"
 
-#: dt-login/login-template.php:493
+#: dt-login/login-template.php:498
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:509 dt-login/login-template.php:536
-#: dt-login/login-template.php:582
+#: dt-login/login-template.php:514 dt-login/login-template.php:541
+#: dt-login/login-template.php:587
 msgid "Login"
 msgstr ""
 
-#: dt-login/login-template.php:516
+#: dt-login/login-template.php:521
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:534 dt-users/template-new-user.php:123
+#: dt-login/login-template.php:539 dt-users/template-new-user.php:123
 #: dt-users/template-new-user.php:124 template-settings.php:600
 msgid "Password"
 msgstr "கடவுச்சொல்"
 
-#: dt-login/login-template.php:535
+#: dt-login/login-template.php:540
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:597
+#: dt-login/login-template.php:602
 #, fuzzy
 #| msgid "Lost your password"
 msgid "Lost your password?"
@@ -3330,11 +3337,12 @@ msgstr "சிக்கலான பாதை"
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/daily-activity.php:23
-#: dt-metrics/combined/date-range-activity.php:44
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:92
+#: dt-metrics/metrics.php:95 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/generation-tree.php:32
+#: dt-metrics/records/time-charts.php:44
 msgid "Project"
 msgstr "திட்டம்"
 
@@ -3496,7 +3504,7 @@ msgstr ""
 "செய்யவும்."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:117
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:123
 msgid "Metrics"
 msgstr "அளவீடுகள்"
 
@@ -3513,60 +3521,6 @@ msgstr "செயல்பாடு எதுவும் கண்டறிய�
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "புதிய%s"
-
-#: dt-metrics/combined/date-range-activity.php:43
-msgid "Activity During Date Range"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:102
-#: dt-metrics/combined/time-charts.php:108
-msgid "Post Type"
-msgstr "இடுகை வகை"
-
-#: dt-metrics/combined/date-range-activity.php:104
-#, fuzzy
-#| msgid "Activity"
-msgid "Any Activity"
-msgstr "நடவடிக்கை"
-
-#: dt-metrics/combined/date-range-activity.php:105
-#: dt-metrics/combined/time-charts.php:110
-msgid "Total"
-msgstr "மொத்தம்"
-
-#: dt-metrics/combined/date-range-activity.php:106
-#, fuzzy
-#| msgid "Date Ranges"
-msgid "Date Range"
-msgstr "தேதி வரம்புகள்"
-
-#: dt-metrics/combined/date-range-activity.php:107
-msgid "Reload"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:108
-msgid "Title"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:109
-#: dt-metrics/combined/time-charts.php:113
-#: dt-metrics/personal/activity-highlights.php:67
-msgid "Date"
-msgstr "தேதி"
-
-#: dt-metrics/combined/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
-msgid "New Value"
-msgstr "பழைய மதிப்பு"
-
-#: dt-metrics/combined/date-range-activity.php:309
-msgid "True"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:309
-msgid "False"
-msgstr ""
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3631,40 +3585,6 @@ msgstr "தேதி வரம்பில் %s மாற்றங்கள்"
 msgid "No Data Available"
 msgstr "தரவு எதுவும் கிடைக்கவில்லை"
 
-#: dt-metrics/combined/time-charts.php:43
-#: dt-metrics/combined/time-charts.php:107
-msgid "Fields over Time Charts"
-msgstr "கால அட்டவணையில் புலங்கள்"
-
-#: dt-metrics/combined/time-charts.php:111
-msgid "Added"
-msgstr "சேர்க்கப்பட்டது"
-
-#: dt-metrics/combined/time-charts.php:112
-msgctxt "Total in January"
-msgid "%1$s in %2$s"
-msgstr "%2$s இல் %1$s"
-
-#: dt-metrics/combined/time-charts.php:114
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-users/template-user-management.php:562
-msgid "All Time"
-msgstr "எல்லா நேரமும்"
-
-#: dt-metrics/combined/time-charts.php:115
-msgid "All cumulative totals"
-msgstr "அனைத்து ஒட்டுமொத்த மொத்தங்கள்"
-
-#: dt-metrics/combined/time-charts.php:116
-msgid "Single cumulative totals"
-msgstr "ஒற்றை ஒட்டுமொத்த மொத்தம்"
-
-#: dt-metrics/combined/time-charts.php:117
-msgid "Number added"
-msgstr "எண் சேர்க்கப்பட்டது"
-
 #: dt-metrics/contacts/baptism-tree.php:24
 msgid "Baptism Tree"
 msgstr "ஞானஸ்நானம் மரம்"
@@ -3703,6 +3623,14 @@ msgstr "மைல்கற்கள் விளக்கப்படம்"
 #: dt-metrics/contacts/sources.php:87
 msgid "Filter contacts to date range:"
 msgstr "தேதி வரம்பிற்கு தொடர்புகளை வடிகட்டவும்:"
+
+#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/time-charts.php:114
+#: dt-users/template-user-management.php:562
+msgid "All Time"
+msgstr "எல்லா நேரமும்"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3861,6 +3789,12 @@ msgstr "மொத்த உறுப்பினர்கள்"
 msgid "View Group"
 msgstr "குழுவைக் காண்க"
 
+#: dt-metrics/metrics.php:106
+#, fuzzy
+#| msgid "Metrics"
+msgid "Dynamic Metrics"
+msgstr "அளவீடுகள்"
+
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
 msgid "Activity Highlights"
@@ -3897,6 +3831,12 @@ msgstr "நான் எதிர்வினையாற்றிய கரு�
 #: dt-metrics/personal/activity-highlights.php:66
 msgid "Comments I Posted"
 msgstr "நான் பதிவிட்ட கருத்துக்கள்"
+
+#: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/date-range-activity.php:109
+#: dt-metrics/records/time-charts.php:113
+msgid "Date"
+msgstr "தேதி"
 
 #: dt-metrics/personal/activity-highlights.php:176
 msgid "%1$d %2$s created"
@@ -3962,6 +3902,92 @@ msgstr "எனது செயலில் உள்ள தொடர்புக
 #: dt-metrics/personal/overview.php:68
 msgid "stats as of"
 msgstr "புள்ளிவிவரங்கள்"
+
+#: dt-metrics/records/date-range-activity.php:43
+msgid "Activity During Date Range"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/generation-tree.php:91
+#: dt-metrics/records/time-charts.php:108
+msgid "Post Type"
+msgstr "இடுகை வகை"
+
+#: dt-metrics/records/date-range-activity.php:104
+#, fuzzy
+#| msgid "Activity"
+msgid "Any Activity"
+msgstr "நடவடிக்கை"
+
+#: dt-metrics/records/date-range-activity.php:105
+#: dt-metrics/records/time-charts.php:110
+msgid "Total"
+msgstr "மொத்தம்"
+
+#: dt-metrics/records/date-range-activity.php:106
+#, fuzzy
+#| msgid "Date Ranges"
+msgid "Date Range"
+msgstr "தேதி வரம்புகள்"
+
+#: dt-metrics/records/date-range-activity.php:107
+msgid "Reload"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:108
+msgid "Title"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:110
+#, fuzzy
+#| msgid "Old Value"
+msgid "New Value"
+msgstr "பழைய மதிப்பு"
+
+#: dt-metrics/records/date-range-activity.php:309
+msgid "True"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:309
+msgid "False"
+msgstr ""
+
+#: dt-metrics/records/generation-tree.php:31
+#, fuzzy
+#| msgid "Group Generation Tree"
+msgid "Generation Tree"
+msgstr "குழு தலைமுறை மரம்"
+
+#: dt-metrics/records/generation-tree.php:93
+#, fuzzy
+#| msgid "Generation"
+msgid "Generate"
+msgstr "தலைமுறை"
+
+#: dt-metrics/records/time-charts.php:43 dt-metrics/records/time-charts.php:107
+msgid "Fields over Time Charts"
+msgstr "கால அட்டவணையில் புலங்கள்"
+
+#: dt-metrics/records/time-charts.php:111
+msgid "Added"
+msgstr "சேர்க்கப்பட்டது"
+
+#: dt-metrics/records/time-charts.php:112
+msgctxt "Total in January"
+msgid "%1$s in %2$s"
+msgstr "%2$s இல் %1$s"
+
+#: dt-metrics/records/time-charts.php:115
+msgid "All cumulative totals"
+msgstr "அனைத்து ஒட்டுமொத்த மொத்தங்கள்"
+
+#: dt-metrics/records/time-charts.php:116
+msgid "Single cumulative totals"
+msgstr "ஒற்றை ஒட்டுமொத்த மொத்தம்"
+
+#: dt-metrics/records/time-charts.php:117
+msgid "Number added"
+msgstr "எண் சேர்க்கப்பட்டது"
 
 #: dt-notifications/notifications-email.php:125
 msgid "Click here to view or reply"
