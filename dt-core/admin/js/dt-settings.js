@@ -879,6 +879,9 @@ jQuery(document).ready(function($) {
                         <option value="date">Date</option>
                         <option value="connection">Connection</option>
                     </select>
+                    <p id="field-type-select-description" style="margin:0.2em 0">
+                        ${window.field_settings.field_types.key_select.description}
+                    </p>
                 </td>
             </tr>
             <tr class="connection_field_target_row" style="display: none;">
@@ -938,7 +941,7 @@ jQuery(document).ready(function($) {
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
-        var field_type = field_settings['type'].replace('_', ' ');
+        var field_type = field_settings['type'];
 
         var name_is_custom = false;
         if ( field_settings['default_name'] ) {
@@ -994,7 +997,7 @@ jQuery(document).ready(function($) {
                     <label><b>Field Type</label></b>
                 </td>
                 <td style="text-transform:capitalize;">
-                    ${field_type}
+                    ${window.field_settings.field_types[field_type]?.label || field_type.replace('_', ' ')}
                 </td>
             </tr>`;
 
@@ -2028,6 +2031,11 @@ jQuery(document).ready(function($) {
 
     // Display 'connected to' dropdown if 'connection' post type field is selected
     $('.dt-admin-modal-box').on('change', '[id^=new-field-type]', function() {
+      let selected_type = $(this).val();
+      if ( window.field_settings.field_types[selected_type]?.description ){
+        $('#field-type-select-description').html(window.field_settings.field_types[selected_type].description);
+      }
+
       if ( $(this).val() === 'connection' ) {
             $('.connection_field_target_row').show();
         } else {
