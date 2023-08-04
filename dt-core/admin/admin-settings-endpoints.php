@@ -822,25 +822,27 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'private' => $field_private
                 ];
             } elseif ( $field_type === 'connection' ){
-                if ( !$post_submission['connection_target'] ){
+                $connection_field_options = $post_submission['connection_field_options'] ?? [];
+                if ( !$connection_field_options['connection_target'] ){
                     return new WP_Error( __METHOD__, 'Please select a connection target', [ 'status' => 400 ] );
                 }
-                $p2p_key = $post_type . '_to_' . $post_submission['connection_target'];
+
+                $p2p_key = $post_type . '_to_' . $connection_field_options['connection_target'];
                 if ( p2p_type( $p2p_key ) !== false ){
                     $p2p_key = dt_create_field_key( $p2p_key, true );
                 }
 
                 // Connection field to the same post type
-                if ( $post_type === $post_submission['connection_target'] ){
+                if ( $post_type === $connection_field_options['connection_target'] ){
                     //default direction to "any". If not multidirectional, then from
                     $direction = 'any';
-                    if ( $post_submission['multidirectional'] != 1 ) {
+                    if ( $connection_field_options['multidirectional'] != 1 ) {
                         $direction = 'from';
                     }
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission['new_field_name'],
+                        'name'        => $connection_field_options['new_field_name'],
                         'type'        => 'connection',
-                        'post_type' => $post_submission['connection_target'],
+                        'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
                         'p2p_key' => $p2p_key,
                         'tile'     => $tile_key,
@@ -848,8 +850,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     ];
 
                     // If not multidirectional, create the reverse direction field
-                    if ( $post_submission['multidirectional'] != 1 ){
-                        $reverse_name = $post_submission['reverse_connection_name'] ?? $post_submission['new_field_name'];
+                    if ( $connection_field_options['multidirectional'] != 1 ){
+                        $reverse_name = $connection_field_options['reverse_connection_name'] ?? $connection_field_options['new_field_name'];
                         $custom_field_options[$post_type][$field_key . '_reverse']  = [
                             'name'        => $reverse_name,
                             'type'        => 'connection',
@@ -858,23 +860,23 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                             'p2p_key' => $p2p_key,
                             'tile'     => 'other',
                             'customizable' => 'all',
-                            'hidden' => isset( $post_submission['disable_reverse_connection'] )
+                            'hidden' => !empty( $connection_field_options['disable_reverse_connection'] )
                         ];
                     }
                 } else {
                     $direction = 'from';
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission['new_field_name'],
+                        'name'        => $connection_field_options['new_field_name'],
                         'type'        => 'connection',
-                        'post_type' => $post_submission['connection_target'],
+                        'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
                         'p2p_key' => $p2p_key,
                         'tile'     => $tile_key,
                         'customizable' => 'all',
                     ];
                     // Create the reverse fields on the connection post type
-                    $reverse_name = $post_submission['other_field_name'] ?? $post_submission['new_field_name'];
-                    $custom_field_options[$post_submission['connection_target']][$field_key]  = [
+                    $reverse_name = $connection_field_options['other_field_name'] ?? $connection_field_options['new_field_name'];
+                    $custom_field_options[$connection_field_options['connection_target']][$field_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',
                         'post_type' => $post_type,
@@ -882,7 +884,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'p2p_key' => $p2p_key,
                         'tile'     => 'other',
                         'customizable' => 'all',
-                        'hidden' => isset( $post_submission['disable_other_post_type_field'] )
+                        'hidden' => !empty( $connection_field_options['disable_other_post_type_field'] )
                     ];
                 }
             }

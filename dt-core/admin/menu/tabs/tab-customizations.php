@@ -125,6 +125,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
                 'roles' => Disciple_Tools_Roles::get_dt_roles_and_permissions(),
+                'field_types' => DT_Posts::get_field_types(),
             ]);
         }
 
