@@ -16,7 +16,7 @@
     from { background: #3f729b; }
     to { background: #d3d3d3; }
 }
-#delete-text {
+.delete-text {
     cursor: pointer;
     width: 100%;
     color: #e14d43;
@@ -246,7 +246,6 @@
     margin-left: 1rem;
 }
 
->>>>>>> 6a4c0922d5e2fd47208930dbcc97d074789d46da
 .modal-overlay-content-table, .modal-translations-overlay-content-table {
     margin: 6px 10px 10px 10px;
     line-height: 2.5;

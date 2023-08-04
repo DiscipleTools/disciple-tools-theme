@@ -163,6 +163,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/field', [
+                'methods' => 'DELETE',
+                'callback' => [ $this, 'delete_field' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/new-field-option', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'new_field_option' ],
@@ -1157,6 +1165,27 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             return $custom_field;
         }
         return new WP_Error( 'error', 'Something went wrong', [ 'status' => 500 ] );
+    }
+
+    public function delete_field( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+
+        if ( !isset( $post_submission['post_type'], $post_submission['field_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing post_type or field_key', [ 'status' => 400 ] );
+        }
+
+        $post_type = $post_submission['post_type'];
+        $field_key = $post_submission['field_key'];
+
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+
+        if ( isset( $field_customizations[$post_type][$field_key] ) ) {
+            unset( $field_customizations[$post_type][$field_key] );
+            update_option( 'dt_field_customizations', $field_customizations );
+            wp_cache_delete( $post_type . '_field_settings' );
+            return true;
+        }
+        return false;
     }
 
     public function default_permission_check() {
