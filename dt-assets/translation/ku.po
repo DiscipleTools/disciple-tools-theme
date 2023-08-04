@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-07-14T10:46:35+00:00\n"
+"POT-Creation-Date: 2023-07-31T11:38:38+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Kurdish <https://translate.disciple.tools/projects/disciple-"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Daxwazê bişînin"
 
-#: 403.php:55 archive-template.php:847 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:861 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -86,7 +86,7 @@ msgid "Cancel"
 msgstr "Bişûndekirin"
 
 #: 403.php:59 archive-template.php:388 archive-template.php:430
-#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:154
+#: archive-template.php:885 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -334,92 +334,106 @@ msgstr "Rojanekirin"
 msgid "Make Selections Below"
 msgstr "Hilbijartinên jêrîn bikin"
 
-#: archive-template.php:661 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:638 dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:208
+#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
+msgid "Delete"
+msgstr "Jêbirin"
+
+#: archive-template.php:641 dt-assets/functions/enqueue-scripts.php:326
+#, fuzzy
+#| msgid "Make Selections Below"
+msgid "Delete Selections Below"
+msgstr "Hilbijartinên jêrîn bikin"
+
+#: archive-template.php:675 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "Nav"
 
-#: archive-template.php:672
+#: archive-template.php:686
 msgid "Loading..."
 msgstr "Loading ..."
 
-#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:369
+#: archive-template.php:691 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "Zêde Barkirin"
 
-#: archive-template.php:689
+#: archive-template.php:703
 msgid "Field Name"
 msgstr "Navê zeviyê"
 
-#: archive-template.php:745
+#: archive-template.php:759
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Ji bo lêgerînê binivîse"
 
-#: archive-template.php:754
+#: archive-template.php:768
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Hemî %1$s digel %2$s"
 
-#: archive-template.php:757
+#: archive-template.php:771
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Hemû %1$s bêyî %2$s"
 
-#: archive-template.php:764
+#: archive-template.php:778
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Parzûnek ji bo veqetandî OR Jî Veqetandî"
 
-#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:787 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "Dîroka Afirandinê"
 
-#: archive-template.php:780 archive-template.php:787
+#: archive-template.php:794 archive-template.php:801
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "None Set"
 
-#: archive-template.php:801 archive-template.php:802
+#: archive-template.php:815 archive-template.php:816
 #: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
-#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
+#: dt-metrics/records/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "Na"
 
-#: archive-template.php:808 archive-template.php:809
+#: archive-template.php:822 archive-template.php:823
 #: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
-#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
+#: dt-metrics/records/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "Erê"
 
-#: archive-template.php:813
+#: archive-template.php:827
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Destpêka Range"
 
-#: archive-template.php:816 archive-template.php:827
+#: archive-template.php:830 archive-template.php:841
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Zelal"
 
-#: archive-template.php:823
+#: archive-template.php:837
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Range End"
 
-#: archive-template.php:855
+#: archive-template.php:869
 msgid "Filter Name"
 msgstr "Navê Parzûnê"
 
-#: archive-template.php:860
+#: archive-template.php:874
 msgid "Filter Records"
 msgstr "Records Parzûn"
 
-#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:878 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -499,13 +513,13 @@ msgid "Share"
 msgstr "Par"
 
 #: dt-assets/functions/enqueue-scripts.php:112
-#: dt-metrics/combined/date-range-activity.php:111
+#: dt-metrics/records/date-range-activity.php:111
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "Herêmên Fokusê"
 
 #: dt-assets/functions/enqueue-scripts.php:113
-#: dt-metrics/combined/date-range-activity.php:112
+#: dt-metrics/records/date-range-activity.php:112
 #: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "All Locations"
@@ -543,14 +557,6 @@ msgstr "Tu notifications nexwendî tune"
 #: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "Tu notifications tune"
-
-#: dt-assets/functions/enqueue-scripts.php:174
-#: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:273
-#: dt-assets/functions/enqueue-scripts.php:313
-#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
-msgid "Delete"
-msgstr "Jêbirin"
 
 #: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
@@ -716,26 +722,26 @@ msgstr "Gişt"
 msgid "Without"
 msgstr "Bê"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "şandin"
 
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "nehat şandin (dibe ku e-nameya derbasdar winda nebe)"
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "Exclude Item"
 msgstr "Tiştê jê derxe"
 
-#: dt-assets/functions/enqueue-scripts.php:349 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:354 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Têkelî"
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:355
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1323,8 +1329,9 @@ msgid "Revert Activity"
 msgstr "Çalakiyê Vegerînin"
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/combined/date-range-activity.php:103
-#: dt-metrics/combined/time-charts.php:109
+#: dt-metrics/records/date-range-activity.php:103
+#: dt-metrics/records/generation-tree.php:92
+#: dt-metrics/records/time-charts.php:109
 msgid "Field"
 msgstr "Erd"
 
@@ -1727,7 +1734,7 @@ msgid "Accepted"
 msgstr "Qebûl kirin"
 
 #: dt-contacts/access-module.php:294 dt-contacts/base-setup.php:575
-#: dt-metrics/metrics.php:87 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:90 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1897,7 +1904,7 @@ msgstr "Duplicate Checker"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:96
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
@@ -2655,7 +2662,7 @@ msgid "prayer"
 msgstr "dûa"
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:574
+#: dt-login/login-template.php:579
 msgid "Home"
 msgstr "Xane"
 
@@ -2805,7 +2812,7 @@ msgstr "Kom"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:100
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:103
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
@@ -3198,7 +3205,7 @@ msgstr ""
 msgid "Get New Password"
 msgstr "Şîfre"
 
-#: dt-login/login-template.php:104 dt-login/login-template.php:533
+#: dt-login/login-template.php:104 dt-login/login-template.php:538
 #, fuzzy
 #| msgid "Add email address"
 msgid "Email Address"
@@ -3235,7 +3242,7 @@ msgid "Re-enter Password"
 msgstr "Reset şîfreyê"
 
 #: dt-login/login-template.php:340 dt-login/login-template.php:409
-#: dt-login/login-template.php:590
+#: dt-login/login-template.php:595
 #, fuzzy
 #| msgid "Registered"
 msgid "Register"
@@ -3251,29 +3258,29 @@ msgstr "Di forma we de hin çewtî hene."
 msgid "Display Name (optional)"
 msgstr "Navê Nîşan bide"
 
-#: dt-login/login-template.php:493
+#: dt-login/login-template.php:498
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:509 dt-login/login-template.php:536
-#: dt-login/login-template.php:582
+#: dt-login/login-template.php:514 dt-login/login-template.php:541
+#: dt-login/login-template.php:587
 msgid "Login"
 msgstr ""
 
-#: dt-login/login-template.php:516
+#: dt-login/login-template.php:521
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:534 dt-users/template-new-user.php:123
+#: dt-login/login-template.php:539 dt-users/template-new-user.php:123
 #: dt-users/template-new-user.php:124 template-settings.php:600
 msgid "Password"
 msgstr "Şîfre"
 
-#: dt-login/login-template.php:535
+#: dt-login/login-template.php:540
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:597
+#: dt-login/login-template.php:602
 #, fuzzy
 #| msgid "Lost your password"
 msgid "Lost your password?"
@@ -3347,11 +3354,12 @@ msgstr "Riya krîtîk"
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/daily-activity.php:23
-#: dt-metrics/combined/date-range-activity.php:44
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:92
+#: dt-metrics/metrics.php:95 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/generation-tree.php:32
+#: dt-metrics/records/time-charts.php:44
 msgid "Project"
 msgstr "Rêvename"
 
@@ -3513,7 +3521,7 @@ msgstr ""
 "jêrîn nîşan bidin."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:117
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:123
 msgid "Metrics"
 msgstr "Metrîk"
 
@@ -3530,60 +3538,6 @@ msgstr "Çalakî nehat dîtin!"
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "%s nû"
-
-#: dt-metrics/combined/date-range-activity.php:43
-msgid "Activity During Date Range"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:102
-#: dt-metrics/combined/time-charts.php:108
-msgid "Post Type"
-msgstr "Tîpa Postê"
-
-#: dt-metrics/combined/date-range-activity.php:104
-#, fuzzy
-#| msgid "Activity"
-msgid "Any Activity"
-msgstr "Çalakî"
-
-#: dt-metrics/combined/date-range-activity.php:105
-#: dt-metrics/combined/time-charts.php:110
-msgid "Total"
-msgstr "Hemî"
-
-#: dt-metrics/combined/date-range-activity.php:106
-#, fuzzy
-#| msgid "Date Ranges"
-msgid "Date Range"
-msgstr "Rêjeyên Dîrokê"
-
-#: dt-metrics/combined/date-range-activity.php:107
-msgid "Reload"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:108
-msgid "Title"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:109
-#: dt-metrics/combined/time-charts.php:113
-#: dt-metrics/personal/activity-highlights.php:67
-msgid "Date"
-msgstr "Rojek"
-
-#: dt-metrics/combined/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
-msgid "New Value"
-msgstr "Nirxa Kevn"
-
-#: dt-metrics/combined/date-range-activity.php:309
-msgid "True"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:309
-msgid "False"
-msgstr ""
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3648,40 +3602,6 @@ msgstr "%s di nav rêza dîrokê de diguhere"
 msgid "No Data Available"
 msgstr "No Data Available"
 
-#: dt-metrics/combined/time-charts.php:43
-#: dt-metrics/combined/time-charts.php:107
-msgid "Fields over Time Charts"
-msgstr "Fields over Time Charts"
-
-#: dt-metrics/combined/time-charts.php:111
-msgid "Added"
-msgstr "Zêdekirin"
-
-#: dt-metrics/combined/time-charts.php:112
-msgctxt "Total in January"
-msgid "%1$s in %2$s"
-msgstr "%1$s di %2$s de"
-
-#: dt-metrics/combined/time-charts.php:114
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-users/template-user-management.php:562
-msgid "All Time"
-msgstr "Her dem"
-
-#: dt-metrics/combined/time-charts.php:115
-msgid "All cumulative totals"
-msgstr "Hemî tevgerên komkirî"
-
-#: dt-metrics/combined/time-charts.php:116
-msgid "Single cumulative totals"
-msgstr "Totalên yekbûyî yên yekbûyî"
-
-#: dt-metrics/combined/time-charts.php:117
-msgid "Number added"
-msgstr "Hejmar lê zêde kir"
-
 #: dt-metrics/contacts/baptism-tree.php:24
 msgid "Baptism Tree"
 msgstr "Dara Batizmiyê"
@@ -3720,6 +3640,14 @@ msgstr "Chart Milestones"
 #: dt-metrics/contacts/sources.php:87
 msgid "Filter contacts to date range:"
 msgstr "Fîlterkirina têkiliyan heya rêza dîrokê:"
+
+#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/time-charts.php:114
+#: dt-users/template-user-management.php:562
+msgid "All Time"
+msgstr "Her dem"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3878,6 +3806,12 @@ msgstr "Tevahî Endam"
 msgid "View Group"
 msgstr "Komê Dîtin"
 
+#: dt-metrics/metrics.php:106
+#, fuzzy
+#| msgid "Metrics"
+msgid "Dynamic Metrics"
+msgstr "Metrîk"
+
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
 msgid "Activity Highlights"
@@ -3914,6 +3848,12 @@ msgstr "Şîroveyên ku min bertek nîşan da"
 #: dt-metrics/personal/activity-highlights.php:66
 msgid "Comments I Posted"
 msgstr "Şîroveyên ku min şandin"
+
+#: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/date-range-activity.php:109
+#: dt-metrics/records/time-charts.php:113
+msgid "Date"
+msgstr "Rojek"
 
 #: dt-metrics/personal/activity-highlights.php:176
 msgid "%1$d %2$s created"
@@ -3979,6 +3919,92 @@ msgstr "-Opandina têkiliyên min ên çalak"
 #: dt-metrics/personal/overview.php:68
 msgid "stats as of"
 msgstr "îstatîstîkên wekî"
+
+#: dt-metrics/records/date-range-activity.php:43
+msgid "Activity During Date Range"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/generation-tree.php:91
+#: dt-metrics/records/time-charts.php:108
+msgid "Post Type"
+msgstr "Tîpa Postê"
+
+#: dt-metrics/records/date-range-activity.php:104
+#, fuzzy
+#| msgid "Activity"
+msgid "Any Activity"
+msgstr "Çalakî"
+
+#: dt-metrics/records/date-range-activity.php:105
+#: dt-metrics/records/time-charts.php:110
+msgid "Total"
+msgstr "Hemî"
+
+#: dt-metrics/records/date-range-activity.php:106
+#, fuzzy
+#| msgid "Date Ranges"
+msgid "Date Range"
+msgstr "Rêjeyên Dîrokê"
+
+#: dt-metrics/records/date-range-activity.php:107
+msgid "Reload"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:108
+msgid "Title"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:110
+#, fuzzy
+#| msgid "Old Value"
+msgid "New Value"
+msgstr "Nirxa Kevn"
+
+#: dt-metrics/records/date-range-activity.php:309
+msgid "True"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:309
+msgid "False"
+msgstr ""
+
+#: dt-metrics/records/generation-tree.php:31
+#, fuzzy
+#| msgid "Group Generation Tree"
+msgid "Generation Tree"
+msgstr "Dara Nifşê Komê"
+
+#: dt-metrics/records/generation-tree.php:93
+#, fuzzy
+#| msgid "Generation"
+msgid "Generate"
+msgstr "Bend"
+
+#: dt-metrics/records/time-charts.php:43 dt-metrics/records/time-charts.php:107
+msgid "Fields over Time Charts"
+msgstr "Fields over Time Charts"
+
+#: dt-metrics/records/time-charts.php:111
+msgid "Added"
+msgstr "Zêdekirin"
+
+#: dt-metrics/records/time-charts.php:112
+msgctxt "Total in January"
+msgid "%1$s in %2$s"
+msgstr "%1$s di %2$s de"
+
+#: dt-metrics/records/time-charts.php:115
+msgid "All cumulative totals"
+msgstr "Hemî tevgerên komkirî"
+
+#: dt-metrics/records/time-charts.php:116
+msgid "Single cumulative totals"
+msgstr "Totalên yekbûyî yên yekbûyî"
+
+#: dt-metrics/records/time-charts.php:117
+msgid "Number added"
+msgstr "Hejmar lê zêde kir"
 
 #: dt-notifications/notifications-email.php:125
 msgid "Click here to view or reply"

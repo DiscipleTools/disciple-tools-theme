@@ -2110,6 +2110,11 @@
       sharePayload = $(this).data('bulk_key_share');
     })
 
+    let shares = {
+      'users': sharePayload,
+      'unshare': $('#bulk_share_unshare').prop('checked')
+    };
+
     let queue =  [];
     let count = 0;
     $('.bulk_edit_checkbox input').each(function () {
@@ -2118,7 +2123,7 @@
         queue.push( postId );
       }
     });
-    process(queue, 10, do_each, do_done, updatePayload, sharePayload, commentPayload);
+    process(queue, 10, do_each, do_done, updatePayload, shares, commentPayload);
   }
 
   function bulk_edit_count() {
@@ -2215,12 +2220,15 @@
           }));
         }
 
-        if (share) {
-          share.forEach(function (value) {
-            promises.push(API.add_shared(list_settings.post_type, item, value).catch(err => {
+        if (share && share['users']) {
+          share['users'].forEach(function (value) {
+            let promise = share['unshare'] ? API.remove_shared(list_settings.post_type, item, value).catch(err => {
               console.error(err)
-            }));
-          })
+            }) : API.add_shared(list_settings.post_type, item, value).catch(err => {
+              console.error(err)
+            });
+            promises.push(promise);
+          });
         }
 
         if (comment.commentText) {

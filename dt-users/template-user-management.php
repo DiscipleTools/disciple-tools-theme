@@ -9,7 +9,7 @@ if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
 $dt_url_path = dt_get_url_path();
 $user_management_options = DT_User_Management::user_management_options();
 $contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
-$default_user_roles = apply_filters( 'dt_set_roles_and_permissions', [] );
+$default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
 
 function fetch_user_locations( $user_id ): array {
     global $wpdb;

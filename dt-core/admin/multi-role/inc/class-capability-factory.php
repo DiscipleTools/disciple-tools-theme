@@ -161,8 +161,18 @@ final class Disciple_Tools_Capability_Factory {
      */
     public function add_capability( $slug, $options ) {
         $source = $options['source'];
-        $name = isset( $options['name'] ) ? $options['name'] : dt_label_from_slug( $slug );
-        $description = isset( $options['description'] ) ? $options['description'] : '';
+        $post_type = $options['post_type'] ?? null;
+        if ( isset( $options['name'] ) ){
+            $name = $options['name'];
+        } elseif ( isset( $options['label'] ) ) {
+            $name = $options['label'];
+        } elseif ( isset( $options['post_type'] ) ){
+            $label = DT_Posts::get_label_for_post_type( $options['post_type'], false, false );
+            $name = ucwords( str_replace( strtolower( $options['post_type'] ), $label, strtolower( dt_label_from_slug( $slug ) ) ) );
+        } else {
+            $name = dt_label_from_slug( $slug );
+        }
+        $description = $options['description'] ?? '';
 
         $capability = $this->get_capability( $slug );
 
@@ -171,12 +181,14 @@ final class Disciple_Tools_Capability_Factory {
                 $slug,
                 $source,
                 $name,
-                $description
+                $description,
+                $post_type
             );
         } else {
             $capability->source = $source;
             $capability->slug = $slug;
             $capability->description = $description;
+            $capability->post_type = $post_type;
         }
         $this->capabilities[ $slug ] = $capability;
 
@@ -279,7 +291,6 @@ final class Disciple_Tools_Capability_Factory {
         }, ARRAY_FILTER_USE_KEY);
 
         $capabilities = apply_filters( 'dt_capabilities', $capabilities );
-
         foreach ( $capabilities as $capability => $options ) {
             //There are some random capabilities registered that are just numbers?
             if ( !is_numeric( $capability ) ) {

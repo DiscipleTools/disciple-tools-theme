@@ -88,7 +88,7 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
                 ],
                 'translations'       => [
                     'title_date_range_activity' => $this->title,
-                    'post_type_select_label' => __( 'Post Type', 'disciple_tools' ),
+                    'post_type_select_label' => __( 'Record Type', 'disciple_tools' ),
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'submit_button_label' => __( 'Generate', 'disciple_tools' )
                 ],

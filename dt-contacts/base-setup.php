@@ -16,6 +16,7 @@ class DT_Contacts_Base {
         //setup post type
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
+        add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
 
         //setup tiles and fields
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
@@ -69,78 +70,30 @@ class DT_Contacts_Base {
         return $settings;
     }
 
+    public function dt_capabilities( $capabilities ){
+        $capabilities['dt_all_access_' . $this->post_type] = [
+            'source' => DT_Posts::get_label_for_post_type( $this->post_type, false, false ),
+            'label' => 'Manage all access and media contacts',
+            'description' => 'View and update all access and media contacts',
+            'post_type' => $this->post_type
+        ];
+        if ( isset( $capabilities['view_any_contacts'] ) ){
+            $capabilities['view_any_contacts']['label'] = 'View all, including private';
+            $capabilities['view_any_contacts']['description'] = 'The user can view any contact, including private contacts';
+        }
+        return $capabilities;
+    }
+
     public function dt_set_roles_and_permissions( $expected_roles ){
-        $expected_roles['registered'] = [
-            'label' => __( 'Registered', 'disciple_tools' ),
-            'description' => 'Has no permissions',
-            'permissions' => [],
-            'order' => 4
-        ];
+        foreach ( $expected_roles as $role_key => $role ){
+            if ( isset( $role['type'] ) && in_array( 'base', $role['type'], true ) ){
+                $expected_roles[$role_key]['permissions']['access_contacts'] = true;
+                $expected_roles[$role_key]['permissions']['create_contacts'] = true;
+            }
+        }
 
-        $expected_roles['multiplier'] = [
-            'label' => __( 'Multiplier', 'disciple_tools' ),
-            'description' => 'Interacts with Contacts and Groups',
-            'permissions' => [],
-            'order' => 5
-        ];
-        $expected_roles['strategist'] = [
-            'label' => __( 'Strategist', 'disciple_tools' ),
-            'description' => 'View project metrics',
-            'permissions' => [],
-            'order' => 40
-        ];
-        $expected_roles['user_manager'] = [
-            'label' => __( 'User Manager', 'disciple_tools' ),
-            'description' => 'List, invite, promote and demote users',
-            'permissions' => [],
-            'order' => 95
-        ];
-        $expected_roles['dt_admin'] = [
-            'label' => __( 'Disciple.Tools Admin', 'disciple_tools' ),
-            'description' => 'All D.T permissions',
-            'permissions' => [],
-            'order' => 98
-        ];
-        $expected_roles['administrator'] = [
-            'label' => __( 'Administrator', 'disciple_tools' ),
-            'description' => 'All D.T permissions plus the ability to manage plugins.',
-            'permissions' => [],
-            'order' => 100
-        ];
-
-        $multiplier_permissions = Disciple_Tools_Roles::default_multiplier_caps();
-
-        $user_management_permissions = Disciple_Tools_Roles::default_user_management_caps();
-
-        $role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function( $caps, $slug ) {
-            $caps[$slug] = true;
-            return $caps;
-        }, []);
-
-        // Multiplier
-        $expected_roles['multiplier']['permissions'] = array_merge( $expected_roles['multiplier']['permissions'], $multiplier_permissions );
-
-        // User Manager
-        $expected_roles['user_manager']['permissions'] = array_merge( $expected_roles['user_manager']['permissions'], $multiplier_permissions );
-        $expected_roles['user_manager']['permissions'] = array_merge( $expected_roles['user_manager']['permissions'], $user_management_permissions );
-
-        // D.T Admin
-        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles['dt_admin']['permissions'], $multiplier_permissions );
-        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles['dt_admin']['permissions'], $user_management_permissions );
-        $expected_roles['dt_admin']['permissions'] = array_merge( $expected_roles['dt_admin']['permissions'], $role_caps );
-        $expected_roles['dt_admin']['permissions']['manage_dt'] = true;
-        $expected_roles['dt_admin']['permissions']['view_project_metrics'] = true;
-
-        //strategist
-        $expected_roles['strategist']['permissions']['view_project_metrics'] = true;
-        $expected_roles['strategist']['permissions']['access_disciple_tools'] = true;
-
-        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles['administrator']['permissions'], $multiplier_permissions );
-        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles['administrator']['permissions'], $user_management_permissions );
-        $expected_roles['administrator']['permissions'] = array_merge( $expected_roles['administrator']['permissions'], $role_caps );
-        $expected_roles['administrator']['permissions']['manage_dt'] = true;
-        $expected_roles['administrator']['permissions']['view_project_metrics'] = true;
         $expected_roles['administrator']['permissions']['dt_all_admin_contacts'] = true;
+        $expected_roles['administrator']['permissions']['delete_any_contacts'] = true;
 
         return $expected_roles;
     }

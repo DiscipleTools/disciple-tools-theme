@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-07-14T10:46:35+00:00\n"
+"POT-Creation-Date: 2023-07-31T11:38:38+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Thai <https://translate.disciple.tools/projects/disciple-"
@@ -66,7 +66,7 @@ msgstr "เจ้าของบันทึกจะได้รับแจ้
 msgid "Submit Request"
 msgstr "ส่งคำขอ"
 
-#: 403.php:55 archive-template.php:847 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:861 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -82,7 +82,7 @@ msgid "Cancel"
 msgstr "ยกเลิก"
 
 #: 403.php:59 archive-template.php:388 archive-template.php:430
-#: archive-template.php:871 dt-assets/parts/loop-activity-comment.php:154
+#: archive-template.php:885 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -327,92 +327,106 @@ msgstr "อัปเดต"
 msgid "Make Selections Below"
 msgstr "เลือกด้านล่าง"
 
-#: archive-template.php:661 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:638 dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:208
+#: dt-assets/functions/enqueue-scripts.php:273
+#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
+msgid "Delete"
+msgstr "ลบ"
+
+#: archive-template.php:641 dt-assets/functions/enqueue-scripts.php:326
+#, fuzzy
+#| msgid "Make Selections Below"
+msgid "Delete Selections Below"
+msgstr "เลือกด้านล่าง"
+
+#: archive-template.php:675 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:150 template-settings.php:136
 msgid "Name"
 msgstr "ชื่อ"
 
-#: archive-template.php:672
+#: archive-template.php:686
 msgid "Loading..."
 msgstr "กำลังโหลด ..."
 
-#: archive-template.php:677 dt-assets/functions/enqueue-scripts.php:369
+#: archive-template.php:691 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "โหลดเพิ่มเติม"
 
-#: archive-template.php:689
+#: archive-template.php:703
 msgid "Field Name"
 msgstr "ชื่อเขตข้อมูล"
 
-#: archive-template.php:745
+#: archive-template.php:759
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "พิมพ์เพื่อค้นหา"
 
-#: archive-template.php:754
+#: archive-template.php:768
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%1$sทั้งหมดที่มี%2$s"
 
-#: archive-template.php:757
+#: archive-template.php:771
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%1$s ทั้งหมดที่ไม่มี %2$s"
 
-#: archive-template.php:764
+#: archive-template.php:778
 msgid "Filter for subassigned OR Assigned To"
 msgstr "กรองสำหรับมอบหมายย่อยหรือมอบหมายให้"
 
-#: archive-template.php:773 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:787 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:167
 msgid "Creation Date"
 msgstr "วันที่สร้าง"
 
-#: archive-template.php:780 archive-template.php:787
+#: archive-template.php:794 archive-template.php:801
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "ไม่มีการตั้งค่า"
 
-#: archive-template.php:801 archive-template.php:802
+#: archive-template.php:815 archive-template.php:816
 #: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
-#: dt-metrics/combined/time-charts.php:119 dt-posts/posts.php:462
+#: dt-metrics/records/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "ไม่"
 
-#: archive-template.php:808 archive-template.php:809
+#: archive-template.php:822 archive-template.php:823
 #: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
-#: dt-metrics/combined/time-charts.php:118 dt-posts/posts.php:460
+#: dt-metrics/records/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "ใช่"
 
-#: archive-template.php:813
+#: archive-template.php:827
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "ช่วงเริ่มต้น"
 
-#: archive-template.php:816 archive-template.php:827
+#: archive-template.php:830 archive-template.php:841
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ชัดเจน"
 
-#: archive-template.php:823
+#: archive-template.php:837
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "สิ้นสุดช่วง"
 
-#: archive-template.php:855
+#: archive-template.php:869
 msgid "Filter Name"
 msgstr "ชื่อตัวกรอง"
 
-#: archive-template.php:860
+#: archive-template.php:874
 msgid "Filter Records"
 msgstr "กรองบันทึก"
 
-#: archive-template.php:864 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:878 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -492,13 +506,13 @@ msgid "Share"
 msgstr "แบ่งปัน"
 
 #: dt-assets/functions/enqueue-scripts.php:112
-#: dt-metrics/combined/date-range-activity.php:111
+#: dt-metrics/records/date-range-activity.php:111
 #: template-merge-post-details.php:93
 msgid "Regions of Focus"
 msgstr "ภูมิภาคที่มุ่งเน้น"
 
 #: dt-assets/functions/enqueue-scripts.php:113
-#: dt-metrics/combined/date-range-activity.php:112
+#: dt-metrics/records/date-range-activity.php:112
 #: template-merge-post-details.php:94
 msgid "All Locations"
 msgstr "สถานที่ทั้งหมด"
@@ -536,14 +550,6 @@ msgstr "คุณไม่มีการแจ้งเตือนที่ย
 #: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "คุณไม่มีการแจ้งเตือนใด ๆ"
-
-#: dt-assets/functions/enqueue-scripts.php:174
-#: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:273
-#: dt-assets/functions/enqueue-scripts.php:313
-#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
-msgid "Delete"
-msgstr "ลบ"
 
 #: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
@@ -708,26 +714,26 @@ msgstr "ทั้งหมด"
 msgid "Without"
 msgstr "ไม่มี"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "sent"
 msgstr "ส่งแล้ว"
 
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "ไม่ได้ส่ง (น่าจะขาดอีเมลที่ใช้งานได้)"
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "Exclude Item"
 msgstr "ไม่รวมรายการ"
 
-#: dt-assets/functions/enqueue-scripts.php:349 dt-contacts/base-setup.php:50
+#: dt-assets/functions/enqueue-scripts.php:354 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "ติดต่อ"
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:355
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1279,8 +1285,9 @@ msgid "Revert Activity"
 msgstr "เปลี่ยนกลับกิจกรรม"
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/combined/date-range-activity.php:103
-#: dt-metrics/combined/time-charts.php:109
+#: dt-metrics/records/date-range-activity.php:103
+#: dt-metrics/records/generation-tree.php:92
+#: dt-metrics/records/time-charts.php:109
 msgid "Field"
 msgstr "ฟิลด์"
 
@@ -1673,7 +1680,7 @@ msgid "Accepted"
 msgstr "ได้รับการยอมรับ"
 
 #: dt-contacts/access-module.php:294 dt-contacts/base-setup.php:575
-#: dt-metrics/metrics.php:87 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:90 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1840,7 +1847,7 @@ msgstr "ตัวตรวจสอบซ้ำ"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:96
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:164
@@ -2586,7 +2593,7 @@ msgid "prayer"
 msgstr "คำภาวนา"
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:574
+#: dt-login/login-template.php:579
 msgid "Home"
 msgstr "บ้าน"
 
@@ -2736,7 +2743,7 @@ msgstr "กลุ่ม"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:100
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:103
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-people-groups/people-groups-base.php:183
@@ -3125,7 +3132,7 @@ msgstr ""
 msgid "Get New Password"
 msgstr "รหัสผ่าน"
 
-#: dt-login/login-template.php:104 dt-login/login-template.php:533
+#: dt-login/login-template.php:104 dt-login/login-template.php:538
 #, fuzzy
 #| msgid "Add email address"
 msgid "Email Address"
@@ -3162,7 +3169,7 @@ msgid "Re-enter Password"
 msgstr "รีเซ็ตรหัสผ่าน"
 
 #: dt-login/login-template.php:340 dt-login/login-template.php:409
-#: dt-login/login-template.php:590
+#: dt-login/login-template.php:595
 #, fuzzy
 #| msgid "Registered"
 msgid "Register"
@@ -3178,29 +3185,29 @@ msgstr "มีข้อผิดพลาดบางอย่างในแบ
 msgid "Display Name (optional)"
 msgstr "ชื่อที่แสดง"
 
-#: dt-login/login-template.php:493
+#: dt-login/login-template.php:498
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:509 dt-login/login-template.php:536
-#: dt-login/login-template.php:582
+#: dt-login/login-template.php:514 dt-login/login-template.php:541
+#: dt-login/login-template.php:587
 msgid "Login"
 msgstr ""
 
-#: dt-login/login-template.php:516
+#: dt-login/login-template.php:521
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:534 dt-users/template-new-user.php:123
+#: dt-login/login-template.php:539 dt-users/template-new-user.php:123
 #: dt-users/template-new-user.php:124 template-settings.php:600
 msgid "Password"
 msgstr "รหัสผ่าน"
 
-#: dt-login/login-template.php:535
+#: dt-login/login-template.php:540
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:597
+#: dt-login/login-template.php:602
 #, fuzzy
 #| msgid "Lost your password"
 msgid "Lost your password?"
@@ -3274,11 +3281,12 @@ msgstr "เส้นทางที่สำคัญ"
 
 #: dt-metrics/combined/critical-path.php:25
 #: dt-metrics/combined/daily-activity.php:23
-#: dt-metrics/combined/date-range-activity.php:44
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/combined/time-charts.php:44 dt-metrics/metrics.php:92
+#: dt-metrics/metrics.php:95 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/generation-tree.php:32
+#: dt-metrics/records/time-charts.php:44
 msgid "Project"
 msgstr "โครงการ"
 
@@ -3433,7 +3441,7 @@ msgid ""
 msgstr "คลิกที่สรุปประจำวันของไทม์ไลน์เพื่อแสดงรายการโดยละเอียดของเมตริกด้านล่าง"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:117
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:123
 msgid "Metrics"
 msgstr "เมตริก"
 
@@ -3450,60 +3458,6 @@ msgstr "ไม่พบกิจกรรม!"
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "ใหม่$s"
-
-#: dt-metrics/combined/date-range-activity.php:43
-msgid "Activity During Date Range"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:102
-#: dt-metrics/combined/time-charts.php:108
-msgid "Post Type"
-msgstr "ชนิดของโพสต์"
-
-#: dt-metrics/combined/date-range-activity.php:104
-#, fuzzy
-#| msgid "Activity"
-msgid "Any Activity"
-msgstr "กิจกรรม"
-
-#: dt-metrics/combined/date-range-activity.php:105
-#: dt-metrics/combined/time-charts.php:110
-msgid "Total"
-msgstr "รวม"
-
-#: dt-metrics/combined/date-range-activity.php:106
-#, fuzzy
-#| msgid "Date Ranges"
-msgid "Date Range"
-msgstr "ช่วงวันที่"
-
-#: dt-metrics/combined/date-range-activity.php:107
-msgid "Reload"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:108
-msgid "Title"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:109
-#: dt-metrics/combined/time-charts.php:113
-#: dt-metrics/personal/activity-highlights.php:67
-msgid "Date"
-msgstr "วันที่"
-
-#: dt-metrics/combined/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
-msgid "New Value"
-msgstr "ค่าเก่า"
-
-#: dt-metrics/combined/date-range-activity.php:309
-msgid "True"
-msgstr ""
-
-#: dt-metrics/combined/date-range-activity.php:309
-msgid "False"
-msgstr ""
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
 #: dt-users/hover-coverage-map.php:52
@@ -3568,40 +3522,6 @@ msgstr "%s การเปลี่ยนแปลงในช่วงวัน
 msgid "No Data Available"
 msgstr "ไม่มีข้อมูล"
 
-#: dt-metrics/combined/time-charts.php:43
-#: dt-metrics/combined/time-charts.php:107
-msgid "Fields over Time Charts"
-msgstr "เขตข้อมูลบนแผนภูมิเวลา"
-
-#: dt-metrics/combined/time-charts.php:111
-msgid "Added"
-msgstr "เพิ่มแล้ว"
-
-#: dt-metrics/combined/time-charts.php:112
-msgctxt "Total in January"
-msgid "%1$s in %2$s"
-msgstr "%1$sใน%2$s"
-
-#: dt-metrics/combined/time-charts.php:114
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-users/template-user-management.php:562
-msgid "All Time"
-msgstr "ตลอดเวลา"
-
-#: dt-metrics/combined/time-charts.php:115
-msgid "All cumulative totals"
-msgstr "ผลรวมสะสมทั้งหมด"
-
-#: dt-metrics/combined/time-charts.php:116
-msgid "Single cumulative totals"
-msgstr "ผลรวมสะสมเดี่ยว"
-
-#: dt-metrics/combined/time-charts.php:117
-msgid "Number added"
-msgstr "เพิ่มจำนวนแล้ว"
-
 #: dt-metrics/contacts/baptism-tree.php:24
 msgid "Baptism Tree"
 msgstr "ต้นไม้ล้างบาป"
@@ -3640,6 +3560,14 @@ msgstr "แผนภูมิเหตุการณ์สำคัญ"
 #: dt-metrics/contacts/sources.php:87
 msgid "Filter contacts to date range:"
 msgstr "กรองรายชื่อไปยังช่วงวันที่:"
+
+#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/time-charts.php:114
+#: dt-users/template-user-management.php:562
+msgid "All Time"
+msgstr "ตลอดเวลา"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3796,6 +3724,12 @@ msgstr "สมาชิกทั้งหมด"
 msgid "View Group"
 msgstr "ดูกลุ่ม"
 
+#: dt-metrics/metrics.php:106
+#, fuzzy
+#| msgid "Metrics"
+msgid "Dynamic Metrics"
+msgstr "เมตริก"
+
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
 msgid "Activity Highlights"
@@ -3832,6 +3766,12 @@ msgstr "ความคิดเห็นที่ฉันมีปฏิกิ
 #: dt-metrics/personal/activity-highlights.php:66
 msgid "Comments I Posted"
 msgstr "ความคิดเห็นที่ฉันโพสต์"
+
+#: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/date-range-activity.php:109
+#: dt-metrics/records/time-charts.php:113
+msgid "Date"
+msgstr "วันที่"
 
 #: dt-metrics/personal/activity-highlights.php:176
 msgid "%1$d %2$s created"
@@ -3897,6 +3837,92 @@ msgstr "การติดตามผู้ติดต่อที่ใช้
 #: dt-metrics/personal/overview.php:68
 msgid "stats as of"
 msgstr "สถิติ ณ วันที่"
+
+#: dt-metrics/records/date-range-activity.php:43
+msgid "Activity During Date Range"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/generation-tree.php:91
+#: dt-metrics/records/time-charts.php:108
+msgid "Post Type"
+msgstr "ชนิดของโพสต์"
+
+#: dt-metrics/records/date-range-activity.php:104
+#, fuzzy
+#| msgid "Activity"
+msgid "Any Activity"
+msgstr "กิจกรรม"
+
+#: dt-metrics/records/date-range-activity.php:105
+#: dt-metrics/records/time-charts.php:110
+msgid "Total"
+msgstr "รวม"
+
+#: dt-metrics/records/date-range-activity.php:106
+#, fuzzy
+#| msgid "Date Ranges"
+msgid "Date Range"
+msgstr "ช่วงวันที่"
+
+#: dt-metrics/records/date-range-activity.php:107
+msgid "Reload"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:108
+msgid "Title"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:110
+#, fuzzy
+#| msgid "Old Value"
+msgid "New Value"
+msgstr "ค่าเก่า"
+
+#: dt-metrics/records/date-range-activity.php:309
+msgid "True"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:309
+msgid "False"
+msgstr ""
+
+#: dt-metrics/records/generation-tree.php:31
+#, fuzzy
+#| msgid "Group Generation Tree"
+msgid "Generation Tree"
+msgstr "ต้นไม้สร้างกลุ่ม"
+
+#: dt-metrics/records/generation-tree.php:93
+#, fuzzy
+#| msgid "Generation"
+msgid "Generate"
+msgstr "เจนเนอเรชั่น"
+
+#: dt-metrics/records/time-charts.php:43 dt-metrics/records/time-charts.php:107
+msgid "Fields over Time Charts"
+msgstr "เขตข้อมูลบนแผนภูมิเวลา"
+
+#: dt-metrics/records/time-charts.php:111
+msgid "Added"
+msgstr "เพิ่มแล้ว"
+
+#: dt-metrics/records/time-charts.php:112
+msgctxt "Total in January"
+msgid "%1$s in %2$s"
+msgstr "%1$sใน%2$s"
+
+#: dt-metrics/records/time-charts.php:115
+msgid "All cumulative totals"
+msgstr "ผลรวมสะสมทั้งหมด"
+
+#: dt-metrics/records/time-charts.php:116
+msgid "Single cumulative totals"
+msgstr "ผลรวมสะสมเดี่ยว"
+
+#: dt-metrics/records/time-charts.php:117
+msgid "Number added"
+msgstr "เพิ่มจำนวนแล้ว"
 
 #: dt-notifications/notifications-email.php:125
 msgid "Click here to view or reply"

@@ -71,17 +71,11 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        if ( !isset( $expected_roles['multiplier'] ) ){
-            $expected_roles['multiplier'] = [
-                'label' => __( 'Multiplier', 'disciple_tools' ),
-                'permissions' => []
-            ];
-        }
         // if the user can access contact they also can access group
-        foreach ( $expected_roles as $role => $role_value ){
-            if ( isset( $expected_roles[$role]['permissions']['access_contacts'] ) && $expected_roles[$role]['permissions']['access_contacts'] ){
-                $expected_roles[$role]['permissions']['access_' . $this->post_type] = true;
-                $expected_roles[$role]['permissions']['create_' . $this->post_type] = true;
+        foreach ( $expected_roles as $role_key => $role ){
+            if ( isset( $role['type'] ) && in_array( 'base', $role['type'], true ) ){
+                $expected_roles[$role_key]['permissions']['access_' . $this->post_type] = true;
+                $expected_roles[$role_key]['permissions']['create_' . $this->post_type] = true;
             }
         }
 
@@ -89,6 +83,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $expected_roles['administrator']['permissions']['view_any_groups'] = true;
             $expected_roles['administrator']['permissions']['update_any_groups'] = true;
             $expected_roles['administrator']['permissions']['dt_all_admin_groups'] = true;
+            $expected_roles['administrator']['permissions']['delete_any_groups'] = true;
         }
         if ( isset( $expected_roles['dispatcher'] ) ){
             $expected_roles['dispatcher']['permissions']['view_any_groups'] = true;

@@ -44,7 +44,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
 
         // Check if field is not a default field and add a note in the array
-        foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
+        foreach ( $post_settings['fields'] ?? [] as $field_key => $field_settings ) {
             if ( !array_key_exists( $field_key, $all_non_custom_fields ) ) {
                 $post_settings['fields'][$field_key]['is_custom'] = true;
                 continue;
@@ -82,11 +82,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         wp_enqueue_style( 'dt_settings_css' );
 
         $post_type = self::get_parameter( 'post_type' );
-        if ( !isset( $post_type ) || is_null( $post_type ) ) {
-            return;
-        }
-
-        $post_settings = self::get_post_settings_with_customization_status( $post_type );
 
         $translations = [
             'save' => __( 'Save', 'disciple_tools' ),
@@ -98,7 +93,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'date_modified' => __( 'Date Modified', 'disciple_tools' ),
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
-            'filter_all' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_settings['label_plural'] ),
+            'filter_all' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_settings['label_plural'] ?? $post_type ),
             'range_start' => __( 'start', 'disciple_tools' ),
             'range_end' => __( 'end', 'disciple_tools' ),
             'all' => __( 'All', 'disciple_tools' ),
@@ -109,23 +104,32 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'exclude_item' => __( 'Exclude Item', 'disciple_tools' )
         ];
 
-        wp_localize_script(
-            'dt-settings', 'field_settings', array(
-                'all_post_types' => self::get_all_post_types(),
+        $localized_array = [
+            'all_post_types' => self::get_all_post_types(),
+            'translations' => apply_filters( 'dt_list_js_translations', $translations ),
+            'languages' => dt_get_available_languages( true ),
+            'root' => esc_url_raw( rest_url() ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+            'site_url' => get_site_url(),
+            'template_dir' => get_template_directory_uri(),
+        ];
+
+        if ( !empty( $post_type ) ) {
+            $post_settings = self::get_post_settings_with_customization_status( $post_type );
+            $localized_array = array_merge( $localized_array, [
+                'post_type_settings' => $post_settings,
                 'post_type' => $post_type,
                 'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
-                'post_type_settings' => $post_settings,
                 'post_type_tiles' => DT_Posts::get_post_tiles( $post_type ),
                 'default_tiles' => self::get_default_tiles( $post_type ),
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
-                'translations' => apply_filters( 'dt_list_js_translations', $translations ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
-                'languages' => dt_get_available_languages( true ),
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'site_url' => get_site_url(),
-                'template_dir' => get_template_directory_uri(),
-            )
+                'roles' => Disciple_Tools_Roles::get_dt_roles_and_permissions(),
+            ]);
+        }
+
+        wp_localize_script(
+            'dt-settings', 'field_settings', $localized_array
         );
 
         wp_enqueue_script( 'jquery' );
@@ -170,10 +174,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public static function load_overlay_modal() {
-        $post_type = self::get_parameter( 'post_type' );
-        if ( !isset( $post_type ) || is_null( $post_type ) ) {
-            return;
-        }
         ?>
         <div class="dt-admin-modal-overlay hidden">
             <div class="dt-admin-modal-box hidden">
@@ -228,6 +228,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <div id="post-type-buttons">
             <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a record type:', 'disciple_tools' ); ?></b></div>
+            <div class="latest-post-type-buttons">
         <?php
         $post_types = DT_Posts::get_post_types();
         foreach ( $post_types as $post_type ) :
@@ -239,6 +240,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             ?>
             <a href="<?php echo esc_url( admin_url() . $pill_link ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
         <?php endforeach; ?>
+            </div>
+            <p>
+                <a id="add_new_post_type" href="#" class="button"><?php esc_html_e( 'Add New Record Type', 'disciple_tools' ); ?></a>
+            </p>
         </div>
         <?php
     }
@@ -257,6 +262,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         ?>
         <h2 class="nav-tab-wrapper" style="padding: 0;">
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=tiles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'tiles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Tiles', 'disciple_tools' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=settings" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'settings' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Settings', 'disciple_tools' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=roles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'roles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Roles', 'disciple_tools' ); ?></a>
         </h2>
         <?php
     }
@@ -271,6 +278,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         switch ( $tab ) {
             case 'tiles':
                 self::tile_settings_box();
+                break;
+            case 'settings':
+                self::post_type_settings_box();
+                break;
+            case 'roles':
+                self::roles_settings_box();
                 break;
             default:
                 self::tile_settings_box();
@@ -331,6 +344,166 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function get_post_fields( $post_type ){
         return DT_Posts::get_post_field_settings( $post_type, false, true );
+    }
+
+    private function roles_settings_box(){
+        $post_type = self::get_parameter( 'post_type' );
+        if ( isset( $post_type ) ){
+            $capability_factory = Disciple_Tools_Capability_Factory::get_instance();
+            $roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+            ksort( $roles );
+            ?>
+            <table class="widefat striped" style="margin-top: 12px;">
+                <thead>
+                <th colspan="2"><?php echo esc_html( 'Roles & Permissions' ); ?></th>
+                </thead>
+                <tbody>
+                <?php
+                foreach ( $roles as $key => $role ){
+                    if ( $key === 'registered' ){
+                        continue;
+                    }
+                    ?>
+                    <tr>
+                        <td>
+                            <span style="font-weight: bold;"><?php echo esc_html( $role['label'] ?? $key ); ?></span>
+                        </td>
+                        <td>
+                            <fieldset style="display: grid; grid-template-columns: repeat(4, 1fr);">
+                                <?php
+                                $capabilities = $capability_factory->get_capabilities();
+                                foreach ( $capabilities as $capability_key => $capability ){
+                                    if ( isset( $capability->post_type ) && $capability->post_type === $post_type ){
+                                        $is_capability_selected = isset( $role['permissions'][$capability_key] ) && $role['permissions'][$capability_key] === true;
+                                        $capability_name = $capability->name ?? $capability_key;
+                                        ?>
+                                        <div class="capability">
+                                            <label>
+                                                <input  type="checkbox"
+                                                        class="roles-settings-capability"
+                                                        data-role_key="<?php echo esc_attr( $key ) ?>"
+                                                        data-capability_key="<?php echo esc_attr( $capability_key ) ?>"
+                                                        <?php echo esc_attr( $is_capability_selected ? 'checked' : '' ) ?>
+                                                        <?php echo esc_attr( ( $key == 'administrator' ) && !dt_is_administrator() ? 'disabled' : '' ) ?>
+                                                />
+                                                <?php
+                                                echo esc_attr( $capability_name );
+                                                if ( !empty( $capability->description ) ){
+                                                    ?>
+                                                    <span
+                                                        data-tooltip="<?php echo esc_attr( $capability->description ); ?>">
+                                                        <span class="dashicons dashicons-editor-help"></span>
+                                                    </span>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </label>
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <span style="float: right;">
+                            <button type="submit"
+                                    class="button button-primary"
+                                    name="roles_settings_update_but"
+                                    id="roles_settings_update_but"
+                                    value="<?php echo esc_html( $post_type ); ?>"
+                                    data-post_type="<?php echo esc_attr( $post_type ) ?>"><?php echo esc_html( 'Update' ); ?>
+                                <span id="roles_settings_update_but_icon"></span>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <?php
+        }
+    }
+
+    private function post_type_settings_box(){
+        $request_post_type = self::get_parameter( 'post_type' );
+        if ( is_null( $request_post_type ) ){
+            return;
+        }
+
+        // Build array containing both custom and default post types.
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+        $post_types = DT_Posts::get_post_types();
+        $post_types_settings = [];
+        foreach ( $post_types as $post_type ){
+            $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type, false );
+            if ( empty( $post_types_settings[$post_type] ) && isset( $custom_post_types[$post_type] ) ){
+                $post_types_settings[$post_type] = $custom_post_types[$post_type];
+            }
+        }
+        $this->display_post_type_settings( $request_post_type, $post_types_settings[$request_post_type] ?? [], ( isset( $custom_post_types[$request_post_type]['is_custom'] ) && $custom_post_types[$request_post_type]['is_custom'] ) );
+    }
+
+    private function display_post_type_settings( $post_type, $settings, $is_custom_post_type ){
+        if ( !empty( $settings ) ){
+            ?>
+            <table class="widefat striped" style="margin-top: 12px;">
+                <thead>
+                    <th colspan="2"><?php echo esc_html( 'Record Type Settings' ); ?></th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><label><b><?php echo esc_html( 'Key' ); ?></b></label></td>
+                        <td id="post_type_settings_key"><?php echo esc_html( $post_type ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Singular' ); ?></b></label></td>
+                        <td><input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $settings['label_singular'] ?? $post_type ); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_type_settings_plural"><b><?php echo esc_html( 'Plural' ); ?></b></label></td>
+                        <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $settings['label_plural'] ?? $post_type ); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td><label
+                                for="post_type_settings_frontend_displayed"><b><?php echo esc_html( sprintf( 'Display %s Tab in Navigation Bar', $settings['label_plural'] ?? $post_type ) ); ?></b></label>
+                        </td>
+                        <td><input id="post_type_settings_frontend_displayed" name="post_type_settings_frontend_displayed" type="checkbox" <?php echo esc_attr( ( isset( $settings['hidden'] ) && $settings['hidden'] ) ? '' : 'checked' ); ?> /></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <span style="float: right;">
+                            <?php
+                            if ( $is_custom_post_type ){
+
+                                // Ensure current user has correct permissions to action deletion.
+                                $disabled = current_user_can( 'delete_any_' . $post_type ) ? '' : 'disabled';
+                                ?>
+                                <button type="submit" class="button button-primary"
+                                        name="post_type_settings_delete_but" id="post_type_settings_delete_but"
+                                        value="<?php echo esc_html( $post_type ); ?>"
+                                        <?php echo esc_html( $disabled ); ?>><?php echo esc_html( 'Delete' ); ?></button>
+                                <?php
+                            }
+                            ?>
+                            <button type="submit" class="button button-primary" name="post_type_settings_update_but" id="post_type_settings_update_but" value="<?php echo esc_html( $post_type ); ?>"><?php echo esc_html( 'Update' ); ?>
+                                <span id="post_type_settings_update_but_icon"></span>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+            <?php
+        }
     }
 
     private function tile_settings_box() {
@@ -405,7 +578,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         if ( isset( $tile_value['order'] ) ) {
                             $post_tiles['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_tiles['fields'] );
                         }
-                        foreach ( $post_tiles['fields'] as $field_key => $field_settings ) : ?>
+                        foreach ( $post_tiles['fields'] ?? [] as $field_key => $field_settings ) : ?>
                             <?php if ( self::field_option_in_tile( $field_key, $tile_key ) && self::field_is_customizable( $post_type, $field_key ) ) : ?>
                                 <div class="sortable-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>

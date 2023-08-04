@@ -23,6 +23,29 @@ function makeRequest(type, url, data, base = "dt/v1/") {
 jQuery(document).ready(function($) {
 
     window.API = {};
+    window.API.create_new_post_type = (new_key, new_name_single, new_name_plural) => makeRequest("POST", `create-new-post-type`, {
+      key: new_key,
+      single: new_name_single,
+      plural: new_name_plural
+    }, `dt-admin-settings/`);
+
+    window.API.update_post_type = (key, name_singular, name_plural, displayed) => makeRequest("POST", `update-post-type`, {
+      key: key,
+      single: name_singular,
+      plural: name_plural,
+      displayed: displayed
+    }, `dt-admin-settings/`);
+
+    window.API.delete_post_type = (key, delete_all_records) => makeRequest("POST", `delete-post-type`, {
+      key: key,
+      delete_all_records: delete_all_records
+    }, `dt-admin-settings/`);
+
+    window.API.update_roles = (post_type, roles) => makeRequest("POST", `update-roles`, {
+      post_type: post_type,
+      roles: roles
+    }, `dt-admin-settings/`);
+
     window.API.create_new_tile = (post_type, new_tile_name, new_tile_description) => makeRequest("POST", `create-new-tile`, {
         post_type: post_type,
         new_tile_name: new_tile_name,
@@ -296,6 +319,11 @@ jQuery(document).ready(function($) {
         showOverlayModal('add-new-tile');
     });
 
+    $('#add_new_post_type').on('click', function(event){
+      event.preventDefault();
+      showOverlayModal('add-new-post-type');
+    });
+
     $('.field-settings-table').on('click', '.add-new-field', function() {
         var tile_key = $(this).data('parent-tile-key');
         showOverlayModal('add-new-field', tile_key);
@@ -475,6 +503,12 @@ jQuery(document).ready(function($) {
     }
 
     function showOverlayModalContentBox(modalName, data=null) {
+        if ( modalName == 'delete-post-type') {
+            loadDeletePostTypeContentBox(data);
+        }
+        if ( modalName == 'add-new-post-type') {
+            loadAddPostTypeContentBox();
+        }
         if ( modalName == 'add-new-tile' ) {
             loadAddTileContentBox();
         }
@@ -513,6 +547,83 @@ jQuery(document).ready(function($) {
         $([document.documentElement, document.body]).animate({
             scrollTop: target_element.offset().top + offset
         }, 500);
+    }
+
+    // Delete Post Type Modal
+    function loadDeletePostTypeContentBox(data) {
+      let modal_html_content = `
+            <tr>
+                <th colspan="2">
+                    <h3 class="modal-box-title">Delete Record Type</h3>
+                </th>
+            </tr>
+            <tr colspan="2">
+                <td>
+                    Are you sure you want to delete ${data['post_type']} and field settings?
+                </td>
+            </tr>
+            <tr colspan="2">
+                <td>
+                    <input name="delete_post_type_records" id="delete_post_type_records" type="checkbox">
+                    <label for="delete_post_type_records"><b>Delete all records of type ${data['post_type']}?</b></label>
+                </td>
+            </tr>
+            <tr class="last-row">
+                <td colspan="2">
+                    <div id="delete_post_type_msg"></div><br>
+                    <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                    <button class="button button-primary" type="submit" id="js-delete-post-type" data-post_type="${data['post_type']}">
+                    Delete Record Type
+                    <span id="js_delete_post_type_icon"></span>
+                    </button>
+                </td>
+            </tr>`;
+      $('#modal-overlay-content-table').html(modal_html_content);
+    }
+
+    // Add Post Type Modal
+    function loadAddPostTypeContentBox() {
+      let modal_html_content = `
+          <tr>
+              <th colspan="2">
+                  <h3 class="modal-box-title">Add New Record Type</h3>
+              </th>
+          </tr>
+          <tr>
+              <td>
+                  <label for="new_post_type_name_single"><b>Single Name</b></label>
+              </td>
+              <td>
+                  <input name="new_post_type_name_single" id="new_post_type_name_single" type="text" required>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <label for="new_post_type_key"><b>Key</b></label>
+              </td>
+              <td>
+                  <input name="new_post_type_key" id="new_post_type_key" type="text" required>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <label for="new_post_type_name_plural"><b>Plural Name</b></label>
+              </td>
+              <td>
+                  <input name="new_post_type_name_plural" id="new_post_type_name_plural" type="text" required>
+              </td>
+          </tr>
+          <tr class="last-row">
+              <td colspan="2">
+                  <div id="new_post_type_msg"></div><br>
+                  <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
+                  <button class="button button-primary" type="submit" id="js-add-post-type">
+                  Create Record Type
+                  <span id="js_add_post_type_icon"></span>
+                  </button>
+              </td>
+          </tr>`;
+      $('#modal-overlay-content-table').html(modal_html_content);
     }
 
     // Add Tile Modal
@@ -1175,6 +1286,226 @@ jQuery(document).ready(function($) {
 
     $('#modal-overlay-form').on('submit', function(event){
         event.preventDefault();
+    });
+
+    // Update Roles & Permissions
+    $(document).on('click', '#roles_settings_update_but', function (e) {
+      e.preventDefault();
+      let post_type = $(e.currentTarget).data('post_type');
+
+      // Activate spinner.
+      let button_icon = $('#roles_settings_update_but_icon');
+      button_icon.removeClass('mdi mdi-comment-check-outline');
+      button_icon.removeClass('mdi mdi-comment-remove-outline');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
+
+      let roles = {};
+      $('.roles-settings-capability').each(function (idx, capability) {
+        let enabled = $(capability).prop('checked');
+        let role_key = $(capability).data('role_key');
+        let capability_key = $(capability).data('capability_key');
+
+        // Assign to specific role.
+        if (roles[role_key] === undefined) {
+          roles[role_key] = [];
+        }
+        roles[role_key].push({
+          'key': capability_key,
+          'enabled': enabled
+        });
+      });
+
+      // Dispatch update endpoint api request.
+      API.update_roles(post_type, roles).promise().then(function (data) {
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+        button_icon.css('color', '#ffffff');
+
+        if (data && data['updated']) {
+          button_icon.addClass('mdi mdi-comment-check-outline');
+
+        } else {
+          button_icon.addClass('mdi mdi-comment-remove-outline');
+        }
+      });
+    });
+
+    // Process Add Post Type - Single Name Events
+    $('#modal-overlay-form').on('keyup', '#new_post_type_name_single', function (e) {
+
+      // Generate corresponding key.
+      let single_name = $('#new_post_type_name_single').val().trim();
+      let key = single_name.toLowerCase().replaceAll(/[!-\/:-@[-`{-~\s*]/ig, '_');
+      $('#new_post_type_key').val(key);
+
+      // Generate corresponding plural name.
+      $('#new_post_type_name_plural').val(single_name + 's');
+    });
+
+    // Delete Post Type - Show Modal
+    $(document).on('click', '#post_type_settings_delete_but', function (e) {
+      e.preventDefault();
+
+      showOverlayModal('delete-post-type', {
+        'post_type': $('#post_type_settings_key').html()
+      });
+    });
+
+    // Delete Post Type
+    $(document).on('click', '#js-delete-post-type', function (e) {
+      e.preventDefault();
+
+      let post_type = $(e.currentTarget).data('post_type');
+      let delete_all_records = $('#delete_post_type_records').prop('checked');
+      let delete_post_type_msg = $('#delete_post_type_msg');
+      $(delete_post_type_msg).html('');
+
+      // Activate spinner.
+      let button_icon = $('#js_delete_post_type_icon');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
+
+      API.delete_post_type(post_type, delete_all_records).promise().then(function (data) {
+        console.log(data);
+
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+
+        if(data && data['deleted']) {
+          window.location.href = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
+
+        } else {
+          $(delete_post_type_msg).html(window.lodash.escape(data['msg']));
+        }
+      });
+    });
+
+    // Update Post Type
+    $(document).on('click', '#post_type_settings_update_but', function (e) {
+      e.preventDefault();
+
+      let post_type_settings_singular = $('#post_type_settings_singular');
+      let post_type_settings_plural = $('#post_type_settings_plural');
+
+      let post_type = $('#post_type_settings_key').html();
+      let singular = $(post_type_settings_singular).val();
+      let plural = $(post_type_settings_plural).val();
+      let displayed = $('#post_type_settings_frontend_displayed').prop('checked');
+
+      // Reset any previous failed validation highlights.
+      $(post_type_settings_singular).css('border', '');
+      $(post_type_settings_plural).css('border', '');
+
+      // Activate spinner.
+      let button_icon = $('#post_type_settings_update_but_icon');
+      button_icon.removeClass('mdi mdi-comment-check-outline');
+      button_icon.removeClass('mdi mdi-comment-remove-outline');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
+
+      // Ensure we have valid entries.
+      if (singular.trim() === '') {
+        alert('Please ensure to enter a valid Singular value.');
+        $(post_type_settings_singular).css('border', '2px solid #e14d43');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+
+      } else if (plural.trim() === '') {
+        alert('Please ensure to enter a valid Plural value.');
+        $(post_type_settings_plural).css('border', '2px solid #e14d43');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+
+      } else {
+
+        API.update_post_type(post_type, singular, plural, displayed).promise().then(function (data) {
+          button_icon.removeClass('active');
+          button_icon.removeClass('loading-spinner');
+          button_icon.css('color', '#ffffff');
+
+          if (data && data['updated']) {
+            button_icon.addClass('mdi mdi-comment-check-outline');
+
+          } else {
+            button_icon.addClass('mdi mdi-comment-remove-outline');
+          }
+        });
+      }
+    });
+
+    // Process Add Post Type
+    $('#modal-overlay-form').on('click', '#js-add-post-type', function (e) {
+      let new_post_type_key = $('#new_post_type_key');
+      let new_post_type_name_single = $('#new_post_type_name_single');
+      let new_post_type_name_plural = $('#new_post_type_name_plural');
+      let new_post_type_msg = $('#new_post_type_msg');
+
+      // Reset any previous failed validation highlights.
+      $(new_post_type_name_single).css('border', '');
+      $(new_post_type_key).css('border', '');
+      $(new_post_type_name_plural).css('border', '');
+      $(new_post_type_msg).html('');
+
+      // Activate spinner.
+      let button_icon = $('#js_add_post_type_icon');
+      button_icon.css('margin', '2px 0px 4px  10px');
+      button_icon.addClass('active');
+      button_icon.addClass('loading-spinner');
+
+      // Validate initial field entries.
+      let key = $(new_post_type_key).val().trim();
+      let single_name = $(new_post_type_name_single).val().trim();
+      let plural_name = $(new_post_type_name_plural).val().trim();
+
+      if(single_name === '') {
+        $(new_post_type_name_single).css('border', '2px solid #e14d43');
+        button_icon.css('margin', '');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+        return false;
+
+      } else if (key === '') {
+        $(new_post_type_key).css('border', '2px solid #e14d43');
+        button_icon.css('margin', '');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+        return false;
+
+      } else if(plural_name === '') {
+        $(new_post_type_name_plural).css('border', '2px solid #e14d43');
+        button_icon.css('margin', '');
+        button_icon.removeClass('active');
+        button_icon.removeClass('loading-spinner');
+        return false;
+
+      } else {
+
+        // Submit post type creation request.
+        API.create_new_post_type(key, single_name, plural_name).promise().then(function (data) {
+
+          button_icon.css('margin', '');
+          button_icon.removeClass('active');
+          button_icon.removeClass('loading-spinner');
+
+          if (data && data['success'] && data['post_type'] && data['post_type_label']) {
+
+            // Unselect all/any primary buttons.
+            let latest_post_type_buttons = $('.latest-post-type-buttons');
+            $(latest_post_type_buttons).find('.button').removeClass('button-primary');
+
+            // Generate new post type button.
+            let pill_link = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=' + data['post_type'] + '&tab=tiles';
+            let pill_link_html = `<a href="${pill_link}" class="button button-primary">${data['post_type_label']}</a>`;
+            $(latest_post_type_buttons).append(pill_link_html);
+
+            // Refresh page with new post type selected
+            window.location.href = pill_link;
+          } else {
+            $(new_post_type_msg).html(window.lodash.escape(data['msg']));
+          }
+        });
+      }
     });
 
     // Process Add Tile
