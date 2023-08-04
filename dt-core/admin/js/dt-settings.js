@@ -1056,7 +1056,11 @@ jQuery(document).ready(function($) {
         var field_icon_image_html = '';
         let icon = (field_settings['icon'] && field_settings['icon'] !== '') ? field_settings['icon'] : field_settings['font-icon'];
         if ( icon && (typeof icon !== 'undefined') && (icon !== 'undefined') ) {
-          field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+          if ( icon.trim().toLowerCase().startsWith('mdi') ){
+            field_icon_image_html = `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>`;
+          } else {
+            field_icon_image_html = `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`;
+          }
 
         } else icon = '';
 

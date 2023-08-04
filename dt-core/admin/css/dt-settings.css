@@ -283,6 +283,7 @@
     width: 30px;
     height: 30px;
     vertical-align: top;
+    line-height: 1;
 }
 .new-custom-field {
     display: block;
