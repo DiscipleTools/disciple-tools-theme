@@ -99,6 +99,11 @@ jQuery(document).ready(function($) {
         field_icon: field_icon,
     }, `dt-admin-settings/`);
 
+    window.API.delete_field = ( post_type, field_key ) => makeRequest("DELETE", `field`, {
+      post_type,
+      field_key,
+    }, `dt-admin-settings/`);
+
     window.API.new_field_option = (post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon) => makeRequest("POST", `new-field-option`, {
         post_type: post_type,
         tile_key: tile_key,
@@ -118,9 +123,10 @@ jQuery(document).ready(function($) {
         field_option_icon: field_option_icon,
     }, `dt-admin-settings/`);
 
-    window.API.delete_field = ( post_type, field_key ) => makeRequest("DELETE", `field`, {
+    window.API.delete_field_option = ( post_type, field_key, field_option_key ) => makeRequest("DELETE", `field-option`, {
         post_type,
         field_key,
+        field_option_key,
     }, `dt-admin-settings/`);
 
     window.API.update_tile_and_fields_order = (post_type, dt_custom_tiles_and_fields_ordered) => makeRequest("POST", `update-tiles-and-fields-order`, {
@@ -785,7 +791,7 @@ jQuery(document).ready(function($) {
         `);
     });
 
-    // Delete Tile Text Click
+    // Delete Field Text Click
     $('#modal-overlay-form').on('click', '#delete-field-text', function(e) {
         $(this).blur();
         if( $('#delete-confirmation-container').length > 0 ) {
@@ -799,6 +805,22 @@ jQuery(document).ready(function($) {
             </div>
         `);
     });
+
+    // Delete Field Option Text Click
+    $('#modal-overlay-form').on('click', '#delete-field-option-text', function(e) {
+        $(this).blur();
+        if( $('#delete-confirmation-container').length > 0 ) {
+            return;
+        }
+        let field_key = $(this).data('field-key');
+        let field_option_key = $(this).data('field-option-key');
+        $(this).parent().append(`
+            <div id="delete-confirmation-container" style="cursor: pointer;">
+                <svg id="delete-field-option-confirmation-confirm" data-field-key="${field_key}" data-field-option-key="${field_option_key}" stroke="#e14d43" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg id="delete-confirmation-cancel" stroke="#e14d43" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+        `);
+    })
 
     // Delete Confirmation Confirm
     $('#modal-overlay-form').on('click', '#delete-tile-confirmation-confirm', function(e) {
@@ -843,6 +865,21 @@ jQuery(document).ready(function($) {
       API.delete_field(post_type, field_key).promise().then(function() {
         closeModal();
         let field_element = $(`.sortable-field[data-key="${field_key}"]`);
+        field_element.css('background', '#e14d43');
+        field_element.fadeOut(500, function(){
+            field_element.remove();
+        });
+      })
+    });
+
+
+    $('#modal-overlay-form').on('click', '#delete-field-option-confirmation-confirm', function(e) {
+      let post_type = get_post_type();
+      let field_key = $(this).data('field-key');
+      let field_option_key = $(this).data('field-option-key');
+      API.delete_field_option(post_type, field_key, field_option_key).promise().then(function() {
+        closeModal();
+        let field_element = $(`.sortable-field[data-key="${field_key}"] .field-settings-table-field-option[data-field-option-key="${field_option_key}"]` );
         field_element.css('background', '#e14d43');
         field_element.fadeOut(500, function(){
             field_element.remove();
@@ -1254,6 +1291,12 @@ jQuery(document).ready(function($) {
 
         } else field_icon_url = '';
 
+        let delete_field_option_html_content = '';
+        if (field_settings.is_custom || field_option.is_custom) {
+          delete_field_option_html_content = `<a id="delete-field-option-text" class="delete-text" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Delete Field Option</a>`;
+        }
+
+
         var modal_html_content = `
         <tr>
             <th colspan="2">
@@ -1342,7 +1385,10 @@ jQuery(document).ready(function($) {
             </td>
         </tr>
         <tr class="last-row">
-            <td colspan="2">
+            <td>
+                ${delete_field_option_html_content}
+            </td>
+            <td>
                 <button class="button dt-admin-modal-box-close" type="button">Cancel</button>
                 <button class="button button-primary" type="submit" id="js-edit-field-option" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
             </td>

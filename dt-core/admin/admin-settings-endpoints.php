@@ -187,6 +187,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/field-option', [
+                'methods' => 'DELETE',
+                'callback' => [ $this, 'delete_field_option' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/update-tiles-and-fields-order', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'update_tiles_and_fields_order' ],
@@ -941,39 +949,59 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function edit_field_option( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
-        if ( isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_key'], $post_submission['new_field_option_label'] ) ) {
-            $field_key = $post_submission['field_key'];
-            $post_type = $post_submission['post_type'];
-            $field_option_key = $post_submission['field_option_key'];
-            $new_field_option_label = $post_submission['new_field_option_label'];
-            $new_field_option_description = $post_submission['new_field_option_description'];
-            $field_option_icon = $post_submission['field_option_icon'];
-
-            $field_customizations = dt_get_option( 'dt_field_customizations' );
-            $custom_field_option = [
-                'label' => $new_field_option_label,
-                'description' => $new_field_option_description,
-            ];
-
-            if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
-                $field_option_icon = strtolower( trim( $field_option_icon ) );
-                $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
-                $custom_field_option[$icon_key] = $field_option_icon;
-
-                if ( $icon_key == 'font-icon' ){
-                    $custom_field_option['icon'] = '';
-                }
-            }
-
-            // Create default_name to store the default field option label if it changed
-            if ( self::default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_field_option['label'] ) ) {
-                $custom_field_option['default_name'] = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
-            }
-
-            $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
-            update_option( 'dt_field_customizations', $field_customizations );
-            return $custom_field_option;
+        if ( !isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_key'], $post_submission['new_field_option_label'] ) ) {
+            return new WP_Error( __METHOD__, __( 'Missing required parameters', 'disciple_tools' ), [ 'status' => 400 ] );
         }
+        $field_key = $post_submission['field_key'];
+        $post_type = $post_submission['post_type'];
+        $field_option_key = $post_submission['field_option_key'];
+        $new_field_option_label = $post_submission['new_field_option_label'];
+        $new_field_option_description = $post_submission['new_field_option_description'];
+        $field_option_icon = $post_submission['field_option_icon'];
+
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+        $custom_field_option = [
+            'label' => $new_field_option_label,
+            'description' => $new_field_option_description,
+        ];
+
+        if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
+            $field_option_icon = strtolower( trim( $field_option_icon ) );
+            $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
+            $custom_field_option[$icon_key] = $field_option_icon;
+
+            if ( $icon_key == 'font-icon' ){
+                $custom_field_option['icon'] = '';
+            }
+        }
+
+        // Create default_name to store the default field option label if it changed
+        if ( self::default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_field_option['label'] ) ) {
+            $custom_field_option['default_name'] = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
+        }
+
+        $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
+        update_option( 'dt_field_customizations', $field_customizations );
+        return $custom_field_option;
+    }
+
+    public function delete_field_option( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        if ( !isset( $post_submission['post_type'], $post_submission['field_key'], $post_submission['field_option_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing post_type or field_key or field_option_key', [ 'status' => 400 ] );
+        }
+        $field_key = $post_submission['field_key'];
+        $post_type = $post_submission['post_type'];
+        $field_option_key = $post_submission['field_option_key'];
+
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+        if ( !isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
+            return new WP_Error( __METHOD__, 'Field option does not exist', [ 'status' => 400 ] );
+        }
+
+        unset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] );
+        update_option( 'dt_field_customizations', $field_customizations );
+        return $field_customizations;
     }
 
     public function plugin_activate( WP_REST_Request $request ) {
