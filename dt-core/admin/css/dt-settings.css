@@ -16,7 +16,7 @@
     from { background: #3f729b; }
     to { background: #d3d3d3; }
 }
-#delete-text {
+.delete-text {
     cursor: pointer;
     width: 100%;
     color: #e14d43;
@@ -226,7 +226,8 @@
 }
 
 #modal-overlay-content-table td {
-    padding: 0.1rem 0.5rem;
+    padding: 0.2rem 0.5rem;
+    vertical-align: top;
 }
 #modal-overlay-content-table input[type="text"],select {
     width: 100%;
@@ -246,7 +247,6 @@
     margin-left: 1rem;
 }
 
->>>>>>> 6a4c0922d5e2fd47208930dbcc97d074789d46da
 .modal-overlay-content-table, .modal-translations-overlay-content-table {
     margin: 6px 10px 10px 10px;
     line-height: 2.5;
@@ -494,4 +494,36 @@
     width: 100%;
     height: 3em;
     padding-left: 12px;
+}
+
+.help-icon {
+    width: 15px;
+}
+.ui-tooltip {
+    z-index: 100000000;
+}
+.ui-tooltip {
+    white-space: pre-line;
+}
+
+.dt-tag {
+    display: inline-block;
+    padding: 0.5em 0.8em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    color: #fff;
+}
+.dt-tag-teal {
+    background-color: #009688
+}
+.dt-tag-grey {
+    background-color: #9e9e9e
+}
+.dt-tag-orange {
+    background-color: #ff9800
 }

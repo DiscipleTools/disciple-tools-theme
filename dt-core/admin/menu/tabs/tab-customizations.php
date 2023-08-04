@@ -43,13 +43,20 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
 
-        // Check if field is not a default field and add a note in the array
         foreach ( $post_settings['fields'] ?? [] as $field_key => $field_settings ) {
+            // Check if field is not a default field and add a note in the array
             if ( !array_key_exists( $field_key, $all_non_custom_fields ) ) {
                 $post_settings['fields'][$field_key]['is_custom'] = true;
-                continue;
             }
-
+            // check if a field options is not a default field option and add a note in the array
+            if ( in_array( $field_settings['type'], [ 'key_select', 'multi_select' ], true ) && isset( $field_settings['default'] ) && is_array( $field_settings['default'] ) ){
+                foreach ( $field_settings['default'] as $option_key => $option ) {
+                    if ( !array_key_exists( $option_key, $all_non_custom_fields[$field_key]['default'] ?? [] ) ) {
+                        $post_settings['fields'][$field_key]['default'][$option_key]['is_custom'] = true;
+                    }
+                }
+            }
+            // check if a field name is not a default field name and add a note in the array
             if ( isset( $all_non_custom_fields[$field_key]['name'] ) && $post_settings['fields'][$field_key]['name'] != $all_non_custom_fields[$field_key]['name'] ) {
                 $post_settings['fields'][$field_key]['default_name'] = $all_non_custom_fields[$field_key]['name'];
             }
@@ -125,6 +132,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
                 'roles' => Disciple_Tools_Roles::get_dt_roles_and_permissions(),
+                'field_types' => DT_Posts::get_field_types(),
             ]);
         }
 
