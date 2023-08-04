@@ -71,15 +71,16 @@ class DT_Login_User_Manager {
     private function create_user() {
         $password = wp_generate_password();
 
+        $default_role = DT_Login_Fields::get( 'default_role' );
+        $user_role = !empty( $default_role ) ? $default_role : 'registered';
         $userdata = [
             'user_email' => $this->email,
             'user_login' => $this->uid,
             'user_pass' => $password,
             'display_name' => $this->name,
             'nickname' => $this->name,
+            'role' => $user_role,
         ];
-
-        /* setup roles */
 
         $user_id = wp_insert_user( $userdata );
 
