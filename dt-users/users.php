@@ -539,6 +539,15 @@ class Disciple_Tools_Users
                         'title' => $user->display_name
                     ], false, false );
                 }
+
+                /**
+                 * The user profile has updated, you can update the corresponding contact with user information
+                 *
+                 * @param array $contact
+                 * @param array $user
+                 */
+                do_action( 'dt_update_users_corresponding_contact', $contact, $user );
+
                 return $contact->ID;
             }
         }
