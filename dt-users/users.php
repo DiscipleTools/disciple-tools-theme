@@ -530,6 +530,15 @@ class Disciple_Tools_Users
                 ], true, false );
                 if ( !is_wp_error( $new_user_contact ) ){
                     update_user_option( $user_id, 'corresponds_to_contact', $new_user_contact['ID'] );
+
+                    /**
+                     * The user's corresponding contact has been created, you can update the corresponding contact with user information
+                     *
+                     * @param array $new_user_contact
+                     * @param WP_User $user
+                     */
+                    do_action( 'dt_create_users_corresponding_contact', $new_user_contact, $user );
+
                     return $new_user_contact['ID'];
                 }
             } else {
@@ -539,6 +548,15 @@ class Disciple_Tools_Users
                         'title' => $user->display_name
                     ], false, false );
                 }
+
+                /**
+                 * The user profile has updated, you can update the corresponding contact with user information
+                 *
+                 * @param WP_Post $contact
+                 * @param WP_User $user
+                 */
+                do_action( 'dt_update_users_corresponding_contact', $contact, $user );
+
                 return $contact->ID;
             }
         }
