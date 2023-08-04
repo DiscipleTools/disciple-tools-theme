@@ -697,6 +697,8 @@ jQuery(document).ready(function($) {
                 delete_tile_html_content = `<a id="delete-tile-text" class="delete-text" data-tile-key="${tile_key}">Delete Tile</a>`;
             }
 
+            let key_tag = `<span title="Tile key" class="dt-tag dt-tag-grey">${tile_key}</span>`
+
             var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -705,10 +707,10 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label><b>Key</b></label>
+                    <label><b>Details</b></label>
                 </td>
                 <td>
-                    ${tile_key}
+                    ${key_tag}
                 </td>
             </tr>
             <tr>
@@ -1076,6 +1078,13 @@ jQuery(document).ready(function($) {
           delete_field_html_content = `<a id="delete-field-text" class="delete-text" data-field-key="${field_key}">Delete Field</a>`;
         }
 
+        let key_tag = `<span title="Field key" class="dt-tag dt-tag-grey">${field_key}</span>`
+        let field_type_tag = `<span title="Field type" class="dt-tag dt-tag-teal">${window.field_settings.field_types[field_type]?.label || field_type.replace('_', ' ')}</span>`
+        let private_tag = ``;
+        if ( field_settings['private'] ) {
+          private_tag = `<span title="The content of private fields can only be seen by the user who creates it and will not be shared with other DT users." class="dt-tag dt-tag-orange">Private Field</span>`
+        }
+
         var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -1084,20 +1093,13 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label><b>Key</label></b>
+                    <label><b>Details</label></b>
                 </td>
                 <td>
-                    ${field_key}
+                    ${key_tag} ${field_type_tag} ${private_tag}
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <label><b>Field Type</label></b>
-                </td>
-                <td style="text-transform:capitalize;">
-                    ${window.field_settings.field_types[field_type]?.label || field_type.replace('_', ' ')}
-                </td>
-            </tr>`;
+        `
 
             var name_section_html = `
                 <tr>
@@ -1155,14 +1157,6 @@ jQuery(document).ready(function($) {
                             (${description_translations_count})
                         </button>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="edit-field-private"><b>Private Field</b></label>
-                </td>
-                <td>
-                    <input name="edit-field-private" id="edit-field-private" type="checkbox" ${private_field} disabled>
                 </td>
             </tr>
             <tr>
@@ -1296,6 +1290,7 @@ jQuery(document).ready(function($) {
           delete_field_option_html_content = `<a id="delete-field-option-text" class="delete-text" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Delete Field Option</a>`;
         }
 
+        let key_tag = `<span title="Field option key" class="dt-tag dt-tag-grey">${field_option_key}</span>`
 
         var modal_html_content = `
         <tr>
@@ -1305,10 +1300,10 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <label><b>Key</b></label>
+                <label><b>Details</b></label>
             </td>
             <td>
-                ${field_option_key}
+                ${key_tag}
             </td>
         </tr>`;
 
