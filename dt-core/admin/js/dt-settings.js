@@ -90,12 +90,11 @@ jQuery(document).ready(function($) {
         other_field_name: other_field_name,
     }, `dt-admin-settings/`);
 
-    window.API.edit_field = (post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
+    window.API.edit_field = (post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
         custom_name: custom_name,
-        field_private: field_private,
         tile_select: tile_select,
         field_description: field_description,
         field_icon: field_icon,
@@ -1061,7 +1060,7 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-private"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-private" id="edit-field-private" type="checkbox" ${private_field}>
+                    <input name="edit-field-private" id="edit-field-private" type="checkbox" ${private_field} disabled>
                 </td>
             </tr>
             <tr>
@@ -1655,7 +1654,6 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
         var custom_name = $('#edit-field-custom-name').val().trim();
-        var field_private = $('#edit-field-private').is(':checked');
         var tile_select = $('#tile_select').val().trim();
         var field_description = $('#edit-field-description').val().trim();
         var field_icon = $('#edit-field-icon').val().trim();
@@ -1665,7 +1663,7 @@ jQuery(document).ready(function($) {
             return false;
         }
 
-        API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
+        API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon).promise().then(function(result){
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
