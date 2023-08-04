@@ -543,8 +543,8 @@ class Disciple_Tools_Users
                 /**
                  * The user profile has updated, you can update the corresponding contact with user information
                  *
-                 * @param array $contact
-                 * @param array $user
+                 * @param WP_Post $contact
+                 * @param WP_User $user
                  */
                 do_action( 'dt_update_users_corresponding_contact', $contact, $user );
 
