@@ -534,10 +534,10 @@ class Disciple_Tools_Users
                     /**
                      * The user's corresponding contact has been created, you can update the corresponding contact with user information
                      *
-                     * @param WP_Post $new_user_contact
+                     * @param array $new_user_contact
                      * @param WP_User $user
                      */
-                    do_action( 'dt_update_users_corresponding_contact', $new_user_contact, $user );
+                    do_action( 'dt_create_users_corresponding_contact', $new_user_contact, $user );
 
                     return $new_user_contact['ID'];
                 }
