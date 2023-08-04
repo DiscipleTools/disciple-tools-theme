@@ -226,7 +226,8 @@
 }
 
 #modal-overlay-content-table td {
-    padding: 0.1rem 0.5rem;
+    padding: 0.2rem 0.5rem;
+    vertical-align: top;
 }
 #modal-overlay-content-table input[type="text"],select {
     width: 100%;
@@ -493,4 +494,14 @@
     width: 100%;
     height: 3em;
     padding-left: 12px;
+}
+
+.help-icon {
+    width: 15px;
+}
+.ui-tooltip {
+    z-index: 100000000;
+}
+.ui-tooltip {
+    white-space: pre-line;
 }

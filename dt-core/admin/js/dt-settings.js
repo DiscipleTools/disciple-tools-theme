@@ -21,6 +21,7 @@ function makeRequest(type, url, data, base = "dt/v1/") {
 }
 
 jQuery(document).ready(function($) {
+    $( document ).tooltip();
 
     window.API = {};
     window.API.create_new_post_type = (new_key, new_name_single, new_name_plural) => makeRequest("POST", `create-new-post-type`, {
@@ -79,23 +80,20 @@ jQuery(document).ready(function($) {
         field_option_key: field_option_key,
     }, `dt-admin-settings`);
 
-    window.API.new_field = (post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name) => makeRequest("POST", `new-field`, {
-        post_type: post_type,
-        tile_key: tile_key,
-        new_field_name: new_field_name,
-        new_field_type: new_field_type,
-        new_field_private: new_field_private,
-        connection_target: connection_target,
-        multidirectional: multidirectional,
-        other_field_name: other_field_name,
+    window.API.new_field = (post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_field_options) => makeRequest("POST", `new-field`, {
+        post_type,
+        tile_key,
+        new_field_name,
+        new_field_type,
+        new_field_private,
+        connection_field_options
     }, `dt-admin-settings/`);
 
-    window.API.edit_field = (post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
+    window.API.edit_field = (post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
         custom_name: custom_name,
-        field_private: field_private,
         tile_select: tile_select,
         field_description: field_description,
         field_icon: field_icon,
@@ -912,6 +910,9 @@ jQuery(document).ready(function($) {
                         <option value="date">Date</option>
                         <option value="connection">Connection</option>
                     </select>
+                    <p id="field-type-select-description" style="margin:0.2em 0">
+                        ${window.field_settings.field_types.key_select.description}
+                    </p>
                 </td>
             </tr>
             <tr class="connection_field_target_row" style="display: none;">
@@ -930,26 +931,51 @@ jQuery(document).ready(function($) {
                     modal_html_content += `</select>
                 </td>
             </tr>
-            <tr class="same_post_type_row" style="display: none">
-                <td>
-                    Bi-directional
+            <tr class="same_post_type_row" style="display: none" >
+                <td title='By default a connection is bi-directional.\n\nIt does not matter if contact A in connected to contact B, or contact B is connected to contact A.\n\nUncheck if the direction does matter, example: contact A baptised contact B.'>
+                    Bi-directional <img src="${window.field_settings.template_dir}/dt-assets/images/help.svg" class="help-icon" >
                 </td>
                 <td>
                     <input type="checkbox" id="multidirectional_checkbox" name="multidirectional" checked>
                 </td>
             </tr>
-            <tr class="connection_field_reverse_row" style="display: none;">
+            <tr class="connection_field_reverse_name_row" style="display: none;">
                 <td>
                     Field name when shown on:
                     <span class="connected_post_type"></span>
                 </td>
                 <td>
-                    <input name="other_field_name" id="other_field_name">
+                    <input type="text" name="other_field_name" id="other_field_name">
                 </td>
             </tr>
-            <tr>
+            <tr id="connection_field_reverse_hide_row" style="display: none;">
+                <td title="Hide the connection field on the other record type">
+                    Hide connection field on: <span class="connected_post_type"></span> <img src="${window.field_settings.template_dir}/dt-assets/images/help.svg" class="help-icon" >
+                </td>
                 <td>
-                    <label for="new_tile_name"><b>Private Field</b></label>
+                    <input type="checkbox" id="hide_reverse_connection" name="hide_reverse_connection">
+                </td>
+            </tr>
+            <tr id="connection_field_reverse_directional_name_row" style="display: none;">
+                <td title="Two fields are created when creating a directional connection, one for each direction.\n\nGive the name for the field going in reverse direction. Example for the Baptized field: Baptized By">
+                    Reverse connection field name <img src="${window.field_settings.template_dir}/dt-assets/images/help.svg" class="help-icon" >
+                </td>
+                <td>
+                    <input type="text" name="reverse_connection_direction_field_name" id="reverse_connection_direction_field_name">
+                </td>
+            </tr>
+            <tr id="connection_field_hide_reverse_directional_row" style="display: none;">
+                <td title="Hide the reverse connection field to only show the field going one direction.">
+                    Hide reverse connection field on: <span class="connected_post_type"></span> <img src="${window.field_settings.template_dir}/dt-assets/images/help.svg" class="help-icon" >
+                </td>
+                <td>
+                    <input type="checkbox" id="hide_reverse_directional_connection" name="hide_reverse_directional_connection">
+                </td>
+            </tr>
+
+            <tr>
+                <td title="The content of private fields can only be seen by the user who creates it and will not be shared with other DT users.">
+                    <label for="new_tile_name"><b>Private Field</b> <img src="${window.field_settings.template_dir}/dt-assets/images/help.svg" class="help-icon"></label>
                 </td>
                 <td>
                     <input name="new_field_private" id="new-field-private" type="checkbox">
@@ -971,7 +997,7 @@ jQuery(document).ready(function($) {
         var tile_key = field_data['tile_key'];
         var field_key = field_data['field_key'];
         var field_settings = window['field_settings']['post_type_settings']['fields'][field_key];
-        var field_type = field_settings['type'].replace('_', ' ');
+        var field_type = field_settings['type'];
 
         var name_is_custom = false;
         if ( field_settings['default_name'] ) {
@@ -1032,7 +1058,7 @@ jQuery(document).ready(function($) {
                     <label><b>Field Type</label></b>
                 </td>
                 <td style="text-transform:capitalize;">
-                    ${field_type}
+                    ${window.field_settings.field_types[field_type]?.label || field_type.replace('_', ' ')}
                 </td>
             </tr>`;
 
@@ -1099,7 +1125,7 @@ jQuery(document).ready(function($) {
                     <label for="edit-field-private"><b>Private Field</b></label>
                 </td>
                 <td>
-                    <input name="edit-field-private" id="edit-field-private" type="checkbox" ${private_field}>
+                    <input name="edit-field-private" id="edit-field-private" type="checkbox" ${private_field} disabled>
                 </td>
             </tr>
             <tr>
@@ -1621,16 +1647,23 @@ jQuery(document).ready(function($) {
         var new_field_name = $(`#new-field-name`).val().trim();
         var new_field_type = $(`#new-field-type`).val().trim();
         var new_field_private = $(`#new-field-private`).is(':checked');
-        var connection_target = $('#connection-field-target').val().trim();
-        var multidirectional = $('#multidirectional_checkbox').is(':checked');
-        var other_field_name = $('#other_field_name').val().trim();
+
+        //connection field options
+        let connection_field_options = {
+          connection_target: $('#connection-field-target').val().trim(),
+          other_field_name: $('#other_field_name').val().trim(),
+          disable_other_post_type_field: $('#hide_reverse_connection').is(':checked'),
+          multidirectional: $('#multidirectional_checkbox').is(':checked'),
+          reverse_connection_name: $('#reverse_connection_direction_field_name').val().trim(),
+          disable_reverse_connection: $('#hide-reverse-connection').is(':checked'),
+        }
 
         if (new_field_name === '') {
             $('#new-field-name').css('border', '2px solid #e14d43');
             return false;
         }
 
-        API.new_field(post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_target, multidirectional, other_field_name ).promise().then(function(response) {
+        API.new_field(post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_field_options ).promise().then(function(response) {
             var field_key = response['key'];
             window['field_settings']['post_type_settings']['fields'][field_key] = response;
             var new_field_nonexpandable_html = `
@@ -1696,7 +1729,6 @@ jQuery(document).ready(function($) {
         var tile_key = $(this).data('tile-key');
         var field_key = $(this).data('field-key');
         var custom_name = $('#edit-field-custom-name').val().trim();
-        var field_private = $('#edit-field-private').is(':checked');
         var tile_select = $('#tile_select').val().trim();
         var field_description = $('#edit-field-description').val().trim();
         var field_icon = $('#edit-field-icon').val().trim();
@@ -1706,7 +1738,7 @@ jQuery(document).ready(function($) {
             return false;
         }
 
-        API.edit_field(post_type, tile_key, field_key, custom_name, field_private, tile_select, field_description, field_icon).promise().then(function(result){
+        API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon).promise().then(function(result){
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
@@ -2069,28 +2101,40 @@ jQuery(document).ready(function($) {
 
     // Display 'connected to' dropdown if 'connection' post type field is selected
     $('.dt-admin-modal-box').on('change', '[id^=new-field-type]', function() {
+      let selected_type = $(this).val();
+      if ( window.field_settings.field_types[selected_type]?.description ){
+        $('#field-type-select-description').html(window.field_settings.field_types[selected_type].description);
+      }
+
       if ( $(this).val() === 'connection' ) {
             $('.connection_field_target_row').show();
         } else {
             $('.connection_field_target_row').hide();
             $('.same_post_type_row').hide();
-            $('.connection_field_reverse_row').hide();
+            $('.connection_field_reverse_name_row').hide();
             $('#connection-field-target option').prop('selected', false);
         }
     });
 
     $('.dt-admin-modal-box').on('change', '#connection-field-target', function() {
         var selected_field_target = $(this).find(':selected').val();
-        if ( selected_field_target === window.post_type ) {
-            $('.connection_field_reverse_row').hide();
-            $('.same_post_type_row').show();
-        } else {
-            $('.same_post_type_row').hide();
-            $('.connection_field_reverse_row').show();
-            var selected_field_target_label = window.field_settings.all_post_types[selected_field_target];
-            $('.connected_post_type').text(selected_field_target_label);
-        }
+        let same_post_type = selected_field_target === window.post_type;
+        $('.same_post_type_row').toggle( same_post_type );
+        $('.connection_field_reverse_name_row').toggle( !same_post_type );
+        $('#connection_field_reverse_hide_row').toggle( !same_post_type )
+
+        let bidirectional_checked = $('#multidirectional_checkbox').prop('checked');
+        $('#connection_field_reverse_directional_name_row').toggle( same_post_type && !bidirectional_checked );
+        $('#connection_field_hide_reverse_directional_row').toggle( same_post_type && !bidirectional_checked );
+
+        $('.connected_post_type').text(window.field_settings.all_post_types[selected_field_target]);
     });
+
+    $('.dt-admin-modal-box').on('change', '#multidirectional_checkbox', function() {
+      let checked = $(this).prop('checked');
+      $('#connection_field_hide_reverse_directional_row').toggle( !checked )
+      $('#connection_field_reverse_directional_name_row').toggle( !checked )
+    })
 
     $('.dt-admin-modal-box').on('input', '#new-field-name', function() {
         $('.loading-spinner').addClass('active');
