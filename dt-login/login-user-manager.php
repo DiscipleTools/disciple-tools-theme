@@ -71,8 +71,7 @@ class DT_Login_User_Manager {
     private function create_user() {
         $password = wp_generate_password();
 
-        $default_role = DT_Login_Fields::get( 'default_role' );
-        $user_role = !empty( $default_role ) ? $default_role : 'registered';
+        $user_role = $this->get_default_role();
         $userdata = [
             'user_email' => $this->email,
             'user_login' => $this->uid,
@@ -84,11 +83,21 @@ class DT_Login_User_Manager {
 
         $user_id = wp_insert_user( $userdata );
 
+        $this->add_user_to_blog_if_needed( $user_id, $user_role ); // add user to site.
+
         $this->update_user_meta( $user_id );
     }
 
     private function update_user() {
         $user = get_user_by( 'email', $this->email );
+
+        $user_role = $user->roles[0];
+
+        if ( !$user_role ) {
+            $user_role = $this->get_default_role();
+        }
+
+        $this->add_user_to_blog_if_needed( $user->ID, $user_role ); // add user to site.
 
         $this->update_user_meta( $user->ID );
     }
@@ -96,6 +105,19 @@ class DT_Login_User_Manager {
     private function update_user_meta( int $user_id ) {
         update_user_meta( $user_id, 'firebase_uid', $this->uid );
         update_user_meta( $user_id, 'firebase_identities', $this->identities );
+    }
+
+    public function add_user_to_blog_if_needed( int $user_id, string $user_role ) {
+        if ( is_multisite() && !is_user_member_of_blog( $user_id, get_current_blog_id() ) ) {
+            add_user_to_blog( get_current_blog_id(), $user_id, $user_role ); // add user to site.
+        }
+    }
+
+    private function get_default_role() {
+        $default_role = DT_Login_Fields::get( 'default_role' );
+        $user_role = !empty( $default_role ) ? $default_role : 'registered';
+
+        return $user_role;
     }
 
     /**

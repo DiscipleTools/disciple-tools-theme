@@ -114,7 +114,7 @@ class DT_Login_Email {
             return $error;
         }
 
-        if ( is_multisite() ) {
+        if ( is_multisite() && !is_user_member_of_blog( $user_id, get_current_blog_id() ) ) {
             add_user_to_blog( get_current_blog_id(), $user_id, $user_role ); // add user to site.
         }
 
