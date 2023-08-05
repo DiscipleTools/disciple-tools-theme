@@ -98,12 +98,13 @@ class DT_Login_Email {
             $username = $username . rand( 0, 9 );
         }
 
+        $user_role = !empty( $dt_login['default_role'] ) ? $dt_login['default_role'] : 'registered';
         $userdata = [
             'user_email' => $email,
             'user_login' => $username,
             'display_name' => $display_name,
             'user_pass' => $password,
-            'role' => $dt_login['default_role'] ?? 'registered'
+            'role' => $user_role,
         ];
 
         $user_id = wp_insert_user( $userdata );
@@ -113,8 +114,8 @@ class DT_Login_Email {
             return $error;
         }
 
-        if ( is_multisite() ) {
-            add_user_to_blog( get_current_blog_id(), $user_id, 'subscriber' ); // add user to site.
+        if ( is_multisite() && !is_user_member_of_blog( $user_id, get_current_blog_id() ) ) {
+            add_user_to_blog( get_current_blog_id(), $user_id, $user_role ); // add user to site.
         }
 
         // @todo send to location based on user role

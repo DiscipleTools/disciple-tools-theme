@@ -254,6 +254,15 @@ class DT_Login_Fields {
     }
 
     private static function get_defaults() {
+        $roles = dt_list_roles();
+
+        $role_list = [];
+        foreach ( $roles as $role_key => $role ) {
+            if ( $role['disabled'] === false ) {
+                $role_list[$role_key] = $role['label'];
+            }
+        }
+
         $defaults = [
             // firebase
             'firebase_config_label' => [
@@ -364,6 +373,17 @@ class DT_Login_Fields {
                 ],
                 'multisite_level' => true,
             ],
+            'default_role' => [
+                'tab' => 'general',
+                'key' => 'default_role',
+                'label' => 'Default Role',
+                'description' => 'The default role to give a newly registered user',
+                'value' => 'multiplier',
+                'type' => 'select',
+                'default' => $role_list,
+                'multisite_level' => true,
+            ],
+
 
             'shortcode_firebase_logon_buttons' => [
                 'tab' => 'shortcodes',
