@@ -1286,7 +1286,6 @@ jQuery(document).ready(function($) {
 
   // Edit Field Option Modal
   function loadEditFieldOptionContentBox(data) {
-    console.log(data);
     let post_type = get_post_type();
     let tile_key = data['tile_key'];
     let field_key = data['field_key'];
@@ -1294,10 +1293,6 @@ jQuery(document).ready(function($) {
     let field_settings = all_settings.post_type_settings.fields[field_key];
     let field_option = field_settings['default'][field_option_key];
     let option_description = '';
-
-    console.log(field_option_key);
-    console.log(field_settings);
-    console.log(field_option);
 
     let name_is_custom = false;
     if ( field_option['default_name'] ) {
@@ -1523,14 +1518,11 @@ jQuery(document).ready(function($) {
     button_icon.addClass('loading-spinner');
 
     API.delete_post_type(post_type, delete_all_records).promise().then(function (data) {
-      console.log(data);
-
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
 
       if(data && data['deleted']) {
         window.location.href = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
-
       } else {
         $(delete_post_type_msg).html(window.lodash.escape(data['msg']));
       }
