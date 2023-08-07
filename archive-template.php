@@ -361,11 +361,13 @@ dt_please_log_in();
                         </div>
 
                         <?php
-                            $status_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['status_key'] : null;
-                            $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
-
-                            $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : __( 'Archived', 'disciple_tools' );
-                            $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
+                        $status_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['status_key'] : null;
+                        $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
+                        $archived_text = __( 'Archived', 'disciple_tools' );
+                        if ( $status_key && $archived_key && isset( $post_settings['fields'][$status_key]['default'][$archived_key]['label'] ) ){
+                            $archived_text = $post_settings['fields'][$status_key]['default'][$archived_key]['label'];
+                        }
+                        $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
                         ?>
 
                         <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">

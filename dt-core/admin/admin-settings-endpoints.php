@@ -980,6 +980,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $custom_field_option['default_name'] = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
         }
 
+        // Field option hidden
+        if ( isset( $post_submission['visibility']['hidden'] ) ) {
+            $custom_field_option['deleted'] = $post_submission['visibility']['hidden'];
+        }
+
         $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
         update_option( 'dt_field_customizations', $field_customizations );
         return $custom_field_option;
@@ -1176,11 +1181,32 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             // Field icon
             if ( isset( $post_submission['field_icon'] ) && strpos( $post_submission['field_icon'], 'undefined' ) === false ) {
-                $field_icon                           = $post_submission['field_icon'];
                 $field_icon_key                       = ( ! empty( $field_icon ) && strpos( $field_icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
                 $field_null_icon_key                  = ( $field_icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
                 $custom_field[ $field_icon_key ]      = $field_icon;
                 $custom_field[ $field_null_icon_key ] = null;
+            }
+
+            // Field hidden
+            if ( isset( $post_submission['visibility']['hidden'] ) ) {
+                $custom_field['hidden'] = $post_submission['visibility']['hidden'];
+            }
+            // show only for types
+            if ( isset( $post_submission['visibility']['type_visibility'] ) && isset( $post_fields['type']['default'] ) ) {
+                $selected = [];
+                foreach ( $post_fields['type']['default'] as $type_key => $type_value ){
+                    if ( in_array( $type_key, $post_submission['visibility']['type_visibility'], true ) ){
+                        $selected[] = $type_key;
+                    }
+                }
+                if ( empty( $selected ) ){
+                    $custom_field['only_for_types'] = false;
+                    $custom_field['hidden'] = true;
+                } else if ( count( $selected ) === count( $post_fields['type']['default'] ) ){
+                    $custom_field['only_for_types'] = true;
+                } else {
+                    $custom_field['only_for_types'] = array_values( $selected );
+                }
             }
 
             $field_customizations[$post_type][$field_key] = $custom_field;

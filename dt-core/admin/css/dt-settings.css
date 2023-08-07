@@ -283,6 +283,7 @@
     width: 30px;
     height: 30px;
     vertical-align: top;
+    line-height: 1;
 }
 .new-custom-field {
     display: block;
@@ -526,4 +527,7 @@
 }
 .dt-tag-orange {
     background-color: #ff9800
+}
+.hidden-icon {
+    margin: 0 3px;
 }

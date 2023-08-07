@@ -89,7 +89,7 @@ jQuery(document).ready(function($) {
         connection_field_options
     }, `dt-admin-settings/`);
 
-    window.API.edit_field = (post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
+    window.API.edit_field = (post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon, visibility) => makeRequest("POST", `edit-field`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
@@ -97,6 +97,7 @@ jQuery(document).ready(function($) {
         tile_select: tile_select,
         field_description: field_description,
         field_icon: field_icon,
+        visibility: visibility,
     }, `dt-admin-settings/`);
 
     window.API.delete_field = ( post_type, field_key ) => makeRequest("DELETE", `field`, {
@@ -113,7 +114,7 @@ jQuery(document).ready(function($) {
         field_option_icon: field_option_icon,
     }, `dt-admin-settings/`);
 
-    window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon) => makeRequest("POST", `edit-field-option`, {
+    window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon, visibility) => makeRequest("POST", `edit-field-option`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
@@ -121,6 +122,7 @@ jQuery(document).ready(function($) {
         new_field_option_label: new_field_option_label,
         new_field_option_description: new_field_option_description,
         field_option_icon: field_option_icon,
+        visibility: visibility,
     }, `dt-admin-settings/`);
 
     window.API.delete_field_option = ( post_type, field_key, field_option_key ) => makeRequest("DELETE", `field-option`, {
@@ -742,10 +744,18 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="hide_tile"><b>Hide tile on page</b></label>
+                    <label for="hide_tile"><b>Hide tile</b></label>
                 </td>
                 <td>
                     <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="hide_tile"><b>Visibility</b></label>
+                </td>
+                <td>
+                    See <a target="_blank" href="${window.field_settings.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-tiles&post_type=${post_type}&tile=${tile_key}">Legacy Settings</a> for more advanced visibility options
                 </td>
             </tr>
             <tr class="last-row">
@@ -1055,14 +1065,13 @@ jQuery(document).ready(function($) {
         var field_icon_image_html = '';
         let icon = (field_settings['icon'] && field_settings['icon'] !== '') ? field_settings['icon'] : field_settings['font-icon'];
         if ( icon && (typeof icon !== 'undefined') && (icon !== 'undefined') ) {
-          field_icon_image_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>` : `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`) + '</span>';
+          if ( icon.trim().toLowerCase().startsWith('mdi') ){
+            field_icon_image_html = `<i class="${icon} field-icon" style="font-size: 30px; vertical-align: middle;"></i>`;
+          } else {
+            field_icon_image_html = `<img src="${icon}" class="field-icon" style="vertical-align: middle;">`;
+          }
 
         } else icon = '';
-
-        var private_field = '';
-        if ( field_settings['private'] ) {
-            private_field = 'checked';
-        }
 
         if ( !field_settings['description'] ) {
             field_settings['description'] = '';
@@ -1082,6 +1091,26 @@ jQuery(document).ready(function($) {
         let private_tag = ``;
         if ( field_settings['private'] ) {
           private_tag = `<span title="The content of private fields can only be seen by the user who creates it and will not be shared with other DT users." class="dt-tag dt-tag-orange">Private Field</span>`
+        }
+
+        let type_visibility_html = ''
+        if ( window.field_settings?.post_type_settings?.fields['type']?.default ) {
+          type_visibility_html = `
+            <tr>
+              <td>
+                <strong>Show For</strong>
+              </td>
+              <td class="checkbox-group" id="type-visibility">
+                ${Object.keys(window.field_settings?.post_type_settings?.fields['type']?.default).map((option_key)=>{
+                  let type_option = window.field_settings.post_type_settings.fields['type'].default[option_key]
+                  let type_selected = field_settings.only_for_types === undefined || field_settings.only_for_types === true || Object.values(field_settings.only_for_types).includes(option_key)
+                  return `<label><input type="checkbox" value="${option_key}" name="type-visibility" ${type_selected?'checked':''}>
+                    ${type_option.label}
+                  </label>`  
+                }).join('')}
+              </td>
+            </tr>
+          `
         }
 
         var modal_html_content = `
@@ -1189,6 +1218,15 @@ jQuery(document).ready(function($) {
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <b>Hide Field</b>    
+                </td>
+                <td>
+                    <input type="checkbox" name="hide-field" id="hide-field" ${field_settings.hidden ? 'checked' : ''}>
+                </td>
+            </tr>
+            ${type_visibility_html}
             <tr class="last-row">
                 <td>
                     ${delete_field_html_content}
@@ -1376,6 +1414,14 @@ jQuery(document).ready(function($) {
                     <button class="button change-icon-button" style="vertical-align: middle;"
                             data-icon-input="edit-field-icon">Change Icon</button>
                   </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Hide Option</b>    
+            </td>
+            <td>
+                <input type="checkbox" name="hide-field" id="hide-field-option" ${field_option.deleted ? 'checked' : ''}>
             </td>
         </tr>
         <tr class="last-row">
@@ -1772,19 +1818,26 @@ jQuery(document).ready(function($) {
         var tile_select = $('#tile_select').val().trim();
         var field_description = $('#edit-field-description').val().trim();
         var field_icon = $('#edit-field-icon').val().trim();
+        let visibility = {
+          hidden: $('#hide-field').is(':checked'),
+          type_visibility: $('#type-visibility input:checked').map((index, obj)=>{
+            return $(obj).val()
+          }).get()
+        }
 
         if (custom_name === '') {
             $('#edit-field-custom-name').css('border', '2px solid #e14d43');
             return false;
         }
 
-        API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon).promise().then(function(result){
+        API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon, visibility).promise().then(function(result){
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
 
             var edited_field_submenu_element = edited_field_menu_element.find('.field-settings-table-child-toggle')
             var edited_field_menu_name_element = edited_field_menu_element.find('.field-settings-table-field-name');
+            let hidden_icon = edited_field_menu_name_element.find('.hidden-icon')
 
             edited_field_menu_name_element.removeClass('submenu-highlight').removeClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
@@ -1810,6 +1863,10 @@ jQuery(document).ready(function($) {
                 edited_field_menu_name_element.data('parent-tile-key', tile_select);
                 edited_field_submenu_element.data('parent-tile-key', tile_select);
             }
+
+            // hide or show field hidden icon
+            hidden_icon.toggle(result.hidden)
+
             show_preview_tile(tile_key);
             closeModal();
             edited_field_menu_name_element.addClass('menu-highlight');
@@ -1866,17 +1923,23 @@ jQuery(document).ready(function($) {
         var new_field_option_label = $('#new-option-name').val().trim();
         var new_field_option_description = $('#new-option-description').val().trim();
         var field_option_icon = $('#edit-field-icon').val().trim();
+        let visibility = {
+            hidden: $('#hide-field-option').is(':checked'),
+        }
 
         if (new_field_option_label === '') {
             $('#new-option-name').css('border', '2px solid #e14d43');
             return false;
         }
 
-        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function(result) {
+        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon, visibility).promise().then(function(result) {
             window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = result;
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element.parent().removeClass('submenu-highlight');
             edited_field_option_element[0].innerText = new_field_option_label;
+
+            //show or hide the hidden icon
+            $(`.field-settings-table-field-option[data-field-key=${field_key}][data-field-option-key="${field_option_key}"] .hidden-icon`).toggle(result.deleted)
             show_preview_tile(tile_key);
             closeModal();
             edited_field_option_element.parent().addClass('submenu-highlight');
