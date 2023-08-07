@@ -12,6 +12,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public $post_type = 'contacts';
     public $post_types = [];
     public $post_type_options = [];
+    public $post_type_system_options = [];
 
     public $title;
     public $slug = 'dynamic_records_map'; // lowercase
@@ -38,7 +39,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         foreach ( $post_types as $post_type ){
             $field_settings = [];
             foreach ( DT_Posts::get_post_field_settings( $post_type ) ?? [] as $field_key => $field_setting ){
-                if ( isset( $field_setting['type'] ) && in_array( $field_setting['type'], [ 'key_select', 'multi_select', 'user_select' ] ) ){
+                if ( isset( $field_setting['type'] ) && in_array( $field_setting['type'], [ 'key_select', 'multi_select' ] ) ){
                     if ( ( isset( $field_setting['hidden'] ) && $field_setting['hidden'] ) || ( isset( $field_setting['private'] ) && $field_setting['private'] ) ){
                         continue;
                     } else {
@@ -58,6 +59,11 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                 'fields' => $field_settings
             ];
         }
+
+        $this->post_type_system_options = [];
+        $this->post_type_system_options['users'] = [
+            'label' => __( 'Users', 'disciple_tools' )
+        ];
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -85,7 +91,9 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                         'title' => __( 'Add Records', 'disciple_tools' ),
                         'post_types_title' => __( 'Post Types', 'disciple_tools' ),
                         'layer_tab_button_title' => __( 'Layer', 'disciple_tools' ),
-                        'confirm_delete_layer' => __( 'Are you sure you wish to delete layer?', 'disciple_tools' )
+                        'confirm_delete_layer' => __( 'Are you sure you wish to delete layer?', 'disciple_tools' ),
+                        'post_type_select_opt_group_record_types' => __( 'Record Types', 'disciple_tools' ),
+                        'post_type_select_opt_group_system' => __( 'System', 'disciple_tools' )
                     ]
                 ],
                 'settings' => [
@@ -95,6 +103,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                     'menu_slug' => $this->base_slug,
                     'post_type' => $this->post_type,
                     'post_types' => $this->post_type_options,
+                    'post_types_system_options' => $this->post_type_system_options,
                     'title' => $this->title,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
@@ -165,6 +174,17 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $response = [];
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( !empty( $params['post_type'] ) ){
+
+            // Ensure params shape is altered accordingly, for system based post types.
+            switch ( $params['post_type'] ){
+                case 'system-users':
+                    $params['field_type'] = 'user_select';
+                    break;
+                default:
+                    break;
+            }
+
+            // Execute request query.
             $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params );
         }
 

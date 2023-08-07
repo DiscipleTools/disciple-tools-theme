@@ -1313,16 +1313,11 @@ class Disciple_Tools_Mapping_Queries {
 
         } elseif ( $args['field_type'] == 'user_select' ){
             $prepared_query = $wpdb->prepare("
-                SELECT DISTINCT lgm.label AS address, u.display_name AS name, lgm.post_id, lgm.lng, lgm.lat
+                SELECT DISTINCT lgm.label AS address, u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
+                  LEFT JOIN wp_usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = 'wp_corresponds_to_contact' )
                   WHERE lgm.post_type = %s", 'users');
-
-            /*
-             * TODO:
-             *  - Maybe filter on current workload statuses?
-             *  - Convert user id to actual corresponding post id.
-             */
 
         } else {
             $prepared_query = $wpdb->prepare( "

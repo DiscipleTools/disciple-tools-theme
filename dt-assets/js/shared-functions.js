@@ -611,6 +611,14 @@ window.SHAREDFUNCTIONS = {
 
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}${args}`;
   },
+  remove_json_cookie(cname, path = "") {
+    if (path) {
+      path = window.location.pathname.split(path)[0] + path;
+      path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
+    }
+
+    document.cookie = `${cname}=;path=${path};expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+  },
   createCustomFilter(field, value) {
     return ({
       fields: [
