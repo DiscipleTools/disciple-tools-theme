@@ -89,7 +89,7 @@ jQuery(document).ready(function($) {
         connection_field_options
     }, `dt-admin-settings/`);
 
-    window.API.edit_field = (post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon) => makeRequest("POST", `edit-field`, {
+    window.API.edit_field = (post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon, visibility) => makeRequest("POST", `edit-field`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
@@ -97,6 +97,7 @@ jQuery(document).ready(function($) {
         tile_select: tile_select,
         field_description: field_description,
         field_icon: field_icon,
+        visibility: visibility,
     }, `dt-admin-settings/`);
 
     window.API.delete_field = ( post_type, field_key ) => makeRequest("DELETE", `field`, {
@@ -113,7 +114,7 @@ jQuery(document).ready(function($) {
         field_option_icon: field_option_icon,
     }, `dt-admin-settings/`);
 
-    window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon) => makeRequest("POST", `edit-field-option`, {
+    window.API.edit_field_option = (post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon, visibility) => makeRequest("POST", `edit-field-option`, {
         post_type: post_type,
         tile_key: tile_key,
         field_key: field_key,
@@ -121,6 +122,7 @@ jQuery(document).ready(function($) {
         new_field_option_label: new_field_option_label,
         new_field_option_description: new_field_option_description,
         field_option_icon: field_option_icon,
+        visibility: visibility,
     }, `dt-admin-settings/`);
 
     window.API.delete_field_option = ( post_type, field_key, field_option_key ) => makeRequest("DELETE", `field-option`, {
@@ -1064,11 +1066,6 @@ jQuery(document).ready(function($) {
 
         } else icon = '';
 
-        var private_field = '';
-        if ( field_settings['private'] ) {
-            private_field = 'checked';
-        }
-
         if ( !field_settings['description'] ) {
             field_settings['description'] = '';
         }
@@ -1192,6 +1189,14 @@ jQuery(document).ready(function($) {
                         <button class="button change-icon-button" style="vertical-align: middle;"
                                 data-icon-input="edit-field-icon">Change Icon</button>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Hide Field</b>    
+                </td>
+                <td>
+                    <input type="checkbox" name="hide-field" id="hide-field" ${field_settings.hidden ? 'checked' : ''}>
                 </td>
             </tr>
             <tr class="last-row">
@@ -1381,6 +1386,14 @@ jQuery(document).ready(function($) {
                     <button class="button change-icon-button" style="vertical-align: middle;"
                             data-icon-input="edit-field-icon">Change Icon</button>
                   </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Hide Option</b>    
+            </td>
+            <td>
+                <input type="checkbox" name="hide-field" id="hide-field-option" ${field_option.deleted ? 'checked' : ''}>
             </td>
         </tr>
         <tr class="last-row">
@@ -1777,19 +1790,23 @@ jQuery(document).ready(function($) {
         var tile_select = $('#tile_select').val().trim();
         var field_description = $('#edit-field-description').val().trim();
         var field_icon = $('#edit-field-icon').val().trim();
+        let visibility = {
+          hidden: $('#hide-field').is(':checked'),
+        }
 
         if (custom_name === '') {
             $('#edit-field-custom-name').css('border', '2px solid #e14d43');
             return false;
         }
 
-        API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon).promise().then(function(result){
+        API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon, visibility).promise().then(function(result){
             $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
             var edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
 
             var edited_field_submenu_element = edited_field_menu_element.find('.field-settings-table-child-toggle')
             var edited_field_menu_name_element = edited_field_menu_element.find('.field-settings-table-field-name');
+            let hidden_icon = edited_field_menu_name_element.find('.hidden-icon')
 
             edited_field_menu_name_element.removeClass('submenu-highlight').removeClass('menu-highlight');
             edited_field_submenu_element.children('.field-settings-table-field-option').removeClass('submenu-highlight');
@@ -1815,6 +1832,10 @@ jQuery(document).ready(function($) {
                 edited_field_menu_name_element.data('parent-tile-key', tile_select);
                 edited_field_submenu_element.data('parent-tile-key', tile_select);
             }
+
+            // hide or show field hidden icon
+            hidden_icon.toggle(result.hidden)
+
             show_preview_tile(tile_key);
             closeModal();
             edited_field_menu_name_element.addClass('menu-highlight');
@@ -1871,17 +1892,23 @@ jQuery(document).ready(function($) {
         var new_field_option_label = $('#new-option-name').val().trim();
         var new_field_option_description = $('#new-option-description').val().trim();
         var field_option_icon = $('#edit-field-icon').val().trim();
+        let visibility = {
+            hidden: $('#hide-field-option').is(':checked'),
+        }
 
         if (new_field_option_label === '') {
             $('#new-option-name').css('border', '2px solid #e14d43');
             return false;
         }
 
-        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon).promise().then(function(result) {
+        API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon, visibility).promise().then(function(result) {
             window['field_settings']['post_type_settings']['fields'][field_key]['default'][field_option_key] = result;
             var edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
             edited_field_option_element.parent().removeClass('submenu-highlight');
             edited_field_option_element[0].innerText = new_field_option_label;
+
+            //show or hide the hidden icon
+            $(`.field-settings-table-field-option[data-field-key=${field_key}][data-field-option-key="${field_option_key}"] .hidden-icon`).toggle(result.deleted)
             show_preview_tile(tile_key);
             closeModal();
             edited_field_option_element.parent().addClass('submenu-highlight');
