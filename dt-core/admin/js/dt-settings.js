@@ -255,8 +255,7 @@ jQuery(document).ready(function($) {
             var fields = $(document).find(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
             var field_order = [];
             $.each(fields, function(field_index, field_element) {
-                var field_key = field_element.id;
-                field_order.push(field_key);
+              field_order.push(field_element.dataset.key);
             });
 
             dt_custom_tiles_and_fields_ordered[tile_key]['order'] = field_order;
