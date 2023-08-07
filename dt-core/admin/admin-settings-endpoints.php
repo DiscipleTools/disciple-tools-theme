@@ -1191,6 +1191,23 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             if ( isset( $post_submission['visibility']['hidden'] ) ) {
                 $custom_field['hidden'] = $post_submission['visibility']['hidden'];
             }
+            // show only for types
+            if ( isset( $post_submission['visibility']['type_visibility'] ) && isset( $post_fields['type']['default'] ) ) {
+                $selected = [];
+                foreach ( $post_fields['type']['default'] as $type_key => $type_value ){
+                    if ( in_array( $type_key, $post_submission['visibility']['type_visibility'], true ) ){
+                        $selected[] = $type_key;
+                    }
+                }
+                if ( empty( $selected ) ){
+                    $custom_field['only_for_types'] = false;
+                    $custom_field['hidden'] = true;
+                } else if ( count( $selected ) === count( $post_fields['type']['default'] ) ){
+                    $custom_field['only_for_types'] = true;
+                } else {
+                    $custom_field['only_for_types'] = array_values( $selected );
+                }
+            }
 
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );

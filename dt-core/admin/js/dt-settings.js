@@ -1094,6 +1094,26 @@ jQuery(document).ready(function($) {
           private_tag = `<span title="The content of private fields can only be seen by the user who creates it and will not be shared with other DT users." class="dt-tag dt-tag-orange">Private Field</span>`
         }
 
+        let type_visibility_html = ''
+        if ( window.field_settings?.post_type_settings?.fields['type']?.default ) {
+          type_visibility_html = `
+            <tr>
+              <td>
+                <strong>Show For</strong>
+              </td>
+              <td class="checkbox-group" id="type-visibility">
+                ${Object.keys(window.field_settings?.post_type_settings?.fields['type']?.default).map((option_key)=>{
+                  let type_option = window.field_settings.post_type_settings.fields['type'].default[option_key]
+                  let type_selected = field_settings.only_for_types === undefined || field_settings.only_for_types === true || Object.values(field_settings.only_for_types).includes(option_key)
+                  return `<label><input type="checkbox" value="${option_key}" name="type-visibility" ${type_selected?'checked':''}>
+                    ${type_option.label}
+                  </label>`  
+                }).join('')}
+              </td>
+            </tr>
+          `
+        }
+
         var modal_html_content = `
             <tr>
                 <th colspan="2">
@@ -1207,6 +1227,7 @@ jQuery(document).ready(function($) {
                     <input type="checkbox" name="hide-field" id="hide-field" ${field_settings.hidden ? 'checked' : ''}>
                 </td>
             </tr>
+            ${type_visibility_html}
             <tr class="last-row">
                 <td>
                     ${delete_field_html_content}
@@ -1800,6 +1821,9 @@ jQuery(document).ready(function($) {
         var field_icon = $('#edit-field-icon').val().trim();
         let visibility = {
           hidden: $('#hide-field').is(':checked'),
+          type_visibility: $('#type-visibility input:checked').map((index, obj)=>{
+            return $(obj).val()
+          }).get()
         }
 
         if (custom_name === '') {
