@@ -745,10 +745,18 @@ jQuery(document).ready(function($) {
             </tr>
             <tr>
                 <td>
-                    <label for="hide_tile"><b>Hide tile on page</b></label>
+                    <label for="hide_tile"><b>Hide tile</b></label>
                 </td>
                 <td>
                     <input name="hide-tile" id="hide-tile-${tile_key}" type="checkbox" ${hide_tile}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="hide_tile"><b>Visibility</b></label>
+                </td>
+                <td>
+                    See <a target="_blank" href="${window.field_settings.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-tiles&post_type=${post_type}&tile=${tile_key}">Legacy Settings</a> for more advanced visibility options
                 </td>
             </tr>
             <tr class="last-row">
