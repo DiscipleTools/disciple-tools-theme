@@ -6,27 +6,47 @@ add_shortcode( 'dt_firebase_login_ui', 'dt_firebase_login_ui' );
 
 /**
  * Output the necessary script and html to render the Firebase Authentication UI
- * @param mixed $attr
+ * @param mixed $atts
  * @return void
  */
-function dt_firebase_login_ui( $attr ) {
+function dt_firebase_login_ui( $atts ) {
 
-        $config = [];
-        $config['api_key'] = DT_Login_Fields::get( 'firebase_api_key' );
-        $config['project_id'] = DT_Login_Fields::get( 'firebase_project_id' );
-        $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
-        $config['redirect_url'] = DT_Login_Fields::get( 'redirect_url' );
-        $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
-        $config['disable_sign_up_status'] = !DT_Login_Fields::can_users_register();
+    $default_lang = 'en';
+    $atts = shortcode_atts( [
+        'lang_code' => $default_lang,
+    ], $atts );
 
-        $sign_in_options = [];
-        $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
-        $sign_in_options['facebook'] = DT_Login_Fields::get( 'identity_providers_facebook' ) === 'on' ? true : false;
-        $sign_in_options['email'] = DT_Login_Fields::get( 'identity_providers_email' ) === 'on' ? true : false;
-        $sign_in_options['github'] = DT_Login_Fields::get( 'identity_providers_github' ) === 'on' ? true : false;
-        $sign_in_options['twitter'] = DT_Login_Fields::get( 'identity_providers_twitter' ) === 'on' ? true : false;
+    $lang_code = $atts['lang_code'];
 
-        $config['sign_in_options'] = $sign_in_options;
+    if ( strlen( $lang_code ) === 4 ) {
+        $lang_code = implode( '_', str_split( $lang_code, 2 ) );
+    }
+
+    if ( !in_array( $lang_code, dt_login_firebase_supported_languages() ) ) {
+        $lang_code = $default_lang;
+    }
+
+    $lang_prefix = '';
+    if ( $lang_code !== 'en' ) {
+        $lang_prefix = '__' . $lang_code;
+    }
+
+    $config = [];
+    $config['api_key'] = DT_Login_Fields::get( 'firebase_api_key' );
+    $config['project_id'] = DT_Login_Fields::get( 'firebase_project_id' );
+    $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
+    $config['redirect_url'] = DT_Login_Fields::get( 'redirect_url' );
+    $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
+    $config['disable_sign_up_status'] = !DT_Login_Fields::can_users_register();
+
+    $sign_in_options = [];
+    $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
+    $sign_in_options['facebook'] = DT_Login_Fields::get( 'identity_providers_facebook' ) === 'on' ? true : false;
+    $sign_in_options['email'] = DT_Login_Fields::get( 'identity_providers_email' ) === 'on' ? true : false;
+    $sign_in_options['github'] = DT_Login_Fields::get( 'identity_providers_github' ) === 'on' ? true : false;
+    $sign_in_options['twitter'] = DT_Login_Fields::get( 'identity_providers_twitter' ) === 'on' ? true : false;
+
+    $config['sign_in_options'] = $sign_in_options;
 
     ?>
 
@@ -81,7 +101,7 @@ function dt_firebase_login_ui( $attr ) {
         }
 
     </script>
-    <script src="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth<?php echo esc_html( $lang_prefix ) ?>.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth.css" />
 
     <style>
@@ -205,6 +225,53 @@ function dt_firebase_login_ui( $attr ) {
     </div>
 
     <?php
+}
+
+function dt_login_firebase_supported_languages() {
+    return [
+        'ar',
+        'bg',
+        'ca',
+        'zh_cn',
+        'zh_tw',
+        'hr',
+        'cs',
+        'da',
+        'nl',
+        'en',
+        'en_gb',
+        'fa',
+        'fil',
+        'fi',
+        'fr',
+        'de',
+        'el',
+        'iw',
+        'hi',
+        'hu',
+        'id',
+        'it',
+        'ja',
+        'ko',
+        'lv',
+        'lt',
+        'no',
+        'pl',
+        'pt_br',
+        'pt_pt',
+        'ro',
+        'ru',
+        'sr',
+        'sk',
+        'sl',
+        'es',
+        'es_419',
+        'sv',
+        'th',
+        'tr',
+        'uk',
+        'vi',
+    ];
 }
 
 add_shortcode( 'dt_firebase_logout_script', 'dt_firebase_logout_script' );
