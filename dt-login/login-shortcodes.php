@@ -18,10 +18,6 @@ function dt_firebase_login_ui( $atts ) {
 
     $lang_code = $atts['lang_code'];
 
-    if ( strlen( $lang_code ) === 4 ) {
-        $lang_code = implode( '_', str_split( $lang_code, 2 ) );
-    }
-
     if ( !in_array( $lang_code, dt_login_firebase_supported_languages() ) ) {
         $lang_code = $default_lang;
     }
