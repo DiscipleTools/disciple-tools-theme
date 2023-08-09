@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
     chart.empty().html(spinner)
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
-    let translations = dtMetricsProject.data.translations
+    let translations = window.dtMetricsProject.data.translations
 
     chart.empty().html(`
           <span class="section-header">${window.lodash.escape(translations.title_group_tree)}</span><hr>
@@ -25,19 +25,19 @@ jQuery(document).ready(function() {
               </span>
           </div>
               <div class="cell">
-                  <div class="scrolling-wrapper" id="generation_map"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+                  <div class="scrolling-wrapper" id="generation_map"><img src="${window.dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
               </div>
           </div>
            <div id="modal" class="reveal" data-reveal></div>
            <br><br>
        `)
 
-    makeRequest('POST', 'metrics/my/group_tree' )
+    window.makeRequest('POST', 'metrics/my/group_tree' )
       .then(response => {
         // console.log(response)
         jQuery('#generation_map').empty().html(response)
         jQuery('#generation_map li:last-child').addClass('last');
-        new Foundation.Reveal(jQuery('#modal'))
+        new window.Foundation.Reveal(jQuery('#modal'))
       })
   }
 })
@@ -45,11 +45,11 @@ jQuery(document).ready(function() {
 function open_modal_details( id ) {
   let modal = jQuery('#modal')
   let spinner = ' <span class="loading-spinner active"></span> '
-  let translations = dtMetricsProject.data.translations
+  let translations = window.dtMetricsProject.data.translations
 
   modal.empty().html(spinner).foundation('open')
 
-  makeRequest('GET', 'groups/'+id, null, 'dt-posts/v2/' )
+  window.makeRequest('GET', 'groups/'+id, null, 'dt-posts/v2/' )
     .then(data => {
       // console.log(data)
       if( data ) {

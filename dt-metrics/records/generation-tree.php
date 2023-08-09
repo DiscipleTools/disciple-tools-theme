@@ -78,7 +78,7 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
+            'dt_metrics_project_script', 'window.dtMetricsProject', [
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'site_url' => site_url(),

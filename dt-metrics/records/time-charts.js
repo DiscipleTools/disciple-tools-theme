@@ -8,13 +8,13 @@ const CUMULATIVE_PREFIX = 'cumulative_'
 const graphTypes = ['stacked', 'line']
 
 const getTimeMetricsByYear = (postType, field) =>
-makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`)
+window.makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`)
 
 const getTimeMetricsByMonth = (postType, field, year) =>
-makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
+window.makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
 
 const getFieldSettings = (postType) =>
-makeRequest('GET', `metrics/field_settings/${postType}`)
+window.makeRequest('GET', `metrics/field_settings/${postType}`)
 
 const escapeObject = window.SHAREDFUNCTIONS.escapeObject
 
@@ -30,9 +30,9 @@ function projectTimeCharts() {
         stacked_chart_title,
         cumulative_chart_title,
         additions_chart_title,
-    } = escapeObject(dtMetricsProject.translations)
+    } = escapeObject(window.dtMetricsProject.translations)
 
-    const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options)
+    const postTypeOptions = escapeObject(window.dtMetricsProject.select_options.post_type_select_options)
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
 
@@ -85,11 +85,11 @@ function projectTimeCharts() {
 
     document.querySelector('#post-type-select').addEventListener('change', (e) => {
         const postType = e.target.value
-        dtMetricsProject.state.post_type = postType
+        window.dtMetricsProject.state.post_type = postType
         getFieldSettings(postType)
             .promise()
             .then((data) => {
-                dtMetricsProject.field_settings = data
+                window.dtMetricsProject.field_settings = data
                 fieldSelectElement.innerHTML = buildFieldSelectOptions()
                 fieldSelectElement.dispatchEvent( new Event('change') )
             })
@@ -99,19 +99,19 @@ function projectTimeCharts() {
     })
 
     fieldSelectElement.addEventListener('change', (e) => {
-        dtMetricsProject.state.field = e.target.value
-        if (!dtMetricsProject.field_settings[e.target.value]) {
-            console.error(e.target.value, 'not found in', dtMetricsProject.field_settings)
+        window.dtMetricsProject.state.field = e.target.value
+        if (!window.dtMetricsProject.field_settings[e.target.value]) {
+            console.error(e.target.value, 'not found in', window.dtMetricsProject.field_settings)
             return
         }
-        dtMetricsProject.state.fieldType = dtMetricsProject.field_settings[e.target.value].type
+        window.dtMetricsProject.state.fieldType = window.dtMetricsProject.field_settings[e.target.value].type
         getData()
     })
 
     document.querySelector('#date-select').addEventListener('change', (e) => {
         const year = e.target.value
-        dtMetricsProject.state.year = year
-        dtMetricsProject.state.chart_view = year === 'all-time' ? 'year' : 'month'
+        window.dtMetricsProject.state.year = year
+        window.dtMetricsProject.state.chart_view = year === 'all-time' ? 'year' : 'month'
         getData()
     })
 
@@ -120,7 +120,7 @@ function projectTimeCharts() {
 }
 
 function buildFieldSelectOptions() {
-    const unescapedOptions = Object.entries(dtMetricsProject.field_settings)
+    const unescapedOptions = Object.entries(window.dtMetricsProject.field_settings)
         .reduce((options, [ key, setting ]) => {
             options[key] = setting.name
             return options
@@ -137,7 +137,7 @@ function buildFieldSelectOptions() {
 }
 
 function buildDateSelectOptions(allTimeLabel) {
-    const { earliest_year } = dtMetricsProject.state
+    const { earliest_year } = window.dtMetricsProject.state
 
     const now = new Date()
     const currentYear = now.getUTCFullYear()
@@ -151,15 +151,15 @@ function buildDateSelectOptions(allTimeLabel) {
 }
 
 function createCharts() {
-    const { fieldType } = dtMetricsProject.state
+    const { fieldType } = window.dtMetricsProject.state
     const {
         added_label,
         total_label,
-    } = escapeObject(dtMetricsProject.translations)
-    const data = dtMetricsProject.data
+    } = escapeObject(window.dtMetricsProject.translations)
+    const data = window.dtMetricsProject.data
 
     // if date field create cumulative and addition charts
-    if ( !dtMetricsProject.multi_fields.includes(fieldType)) {
+    if ( !window.dtMetricsProject.multi_fields.includes(fieldType)) {
         hideChart('stacked-chart')
         createChart('cumulative-chart', ['cumulative_count'], {
             customLabel: total_label,
@@ -201,8 +201,8 @@ function createChart(id, keys, options) {
         customLabel: ''
     }
     const { single, graphType, customLabel } = { ...defaultOptions, ...options }
-    const { field, fieldType } = dtMetricsProject.state
-    const { true_label, false_label } = escapeObject(dtMetricsProject.translations)
+    const { field, fieldType } = window.dtMetricsProject.state
+    const { true_label, false_label } = escapeObject(window.dtMetricsProject.translations)
 
     if (!graphTypes.includes(graphType)) {
         throw new Error(`graphType ${graphType} not found in ${graphTypes}`)
@@ -214,7 +214,7 @@ function createChart(id, keys, options) {
     // create the series for each key name in the data arrays
     // then get the labels from field_settings, if they exist
     const fieldLabels = keys.map((key) => {
-        const fieldSettings = dtMetricsProject.field_settings[field]
+        const fieldSettings = window.dtMetricsProject.field_settings[field]
         const defaultSettings = fieldSettings && fieldSettings.default ? fieldSettings.default : []
 
         const newKey = isCumulativeKey(key) ? key.replace(CUMULATIVE_PREFIX, '') : key
@@ -269,10 +269,10 @@ function createChart(id, keys, options) {
     const chartSection = document.getElementById(id)
     const legendDiv = chartSection.querySelector('.legend')
 
-    const legendContainer = am4core.create(legendDiv, am4core.Container)
-    legendContainer.width = am4core.percent(100)
-    legendContainer.height = am4core.percent(100)
-    chart.legend = new am4charts.Legend()
+    const legendContainer = window.am4core.create(legendDiv, window.am4core.Container)
+    legendContainer.width = window.am4core.percent(100)
+    legendContainer.height = window.am4core.percent(100)
+    chart.legend = new window.am4charts.Legend()
     chart.legend.minHeight = 36
     chart.legend.scrollable = true
     chart.legend.parent = legendContainer
@@ -296,24 +296,24 @@ function createChart(id, keys, options) {
 }
 
 function initialiseChart(id) {
-    const { year, chart_view: view } = dtMetricsProject.state
+    const { year, chart_view: view } = window.dtMetricsProject.state
     const {
         all_time,
-    } = escapeObject(dtMetricsProject.translations)
+    } = escapeObject(window.dtMetricsProject.translations)
 
-    am4core.options.autoDispose = true
+    window.am4core.options.autoDispose = true
 
     const chartSection = document.getElementById(id)
     const timechartDiv = chartSection.querySelector('.timechart')
 
-    const chart = am4core.create(timechartDiv, am4charts.XYChart)
-    const data = dtMetricsProject.data
+    const chart = window.am4core.create(timechartDiv, window.am4charts.XYChart)
+    const data = window.dtMetricsProject.data
 
-    const categoryAxis = chart.xAxes.push( new am4charts.CategoryAxis() )
+    const categoryAxis = chart.xAxes.push( new window.am4charts.CategoryAxis() )
     categoryAxis.dataFields.category = view
     categoryAxis.title.text = year === 'all-time' ? all_time : String(year)
 
-    const valueAxis = chart.yAxes.push( new am4charts.ValueAxis() )
+    const valueAxis = chart.yAxes.push( new window.am4charts.ValueAxis() )
     valueAxis.maxPrecision = 0
 
     chart.data = data
@@ -322,12 +322,12 @@ function initialiseChart(id) {
 }
 
 function createColumnSeries(chart, field, name, hidden = false) {
-    const { chart_view } = dtMetricsProject.state
-    const { tooltip_label } = escapeObject(dtMetricsProject.translations)
+    const { chart_view } = window.dtMetricsProject.state
+    const { tooltip_label } = escapeObject(window.dtMetricsProject.translations)
 
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
 
-    const series = chart.series.push( new am4charts.ColumnSeries())
+    const series = chart.series.push( new window.am4charts.ColumnSeries())
     series.dataFields.valueY = field
     series.dataFields.categoryX = chart_view
     series.name = name
@@ -341,16 +341,16 @@ function createColumnSeries(chart, field, name, hidden = false) {
 }
 
 function createLineSeries(chart, field, name, hidden = false) {
-    const { chart_view } = dtMetricsProject.state
-    const { tooltip_label } = escapeObject(dtMetricsProject.translations)
+    const { chart_view } = window.dtMetricsProject.state
+    const { tooltip_label } = escapeObject(window.dtMetricsProject.translations)
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
 
-    let lineSeries = chart.series.push(new am4charts.LineSeries());
+    let lineSeries = chart.series.push(new window.am4charts.LineSeries());
     lineSeries.name = name
     lineSeries.dataFields.valueY = field;
     lineSeries.dataFields.categoryX = chart_view
 
-//    lineSeries.stroke = am4core.color("#fdd400");
+//    lineSeries.stroke = window.am4core.color("#fdd400");
     lineSeries.strokeWidth = 3;
     lineSeries.propertyFields.strokeDasharray = "lineDash";
     lineSeries.tooltip.label.textAlign = "middle";
@@ -358,26 +358,26 @@ function createLineSeries(chart, field, name, hidden = false) {
         lineSeries.hide()
     }
 
-    let bullet = lineSeries.bullets.push(new am4charts.Bullet());
-//    bullet.fill = am4core.color("#fdd400"); // tooltips grab fill from parent by default
+    let bullet = lineSeries.bullets.push(new window.am4charts.Bullet());
+//    bullet.fill = window.am4core.color("#fdd400"); // tooltips grab fill from parent by default
     bullet.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
-    let circle = bullet.createChild(am4core.Circle);
+    let circle = bullet.createChild(window.am4core.Circle);
     circle.radius = 4;
-    circle.fill = am4core.color("#fff");
+    circle.fill = window.am4core.color("#fff");
     circle.strokeWidth = 3;
 
     return lineSeries
 }
 
 function getMinMaxValuesOfDataForKey(key) {
-    const data = dtMetricsProject.data
+    const data = window.dtMetricsProject.data
     let min = 0
     let max = 0
 
     data.forEach(timePeriodData => {
         const dataStr = timePeriodData[key]
         if (!dataStr || dataStr.length === 0) return
-        dataVal = parseInt(dataStr)
+        let dataVal = parseInt(dataStr)
 
         if (dataVal < min) {
             min = dataVal
@@ -405,7 +405,7 @@ function addHideOtherSeriesEventHandlers(series) {
 }
 
 function getData() {
-    const { post_type: postType, field, year } = dtMetricsProject.state
+    const { post_type: postType, field, year } = window.dtMetricsProject.state
 
     const isAllTime = year === 'all-time'
     const data = isAllTime
@@ -441,9 +441,9 @@ function getData() {
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
 function formatYearData(yearlyData) {
-    const { fieldType } = dtMetricsProject.state
+    const { fieldType } = window.dtMetricsProject.state
 
-    if ( dtMetricsProject.multi_fields.includes(fieldType)) {
+    if ( window.dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundYearData(yearlyData)
     } else {
         return formatSimpleYearData(yearlyData)
@@ -508,9 +508,9 @@ function formatCompoundYearData(yearlyData) {
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
 function formatMonthData(monthlyData) {
-    const { fieldType } = dtMetricsProject.state
+    const { fieldType } = window.dtMetricsProject.state
 
-    if ( dtMetricsProject.multi_fields.includes(fieldType)) {
+    if ( window.dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundMonthData(monthlyData)
     } else {
         return formatSimpleMonthData(monthlyData)
@@ -518,7 +518,7 @@ function formatMonthData(monthlyData) {
 }
 
 function isInFuture(monthNumber) {
-    const { year } = dtMetricsProject.state
+    const { year } = window.dtMetricsProject.state
     const now = new Date()
     return now.getUTCFullYear() === parseInt(year) && monthNumber > now.getMonth() + 1
 }

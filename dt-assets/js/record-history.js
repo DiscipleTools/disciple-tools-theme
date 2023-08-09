@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
       // Package filtered dates.
       let filtered_dates = {};
       $.each(activities, function (idx, activity) {
-        let hist_time = moment.unix(parseInt(activity['hist_time']));
+        let hist_time = window.moment.unix(parseInt(activity['hist_time']));
 
         // Default to midnight.
         hist_time.second(0);
@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
 
     if (record_history_select.val()) {
       let ts_start = record_history_select.val();
-      let ts_end = moment.unix(record_history_select.val()).add(24, 'hours').unix();
+      let ts_end = window.moment.unix(record_history_select.val()).add(24, 'hours').unix();
 
       handle_selected_activity_date(ts_start, ts_end, handle_activities_display);
       reset_show_all_activities_switch();
@@ -137,7 +137,7 @@ jQuery(document).ready(function ($) {
         let activity_heading = window.lodash.unescape(activity['object_note']);
         let field_label = '---';
         let revert_but_tooltip = window.record_history_settings.translations.revert_but_tooltip;
-        let activity_date = moment.unix(parseInt(activity['hist_time'])).format(date_format_long);
+        let activity_date = window.moment.unix(parseInt(activity['hist_time'])).format(date_format_long);
         let owner_name = (activity['name']) ? window.lodash.unescape(activity['name']):'';
         let owner_gravatar = (activity['gravatar']) ? `<img src="${activity['gravatar']}"/>` : `<span class="mdi mdi-robot-confused-outline" style="font-size: 20px;"></span>`
 
@@ -164,7 +164,7 @@ jQuery(document).ready(function ($) {
           let timestamps = activity_heading.match(/\d{10}/g);
           if (timestamps!=null) {
             $.each(timestamps, function (ts_idx, ts) {
-              activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), moment.unix(parseInt(ts)).format(date_format_pretty_short));
+              activity_heading = window.lodash.replace(activity_heading, new RegExp(ts, 'g'), window.moment.unix(parseInt(ts)).format(date_format_pretty_short));
             });
           }
         }
@@ -218,7 +218,7 @@ jQuery(document).ready(function ($) {
   }
 
   function handle_revert_request(start_id, timestamp) {
-    let timestamp_formatted = moment.unix(parseInt(timestamp)).format(date_format_long);
+    let timestamp_formatted = window.moment.unix(parseInt(timestamp)).format(date_format_long);
     let confirm_text = window.lodash.escape(window.record_history_settings.translations.revert_confirm_text).replace('%s', timestamp_formatted);
     if (confirm(confirm_text)) {
 

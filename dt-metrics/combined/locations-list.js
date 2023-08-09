@@ -112,14 +112,14 @@ function get_data( force_refresh = false ) {
 }
 
 function location_grid_list( div, grid_id ) {
-  DRILLDOWN.show_spinner()
+  window.DRILLDOWN.show_spinner()
 
   // Find data source before build
   if ( grid_id === 'top_map_level' ) {
     let map_data = null
     let default_map_settings = LISTDATA.settings.default_map_settings
 
-    if ( DRILLDOWN.isEmpty( default_map_settings.children ) ) {
+    if (window.DRILLDOWN.isEmpty( default_map_settings.children ) ) {
       map_data = LISTDATA.data[default_map_settings.parent]
     }
     else {
@@ -131,7 +131,7 @@ function location_grid_list( div, grid_id ) {
         jQuery('#section_title').empty()
         jQuery('#current_level').empty()
         jQuery('#location_list').empty().append('Select Location')
-        DRILLDOWN.hide_spinner()
+        window.DRILLDOWN.hide_spinner()
         return;
       }
     }
@@ -164,7 +164,7 @@ function location_grid_list( div, grid_id ) {
       .fail(function (err) {
         console.log("error")
         console.log(err)
-        DRILLDOWN.hide_spinner()
+        window.DRILLDOWN.hide_spinner()
       })
 
   } else {
@@ -182,7 +182,7 @@ function location_grid_list( div, grid_id ) {
     // Population Division and Check for Custom Division
     let pd_settings = LISTDATA.settings.population_division
     let population_division = pd_settings.base
-    if ( ! DRILLDOWN.isEmpty( pd_settings.custom ) ) {
+    if ( !window.DRILLDOWN.isEmpty( pd_settings.custom ) ) {
       jQuery.each( pd_settings.custom, function(i,v) {
         if ( map_data.self.grid_id === i ) {
           population_division = v
@@ -260,6 +260,6 @@ function location_grid_list( div, grid_id ) {
       });
     }
 
-    DRILLDOWN.hide_spinner()
+    window.DRILLDOWN.hide_spinner()
   }
 }

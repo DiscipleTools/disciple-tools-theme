@@ -9,5 +9,5 @@ jQuery(document).ready(function() {
     <div id="mapping_chart"></div>
   `)
 
-  page_mapping_view(window.wp_js_object.rest_endpoints_base)
+  window.page_mapping_view(window.wp_js_object.rest_endpoints_base)
 })

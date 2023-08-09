@@ -5,7 +5,7 @@ jQuery(function () {
 });
 
 const getGenerationTree = (data) =>
-  makeRequest('POST', `metrics/generation_tree`, data)
+  window.makeRequest('POST', `metrics/generation_tree`, data)
 
 const escapeObject = window.SHAREDFUNCTIONS.escapeObject
 
@@ -17,9 +17,9 @@ function project_generation_tree() {
     post_type_select_label,
     post_field_select_label,
     submit_button_label
-  } = escapeObject(dtMetricsProject.translations);
+  } = escapeObject(window.dtMetricsProject.translations);
 
-  const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options);
+  const postTypeOptions = escapeObject(window.dtMetricsProject.select_options.post_type_select_options);
 
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
 
@@ -51,14 +51,14 @@ function project_generation_tree() {
   // Add post type event listener.
   const fieldSelectElement = document.querySelector('#post-field-select')
   document.querySelector('#post-type-select').addEventListener('change', (e) => {
-    dtMetricsProject.state.post_type = e.target.value;
+    window.dtMetricsProject.state.post_type = e.target.value;
     fieldSelectElement.innerHTML = buildFieldSelectOptions();
   });
 
   // Add submit button event listener.
   document.querySelector('#post-field-submit-button').addEventListener('click', (e) => {
-    let post_type = $('#post-type-select').val();
-    let field_id = $('#post-field-select').val();
+    let post_type = jQuery('#post-type-select').val();
+    let field_id = jQuery('#post-field-select').val();
     let loadingSpinner = document.querySelector('#chart-loading-spinner');
     loadingSpinner.classList.add('active');
 
@@ -69,7 +69,7 @@ function project_generation_tree() {
     })
     .promise()
     .then((response) => {
-      let generation_map = $('#generation_map');
+      let generation_map = jQuery('#generation_map');
 
       // Refresh generation tree results.
       generation_map.fadeOut('fast', function () {
@@ -96,19 +96,19 @@ function project_generation_tree() {
 function buildFieldSelectOptions() {
 
   // Detect and filter out suitable connection fields by selected post type.
-  dtMetricsProject.field_settings = {};
-  let post_type = dtMetricsProject.state.post_type;
+  window.dtMetricsProject.field_settings = {};
+  let post_type = window.dtMetricsProject.state.post_type;
 
-  if (dtMetricsProject.all_post_types[post_type] && dtMetricsProject.all_post_types[post_type]['fields']) {
-    $.each(dtMetricsProject.all_post_types[post_type]['fields'], function (field_id, field_settings) {
-      if ((field_settings['type'] == 'connection') && (field_settings['post_type'] == post_type)) {
-        dtMetricsProject.field_settings[field_id] = field_settings;
+  if (window.dtMetricsProject.all_post_types[post_type] && window.dtMetricsProject.all_post_types[post_type]['fields']) {
+    jQuery.each(window.dtMetricsProject.all_post_types[post_type]['fields'], function (field_id, field_settings) {
+      if ((field_settings['type'] === 'connection') && (field_settings['post_type'] === post_type)) {
+        window.dtMetricsProject.field_settings[field_id] = field_settings;
       }
     });
   }
 
   // Proceed with select options html generation.
-  const unescapedOptions = Object.entries(dtMetricsProject.field_settings)
+  const unescapedOptions = Object.entries(window.dtMetricsProject.field_settings)
   .reduce((options, [key, setting]) => {
     options[key] = setting.name
     return options

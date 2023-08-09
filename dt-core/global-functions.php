@@ -816,7 +816,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                     <script>
                         jQuery(document).ready(function(){
-                            write_input_widget()
+                            window.write_input_widget()
                         })
                     </script>
                 <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>

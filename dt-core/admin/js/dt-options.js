@@ -501,7 +501,7 @@ jQuery(document).ready(function ($) {
   }) {
 
     // Build media uploader modal
-    let mediaFrame = wp.media({
+    let mediaFrame = window.wp.media({
 
       // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
       // Determines what kind of library should be rendered.

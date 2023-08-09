@@ -26,7 +26,7 @@ jQuery(document).ready(function($) {
           let updated_comment = data.comment || data
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
-          updated_comment.date = moment(updated_comment.comment_date_gmt + "Z")
+          updated_comment.date = window.moment(updated_comment.comment_date_gmt + "Z")
           comments.push(updated_comment)
           display_activity_comment()
           // fire comment posted event
@@ -50,7 +50,7 @@ jQuery(document).ready(function($) {
      * to avoid duplicating data with the post's metadata. */
     let settings = commentsSettings
     const currentContact = settings.post
-    let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
+    let createdDate = window.moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
       object_note: window.detailsSettings.translations.created_on.replace('%s', window.SHAREDFUNCTIONS.formatDate(createdDate.unix(), true)),
@@ -69,7 +69,7 @@ jQuery(document).ready(function($) {
     }
 
     activityData.forEach(item => {
-      item.date = moment.unix(item.hist_time)
+      item.date = window.moment.unix(item.hist_time)
       let field = item.meta_key
 
       if (field && field.includes("quick_button_")){
@@ -357,7 +357,7 @@ jQuery(document).ready(function($) {
     let array = []
 
     displayed.forEach(d=>{
-      baptismDateRegex = /\{(\d+)\}+/;
+      let baptismDateRegex = /\{(\d+)\}+/;
 
       if (baptismDateRegex.test(d.object_note)) {
         d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);
@@ -522,7 +522,7 @@ jQuery(document).ready(function($) {
   let prepareData = function(commentData, activityData){
     let typesCount = {};
     commentData.forEach(comment => {
-      comment.date = moment(comment.comment_date_gmt + "Z")
+      comment.date = window.moment(comment.comment_date_gmt + "Z")
 
       /* comment_content should be HTML. However, we want to make sure that
        * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
@@ -583,7 +583,7 @@ jQuery(document).ready(function($) {
       if ( searchUsersPromise && window.lodash.get(searchUsersPromise, 'readyState') !== 4 ){
         searchUsersPromise.abort("abortPromise")
       }
-      searchUsersPromise = API.search_users(query)
+      searchUsersPromise = window.API.search_users(query)
       searchUsersPromise.then(responseData=>{
         $('#comment-input').removeClass('loading-gif')
         let data = []
@@ -619,7 +619,7 @@ jQuery(document).ready(function($) {
     let id = $(this).data('id')
     $("#revert-modal").foundation('open')
     $("#confirm-revert").data("id", id)
-    API.get_single_activity(postType, postId, id).then(a => {
+    window.API.get_single_activity(postType, postId, id).then(a => {
       let field = a.meta_key
       if (window.detailsSettings.post_settings){
         field = window.lodash.get(window.detailsSettings, `post_settings.fields[${a.meta_key}].name`)
@@ -634,11 +634,11 @@ jQuery(document).ready(function($) {
   // confirm going back to the old version on the activity
   $('#confirm-revert').on("click", function () {
     let id = $(this).data('id')
-    API.revert_activity(postType, postId, id).then(contactResponse => {
+    window.API.revert_activity(postType, postId, id).then(contactResponse => {
       refreshActivity()
       $("#revert-modal").foundation('close')
       if (typeof refresh_quick_action_buttons === 'function'){
-        refresh_quick_action_buttons(contactResponse)
+        window.refresh_quick_action_buttons(contactResponse)
       }
     }).catch(err => { console.error(err) })
   })

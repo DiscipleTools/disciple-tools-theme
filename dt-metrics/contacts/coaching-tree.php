@@ -40,7 +40,7 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
+            'dt_metrics_project_script', 'window.dtMetricsProject', [
                 'root' => esc_url_raw( rest_url() ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),

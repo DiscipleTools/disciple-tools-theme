@@ -13,7 +13,7 @@ module.exports = {
   },
   "rules": {
     "no-console": "off",
-    "no-undef": "off",
+    "no-undef": 1,
     "no-unused-vars": "off",
     "no-empty": "off",
     "no-useless-escape": "off",
@@ -26,5 +26,6 @@ module.exports = {
       }
     ]
   },
-  "parser": "@babel/eslint-parser"
+  "parser": "@babel/eslint-parser",
+  ignorePatterns: [ 'dt-core/admin/multi-role/*' ]
 };

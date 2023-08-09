@@ -1,9 +1,9 @@
-$(document).on("click", '.dismiss-all', function () {
-  $(this).addClass('loading')
-  let id = $(this).data('id')
-  makeRequestOnPosts('POST', `contacts/${id}/dismiss-duplicates`, {'id': 'all'}).then(() => {
-    $(`#contact_${id}`).remove()
-    $(this).removeClass('loading')
+jQuery(document).on("click", '.dismiss-all', function () {
+  jQuery(this).addClass('loading')
+  let id = jQuery(this).data('id')
+  window.makeRequestOnPosts('POST', `contacts/${id}/dismiss-duplicates`, {'id': 'all'}).then(() => {
+    jQuery(`#contact_${id}`).remove()
+    jQuery(this).removeClass('loading')
   })
 })
 
@@ -38,14 +38,14 @@ let get_duplicates = (limit = 0) => {
         </div>
       `
     })
-    $('#duplicates-content').append(html)
-    $('#scanned_number').html(window.lodash.escape(response.scanned))
-    let found = $('#duplicates-content .bordered-box').length
-    $('#found_text').html(window.lodash.escape(found));
+    jQuery('#duplicates-content').append(html)
+    jQuery('#scanned_number').html(window.lodash.escape(response.scanned))
+    let found = jQuery('#duplicates-content .bordered-box').length
+    jQuery('#found_text').html(window.lodash.escape(found));
     if (found < 100 && !response.reached_the_end) {
       get_duplicates(response.scanned)
     } else {
-      $('.loading-spinner').removeClass("active")
+      jQuery('.loading-spinner').removeClass("active")
     }
   })
 

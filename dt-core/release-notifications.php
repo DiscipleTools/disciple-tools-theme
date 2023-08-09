@@ -137,7 +137,7 @@ function dt_release_modal() {
         });
 
         let div = jQuery('#release-modal');
-        new Foundation.Reveal( div );
+        new window.Foundation.Reveal( div );
         div.foundation('open');
       })
     </script>

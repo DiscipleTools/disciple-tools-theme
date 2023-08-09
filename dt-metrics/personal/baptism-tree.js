@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
     chart.empty().html(spinner)
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
-    let translations = dtMetricsProject.data.translations
+    let translations = window.dtMetricsProject.data.translations
 
     chart.empty().html(`
         <span class="section-header">${ window.lodash.escape( translations.title_baptism_tree ) }</span><hr>
@@ -24,12 +24,12 @@ jQuery(document).ready(function() {
         <br><br>
        `)
 
-    makeRequest('POST', 'metrics/my/baptism_tree' )
+    window.makeRequest('POST', 'metrics/my/baptism_tree' )
       .then(response => {
         // console.log(response)
         jQuery('#generation_map').empty().html(response)
         jQuery('#generation_map li:last-child').addClass('last');
-        new Foundation.Reveal(jQuery('#modal'))
+        new window.Foundation.Reveal(jQuery('#modal'))
       })
   }
 })

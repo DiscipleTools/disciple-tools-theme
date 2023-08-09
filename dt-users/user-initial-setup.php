@@ -89,7 +89,7 @@ function dt_user_initial_setup_modal(): void{
             // Append modal content and display.
             content.append(modal_html);
             let div = jQuery('#user_notify_modal');
-            new Foundation.Reveal(div);
+            new window.Foundation.Reveal(div);
             div.foundation('open');
 
             // Handle initial user language setup submissions.
@@ -101,7 +101,7 @@ function dt_user_initial_setup_modal(): void{
                 let updated_locale = jQuery('#locale').val();
 
                 // Post updated language locale.
-                makeRequest("POST", `user/update`, {
+                window.makeRequest("POST", `user/update`, {
                     'locale': updated_locale
                 }, 'dt/v1/')
                 .done(response => {

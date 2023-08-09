@@ -2,7 +2,7 @@ window.mapbox_library_api.current_map_type = "area"
 jQuery(document).ready(function($) {
   let user_list = []
 
-  makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
+  window.makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
   .done(response=>{
     user_list = response
   }).catch((e)=>{
@@ -33,8 +33,8 @@ jQuery(document).ready(function($) {
     buttons.addClass("empty-select-button")
     $(this).addClass("selected-select-button")
 
-    mapbox_library_api.query_args = { status: $(this).data('key') }
-    mapbox_library_api.setup_map_type()
+    window. mapbox_library_api.query_args = { status: $(this).data('key') }
+    window. mapbox_library_api.setup_map_type()
   })
 
   window.mapbox_library_api.area_map.load_detail_panel =  function ( lng, lat, level ) {
@@ -50,7 +50,7 @@ jQuery(document).ready(function($) {
     jQuery('#geocode-details').show()
 
     // geocode
-    makeRequest('GET', window.wpApiShare.template_dir + '/dt-mapping/location-grid-list-api.php',
+    window.makeRequest('GET', window.wpApiShare.template_dir + '/dt-mapping/location-grid-list-api.php',
       {
         type:'geocode',
         longitude:lng,
@@ -188,7 +188,7 @@ jQuery(document).ready(function($) {
           minLength: 0,
           accent: true,
           searchOnFocus: true,
-          source: TYPEAHEADS.typeaheadUserSource(),
+          source: window.TYPEAHEADS.typeaheadUserSource(),
           templateValue: "{{name}}",
           template: function (query, item) {
             return `<div class="assigned-to-row" dir="auto">
@@ -218,9 +218,9 @@ jQuery(document).ready(function($) {
                   ]
                 }
               }
-              makeRequest( "POST", `users/user_location`, data )
+              window.makeRequest( "POST", `users/user_location`, data )
               .then(function (response) {
-                makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
+                window.makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
                 .done(response=>{
                   user_list = response
                   if ( selected_location in user_list ) {
@@ -259,7 +259,7 @@ jQuery(document).ready(function($) {
               }).catch(err => { console.error(err) })
             },
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $('#add-user-location-result-container').html(text);
             },
             onHideLayout: function () {
@@ -301,12 +301,12 @@ jQuery(document).ready(function($) {
       }
 
       // let post_id = e.currentTarget.dataset.user_id
-      makeRequest( "DELETE", `users/user_location`, data )
+      window.makeRequest( "DELETE", `users/user_location`, data )
       .then(function (response) {
 
         jQuery('div[data-id=' + e.currentTarget.dataset.id + ']').remove()
 
-        makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
+        window.makeRequest( "POST", `get_user_list`, null , 'user-management/v1/')
         .done(response=>{
           user_list = response
 
