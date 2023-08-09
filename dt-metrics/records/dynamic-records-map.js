@@ -565,6 +565,8 @@ let mapbox_library_api = {
           'circle-stroke-width': 1,
           'circle-stroke-color': '#fff'
         },
+        minzoom: 0,
+        maxzoom: 24,
         metadata: { // Custom metadata for downstream processing.
           is_record_map: true,
           layer_id: layer_id
