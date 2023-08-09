@@ -8,6 +8,7 @@ let mapbox_library_api = {
   map: null,
   spinner: null,
   map_query_layer_payloads: {},
+  dt_maps_layers_cookie_id: 'dt-maps-layers-cookie',
   setup_container: function (callback = function () {
 
   }) {
@@ -119,7 +120,7 @@ let mapbox_library_api = {
           <hr style="margin:10px 5px;">
           <div style="float: right;">
             <button id="display_records_toggle" class="button small select-button empty-select-button" style="display: none;">
-                <i class="mdi mdi-earth-off" style="font-size: 25px;"></i>
+                <i class="mdi mdi-earth" style="font-size: 25px;"></i>
             </button>
             <button id="delete_records_request" class="button small select-button empty-select-button" style="display: none;">
                 <i class="mdi mdi-delete-forever-outline" style="font-size: 25px;"></i>
@@ -214,14 +215,22 @@ let mapbox_library_api = {
     mapbox_library_api.setup_map_type();
 
     $('#map-type button').on('click', function (e) {
-      let id = $(this).attr('id');
+      let map_type_button = $(this);
+      let id = $(map_type_button).attr('id');
+      let show_base_map = !$(map_type_button).hasClass('selected-select-button');
+
       switch (id) {
         default: {
+
+          // Reset all map type buttons.
           $('#map-type button').removeClass("selected-select-button").addClass("empty-select-button");
-          $(this).addClass("selected-select-button");
+
+          if (show_base_map) {
+            $(map_type_button).addClass("selected-select-button");
+          }
 
           mapbox_library_api.current_map_type = id;
-          mapbox_library_api.setup_map_type();
+          mapbox_library_api.setup_map_type(show_base_map);
           break;
         }
       }
@@ -237,8 +246,6 @@ let mapbox_library_api = {
           makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, payload, mapbox_library_api.obj.settings.rest_base_url)
           .done(response => {
             if (response && response.request && response.response && mapbox_library_api.map) {
-
-              let query_cookie_key = `dt-maps-${response.request.id}-cookie`;
 
               // Remove existing map query layer sources.
               mapbox_library_api.remove_map_record_layer(response.request.id);
@@ -263,6 +270,11 @@ let mapbox_library_api = {
               </button>`;
                 $(map_layers_tab).append(map_layers_tab_button_html);
 
+                // Ensure map layers div left border is displayed accordingly.
+                if (!$(map_layers_tab).hasClass('border-left')) {
+                  $(map_layers_tab).addClass('border-left');
+                }
+
                 // Capture display order and default to a displayed state.
                 response.request['display_order'] = map_layers_tab_count;
                 response.request['displayed'] = true;
@@ -274,8 +286,18 @@ let mapbox_library_api = {
 
                 // Ensure payload query body is captured within cookie; to ensure it persists beyond browser refreshes.
                 let expires = moment().add(1, 'month').toDate().toUTCString();
-                window.SHAREDFUNCTIONS.save_json_cookie(query_cookie_key, cookie, '', expires);
+
+                // Assign to main parent layers cookie.
+                let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
+                if (Array.isArray(dt_maps_layers_cookie)) {
+                  dt_maps_layers_cookie = {};
+                }
+                dt_maps_layers_cookie['' + response.request.id] = cookie;
+                window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
               }
+
+              // Hide layer records add modal.
+              $('#add_records_div').fadeOut('fast');
             }
           });
           break;
@@ -284,14 +306,17 @@ let mapbox_library_api = {
           let map_query_layer_payload = mapbox_library_api.map_query_layer_payloads[div_layer_id];
           if (map_query_layer_payload && confirm(window.lodash.escape(mapbox_library_api.obj.translations.add_records.confirm_delete_layer))) {
 
-            // Generate required keys.
-            let query_cookie_key = `dt-maps-${map_query_layer_payload.id}-cookie`;
-
             // Remove existing map query layer sources.
             mapbox_library_api.remove_map_record_layer(map_query_layer_payload.id);
 
             // Remove cookie.
-            window.SHAREDFUNCTIONS.remove_json_cookie(query_cookie_key);
+            let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
+            if (!Array.isArray(dt_maps_layers_cookie) && dt_maps_layers_cookie['' + map_query_layer_payload.id]) {
+              delete dt_maps_layers_cookie['' + map_query_layer_payload.id];
+
+              let expires = moment().add(1, 'month').toDate().toUTCString();
+              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+            }
 
             // Remove from map memory.
             delete mapbox_library_api.map_query_layer_payloads[div_layer_id];
@@ -340,6 +365,15 @@ let mapbox_library_api = {
 
             // Toggle display button icon, based on current display flag.
             mapbox_library_api.refresh_display_records_button_icon(div_layer_id);
+
+            // Update cookie, to ensure changes persist following refreshes.
+            let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
+            if (!Array.isArray(dt_maps_layers_cookie)) {
+              dt_maps_layers_cookie['' + div_layer_id] = layer_settings;
+
+              let expires = moment().add(1, 'month').toDate().toUTCString();
+              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+            }
           }
           break;
         }
@@ -351,7 +385,7 @@ let mapbox_library_api = {
 
     // Create query layers placeholder div.
     let legend_bar = $('#legend-bar');
-    $(legend_bar).append(`<div id="map_layers_tab" class="border-left"></div>`);
+    $(legend_bar).append(`<div id="map_layers_tab"></div>`);
 
     // Append additional map controls.
     let map_controls_html = `
@@ -392,7 +426,15 @@ let mapbox_library_api = {
   reload_record_layers: function (reload_data = true) {
 
     // Reload to be based on currently stored cookie settings.
-    let layer_cookies = window.SHAREDFUNCTIONS.get_json_cookies_by_regex(/dt-maps-.*-cookie/g);
+    let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
+
+    // Convert parent object to array of layer objects.
+    let layer_cookies = [];
+    if (!Array.isArray(dt_maps_layers_cookie)) {
+      layer_cookies = Object.entries(dt_maps_layers_cookie).map(([k,v]) => v);
+    }
+
+    // Proceed with layer displaying based on loaded cookie settings.
     if (layer_cookies) {
       mapbox_library_api.map_query_layer_payloads = {};
       let map_layers_tab = $('#map_layers_tab');
@@ -425,6 +467,9 @@ let mapbox_library_api = {
         // Persist loaded cookie query layer payload details in memory.
         mapbox_library_api.map_query_layer_payloads[cookie.id] = cookie;
 
+        // Ensure map layer tab button adopts the correct opacity based on display flag.
+        mapbox_library_api.refresh_display_records_button_icon(cookie.id);
+
         // If requested, fetch latest query results based on loaded cookie settings.
         if (reload_data && (cookie.displayed && cookie.displayed === true)) {
           makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, cookie, mapbox_library_api.obj.settings.rest_base_url)
@@ -443,8 +488,14 @@ let mapbox_library_api = {
             }
           });
         }
-
       });
+
+      // Adjust left border display accordingly, based on available map layers.
+      if( $(map_layers_tab).children().length > 0 ) {
+        $(map_layers_tab).addClass('border-left');
+      } else {
+        $(map_layers_tab).removeClass('border-left');
+      }
     }
   },
   remove_map_record_layer: function (layer_id) {
@@ -497,6 +548,8 @@ let mapbox_library_api = {
 
       // Handle point clicks.
       mapbox_library_api.map.on('click', query_layer_key, function (e) {
+        e.preventDefault();
+
         let features = e.features;
         let geocode_details = $('#geocode-details');
         let geocode_details_content = $('#geocode-details-content');
@@ -507,6 +560,7 @@ let mapbox_library_api = {
           if (features) {
             let content_html = ``;
             $.each(features, function (idx, feature) {
+              if ( idx > 20 ){ return }
               if (feature.properties && feature.properties.post_type && feature.properties.post_id && feature.properties.name) {
 
                 // Ensure the correct post type is adopted for system based query layers.
@@ -526,8 +580,11 @@ let mapbox_library_api = {
                   </div>`;
               }
             });
-
             $(geocode_details_content).html(content_html);
+
+            // Remove any duplicate links.
+            mapbox_library_api.remove_geocode_details_content_duplicates();
+
             $(geocode_details_content).fadeIn('fast');
             $(geocode_details).fadeIn('fast');
           }
@@ -591,19 +648,25 @@ let mapbox_library_api = {
       let layer_settings = mapbox_library_api.map_query_layer_payloads[layer_id];
 
       if (layer_settings) {
-        let display_records_button_icon = $('#display_records_toggle').find('i');
+        let map_layers_tab = $('#map_layers_tab');
+        let map_layers_tab_button = $(map_layers_tab).find("button[data-query_id='"+ layer_id +"']");
+        let display_records_button = $('#display_records_toggle');
+
         if (layer_settings['displayed'] && layer_settings['displayed'] === true) {
-          $(display_records_button_icon).removeClass('mdi-earth');
-          $(display_records_button_icon).addClass('mdi-earth-off');
+          $(display_records_button).addClass('selected-select-button');
+          $(map_layers_tab_button).css('opacity', 1.0);
+
         } else {
-          $(display_records_button_icon).removeClass('mdi-earth-off');
-          $(display_records_button_icon).addClass('mdi-earth');
+          $(display_records_button).removeClass('selected-select-button');
+          $(map_layers_tab_button).css('opacity', 0.3);
         }
       }
     }
   },
   add_records_build_post_type_field_select_options: function (post_type) {
     let post_type_setting = mapbox_library_api.obj.settings.post_types[post_type];
+
+    let options_html = `<option value='query_all'>${window.lodash.escape(this.obj.translations.add_records.post_type_select_opt_group_record_types_query_all)}</option>`;
     if (post_type_setting && post_type_setting['fields']) {
       let field_setting = post_type_setting['fields'];
 
@@ -620,23 +683,26 @@ let mapbox_library_api = {
         if (value1 > value2) return 1
       });
 
-      return sortedOptions.map(([value, label]) => `
+      options_html += sortedOptions.map(([value, label]) => `
         <option value="${value}"> ${window.lodash.escape(label)} </option>
     `);
-    } else {
-      return '';
     }
+
+    return options_html;
   },
   add_records_refresh_post_type_field_value_entry_element: function (post_type, field_key, callback = function () {
 
   }) {
+
+    // Reset field value element by default.
+    let entry_div = $('#add_records_div_content_post_type_field_values');
+    $(entry_div).empty();
+
     let post_type_setting = mapbox_library_api.obj.settings.post_types[post_type];
     if (post_type_setting && post_type_setting['fields'][field_key] && post_type_setting['fields'][field_key]['type']) {
       let field_settings = post_type_setting['fields'][field_key];
       let field_type = field_settings['type'];
       let field_default = field_settings['default'] ? field_settings['default'] : [];
-      let entry_div = $('#add_records_div_content_post_type_field_values');
-      $(entry_div).empty();
 
       // Generate entry element accordingly based on field type.
       $(entry_div).fadeOut('fast', function () {
@@ -719,7 +785,7 @@ let mapbox_library_api = {
   add_records_generate_hex_color: function () {
     return '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
   },
-  setup_map_type: function (){
+  setup_map_type: function (show_base_map = true){
     // init map
     window.mapboxgl.accessToken = this.obj.settings.map_key;
     if ( mapbox_library_api.map ){
@@ -753,7 +819,10 @@ let mapbox_library_api = {
 
     mapbox_library_api.map.on('load', function() {
       mapbox_library_api.reload_record_layers();
-      mapbox_library_api.load_map()
+
+      if (show_base_map) {
+        mapbox_library_api.load_map();
+      }
     })
   },
   load_map: function (map_type, query){
@@ -847,6 +916,8 @@ let mapbox_library_api = {
       mapbox_library_api.spinner.hide()
     },
     on_click: function (e) {
+      e.preventDefault();
+
       let list = []
       jQuery('#geocode-details').show()
 
@@ -866,10 +937,25 @@ let mapbox_library_api = {
             <div class="cell"><a  target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape( post_type )}/${window.lodash.escape( details.ID )}">${window.lodash.escape( details.title )/*View Record*/}</a></div>
           `)
 
+          // Remove any duplicate links.
+          mapbox_library_api.remove_geocode_details_content_duplicates();
+
           jQuery('.loading-spinner').hide()
         })
       })
     }
+  },
+  remove_geocode_details_content_duplicates: function () {
+    let content = $('#geocode-details-content');
+    let links = [];
+    $(content).find('a').each(function (idx, link) {
+      if (window.lodash.includes(links, $(link).attr('href'))) {
+        $(link).parent().remove();
+
+      } else {
+        links.push($(link).attr('href'));
+      }
+    });
   },
   standardize_longitude: function (lng){
     if (lng > 180) {

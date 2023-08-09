@@ -93,6 +93,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                         'layer_tab_button_title' => __( 'Layer', 'disciple_tools' ),
                         'confirm_delete_layer' => __( 'Are you sure you wish to delete layer?', 'disciple_tools' ),
                         'post_type_select_opt_group_record_types' => __( 'Record Types', 'disciple_tools' ),
+                        'post_type_select_opt_group_record_types_query_all' => __( 'All', 'disciple_tools' ),
                         'post_type_select_opt_group_system' => __( 'System', 'disciple_tools' )
                     ]
                 ],
@@ -124,7 +125,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'post_type_geojson' ],
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [ $this, 'has_permission' ]
                 ]
             ]
         );
@@ -133,7 +134,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'cluster_geojson' ],
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [ $this, 'has_permission' ]
                 ]
             ]
         );
@@ -142,7 +143,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_grid_totals' ],
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [ $this, 'has_permission' ]
                 ]
             ]
         );
@@ -151,7 +152,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_list_by_grid_id' ],
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [ $this, 'has_permission' ]
                 ]
             ]
         );
@@ -160,17 +161,13 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'points_geojson' ],
-                    'permission_callback' => '__return_true'
+                    'permission_callback' => [ $this, 'has_permission' ]
                 ]
             ]
         );
     }
 
     public function post_type_geojson( WP_REST_Request $request ){
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
-        }
-
         $response = [];
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( !empty( $params['post_type'] ) ){
@@ -195,10 +192,6 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     }
 
     public function cluster_geojson( WP_REST_Request $request ) {
-        if ( ! $this->has_permission() ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
-        }
-
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
@@ -213,9 +206,6 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 
 
     public function get_grid_totals( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
-        }
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );
@@ -252,10 +242,6 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
      * Points
      */
     public function points_geojson( WP_REST_Request $request ) {
-        if ( ! $this->has_permission() ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
-        }
-
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, 'Missing Post Types', [ 'status' => 400 ] );

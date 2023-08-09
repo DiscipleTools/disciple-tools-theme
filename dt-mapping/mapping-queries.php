@@ -1301,7 +1301,7 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         //phpcs:disable
-        if ( !empty( $args['field_key'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
+        if ( isset( $args['field_key'], $args['field_type'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
             $prepared_query = $wpdb->prepare( "
                 SELECT DISTINCT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
@@ -1311,7 +1311,7 @@ class Disciple_Tools_Mapping_Queries {
                   AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ),
                 $post_type, $args['field_key'] );
 
-        } elseif ( $args['field_type'] == 'user_select' ){
+        } elseif ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ){
             $prepared_query = $wpdb->prepare("
                 SELECT DISTINCT lgm.label AS address, u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
