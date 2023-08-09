@@ -44,7 +44,7 @@ function mark_unread (notification_id) {
 }
 
 function mark_all_viewed () {
-  const id = wpApiNotifications.current_user_id
+  const id = window.wpApiNotifications.current_user_id
 
   return window.makeRequest('post', 'notifications/mark_all_viewed/' + id).done(() => {
     get_new_notification_count()
@@ -170,12 +170,12 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
       (all === true && (all_offset === 0 || !all_offset )) ||
       all === false && (new_offset === 0 || !new_offset))
     { // determines if this is the first query (offset 0) and there is nothing returned.
-      jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-notifications"] )}</div>`)
+      jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( window.wpApiNotifications.translations["no-notifications"] )}</div>`)
       jQueryElements.nextAll && jQueryElements.nextAll.hide()
       jQueryElements.nextNew && jQueryElements.nextNew.hide()
     } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
       if (reset) {
-        jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-unread"] )}</div>`)
+        jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( window.wpApiNotifications.translations["no-unread"] )}</div>`)
       }
 
       jQueryElements.nextAll && jQueryElements.nextAll.hide()
@@ -255,5 +255,5 @@ window.fiveMinuteTimer = setInterval(function () {
   });
 }, 300000); //300000 = five minutes
 jQuery(document).ready(function () {
-  get_notifications(false, true, dropdown = true, limit = 5);
+  get_notifications(false, true, true, 5);
 });

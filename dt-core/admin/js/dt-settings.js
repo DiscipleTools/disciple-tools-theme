@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
         $.each(field_options, function(option_index, option_element) {
           sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
         });
-        API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
+        window.API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
           let old_order = all_settings.post_type_settings.fields[field_key]['default'];
           all_settings.post_type_settings.fields[field_key]['default'] = order_field_option_keys_by_array(old_order, new_order);
 
@@ -226,7 +226,7 @@ jQuery(document).ready(function($) {
         return;
       }
       let dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
-      API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
+      window.API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
         if ( result[post_type][tile_key] ) {
           window.field_settings.post_type_settings.tiles[tile_key].order = result[post_type][tile_key]['order'];
         }

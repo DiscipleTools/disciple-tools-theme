@@ -1,5 +1,5 @@
 function get_map_start( token ) {
-  let c = Cookies.get(token)
+  let c = window.Cookies.get(token)
   if ( c === undefined ) {
     return false;
   }
@@ -17,7 +17,7 @@ function set_map_start( token, bounds ) {
       standardize_coordinates( bounds._sw.lat ),
     ]
   ]
-  Cookies.set( token, JSON.stringify(b) )
+  window.Cookies.set( token, JSON.stringify(b) )
 }
 
 function standardize_coordinates( coord ) {

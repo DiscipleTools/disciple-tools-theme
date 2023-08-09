@@ -276,8 +276,8 @@ jQuery(document).ready(function($) {
               },
               callback: {
                 done: function (data) {
-                  if (typeof typeaheadTotals !== "undefined") {
-                    typeaheadTotals.field = data.total
+                  if (typeof window.typeaheadTotals !== "undefined") {
+                    window.typeaheadTotals.field = data.total
                   }
                   return data.location_grid
                 }

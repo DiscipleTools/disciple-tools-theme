@@ -371,8 +371,8 @@ window.TYPEAHEADS = {
           },
           callback: {
             done: function (data) {
-              if (typeof typeaheadTotals !== "undefined") {
-                typeaheadTotals.field = data.total;
+              if (typeof window.typeaheadTotals !== "undefined") {
+                window.typeaheadTotals.field = data.total;
               }
               return data.posts;
             },
@@ -910,8 +910,10 @@ window.sha256 = (ascii) => {
   //* caching results is optional - remove/add slash from front of this line to toggle
   // Initial hash value: first 32 bits of the fractional parts of the square roots of the first 8 primes
   // (we actually calculate the first 64, but extra values are just ignored)
+  // eslint-disable-next-line no-undef
   var hash = sha256.h = sha256.h || [];
   // Round constants: first 32 bits of the fractional parts of the cube roots of the first 64 primes
+  // eslint-disable-next-line no-undef
   var k = sha256.k = sha256.k || [];
   var primeCounter = k[lengthProperty];
   /*/

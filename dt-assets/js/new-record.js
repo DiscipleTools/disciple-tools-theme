@@ -309,8 +309,8 @@ jQuery(function($) {
                   },
                   callback: {
                     done: function (data) {
-                      if (typeof typeaheadTotals !== "undefined") {
-                        typeaheadTotals.field = data.total
+                      if (typeof window.typeaheadTotals !== "undefined") {
+                        window.typeaheadTotals.field = data.total
                       }
                       return data.location_grid
                     }
@@ -354,7 +354,7 @@ jQuery(function($) {
                   .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
               },
               onResult: function (node, query, result, resultCount) {
-                resultCount = typeaheadTotals.location_grid
+                resultCount = window.typeaheadTotals.location_grid
                 let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
                 $('#location_grid-result-container').html(text);
               },
@@ -419,6 +419,7 @@ jQuery(function($) {
     for (let input of $(".multi_select .typeahead__query input")) {
       let field = $(input).data('field')
       let typeahead_name = (!is_bulk) ? `.js-typeahead-${field}` : `.js-typeahead-${field}-${bulk_id}`;
+      const post_type = window.new_record_localized.post_type
 
       if (window.Typeahead[typeahead_name]) {
         return
