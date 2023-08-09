@@ -439,6 +439,12 @@ let mapbox_library_api = {
       default_cookie['id'] = mapbox_library_api.add_records_generate_captured_state_snapshot_payload_id(default_cookie);
       layer_cookies.push(default_cookie);
 
+      // Persist default cookie.
+      let expires = moment().add(1, 'month').toDate().toUTCString();
+      dt_maps_layers_cookie = {};
+      dt_maps_layers_cookie['' + default_cookie['id']] = default_cookie;
+      window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+
       // Force a reload.
       reload_data = true;
     }
