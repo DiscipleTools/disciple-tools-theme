@@ -129,6 +129,7 @@ details.flyout .button {
     width: 300px;
     transition: all 150ms cubic-bezier(.25, .8, .25, 1);
     border: 1px solid #919191;
+    color:black;
 }
 
 [data-tooltip]:hover::after {

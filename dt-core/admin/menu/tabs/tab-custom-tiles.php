@@ -355,6 +355,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST['post_type'] ) ){
                     $post_type = sanitize_key( $_POST['post_type'] );
                 }
+            } else if ( isset( $_GET['post_type'] ) ){
+                $post_type = sanitize_key( $_GET['post_type'] );
             }
             $this->template( 'begin' );
 
@@ -399,6 +401,8 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 } else if ( !empty( $_POST['tile-select'] ) ){
                     $tile_key = sanitize_key( $_POST['tile-select'] );
                 }
+            } elseif ( isset( $_GET['tile'] ) ){
+                $tile_key = sanitize_key( $_GET['tile'] );
             }
 
 

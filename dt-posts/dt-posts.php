@@ -3024,6 +3024,97 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         return false;
     }
+
+
+    /**
+     * Get available field types
+     * See https://developers.disciple.tools/theme-core/customization/fields
+     * @return array[]
+     */
+    public static function get_field_types(){
+        return [
+            'text' => [
+                'label' => 'Text',
+                'description' => 'A single line of text',
+                'user_creatable' => true,
+            ],
+            'textarea' => [
+                'label' => 'Textarea',
+                'description' => 'A multi-line text area',
+                'user_creatable' => true,
+            ],
+            'number' => [
+                'label' => 'Number',
+                'description' => 'A number',
+                'user_creatable' => true,
+            ],
+            'date' => [
+                'label' => 'Date',
+                'description' => 'A date, like 2020-01-01',
+                'user_creatable' => true,
+            ],
+            'key_select' => [
+                'label' => 'Dropdown',
+                'description' => 'A dropdown with a list of options',
+                'user_creatable' => true,
+            ],
+            'multi_select' => [
+                'label' => 'Multi Select',
+                'description' => 'Button group to select multiple options',
+                'user_creatable' => true,
+            ],
+            'boolean' => [
+                'label' => 'Boolean',
+                'description' => 'A checkbox for yes or no',
+                'user_creatable' => false,
+            ],
+            'communication_channel' => [
+                'label' => 'Communication Channel',
+                'description' => 'Field for multiple contact info like email, phone, etc.',
+                'user_creatable' => false,
+            ],
+            'connection' => [
+                'label' => 'Connection',
+                'description' => 'Connections to other records',
+                'user_creatable' => true,
+            ],
+            'user_select' => [
+                'label' => 'User Select',
+                'description' => 'Field for selecting a user',
+                'user_creatable' => false,
+            ],
+            'link' => [
+                'label' => 'Links or Categories',
+                'description' => 'Create categories and add values to them',
+                'user_creatable' => true,
+            ],
+            'tags' => [
+                'label' => 'Tags',
+                'description' => 'Create and select tags',
+                'user_creatable' => true,
+            ],
+            'location' => [
+                'label' => 'Location',
+                'description' => 'Location selected from the predefined location grid list',
+                'user_creatable' => false,
+            ],
+            'location_meta' => [
+                'label' => 'Location with Geocoding',
+                'description' => 'Location selected with the help of a geocoder (mapbox, google)',
+                'user_creatable' => false,
+            ],
+            'tasks' => [
+                'label' => 'Tasks',
+                'description' => 'Tasks assigned to a record',
+                'user_creatable' => false,
+            ],
+            'array' => [
+                'label' => 'Array',
+                'description' => 'Array of data',
+                'user_creatable' => false,
+            ],
+        ];
+    }
 }
 
 

@@ -258,7 +258,12 @@ jQuery(document).on("click", ".help-button-tile", function () {
   let tile = window.wpApiShare.tiles[section];
   if (tile && window.post_type_fields) {
     if (tile.label) {
-      $("#help-modal-field-title").html(window.lodash.escape(tile.label));
+      let tile_label = window.lodash.escape(tile.label);
+      if ( window.wpApiShare.can_manage_dt ){
+        let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${section}`
+        tile_label += ` <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.lodash.escape(window.wpApiShare.translations.edit)}</a></span>`;
+      }
+      $("#help-modal-field-title").html(tile_label);
     }
     if (tile.description) {
       $("#help-modal-field-description").html(window.lodash.escape(tile.description));
@@ -282,7 +287,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
         let field_name = `<h2>${window.lodash.escape(field.name)}</h2>`;
         if ( window.wpApiShare.can_manage_dt ){
           let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
-          field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
+          field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.lodash.escape(window.wpApiShare.translations.edit)}</a></span></h2>`;
         }
         html += field_name
         html += `<p>${window.lodash.escape(field.description)}</p>`;
