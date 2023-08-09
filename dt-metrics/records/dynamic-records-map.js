@@ -217,20 +217,16 @@ let mapbox_library_api = {
     $('#map-type button').on('click', function (e) {
       let map_type_button = $(this);
       let id = $(map_type_button).attr('id');
-      let show_base_map = !$(map_type_button).hasClass('selected-select-button');
 
       switch (id) {
         default: {
 
-          // Reset all map type buttons.
+          // Reset all map type buttons and select caller.
           $('#map-type button').removeClass("selected-select-button").addClass("empty-select-button");
-
-          if (show_base_map) {
-            $(map_type_button).addClass("selected-select-button");
-          }
+          $(map_type_button).addClass("selected-select-button");
 
           mapbox_library_api.current_map_type = id;
-          mapbox_library_api.setup_map_type(show_base_map);
+          mapbox_library_api.setup_map_type();
           break;
         }
       }
@@ -250,51 +246,48 @@ let mapbox_library_api = {
               // Remove existing map query layer sources.
               mapbox_library_api.remove_map_record_layer(response.request.id);
 
-              // Ensure valid features have been returned.
-              if (response.response.features && response.response.features.length > 0) {
+              // Generate layer color.
+              let layer_color = mapbox_library_api.add_records_generate_hex_color();
 
-                let layer_color = mapbox_library_api.add_records_generate_hex_color();
+              // Add corresponding mqp query source and layer.
+              mapbox_library_api.add_map_record_layer(response.request.id, layer_color, response.response);
 
-                // Add corresponding mqp query source and layer.
-                mapbox_library_api.add_map_record_layer(response.request.id, layer_color, response.response);
+              // Create a corresponding layers tab button.
+              let map_layers_tab = $('#map_layers_tab');
+              let map_layers_tab_count = $(map_layers_tab).children().length + 1;
+              let map_layers_tab_button_html = `
+            <button
+              class="button map-layers-tab-button"
+              style="background-color: ${layer_color} !important;"
+              data-query_id="${response.request.id}">
+              ${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${map_layers_tab_count}
+            </button>`;
+              $(map_layers_tab).append(map_layers_tab_button_html);
 
-                // Create a corresponding layers tab button.
-                let map_layers_tab = $('#map_layers_tab');
-                let map_layers_tab_count = $(map_layers_tab).children().length + 1;
-                let map_layers_tab_button_html = `
-              <button
-                class="button map-layers-tab-button"
-                style="background-color: ${layer_color} !important;"
-                data-query_id="${response.request.id}">
-                ${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${map_layers_tab_count}
-              </button>`;
-                $(map_layers_tab).append(map_layers_tab_button_html);
-
-                // Ensure map layers div left border is displayed accordingly.
-                if (!$(map_layers_tab).hasClass('border-left')) {
-                  $(map_layers_tab).addClass('border-left');
-                }
-
-                // Capture display order and default to a displayed state.
-                response.request['display_order'] = map_layers_tab_count;
-                response.request['displayed'] = true;
-
-                // Persist query layer payload details.
-                let cookie = response.request;
-                cookie['color'] = layer_color;
-                mapbox_library_api.map_query_layer_payloads[response.request.id] = cookie;
-
-                // Ensure payload query body is captured within cookie; to ensure it persists beyond browser refreshes.
-                let expires = moment().add(1, 'month').toDate().toUTCString();
-
-                // Assign to main parent layers cookie.
-                let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
-                if (Array.isArray(dt_maps_layers_cookie)) {
-                  dt_maps_layers_cookie = {};
-                }
-                dt_maps_layers_cookie['' + response.request.id] = cookie;
-                window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+              // Ensure map layers div left border is displayed accordingly.
+              if (!$(map_layers_tab).hasClass('border-left')) {
+                $(map_layers_tab).addClass('border-left');
               }
+
+              // Capture display order and default to a displayed state.
+              response.request['display_order'] = map_layers_tab_count;
+              response.request['displayed'] = true;
+
+              // Persist query layer payload details.
+              let cookie = response.request;
+              cookie['color'] = layer_color;
+              mapbox_library_api.map_query_layer_payloads[response.request.id] = cookie;
+
+              // Ensure payload query body is captured within cookie; to ensure it persists beyond browser refreshes.
+              let expires = moment().add(1, 'month').toDate().toUTCString();
+
+              // Assign to main parent layers cookie.
+              let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
+              if (Array.isArray(dt_maps_layers_cookie)) {
+                dt_maps_layers_cookie = {};
+              }
+              dt_maps_layers_cookie['' + response.request.id] = cookie;
+              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
 
               // Hide layer records add modal.
               $('#add_records_div').fadeOut('fast');
@@ -434,77 +427,101 @@ let mapbox_library_api = {
       layer_cookies = Object.entries(dt_maps_layers_cookie).map(([k,v]) => v);
     }
 
+    // Default to showing all contacts if no cookies detected.
+    if (layer_cookies.length === 0) {
+      let default_cookie = {
+        'post_type': 'contacts',
+        'field_key': 'query_all',
+        'display_order': 0,
+        'displayed': true,
+        'color': mapbox_library_api.add_records_generate_hex_color()
+      };
+      default_cookie['id'] = mapbox_library_api.add_records_generate_captured_state_snapshot_payload_id(default_cookie);
+      layer_cookies.push(default_cookie);
+
+      // Force a reload.
+      reload_data = true;
+    }
+
     // Proceed with layer displaying based on loaded cookie settings.
-    if (layer_cookies) {
-      mapbox_library_api.map_query_layer_payloads = {};
-      let map_layers_tab = $('#map_layers_tab');
-      $(map_layers_tab).empty();
+    mapbox_library_api.map_query_layer_payloads = {};
+    let map_layers_tab = $('#map_layers_tab');
+    $(map_layers_tab).empty();
 
-      // Sort loaded layer cookies by display ordering value.
-      layer_cookies.sort(function (a, b) {
-        if (a.display_order && b.display_order) {
-          if (a.display_order < b.display_order) {
-            return -1;
-          }
-          if (a.display_order > b.display_order) {
-            return 1;
-          }
+    // Sort loaded layer cookies by display ordering value.
+    layer_cookies.sort(function (a, b) {
+      if (a.display_order && b.display_order) {
+        if (a.display_order < b.display_order) {
+          return -1;
         }
-        return 0;
-      });
-
-      // Rebuild layer buttons.
-      $.each(layer_cookies, function (idx, cookie) {
-        let map_layers_tab_button_html = `
-              <button
-                class="button map-layers-tab-button"
-                style="background-color: ${cookie.color} !important;"
-                data-query_id="${cookie.id}">
-                ${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${$(map_layers_tab).children().length + 1}
-              </button>`;
-        $(map_layers_tab).append(map_layers_tab_button_html);
-
-        // Persist loaded cookie query layer payload details in memory.
-        mapbox_library_api.map_query_layer_payloads[cookie.id] = cookie;
-
-        // Ensure map layer tab button adopts the correct opacity based on display flag.
-        mapbox_library_api.refresh_display_records_button_icon(cookie.id);
-
-        // If requested, fetch latest query results based on loaded cookie settings.
-        if (reload_data && (cookie.displayed && cookie.displayed === true)) {
-          makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, cookie, mapbox_library_api.obj.settings.rest_base_url)
-          .done(response => {
-            if (response && response.request && response.response && mapbox_library_api.map) {
-
-              // Remove existing map query layer sources.
-              mapbox_library_api.remove_map_record_layer(response.request.id);
-
-              // Ensure valid features have been returned.
-              if (response.response.features && response.response.features.length > 0) {
-
-                // Add corresponding mqp query source and layer.
-                mapbox_library_api.add_map_record_layer(response.request.id, cookie.color, response.response);
-              }
-            }
-          });
+        if (a.display_order > b.display_order) {
+          return 1;
         }
-      });
-
-      // Adjust left border display accordingly, based on available map layers.
-      if( $(map_layers_tab).children().length > 0 ) {
-        $(map_layers_tab).addClass('border-left');
-      } else {
-        $(map_layers_tab).removeClass('border-left');
       }
+      return 0;
+    });
+
+    // Rebuild layer buttons.
+    $.each(layer_cookies, function (idx, cookie) {
+      let map_layers_tab_button_html = `
+            <button
+              class="button map-layers-tab-button"
+              style="background-color: ${cookie.color} !important;"
+              data-query_id="${cookie.id}">
+              ${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${$(map_layers_tab).children().length + 1}
+            </button>`;
+      $(map_layers_tab).append(map_layers_tab_button_html);
+
+      // Persist loaded cookie query layer payload details in memory.
+      mapbox_library_api.map_query_layer_payloads[cookie.id] = cookie;
+
+      // Ensure map layer tab button adopts the correct opacity based on display flag.
+      mapbox_library_api.refresh_display_records_button_icon(cookie.id);
+
+      // If requested, fetch latest query results based on loaded cookie settings.
+      if (reload_data && (cookie.displayed && cookie.displayed === true)) {
+        makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, cookie, mapbox_library_api.obj.settings.rest_base_url)
+        .done(response => {
+          if (response && response.request && response.response && mapbox_library_api.map) {
+
+            // Remove existing map query layer sources.
+            mapbox_library_api.remove_map_record_layer(response.request.id);
+
+            // Ensure valid features have been returned.
+            if (response.response.features && response.response.features.length > 0) {
+
+              // Add corresponding mqp query source and layer.
+              mapbox_library_api.add_map_record_layer(response.request.id, cookie.color, response.response);
+            }
+          }
+        });
+      }
+    });
+
+    // Adjust left border display accordingly, based on available map layers.
+    if( $(map_layers_tab).children().length > 0 ) {
+      $(map_layers_tab).addClass('border-left');
+    } else {
+      $(map_layers_tab).removeClass('border-left');
     }
   },
   remove_map_record_layer: function (layer_id) {
     let query_source_key = `dt-maps-${layer_id}-source`;
     let query_layer_key = `dt-maps-${layer_id}-layer`;
+    let query_layer_key_clustered = `dt-maps-${layer_id}-layer-clustered`;
+    let query_layer_key_clustered_count = `dt-maps-${layer_id}-layer-clustered-count`;
 
     let query_layer = mapbox_library_api.map.getLayer(query_layer_key);
     if (typeof query_layer !== 'undefined') {
       mapbox_library_api.map.removeLayer(query_layer_key);
+    }
+
+    if (typeof mapbox_library_api.map.getLayer(query_layer_key_clustered) !== 'undefined') {
+      mapbox_library_api.map.removeLayer(query_layer_key_clustered);
+    }
+
+    if (typeof mapbox_library_api.map.getLayer(query_layer_key_clustered_count) !== 'undefined') {
+      mapbox_library_api.map.removeLayer(query_layer_key_clustered_count);
     }
 
     let query_source = mapbox_library_api.map.getSource(query_source_key);
@@ -515,6 +532,8 @@ let mapbox_library_api = {
   add_map_record_layer: function (layer_id, layer_color, geojson_data) {
     let query_source_key = `dt-maps-${layer_id}-source`;
     let query_layer_key = `dt-maps-${layer_id}-layer`;
+    let query_layer_key_clustered = `dt-maps-${layer_id}-layer-clustered`;
+    let query_layer_key_clustered_count = `dt-maps-${layer_id}-layer-clustered-count`;
 
     // Add query layer source.
     if (typeof mapbox_library_api.map.getSource(query_source_key) === 'undefined') {
@@ -527,7 +546,7 @@ let mapbox_library_api = {
       });
     }
 
-    // Add corresponding query layer.
+    // Add corresponding query layers based on global map type.
     if (typeof mapbox_library_api.map.getLayer(query_layer_key) === 'undefined') {
       mapbox_library_api.map.addLayer({
         id: query_layer_key,
@@ -545,52 +564,149 @@ let mapbox_library_api = {
           layer_id: layer_id
         }
       });
+    }
 
-      // Handle point clicks.
-      mapbox_library_api.map.on('click', query_layer_key, function (e) {
-        e.preventDefault();
-
-        let features = e.features;
-        let geocode_details = $('#geocode-details');
-        let geocode_details_content = $('#geocode-details-content');
-
-        $(geocode_details).fadeOut('fast', function () {
-          $(geocode_details_content).empty();
-
-          if (features) {
-            let content_html = ``;
-            $.each(features, function (idx, feature) {
-              if ( idx > 20 ){ return }
-              if (feature.properties && feature.properties.post_type && feature.properties.post_id && feature.properties.name) {
-
-                // Ensure the correct post type is adopted for system based query layers.
-                let post_type = feature.properties.post_type;
-                switch (post_type) {
-                  case 'system-users': {
-                    post_type = 'contacts';
-                    break;
-                  }
-                }
-
-                content_html += `
-                  <div class="grid-x" id="list-${window.lodash.escape( idx )}">
-                    <div class="cell">
-                        <a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape(post_type)}/${window.lodash.escape(feature.properties.post_id)}">${window.lodash.escape(feature.properties.name)}</a>
-                    </div>
-                  </div>`;
-              }
-            });
-            $(geocode_details_content).html(content_html);
-
-            // Remove any duplicate links.
-            mapbox_library_api.remove_geocode_details_content_duplicates();
-
-            $(geocode_details_content).fadeIn('fast');
-            $(geocode_details).fadeIn('fast');
+    if (mapbox_library_api.current_map_type === 'cluster') {
+      if (typeof mapbox_library_api.map.getLayer(query_layer_key_clustered) === 'undefined') {
+        mapbox_library_api.map.addLayer({
+          id: query_layer_key_clustered,
+          type: 'circle',
+          source: query_source_key,
+          filter: ['has', 'point_count'],
+          paint: {
+            'circle-color': [
+              'step',
+              ['get', 'point_count'],
+              layer_color,
+              100,
+              layer_color,
+              750,
+              layer_color
+            ],
+            'circle-radius': [
+              'step',
+              ['get', 'point_count'],
+              20,
+              100,
+              30,
+              750,
+              40
+            ]
+          },
+          metadata: { // Custom metadata for downstream processing.
+            is_record_map: true,
+            layer_id: layer_id
           }
         });
+      }
+
+      if (typeof mapbox_library_api.map.getLayer(query_layer_key_clustered_count) === 'undefined') {
+        mapbox_library_api.map.addLayer({
+          id: query_layer_key_clustered_count,
+          type: 'symbol',
+          source: query_source_key,
+          filter: ['has', 'point_count'],
+          layout: {
+            'text-field': '{point_count_abbreviated}',
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 12
+          },
+          metadata: { // Custom metadata for downstream processing.
+            is_record_map: true,
+            layer_id: layer_id
+          }
+        });
+      }
+
+      // Handle various point events.
+      mapbox_library_api.map.on('mouseenter', query_layer_key_clustered, function () {
+        mapbox_library_api.map.getCanvas().style.cursor = 'pointer';
+      });
+
+      mapbox_library_api.map.on('mouseenter', query_layer_key_clustered_count, function () {
+        mapbox_library_api.map.getCanvas().style.cursor = 'pointer';
+      });
+
+      mapbox_library_api.map.on('mouseleave', query_layer_key_clustered, function () {
+        mapbox_library_api.map.getCanvas().style.cursor = '';
+      });
+
+      mapbox_library_api.map.on('mouseleave', query_layer_key_clustered_count, function () {
+        mapbox_library_api.map.getCanvas().style.cursor = '';
+      });
+
+      mapbox_library_api.map.on('click', query_layer_key_clustered, function (e) {
+        let features = mapbox_library_api.map.queryRenderedFeatures(e.point, {
+          layers: [query_layer_key_clustered]
+        });
+
+        let clusterId = features[0].properties.cluster_id;
+        mapbox_library_api.map.getSource(query_source_key).getClusterExpansionZoom(
+          clusterId,
+          function (err, zoom) {
+            if (err) return;
+
+            mapbox_library_api.map.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom
+            });
+          }
+        );
       });
     }
+
+    // Handle various point events.
+    mapbox_library_api.map.on('mouseenter', query_layer_key, function () {
+      mapbox_library_api.map.getCanvas().style.cursor = 'pointer';
+    });
+
+    mapbox_library_api.map.on('mouseleave', query_layer_key, function () {
+      mapbox_library_api.map.getCanvas().style.cursor = '';
+    });
+
+    mapbox_library_api.map.on('click', query_layer_key, function (e) {
+      e.preventDefault();
+
+      let features = e.features;
+      let geocode_details = $('#geocode-details');
+      let geocode_details_content = $('#geocode-details-content');
+
+      $(geocode_details).fadeOut('fast', function () {
+        $(geocode_details_content).empty();
+
+        if (features) {
+          let content_html = ``;
+          $.each(features, function (idx, feature) {
+            if ( idx > 20 ){ return }
+            if (feature.properties && feature.properties.post_type && feature.properties.post_id && feature.properties.name) {
+
+              // Ensure the correct post type is adopted for system based query layers.
+              let post_type = feature.properties.post_type;
+              switch (post_type) {
+                case 'system-users': {
+                  post_type = 'contacts';
+                  break;
+                }
+              }
+
+              content_html += `
+                <div class="grid-x" id="list-${window.lodash.escape( idx )}">
+                  <div class="cell">
+                      <a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape(post_type)}/${window.lodash.escape(feature.properties.post_id)}">${window.lodash.escape(feature.properties.name)}</a>
+                  </div>
+                </div>`;
+            }
+          });
+          $(geocode_details_content).html(content_html);
+
+          // Remove any duplicate links.
+          mapbox_library_api.remove_geocode_details_content_duplicates();
+
+          $(geocode_details_content).fadeIn('fast');
+          $(geocode_details).fadeIn('fast');
+        }
+      });
+    });
   },
   show_records_modal_add_mode: function () {
     let add_records_div = $('#add_records_div');
@@ -785,7 +901,7 @@ let mapbox_library_api = {
   add_records_generate_hex_color: function () {
     return '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
   },
-  setup_map_type: function (show_base_map = true){
+  setup_map_type: function (){
     // init map
     window.mapboxgl.accessToken = this.obj.settings.map_key;
     if ( mapbox_library_api.map ){
@@ -819,11 +935,7 @@ let mapbox_library_api = {
 
     mapbox_library_api.map.on('load', function() {
       mapbox_library_api.reload_record_layers();
-
-      if (show_base_map) {
-        mapbox_library_api.load_map();
-      }
-    })
+    });
   },
   load_map: function (map_type, query){
 
