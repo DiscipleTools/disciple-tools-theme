@@ -543,13 +543,18 @@ let mapbox_library_api = {
 
     // Add query layer source.
     if (typeof mapbox_library_api.map.getSource(query_source_key) === 'undefined') {
-      mapbox_library_api.map.addSource(query_source_key, {
+      let source_options = {
         type: 'geojson',
-        data: geojson_data,
-        cluster: true,
-        clusterMaxZoom: 14,
-        clusterRadius: 50
-      });
+        data: geojson_data
+      };
+
+      if (mapbox_library_api.current_map_type === 'cluster') {
+        source_options['cluster'] = true;
+        source_options['clusterMaxZoom'] = 14;
+        source_options['clusterRadius'] = 50;
+      }
+
+      mapbox_library_api.map.addSource(query_source_key, source_options);
     }
 
     // Add corresponding query layers based on global map type.
@@ -565,8 +570,6 @@ let mapbox_library_api = {
           'circle-stroke-width': 1,
           'circle-stroke-color': '#fff'
         },
-        minzoom: 0,
-        maxzoom: 24,
         metadata: { // Custom metadata for downstream processing.
           is_record_map: true,
           layer_id: layer_id
