@@ -1212,7 +1212,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );
-            return $custom_field;
+
+            $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
+            return $post_fields[$field_key];
         }
         return new WP_Error( 'error', 'Something went wrong', [ 'status' => 500 ] );
     }
