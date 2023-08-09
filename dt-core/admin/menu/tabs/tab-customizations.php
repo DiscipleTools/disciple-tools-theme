@@ -239,21 +239,19 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         <div id="post-type-buttons">
             <div style="padding-bottom: 8px;"><b><?php esc_html_e( 'Select a record type:', 'disciple_tools' ); ?></b></div>
             <div class="latest-post-type-buttons">
-        <?php
-        $post_types = DT_Posts::get_post_types();
-        foreach ( $post_types as $post_type ) :
-            $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
-            $pill_link = "admin.php?page=dt_customizations&post_type=$post_type&tab=tiles";
-            if ( self::get_parameter( 'tab' ) ) {
-                $pill_link .= '&tab=' . self::get_parameter( 'tab' );
-            }
-            ?>
-            <a href="<?php echo esc_url( admin_url() . $pill_link ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
-        <?php endforeach; ?>
+                <?php
+                $post_types = DT_Posts::get_post_types();
+                foreach ( $post_types as $post_type ) :
+                    $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
+                    $pill_link = "admin.php?page=dt_customizations&post_type=$post_type&tab=tiles";
+                    if ( self::get_parameter( 'tab' ) ) {
+                        $pill_link .= '&tab=' . self::get_parameter( 'tab' );
+                    }
+                    ?>
+                    <a href="<?php echo esc_url( admin_url() . $pill_link ); ?>" class="button <?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) ? 'button-primary' : null; ?>"><?php echo esc_html( $post_type_label ); ?></a>
+                <?php endforeach; ?>
+                <a id="add_new_post_type" href="#" class="button button-tertiary" style="color: green; border-color:green; margin: 0 1em"><i class="mdi mdi-playlist-plus" style="font-size: 25px; line-height: 1; vertical-align: middle"></i> <?php esc_html_e( 'New Record Type', 'disciple_tools' ); ?></a>
             </div>
-            <p>
-                <a id="add_new_post_type" href="#" class="button"><?php esc_html_e( 'Add New Record Type', 'disciple_tools' ); ?></a>
-            </p>
         </div>
         <?php
     }
