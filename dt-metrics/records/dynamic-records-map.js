@@ -9,9 +9,7 @@ let mapbox_library_api = {
   spinner: null,
   map_query_layer_payloads: {},
   dt_maps_layers_cookie_id: 'dt-maps-layers-cookie',
-  setup_container: function (callback = function () {
-
-  }) {
+  setup_container: function () {
     if ( this.container_set_up ){ return; }
     if ( typeof window.dt_mapbox_metrics.settings === 'undefined' ) { return; }
 
@@ -402,8 +400,6 @@ let mapbox_library_api = {
       // Display Add Records modal window in edit mode with required functionality.
       mapbox_library_api.show_records_modal_edit_mode(query_payload_id, query_payload, query_layer_title);
     });
-
-    callback();
   },
   reload_record_layers: function (reload_data = true) {
 
@@ -805,9 +801,7 @@ let mapbox_library_api = {
 
     return options_html;
   },
-  add_records_refresh_post_type_field_value_entry_element: function (post_type, field_key, callback = function () {
-
-  }) {
+  add_records_refresh_post_type_field_value_entry_element: function (post_type, field_key, callback) {
 
     // Reset field value element by default.
     let entry_div = $('#add_records_div_content_post_type_field_values');
@@ -834,7 +828,11 @@ let mapbox_library_api = {
             });
 
             $(entry_div).html(option_html);
-            callback();
+
+            if (callback) {
+              callback();
+            }
+
             $(entry_div).fadeIn('fast');
             break;
           }
@@ -1455,8 +1453,7 @@ mapbox_library_api.area_map = area_map
 window.mapbox_library_api = mapbox_library_api;
 
 jQuery(document).ready(function($) {
-  window.mapbox_library_api.setup_container(function () {
-  });
+  window.mapbox_library_api.setup_container();
   let obj = window.dt_mapbox_metrics
   jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${obj.settings.menu_slug}-menu`));
 })
