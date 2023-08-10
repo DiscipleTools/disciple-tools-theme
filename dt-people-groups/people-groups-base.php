@@ -73,7 +73,8 @@ class Disciple_Tools_People_Groups_Base {
     }
 
     public function dt_nav_filter( $navigation_array ) {
-        $is_hidden = ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab );
+        $post_type_updates = get_option( 'dt_custom_post_types', [] );
+        $is_hidden = $post_type_updates[$this->post_type]['hidden'] ?? false;
 
         if ( isset( $navigation_array['main'], $navigation_array['main'][ $this->post_type ] ) ) {
             $navigation_array['main'][ $this->post_type ]['hidden'] = $is_hidden;

@@ -17,8 +17,6 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_People_Groups
 {
-    public static $option_key_settings_display_tab = 'dt_people_groups_display_tab';
-
     /**
      * Get JP csv file contents and return as array.
      * @return array
@@ -535,34 +533,8 @@ class Disciple_Tools_People_Groups
         }
     }
 
-    public static function admin_display_settings_tab_table( $enabled_on_click = true ) {
-        ?>
-        <table class="widefat striped">
-            <thead>
-            <tr>
-                <th colspan="1">Display Options</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    Display People Groups Tab in Navigation Bar
-                    <? $display_in_tab_html = get_option( self::$option_key_settings_display_tab ) ? 'checked' : '';
-                    $on_click_html       = $enabled_on_click ? 'onclick=update_setting_options();' : '';
-                    ?>
-                    &nbsp;<input type="checkbox" name="display_people_group_tab"
-                                 id="display_people_group_tab" <?php echo esc_html( $on_click_html . ' ' . $display_in_tab_html ); ?>>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-
     public static function admin_tab_table() {
         $names = self::get_country_dropdown();
-
-        self::admin_display_settings_tab_table();
         ?>
         <br><br>
         <table class="widefat striped" id="import_people_group_table">
@@ -679,13 +651,5 @@ class Disciple_Tools_People_Groups
         'total' => $total_found_posts,
         'posts' => $list
         ];
-    }
-
-    public static function update_setting_options( $settings ): array {
-        if ( isset( $settings['display_tab'] ) ) {
-            update_option( self::$option_key_settings_display_tab, ! empty( $settings['display_tab'] ) );
-        }
-
-        return [];
     }
 }
