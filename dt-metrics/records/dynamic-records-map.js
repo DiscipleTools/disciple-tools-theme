@@ -287,7 +287,7 @@ let mapbox_library_api = {
                 dt_maps_layers_cookie = {};
               }
               dt_maps_layers_cookie['' + response.request.id] = cookie;
-              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
 
               // Hide layer records add modal.
               $('#add_records_div').fadeOut('fast');
@@ -308,7 +308,7 @@ let mapbox_library_api = {
               delete dt_maps_layers_cookie['' + map_query_layer_payload.id];
 
               let expires = moment().add(1, 'month').toDate().toUTCString();
-              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
             }
 
             // Remove from map memory.
@@ -365,7 +365,7 @@ let mapbox_library_api = {
               dt_maps_layers_cookie['' + div_layer_id] = layer_settings;
 
               let expires = moment().add(1, 'month').toDate().toUTCString();
-              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
             }
           }
           break;
@@ -443,7 +443,7 @@ let mapbox_library_api = {
       let expires = moment().add(1, 'month').toDate().toUTCString();
       dt_maps_layers_cookie = {};
       dt_maps_layers_cookie['' + default_cookie['id']] = default_cookie;
-      window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '', expires);
+      window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
 
       // Force a reload.
       reload_data = true;
