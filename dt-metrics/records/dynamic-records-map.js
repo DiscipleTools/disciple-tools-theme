@@ -891,7 +891,8 @@ let mapbox_library_api = {
     return payload;
   },
   add_records_generate_captured_state_snapshot_payload_id: function (payload) {
-    let seed = payload.post_type + payload.field_key;
+    let timestamp = moment().unix();
+    let seed = timestamp + payload.post_type + payload.field_key;
 
     if (payload.field_values) {
       $.each(payload.field_values, function (idx, value) {
