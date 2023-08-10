@@ -8,7 +8,7 @@
   let filterToEdit = "";
   let filter_accordions = $('#list-filter-tabs')
   let currentFilters = $("#current-filters")
-  let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
+  let cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage("last_view", {}, list_settings.post_type);
   let cached_filter
   let get_records_promise = null
   let loading_spinner = $("#list-loading-spinner")
@@ -24,7 +24,7 @@
   const { status_key, archived_key } = status_field ? status_field : {}
   const filterOutArchivedItemsKey = `-${archived_key}`
   const archivedSwitch = $('#archivedToggle')
-  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie( 'list_archived_switch_status', [] ) || false
+  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_from_local_storage( 'list_archived_switch_status', [], list_settings.post_type ) || false
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
   const esc = window.lodash.escape
@@ -695,7 +695,7 @@
     const showArchived = this.checked
 
     archivedSwitchStatus = showArchived
-    window.SHAREDFUNCTIONS.save_json_cookie('list_archived_switch_status', showArchived, list_settings.post_type)
+    window.SHAREDFUNCTIONS.save_json_to_local_storage('list_archived_switch_status', showArchived, list_settings.post_type)
 
     get_records()
   })
@@ -957,7 +957,7 @@
     update_url_query(current_filter)
     apply_archived_toggle_to_current_filter()
 
-    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
+    window.SHAREDFUNCTIONS.save_json_to_local_storage(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
