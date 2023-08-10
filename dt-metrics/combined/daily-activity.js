@@ -39,7 +39,7 @@ jQuery(document).ready(function ($) {
 
   function display_daily_activity_chart(start_date, end_date, days) {
     // Ensure overwritten charts are automatically disposed.
-    am4core.options.autoDispose = true;
+    window.am4core.options.autoDispose = true;
 
     // Ensure to hide daily sub-charts.
     $('#chart_day_title').html('');
@@ -50,16 +50,16 @@ jQuery(document).ready(function ($) {
 
     // Proceed with chart creation.
     $('#chartdiv').fadeOut('fast', function () {
-      am4core.ready(function () {
+      window.am4core.ready(function () {
 
-        am4core.useTheme(am4themes_animated);
-        am4core.ready(function () {
-          let chart = am4core.create("chartdiv", am4plugins_timeline.CurveChart);
+        window.am4core.useTheme(window.am4themes_animated);
+        window.am4core.ready(function () {
+          let chart = window.am4core.create("chartdiv", window.am4plugins_timeline.CurveChart);
 
           chart.curveContainer.padding(0, 300, 0, 0);
           chart.maskBullets = false;
 
-          let colorSet = new am4core.ColorSet();
+          let colorSet = new window.am4core.ColorSet();
 
           chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
           chart.dateFormatter.dateFormat = "yyyy-MM-dd";
@@ -68,7 +68,7 @@ jQuery(document).ready(function ($) {
           chart.data = build_days_data_array(days, colorSet);
           chart.clickable = true;
 
-          let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+          let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
           categoryAxis.dataFields.category = "category";
           categoryAxis.renderer.grid.template.disabled = true;
           categoryAxis.renderer.labels.template.paddingRight = 25;
@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
           categoryAxis.renderer.innerRadius = 10;
           categoryAxis.renderer.radius = 30;
 
-          let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+          let dateAxis = chart.xAxes.push(new window.am4charts.DateAxis());
 
           dateAxis.renderer.points = getPoints();
 
@@ -89,7 +89,7 @@ jQuery(document).ready(function ($) {
           dateAxis.renderer.line.strokeOpacity = 0.5;
           dateAxis.tooltip.background.fillOpacity = 0.2;
           dateAxis.tooltip.background.cornerRadius = 5;
-          dateAxis.tooltip.label.fill = new am4core.InterfaceColorSet().getFor("alternativeBackground");
+          dateAxis.tooltip.label.fill = new window.am4core.InterfaceColorSet().getFor("alternativeBackground");
           dateAxis.tooltip.label.paddingTop = 7;
           dateAxis.endLocation = 0;
           dateAxis.startLocation = -0.5;
@@ -99,13 +99,13 @@ jQuery(document).ready(function ($) {
           let labelTemplate = dateAxis.renderer.labels.template;
           labelTemplate.verticalCenter = "middle";
           labelTemplate.fillOpacity = 0.6;
-          labelTemplate.background.fill = new am4core.InterfaceColorSet().getFor("background");
+          labelTemplate.background.fill = new window.am4core.InterfaceColorSet().getFor("background");
           labelTemplate.background.fillOpacity = 1;
-          labelTemplate.fill = new am4core.InterfaceColorSet().getFor("text");
+          labelTemplate.fill = new window.am4core.InterfaceColorSet().getFor("text");
           labelTemplate.padding(7, 7, 7, 7);
 
-          let series = chart.series.push(new am4plugins_timeline.CurveColumnSeries());
-          series.columns.template.height = am4core.percent(30);
+          let series = chart.series.push(new window.am4plugins_timeline.CurveColumnSeries());
+          series.columns.template.height = window.am4core.percent(30);
 
           series.dataFields.openDateX = "start";
           series.dataFields.dateX = "end";
@@ -116,15 +116,15 @@ jQuery(document).ready(function ($) {
           series.columns.template.strokeOpacity = 0;
           series.columns.template.fillOpacity = 0.6;
 
-          let imageBullet1 = series.bullets.push(new am4plugins_bullets.PinBullet());
+          let imageBullet1 = series.bullets.push(new window.am4plugins_bullets.PinBullet());
           imageBullet1.background.radius = 0;
           imageBullet1.locationX = 1;
           imageBullet1.propertyFields.stroke = "color";
           imageBullet1.background.propertyFields.fill = "color";
-          //..imageBullet1.image = new am4core.Image();
+          //..imageBullet1.image = new window.am4core.Image();
           //..imageBullet1.image.propertyFields.href = "icon";
           //..imageBullet1.image.scale = 0.7;
-          //..imageBullet1.circle.radius = am4core.percent(100);
+          //..imageBullet1.circle.radius = window.am4core.percent(100);
           imageBullet1.background.fillOpacity = 0.8;
           imageBullet1.background.strokeOpacity = 0;
           imageBullet1.dy = -2;
@@ -133,12 +133,12 @@ jQuery(document).ready(function ($) {
           imageBullet1.background.hide();
           imageBullet1.background.disabled = true;
           //..imageBullet1.tooltipHTML = "{tooltip}";
-          imageBullet1.label = new am4core.Label();
+          imageBullet1.label = new window.am4core.Label();
           imageBullet1.label.html = "{tooltip}";
 
           // Capture bullet clicks and display count breakdowns accordingly!
-          imageBullet1.cursorOverStyle = am4core.MouseCursorStyle.pointer;
-          imageBullet1.cursorDownStyle = am4core.MouseCursorStyle.grabbing;
+          imageBullet1.cursorOverStyle = window.am4core.MouseCursorStyle.pointer;
+          imageBullet1.cursorDownStyle = window.am4core.MouseCursorStyle.grabbing;
           imageBullet1.clickable = true;
           imageBullet1.events.on("hit", function (ev) {
             display_daily_counts(ev.target.dataItem.dataContext);
@@ -158,7 +158,7 @@ jQuery(document).ready(function ($) {
           hs.properties.scale = 1.3;
           hs.properties.opacity = 1;
 
-          let textBullet = series.bullets.push(new am4charts.LabelBullet());
+          let textBullet = series.bullets.push(new window.am4charts.LabelBullet());
           textBullet.label.propertyFields.text = "text";
           textBullet.disabled = true;
           textBullet.propertyFields.disabled = "textDisabled";
@@ -167,9 +167,9 @@ jQuery(document).ready(function ($) {
           textBullet.dy = -100;
           textBullet.label.textAlign = "middle";
 
-          chart.scrollbarX = new am4core.Scrollbar();
+          chart.scrollbarX = new window.am4core.Scrollbar();
           chart.scrollbarX.align = "center"
-          chart.scrollbarX.width = am4core.percent(75);
+          chart.scrollbarX.width = window.am4core.percent(75);
           chart.scrollbarX.parent = chart.curveContainer;
           chart.scrollbarX.height = 300;
           chart.scrollbarX.orientation = "vertical";
@@ -178,7 +178,7 @@ jQuery(document).ready(function ($) {
           chart.scrollbarX.isMeasured = false;
           chart.scrollbarX.opacity = 0.5;
 
-          let cursor = new am4plugins_timeline.CurveCursor();
+          let cursor = new window.am4plugins_timeline.CurveCursor();
           chart.cursor = cursor;
           cursor.xAxis = dateAxis;
           cursor.yAxis = categoryAxis;
@@ -241,15 +241,15 @@ jQuery(document).ready(function ($) {
           let h = 400;
           let levelCount = 4;
 
-          let radius = am4core.math.min(w / (levelCount - 1) / 2, h / 2);
+          let radius = window.am4core.math.min(w / (levelCount - 1) / 2, h / 2);
           let startX = radius;
 
           for (let i = 0; i < 25; i++) {
             let angle = 0 + i / 25 * 90;
             let centerPoint = {y: 200 - radius, x: 0}
             points.push({
-              y: centerPoint.y + radius * am4core.math.cos(angle),
-              x: centerPoint.x + radius * am4core.math.sin(angle)
+              y: centerPoint.y + radius * window.am4core.math.cos(angle),
+              x: centerPoint.x + radius * window.am4core.math.sin(angle)
             });
           }
 
@@ -265,8 +265,8 @@ jQuery(document).ready(function ($) {
                 for (let k = 0; k < 50; k++) {
                   let angle = -90 + k / 50 * 180;
                   points.push({
-                    y: centerPoint.y + radius * am4core.math.cos(angle),
-                    x: centerPoint.x + radius * am4core.math.sin(angle)
+                    y: centerPoint.y + radius * window.am4core.math.cos(angle),
+                    x: centerPoint.x + radius * window.am4core.math.sin(angle)
                   });
                 }
               }
@@ -278,8 +278,8 @@ jQuery(document).ready(function ($) {
                 for (let k = 0; k < 25; k++) {
                   let angle = -90 + k / 25 * 90;
                   points.push({
-                    y: centerPoint.y + radius * am4core.math.cos(angle),
-                    x: centerPoint.x + radius * am4core.math.sin(angle)
+                    y: centerPoint.y + radius * window.am4core.math.cos(angle),
+                    x: centerPoint.x + radius * window.am4core.math.sin(angle)
                   });
                 }
                 points.push({y: 0, x: 1300});
@@ -293,8 +293,8 @@ jQuery(document).ready(function ($) {
                 for (let k = 0; k < 50; k++) {
                   let angle = -90 - k / 50 * 180;
                   points.push({
-                    y: centerPoint.y + radius * am4core.math.cos(angle),
-                    x: centerPoint.x + radius * am4core.math.sin(angle)
+                    y: centerPoint.y + radius * window.am4core.math.cos(angle),
+                    x: centerPoint.x + radius * window.am4core.math.sin(angle)
                   });
                 }
               }
@@ -469,7 +469,7 @@ jQuery(document).ready(function ($) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: `${wp_js_object.rest_endpoints_base}/daily-activity/?date_range=${date_range_filter}`,
+        url: `${window.wp_js_object.rest_endpoints_base}/daily-activity/?date_range=${date_range_filter}`,
         beforeSend: function (xhr) {
           xhr.setRequestHeader("X-WP-Nonce", window.wpApiShare.nonce);
         },

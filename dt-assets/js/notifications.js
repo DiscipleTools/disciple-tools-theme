@@ -1,13 +1,13 @@
 /* Functions to support the notifications system. */
 function get_new_notification_count() {
-  return makeRequest('post', 'notifications/get_new_notifications_count').done(data => {
+  return window.makeRequest('post', 'notifications/get_new_notifications_count').done(data => {
     if (data > 0) {
       jQuery('.notification-count').text(data).show().css('display', 'inline-block')
       return
     }
 
     jQuery('.notification-count').hide()
-  }).fail(handleAjaxError)
+  }).fail(window.handleAjaxError)
 }
 
 setTimeout(get_new_notification_count, 2000)
@@ -26,31 +26,31 @@ const notificationNew = notification_id => `
 `
 
 function mark_viewed (notification_id) {
-  return makeRequest('post', 'notifications/mark_viewed/' + notification_id).done(() => {
+  return window.makeRequest('post', 'notifications/mark_viewed/' + notification_id).done(() => {
     get_new_notification_count()
     jQuery(`.row-${notification_id} .notification-row`).removeClass("unread-notification-row")
     jQuery('.toggle-area-'+notification_id).html(notificationRead(notification_id))
     // TODO toggle the .new-cell class off
-  }).fail(handleAjaxError)
+  }).fail(window.handleAjaxError)
 }
 
 function mark_unread (notification_id) {
-  return makeRequest('post', 'notifications/mark_unread/' + notification_id).done(() => {
+  return window.makeRequest('post', 'notifications/mark_unread/' + notification_id).done(() => {
     get_new_notification_count()
     jQuery(`.row-${notification_id} .notification-row`).addClass("unread-notification-row")
     jQuery('.toggle-area-'+notification_id).html(notificationNew(notification_id))
     // TODO toggle the .new-cell class on
-  }).fail(handleAjaxError)
+  }).fail(window.handleAjaxError)
 }
 
 function mark_all_viewed () {
-  const id = wpApiNotifications.current_user_id
+  const id = window.wpApiNotifications.current_user_id
 
-  return makeRequest('post', 'notifications/mark_all_viewed/' + id).done(() => {
+  return window.makeRequest('post', 'notifications/mark_all_viewed/' + id).done(() => {
     get_new_notification_count()
     jQuery('.new-cell').html(notificationRead(id))
     // TODO also change the backgrounds of the notifications to indicate their read status?
-  }).fail(handleAjaxError)
+  }).fail(window.handleAjaxError)
 }
 
 const notification_group_header = (record_title) => `
@@ -146,7 +146,7 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
 
   // return notifications if query successful
   let mentions = include_mentions();
-  return makeRequest('post', 'notifications/get_notifications', { all, page, limit, mentions }).done(data => {
+  return window.makeRequest('post', 'notifications/get_notifications', { all, page, limit, mentions }).done(data => {
     if (data) {
       if (reset) {
         jQueryElements.notificationList.empty()
@@ -170,18 +170,18 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
       (all === true && (all_offset === 0 || !all_offset )) ||
       all === false && (new_offset === 0 || !new_offset))
     { // determines if this is the first query (offset 0) and there is nothing returned.
-      jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-notifications"] )}</div>`)
+      jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( window.wpApiNotifications.translations["no-notifications"] )}</div>`)
       jQueryElements.nextAll && jQueryElements.nextAll.hide()
       jQueryElements.nextNew && jQueryElements.nextNew.hide()
     } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
       if (reset) {
-        jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( wpApiNotifications.translations["no-unread"] )}</div>`)
+        jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( window.wpApiNotifications.translations["no-unread"] )}</div>`)
       }
 
       jQueryElements.nextAll && jQueryElements.nextAll.hide()
       jQueryElements.nextNew && jQueryElements.nextNew.hide()
     }
-  }).fail(handleAjaxError)
+  }).fail(window.handleAjaxError)
 }
 
 function include_mentions() {
@@ -255,5 +255,5 @@ window.fiveMinuteTimer = setInterval(function () {
   });
 }, 300000); //300000 = five minutes
 jQuery(document).ready(function () {
-  get_notifications(false, true, dropdown = true, limit = 5);
+  get_notifications(false, true, true, 5);
 });

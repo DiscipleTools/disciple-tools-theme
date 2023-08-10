@@ -90,7 +90,7 @@ jQuery(function() {
           : window.lodash.escape(object_note)
       }
       let activityDetails = ''
-      dateRegex = /\{(\d+)\}+/;
+      let dateRegex = /\{(\d+)\}+/;
       object_notes.forEach((objectNote) => {
         let newObjectNote = `${window.lodash.escape(objectNote)}`
         if (dateRegex.test(objectNote)) {
@@ -122,7 +122,7 @@ jQuery(function() {
     let daysActivity = {}
     data.forEach(activity => {
       // data is already in date order, so we can go day by day
-      const date = moment.unix(activity.hist_time).format('YYYY-MM-DD')
+      const date = window.moment.unix(activity.hist_time).format('YYYY-MM-DD')
       if (date !== currentDay) {
         currentDay = date
         daysActivity = {}

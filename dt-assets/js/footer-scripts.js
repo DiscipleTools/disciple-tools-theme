@@ -2,8 +2,8 @@
 These functions make sure WordPress
 and Foundation play nice together.
 */
-if (Foundation.MediaQuery.current == 'small') {
-  $('.title-bar').removeAttr('data-sticky').removeClass('is-anchored is-at-bottom').attr('style', '');
+if (window.Foundation.MediaQuery.current == 'small') {
+  jQuery('.title-bar').removeAttr('data-sticky').removeClass('is-anchored is-at-bottom').attr('style', '');
 }
 
 jQuery(document).foundation();
@@ -48,17 +48,17 @@ document.addEventListener('DOMContentLoaded', top_bar_menu_more_button);
 window.addEventListener('resize', top_bar_menu_more_button);
 
 function top_bar_menu_more_button () {
-  if ( $("#top-bar-menu > div.top-bar-left > ul > li:nth-last-child(2)").is(':visible')) {
-    $("#more-menu-button").hide();
+  if ( jQuery("#top-bar-menu > div.top-bar-left > ul > li:nth-last-child(2)").is(':visible')) {
+    jQuery("#more-menu-button").hide();
   } else {
-    $("#more-menu-button").show();
+    jQuery("#more-menu-button").show();
   }
 }
 
 /**
  * Ensure correct side menu highlights are maintained
  */
-jQuery(document).ready(function () {
+jQuery(document).ready(function ($) {
 
   // Determine selected menu item
   let selected_menu_item = (window.wpApiShare.url_path === 'metrics') ? 'metrics/personal/overview' : window.wpApiShare.url_path;

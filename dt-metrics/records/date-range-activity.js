@@ -5,13 +5,13 @@ jQuery(function () {
 });
 
 const getFieldSettings = (postType) =>
-  makeRequest('GET', `metrics/field_settings/${postType}`)
+  window.makeRequest('GET', `metrics/field_settings/${postType}`)
 
 const renderFieldHtml = (data) =>
-  makeRequest('GET', `metrics/render_field_html`, data)
+  window.makeRequest('GET', `metrics/render_field_html`, data)
 
 const getDateRangeActivity = (data) =>
-  makeRequest('POST', `metrics/date_range_activity`, data)
+  window.makeRequest('POST', `metrics/date_range_activity`, data)
 
 const escapeObject = window.SHAREDFUNCTIONS.escapeObject
 
@@ -28,9 +28,9 @@ function project_activity_during_date_range() {
     results_table_head_title_label,
     results_table_head_date_label,
     results_table_head_new_value_label
-  } = escapeObject(dtMetricsProject.translations);
+  } = escapeObject(window.dtMetricsProject.translations);
 
-  const postTypeOptions = escapeObject(dtMetricsProject.select_options.post_type_select_options);
+  const postTypeOptions = escapeObject(window.dtMetricsProject.select_options.post_type_select_options);
 
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
 
@@ -54,7 +54,7 @@ function project_activity_during_date_range() {
         <label class="section-subheader" for="date-select">${date_select_label}</label>
         <div class="date_range_picker">
             <i class="fi-calendar"></i>&nbsp;
-            <span>${moment().format("YYYY")}</span>
+            <span>${window.moment().format("YYYY")}</span>
             <i class="dt_caret down"></i>
         </div>
 
@@ -82,10 +82,10 @@ function project_activity_during_date_range() {
   // Activate date range picker element.
   window.METRICS.setupDatePickerWithoutEndpoint(
     function (start, end, label) {
-      $('.date_range_picker span').html(label);
-      $('#post-field-submit-button').click();
+      jQuery('.date_range_picker span').html(label);
+      jQuery('#post-field-submit-button').click();
     },
-    moment().startOf('year')
+    window.moment().startOf('year')
   );
 
   // Display field value entry accordingly based on selected field.
@@ -95,12 +95,12 @@ function project_activity_during_date_range() {
   const fieldSelectElement = document.querySelector('#post-field-select')
   document.querySelector('#post-type-select').addEventListener('change', (e) => {
     const postType = e.target.value
-    dtMetricsProject.state.post_type = postType;
+    window.dtMetricsProject.state.post_type = postType;
     getFieldSettings(postType)
     .promise()
     .then((data) => {
       console.log(data);
-      dtMetricsProject.field_settings = data;
+      window.dtMetricsProject.field_settings = data;
       fieldSelectElement.innerHTML = buildFieldSelectOptions();
       fieldSelectElement.dispatchEvent(new Event('change'));
     })
@@ -116,12 +116,12 @@ function project_activity_during_date_range() {
 
   // Add submit button event listener.
   document.querySelector('#post-field-submit-button').addEventListener('click', (e) => {
-    let field_settings = dtMetricsProject.field_settings;
-    let date_range_picker = $('.date_range_picker').data('daterangepicker');
-    let post_type = $('#post-type-select').val();
-    let field_id =  $('#post-field-select').val();
+    let field_settings = window.dtMetricsProject.field_settings;
+    let date_range_picker = jQuery('.date_range_picker').data('daterangepicker');
+    let post_type = jQuery('#post-type-select').val();
+    let field_id =  jQuery('#post-field-select').val();
     let field_type = field_settings[field_id]['type'];
-    let value = $('#post-field-value').val();
+    let value = jQuery('#post-field-value').val();
     let loadingSpinner = document.querySelector('#chart-loading-spinner');
     loadingSpinner.classList.add('active');
 
@@ -159,11 +159,11 @@ function project_activity_during_date_range() {
       let total = response['total'];
       let posts = response['posts'];
 
-      let activity_results_div = $('#activity_results_div');
+      let activity_results_div = jQuery('#activity_results_div');
 
       // Refresh activity during date range results display.
       activity_results_div.fadeOut('fast', function () {
-        $('#activity_results_total').html(total);
+        jQuery('#activity_results_total').html(total);
 
         // Refresh and re-populate results table.
         let table = activity_results_div.find('table');
@@ -175,7 +175,7 @@ function project_activity_during_date_range() {
 
           posts.forEach(function (post) {
             if (post['id'] && post['name'] && post['timestamp']) {
-              let post_url = dtMetricsProject.site_url + '/' + post['post_type'] + '/' + post['id'];
+              let post_url = window.dtMetricsProject.site_url + '/' + post['post_type'] + '/' + post['id'];
               let new_value = window.lodash.escape(post['new_value']);
 
               // Apply custom styling.
@@ -186,7 +186,7 @@ function project_activity_during_date_range() {
               tbody.append(`
                 <tr>
                     <td><a href="${post_url}" target="_blank">${window.lodash.escape(post['name'])}</a></td>
-                    <td>${window.lodash.escape(moment.unix(post['timestamp']).format('dddd, MMMM Do YYYY, h:mm:ss A'))}</td>
+                    <td>${window.lodash.escape(window.moment.unix(post['timestamp']).format('dddd, MMMM Do YYYY, h:mm:ss A'))}</td>
                     <td>${new_value}</td>
                 </tr>
               `);
@@ -211,7 +211,7 @@ function project_activity_during_date_range() {
 }
 
 function buildFieldSelectOptions() {
-    const unescapedOptions = Object.entries(dtMetricsProject.field_settings)
+    const unescapedOptions = Object.entries(window.dtMetricsProject.field_settings)
         .reduce((options, [ key, setting ]) => {
             options[key] = setting.name
             return options
@@ -234,13 +234,13 @@ function refreshFieldValueEntryElement() {
   entry_div.empty();
 
   // Determine field id to be refreshed.
-  let field_settings = dtMetricsProject.field_settings;
+  let field_settings = window.dtMetricsProject.field_settings;
   let field_id = jQuery('#post-field-select').val();
   if (field_id && field_settings[field_id]) {
 
     // Based on field type & associated defaults, determine html element style to be adopted.
     if (field_settings[field_id]['default'] && Object.keys(field_settings[field_id]['default']).length > 0) {
-      let options_html = `<option value="">[ ${window.lodash.escape(dtMetricsProject.translations['post_field_select_any_activity_label'])} ]</option>`;
+      let options_html = `<option value="">[ ${window.lodash.escape(window.dtMetricsProject.translations['post_field_select_any_activity_label'])} ]</option>`;
       Object.entries(field_settings[field_id]['default']).forEach(([key, option]) => {
         options_html += `<option value="${key}">${option['label']}</option>`;
       });
@@ -250,7 +250,7 @@ function refreshFieldValueEntryElement() {
 
       // Fetch html rendering for selected field.
       renderFieldHtml({
-        'post_type': $('#post-type-select').val(),
+        'post_type': jQuery('#post-type-select').val(),
         'field_id': field_id
       }).promise()
       .then((response) => {
@@ -283,7 +283,7 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
           searchOnFocus: true,
           maxItem: 20,
           template: window.TYPEAHEADS.contactListRowTemplate,
-          source: TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
+          source: window.TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
           display: ["name", "label"],
           templateValue: function () {
             if (this.items[this.items.length - 1].label) {
@@ -303,11 +303,11 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
           },
           callback: {
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
-              $(`#${field_id}-result-container`).html(text);
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
+              jQuery(`#${field_id}-result-container`).html(text);
             },
             onHideLayout: function () {
-              $(`#${field_id}-result-container`).html("");
+              jQuery(`#${field_id}-result-container`).html("");
             },
             onClick: function (node, a, item, event) {
               // Stop list from opening again
@@ -331,14 +331,14 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
           dropdownFilter: [{
             key: 'group',
             value: 'focus',
-            template: window.lodash.escape(dtMetricsProject['translations']['regions_of_focus']),
-            all: window.lodash.escape(dtMetricsProject['translations']['all_locations'])
+            template: window.lodash.escape(window.dtMetricsProject['translations']['regions_of_focus']),
+            all: window.lodash.escape(window.dtMetricsProject['translations']['all_locations'])
           }],
           source: {
             focus: {
               display: "name",
               ajax: {
-                url: dtMetricsProject['root'] + 'dt/v1/mapping_module/search_location_grid_by_name',
+                url: window.dtMetricsProject['root'] + 'dt/v1/mapping_module/search_location_grid_by_name',
                 data: {
                   s: "{{query}}",
                   filter: function () {
@@ -346,7 +346,7 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
                   }
                 },
                 beforeSend: function (xhr) {
-                  xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject['nonce']);
+                  xhr.setRequestHeader('X-WP-Nonce', window.dtMetricsProject['nonce']);
                 },
                 callback: {
                   done: function (data) {
@@ -375,12 +375,12 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
               this.filters.dropdown = {
                 key: "group",
                 value: "focus",
-                template: window.lodash.escape(dtMetricsProject['translations']['regions_of_focus'])
+                template: window.lodash.escape(window.dtMetricsProject['translations']['regions_of_focus'])
               };
               this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html(window.lodash.escape(dtMetricsProject['translations']['regions_of_focus']));
+              .html(window.lodash.escape(window.dtMetricsProject['translations']['regions_of_focus']));
             }
           }
         });
@@ -394,7 +394,7 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
         maxItem: 0,
         accent: true,
         searchOnFocus: true,
-        source: TYPEAHEADS.typeaheadUserSource(),
+        source: window.TYPEAHEADS.typeaheadUserSource(),
         templateValue: "{{name}}",
         template: function (query, item) {
           return `<div class="assigned-to-row" dir="auto">
@@ -416,11 +416,11 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
           onClick: function (node, a, item) {
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $(`#${field_id}-result-container`).html(text);
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            jQuery(`#${field_id}-result-container`).html(text);
           },
           onHideLayout: function () {
-            $(`.${field_id}-result-container`).html("");
+            jQuery(`.${field_id}-result-container`).html("");
           }
         }
       });
