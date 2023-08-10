@@ -24,7 +24,7 @@
   const { status_key, archived_key } = status_field ? status_field : {}
   const filterOutArchivedItemsKey = `-${archived_key}`
   const archivedSwitch = $('#archivedToggle')
-  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_from_local_storage( 'list_archived_switch_status', [], list_settings.post_type ) || false
+  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_from_local_storage( 'list_archived_switch_status', false, list_settings.post_type );
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
   const esc = window.lodash.escape
