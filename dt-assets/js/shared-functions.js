@@ -594,13 +594,25 @@ window.SHAREDFUNCTIONS = {
 
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
-  remove_json_cookie(cname, path = "") {
-    if (path) {
-      path = window.location.pathname.split(path)[0] + path;
-      path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
+  get_json_from_local_storage(key, default_val = {}, path) {
+    if ( path ){
+      key = path + '_' + key;
     }
-
-    document.cookie = `${cname}=;path=${path};expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    if ( localStorage ){
+      let json = localStorage.getItem(key);
+      try {
+        default_val = JSON.parse(json);
+      } catch (e) {}
+    }
+    return default_val;
+  },
+  save_json_to_local_storage(key, json, path) {
+    if ( path ){
+      key = path + '_' + key;
+    }
+    if ( localStorage ){
+      window.localStorage.setItem(key, JSON.stringify(json))
+    }
   },
   createCustomFilter(field, value) {
     return ({
