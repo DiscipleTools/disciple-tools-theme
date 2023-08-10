@@ -278,16 +278,10 @@ let mapbox_library_api = {
               cookie['color'] = layer_color;
               mapbox_library_api.map_query_layer_payloads[response.request.id] = cookie;
 
-              // Ensure payload query body is captured within cookie; to ensure it persists beyond browser refreshes.
-              let expires = moment().add(1, 'month').toDate().toUTCString();
-
               // Assign to main parent layers cookie.
-              let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
-              if (Array.isArray(dt_maps_layers_cookie)) {
-                dt_maps_layers_cookie = {};
-              }
+              let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id);
               dt_maps_layers_cookie['' + response.request.id] = cookie;
-              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
+              window.SHAREDFUNCTIONS.save_json_to_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, null);
 
               // Hide layer records add modal.
               $('#add_records_div').fadeOut('fast');
@@ -303,12 +297,11 @@ let mapbox_library_api = {
             mapbox_library_api.remove_map_record_layer(map_query_layer_payload.id);
 
             // Remove cookie.
-            let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
-            if (!Array.isArray(dt_maps_layers_cookie) && dt_maps_layers_cookie['' + map_query_layer_payload.id]) {
+            let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id);
+            if (dt_maps_layers_cookie['' + map_query_layer_payload.id]) {
               delete dt_maps_layers_cookie['' + map_query_layer_payload.id];
 
-              let expires = moment().add(1, 'month').toDate().toUTCString();
-              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
+              window.SHAREDFUNCTIONS.save_json_to_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, null);
             }
 
             // Remove from map memory.
@@ -360,13 +353,9 @@ let mapbox_library_api = {
             mapbox_library_api.refresh_display_records_button_icon(div_layer_id);
 
             // Update cookie, to ensure changes persist following refreshes.
-            let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
-            if (!Array.isArray(dt_maps_layers_cookie)) {
-              dt_maps_layers_cookie['' + div_layer_id] = layer_settings;
-
-              let expires = moment().add(1, 'month').toDate().toUTCString();
-              window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
-            }
+            let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id);
+            dt_maps_layers_cookie['' + div_layer_id] = layer_settings;
+            window.SHAREDFUNCTIONS.save_json_to_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, null);
           }
           break;
         }
@@ -419,12 +408,12 @@ let mapbox_library_api = {
   reload_record_layers: function (reload_data = true) {
 
     // Reload to be based on currently stored cookie settings.
-    let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id);
+    let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id);
 
     // Convert parent object to array of layer objects.
     let layer_cookies = [];
-    if (!Array.isArray(dt_maps_layers_cookie)) {
-      layer_cookies = Object.entries(dt_maps_layers_cookie).map(([k,v]) => v);
+    if (!Array.isArray(dt_maps_layers_cookie) && !window.lodash.isEmpty(dt_maps_layers_cookie)) {
+      layer_cookies = Object.entries(dt_maps_layers_cookie).map(([k, v]) => v);
     }
 
     // Default to showing all contacts if no cookies detected.
@@ -440,10 +429,9 @@ let mapbox_library_api = {
       layer_cookies.push(default_cookie);
 
       // Persist default cookie.
-      let expires = moment().add(1, 'month').toDate().toUTCString();
       dt_maps_layers_cookie = {};
       dt_maps_layers_cookie['' + default_cookie['id']] = default_cookie;
-      window.SHAREDFUNCTIONS.save_json_cookie(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, '');
+      window.SHAREDFUNCTIONS.save_json_to_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, null);
 
       // Force a reload.
       reload_data = true;
