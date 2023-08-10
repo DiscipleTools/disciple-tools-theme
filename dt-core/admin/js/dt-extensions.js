@@ -196,19 +196,19 @@ jQuery(function($){
     }
 
     window.API = {
-        plugin_install: (download_url) => window.makeRequest("POST", `plugin-install`, {
+        plugin_install: (download_url) => makeRequest("POST", `plugin-install`, {
                 download_url: download_url
             }, `dt-admin-settings/`),
 
-        plugin_delete: (plugin_slug) => window.makeRequest("POST", `plugin-delete`, {
+        plugin_delete: (plugin_slug) => makeRequest("POST", `plugin-delete`, {
             plugin_slug: plugin_slug
         }, `dt-admin-settings/`),
 
-        plugin_activate: (plugin_slug) => window.makeRequest("POST", `plugin-activate`, {
+        plugin_activate: (plugin_slug) => makeRequest("POST", `plugin-activate`, {
                 plugin_slug: plugin_slug
             }, `dt-admin-settings/`),
 
-        plugin_deactivate: (plugin_slug) => window.makeRequest("POST", `plugin-deactivate`, {
+        plugin_deactivate: (plugin_slug) => makeRequest("POST", `plugin-deactivate`, {
                 plugin_slug: plugin_slug
             }, `dt-admin-settings/`),
     }
