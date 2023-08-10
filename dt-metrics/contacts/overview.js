@@ -10,8 +10,8 @@ jQuery(document).ready(function() {
     chart.empty().html(spinner)
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
 
-    let sourceData = dtMetricsProject.data
-    let translations = dtMetricsProject.data.translations
+    let sourceData = window.dtMetricsProject.data
+    let translations = window.dtMetricsProject.data.translations
 
     chart.empty().html(`
         <div class="cell center">
@@ -57,25 +57,25 @@ jQuery(document).ready(function() {
     draw_status_pie_chart()
 
     function drawMyContactsProgress() {
-      let chart = am4core.create("my_contacts_progress", am4charts.XYChart)
+      let chart = window.am4core.create("my_contacts_progress", window.am4charts.XYChart)
       let title = chart.titles.create()
       title.text = `[bold]${window.dtMetricsProject.data.translations.label_follow_up_progress}[/]`
       chart.data = sourceData.contacts_progress.reverse()
-      let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+      let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "label";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
 
-      let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+      let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
       valueAxis.title.text = "Number of contacts"
 
-      let series = chart.series.push(new am4charts.ColumnSeries());
+      let series = chart.series.push(new window.am4charts.ColumnSeries());
       series.dataFields.valueX = "value";
       series.dataFields.categoryY = "label";
       series.columns.template.tooltipText = "Total: [bold]{valueX}[/]";
 
       // field value label
-      let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+      let valueLabel = series.bullets.push(new window.am4charts.LabelBullet());
       valueLabel.label.text = "{valueX}";
       valueLabel.label.horizontalCenter = "left";
       valueLabel.label.dx = 10;
@@ -86,22 +86,22 @@ jQuery(document).ready(function() {
 
     function draw_status_pie_chart() {
       let contact_statuses = sourceData.contact_statuses
-      am4core.useTheme(am4themes_animated);
+      window.am4core.useTheme(window.am4themes_animated);
 
-      let container = am4core.create("status_chart_div", am4core.Container);
-      container.width = am4core.percent(100);
-      container.height = am4core.percent(100);
+      let container = window.am4core.create("status_chart_div", window.am4core.Container);
+      container.width = window.am4core.percent(100);
+      container.height = window.am4core.percent(100);
       container.layout = "horizontal";
 
 
-      let chart = container.createChild(am4charts.PieChart);
+      let chart = container.createChild(window.am4charts.PieChart);
       let title = chart.titles.create()
       title.text = `[bold]${window.dtMetricsProject.data.translations.title_status_chart}[/]`
       // Add data
       chart.data = contact_statuses
 
       // Add and configure Series
-      let pieSeries = chart.series.push(new am4charts.PieSeries());
+      let pieSeries = chart.series.push(new window.am4charts.PieSeries());
       pieSeries.dataFields.value = "count";
       pieSeries.dataFields.category = "status";
       pieSeries.slices.template.states.getKey("active").properties.shiftRadius = 0;
@@ -111,12 +111,12 @@ jQuery(document).ready(function() {
         selectSlice(event.target.dataItem);
       })
 
-      let chart2 = container.createChild(am4charts.PieChart);
-      chart2.width = am4core.percent(30);
-      chart2.radius = am4core.percent(80);
+      let chart2 = container.createChild(window.am4charts.PieChart);
+      chart2.width = window.am4core.percent(30);
+      chart2.radius = window.am4core.percent(80);
 
       // Add and configure Series
-      let pieSeries2 = chart2.series.push(new am4charts.PieSeries());
+      let pieSeries2 = chart2.series.push(new window.am4charts.PieSeries());
       pieSeries2.dataFields.value = "count";
       pieSeries2.dataFields.category = "reason";
       pieSeries2.slices.template.states.getKey("active").properties.shiftRadius = 0;
@@ -125,15 +125,15 @@ jQuery(document).ready(function() {
       pieSeries2.alignLabels = false;
       pieSeries2.events.on("positionchanged", updateLines);
 
-      let interfaceColors = new am4core.InterfaceColorSet();
+      let interfaceColors = new window.am4core.InterfaceColorSet();
 
-      let line1 = container.createChild(am4core.Line);
+      let line1 = container.createChild(window.am4core.Line);
       line1.strokeDasharray = "2,2";
       line1.strokeOpacity = 0.5;
       line1.stroke = interfaceColors.getFor("alternativeBackground");
       line1.isMeasured = false;
 
-      let line2 = container.createChild(am4core.Line);
+      let line2 = container.createChild(window.am4core.Line);
       line2.strokeDasharray = "2,2";
       line2.strokeOpacity = 0.5;
       line2.stroke = interfaceColors.getFor("alternativeBackground");
@@ -157,7 +157,7 @@ jQuery(document).ready(function() {
         let animation = pieSeries.animate([{
           property: "startAngle",
           to: firstAngle - middleAngle
-        }, {property: "endAngle", to: firstAngle - middleAngle + 360}], 600, am4core.ease.sinOut);
+        }, {property: "endAngle", to: firstAngle - middleAngle + 360}], 600, window.am4core.ease.sinOut);
         animation.events.on("animationprogress", updateLines);
 
         selectedSlice.events.on("transformed", updateLines);
@@ -167,22 +167,22 @@ jQuery(document).ready(function() {
       function updateLines() {
         if (selectedSlice) {
           let p11 = {
-            x: selectedSlice.radius * am4core.math.cos(selectedSlice.startAngle),
-            y: selectedSlice.radius * am4core.math.sin(selectedSlice.startAngle)
+            x: selectedSlice.radius * window.am4core.math.cos(selectedSlice.startAngle),
+            y: selectedSlice.radius * window.am4core.math.sin(selectedSlice.startAngle)
           };
           let p12 = {
-            x: selectedSlice.radius * am4core.math.cos(selectedSlice.startAngle + selectedSlice.arc),
-            y: selectedSlice.radius * am4core.math.sin(selectedSlice.startAngle + selectedSlice.arc)
+            x: selectedSlice.radius * window.am4core.math.cos(selectedSlice.startAngle + selectedSlice.arc),
+            y: selectedSlice.radius * window.am4core.math.sin(selectedSlice.startAngle + selectedSlice.arc)
           };
 
-          p11 = am4core.utils.spritePointToSvg(p11, selectedSlice);
-          p12 = am4core.utils.spritePointToSvg(p12, selectedSlice);
+          p11 = window.am4core.utils.spritePointToSvg(p11, selectedSlice);
+          p12 = window.am4core.utils.spritePointToSvg(p12, selectedSlice);
 
           let p21 = {x: 0, y: -pieSeries2.pixelRadius};
           let p22 = {x: 0, y: pieSeries2.pixelRadius};
 
-          p21 = am4core.utils.spritePointToSvg(p21, pieSeries2);
-          p22 = am4core.utils.spritePointToSvg(p22, pieSeries2);
+          p21 = window.am4core.utils.spritePointToSvg(p21, pieSeries2);
+          p22 = window.am4core.utils.spritePointToSvg(p22, pieSeries2);
 
           line1.x1 = p11.x;
           line1.x2 = p21.x;
@@ -198,7 +198,7 @@ jQuery(document).ready(function() {
 
     }
 
-    new Foundation.Reveal(jQuery('#dt-project-legend'));
+    new window.Foundation.Reveal(jQuery('#dt-project-legend'));
   }
 })
 

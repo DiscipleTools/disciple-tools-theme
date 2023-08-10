@@ -71,7 +71,7 @@ let mapbox_library_api = {
         </div>
       </div>
     `)
-    this.spinner = $("#spinner")
+    this.spinner = jQuery("#spinner")
 
     //set_info_boxes
     let map_wrapper = jQuery('#map-wrapper')
@@ -83,10 +83,10 @@ let mapbox_library_api = {
     mapbox_library_api.setup_map_type()
 
 
-    $('#map-type button').on('click', function (e){
-      $('#map-type button').removeClass("selected-select-button").addClass("empty-select-button")
-      $(this).addClass("selected-select-button")
-      mapbox_library_api.current_map_type = $(this).attr('id');
+    jQuery('#map-type button').on('click', function (e){
+      jQuery('#map-type button').removeClass("selected-select-button").addClass("empty-select-button")
+      jQuery(this).addClass("selected-select-button")
+      mapbox_library_api.current_map_type = jQuery(this).attr('id');
       mapbox_library_api.setup_map_type()
     })
 
@@ -105,15 +105,15 @@ let mapbox_library_api = {
             ${options_html}
           </div>
         `
-        $('#legend-bar').append(split_by_html)
-        $(`#${field_key} button`).on('click', function (e){
-          $(this).toggleClass("selected-select-button")
-          $(this).toggleClass("empty-select-button")
+        jQuery('#legend-bar').append(split_by_html)
+        jQuery(`#${field_key} button`).on('click', function (e){
+          jQuery(this).toggleClass("selected-select-button")
+          jQuery(this).toggleClass("empty-select-button")
 
           let ar = [];
-          $(`#${field_key} button`).each((index, button)=>{
-            if ( !$(button).hasClass("empty-select-button")){
-              ar.push($(button).data('key'))
+          jQuery(`#${field_key} button`).each((index, button)=>{
+            if ( !jQuery(button).hasClass("empty-select-button")){
+              ar.push(jQuery(button).data('key'))
             }
           })
           let query = { [field_key]: ar}
@@ -139,15 +139,15 @@ let mapbox_library_api = {
     });
     // SET BOUNDS
     let map_bounds_token = this.obj.settings.post_type + this.obj.settings.menu_slug
-    let map_start = get_map_start( map_bounds_token )
+    let map_start = window.get_map_start( map_bounds_token )
     if ( map_start ) {
       mapbox_library_api.map.fitBounds( map_start, {duration: 0});
     }
     mapbox_library_api.map.on('zoomend', function() {
-      set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
+      window.set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
     })
     mapbox_library_api.map.on('dragend', function() {
-      set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
+      window.set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
     })
     // end set bounds
     // disable map rotation using right click + drag
@@ -196,7 +196,7 @@ let mapbox_library_api = {
 
   points_map: {
     setup: async function () {
-      let points = await makeRequest('POST', mapbox_library_api.obj.settings.points_rest_url, {
+      let points = await window.makeRequest('POST', mapbox_library_api.obj.settings.points_rest_url, {
         post_type: mapbox_library_api.post_type,
         query: mapbox_library_api.query_args || {}
       }, mapbox_library_api.obj.settings.rest_base_url)
@@ -253,7 +253,7 @@ let mapbox_library_api = {
         let post_id = e.features[i].properties.post_id;
         let post_type = e.features[i].properties.post_type
         content.append(`<div class="grid-x" id="list-${window.lodash.escape( i )}"></div>`)
-        makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
+        window.makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
         .done(details=>{
           list[i] = jQuery('#list-'+i)
 
@@ -287,7 +287,7 @@ jQuery('.close-details').on('click', function() {
 
 let cluster_map = {
   default_setup: async function (){
-    let geojson = await makeRequest( "POST", mapbox_library_api.obj.settings.rest_url, { post_type: mapbox_library_api.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
+    let geojson = await window.makeRequest( "POST", mapbox_library_api.obj.settings.rest_url, { post_type: mapbox_library_api.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
     cluster_map.load_layer(geojson)
   },
   load_layer: function ( geojson ) {
@@ -393,7 +393,7 @@ let cluster_map = {
       let post_id = e.features[i].properties.post_id;
       let post_type = e.features[i].properties.post_type
       content.append(`<div class="grid-x" id="list-${window.lodash.escape( i )}"></div>`)
-      makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
+      window.makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
       .done(details=>{
         list[i] = jQuery('#list-'+i)
         list[i].append(`
@@ -411,7 +411,7 @@ let area_map = {
   behind_layer: null,
   setup: async function ( behind_layer = null ){
     area_map.behind_layer = behind_layer
-    area_map.grid_data = await makeRequest( "POST", mapbox_library_api.obj.settings.totals_rest_url, { post_type: mapbox_library_api.obj.settings.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
+    area_map.grid_data = await window.makeRequest( "POST", mapbox_library_api.obj.settings.totals_rest_url, { post_type: mapbox_library_api.obj.settings.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
     await area_map.load_layer()
     // load new layer on event
     mapbox_library_api.map.on('zoomend', function() {
@@ -441,7 +441,7 @@ let area_map = {
 
     let data = [{ grid_id:'1', parent_id:'1'}]
     if ( level !== "world" ){
-      data = await makeRequest('GET', `${mapbox_library_api.obj.settings.geocoder_url}dt-mapping/location-grid-list-api.php`,
+      data = await window.makeRequest('GET', `${mapbox_library_api.obj.settings.geocoder_url}dt-mapping/location-grid-list-api.php`,
         {
           type: 'match_within_bbox',
           north_latitude: bbox._ne.lat,
@@ -540,7 +540,7 @@ let area_map = {
     jQuery('#geocode-details').show()
 
     // geocode
-    makeRequest('GET', mapbox_library_api.obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php',
+    window.makeRequest('GET', mapbox_library_api.obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php',
       {
         type:'geocode',
         longitude:lng,
@@ -597,7 +597,7 @@ let area_map = {
 
       if ( details.admin2_grid_id !== null ) {
         jQuery('#admin2_list').html( spinner_html )
-        makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin2_grid_id, post_type: mapbox_library_api.post_type,
+        window.makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin2_grid_id, post_type: mapbox_library_api.post_type,
           query: mapbox_library_api.query_args || {} } , mapbox_library_api.obj.settings.rest_base_url )
         .done(list_by_grid=>{
           if ( list_by_grid.length > 0 ) {
@@ -608,7 +608,7 @@ let area_map = {
         })
       } else if ( details.admin1_grid_id !== null ) {
         jQuery('#admin1_list').html( spinner_html )
-        makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin1_grid_id, post_type: mapbox_library_api.post_type,
+        window.makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin1_grid_id, post_type: mapbox_library_api.post_type,
           query: mapbox_library_api.query_args || {} } , mapbox_library_api.obj.settings.rest_base_url )
         .done(list_by_grid=>{
           if ( list_by_grid.length > 0 ) {
@@ -619,7 +619,7 @@ let area_map = {
         })
       } else if ( details.admin0_grid_id !== null ) {
         jQuery('#admin0_list').html( spinner_html )
-        makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin0_grid_id, post_type: mapbox_library_api.post_type,
+        window.makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin0_grid_id, post_type: mapbox_library_api.post_type,
           query: mapbox_library_api.query_args || {} } , mapbox_library_api.obj.settings.rest_base_url )
         .done(list_by_grid=>{
           if ( list_by_grid.length > 0 ) {

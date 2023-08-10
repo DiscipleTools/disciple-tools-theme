@@ -12,8 +12,8 @@ jQuery(document).ready(function($) {
     let numberIndicator = $(`span.${fieldKey}`)
     let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
     data[fieldKey] = newNumber
-    API.update_post('contacts', post_id, data).then(()=>{
-      record_updated(false)
+    window.API.update_post('contacts', post_id, data).then(()=>{
+      window.record_updated(false)
     })
     .catch(err=>{
       console.log("error")
@@ -31,11 +31,11 @@ jQuery(document).ready(function($) {
     constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.update_post('contacts', post_id, { baptism_date: date }).then((resp)=>{
+      window.API.update_post('contacts', post_id, { baptism_date: date }).then((resp)=>{
         if (this.value) {
           this.value = window.SHAREDFUNCTIONS.formatDate(resp["baptism_date"]["timestamp"]);
         }
-      }).catch(handleAjaxError)
+      }).catch(window.handleAjaxError)
     },
     changeMonth: true,
     changeYear: true,
@@ -50,7 +50,7 @@ jQuery(document).ready(function($) {
           minLength: 0,
           accent: true,
           searchOnFocus: true,
-          source: TYPEAHEADS.typeaheadContactsSource(),
+          source: window.TYPEAHEADS.typeaheadContactsSource(),
           templateValue: "{{name}}",
           template: window.TYPEAHEADS.contactListRowTemplate,
           matcher: function (item) {
@@ -67,7 +67,7 @@ jQuery(document).ready(function($) {
               })
             }, callback: {
               onCancel: function (node, item) {
-                API.update_post('contacts', post_id, {"baptized_by": {values:[{value:item.ID, delete:true}]}})
+                window.API.update_post('contacts', post_id, {"baptized_by": {values:[{value:item.ID, delete:true}]}})
                 .catch(err => { console.error(err) })
               }
             },
@@ -75,7 +75,7 @@ jQuery(document).ready(function($) {
           },
           callback: {
             onClick: function (node, a, item) {
-              API.update_post('contacts', post_id, {"baptized_by": {values:[{"value":item.ID}]}})
+              window.API.update_post('contacts', post_id, {"baptized_by": {values:[{"value":item.ID}]}})
               .catch(err => { console.error(err) })
               this.addMultiselectItemLayout(item)
               event.preventDefault()
@@ -83,7 +83,7 @@ jQuery(document).ready(function($) {
               this.resetInput();
             },
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $('#modal_baptized_by-result-container').html(text);
             },
             onHideLayout: function () {
@@ -93,7 +93,7 @@ jQuery(document).ready(function($) {
         });
       }
       if ( window.lodash.get(newContact, "baptism_date.timestamp", 0) > 0){
-        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
+        modalBaptismDatePicker.datepicker('setDate', window.moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"));
         modalBaptismDatePicker.val(window.SHAREDFUNCTIONS.formatDate(newContact['baptism_date']["timestamp"]) )
       }
     }

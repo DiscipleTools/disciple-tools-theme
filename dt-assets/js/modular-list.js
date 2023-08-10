@@ -16,7 +16,7 @@
   let table_header_row = $('.js-list thead .sortable th')
   let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
   let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
-  let current_user_id = wpApiNotifications.current_user_id;
+  let current_user_id = window.wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
   let getFilterCountsPromise = null
@@ -71,7 +71,6 @@
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
 
-    console.log('getting current filter')
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
@@ -209,7 +208,7 @@
 
   // Collapse filter tile for mobile view
   function collapse_filters() {
-    if (Foundation.MediaQuery.only("small")) {
+    if (window.Foundation.MediaQuery.only("small")) {
       $('#list-filters .bordered-box').addClass('collapsed')
     } else {
       $('#list-filters .bordered-box').removeClass('collapsed')
@@ -539,7 +538,7 @@
         )
       )
     })
-    new Foundation.Accordion(filter_accordions, {
+    new window.Foundation.Accordion(filter_accordions, {
       slideSpeed: 100,
       allowAllClosed: true
     });
@@ -1057,17 +1056,17 @@
           } else if (withoutConnections.prop('checked') === true) {
             search_query.push( { [field] : [ALL_WITHOUT_ID] } )
           } else {
-            search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
+            search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
           }
         }
       if ( type === "user_select" ){
-        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
       } else if ( type === "multi_select" ){
-        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
       } else if ( type === "tags" ){
-        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
       } else if ( type === "location" || type === "location_meta" ){
-        search_query.push({'location_grid': adjust_search_query_filter_states('location_grid', type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID'))});
+        search_query.push({'location_grid': adjust_search_query_filter_states('location_grid', type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), 'ID'))});
       } else if ( type === "date" ) {
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
@@ -1374,7 +1373,7 @@
             new_filter_labels.push(newLabel)
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $(`#${field}-result-container`).html(text);
           },
           onHideLayout: function () {
@@ -1399,7 +1398,7 @@
           template: function (query, item) {
             return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
           },
-          source: TYPEAHEADS.typeaheadPostsSource(post_type),
+          source: window.TYPEAHEADS.typeaheadPostsSource(post_type),
           display: "name",
           templateValue: "{{name}}",
           dynamic: true,
@@ -1414,7 +1413,7 @@
           },
           callback: {
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $(`#${field_key}-result-container`).html(text);
             },
             onHideLayout: function () {
@@ -1458,7 +1457,7 @@
           template: function (query, item) {
             return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
           },
-          source: TYPEAHEADS.typeaheadUserSource(),
+          source: window.TYPEAHEADS.typeaheadUserSource(),
           display: "name",
           templateValue: "{{name}}",
           dynamic: true,
@@ -1474,7 +1473,7 @@
           },
           callback: {
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $(`#${field_key}-result-container`).html(text);
             },
             onHideLayout: function () {
@@ -1535,8 +1534,8 @@
                 },
                 callback: {
                   done: function (data) {
-                    if (typeof typeaheadTotals!=="undefined") {
-                      typeaheadTotals.field = data.total
+                    if (typeof window.typeaheadTotals!=="undefined") {
+                      window.typeaheadTotals.field = data.total
                     }
                     return data.location_grid
                   }
@@ -1559,7 +1558,7 @@
           },
           callback: {
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $('#location_grid-result-container').html(text);
             },
             onReady() {
@@ -1614,7 +1613,7 @@
     })
     selected_filters.empty();
     $(".typeahead__query input").each(function () {
-      let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
+      let typeahead = window.Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
       if ( typeahead && typeahead.items ){
         for (let i = 0; i < typeahead.items.length; i ){
           typeahead.cancelMultiselectItem(0)
@@ -1677,14 +1676,14 @@
             $(fieldAllConnectionsElement).prop('checked', true)
             boundAllConnectionsClickHandler()
           } else {
-            Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
+            window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
           }
         } else if ( type === "multi_select" ){
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+          window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
         } else if ( type === "tags" ){
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
+          window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
         } else if ( type === "user_select" ){
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
+          window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
       })
       // moved this below the forEach as the global new_filter_labels was messing with the loop.
@@ -1706,7 +1705,7 @@
     $(`.filter-list-name[data-filter="${filter_id}"]`).text(filter.name)
     filter.query = search_query
     filter.labels = new_filter_labels
-    API.save_filters( list_settings.post_type, filter )
+    window.API.save_filters( list_settings.post_type, filter )
     get_records_for_current_filter()
   })
 
@@ -1714,8 +1713,8 @@
     let field = $(b).data("field")
     $(`.tabs-panel`).removeClass('is-active')
     $(`#${field}.tabs-panel`).addClass('is-active')
-    if (field && Typeahead[`.js-typeahead-${field}`]) {
-      Typeahead[`.js-typeahead-${field}`].adjustInputSize()
+    if (field && window.Typeahead[`.js-typeahead-${field}`]) {
+      window.Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
   })
 
@@ -1788,7 +1787,7 @@
     filter.tab = 'custom'
     if (filter.query){
       list_settings.filters.filters.push(filter)
-      API.save_filters(list_settings.post_type, filter).then(()=>{
+      window.API.save_filters(list_settings.post_type, filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filter_to_save}`).remove()
         setup_filters()
         let active_tab = $('.accordion-item.is-active ').data('id');
@@ -1810,7 +1809,7 @@
     let filter = window.lodash.find(list_settings.filters.filters, {ID:filter_to_delete})
     if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
       filter.visible = false;
-      API.save_filters(list_settings.post_type,filter).then(()=>{
+      window.API.save_filters(list_settings.post_type,filter).then(()=>{
         window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
@@ -1818,7 +1817,7 @@
         console.error(err)
       })
     } else {
-      API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
+      window.API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
         window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         check_first_filter()
@@ -1978,7 +1977,7 @@
       } else {
         favoritedValue = true;
       }
-      API.update_post(list_settings.post_type, post_id, {'favorite': favoritedValue}).then((new_post) => {
+      window.API.update_post(list_settings.post_type, post_id, {'favorite': favoritedValue}).then((new_post) => {
         $(this).toggleClass('selected');
       })
     })
@@ -2215,16 +2214,16 @@
     switch (event_type) {
       case 'update': {
         if (Object.keys(update).length) {
-          promises.push(API.update_post(list_settings.post_type, item, update).catch(err => {
+          promises.push(window.API.update_post(list_settings.post_type, item, update).catch(err => {
             console.error(err);
           }));
         }
 
         if (share && share['users']) {
           share['users'].forEach(function (value) {
-            let promise = share['unshare'] ? API.remove_shared(list_settings.post_type, item, value).catch(err => {
+            let promise = share['unshare'] ? window.API.remove_shared(list_settings.post_type, item, value).catch(err => {
               console.error(err)
-            }) : API.add_shared(list_settings.post_type, item, value).catch(err => {
+            }) : window.API.add_shared(list_settings.post_type, item, value).catch(err => {
               console.error(err)
             });
             promises.push(promise);
@@ -2232,7 +2231,7 @@
         }
 
         if (comment.commentText) {
-          promises.push(API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
+          promises.push(window.API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
             console.error(err);
           }));
         }
@@ -2241,7 +2240,7 @@
       }
       case 'delete': {
         if (list_settings.permissions.delete_any) {
-          promises.push(API.delete_post(list_settings.post_type, item).catch(err => {
+          promises.push(window.API.delete_post(list_settings.post_type, item).catch(err => {
             console.error(err);
           }));
         }
@@ -2267,7 +2266,7 @@
       maxItem: 0,
       accent: true,
       searchOnFocus: true,
-      source: TYPEAHEADS.typeaheadUserSource(),
+      source: window.TYPEAHEADS.typeaheadUserSource(),
       templateValue: "{{name}}",
       template: function (query, item) {
         return `<div class="assigned-to-row" dir="auto">
@@ -2290,7 +2289,7 @@
           node.data('bulk_key_assigned_to', `user-${item.ID}`);
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $('#bulk_assigned_to-result-container').html(text);
         },
         onHideLayout: function () {
@@ -2311,7 +2310,7 @@
     maxItem: 0,
     accent: true,
     searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadUserSource(),
+    source: window.TYPEAHEADS.typeaheadUserSource(),
     templateValue: "{{name}}",
     dynamic: true,
     multiselect: {
@@ -2396,7 +2395,7 @@
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $(`#${element_id}-result-container`).html(text);
           },
           onHideLayout: function (event, query) {
@@ -2442,8 +2441,8 @@
             },
             callback: {
               done: function (data) {
-                if (typeof typeaheadTotals!=="undefined") {
-                  typeaheadTotals.field = data.total
+                if (typeof window.typeaheadTotals!=="undefined") {
+                  window.typeaheadTotals.field = data.total
                 }
                 return data.location_grid
               }
@@ -2481,7 +2480,7 @@
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $('#location_grid-result-container').html(text);
         },
         onHideLayout: function () {
@@ -2550,7 +2549,7 @@
           this.resetInput();
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -2595,7 +2594,7 @@
         date = " ";//null;
       }
 
-      let formattedDate = moment.utc(date).unix();
+      let formattedDate = window.moment.utc(date).unix();
 
       let field_key = this.id.replace('bulk_', '')
       $(this).data(`bulk_key_${field_key}`, formattedDate);
@@ -2604,7 +2603,7 @@
     changeYear: true,
     yearRange: "1900:2050",
   }).each(function() {
-    if (this.value && moment.unix(this.value).isValid()) {
+    if (this.value && window.moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
     }
   })
@@ -2713,7 +2712,7 @@
 
     $('#bulk_send_app_submit-spinner').addClass('active')
 
-    makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
+    window.makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
       .done( data => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
         $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)

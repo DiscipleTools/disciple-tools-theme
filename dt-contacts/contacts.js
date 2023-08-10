@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
       minLength: 0,
       accent: true,
       searchOnFocus: true,
-      source: TYPEAHEADS.typeaheadUserSource(),
+      source: window.TYPEAHEADS.typeaheadUserSource(),
       templateValue: "{{name}}",
       template: function (query, item) {
         return `<span class="row">
@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
           })
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $('#user-select-result-container').html(text);
         },
         onHideLayout: function () {
@@ -209,14 +209,14 @@ jQuery(document).ready(function($) {
 
   $(document).on( "click", ".dismiss-duplicate", function () {
     let id = $(this).data('id');
-    makeRequestOnPosts('POST', `${post_type}/${post_id}/dismiss-duplicates`, {'id':id}).then(resp=>{
+    window.makeRequestOnPosts('POST', `${post_type}/${post_id}/dismiss-duplicates`, {'id':id}).then(resp=>{
       post.duplicate_data = resp;
       loadDuplicates();
       adjust_duplicates_detected_notice_display(post.ID);
     })
   })
   $('#dismiss_all_duplicates').on( 'click', function () {
-    makeRequestOnPosts('POST', `${post_type}/${post.ID}/dismiss-duplicates`, {'id':'all'}).then(resp=> {
+    window.makeRequestOnPosts('POST', `${post_type}/${post.ID}/dismiss-duplicates`, {'id':'all'}).then(resp=> {
       post.duplicate_data = resp;
       loadDuplicates();
       adjust_duplicates_detected_notice_display(post.ID);
@@ -246,7 +246,7 @@ jQuery(document).ready(function($) {
     if ( ! siteId ) {
       return;
     }
-    API.transfer_contact( post_id, siteId )
+    window.API.transfer_contact( post_id, siteId )
     .then(data=>{
       if ( data ) {
         location.reload();
@@ -254,7 +254,7 @@ jQuery(document).ready(function($) {
     }).catch(err=>{
       console.error(err)
       // try a second time.
-      API.transfer_contact( post_id, siteId )
+      window.API.transfer_contact( post_id, siteId )
       .then(data=>{
         if ( data ) {
           location.reload();
@@ -280,7 +280,7 @@ jQuery(document).ready(function($) {
       return;
     }
 
-    API.transfer_contact_summary_update(post_id, update)
+    window.API.transfer_contact_summary_update(post_id, update)
       .then(data => {
         $(this).removeClass('loading');
         transfer_contact_summary_update_results(data);
@@ -288,7 +288,7 @@ jQuery(document).ready(function($) {
       }).catch(err => {
       console.error(err)
       // try a second time.
-      API.transfer_contact_summary_update(post_id, update)
+      window.API.transfer_contact_summary_update(post_id, update)
         .then(data => {
           $(this).removeClass('loading');
           transfer_contact_summary_update_results(data);

@@ -69,7 +69,7 @@ jQuery(document).ready(function ($) {
     if (parent_form && icon_input) {
 
       // Build media uploader modal
-      let mediaFrame = wp.media({
+      let mediaFrame = window.wp.media({
 
         // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
         // Determines what kind of library should be rendered.

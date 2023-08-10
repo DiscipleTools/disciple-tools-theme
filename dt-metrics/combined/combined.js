@@ -3,29 +3,30 @@ jQuery(document).ready(function($) {
 
   //over-ride points setup so we can load 2 layers.
   window.mapbox_library_api.points_map.setup = async function (){
-    let contact_points = await makeRequest('POST', mapbox_library_api.obj.settings.points_rest_url, {
+    let contact_points = await window.makeRequest('POST', window. mapbox_library_api.obj.settings.points_rest_url, {
       post_type: "contacts",
       query: []
-    }, mapbox_library_api.obj.settings.rest_base_url)
-    let group_points = await makeRequest('POST', mapbox_library_api.obj.settings.points_rest_url, {
+    }, window. mapbox_library_api.obj.settings.rest_base_url)
+    let group_points = await window.makeRequest('POST', window. mapbox_library_api.obj.settings.points_rest_url, {
       post_type: "groups",
       query: []
-    }, mapbox_library_api.obj.settings.rest_base_url)
+    }, window. mapbox_library_api.obj.settings.rest_base_url)
 
     window.mapbox_library_api.area_map.setup = async function (){
-      area_map.grid_data = await makeRequest( "POST", mapbox_library_api.obj.settings.totals_rest_url, { post_type: mapbox_library_api.obj.settings.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
+      let area_map = window.mapbox_library_api.area_map
+      area_map.grid_data = await window.makeRequest( "POST", window. mapbox_library_api.obj.settings.totals_rest_url, { post_type: window. mapbox_library_api.obj.settings.post_type, query: window. mapbox_library_api.query_args || {}} , window. mapbox_library_api.obj.settings.rest_base_url )
       await area_map.load_layer()
       // load new layer on event
-      mapbox_library_api.map.on('zoomend', function() {
+      window. mapbox_library_api.map.on('zoomend', function() {
         area_map.load_layer()
       })
-      mapbox_library_api.map.on('dragend', function() {
+      window. mapbox_library_api.map.on('dragend', function() {
         area_map.load_layer()
       })
-      mapbox_library_api.map.on('click', function( e ) {
+      window. mapbox_library_api.map.on('click', function( e ) {
         // this section increments up the result on level because
         // it corresponds better to the viewable user intent for details
-        let level = mapbox_library_api.get_level()
+        let level = window. mapbox_library_api.get_level()
         area_map.load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
       })
     }

@@ -134,7 +134,7 @@ class DT_Magic_URL_Setup {
                         $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').addClass('active')
                         let email = $('.email.<?php echo esc_attr( $meta_key ); ?>').val();
                         let note = $('.note.<?php echo esc_attr( $meta_key ); ?>').val();
-                        makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', email: email, note: note, post_ids: [ window.detailsSettings.post_id ] } )
+                        window.makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', email: email, note: note, post_ids: [ window.detailsSettings.post_id ] } )
                         .done( data => {
                             $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').removeClass('active')
                             $('#modal-small').foundation('close')

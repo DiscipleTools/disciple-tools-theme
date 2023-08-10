@@ -11,9 +11,9 @@ function makeRequest(type, url, data, base = "dt/v1/") {
     type: type,
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: url.startsWith("http") ? url : `${field_settings.root}${base}${url}`,
+    url: url.startsWith("http") ? url : `${window.field_settings.root}${base}${url}`,
     beforeSend: (xhr) => {
-      xhr.setRequestHeader("X-WP-Nonce", field_settings.nonce);
+      xhr.setRequestHeader("X-WP-Nonce", window.field_settings.nonce);
     },
   };
 
@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
         $.each(field_options, function(option_index, option_element) {
           sortable_field_options_ordering.push(option_element.dataset['fieldOptionKey']);
         });
-        API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
+        window.API.update_field_options_order(post_type, field_key, sortable_field_options_ordering).promise().then(function(new_order){
           let old_order = all_settings.post_type_settings.fields[field_key]['default'];
           all_settings.post_type_settings.fields[field_key]['default'] = order_field_option_keys_by_array(old_order, new_order);
 
@@ -226,7 +226,7 @@ jQuery(document).ready(function($) {
         return;
       }
       let dt_custom_tiles_and_fields_ordered = get_dt_custom_tiles_and_fields_ordered();
-      API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
+      window.API.update_tile_and_fields_order(post_type, dt_custom_tiles_and_fields_ordered).promise().then(function(result) {
         if ( result[post_type][tile_key] ) {
           window.field_settings.post_type_settings.tiles[tile_key].order = result[post_type][tile_key]['order'];
         }
@@ -690,7 +690,7 @@ jQuery(document).ready(function($) {
       description_translations_count = Object.values(all_settings['post_type_tiles'][tile_key]['description_translations']).filter(function(t) {return t;}).length;
     }
 
-    API.get_tile(post_type, tile_key).promise().then(function(data) {
+    window.API.get_tile(post_type, tile_key).promise().then(function(data) {
       let tile_description = '';
       if ( data['description'] ) {
         tile_description = data['description'];
@@ -844,7 +844,7 @@ jQuery(document).ready(function($) {
   dt_overlay_form.on('click', '#delete-tile-confirmation-confirm', function(e) {
     let post_type = get_post_type();
     let tile_key = $(this).data('tile-key');
-    API.delete_tile(post_type, tile_key).promise().then(function() {
+    window.API.delete_tile(post_type, tile_key).promise().then(function() {
       let tile_submenu = $(`div.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
       closeModal();
       if (tile_submenu.is(':visible')) {
@@ -880,7 +880,7 @@ jQuery(document).ready(function($) {
   dt_overlay_form.on('click', '#delete-field-confirmation-confirm', function(e) {
     let post_type = get_post_type();
     let field_key = $(this).data('field-key');
-    API.delete_field(post_type, field_key).promise().then(function() {
+    window.API.delete_field(post_type, field_key).promise().then(function() {
       closeModal();
       let field_element = $(`.sortable-field[data-key="${field_key}"]`);
       field_element.css('background', '#e14d43');
@@ -895,7 +895,7 @@ jQuery(document).ready(function($) {
     let post_type = get_post_type();
     let field_key = $(this).data('field-key');
     let field_option_key = $(this).data('field-option-key');
-    API.delete_field_option(post_type, field_key, field_option_key).promise().then(function() {
+    window.API.delete_field_option(post_type, field_key, field_option_key).promise().then(function() {
       closeModal();
       let field_element = $(`.sortable-field[data-key="${field_key}"] .field-settings-table-field-option[data-field-option-key="${field_option_key}"]` );
       field_element.css('background', '#e14d43');
@@ -1468,7 +1468,7 @@ jQuery(document).ready(function($) {
     });
 
     // Dispatch update endpoint api request.
-    API.update_roles(post_type, roles).promise().then(function (data) {
+    window.API.update_roles(post_type, roles).promise().then(function (data) {
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
       button_icon.css('color', '#ffffff');
@@ -1517,7 +1517,7 @@ jQuery(document).ready(function($) {
     button_icon.addClass('active');
     button_icon.addClass('loading-spinner');
 
-    API.delete_post_type(post_type, delete_all_records).promise().then(function (data) {
+    window.API.delete_post_type(post_type, delete_all_records).promise().then(function (data) {
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
 
@@ -1567,7 +1567,7 @@ jQuery(document).ready(function($) {
 
     } else {
 
-      API.update_post_type(post_type, singular, plural, displayed).promise().then(function (data) {
+      window.API.update_post_type(post_type, singular, plural, displayed).promise().then(function (data) {
         button_icon.removeClass('active');
         button_icon.removeClass('loading-spinner');
         button_icon.css('color', '#ffffff');
@@ -1630,7 +1630,7 @@ jQuery(document).ready(function($) {
     } else {
 
       // Submit post type creation request.
-      API.create_new_post_type(key, single_name, plural_name).promise().then(function (data) {
+      window.API.create_new_post_type(key, single_name, plural_name).promise().then(function (data) {
 
         button_icon.css('margin', '');
         button_icon.removeClass('active');
@@ -1666,7 +1666,7 @@ jQuery(document).ready(function($) {
     }
     let new_tile_description = $('#new_tile_description').val().trim();
 
-    API.create_new_tile(post_type, new_tile_name, new_tile_description).promise().then(function(data) {
+    window.API.create_new_tile(post_type, new_tile_name, new_tile_description).promise().then(function(data) {
       let tile_key = data['key'];
       let tile_label = data['label'];
       window.field_settings.post_type_tiles[tile_key] = {'label':tile_label};
@@ -1711,7 +1711,7 @@ jQuery(document).ready(function($) {
       return false;
     }
 
-    API.edit_tile(post_type, tile_key, tile_label, tile_description, hide_tile).promise().then(function(response) {
+    window.API.edit_tile(post_type, tile_key, tile_label, tile_description, hide_tile).promise().then(function(response) {
       $(`#tile-key-${tile_key}`).parent().removeClass('menu-highlight');
       all_settings['post_type_tiles'][tile_key] = response;
       $(`#tile-key-${tile_key}`).html(tile_label);
@@ -1744,7 +1744,7 @@ jQuery(document).ready(function($) {
       return false;
     }
 
-    API.new_field(post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_field_options ).promise().then(function(response) {
+    window.API.new_field(post_type, tile_key, new_field_name, new_field_type, new_field_private, connection_field_options ).promise().then(function(response) {
       let field_key = response['key'];
       all_settings.post_type_settings.fields[field_key] = response;
       let new_field_nonexpandable_html = `
@@ -1825,7 +1825,7 @@ jQuery(document).ready(function($) {
       return false;
     }
 
-    API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon, visibility).promise().then(function(result){
+    window.API.edit_field(post_type, tile_key, field_key, custom_name, tile_select, field_description, field_icon, visibility).promise().then(function(result){
       $.extend(window.field_settings.post_type_settings.fields[field_key], result);
 
       let edited_field_menu_element = $(`.sortable-field[data-key=${field_key}]`)
@@ -1885,7 +1885,7 @@ jQuery(document).ready(function($) {
       return false;
     }
 
-    API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
+    window.API.new_field_option(post_type, tile_key, field_key, field_option_name, field_option_description, field_option_icon).promise().then(function(new_field_option_key) {
       all_settings.post_type_settings.fields[field_key]['default'][new_field_option_key] = {
         label:field_option_name,
         description:field_option_description,
@@ -1927,7 +1927,7 @@ jQuery(document).ready(function($) {
       return false;
     }
 
-    API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon, visibility).promise().then(function(result) {
+    window.API.edit_field_option(post_type, tile_key, field_key, field_option_key, new_field_option_label, new_field_option_description, field_option_icon, visibility).promise().then(function(result) {
       all_settings.post_type_settings.fields[field_key]['default'][field_option_key] = result;
       let edited_field_option_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-field-key="${field_key}"][data-field-option-key="${field_option_key}"]`);
       edited_field_option_element.parent().removeClass('submenu-highlight');
@@ -1947,7 +1947,7 @@ jQuery(document).ready(function($) {
     let tile_key = $(this).data('tile-key');
     let field_key = $(this).data('field-key');
 
-    API.remove_custom_field_name(post_type, field_key).promise().then(function(default_name) {
+    window.API.remove_custom_field_name(post_type, field_key).promise().then(function(default_name) {
       all_settings.post_type_settings.fields[field_key]['name'] = default_name;
       delete all_settings.post_type_settings.fields[field_key]['default_name'];
       let edited_field_content_element = $(`.field-name-content[data-parent-tile-key="${tile_key}"][data-key="${field_key}"]`);
@@ -1966,7 +1966,7 @@ jQuery(document).ready(function($) {
     let field_key = $(this).data('field-key');
     let field_option_key = $(this).data('field-option-key');
 
-    API.remove_custom_field_option_label(post_type, field_key, field_option_key).promise().then(function(default_label) {
+    window.API.remove_custom_field_option_label(post_type, field_key, field_option_key).promise().then(function(default_label) {
       all_settings.post_type_settings.fields[field_key]['default'][field_option_key]['label'] = default_label;
       delete all_settings.post_type_settings.fields[field_key]['default_name'];
 
@@ -2126,7 +2126,7 @@ jQuery(document).ready(function($) {
 
     translations = JSON.stringify(translations);
     let element_button_selector = $('.expand_translations[name="translate-label-button"]');
-    API.edit_translations(translation_type, post_type, tile_key, translations, field_key, field_option_key).promise().then(function(response) {
+    window.API.edit_translations(translation_type, post_type, tile_key, translations, field_key, field_option_key).promise().then(function(response) {
       let translations_count = 0;
       if ( translation_type === 'tile-label' ) {
         all_settings['post_type_tiles'][tile_key]['translations'] = response;
