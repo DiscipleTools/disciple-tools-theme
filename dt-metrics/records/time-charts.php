@@ -89,7 +89,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
-            'dt_metrics_project_script', 'window.dtMetricsProject', [
+            'dt_metrics_project_script', 'dtMetricsProject', [
                 'root'               => esc_url_raw( rest_url() ),
                 'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),

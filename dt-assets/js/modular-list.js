@@ -71,7 +71,6 @@
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
 
-    console.log('getting current filter')
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
