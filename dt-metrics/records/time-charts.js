@@ -75,6 +75,18 @@ function projectTimeCharts() {
         </section>
     `
 
+    /*jQuery('#metrics-content-modal').empty().html(`
+        <div class="large reveal" id="post_details_modal" data-reveal data-reset-on-close>
+            <button class="button loader" data-close aria-label="Close reveal" type="button">
+                Close
+            </button>
+
+            <button class="close-button" data-close aria-label="Close" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `);*/
+
     const chartSection = document.querySelector('#chart-area')
     const loadingSpinner = document.querySelector('#chart-loading-spinner')
     chartSection.addEventListener('datachange', () => {
@@ -337,6 +349,20 @@ function createColumnSeries(chart, field, name, hidden = false) {
         series.hide()
     }
 
+    // Capture event clicks.
+    series.columns.template.events.on("hit", function (e) {
+      let target = e.target;
+      let date_key = target.dataItem.component.dataFields.categoryX;
+      let metric_key = target.dataItem.component.dataFields.valueY;
+      let data = target.dataItem.dataContext;
+
+      console.log(date_key);
+      console.log(metric_key);
+      console.log(data);
+
+      displayPostListModal(data[date_key], date_key, metric_key);
+    });
+
     return series
 }
 
@@ -361,12 +387,71 @@ function createLineSeries(chart, field, name, hidden = false) {
     let bullet = lineSeries.bullets.push(new window.am4charts.Bullet());
 //    bullet.fill = window.am4core.color("#fdd400"); // tooltips grab fill from parent by default
     bullet.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
+
+    // Capture event clicks.
+    bullet.events.on("hit", function (e) {
+      let target = e.target;
+      let date_key = target.dataItem.component.dataFields.categoryX;
+      let metric_key = target.dataItem.component.dataFields.valueY;
+      let data = target.dataItem.dataContext;
+
+      displayPostListModal(data[date_key], date_key, metric_key);
+    });
+
     let circle = bullet.createChild(window.am4core.Circle);
     circle.radius = 4;
     circle.fill = window.am4core.color("#fff");
     circle.strokeWidth = 3;
 
     return lineSeries
+}
+
+function displayPostListModal(date, date_key, metric_key) {
+  if (date && date_key && metric_key) {
+    let selected_posts = [];
+    let posts = window.dtMetricsProject.state['posts'];
+
+    if (posts && posts.length > 0) {
+
+      // TODO: Limit post display count & dynamic scrolling.
+
+      // Filter out required posts.
+      jQuery.each(posts, function (idx, post) {
+        if (post['id'] && (post[date_key] && post[date_key] === date) && (post['value'] && window.lodash.includes(metric_key, post['value']))) {
+          selected_posts.push(post);
+        }
+      });
+
+      // Proceed with displaying post list.
+      if (selected_posts.length > 0) {
+
+        let list_html = `
+        <br>
+        ${(function (posts_to_filter) {
+            let post_list_html = ``;
+            jQuery.each(posts_to_filter, function (idx, post) {
+              let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
+
+              post_list_html += `
+              <div>
+                <a href="${url}" target="_blank">${post['name'] ? post['name'] : post['id']}</a>
+              </div>
+              `;
+            });
+
+            return post_list_html;
+
+        })(selected_posts)}
+        <br>
+        `;
+
+        // Render post html list.
+        jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(window.dtMetricsProject.translations.modal_title));
+        jQuery('#template_metrics_modal_content').empty().html(list_html);
+        jQuery('#template_metrics_modal').foundation('open');
+      }
+    }
+  }
 }
 
 function getMinMaxValuesOfDataForKey(key) {
@@ -416,7 +501,12 @@ function getData() {
     const chartElement = document.querySelector('#chart-area')
     loadingSpinner.classList.add('active')
     data.promise()
-        .then(({ data, cumulative_offset }) => {
+        .then(({ data, posts, cumulative_offset }) => {
+
+          console.log(data);
+          console.log(posts);
+          window.dtMetricsProject.state['posts'] = posts;
+
             if ( !data ) {
                 throw new Error('no data object returned')
             }

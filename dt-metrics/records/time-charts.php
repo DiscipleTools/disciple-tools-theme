@@ -90,6 +90,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
+                'site' => esc_url_raw( site_url( '/' ) ),
                 'root'               => esc_url_raw( rest_url() ),
                 'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
@@ -117,6 +118,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'additions_chart_title' => __( 'Number added', 'disciple_tools' ),
                     'true_label' => __( 'Yes', 'disciple_tools' ),
                     'false_label' => __( 'No', 'disciple_tools' ),
+                    'modal_title' => __( 'Records', 'disciple_tools' )
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
@@ -138,7 +140,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'time_metrics_by_month' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => [ $this, 'has_permission' ],
                 ],
             ]
         );
@@ -148,7 +150,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'time_metrics_by_year' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => [ $this, 'has_permission' ],
                 ],
             ]
         );
@@ -158,18 +160,13 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'field_settings' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => [ $this, 'has_permission' ],
                 ],
             ]
         );
     }
 
     public function time_metrics_by_month( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( 'time_metrics_by_month', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
-
-
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
         $field = $url_params['field'];
@@ -184,9 +181,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     }
 
     public function time_metrics_by_year( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( 'time_metrics_by_year', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
         $field = $url_params['field'];
@@ -200,9 +194,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     }
 
     public function field_settings( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( 'get_field_settings', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
     }
