@@ -20,7 +20,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public $js_file_name = '/dt-metrics/records/dynamic-records-map.js'; // should be full file name plus extension
     public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
     public $namespace = 'dt-metrics/records';
-    public $base_filter = [ 'type' => [ 'access' ] ];
+    public $base_filter = [];
 
     public function __construct() {
         parent::__construct();
