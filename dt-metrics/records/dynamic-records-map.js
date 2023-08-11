@@ -405,16 +405,15 @@ jQuery(document).ready(function($) {
     reload_record_layers: function (reload_data = true) {
 
       // Reload to be based on currently stored cookie settings.
-      let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id);
+      let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, false);
 
       // Convert parent object to array of layer objects.
       let layer_cookies = [];
       if (!Array.isArray(dt_maps_layers_cookie) && !window.lodash.isEmpty(dt_maps_layers_cookie)) {
         layer_cookies = Object.entries(dt_maps_layers_cookie).map(([k, v]) => v);
       }
-
       // Default to showing all contacts if no cookies detected.
-      if (layer_cookies.length === 0) {
+      if (layer_cookies.length === 0 && dt_maps_layers_cookie === false) {
         let default_cookie = {
           'post_type': 'contacts',
           'field_key': 'query_all',
@@ -433,6 +432,7 @@ jQuery(document).ready(function($) {
         // Force a reload.
         reload_data = true;
       }
+
 
       // Proceed with layer displaying based on loaded cookie settings.
       mapbox_library_api.map_query_layer_payloads = {};
