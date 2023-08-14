@@ -57,7 +57,7 @@ function page_mapping_view( rest_endpoints_base = null ) {
       <hr id="map_hr_2" class="map_hr">
     </div>
 
-    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${window.lodash.escape( translations.refresh_data )}</a></span>
+    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${window.SHAREDFUNCTIONS.escapeHTML( translations.refresh_data )}</a></span>
   `);
 
   if ( MAPPINGDATA.data ){
@@ -86,10 +86,10 @@ function setCommonMapSettings( chart ) {
   // create tool tip
   let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            ${window.lodash.escape(translations.population)}: {population}<br>
+                            ${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}: {population}<br>
                             `;
   jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-    toolTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
+    toolTipContent += `${window.SHAREDFUNCTIONS.escapeHTML(vc.label)}: {${window.SHAREDFUNCTIONS.escapeHTML( vc.key )}}<br>`
   })
 
   template.tooltipHTML = toolTipContent
@@ -341,10 +341,10 @@ function location_grid_map( div, grid_id = 'world' ) {
 
         let circleTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            ${window.lodash.escape(translations.population)}: {population}<br>
+                            ${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}: {population}<br>
                             `;
         jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-          circleTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
+          circleTipContent += `${window.SHAREDFUNCTIONS.escapeHTML(vc.label)}: {${window.SHAREDFUNCTIONS.escapeHTML( vc.key )}}<br>`
         })
         circle.tooltipHTML = circleTipContent
 
@@ -375,10 +375,10 @@ function data_type_list( div ) {
       hollow = ''
     }
     list.append(`
-      <a onclick="heatmap_focus_change( ${window.lodash.escape( i )}, '${MAPPINGDATA.settings.current_map}' )"
+      <a onclick="heatmap_focus_change( ${window.SHAREDFUNCTIONS.escapeHTML( i )}, '${MAPPINGDATA.settings.current_map}' )"
         class="button ${hollow}"
-        id="${window.lodash.escape( v.key )}">
-        ${window.lodash.escape( v.label )}
+        id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}">
+        ${window.SHAREDFUNCTIONS.escapeHTML( v.label )}
       </a>
     `)
   })

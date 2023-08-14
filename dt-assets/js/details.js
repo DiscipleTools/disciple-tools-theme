@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
   detailsBarCreatedOnElements.forEach((element) => {
     const postDate = post.post_date.timestamp
     const formattedDate = window.SHAREDFUNCTIONS.formatDate(postDate)
-    element.innerHTML = window.lodash.escape( window.detailsSettings.translations.created_on.replace('%s', formattedDate) )
+    element.innerHTML = window.SHAREDFUNCTIONS.escapeHTML( window.detailsSettings.translations.created_on.replace('%s', formattedDate) )
   })
 
   const updateTextMetaOnChange = updateTextMeta()
@@ -222,9 +222,9 @@ jQuery(document).ready(function($) {
     const $list = $(`#edit-${field}`)
 
     $list.append(`<div class="input-group">
-          <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
+          <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field )}" class="dt-communication-channel input-group-field" dir="auto" />
           <div class="input-group-button">
-          <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
+          <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.SHAREDFUNCTIONS.escapeHTML( field )}" data-key="new" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field )}">&times;</button>
           </div></div>`)
    })
 
@@ -252,7 +252,7 @@ jQuery(document).ready(function($) {
         let list = $(`#edit-${field}`)
         if ( list.children().length === 0 ){
           list.append(`<div class="input-group">
-            <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
+            <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             </div>`)
         }
         $(`#${field}-spinner`).removeClass('active')
@@ -307,7 +307,7 @@ jQuery(document).ready(function($) {
         $(this).parent().find('.channel-delete-button').data('key', key)
       } else {
         $(this).parent().append(`<div class="input-group-button">
-            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${window.lodash.escape( key )}" data-field="${window.lodash.escape( field_key )}">&times;</button>
+            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${window.SHAREDFUNCTIONS.escapeHTML( key )}" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field_key )}">&times;</button>
         </div>`)
       }
       post = updatedContact
@@ -320,15 +320,15 @@ jQuery(document).ready(function($) {
 
   $( document ).on( 'text-input-updated', function (e, newContact, id, val){
     if ( id === "name" ){
-      $("#title").html(window.lodash.escape(val))
-      $("#second-bar-name").text(window.lodash.escape(val))
+      $("#title").html(window.SHAREDFUNCTIONS.escapeHTML(val))
+      $("#second-bar-name").text(window.SHAREDFUNCTIONS.escapeHTML(val))
     }
   })
 
   $( document ).on( 'contenteditable-updated', function (e, newContact, id, val){
     if ( id === "title" ){
-      $("#name").val(window.lodash.escape(val))
-      $("#second-bar-name").text(window.lodash.escape(val))
+      $("#name").val(window.SHAREDFUNCTIONS.escapeHTML(val))
+      $("#second-bar-name").text(window.SHAREDFUNCTIONS.escapeHTML(val))
     }
   })
 
@@ -392,18 +392,18 @@ jQuery(document).ready(function($) {
         return `<div class="assigned-to-row" dir="auto">
           <span>
               <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-              ${window.lodash.escape( item.name )}
+              ${window.SHAREDFUNCTIONS.escapeHTML( item.name )}
           </span>
-          ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+          ${ item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : '' }
           ${ item.update_needed && item.update_needed > 0 ? `<span>
-            <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-            <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+            <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
           </span>` : '' }
         </div>`
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
           window.API.update_post(post_type, post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
@@ -510,7 +510,7 @@ jQuery(document).ready(function($) {
 
           // If present, adjust status label, so as to remain uniform
           if (item['status']) {
-            item['status']['label'] = item['status']['label'] ? '[' + window.lodash.escape(item['status']['label']).toLowerCase() + ']' : '';
+            item['status']['label'] = item['status']['label'] ? '[' + window.SHAREDFUNCTIONS.escapeHTML(item['status']['label']).toLowerCase() + ']' : '';
           }
 
           this.addMultiselectItemLayout(item)
@@ -617,7 +617,7 @@ jQuery(document).ready(function($) {
       maxItem: 20,
       searchOnFocus: true,
       template: function (query, item) {
-        return `<span>${window.lodash.escape(item.value)}</span>`
+        return `<span>${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`
       },
       source: source_data,
       display: "value",
@@ -712,9 +712,9 @@ jQuery(document).ready(function($) {
     }).then((newRecord)=>{
       $(".js-create-record-button").attr("disabled", false).removeClass("loading");
       $(".reveal-after-record-create").show()
-      $("#new-record-link").html(`<a href="${window.lodash.escape( newRecord.permalink )}">${window.lodash.escape( title )}</a>`)
+      $("#new-record-link").html(`<a href="${window.SHAREDFUNCTIONS.escapeHTML( newRecord.permalink )}">${window.SHAREDFUNCTIONS.escapeHTML( title )}</a>`)
       $(".hide-after-record-create").hide()
-      $('#go-to-record').attr('href', window.lodash.escape( newRecord.permalink ));
+      $('#go-to-record').attr('href', window.SHAREDFUNCTIONS.escapeHTML( newRecord.permalink ));
       $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
       if ( window.Typeahead[`.js-typeahead-${connection_type}`] ){
         window.Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
@@ -741,8 +741,8 @@ jQuery(document).ready(function($) {
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-        all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+        template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus),
+        all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -796,11 +796,11 @@ jQuery(document).ready(function($) {
           window.masonGrid.masonry('layout')
         },
         onReady() {
-          this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.filters.dropdown = {key: "group", value: "focus", template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus)}
           this.container
           .removeClass("filter")
           .find("." + this.options.selector.filterButton)
-          .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+          .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals[field_id]
@@ -855,24 +855,24 @@ jQuery(document).ready(function($) {
       let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
                       || ( task.category !== "reminder" && task.value.status === 'task_complete' )
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
-      let task_row = `<strong>${window.lodash.escape( window.moment(task.date).format("MMM D YYYY") )}</strong> `
+      let task_row = `<strong>${window.SHAREDFUNCTIONS.escapeHTML( window.moment(task.date).format("MMM D YYYY") )}</strong> `
       if ( task.category === "reminder" ){
-        task_row += window.lodash.escape( window.detailsSettings.translations.reminder )
+        task_row += window.SHAREDFUNCTIONS.escapeHTML( window.detailsSettings.translations.reminder )
         if ( task.value.note ){
-          task_row += ' ' + window.lodash.escape(task.value.note)
+          task_row += ' ' + window.SHAREDFUNCTIONS.escapeHTML(task.value.note)
         }
       } else {
-         task_row += window.lodash.escape(task.value.note || window.detailsSettings.translations.no_note )
+         task_row += window.SHAREDFUNCTIONS.escapeHTML(task.value.note || window.detailsSettings.translations.no_note )
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
         ${task_row}
-        ${ show_complete_button ? `<button type="button" data-id="${window.lodash.escape(task.id)}" class="existing-task-action complete-task">${window.lodash.escape(window.detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
-        <button type="button" data-id="${window.lodash.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${window.lodash.escape(window.detailsSettings.translations.remove).toLowerCase()}</button>
+        ${ show_complete_button ? `<button type="button" data-id="${window.SHAREDFUNCTIONS.escapeHTML(task.id)}" class="existing-task-action complete-task">${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
+        <button type="button" data-id="${window.SHAREDFUNCTIONS.escapeHTML(task.id)}" class="existing-task-action remove-task" style="color: red;">${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.remove).toLowerCase()}</button>
       </li>`
     })
     if (!html ){
-      $('#tasks-modal .existing-tasks').html(`<li>${window.lodash.escape(window.detailsSettings.translations.no_tasks)}</li>`)
+      $('#tasks-modal .existing-tasks').html(`<li>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.no_tasks)}</li>`)
     } else {
       $('#tasks-modal .existing-tasks').html(html)
     }
@@ -956,7 +956,7 @@ jQuery(document).ready(function($) {
       $("#create-task")
       .attr("disabled", false)
       .removeClass("loading");
-      $('.js-add-task-form .error-text').html(window.lodash.escape(window.lodash.get(err, "responseJSON.message")));
+      $('.js-add-task-form .error-text').html(window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(err, "responseJSON.message")));
       console.error(err)
     })
   })
@@ -1143,29 +1143,29 @@ jQuery(document).ready(function($) {
         let field_value = window.lodash.get( post, field_key, false )
         let values_html = ``
         if ( field_options.type === 'text' ){
-          values_html = window.lodash.escape( field_value )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         } else if ( field_options.type === 'textarea' ){
-          values_html = window.lodash.escape( field_value )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         } else if ( field_options.type === 'date' ){
-          values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'boolean' ){
-          values_html = window.lodash.escape( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
         } else if ( field_options.type === 'key_select' ){
-          values_html = window.lodash.escape( field_value.label )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value.label )
         } else if ( field_options.type === 'multi_select' || field_options.type === 'tags' ){
           values_html = field_value.map(v=>{
-            return `${window.lodash.escape( window.lodash.get( field_options, `default[${v}].label`, v ))}`;
+            return `${window.SHAREDFUNCTIONS.escapeHTML( window.lodash.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
           values_html = field_value.map(v=>{
-            return window.lodash.escape(v.matched_search || v.label);
+            return window.SHAREDFUNCTIONS.escapeHTML(v.matched_search || v.label);
           }).join(' / ')
         } else if ( field_options.type === 'communication_channel' || field_options.type === 'link' ){
           field_value.forEach((v, index)=>{
             if ( index > 0 ){
               values_html += ', '
             }
-            let value = window.lodash.escape(v.value)
+            let value = window.SHAREDFUNCTIONS.escapeHTML(v.value)
             if ( field_key === 'contact_phone' ){
               values_html += `<a dir="auto" class="phone-link" href="tel:${value}" title="${value}">${value}</a>`
             } else if (field_key === "contact_email") {
@@ -1181,27 +1181,27 @@ jQuery(document).ready(function($) {
                   urlToDisplay = value.replace(prefix[0], "")
                 }
                 value = upgradeUrl(value)
-                value = `<a href="${window.lodash.escape(value)}" target="_blank" >${window.lodash.escape(urlToDisplay)}</a>`
+                value = `<a href="${window.SHAREDFUNCTIONS.escapeHTML(value)}" target="_blank" >${window.SHAREDFUNCTIONS.escapeHTML(urlToDisplay)}</a>`
               }
               values_html += value
             }
           })
           let labels = field_value.map(v=>{
-            return window.lodash.escape(v.value);
+            return window.SHAREDFUNCTIONS.escapeHTML(v.value);
           }).join(', ')
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${labels}">${values_html}</span>`)
 
         } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
             if ( v.label ){
-              return window.lodash.escape(v.label || v.post_title);
+              return window.SHAREDFUNCTIONS.escapeHTML(v.label || v.post_title);
             } else {
-              return `<a href="${window.lodash.escape(v.permalink)}" target="_blank" >${window.lodash.escape(v.post_title)}</a>`
+              return `<a href="${window.SHAREDFUNCTIONS.escapeHTML(v.permalink)}" target="_blank" >${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a>`
             }
           }).join(' / ')
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span>${values_html}</span>`)
         } else {
-          values_html = window.lodash.escape( field_value )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         }
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
         if (field_options.type !== 'communication_channel' && field_options.type !== 'link' && field_options.type !== 'connection') {
@@ -1233,14 +1233,14 @@ jQuery(document).ready(function($) {
         for (const service in messagingServices) {
           let link = messagingServices[service].link.replace('PHONE_NUMBER_NO_PLUS', phoneNumber.replace(/^((\+)|(00))/,"")).replace('PHONE_NUMBER', phoneNumber);
 
-          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
+          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)} ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
         }
 
         let openWithDiv = `<div class="phone-open-with-container __${phoneNumber.replace(/^((\+)|(00))/,"")}">
-        <strong>${window.lodash.escape(window.detailsSettings.translations.Open_with)}...</strong>
+        <strong>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)}...</strong>
           <ul>
-            <li><a href="${PhoneLink}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${window.post_type_fields.contact_phone.name}" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/>${window.post_type_fields.contact_phone.name}</a></li>
-            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} iMessage" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
+            <li><a href="${PhoneLink}" title="${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)} ${window.post_type_fields.contact_phone.name}" target="_blank" class="phone-open-with-link"><img src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/>${window.post_type_fields.contact_phone.name}</a></li>
+            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)} iMessage" target="_blank" class="phone-open-with-link"><img src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
             }
             ${messagingServicesLinks}
           </ul>
@@ -1332,7 +1332,7 @@ jQuery(document).ready(function($) {
         template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
         hint: true,
-        emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+        emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
         callback: {
           onClick: function (node, a, item) {
             $('.confirm-merge-with-post').show()

@@ -156,25 +156,25 @@ jQuery(document).ready(function($) {
 
 
       const contactStatusHTML = ( member.data && member.data.overall_status )
-        ? `<i class="fi-torso small" style="color: ${window.lodash.escape( member.data.overall_status.color )}" title="${window.lodash.escape( member.data.overall_status.label )}"></i>`
+        ? `<i class="fi-torso small" style="color: ${window.SHAREDFUNCTIONS.escapeHTML( member.data.overall_status.color )}" title="${window.SHAREDFUNCTIONS.escapeHTML( member.data.overall_status.label )}"></i>`
         : '<i class="fi-torso small"></i>'
 
       const milestonesHTML = member.data.milestones.reduce((htmlString, milestone) => {
         return milestone.icon
-          ? htmlString + `<img class="dt-icon" src="${window.lodash.escape( milestone.icon )}" alt="${window.lodash.escape( milestone.label )}" title="${window.lodash.escape( milestone.label )}">`
+          ? htmlString + `<img class="dt-icon" src="${window.SHAREDFUNCTIONS.escapeHTML( milestone.icon )}" alt="${window.SHAREDFUNCTIONS.escapeHTML( milestone.label )}" title="${window.SHAREDFUNCTIONS.escapeHTML( milestone.label )}">`
           : htmlString
       }, '')
-      let memberHTML = `<div class="member-row" style="" data-id="${window.lodash.escape( member.ID )}">
+      let memberHTML = `<div class="member-row" style="" data-id="${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
               ${contactStatusHTML}
-              <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape( member.ID )}">${window.lodash.escape(member.post_title)}</a>
+              <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">${window.SHAREDFUNCTIONS.escapeHTML(member.post_title)}</a>
               ${leaderHTML}
               ${milestonesHTML}
           </div>
-          <button class="button clear make-leader member-row-actions ${leaderStatus}" style="${leaderStyle}" data-id="${window.lodash.escape( member.ID )}">
+          <button class="button clear make-leader member-row-actions ${leaderStatus}" style="${leaderStyle}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">
             <i class="fi-foot small"></i>
           </button>
-          <button class="button clear delete-member member-row-actions" data-id="${window.lodash.escape( member.ID )}">
+          <button class="button clear delete-member member-row-actions" data-id="${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">
             <i class="fi-x small"></i>
           </button>
         </div>`
@@ -252,28 +252,28 @@ jQuery(document).ready(function($) {
 
   let ffInputs = `
     <label style="margin-left:33.3%;">
-        <span></span>${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_unbelievers.name)}
+        <span></span>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.post_settings.fields.four_fields_unbelievers.name)}
         <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;" type="text" name="four_fields_unbelievers" id="four_fields_unbelievers">
     </label>
     <div></div>
     <label style="margin-right:33.3%;">
-        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_believers.name)}
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.post_settings.fields.four_fields_believers.name)}
         <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;" type="text" name="four_fields_believers" id="four_fields_believers">
     </label>
     <div></div>
     <label style="text-align: center">
-        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_multiplying.name)}
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.post_settings.fields.four_fields_multiplying.name)}
         <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin:auto" type="text" name="four_fields_multiplying" id="four_fields_multiplying">
     </label>
     <div></div>
     <label style="margin-left:33.3%;">
         <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-bottom:0" type="text" name="four_fields_accountable" id="four_fields_accountable">
-        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_accountable.name)}
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.post_settings.fields.four_fields_accountable.name)}
     </label>
     <div></div>
     <label style="margin-right:33.3%;">
         <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-bottom:0" type="text" name="four_fields_church_commitment" id="four_fields_church_commitment">
-        ${window.lodash.escape(window.detailsSettings.post_settings.fields.four_fields_church_commitment.name)}
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.post_settings.fields.four_fields_church_commitment.name)}
     </label>
   `
   $('#four-fields-inputs').append(ffInputs)

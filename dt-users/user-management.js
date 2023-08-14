@@ -186,9 +186,9 @@ jQuery(document).ready(function($) {
     let rows = ``
     list.forEach(range=>{
       rows += `<tr>
-        <td>${window.lodash.escape(range.start_date)}</td>
-        <td>${window.lodash.escape(range.end_date)}</td>
-        <td><button class="button remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}">${ escaped_translations.remove }</button></td>
+        <td>${window.SHAREDFUNCTIONS.escapeHTML(range.start_date)}</td>
+        <td>${window.SHAREDFUNCTIONS.escapeHTML(range.end_date)}</td>
+        <td><button class="button remove_dates_unavailable" data-id="${window.SHAREDFUNCTIONS.escapeHTML(range.id)}">${ escaped_translations.remove }</button></td>
       </tr>`
     })
     date_unavailable_table.html(rows)
@@ -257,8 +257,8 @@ jQuery(document).ready(function($) {
         dropdownFilter: [{
           key: 'group',
           value: 'focus',
-          template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-          all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+          template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus),
+          all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations),
         }],
         source: {
           focus: {
@@ -303,11 +303,11 @@ jQuery(document).ready(function($) {
             update_user( window.current_user_lookup, 'add_location', item.ID)
           },
           onReady(){
-            this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+            this.filters.dropdown = {key: "group", value: "focus", template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus)}
             this.container
             .removeClass("filter")
             .find("." + this.options.selector.filterButton)
-            .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+            .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus));
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.location_grid
@@ -460,7 +460,7 @@ jQuery(document).ready(function($) {
         if ( window.current_user_lookup === user_id ) {
           $('#profile_loading').removeClass("active")
           user_details = details
-          $("#user_name").html(window.lodash.escape(details.display_name))
+          $("#user_name").html(window.SHAREDFUNCTIONS.escapeHTML(details.display_name))
           $("#update_display_name").val(details.display_name);
           $("#user_email").html(details.user_email);
           (details.languages || []).forEach(l=>{
@@ -473,10 +473,10 @@ jQuery(document).ready(function($) {
             $(`#${field.key}`).val(field.value)
           })
 
-          $('#user_status').val(window.lodash.escape(details.user_status))
+          $('#user_status').val(window.SHAREDFUNCTIONS.escapeHTML(details.user_status))
           if ( details.user_status !== "0" ){
           }
-          $('#workload_status').val(window.lodash.escape(details.workload_status))
+          $('#workload_status').val(window.SHAREDFUNCTIONS.escapeHTML(details.workload_status))
 
 
           setup_user_roles( details );
@@ -489,8 +489,8 @@ jQuery(document).ready(function($) {
           let update_needed_list_html = ``;
           (details.update_needed.contacts||[]).forEach(contact => {
             update_needed_list_html += `<li>
-            <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
-                ${window.lodash.escape(contact.post_title)}:  ${window.lodash.escape(contact.last_modified_msg)}
+            <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+                ${window.SHAREDFUNCTIONS.escapeHTML(contact.post_title)}:  ${window.SHAREDFUNCTIONS.escapeHTML(contact.last_modified_msg)}
             </a>
           </li>`
           })
@@ -536,14 +536,14 @@ jQuery(document).ready(function($) {
         .done(details => {
           if (window.current_user_lookup===user_id) {
             //stats
-            $('#update_needed_count').html(window.lodash.escape(details.update_needed["total"]))
-            $('#needs_accepted_count').html(window.lodash.escape(details.needs_accepted["total"]))
-            $('#active_contacts').html(window.lodash.escape(details.active_contacts))
-            $('#unread_notifications').html(window.lodash.escape(details.unread_notifications))
-            $('#assigned_this_month').text(window.lodash.escape(details.assigned_counts.this_month))
-            $('#assigned_last_month').text(window.lodash.escape(details.assigned_counts.last_month))
-            $('#assigned_this_year').text(window.lodash.escape(details.assigned_counts.this_year))
-            $('#assigned_all_time').text(window.lodash.escape(details.assigned_counts.all_time))
+            $('#update_needed_count').html(window.SHAREDFUNCTIONS.escapeHTML(details.update_needed["total"]))
+            $('#needs_accepted_count').html(window.SHAREDFUNCTIONS.escapeHTML(details.needs_accepted["total"]))
+            $('#active_contacts').html(window.SHAREDFUNCTIONS.escapeHTML(details.active_contacts))
+            $('#unread_notifications').html(window.SHAREDFUNCTIONS.escapeHTML(details.unread_notifications))
+            $('#assigned_this_month').text(window.SHAREDFUNCTIONS.escapeHTML(details.assigned_counts.this_month))
+            $('#assigned_last_month').text(window.SHAREDFUNCTIONS.escapeHTML(details.assigned_counts.last_month))
+            $('#assigned_this_year').text(window.SHAREDFUNCTIONS.escapeHTML(details.assigned_counts.this_year))
+            $('#assigned_all_time').text(window.SHAREDFUNCTIONS.escapeHTML(details.assigned_counts.all_time))
 
             status_pie_chart(details.contact_statuses)
           }
@@ -561,8 +561,8 @@ jQuery(document).ready(function($) {
             response.unaccepted_contacts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
               unaccepted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
-              ${window.lodash.escape(contact.name)} has be waiting to be accepted for ${days.toFixed(1)} days
+          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+              ${window.SHAREDFUNCTIONS.escapeHTML(contact.name)} has be waiting to be accepted for ${days.toFixed(1)} days
               </a> </li>`
             })
             $('#unaccepted_contacts').html(unaccepted_contacts_html)
@@ -591,8 +591,8 @@ jQuery(document).ready(function($) {
               .replace('%2$s', window.moment.unix(contact.date_accepted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
               accepted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
-              ${window.lodash.escape(accept_line)}
+          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+              ${window.SHAREDFUNCTIONS.escapeHTML(accept_line)}
           </a> </li>`
             })
             $('#contact_accepts').html(accepted_contacts_html)
@@ -617,11 +617,11 @@ jQuery(document).ready(function($) {
             response.unattempted_contacts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
               let line = escaped_translations.no_contact_attempt_time
-              .replace('%1$s', window.lodash.escape(contact.name))
+              .replace('%1$s', window.SHAREDFUNCTIONS.escapeHTML(contact.name))
               .replace('%2$s', days.toFixed(1))
               unattemped_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
-              ${window.lodash.escape(line)}
+          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+              ${window.SHAREDFUNCTIONS.escapeHTML(line)}
           </a> </li>`
             })
             $('#unattempted_contacts').html(unattemped_contacts_html)
@@ -646,12 +646,12 @@ jQuery(document).ready(function($) {
               let days = contact.time / 60 / 60 / 24;
               avg_contact_attempt += days
               let line = escaped_translations.contact_attempt_time
-              .replace('%1$s', window.lodash.escape(contact.name))
+              .replace('%1$s', window.SHAREDFUNCTIONS.escapeHTML(contact.name))
               .replace('%2$s', window.moment.unix(contact.date_attempted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
               attempted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
-              ${window.lodash.escape(line)}
+          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+              ${window.SHAREDFUNCTIONS.escapeHTML(line)}
           </a> </li>`
             })
             $('#contact_attempts').html(attempted_contacts_html)
@@ -970,11 +970,11 @@ jQuery(document).ready(function($) {
           const { user_id, corresponds_to_contact: contact_id } = response
           result_div.html('')
           if ( dt_user_management_localized.has_permission ) {
-            result_div.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(user_id)}">
+            result_div.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(user_id)}">
               ${ escaped_translations.view_new_user }</a>
             `)
           }
-          result_div.append(`<br /><a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(contact_id)}">
+          result_div.append(`<br /><a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact_id)}">
               ${ escaped_translations.view_new_contact }</a>
             `)
           $('#new-user-form').empty()
@@ -1001,24 +1001,24 @@ jQuery(document).ready(function($) {
         .done(function(response){
 
           if (overwriteTypeahead) {
-            $(".js-typeahead-subassigned").val(window.lodash.escape(response.name))
+            $(".js-typeahead-subassigned").val(window.SHAREDFUNCTIONS.escapeHTML(response.name))
           }
           if ( isUser || ( response.corresponds_to_user >= 0 ) ) {
-            $('#name').val( window.lodash.escape(response.name) )
+            $('#name').val( window.SHAREDFUNCTIONS.escapeHTML(response.name) )
             if ( response.contact_email && response.contact_email.length > 0 ) {
-              $('#email').val( window.lodash.escape(response.contact_email[0].value) )
+              $('#email').val( window.SHAREDFUNCTIONS.escapeHTML(response.contact_email[0].value) )
             }
             $('#contact-result').html(escaped_translations.already_user)
             if ( window.dt_user_management_localized.has_permission ) {
-              $('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.corresponds_to_user)}">${escaped_translations.view_user}</a>`)
+              $('#contact-result').append(`<br /> <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(response.corresponds_to_user)}">${escaped_translations.view_user}</a>`)
             }
-            $('#contact-result').append(`<br /> <a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${id}">${escaped_translations.view_contact}</a>`)
+            $('#contact-result').append(`<br /> <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${id}">${escaped_translations.view_contact}</a>`)
           } else {
             window.contact_record = response
             submit_button.prop('disabled', false)
-            $('#name').val( window.lodash.escape(response.title) )
+            $('#name').val( window.SHAREDFUNCTIONS.escapeHTML(response.title) )
             if ( response.contact_email && response.contact_email[0] !== 'undefined' ) {
-              $('#email').val( window.lodash.escape(response.contact_email[0].value) )
+              $('#email').val( window.SHAREDFUNCTIONS.escapeHTML(response.contact_email[0].value) )
             }
 
           }
@@ -1074,7 +1074,7 @@ jQuery(document).ready(function($) {
   function write_language_dropdown(translations, default_language) {
       let select = '<select name="locale" id="locale">';
       for ( const translation in translations ) {
-        select += `<option value="${window.lodash.escape(translations[translation].language )}" ${(translations[translation].language === default_language) ? 'selected' : '' } > ${(translations[translation].flag ? translations[translation].flag + ' ' : '')} ${window.lodash.escape( translations[translation].native_name )}</option>`
+        select += `<option value="${window.SHAREDFUNCTIONS.escapeHTML(translations[translation].language )}" ${(translations[translation].language === default_language) ? 'selected' : '' } > ${(translations[translation].flag ? translations[translation].flag + ' ' : '')} ${window.SHAREDFUNCTIONS.escapeHTML( translations[translation].native_name )}</option>`
       }
       select += '</select>'
       return select;
