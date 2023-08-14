@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
     if ( already_set ){
       update.values[0].delete = true;
     }
-    API.update_post( post_type, post_id, { 'health_metrics': update })
+    window.API.update_post( post_type, post_id, { 'health_metrics': update })
       .then( groupData => {
         post = groupData;
         /* Update icon */
@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
     if ( already_set ){
       update.values[0].delete = true;
     }
-    API.update_post( post_type, post_id, { 'health_metrics': update })
+    window.API.update_post( post_type, post_id, { 'health_metrics': update })
       .then( groupData => {
         post = groupData;
         /* Update commitment circle */
@@ -201,13 +201,13 @@ jQuery(document).ready(function($) {
   $(document).on("click", ".delete-member", function () {
     let id = $(this).data('id')
     $(`.member-row[data-id="${id}"]`).remove()
-    API.update_post( post_type, post_id, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
+    window.API.update_post( post_type, post_id, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
       post=groupRes
       populateMembersList()
       window.masonGrid.masonry('layout')
     })
     if( window.lodash.find( post.leaders || [], {ID: id}) ) {
-      API.update_post( post_type, post_id, {'leaders': {values: [{value: id, delete: true}]}})
+      window.API.update_post( post_type, post_id, {'leaders': {values: [{value: id, delete: true}]}})
     }
   })
   $(document).on("click", ".make-leader", function () {
@@ -220,7 +220,7 @@ jQuery(document).ready(function($) {
     if( window.lodash.find( post.leaders || [], {ID: id}) || existingLeaderIcon.length !== 0){
       remove = true
     }
-    API.update_post( post_type, post_id, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
+    window.API.update_post( post_type, post_id, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
       post=groupRes
       populateMembersList()
       window.masonGrid.masonry('layout')
@@ -228,7 +228,7 @@ jQuery(document).ready(function($) {
   })
   $('.add-new-member').on("click", function () {
     $('#add-new-group-member-modal').foundation('open');
-    Typeahead[`.js-typeahead-members`].adjustInputSize()
+    window.Typeahead[`.js-typeahead-members`].adjustInputSize()
   })
   $( document ).on( "dt-post-connection-added", function( e, new_post, field_key ){
     post = new_post;
@@ -285,7 +285,7 @@ jQuery(document).ready(function($) {
 
     window.API.update_post( post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "text-input-updated", [ resp, id, val ] );
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
   /* End Four Fields */
 

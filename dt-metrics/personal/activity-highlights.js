@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
   if ( window.wpApiShare.url_path.startsWith( 'metrics/personal/activity-highlights' ) ) {
     my_stats()
   }
@@ -6,8 +6,8 @@ jQuery(document).ready(function() {
   function my_stats() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsActivity.data
-    let translations = dtMetricsActivity.translations
+    let sourceData = window.dtMetricsActivity.data
+    let translations = window.dtMetricsActivity.translations
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
@@ -31,7 +31,7 @@ jQuery(document).ready(function() {
     `)
 
     window.METRICS.setupDatePicker(
-      `${dtMetricsActivity.rest_endpoints_base}/highlights_data/`,
+      `${window.dtMetricsActivity.rest_endpoints_base}/highlights_data/`,
       function (data, label) {
         if (data) {
           $('.date_range_picker span').html(label);
@@ -73,7 +73,7 @@ function buildHighlights(data, label = "all time") {
     baptism_by_others,
     comments_I_liked,
     comments_I_posted,
-  } = SHAREDFUNCTIONS.escapeObject(dtMetricsActivity.translations)
+  } = window.SHAREDFUNCTIONS.escapeObject(window.dtMetricsActivity.translations)
 
   const chartDiv = jQuery('#activity_highlights')
 
@@ -218,7 +218,7 @@ function makeBaptismsSection(data) {
     `
   }
 
-  const { date, contact } = SHAREDFUNCTIONS.escapeObject( dtMetricsActivity.translations )
+  const { date, contact } = window.SHAREDFUNCTIONS.escapeObject( window.dtMetricsActivity.translations )
 
   return `
     <div>
@@ -255,7 +255,7 @@ function makeBaptismsByOthersSection(data) {
     `
   }
 
-  const { date, contact, baptized_by } = SHAREDFUNCTIONS.escapeObject( dtMetricsActivity.translations )
+  const { date, contact, baptized_by } = window.SHAREDFUNCTIONS.escapeObject( window.dtMetricsActivity.translations )
 
   const baptisms = []
 
@@ -308,11 +308,11 @@ function makeCommentsSection(data) {
     return none()
   }
 
-  const { group, contact } = dtMetricsActivity.translations
+  const { group, contact } = window.dtMetricsActivity.translations
 
   const postTypeLabels = {
-    'contacts': lodash.escape(contact),
-    'groups': lodash.escape(group),
+    'contacts': window.lodash.escape(contact),
+    'groups': window.lodash.escape(group),
   }
 
   return `
@@ -330,7 +330,7 @@ function makeCommentsSection(data) {
             <div>
               ${postTypeLabels[info.post_type]}:
               <a href="/${info.post_type}/${info.ID}">${info.post_title}</a>
-              <span class="comment-date">${SHAREDFUNCTIONS.formatDate(epochDateTime, false, true)}</span>
+              <span class="comment-date">${window.SHAREDFUNCTIONS.formatDate(epochDateTime, false, true)}</span>
             </div>
             <div>
               <div class="comment-bubble">${window.SHAREDFUNCTIONS.formatComment(info.comment_content)}</div>
@@ -366,13 +366,13 @@ function makeRecordsCreatedSection(data) {
 }
 
 function makeCommentFilterSelect() {
-  const { reaction_options, translations } = dtMetricsActivity
+  const { reaction_options, translations } = window.dtMetricsActivity
 
   const { all } = translations
 
   return `
     <select id="comment-filter">
-      <option value="all">${lodash.escape(all)}</option>
+      <option value="all">${window.lodash.escape(all)}</option>
       ${Object.entries(reaction_options).map(([key, reaction]) => `
         <option value="${key}">${displayReaction(reaction)}</option>
       `)}
@@ -389,7 +389,7 @@ function empty(data) {
 }
 
 function none() {
-  const { none } = SHAREDFUNCTIONS.escapeObject(dtMetricsActivity.translations)
+  const { none } = window.SHAREDFUNCTIONS.escapeObject(window.dtMetricsActivity.translations)
 
   return none;
 }

@@ -1398,7 +1398,7 @@ jQuery(function ($) {
             if (input) {
 
               // Execute predictions google api search.
-              let auto_complete_service = new google.maps.places.AutocompleteService();
+              let auto_complete_service = new window.google.maps.places.AutocompleteService();
               let promise = auto_complete_service.getPlacePredictions({'input': input.val()}, function (predictions, status) {
                 if (status === 'OK') {
                   google_predictions = predictions;
@@ -1415,7 +1415,7 @@ jQuery(function ($) {
           if (item && item['place_id']) {
 
             // Geocode item place details, for further information extraction; E.g. Lat/Lng.
-            let geocode_service = new google.maps.Geocoder()
+            let geocode_service = new window.google.maps.Geocoder()
             geocode_service.geocode({'placeId': item['place_id']}, function (results, status) {
               if (status === 'OK' && results && results.length > 0) {
 

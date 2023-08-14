@@ -141,8 +141,8 @@ jQuery(document).ready(function ($) {
         $('.date_range_picker span').html(label);
         refresh_charts();
       },
-      moment().startOf('year'),
-      moment().endOf('year')
+      window.moment().startOf('year'),
+      window.moment().endOf('year')
     );
 
     // Trigger data refreshes, following a site link change
@@ -157,7 +157,7 @@ jQuery(document).ready(function ($) {
   function date_ranges_select_html() {
     return `<div class="date_range_picker" style="min-width: 150px;">
                 <i class="fi-calendar"></i>
-                <span>${moment().format("YYYY")}</span>
+                <span>${window.moment().format("YYYY")}</span>
                 <i class="dt_caret down"></i>
             </div>`;
   }
@@ -209,7 +209,7 @@ jQuery(document).ready(function ($) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: `${wp_js_object.rest_endpoints_base}/site-links/?site_id=${site_id}&start=${start_date}&end=${end_date}`,
+        url: `${window.wp_js_object.rest_endpoints_base}/site-links/?site_id=${site_id}&start=${start_date}&end=${end_date}`,
         beforeSend: function (xhr) {
           xhr.setRequestHeader("X-WP-Nonce", window.wpApiShare.nonce);
         },
@@ -243,8 +243,8 @@ jQuery(document).ready(function ($) {
 
   function display_site_link_charts(total, statuses_current, statuses_changes, seeker_paths_current, seeker_paths_changes, milestones_current, milestones_changes) {
     // Ensure overwritten charts are automatically disposed.
-    am4core.options.autoDispose = true;
-    am4core.useTheme(am4themes_animated);
+    window.am4core.options.autoDispose = true;
+    window.am4core.useTheme(window.am4themes_animated);
 
     // Display total transferred metrics.
     $('#totals_div').fadeOut('fast', function () {
@@ -296,10 +296,10 @@ jQuery(document).ready(function ($) {
   }
 
   function display_site_link_charts_status(statuses, chart_div, callback) {
-    am4core.ready(function () {
+    window.am4core.ready(function () {
 
       // Create chart instance
-      let chart = am4core.create(chart_div, am4charts.PieChart);
+      let chart = window.am4core.create(chart_div, window.am4charts.PieChart);
 
       // Add data
       chart.data = [];
@@ -314,10 +314,10 @@ jQuery(document).ready(function ($) {
         });
 
         // Add and configure Series
-        let pieSeries = chart.series.push(new am4charts.PieSeries());
+        let pieSeries = chart.series.push(new window.am4charts.PieSeries());
         pieSeries.dataFields.value = "count";
         pieSeries.dataFields.category = "status";
-        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.stroke = window.am4core.color("#fff");
         pieSeries.slices.template.strokeWidth = 2;
         pieSeries.slices.template.strokeOpacity = 1;
 
@@ -329,14 +329,14 @@ jQuery(document).ready(function ($) {
         // Execute callback() function
         callback();
       }
-    }); // end am4core.ready()
+    }); // end window.am4core.ready()
   }
 
   function display_site_link_charts_seeker(seeker_paths, chart_div, callback) {
-    am4core.ready(function () {
+    window.am4core.ready(function () {
 
       // Create chart instance
-      let chart = am4core.create(chart_div, am4charts.XYChart);
+      let chart = window.am4core.create(chart_div, window.am4charts.XYChart);
 
       // Add data
       chart.data = [];
@@ -351,7 +351,7 @@ jQuery(document).ready(function ($) {
         });
 
         // Create axes
-        let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+        let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
         categoryAxis.dataFields.category = "seeker_path";
         categoryAxis.numberFormatter.numberFormat = "#";
         categoryAxis.renderer.inversed = true;
@@ -359,7 +359,7 @@ jQuery(document).ready(function ($) {
         categoryAxis.renderer.cellStartLocation = 0.1;
         categoryAxis.renderer.cellEndLocation = 0.9;
 
-        let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+        let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
         valueAxis.renderer.opposite = true;
 
         createSeries("count", "");
@@ -370,37 +370,37 @@ jQuery(document).ready(function ($) {
 
       // Create series
       function createSeries(field, name) {
-        let series = chart.series.push(new am4charts.ColumnSeries());
+        let series = chart.series.push(new window.am4charts.ColumnSeries());
         series.dataFields.valueX = field;
         series.dataFields.categoryY = "seeker_path";
         series.name = name;
         series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
-        series.columns.template.height = am4core.percent(100);
+        series.columns.template.height = window.am4core.percent(100);
         series.sequencedInterpolation = true;
 
-        let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+        let valueLabel = series.bullets.push(new window.am4charts.LabelBullet());
         valueLabel.label.text = "{valueX}";
         valueLabel.label.horizontalCenter = "left";
         valueLabel.label.dx = 10;
         valueLabel.label.hideOversized = false;
         valueLabel.label.truncate = false;
 
-        let categoryLabel = series.bullets.push(new am4charts.LabelBullet());
+        let categoryLabel = series.bullets.push(new window.am4charts.LabelBullet());
         categoryLabel.label.text = "{name}";
         categoryLabel.label.horizontalCenter = "right";
         categoryLabel.label.dx = -10;
-        categoryLabel.label.fill = am4core.color("#fff");
+        categoryLabel.label.fill = window.am4core.color("#fff");
         categoryLabel.label.hideOversized = false;
         categoryLabel.label.truncate = false;
       }
-    }); // end am4core.ready()
+    }); // end window.am4core.ready()
   }
 
   function display_site_link_charts_milestones(milestones, chart_div, callback) {
-    am4core.ready(function () {
+    window.am4core.ready(function () {
 
       // Create chart instance
-      let chart = am4core.create(chart_div, am4charts.XYChart);
+      let chart = window.am4core.create(chart_div, window.am4charts.XYChart);
 
       // Add data
       chart.data = [];
@@ -415,7 +415,7 @@ jQuery(document).ready(function ($) {
         });
 
         // Create axes
-        let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+        let categoryAxis = chart.xAxes.push(new window.am4charts.CategoryAxis());
         categoryAxis.dataFields.category = "milestone";
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.minGridDistance = 30;
@@ -427,10 +427,10 @@ jQuery(document).ready(function ($) {
           return dy;
         });
 
-        let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        let valueAxis = chart.yAxes.push(new window.am4charts.ValueAxis());
 
         // Create series
-        let series = chart.series.push(new am4charts.ColumnSeries());
+        let series = chart.series.push(new window.am4charts.ColumnSeries());
         series.dataFields.valueY = "count";
         series.dataFields.categoryX = "milestone";
         series.name = "Milestones";
@@ -444,6 +444,6 @@ jQuery(document).ready(function ($) {
         // Execute callback() function
         callback();
       }
-    }); // end am4core.ready()
+    }); // end window.am4core.ready()
   }
 });

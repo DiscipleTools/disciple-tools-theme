@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
         $(document).trigger("text-input-updated", [newPost, id, val]);
         isUpdating = false
       }).catch((error) => {
-        handleAjaxError(error)
+        window.handleAjaxError(error)
         isUpdating = false
       })
     }
@@ -94,7 +94,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValues }).then((newPost)=>{
       $(`#${fieldKey}-spinner`).removeClass('active')
       post = newPost
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('.dt_textarea').change(function(){
@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "textarea-updated", [ newPost, id, val ] );
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('button.dt_multi_select').on('click',function () {
@@ -134,7 +134,7 @@ jQuery(document).ready(function($) {
     }).catch(err=>{
       field.removeClass("submitting-select-button selected-select-button")
       field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
-      handleAjaxError(err)
+      window.handleAjaxError(err)
     })
   })
 
@@ -150,19 +150,19 @@ jQuery(document).ready(function($) {
       }
       let id = $(this).attr('id')
       $(`#${id}-spinner`).addClass('active')
-      rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
+      rest_api.update_post( post_type, post_id, { [id]: window.moment.utc(date).unix() }).then((resp)=>{
         $(`#${id}-spinner`).removeClass('active')
         if (this.value) {
           this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
         }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
-      }).catch(handleAjaxError)
+      }).catch(window.handleAjaxError)
     },
     changeMonth: true,
     changeYear: true,
     yearRange: "1900:2050",
   }).each(function() {
-    if (this.value && moment.unix(this.value).isValid()) {
+    if (this.value && window.moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
     }
   })
@@ -178,7 +178,7 @@ jQuery(document).ready(function($) {
       $(`#${input_id}-spinner`).removeClass('active')
       $(document).trigger("dt_date_picker-updated", [resp, input_id, date]);
 
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   });
 
   $('select.select-field').change(e => {
@@ -192,7 +192,7 @@ jQuery(document).ready(function($) {
       if ( $(e.currentTarget).hasClass( "color-select")){
         $(`#${id}`).css("background-color", window.lodash.get(window.detailsSettings, `post_settings.fields[${id}].default[${val}].color`) )
       }
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('input.number-input').on("blur", function(){
@@ -202,7 +202,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "number-input-updated", [ resp, id, val ] );
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('.dt_contenteditable').on('blur', function(){
@@ -213,7 +213,7 @@ jQuery(document).ready(function($) {
     }
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   // Clicking the plus sign next to the field label
@@ -231,7 +231,7 @@ jQuery(document).ready(function($) {
   $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
 
   $('.add-link__option').on('click', (event) => {
-    SHAREDFUNCTIONS.addLink(event)
+    window.SHAREDFUNCTIONS.addLink(event)
     $(event.target).parent().hide()
     setTimeout(() => {
       event.target.parentElement.removeAttribute('style')
@@ -247,7 +247,7 @@ jQuery(document).ready(function($) {
     } else if ( key ){
       $(`#${field}-spinner`).addClass('active')
       update["key"] = key;
-      API.update_post(post_type, post_id, { [field]: [update]}).then((updatedContact)=>{
+      window.API.update_post(post_type, post_id, { [field]: [update]}).then((updatedContact)=>{
         $(this).parent().parent().remove()
         let list = $(`#edit-${field}`)
         if ( list.children().length === 0 ){
@@ -258,7 +258,7 @@ jQuery(document).ready(function($) {
         $(`#${field}-spinner`).removeClass('active')
         post = updatedContact
         resetDetailsFields()
-      }).catch(handleAjaxError)
+      }).catch(window.handleAjaxError)
     }
   })
 
@@ -283,11 +283,11 @@ jQuery(document).ready(function($) {
       ]
     }
 
-    API.update_post(post_type, post_id, { [fieldKey]: update }).then((updatedContact)=>{
+    window.API.update_post(post_type, post_id, { [fieldKey]: update }).then((updatedContact)=>{
       $(`#${fieldKey}-spinner`).removeClass('active')
       post = updatedContact
       resetDetailsFields()
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $(document).on('blur', 'input.dt-communication-channel', function(){
@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
       update["key"] = id;
     }
     $(`#${field_key}-spinner`).addClass('active')
-    API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
+    window.API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
       $(`#${field_key}-spinner`).removeClass('active')
       let key = window.lodash.last(updatedContact[field_key]).key
       $(this).attr('id', key)
@@ -312,7 +312,7 @@ jQuery(document).ready(function($) {
       }
       post = updatedContact
       resetDetailsFields()
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $( document ).on( 'select-field-updated', function (e, newContact, id, val) {
@@ -352,7 +352,7 @@ jQuery(document).ready(function($) {
    */
   $('.update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
-    API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
+    window.API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
       post = resp
     })
   })
@@ -364,8 +364,8 @@ jQuery(document).ready(function($) {
     $('#show-details-edit-button').toggle()
     $(`#details-section .typeahead__query input`).each((i, element)=>{
       let field_key = $(element).data("field")
-      if ( Typeahead[`.js-typeahead-${field_key}`]){
-        Typeahead[`.js-typeahead-${field_key}`].adjustInputSize()
+      if ( window.Typeahead[`.js-typeahead-${field_key}`]){
+        window.Typeahead[`.js-typeahead-${field_key}`].adjustInputSize()
       }
     })
   })
@@ -386,7 +386,7 @@ jQuery(document).ready(function($) {
       maxItem: 0,
       accent: true,
       searchOnFocus: true,
-      source: TYPEAHEADS.typeaheadUserSource(),
+      source: window.TYPEAHEADS.typeaheadUserSource(),
       templateValue: "{{name}}",
       template: function (query, item) {
         return `<div class="assigned-to-row" dir="auto">
@@ -406,14 +406,14 @@ jQuery(document).ready(function($) {
       emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
-          API.update_post(post_type, post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
+          window.API.update_post(post_type, post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
             window.lodash.set(post, field_key, response[field_key])
             user_input.val(post[field_key].display)
             user_input.blur()
           }).catch(err => { console.error(err) })
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_key}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -481,7 +481,7 @@ jQuery(document).ready(function($) {
         callback: {
           onCancel: function (node, item) {
             $(`#${field_id}-spinner`).addClass('active')
-            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
+            window.API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
               $(`#${field_id}-spinner`).removeClass('active')
             }).catch(err => { console.error(err) })
           }
@@ -503,7 +503,7 @@ jQuery(document).ready(function($) {
         },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
-          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).then(new_post=>{
+          window.API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).then(new_post=>{
             $(`#${field_id}-spinner`).removeClass('active')
             $( document ).trigger( "dt-post-connection-added", [ new_post, field_id ] );
           }).catch(err => { console.error(err) })
@@ -517,10 +517,10 @@ jQuery(document).ready(function($) {
           event.preventDefault()
           this.hideLayout();
           this.resetInput();
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function (event, query) {
@@ -528,10 +528,10 @@ jQuery(document).ready(function($) {
           if ( !query ){
             $(`#${field_id}-result-container`).empty()
           }
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onShowLayout (){
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         }
       }
     })
@@ -633,7 +633,7 @@ jQuery(document).ready(function($) {
         callback: {
           onCancel: function (node, item, event) {
             $(`#${field}-spinner`).addClass('active')
-            API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
+            window.API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
               $(`#${field}-spinner`).removeClass('active')
               this.hideLayout();
               this.resetInput();
@@ -652,7 +652,7 @@ jQuery(document).ready(function($) {
       callback: {
         onClick: function(node, a, item, event){
           $(`#${field}-spinner`).addClass('active')
-          API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
+          window.API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
             $(`#${field}-spinner`).removeClass('active')
             $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
             this.addMultiselectItemLayout(item)
@@ -662,7 +662,7 @@ jQuery(document).ready(function($) {
           }).catch(err => { console.error(err) })
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           if ( Object.keys(field_options).length > 0 ){
             //adding the result text moves the input. The timeout helps keep the dropdown from closing as the user clicks and cursor moves away from the input.
             setTimeout( () => {
@@ -703,7 +703,7 @@ jQuery(document).ready(function($) {
       return;
     }
     let update_field = connection_type;
-    API.create_post( field_settings[update_field].post_type, {
+    window.API.create_post( field_settings[update_field].post_type, {
       title,
       additional_meta: {
         created_from: post_id,
@@ -716,9 +716,9 @@ jQuery(document).ready(function($) {
       $(".hide-after-record-create").hide()
       $('#go-to-record').attr('href', window.lodash.escape( newRecord.permalink ));
       $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
-      if ( Typeahead[`.js-typeahead-${connection_type}`] ){
-        Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
-        masonGrid.masonry('layout')
+      if ( window.Typeahead[`.js-typeahead-${connection_type}`] ){
+        window.Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
+        window.masonGrid.masonry('layout')
       }
     })
     .catch(function(error) {
@@ -760,8 +760,8 @@ jQuery(document).ready(function($) {
             },
             callback: {
               done: function (data) {
-                if (typeof typeaheadTotals!=="undefined") {
-                  typeaheadTotals.field = data.total
+                if (typeof window.typeaheadTotals!=="undefined") {
+                  window.typeaheadTotals.field = data.total
                 }
                 return data.location_grid
               }
@@ -781,19 +781,19 @@ jQuery(document).ready(function($) {
 
         }, callback: {
           onCancel: function (node, item) {
-            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+            window.API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
             .catch(err => { console.error(err) })
           }
         }
       },
       callback: {
         onClick: function (node, a, item, event) {
-          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
+          window.API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
           this.resetInput();
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onReady() {
           this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
@@ -804,7 +804,7 @@ jQuery(document).ready(function($) {
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals[field_id]
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -842,7 +842,7 @@ jQuery(document).ready(function($) {
   $('.open-share').on("click", function(){
     $('#share-contact-modal').foundation('open');
     if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share(post_type, post_id )
+      shareTypeahead = window.TYPEAHEADS.share(post_type, post_id )
     }
   })
 
@@ -855,7 +855,7 @@ jQuery(document).ready(function($) {
       let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
                       || ( task.category !== "reminder" && task.value.status === 'task_complete' )
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
-      let task_row = `<strong>${window.lodash.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
+      let task_row = `<strong>${window.lodash.escape( window.moment(task.date).format("MMM D YYYY") )}</strong> `
       if ( task.category === "reminder" ){
         task_row += window.lodash.escape( window.detailsSettings.translations.reminder )
         if ( task.value.note ){
@@ -880,7 +880,7 @@ jQuery(document).ready(function($) {
     $('.complete-task').on("click", function () {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
-      API.update_post(post_type, post_id, {
+      window.API.update_post(post_type, post_id, {
           "tasks": { values: [ { id, value: {status: 'task_complete'}, } ] }
       }).then(resp => {
         post = resp
@@ -891,7 +891,7 @@ jQuery(document).ready(function($) {
     $('.remove-task').on("click", function () {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
-      API.update_post(post_type, post_id, {
+      window.API.update_post(post_type, post_id, {
           "tasks": { values: [ { id, delete: true } ] }
       }).then(resp => {
         post = resp
@@ -921,7 +921,7 @@ jQuery(document).ready(function($) {
       "monthNames": window.SHAREDFUNCTIONS.get_months_labels(),
     },
     "firstDay": 1,
-    "startDate": moment().add(1, "day"),
+    "startDate": window.moment().add(1, "day"),
     "opens": "center",
     "drops": "down"
   });
@@ -935,7 +935,7 @@ jQuery(document).ready(function($) {
     let date = $('#create-task-date').data('daterangepicker').startDate
     let note = task_note.val()
     let task_type = $('#tasks-modal input[name="task-type"]:checked').val()
-    API.update_post(post_type, post_id, {
+    window.API.update_post(post_type, post_id, {
       "tasks":{
         values: [
           {
@@ -1059,7 +1059,7 @@ jQuery(document).ready(function($) {
         callback: {
           onCancel: function (node, item, event) {
             $(`#${field}-spinner`).addClass('active')
-            API.update_post(post_type, post_id, {[field]: {values:[{value:item.name, delete:true}]}}).then((new_post)=>{
+            window.API.update_post(post_type, post_id, {[field]: {values:[{value:item.name, delete:true}]}}).then((new_post)=>{
               $(`#${field}-spinner`).removeClass('active')
               this.hideLayout();
               this.resetInput();
@@ -1082,16 +1082,16 @@ jQuery(document).ready(function($) {
           addTag(field, item.name)
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field}-result-container`).html(text);
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onHideLayout: function () {
           $(`#${field}-result-container`).html("");
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onShowLayout() {
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         }
       }
     });
@@ -1105,18 +1105,18 @@ jQuery(document).ready(function($) {
   $("#create-tag-return").on("click", function () {
     let field = $("#create-tag-modal").data("field");
     let tag = $("#new-tag").val()
-    Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({name: tag})
-    API.update_post(post_type, post_id, {[field]: {values: [{value: tag}]}})
+    window.Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({name: tag})
+    window.API.update_post(post_type, post_id, {[field]: {values: [{value: tag}]}})
   })
 
   function addTagOnClick(field, tag) {
     $(`#${field}-spinner`).addClass('active')
-    API.update_post(post_type, post_id, {[field]: {values:[{"value":tag}]}}).then(new_post=>{
+    window.API.update_post(post_type, post_id, {[field]: {values:[{"value":tag}]}}).then(new_post=>{
       $(`#${field}-spinner`).removeClass('active')
       this.addMultiselectItemLayout({name: tag})
       this.hideLayout();
       this.resetInput();
-      masonGrid.masonry('layout')
+      window.masonGrid.masonry('layout')
     }).catch(err => { console.error(err) })
   }
 
@@ -1257,13 +1257,13 @@ jQuery(document).ready(function($) {
 
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.delete_post( post_type, post_id ).then(()=>{
+    window.API.delete_post( post_type, post_id ).then(()=>{
       window.location = window.wpApiShare.site_url + '/' + post_type
     })
   })
   $('#archive-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.update_post( post_type, post_id, {overall_status:"closed"} ).then(()=>{
+    window.API.update_post( post_type, post_id, {overall_status:"closed"} ).then(()=>{
       $(this).attr("disabled", false).removeClass("loading");
       $('#archive-record-modal').foundation('close');
       $('.archived-notification').show()
@@ -1271,7 +1271,7 @@ jQuery(document).ready(function($) {
   })
   $('#unarchive-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.update_post( post_type, post_id, {overall_status:"active"} ).then(()=>{
+    window.API.update_post( post_type, post_id, {overall_status:"active"} ).then(()=>{
       $(this).attr("disabled", false).removeClass("loading");
       $('.archived-notification').hide()
     })
@@ -1327,7 +1327,7 @@ jQuery(document).ready(function($) {
         minLength: 0,
         accent: true,
         searchOnFocus: true,
-        source: TYPEAHEADS.typeaheadPostsSource(merge_post_type, {'include-users': false}),
+        source: window.TYPEAHEADS.typeaheadPostsSource(merge_post_type, {'include-users': false}),
         templateValue: "{{name}}",
         template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
@@ -1340,7 +1340,7 @@ jQuery(document).ready(function($) {
             $('#name-of-post-to-merge').html(item.name)
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#merge_with-result-container').html(text);
           },
           onHideLayout: function () {
@@ -1407,6 +1407,6 @@ jQuery(document).ready(function($) {
 
 // change update needed notification and switch if needed.
 function record_updated(updateNeeded) {
-  $('.update-needed-notification').toggle(updateNeeded)
-  $('.update-needed').prop("checked", updateNeeded)
+  jQuery('.update-needed-notification').toggle(updateNeeded)
+  jQuery('.update-needed').prop("checked", updateNeeded)
 }

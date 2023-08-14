@@ -1,3 +1,4 @@
+/* global dt_user_management_localized:false */
 jQuery(document).ready(function($) {
   let escaped_translations = window.SHAREDFUNCTIONS.escapeObject(window.dt_user_management_localized.translations)
 
@@ -87,14 +88,14 @@ jQuery(document).ready(function($) {
 
     $('#refresh_cached_data').on('click', function () {
       $('#loading-page').addClass('active')
-      makeRequest( "get", `get_users?refresh=1`, null , 'user-management/v1/').then(()=>{
+      window.makeRequest( "get", `get_users?refresh=1`, null , 'user-management/v1/').then(()=>{
         location.reload()
       })
     })
 
     $('.user_row').on("click", function (a) {
       if ( a.target._DT_CellIndex.column !== 0 ){
-        user_id = $(this).data("user")
+        let user_id = $(this).data("user")
         open_user_modal( user_id )
       }
     })
@@ -122,7 +123,7 @@ jQuery(document).ready(function($) {
     let data =  {
       [key]: value
     }
-    return makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
+    return window.makeRequest( "POST", `user?user=${user_id}`, data , 'user-management/v1/' )
   }
 
   let user_details = [];
@@ -238,13 +239,13 @@ jQuery(document).ready(function($) {
       'id': user_id,
       'email': user_email
     }
-    return makeRequest('POST', `send_pwd_reset_email`, data, 'user-management/v1/');
+    return window.makeRequest('POST', `send_pwd_reset_email`, data, 'user-management/v1/');
   }
 
   /**
    * Locations
    */
-  if ( typeof dtMapbox === "undefined" && $('.js-typeahead-location_grid').length) {
+  if ( typeof window.dtMapbox === "undefined" && $('.js-typeahead-location_grid').length) {
     let typeaheadTotals = {}
     if (!window.Typeahead['.js-typeahead-location_grid'] ){
       $.typeahead({
@@ -263,7 +264,7 @@ jQuery(document).ready(function($) {
           focus: {
             display: "name",
             ajax: {
-              url: wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
+              url: window.wpApiShare.root + 'dt/v1/mapping_module/search_location_grid_by_name',
               data: {
                 s: "{{query}}",
                 filter: function () {
@@ -271,12 +272,12 @@ jQuery(document).ready(function($) {
                 }
               },
               beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
               },
               callback: {
                 done: function (data) {
-                  if (typeof typeaheadTotals !== "undefined") {
-                    typeaheadTotals.field = data.total
+                  if (typeof window.typeaheadTotals !== "undefined") {
+                    window.typeaheadTotals.field = data.total
                   }
                   return data.location_grid
                 }
@@ -310,7 +311,7 @@ jQuery(document).ready(function($) {
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.location_grid
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#location_grid-result-container').html(text);
           },
           onHideLayout: function () {
@@ -363,7 +364,7 @@ jQuery(document).ready(function($) {
     }).catch(err=>{
       field.removeClass("submitting-select-button selected-select-button")
       field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
-      handleAjaxError(err)
+      window.handleAjaxError(err)
     })
   })
 
@@ -445,7 +446,7 @@ jQuery(document).ready(function($) {
     $('#workload-select').val('')
 
     //clear the locations typeahead of previous values when the modal is opened
-    let typeahead = Typeahead['.js-typeahead-location_grid']
+    let typeahead = window.Typeahead['.js-typeahead-location_grid']
     if (typeahead) {
       typeahead.items = [];
       typeahead.comparedItems =[];
@@ -454,7 +455,7 @@ jQuery(document).ready(function($) {
     }
 
     /* details */
-    makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')
+    window.makeRequest( "get", `user?user=${user_id}&section=details`, null , 'user-management/v1/')
       .done(details=>{
         if ( window.current_user_lookup === user_id ) {
           $('#profile_loading').removeClass("active")
@@ -497,17 +498,17 @@ jQuery(document).ready(function($) {
 
 
           //locations
-          if ( typeof dtMapbox !== "undefined" ) {
-            dtMapbox.post_type = 'users'
-            dtMapbox.user_id = user_id
-            dtMapbox.user_location = details.user_location
-            write_results_box()
+          if ( typeof window.dtMapbox !== "undefined" ) {
+            window.dtMapbox.post_type = 'users'
+            window.dtMapbox.user_id = user_id
+            window.dtMapbox.user_location = details.user_location
+            window.write_results_box()
 
             $( '#new-mapbox-search' ).on( "click", function() {
-              dtMapbox.post_type = 'users'
-              dtMapbox.user_id = user_id
-              dtMapbox.user_location = details.user_location
-              write_input_widget()
+              window.dtMapbox.post_type = 'users'
+              window.dtMapbox.user_id = user_id
+              window.dtMapbox.user_location = details.user_location
+              window.write_input_widget()
             });
           } else {
             //locations
@@ -531,7 +532,7 @@ jQuery(document).ready(function($) {
     $('#dmm-label').on( "click", function (){
       if ( !loaded_dmm_tab_once ) {
         /* locations */
-        makeRequest("get", `user?user=${user_id}&section=stats`, null, 'user-management/v1/')
+        window.makeRequest("get", `user?user=${user_id}&section=stats`, null, 'user-management/v1/')
         .done(details => {
           if (window.current_user_lookup===user_id) {
             //stats
@@ -552,7 +553,7 @@ jQuery(document).ready(function($) {
           console.log(e)
         })
         /* unaccepted_contacts */
-        makeRequest("get", `user?user=${user_id}&section=unaccepted_contacts`, null, 'user-management/v1/')
+        window.makeRequest("get", `user?user=${user_id}&section=unaccepted_contacts`, null, 'user-management/v1/')
         .done(response => {
 
           if (window.current_user_lookup===user_id && response.unaccepted_contacts.length > 0) {
@@ -575,7 +576,7 @@ jQuery(document).ready(function($) {
         })
 
         /* contact_accepts */
-        makeRequest("get", `user?user=${user_id}&section=contact_accepts`, null, 'user-management/v1/')
+        window.makeRequest("get", `user?user=${user_id}&section=contact_accepts`, null, 'user-management/v1/')
         .done(response => {
 
           if (window.current_user_lookup===user_id && response.contact_accepts.length > 0) {
@@ -587,7 +588,7 @@ jQuery(document).ready(function($) {
               avg_contact_accept += days
               let accept_line = escaped_translations.accept_time
               .replace('%1$s', contact.name)
-              .replace('%2$s', moment.unix(contact.date_accepted).format("MMM Do"))
+              .replace('%2$s', window.moment.unix(contact.date_accepted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
               accepted_contacts_html += `<li>
           <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
@@ -607,7 +608,7 @@ jQuery(document).ready(function($) {
         })
 
         /* unattempted_contacts */
-        makeRequest("get", `user?user=${user_id}&section=unattempted_contacts`, null, 'user-management/v1/')
+        window.makeRequest("get", `user?user=${user_id}&section=unattempted_contacts`, null, 'user-management/v1/')
         .done(response => {
 
           if (window.current_user_lookup===user_id && response.unattempted_contacts.length > 0) {
@@ -634,7 +635,7 @@ jQuery(document).ready(function($) {
         })
 
         /* contact_attempts */
-        makeRequest("get", `user?user=${user_id}&section=contact_attempts`, null, 'user-management/v1/')
+        window.makeRequest("get", `user?user=${user_id}&section=contact_attempts`, null, 'user-management/v1/')
         .done(response => {
 
           if (window.current_user_lookup===user_id && response.contact_attempts.length > 0) {
@@ -646,7 +647,7 @@ jQuery(document).ready(function($) {
               avg_contact_attempt += days
               let line = escaped_translations.contact_attempt_time
               .replace('%1$s', window.lodash.escape(contact.name))
-              .replace('%2$s', moment.unix(contact.date_attempted).format("MMM Do"))
+              .replace('%2$s', window.moment.unix(contact.date_attempted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
               attempted_contacts_html += `<li>
           <a href="${window.wpApiShare.site_url}/contacts/${window.lodash.escape(contact.ID)}" target="_blank">
@@ -668,7 +669,7 @@ jQuery(document).ready(function($) {
     })
 
     /* activity */
-    makeRequest( "get", `user?user=${user_id}&section=activity`, null , 'user-management/v1/')
+    window.makeRequest( "get", `user?user=${user_id}&section=activity`, null , 'user-management/v1/')
       .done(activity=>{
         if ( window.current_user_lookup === user_id ) {
           let activity_div = $('#activity')
@@ -681,7 +682,7 @@ jQuery(document).ready(function($) {
     })
 
     /* days active */
-    makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
+    window.makeRequest( "get", `user?user=${user_id}&section=days_active`, null , 'user-management/v1/')
       .done(days=>{
         if ( window.current_user_lookup === user_id ) {
           let days_of_the_week = window.SHAREDFUNCTIONS.get_days_of_the_week_initials('short')
@@ -703,15 +704,15 @@ jQuery(document).ready(function($) {
   }
 
   function day_activity_chart( days_active ) {
-    am4core.ready(function() {
+    window.am4core.ready(function() {
 
-      am4core.useTheme(am4themes_animated);
+      window.am4core.useTheme(window.am4themes_animated);
 
-      let chart = am4core.create("day_activity_chart", am4charts.XYChart);
+      let chart = window.am4core.create("day_activity_chart", window.am4charts.XYChart);
       chart.maskBullets = false;
 
-      let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      let yAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+      let xAxis = chart.xAxes.push(new window.am4charts.CategoryAxis());
+      let yAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
 
       xAxis.dataFields.category = "week_start";
       yAxis.dataFields.category = "weekday";
@@ -723,28 +724,28 @@ jQuery(document).ready(function($) {
       yAxis.renderer.inversed = true;
       yAxis.renderer.minGridDistance = 10;
 
-      let series = chart.series.push(new am4charts.ColumnSeries());
+      let series = chart.series.push(new window.am4charts.ColumnSeries());
       series.dataFields.categoryY = "weekday";
       series.dataFields.categoryX = "week_start";
       series.dataFields.value = "activity";
       series.sequencedInterpolation = true;
       series.defaultState.transitionDuration = 3000;
 
-      let bgColor = new am4core.InterfaceColorSet().getFor("background");
+      let bgColor = new window.am4core.InterfaceColorSet().getFor("background");
 
       let columnTemplate = series.columns.template;
       columnTemplate.strokeWidth = 1;
       columnTemplate.strokeOpacity = 0.2;
       // columnTemplate.stroke = bgColor;
       columnTemplate.tooltipText = "{weekday}, {day}: {activity_count}";
-      columnTemplate.width = am4core.percent(100);
-      columnTemplate.height = am4core.percent(100);
+      columnTemplate.width = window.am4core.percent(100);
+      columnTemplate.height = window.am4core.percent(100);
 
       series.heatRules.push({
         target: columnTemplate,
         property: "fill",
-        // min: am4core.color('#deeff8'),
-        min: am4core.color(bgColor),
+        // min: window.am4core.color('#deeff8'),
+        min: window.am4core.color(bgColor),
         max: chart.colors.getIndex(0)
       });
 
@@ -759,21 +760,21 @@ jQuery(document).ready(function($) {
       return
     }
 
-    am4core.useTheme(am4themes_animated);
+    window.am4core.useTheme(window.am4themes_animated);
 
-    let container = am4core.create("status_chart_div", am4core.Container);
-    container.width = am4core.percent(100);
-    container.height = am4core.percent(100);
+    let container = window.am4core.create("status_chart_div", window.am4core.Container);
+    container.width = window.am4core.percent(100);
+    container.height = window.am4core.percent(100);
     container.layout = "vertical";
 
 
-    let chart = container.createChild(am4charts.PieChart);
+    let chart = container.createChild(window.am4charts.PieChart);
 
     // Add data
     chart.data = contact_statuses
 
     // Add and configure Series
-    let pieSeries = chart.series.push(new am4charts.PieSeries());
+    let pieSeries = chart.series.push(new window.am4charts.PieSeries());
     pieSeries.dataFields.value = "count";
     pieSeries.dataFields.category = "status";
     pieSeries.slices.template.states.getKey("active").properties.shiftRadius = 0;
@@ -783,12 +784,12 @@ jQuery(document).ready(function($) {
       selectSlice(event.target.dataItem);
     })
 
-    let chart2 = container.createChild(am4charts.PieChart);
-    chart2.width = am4core.percent(80);
-    chart2.radius = am4core.percent(80);
+    let chart2 = container.createChild(window.am4charts.PieChart);
+    chart2.width = window.am4core.percent(80);
+    chart2.radius = window.am4core.percent(80);
 
     // Add and configure Series
-    let pieSeries2 = chart2.series.push(new am4charts.PieSeries());
+    let pieSeries2 = chart2.series.push(new window.am4charts.PieSeries());
     pieSeries2.dataFields.value = "count";
     pieSeries2.dataFields.category = "reason";
     pieSeries2.slices.template.states.getKey("active").properties.shiftRadius = 0;
@@ -797,15 +798,15 @@ jQuery(document).ready(function($) {
     pieSeries2.alignLabels = false;
     pieSeries2.events.on("positionchanged", updateLines);
 
-    let interfaceColors = new am4core.InterfaceColorSet();
+    let interfaceColors = new window.am4core.InterfaceColorSet();
 
-    let line1 = container.createChild(am4core.Line);
+    let line1 = container.createChild(window.am4core.Line);
     line1.strokeDasharray = "2,2";
     line1.strokeOpacity = 0.5;
     line1.stroke = interfaceColors.getFor("alternativeBackground");
     line1.isMeasured = false;
 
-    let line2 = container.createChild(am4core.Line);
+    let line2 = container.createChild(window.am4core.Line);
     line2.strokeDasharray = "2,2";
     line2.strokeOpacity = 0.5;
     line2.stroke = interfaceColors.getFor("alternativeBackground");
@@ -826,7 +827,7 @@ jQuery(document).ready(function($) {
 
       let middleAngle = selectedSlice.middleAngle;
       let firstAngle = pieSeries.slices.getIndex(0).startAngle;
-      let animation = pieSeries.animate([{ property: "startAngle", to: firstAngle - middleAngle }, { property: "endAngle", to: firstAngle - middleAngle + 360 }], 600, am4core.ease.sinOut);
+      let animation = pieSeries.animate([{ property: "startAngle", to: firstAngle - middleAngle }, { property: "endAngle", to: firstAngle - middleAngle + 360 }], 600, window.am4core.ease.sinOut);
       animation.events.on("animationprogress", updateLines);
 
       selectedSlice.events.on("transformed", updateLines);
@@ -834,17 +835,17 @@ jQuery(document).ready(function($) {
 
     function updateLines() {
       if (selectedSlice) {
-        let p11 = { x: selectedSlice.radius * am4core.math.cos(selectedSlice.startAngle), y: selectedSlice.radius * am4core.math.sin(selectedSlice.startAngle) };
-        let p12 = { x: selectedSlice.radius * am4core.math.cos(selectedSlice.startAngle + selectedSlice.arc), y: selectedSlice.radius * am4core.math.sin(selectedSlice.startAngle + selectedSlice.arc) };
+        let p11 = { x: selectedSlice.radius * window.am4core.math.cos(selectedSlice.startAngle), y: selectedSlice.radius * window.am4core.math.sin(selectedSlice.startAngle) };
+        let p12 = { x: selectedSlice.radius * window.am4core.math.cos(selectedSlice.startAngle + selectedSlice.arc), y: selectedSlice.radius * window.am4core.math.sin(selectedSlice.startAngle + selectedSlice.arc) };
 
-        p11 = am4core.utils.spritePointToSvg(p11, selectedSlice);
-        p12 = am4core.utils.spritePointToSvg(p12, selectedSlice);
+        p11 = window.am4core.utils.spritePointToSvg(p11, selectedSlice);
+        p12 = window.am4core.utils.spritePointToSvg(p12, selectedSlice);
 
         let p21 = { x: 0, y: -pieSeries2.pixelRadius };
         let p22 = { x: 0, y: pieSeries2.pixelRadius };
 
-        p21 = am4core.utils.spritePointToSvg(p21, pieSeries2);
-        p22 = am4core.utils.spritePointToSvg(p22, pieSeries2);
+        p21 = window.am4core.utils.spritePointToSvg(p21, pieSeries2);
+        p22 = window.am4core.utils.spritePointToSvg(p22, pieSeries2);
 
         line1.x1 = p11.x;
         line1.x2 = p21.x;
@@ -950,7 +951,7 @@ jQuery(document).ready(function($) {
         $('#create-user').addClass('loading')
         submit_button.prop('disabled', true)
 
-        return makeRequest(
+        return window.makeRequest(
           "POST",
           `users/create`,
           {
@@ -996,7 +997,7 @@ jQuery(document).ready(function($) {
 
     function getContact(id, isUser = false, overwriteTypeahead = false) {
       $('.loading-spinner').addClass('active')
-      makeRequest('GET', 'contacts/'+id, null, 'dt-posts/v2/' )
+      window.makeRequest('GET', 'contacts/'+id, null, 'dt-posts/v2/' )
         .done(function(response){
 
           if (overwriteTypeahead) {
@@ -1044,7 +1045,7 @@ jQuery(document).ready(function($) {
             getContact(item.ID, item.user)
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $(`#${field_id}-result-container`).html(text);
             submit_button.prop('disabled', false)
             $('#contact-result').html(``)

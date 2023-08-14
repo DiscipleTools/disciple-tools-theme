@@ -265,7 +265,7 @@ jQuery(function ($) {
           let post_timestamp = $(td).find('#' + field_id).val();
           let hasStartDate = (post_timestamp && post && post[post_field_id] !== undefined);
           if (hasStartDate) {
-            date_config['startDate'] = moment.unix(post_timestamp);
+            date_config['startDate'] = window.moment.unix(post_timestamp);
             field_meta.val(post_timestamp);
           }
 
@@ -417,7 +417,7 @@ jQuery(function ($) {
                 this.addMultiselectItemLayout({name: item.name});
               },
               onResult: function (node, query, result, resultCount) {
-                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
                 $(td).find(`#${field_id}-result-container`).html(text);
               },
               onHideLayout: function () {
@@ -569,7 +569,7 @@ jQuery(function ($) {
               }
 
               // Switch over to standard workflow, with autosubmit disabled!
-              write_input_widget();
+              window.write_input_widget();
             });
 
             // Hide new button and default to single entry
@@ -611,7 +611,7 @@ jQuery(function ($) {
             if (post_location_grid_meta !== undefined && post_location_grid_meta.length !== 0) {
               $.each(post_location_grid_meta, function (i, v) {
                 if (String(grid_meta_id) === String(v.grid_meta_id)) {
-                  return load_modal(v.lng, v.lat, v.level, v.label, v.grid_id);
+                  return window.load_modal(v.lng, v.lat, v.level, v.label, v.grid_id);
                 }
               });
             }
@@ -736,7 +736,7 @@ jQuery(function ($) {
             maxItem: 0,
             accent: true,
             searchOnFocus: true,
-            source: TYPEAHEADS.typeaheadUserSource(),
+            source: window.TYPEAHEADS.typeaheadUserSource(),
             templateValue: "{{name}}",
             template: function (query, item) {
               return `<div class="assigned-to-row" dir="auto">
@@ -758,7 +758,7 @@ jQuery(function ($) {
               onClick: function (node, a, item) {
               },
               onResult: function (node, query, result, resultCount) {
-                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
                 $(`#${field_id}-result-container`).html(text);
               },
               onHideLayout: function () {
@@ -804,7 +804,7 @@ jQuery(function ($) {
               searchOnFocus: true,
               maxItem: 20,
               template: window.TYPEAHEADS.contactListRowTemplate,
-              source: TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
+              source: window.TYPEAHEADS.typeaheadPostsSource(post_type, field_id),
               display: ["name", "label"],
               templateValue: function () {
                 if (this.items[this.items.length - 1].label) {
@@ -828,7 +828,7 @@ jQuery(function ($) {
               },
               callback: {
                 onResult: function (node, query, result, resultCount) {
-                  let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
+                  let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result);
                   $(`#${field_id}-result-container`).html(text);
                 },
                 onHideLayout: function () {

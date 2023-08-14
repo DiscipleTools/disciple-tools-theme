@@ -4,7 +4,7 @@ let post = window.detailsSettings.post_fields
 
 
 function setStatus(contact, openModal) {
-  let statusSelect = $('#overall_status')
+  let statusSelect = jQuery('#overall_status')
   let status = window.lodash.get(contact, "overall_status.key")
   let reasonLabel = window.lodash.get(contact, `reason_${status}.label`)
   let statusColor = window.lodash.get(window.detailsSettings,
@@ -14,11 +14,11 @@ function setStatus(contact, openModal) {
 
   if (openModal){
     if (status === "paused"){
-      $('#paused-contact-modal').foundation('open');
+      jQuery('#paused-contact-modal').foundation('open');
     } else if (status === "closed"){
-      $('#closed-contact-modal').foundation('open');
+      jQuery('#closed-contact-modal').foundation('open');
     } else if (status === 'unassignable'){
-      $('#unassignable-contact-modal').foundation('open');
+      jQuery('#unassignable-contact-modal').foundation('open');
     }
   }
 
@@ -29,19 +29,19 @@ function setStatus(contact, openModal) {
   }
 
   if (["paused", "closed", "unassignable"].includes(status)){
-    $('#reason').text(`(${reasonLabel})`)
-    $(`#edit-reason`).show()
+    jQuery('#reason').text(`(${reasonLabel})`)
+    jQuery(`#edit-reason`).show()
   } else {
-    $('#reason').text(``)
-    $(`#edit-reason`).hide()
+    jQuery('#reason').text(``)
+    jQuery(`#edit-reason`).hide()
   }
 }
 
 function updateCriticalPath(key) {
-  $('#seeker_path').val(key)
+  jQuery('#seeker_path').val(key)
   let seekerPathKeys = window.lodash.keys(post.seeker_path.default)
   let percentage = (window.lodash.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
-  $('#seeker-progress').css("width", `${percentage}%`)
+  jQuery('#seeker-progress').css("width", `${percentage}%`)
 }
 
 
@@ -63,9 +63,9 @@ jQuery(document).ready(function($) {
   })
   $('#content')[0].addEventListener('comment_posted', function (e) {
     if ( $('.update-needed').prop("checked") === true ){
-      API.get_post("contacts",  post_id ).then(resp=>{
+      window.API.get_post("contacts",  post_id ).then(resp=>{
         post = resp
-        record_updated(window.lodash.get(resp, "requires_update") === true )
+        window.record_updated(window.lodash.get(resp, "requires_update") === true )
       }).catch(err => { console.error(err) })
     }
   }, false);
@@ -88,7 +88,7 @@ jQuery(document).ready(function($) {
     $(this).toggleClass('loading')
     let data = {overall_status:field}
     data[`reason_${field}`] = select.val()
-    API.update_post('contacts', post_id, data).then(contactData=>{
+    window.API.update_post('contacts', post_id, data).then(contactData=>{
       $(this).toggleClass('loading')
       $(`#${field}-contact-modal`).foundation('close')
       setStatus(contactData)
@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
   $('.accept-decline').on('click', function () {
     let action = $(this).data("action")
     let data = {accept:action === "accept"}
-    makeRequestOnPosts( "POST", `contacts/${post_id}/accept`, data)
+    window.makeRequestOnPosts( "POST", `contacts/${post_id}/accept`, data)
     .then(function (resp) {
       setStatus(resp)
       jQuery('#accept-contact').hide()
@@ -228,7 +228,7 @@ jQuery(document).ready(function($) {
     let user_id = $(this).data('id')
     $('#dispatch-tile-loader').addClass('active')
     let status = selected_role === "dispatcher" ? "unassigned" : "assigned"
-    API.update_post(
+    window.API.update_post(
       'contacts',
       window.detailsSettings.post_fields.ID,
       {
