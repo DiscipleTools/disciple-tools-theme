@@ -74,7 +74,7 @@ class Disciple_Tools_People_Groups_Base {
 
     public function dt_nav_filter( $navigation_array ) {
         $post_type_updates = get_option( 'dt_custom_post_types', [] );
-        $is_hidden = $post_type_updates[$this->post_type]['hidden'] ?? false;
+        $is_hidden = $post_type_updates[$this->post_type]['hidden'] ?? true;
 
         if ( isset( $navigation_array['main'], $navigation_array['main'][ $this->post_type ] ) ) {
             $navigation_array['main'][ $this->post_type ]['hidden'] = $is_hidden;
