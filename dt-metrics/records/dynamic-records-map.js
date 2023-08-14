@@ -84,23 +84,23 @@ jQuery(document).ready(function($) {
                             <select id="add_records_div_content_post_type">
                               <optgroup label="${window.lodash.escape(this.obj.translations.add_records.post_type_select_opt_group_record_types)}">
                               ${(function (obj) {
-  
+
                                 let html = ``;
                                 jQuery.each(obj.settings.post_types, function(idx, post_type){
                                   html += `<option value="${window.lodash.escape(idx)}">${window.lodash.escape(post_type['label'])}</option>`;
                                 });
-  
+
                                 return html;
                               })(this.obj)}
                               </optgroup>
                               <optgroup label="${window.lodash.escape(this.obj.translations.add_records.post_type_select_opt_group_system)}">
                               ${(function (obj) {
-  
+
                                 let html = ``;
                                 jQuery.each(obj.settings.post_types_system_options, function(idx, post_type_system){
                                   html += `<option value="system-${window.lodash.escape(idx)}">${window.lodash.escape(post_type_system['label'])}</option>`;
                                 });
-  
+
                                 return html;
                               })(this.obj)}
                               </optgroup>
@@ -278,7 +278,10 @@ jQuery(document).ready(function($) {
                 mapbox_library_api.map_query_layer_payloads[response.request.id] = cookie;
 
                 // Assign to main parent layers cookie.
-                let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id);
+                let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, {});
+                if (!dt_maps_layers_cookie) {
+                  dt_maps_layers_cookie = {};
+                }
                 dt_maps_layers_cookie['' + response.request.id] = cookie;
                 window.SHAREDFUNCTIONS.save_json_to_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, null);
 
@@ -663,46 +666,88 @@ jQuery(document).ready(function($) {
       mapbox_library_api.map.on('click', query_layer_key, function (e) {
         e.preventDefault();
 
-        let features = e.features;
         let geocode_details = $('#geocode-details');
         let geocode_details_content = $('#geocode-details-content');
+        $(geocode_details_content).empty();
 
-        $(geocode_details).fadeOut('fast', function () {
-          $(geocode_details_content).empty();
+        if (e.features) {
 
-          if (features) {
-            let content_html = ``;
-            $.each(features, function (idx, feature) {
-              if ( idx > 20 ){ return }
-              if (feature.properties && feature.properties.post_type && feature.properties.post_id && feature.properties.name) {
+          // Fetch all points across layers, within given range.
+          let features = mapbox_library_api.fetch_neighbouring_point_features(e.lngLat.lat, e.lngLat.lng, 0.1);
 
-                // Ensure the correct post type is adopted for system based query layers.
-                let post_type = feature.properties.post_type;
-                switch (post_type) {
-                  case 'system-users': {
-                    post_type = 'contacts';
-                    break;
-                  }
+          let content_html = ``;
+          $.each(features, function (idx, feature) {
+            if ( idx > 20 ){ return }
+            if (feature.properties && feature.properties.post_type && feature.properties.post_id && feature.properties.name) {
+
+              // Ensure the correct post type is adopted for system based query layers.
+              let post_type = feature.properties.post_type;
+              switch (post_type) {
+                case 'system-users': {
+                  post_type = 'contacts';
+                  break;
                 }
-
-                content_html += `
-                  <div class="grid-x" id="list-${window.lodash.escape( idx )}">
-                    <div class="cell">
-                        <a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape(post_type)}/${window.lodash.escape(feature.properties.post_id)}">${window.lodash.escape(feature.properties.name)}</a>
-                    </div>
-                  </div>`;
               }
-            });
-            $(geocode_details_content).html(content_html);
 
-            // Remove any duplicate links.
-            mapbox_library_api.remove_geocode_details_content_duplicates();
+              content_html += `
+                <div class="grid-x" id="list-${window.lodash.escape( idx )}">
+                  <div class="cell">
+                      <a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape(post_type)}/${window.lodash.escape(feature.properties.post_id)}">${window.lodash.escape(feature.properties.name)}</a>
+                  </div>
+                </div>`;
+            }
+          });
+          $(geocode_details_content).html(content_html);
 
-            $(geocode_details_content).fadeIn('fast');
-            $(geocode_details).fadeIn('fast');
-          }
-        });
+          // Remove any duplicate links.
+          mapbox_library_api.remove_geocode_details_content_duplicates();
+
+          $(geocode_details_content).fadeIn('fast');
+          $(geocode_details).fadeIn('fast');
+        }
       });
+    },
+    fetch_neighbouring_point_features: function (lat, lng, range) {
+
+      // Define neighbouring point ranges by way of surrounding block.
+      let lat_range = parseFloat(range) * parseFloat(lat);
+      let lat_min = parseFloat(lat) - lat_range;
+      let lat_max = parseFloat(lat) + lat_range;
+
+      let lng_range = parseFloat(range) * parseFloat(lng);
+      let lng_min = parseFloat(lng) - lng_range;
+      let lng_max = parseFloat(lng) + lng_range;
+
+      // Iterate over available dt-map sources and generate unique list of neighbours.
+      let neighbouring_posts_already_captured = [];
+      let neighbouring_post_features = [];
+
+      let style = mapbox_library_api.map.getStyle();
+      window.lodash.forOwn(style.sources, (source, source_id) => {
+        if (source_id.startsWith('dt-maps-') && source.data && source.data.features) {
+          $.each(source.data.features, function (idx, feature) {
+
+            // Determine if point coordinates fall within calculated range.
+            if (feature.geometry && feature.geometry.coordinates) {
+              let feature_lat = parseFloat(feature.geometry.coordinates[1]);
+              let feature_lng = parseFloat(feature.geometry.coordinates[0]);
+              let feature_properties = feature.properties;
+
+              // Ensure negative coordinates are checked accordingly.
+              let neighbouring_lat = (feature_lat < 0) ? ((feature_lat >= lat_max) && (feature_lat <= lat_min)):((feature_lat >= lat_min) && (feature_lat <= lat_max));
+              let neighbouring_lng = (feature_lng < 0) ? ((feature_lng >= lng_max) && (feature_lng <= lng_min)):((feature_lng >= lng_min) && (feature_lng <= lng_max));
+
+              // If flagged, capture feature details; if not already done so.
+              if (neighbouring_lat && neighbouring_lng && feature_properties && feature_properties.post_id && !window.lodash.includes(neighbouring_posts_already_captured, feature_properties.post_id)) {
+                neighbouring_posts_already_captured.push(feature_properties.post_id);
+                neighbouring_post_features.push(feature);
+              }
+            }
+          });
+        }
+      });
+
+      return neighbouring_post_features;
     },
     show_records_modal_add_mode: function () {
       let add_records_div = $('#add_records_div');
