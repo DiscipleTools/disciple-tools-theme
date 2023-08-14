@@ -749,6 +749,9 @@ window.SHAREDFUNCTIONS = {
         return [ key, window.lodash.escape(value)]
     }))
   },
+  escapeHTML(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+  },
   make_links_clickable( selector ){
     //make text links clickable in a section
     let elem_text = jQuery(selector).html()
