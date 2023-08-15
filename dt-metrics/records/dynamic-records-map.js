@@ -728,22 +728,20 @@ jQuery(document).ready(function($) {
       });
     },
     adjust_layer_point_sizes: function () {
-      if (mapbox_library_api.current_map_type === 'points') {
-        let layers = [];
-        let style = mapbox_library_api.map.getStyle();
-        style.layers.forEach(layer => {
-          if (layer.id.startsWith("dt-maps-")) {
-            layers.push(layer);
-          }
-        });
-
-        // Proceed with layer point size adjustments, starting in reverse order.
-        let counter = 0;
-        for (let i = (layers.length - 1); i >= 0; i--) {
-          let size = counter * 4;
-          counter++;
-          mapbox_library_api.map.setPaintProperty(layers[i].id, 'circle-translate', [size, 0]);
+      let layers = [];
+      let style = mapbox_library_api.map.getStyle();
+      style.layers.forEach(layer => {
+        if (layer.id.startsWith('dt-maps-') && layer.id.endsWith('-layer')) {
+          layers.push(layer);
         }
+      });
+
+      // Proceed with layer point size adjustments, starting in reverse order.
+      let counter = 0;
+      for (let i = (layers.length - 1); i >= 0; i--) {
+        let size = counter * 4;
+        counter++;
+        mapbox_library_api.map.setPaintProperty(layers[i].id, 'circle-translate', [size, 0]);
       }
     },
     show_records_modal_add_mode: function () {
