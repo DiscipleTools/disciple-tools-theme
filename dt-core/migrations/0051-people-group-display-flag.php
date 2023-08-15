@@ -2,10 +2,10 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * Class DT_Mapping_Module_Migration_0020
+ * Class Disciple_Tools_Migration_0051
  * Migrate people groups display tab flag.
  */
-class DT_Mapping_Module_Migration_0020 extends DT_Mapping_Module_Migration {
+class Disciple_Tools_Migration_0051 extends Disciple_Tools_Migration {
 
     /**
      * @throws \Exception  Got error when creating table $name.
