@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
   let spinner_html = '<span class="loading-spinner users-spinner active"></span>'
   let mapbox_library_api = {
     container_set_up: false,
-    current_map_type: 'cluster',
+    current_map_type: 'points',
     obj: window.dt_mapbox_metrics,
     post_type: window.dt_mapbox_metrics.settings.post_type,
     title: window.dt_mapbox_metrics.settings.title,
