@@ -327,6 +327,9 @@ jQuery(document).ready(function($) {
                 // Remove layer data points.
                 mapbox_library_api.remove_map_record_layer(layer_settings.id);
 
+                // Adjust all map layer points.
+                mapbox_library_api.adjust_layer_point_sizes();
+
               } else {
                 layer_settings['displayed'] = true;
 
@@ -343,6 +346,10 @@ jQuery(document).ready(function($) {
 
                       // Add corresponding mqp query source and layer.
                       mapbox_library_api.add_map_record_layer(response.request.id, layer_settings.color, response.response);
+
+                      // Adjust all map layer points.
+                      mapbox_library_api.adjust_layer_point_sizes();
+
                     }
                   }
                 });
@@ -405,7 +412,7 @@ jQuery(document).ready(function($) {
         mapbox_library_api.show_records_modal_edit_mode(query_payload_id, query_payload, query_layer_title);
       });
     },
-    reload_record_layers: function (reload_data = true) {
+    reload_record_layers: function (reload_data = true, callback) {
 
       // Reload to be based on currently stored cookie settings.
       let dt_maps_layers_cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, false);
@@ -435,7 +442,6 @@ jQuery(document).ready(function($) {
         // Force a reload.
         reload_data = true;
       }
-
 
       // Proceed with layer displaying based on loaded cookie settings.
       mapbox_library_api.map_query_layer_payloads = {};
@@ -486,6 +492,10 @@ jQuery(document).ready(function($) {
 
                 // Add corresponding mqp query source and layer.
                 mapbox_library_api.add_map_record_layer(response.request.id, cookie.color, response.response);
+              }
+
+              if (callback) {
+                callback();
               }
             }
           });
@@ -666,14 +676,18 @@ jQuery(document).ready(function($) {
       mapbox_library_api.map.on('click', query_layer_key, function (e) {
         e.preventDefault();
 
-        let geocode_details = $('#geocode-details');
-        let geocode_details_content = $('#geocode-details-content');
-        $(geocode_details_content).empty();
+        let features = [];
+        let rendered_features = mapbox_library_api.map.queryRenderedFeatures(e.point);
+        $.each(rendered_features, function (idx, feature) {
+          if (feature.source && feature.source.startsWith('dt-maps-')) {
+            features.push(feature);
+          }
+        });
 
-        if (e.features) {
-
-          // Fetch all points across layers, within given range.
-          let features = mapbox_library_api.fetch_neighbouring_point_features(e.lngLat.lat, e.lngLat.lng, 0.1);
+        if (features.length > 0) {
+          let geocode_details = $('#geocode-details');
+          let geocode_details_content = $('#geocode-details-content');
+          $(geocode_details_content).empty();
 
           let content_html = ``;
           $.each(features, function (idx, feature) {
@@ -707,47 +721,23 @@ jQuery(document).ready(function($) {
         }
       });
     },
-    fetch_neighbouring_point_features: function (lat, lng, range) {
+    adjust_layer_point_sizes: function () {
+      if (mapbox_library_api.current_map_type === 'points') {
+        let layers = [];
+        let style = mapbox_library_api.map.getStyle();
+        style.layers.forEach(layer => {
+          if (layer.id.startsWith("dt-maps-")) {
+            layers.push(layer);
+          }
+        });
 
-      // Define neighbouring point ranges by way of surrounding block.
-      let lat_range = parseFloat(range) * parseFloat(lat);
-      let lat_min = parseFloat(lat) - lat_range;
-      let lat_max = parseFloat(lat) + lat_range;
-
-      let lng_range = parseFloat(range) * parseFloat(lng);
-      let lng_min = parseFloat(lng) - lng_range;
-      let lng_max = parseFloat(lng) + lng_range;
-
-      // Iterate over available dt-map sources and generate unique list of neighbours.
-      let neighbouring_posts_already_captured = [];
-      let neighbouring_post_features = [];
-
-      let style = mapbox_library_api.map.getStyle();
-      window.lodash.forOwn(style.sources, (source, source_id) => {
-        if (source_id.startsWith('dt-maps-') && source.data && source.data.features) {
-          $.each(source.data.features, function (idx, feature) {
-
-            // Determine if point coordinates fall within calculated range.
-            if (feature.geometry && feature.geometry.coordinates) {
-              let feature_lat = parseFloat(feature.geometry.coordinates[1]);
-              let feature_lng = parseFloat(feature.geometry.coordinates[0]);
-              let feature_properties = feature.properties;
-
-              // Ensure negative coordinates are checked accordingly.
-              let neighbouring_lat = (feature_lat < 0) ? ((feature_lat >= lat_max) && (feature_lat <= lat_min)):((feature_lat >= lat_min) && (feature_lat <= lat_max));
-              let neighbouring_lng = (feature_lng < 0) ? ((feature_lng >= lng_max) && (feature_lng <= lng_min)):((feature_lng >= lng_min) && (feature_lng <= lng_max));
-
-              // If flagged, capture feature details; if not already done so.
-              if (neighbouring_lat && neighbouring_lng && feature_properties && feature_properties.post_id && !window.lodash.includes(neighbouring_posts_already_captured, feature_properties.post_id)) {
-                neighbouring_posts_already_captured.push(feature_properties.post_id);
-                neighbouring_post_features.push(feature);
-              }
-            }
-          });
+        // Proceed with layer point size adjustments, starting in reverse order.
+        let counter = 0;
+        for (let i = (layers.length - 1); i >= 0; i--) {
+          let size = ++counter * 6;
+          mapbox_library_api.map.setPaintProperty(layers[i].id, 'circle-radius', size);
         }
-      });
-
-      return neighbouring_post_features;
+      }
     },
     show_records_modal_add_mode: function () {
       let add_records_div = $('#add_records_div');
@@ -977,8 +967,10 @@ jQuery(document).ready(function($) {
       // disable map rotation using touch rotation gesture
       mapbox_library_api.map.touchZoomRotate.disableRotation();
 
-      mapbox_library_api.map.on('load', function() {
-        mapbox_library_api.reload_record_layers();
+      mapbox_library_api.map.on('load', function () {
+        mapbox_library_api.reload_record_layers(true, function () {
+          mapbox_library_api.adjust_layer_point_sizes();
+        });
       });
     },
     load_map: function (map_type, query){
