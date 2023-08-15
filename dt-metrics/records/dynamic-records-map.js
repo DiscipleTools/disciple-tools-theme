@@ -740,7 +740,7 @@ jQuery(document).ready(function($) {
         // Proceed with layer point size adjustments, starting in reverse order.
         let counter = 0;
         for (let i = (layers.length - 1); i >= 0; i--) {
-          let size = 6 + counter * 4;
+          let size = counter * 4;
           counter++;
           mapbox_library_api.map.setPaintProperty(layers[i].id, 'circle-translate', [size, 0]);
         }
