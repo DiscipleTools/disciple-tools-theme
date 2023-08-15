@@ -285,6 +285,9 @@ jQuery(document).ready(function($) {
                 dt_maps_layers_cookie['' + response.request.id] = cookie;
                 window.SHAREDFUNCTIONS.save_json_to_local_storage(mapbox_library_api.dt_maps_layers_cookie_id, dt_maps_layers_cookie, null);
 
+                // Adjust all map layer points.
+                mapbox_library_api.adjust_layer_point_sizes();
+
                 // Hide layer records add modal.
                 $('#add_records_div').fadeOut('fast');
               }
@@ -314,6 +317,9 @@ jQuery(document).ready(function($) {
 
               // Refresh layer query buttons.
               mapbox_library_api.reload_record_layers(false);
+
+              // Adjust all map layer points.
+              mapbox_library_api.adjust_layer_point_sizes();
 
             }
             break;
@@ -734,8 +740,9 @@ jQuery(document).ready(function($) {
         // Proceed with layer point size adjustments, starting in reverse order.
         let counter = 0;
         for (let i = (layers.length - 1); i >= 0; i--) {
-          let size = ++counter * 6;
-          mapbox_library_api.map.setPaintProperty(layers[i].id, 'circle-radius', size);
+          let size = 6 + counter * 4;
+          counter++;
+          mapbox_library_api.map.setPaintProperty(layers[i].id, 'circle-translate', [size, 0]);
         }
       }
     },
