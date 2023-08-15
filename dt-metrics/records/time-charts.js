@@ -356,10 +356,6 @@ function createColumnSeries(chart, field, name, hidden = false) {
       let metric_key = target.dataItem.component.dataFields.valueY;
       let data = target.dataItem.dataContext;
 
-      console.log(date_key);
-      console.log(metric_key);
-      console.log(data);
-
       displayPostListModal(data[date_key], date_key, metric_key);
     });
 
@@ -413,18 +409,19 @@ function displayPostListModal(date, date_key, metric_key) {
 
     if (posts && posts.length > 0) {
 
-      // TODO: Limit post display count & dynamic scrolling.
-
       // Filter out required posts.
+      let limit = 100;
       jQuery.each(posts, function (idx, post) {
         if (post['id'] && (post[date_key] && post[date_key] === date) && (post['value'] && window.lodash.includes(metric_key, post['value']))) {
-          selected_posts.push(post);
+          if (--limit >= 0) {
+            selected_posts.push(post);
+          }
         }
       });
 
       // Proceed with displaying post list.
       if (selected_posts.length > 0) {
-
+        let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
         let list_html = `
         <br>
         ${(function (posts_to_filter) {
@@ -438,16 +435,17 @@ function displayPostListModal(date, date_key, metric_key) {
               </div>
               `;
             });
-
             return post_list_html;
-
-        })(selected_posts)}
+        })(sorted_posts)}
         <br>
         `;
 
         // Render post html list.
+        let content = jQuery('#template_metrics_modal_content');
         jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(window.dtMetricsProject.translations.modal_title));
-        jQuery('#template_metrics_modal_content').empty().html(list_html);
+        jQuery(content).css('max-height', '300px');
+        jQuery(content).css('overflow', 'auto');
+        jQuery(content).empty().html(list_html);
         jQuery('#template_metrics_modal').foundation('open');
       }
     }
@@ -502,9 +500,6 @@ function getData() {
     loadingSpinner.classList.add('active')
     data.promise()
         .then(({ data, posts, cumulative_offset }) => {
-
-          console.log(data);
-          console.log(posts);
           window.dtMetricsProject.state['posts'] = posts;
 
             if ( !data ) {
@@ -683,8 +678,8 @@ function makeCumulativeKeys(keys) {
 function calculateCumulativeTotals(keys, data, cumulativeTotals, cumulativeKeys) {
     // add onto previous data to get cumulative totals
     // each key always has a value >= 0
-    keys.forEach((key) => {
-        const count = data[key] ? parseInt(data[key]) : 0
+  keys.forEach((key) => {
+        const count = ((typeof data !== 'undefined') && data[key]) ? parseInt(data[key]) : 0
         const cumulativeKey = cumulativeKeys[key]
         if (!cumulativeTotals[cumulativeKey] && count > 0) {
             cumulativeTotals[cumulativeKey] = count

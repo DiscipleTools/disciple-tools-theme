@@ -3,6 +3,7 @@
 
     <div id="template_metrics_modal_content"></div>
 
+    <br>
     <button class="button loader" data-close aria-label="Close reveal" type="button">
         <?php echo esc_html__( 'Close', 'disciple_tools' ) ?>
     </button>
