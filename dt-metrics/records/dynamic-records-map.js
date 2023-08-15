@@ -682,8 +682,16 @@ jQuery(document).ready(function($) {
       mapbox_library_api.map.on('click', query_layer_key, function (e) {
         e.preventDefault();
 
+        // Find all features within a bounding box around a point.
+        let point = e.point;
+        let width = 10;
+        let height = 20;
+        let b1 = [point.x - width / 2, point.y - height / 2];
+        let b2 = [point.x + width / 2, point.y + height / 2];
+
         let features = [];
-        let rendered_features = mapbox_library_api.map.queryRenderedFeatures(e.point);
+        let rendered_features = mapbox_library_api.map.queryRenderedFeatures([b1, b2]);
+
         $.each(rendered_features, function (idx, feature) {
           if (feature.source && feature.source.startsWith('dt-maps-')) {
             features.push(feature);
