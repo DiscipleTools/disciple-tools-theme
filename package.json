@@ -1,5 +1,6 @@
 {
   "name": "disciple-tools",
+  "type" : "module",
   "version": "0.1.0",
   "description": "A coalition management system for Disciple Making Movements",
   "repository": {
