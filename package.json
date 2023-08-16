@@ -59,7 +59,10 @@
       "eslint"
     ]
   },
-  "eslintIgnore": ["dt-assets/build/js/scripts.min.js"],
+  "eslintIgnore": [
+    "dt-assets/build/js/scripts.min.js",
+    "dt-core/dependencies/*"
+  ],
   "jshintConfig": {
     "globals": {
       "jQuery": true
