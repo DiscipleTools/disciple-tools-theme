@@ -207,11 +207,11 @@ class DT_User_Management
 
         if ( strpos( $url_path, 'user-management/users' ) !== false ) {
             wp_enqueue_script( 'dt_users_table',
-                get_template_directory_uri() . '/dt-users/users-table.js',
+                get_template_directory_uri() . '/dt-users/table/users-table.js',
                 [
                     'jquery'
                 ],
-                filemtime( get_theme_file_path() . '/dt-users/users-table.js' ),
+                filemtime( get_theme_file_path() . '/dt-users/table/users-table.js' ),
             );
 
 
