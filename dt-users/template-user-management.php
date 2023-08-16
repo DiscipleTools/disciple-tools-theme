@@ -7,21 +7,8 @@ if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
     exit();
 }
 $dt_url_path = dt_get_url_path();
-$user_management_options = DT_User_Management::user_management_options();
-$contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
+$dt_user_fields = Disciple_Tools_Users::get_users_fields();
 $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
-
-function fetch_user_locations( $user_id ): array {
-    global $wpdb;
-
-    return $wpdb->get_results( $wpdb->prepare( "
-    SELECT user_meta.meta_value id, loca_grid.name
-    FROM $wpdb->usermeta user_meta
-    INNER JOIN $wpdb->dt_location_grid loca_grid ON user_meta.meta_value = loca_grid.grid_id
-    WHERE user_meta.user_id = %d AND user_meta.meta_key = %s
-    GROUP BY user_meta.meta_value
-    ", $user_id, $wpdb->prefix . 'location_grid' ), ARRAY_A );
-}
 
 ?>
 
@@ -117,15 +104,15 @@ function fetch_user_locations( $user_id ): array {
                                         <h4><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h4>
                                         <select id="user_status" class="select-field">
                                             <option></option>
-                                            <?php foreach ( $user_management_options['user_status_options'] as $status_key => $status_value ) : ?>
-                                                <option value="<?php echo esc_html( $status_key ); ?>"><?php echo esc_html( $status_value ); ?></option>
+                                            <?php foreach ( $dt_user_fields['user_status']['options'] as $status_key => $status_value ) : ?>
+                                                <option value="<?php echo esc_html( $status_key ); ?>"><?php echo esc_html( $status_value['label'] ); ?></option>
                                             <?php endforeach; ?>
                                         </select>
 
                                         <!-- Workload Status -->
                                         <h4><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></h4>
                                         <select id="workload_status" class="select-field">
-                                            <?php $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [] ?>
+                                            <?php $workload_status_options = $dt_user_fields['workload_status']['options'] ?? [] ?>
                                             <option></option>
                                             <?php foreach ( $workload_status_options as $key => $val ) : ?>
                                                 <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $val['label'] ) ?></option>
@@ -161,10 +148,10 @@ function fetch_user_locations( $user_id ): array {
                                             <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
                                         </h4>
                                         <div class="small button-group" style="display: inline-block" id="languages_multi_select">
-                                            <?php foreach ( $contact_fields['languages']['default'] as $option_key => $option_value ): ?>
+                                            <?php foreach ( $dt_user_fields['user_languages']['options'] as $option_key => $option_value ): ?>
                                                 <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( 'languages' ) ?>"
                                                         class="dt_multi_select empty-select-button select-button button ">
-                                                    <?php echo esc_html( $contact_fields['languages']['default'][$option_key]['label'] ) ?>
+                                                    <?php echo esc_html( $option_value['label'] ) ?>
                                                 </button>
                                             <?php endforeach; ?>
                                         </div>

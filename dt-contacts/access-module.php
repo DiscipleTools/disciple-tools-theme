@@ -1526,7 +1526,8 @@ class DT_Contacts_Access extends DT_Module_Base {
         $gender_data = $this->get_gender_data();
 
         $list = [];
-        $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
+        $user_fields = Disciple_Tools_Users::get_users_fields();
+        $workload_status_options = $user_fields['workload_status']['options'];
         foreach ( $user_data as $user ) {
             $roles = maybe_unserialize( $user['roles'] );
             if ( isset( $roles['multiplier'] ) || isset( $roles['dt_admin'] ) || isset( $roles['dispatcher'] ) || isset( $roles['marketer'] ) ) {

@@ -139,20 +139,11 @@ class DT_User_Management
         return $content;
     }
 
-    public static function user_management_options(){
-        return [
-            'user_status_options' => [
-                'active' => __( 'Active', 'disciple_tools' ),
-                'away' => __( 'Away', 'disciple_tools' ),
-                'inconsistent' => __( 'Inconsistent', 'disciple_tools' ),
-                'inactive' => __( 'Inactive', 'disciple_tools' ),
-            ]
-        ];
-    }
-
     public function scripts() {
         $url_path = dt_get_url_path();
-        if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ) {
+        $dt_user_fields = Disciple_Tools_Users::get_users_fields();
+        if ( strpos( $url_path, 'user-management/user' ) !== false || strpos( $url_path, 'user-management/add-user' ) !== false ){
+
 
             $dependencies = [
                 'jquery',
@@ -173,7 +164,7 @@ class DT_User_Management
             wp_enqueue_script( 'dtActivityLogs', get_template_directory_uri() . '/dt-assets/js/activity-log.js', [
                 'jquery',
                 'lodash'
-            ], filemtime( get_theme_file_path() .  '/dt-assets/js/activity-log.js' ), true );
+            ], filemtime( get_theme_file_path() . '/dt-assets/js/activity-log.js' ), true );
 
             wp_enqueue_script( 'dt_dispatcher_tools', get_template_directory_uri() . '/dt-users/user-management.js', $dependencies, filemtime( plugin_dir_path( __FILE__ ) . '/user-management.js' ), true );
 
@@ -185,7 +176,6 @@ class DT_User_Management
                     'current_user_login' => wp_get_current_user()->user_login,
                     'current_user_id'    => get_current_user_id(),
                     'map_key'            => DT_Mapbox_API::get_key(),
-                    'options'            => self::user_management_options(),
                     'url_path'           => dt_get_url_path(),
                     'translations'       => [
                         'accept_time' => _x( '%1$s was accepted on %2$s after %3$s days', 'Bob was accepted on Jul 8 after 10 days', 'disciple_tools' ),
@@ -209,11 +199,13 @@ class DT_User_Management
                 ]
             );
 
-            if ( DT_Mapbox_API::get_key() ) {
+            if ( DT_Mapbox_API::get_key() ){
                 DT_Mapbox_API::load_mapbox_header_scripts();
                 DT_Mapbox_API::load_mapbox_search_widget_users();
             }
+        }
 
+        if ( strpos( $url_path, 'user-management/users' ) !== false ) {
             wp_enqueue_script( 'dt_users_table',
                 get_template_directory_uri() . '/dt-users/users-table.js',
                 [
@@ -222,12 +214,11 @@ class DT_User_Management
                 filemtime( get_theme_file_path() . '/dt-users/users-table.js' ),
             );
 
-            $fields = Disciple_Tools_Users::get_users_fields();
 
-            if ( isset( $fields['location_grid'] ) ){
+            if ( isset( $dt_user_fields['location_grid'] ) ){
                 //used locations
                 $locations = self::get_used_user_locations();
-                $fields['location_grid']['options'] = $locations;
+                $dt_user_fields['location_grid']['options'] = $locations;
             }
 
             wp_localize_script( 'dt_users_table', 'dt_users_table', [
@@ -237,7 +228,7 @@ class DT_User_Management
                     'users' => __( 'Users', 'disciple_tools' ),
                     'showing_x_of_y' => __( 'Showing %1$s of %2$s', 'disciple_tools' ),
                 ],
-                'fields' => $fields,
+                'fields' => $dt_user_fields,
                 'rest_endpoint' => trailingslashit( rest_url( 'user-management/v1/' ) ),
             ] );
         }

@@ -185,20 +185,7 @@ class Disciple_Tools_Users
                 'table' => 'usermeta_table',
                 'key' => $wpdb->prefix . 'workload_status',
                 'label' => __( 'Workload Status', 'disciple_tools' ),
-                'options' => [
-                    'active' => [
-                        'label' => __( 'Accepting new contacts', 'disciple_tools' ),
-                        'color' => '#4caf50'
-                    ],
-                    'existing' => [
-                        'label' => __( "I'm only investing in existing contacts", 'disciple_tools' ),
-                        'color' => '#ff9800'
-                    ],
-                    'too_many' => [
-                        'label' => __( 'I have too many contacts', 'disciple_tools' ),
-                        'color' => '#F43636'
-                    ]
-                ],
+                'options' => dt_get_site_custom_lists()['user_workload_status'] ?? [],
                 'type' => 'key_select',
             ],
             'last_activity' => [

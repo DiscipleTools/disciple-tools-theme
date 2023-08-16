@@ -13,11 +13,11 @@ jQuery(document).ready(function($) {
   $('#map-type').hide()
   let field_key = "user_status_options"
   let options_html = `<button class="button small selected-select-button" data-key="all">
-    ${window.lodash.escape(window.dt_mapbox_metrics.translations.all)}:
+    ${window.lodash.escape(window.dt_mapbox_metrics.translations.all)}
   </button>`
   window.lodash.forOwn(window.dt_mapbox_metrics.settings.user_status_options, (option, option_key)=>{
     options_html += `<button class="button small empty-select-button" data-key="${window.lodash.escape(option_key)}" style="">
-      ${window.lodash.escape(option)}
+      ${window.lodash.escape(option.label)}
     </button>`
   })
   let split_by_html = `
