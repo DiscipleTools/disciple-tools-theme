@@ -64,12 +64,16 @@ class DT_Login_Email {
         }
          */
         // validate elements
-        if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) ) {
+        if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) || empty( $_POST['password2'] ) ) {
             $error->add( __METHOD__, __( 'Missing email or password.', 'disciple_tools' ) );
             return $error;
         }
 
-        // @todo check if passwords are identical
+        // check if passwords are identical
+        if ( $_POST['password'] !== $_POST['password2'] ) {
+            $error->add( __METHOD__, __( 'Passwords do not match. Please, try again.', 'disciple_tools' ) );
+            return $error;
+        }
 
         // sanitize user form input
         $password   = sanitize_text_field( wp_unslash( $_POST['password'] ) );
