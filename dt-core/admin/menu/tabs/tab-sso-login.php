@@ -28,8 +28,8 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        //add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        //add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
         $user_id = get_current_user_id();
