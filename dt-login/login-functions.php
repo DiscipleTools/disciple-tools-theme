@@ -29,6 +29,19 @@ function dt_login_redirect_login_page() {
             exit;
         }
 
+        //phpcs:disable
+        if ( $page_viewed == 'wp-login.php' && isset( $_POST['wp-submit'] ) && $_POST['wp-submit'] == 'Login' ) {
+            if ( isset( $_POST['log'] ) && isset( $_POST['pwd'] ) && ( empty( $_POST['log'] ) || empty( $_POST['pwd'] ) ) ) {
+                if ( isset( $_POST['redirect_to'] ) ) {
+                    wp_redirect( dt_login_url( 'login', $_POST['redirect_to'] ) );
+                } else {
+                    wp_redirect( dt_login_url( 'login' ) );
+                }
+                exit;
+            }
+        }
+        //phpcs:enable
+
         if ( $page_viewed == 'wp-login.php' && isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'GET' ) {
             wp_redirect( dt_login_url( 'login' ) );
             exit;
