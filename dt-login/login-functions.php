@@ -30,7 +30,7 @@ function dt_login_redirect_login_page() {
         }
 
         //phpcs:disable
-        if ( $page_viewed == 'wp-login.php' && isset( $_POST['wp-submit'] ) && $_POST['wp-submit'] == 'Login' ) {
+        if ( $page_viewed == 'wp-login.php' && !isset( $_GET['action'] ) && $_SERVER['REQUEST_METHOD'] == 'POST' ) {
             if ( isset( $_POST['log'] ) && isset( $_POST['pwd'] ) && ( empty( $_POST['log'] ) || empty( $_POST['pwd'] ) ) ) {
                 if ( isset( $_POST['redirect_to'] ) ) {
                     wp_redirect( dt_login_url( 'login', $_POST['redirect_to'] ) . '&login=failed' );
