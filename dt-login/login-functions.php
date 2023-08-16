@@ -33,9 +33,14 @@ function dt_login_redirect_login_page() {
         if ( $page_viewed == 'wp-login.php' && isset( $_POST['wp-submit'] ) && $_POST['wp-submit'] == 'Login' ) {
             if ( isset( $_POST['log'] ) && isset( $_POST['pwd'] ) && ( empty( $_POST['log'] ) || empty( $_POST['pwd'] ) ) ) {
                 if ( isset( $_POST['redirect_to'] ) ) {
-                    wp_redirect( dt_login_url( 'login', $_POST['redirect_to'] ) );
+                    wp_redirect( dt_login_url( 'login', $_POST['redirect_to'] ) . '&login=failed' );
                 } else {
-                    wp_redirect( dt_login_url( 'login' ) );
+                    $parsed_url = wp_parse_url( dt_login_url( 'login' ) );
+                    if ( isset( $parsed_url['query'] ) && !empty( $parsed_url['query'] ) ) {
+                        wp_redirect( dt_login_url( 'login' ) . '&login=failed' );
+                    } else {
+                        wp_redirect( dt_login_url( 'login' ) . '?login=failed' );
+                    }
                 }
                 exit;
             }
@@ -150,7 +155,15 @@ add_action( 'wp_login_failed', 'dt_login_login_failed' );
 function dt_login_login_failed() {
     if ( !dt_is_rest() ){
         $login_page  = dt_login_url( 'login' );
-        wp_redirect( $login_page . '?login=failed' );
+        $parsed_url = wp_parse_url( $login_page );
+
+        if ( isset( $parsed_url['query'] ) && !empty( $parsed_url['query'] ) ) {
+            $login_page .= '&login=failed';
+        } else {
+            $login_page .= '?login=failed';
+        }
+
+        wp_redirect( $login_page );
         exit;
     }
 }
