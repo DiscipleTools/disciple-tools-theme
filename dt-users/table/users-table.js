@@ -113,21 +113,21 @@ export class UsersTable extends LitElement {
                   if ( window.dt_users_table.fields[k].hidden === true  ) return;
                   if ( window.dt_users_table.fields[k].options  ) {
                     let options = window.dt_users_table.fields[k].options;
-                    return html`<td data-field="${k}">
+                    return html`<td data-field="${k}" data-type="${window.dt_users_table.fields[k].type}">
                         <select class="filter-select" @change="${e=>this.filter_column(k,e.target.value, e)}">
                             <option value=""></option>
                             ${Object.keys(options).map(o=> html`<option value="${o}">${options[o].label}</option>`)}
                         </select>
                     </td>`
                   } else {
-                    return html`<td data-field="${k}"></td>`
+                    return html`<td data-field="${k}" data-type="${window.dt_users_table.fields[k].type}"></td>`
                   }
                 })}
             </tr>
             <tr>
                 ${Object.keys(window.dt_users_table.fields).map(k=>{
                   if ( window.dt_users_table.fields[k].hidden === true  ) return;
-                  return html`<th id="${k}" data-field="${k}" @click="${this.sort_column}">
+                  return html`<th id="${k}" data-field="${k}" @click="${this.sort_column}" data-type="${window.dt_users_table.fields[k].type}">
                       ${window.dt_users_table.fields[k].label}
                   </th>`
                 })}
@@ -187,6 +187,9 @@ export class UsersTable extends LitElement {
           padding: 8px;
           //width: 150px;
         }
+        th[data-type="number"],td[data-type="number"] {
+          width: 75px;
+        }
         th[data-field="ID"],td[data-field="ID"] {
           width: 50px;
         }
@@ -228,6 +231,9 @@ export class UsersTable extends LitElement {
         tr.user_row:hover {
           background-color: #ddd;
           cursor: pointer;
+        }
+        td {
+          overflow: hidden;
         }
         
         select {
