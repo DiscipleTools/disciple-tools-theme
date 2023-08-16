@@ -384,7 +384,7 @@ class DT_Login_Fields {
                 'multisite_level' => true,
             ],
 
-
+            // shortcodes
             'shortcode_firebase_logon_buttons' => [
                 'tab' => 'shortcodes',
                 'key' => 'shortcode_firebase_logon_buttons',
@@ -405,7 +405,7 @@ class DT_Login_Fields {
                 'type' => 'label',
             ],
 
-
+            // identity_providers
             'identity_providers' => [
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_label',
@@ -479,6 +479,37 @@ class DT_Login_Fields {
                 ],
                 'multisite_level' => true,
             ],
+
+            // captcha
+            'google_captcha' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_label',
+                'label' => 'Google Captcha Keys',
+                'description' => 'Put your google captcha keys here to enable google captcha in the login forms',
+                'value' => '',
+                'type' => 'label',
+            ],
+            'google_captcha_client_key' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_client_key',
+                'label' => 'Google Captcha Client Key',
+                'description' => 'This is the key that doesn\'t matter if the public find out about it',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+            'google_captcha_server_secret_key' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_server_secret_key',
+                'label' => 'Google Captcha Server Secret Key',
+                'description' => 'This is the one to keep secret from the public.',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+
+
+
 
         ];
 
