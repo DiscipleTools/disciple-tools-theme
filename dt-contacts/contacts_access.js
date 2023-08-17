@@ -153,7 +153,7 @@ jQuery(document).ready(function($) {
       ? window.detailsSettings.post_fields.gender
       : { key: null, label: "" }
 
-    let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.lodash.escape(window.dt_contacts_access.translations.all)}</a> | `
+    let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.all)}</a> | `
 
     defined_list_section.show()
     let users_with_role = dispatch_users.filter(u => u.roles.includes(tab))
@@ -176,11 +176,11 @@ jQuery(document).ready(function($) {
       location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
     }
     populate_users_list( users_with_role )
-    filters += `<a data-id="ready">${window.lodash.escape(window.dt_contacts_access.translations.ready)}</a> | `
-    filters += `<a data-id="recent">${window.lodash.escape(window.dt_contacts_access.translations.recent)}</a> | `
-    filters += `<a data-id="language">${window.lodash.escape(window.dt_contacts_access.translations.language)}</a> | `
-    filters += `<a data-id="gender">${window.lodash.escape(window.dt_contacts_access.translations.gender)}</a> | `
-    filters += `<a data-id="location">${window.lodash.escape(window.dt_contacts_access.translations.location)}</a>`
+    filters += `<a data-id="ready">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.ready)}</a> | `
+    filters += `<a data-id="recent">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.recent)}</a> | `
+    filters += `<a data-id="language">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.language)}</a> | `
+    filters += `<a data-id="gender">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.gender)}</a> | `
+    filters += `<a data-id="location">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.location)}</a>`
     list_filters.html(filters)
 
 
@@ -197,28 +197,28 @@ jQuery(document).ready(function($) {
     users.forEach( m => {
       user_rows += `<div class="assigned-to-row" dir="auto">
         <span>
-          <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( m.avatar )}"/></span>
-          ${window.lodash.escape(m.name)}
+          <span class="avatar"><img style="vertical-align: text-bottom" src="${window.SHAREDFUNCTIONS.escapeHTML( m.avatar )}"/></span>
+          ${window.SHAREDFUNCTIONS.escapeHTML(m.name)}
         </span>
-        ${ m.status_color ? `<span class="status-square" style="background-color: ${ window.lodash.escape(m.status_color) }">&nbsp;</span>` : '' }
+        ${ m.status_color ? `<span class="status-square" style="background-color: ${ window.SHAREDFUNCTIONS.escapeHTML(m.status_color) }">&nbsp;</span>` : '' }
         ${ m.update_needed ? `
           <span>
-            <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-            <span style="font-size: 14px">${ window.lodash.escape(m.update_needed) }</span>
+            <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 14px">${ window.SHAREDFUNCTIONS.escapeHTML(m.update_needed) }</span>
           </span>` : ''
       }
-        ${ m.best_location_match ? `<span>(${ window.lodash.escape(m.best_location_match) })</span>` : ''
+        ${ m.best_location_match ? `<span>(${ window.SHAREDFUNCTIONS.escapeHTML(m.best_location_match) })</span>` : ''
 
       }
         <div style="flex-grow: 1"></div>
-        <button class="button hollow tiny trigger-assignment" data-id="${ window.lodash.escape(m.ID) }" style="margin-bottom: 3px">
-           ${window.lodash.escape(window.dt_contacts_access.translations.assign)}
+        <button class="button hollow tiny trigger-assignment" data-id="${ window.SHAREDFUNCTIONS.escapeHTML(m.ID) }" style="margin-bottom: 3px">
+           ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.assign)}
         </button>
       </div>
       `
     })
     if ( user_rows.length === 0 ){
-      user_rows = `<p style="padding:1rem">${window.lodash.escape(window.wpApiShare.translations.no_records_found.replace("{{query}}", window.dt_contacts_access.translations[tab]))}</p>`
+      user_rows = `<p style="padding:1rem">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found.replace("{{query}}", window.dt_contacts_access.translations[tab]))}</p>`
     }
     populated_list.html(user_rows)
 
@@ -238,7 +238,7 @@ jQuery(document).ready(function($) {
     ).then(function (response) {
       $('#dispatch-tile-loader').removeClass('active')
       setStatus(response)
-      $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
+      $(`.js-typeahead-assigned_to`).val(window.SHAREDFUNCTIONS.escapeHTML(response.assigned_to.display)).blur()
       $('#assigned_to_user_modal').foundation('close');
     })
   })

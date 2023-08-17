@@ -73,7 +73,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         wp_enqueue_style( 'jquery-ui' );
 
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
         dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [ 'jquery', 'jquery-ui-js', 'dt_shared_scripts' ], true );
         dt_theme_enqueue_script( 'dt-options', 'dt-core/admin/js/dt-options.js', [
             'jquery',

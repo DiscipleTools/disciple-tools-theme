@@ -1,17 +1,12 @@
 /*
-This javascript file is enqueued on the contacts, groups, locations, and assets pages. The scripts here are
-shared scripts applicable to all these sections.
-@see /includes/functions/enqueue-scripts.php
-@since 0.1.0
+This javascript file is enqueued on all admin pages.
+shared scripts applicable to all sections.
  */
 "use strict";
-// user interface utilities
-jQuery(document).ready(function ($) {
 
-  // removes elements of the public metabox from visible.
-  $('#minor-publishing-actions').hide();
-  $('.misc-pub-visibility').hide();
-  $('.misc-pub-post-status').hide();
-  $('.misc-pub-revisions').hide();
-});
-
+window.dt_admin_shared = {
+  escape(str) {
+    if (typeof str !== "string") return str;
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+  }
+}

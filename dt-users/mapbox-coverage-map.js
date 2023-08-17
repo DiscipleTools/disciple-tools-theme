@@ -13,16 +13,16 @@ jQuery(document).ready(function($) {
   $('#map-type').hide()
   let field_key = "user_status_options"
   let options_html = `<button class="button small selected-select-button" data-key="all">
-    ${window.lodash.escape(window.dt_mapbox_metrics.translations.all)}
+    ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.translations.all)}
   </button>`
   window.lodash.forOwn(window.dt_mapbox_metrics.settings.user_status_options, (option, option_key)=>{
-    options_html += `<button class="button small empty-select-button" data-key="${window.lodash.escape(option_key)}" style="">
-      ${window.lodash.escape(option.label)}
+    options_html += `<button class="button small empty-select-button" data-key="${window.SHAREDFUNCTIONS.escapeHTML(option_key)}" style="">
+      ${window.SHAREDFUNCTIONS.escapeHTML(option.label)}
     </button>`
   })
   let split_by_html = `
       <div id="${field_key}" class="border-left map-option-buttons">
-        ${window.lodash.escape(window.dt_mapbox_metrics.translations.user_status)}:
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.translations.user_status)}:
         ${options_html}
       </div>
     `
@@ -67,7 +67,7 @@ jQuery(document).ready(function($) {
       if ( details.admin0_grid_id ) {
         list.append( `
           <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
-            <a href="#" class="accordion-title">${window.lodash.escape(details.admin0_name)} :  <span id="admin0_count">0</span></a>
+            <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML(details.admin0_name)} :  <span id="admin0_count">0</span></a>
             <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
           </li>
         `)
@@ -76,27 +76,27 @@ jQuery(document).ready(function($) {
           jQuery('#admin0_count').html(user_list[details.admin0_grid_id].length)
           jQuery.each(user_list[details.admin0_grid_id], function(i,v) {
             level_list.append(`
-              <div class="cell small-10 align-self-middle" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(v.user_id)}">
-                  ${window.lodash.escape(v.name)}
+              <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
+                  ${window.SHAREDFUNCTIONS.escapeHTML(v.name)}
                 </a>
               </div>
-              <div class="cell small-2" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.lodash.escape(v.user_id)}" data-id="${window.lodash.escape(v.grid_meta_id)}" data-level="admin0" data-location="${window.lodash.escape(details.admin0_grid_id)}">
-                  <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
+              <div class="cell small-2" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" data-level="admin0" data-location="${window.SHAREDFUNCTIONS.escapeHTML(details.admin0_grid_id)}">
+                  <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
                 </a>
               </div>`)
           })
         }
-        level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin0" data-location="${window.lodash.escape(details.admin0_grid_id)}">
-          ${window.lodash.escape(window.dt_mapbox_metrics.translations.add_user_to.replace('%s', details.admin0_name))}
+        level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin0" data-location="${window.SHAREDFUNCTIONS.escapeHTML(details.admin0_grid_id)}">
+          ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.translations.add_user_to.replace('%s', details.admin0_name))}
         </button></div>`)
 
       }
       if ( details.admin1_grid_id ) {
         list.append( `
           <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
-            <a href="#" class="accordion-title">${window.lodash.escape(details.admin1_name)} : <span id="admin1_count">0</span></a>
+            <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML(details.admin1_name)} : <span id="admin1_count">0</span></a>
             <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
           </li>
         `)
@@ -106,26 +106,26 @@ jQuery(document).ready(function($) {
           jQuery('#admin1_count').html(user_list[details.admin1_grid_id].length)
           jQuery.each(user_list[details.admin1_grid_id], function(i,v) {
             level_list.append(`
-              <div class="cell small-10 align-self-middle" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(v.user_id)}">
-                  ${window.lodash.escape(v.name)}
+              <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
+                  ${window.SHAREDFUNCTIONS.escapeHTML(v.name)}
                 </a>
               </div>
-              <div class="cell small-2" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.lodash.escape(v.user_id)}" data-id="${window.lodash.escape(v.grid_meta_id)}" data-level="admin1" data-location="${window.lodash.escape(details.admin1_grid_id)}">
-                  <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
+              <div class="cell small-2" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" data-level="admin1" data-location="${window.SHAREDFUNCTIONS.escapeHTML(details.admin1_grid_id)}">
+                  <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
                 </a>
               </div>`)
           })
         }
-        level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin1" data-location="${window.lodash.escape(details.admin1_grid_id)}">
-          ${window.lodash.escape(window.dt_mapbox_metrics.translations.add_user_to.replace('%s', details.admin1_name))}
+        level_list.append(`<div class="cell add-user-button"><button class="add-user small expanded button hollow" data-level="admin1" data-location="${window.SHAREDFUNCTIONS.escapeHTML(details.admin1_grid_id)}">
+          ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.translations.add_user_to.replace('%s', details.admin1_name))}
         </button></div>`)
       }
       if ( details.admin2_grid_id ) {
         list.append( `
           <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
-            <a href="#" class="accordion-title">${window.lodash.escape(details.admin2_name)} : <span id="admin2_count">0</span></a>
+            <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML(details.admin2_name)} : <span id="admin2_count">0</span></a>
             <div class="accordion-content" data-tab-content><div id="admin2_list"  class="grid-x"></div></div>
           </li>
         `)
@@ -135,20 +135,20 @@ jQuery(document).ready(function($) {
           jQuery('#admin2_count').html(user_list[details.admin2_grid_id].length)
           jQuery.each(user_list[details.admin2_grid_id], function(i,v) {
             level_list.append(`
-              <div class="cell small-10 align-self-middle" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                <a href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(v.user_id)}">
-                  ${window.lodash.escape(v.name)}
+              <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
+                  ${window.SHAREDFUNCTIONS.escapeHTML(v.name)}
                 </a>
               </div>
-              <div class="cell small-2" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.lodash.escape(v.user_id)}" data-id="${window.lodash.escape(v.grid_meta_id)}" data-level="admin2"  data-location="${window.lodash.escape(details.admin2_grid_id)}">
-                  <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
+              <div class="cell small-2" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" data-level="admin2"  data-location="${window.SHAREDFUNCTIONS.escapeHTML(details.admin2_grid_id)}">
+                  <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
                 </a>
               </div>`)
           })
         }
-        level_list.append(`<div class="cell add-user-button"><button class="add-user expanded small button hollow" data-level="admin2" data-location="${window.lodash.escape(details.admin2_grid_id)}">
-          ${window.lodash.escape(window.dt_mapbox_metrics.translations.add_user_to.replace('%s', details.admin2_name))}
+        level_list.append(`<div class="cell add-user-button"><button class="add-user expanded small button hollow" data-level="admin2" data-location="${window.SHAREDFUNCTIONS.escapeHTML(details.admin2_grid_id)}">
+          ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.translations.add_user_to.replace('%s', details.admin2_name))}
         </button></div>`)
       }
 
@@ -175,7 +175,7 @@ jQuery(document).ready(function($) {
                   </span>
                   <span class="typeahead__button">
                     <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                      <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/chevron_down.svg" alt="chevron"/>
+                      <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/chevron_down.svg" alt="chevron"/>
                     </button>
                   </span>
                 </div>
@@ -194,18 +194,18 @@ jQuery(document).ready(function($) {
             return `<div class="assigned-to-row" dir="auto">
               <span>
                   <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                  ${window.lodash.escape( item.name )}
+                  ${window.SHAREDFUNCTIONS.escapeHTML( item.name )}
               </span>
-              ${ window.lodash.escape(item.status_color) ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+              ${ window.SHAREDFUNCTIONS.escapeHTML(item.status_color) ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : '' }
               ${ item.update_needed ? `<span>
-                <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-                <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+                <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+                <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
               </span>` : '' }
             </div>`
           },
           dynamic: true,
           hint: true,
-          emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
           callback: {
             onClick: function(node, a, item){
               let data = {
@@ -240,14 +240,14 @@ jQuery(document).ready(function($) {
                 jQuery.each(response.user_location.location_grid_meta, function(i,v) {
                   if ( v.grid_id.toString() === selected_location.toString() ) {
                     jQuery('#'+list_level+'_list').prepend(`
-                      <div class="cell small-10 align-self-middle" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                        <a  href="${window.lodash.escape(window.wpApiShare.site_url)}/user-management/user/${window.lodash.escape(response.user_id)}">
-                          ${window.lodash.escape(response.user_title)}
+                      <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                        <a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(response.user_id)}">
+                          ${window.SHAREDFUNCTIONS.escapeHTML(response.user_title)}
                         </a>
                       </div>
                       <div class="cell small-2"">
-                        <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.lodash.escape(response.user_id)}" data-id="${window.lodash.escape(v.grid_meta_id)}">
-                          <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
+                        <a class="button clear delete-button mapbox-delete-button small float-right" data-user_id="${window.SHAREDFUNCTIONS.escapeHTML(response.user_id)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
+                          <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/invalid.svg" alt="delete">
                         </a>
                       </div>`)
                   }

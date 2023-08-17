@@ -11,17 +11,17 @@ jQuery(document).ready(function($) {
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
-    const title = window.lodash.escape( translations.title )
+    const title = window.SHAREDFUNCTIONS.escapeHTML( translations.title )
 
     /* highlights */
     chartDiv.empty().html(`
       <div class="cell center">
         <h3>${ title }</h3>
       </div>
-      <div class="section-subheader">${window.lodash.escape(translations.filter_contacts_to_date_range)}</div>
+      <div class="section-subheader">${window.SHAREDFUNCTIONS.escapeHTML(translations.filter_contacts_to_date_range)}</div>
       <div class="date_range_picker">
           <i class="fi-calendar"></i>&nbsp;
-          <span>${window.lodash.escape(translations.all_time)}</span>
+          <span>${window.SHAREDFUNCTIONS.escapeHTML(translations.all_time)}</span>
           <i class="dt_caret down"></i>
       </div>
       <div style="display: inline-block" class="loading-spinner"></div>
@@ -311,8 +311,8 @@ function makeCommentsSection(data) {
   const { group, contact } = window.dtMetricsActivity.translations
 
   const postTypeLabels = {
-    'contacts': window.lodash.escape(contact),
-    'groups': window.lodash.escape(group),
+    'contacts': window.SHAREDFUNCTIONS.escapeHTML(contact),
+    'groups': window.SHAREDFUNCTIONS.escapeHTML(group),
   }
 
   return `
@@ -372,7 +372,7 @@ function makeCommentFilterSelect() {
 
   return `
     <select id="comment-filter">
-      <option value="all">${window.lodash.escape(all)}</option>
+      <option value="all">${window.SHAREDFUNCTIONS.escapeHTML(all)}</option>
       ${Object.entries(reaction_options).map(([key, reaction]) => `
         <option value="${key}">${displayReaction(reaction)}</option>
       `)}

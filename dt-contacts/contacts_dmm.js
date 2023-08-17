@@ -58,7 +58,7 @@ jQuery(document).ready(function($) {
           },
           dynamic: true,
           hint: true,
-          emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
           multiselect: {
             matchOn: ["ID"],
             data: function () {
@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
                 .catch(err => { console.error(err) })
               }
             },
-            href: window.lodash.escape( window.wpApiShare.site_url ) + "/contacts/{{ID}}"
+            href: window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.site_url ) + "/contacts/{{ID}}"
           },
           callback: {
             onClick: function (node, a, item) {

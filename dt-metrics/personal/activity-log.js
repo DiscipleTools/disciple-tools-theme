@@ -23,7 +23,7 @@ jQuery(document).ready(function() {
     window.makeRequest( "get", `activity-log`, null , 'dt-users/v1/')
     .done(activity=>{
 
-      const title = makeTitle(window.lodash.escape( translations.title ))
+      const title = makeTitle(window.SHAREDFUNCTIONS.escapeHTML( translations.title ))
       const activity_html = window.dtActivityLogs.makeActivityList(activity, translations)
 
       let html = `

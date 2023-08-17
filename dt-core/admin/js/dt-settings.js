@@ -1,6 +1,7 @@
 "use strict";
 
 let all_settings = window.field_settings
+let dt_shared = window.dt_admin_shared
 
 function makeRequest(type, url, data, base = "dt/v1/") {
   //make sure base has a trailing slash if url does not start with one
@@ -353,7 +354,7 @@ jQuery(document).ready(function($) {
     let tile_html = `
         <div class="dt-tile-preview">
             <div class="section-header">
-                <h3 class="section-header">${all_settings['post_type_tiles'][tile_key]['label']}</h3>
+                <h3 class="section-header">${dt_shared.escape(all_settings['post_type_tiles'][tile_key]['label'])}</h3>
                 <img src="${window.field_settings.template_dir}/dt-assets/images/chevron_up.svg" class="chevron">
             </div>
             <div class="section-body">`;
@@ -381,13 +382,13 @@ jQuery(document).ready(function($) {
       let icon_html = '';
       let icon = (field['icon'] && field['icon'] !== '') ? field['icon'] : field['font-icon'];
       if (icon && (typeof icon !== 'undefined') && (icon !== 'undefined')) {
-        icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
+        icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${dt_shared.escape(icon)} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
       }
 
       tile_html += `
           <div class="section-subheader">
               ${icon_html}
-              ${field['name']}
+              ${dt_shared.escape(field['name'])}
           </div>
       `;
 
@@ -1524,7 +1525,7 @@ jQuery(document).ready(function($) {
       if(data && data['deleted']) {
         window.location.href = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
       } else {
-        $(delete_post_type_msg).html(window.lodash.escape(data['msg']));
+        $(delete_post_type_msg).html(dt_shared.escape(data['msg']));
       }
     });
   });
@@ -1650,7 +1651,7 @@ jQuery(document).ready(function($) {
           // Refresh page with new post type selected
           window.location.href = pill_link;
         } else {
-          $(new_post_type_msg).html(window.lodash.escape(data['msg']));
+          $(new_post_type_msg).html(dt_shared.escape(data['msg']));
         }
       });
     }

@@ -76,9 +76,9 @@ jQuery(document).ready(function($) {
         if (window.detailsSettings){
           field = window.lodash.get(window.detailsSettings,`post_settings.fields[${item.meta_key}].name`)
         }
-        item.action = `<a class="revert-activity dt_tooltip" data-id="${window.lodash.escape( item.histid )}">
+        item.action = `<a class="revert-activity dt_tooltip" data-id="${window.SHAREDFUNCTIONS.escapeHTML( item.histid )}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
-          <span class="tooltiptext">${window.lodash.escape( field || item.meta_key )} </span>
+          <span class="tooltiptext">${window.SHAREDFUNCTIONS.escapeHTML( field || item.meta_key )} </span>
         </a>`
       } else {
         item.action = ''
@@ -161,11 +161,11 @@ jQuery(document).ready(function($) {
                   <div class="edit-comment-controls">
                     <a class="open-edit-comment" data-id="<%- a.comment_ID %>" data-type="<%- a.comment_type %>" style="margin-right:5px">
                         <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/edit.svg">
-                        ${window.lodash.escape(commentsSettings.translations.edit)}
+                        ${window.SHAREDFUNCTIONS.escapeHTML(commentsSettings.translations.edit)}
                     </a>
                     <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
                         <img class="dt-blue-icon" src="${commentsSettings.template_dir}/dt-assets/images/trash.svg">
-                        ${window.lodash.escape(commentsSettings.translations.delete)}
+                        ${window.SHAREDFUNCTIONS.escapeHTML(commentsSettings.translations.delete)}
                     </a>
                   </div>
                 <% } %>
@@ -177,8 +177,8 @@ jQuery(document).ready(function($) {
     }); %>
     <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate'
     ) { %>
-        <a class="translate-button showTranslation">${window.lodash.escape(commentsSettings.translations.translate)}</a>
-        <a class="translate-button hideTranslation hide">${window.lodash.escape(commentsSettings.translations.hide_translation)}</a>
+        <a class="translate-button showTranslation">${window.SHAREDFUNCTIONS.escapeHTML(commentsSettings.translations.translate)}</a>
+        <a class="translate-button hideTranslation hide">${window.SHAREDFUNCTIONS.escapeHTML(commentsSettings.translations.hide_translation)}</a>
         </div>
     <% } %>
     </div>
@@ -196,7 +196,7 @@ jQuery(document).ready(function($) {
     let translation_bubble = $(this).siblings('.translation-bubble');
     let translation_hide = $(this).siblings('.translate-button.hideTranslation');
 
-    let url = `https://translation.googleapis.com/language/translate/v2?key=${window.lodash.escape(commentsSettings.google_translate_key)}`
+    let url = `https://translation.googleapis.com/language/translate/v2?key=${window.SHAREDFUNCTIONS.escapeHTML(commentsSettings.google_translate_key)}`
     let targetLang;
 
     if (langcode !== "zh-TW") {
@@ -453,8 +453,8 @@ jQuery(document).ready(function($) {
     Object.entries(reactions).forEach(([alias, reaction]) => {
       const reactionValue = `reaction_${alias}`
       emojis += `
-      <button class="add-reaction" type="submit" name="reaction" title="${window.lodash.escape(reaction.name)}" value="${reactionValue}">
-        <img class="emoji" alt="${window.lodash.escape(reaction.name)}" src="${window.lodash.escape(reaction.path)}">
+      <button class="add-reaction" type="submit" name="reaction" title="${window.SHAREDFUNCTIONS.escapeHTML(reaction.name)}" value="${reactionValue}">
+        <img class="emoji" alt="${window.SHAREDFUNCTIONS.escapeHTML(reaction.name)}" src="${window.SHAREDFUNCTIONS.escapeHTML(reaction.path)}">
       </button>
       `
     })
