@@ -458,6 +458,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     private function display_post_type_settings( $post_type, $settings, $is_custom_post_type ){
+        $custom_settings = get_option( 'dt_custom_post_types', [] );
+        $post_type_custom_settings = $custom_settings[$post_type] ?? [];
         if ( !empty( $settings ) ){
             ?>
             <table class="widefat striped" style="margin-top: 12px;">
@@ -470,12 +472,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <td id="post_type_settings_key"><?php echo esc_html( $post_type ); ?></td>
                     </tr>
                     <tr>
-                        <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Singular' ); ?></b></label></td>
-                        <td><input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $settings['label_singular'] ?? $post_type ); ?>" /></td>
+                        <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Custom Singular Label' ); ?></b></label></td>
+                        <td><input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_singular'] ?? '' ); ?>" /></td>
                     </tr>
                     <tr>
-                        <td><label for="post_type_settings_plural"><b><?php echo esc_html( 'Plural' ); ?></b></label></td>
-                        <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $settings['label_plural'] ?? $post_type ); ?>" /></td>
+                        <td><label for="post_type_settings_plural"><b><?php echo esc_html( 'Custom Plural Label' ); ?></b></label></td>
+                        <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_plural'] ?? '' ); ?>" /></td>
                     </tr>
                     <tr>
                         <td><label
