@@ -273,6 +273,7 @@ class Disciple_Tools_Post_Type_Template {
             if ( !empty( $post_type_updates[$post_type]['label_plural'] ) ){
                 $settings['label_plural'] = $post_type_updates[$post_type]['label_plural'];
             }
+            $settings['is_custom'] = $post_type_updates[$post_type]['is_custom'] ?? false;
         }
         return $settings;
     }
@@ -378,6 +379,17 @@ class Disciple_Tools_Post_Type_Template {
         return $capabilities;
     }
 }
+
+add_action( 'after_setup_theme', function (){
+    $custom_post_types = get_option( 'dt_custom_post_types', [] );
+    $already_registered = apply_filters( 'dt_registered_post_types', [] );
+
+    foreach ( $custom_post_types as $post_type_key => $post_type ){
+        if ( ( $post_type['is_custom'] ?? false ) && !in_array( $post_type_key, $already_registered, true ) ){
+            new Disciple_Tools_Post_Type_Template( $post_type_key, $post_type['label_singular'] ?? $post_type_key, $post_type['label_plural'] ?? $post_type_key );
+        }
+    }
+}, 200 );
 
 /**
  * Set default list view permissions
