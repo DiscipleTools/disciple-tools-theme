@@ -64,6 +64,14 @@ function dt_filter_handler( $approved, $commentdata ){
     return 1;
 }
 
+function dt_is_locale_rtl( $locale = null ){
+    if ( empty( $locale ) ){
+        $locale = get_user_locale();
+    }
+    $all_languages = dt_get_global_languages_list();
+    return isset( $all_languages[ $locale ]['rtl'] ) && !empty( $all_languages[ $locale ]['rtl'] );
+}
+
 function dt_custom_dir_attr( $lang ){
     if ( is_admin() ) {
         return $lang;
@@ -71,12 +79,14 @@ function dt_custom_dir_attr( $lang ){
 
     $current_user = wp_get_current_user();
     $user_language = get_user_locale( $current_user->ID );
-    /* translators: If your language is written right to left make this translation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank */
-    $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+    $dir = dt_is_locale_rtl( $user_language ) ? 'rtl' : 'ltr';
 
-    //default direction to ltr
-    if ( $dir !== 'rtl' ){
-        $dir = 'ltr';
+    //set the locale to be rtl globally
+    if ( $dir === 'rtl' ){
+        global $wp_locale;
+        if ( $wp_locale instanceof WP_Locale ) {
+            $wp_locale->text_direction = 'rtl';
+        }
     }
 
     $dir_attr = 'dir="' . $dir . '"';
