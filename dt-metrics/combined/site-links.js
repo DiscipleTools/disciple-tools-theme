@@ -11,15 +11,15 @@ jQuery(document).ready(function ($) {
 
     // Display chart controls
     chartDiv.empty().html(`
-    <div class="section-header">${window.lodash.escape(window.wp_js_object.translations.headings.header)}</div>
-    <div class="section-subheader">${window.lodash.escape(window.wp_js_object.translations.headings.sub_header)}:</div>
+    <div class="section-header">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.header)}</div>
+    <div class="section-subheader">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.sub_header)}:</div>
     <br>
 
     <table>
         <thead>
           <tr>
-            <th>${window.lodash.escape(window.wp_js_object.translations.headings.date_range_header)}</th>
-            <th>${window.lodash.escape(window.wp_js_object.translations.headings.site_links_header)}</th>
+            <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.date_range_header)}</th>
+            <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.site_links_header)}</th>
             <th></th>
           </tr>
         </thead>
@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.totals_header)}</th>
+                    <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.totals_header)}</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +53,7 @@ jQuery(document).ready(function ($) {
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.status_created_header)}</th>
+                    <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.status_created_header)}</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,7 +67,7 @@ jQuery(document).ready(function ($) {
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_created_header)}</th>
+                    <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.seeker_path_created_header)}</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,7 +81,7 @@ jQuery(document).ready(function ($) {
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_created_header)}</th>
+                    <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.milestones_created_header)}</th>
                 </tr>
             </thead>
             <tbody>
@@ -96,7 +96,7 @@ jQuery(document).ready(function ($) {
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.status_changes_header)}</th>
+                    <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.status_changes_header)}</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,7 +110,7 @@ jQuery(document).ready(function ($) {
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.seeker_path_changes_header)}</th>
+                    <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.seeker_path_changes_header)}</th>
                 </tr>
             </thead>
             <tbody>
@@ -124,7 +124,7 @@ jQuery(document).ready(function ($) {
         <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.wp_js_object.translations.headings.milestones_changes_header)}</th>
+                    <th>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.milestones_changes_header)}</th>
                 </tr>
             </thead>
             <tbody>
@@ -169,14 +169,14 @@ jQuery(document).ready(function ($) {
 
       let html = '<select id="site_links_filter" style="min-width: 150px;">';
       $.each(sites, function (idx, val) {
-        html += '<option value="' + window.lodash.escape(val['id']) + '">' + window.lodash.escape(val['name']) + '</option>';
+        html += '<option value="' + window.SHAREDFUNCTIONS.escapeHTML(val['id']) + '">' + window.SHAREDFUNCTIONS.escapeHTML(val['name']) + '</option>';
       });
 
       html += '</select>';
       return html;
 
     } else {
-      return window.lodash.escape(window.wp_js_object.translations.headings.site_links_none_header);
+      return window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.site_links_none_header);
     }
   }
 

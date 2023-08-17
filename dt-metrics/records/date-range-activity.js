@@ -176,17 +176,17 @@ function project_activity_during_date_range() {
           posts.forEach(function (post) {
             if (post['id'] && post['name'] && post['timestamp']) {
               let post_url = window.dtMetricsProject.site_url + '/' + post['post_type'] + '/' + post['id'];
-              let new_value = window.lodash.escape(post['new_value']);
+              let new_value = window.SHAREDFUNCTIONS.escapeHTML(post['new_value']);
 
               // Apply custom styling.
               if ((post['field_type'] && post['field_type'] === 'connection') && (post['deleted'] && post['deleted'] === true)) {
-                new_value = `<s>${window.lodash.escape(post['new_value'])}</s>`;
+                new_value = `<s>${window.SHAREDFUNCTIONS.escapeHTML(post['new_value'])}</s>`;
               }
 
               tbody.append(`
                 <tr>
-                    <td><a href="${post_url}" target="_blank">${window.lodash.escape(post['name'])}</a></td>
-                    <td>${window.lodash.escape(window.moment.unix(post['timestamp']).format('dddd, MMMM Do YYYY, h:mm:ss A'))}</td>
+                    <td><a href="${post_url}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(post['name'])}</a></td>
+                    <td>${window.SHAREDFUNCTIONS.escapeHTML(window.moment.unix(post['timestamp']).format('dddd, MMMM Do YYYY, h:mm:ss A'))}</td>
                     <td>${new_value}</td>
                 </tr>
               `);
@@ -240,7 +240,7 @@ function refreshFieldValueEntryElement() {
 
     // Based on field type & associated defaults, determine html element style to be adopted.
     if (field_settings[field_id]['default'] && Object.keys(field_settings[field_id]['default']).length > 0) {
-      let options_html = `<option value="">[ ${window.lodash.escape(window.dtMetricsProject.translations['post_field_select_any_activity_label'])} ]</option>`;
+      let options_html = `<option value="">[ ${window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations['post_field_select_any_activity_label'])} ]</option>`;
       Object.entries(field_settings[field_id]['default']).forEach(([key, option]) => {
         options_html += `<option value="${key}">${option['label']}</option>`;
       });
@@ -331,8 +331,8 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
           dropdownFilter: [{
             key: 'group',
             value: 'focus',
-            template: window.lodash.escape(window.dtMetricsProject['translations']['regions_of_focus']),
-            all: window.lodash.escape(window.dtMetricsProject['translations']['all_locations'])
+            template: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject['translations']['regions_of_focus']),
+            all: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject['translations']['all_locations'])
           }],
           source: {
             focus: {
@@ -375,12 +375,12 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
               this.filters.dropdown = {
                 key: "group",
                 value: "focus",
-                template: window.lodash.escape(window.dtMetricsProject['translations']['regions_of_focus'])
+                template: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject['translations']['regions_of_focus'])
               };
               this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html(window.lodash.escape(window.dtMetricsProject['translations']['regions_of_focus']));
+              .html(window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject['translations']['regions_of_focus']));
             }
           }
         });
@@ -400,18 +400,18 @@ function activateSpecialFieldValueControls(field_id, field_settings) {
           return `<div class="assigned-to-row" dir="auto">
                   <span>
                       <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                      ${window.lodash.escape(item.name)}
+                      ${window.SHAREDFUNCTIONS.escapeHTML(item.name)}
                   </span>
-                  ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : ''}
+                  ${item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : ''}
                   ${item.update_needed && item.update_needed > 0 ? `<span>
-                    <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-                    <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+                    <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+                    <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
                   </span>` : ''}
                 </div>`;
         },
         dynamic: true,
         hint: true,
-        emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+        emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
         callback: {
           onClick: function (node, a, item) {
           },

@@ -440,7 +440,7 @@ jQuery(function ($) {
             if ((post_tags !== undefined) && typeahead_tags) {
               jQuery.each(post_tags, function (idx, tag) {
                 typeahead_tags.addMultiselectItemLayout({
-                  name: window.lodash.escape(tag)
+                  name: window.SHAREDFUNCTIONS.escapeHTML(tag)
                 });
               });
             }
@@ -472,9 +472,9 @@ jQuery(function ($) {
 
             list.append(`
                 <div class="input-group">
-                    <input type="text" data-field="${window.lodash.escape(field)}" class="dt-communication-channel input-group-field" dir="auto" />
+                    <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML(field)}" class="dt-communication-channel input-group-field" dir="auto" />
                     <div class="input-group-button">
-                        <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape(field)}" data-key="new" data-field="${window.lodash.escape(field)}">&times;</button>
+                        <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.SHAREDFUNCTIONS.escapeHTML(field)}" data-key="new" data-field="${window.SHAREDFUNCTIONS.escapeHTML(field)}">&times;</button>
                     </div>
                 </div>`);
           });
@@ -524,24 +524,24 @@ jQuery(function ($) {
             $.each(post['location_grid_meta'], function (i, v) {
               if (v.grid_meta_id) {
                 lgm_results.append(`<div class="input-group">
-                    <input type="text" class="active-location input-group-field" id="location-${window.lodash.escape(v.grid_meta_id)}" dir="auto" value="${window.lodash.escape(v.label)}" readonly />
+                    <input type="text" class="active-location input-group-field" id="location-${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" dir="auto" value="${window.SHAREDFUNCTIONS.escapeHTML(v.label)}" readonly />
                     <div class="input-group-button">
-                      <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${window.lodash.escape(mapbox['translations']['open_modal'])}" data-id="${window.lodash.escape(v.grid_meta_id)}"><i class="fi-map"></i></button>
-                      <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${window.lodash.escape(mapbox['translations']['delete_location'])}" data-id="${window.lodash.escape(v.grid_meta_id)}">&times;</button>
+                      <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['open_modal'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}"><i class="fi-map"></i></button>
+                      <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">&times;</button>
                     </div>
                   </div>`);
               } else {
                 lgm_results.append(`<div class="input-group">
-                    <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape(v.key)}" value="${window.lodash.escape(v.label)}" dir="auto" data-field="contact_address" />
+                    <input type="text" class="dt-communication-channel input-group-field" id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}" value="${window.SHAREDFUNCTIONS.escapeHTML(v.label)}" dir="auto" data-field="contact_address" />
                     <div class="input-group-button">
                       <button type="button" class="button success delete-button-style open-mapping-address-modal"
-                          title="${window.lodash.escape(mapbox['translations']['open_modal'])}"
-                          data-id="${window.lodash.escape(v.key)}"
+                          title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['open_modal'])}"
+                          data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}"
                           data-field="contact_address"
-                          data-key="${window.lodash.escape(v.key)}">
+                          data-key="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}">
                           <i class="fi-pencil"></i>
                       </button>
-                      <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${window.lodash.escape(mapbox['translations']['delete_location'])}" data-id="${window.lodash.escape(v.key)}" data-field="contact_address" data-key="${window.lodash.escape(v.key)}">&times;</button>
+                      <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}" data-field="contact_address" data-key="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}">&times;</button>
                     </div>
                   </div>`);
               }
@@ -559,10 +559,10 @@ jQuery(function ($) {
               if ($(td).find('#mapbox-autocomplete').length === 0) {
                 $(td).find('#mapbox-wrapper').prepend(`
               <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
-                  <input id="mapbox-search" type="text" name="mapbox_search" placeholder="${window.lodash.escape(mapbox['translations']['search_location'])}" autocomplete="off" dir="auto" />
+                  <input id="mapbox-search" type="text" name="mapbox_search" placeholder="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['search_location'])}" autocomplete="off" dir="auto" />
                   <div class="input-group-button">
                       <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
-                      <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${window.lodash.escape(mapbox['translations']['delete_location'])}" >&times;</button>
+                      <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" >&times;</button>
                   </div>
                   <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
               </div>`);
@@ -645,8 +645,8 @@ jQuery(function ($) {
             dropdownFilter: [{
               key: 'group',
               value: 'focus',
-              template: window.lodash.escape(translations['regions_of_focus']),
-              all: window.lodash.escape(translations['all_locations'])
+              template: window.SHAREDFUNCTIONS.escapeHTML(translations['regions_of_focus']),
+              all: window.SHAREDFUNCTIONS.escapeHTML(translations['all_locations'])
             }],
             source: {
               focus: {
@@ -693,12 +693,12 @@ jQuery(function ($) {
                 this.filters.dropdown = {
                   key: "group",
                   value: "focus",
-                  template: window.lodash.escape(translations['regions_of_focus'])
+                  template: window.SHAREDFUNCTIONS.escapeHTML(translations['regions_of_focus'])
                 };
                 this.container
                   .removeClass("filter")
                   .find("." + this.options.selector.filterButton)
-                  .html(window.lodash.escape(translations['regions_of_focus']));
+                  .html(window.SHAREDFUNCTIONS.escapeHTML(translations['regions_of_focus']));
               }
             }
           });
@@ -711,7 +711,7 @@ jQuery(function ($) {
             $.each(post_locations, function (idx, location) {
               typeahead.addMultiselectItemLayout({
                 ID: location['id'],
-                name: window.lodash.escape(location['label'])
+                name: window.SHAREDFUNCTIONS.escapeHTML(location['label'])
               });
             });
           }
@@ -742,18 +742,18 @@ jQuery(function ($) {
               return `<div class="assigned-to-row" dir="auto">
                   <span>
                       <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                      ${window.lodash.escape(item.name)}
+                      ${window.SHAREDFUNCTIONS.escapeHTML(item.name)}
                   </span>
-                  ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : ''}
+                  ${item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : ''}
                   ${item.update_needed && item.update_needed > 0 ? `<span>
-                    <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-                    <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+                    <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+                    <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
                   </span>` : ''}
                 </div>`;
             },
             dynamic: true,
             hint: true,
-            emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+            emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
             callback: {
               onClick: function (node, a, item) {
               },
@@ -853,7 +853,7 @@ jQuery(function ($) {
             $.each(post_connections, function (idx, connection) {
               connection_typeahead.addMultiselectItemLayout({
                 ID: connection['ID'],
-                name: window.lodash.escape(connection['post_title'])
+                name: window.SHAREDFUNCTIONS.escapeHTML(connection['post_title'])
               });
             });
           }
@@ -1062,9 +1062,9 @@ jQuery(function ($) {
               // Add, if not already present
               list.append(`
                 <div class="input-group">
-                    <input type="text" data-field="${window.lodash.escape(update_field_id)}" class="dt-communication-channel input-group-field" dir="auto" value="${window.lodash.escape(value)}" />
+                    <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}" class="dt-communication-channel input-group-field" dir="auto" value="${window.SHAREDFUNCTIONS.escapeHTML(value)}" />
                     <div class="input-group-button">
-                        <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape(update_field_id)}" data-key="new" data-field="${window.lodash.escape(update_field_id)}">&times;</button>
+                        <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}" data-key="new" data-field="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}">&times;</button>
                     </div>
                 </div>`);
 
@@ -1589,13 +1589,13 @@ jQuery(function ($) {
       console.log(payload);
 
       // Finally dispatch payload to corresponding post type merge endpoint
-      window.makeRequestOnPosts("POST", window.lodash.escape(post_type) + '/merge', payload).then(resp => {
+      window.makeRequestOnPosts("POST", window.SHAREDFUNCTIONS.escapeHTML(post_type) + '/merge', payload).then(resp => {
         window.location = primary_post['record']['ID'];
 
       }).catch(err => {
         console.error(err);
         $('.submit-merge').toggleClass('loading').attr("disabled", false);
-        $('.merge_errors').html(window.lodash.escape(window.merge_post_details['translations']['error_msg']) + ' : ' + window.lodash.escape(window.lodash.get(err, 'responseJSON.message', err)));
+        $('.merge_errors').html(window.SHAREDFUNCTIONS.escapeHTML(window.merge_post_details['translations']['error_msg']) + ' : ' + window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(err, 'responseJSON.message', err)));
       });
 
     } else {

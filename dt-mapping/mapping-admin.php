@@ -1745,16 +1745,16 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         `<tr>
                             <td>
                                 <a class="open_next_drilldown"
-                                    data-parent="${window.lodash.escape( v.parent_id )}"
-                                    data-grid_id="${window.lodash.escape( v.grid_id )}"
-                                    style="cursor: pointer;">${window.lodash.escape( v.name )}
+                                    data-parent="${window.SHAREDFUNCTIONS.escapeHTML( v.parent_id )}"
+                                    data-grid_id="${window.SHAREDFUNCTIONS.escapeHTML( v.grid_id )}"
+                                    style="cursor: pointer;">${window.SHAREDFUNCTIONS.escapeHTML( v.name )}
                                 </a>
                             </td>
-                            <td>${window.lodash.escape( v.population_formatted )}</td>
-                            <td>${window.lodash.escape( v.grid_id )}</td>
+                            <td>${window.SHAREDFUNCTIONS.escapeHTML( v.population_formatted )}</td>
+                            <td>${window.SHAREDFUNCTIONS.escapeHTML( v.grid_id )}</td>
                             <td>`;
                             if( v.is_custom_location === "1" ) {
-                                row += `<a class="button delete-button" data-grid_id="${window.lodash.escape( v.grid_id ) }">Delete</a>`;
+                                row += `<a class="button delete-button" data-grid_id="${window.SHAREDFUNCTIONS.escapeHTML( v.grid_id ) }">Delete</a>`;
                             }
                         row += `</td>
                             </tr>`;
