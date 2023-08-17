@@ -34,8 +34,8 @@ jQuery(document).ready(function($) {
     plural: new_name_plural
   }, `dt-admin-settings/`);
 
-  window.API.update_post_type = (key, name_singular, name_plural, displayed) => makeRequest("POST", `update-post-type`, {
-    key: key,
+  window.API.update_post_type = (post_type, name_singular, name_plural, displayed) => makeRequest("POST", `update-post-type`, {
+    post_type: post_type,
     single: name_singular,
     plural: name_plural,
     displayed: displayed
@@ -1533,6 +1533,8 @@ jQuery(document).ready(function($) {
   $(document).on('click', '#post_type_settings_update_but', function (e) {
     e.preventDefault();
 
+    let is_custom = all_settings?.post_type_settings?.is_custom;
+
     let post_type_settings_singular = $('#post_type_settings_singular');
     let post_type_settings_plural = $('#post_type_settings_plural');
 
@@ -1553,14 +1555,14 @@ jQuery(document).ready(function($) {
     button_icon.addClass('loading-spinner');
 
     // Ensure we have valid entries.
-    if (singular.trim() === '') {
-      alert('Please ensure to enter a valid Singular value.');
+    if (is_custom && singular.trim() === '') {
+      alert('Singular field cannot be empty.');
       $(post_type_settings_singular).css('border', '2px solid #e14d43');
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
 
-    } else if (plural.trim() === '') {
-      alert('Please ensure to enter a valid Plural value.');
+    } else if ( is_custom && plural.trim() === '') {
+      alert('Plural field cannot be empty');
       $(post_type_settings_plural).css('border', '2px solid #e14d43');
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
@@ -1578,6 +1580,8 @@ jQuery(document).ready(function($) {
         } else {
           button_icon.addClass('mdi mdi-comment-remove-outline');
         }
+      }).catch(e=>{
+        alert(e?.responseJSON?.message || 'An error occurred while updating the post type settings.')
       });
     }
   });

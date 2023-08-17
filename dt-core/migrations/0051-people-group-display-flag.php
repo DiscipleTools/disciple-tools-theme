@@ -16,13 +16,11 @@ class Disciple_Tools_Migration_0051 extends Disciple_Tools_Migration {
         $custom_post_types = get_option( 'dt_custom_post_types', [] );
         if ( !isset( $custom_post_types['peoplegroups'] ) ){
             $custom_post_types['peoplegroups'] = [
-                'label_singular' => 'People Group',
-                'label_plural' => 'People Groups',
-                'hidden' => !$dt_people_groups_display_tab,
-                'is_custom' => true
+                'hidden' => empty( $dt_people_groups_display_tab ),
             ];
             update_option( 'dt_custom_post_types', $custom_post_types );
         }
+        delete_option( 'dt_people_groups_display_tab' );
     }
 
     /**

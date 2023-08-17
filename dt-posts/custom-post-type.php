@@ -273,6 +273,7 @@ class Disciple_Tools_Post_Type_Template {
             if ( !empty( $post_type_updates[$post_type]['label_plural'] ) ){
                 $settings['label_plural'] = $post_type_updates[$post_type]['label_plural'];
             }
+            $settings['is_custom'] = $post_type_updates[$post_type]['is_custom'] ?? false;
         }
         return $settings;
     }

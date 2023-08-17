@@ -324,30 +324,32 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function update_post_type( WP_REST_Request $request ){
         $params = $request->get_params();
-        $updated = false;
-        if ( isset( $params['key'], $params['single'], $params['plural'], $params['displayed'] ) ){
-            $post_type = $params['key'];
-            $single = $params['single'];
-            $plural = $params['plural'];
-            $displayed = $params['displayed'];
+        if ( !isset( $params['post_type'] ) ){
+            return new WP_Error( __FUNCTION__, 'Missing post type', [ 'status' => 400 ] );
+        }
+        $post_type = $params['post_type'];
+        // Fetch existing post type settings and update.
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
 
-            // Fetch existing post type settings and update.
-            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+        $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
+        $is_custom = $post_type_settings['is_custom'] ?? false;
 
-            // Proceed with storing updates.
-            $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
-            $post_type_settings['label_singular'] = $single;
-            $post_type_settings['label_plural'] = $plural;
-            $post_type_settings['hidden'] = ! $displayed;
-            $custom_post_types[$post_type] = $post_type_settings;
-
-            update_option( 'dt_custom_post_types', $custom_post_types );
-
-            $updated = true;
+        //set labels
+        $post_type_settings['label_singular'] = $params['single'];
+        $post_type_settings['label_plural'] = $params['plural'];
+        if ( $is_custom && ( empty( $params['single'] ) || empty( $params['plural'] ) ) ){
+            return new WP_Error( __FUNCTION__, 'Missing record type labels', [ 'status' => 400 ] );
         }
 
+        //set hidden
+        $post_type_settings['hidden'] = empty( $params['displayed'] );
+
+        $custom_post_types[$post_type] = $post_type_settings;
+
+        update_option( 'dt_custom_post_types', $custom_post_types );
+
         return [
-            'updated' => $updated
+            'updated' => true,
         ];
     }
 
