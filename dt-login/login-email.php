@@ -143,29 +143,29 @@ class DT_Login_Email {
         $errors = new WP_Error();
 
         if ( ! ( isset( $_POST['retrieve_password_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['retrieve_password_nonce'] ) ), 'retrieve_password' ) ) ) {
-            $errors->add( __METHOD__, __( 'Missing form verification. Refresh and try again.', 'disciple_tools' ) );
+            $errors->add( 'retrieve-password-missing-nonce', __( 'Missing form verification. Refresh and try again.', 'disciple_tools' ) );
             return $errors;
         }
 
         if ( isset( $_POST['user_login'] ) ) {
             $user_login = trim( sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) );
         } else {
-            $errors->add( __METHOD__, __( 'Missing username or email address.', 'disciple_tools' ) );
+            $errors->add( 'retrieve-password-missing-username-email', __( 'Missing username or email address.', 'disciple_tools' ) );
             return $errors;
         }
 
 
         if ( empty( $user_login ) ) {
-            $errors->add( __METHOD__, __( 'ERROR: Enter a username or email address.', 'disciple_tools' ) );
+            $errors->add( 'retrieve-password-no-username-email', __( 'ERROR: Enter a username or email address.', 'disciple_tools' ) );
         } elseif ( strpos( $user_login, '@' ) ) {
             $user_data = get_user_by( 'email', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that email address.', 'disciple_tools' ) );
+                $errors->add( 'retrieve-password-bad-email-address', __( 'ERROR: There is no user registered with that email address.', 'disciple_tools' ) );
             }
         } else {
             $user_data = get_user_by( 'login', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that username.', 'disciple_tools' ) );
+                $errors->add( 'retrieve-password-bad-username', __( 'ERROR: There is no user registered with that username.', 'disciple_tools' ) );
             }
         }
 
