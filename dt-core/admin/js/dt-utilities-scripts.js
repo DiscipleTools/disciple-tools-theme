@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
         frame: 'select',
 
         // Modal title.
-        title: window.SHAREDFUNCTIONS.escapeHTML(window.dt_admin_scripts.upload.title),
+        title: window.dt_admin_shared.escape(window.dt_admin_scripts.upload.title),
 
         // Enable/disable multiple select
         multiple: false,
@@ -99,7 +99,7 @@ jQuery(document).ready(function ($) {
         },
 
         button: {
-          text: window.SHAREDFUNCTIONS.escapeHTML(window.dt_admin_scripts.upload.button_txt)
+          text: window.dt_admin_shared.escape(window.dt_admin_scripts.upload.button_txt)
         }
 
       });

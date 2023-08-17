@@ -1525,7 +1525,7 @@ jQuery(document).ready(function($) {
       if(data && data['deleted']) {
         window.location.href = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
       } else {
-        $(delete_post_type_msg).html(window.SHAREDFUNCTIONS.escapeHTML(data['msg']));
+        $(delete_post_type_msg).html(dt_shared.escape(data['msg']));
       }
     });
   });
@@ -1651,7 +1651,7 @@ jQuery(document).ready(function($) {
           // Refresh page with new post type selected
           window.location.href = pill_link;
         } else {
-          $(new_post_type_msg).html(window.SHAREDFUNCTIONS.escapeHTML(data['msg']));
+          $(new_post_type_msg).html(dt_shared.escape(data['msg']));
         }
       });
     }

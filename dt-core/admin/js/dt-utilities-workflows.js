@@ -249,7 +249,7 @@ jQuery(function ($) {
           // Append new options
           events.forEach(function (event, idx) {
             if (event['id'] && event['name']) {
-              let option = `<option value="${window.SHAREDFUNCTIONS.escapeHTML(event['id'])}">${window.SHAREDFUNCTIONS.escapeHTML(event['name'])}</option>`;
+              let option = `<option value="${window.dt_admin_shared.escape(event['id'])}">${window.dt_admin_shared.escape(event['name'])}</option>`;
               events_select.append(option);
             }
           });
@@ -371,13 +371,13 @@ jQuery(function ($) {
         let response = {};
         response['id'] = Date.now();
 
-        let html = `<select style="min-width: 100%; max-width: 100px;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+        let html = `<select style="min-width: 100%; max-width: 100px;" id="${window.dt_admin_shared.escape(response['id'])}">`;
         html += '<option disabled selected value="">--- select custom action ---</option>';
 
         // Iterate over custom actions...
         for (const [key, action] of Object.entries(actions)) {
           if (action['id'] && action['name']) {
-            html += `<option value="${window.SHAREDFUNCTIONS.escapeHTML(action['id'])}">${window.SHAREDFUNCTIONS.escapeHTML(action['name'])}</option>`;
+            html += `<option value="${window.dt_admin_shared.escape(action['id'])}">${window.dt_admin_shared.escape(action['name'])}</option>`;
           }
         }
 
@@ -617,7 +617,7 @@ jQuery(function ($) {
         // Add sorted field names
         fields.forEach(function (field, idx) {
           if (field['id'] && field['name']) {
-            let option = `<option value="${window.SHAREDFUNCTIONS.escapeHTML(field['id'])}">${window.SHAREDFUNCTIONS.escapeHTML(field['name'])}</option>`;
+            let option = `<option value="${window.dt_admin_shared.escape(field['id'])}">${window.dt_admin_shared.escape(field['name'])}</option>`;
             fields_select.append(option);
           }
         });
@@ -892,23 +892,23 @@ jQuery(function ($) {
 
       // Field
       html += '<td style="vertical-align: middle;">';
-      html += `<input id="workflows_design_section_step2_conditions_table_field_id" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}">`;
-      html += `<input id="workflows_design_section_step2_conditions_table_field_name" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(field_name)}">`;
-      html += window.SHAREDFUNCTIONS.escapeHTML(field_name);
+      html += `<input id="workflows_design_section_step2_conditions_table_field_id" type="hidden" value="${window.dt_admin_shared.escape(field_id)}">`;
+      html += `<input id="workflows_design_section_step2_conditions_table_field_name" type="hidden" value="${window.dt_admin_shared.escape(field_name)}">`;
+      html += window.dt_admin_shared.escape(field_name);
       html += '</td>';
 
       // Condition
       html += '<td style="vertical-align: middle;">';
-      html += `<input id="workflows_design_section_step2_conditions_table_condition_id" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(condition_id)}">`;
-      html += `<input id="workflows_design_section_step2_conditions_table_condition_name" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(condition_name)}">`;
-      html += window.SHAREDFUNCTIONS.escapeHTML(condition_name);
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_id" type="hidden" value="${window.dt_admin_shared.escape(condition_id)}">`;
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_name" type="hidden" value="${window.dt_admin_shared.escape(condition_name)}">`;
+      html += window.dt_admin_shared.escape(condition_name);
       html += '</td>';
 
       // Value
       html += '<td style="vertical-align: middle;">';
-      html += `<input id="workflows_design_section_step2_conditions_table_condition_value" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(condition_value_id)}">`;
-      html += `<input id="workflows_design_section_step2_conditions_table_condition_value_name" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(condition_value_name)}">`;
-      html += window.SHAREDFUNCTIONS.escapeHTML(condition_value_name);
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_value" type="hidden" value="${window.dt_admin_shared.escape(condition_value_id)}">`;
+      html += `<input id="workflows_design_section_step2_conditions_table_condition_value_name" type="hidden" value="${window.dt_admin_shared.escape(condition_value_name)}">`;
+      html += window.dt_admin_shared.escape(condition_value_name);
       html += '</td>';
 
       // Removal Button
@@ -929,23 +929,23 @@ jQuery(function ($) {
 
       // Field
       html += '<td style="vertical-align: middle;">';
-      html += `<input id="workflows_design_section_step3_actions_table_field_id" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}">`;
-      html += `<input id="workflows_design_section_step3_actions_table_field_name" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(field_name)}">`;
-      html += window.SHAREDFUNCTIONS.escapeHTML(field_name);
+      html += `<input id="workflows_design_section_step3_actions_table_field_id" type="hidden" value="${window.dt_admin_shared.escape(field_id)}">`;
+      html += `<input id="workflows_design_section_step3_actions_table_field_name" type="hidden" value="${window.dt_admin_shared.escape(field_name)}">`;
+      html += window.dt_admin_shared.escape(field_name);
       html += '</td>';
 
       // Condition
       html += '<td style="vertical-align: middle;">';
-      html += `<input id="workflows_design_section_step3_actions_table_action_id" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(action_id)}">`;
-      html += `<input id="workflows_design_section_step3_actions_table_action_name" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(action_name)}">`;
-      html += window.SHAREDFUNCTIONS.escapeHTML(action_name);
+      html += `<input id="workflows_design_section_step3_actions_table_action_id" type="hidden" value="${window.dt_admin_shared.escape(action_id)}">`;
+      html += `<input id="workflows_design_section_step3_actions_table_action_name" type="hidden" value="${window.dt_admin_shared.escape(action_name)}">`;
+      html += window.dt_admin_shared.escape(action_name);
       html += '</td>';
 
       // Value
       html += '<td style="vertical-align: middle;">';
-      html += `<input id="workflows_design_section_step3_actions_table_action_value" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(action_value_id)}">`;
-      html += `<input id="workflows_design_section_step3_actions_table_action_value_name" type="hidden" value="${window.SHAREDFUNCTIONS.escapeHTML(action_value_name)}">`;
-      html += window.SHAREDFUNCTIONS.escapeHTML(action_value_name);
+      html += `<input id="workflows_design_section_step3_actions_table_action_value" type="hidden" value="${window.dt_admin_shared.escape(action_value_id)}">`;
+      html += `<input id="workflows_design_section_step3_actions_table_action_value_name" type="hidden" value="${window.dt_admin_shared.escape(action_value_name)}">`;
+      html += window.dt_admin_shared.escape(action_value_name);
       html += '</td>';
 
       // Removal Button
@@ -1316,7 +1316,7 @@ jQuery(function ($) {
     function generate_event_value_textfield() {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = `<input type="text" placeholder="Enter a value..." style="min-width: 100%;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+      response['html'] = `<input type="text" placeholder="Enter a value..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
 
       return response;
     }
@@ -1324,8 +1324,8 @@ jQuery(function ($) {
     function generate_event_value_datepicker() {
       let response = {};
       response['id'] = Date.now();
-      response['html'] = `<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
-      response['html'] += `<label><input type="checkbox" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}_current" > Use current date`;
+      response['html'] = `<input type="text" class="dt-datepicker" placeholder="Enter a date..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
+      response['html'] += `<label><input type="checkbox" id="${window.dt_admin_shared.escape(response['id'])}_current" > Use current date`;
       response['datepicker'] = {};
 
       return response;
@@ -1335,7 +1335,7 @@ jQuery(function ($) {
       let response = {};
       response['id'] = Date.now();
 
-      let html = `<select style="min-width: 100%;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+      let html = `<select style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
       html += '<option value="true" selected>True</option>';
       html += '<option value="false">False</option>';
       html += '</select>';
@@ -1351,12 +1351,12 @@ jQuery(function ($) {
         let response = {};
         response['id'] = Date.now();
 
-        let html = `<select style="min-width: 100%; max-width: 100px;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+        let html = `<select style="min-width: 100%; max-width: 100px;" id="${window.dt_admin_shared.escape(response['id'])}">`;
         html += '<option disabled selected value="">--- select value ---</option>';
 
         // Iterate over field defaults...
         for (const [key, value] of Object.entries(defaults)) {
-          html += `<option value="${window.SHAREDFUNCTIONS.escapeHTML(key)}">${window.SHAREDFUNCTIONS.escapeHTML(value['label'])}</option>`;
+          html += `<option value="${window.dt_admin_shared.escape(key)}">${window.dt_admin_shared.escape(value['label'])}</option>`;
         }
 
         html += '</select>';
@@ -1373,7 +1373,7 @@ jQuery(function ($) {
       response['id'] = Date.now();
 
       let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
       html += '</div></div></div>';
       response['html'] = html;
 
@@ -1576,7 +1576,7 @@ jQuery(function ($) {
       response['id'] = Date.now();
 
       let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing a location..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
       html += '</div></div></div>';
       response['html'] = html;
 
@@ -1621,7 +1621,7 @@ jQuery(function ($) {
         response['id'] = Date.now();
 
         let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-        html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing connection details..." style="min-width: 100%;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+        html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing connection details..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
         html += '</div></div></div>';
         response['html'] = html;
 
@@ -1666,7 +1666,7 @@ jQuery(function ($) {
       response['id'] = Date.now();
 
       let html = '<div class="typeahead__container"><div class="typeahead__field"><div class="typeahead__query">';
-      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing user details..." style="min-width: 100%;" id="${window.SHAREDFUNCTIONS.escapeHTML(response['id'])}">`;
+      html += `<input type="text" class="dt-typeahead" autocomplete="off" placeholder="Start typing user details..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
       html += '</div></div></div>';
       response['html'] = html;
 
