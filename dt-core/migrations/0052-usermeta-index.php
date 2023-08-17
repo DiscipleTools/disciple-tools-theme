@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  *
  * Adds index to activity table
  */
-class Disciple_Tools_Migration_0051 extends Disciple_Tools_Migration {
+class Disciple_Tools_Migration_0052 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
         $index_exists = $wpdb->query( $wpdb->prepare("
