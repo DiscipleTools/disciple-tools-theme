@@ -239,7 +239,17 @@ class DT_Login_Email {
          */
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
-        if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
+        /**
+         * Filter the headers of the password reset mail
+         *
+         * @param string  $headers    Default headers.
+         * @param string  $key        The activation key.
+         * @param string  $user_login The username for the user.
+         * @param WP_User $user_data  WP_User object.
+         */
+        $headers = apply_filters( 'retrieve_password_headers', '', $key, $user_login, $user_data );
+
+        if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message, $headers ) ) {
             wp_die( esc_html__( 'The email could not be sent.' ) . "<br />\n" . esc_html__( 'Possible reason: your host may have disabled the mail() function.', 'disciple_tools' ) );
         }
 
