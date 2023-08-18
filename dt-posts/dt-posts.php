@@ -3058,6 +3058,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'description' => 'A date, like 2020-01-01',
                 'user_creatable' => true,
             ],
+            'datetime' => [
+                'label' => 'Date with a time',
+                'description' => 'A date, like August 9, 2023 at 4:10 PM',
+                'user_creatable' => true,
+            ],
             'key_select' => [
                 'label' => 'Dropdown',
                 'description' => 'A dropdown with a list of options',
