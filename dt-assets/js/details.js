@@ -138,8 +138,7 @@ jQuery(document).ready(function($) {
     })
   })
 
-
-  $('.dt_date_picker').datepicker({
+  $('.dt_date_group .dt_date_picker').datepicker({
     constrainInput: false,
     dateFormat: 'yy-mm-dd',
     onClose: function (date) {
@@ -148,12 +147,13 @@ jQuery(document).ready(function($) {
       if (!$(this).val()) {
         date = " ";//null;
       }
+
       let id = $(this).attr('id')
       $(`#${id}-spinner`).addClass('active')
       rest_api.update_post( post_type, post_id, { [id]: window.moment.utc(date).unix() }).then((resp)=>{
         $(`#${id}-spinner`).removeClass('active')
         if (this.value) {
-          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"]);
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, );
         }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
       }).catch(window.handleAjaxError)
@@ -165,6 +165,83 @@ jQuery(document).ready(function($) {
     if (this.value && window.moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
     }
+  })
+
+
+  $('.dt_date_time_group').each(function setTimePickers() {
+    const timestamp = this.dataset.timestamp
+
+    const timePicker = $(this).children('.dt_time_picker')
+
+    if ( timePicker ) {
+      timePicker.val(toTimeInputFormat(timestamp))
+    }
+  })
+
+  function toTimeInputFormat(timestamp) {
+      const date = window.moment( Number(timestamp) * 1000 )
+      return date.format('HH:mm')
+  }
+
+  $('.dt_date_time_group .dt_date_picker').datepicker({
+    constrainInput: false,
+    dateFormat: 'yy-mm-dd',
+    onClose: function (date) {
+      date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
+      if (!$(this).val()) {
+        date = " ";//null;
+      }
+
+      let id = $(this).attr('id')
+
+      const dateTimeGroup = $(`.${id}.dt_date_time_group`)
+      const currentTimestamp = dateTimeGroup.data('timestamp')
+
+      const currentDateTime = window.moment(currentTimestamp * 1000)
+      const hours = currentDateTime.get('h')
+      const minutes = currentDateTime.get('m')
+
+      const updatedTimestamp = window.moment(date).set({ h: hours, m: minutes }).unix()
+
+      dateTimeGroup.data('timestamp', updatedTimestamp)
+
+      $(`#${id}-spinner`).addClass('active')
+      rest_api.update_post( post_type, post_id, { [id]: updatedTimestamp }).then((resp)=>{
+        $(`#${id}-spinner`).removeClass('active')
+        if (this.value) {
+          this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, true);
+        }
+        $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
+      }).catch(window.handleAjaxError)
+    },
+    changeMonth: true,
+    changeYear: true,
+    yearRange: "1900:2050",
+  }).each(function() {
+    if (this.value && window.moment.unix(this.value).isValid()) {
+      this.value = window.SHAREDFUNCTIONS.formatDate(this.value, false, false, true);
+    }
+  })
+
+  $('.dt_time_picker').on('blur' ,function() {
+    const fieldId = this.dataset.fieldId
+
+    const dateTimeGroup = $(`.${fieldId}.dt_date_time_group`)
+
+    const timestamp = dateTimeGroup.data('timestamp')
+    const [ hours, minutes ] = this.value.split(':')
+
+    const updatedTimestamp = window.moment(timestamp * 1000).set({ h: hours, m: minutes }).unix()
+
+    dateTimeGroup.data('timestamp', updatedTimestamp)
+
+    $(`#${fieldId}-spinner`).addClass('active')
+    rest_api.update_post( post_type, post_id, { [fieldId]: updatedTimestamp }).then((resp)=>{
+      $(`#${fieldId}-spinner`).removeClass('active')
+      $( document ).trigger( "dt_datetime_picker-updated", [ resp, fieldId, updatedTimestamp ] );
+    }).catch(window.handleAjaxError)
+
   })
 
 
@@ -1146,8 +1223,8 @@ jQuery(document).ready(function($) {
           values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         } else if ( field_options.type === 'textarea' ){
           values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
-        } else if ( field_options.type === 'date' ){
-          values_html = window.SHAREDFUNCTIONS.escapeHTML( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
+        } else if ( field_options.type === 'date' || field_options.type === 'datetime' ) {
+          values_html = window.SHAREDFUNCTIONS.escapeHTML(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))
         } else if ( field_options.type === 'boolean' ){
           values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
         } else if ( field_options.type === 'key_select' ){

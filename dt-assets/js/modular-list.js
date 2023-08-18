@@ -806,6 +806,8 @@
               values = [window.SHAREDFUNCTIONS.escapeHTML(field_value)]
             } else if (field_settings.type === 'date') {
               values = [window.SHAREDFUNCTIONS.escapeHTML(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
+            } else if (field_settings.type === 'datetime') {
+              values = [window.SHAREDFUNCTIONS.escapeHTML(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp, true))]
             } else if (field_settings.type === 'user_select') {
               values = [window.SHAREDFUNCTIONS.escapeHTML(field_value.display)]
             } else if (field_settings.type === 'key_select') {
@@ -1067,7 +1069,7 @@
         search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
       } else if ( type === "location" || type === "location_meta" ){
         search_query.push({'location_grid': adjust_search_query_filter_states('location_grid', type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), 'ID'))});
-      } else if ( type === "date" ) {
+      } else if ( type === "date" || type === "datetime" ){
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
         if ( start ){
@@ -1166,7 +1168,7 @@
 
     // Adjust accordingly, by field type
     if (window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta', 'key_select'], field_type) ||
-      !window.lodash.includes(['date', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
+      !window.lodash.includes(['date', 'datetime', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
 
       // Start adjustment of sarch query filters
       let adjusted_filters = window.lodash.map(filters, function (value) {
@@ -1667,7 +1669,7 @@
         let type = window.lodash.get(list_settings, `post_type_settings.fields.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
-        } else if ( type === "date" ){
+        } else if ( type === "date" || type === "datetime" ){
           $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
         } else if ( connectionTypeKeys.includes( label.field ) ){
           if (label.id === '*') {

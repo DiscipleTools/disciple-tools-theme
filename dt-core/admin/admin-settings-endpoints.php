@@ -752,90 +752,25 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
 
             // Field privacy
-            if ( isset( $post_submission['new_field_private'] ) && $post_submission['new_field_private'] ) {
-                $field_private = true;
-            } else {
-                $field_private = false;
-            }
+            $field_private = !empty( $post_submission['new_field_private'] );
 
             $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
             if ( isset( $post_fields[ $field_key ] ) ){
                 return new WP_Error( __METHOD__, 'Field already exists', [ 'status' => 400 ] );
             }
-            $new_field = [];
-            if ( $field_type === 'key_select' ){
-                $new_field = [
-                    'name' => $post_submission['new_field_name'],
-                    'default' => [],
-                    'type' => 'key_select',
-                    'tile' => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'multi_select' ){
-                $new_field = [
-                    'name' => $post_submission['new_field_name'],
-                    'default' => [],
-                    'type' => 'multi_select',
-                    'tile' => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private,
-                ];
-            } elseif ( $field_type === 'tags' ){
-                $new_field = [
-                    'name' => $post_submission['new_field_name'],
-                    'default' => [],
-                    'type' => 'tags',
-                    'tile' => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'date' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'date',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'text' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'text',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'textarea' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'textarea',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'number' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'number',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'link' ) {
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'link',
-                    'default'     => [],
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'connection' ){
+            $new_field = [
+                'name' => $post_submission['new_field_name'],
+                'type' => $field_type,
+                'default' => '',
+                'tile' => $tile_key,
+                'customizable' => 'all',
+                'private' => $field_private
+            ];
+            if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link' ] ) ){
+                $new_field['default'] = [];
+            }
+            if ( $field_type === 'connection' ){
+                $new_field = [];
                 $connection_field_options = $post_submission['connection_field_options'] ?? [];
                 if ( !$connection_field_options['connection_target'] ){
                     return new WP_Error( __METHOD__, 'Please select a connection target', [ 'status' => 400 ] );

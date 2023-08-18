@@ -1,6 +1,5 @@
 /* global moment:false, _:false, commentsSettings:false */
 jQuery(document).ready(function($) {
-
   let commentPostedEvent = document.createEvent('Event');
   commentPostedEvent.initEvent('comment_posted', true, true);
 
@@ -358,9 +357,12 @@ jQuery(document).ready(function($) {
 
     displayed.forEach(d=>{
       let baptismDateRegex = /\{(\d+)\}+/;
-
       if (baptismDateRegex.test(d.object_note)) {
-        d.object_note = d.object_note.replace(baptismDateRegex, baptismTimestamptoDate);
+        if (d.field_type === 'datetime') {
+          d.object_note = d.object_note.replace(baptismDateRegex, formatTimestampToDateTime);
+        } else {
+          d.object_note = d.object_note.replace(baptismDateRegex, formatTimestampToDate);
+        }
       }
       if ( d.object_note ){
         d.object_note = formatComment(d.object_note)
@@ -403,6 +405,7 @@ jQuery(document).ready(function($) {
         activity: array
       }))
     }
+
     document.querySelectorAll('.reactions__dropdown').forEach((element) => {
       const commentId = element.dataset.commentId
       const emojis = emojiButtons()
@@ -462,10 +465,12 @@ jQuery(document).ready(function($) {
     return emojiContainer.outerHTML
   }
 
-  function baptismTimestamptoDate(match, timestamp) {
+  function formatTimestampToDate(match, timestamp) {
     return window.SHAREDFUNCTIONS.formatDate(timestamp)
   }
-
+  function formatTimestampToDateTime(match, timestamp) {
+    return window.SHAREDFUNCTIONS.formatDate(timestamp, true)
+  }
   /**
    * Comments and activity
    */
@@ -509,6 +514,7 @@ jQuery(document).ready(function($) {
       $("#comments-activity-spinner.loading-spinner").removeClass("active")
       const commentData = commentDataStatusJQXHR[0].comments;
       const activityData = activityDataStatusJQXHR[0].activity;
+
       prepareData(commentData, activityData)
     }).catch(err => {
       if ( !window.lodash.get( err, "statusText" ) === "abort" ) {

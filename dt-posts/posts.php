@@ -465,7 +465,7 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]['type'] === 'number' ){
                     $message = $fields[$activity->meta_key]['name'] . ': ' . $activity->meta_value;
                 }
-                if ( $fields[$activity->meta_key]['type'] === 'date' ){
+                if ( $fields[$activity->meta_key]['type'] === 'date' || $fields[$activity->meta_key]['type'] === 'datetime' ){
                     if ( $activity->meta_value === 'value_deleted' ){
                         $message = sprintf( __( '%s removed', 'disciple_tools' ), $fields[$activity->meta_key]['name'] );
                     } else {
@@ -731,7 +731,7 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         // add postmeta join fields
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'number', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'datetime', 'number', 'user_select' ] ) ){
                             if ( !in_array( $table_key, $args['joins_fields'] ) ){
                                 if ( isset( $field_settings[$query_key]['private'] ) && $field_settings[$query_key]['private'] ) {
                                     $args['joins_fields'][] = $table_key;
@@ -744,7 +744,7 @@ class Disciple_Tools_Posts
                         }
 
 
-                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'user_select' ] ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'datetime', 'user_select' ] ) ){
                             /**
                              * key_select, multi_select, tags, boolean, date
                              */
@@ -776,7 +776,7 @@ class Disciple_Tools_Posts
                                     $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
                                 }
                                 //date fields
-                                if ( $field_type === 'date' ){
+                                if ( $field_type === 'date' || $field_type === 'datetime' ){
                                     $connector = ' AND ';
                                     if ( $value_key === 'start' ){
                                         $value = strtotime( $value );
@@ -1937,7 +1937,7 @@ class Disciple_Tools_Posts
             }
 
             /* The Link field type is handled seperately so has not been added to this array */
-            $private_field_types = [ 'text', 'textarea', 'date', 'key_select', 'boolean', 'number' ];
+            $private_field_types = [ 'text', 'textarea', 'date', 'datetime', 'key_select', 'boolean', 'number' ];
             if ( isset( $field_settings[ $field_key ]['type'] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]['type'], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]['type'] === 'boolean' ){
                     if ( $fields[$field_key] === '1' || $fields[$field_key] === 'yes' || $fields[$field_key] === 'true' ){
@@ -1946,7 +1946,7 @@ class Disciple_Tools_Posts
                         $field_value = false;
                     }
                 }
-                if ( $field_settings[ $field_key ]['type'] === 'date' && !is_numeric( $fields[$field_key] ) ) {
+                if ( ( $field_settings[ $field_key ]['type'] === 'date' || $field_settings[ $field_key ]['type'] === 'datetime' ) && !is_numeric( $fields[$field_key] ) ) {
                         $field_value = strtotime( $fields[$field_key] );
                 } else {
                     $field_value = $fields[$field_key];
@@ -2509,6 +2509,13 @@ class Disciple_Tools_Posts
                             'formatted' => dt_format_date( $value[0]['value'] ),
                         ];
                     }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'datetime' ) {
+                    if ( isset( $value[0]['value'] ) && !empty( $value[0]['value'] ) ){
+                        $fields[$key] = [
+                            'timestamp' => is_numeric( $value[0]['value'] ) ? (int) $value[0]['value'] : dt_format_date( $value[0]['value'], 'U' ),
+                            'formatted' => dt_format_date( $value[0]['value'], 'Y-m-d H:i:s' ),
+                        ];
+                    }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location' ) {
                     $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( array_map( $map_values, $value ) );
                     $fields[$key] = [];
@@ -2662,6 +2669,13 @@ class Disciple_Tools_Posts
                     } else if ( $field_settings[$field_key]['type'] === 'date' ){
                         $timestamp = $m['meta_value'];
                         $formatted_date = dt_format_date( $timestamp );
+
+                        $fields[$field_key]['timestamp'] = (int) $timestamp;
+                        $fields[$field_key]['formatted'] = $formatted_date;
+
+                    } else if ( $field_settings[$field_key]['type'] === 'datetime' ){
+                        $timestamp = $m['meta_value'];
+                        $formatted_date = dt_format_date( $timestamp, 'Y-m-d H:i:s' );
 
                         $fields[$field_key]['timestamp'] = (int) $timestamp;
                         $fields[$field_key]['formatted'] = $formatted_date;
