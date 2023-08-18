@@ -617,7 +617,7 @@ dt_please_log_in();
                                 };
                                 uasort( $field_options, 'multiselect_at_end' );
                                 $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
-                                $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
+                                $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
                                 foreach ( $field_options as $field_option => $value ) :
                                     if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
                                         && $value['type'] != 'communication_channel' && empty( $value['hidden'] ) ) : ?>
@@ -717,7 +717,7 @@ dt_please_log_in();
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'location', 'location_meta', 'connection', 'tags' ];
+                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags' ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
@@ -829,7 +829,7 @@ dt_please_log_in();
                                                        value="1"> <?php esc_html_e( 'Yes', 'disciple_tools' ) ?>
                                             </label>
                                         </div>
-                                    <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]['type'] == 'date' ) : ?>
+                                    <?php elseif ( isset( $field_options[$field] ) && in_array( $field_options[$field]['type'], [ 'date', 'datetime' ] ) ) : ?>
                                         <strong><?php echo esc_html_x( 'Range Start', 'The start date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">
