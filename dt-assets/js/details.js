@@ -179,7 +179,7 @@ jQuery(document).ready(function($) {
   })
 
   function toTimeInputFormat(timestamp) {
-      const date = moment( Number(timestamp) * 1000 )
+      const date = window.moment( Number(timestamp) * 1000 )
       return date.format('HH:mm')
   }
 
@@ -219,7 +219,7 @@ jQuery(document).ready(function($) {
     changeYear: true,
     yearRange: "1900:2050",
   }).each(function() {
-    if (this.value && moment.unix(this.value).isValid()) {
+    if (this.value && window.moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value, false, false, true);
     }
   })
