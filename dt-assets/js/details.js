@@ -1223,8 +1223,8 @@ jQuery(document).ready(function($) {
           values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         } else if ( field_options.type === 'textarea' ){
           values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
-        } else if ( field_options.type === 'date' ){
-          values_html = window.SHAREDFUNCTIONS.escapeHTML( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
+        } else if ( field_options.type === 'date' || field_options.type === 'datetime' ) {
+          values_html = window.SHAREDFUNCTIONS.escapeHTML(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))
         } else if ( field_options.type === 'boolean' ){
           values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
         } else if ( field_options.type === 'key_select' ){
