@@ -1296,22 +1296,27 @@ class Disciple_Tools_Posts
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
-        $posts = $wpdb->get_results("
-            SELECT SQL_CALC_FOUND_ROWS p.ID, p.post_title, p.post_type, p.post_date
+        $has_joins = strlen( $fields_sql["joins_sql"] ) > 0 || strlen( $joins ) > 0;
+        $sql = "
+            SELECT p.ID, p.post_title, p.post_type, p.post_date
             FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
-            GROUP BY p.ID " . $group_by_sql . "
+            " . ( $has_joins ? "GROUP BY p.ID " . $group_by_sql : "" ) . "
             ORDER BY " . $sort_sql . "
             LIMIT " . esc_sql( $offset ) .", " . $limit . "
-        ", OBJECT );
+        ";
+        $posts = $wpdb->get_results($sql, OBJECT);
 
-        if ( empty( $posts ) && !empty( $wpdb->last_error )){
-            return new WP_Error( __FUNCTION__, "Sorry, we had a query issue.", [ 'status' => 500 ] );
-        }
-
-
+        $total_rows = $wpdb->get_var("
+            SELECT count(distinct p.ID)
+            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
+            (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
+        " );
         // phpcs:enable
-        $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
+
+        if ( empty( $posts ) && !empty( $wpdb->last_error ) ){
+            return new WP_Error( __FUNCTION__, 'Sorry, we had a query issue.', [ 'status' => 500 ] );
+        }
 
         //search by post_id
         if ( is_numeric( $search ) ){
@@ -2743,7 +2748,7 @@ class Disciple_Tools_Posts
 
         foreach ( $link_keys as $link_info ) {
             if ( strpos( $key, $link_info['stub'] ) === 0 ) {
-                $link_info['type'] = substr( $key, strlen( utf8_decode( $link_info['stub'] ) ) );
+                $link_info['type'] = substr( $key, strlen( $link_info['stub'] ) );
                 return $link_info;
             }
         }

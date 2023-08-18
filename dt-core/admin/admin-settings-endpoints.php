@@ -65,6 +65,38 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/create-new-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'create_new_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/update-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/delete-post-type', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'delete_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/update-roles', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_roles' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/create-new-tile', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'create_new_tile' ],
@@ -121,6 +153,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/field', [
+                'methods' => 'DELETE',
+                'callback' => [ $this, 'delete_field' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/new-field-option', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'new_field_option' ],
@@ -132,6 +172,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $this->namespace, '/edit-field-option', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'edit_field_option' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/field-option', [
+                'methods' => 'DELETE',
+                'callback' => [ $this, 'delete_field_option' ],
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
@@ -220,6 +268,199 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
         }
         return $output;
+    }
+
+    public static function create_new_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $response = [];
+        if ( isset( $params['key'], $params['single'], $params['plural'] ) ){
+            $key = $params['key'];
+            $single = $params['single'];
+            $plural = $params['plural'];
+
+            // Create new post type.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            if ( !isset( $custom_post_types[$key] ) && !in_array( $key, DT_Posts::get_post_types() ) ){
+                $custom_post_types[$key] = [
+                    'label_singular' => $single,
+                    'label_plural' => $plural,
+                    'hidden' => false,
+                    'is_custom' => true
+                ];
+
+                update_option( 'dt_custom_post_types', $custom_post_types );
+
+                // Return successful response.
+                $response = [
+                    'success' => true,
+                    'post_type' => $key,
+                    'post_type_label' => $plural
+                ];
+            } else {
+                $response = [
+                    'success' => false,
+                    'msg' => 'Unable to create '. $key .' record type; which already exists.'
+                ];
+            }
+        } else {
+            $response = [
+                'success' => false,
+                'msg' => 'Unable to create record type; due to missing parameters.'
+            ];
+        }
+
+        return $response;
+    }
+
+    public static function update_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'] ) ){
+            return new WP_Error( __FUNCTION__, 'Missing post type', [ 'status' => 400 ] );
+        }
+        $post_type = $params['post_type'];
+        // Fetch existing post type settings and update.
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+
+        $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
+        $is_custom = $post_type_settings['is_custom'] ?? false;
+
+        //set labels
+        $post_type_settings['label_singular'] = $params['single'];
+        if ( empty( $params['single'] ) && isset( $post_type_settings['label_singular'] ) ){
+            unset( $post_type_settings['label_singular'] );
+        }
+        $post_type_settings['label_plural'] = $params['plural'];
+        if ( empty( $params['plural'] ) && isset( $post_type_settings['label_plural'] ) ){
+            unset( $post_type_settings['label_plural'] );
+        }
+        if ( $is_custom && ( empty( $params['single'] ) || empty( $params['plural'] ) ) ){
+            return new WP_Error( __FUNCTION__, 'Missing record type labels', [ 'status' => 400 ] );
+        }
+
+        //set hidden
+        $post_type_settings['hidden'] = empty( $params['displayed'] );
+
+        $custom_post_types[$post_type] = $post_type_settings;
+
+        update_option( 'dt_custom_post_types', $custom_post_types );
+
+        return [
+            'updated' => true,
+        ];
+    }
+
+    public static function delete_post_type( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $deleted = false;
+        $deleted_msg = '';
+        if ( isset( $params['key'] ) ){
+            $post_type = $params['key'];
+
+            // Ensure current user has the ability to delete post type;
+            if ( !current_user_can( 'delete_any_' . $post_type ) ){
+                return [
+                    'deleted' => false,
+                    'msg' => 'Current user unable to delete '. $post_type .' record type.'
+                ];
+            }
+
+            // Only process custom post types.
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            if ( isset( $custom_post_types[$post_type] ) ){
+
+                // Remove custom post type.
+                unset( $custom_post_types[$post_type] );
+                update_option( 'dt_custom_post_types', $custom_post_types );
+
+                // Remove field settings.
+                $field_customizations = dt_get_option( 'dt_field_customizations' );
+                if ( isset( $field_customizations[$post_type] ) ){
+                    unset( $field_customizations[$post_type] );
+
+                    update_option( 'dt_field_customizations', $field_customizations );
+                    wp_cache_delete( $post_type . '_field_settings' );
+                }
+
+                // If specified, proceed with deletion of all associated records.
+                if ( isset( $params['delete_all_records'] ) && $params['delete_all_records'] ){
+                    global $wpdb;
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p LEFT JOIN $wpdb->p2pmeta pm ON pm.p2p_id = p.p2p_id WHERE ( p.p2p_to IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) OR p.p2p_from IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) )", $post_type, $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c LEFT JOIN $wpdb->commentmeta cm ON cm.comment_id = c.comment_ID WHERE c.comment_post_ID IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s )", $post_type ) );
+                    $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = %s", $post_type ) );
+                }
+
+                $deleted = true;
+                $deleted_msg = 'Deleted post type ' . $post_type;
+            } else {
+                $deleted_msg = $post_type . ' does not appear to be a custom record type.';
+            }
+        } else {
+            $deleted_msg = 'Unable to delete record type; due to missing parameters.';
+        }
+
+        return [
+            'deleted' => $deleted,
+            'msg' => $deleted_msg
+        ];
+    }
+
+    public static function update_roles( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $updated = false;
+
+        if ( isset( $params['roles'] ) && current_user_can( 'edit_roles' ) ){
+            $roles = $params['roles'];
+
+            // Fetch existing roles and permissions.
+            $existing_roles_permissions = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+
+            // Fetch existing custom roles.
+            $existing_custom_roles = get_option( 'dt_custom_roles', [] );
+
+            // Proceed with storing updates, accordingly overwriting existing roles.
+            foreach ( $roles as $role => $capabilities ){
+
+                // Skip administrator roles, whilst not currently an administrator.
+                if ( $role == 'administrator' && !dt_is_administrator() ){
+                    continue;
+                }
+
+                // Sync updated custom role with existing settings.
+                $updated_custom_role = [];
+                $existing_role = $existing_roles_permissions[$role] ?? [];
+                $updated_custom_role['label'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['label'] ?? '' ) : $role;
+                $updated_custom_role['description'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['description'] ?? '' ) : '';
+                $updated_custom_role['slug'] = $role;
+                $updated_custom_role['is_editable'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['is_editable'] ?? false ) : true;
+                $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
+
+                // Identify capabilities selection states.
+                $updated_capabilities = [];
+                foreach ( $capabilities ?? [] as $capability ){
+                    $updated_capabilities[$capability['key']] = $capability['enabled'];
+                }
+
+                // Capture capability updates.
+                $updated_custom_role['capabilities'] = $updated_capabilities;
+
+                // Save updates to custom roles option.
+                $existing_custom_roles[$role] = $updated_custom_role;
+            }
+
+            // Persist updated custom roles.
+            update_option( 'dt_custom_roles', $existing_custom_roles );
+
+            $updated = true;
+        }
+
+        return [
+            'updated' => $updated
+        ];
     }
 
     public static function create_new_tile( WP_REST_Request $request ) {
@@ -595,25 +836,27 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'private' => $field_private
                 ];
             } elseif ( $field_type === 'connection' ){
-                if ( !$post_submission['connection_target'] ){
+                $connection_field_options = $post_submission['connection_field_options'] ?? [];
+                if ( !$connection_field_options['connection_target'] ){
                     return new WP_Error( __METHOD__, 'Please select a connection target', [ 'status' => 400 ] );
                 }
-                $p2p_key = $post_type . '_to_' . $post_submission['connection_target'];
+
+                $p2p_key = $post_type . '_to_' . $connection_field_options['connection_target'];
                 if ( p2p_type( $p2p_key ) !== false ){
                     $p2p_key = dt_create_field_key( $p2p_key, true );
                 }
 
                 // Connection field to the same post type
-                if ( $post_type === $post_submission['connection_target'] ){
+                if ( $post_type === $connection_field_options['connection_target'] ){
                     //default direction to "any". If not multidirectional, then from
                     $direction = 'any';
-                    if ( $post_submission['multidirectional'] != 1 ) {
+                    if ( $connection_field_options['multidirectional'] != 1 ) {
                         $direction = 'from';
                     }
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission['new_field_name'],
+                        'name'        => $connection_field_options['new_field_name'],
                         'type'        => 'connection',
-                        'post_type' => $post_submission['connection_target'],
+                        'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
                         'p2p_key' => $p2p_key,
                         'tile'     => $tile_key,
@@ -621,8 +864,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     ];
 
                     // If not multidirectional, create the reverse direction field
-                    if ( $post_submission['multidirectional'] != 1 ){
-                        $reverse_name = $post_submission['reverse_connection_name'] ?? $post_submission['new_field_name'];
+                    if ( $connection_field_options['multidirectional'] != 1 ){
+                        $reverse_name = $connection_field_options['reverse_connection_name'] ?? $connection_field_options['new_field_name'];
                         $custom_field_options[$post_type][$field_key . '_reverse']  = [
                             'name'        => $reverse_name,
                             'type'        => 'connection',
@@ -631,23 +874,23 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                             'p2p_key' => $p2p_key,
                             'tile'     => 'other',
                             'customizable' => 'all',
-                            'hidden' => isset( $post_submission['disable_reverse_connection'] )
+                            'hidden' => !empty( $connection_field_options['disable_reverse_connection'] )
                         ];
                     }
                 } else {
                     $direction = 'from';
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $post_submission['new_field_name'],
+                        'name'        => $connection_field_options['new_field_name'],
                         'type'        => 'connection',
-                        'post_type' => $post_submission['connection_target'],
+                        'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
                         'p2p_key' => $p2p_key,
                         'tile'     => $tile_key,
                         'customizable' => 'all',
                     ];
                     // Create the reverse fields on the connection post type
-                    $reverse_name = $post_submission['other_field_name'] ?? $post_submission['new_field_name'];
-                    $custom_field_options[$post_submission['connection_target']][$field_key]  = [
+                    $reverse_name = $connection_field_options['other_field_name'] ?? $connection_field_options['new_field_name'];
+                    $custom_field_options[$connection_field_options['connection_target']][$field_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',
                         'post_type' => $post_type,
@@ -655,7 +898,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'p2p_key' => $p2p_key,
                         'tile'     => 'other',
                         'customizable' => 'all',
-                        'hidden' => isset( $post_submission['disable_other_post_type_field'] )
+                        'hidden' => !empty( $connection_field_options['disable_other_post_type_field'] )
                     ];
                 }
             }
@@ -704,39 +947,64 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function edit_field_option( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
-        if ( isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_key'], $post_submission['new_field_option_label'] ) ) {
-            $field_key = $post_submission['field_key'];
-            $post_type = $post_submission['post_type'];
-            $field_option_key = $post_submission['field_option_key'];
-            $new_field_option_label = $post_submission['new_field_option_label'];
-            $new_field_option_description = $post_submission['new_field_option_description'];
-            $field_option_icon = $post_submission['field_option_icon'];
-
-            $field_customizations = dt_get_option( 'dt_field_customizations' );
-            $custom_field_option = [
-                'label' => $new_field_option_label,
-                'description' => $new_field_option_description,
-            ];
-
-            if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
-                $field_option_icon = strtolower( trim( $field_option_icon ) );
-                $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
-                $custom_field_option[$icon_key] = $field_option_icon;
-
-                if ( $icon_key == 'font-icon' ){
-                    $custom_field_option['icon'] = '';
-                }
-            }
-
-            // Create default_name to store the default field option label if it changed
-            if ( self::default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_field_option['label'] ) ) {
-                $custom_field_option['default_name'] = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
-            }
-
-            $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
-            update_option( 'dt_field_customizations', $field_customizations );
-            return $custom_field_option;
+        if ( !isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_key'], $post_submission['new_field_option_label'] ) ) {
+            return new WP_Error( __METHOD__, __( 'Missing required parameters', 'disciple_tools' ), [ 'status' => 400 ] );
         }
+        $field_key = $post_submission['field_key'];
+        $post_type = $post_submission['post_type'];
+        $field_option_key = $post_submission['field_option_key'];
+        $new_field_option_label = $post_submission['new_field_option_label'];
+        $new_field_option_description = $post_submission['new_field_option_description'];
+        $field_option_icon = $post_submission['field_option_icon'];
+
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+        $custom_field_option = [
+            'label' => $new_field_option_label,
+            'description' => $new_field_option_description,
+        ];
+
+        if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
+            $field_option_icon = strtolower( trim( $field_option_icon ) );
+            $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
+            $custom_field_option[$icon_key] = $field_option_icon;
+
+            if ( $icon_key == 'font-icon' ){
+                $custom_field_option['icon'] = '';
+            }
+        }
+
+        // Create default_name to store the default field option label if it changed
+        if ( self::default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_field_option['label'] ) ) {
+            $custom_field_option['default_name'] = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
+        }
+
+        // Field option hidden
+        if ( isset( $post_submission['visibility']['hidden'] ) ) {
+            $custom_field_option['deleted'] = $post_submission['visibility']['hidden'];
+        }
+
+        $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
+        update_option( 'dt_field_customizations', $field_customizations );
+        return $custom_field_option;
+    }
+
+    public function delete_field_option( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+        if ( !isset( $post_submission['post_type'], $post_submission['field_key'], $post_submission['field_option_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing post_type or field_key or field_option_key', [ 'status' => 400 ] );
+        }
+        $field_key = $post_submission['field_key'];
+        $post_type = $post_submission['post_type'];
+        $field_option_key = $post_submission['field_option_key'];
+
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+        if ( !isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
+            return new WP_Error( __METHOD__, 'Field option does not exist', [ 'status' => 400 ] );
+        }
+
+        unset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] );
+        update_option( 'dt_field_customizations', $field_customizations );
+        return $field_customizations;
     }
 
     public function plugin_activate( WP_REST_Request $request ) {
@@ -899,12 +1167,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $custom_field['default_name'] = self::get_default_field_name( $post_type, $field_key );
             }
 
-            // Field privacy
-            $custom_field['private'] = false;
-            if ( isset( $post_submission['field_private'] ) && $post_submission['field_private'] ) {
-                $custom_field['private'] = true;
-            }
-
             // Field tile
             if ( isset( $post_submission['tile_select'] ) ) {
                 $custom_field['tile'] = $post_submission['tile_select'];
@@ -917,19 +1179,63 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             // Field icon
             if ( isset( $post_submission['field_icon'] ) && strpos( $post_submission['field_icon'], 'undefined' ) === false ) {
-                $field_icon                           = $post_submission['field_icon'];
                 $field_icon_key                       = ( ! empty( $field_icon ) && strpos( $field_icon, 'mdi mdi-' ) === 0 ) ? 'font-icon' : 'icon';
                 $field_null_icon_key                  = ( $field_icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
                 $custom_field[ $field_icon_key ]      = $field_icon;
                 $custom_field[ $field_null_icon_key ] = null;
             }
 
+            // Field hidden
+            if ( isset( $post_submission['visibility']['hidden'] ) ) {
+                $custom_field['hidden'] = $post_submission['visibility']['hidden'];
+            }
+            // show only for types
+            if ( isset( $post_submission['visibility']['type_visibility'] ) && isset( $post_fields['type']['default'] ) ) {
+                $selected = [];
+                foreach ( $post_fields['type']['default'] as $type_key => $type_value ){
+                    if ( in_array( $type_key, $post_submission['visibility']['type_visibility'], true ) ){
+                        $selected[] = $type_key;
+                    }
+                }
+                if ( empty( $selected ) ){
+                    $custom_field['only_for_types'] = false;
+                    $custom_field['hidden'] = true;
+                } else if ( count( $selected ) === count( $post_fields['type']['default'] ) ){
+                    $custom_field['only_for_types'] = true;
+                } else {
+                    $custom_field['only_for_types'] = array_values( $selected );
+                }
+            }
+
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );
-            return $custom_field;
+
+            $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
+            return $post_fields[$field_key];
         }
         return new WP_Error( 'error', 'Something went wrong', [ 'status' => 500 ] );
+    }
+
+    public function delete_field( WP_REST_Request $request ) {
+        $post_submission = $request->get_params();
+
+        if ( !isset( $post_submission['post_type'], $post_submission['field_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing post_type or field_key', [ 'status' => 400 ] );
+        }
+
+        $post_type = $post_submission['post_type'];
+        $field_key = $post_submission['field_key'];
+
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
+
+        if ( isset( $field_customizations[$post_type][$field_key] ) ) {
+            unset( $field_customizations[$post_type][$field_key] );
+            update_option( 'dt_field_customizations', $field_customizations );
+            wp_cache_delete( $post_type . '_field_settings' );
+            return true;
+        }
+        return false;
     }
 
     public function default_permission_check() {

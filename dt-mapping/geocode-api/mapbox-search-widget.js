@@ -2,11 +2,11 @@
 jQuery(document).ready(function(){
 
   // load widget
-  if ( dtMapbox.post.length !== 0 ) {
-    write_results_box()
+  if ( window.dtMapbox.post.length !== 0 ) {
+    window.write_results_box()
   }
   jQuery( '#new-mapbox-search' ).on( "click", function() {
-    write_input_widget()
+    window.write_input_widget()
   });
 })
 
@@ -23,30 +23,30 @@ function write_results_box() {
 
   let lgm_results = jQuery('#location-grid-meta-results')
 
-  if ( ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) || ( dtMapbox.post.contact_address !== undefined && dtMapbox.post.contact_address.length !== 0 ) ) {
+  if ( ( window.dtMapbox.post.location_grid_meta !== undefined && window.dtMapbox.post.location_grid_meta.length !== 0 ) || ( window.dtMapbox.post.contact_address !== undefined && window.dtMapbox.post.contact_address.length !== 0 ) ) {
 
-    if ( dtMapbox.post.location_grid_meta !== undefined && dtMapbox.post.location_grid_meta.length !== 0 ) {
-      jQuery.each( dtMapbox.post.location_grid_meta, function(i,v) {
+    if ( window.dtMapbox.post.location_grid_meta !== undefined && window.dtMapbox.post.location_grid_meta.length !== 0 ) {
+      jQuery.each( window.dtMapbox.post.location_grid_meta, function(i,v) {
         if ( v.grid_meta_id ){
           lgm_results.append(`<div class="input-group">
-            <input type="text" class="active-location input-group-field" id="location-${window.lodash.escape( v.grid_meta_id )}" dir="auto" value="${window.lodash.escape( v.label )}" readonly />
+            <input type="text" class="active-location input-group-field" id="location-${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}" dir="auto" value="${window.SHAREDFUNCTIONS.escapeHTML( v.label )}" readonly />
             <div class="input-group-button">
-              <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.lodash.escape( v.grid_meta_id )}"><i class="fi-map"></i></button>
-              <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.grid_meta_id )}">&times;</button>
+              <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}"><i class="fi-map"></i></button>
+              <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}">&times;</button>
             </div>
           </div>`)
         } else {
           lgm_results.append(`<div class="input-group">
-            <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape( v.key )}" value="${window.lodash.escape( v.label )}" dir="auto" data-field="contact_address" />
+            <input type="text" class="dt-communication-channel input-group-field" id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}" value="${window.SHAREDFUNCTIONS.escapeHTML( v.label )}" dir="auto" data-field="contact_address" />
             <div class="input-group-button">
               <button type="button" class="button success delete-button-style open-mapping-address-modal"
-                  title="${ window.lodash.escape( dtMapbox.translations.open_mapping ) /*Open Modal*/}"
-                  data-id="${window.lodash.escape( v.key )}"
+                  title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.open_mapping ) /*Open Modal*/}"
+                  data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}"
                   data-field="contact_address"
-                  data-key="${window.lodash.escape( v.key )}">
+                  data-key="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}">
                   <i class="fi-pencil"></i>
               </button>
-              <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ window.lodash.escape( dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.key )}" data-field="contact_address" data-key="${window.lodash.escape( v.key )}">&times;</button>
+              <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}" data-field="contact_address" data-key="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}">&times;</button>
             </div>
           </div>`)
         }
@@ -59,10 +59,10 @@ function write_results_box() {
     reset_tile_spacing()
   } /*end valid check*/
 
-  new Foundation.Reveal(jQuery('#mapping-modal'))
+  new window.Foundation.Reveal(jQuery('#mapping-modal'))
 
   if ( lgm_results.children().length === 0 ) {
-    write_input_widget()
+    window.write_input_widget()
   }
 }
 
@@ -81,9 +81,9 @@ function delete_click_listener() {
       }
     }
 
-    API.update_post( dtMapbox.post_type, dtMapbox.post_id, data ).then(function (response) {
-      dtMapbox.post = response
-      write_results_box()
+    window.API.update_post( window.dtMapbox.post_type, window.dtMapbox.post_id, data ).then(function (response) {
+      window.dtMapbox.post = response
+      window.write_results_box()
     }).catch(err => { console.error(err) })
 
   });
@@ -93,7 +93,7 @@ function open_modal_grid_listener(){
   jQuery('.open-mapping-grid-modal').on("click", function(e){
     let grid_meta_id = e.currentTarget.dataset.id
 
-    jQuery.each( dtMapbox.post.location_grid_meta, function(i,v){
+    jQuery.each( window.dtMapbox.post.location_grid_meta, function(i,v){
       if ( grid_meta_id === v.grid_meta_id ) {
         return load_modal( v.lng, v.lat, v.level, v.label, v.grid_id )
       }
@@ -107,12 +107,12 @@ function open_modal_address_listener(){
     let selected_key = jQuery(this).data('key')
     let selected_value = jQuery(`#${selected_key}`).val()
     if ( selected_value !== '' ){
-      write_input_widget()
+      window.write_input_widget()
 
       let mabox_search_input = jQuery('#mapbox-search')
       mabox_search_input.val( selected_value )
 
-      if ( dtMapbox.google_map_key ) {
+      if ( window.dtMapbox.google_map_key ) {
         google_autocomplete( mabox_search_input.val() )
       } else {
         mapbox_autocomplete( mabox_search_input.val() )
@@ -133,7 +133,7 @@ function load_modal( lng, lat, level, label, grid_id ){
   let content = jQuery('#mapping-modal-contents')
   content.empty().append(`
            <div class="grid-x">
-            <div class="cell"><strong>${window.lodash.escape( label )}</strong></div>
+            <div class="cell"><strong>${window.SHAREDFUNCTIONS.escapeHTML( label )}</strong></div>
             <div class="cell">
                 <div id="map-wrapper">
                     <div id='map'>${spinner}</div>
@@ -151,8 +151,8 @@ function load_modal( lng, lat, level, label, grid_id ){
   }
 
   jQuery('#map').empty()
-  mapboxgl.accessToken = dtMapbox.map_key;
-  var map = new mapboxgl.Map({
+  window.mapboxgl.accessToken = window.dtMapbox.map_key;
+  var map = new window.mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [lng, lat],
@@ -160,7 +160,7 @@ function load_modal( lng, lat, level, label, grid_id ){
     zoom: zoom
   });
 
-  var marker = new mapboxgl.Marker()
+  var marker = new window.mapboxgl.Marker()
     .setLngLat([lng, lat])
     .addTo(map);
 }
@@ -182,12 +182,12 @@ window.write_input_widget = function write_input_widget() {
   if ( jQuery('#mapbox-autocomplete').length === 0 ) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true" data-add-address="true">
-        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" dir="auto" placeholder="${ dtMapbox.translations.search_location /*Search Location*/ }" />
+        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" dir="auto" placeholder="${ window.dtMapbox.translations.search_location /*Search Location*/ }" />
         <div class="input-group-button">
             <button id="mapbox-spinner-button" class="button hollow" style="display:none;border-color:lightgrey;">
                 <span class="" style="border-radius: 50%;width: 24px;height: 24px;border: 0.25rem solid lightgrey;border-top-color: black;animation: spin 1s infinite linear;display: inline-block;"></span>
             </button>
-            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.lodash.escape( dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>`)
@@ -202,11 +202,11 @@ window.write_input_widget = function write_input_widget() {
   let setup_hide_list = function (){
     if ( !hide_list_setup ){
       hide_list_setup = true
-      $(document).mouseup(function(e){
-        let container = $("#mapbox-autocomplete");
+      jQuery(document).mouseup(function(e){
+        let container = jQuery("#mapbox-autocomplete");
         container.removeClass('active')
         let list = jQuery('#mapbox-autocomplete-list')
-        let isEmpty = !$.trim(list.html());
+        let isEmpty = !jQuery.trim(list.html());
         // if the target of the click isn't the container nor a descendant of the container
         if (!container.is(e.target) && container.has(e.target).length === 0 && !isEmpty )
         {
@@ -243,7 +243,7 @@ window.write_input_widget = function write_input_widget() {
       e.preventDefault();
       if (window.currentfocus > -1) {
         /*and simulate a click on the "active" item:*/
-        close_all_lists($($("#mapbox-autocomplete-list div")[window.currentfocus]).data("value"));
+        close_all_lists(jQuery(jQuery("#mapbox-autocomplete-list div")[window.currentfocus]).data("value"));
       }
     } else {
       validate_timer()
@@ -292,7 +292,7 @@ function validate_timer() {
     reset_tile_spacing()
 
     // call geocoder
-    if ( dtMapbox.google_map_key ) {
+    if ( window.dtMapbox.google_map_key ) {
       google_autocomplete( jQuery('#mapbox-search').val() )
     } else {
       mapbox_autocomplete( jQuery('#mapbox-search').val() )
@@ -323,11 +323,11 @@ function close_all_lists(selection_id) {
   }
 
   /* if Google Geocoding enabled*/
-  else if ( dtMapbox.google_map_key ) {
+  else if ( window.dtMapbox.google_map_key ) {
     jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].description)
     jQuery('#mapbox-autocomplete-list').empty()
 
-    const geocoder = new google.maps.Geocoder();
+    const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ placeId: window.mapbox_result_features[selection_id].place_id }, (results, status) => {
       if (status !== "OK") {
         console.log("Geocoder failed due to: " + status);
@@ -381,7 +381,7 @@ function mapbox_autocomplete(address){
 
   let root = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
   let settings = '.json?types=country,region,postcode,district,place,locality,neighborhood,address&limit=6&access_token='
-  let key = dtMapbox.map_key
+  let key = window.dtMapbox.map_key
   let url = root + encodeURI( address ) + settings + key
 
   fetch( url, {
@@ -399,13 +399,13 @@ function mapbox_autocomplete(address){
 
     jQuery.each( data.features, function( index, value ) {
       if ( 4 > index ){
-        list.append(`<div data-value="${window.lodash.escape( index )}">${window.lodash.escape( value.place_name )}</div>`)
+        list.append(`<div data-value="${window.SHAREDFUNCTIONS.escapeHTML( index )}">${window.SHAREDFUNCTIONS.escapeHTML( value.place_name )}</div>`)
       }
     })
 
     let add_address = jQuery('#mapbox-autocomplete').data('add-address')
     if ( typeof add_address === 'undefined' || add_address === true ) {
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.use )}: <span dir="auto">"${window.SHAREDFUNCTIONS.escapeHTML( address )}"</span></div>`)
     }
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -426,7 +426,7 @@ function google_autocomplete(address){
     return;
   }
 
-  let service = new google.maps.places.AutocompleteService();
+  let service = new window.google.maps.places.AutocompleteService();
   service.getPlacePredictions({ 'input': address }, function(predictions, status ) {
     let list = jQuery('#mapbox-autocomplete-list')
     list.empty()
@@ -434,13 +434,13 @@ function google_autocomplete(address){
     if ( status === 'OK' ) {
       jQuery.each( predictions, function( index, value ) {
         if ( 4 > index ) {
-          list.append(`<div data-value="${index}">${window.lodash.escape(value.description)}</div>`)
+          list.append(`<div data-value="${index}">${window.SHAREDFUNCTIONS.escapeHTML(value.description)}</div>`)
         }
       })
 
       let add_address = jQuery('#mapbox-autocomplete').data('add-address')
       if ( typeof add_address === 'undefined' || add_address === true ) {
-        list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
+        list.append(`<div data-value="address" style="font-weight:bold;">${window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.use )}: <span dir="auto">"${window.SHAREDFUNCTIONS.escapeHTML( address )}"</span></div>`)
       }
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -452,7 +452,7 @@ function google_autocomplete(address){
     }
     else if ( status === 'ZERO_RESULTS' ) {
       list.append(`<div>No Results Found</div>`)
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.use )}: <span dir="auto">"${window.SHAREDFUNCTIONS.escapeHTML( address )}"</span></div>`)
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
         close_all_lists(e.target.attributes['data-value'].value);
@@ -470,10 +470,10 @@ function post_geocoded_location() {
     /* if post_type = user, else all other post types */
     jQuery('#mapbox-spinner-button').show()
 
-    API.update_post( dtMapbox.post_type, dtMapbox.post_id, window.location_data ).then(function (response) {
-      dtMapbox.post = response
+    window.API.update_post( window.dtMapbox.post_type, window.dtMapbox.post_id, window.location_data ).then(function (response) {
+      window.dtMapbox.post = response
       jQuery('#mapbox-wrapper').empty()
-      write_results_box()
+      window.write_results_box()
 
     }).catch(err => { console.error(err) })
 
@@ -493,11 +493,11 @@ function post_contact_address( update ) {
   if ( mapbox_autocomplete.data('autosubmit') ) {
     jQuery('#mapbox-spinner-button').show()
 
-    API.update_post(window.dtMapbox.post_type, window.dtMapbox.post_id, {["contact_address"]: [update]}).then((updatedContact) => {
-      dtMapbox.post = updatedContact
+    window.API.update_post(window.dtMapbox.post_type, window.dtMapbox.post_id, {["contact_address"]: [update]}).then((updatedContact) => {
+      window.dtMapbox.post = updatedContact
       jQuery('#mapbox-wrapper').empty()
-      write_results_box()
-    }).catch(handleAjaxError)
+      window.write_results_box()
+    }).catch(window.handleAjaxError)
 
   } else {
 

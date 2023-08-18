@@ -634,10 +634,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <th><?php esc_html_e( 'Private Field', 'disciple_tools' ) ?></th>
                     <td>
-                        <?php $private_field_disabled = isset( $defaults[$field_key] ) || $field['type'] === 'connection' ?>
                         <label>
-                            <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? 'checked' : '' );?> <?php echo esc_html( ( $private_field_disabled ) ? 'disabled' : '' ); ?>>
-                            Values for this field are only able to be seen by the user who entered them.
+                            <input name="field_private" id="field_private" type="checkbox" <?php echo esc_html( ( isset( $field['private'] ) && $field['private'] ) ? 'checked' : '' );?> disabled>
+                            Values for this field are only seen by the user who entered them.
                         </label>
                     </td>
                 </tr>
@@ -1161,12 +1160,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $post_submission['delete_custom_label'], $custom_field['name'] ) ){
                 unset( $custom_field['name'] );
             }
-            //field privacy
-            if ( isset( $post_submission['field_private'] ) && $post_submission['field_private'] ) {
-                $custom_field['private'] = true;
-            } else if ( !isset( $post_submission['field_private'] ) || !$post_submission['field_private'] ) {
-                $custom_field['private'] = false;
-            }
             //field hidden
             if ( isset( $post_submission['field_hidden'] ) && $post_submission['field_hidden'] ) {
                 $custom_field['hidden'] = true;
@@ -1333,7 +1326,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <table>
                 <tr>
                     <td style="vertical-align: middle; min-width:250px">
-                        <?php esc_html_e( 'Post type', 'disciple_tools' ) ?>
+                        <?php esc_html_e( 'Record type', 'disciple_tools' ) ?>
                     </td>
                     <td>
                         <strong><?php echo esc_html( $wp_post_types[$post_type]->label ); ?></strong>

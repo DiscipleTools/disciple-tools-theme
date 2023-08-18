@@ -2,7 +2,7 @@
 
 class DT_URL {
 
-    private $parsed_url;
+    public $parsed_url;
     public $query_params;
     public function __construct( string $url ) {
         $this->parsed_url = parse_url( $url );

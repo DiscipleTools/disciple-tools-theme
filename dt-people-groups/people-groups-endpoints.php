@@ -107,13 +107,6 @@ class Disciple_Tools_People_Groups_Endpoints
                 'permission_callback' => '__return_true',
             ]
         );
-        register_rest_route(
-            $this->namespace, '/people-groups/update_setting_options', [
-                'methods'  => 'POST',
-                'callback' => [ $this, 'update_setting_options' ],
-                'permission_callback' => '__return_true',
-            ]
-        );
     }
 
     /**
@@ -218,21 +211,6 @@ class Disciple_Tools_People_Groups_Endpoints
             return $result;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
-        }
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function update_setting_options( WP_REST_Request $request ) {
-
-        $params = $request->get_params();
-        if ( isset( $params['settings'] ) ) {
-            return Disciple_Tools_People_Groups::update_setting_options( $params['settings'] );
-        } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter `settings`' );
         }
     }
 }

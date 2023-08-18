@@ -57,18 +57,18 @@ function page_mapping_view( rest_endpoints_base = null ) {
       <hr id="map_hr_2" class="map_hr">
     </div>
 
-    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${window.lodash.escape( translations.refresh_data )}</a></span>
+    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${window.SHAREDFUNCTIONS.escapeHTML( translations.refresh_data )}</a></span>
   `);
 
   if ( MAPPINGDATA.data ){
-    DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
+    window.DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
   } else {
     return get_data(false).then(response=>{
       MAPPINGDATA.data = response
       // set the depth of the drill down
       MAPPINGDATA.settings.hide_final_drill_down = false
       // load drill down
-      DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
+      window.DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
     }).fail(err=>{
       console.log(err)
     })
@@ -78,7 +78,7 @@ function page_mapping_view( rest_endpoints_base = null ) {
 
 
 function setCommonMapSettings( chart ) {
-  let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+  let polygonSeries = chart.series.push(new window.am4maps.MapPolygonSeries());
   polygonSeries.exclude = ["AQ","GL"];
   polygonSeries.useGeodata = true;
   let template = polygonSeries.mapPolygons.template;
@@ -86,23 +86,23 @@ function setCommonMapSettings( chart ) {
   // create tool tip
   let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            ${window.lodash.escape(translations.population)}: {population}<br>
+                            ${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}: {population}<br>
                             `;
   jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-    toolTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
+    toolTipContent += `${window.SHAREDFUNCTIONS.escapeHTML(vc.label)}: {${window.SHAREDFUNCTIONS.escapeHTML( vc.key )}}<br>`
   })
 
   template.tooltipHTML = toolTipContent
 
   // Create hover state and set alternative fill color
   let hs = template.states.create("hover");
-  hs.properties.fill = am4core.color("#000");
+  hs.properties.fill = window.am4core.color("#000");
 
   template.propertyFields.fill = "fill";
   polygonSeries.tooltip.label.interactionsEnabled = true;
   polygonSeries.tooltip.pointerOrientation = "vertical";
-  template.fill = am4core.color("#FFFFFF");
-  // template.stroke = am4core.color("rgba(89,89,89,0.51)");
+  template.fill = window.am4core.color("#FFFFFF");
+  // template.stroke = window.am4core.color("rgba(89,89,89,0.51)");
 
   polygonSeries.heatRules.push({
     property: "fill",
@@ -111,14 +111,14 @@ function setCommonMapSettings( chart ) {
     max: chart.colors.getIndex(1).brighten(-0.3)
   });
   // Zoom control
-  chart.zoomControl = new am4maps.ZoomControl();
+  chart.zoomControl = new window.am4maps.ZoomControl();
 
-  let homeButton = new am4core.Button();
+  let homeButton = new window.am4core.Button();
   homeButton.events.on("hit", function(){
     chart.goHome();
   });
 
-  homeButton.icon = new am4core.Sprite();
+  homeButton.icon = new window.am4core.Sprite();
   homeButton.padding(7, 5, 7, 5);
   homeButton.width = 30;
   homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
@@ -130,7 +130,7 @@ function setCommonMapSettings( chart ) {
   /* Click navigation */
   template.events.on("hit", function(ev) {
     // if (MAPPINGDATA.data[ev.target.dataItem.dataContext.grid_id]) {
-    return DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.grid_id)
+    return window.DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.grid_id)
     // }
   }, this);
 
@@ -192,7 +192,7 @@ function setUpData( features, map_data ){
             mapFeature.properties[label.key] = MAPPINGDATA.data.custom_column_data[grid_id][labelIndex]
             mapFeature.properties.value = mapFeature.properties[label.key]
             if ( mapFeature.properties.value === 0 ){
-              mapFeature.properties.fill = am4core.color(mapFillColor);
+              mapFeature.properties.fill = window.am4core.color(mapFillColor);
             }
           }
         })
@@ -200,7 +200,7 @@ function setUpData( features, map_data ){
         jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
           mapFeature.properties[label.key] = 0
           mapFeature.properties.value = 0
-          mapFeature.properties.fill = am4core.color(mapFillColor);
+          mapFeature.properties.fill = window.am4core.color(mapFillColor);
         })
       }
       /* end custom column */
@@ -211,15 +211,15 @@ function setUpData( features, map_data ){
 
 
 function location_grid_map( div, grid_id = 'world' ) {
-  am4core.useTheme(am4themes_animated);
+  window.am4core.useTheme(window.am4themes_animated);
 
   let chart = null
   if ( openChart ){
     openChart.dispose()
   }
-  chart = am4core.create( div, am4maps.MapChart);
+  chart = window.am4core.create( div, window.am4maps.MapChart);
   setCommonMapSettings( chart );
-  chart.projection = new am4maps.projections.Miller(); // Set projection
+  chart.projection = new window.am4maps.projections.Miller(); // Set projection
   chart.reverseGeodata = true
   openChart = chart
   let title = jQuery('#section_title')
@@ -304,12 +304,12 @@ function location_grid_map( div, grid_id = 'world' ) {
         // Create map polygon series
         chart.geodata = data
 
-        chart.projection = new am4maps.projections.Miller();
+        chart.projection = new window.am4maps.projections.Miller();
         chart.reverseGeodata = true
-        let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+        let polygonSeries = chart.series.push(new window.am4maps.MapPolygonSeries());
         polygonSeries.useGeodata = true;
 
-        let imageSeries = chart.series.push(new am4maps.MapImageSeries());
+        let imageSeries = chart.series.push(new window.am4maps.MapImageSeries());
 
         let locations = []
         jQuery.each( MAPPINGDATA.data[grid_id].children, function(i, v) {
@@ -325,26 +325,26 @@ function location_grid_map( div, grid_id = 'world' ) {
 
 
         let imageSeriesTemplate = imageSeries.mapImages.template;
-        let circle = imageSeriesTemplate.createChild(am4core.Circle);
+        let circle = imageSeriesTemplate.createChild(window.am4core.Circle);
         circle.radius = 6;
-        circle.fill = am4core.color("#3c5bdc");
-        circle.stroke = am4core.color("#3c5bdc");
+        circle.fill = window.am4core.color("#3c5bdc");
+        circle.stroke = window.am4core.color("#3c5bdc");
         circle.strokeWidth = 2;
         circle.nonScaling = true;
 
         // Click navigation
         circle.events.on("hit", function (ev) {
 
-          return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id, MAPPINGDATA.settings.cached )
+          return window.DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id, MAPPINGDATA.settings.cached )
 
         }, this);
 
         let circleTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            ${window.lodash.escape(translations.population)}: {population}<br>
+                            ${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}: {population}<br>
                             `;
         jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-          circleTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
+          circleTipContent += `${window.SHAREDFUNCTIONS.escapeHTML(vc.label)}: {${window.SHAREDFUNCTIONS.escapeHTML( vc.key )}}<br>`
         })
         circle.tooltipHTML = circleTipContent
 
@@ -375,10 +375,10 @@ function data_type_list( div ) {
       hollow = ''
     }
     list.append(`
-      <a onclick="heatmap_focus_change( ${window.lodash.escape( i )}, '${MAPPINGDATA.settings.current_map}' )"
+      <a onclick="heatmap_focus_change( ${window.SHAREDFUNCTIONS.escapeHTML( i )}, '${MAPPINGDATA.settings.current_map}' )"
         class="button ${hollow}"
-        id="${window.lodash.escape( v.key )}">
-        ${window.lodash.escape( v.label )}
+        id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}">
+        ${window.SHAREDFUNCTIONS.escapeHTML( v.label )}
       </a>
     `)
   })
@@ -419,12 +419,12 @@ function mini_map( div, marker_data ) {
       minimapChart.dispose()
     }
 
-    am4core.useTheme(am4themes_animated);
+    window.am4core.useTheme(window.am4themes_animated);
 
-    minimapChart = am4core.create( div, am4maps.MapChart);
+    minimapChart = window.am4core.create( div, window.am4maps.MapChart);
     let chart = minimapChart
 
-    chart.projection = new am4maps.projections.Orthographic(); // Set projection
+    chart.projection = new window.am4maps.projections.Orthographic(); // Set projection
     chart.reverseGeodata = true
 
     chart.seriesContainer.draggable = false;
@@ -437,19 +437,19 @@ function mini_map( div, marker_data ) {
     }
 
     chart.geodata = window.am4geodata_worldLow;
-    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+    let polygonSeries = chart.series.push(new window.am4maps.MapPolygonSeries());
 
     polygonSeries.useGeodata = true;
 
-    let imageSeries = chart.series.push(new am4maps.MapImageSeries());
+    let imageSeries = chart.series.push(new window.am4maps.MapImageSeries());
 
     imageSeries.data = marker_data;
 
     let imageSeriesTemplate = imageSeries.mapImages.template;
-    let circle = imageSeriesTemplate.createChild(am4core.Circle);
+    let circle = imageSeriesTemplate.createChild(window.am4core.Circle);
     circle.radius = 4;
-    circle.fill = am4core.color("#B27799");
-    circle.stroke = am4core.color("#FFFFFF");
+    circle.fill = window.am4core.color("#B27799");
+    circle.stroke = window.am4core.color("#FFFFFF");
     circle.strokeWidth = 2;
     circle.nonScaling = true;
     circle.tooltipText = "{title}";

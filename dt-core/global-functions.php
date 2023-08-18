@@ -199,6 +199,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+
+    /*
+     * deprecated
+     */
     if ( ! function_exists( 'dt_sanitize_array_html' ) ) {
         function dt_sanitize_array_html( $array ) {
             array_walk_recursive($array, function ( &$v ) {
@@ -826,7 +830,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                     <script>
                         jQuery(document).ready(function(){
-                            write_input_widget()
+                            window.write_input_widget()
                         })
                     </script>
                 <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>

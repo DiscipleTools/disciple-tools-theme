@@ -501,14 +501,14 @@ jQuery(document).ready(function ($) {
   }) {
 
     // Build media uploader modal
-    let mediaFrame = wp.media({
+    let mediaFrame = window.wp.media({
 
       // Accepts [ 'select', 'post', 'image', 'audio', 'video' ]
       // Determines what kind of library should be rendered.
       frame: 'select',
 
       // Modal title.
-      title: window.lodash.escape(window.dt_admin_scripts.upload.title),
+      title: window.dt_admin_shared.escape(window.dt_admin_scripts.upload.title),
 
       // Enable/disable multiple select
       multiple: false,
@@ -531,7 +531,7 @@ jQuery(document).ready(function ($) {
       },
 
       button: {
-        text: window.lodash.escape(window.dt_admin_scripts.upload.button_txt)
+        text: window.dt_admin_shared.escape(window.dt_admin_scripts.upload.button_txt)
       }
 
     });

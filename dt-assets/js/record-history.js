@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
       // Package filtered dates.
       let filtered_dates = {};
       $.each(activities, function (idx, activity) {
-        let hist_time = moment.unix(parseInt(activity['hist_time']));
+        let hist_time = window.moment.unix(parseInt(activity['hist_time']));
 
         // Default to midnight.
         hist_time.second(0);
@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
 
     if (record_history_select.val()) {
       let ts_start = record_history_select.val();
-      let ts_end = moment.unix(record_history_select.val()).add(24, 'hours').unix();
+      let ts_end = window.moment.unix(record_history_select.val()).add(24, 'hours').unix();
 
       handle_selected_activity_date(ts_start, ts_end, handle_activities_display);
       reset_show_all_activities_switch();
@@ -137,7 +137,7 @@ jQuery(document).ready(function ($) {
         let activity_heading = window.lodash.unescape(activity['object_note']);
         let field_label = '---';
         let revert_but_tooltip = window.record_history_settings.translations.revert_but_tooltip;
-        let activity_date = moment.unix(parseInt(activity['hist_time'])).format(date_format_long);
+        let activity_date = window.moment.unix(parseInt(activity['hist_time'])).format(date_format_long);
         let owner_name = (activity['name']) ? window.lodash.unescape(activity['name']):'';
         let owner_gravatar = (activity['gravatar']) ? `<img src="${activity['gravatar']}"/>` : `<span class="mdi mdi-robot-confused-outline" style="font-size: 20px;"></span>`
 
@@ -152,9 +152,9 @@ jQuery(document).ready(function ($) {
             // Replace raw link with converted html link.
             if (url_labels!=null) {
               let raw_link = url_labels[0] + '(' + url + ')';
-              activity_heading = window.lodash.replace(activity_heading, raw_link, `<a href="${window.lodash.escape(url)}" target="_blank">${window.lodash.escape(url_labels[1])}</a>`);
+              activity_heading = window.lodash.replace(activity_heading, raw_link, `<a href="${window.SHAREDFUNCTIONS.escapeHTML(url)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(url_labels[1])}</a>`);
             } else {
-              activity_heading = window.lodash.replace(activity_heading, new RegExp(url, 'g'), `<a href="${window.lodash.escape(url)}" target="_blank">${window.lodash.escape(url)}</a>`);
+              activity_heading = window.lodash.replace(activity_heading, new RegExp(url, 'g'), `<a href="${window.SHAREDFUNCTIONS.escapeHTML(url)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(url)}</a>`);
             }
           });
         }
@@ -165,7 +165,7 @@ jQuery(document).ready(function ($) {
           if (timestamps!=null) {
             $.each(timestamps, function (ts_idx, ts) {
               if (activity['field_type'] === 'date') {
-                activity_heading = window.lodash.replace(activity_heading, new RegExp(`\{?${ts}\}?`, 'g'), moment.unix(parseInt(ts)).format(date_format_pretty_short));
+                activity_heading = window.lodash.replace(activity_heading, new RegExp(`\{?${ts}\}?`, 'g'), window.moment.unix(parseInt(ts)).format(date_format_pretty_short));
               }
               if (activity['field_type'] === 'datetime') {
                 activity_heading = window.lodash.replace(activity_heading, new RegExp(`\{?${ts}\}?`, 'g'), window.SHAREDFUNCTIONS.formatDate(ts, true));
@@ -191,17 +191,17 @@ jQuery(document).ready(function ($) {
             <div class="grid-container record-history-activity-block">
                 <div class="grid-x">
                     <div class="cell small-11 record-history-activity-block-body">
-                        <span class="record-history-activity-heading">${activity_heading} (<span style="color: #989898;">${window.lodash.escape(field_label)}</span>)</span><br>
+                        <span class="record-history-activity-heading">${activity_heading} (<span style="color: #989898;">${window.SHAREDFUNCTIONS.escapeHTML(field_label)}</span>)</span><br>
                         <span class="record-history-activity-gravatar">
                             ${owner_gravatar}
                             <span class="record-history-activity-owner" style="margin-right: 10px;">${owner_name}</span>
-                            <span class="record-history-activity-date">${window.lodash.escape(activity_date)}</span>
+                            <span class="record-history-activity-date">${window.SHAREDFUNCTIONS.escapeHTML(activity_date)}</span>
                         </span>
                     </div>
                     <div class="cell small-1 record-history-activity-block-controls">
                         <input type="hidden" id="record_history_activity_block_timestamp_id" value="${activity['histid']}"/>
                         <input type="hidden" id="record_history_activity_block_timestamp" value="${activity['hist_time']}"/>
-                        <button class="button record-history-activity-block-controls-revert-but" title="${window.lodash.escape(revert_but_tooltip)}"><span class="mdi mdi-history" style="font-size: 20px;"></span></button>
+                        <button class="button record-history-activity-block-controls-revert-but" title="${window.SHAREDFUNCTIONS.escapeHTML(revert_but_tooltip)}"><span class="mdi mdi-history" style="font-size: 20px;"></span></button>
                     </div>
                 </div>
             </div>`;
@@ -223,8 +223,8 @@ jQuery(document).ready(function ($) {
   }
 
   function handle_revert_request(start_id, timestamp) {
-    let timestamp_formatted = moment.unix(parseInt(timestamp)).format(date_format_long);
-    let confirm_text = window.lodash.escape(window.record_history_settings.translations.revert_confirm_text).replace('%s', timestamp_formatted);
+    let timestamp_formatted = window.moment.unix(parseInt(timestamp)).format(date_format_long);
+    let confirm_text = window.SHAREDFUNCTIONS.escapeHTML(window.record_history_settings.translations.revert_confirm_text).replace('%s', timestamp_formatted);
     if (confirm(confirm_text)) {
 
       // On confirmation, start revert process

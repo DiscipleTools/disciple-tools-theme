@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
   detailsBarCreatedOnElements.forEach((element) => {
     const postDate = post.post_date.timestamp
     const formattedDate = window.SHAREDFUNCTIONS.formatDate(postDate)
-    element.innerHTML = window.lodash.escape( window.detailsSettings.translations.created_on.replace('%s', formattedDate) )
+    element.innerHTML = window.SHAREDFUNCTIONS.escapeHTML( window.detailsSettings.translations.created_on.replace('%s', formattedDate) )
   })
 
   const updateTextMetaOnChange = updateTextMeta()
@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
         $(document).trigger("text-input-updated", [newPost, id, val]);
         isUpdating = false
       }).catch((error) => {
-        handleAjaxError(error)
+        window.handleAjaxError(error)
         isUpdating = false
       })
     }
@@ -94,7 +94,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValues }).then((newPost)=>{
       $(`#${fieldKey}-spinner`).removeClass('active')
       post = newPost
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('.dt_textarea').change(function(){
@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "textarea-updated", [ newPost, id, val ] );
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('button.dt_multi_select').on('click',function () {
@@ -134,7 +134,7 @@ jQuery(document).ready(function($) {
     }).catch(err=>{
       field.removeClass("submitting-select-button selected-select-button")
       field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
-      handleAjaxError(err)
+      window.handleAjaxError(err)
     })
   })
 
@@ -150,19 +150,19 @@ jQuery(document).ready(function($) {
 
       let id = $(this).attr('id')
       $(`#${id}-spinner`).addClass('active')
-      rest_api.update_post( post_type, post_id, { [id]: moment.utc(date).unix() }).then((resp)=>{
+      rest_api.update_post( post_type, post_id, { [id]: window.moment.utc(date).unix() }).then((resp)=>{
         $(`#${id}-spinner`).removeClass('active')
         if (this.value) {
           this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, );
         }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
-      }).catch(handleAjaxError)
+      }).catch(window.handleAjaxError)
     },
     changeMonth: true,
     changeYear: true,
     yearRange: "1900:2050",
   }).each(function() {
-    if (this.value && moment.unix(this.value).isValid()) {
+    if (this.value && window.moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
     }
   })
@@ -255,7 +255,7 @@ jQuery(document).ready(function($) {
       $(`#${input_id}-spinner`).removeClass('active')
       $(document).trigger("dt_date_picker-updated", [resp, input_id, date]);
 
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   });
 
   $('select.select-field').change(e => {
@@ -269,7 +269,7 @@ jQuery(document).ready(function($) {
       if ( $(e.currentTarget).hasClass( "color-select")){
         $(`#${id}`).css("background-color", window.lodash.get(window.detailsSettings, `post_settings.fields[${id}].default[${val}].color`) )
       }
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('input.number-input').on("blur", function(){
@@ -279,7 +279,7 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $(`#${id}-spinner`).removeClass('active')
       $( document ).trigger( "number-input-updated", [ resp, id, val ] );
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $('.dt_contenteditable').on('blur', function(){
@@ -290,7 +290,7 @@ jQuery(document).ready(function($) {
     }
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   // Clicking the plus sign next to the field label
@@ -299,16 +299,16 @@ jQuery(document).ready(function($) {
     const $list = $(`#edit-${field}`)
 
     $list.append(`<div class="input-group">
-          <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
+          <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field )}" class="dt-communication-channel input-group-field" dir="auto" />
           <div class="input-group-button">
-          <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.lodash.escape( field )}" data-key="new" data-field="${window.lodash.escape( field )}">&times;</button>
+          <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.SHAREDFUNCTIONS.escapeHTML( field )}" data-key="new" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field )}">&times;</button>
           </div></div>`)
    })
 
   $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
 
   $('.add-link__option').on('click', (event) => {
-    SHAREDFUNCTIONS.addLink(event)
+    window.SHAREDFUNCTIONS.addLink(event)
     $(event.target).parent().hide()
     setTimeout(() => {
       event.target.parentElement.removeAttribute('style')
@@ -324,18 +324,18 @@ jQuery(document).ready(function($) {
     } else if ( key ){
       $(`#${field}-spinner`).addClass('active')
       update["key"] = key;
-      API.update_post(post_type, post_id, { [field]: [update]}).then((updatedContact)=>{
+      window.API.update_post(post_type, post_id, { [field]: [update]}).then((updatedContact)=>{
         $(this).parent().parent().remove()
         let list = $(`#edit-${field}`)
         if ( list.children().length === 0 ){
           list.append(`<div class="input-group">
-            <input type="text" data-field="${window.lodash.escape( field )}" class="dt-communication-channel input-group-field" dir="auto" />
+            <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field )}" class="dt-communication-channel input-group-field" dir="auto" />
             </div>`)
         }
         $(`#${field}-spinner`).removeClass('active')
         post = updatedContact
         resetDetailsFields()
-      }).catch(handleAjaxError)
+      }).catch(window.handleAjaxError)
     }
   })
 
@@ -360,11 +360,11 @@ jQuery(document).ready(function($) {
       ]
     }
 
-    API.update_post(post_type, post_id, { [fieldKey]: update }).then((updatedContact)=>{
+    window.API.update_post(post_type, post_id, { [fieldKey]: update }).then((updatedContact)=>{
       $(`#${fieldKey}-spinner`).removeClass('active')
       post = updatedContact
       resetDetailsFields()
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $(document).on('blur', 'input.dt-communication-channel', function(){
@@ -376,7 +376,7 @@ jQuery(document).ready(function($) {
       update["key"] = id;
     }
     $(`#${field_key}-spinner`).addClass('active')
-    API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
+    window.API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
       $(`#${field_key}-spinner`).removeClass('active')
       let key = window.lodash.last(updatedContact[field_key]).key
       $(this).attr('id', key)
@@ -384,12 +384,12 @@ jQuery(document).ready(function($) {
         $(this).parent().find('.channel-delete-button').data('key', key)
       } else {
         $(this).parent().append(`<div class="input-group-button">
-            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${window.lodash.escape( key )}" data-field="${window.lodash.escape( field_key )}">&times;</button>
+            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${window.SHAREDFUNCTIONS.escapeHTML( key )}" data-field="${window.SHAREDFUNCTIONS.escapeHTML( field_key )}">&times;</button>
         </div>`)
       }
       post = updatedContact
       resetDetailsFields()
-    }).catch(handleAjaxError)
+    }).catch(window.handleAjaxError)
   })
 
   $( document ).on( 'select-field-updated', function (e, newContact, id, val) {
@@ -397,15 +397,15 @@ jQuery(document).ready(function($) {
 
   $( document ).on( 'text-input-updated', function (e, newContact, id, val){
     if ( id === "name" ){
-      $("#title").html(window.lodash.escape(val))
-      $("#second-bar-name").text(window.lodash.escape(val))
+      $("#title").html(window.SHAREDFUNCTIONS.escapeHTML(val))
+      $("#second-bar-name").text(window.SHAREDFUNCTIONS.escapeHTML(val))
     }
   })
 
   $( document ).on( 'contenteditable-updated', function (e, newContact, id, val){
     if ( id === "title" ){
-      $("#name").val(window.lodash.escape(val))
-      $("#second-bar-name").text(window.lodash.escape(val))
+      $("#name").val(window.SHAREDFUNCTIONS.escapeHTML(val))
+      $("#second-bar-name").text(window.SHAREDFUNCTIONS.escapeHTML(val))
     }
   })
 
@@ -429,7 +429,7 @@ jQuery(document).ready(function($) {
    */
   $('.update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
-    API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
+    window.API.update_post( post_type, post_id, {"requires_update":updateNeeded}).then(resp=>{
       post = resp
     })
   })
@@ -441,8 +441,8 @@ jQuery(document).ready(function($) {
     $('#show-details-edit-button').toggle()
     $(`#details-section .typeahead__query input`).each((i, element)=>{
       let field_key = $(element).data("field")
-      if ( Typeahead[`.js-typeahead-${field_key}`]){
-        Typeahead[`.js-typeahead-${field_key}`].adjustInputSize()
+      if ( window.Typeahead[`.js-typeahead-${field_key}`]){
+        window.Typeahead[`.js-typeahead-${field_key}`].adjustInputSize()
       }
     })
   })
@@ -463,34 +463,34 @@ jQuery(document).ready(function($) {
       maxItem: 0,
       accent: true,
       searchOnFocus: true,
-      source: TYPEAHEADS.typeaheadUserSource(),
+      source: window.TYPEAHEADS.typeaheadUserSource(),
       templateValue: "{{name}}",
       template: function (query, item) {
         return `<div class="assigned-to-row" dir="auto">
           <span>
               <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-              ${window.lodash.escape( item.name )}
+              ${window.SHAREDFUNCTIONS.escapeHTML( item.name )}
           </span>
-          ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+          ${ item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : '' }
           ${ item.update_needed && item.update_needed > 0 ? `<span>
-            <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-            <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+            <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
           </span>` : '' }
         </div>`
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function(node, a, item){
-          API.update_post(post_type, post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
+          window.API.update_post(post_type, post_id, {[field_key]: 'user-' + item.ID}).then(function (response) {
             window.lodash.set(post, field_key, response[field_key])
             user_input.val(post[field_key].display)
             user_input.blur()
           }).catch(err => { console.error(err) })
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_key}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -558,7 +558,7 @@ jQuery(document).ready(function($) {
         callback: {
           onCancel: function (node, item) {
             $(`#${field_id}-spinner`).addClass('active')
-            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
+            window.API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
               $(`#${field_id}-spinner`).removeClass('active')
             }).catch(err => { console.error(err) })
           }
@@ -580,24 +580,24 @@ jQuery(document).ready(function($) {
         },
         onClick: function(node, a, item, event){
           $(`#${field_id}-spinner`).addClass('active')
-          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).then(new_post=>{
+          window.API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).then(new_post=>{
             $(`#${field_id}-spinner`).removeClass('active')
             $( document ).trigger( "dt-post-connection-added", [ new_post, field_id ] );
           }).catch(err => { console.error(err) })
 
           // If present, adjust status label, so as to remain uniform
           if (item['status']) {
-            item['status']['label'] = item['status']['label'] ? '[' + window.lodash.escape(item['status']['label']).toLowerCase() + ']' : '';
+            item['status']['label'] = item['status']['label'] ? '[' + window.SHAREDFUNCTIONS.escapeHTML(item['status']['label']).toLowerCase() + ']' : '';
           }
 
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
           this.resetInput();
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function (event, query) {
@@ -605,10 +605,10 @@ jQuery(document).ready(function($) {
           if ( !query ){
             $(`#${field_id}-result-container`).empty()
           }
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onShowLayout (){
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         }
       }
     })
@@ -694,7 +694,7 @@ jQuery(document).ready(function($) {
       maxItem: 20,
       searchOnFocus: true,
       template: function (query, item) {
-        return `<span>${window.lodash.escape(item.value)}</span>`
+        return `<span>${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`
       },
       source: source_data,
       display: "value",
@@ -710,7 +710,7 @@ jQuery(document).ready(function($) {
         callback: {
           onCancel: function (node, item, event) {
             $(`#${field}-spinner`).addClass('active')
-            API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
+            window.API.update_post(post_type, post_id, {[field]: {values:[{value:item.key, delete:true}]}}).then((new_post)=>{
               $(`#${field}-spinner`).removeClass('active')
               this.hideLayout();
               this.resetInput();
@@ -729,7 +729,7 @@ jQuery(document).ready(function($) {
       callback: {
         onClick: function(node, a, item, event){
           $(`#${field}-spinner`).addClass('active')
-          API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
+          window.API.update_post(post_type, post_id, {[field]: {values:[{"value":item.key}]}}).then(new_post=>{
             $(`#${field}-spinner`).removeClass('active')
             $( document ).trigger( "dt_multi_select-updated", [ new_post, field ] );
             this.addMultiselectItemLayout(item)
@@ -739,7 +739,7 @@ jQuery(document).ready(function($) {
           }).catch(err => { console.error(err) })
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           if ( Object.keys(field_options).length > 0 ){
             //adding the result text moves the input. The timeout helps keep the dropdown from closing as the user clicks and cursor moves away from the input.
             setTimeout( () => {
@@ -780,7 +780,7 @@ jQuery(document).ready(function($) {
       return;
     }
     let update_field = connection_type;
-    API.create_post( field_settings[update_field].post_type, {
+    window.API.create_post( field_settings[update_field].post_type, {
       title,
       additional_meta: {
         created_from: post_id,
@@ -789,13 +789,13 @@ jQuery(document).ready(function($) {
     }).then((newRecord)=>{
       $(".js-create-record-button").attr("disabled", false).removeClass("loading");
       $(".reveal-after-record-create").show()
-      $("#new-record-link").html(`<a href="${window.lodash.escape( newRecord.permalink )}">${window.lodash.escape( title )}</a>`)
+      $("#new-record-link").html(`<a href="${window.SHAREDFUNCTIONS.escapeHTML( newRecord.permalink )}">${window.SHAREDFUNCTIONS.escapeHTML( title )}</a>`)
       $(".hide-after-record-create").hide()
-      $('#go-to-record').attr('href', window.lodash.escape( newRecord.permalink ));
+      $('#go-to-record').attr('href', window.SHAREDFUNCTIONS.escapeHTML( newRecord.permalink ));
       $( document ).trigger( "dt-post-connection-created", [ post, update_field ] );
-      if ( Typeahead[`.js-typeahead-${connection_type}`] ){
-        Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
-        masonGrid.masonry('layout')
+      if ( window.Typeahead[`.js-typeahead-${connection_type}`] ){
+        window.Typeahead[`.js-typeahead-${connection_type}`].addMultiselectItemLayout({ID:newRecord.ID.toString(), name:title})
+        window.masonGrid.masonry('layout')
       }
     })
     .catch(function(error) {
@@ -818,8 +818,8 @@ jQuery(document).ready(function($) {
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-        all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+        template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus),
+        all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -837,8 +837,8 @@ jQuery(document).ready(function($) {
             },
             callback: {
               done: function (data) {
-                if (typeof typeaheadTotals!=="undefined") {
-                  typeaheadTotals.field = data.total
+                if (typeof window.typeaheadTotals!=="undefined") {
+                  window.typeaheadTotals.field = data.total
                 }
                 return data.location_grid
               }
@@ -858,30 +858,30 @@ jQuery(document).ready(function($) {
 
         }, callback: {
           onCancel: function (node, item) {
-            API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
+            window.API.update_post(post_type, post_id, {[field_id]: {values:[{value:item.ID, delete:true}]}})
             .catch(err => { console.error(err) })
           }
         }
       },
       callback: {
         onClick: function (node, a, item, event) {
-          API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
+          window.API.update_post(post_type, post_id, {[field_id]: {values:[{"value":item.ID}]}}).catch(err => { console.error(err) })
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
           this.resetInput();
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onReady() {
-          this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.filters.dropdown = {key: "group", value: "focus", template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus)}
           this.container
           .removeClass("filter")
           .find("." + this.options.selector.filterButton)
-          .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+          .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals[field_id]
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -919,7 +919,7 @@ jQuery(document).ready(function($) {
   $('.open-share').on("click", function(){
     $('#share-contact-modal').foundation('open');
     if  (!shareTypeahead) {
-      shareTypeahead = TYPEAHEADS.share(post_type, post_id )
+      shareTypeahead = window.TYPEAHEADS.share(post_type, post_id )
     }
   })
 
@@ -932,24 +932,24 @@ jQuery(document).ready(function($) {
       let task_done = ( task.category === "reminder" && task.value.notification === 'notification_sent' )
                       || ( task.category !== "reminder" && task.value.status === 'task_complete' )
       let show_complete_button = task.category !== "reminder" && task.value.status !== 'task_complete'
-      let task_row = `<strong>${window.lodash.escape( moment(task.date).format("MMM D YYYY") )}</strong> `
+      let task_row = `<strong>${window.SHAREDFUNCTIONS.escapeHTML( window.moment(task.date).format("MMM D YYYY") )}</strong> `
       if ( task.category === "reminder" ){
-        task_row += window.lodash.escape( window.detailsSettings.translations.reminder )
+        task_row += window.SHAREDFUNCTIONS.escapeHTML( window.detailsSettings.translations.reminder )
         if ( task.value.note ){
-          task_row += ' ' + window.lodash.escape(task.value.note)
+          task_row += ' ' + window.SHAREDFUNCTIONS.escapeHTML(task.value.note)
         }
       } else {
-         task_row += window.lodash.escape(task.value.note || window.detailsSettings.translations.no_note )
+         task_row += window.SHAREDFUNCTIONS.escapeHTML(task.value.note || window.detailsSettings.translations.no_note )
       }
       html += `<li>
         <span style="${task_done ? 'text-decoration:line-through' : ''}">
         ${task_row}
-        ${ show_complete_button ? `<button type="button" data-id="${window.lodash.escape(task.id)}" class="existing-task-action complete-task">${window.lodash.escape(window.detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
-        <button type="button" data-id="${window.lodash.escape(task.id)}" class="existing-task-action remove-task" style="color: red;">${window.lodash.escape(window.detailsSettings.translations.remove).toLowerCase()}</button>
+        ${ show_complete_button ? `<button type="button" data-id="${window.SHAREDFUNCTIONS.escapeHTML(task.id)}" class="existing-task-action complete-task">${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.complete).toLowerCase()}</button>` : '' }
+        <button type="button" data-id="${window.SHAREDFUNCTIONS.escapeHTML(task.id)}" class="existing-task-action remove-task" style="color: red;">${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.remove).toLowerCase()}</button>
       </li>`
     })
     if (!html ){
-      $('#tasks-modal .existing-tasks').html(`<li>${window.lodash.escape(window.detailsSettings.translations.no_tasks)}</li>`)
+      $('#tasks-modal .existing-tasks').html(`<li>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.no_tasks)}</li>`)
     } else {
       $('#tasks-modal .existing-tasks').html(html)
     }
@@ -957,7 +957,7 @@ jQuery(document).ready(function($) {
     $('.complete-task').on("click", function () {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
-      API.update_post(post_type, post_id, {
+      window.API.update_post(post_type, post_id, {
           "tasks": { values: [ { id, value: {status: 'task_complete'}, } ] }
       }).then(resp => {
         post = resp
@@ -968,7 +968,7 @@ jQuery(document).ready(function($) {
     $('.remove-task').on("click", function () {
       $('#tasks-spinner').addClass('active')
       let id = $(this).data('id')
-      API.update_post(post_type, post_id, {
+      window.API.update_post(post_type, post_id, {
           "tasks": { values: [ { id, delete: true } ] }
       }).then(resp => {
         post = resp
@@ -998,7 +998,7 @@ jQuery(document).ready(function($) {
       "monthNames": window.SHAREDFUNCTIONS.get_months_labels(),
     },
     "firstDay": 1,
-    "startDate": moment().add(1, "day"),
+    "startDate": window.moment().add(1, "day"),
     "opens": "center",
     "drops": "down"
   });
@@ -1012,7 +1012,7 @@ jQuery(document).ready(function($) {
     let date = $('#create-task-date').data('daterangepicker').startDate
     let note = task_note.val()
     let task_type = $('#tasks-modal input[name="task-type"]:checked').val()
-    API.update_post(post_type, post_id, {
+    window.API.update_post(post_type, post_id, {
       "tasks":{
         values: [
           {
@@ -1033,7 +1033,7 @@ jQuery(document).ready(function($) {
       $("#create-task")
       .attr("disabled", false)
       .removeClass("loading");
-      $('.js-add-task-form .error-text').html(window.lodash.escape(window.lodash.get(err, "responseJSON.message")));
+      $('.js-add-task-form .error-text').html(window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(err, "responseJSON.message")));
       console.error(err)
     })
   })
@@ -1136,7 +1136,7 @@ jQuery(document).ready(function($) {
         callback: {
           onCancel: function (node, item, event) {
             $(`#${field}-spinner`).addClass('active')
-            API.update_post(post_type, post_id, {[field]: {values:[{value:item.name, delete:true}]}}).then((new_post)=>{
+            window.API.update_post(post_type, post_id, {[field]: {values:[{value:item.name, delete:true}]}}).then((new_post)=>{
               $(`#${field}-spinner`).removeClass('active')
               this.hideLayout();
               this.resetInput();
@@ -1159,16 +1159,16 @@ jQuery(document).ready(function($) {
           addTag(field, item.name)
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field}-result-container`).html(text);
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onHideLayout: function () {
           $(`#${field}-result-container`).html("");
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         },
         onShowLayout() {
-          masonGrid.masonry('layout')
+          window.masonGrid.masonry('layout')
         }
       }
     });
@@ -1182,18 +1182,18 @@ jQuery(document).ready(function($) {
   $("#create-tag-return").on("click", function () {
     let field = $("#create-tag-modal").data("field");
     let tag = $("#new-tag").val()
-    Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({name: tag})
-    API.update_post(post_type, post_id, {[field]: {values: [{value: tag}]}})
+    window.Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({name: tag})
+    window.API.update_post(post_type, post_id, {[field]: {values: [{value: tag}]}})
   })
 
   function addTagOnClick(field, tag) {
     $(`#${field}-spinner`).addClass('active')
-    API.update_post(post_type, post_id, {[field]: {values:[{"value":tag}]}}).then(new_post=>{
+    window.API.update_post(post_type, post_id, {[field]: {values:[{"value":tag}]}}).then(new_post=>{
       $(`#${field}-spinner`).removeClass('active')
       this.addMultiselectItemLayout({name: tag})
       this.hideLayout();
       this.resetInput();
-      masonGrid.masonry('layout')
+      window.masonGrid.masonry('layout')
     }).catch(err => { console.error(err) })
   }
 
@@ -1220,29 +1220,29 @@ jQuery(document).ready(function($) {
         let field_value = window.lodash.get( post, field_key, false )
         let values_html = ``
         if ( field_options.type === 'text' ){
-          values_html = window.lodash.escape( field_value )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         } else if ( field_options.type === 'textarea' ){
-          values_html = window.lodash.escape( field_value )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         } else if ( field_options.type === 'date' ){
-          values_html = window.lodash.escape( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( window.SHAREDFUNCTIONS.formatDate( field_value.timestamp ) )
         } else if ( field_options.type === 'boolean' ){
-          values_html = window.lodash.escape( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value ? window.detailsSettings.translations.yes : window.detailsSettings.translations.no )
         } else if ( field_options.type === 'key_select' ){
-          values_html = window.lodash.escape( field_value.label )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value.label )
         } else if ( field_options.type === 'multi_select' || field_options.type === 'tags' ){
           values_html = field_value.map(v=>{
-            return `${window.lodash.escape( window.lodash.get( field_options, `default[${v}].label`, v ))}`;
+            return `${window.SHAREDFUNCTIONS.escapeHTML( window.lodash.get( field_options, `default[${v}].label`, v ))}`;
           }).join(', ')
         } else if ( ['location', 'location_meta' ].includes(field_options.type) ){
           values_html = field_value.map(v=>{
-            return window.lodash.escape(v.matched_search || v.label);
+            return window.SHAREDFUNCTIONS.escapeHTML(v.matched_search || v.label);
           }).join(' / ')
         } else if ( field_options.type === 'communication_channel' || field_options.type === 'link' ){
           field_value.forEach((v, index)=>{
             if ( index > 0 ){
               values_html += ', '
             }
-            let value = window.lodash.escape(v.value)
+            let value = window.SHAREDFUNCTIONS.escapeHTML(v.value)
             if ( field_key === 'contact_phone' ){
               values_html += `<a dir="auto" class="phone-link" href="tel:${value}" title="${value}">${value}</a>`
             } else if (field_key === "contact_email") {
@@ -1258,27 +1258,27 @@ jQuery(document).ready(function($) {
                   urlToDisplay = value.replace(prefix[0], "")
                 }
                 value = upgradeUrl(value)
-                value = `<a href="${window.lodash.escape(value)}" target="_blank" >${window.lodash.escape(urlToDisplay)}</a>`
+                value = `<a href="${window.SHAREDFUNCTIONS.escapeHTML(value)}" target="_blank" >${window.SHAREDFUNCTIONS.escapeHTML(urlToDisplay)}</a>`
               }
               values_html += value
             }
           })
           let labels = field_value.map(v=>{
-            return window.lodash.escape(v.value);
+            return window.SHAREDFUNCTIONS.escapeHTML(v.value);
           }).join(', ')
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span title="${labels}">${values_html}</span>`)
 
         } else if ( ['connection'].includes(field_options.type) ){
           values_html = field_value.map(v=>{
             if ( v.label ){
-              return window.lodash.escape(v.label || v.post_title);
+              return window.SHAREDFUNCTIONS.escapeHTML(v.label || v.post_title);
             } else {
-              return `<a href="${window.lodash.escape(v.permalink)}" target="_blank" >${window.lodash.escape(v.post_title)}</a>`
+              return `<a href="${window.SHAREDFUNCTIONS.escapeHTML(v.permalink)}" target="_blank" >${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a>`
             }
           }).join(' / ')
           $(`#collapsed-detail-${field_key} .collapsed-items`).html(`<span>${values_html}</span>`)
         } else {
-          values_html = window.lodash.escape( field_value )
+          values_html = window.SHAREDFUNCTIONS.escapeHTML( field_value )
         }
         $(`#collapsed-detail-${field_key}`).toggle(values_html !== ``)
         if (field_options.type !== 'communication_channel' && field_options.type !== 'link' && field_options.type !== 'connection') {
@@ -1310,14 +1310,14 @@ jQuery(document).ready(function($) {
         for (const service in messagingServices) {
           let link = messagingServices[service].link.replace('PHONE_NUMBER_NO_PLUS', phoneNumber.replace(/^((\+)|(00))/,"")).replace('PHONE_NUMBER', phoneNumber);
 
-          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
+          messagingServicesLinks = messagingServicesLinks + `<li><a href="${link}" title="${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)} ${messagingServices[service].name}" target="_blank" class="phone-open-with-link"><img src="${messagingServices[service].icon}"/>${messagingServices[service].name}</a></li>`
         }
 
         let openWithDiv = `<div class="phone-open-with-container __${phoneNumber.replace(/^((\+)|(00))/,"")}">
-        <strong>${window.lodash.escape(window.detailsSettings.translations.Open_with)}...</strong>
+        <strong>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)}...</strong>
           <ul>
-            <li><a href="${PhoneLink}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} ${window.post_type_fields.contact_phone.name}" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/>${window.post_type_fields.contact_phone.name}</a></li>
-            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="${window.lodash.escape(window.detailsSettings.translations.Open_with)} iMessage" target="_blank" class="phone-open-with-link"><img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
+            <li><a href="${PhoneLink}" title="${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)} ${window.post_type_fields.contact_phone.name}" target="_blank" class="phone-open-with-link"><img src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/phone.svg"/>${window.post_type_fields.contact_phone.name}</a></li>
+            ${(navigator.platform === "MacIntel" || navigator.platform == "iPhone" || navigator.platform == "iPad" || navigator.platform == "iPod") ? `<li><a href="iMessage://${phoneNumber}" title="${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.Open_with)} iMessage" target="_blank" class="phone-open-with-link"><img src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/imessage.svg"/> iMessage</a></li>` : ""
             }
             ${messagingServicesLinks}
           </ul>
@@ -1334,13 +1334,13 @@ jQuery(document).ready(function($) {
 
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.delete_post( post_type, post_id ).then(()=>{
+    window.API.delete_post( post_type, post_id ).then(()=>{
       window.location = window.wpApiShare.site_url + '/' + post_type
     })
   })
   $('#archive-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.update_post( post_type, post_id, {overall_status:"closed"} ).then(()=>{
+    window.API.update_post( post_type, post_id, {overall_status:"closed"} ).then(()=>{
       $(this).attr("disabled", false).removeClass("loading");
       $('#archive-record-modal').foundation('close');
       $('.archived-notification').show()
@@ -1348,7 +1348,7 @@ jQuery(document).ready(function($) {
   })
   $('#unarchive-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
-    API.update_post( post_type, post_id, {overall_status:"active"} ).then(()=>{
+    window.API.update_post( post_type, post_id, {overall_status:"active"} ).then(()=>{
       $(this).attr("disabled", false).removeClass("loading");
       $('.archived-notification').hide()
     })
@@ -1404,12 +1404,12 @@ jQuery(document).ready(function($) {
         minLength: 0,
         accent: true,
         searchOnFocus: true,
-        source: TYPEAHEADS.typeaheadPostsSource(merge_post_type, {'include-users': false}),
+        source: window.TYPEAHEADS.typeaheadPostsSource(merge_post_type, {'include-users': false}),
         templateValue: "{{name}}",
         template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
         hint: true,
-        emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+        emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
         callback: {
           onClick: function (node, a, item) {
             $('.confirm-merge-with-post').show()
@@ -1417,7 +1417,7 @@ jQuery(document).ready(function($) {
             $('#name-of-post-to-merge').html(item.name)
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#merge_with-result-container').html(text);
           },
           onHideLayout: function () {
@@ -1484,6 +1484,6 @@ jQuery(document).ready(function($) {
 
 // change update needed notification and switch if needed.
 function record_updated(updateNeeded) {
-  $('.update-needed-notification').toggle(updateNeeded)
-  $('.update-needed').prop("checked", updateNeeded)
+  jQuery('.update-needed-notification').toggle(updateNeeded)
+  jQuery('.update-needed').prop("checked", updateNeeded)
 }

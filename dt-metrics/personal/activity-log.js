@@ -12,18 +12,18 @@ jQuery(document).ready(function() {
     })
     metricsContentDiv.addClass('large-6')
     let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsActivity.data
-    let translations = dtMetricsActivity.data.translations
+    let sourceData = window.dtMetricsActivity.data
+    let translations = window.dtMetricsActivity.data.translations
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
     /* activity */
     const user_id = sourceData.user_id
 
-    makeRequest( "get", `activity-log`, null , 'dt-users/v1/')
+    window.makeRequest( "get", `activity-log`, null , 'dt-users/v1/')
     .done(activity=>{
 
-      const title = makeTitle(window.lodash.escape( translations.title ))
+      const title = makeTitle(window.SHAREDFUNCTIONS.escapeHTML( translations.title ))
       const activity_html = window.dtActivityLogs.makeActivityList(activity, translations)
 
       let html = `

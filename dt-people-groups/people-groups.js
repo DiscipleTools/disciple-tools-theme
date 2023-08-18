@@ -6,45 +6,20 @@ jQuery(document).ready(function () {
 
 });
 
-function update_setting_options() {
-  let settings = {
-    'settings': {
-      'display_tab': jQuery('#display_people_group_tab').prop('checked')
-    }
-  };
-
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(settings),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/update_setting_options',
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
-    },
-  }).done(function (data) {
-    console.log(data);
-
-  }).fail(function (err) {
-    console.log("error");
-    console.log(err);
-  })
-}
-
 function group_search() {
     let sval = jQuery('#group-search').val();
     let data = { "s": sval }
     let search_button = jQuery('#search_button')
-    search_button.append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
+    search_button.append(' <img style="height:1em;" src="' + window.dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
 
     jQuery.ajax({
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/search_csv',
+        url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/search_csv',
         beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
         },
     })
         .done(function (data) {
@@ -97,7 +72,7 @@ function import_all_people_groups() {
     group_search_select.attr('disabled', 'disabled');
     search_button.attr('disabled', 'disabled');
     import_all_button.attr('disabled', 'disabled');
-    import_all_button.empty().text('Import All Country People Groups').append(' <img style="height:1em;" src="' + dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
+    import_all_button.empty().text('Import All Country People Groups').append(' <img style="height:1em;" src="' + window.dtPeopleGroupsAPI.images_uri + 'spinner.svg" />');
     add_all_groups.hide();
     results_div.empty();
 
@@ -107,9 +82,9 @@ function import_all_people_groups() {
       data: JSON.stringify({}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/get_bulk_people_groups_import_batches',
+      url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/get_bulk_people_groups_import_batches',
       beforeSend: function (xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
       }
 
     }).done(function (data) {
@@ -158,9 +133,9 @@ function add_bulk_people_groups(country, people_groups) {
     data: JSON.stringify({'groups': people_groups}),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/add_bulk_people_groups',
+    url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/add_bulk_people_groups',
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
     },
     success: function (data) {
       console.log(data);
@@ -185,16 +160,16 @@ function add_single_people_group( rop3, country, location_grid ) {
     let message = jQuery('#message-' + rop3 )
 
 
-    button.attr('disabled', 'disabled').append(' <img style="height:1em;" src="'+ dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
+    button.attr('disabled', 'disabled').append(' <img style="height:1em;" src="'+ window.dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
 
     jQuery.ajax({
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/add_single_people_group',
+        url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/add_single_people_group',
         beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
         },
     })
         .done(function (data) {
@@ -218,7 +193,7 @@ function link_search() {
     let rop3 = jQuery('#rop3').val()
     let post_id = jQuery('#post_id').val()
     let search_button = jQuery('#search_button')
-    search_button.append(' <img style="height:1em;" src="'+ dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
+    search_button.append(' <img style="height:1em;" src="'+ window.dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
 
     if( country ) {
         let data = { "s": country }
@@ -227,9 +202,9 @@ function link_search() {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/search_csv',
+            url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/search_csv',
             beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
             },
         })
             .done(function (data) {
@@ -259,9 +234,9 @@ function link_search() {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/search_csv_by_rop3',
+            url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/search_csv_by_rop3',
             beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
             },
         })
             .done(function (data) {
@@ -294,7 +269,7 @@ function link_search() {
 function link_or_update( rop3, country, post_id ) {
     let button = jQuery( '#button-' + rop3 )
     let message = jQuery('#message-' + rop3 )
-    button.attr('disabled', 'disabled').append(' <img style="height:1em;" src="'+ dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
+    button.attr('disabled', 'disabled').append(' <img style="height:1em;" src="'+ window.dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
 
     let data = { "country": country, "rop3": rop3, "post_id": post_id }
     jQuery.ajax({
@@ -302,9 +277,9 @@ function link_or_update( rop3, country, post_id ) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/link_or_update',
+        url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/link_or_update',
         beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
         },
     })
         .done(function (data) {
@@ -326,7 +301,7 @@ function link_or_update_by_rop3( rop3, country, post_id ) {
 
     let button = jQuery( '#button-' + str )
     let message = jQuery('#message-' + str )
-    button.attr('disabled', 'disabled').append(' <img style="height:1em;" src="'+ dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
+    button.attr('disabled', 'disabled').append(' <img style="height:1em;" src="'+ window.dtPeopleGroupsAPI.images_uri +'spinner.svg" />')
 
     let data = { "country": country, "rop3": rop3, "post_id": post_id }
     jQuery.ajax({
@@ -334,9 +309,9 @@ function link_or_update_by_rop3( rop3, country, post_id ) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtPeopleGroupsAPI.root + 'dt/v1/people-groups/link_or_update',
+        url: window.dtPeopleGroupsAPI.root + 'dt/v1/people-groups/link_or_update',
         beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', dtPeopleGroupsAPI.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', window.dtPeopleGroupsAPI.nonce);
         },
     })
         .done(function (data) {

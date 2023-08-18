@@ -30,8 +30,6 @@ if ( !$current_user_can_manage_users && !DT_User_Management::non_admins_can_make
     exit();
 }
 $dt_url_path = dt_get_url_path();
-$user_management_options = DT_User_Management::user_management_options();
-
 
 /* Build variables for page */
 $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );

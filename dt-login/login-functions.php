@@ -45,17 +45,33 @@ function dt_login_url( string $name, string $url = '' ) : string {
 
     $login_url = $dt_login['login_url'] ?? '';
     $redirect_url = empty( $query_redirect_url ) ? site_url( $dt_login['redirect_url'] ) ?? '' : $query_redirect_url;
+
+    /**
+     * Filters the redirect url from the dt login page.
+     *
+     * @param string $redirect_url
+     */
+    $redirect_url = apply_filters( 'dt_login_redirect_url', $redirect_url );
+
     $login_page_enabled = $dt_login['login_enabled'] === 'on';
 
     if ( !$login_page_enabled ) {
         $login_url = 'wp-login.php';
     }
 
+    /**
+     * Filters the base login_url e.g. login or wp-login.php
+     *
+     * @param string $login_url
+     */
+    $login_url = apply_filters( 'dt_login_url', $login_url );
+
     $redirect_params = empty( $redirect_url ) ? [] : [ 'redirect_to' => rawurlencode( $redirect_url ) ];
 
     switch ( $name ) {
         case 'home':
-            return dt_create_site_url();
+            $home_url = apply_filters( 'dt_login_url', '' );
+            return dt_create_site_url( $home_url );
         case 'login':
             return dt_create_site_url( $login_url, $redirect_params );
         case 'redirect':

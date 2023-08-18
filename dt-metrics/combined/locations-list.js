@@ -112,14 +112,14 @@ function get_data( force_refresh = false ) {
 }
 
 function location_grid_list( div, grid_id ) {
-  DRILLDOWN.show_spinner()
+  window.DRILLDOWN.show_spinner()
 
   // Find data source before build
   if ( grid_id === 'top_map_level' ) {
     let map_data = null
     let default_map_settings = LISTDATA.settings.default_map_settings
 
-    if ( DRILLDOWN.isEmpty( default_map_settings.children ) ) {
+    if (window.DRILLDOWN.isEmpty( default_map_settings.children ) ) {
       map_data = LISTDATA.data[default_map_settings.parent]
     }
     else {
@@ -131,7 +131,7 @@ function location_grid_list( div, grid_id ) {
         jQuery('#section_title').empty()
         jQuery('#current_level').empty()
         jQuery('#location_list').empty().append('Select Location')
-        DRILLDOWN.hide_spinner()
+        window.DRILLDOWN.hide_spinner()
         return;
       }
     }
@@ -164,7 +164,7 @@ function location_grid_list( div, grid_id ) {
       .fail(function (err) {
         console.log("error")
         console.log(err)
-        DRILLDOWN.hide_spinner()
+        window.DRILLDOWN.hide_spinner()
       })
 
   } else {
@@ -182,7 +182,7 @@ function location_grid_list( div, grid_id ) {
     // Population Division and Check for Custom Division
     let pd_settings = LISTDATA.settings.population_division
     let population_division = pd_settings.base
-    if ( ! DRILLDOWN.isEmpty( pd_settings.custom ) ) {
+    if ( !window.DRILLDOWN.isEmpty( pd_settings.custom ) ) {
       jQuery.each( pd_settings.custom, function(i,v) {
         if ( map_data.self.grid_id === i ) {
           population_division = v
@@ -192,7 +192,7 @@ function location_grid_list( div, grid_id ) {
 
     // Self Data
     let self_population = map_data.self.population_formatted
-    jQuery('#current_level').empty().html(`${window.lodash.escape(translations.population)} ${window.lodash.escape( self_population )}`)
+    jQuery('#current_level').empty().html(`${window.SHAREDFUNCTIONS.escapeHTML(translations.population)} ${window.SHAREDFUNCTIONS.escapeHTML( self_population )}`)
 
     // Build List
     let locations = jQuery('#location_list')
@@ -201,12 +201,12 @@ function location_grid_list( div, grid_id ) {
     let html = `<table id="country-list-table" class="display">`
 
     // Header Section
-    html += `<thead><tr><th>${window.lodash.escape(translations.name)}</th><th>${window.lodash.escape(translations.population)}</th>`
+    html += `<thead><tr><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.name)}</th><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}</th>`
 
     /* Additional Columns */
     if ( LISTDATA.data.custom_column_labels ) {
       jQuery.each( LISTDATA.data.custom_column_labels, function(i,v) {
-        html += `<th>${window.lodash.escape( v.label )}</th>`
+        html += `<th>${window.SHAREDFUNCTIONS.escapeHTML( v.label )}</th>`
       })
     }
     /* End Additional Columns */
@@ -223,13 +223,13 @@ function location_grid_list( div, grid_id ) {
       let population = v.population_formatted
 
       html += `<tr>
-                    <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${window.lodash.escape( v.grid_id )} )">${window.lodash.escape( v.name )}</a></strong></td>
-                    <td>${window.lodash.escape( population )}</td>`
+                    <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${window.SHAREDFUNCTIONS.escapeHTML( v.grid_id )} )">${window.SHAREDFUNCTIONS.escapeHTML( v.name )}</a></strong></td>
+                    <td>${window.SHAREDFUNCTIONS.escapeHTML( population )}</td>`
 
       /* Additional Columns */
       if ( LISTDATA.data.custom_column_data[v.grid_id] ) {
         jQuery.each( LISTDATA.data.custom_column_data[v.grid_id], function(ii,vv) {
-          html += `<td><strong>${window.lodash.escape( vv )}</strong></td>`
+          html += `<td><strong>${window.SHAREDFUNCTIONS.escapeHTML( vv )}</strong></td>`
         })
       } else {
         jQuery.each( LISTDATA.data.custom_column_labels, function(ii,vv) {
@@ -260,6 +260,6 @@ function location_grid_list( div, grid_id ) {
       });
     }
 
-    DRILLDOWN.hide_spinner()
+    window.DRILLDOWN.hide_spinner()
   }
 }

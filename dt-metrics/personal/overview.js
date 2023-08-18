@@ -8,31 +8,31 @@ jQuery(function() {
     let chartDiv = jQuery('#chart')
 
     let sourceData = await fetch(
-      dtMetricsPersonal.rest_url + '/data',
+      window.dtMetricsPersonal.rest_url + '/data',
       { headers: { 'X-WP-Nonce': window.dtMetricsPersonal.nonce } }
     ).then( response => response.json() )
 
-    let translations = dtMetricsPersonal.translations
+    let translations = window.dtMetricsPersonal.translations
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
     let html = `
       <div class="cell center">
-          <h3 >${ window.lodash.escape( translations.title ) }</h3>
+          <h3 >${ window.SHAREDFUNCTIONS.escapeHTML( translations.title ) }</h3>
       </div>
       <br><br>
       <div class="grid-x grid-padding-x grid-padding-y">
-        <h3 class="section-header">${ window.lodash.escape( translations.title_contacts ) }</h3>
+        <h3 class="section-header">${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_contacts ) }</h3>
         <div class="cell center callout">
             <div class="grid-x">
                 <div class="medium-4 cell center ">
-                    <h5>${ window.lodash.escape( translations.title_waiting_on_accept ) }<br><span id="needs_accepted">0</span></h5>
+                    <h5>${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_waiting_on_accept ) }<br><span id="needs_accepted">0</span></h5>
                 </div>
                 <div class="medium-4 cell center left-border-grey">
-                    <h5>${ window.lodash.escape( translations.title_waiting_on_update ) }<br><span id="updates_needed">0</span></h5>
+                    <h5>${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_waiting_on_update ) }<br><span id="updates_needed">0</span></h5>
                 </div>
                 <div class="medium-4 cell center left-border-grey">
-                    <h5>${ window.lodash.escape( translations.label_active_contacts ) }<br><span id="contacts">0</span></h5>
+                    <h5>${ window.SHAREDFUNCTIONS.escapeHTML( translations.label_active_contacts ) }<br><span id="contacts">0</span></h5>
                 </div>
             </div>
         </div>`
@@ -42,15 +42,15 @@ jQuery(function() {
         </div>`
       }
 
-      html += `<h3 class="section-header" style="margin-top:40px;">${ window.lodash.escape( translations.title_groups ) }</h3>
+      html += `<h3 class="section-header" style="margin-top:40px;">${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_groups ) }</h3>
         <div class="cell">
             <div class="cell center callout">
                 <div class="grid-x">
                     <div class="medium-4 cell center">
-                        <h5>${ window.lodash.escape( translations.title_total_groups ) }<br><span id="total_groups">0</span></h5>
+                        <h5>${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_total_groups ) }<br><span id="total_groups">0</span></h5>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h5>${ window.lodash.escape( translations.title_teams ) }<br><span id="teams">0</span></h5>
+                        <h5>${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_teams ) }<br><span id="teams">0</span></h5>
                     </div>
                </div>
             </div>
@@ -97,26 +97,26 @@ jQuery(function() {
     drawGroupGenerations();
 
     function drawMyContactsProgress() {
-      let chart = am4core.create("my_contacts_progress", am4charts.XYChart)
+      let chart = window.am4core.create("my_contacts_progress", window.am4charts.XYChart)
       let title = chart.titles.create()
       title.text = `[bold]${ translations.label_my_follow_up_progress }[/]`
       chart.data = sourceData.contacts_progress.reverse()
 
-      let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+      let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "label";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
 
-      let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+      let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
       valueAxis.title.text = "Number of contacts"
 
-      let series = chart.series.push(new am4charts.ColumnSeries());
+      let series = chart.series.push(new window.am4charts.ColumnSeries());
       series.dataFields.valueX = "value";
       series.dataFields.categoryY = "label";
       series.columns.template.tooltipText = "Total: [bold]{valueX}[/]";
 
       // field value label
-      let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+      let valueLabel = series.bullets.push(new window.am4charts.LabelBullet());
       valueLabel.label.text = "{valueX}";
       valueLabel.label.horizontalCenter = "left";
       valueLabel.label.dx = 10;
@@ -126,11 +126,11 @@ jQuery(function() {
     }
 
     function drawMyGroupHealth() {
-      let chart = am4core.create("my_groups_health", am4charts.XYChart);
+      let chart = window.am4core.create("my_groups_health", window.am4charts.XYChart);
       chart.data = sourceData.group_health
       let title = chart.titles.create()
       title.text = `[bold]${ translations.label_group_needing_training }[/]`
-      let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+      let categoryAxis = chart.xAxes.push(new window.am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "label";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 20;
@@ -142,7 +142,7 @@ jQuery(function() {
         axis.renderer.labels.template.disabled = cellWidth < 70;
       });
 
-      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      let valueAxis = chart.yAxes.push(new window.am4charts.ValueAxis());
       valueAxis.min = 0;
       valueAxis.max = 100;
       valueAxis.strictMinMax = true;
@@ -152,8 +152,8 @@ jQuery(function() {
         return text + "%";
       });
 
-      let series1 = chart.series.push(new am4charts.ColumnSeries());
-      series1.columns.template.width = am4core.percent(80);
+      let series1 = chart.series.push(new window.am4charts.ColumnSeries());
+      series1.columns.template.width = window.am4core.percent(80);
       series1.columns.template.tooltipText = "{name}: {valueY}";
       series1.name = "Practicing";
       series1.dataFields.categoryX = "label";
@@ -163,10 +163,10 @@ jQuery(function() {
       series1.stacked = true;
       series1.tooltip.pointerOrientation = "vertical";
 
-      let series2 = chart.series.push(new am4charts.ColumnSeries());
-      series2.stroke = am4core.color("#da7070"); // red
-      series2.fill = am4core.color("#da7070"); // red
-      series2.columns.template.width = am4core.percent(80);
+      let series2 = chart.series.push(new window.am4charts.ColumnSeries());
+      series2.stroke = window.am4core.color("#da7070"); // red
+      series2.fill = window.am4core.color("#da7070"); // red
+      series2.columns.template.width = window.am4core.percent(80);
       series2.columns.template.tooltipText =
         "{name}: {valueY}";
       series2.name = "Not Practicing";
@@ -176,37 +176,37 @@ jQuery(function() {
       series2.dataItems.template.locations.categoryX = 0.5;
       series2.stacked = true;
       series2.tooltip.pointerOrientation = "vertical";
-      chart.legend = new am4charts.Legend();
+      chart.legend = new window.am4charts.Legend();
 
     }
 
     function drawGroupTypes() {
-      let chart = am4core.create("group_types", am4charts.PieChart);
+      let chart = window.am4core.create("group_types", window.am4charts.PieChart);
       let title = chart.titles.create()
       title.text = `[bold]${ translations.title_group_types }[/]`
       chart.data = sourceData.group_types
-      let pieSeries = chart.series.push(new am4charts.PieSeries());
+      let pieSeries = chart.series.push(new window.am4charts.PieSeries());
       pieSeries.dataFields.value = "count";
       pieSeries.dataFields.category = "label";
       pieSeries.labels.template.disabled = true;
-      chart.innerRadius = am4core.percent(30);
-      chart.legend = new am4charts.Legend();
+      chart.innerRadius = window.am4core.percent(30);
+      chart.legend = new window.am4charts.Legend();
     }
 
     function drawGroupGenerations() {
-      let chart = am4core.create("group_generations", am4charts.XYChart);
+      let chart = window.am4core.create("group_generations", window.am4charts.XYChart);
       let title = chart.titles.create()
       title.text = `[bold]${ translations.title_generations }[/]`
 
       chart.data = sourceData.group_generations.reverse()
-      let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+      let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "generation";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.labels.template.adapter.add("text", function(text) {
         return translations.label_generation + ' ' + text;
       });
 
-      let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+      let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
       valueAxis.renderer.inside = true;
       valueAxis.renderer.labels.template.disabled = true;
       valueAxis.min = 0;
@@ -223,14 +223,14 @@ jQuery(function() {
       }
 
       function createSeries(field, name) {
-        let series = chart.series.push(new am4charts.ColumnSeries());
+        let series = chart.series.push(new window.am4charts.ColumnSeries());
         series.name = name;
         series.dataFields.valueX = field;
         series.dataFields.categoryY = "generation";
         series.stacked = true;
-        series.columns.template.width = am4core.percent(60);
+        series.columns.template.width = window.am4core.percent(60);
         series.columns.template.tooltipText = "[bold]{name}[/]\n {valueX}";
-        let labelBullet = series.bullets.push(new am4charts.LabelBullet());
+        let labelBullet = series.bullets.push(new window.am4charts.LabelBullet());
         labelBullet.label.text = "{valueX}";
         labelBullet.locationX = 0.5;
         return series;
@@ -252,10 +252,10 @@ jQuery(function() {
         createSeries(type['type'], type['label']);
       });
 
-      chart.legend = new am4charts.Legend();
+      chart.legend = new window.am4charts.Legend();
     }
 
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
+    new window.Foundation.Reveal(jQuery('.dt-project-legend'));
 
   }
 })

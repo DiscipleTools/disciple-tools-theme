@@ -73,7 +73,8 @@ class Disciple_Tools_People_Groups_Base {
     }
 
     public function dt_nav_filter( $navigation_array ) {
-        $is_hidden = ! get_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab );
+        $post_type_updates = get_option( 'dt_custom_post_types', [] );
+        $is_hidden = $post_type_updates[$this->post_type]['hidden'] ?? true;
 
         if ( isset( $navigation_array['main'], $navigation_array['main'][ $this->post_type ] ) ) {
             $navigation_array['main'][ $this->post_type ]['hidden'] = $is_hidden;
@@ -110,17 +111,6 @@ class Disciple_Tools_People_Groups_Base {
 
     public function dt_set_roles_and_permissions( $expected_roles ) {
 
-        if ( ! isset( $expected_roles['multiplier'] ) ) {
-            $expected_roles['multiplier'] = [
-                'label'       => __( 'Multiplier', 'disciple-tools-plugin-starter-template' ),
-                'description' => 'Interacts with Contacts and Groups',
-                'permissions' => [
-                    'list_all_' . $this->post_type => true,
-                    'view_any_' . $this->post_type => true
-                ]
-            ];
-        }
-
         // if the user can access contact they also can access this post type
         foreach ( $expected_roles as $role => $role_value ) {
             if ( isset( $role_value['permissions']['access_contacts'] ) && $role_value['permissions']['access_contacts'] ) {
@@ -135,6 +125,7 @@ class Disciple_Tools_People_Groups_Base {
             $expected_roles['administrator']['permissions'][ 'create_' . $this->post_type ]     = true;
             $expected_roles['administrator']['permissions'][ 'view_any_' . $this->post_type ]   = true;
             $expected_roles['administrator']['permissions'][ 'update_any_' . $this->post_type ] = true;
+            $expected_roles['administrator']['permissions'][ 'delete_any_' . $this->post_type ] = true;
             $expected_roles['administrator']['permissions']['edit_peoplegroups']                = true;
         }
         if ( isset( $expected_roles['dt_admin'] ) ) {
@@ -142,6 +133,7 @@ class Disciple_Tools_People_Groups_Base {
             $expected_roles['dt_admin']['permissions'][ 'create_' . $this->post_type ]     = true;
             $expected_roles['dt_admin']['permissions'][ 'view_any_' . $this->post_type ]   = true;
             $expected_roles['dt_admin']['permissions'][ 'update_any_' . $this->post_type ] = true;
+            $expected_roles['dt_admin']['permissions'][ 'delete_any_' . $this->post_type ] = true;
             $expected_roles['dt_admin']['permissions']['edit_peoplegroups']                = true;
         }
 

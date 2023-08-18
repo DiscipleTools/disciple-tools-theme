@@ -403,6 +403,37 @@ class Disciple_Tools_Queries
 
         switch ( $query_name ) {
 
+            case 'generation_tree_multiplying_only':
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = %s
+                    AND a.ID NOT IN (
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = %s
+                      GROUP BY p2p_from
+                    )
+                      AND a.ID IN (
+                      SELECT DISTINCT (p2p_to)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = %s
+                      GROUP BY p2p_to
+                    )
+                    UNION
+                    SELECT
+                      p.p2p_from  as id,
+                      p.p2p_to    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = %s
+                ", $args['post_type'], $args['p2p_key'], $args['p2p_key'], $args['p2p_key'] ), ARRAY_A );
+                break;
+
             case 'baptisms_all':
                 /**
                  * Query returns a generation tree with all baptisms in the system, whether multiplying or not.

@@ -440,9 +440,9 @@ class DT_User_Hooks_And_Configuration {
         global $wpdb;
         $wpdb->get_results(
             $wpdb->prepare( "
-                DELETE FROM $wpdb->postmeta pm
+                DELETE FROM $wpdb->postmeta
                 WHERE meta_key = 'corresponds_to_user'
-                AND pm.meta_value = %d
+                AND meta_value = %d
             ", $user_id )
         );
     }
@@ -452,9 +452,9 @@ class DT_User_Hooks_And_Configuration {
         global $wpdb;
         $wpdb->get_results(
             $wpdb->prepare( "
-                DELETE FROM $wpdb->postmeta pm
+                DELETE FROM $wpdb->postmeta
                 WHERE meta_key = 'corresponds_to_user'
-                AND pm.meta_value = %d
+                AND meta_value = %d
             ", $user_id )
         );
 
