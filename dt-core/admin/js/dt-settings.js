@@ -964,6 +964,7 @@ jQuery(document).ready(function($) {
                     <option value="number">Number</option>
                     <option value="link">Link</option>
                     <option value="date">Date</option>
+                    <option value="datetime">Date Time</option>
                     <option value="connection">Connection</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
@@ -2221,7 +2222,7 @@ jQuery(document).ready(function($) {
 
   dt_admin_modal_box.on('change', '#connection-field-target', function() {
     let selected_field_target = $(this).find(':selected').val();
-    let same_post_type = selected_field_target === window.post_type;
+    let same_post_type = selected_field_target === all_settings.post_type;
     $('.same_post_type_row').toggle( same_post_type );
     $('.connection_field_reverse_name_row').toggle( !same_post_type );
     $('#connection_field_reverse_hide_row').toggle( !same_post_type )
