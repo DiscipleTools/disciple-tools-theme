@@ -198,11 +198,11 @@ jQuery(document).ready(function($) {
       const dateTimeGroup = $(`.${id}.dt_date_time_group`)
       const currentTimestamp = dateTimeGroup.data('timestamp')
 
-      const currentDateTime = moment(currentTimestamp * 1000)
+      const currentDateTime = window.moment(currentTimestamp * 1000)
       const hours = currentDateTime.get('h')
       const minutes = currentDateTime.get('m')
 
-      const updatedTimestamp = moment(date).set({ h: hours, m: minutes }).unix()
+      const updatedTimestamp = window.moment(date).set({ h: hours, m: minutes }).unix()
 
       dateTimeGroup.data('timestamp', updatedTimestamp)
 
@@ -213,7 +213,7 @@ jQuery(document).ready(function($) {
           this.value = window.SHAREDFUNCTIONS.formatDate(resp[id]["timestamp"], false, false, true);
         }
         $( document ).trigger( "dt_date_picker-updated", [ resp, id, date ] );
-      }).catch(handleAjaxError)
+      }).catch(window.handleAjaxError)
     },
     changeMonth: true,
     changeYear: true,
@@ -232,15 +232,15 @@ jQuery(document).ready(function($) {
     const timestamp = dateTimeGroup.data('timestamp')
     const [ hours, minutes ] = this.value.split(':')
 
-    const updatedTimestamp = moment(timestamp * 1000).set({ h: hours, m: minutes }).unix()
+    const updatedTimestamp = window.moment(timestamp * 1000).set({ h: hours, m: minutes }).unix()
 
     dateTimeGroup.data('timestamp', updatedTimestamp)
 
     $(`#${fieldId}-spinner`).addClass('active')
     rest_api.update_post( post_type, post_id, { [fieldId]: updatedTimestamp }).then((resp)=>{
       $(`#${fieldId}-spinner`).removeClass('active')
-      $( document ).trigger( "dt_date_picker-updated", [ resp, fieldId, date ] );
-    }).catch(handleAjaxError)
+      $( document ).trigger( "dt_datetime_picker-updated", [ resp, fieldId, updatedTimestamp ] );
+    }).catch(window.handleAjaxError)
 
   })
 
