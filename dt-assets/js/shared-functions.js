@@ -747,10 +747,11 @@ window.SHAREDFUNCTIONS = {
    */
   escapeObject(obj) {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
-        return [ key, this.escapeHTML(value)]
+        return [ key, window.SHAREDFUNCTIONS.escapeHTML(value)]
     }))
   },
   escapeHTML(str) {
+    if (typeof str === "undefined") return '';
     if (typeof str !== "string") return str;
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
   },
