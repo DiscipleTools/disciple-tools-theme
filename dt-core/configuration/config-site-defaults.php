@@ -680,5 +680,6 @@ function dt_header_icon_and_meta(){
     <meta name="msapplication-TileImage" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/mstile-144x144.png">
     <meta name="msapplication-config" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/browserconfig.xml">
     <meta name="theme-color" content="#3f729b">
+    <base href="<?php echo esc_url( trailingslashit( home_url() ) ); ?>">
     <?php
 }
