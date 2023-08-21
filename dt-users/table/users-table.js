@@ -149,8 +149,8 @@ export class UsersTable extends LitElement {
                       //array fields   
                       if ( ['array', 'array_keys'].includes(field.type) ){
                         let labels = (user[k] || []).map(v=>{
-                          return field.options[v]?.label || v
-                        }).join(', ')
+                          return field.options[v]?.label || null
+                        }).filter(a=>a).join(', ')
                         return html`<td>${labels}</td>`
                       } else
                       //key select fields  

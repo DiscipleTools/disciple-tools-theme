@@ -652,7 +652,7 @@ class DT_User_Management
                 }
 
                 if ( $field_value['type'] === 'location_grid' ){
-                    $select .= ", GROUP_CONCAT(um_$field_key.meta_value) as $field_key";
+                    $select .= ", GROUP_CONCAT(DISTINCT(um_$field_key.meta_value)) as $field_key";
                     $joins .= " LEFT JOIN $wpdb->usermeta as um_$field_key on ( um_$field_key.user_id = users.ID AND um_$field_key.meta_key = '{$field_value['key']}' ) ";
                     if ( !empty( $filter[$field_key] ) ){
                         $where .= $wpdb->prepare( " AND um_$field_key.meta_value LIKE %s ", esc_sql( $filter[$field_key] ) ); //phpcs:ignore
