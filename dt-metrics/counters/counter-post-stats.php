@@ -29,7 +29,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
      * Return count of posts by date field with stats counted by
      * month
      */
-    public static function get_number_field_by_month( string $post_type, string $field, int $year ) {
+    public static function get_number_field_by_month( string $post_type, string $field, int $year, $include_posts = false ) {
         global $wpdb;
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
@@ -65,8 +65,11 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
         );
-        $result_posts = $wpdb->get_results(
-            $wpdb->prepare( "
+
+        $result_posts = [];
+        if ( $include_posts ){
+            $result_posts = $wpdb->get_results(
+                $wpdb->prepare( "
                 SELECT DISTINCT
                     MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month,
                     p.ID AS id, p.post_title AS name, pm.meta_value AS value
@@ -92,10 +95,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     AND log.hist_time >= %s
                     AND log.hist_time <= %s
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
-        );
+            );
+        }
 
         $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
-
 
         return [
             'data' => $results,
@@ -143,42 +146,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
         );
-        $result_posts = $wpdb->get_results(
-            $wpdb->prepare( "
-                SELECT DISTINCT
-                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
-                    p.ID AS id, p.post_title AS name, pm.meta_value AS value
-                FROM $wpdb->posts AS p
-                JOIN $wpdb->postmeta AS pm
-                    ON p.ID = pm.post_id
-                JOIN $wpdb->dt_activity_log AS log
-                    ON log.object_id = p.ID
-                    AND log.meta_key = %s
-                WHERE p.post_type = %s
-                    AND pm.meta_key = %s
-                    AND log.meta_value = pm.meta_value
-                    AND log.hist_time = (
-                        SELECT MAX( log2.hist_time )
-                        FROM $wpdb->dt_activity_log AS log2
-                        WHERE log.meta_value = log2.meta_value
-                        AND log.object_id = log2.object_id
-                        AND log2.hist_time >= %s
-                        AND log2.hist_time <= %s
-                        AND log2.meta_key = %s
-                    )
-                    AND log.object_type = %s
-                    AND log.hist_time >= %s
-                    AND log.hist_time <= %s
-            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
-        );
 
         $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
 
-
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset,
-            'posts' => $result_posts
+            'cumulative_offset' => $cumulative_offset
         ];
     }
 
@@ -186,7 +159,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
      * Return count of posts by date field with stats counted by
      * month
      */
-    public static function get_date_field_by_month( string $post_type, string $field, int $year ) {
+    public static function get_date_field_by_month( string $post_type, string $field, int $year, $include_posts = false ) {
         global $wpdb;
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
@@ -210,8 +183,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     ORDER BY MONTH( %1s )
                 ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ), $field, $field )
             );
-            $result_posts = $wpdb->get_results(
-                $wpdb->prepare( "
+
+            if ( $include_posts ){
+                $result_posts = $wpdb->get_results(
+                    $wpdb->prepare( "
                     SELECT DISTINCT
                         MONTH( %1s ) AS month,
                         p.ID AS id, p.post_title AS name
@@ -220,7 +195,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                         AND %1s >= %s
                         AND %1s <= %s
                 ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ) )
-            );
+                );
+            }
 
             $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start );
 
@@ -247,21 +223,24 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ", $post_type, $field, $start, $end
                 )
             );
-            $result_posts = $wpdb->get_results(
-                $wpdb->prepare( "
-                    SELECT DISTINCT
-                        MONTH( FROM_UNIXTIME( pm.meta_value ) ) AS month,
-                        p.ID AS id, pm.meta_value AS value
-                    FROM $wpdb->posts AS p
-                    INNER JOIN $wpdb->postmeta AS pm
-                        ON p.ID = pm.post_id
-                    WHERE p.post_type = %s
-                        AND pm.meta_key = %s
-                        AND pm.meta_value >= %s
-                        AND pm.meta_value <= %s
-                ", $post_type, $field, $start, $end
-                )
-            );
+
+            if ( $include_posts ){
+                $result_posts = $wpdb->get_results(
+                    $wpdb->prepare( "
+                        SELECT DISTINCT
+                            MONTH( FROM_UNIXTIME( pm.meta_value ) ) AS month,
+                            p.ID AS id, p.post_title AS name, pm.meta_value AS value
+                        FROM $wpdb->posts AS p
+                        INNER JOIN $wpdb->postmeta AS pm
+                            ON p.ID = pm.post_id
+                        WHERE p.post_type = %s
+                            AND pm.meta_key = %s
+                            AND pm.meta_value >= %s
+                            AND pm.meta_value <= %s
+                    ", $post_type, $field, $start, $end
+                    )
+                );
+            }
 
             $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
 
@@ -286,8 +265,6 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
         $results = [];
-        $result_posts = [];
-
         if ( self::isPostField( $field ) ) {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
@@ -301,17 +278,6 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     GROUP BY YEAR( %1s )
                     ORDER BY YEAR( %1s )
                 ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ), $field, $field )
-            );
-            $result_posts = $wpdb->get_results(
-                $wpdb->prepare( "
-                    SELECT DISTINCT
-                        YEAR( %1s ) AS year,
-                        ID AS id, post_title AS name
-                    FROM $wpdb->posts
-                    WHERE post_type = %s
-                        AND %1s >= %s
-                        AND %1s <= %s
-                ", $field, $field, $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ) )
             );
         } else {
             $results = $wpdb->get_results(
@@ -331,30 +297,14 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ", $post_type, $field, $start, $end
                 )
             );
-            $result_posts = $wpdb->get_results(
-                $wpdb->prepare( "
-                    SELECT DISTINCT
-                        YEAR( FROM_UNIXTIME( pm.meta_value ) ) AS year,
-                        p.ID AS id, p.post_title AS name, pm.meta_value AS value
-                    FROM $wpdb->posts AS p
-                    INNER JOIN $wpdb->postmeta AS pm
-                        ON p.ID = pm.post_id
-                    WHERE p.post_type = %s
-                        AND pm.meta_key = %s
-                        AND pm.meta_value >= %s
-                        AND pm.meta_value <= %s
-                ", $post_type, $field, $start, $end
-                )
-            );
         }
 
         return [
-            'data' => $results,
-            'posts' => $result_posts
+            'data' => $results
         ];
     }
 
-    public static function get_multi_field_by_month( $post_type, $field, $year ) {
+    public static function get_multi_field_by_month( $post_type, $field, $year, $include_posts = false ) {
         global $wpdb;
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
@@ -415,36 +365,40 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
             // phpcs:enable
         );
-        $result_posts = $wpdb->get_results(
-        // phpcs:disable
+
+        $result_posts = [];
+        if ( $include_posts ){
+            $result_posts = $wpdb->get_results(
+            // phpcs:disable
             $wpdb->prepare( "
-                SELECT DISTINCT
-                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
-                    p.ID AS id, p.post_title AS name, pm.meta_value AS value
-                FROM $wpdb->posts AS p
-                JOIN $wpdb->postmeta AS pm
-                    ON p.ID = pm.post_id
-                JOIN $wpdb->dt_activity_log AS log
-                    ON log.object_id = p.ID
-                    AND log.meta_key = %s
-                WHERE p.post_type = %s
-                    AND pm.meta_key = %s
-                    AND log.meta_value = pm.meta_value
-                    AND log.hist_time = (
-                        SELECT MAX( log2.hist_time )
-                        FROM $wpdb->dt_activity_log AS log2
-                        WHERE log.meta_value = log2.meta_value
-                        AND log.object_id = log2.object_id
-                        AND log2.hist_time >= %s
-                        AND log2.hist_time <= %s
-                        AND log2.meta_key = %s
-                    )
-                    AND log.object_type = %s
-                    AND log.hist_time >= %s
-                    AND log.hist_time <= %s
+            SELECT DISTINCT
+                MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month,
+                p.ID AS id, p.post_title AS name, pm.meta_value AS value
+            FROM $wpdb->posts AS p
+            JOIN $wpdb->postmeta AS pm
+                ON p.ID = pm.post_id
+            JOIN $wpdb->dt_activity_log AS log
+                ON log.object_id = p.ID
+                AND log.meta_key = %s
+            WHERE p.post_type = %s
+                AND pm.meta_key = %s
+                AND log.meta_value = pm.meta_value
+                AND log.hist_time = (
+                    SELECT MAX( log2.hist_time )
+                    FROM $wpdb->dt_activity_log AS log2
+                    WHERE log.meta_value = log2.meta_value
+                    AND log.object_id = log2.object_id
+                    AND log2.hist_time >= %s
+                    AND log2.hist_time <= %s
+                    AND log2.meta_key = %s
+                )
+                AND log.object_type = %s
+                AND log.hist_time >= %s
+                AND log.hist_time <= %s
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
-        // phpcs:enable
-        );
+            // phpcs:enable
+            );
+        }
 
         $cumulative_offset = self::get_multi_field_cumulative_offsets( $post_type, $field, $start, $multi_values );
 
@@ -517,44 +471,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             // phpcs:enable
         );
 
-        $result_posts = $wpdb->get_results(
-            // phpcs:disable
-            $wpdb->prepare( "
-                SELECT DISTINCT
-                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
-                    p.ID AS id, p.post_title AS name, pm.meta_value AS value
-                FROM $wpdb->posts AS p
-                JOIN $wpdb->postmeta AS pm
-                    ON p.ID = pm.post_id
-                JOIN $wpdb->dt_activity_log AS log
-                    ON log.object_id = p.ID
-                    AND log.meta_key = %s
-                WHERE p.post_type = %s
-                    AND pm.meta_key = %s
-                    AND log.meta_value = pm.meta_value
-                    AND log.hist_time = (
-                        SELECT MAX( log2.hist_time )
-                        FROM $wpdb->dt_activity_log AS log2
-                        WHERE log.meta_value = log2.meta_value
-                        AND log.object_id = log2.object_id
-                        AND log2.hist_time >= %s
-                        AND log2.hist_time <= %s
-                        AND log2.meta_key = %s
-                    )
-                    AND log.object_type = %s
-                    AND log.hist_time >= %s
-                    AND log.hist_time <= %s
-            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
-            // phpcs:enable
-        );
-
         return [
-            'data' => $results,
-            'posts' => $result_posts
+            'data' => $results
         ];
     }
 
-    public static function get_connection_field_by_month( $connection_type, $year ) {
+    public static function get_connection_field_by_month( $connection_type, $year, $include_posts = false ) {
         global $wpdb;
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
@@ -576,8 +498,11 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY MONTH( meta.meta_value )
             ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
         );
-        $result_posts = $wpdb->get_results(
-            $wpdb->prepare( "
+
+        $result_posts = [];
+        if ( $include_posts ){
+            $result_posts = $wpdb->get_results(
+                $wpdb->prepare( "
                 SELECT DISTINCT
                     MONTH( meta.meta_value ) AS month,
                     p.ID AS id, p.post_title AS name
@@ -589,7 +514,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     AND meta.meta_value >= %s
                     AND meta.meta_value <= %s
             ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
-        );
+            );
+        }
 
         $cumulative_offset = self::get_connection_field_cumulative_offset( $connection_type, $start );
 
@@ -623,24 +549,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY YEAR( meta.meta_value )
             ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
         );
-        $result_posts = $wpdb->get_results(
-            $wpdb->prepare( "
-                SELECT DISTINCT
-                    YEAR( meta.meta_value ) AS year,
-                    p.ID AS id, p.post_title AS name
-                FROM $wpdb->p2p AS p2p
-                JOIN $wpdb->p2pmeta AS meta ON p2p.p2p_id = meta.p2p_id
-                LEFT JOIN $wpdb->posts AS p ON p.ID = meta.p2p_id
-                WHERE p2p.p2p_type = %s
-                    AND meta.meta_key = 'date'
-                    AND meta.meta_value >= %s
-                    AND meta.meta_value <= %s
-            ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
-        );
 
         return [
-            'data' => $results,
-            'posts' => $result_posts
+            'data' => $results
         ];
     }
 

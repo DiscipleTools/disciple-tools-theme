@@ -13,6 +13,9 @@ window.makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`)
 const getTimeMetricsByMonth = (postType, field, year) =>
 window.makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
 
+const getTimeMetricsPosts = (postType, field, year) =>
+window.makeRequest('GET', `metrics/time_metrics_posts/${postType}/${field}/${year}`)
+
 const getFieldSettings = (postType) =>
 window.makeRequest('GET', `metrics/field_settings/${postType}`)
 
@@ -404,41 +407,72 @@ function createLineSeries(chart, field, name, hidden = false) {
 
 function displayPostListModal(date, date_key, metric_key) {
   if (date && date_key && metric_key) {
-    let selected_posts = [];
-    let posts = window.dtMetricsProject.state['posts'];
+    let { post_type, field, fieldType, year } = window.dtMetricsProject.state;
 
-    if (posts && posts.length > 0) {
+    // Determine date range to be used.
+    let is_by_year = date_key === 'year';
+    let is_all_time = year === 'all-time';
+    let date_range = is_all_time ? date : year;
 
-      // Filter out required posts.
-      let limit = 100;
-      jQuery.each(posts, function (idx, post) {
-        if (post['id'] && (post[date_key] && post[date_key] === date) && (post['value'] && window.lodash.includes(metric_key, post['value']))) {
-          if (--limit >= 0) {
-            selected_posts.push(post);
+    getTimeMetricsPosts(post_type, field, date_range)
+    .promise()
+    .then(response => {
+      if (response && response.posts) {
+        let selected_posts = [];
+        let posts = response.posts;
+
+        // Filter out required posts.
+        let limit = 100;
+        jQuery.each(posts, function (idx, post) {
+          if (post['id'] && post['name']) {
+            if (post['value']) {
+              if (window.lodash.includes(['tags', 'multi_select', 'key_select'], fieldType) && window.lodash.includes(metric_key, post['value'])) {
+                if (is_by_year || (post['month'] && (window.moment().month(date).format('M') === post['month']))) {
+                  if (--limit >= 0) {
+                    selected_posts.push(post);
+                  }
+                }
+
+              } else if (window.lodash.includes(['date', 'number'], fieldType)) {
+                if (is_by_year || (post['month'] && (window.moment().month(date).format('M') === post['month']))) {
+                  if (--limit >= 0) {
+                    selected_posts.push(post);
+                  }
+                }
+              }
+            } else if (window.lodash.includes(['connection'], fieldType)) {
+              if (is_by_year || (post['month'] && (window.moment().month(date).format('M') === post['month']))) {
+                if (--limit >= 0) {
+                  selected_posts.push(post);
+                }
+              }
+            } else {
+              if (--limit >= 0) {
+                selected_posts.push(post);
+              }
+            }
           }
-        }
-      });
+        });
 
-      // Proceed with displaying post list.
-      if (selected_posts.length > 0) {
+        // Proceed with displaying post list.
         let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
         let list_html = `
-        <br>
-        ${(function (posts_to_filter) {
-            let post_list_html = ``;
-            jQuery.each(posts_to_filter, function (idx, post) {
-              let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
+          <br>
+          ${(function (posts_to_filter) {
+              let post_list_html = ``;
+              jQuery.each(posts_to_filter, function (idx, post) {
+                let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
 
-              post_list_html += `
-              <div>
-                <a href="${url}" target="_blank">${post['name'] ? post['name'] : post['id']}</a>
-              </div>
-              `;
-            });
-            return post_list_html;
-        })(sorted_posts)}
-        <br>
-        `;
+                post_list_html += `
+                <div>
+                  <a href="${url}" target="_blank">${post['name'] ? post['name']:post['id']}</a>
+                </div>
+                `;
+              });
+              return (posts_to_filter.length > 0) ? post_list_html : window.dtMetricsProject.translations.modal_no_records;
+            })(sorted_posts)}
+          <br>
+          `;
 
         // Render post html list.
         let content = jQuery('#template_metrics_modal_content');
@@ -448,7 +482,11 @@ function displayPostListModal(date, date_key, metric_key) {
         jQuery(content).empty().html(list_html);
         jQuery('#template_metrics_modal').foundation('open');
       }
-    }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
   }
 }
 
@@ -499,18 +537,16 @@ function getData() {
     const chartElement = document.querySelector('#chart-area')
     loadingSpinner.classList.add('active')
     data.promise()
-        .then(({ data, posts, cumulative_offset }) => {
-          window.dtMetricsProject.state['posts'] = posts;
-
-            if ( !data ) {
-                throw new Error('no data object returned')
-            }
-            window.dtMetricsProject.cumulative_offset = cumulative_offset
-            window.dtMetricsProject.data = isAllTime
-                ? formatYearData(data)
-                : formatMonthData(data)
-            chartElement.dispatchEvent( new Event('datachange') )
-            loadingSpinner.classList.remove('active')
+        .then(({ data, cumulative_offset }) => {
+          if ( !data ) {
+              throw new Error('no data object returned')
+          }
+          window.dtMetricsProject.cumulative_offset = cumulative_offset
+          window.dtMetricsProject.data = isAllTime
+              ? formatYearData(data)
+              : formatMonthData(data)
+          chartElement.dispatchEvent( new Event('datachange') )
+          loadingSpinner.classList.remove('active')
         })
         .catch((error) => {
             console.log(error)
