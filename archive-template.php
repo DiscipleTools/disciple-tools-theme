@@ -20,7 +20,7 @@ dt_please_log_in();
              data-sticky data-options="marginTop:0;" data-top-anchor="1"
              class="second-bar list-actions-bar">
             <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
-                <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
+                <a class="button dt-green create-post-desktop" href="<?php echo esc_url( $post_type ) . '/new' ?>">
                     <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( 'Create New %s', 'Create New record', 'disciple_tools' ), $post_settings['label_singular'] ?? $post_type ) ) ?></span>
                 </a>
@@ -110,7 +110,7 @@ dt_please_log_in();
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
+        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( $post_type ) . '/new' ?>">
             <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
         </a>
         <a class="button filter-posts-mobile" data-open="filter-modal">

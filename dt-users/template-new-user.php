@@ -14,7 +14,7 @@ if ( current_user_can( 'manage_dt' ) && !current_user_can( 'create_users' ) && i
             <h3><?php esc_html_e( 'Permission denied', 'disciple_tools' ); ?></h3>
             <p>
                 <?php esc_html_e( 'Administrator must enable "Add New Users" option in multisite settings:', 'disciple_tools' ); ?>
-                <a href="<?php echo esc_html( site_url( '/wp-admin/network/settings.php' ) ); ?>"
+                <a href="wp-admin/network/settings.php"
                    target="_blank">Network Admin Settings</a>
             </p>
         </div>

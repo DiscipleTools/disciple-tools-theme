@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
         let update_needed_list_html = ``;
         (details.update_needed.contacts||[]).forEach(contact => {
           update_needed_list_html += `<li>
-            <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+            <a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
                 ${window.SHAREDFUNCTIONS.escapeHTML(contact.post_title)}:  ${window.SHAREDFUNCTIONS.escapeHTML(contact.last_modified_msg)}
             </a>
           </li>`
@@ -195,7 +195,7 @@ jQuery(document).ready(function($) {
             response.unaccepted_contacts.forEach(contact => {
               let days = contact.time / 60 / 60 / 24;
               unaccepted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+          <a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
               ${window.SHAREDFUNCTIONS.escapeHTML(contact.name)} has be waiting to be accepted for ${days.toFixed(1)} days
               </a> </li>`
             })
@@ -225,7 +225,7 @@ jQuery(document).ready(function($) {
               .replace('%2$s', window.moment.unix(contact.date_accepted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
               accepted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+          <a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
               ${window.SHAREDFUNCTIONS.escapeHTML(accept_line)}
           </a> </li>`
             })
@@ -254,7 +254,7 @@ jQuery(document).ready(function($) {
               .replace('%1$s', window.SHAREDFUNCTIONS.escapeHTML(contact.name))
               .replace('%2$s', days.toFixed(1))
               unattemped_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+          <a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
               ${window.SHAREDFUNCTIONS.escapeHTML(line)}
           </a> </li>`
             })
@@ -284,7 +284,7 @@ jQuery(document).ready(function($) {
               .replace('%2$s', window.moment.unix(contact.date_attempted).format("MMM Do"))
               .replace('%3$s', days.toFixed(1))
               attempted_contacts_html += `<li>
-          <a href="${window.wpApiShare.site_url}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
+          <a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact.ID)}" target="_blank">
               ${window.SHAREDFUNCTIONS.escapeHTML(line)}
           </a> </li>`
             })
@@ -428,12 +428,12 @@ jQuery(document).ready(function($) {
 
   $('#corresponds_to_contact_link').on( "click", function (){
     if ( user_details.corresponds_to_contact ){
-      window.open(window.wpApiShare.site_url + "/contacts/" + user_details.corresponds_to_contact, '_blank');
+      window.open("contacts/" + user_details.corresponds_to_contact, '_blank');
     }
   })
   $('#wp_admin_edit_user').on( "click", function (){
     if ( user_details.user_id ){
-      window.open(window.wpApiShare.site_url + "/wp-admin/user-edit.php?user_id=" + user_details.user_id, '_blank');
+      window.open("wp-admin/user-edit.php?user_id=" + user_details.user_id, '_blank');
     }
   })
   $('#reset_user_pwd_email').on("click", function (e) {
@@ -862,11 +862,11 @@ jQuery(document).ready(function($) {
           const { user_id, corresponds_to_contact: contact_id } = response
           result_div.html('')
           if ( dt_user_management_localized.has_permission ) {
-            result_div.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(user_id)}">
+            result_div.append(`<a href="user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(user_id)}">
               ${ escaped_translations.view_new_user }</a>
             `)
           }
-          result_div.append(`<br /><a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact_id)}">
+          result_div.append(`<br /><a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML(contact_id)}">
               ${ escaped_translations.view_new_contact }</a>
             `)
           $('#new-user-form').empty()
@@ -902,9 +902,9 @@ jQuery(document).ready(function($) {
             }
             $('#contact-result').html(escaped_translations.already_user)
             if ( window.dt_user_management_localized.has_permission ) {
-              $('#contact-result').append(`<br /> <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(response.corresponds_to_user)}">${escaped_translations.view_user}</a>`)
+              $('#contact-result').append(`<br /> <a href="user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(response.corresponds_to_user)}">${escaped_translations.view_user}</a>`)
             }
-            $('#contact-result').append(`<br /> <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${id}">${escaped_translations.view_contact}</a>`)
+            $('#contact-result').append(`<br /> <a href="contacts/${id}">${escaped_translations.view_contact}</a>`)
           } else {
             window.contact_record = response
             submit_button.prop('disabled', false)

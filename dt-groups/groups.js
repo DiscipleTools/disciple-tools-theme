@@ -167,7 +167,7 @@ jQuery(document).ready(function($) {
       let memberHTML = `<div class="member-row" style="" data-id="${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">
           <div style="flex-grow: 1" class="member-status">
               ${contactStatusHTML}
-              <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">${window.SHAREDFUNCTIONS.escapeHTML(member.post_title)}</a>
+              <a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">${window.SHAREDFUNCTIONS.escapeHTML(member.post_title)}</a>
               ${leaderHTML}
               ${milestonesHTML}
           </div>

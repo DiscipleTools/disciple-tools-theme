@@ -402,7 +402,7 @@
     url.searchParams.set('filter_id', currentFilter.ID)
     url.searchParams.set('filter_tab', currentFilter.tab || '')
 
-    window.history.pushState(null, document.title, url.search)
+    window.history.pushState(null, document.title, url.href)
   }
 
   function get_records_for_current_filter(custom_filter = null){
@@ -2378,7 +2378,7 @@
               $(node).removeData( `bulk_key_${field_id}` );
             }
           },
-          href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`
+          href: `${listing_post_type}/{{ID}}`
         },
         callback: {
           onClick: function(node, a, item, event){

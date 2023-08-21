@@ -64,7 +64,7 @@ get_header(); ?>
                             <div class="small-4 medium-3 cell" style="text-align:right;">
                                 <span class="hide-for-small-only">
                                     <a onclick="mark_all_viewed()"><?php esc_html_e( 'Mark all as read', 'disciple_tools' ) ?></a>  -
-                                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/#notifications">
+                                    <a href="settings/#notifications">
                                         <?php esc_html_e( 'Settings', 'disciple_tools' )?>
                                     </a>
                                 </span>

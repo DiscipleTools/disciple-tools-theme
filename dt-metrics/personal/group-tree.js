@@ -54,7 +54,7 @@ function open_modal_details( id ) {
       // console.log(data)
       if( data ) {
         let list = '<dt>'+window.SHAREDFUNCTIONS.escapeHTML( translations.members )+'</dt><ul>'
-        jQuery.each(data.members, function(i, v)  { list += `<li><a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML( data.members[i].ID )}">${window.SHAREDFUNCTIONS.escapeHTML( data.members[i].post_title )}</a></li>` } )
+        jQuery.each(data.members, function(i, v)  { list += `<li><a href="contacts/${window.SHAREDFUNCTIONS.escapeHTML( data.members[i].ID )}">${window.SHAREDFUNCTIONS.escapeHTML( data.members[i].post_title )}</a></li>` } )
         let assigned_to = ''
         if (typeof data.assigned_to !== 'undefined') {
           assigned_to = data.assigned_to['display']
@@ -71,7 +71,7 @@ function open_modal_details( id ) {
                             ${list}
                         </dl>
                     </div>
-                    <div class="cell center"><hr><a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/groups/${window.SHAREDFUNCTIONS.escapeHTML( id )}">${window.SHAREDFUNCTIONS.escapeHTML(translations.view_group)}</a></div>
+                    <div class="cell center"><hr><a href="groups/${window.SHAREDFUNCTIONS.escapeHTML( id )}">${window.SHAREDFUNCTIONS.escapeHTML(translations.view_group)}</a></div>
                 </div>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
                     <span aria-hidden="true">&times;</span>

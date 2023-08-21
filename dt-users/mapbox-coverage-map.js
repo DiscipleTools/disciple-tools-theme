@@ -77,7 +77,7 @@ jQuery(document).ready(function($) {
           jQuery.each(user_list[details.admin0_grid_id], function(i,v) {
             level_list.append(`
               <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
-                <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
+                <a href="user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
                   ${window.SHAREDFUNCTIONS.escapeHTML(v.name)}
                 </a>
               </div>
@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
           jQuery.each(user_list[details.admin1_grid_id], function(i,v) {
             level_list.append(`
               <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
-                <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
+                <a href="user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
                   ${window.SHAREDFUNCTIONS.escapeHTML(v.name)}
                 </a>
               </div>
@@ -136,7 +136,7 @@ jQuery(document).ready(function($) {
           jQuery.each(user_list[details.admin2_grid_id], function(i,v) {
             level_list.append(`
               <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
-                <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
+                <a href="user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(v.user_id)}">
                   ${window.SHAREDFUNCTIONS.escapeHTML(v.name)}
                 </a>
               </div>
@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
                   if ( v.grid_id.toString() === selected_location.toString() ) {
                     jQuery('#'+list_level+'_list').prepend(`
                       <div class="cell small-10 align-self-middle" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">
-                        <a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(response.user_id)}">
+                        <a  href="user-management/user/${window.SHAREDFUNCTIONS.escapeHTML(response.user_id)}">
                           ${window.SHAREDFUNCTIONS.escapeHTML(response.user_title)}
                         </a>
                       </div>

@@ -564,7 +564,7 @@ jQuery(document).ready(function($) {
           }
         },
         href: function (item) {
-          return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
+          return `${listing_post_type}/${item.ID}`
         }
       },
       callback: {
@@ -1335,7 +1335,7 @@ jQuery(document).ready(function($) {
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
     window.API.delete_post( post_type, post_id ).then(()=>{
-      window.location = window.wpApiShare.site_url + '/' + post_type
+      window.location = post_type
     })
   })
   $('#archive-record').on('click', function(){
@@ -1375,13 +1375,13 @@ jQuery(document).ready(function($) {
     if ( current_record === 0 || typeof(records_list[current_record-1]) === 'undefined') {
       $(document).find('.navigation-previous').hide();
     } else {
-      let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[current_record-1].ID
+      let link = window.detailsSettings.post_type + '/' + records_list[current_record-1].ID
       $(document).find('.navigation-previous').attr('href', link);
       $(document).find('.navigation-previous').removeAttr('style');
     }
 
     if (typeof (records_list[next_record]) !== 'undefined') {
-      let link = window.wpApiShare.site_url + '/' + window.detailsSettings.post_type + '/' + records_list[next_record].ID
+      let link = window.detailsSettings.post_type + '/' + records_list[next_record].ID
       $(document).find('.navigation-next').attr('href', link);
       $(document).find('.navigation-next').removeAttr('style');
     } else {

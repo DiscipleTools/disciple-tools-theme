@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
 
       let original_contact_html = `<div class="merge-modal-contact-row">
         <h5>
-        <a href="${window.wpApiShare.site_url}/${post_type}/${window.SHAREDFUNCTIONS.escapeHTML(post_id)}" class="merge-modal-contact-name" target=_blank>
+        <a href="${post_type}/${window.SHAREDFUNCTIONS.escapeHTML(post_id)}" class="merge-modal-contact-name" target=_blank>
         ${ window.SHAREDFUNCTIONS.escapeHTML(post.name) }
         <span class="merge-modal-contact-info"> #${post_id} (${window.lodash.get(post, "overall_status.label") ||""}) </span>
         </a>
@@ -168,7 +168,7 @@ jQuery(document).ready(function($) {
     let matched_values = dupe.fields.map(f=>f.value)
     html += `<div class="merge-modal-contact-row">
       <h5>
-      <a href="${window.wpApiShare.site_url}/${post_type}/${window.SHAREDFUNCTIONS.escapeHTML(dupe.ID)}" class="merge-modal-contact-name" target=_blank>
+      <a href="${post_type}/${window.SHAREDFUNCTIONS.escapeHTML(dupe.ID)}" class="merge-modal-contact-name" target=_blank>
       ${ window.SHAREDFUNCTIONS.escapeHTML(dupe.post.name) }
       <span class="merge-modal-contact-info"> #${dupe.ID} (${window.lodash.get(dupe.post, "overall_status.label") ||""}) </span>
       </a>
@@ -204,7 +204,7 @@ jQuery(document).ready(function($) {
 
   $(document).on( "click", ".merge-post", function () {
     let dup_id = $(this).data('dup-id')
-    window.location = `${window.wpApiShare.site_url}/${post_type}/mergedetails?dupeid=${dup_id}&currentid=${post_id}`
+    window.location = `${post_type}/mergedetails?dupeid=${dup_id}&currentid=${post_id}`
   })
 
   $(document).on( "click", ".dismiss-duplicate", function () {

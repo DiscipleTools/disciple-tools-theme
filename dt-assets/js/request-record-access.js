@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
       $('#request-record-access-modal-button').toggleClass('loading');
       $('#request-record-access-modal').foundation('close');
 
-     window.location = window.wpApiShare.site_url + '/' + postType
+     window.location = postType
 
     }).catch(err => {
 

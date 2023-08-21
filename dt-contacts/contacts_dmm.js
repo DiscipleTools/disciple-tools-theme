@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
                 .catch(err => { console.error(err) })
               }
             },
-            href: window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.site_url ) + "/contacts/{{ID}}"
+            href: "contacts/{{ID}}"
           },
           callback: {
             onClick: function (node, a, item) {

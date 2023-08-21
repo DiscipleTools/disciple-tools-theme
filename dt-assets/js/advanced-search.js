@@ -6,7 +6,8 @@ jQuery(document).ready(function ($) {
   let fetch_more_text = window.advanced_search_settings.fetch_more_text;
 
   // Open the advanced search modal
-  $(document).on("click", '.advanced-search-nav-button', function () {
+  $(document).on("click", '.advanced-search-nav-button', function (e) {
+    e.preventDefault()
     reset_widgets();
     $('#advanced-search-modal').foundation('open');
     $('#advanced-search-modal-form-query').focus();
@@ -199,8 +200,8 @@ jQuery(document).ready(function ($) {
 
   function build_result_table_row(post) {
     // Determine hidden values
-    let hidden_post_id = post['ID'];
-    let hidden_post_type = post['post_type'];
+    let hidden_post_id =  window.SHAREDFUNCTIONS.escapeHTML(post['ID']);
+    let hidden_post_type =  window.SHAREDFUNCTIONS.escapeHTML(post['post_type']);
 
     // Determine available hit types
     let _is_post_hit = is_post_hit(post['post_hit']);
@@ -214,7 +215,7 @@ jQuery(document).ready(function ($) {
     // Convert post title to link, so as to provide support for browser link options, such as open in new tab!
     let status_label = (_is_status_hit && post['status'] && post['status']['label']) ? ' [<i>' + window.SHAREDFUNCTIONS.escapeHTML(post['status']['label']).toLowerCase() + '</i>]' : '';
     let status_color_css = (_is_status_hit && post['status'] && post['status']['color']) ? 'style="border-left-color: ' + post['status']['color'] + ' !important; border-left: 5px solid;"' : '';
-    let post_link = window.wpApiShare.site_url + '/' + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_type) + "/" + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_id);
+    let post_link = hidden_post_type + "/" + hidden_post_id;
     results_html += '<td class="advanced-search-modal-results-table-col-hits" ' + status_color_css + '><a href="' + post_link + '"><b>' + window.SHAREDFUNCTIONS.escapeHTML(post['post_title']) + '</b> (#' + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_id) + ')' + status_label + '</a><br><span>';
 
     if (_is_comment_hit) {
@@ -258,7 +259,7 @@ jQuery(document).ready(function ($) {
   }
 
   function display_record(post_type, post_id) {
-    window.location = window.wpApiShare.site_url + '/' + post_type + "/" + post_id;
+    window.location = post_type + "/" + post_id;
   }
 
   function remove_duplicate_hits(hits) {
@@ -271,7 +272,7 @@ jQuery(document).ready(function ($) {
         // Filter out all and any duplicates.
         hit['posts'].forEach(function (post) {
           let post_id = post['ID'];
-          if (!window.lodash.includes(already_found_ids, post_id)) {
+          if (!already_found_ids.includes(post_id)) {
             already_found_ids.push(post_id);
             filtered_posts.push(post);
           }

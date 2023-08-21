@@ -542,7 +542,7 @@ class DT_User_Hooks_And_Configuration {
                         <input type="text" class="regular-text corresponds_to_contact" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" /><br />
                         <input type="hidden" class="regular-text corresponds_to_contact_id" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" />
                         <?php if ( $contact_id ) : ?>
-                            <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( 'View Contact', 'disciple_tools' ) ?></a></span>
+                            <span class="description"><a href="<?php echo esc_html( 'contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( 'View Contact', 'disciple_tools' ) ?></a></span>
                         <?php else : ?>
                             <span class="description"><?php esc_html_e( 'Add the name of the contact record this user corresponds to.', 'disciple_tools' ) ?>
                                 <a target="_blank" href="https://disciple.tools/user-docs/getting-started-info/users/inviting-users/"><?php esc_html_e( 'Learn more.', 'disciple_tools' ) ?></a>

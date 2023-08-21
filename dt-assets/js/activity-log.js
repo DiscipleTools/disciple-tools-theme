@@ -33,7 +33,7 @@ jQuery(function() {
         ? `
         <input type="checkbox" class="activity__more-state" id="${forID}" />
         <h5 class="post-activities__title">
-          <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${window.SHAREDFUNCTIONS.escapeHTML(postTitle)}</a>
+          <a href="${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${window.SHAREDFUNCTIONS.escapeHTML(postTitle)}</a>
           <label for="${forID}" class="activity__less-link">
             <img src="${template_dir}/dt-assets/images/chevron_up.svg"/>
           </label>

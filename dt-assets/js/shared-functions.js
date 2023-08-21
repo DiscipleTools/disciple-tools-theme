@@ -259,7 +259,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
     if (tile.label) {
       let tile_label = window.SHAREDFUNCTIONS.escapeHTML(tile.label);
       if ( window.wpApiShare.can_manage_dt ){
-        let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${section}`
+        let edit_link = `wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${section}`
         tile_label += ` <span style="font-size: 10px"><a href="${window.SHAREDFUNCTIONS.escapeHTML(edit_link)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.edit)}</a></span>`;
       }
       jQuery("#help-modal-field-title").html(tile_label);
@@ -285,7 +285,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
       ) {
         let field_name = `<h2>${window.SHAREDFUNCTIONS.escapeHTML(field.name)}</h2>`;
         if ( window.wpApiShare.can_manage_dt ){
-          let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
+          let edit_link = `wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
           field_name = `<h2>${window.SHAREDFUNCTIONS.escapeHTML(field.name)} <span style="font-size: 10px"><a href="${window.SHAREDFUNCTIONS.escapeHTML(edit_link)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.edit)}</a></span></h2>`;
         }
         html += field_name
@@ -624,7 +624,7 @@ window.SHAREDFUNCTIONS = {
   create_url_for_list_query(postType, query, labels) {
     const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(query);
     const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(labels);
-    return window.wpApiShare.site_url + `/${postType}?query=${encodedQuery}&labels=${encodedLabels}`;
+    return `${postType}?query=${encodedQuery}&labels=${encodedLabels}`;
   },
   encodeJSON(json) {
     return this.b64encode(JSON.stringify(json))
@@ -718,7 +718,7 @@ window.SHAREDFUNCTIONS = {
         if (text.includes("http") && !url.includes("http")){
           [url, text] = [text, url]
         }
-        url = url.includes('http') ? url : `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`
+        url = url.includes('http') ? url : `${window.wpApiShare.post_type}/${url}`
         return `<a href="${url}">${text}</a>`
       })
 

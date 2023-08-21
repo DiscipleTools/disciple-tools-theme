@@ -16,7 +16,7 @@ let mapbox_library_api = {
     // Ensure a valid mapbox key has been specified.
     if (!window.dt_mapbox_metrics.settings.map_key) {
       chart.empty();
-      let mapping_settings_url = window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_mapping_module&tab=geocoding';
+      let mapping_settings_url = 'wp-admin/admin.php?page=dt_mapping_module&tab=geocoding';
       chart.empty().html(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(mapping_settings_url)}">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.settings.no_map_key_msg)}</a>`);
 
       return;
@@ -258,7 +258,7 @@ let mapbox_library_api = {
           list[i] = jQuery('#list-'+i)
 
           list[i].append(`
-            <div class="cell"><a  target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
+            <div class="cell"><a  target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
           `)
 
           jQuery('.loading-spinner').hide()
@@ -397,7 +397,7 @@ let cluster_map = {
       .done(details=>{
         list[i] = jQuery('#list-'+i)
         list[i].append(`
-            <div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
+            <div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
           `)
         jQuery('.loading-spinner').hide()
       })
@@ -635,7 +635,7 @@ let area_map = {
         level_list.empty()
         jQuery.each(list_by_grid, function(i,v) {
           if ( i > 20 ){ return }
-          level_list.append(`<div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( mapbox_library_api.post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( v.post_id )}">${window.SHAREDFUNCTIONS.escapeHTML( v.post_title ) }</a></div>`)
+          level_list.append(`<div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML( mapbox_library_api.post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( v.post_id )}">${window.SHAREDFUNCTIONS.escapeHTML( v.post_title ) }</a></div>`)
         })
         if ( list_by_grid.length > 20 ){
           level_list.append(`<div class="cell">...</div>`)
