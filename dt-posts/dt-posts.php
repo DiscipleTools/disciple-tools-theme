@@ -2740,6 +2740,11 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
 
+        //there should not be a "No Tile" tile.
+        if ( isset( $tile_options[$post_type]['no_tile'] ) ){
+            unset( $tile_options[$post_type]['no_tile'] );
+        }
+
         wp_cache_set( $post_type . '_tile_options', $tile_options[$post_type] );
         return $tile_options[$post_type];
     }

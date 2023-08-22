@@ -252,11 +252,10 @@ jQuery(document).ready(function($) {
     let tile_priority = 10;
 
     $.each(tiles, function(tile_index, tile_key) {
-      if (tile_key === '' ) {
+      if ( tile_key === '' || tile_key === 'no_tile' ) {
         return;
       }
       dt_custom_tiles_and_fields_ordered[tile_key] = {};
-      let tile_label = $(`#tile-key-${tile_key}`).prop('innerText');
       let fields = $(document).find(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
       let field_order = [];
       $.each(fields, function(field_index, field_element) {
@@ -265,7 +264,6 @@ jQuery(document).ready(function($) {
 
       dt_custom_tiles_and_fields_ordered[tile_key]['order'] = field_order;
       dt_custom_tiles_and_fields_ordered[tile_key]['tile_priority'] = tile_priority;
-      dt_custom_tiles_and_fields_ordered[tile_key]['label'] = tile_label;
       tile_priority += 10;
     });
     return dt_custom_tiles_and_fields_ordered;
