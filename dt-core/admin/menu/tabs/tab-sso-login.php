@@ -28,6 +28,10 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
+        if ( !current_user_can( 'manage_options' ) ){
+            return;
+        }
+
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
@@ -125,12 +129,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function tab( $args ) {
-        $must_have_super_admin_rights = isset( $args['multisite_level'] )
-            && $args['multisite_level'] === true
-            && (
-                !$this->is_site_admin
-                || get_current_blog_id() !== get_main_network_id()
-            );
+        $must_have_super_admin_rights = is_multisite() && !is_super_admin() && !empty( $args['multisite_level'] );
         switch ( $args['type'] ) {
             case 'text':
                 ?>
@@ -198,7 +197,13 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $_POST[$this->token.'_nonce'] )
             && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[$this->token.'_nonce'] ) ), $this->token . get_current_user_id() ) ) {
 
-            $params = $_POST;
+
+            $has_permission = is_multisite() && !is_super_admin() && current_user_can( 'manage_options' );
+            if ( !$has_permission ){
+                return false;
+            }
+
+            $params = dt_recursive_sanitize_array( $_POST );
 
             if ( isset( $params['delete'] ) ) {
                 DT_Login_Fields::delete();
