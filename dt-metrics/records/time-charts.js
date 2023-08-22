@@ -236,7 +236,7 @@ function createChart(id, keys, options) {
 
         let label = ''
         if (defaultSettings[newKey]) {
-            label = window.lodash.escape( defaultSettings[newKey].label )
+            label = window.SHAREDFUNCTIONS.escapeHTML( defaultSettings[newKey].label )
         } else if ( fieldType === 'boolean' ) {
             if (newKey === '1') {
                 label = true_label

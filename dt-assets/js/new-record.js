@@ -53,15 +53,15 @@ jQuery(function($) {
       $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
     } else {
       $list.append(`<li style="display: flex">
-                <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}" data-${field}-index="${window.lodash.escape( elementIndex )}"/>
-                <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button" data-${field}-index="${elementIndex}">
-                    <img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
+                <input type="text" class="dt-communication-channel" data-field="${window.SHAREDFUNCTIONS.escapeHTML( listClass )}" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}"/>
+                <button class="button clear delete-button new-${window.SHAREDFUNCTIONS.escapeHTML( listClass )}" type="button" data-${field}-index="${elementIndex}">
+                    <img src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
                 </button>
-                <span class="loading-spinner" data-${field}-index="${window.lodash.escape( elementIndex )}" style="margin: 0.5rem;"></span>
+                <span class="loading-spinner" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}" style="margin: 0.5rem;"></span>
               </li>
-              <div class="communication-channel-error" data-${field}-index="${window.lodash.escape( elementIndex )}" style="display: none;">
+              <div class="communication-channel-error" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}" style="display: none;">
                 ${window.new_record_localized.translations.value_already_exists.replace('%s', fieldName)}:
-                <span class="duplicate-ids" data-${field}-index="${window.lodash.escape( elementIndex )}" style="color: #3f729b;"></span>
+                <span class="duplicate-ids" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}" style="color: #3f729b;"></span>
               </div>`)
     }
   })
@@ -290,8 +290,8 @@ jQuery(function($) {
             dropdownFilter: [{
               key: 'group',
               value: 'focus',
-              template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-              all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+              template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus),
+              all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations),
             }],
             source: {
               focus: {
@@ -347,11 +347,11 @@ jQuery(function($) {
                 this.resetInput();
               },
               onReady(){
-                this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+                this.filters.dropdown = {key: "group", value: "focus", template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus)}
                 this.container
                   .removeClass("filter")
                   .find("." + this.options.selector.filterButton)
-                  .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+                  .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus));
               },
               onResult: function (node, query, result, resultCount) {
                 resultCount = window.typeaheadTotals.location_grid
@@ -376,18 +376,18 @@ jQuery(function($) {
               return `<div class="assigned-to-row" dir="auto">
               <span>
                   <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                  ${window.lodash.escape( item.name )}
+                  ${window.SHAREDFUNCTIONS.escapeHTML( item.name )}
               </span>
-              ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+              ${ item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : '' }
               ${ item.update_needed && item.update_needed > 0 ? `<span>
-                <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-                <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+                <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+                <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
               </span>` : '' }
             </div>`
             },
             dynamic: true,
             hint: true,
-            emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+            emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
             callback: {
               onClick: function(node, a, item){
                 if (!is_bulk) {
@@ -468,7 +468,7 @@ jQuery(function($) {
         maxItem: 20,
         searchOnFocus: true,
         template: function (query, item) {
-          return `<span>${window.lodash.escape(item.value)}</span>`
+          return `<span>${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`
         },
         source: source_data,
         display: "value",
@@ -814,7 +814,7 @@ jQuery(function($) {
       $(mapbox_clear_autocomplete).prop('id', 'mapbox-clear-autocomplete-altered');
       $(mapbox_search).prop('id', 'mapbox-search-altered');
       $(mapbox_search).prop('type', 'button');
-      $(mapbox_search).prop('value', window.lodash.escape(window.new_record_localized.bulk_mapbox_placeholder_txt));
+      $(mapbox_search).prop('value', window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_mapbox_placeholder_txt));
       $(mapbox_search).addClass('button');
       $(mapbox_search).addClass('mapbox-altered-input');
       $(mapbox_search).data('field', 'location_grid_meta');
@@ -866,7 +866,7 @@ jQuery(function($) {
           let mapbox_search = $(record).find('#mapbox-search-altered');
 
           // Update button text to selected location.
-          mapbox_search.val(window.lodash.truncate(window.lodash.escape(selected_location['location_grid_meta']['values'][0]['label'])));
+          mapbox_search.val(window.lodash.truncate(window.SHAREDFUNCTIONS.escapeHTML(selected_location['location_grid_meta']['values'][0]['label'])));
 
           // Capture selected location within data attribute.
           mapbox_search.data('selected_location', JSON.stringify(selected_location));
@@ -1282,7 +1282,7 @@ jQuery(function($) {
 
   function apply_field_value_copy_controls_button(record_id, field_div, field_class, field_id) {
     if ($(field_div).find('.field-value-copy-controls').length === 0) {
-      let button_html = '<button style="margin-left: 10px;" data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.lodash.escape(window.new_record_localized.bulk_copy_control_but_img_uri) + '"></button>';
+      let button_html = '<button style="margin-left: 10px;" data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_copy_control_but_img_uri) + '"></button>';
       $(field_div).find('.section-subheader').append('<span class="field-value-copy-controls" style="float: right; padding: 0; margin: 0;">' + button_html + '</span>');
     }
   }
@@ -1362,7 +1362,7 @@ jQuery(function($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.lodash.escape(window.new_record_localized.bulk_record_removal_but_img_uri)}"></button>`;
+    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_record_removal_but_img_uri)}"></button>`;
     return button_html;
   }
 

@@ -126,8 +126,8 @@ if ( typeof window.dtMapbox === "undefined" ) {
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-        all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+        template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus),
+        all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -172,11 +172,11 @@ if ( typeof window.dtMapbox === "undefined" ) {
           add_location_grid( item.ID)
         },
         onReady(){
-          this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+          this.filters.dropdown = {key: "group", value: "focus", template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus)}
           this.container
             .removeClass("filter")
             .find("." + this.options.selector.filterButton)
-            .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+            .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid
@@ -251,11 +251,11 @@ let display_dates_unavailable = (list = [], first_run )=>{
   list = window.lodash.orderBy( list, [ "start_date" ], "desc")
   list.forEach(range=>{
     rows += `<tr>
-        <td>${window.lodash.escape(range.start_date)}</td>
-        <td>${window.lodash.escape(range.end_date)}</td>
+        <td>${window.SHAREDFUNCTIONS.escapeHTML(range.start_date)}</td>
+        <td>${window.SHAREDFUNCTIONS.escapeHTML(range.end_date)}</td>
         <td>
-            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${window.lodash.escape(range.id)}" style="margin-bottom: 0">
-            <i class="fi-x"></i> ${window.lodash.escape( window.wpApiSettingsPage.translations.delete )}</button>
+            <button class="button hollow tiny alert remove_dates_unavailable" data-id="${window.SHAREDFUNCTIONS.escapeHTML(range.id)}" style="margin-bottom: 0">
+            <i class="fi-x"></i> ${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiSettingsPage.translations.delete )}</button>
         </td>
       </tr>`
   })

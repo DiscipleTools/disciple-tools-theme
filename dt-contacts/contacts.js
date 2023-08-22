@@ -17,12 +17,12 @@ jQuery(document).ready(function($) {
       template: function (query, item) {
         return `<span class="row">
           <span class="avatar"><img src="{{avatar}}"/> </span>
-          <span>${window.lodash.escape( item.name )}</span>
+          <span>${window.SHAREDFUNCTIONS.escapeHTML( item.name )}</span>
         </span>`
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function (node, a, item) {
           jQuery.ajax({
@@ -84,8 +84,8 @@ jQuery(document).ready(function($) {
     if ( response.ids && response.ids.length > 0 ){
       $('.details-title-section').html(`
         <button class="button hollow center-items duplicates-detected-button" id="duplicates-detected-notice">
-          <img style="height:20px" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-          <strong>${window.lodash.escape(window.detailsSettings.translations.duplicates_detected)}</strong>
+          <img style="height:20px" src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+          <strong>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.duplicates_detected)}</strong>
         </button>
       `)
     }
@@ -102,8 +102,8 @@ jQuery(document).ready(function($) {
 
       let original_contact_html = `<div class="merge-modal-contact-row">
         <h5>
-        <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(post_id)}" class="merge-modal-contact-name" target=_blank>
-        ${ window.lodash.escape(post.name) }
+        <a href="${window.wpApiShare.site_url}/${post_type}/${window.SHAREDFUNCTIONS.escapeHTML(post_id)}" class="merge-modal-contact-name" target=_blank>
+        ${ window.SHAREDFUNCTIONS.escapeHTML(post.name) }
         <span class="merge-modal-contact-info"> #${post_id} (${window.lodash.get(post, "overall_status.label") ||""}) </span>
         </a>
         </h5>`
@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
         if ( field_settings.type === "communication_channel" && post[field_key] ){
           post[field_key].forEach( contact_info=>{
             if ( contact_info.value !== '' ){
-              original_contact_html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 15px;">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
+              original_contact_html +=`<img src='${window.SHAREDFUNCTIONS.escapeHTML(field_settings.icon)}'><span style="margin-right: 15px;">&nbsp;${window.SHAREDFUNCTIONS.escapeHTML(contact_info.value)}</span>`
             }
           })
         }
@@ -154,7 +154,7 @@ jQuery(document).ready(function($) {
         }
       })
       if (dismissed_html) {
-        dismissed_html = `<h4 class="merge-modal-subheading">${window.lodash.escape(window.detailsSettings.translations.dismissed_duplicates)}</h4>`
+        dismissed_html = `<h4 class="merge-modal-subheading">${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.dismissed_duplicates)}</h4>`
           + dismissed_html
         $duplicates.append(dismissed_html);
       }
@@ -168,33 +168,33 @@ jQuery(document).ready(function($) {
     let matched_values = dupe.fields.map(f=>f.value)
     html += `<div class="merge-modal-contact-row">
       <h5>
-      <a href="${window.wpApiShare.site_url}/${post_type}/${window.lodash.escape(dupe.ID)}" class="merge-modal-contact-name" target=_blank>
-      ${ window.lodash.escape(dupe.post.name) }
+      <a href="${window.wpApiShare.site_url}/${post_type}/${window.SHAREDFUNCTIONS.escapeHTML(dupe.ID)}" class="merge-modal-contact-name" target=_blank>
+      ${ window.SHAREDFUNCTIONS.escapeHTML(dupe.post.name) }
       <span class="merge-modal-contact-info"> #${dupe.ID} (${window.lodash.get(dupe.post, "overall_status.label") ||""}) </span>
       </a>
     </h5>`
-    html += `${window.lodash.escape(window.detailsSettings.translations.duplicates_on).replace('%s', '<strong>' + window.lodash.escape(dups_on_fields.join( ', ')) + '</strong>' )}<br />`
+    html += `${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.duplicates_on).replace('%s', '<strong>' + window.SHAREDFUNCTIONS.escapeHTML(dups_on_fields.join( ', ')) + '</strong>' )}<br />`
 
     window.lodash.forOwn(window.detailsSettings.post_settings.fields, (field_settings, field_key)=>{
       if ( field_settings.type === "communication_channel" && dupe.post[field_key] ){
         dupe.post[field_key].forEach( contact_info=>{
           if ( contact_info.value !== '' ){
-            html +=`<img src='${window.lodash.escape(field_settings.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${window.lodash.escape(contact_info.value)}</span>`
+            html +=`<img src='${window.SHAREDFUNCTIONS.escapeHTML(field_settings.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${window.SHAREDFUNCTIONS.escapeHTML(contact_info.value)}</span>`
           }
         })
       }
     })
     html += `<br>`
     if (dupe.post.overall_status?.key === 'closed' && dupe.post.reason_closed && window.detailsSettings.post_settings.fields.reason_closed) {
-      html += `${window.lodash.escape(window.detailsSettings.post_settings.fields.reason_closed?.name)}: <strong>${window.lodash.escape(dupe.post.reason_closed.label)}</strong>`
+      html += `${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.post_settings.fields.reason_closed?.name)}: <strong>${window.SHAREDFUNCTIONS.escapeHTML(dupe.post.reason_closed.label)}</strong>`
       html += `<br>`
     }
     if ( !dismissed_row ){
-      html += `<button class='mergelinks dismiss-duplicate merge-modal-button' data-id='${window.lodash.escape(dupe.ID)}'><a>${window.lodash.escape(window.detailsSettings.translations.dismiss)}</a></button>`
+      html += `<button class='mergelinks dismiss-duplicate merge-modal-button' data-id='${window.SHAREDFUNCTIONS.escapeHTML(dupe.ID)}'><a>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.dismiss)}</a></button>`
     }
     html += `
-       <button type='submit' class="merge-post merge-modal-button" data-dup-id="${window.lodash.escape(dupe.ID)}">
-          <a>${window.lodash.escape(window.detailsSettings.translations.merge)}</a>
+       <button type='submit' class="merge-post merge-modal-button" data-dup-id="${window.SHAREDFUNCTIONS.escapeHTML(dupe.ID)}">
+          <a>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.merge)}</a>
       </button>
     `
 

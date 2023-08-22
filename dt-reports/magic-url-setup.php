@@ -143,7 +143,7 @@ class DT_Magic_URL_Setup {
                 })
 
                 function is_email_format_valid(email) {
-                    return new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$').test(window.lodash.escape(email));
+                    return new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$').test(window.SHAREDFUNCTIONS.escapeHTML(email));
                 }
 
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .qr').on('click', function(e){

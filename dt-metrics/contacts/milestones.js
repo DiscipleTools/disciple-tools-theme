@@ -12,11 +12,11 @@ jQuery(document).ready(function($) {
     let sourceData = window.wp_js_object.data
 
     chartDiv.empty().html(`
-    <div class="section-header">${ window.lodash.escape(window.wp_js_object.translations.milestones) }</div>
-    <div class="section-subheader">${ window.lodash.escape(window.wp_js_object.translations.filter_to_date_range) }:</div>
+    <div class="section-header">${ window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.milestones) }</div>
+    <div class="section-subheader">${ window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.filter_to_date_range) }:</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
-        <span>${ window.lodash.escape(window.wp_js_object.translations.all_time) }</span>
+        <span>${ window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.all_time) }</span>
         <i class="dt_caret down"></i>
     </div>
     <div style="display: inline-block" class="loading-spinner"></div>

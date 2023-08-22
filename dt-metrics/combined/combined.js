@@ -44,19 +44,19 @@ jQuery(document).ready(function($) {
       <span style="vertical-align: middle">
         <img
          style="filter: invert(41%) sepia(53%) saturate(2108%) hue-rotate(338deg) brightness(83%) contrast(91%);"
-         src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
-         ${window.lodash.escape(window.dt_metrics_mapbox_caller_js.translations.groups)}
+         src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
+         ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_metrics_mapbox_caller_js.translations.groups)}
       </span>
       <span style="vertical-align: middle">
         <img
            style="filter: invert(74%) sepia(59%) saturate(6105%) hue-rotate(154deg) brightness(101%) contrast(87%);"
-           src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
-           ${window.lodash.escape(window.dt_metrics_mapbox_caller_js.translations.contacts)}
+           src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
+           ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_metrics_mapbox_caller_js.translations.contacts)}
       </span>
 
       <span style="vertical-align: middle">
         <span style="height:30px;width:30px;border:1px solid;background-color:rgb(155, 200, 254);display: inline-block;vertical-align: middle"></span>
-        ${window.lodash.escape(window.dt_metrics_mapbox_caller_js.translations.active_users)}
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_metrics_mapbox_caller_js.translations.active_users)}
        </span>
     </div>
   `

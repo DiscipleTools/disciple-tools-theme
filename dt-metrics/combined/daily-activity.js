@@ -10,21 +10,21 @@ jQuery(document).ready(function ($) {
     let chartDiv = jQuery('#chart');
 
     chartDiv.empty().html(`
-    <div class="section-header">${window.lodash.escape(window.wp_js_object.translations.headings.header)}</div>
-    <div class="section-subheader">${window.lodash.escape(window.wp_js_object.translations.headings.sub_header)}:</div>
+    <div class="section-header">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.header)}</div>
+    <div class="section-subheader">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.sub_header)}:</div>
     <br>
     <select id="activity_date_range_filter">
-        <option selected value="this-week">${window.lodash.escape(window.wp_js_object.translations.selections.this_week)}</option>
-        <option value="this-month">${window.lodash.escape(window.wp_js_object.translations.selections.this_month)}</option>
-        <option value="last-month">${window.lodash.escape(window.wp_js_object.translations.selections.last_month)}</option>
-        <option value="2-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.two_months_ago)}</option>
-        <option value="3-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.three_months_ago)}</option>
-        <option value="4-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.four_months_ago)}</option>
-        <option value="5-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.five_months_ago)}</option>
-        <option value="6-months-ago">${window.lodash.escape(window.wp_js_object.translations.selections.six_months_ago)}</option>
+        <option selected value="this-week">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.this_week)}</option>
+        <option value="this-month">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.this_month)}</option>
+        <option value="last-month">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.last_month)}</option>
+        <option value="2-months-ago">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.two_months_ago)}</option>
+        <option value="3-months-ago">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.three_months_ago)}</option>
+        <option value="4-months-ago">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.four_months_ago)}</option>
+        <option value="5-months-ago">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.five_months_ago)}</option>
+        <option value="6-months-ago">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.selections.six_months_ago)}</option>
     </select>
     <div style="display: inline-block" class="loading-spinner"></div>
-    ${window.lodash.escape(window.wp_js_object.translations.chart.instructions)}
+    ${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.instructions)}
     <div id="chartdiv" style="height: 600px;"></div><br>
     <h2 id="chart_day_title"></h2><hr>
     <div id="chart_day_counts_div" style="display: none;"></div><br>
@@ -323,22 +323,22 @@ jQuery(document).ready(function ($) {
       // Default Metrics
       if (parseInt(day_counts['new_contacts']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(window.wp_js_object.translations.chart.new_contacts) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.new_contacts) + '</td>';
         metrics_html += '<td>' + day_counts['new_contacts'] + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(day_counts['new_groups']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(window.wp_js_object.translations.chart.new_groups) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.new_groups) + '</td>';
         metrics_html += '<td>' + day_counts['new_groups'] + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(day_counts['baptisms']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(window.wp_js_object.translations.chart.baptisms) + '</td>';
-        metrics_html += '<td>' + window.lodash.escape(day_counts['baptisms']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.baptisms) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(day_counts['baptisms']) + '</td>';
         metrics_html += '</tr>';
       }
 
@@ -347,50 +347,50 @@ jQuery(document).ready(function ($) {
 
       if (parseInt(seeker_path_updates['attempted']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['attempted']['label']) + '</td>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['attempted']['value']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['attempted']['label']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['attempted']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['coaching']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['coaching']['label']) + '</td>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['coaching']['value']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['coaching']['label']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['coaching']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['established']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['established']['label']) + '</td>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['established']['value']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['established']['label']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['established']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['met']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['met']['label']) + '</td>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['met']['value']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['met']['label']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['met']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['none']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['none']['label'] )+ '</td>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['none']['value']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['none']['label'] )+ '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['none']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['ongoing']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['ongoing']['label']) + '</td>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['ongoing']['value']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['ongoing']['label']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['ongoing']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
       if (parseInt(seeker_path_updates['scheduled']['value']) > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['scheduled']['label']) + '</td>';
-        metrics_html += '<td>' + window.lodash.escape(seeker_path_updates['scheduled']['value']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['scheduled']['label']) + '</td>';
+        metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(seeker_path_updates['scheduled']['value']) + '</td>';
         metrics_html += '</tr>';
       }
 
@@ -399,15 +399,15 @@ jQuery(document).ready(function ($) {
 
       if (health['metrics'] && health['metrics'].length > 0) {
         metrics_html += '<tr>';
-        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">' + window.lodash.escape(health['name']) + '</td>';
+        metrics_html += '<td colspan="2" style="background-color:#E8E8E8FF;">' + window.SHAREDFUNCTIONS.escapeHTML(health['name']) + '</td>';
         metrics_html += '</tr>';
 
         // Iterate over each field option
         health['metrics'].forEach(function (metric) {
           if (parseInt(metric['practicing']) > 0) {
             metrics_html += '<tr>';
-            metrics_html += '<td style="padding-left: 50px;"><li>' + window.lodash.escape(metric['label']) + '</li></td>';
-            metrics_html += '<td>' + window.lodash.escape(metric['practicing']) + '</td>';
+            metrics_html += '<td style="padding-left: 50px;"><li>' + window.SHAREDFUNCTIONS.escapeHTML(metric['label']) + '</li></td>';
+            metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(metric['practicing']) + '</td>';
             metrics_html += '</tr>';
           }
         });
@@ -425,7 +425,7 @@ jQuery(document).ready(function ($) {
           if (parseInt(metric['value']) > 0) {
             metrics_html += '<tr>';
             metrics_html += '<td style="padding-left: 50px;"><li>' + metric['label'] + '</li></td>';
-            metrics_html += '<td>' + window.lodash.escape(metric['value']) + '</td>';
+            metrics_html += '<td>' + window.SHAREDFUNCTIONS.escapeHTML(metric['value']) + '</td>';
             metrics_html += '</tr>';
           }
         });
@@ -438,8 +438,8 @@ jQuery(document).ready(function ($) {
 
         html += '<thead>';
         html += '<tr>';
-        html += '<th>' + window.lodash.escape(window.wp_js_object.translations.chart.metrics) + '</th>';
-        html += '<th>' + window.lodash.escape(window.wp_js_object.translations.chart.count) + '</th>';
+        html += '<th>' + window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.metrics) + '</th>';
+        html += '<th>' + window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.count) + '</th>';
         html += '</tr>';
         html += '</thead>';
 
@@ -449,7 +449,7 @@ jQuery(document).ready(function ($) {
         html += '</table>';
 
       } else {
-        html += window.lodash.escape(window.wp_js_object.translations.chart.no_activity);
+        html += window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.no_activity);
       }
 
       chart_day_counts_div.html(html);
@@ -511,8 +511,8 @@ jQuery(document).ready(function ($) {
   function fetch_tooltip(date, counts) {
     let html = '<h3>' + date + '</h3>';
     html += '<ul>';
-    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_contacts) + ': ' + window.lodash.escape(counts['new_contacts']) + '</li>'
-    html += '<li>' + window.lodash.escape(window.wp_js_object.translations.chart.new_groups) + ': ' + window.lodash.escape(counts['new_groups']) + '</li>'
+    html += '<li>' + window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.new_contacts) + ': ' + window.SHAREDFUNCTIONS.escapeHTML(counts['new_contacts']) + '</li>'
+    html += '<li>' + window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.chart.new_groups) + ': ' + window.SHAREDFUNCTIONS.escapeHTML(counts['new_groups']) + '</li>'
     html += '</ul>';
 
     return html;

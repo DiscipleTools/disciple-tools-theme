@@ -18,16 +18,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public function __construct() {
         $this->namespace = $this->context;
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-
-        add_action( 'after_setup_theme', function (){
-            $custom_post_types = get_option( 'dt_custom_post_types', [] );
-
-            foreach ( $custom_post_types as $post_type_key => $post_type ){
-                if ( class_exists( 'Disciple_Tools_Post_Type_Template' ) ){
-                    new Disciple_Tools_Post_Type_Template( $post_type_key, $post_type['label_singular'] ?? $post_type_key, $post_type['label_plural'] ?? $post_type_key );
-                }
-            }
-        }, 100 );
     }
 
     /**
@@ -324,30 +314,38 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function update_post_type( WP_REST_Request $request ){
         $params = $request->get_params();
-        $updated = false;
-        if ( isset( $params['key'], $params['single'], $params['plural'], $params['displayed'] ) ){
-            $post_type = $params['key'];
-            $single = $params['single'];
-            $plural = $params['plural'];
-            $displayed = $params['displayed'];
+        if ( !isset( $params['post_type'] ) ){
+            return new WP_Error( __FUNCTION__, 'Missing post type', [ 'status' => 400 ] );
+        }
+        $post_type = $params['post_type'];
+        // Fetch existing post type settings and update.
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
 
-            // Fetch existing post type settings and update.
-            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+        $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
+        $is_custom = $post_type_settings['is_custom'] ?? false;
 
-            // Proceed with storing updates.
-            $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
-            $post_type_settings['label_singular'] = $single;
-            $post_type_settings['label_plural'] = $plural;
-            $post_type_settings['hidden'] = ! $displayed;
-            $custom_post_types[$post_type] = $post_type_settings;
-
-            update_option( 'dt_custom_post_types', $custom_post_types );
-
-            $updated = true;
+        //set labels
+        $post_type_settings['label_singular'] = $params['single'];
+        if ( empty( $params['single'] ) && isset( $post_type_settings['label_singular'] ) ){
+            unset( $post_type_settings['label_singular'] );
+        }
+        $post_type_settings['label_plural'] = $params['plural'];
+        if ( empty( $params['plural'] ) && isset( $post_type_settings['label_plural'] ) ){
+            unset( $post_type_settings['label_plural'] );
+        }
+        if ( $is_custom && ( empty( $params['single'] ) || empty( $params['plural'] ) ) ){
+            return new WP_Error( __FUNCTION__, 'Missing record type labels', [ 'status' => 400 ] );
         }
 
+        //set hidden
+        $post_type_settings['hidden'] = empty( $params['displayed'] );
+
+        $custom_post_types[$post_type] = $post_type_settings;
+
+        update_option( 'dt_custom_post_types', $custom_post_types );
+
         return [
-            'updated' => $updated
+            'updated' => true,
         ];
     }
 
@@ -754,90 +752,25 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
 
             // Field privacy
-            if ( isset( $post_submission['new_field_private'] ) && $post_submission['new_field_private'] ) {
-                $field_private = true;
-            } else {
-                $field_private = false;
-            }
+            $field_private = !empty( $post_submission['new_field_private'] );
 
             $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
             if ( isset( $post_fields[ $field_key ] ) ){
                 return new WP_Error( __METHOD__, 'Field already exists', [ 'status' => 400 ] );
             }
-            $new_field = [];
-            if ( $field_type === 'key_select' ){
-                $new_field = [
-                    'name' => $post_submission['new_field_name'],
-                    'default' => [],
-                    'type' => 'key_select',
-                    'tile' => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'multi_select' ){
-                $new_field = [
-                    'name' => $post_submission['new_field_name'],
-                    'default' => [],
-                    'type' => 'multi_select',
-                    'tile' => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private,
-                ];
-            } elseif ( $field_type === 'tags' ){
-                $new_field = [
-                    'name' => $post_submission['new_field_name'],
-                    'default' => [],
-                    'type' => 'tags',
-                    'tile' => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'date' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'date',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'text' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'text',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'textarea' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'textarea',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'number' ){
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'number',
-                    'default'     => '',
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'link' ) {
-                $new_field = [
-                    'name'        => $post_submission['new_field_name'],
-                    'type'        => 'link',
-                    'default'     => [],
-                    'tile'     => $tile_key,
-                    'customizable' => 'all',
-                    'private' => $field_private
-                ];
-            } elseif ( $field_type === 'connection' ){
+            $new_field = [
+                'name' => $post_submission['new_field_name'],
+                'type' => $field_type,
+                'default' => '',
+                'tile' => $tile_key,
+                'customizable' => 'all',
+                'private' => $field_private
+            ];
+            if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link' ] ) ){
+                $new_field['default'] = [];
+            }
+            if ( $field_type === 'connection' ){
+                $new_field = [];
                 $connection_field_options = $post_submission['connection_field_options'] ?? [];
                 if ( !$connection_field_options['connection_target'] ){
                     return new WP_Error( __METHOD__, 'Please select a connection target', [ 'status' => 400 ] );

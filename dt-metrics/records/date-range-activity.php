@@ -254,8 +254,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             global $wpdb;
             // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT *
-            FROM $wpdb->dt_activity_log
+            SELECT al.*, p.post_title as post_title, p.post_type as post_type
+            FROM $wpdb->dt_activity_log al
+            INNER JOIN $wpdb->posts p ON ( al.object_id = p.ID )
             WHERE action IN ( $supported_actions_sql )
             AND object_type = %s
             AND hist_time BETWEEN %d AND %d
@@ -319,7 +320,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 $posts[] = [
                     'id' => $activity['object_id'],
                     'post_type' => $activity['object_type'],
-                    'name' => $activity['object_name'],
+                    'name' => $activity['post_title'] ?? $activity['object_name'],
                     'timestamp' => $activity['hist_time'],
                     'new_value' => $new_value,
                     'deleted' => $deleted,
