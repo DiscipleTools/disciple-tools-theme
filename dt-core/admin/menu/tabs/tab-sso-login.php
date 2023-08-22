@@ -28,7 +28,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        if ( !current_user_can( 'manage_options' ) ){
+        if ( !current_user_can( 'manage_dt' ) ){
             return;
         }
 
@@ -61,8 +61,8 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        if ( !current_user_can( 'manage_options' ) ) {
-            var_dump( user_can( get_current_user_id(), 'manage_options' ) );
+        if ( !current_user_can( 'manage_dt' ) ) {
+            var_dump( user_can( get_current_user_id(), 'manage_dt' ) );
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }
 
@@ -82,6 +82,18 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <div class="wrap">
             <h2><?php echo esc_html( $this->tab_title ) ?></h2>
+            <?php if ( is_multisite() ) : ?>
+            <p>
+                Please configure the SSO Login settings from the
+                <?php if ( class_exists( 'DT_Multisite' ) ) : ?>
+                    <a href="<?php echo esc_url( network_admin_url( 'admin.php?page=disciple-tools-multisite&tab=sso-login' ) ) ?>">
+                        Disciple.Tools Network Admin Dashboard </a>
+                <?php else : ?>
+                    Disciple.Tools Network Admin Dashboard
+                <?php endif; ?>
+                using the <a href="https://disciple.tools/plugins/multisite/" target="_blank">D.T Multisite plugin.</a>
+            </p>
+            <?php endif; ?>
             <h2 class="nav-tab-wrapper">
                 <?php
                 foreach ( $tabs as $key => $value ) {
@@ -129,7 +141,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function tab( $args ) {
-        $must_have_super_admin_rights = is_multisite() && !is_super_admin() && !empty( $args['multisite_level'] );
+        $must_have_super_admin_rights = is_multisite() && !empty( $args['multisite_level'] );
         switch ( $args['type'] ) {
             case 'text':
                 ?>
@@ -194,14 +206,10 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
 
     public function process_postback(){
         // process POST
-        if ( isset( $_POST[$this->token.'_nonce'] )
+        $has_permission = current_user_can( 'manage_dt' );
+        if ( $has_permission && isset( $_POST[$this->token.'_nonce'] )
             && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[$this->token.'_nonce'] ) ), $this->token . get_current_user_id() ) ) {
 
-
-            $has_permission = is_multisite() && !is_super_admin() && current_user_can( 'manage_options' );
-            if ( !$has_permission ){
-                return false;
-            }
 
             $params = dt_recursive_sanitize_array( $_POST );
 

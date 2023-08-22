@@ -214,7 +214,7 @@ class DT_Login_Fields {
 
         foreach ( $vars as $key => $param ) {
             $multisite_vars[$key] = $param;
-            if ( !isset( $param['multisite_level'] ) && $param['multisite_level'] === false ) {
+            if ( !isset( $param['multisite_level'] ) || $param['multisite_level'] === false ) {
                 $site_vars[$key] = $param;
             }
         }
