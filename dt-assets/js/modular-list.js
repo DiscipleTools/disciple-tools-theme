@@ -704,6 +704,7 @@
   }
 
   function apply_archived_toggle_to_current_filter() {
+    if ( !list_settings?.post_type_settings?.status_field ) return
     const showArchived = archivedSwitchStatus
     let status = get_filtered_status();
 
