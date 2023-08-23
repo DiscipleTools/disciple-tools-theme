@@ -161,7 +161,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         } else {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
-                    SELECT 
+                    SELECT
                         MONTH( FROM_UNIXTIME( pm.meta_value ) ) AS month,
                         COUNT( pm.meta_value ) AS count
                     FROM $wpdb->posts AS p
@@ -217,7 +217,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         } else {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
-                    SELECT 
+                    SELECT
                         YEAR( FROM_UNIXTIME( pm.meta_value ) ) AS year,
                         COUNT( pm.meta_value ) AS count
                     FROM $wpdb->posts AS p
@@ -376,7 +376,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         ];
     }
 
-    public static function get_connection_field_by_month( $connection_type, $year ) {
+    public static function get_connection_field_by_month( $post_type, $connection_type, $year ) {
         global $wpdb;
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
@@ -385,18 +385,15 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $results = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( meta.meta_value ) AS count,
-                    MONTH( meta.meta_value ) AS month
-                FROM $wpdb->p2p AS p2p
-                JOIN $wpdb->p2pmeta AS meta
-                    ON p2p.p2p_id = meta.p2p_id
-                WHERE p2p.p2p_type = %s
-                    AND meta.meta_key = 'date'
-                    AND meta.meta_value >= %s
-                    AND meta.meta_value <= %s
-                GROUP BY MONTH( meta.meta_value )
-                ORDER BY MONTH( meta.meta_value )
-            ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+                    COUNT( DISTINCT log.object_id ) AS count,
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
+                FROM $wpdb->dt_activity_log AS log
+                WHERE log.object_type = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+            ", $post_type, $connection_type, $start, $end )
         );
 
         $cumulative_offset = self::get_connection_field_cumulative_offset( $connection_type, $start );
@@ -407,7 +404,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         ];
     }
 
-    public static function get_connection_field_by_year( $connection_type ) {
+    public static function get_connection_field_by_year( $post_type, $connection_type ) {
         global $wpdb;
 
         $current_year = gmdate( 'Y' );
@@ -417,18 +414,15 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $results = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( meta.meta_value ) AS count,
-                    YEAR( meta.meta_value ) AS year
-                FROM $wpdb->p2p AS p2p
-                JOIN $wpdb->p2pmeta AS meta
-                    ON p2p.p2p_id = meta.p2p_id
-                WHERE p2p.p2p_type = %s
-                    AND meta.meta_key = 'date'
-                    AND meta.meta_value >= %s
-                    AND meta.meta_value <= %s
-                GROUP BY YEAR( meta.meta_value )
-                ORDER BY YEAR( meta.meta_value )
-            ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+                    COUNT( DISTINCT log.object_id ) AS count,
+                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
+                FROM $wpdb->dt_activity_log AS log
+                WHERE log.object_type = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+            ", $post_type, $connection_type, $start, $end )
         );
 
         return [

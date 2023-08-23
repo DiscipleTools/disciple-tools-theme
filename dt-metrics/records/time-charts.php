@@ -215,7 +215,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
         } elseif ( $field_settings[$field]['type'] === 'connection' ) {
             $connection_type = $field_settings[$field]['p2p_key'];
-            return DT_Counter_Post_Stats::get_connection_field_by_month( $connection_type, $year );
+            return DT_Counter_Post_Stats::get_connection_field_by_month( $post_type, $connection_type, $year );
         } elseif ( $field_settings[$field]['type'] === 'number' ) {
             return DT_Counter_Post_Stats::get_number_field_by_month( $post_type, $field, $year );
         } else {
@@ -231,7 +231,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field );
         } elseif ( $field_settings[$field]['type'] === 'connection' ) {
             $connection_type = $field_settings[$field]['p2p_key'];
-            return DT_Counter_Post_Stats::get_connection_field_by_year( $connection_type );
+            return DT_Counter_Post_Stats::get_connection_field_by_year( $post_type, $connection_type );
         }  elseif ( $field_settings[$field]['type'] === 'number' ) {
             return DT_Counter_Post_Stats::get_number_field_by_year( $post_type, $field );
         } else {
