@@ -30,8 +30,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     public $multi_fields = [
         'tags',
         'multi_select',
-        'key_select',
-        'boolean',
+        'key_select'
     ];
 
     public function __construct() {
@@ -157,16 +156,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         );
 
         register_rest_route(
-            $namespace, '/metrics/time_metrics_posts/(?P<post_type>\w+)/(?P<field>\w+)/(?P<year>\d+)', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'time_metrics_posts' ],
-                    'permission_callback' => [ $this, 'has_permission' ],
-                ],
-            ]
-        );
-
-        register_rest_route(
             $namespace, '/metrics/field_settings/(?P<post_type>\w+)', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
@@ -204,36 +193,22 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         return $this->get_stats_by_year( $url_params['post_type'], $url_params['field'] );
     }
 
-    public function time_metrics_posts( WP_REST_Request $request ){
-        $url_params = $request->get_url_params();
-        $post_type = $url_params['post_type'];
-        $field = $url_params['field'];
-        $year = $url_params['year'];
-
-        $error = $this->checkInput( $post_type, $field, $year );
-        if ( $error ){
-            wp_send_json_error( $error );
-        }
-
-        return $this->get_stats_by_month( $url_params['post_type'], $url_params['field'], $url_params['year'], true );
-    }
-
     public function field_settings( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
     }
 
-    public function get_stats_by_month( $post_type, $field, $year, $include_posts = false ) {
+    public function get_stats_by_month( $post_type, $field, $year ) {
         $field_settings = $this->get_field_settings( $post_type );
         if ( $field_settings[$field]['type'] === 'date' ) {
-            return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year, $include_posts );
+            return DT_Counter_Post_Stats::get_date_field_by_month( $post_type, $field, $year );
         } elseif ( in_array( $field_settings[$field]['type'], $this->multi_fields ) ) {
-            return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year, $include_posts );
+            return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
         } elseif ( $field_settings[$field]['type'] === 'connection' ) {
             $connection_type = $field_settings[$field]['p2p_key'];
-            return DT_Counter_Post_Stats::get_connection_field_by_month( $connection_type, $year, $include_posts );
+            return DT_Counter_Post_Stats::get_connection_field_by_month( $connection_type, $year );
         } elseif ( $field_settings[$field]['type'] === 'number' ) {
-            return DT_Counter_Post_Stats::get_number_field_by_month( $post_type, $field, $year, $include_posts );
+            return DT_Counter_Post_Stats::get_number_field_by_month( $post_type, $field, $year );
         } else {
             return [];
         }

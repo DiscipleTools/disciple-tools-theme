@@ -13,8 +13,11 @@ window.makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`)
 const getTimeMetricsByMonth = (postType, field, year) =>
 window.makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
 
-const getTimeMetricsPosts = (postType, field, year) =>
-window.makeRequest('GET', `metrics/time_metrics_posts/${postType}/${field}/${year}`)
+const getMetricsCumulativePosts = (data) =>
+  window.makeRequest('POST', `metrics/cumulative-posts`, data)
+
+const getMetricsChangedPosts = (data) =>
+  window.makeRequest('POST', `metrics/changed-posts`, data)
 
 const getFieldSettings = (postType) =>
 window.makeRequest('GET', `metrics/field_settings/${postType}`)
@@ -407,70 +410,57 @@ function createLineSeries(chart, field, name, hidden = false) {
 
 function displayPostListModal(date, date_key, metric_key) {
   if (date && date_key && metric_key) {
-    let { post_type, field, fieldType, year } = window.dtMetricsProject.state;
 
-    // Determine date range to be used.
-    let is_by_year = date_key === 'year';
+    // Determine click display parameters.
+    let { post_type, field, fieldType, year, earliest_year } = window.dtMetricsProject.state;
+    let is_cumulative = metric_key.startsWith('cumulative_');
     let is_all_time = year === 'all-time';
-    let date_range = is_all_time ? date : year;
+    let clicked_year = is_all_time ? date : year;
 
-    getTimeMetricsPosts(post_type, field, date_range)
+    // Build request payload.
+    let payload = {
+      'post_type': post_type,
+      'field': field,
+      'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key
+    };
+
+    // Determine request query date range.
+    if (is_all_time) {
+      payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+      payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
+    } else {
+      payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+      payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
+    }
+
+    // Dispatch request and process response accordingly.
+    getMetricsCumulativePosts(payload)
     .promise()
     .then(response => {
-      if (response && response.posts) {
+      if (response && response.data) {
         let selected_posts = [];
-        let posts = response.posts;
+        let posts = response.data;
 
-        // Filter out required posts.
-        let limit = 100;
-        jQuery.each(posts, function (idx, post) {
-          if (post['id'] && post['name']) {
-            if (post['value']) {
-              if (window.lodash.includes(['tags', 'multi_select', 'key_select'], fieldType) && window.lodash.includes(metric_key, post['value'])) {
-                if (is_by_year || (post['month'] && (window.moment().month(date).format('M') === post['month']))) {
-                  if (--limit >= 0) {
-                    selected_posts.push(post);
-                  }
-                }
-
-              } else if (window.lodash.includes(['date', 'number'], fieldType)) {
-                if (is_by_year || (post['month'] && (window.moment().month(date).format('M') === post['month']))) {
-                  if (--limit >= 0) {
-                    selected_posts.push(post);
-                  }
-                }
-              }
-            } else if (window.lodash.includes(['connection'], fieldType)) {
-              if (is_by_year || (post['month'] && (window.moment().month(date).format('M') === post['month']))) {
-                if (--limit >= 0) {
-                  selected_posts.push(post);
-                }
-              }
-            } else {
-              if (--limit >= 0) {
-                selected_posts.push(post);
-              }
-            }
-          }
-        });
+        // Limit to first 100 elements.
+        selected_posts = posts.slice(0, 100);
 
         // Proceed with displaying post list.
         let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
         let list_html = `
           <br>
           ${(function (posts_to_filter) {
-              let post_list_html = ``;
-              jQuery.each(posts_to_filter, function (idx, post) {
-                let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
+          let post_list_html = ``;
+          jQuery.each(posts_to_filter, function (idx, post) {
+            let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
 
-                post_list_html += `
+            post_list_html += `
                 <div>
                   <a href="${url}" target="_blank">${post['name'] ? post['name']:post['id']}</a>
                 </div>
                 `;
-              });
-              return (posts_to_filter.length > 0) ? post_list_html : window.dtMetricsProject.translations.modal_no_records;
-            })(sorted_posts)}
+          });
+          return (posts_to_filter.length > 0) ? post_list_html:window.dtMetricsProject.translations.modal_no_records;
+        })(sorted_posts)}
           <br>
           `;
 
@@ -486,7 +476,6 @@ function displayPostListModal(date, date_key, metric_key) {
     .catch(error => {
       console.log(error);
     });
-
   }
 }
 
