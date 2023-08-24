@@ -376,7 +376,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         ];
     }
 
-    public static function get_connection_field_by_month( $post_type, $connection_type, $year ) {
+    public static function get_connection_field_by_month( $post_type, $field, $connection_type, $year ) {
         global $wpdb;
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
@@ -389,11 +389,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
                 FROM $wpdb->dt_activity_log AS log
                 WHERE log.object_type = %s
+                    AND log.object_subtype = %s
                     AND log.meta_key = %s
                     AND log.hist_time BETWEEN %s AND %s
                 GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $connection_type, $start, $end )
+            ", $post_type, $field, $connection_type, $start, $end )
         );
 
         $cumulative_offset = self::get_connection_field_cumulative_offset( $connection_type, $start );
@@ -404,7 +405,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         ];
     }
 
-    public static function get_connection_field_by_year( $post_type, $connection_type ) {
+    public static function get_connection_field_by_year( $post_type, $field, $connection_type ) {
         global $wpdb;
 
         $current_year = gmdate( 'Y' );
@@ -418,11 +419,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                 FROM $wpdb->dt_activity_log AS log
                 WHERE log.object_type = %s
+                    AND log.object_subtype = %s
                     AND log.meta_key = %s
                     AND log.hist_time BETWEEN %s AND %s
                 GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
                 ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $connection_type, $start, $end )
+            ", $post_type, $field, $connection_type, $start, $end )
         );
 
         return [
