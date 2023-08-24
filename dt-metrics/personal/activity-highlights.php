@@ -466,6 +466,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
+        foreach ( $rows ?? [] as &$comment ){
+            $comment['comment_content'] = wp_kses( $comment['comment_content'], DT_Posts::$allowable_comment_tags );
+        }
+
         return $rows;
     }
 
@@ -525,6 +529,8 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                         ? array_merge( $comments[$comment_id]['reactions'], [ $reaction ] )
                         : [ $reaction ],
                 ], $row);
+
+                $comments['comment_content'] = wp_kses( $comments['comment_content'], DT_Posts::$allowable_comment_tags );
             }
         }
 
