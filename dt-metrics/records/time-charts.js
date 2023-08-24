@@ -416,12 +416,14 @@ function displayPostListModal(date, date_key, metric_key) {
     let is_cumulative = metric_key.startsWith('cumulative_');
     let is_all_time = year === 'all-time';
     let clicked_year = is_all_time ? date : year;
+    let limit = 100;
 
     // Build request payload.
     let payload = {
       'post_type': post_type,
       'field': field,
-      'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key
+      'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key,
+      'limit': limit
     };
 
     // Determine request query date range.
@@ -441,32 +443,50 @@ function displayPostListModal(date, date_key, metric_key) {
         let selected_posts = [];
         let posts = response.data;
 
-        // Limit to first 100 elements.
-        selected_posts = posts.slice(0, 100);
+        // Limit to first X elements.
+        selected_posts = posts.slice(0, limit);
 
         // Proceed with displaying post list.
         let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
         let list_html = `
           <br>
           ${(function (posts_to_filter) {
-          let post_list_html = ``;
+          let post_list_html = `
+          <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_no)}</th>
+                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_title)}</th>
+                </tr>
+            </thead>
+            <tbody>
+          `;
+          let counter = 0;
           jQuery.each(posts_to_filter, function (idx, post) {
             let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
 
             post_list_html += `
-                <div>
-                  <a href="${url}" target="_blank">${post['name'] ? post['name']:post['id']}</a>
-                </div>
+                <tr>
+                    <td>${++counter}</td>
+                    <td><a href="${url}" target="_blank">${post['name'] ? post['name'] : post['id']}</a></td>
+                </tr>
                 `;
           });
-          return (posts_to_filter.length > 0) ? post_list_html:window.dtMetricsProject.translations.modal_no_records;
+
+          post_list_html += `
+            </tbody>
+          </table>
+          `;
+
+          return (posts_to_filter.length > 0) ? post_list_html : window.dtMetricsProject.translations.modal_no_records;
         })(sorted_posts)}
           <br>
           `;
 
         // Render post html list.
+        let title = window.dtMetricsProject.translations.modal_title + ((sorted_posts.length > 0) ? ` [ ${sorted_posts.length} ]` : '' );
         let content = jQuery('#template_metrics_modal_content');
-        jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(window.dtMetricsProject.translations.modal_title));
+        jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
         jQuery(content).css('max-height', '300px');
         jQuery(content).css('overflow', 'auto');
         jQuery(content).empty().html(list_html);

@@ -118,6 +118,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'true_label' => __( 'Yes', 'disciple_tools' ),
                     'false_label' => __( 'No', 'disciple_tools' ),
                     'modal_title' => __( 'Records', 'disciple_tools' ),
+                    'modal_table_head_no' => __( 'No.', 'disciple_tools' ),
+                    'modal_table_head_title' => __( 'Title', 'disciple_tools' ),
                     'modal_no_records' => __( 'No Records Available', 'disciple_tools' )
                 ],
                 'select_options' => [

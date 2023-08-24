@@ -618,6 +618,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
         if ( isset( $field_settings[$field]['type'] ) ){
 
+            $limit = $args['limit'] ?? 100;
+
             // Prepare SQL statements to be executed.
             $results = [];
             $field_type = $field_settings[$field]['type'];
@@ -656,7 +658,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 AND log.hist_time >= %s
                                 AND log.hist_time <= %s
                                 $key_query
-                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ) );
+                            LIMIT %d
+                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end, $limit ) );
                     // phpcs:enable
                     break;
                 case 'date':
@@ -675,7 +678,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 AND pm.meta_key = %s
                                 AND pm.meta_value >= %s
                                 AND pm.meta_value <= %s
-                            ", $post_type, $field, $start, $end )
+                            LIMIT %d
+                            ", $post_type, $field, $start, $end, $limit )
                     );
                     // phpcs:enable
                     break;
@@ -709,7 +713,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 AND log.object_type = %s
                                 AND log.hist_time >= %s
                                 AND log.hist_time <= %s
-                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
+                            LIMIT %d
+                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end, $limit )
                     );
                     // phpcs:enable
                     break;
@@ -733,7 +738,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 AND meta.meta_value >= %s
                                 AND meta.meta_value <= %s
                                 AND p.ID IS NOT NULL
-                        ", $p2p_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+                            LIMIT %d
+                        ", $p2p_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ), $limit )
                         );
                         // phpcs:enable
                     }
