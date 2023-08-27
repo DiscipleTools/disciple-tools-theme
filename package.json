@@ -61,7 +61,8 @@
   },
   "eslintIgnore": [
     "dt-assets/build/js/scripts.min.js",
-    "dt-assets/build/components/**/*"
+    "dt-assets/build/components/**/*",
+    "dt-core/dependencies/*"
   ],
   "jshintConfig": {
     "globals": {

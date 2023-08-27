@@ -4,3 +4,4 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 function*o(o,f){if(void 0!==o){let i=0;for(const t of o)yield f(t,i++)}}export{o};
+//# sourceMappingURL=map-c0e24c36.js.map

@@ -199,6 +199,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+
+    /*
+     * deprecated
+     */
     if ( ! function_exists( 'dt_sanitize_array_html' ) ) {
         function dt_sanitize_array_html( $array ) {
             array_walk_recursive($array, function ( &$v ) {
@@ -316,7 +320,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( !function_exists( 'dt_render_field_icon' ) ){
         function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
             $icon_rendered = false;
-            if ( isset( $field['icon'] ) && !empty( $field['icon'] ) ){
+            if ( !empty( $field['icon'] ) && strpos( $field['icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 if ( isset( $field['name'] ) ) {
                     $alt_tag = $field['name'];
@@ -327,14 +331,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 }
                 ?>
 
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
 
                 <?php
-            } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
+            } else if ( !empty( $field['font-icon'] ) && strpos( $field['font-icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 ?>
 
-                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>" style="font-size: 15px;"></i>
 
                 <?php
             } else if ( $default_to_name && !empty( $field['name'] ) ){
@@ -531,7 +535,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         if ( isset( $fields[$field_key]['type'] ) && !$custom_display && empty( $fields[$field_key]['hidden'] ) ) {
             /* breadrcrumb: new-field-type Add allowed field types */
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'boolean', 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -806,7 +810,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                     <script>
                         jQuery(document).ready(function(){
-                            write_input_widget()
+                            window.write_input_widget()
                         })
                     </script>
                 <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>

@@ -77,6 +77,8 @@ class DT_Login_Page_Base
             'google-search-widget',
         ];
 
+        $allowed_js = apply_filters( 'dt_login_allowed_js', $allowed_js );
+
         global $wp_scripts;
 
         if ( isset( $wp_scripts ) ){
@@ -96,6 +98,8 @@ class DT_Login_Page_Base
             'site-css',
             'mapbox-gl-css',
         ];
+
+        $allowed_css = apply_filters( 'dt_login_allowed_css', $allowed_css );
 
         global $wp_styles;
         if ( isset( $wp_styles ) ) {

@@ -646,3 +646,39 @@ function dt_get_initial_install_meta( $arg = '' ){
 
     return $at_install;
 }
+
+function dt_header_icon_and_meta(){
+    ?>
+    <meta charset="utf-8">
+    <!-- Force IE to use the latest rendering engine available -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta class="foundation-mq">
+    <?php
+
+    /**
+     * Default colors and mobile icons are provided, but can be overridden using this filter
+     * These default settings are sufficient, unless you are building a progressing web app
+     * then you can override them.
+     */
+    $dt_override_header_meta = apply_filters( 'dt_override_header_meta', false );
+    if ( $dt_override_header_meta ){
+        return;
+    }
+    //if a custom icon is set, don't override it
+    if ( function_exists( 'has_site_icon' ) && has_site_icon() ){
+        return;
+    }
+    ?>
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#3f729b">
+    <meta name="msapplication-TileImage" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/mstile-144x144.png">
+    <meta name="msapplication-config" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#3f729b">
+    <?php
+}

@@ -10,11 +10,12 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 /**
  * Test for minimum required PHP version
  */
-if ( version_compare( phpversion(), '7.0', '<' ) ) {
+if ( version_compare( phpversion(), '7.4', '<' ) ) {
 
     /* We only support PHP >= 7.0, however, we want to support allowing users
      * to install this theme even on old versions of PHP, without showing a
@@ -106,17 +107,10 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
         public $theme_url;
         public $theme_path;
         public $admin;
-        public $settings;
-        public $metrics;
-        public $notifications;
-        public $post_types = [];
-        public $endpoints = [];
-        public $core = [];
-        public $hooks = [];
-        public $logging = [];
+        public $logging_activity_api;
         public $user_locale;
         public $site_locale;
-
+        public $multi;
         /**
          * Disciple_Tools The single instance of Disciple_Tools.
          *
@@ -125,6 +119,12 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
          * @since  0.1.0
          */
         private static $_instance = null;
+        public string $admin_img_url = '';
+        public string $admin_js_url = '';
+        public string $admin_js_path = '';
+        public string $admin_css_url = '';
+        public string $admin_css_path = '';
+
 
         /**
          * Main Disciple_Tools Instance
@@ -154,7 +154,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.40.0';
+            $this->version = '1.47.4';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -312,11 +312,11 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             new Disciple_Tools_People_Groups_Base();
 
             require_once( 'dt-people-groups/people-groups-post-type.php' );
-            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+            Disciple_Tools_People_Groups_Post_Type::instance();
 
             if ( strpos( $url_path, 'people-groups' ) !== false ){
                 require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
-                $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
+                Disciple_Tools_People_Groups_Endpoints::instance();
             }
 
             /**
@@ -331,14 +331,14 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * dt-users
              */
             require_once( 'dt-users/users.php' );
-            $this->core['users'] = new Disciple_Tools_Users();
+            new Disciple_Tools_Users();
             require_once( 'dt-users/user-hooks-and-config.php' );
             new DT_User_Hooks_And_Configuration();
             require_once( 'dt-users/user-metrics.php' );
             new DT_User_Metrics();
             require_once( 'dt-users/users-template.php' );
             require_once( 'dt-users/users-endpoints.php' );
-            $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
+            new Disciple_Tools_Users_Endpoints();
             require_once( 'dt-users/user-management.php' );
             require_once( 'dt-users/user-initial-setup.php' );
             require_once( 'dt-users/hover-coverage-map.php' );
@@ -352,9 +352,9 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              */
             require_once( 'dt-notifications/notifications-template.php' );
             require_once( 'dt-notifications/notifications.php' );
-            $this->core['notifications'] = Disciple_Tools_Notifications::instance();
+            Disciple_Tools_Notifications::instance();
             require_once( 'dt-notifications/notifications-endpoints.php' );
-            $this->endpoints['notifications'] = Disciple_Tools_Notifications_Endpoints::instance();
+            Disciple_Tools_Notifications_Endpoints::instance();
             require_once( 'dt-notifications/notifications-email.php' ); // sends notification emails through the async task process
             require_once( 'dt-core/logging/usage.php' );
 
@@ -363,7 +363,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              */
             require_once( 'dt-notifications/notifications-queue.php' );
             require_once( 'dt-notifications/notifications-scheduler.php' );
-            $this->notifications_scheduler = new Disciple_Tools_Notifications_Scheduler( Disciple_Tools_Notifications::instance() );
+            new Disciple_Tools_Notifications_Scheduler( Disciple_Tools_Notifications::instance() );
 
             /**
              * dt-login
@@ -392,7 +392,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
             require_once( 'dt-core/logging/class-activity-api.php' );
             $this->logging_activity_api = new Disciple_Tools_Activity_Log_API();
             require_once( 'dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
-            $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
+            Disciple_Tools_Activity_Hooks::instance();
 
             /**
              * Reports
@@ -403,7 +403,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              * Workflows
              */
             require_once( 'dt-workflows/workflows.php' );
-            $this->workflows = Disciple_Tools_Workflows::instance();
+            Disciple_Tools_Workflows::instance();
 
 
             require_once( 'dt-core/multisite.php' );
@@ -423,11 +423,9 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
              */
             if ( is_admin() || wp_doing_cron() ){
 
-                if ( !class_exists( 'Puc_v4_Factory' ) ){
-                    require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
-                }
+                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
                 $theme_folder_name = basename( dirname( __FILE__ ) );
-                Puc_v4_Factory::buildUpdateChecker(
+                PucFactory::buildUpdateChecker(
                     'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
                     __FILE__,
                     $theme_folder_name
@@ -440,7 +438,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
                 require_once( 'dt-core/admin/admin-functions.php' ); // Load admin functions
                 require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
                 require_once( 'dt-core/admin/config-dashboard.php' );
-                $this->config_dashboard = Disciple_Tools_Dashboard::instance();
+                Disciple_Tools_Dashboard::instance();
 
                 // Admin Menus
                 /* Note: The load order matters for the menus and submenus. Submenu must load after menu. */
@@ -562,7 +560,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
 function dt_theme_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
-        <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.0 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
+        <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.4 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
     </div>
     <?php
 }

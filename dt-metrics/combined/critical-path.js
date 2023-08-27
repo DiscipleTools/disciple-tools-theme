@@ -19,15 +19,15 @@ function numberWithCommas(x) {
 
 function project_critical_path() {
   let chartDiv = jQuery('#chart')
-  let translations = dtMetricsProject.translations
+  let translations = window.dtMetricsProject.translations
 
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
 
   chartDiv.empty().html(`
-    <div class="section-header">${ window.lodash.escape( translations.title_critical_path ) }</div>
+    <div class="section-header">${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_critical_path ) }</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
-        <span>${moment().format("YYYY")}</span>
+        <span>${window.moment().format("YYYY")}</span>
         <i class="dt_caret down"></i>
     </div>
     <div style="display: inline-block" class="loading-spinner"></div>
@@ -37,28 +37,28 @@ function project_critical_path() {
     <div id="ongoingChart" style="width:90%;"></div>
     <!--<div id="chartdiv" style="height: 800px; width:100%;"></div>-->
     <br>
-    <h4>${ window.lodash.escape( translations.filter_critical_path ) }</h4>
+    <h4>${ window.SHAREDFUNCTIONS.escapeHTML( translations.filter_critical_path ) }</h4>
     <div id="field_selector" style="display: flex; flex-wrap: wrap"> </div>
   `)
 
-  fieldSelector( dtMetricsProject.data.cp )
+  fieldSelector( window.dtMetricsProject.data.cp )
 
   window.METRICS.setupDatePicker(
-    `${dtMetricsProject.root}dt/v1/metrics/critical_path_activity`,
+    `${window.dtMetricsProject.root}dt/v1/metrics/critical_path_activity`,
     function (data, label) {
       if (data) {
-        $('.date_range_picker span').html(label);
-        dtMetricsProject.data.cp = data
-        fieldSelector( dtMetricsProject.data.cp )
+        jQuery('.date_range_picker span').html(label);
+        window.dtMetricsProject.data.cp = data
+        fieldSelector( window.dtMetricsProject.data.cp )
         mediaChart(data)
         activityChart(data)
         ongoingChart(data)
         // main_chart(data)
       }
     },
-    moment().startOf('year')
+    window.moment().startOf('year')
   )
-  buildCharts( dtMetricsProject.data.cp )
+  buildCharts( window.dtMetricsProject.data.cp )
 }
 
 let buildCharts = function( data ){
@@ -74,21 +74,21 @@ let main_chart = function(data){
   data = data.filter(a=>a.outreach === undefined).reverse()
 
   // Create chart instance
-  $('#chartdiv').empty().height(50 + chart_row_height * data.length)
-  let chart = am4core.create("chartdiv", am4charts.XYChart);
+  jQuery('#chartdiv').empty().height(50 + chart_row_height * data.length)
+  let chart = window.am4core.create("chartdiv", window.am4charts.XYChart);
 
   chart.data = data
 
-  chart.legend = new am4charts.Legend();
+  chart.legend = new window.am4charts.Legend();
   chart.legend.useDefaultMarker = true;
 
   // Create axes
-  let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+  let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
   categoryAxis.dataFields.category = "label";
   categoryAxis.renderer.grid.template.location = 0;
   categoryAxis.renderer.minGridDistance = 30;
   categoryAxis.renderer.maxGridDistance = 30;
-  let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+  let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
   // valueAxis.title.text = "Critical Path";
   // valueAxis.title.fontWeight = 800;
   // valueAxis.renderer.opposite = true;
@@ -101,30 +101,30 @@ let main_chart = function(data){
   // valueAxis.logarithmic = true;
 
   // Create series
-  let series = chart.series.push(new am4charts.ColumnSeries());
+  let series = chart.series.push(new window.am4charts.ColumnSeries());
   series.name = "Current System counts"
   series.dataFields.valueX = "total";
   series.dataFields.categoryY = "label";
   series.clustered = false;
   series.tooltipText = "Total: [bold]{valueX}[/]";
 
-  // var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+  // var valueLabel = series.bullets.push(new window.am4charts.LabelBullet());
   // valueLabel.label.text = "{valueX}";
   // valueLabel.label.horizontalCenter = "left";
   // valueLabel.label.dx = 10;
   // valueLabel.label.hideOversized = false;
   // valueLabel.label.truncate = false;
 
-  let series2 = chart.series.push(new am4charts.ColumnSeries());
+  let series2 = chart.series.push(new window.am4charts.ColumnSeries());
   series2.name = "Activity"
   series2.dataFields.valueX = "value";
   series2.dataFields.test = "value";
   series2.dataFields.categoryY = "label";
   series2.clustered = false;
-  series2.columns.template.height = am4core.percent(50);
+  series2.columns.template.height = window.am4core.percent(50);
   series2.tooltipText = "[bold]{test}[/]";
 
-  let valueLabel = series2.bullets.push(new am4charts.LabelBullet());
+  let valueLabel = series2.bullets.push(new window.am4charts.LabelBullet());
   valueLabel.label.text = "{valueX}";
   valueLabel.label.horizontalCenter = "left";
   valueLabel.label.dx = 10;
@@ -132,7 +132,7 @@ let main_chart = function(data){
   valueLabel.label.truncate = false;
 
 
-  chart.cursor = new am4charts.XYCursor();
+  chart.cursor = new window.am4charts.XYCursor();
   chart.cursor.lineX.disabled = true;
   chart.cursor.lineY.disabled = true;
 
@@ -153,7 +153,7 @@ let setupChart = function ( chart, valueX, titleText){
   title.textAlign = "middle";
   title.dy = -5
 
-  let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+  let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
   categoryAxis.dataFields.category = "label";
   categoryAxis.renderer.grid.template.location = 0;
   categoryAxis.renderer.minGridDistance = 10;
@@ -166,14 +166,14 @@ let setupChart = function ( chart, valueX, titleText){
   label.textAlign = "end"
   label.dx = -5
 
-  let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+  let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
   valueAxis.title.fontWeight = 800;
   valueAxis.renderer.grid.template.disabled = true
   valueAxis.extraMax = 0.1;
   valueAxis.min = 0
   valueAxis.paddingRight = 20;
 
-  let series = chart.series.push(new am4charts.ColumnSeries());
+  let series = chart.series.push(new window.am4charts.ColumnSeries());
   series.name = "Activity"
   series.dataFields.valueX = valueX;
   series.dataFields.categoryY = "label";
@@ -182,44 +182,44 @@ let setupChart = function ( chart, valueX, titleText){
   series.columns.template.height = 20
 
   //field value label
-  let valueLabel = series.bullets.push(new am4charts.LabelBullet());
+  let valueLabel = series.bullets.push(new window.am4charts.LabelBullet());
   valueLabel.label.text = "{valueX}";
   valueLabel.label.horizontalCenter = "left";
   valueLabel.label.dx = 10;
   valueLabel.label.hideOversized = false;
   valueLabel.label.truncate = false;
 
-  chart.cursor = new am4charts.XYCursor();
+  chart.cursor = new window.am4charts.XYCursor();
   chart.cursor.lineX.disabled = true;
   chart.cursor.lineY.disabled = true;
 }
 
 let mediaChart = function ( data ) {
   data = data.filter(a=>a.outreach).reverse()
-  $('#mediachart').empty().height(chart_min_height + chart_row_height * data.length)
+  jQuery('#mediachart').empty().height(chart_min_height + chart_row_height * data.length)
   if ( data.length ) {
-    let chart = am4core.create("mediachart", am4charts.XYChart);
+    let chart = window.am4core.create("mediachart", window.am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "outreach", dtMetricsProject.translations.title_outreach )
+    setupChart( chart, "outreach", window.dtMetricsProject.translations.title_outreach )
   }
 }
 
 let activityChart = function ( data ) {
   data = data.filter(a=>a.type==="activity").reverse()
-  $('#activityChart').empty().height(chart_min_height+chart_row_height * data.length)
+  jQuery('#activityChart').empty().height(chart_min_height+chart_row_height * data.length)
   if ( data.length ) {
-    let chart = am4core.create("activityChart", am4charts.XYChart);
+    let chart = window.am4core.create("activityChart", window.am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "value", dtMetricsProject.translations.title_follow_up )
+    setupChart( chart, "value", window.dtMetricsProject.translations.title_follow_up )
   }
 }
 let ongoingChart = function ( data ) {
   data = data.filter(a=>a.type==="ongoing").reverse()
-  $('#ongoingChart').empty().height(chart_min_height+chart_row_height * data.length)
+  jQuery('#ongoingChart').empty().height(chart_min_height+chart_row_height * data.length)
   if ( data.length ) {
-    let chart = am4core.create("ongoingChart", am4charts.XYChart);
+    let chart = window.am4core.create("ongoingChart", window.am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "total", dtMetricsProject.translations.movement_training )
+    setupChart( chart, "total", window.dtMetricsProject.translations.movement_training )
   }
 }
 
@@ -234,16 +234,16 @@ let fieldSelector = function( data ){
     </label>
     `
   })
-  $('#field_selector').html(html)
+  jQuery('#field_selector').html(html)
 
-  $('.field-button').on("click", function () {
-    let key = $(this).data("key")
-    if ( $(this).is(":checked") ){
+  jQuery('.field-button').on("click", function () {
+    let key = jQuery(this).data("key")
+    if ( jQuery(this).is(":checked") ){
       filtered = filtered.filter(a=>a!==key)
     } else {
       filtered.push(key)
     }
-    buildCharts( dtMetricsProject.data.cp.filter(a=>!filtered.includes(a.key)) )
+    buildCharts( window.dtMetricsProject.data.cp.filter(a=>!filtered.includes(a.key)) )
   })
 
 }

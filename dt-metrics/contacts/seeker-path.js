@@ -1,16 +1,16 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
 
   let chartDiv = jQuery('#chart')
-  let sourceData = wp_js_object.data
+  let sourceData = window.wp_js_object.data
 
   chartDiv.empty().html(`
-    <div class="section-header">${window.lodash.escape(window.wp_js_object.translations.seeker_path) }</div>
-    <div class="section-subheader">${ window.lodash.escape(window.wp_js_object.translations.filter_contacts_to_date_range) }</div>
+    <div class="section-header">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.seeker_path) }</div>
+    <div class="section-subheader">${ window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.filter_contacts_to_date_range) }</div>
     <div class="date_range_picker">
         <i class="fi-calendar"></i>&nbsp;
-        <span>${ window.lodash.escape(window.wp_js_object.translations.all_time) }</span> 
+        <span>${ window.escape(window.wp_js_object.translations.all_time) }</span> 
         <i class="dt_caret down"></i>
     </div>
     <div style="display: inline-block" class="loading-spinner"></div>
@@ -18,10 +18,10 @@ jQuery(document).ready(function() {
     <div id="chartdiv" style="height: 400px"></div>
   `)
 
-  let chart = am4core.create("chartdiv", am4charts.XYChart);
+  let chart = window.am4core.create("chartdiv", window.am4charts.XYChart);
 
   chart.data = sourceData.seeker_path
-  let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+  let categoryAxis = chart.xAxes.push(new window.am4charts.CategoryAxis());
   categoryAxis.dataFields.category = "seeker_path";
   categoryAxis.renderer.grid.template.location = 0;
   categoryAxis.renderer.minGridDistance = 30;
@@ -32,10 +32,10 @@ jQuery(document).ready(function() {
     return dy;
   });
 
-  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+  let valueAxis = chart.yAxes.push(new window.am4charts.ValueAxis());
 
   // Create series
-  let series = chart.series.push(new am4charts.ColumnSeries());
+  let series = chart.series.push(new window.am4charts.ColumnSeries());
   series.dataFields.valueY = "value";
   series.dataFields.categoryX = "seeker_path";
   series.name = "Visits";
@@ -48,7 +48,7 @@ jQuery(document).ready(function() {
 
 
   window.METRICS.setupDatePicker(
-    `${wp_js_object.rest_endpoints_base}/seeker_path/`,
+    `${window.wp_js_object.rest_endpoints_base}/seeker_path/`,
     function (data, label, start, end) {
       if ( data ){
         $('.date_range_picker span').html( label );

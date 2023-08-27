@@ -20,6 +20,7 @@ class DT_User_Hooks_And_Configuration {
         add_action( 'signup_user_meta', [ $this, 'signup_user_meta' ], 10, 1 );
         add_action( 'wpmu_activate_user', [ $this, 'wpmu_activate_user' ], 10, 3 );
         add_action( 'dt_user_created', [ $this, 'dt_user_created' ], 10, 1 );
+        add_filter( 'wp_send_new_user_notification_to_user', [ $this, 'wp_send_new_user_notification' ], 10, 2 );
 
         //invite user and edit user page modifications
         add_action( 'user_new_form', [ &$this, 'custom_user_profile_fields' ] );
@@ -39,8 +40,36 @@ class DT_User_Hooks_And_Configuration {
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
         add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
+
+        //permissions when editing user roles
+        add_filter( 'editable_roles', [ $this, 'editable_roles' ] );
+        add_action( 'remove_user_role', [ $this, 'remove_user_role' ], 10, 2 );
     }
 
+    /** Remove admin roles from editable roles if user is not an admin. */
+    public function editable_roles( $roles ){
+        $can_not_promote_to_roles = [];
+        if ( !dt_is_administrator() ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
+        }
+        if ( !current_user_can( 'manage_dt' ) ){
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
+        }
+        foreach ( $can_not_promote_to_roles as $role ){
+            if ( isset( $roles[$role] ) ){
+                unset( $roles[$role] );
+            }
+        }
+        return $roles;
+    }
+
+    /** Administrator can not be downgraded by non administrator. */
+    public function remove_user_role( $user_id, $old_role ){
+        if ( $old_role === 'administrator' && !dt_is_administrator() ){
+            $user = get_user_by( 'id', $user_id );
+            $user->add_role( 'administrator' );
+        }
+    }
 
 
 
@@ -164,8 +193,12 @@ class DT_User_Hooks_And_Configuration {
         if ( !empty( $contact_id ) && ! is_wp_error( $contact_id ) ){
             $mention = dt_get_user_mention_syntax( $user_id );
             $comment_html = sprintf( __( 'Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users', 'disciple_tools' ), $mention );
-            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false );
+            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false, get_option( 'dt_disable_dt_new_user_email_notifications', false ) );
         }
+    }
+
+    public function wp_send_new_user_notification( $send, $user ){
+        return !get_option( 'dt_disable_wp_new_user_email_notifications', !$send );
     }
 
     /**
@@ -196,7 +229,7 @@ class DT_User_Hooks_And_Configuration {
             ], true, false );
         }
 
-        if ( !empty( $_POST['allowed_sources'] ) ) {
+        if ( !empty( $_POST['allowed_sources'] ) && current_user_can( 'promote_users' ) ) {
             if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
                 check_admin_referer( 'update-user_' . $user_id );
             }
@@ -407,9 +440,9 @@ class DT_User_Hooks_And_Configuration {
         global $wpdb;
         $wpdb->get_results(
             $wpdb->prepare( "
-                DELETE FROM $wpdb->postmeta pm
+                DELETE FROM $wpdb->postmeta
                 WHERE meta_key = 'corresponds_to_user'
-                AND pm.meta_value = %d
+                AND meta_value = %d
             ", $user_id )
         );
     }
@@ -419,9 +452,9 @@ class DT_User_Hooks_And_Configuration {
         global $wpdb;
         $wpdb->get_results(
             $wpdb->prepare( "
-                DELETE FROM $wpdb->postmeta pm
+                DELETE FROM $wpdb->postmeta
                 WHERE meta_key = 'corresponds_to_user'
-                AND pm.meta_value = %d
+                AND meta_value = %d
             ", $user_id )
         );
 
@@ -525,7 +558,7 @@ class DT_User_Hooks_And_Configuration {
                 </td>
             </tr>
         </table>
-        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) ) :
+        <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) && current_user_can( 'promote_users' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
             $post_settings = DT_Posts::get_post_settings( 'contacts' );
             $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : [];

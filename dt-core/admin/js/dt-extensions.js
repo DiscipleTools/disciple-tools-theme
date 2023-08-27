@@ -16,11 +16,11 @@ jQuery(function($){
         let all_plugins = window.plugins.all_plugins;
         var translations = window.plugins.translations;
         let can_install_plugins = window.plugins.can_install_plugins;
-        var install_text = window.lodash.escape(translations.install);
-        var delete_text = window.lodash.escape(translations.delete);
-        var activate_text = window.lodash.escape(translations.activate);
-        var deactivate_text = window.lodash.escape(translations.deactivate);
-        var plugin_by_text = window.lodash.escape(translations.plugin_by);
+        var install_text = window.dt_admin_shared.escape(translations.install);
+        var delete_text = window.dt_admin_shared.escape(translations.delete);
+        var activate_text = window.dt_admin_shared.escape(translations.activate);
+        var deactivate_text = window.dt_admin_shared.escape(translations.deactivate);
+        var plugin_by_text = window.dt_admin_shared.escape(translations.plugin_by);
 
         $.each(all_plugins, function(index, plugin) {
             var is_proof_of_concept = plugin_is_in_category(plugin, 'proof-of-concept');

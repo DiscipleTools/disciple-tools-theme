@@ -24,17 +24,17 @@ let rebuild_drill_down = ( response, bindFunction, grid_id, cached = true )=>{
 
             // create button
             html += `<li><button id="${window.lodash.escape( section.parent )}" type="button" ${disabled ? "disabled" : ""}
-                onclick="DRILLDOWN.get_drill_down( '${window.lodash.escape( bindFunction )}', '${window.lodash.escape( section.selected )}', ${cached} )"
+                onclick="window.DRILLDOWN.get_drill_down( '${window.lodash.escape( bindFunction )}', '${window.lodash.escape( section.selected )}', ${cached} )"
                 class="button ${hollowClass} geocode-link">${window.lodash.escape( section.selected_name )}</button></li>`
 
             current_selection = section
 
         } else { // it is a list
             // check if list is not empty
-            if (!DRILLDOWN.isEmpty(section.list)) {
+            if (!window.DRILLDOWN.isEmpty(section.list)) {
 
                 // check if hide final drilldown is set and that there are no deeper levels
-                if ( DRILLDOWN.isEmpty(section.deeper_levels) && window.drilldownModule.settings.hide_final_drill_down === true) {
+                if (window.DRILLDOWN.isEmpty(section.deeper_levels) && window.drilldownModule.settings.hide_final_drill_down === true) {
                     console.log('no additional dropdown triggered')
                 } else {
                     // make select
@@ -72,17 +72,17 @@ let rebuild_drill_down = ( response, bindFunction, grid_id, cached = true )=>{
     drill_down.empty().append(html)
 
     // trigger supplied bind event
-    if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
+    if ( typeof window.DRILLDOWN[bindFunction] !== "undefined" ) {
         current_selection.list = final_list
-        DRILLDOWN[bindFunction]( grid_id, selectedGeonameLabel, current_selection )
+        window.DRILLDOWN[bindFunction]( grid_id, selectedGeonameLabel, current_selection )
     }
 
-    DRILLDOWN.hide_spinner()
+    window.DRILLDOWN.hide_spinner()
     return final_list;
 }
 window.DRILLDOWN = {
     get_drill_down( bindFunction, grid_id, cached = true ) {
-        DRILLDOWN.show_spinner()
+        window.DRILLDOWN.show_spinner()
 
 
         if ( ! grid_id ) {
@@ -113,7 +113,7 @@ window.DRILLDOWN = {
             .fail(function (err) {
                 console.log("error")
                 console.log(err)
-                DRILLDOWN.hide_spinner()
+                window.DRILLDOWN.hide_spinner()
             })
         }
 

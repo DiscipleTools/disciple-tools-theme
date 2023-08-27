@@ -110,6 +110,97 @@ class Disciple_Tools_Users
         return false;
     }
 
+
+    public static function get_users_fields( $from_cache = true ){
+        global $wpdb;
+        $cache = wp_cache_get( 'dt_users_fields' );
+        if ( $from_cache && $cache ){
+            return $cache;
+        }
+
+        $fields = [
+            'ID' => [
+                'table' => 'users_table',
+                'label' => __( 'ID', 'disciple_tools' ),
+                'type' => 'number',
+            ],
+            'user_email' => [
+                'table' => 'users_table',
+                'label' => __( 'Email', 'disciple_tools' ),
+                'type' => 'text',
+                'hidden' => true
+            ],
+            'user_login' => [
+                'table' => 'users_table',
+                'label' => __( 'Username', 'disciple_tools' ),
+                'type' => 'text',
+                'hidden' => true
+            ],
+            'display_name' => [
+                'table' => 'users_table',
+                'label' => __( 'Display Name', 'disciple_tools' ),
+                'type' => 'text',
+            ],
+            'capabilities' => [
+                'table' => 'usermeta_table',
+                'key' => $wpdb->prefix . 'user_languages',
+                'label' => __( 'Roles', 'disciple_tools' ),
+                'options' => Disciple_Tools_Roles::get_dt_roles_and_permissions(),
+                'type' => 'array_keys',
+            ],
+            'locale' => [
+                'table' => 'usermeta_table',
+                'key' => 'locale',
+                'label' => __( 'Locale', 'disciple_tools' ),
+                'options' => dt_get_available_languages( true ),
+                'type' => 'key_select',
+                'hidden' => true,
+            ],
+            'user_languages' => [
+                'table' => 'usermeta_table',
+                'key' => $wpdb->prefix . 'user_languages',
+                'label' => __( 'Languages', 'disciple_tools' ),
+                'options' => dt_get_option( 'dt_working_languages' ) ?: [],
+                'type' => 'array',
+            ],
+            'location_grid' => [
+                'table' => 'usermeta_table',
+                'key' => $wpdb->prefix . 'location_grid',
+                'label' => __( 'Locations', 'disciple_tools' ),
+                'type' => 'location_grid',
+            ],
+            'user_status' => [
+                'table' => 'usermeta_table',
+                'key' => $wpdb->prefix . 'user_status',
+                'label' => __( 'Status', 'disciple_tools' ),
+                'options' => [
+                    'active' => [ 'label' => __( 'Active', 'disciple_tools' ) ],
+                    'away' => [ 'label' => __( 'Away', 'disciple_tools' ) ],
+                    'inconsistent' => [ 'label' => __( 'Inconsistent', 'disciple_tools' ) ],
+                    'inactive' => [ 'label' => __( 'Inactive', 'disciple_tools' ) ],
+                ],
+                'type' => 'key_select',
+            ],
+            'workload_status' => [
+                'table' => 'usermeta_table',
+                'key' => $wpdb->prefix . 'workload_status',
+                'label' => __( 'Workload Status', 'disciple_tools' ),
+                'options' => dt_get_site_custom_lists()['user_workload_status'] ?? [],
+                'type' => 'key_select',
+            ],
+            'last_activity' => [
+                'label' => 'Last Activity',
+                'type' => 'date',
+                'table' => 'dt_activity_log',
+                'meta_key' => 'activity_date',
+            ]
+        ];
+
+        $fields = apply_filters( 'dt_users_fields', $fields );
+        wp_cache_set( 'dt_users_fields', $fields );
+        return $fields;
+    }
+
     /**
      * Get assignable users
      *
@@ -530,6 +621,15 @@ class Disciple_Tools_Users
                 ], true, false );
                 if ( !is_wp_error( $new_user_contact ) ){
                     update_user_option( $user_id, 'corresponds_to_contact', $new_user_contact['ID'] );
+
+                    /**
+                     * The user's corresponding contact has been created, you can update the corresponding contact with user information
+                     *
+                     * @param array $new_user_contact
+                     * @param WP_User $user
+                     */
+                    do_action( 'dt_create_users_corresponding_contact', $new_user_contact, $user );
+
                     return $new_user_contact['ID'];
                 }
             } else {
@@ -539,6 +639,15 @@ class Disciple_Tools_Users
                         'title' => $user->display_name
                     ], false, false );
                 }
+
+                /**
+                 * The user profile has updated, you can update the corresponding contact with user information
+                 *
+                 * @param WP_Post $contact
+                 * @param WP_User $user
+                 */
+                do_action( 'dt_update_users_corresponding_contact', $contact, $user );
+
                 return $contact->ID;
             }
         }
@@ -551,7 +660,7 @@ class Disciple_Tools_Users
         }
 
         $can_not_promote_to_roles = [];
-        if ( !is_super_admin() && !dt_current_user_has_role( 'administrator' ) ){
+        if ( !dt_is_administrator() ){
             $can_not_promote_to_roles = [ 'administrator' ];
         }
         if ( !current_user_can( 'manage_dt' ) ){

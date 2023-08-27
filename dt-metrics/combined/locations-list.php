@@ -57,7 +57,9 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_'.$this->slug.'_script', $this->js_object_name, [
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
+                'rest_endpoint' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug/data",
                 'base_slug' => $this->base_slug,
+                'load_url' => "metrics/$this->base_slug/$this->slug",
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,

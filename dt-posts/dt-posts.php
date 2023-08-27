@@ -11,7 +11,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     /**
      * Specifies which HTML tags are permissible in comments.
      */
-    private static $allowable_comment_tags = array(
+    public static $allowable_comment_tags = array(
         'a' => array(
           'href' => array(),
           'title' => array()
@@ -100,7 +100,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     return $updated_post;
                 }
                 //if update successful, comment and return.
-                $update_comment = __( 'Updated existing record instead of creating a new record.', 'disciple_tools' );
+                $update_comment = __( 'This record was automatically updated rather than creating a new record.', 'disciple_tools' );
                 if ( !$silent ){
                     if ( isset( $updated_post['assigned_to']['id'], $updated_post['assigned_to']['display'] ) ) {
                         $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
@@ -221,7 +221,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
-            if ( $field_type === 'date' && !is_numeric( $field_value ) ){
+            if ( ( $field_type === 'date' || $field_type === 'datetime' ) && !is_numeric( $field_value ) ){
                 if ( $is_private ) {
                     $post_user_meta[$field_key] = strtotime( $field_value );
                     unset( $fields[ $field_key ] );
@@ -508,7 +508,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $fields as $field_key => $field_value ){
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $field_type = $post_settings['fields'][ $field_key ]['type'] ?? '';
-                if ( $field_type === 'date' && !is_numeric( $field_value ) ) {
+                if ( ( $field_type === 'date' || $field_type === 'datetime' ) && !is_numeric( $field_value ) ) {
                     if ( empty( $field_value ) ) { // remove date
                         delete_post_meta( $post_id, $field_key );
                         continue;
@@ -976,7 +976,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $group_by_join . "
                 WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
                 (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-                AND group_by.p2p_type IS NOT NULL
                 GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type"
             , ARRAY_A );
 
@@ -984,63 +983,69 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !empty( $p2p_post_type ) ){
                 foreach ( $connections as $connection ){
                     $p2p_target = ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_to' : 'p2p_from';
-                    if ( !empty( $connection[$p2p_target] ) ){
+                    if ( empty( $connection['p2p_from'] ) && empty( $connection['p2p_to'] ) && empty( $connection['value'] ) ){
+                        $initial_results[] = [
+                            'id' => null,
+                            'value' => null
+                        ];
+                    }elseif ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
+                        $initial_results[] = [
+                            'id' => $connection['p2p_from'],
+                            'value' => $connection['p2p_from']
+                        ];
+                    }elseif ( !empty( $connection[$p2p_target] ) ){
                         $initial_results[] = [
                             'id' => $connection[$p2p_target],
                             'value' => $connection[$p2p_target]
                         ];
                     }
-                    if ( $p2p_direction === 'any' && !empty( $connection['p2p_from'] ) ){
-                        $initial_results[] = [
-                            'id' => $connection['p2p_from'],
-                            'value' => $connection['p2p_from']
-                        ];
-                    }
                 }
+            }
+            // Reshape initial results findings.
+            $reshaped_results = [];
+            foreach ( $initial_results as $result ){
+                $reshaped_keys = $result['value'] ?? 'NULL';
+                if ( !isset( $reshaped_results[$reshaped_keys] ) ){
+                    $reshaped_results[$reshaped_keys] = [
+                        'value' => $reshaped_keys,
+                        'count' => 0
+                    ];
+                }
+                $reshaped_results[$reshaped_keys]['count']++;
+            }
+
+            // Now, reshape into required posts structure.
+            foreach ( $reshaped_results as $result ){
+                $posts[] = [
+                    'value' => $result['value'],
+                    'count' => $result['count']
+                ];
             }
         } else {
             $group_by_join = "LEFT JOIN $wpdb->postmeta group_by ON group_by.post_id = p.ID AND group_by.meta_key = '" . esc_sql( $field_key ) . "'";
 
             // phpcs:disable
             // WordPress.WP.PreparedSQL.NotPrepared
-            $initial_results = $wpdb->get_results(
-                "SELECT summary.id, summary.value FROM (SELECT p.ID as id, group_by.meta_value as value
+            $posts = $wpdb->get_results( "
+                SELECT COUNT( DISTINCT( p.ID) ) as count, group_by.meta_value as value
                 FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
-                $group_by_join . "
-                WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
-                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-                AND group_by.meta_value IS NOT NULL
-                GROUP BY p.ID, group_by.meta_value ) AS summary"
+                    $group_by_join . '
+                WHERE ' . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . '
+                GROUP BY group_by.meta_value'
             , ARRAY_A );
-        }
-
-        // Reshape initial results findings.
-        $reshaped_results = [];
-        foreach ( $initial_results as $result ){
-            if ( !empty( $result['value'] ) ){
-                if ( !isset( $reshaped_results[$result['value']] ) ){
-                    $reshaped_results[$result['value']] = [
-                        'value' => $result['value'],
-                        'count' => 0
-                    ];
-                }
-                $reshaped_results[$result['value']]['count']++;
-            }
-        }
-
-        // Now, reshape into required posts structure.
-        foreach ( $reshaped_results as $result ){
-            $posts[] = [
-                'value' => $result['value'],
-                'count' => $result['count']
-            ];
+            // phpcs:enable
         }
 
         // Determine appropriate labels to be used.
         $updated_posts = [];
         $geocoder = new Location_Grid_Geocoder();
         foreach ( $posts as $post ){
-            if ( $group_by_field_type == 'location' ){
+            if ( ( $post['value'] === 'NULL' ) || ( $post['value'] === null ) ){
+                $post['value'] = 'NULL';
+                $post['label'] = __( 'None Set', 'disciple_tools' );
+                $updated_posts[] = $post;
+            } elseif ( $group_by_field_type == 'location' ){
                 $grid = $geocoder->query_by_grid_id( $post['value'] );
                 $post['label'] = $grid['name'] ?? $post['value'];
                 $updated_posts[] = $post;
@@ -1058,7 +1063,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $post['value'] = '0';
                 }
                 $updated_posts[] = $post;
-            } elseif ( $group_by_field_type === 'connection' ) {
+            } elseif ( $group_by_field_type === 'connection' ){
                 $p2p_post_type = $post_fields[$field_key]['post_type'] ?? '';
                 if ( !empty( $p2p_post_type ) ){
                     $wp_post = get_post( $post['value'] );
@@ -1651,6 +1656,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         'hist_time' => $a->hist_time,
                         'meta_id' => $a->meta_id,
                         'histid' => $a->histid,
+                        'field_type' => $a->field_type,
                     ];
 
                     $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
@@ -1692,6 +1698,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'location_meta',
             'key_select',
             'date',
+            'datetime',
             'boolean',
             'communication_channel',
             'text',
@@ -1860,6 +1867,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         break;
                     case 'tags':
                     case 'date':
+                    case 'datetime':
                     case 'link':
                     case 'location':
                     case 'multi_select':
@@ -2132,6 +2140,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                     break;
                 case 'date':
+                case 'datetime':
                     $revert_obj = array_values( $reverted['values'] )[0] ?? null;
                     $post_updates[$field_key] = ( !empty( $revert_obj ) && $revert_obj['keep'] ) ? $revert_obj['value'] : '';
                     break;
@@ -2731,6 +2740,11 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
 
+        //there should not be a "No Tile" tile.
+        if ( isset( $tile_options[$post_type]['no_tile'] ) ){
+            unset( $tile_options[$post_type]['no_tile'] );
+        }
+
         wp_cache_set( $post_type . '_tile_options', $tile_options[$post_type] );
         return $tile_options[$post_type];
     }
@@ -2989,6 +3003,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'boolean':
                 case 'key_select':
                 case 'date':
+                case 'datetime':
                 case 'user_select':
                 case 'number':
                     return $post[ $field_id ] == $value;
@@ -3018,6 +3033,102 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         return false;
+    }
+
+
+    /**
+     * Get available field types
+     * See https://developers.disciple.tools/theme-core/customization/fields
+     * @return array[]
+     */
+    public static function get_field_types(){
+        return [
+            'text' => [
+                'label' => 'Text',
+                'description' => 'A single line of text',
+                'user_creatable' => true,
+            ],
+            'textarea' => [
+                'label' => 'Textarea',
+                'description' => 'A multi-line text area',
+                'user_creatable' => true,
+            ],
+            'number' => [
+                'label' => 'Number',
+                'description' => 'A number',
+                'user_creatable' => true,
+            ],
+            'date' => [
+                'label' => 'Date',
+                'description' => 'A date, like 2020-01-01',
+                'user_creatable' => true,
+            ],
+            'datetime' => [
+                'label' => 'Date with a time',
+                'description' => 'A date, like August 9, 2023 at 4:10 PM',
+                'user_creatable' => true,
+            ],
+            'key_select' => [
+                'label' => 'Dropdown',
+                'description' => 'A dropdown with a list of options',
+                'user_creatable' => true,
+            ],
+            'multi_select' => [
+                'label' => 'Multi Select',
+                'description' => 'Button group to select multiple options',
+                'user_creatable' => true,
+            ],
+            'boolean' => [
+                'label' => 'Boolean',
+                'description' => 'A checkbox for yes or no',
+                'user_creatable' => false,
+            ],
+            'communication_channel' => [
+                'label' => 'Communication Channel',
+                'description' => 'Field for multiple contact info like email, phone, etc.',
+                'user_creatable' => false,
+            ],
+            'connection' => [
+                'label' => 'Connection',
+                'description' => 'Connections to other records',
+                'user_creatable' => true,
+            ],
+            'user_select' => [
+                'label' => 'User Select',
+                'description' => 'Field for selecting a user',
+                'user_creatable' => false,
+            ],
+            'link' => [
+                'label' => 'Links or Categories',
+                'description' => 'Create categories and add values to them',
+                'user_creatable' => true,
+            ],
+            'tags' => [
+                'label' => 'Tags',
+                'description' => 'Create and select tags',
+                'user_creatable' => true,
+            ],
+            'location' => [
+                'label' => 'Location',
+                'description' => 'Location selected from the predefined location grid list',
+                'user_creatable' => false,
+            ],
+            'location_meta' => [
+                'label' => 'Location with Geocoding',
+                'description' => 'Location selected with the help of a geocoder (mapbox, google)',
+                'user_creatable' => false,
+            ],
+            'tasks' => [
+                'label' => 'Tasks',
+                'description' => 'Tasks assigned to a record',
+                'user_creatable' => false,
+            ],
+            'array' => [
+                'label' => 'Array',
+                'description' => 'Array of data',
+                'user_creatable' => false,
+            ],
+        ];
     }
 }
 

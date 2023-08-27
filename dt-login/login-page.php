@@ -42,6 +42,9 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
     }
 
     public function body(){
+
+        do_action( 'dt_login_login_page_header' );
+
         require_once( get_template_directory() . '/dt-login/login-template.php' );
     }
 }
