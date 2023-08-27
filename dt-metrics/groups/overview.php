@@ -13,7 +13,7 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
     public $base_title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/groups/overview.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
 
     public function __construct() {
         parent::__construct();
@@ -25,40 +25,40 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
         }
     }
 
     public function scripts() {
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
+        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', array( 'amcharts-core' ), '4' );
 
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, array(
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
             'amcharts-charts',
             'amcharts-animated',
-            'lodash'
-        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
+            'lodash',
+        ), filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
+            'dt_metrics_project_script', 'dtMetricsProject', array(
                 'root' => esc_url_raw( rest_url() ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'data' => $this->data(),
-            ]
+            )
         );
     }
 
     public function data() {
         $group_types = $this->chart_group_types();
-        return [
-            'translations' => [
+        return array(
+            'translations' => array(
                 'title_overview' => __( 'Project Overview', 'disciple_tools' ),
                 'title_groups_overview' => __( 'Groups Overview', 'disciple_tools' ),
                 'title_contacts' => __( 'Contacts', 'disciple_tools' ),
@@ -76,31 +76,31 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 'label_groups' => strtolower( __( 'Groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
                 'label_generation' => __( 'Generation', 'disciple_tools' ),
-                'label_group_types' => __( 'Group Types', 'disciple_tools' )
-            ],
+                'label_group_types' => __( 'Group Types', 'disciple_tools' ),
+            ),
             'preferences' => $this->preferences(),
             'hero_stats' => $this->chart_project_hero_stats( $group_types ),
             'group_types' => $group_types,
             'group_health' => $this->chart_group_health(),
             'group_generations' => Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX ),
-        ];
+        );
     }
 
     public function preferences() {
-        $data = [];
+        $data = array();
 
         /* Add group preferences*/
         $group_preferences = dt_get_option( 'group_preferences' );
-        $data['groups'] = [
+        $data['groups'] = array(
             'church_metrics' => $group_preferences['church_metrics'] ?? false,
             'four_fields' => $group_preferences['four_fields'] ?? false,
-        ];
+        );
 
         return $data;
     }
 
     public function chart_group_types() {
-        $chart = [];
+        $chart = array();
 
         $group_fields = DT_Posts::get_post_field_settings( 'groups' );
         $types = $group_fields['group_type']['default'];
@@ -118,13 +118,13 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
 
         // Make key list
         $group_fields = DT_Posts::get_post_field_settings( 'groups' );
-        $labels = [];
+        $labels = array();
 
         foreach ( $group_fields['health_metrics']['default'] as $key => $option ) {
             $labels[$key] = $option['label'];
         }
 
-        $chart = [];
+        $chart = array();
 
         $results = self::query_project_group_health();
 
@@ -134,11 +134,11 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
                 $out_of = $results[0]['out_of'];
             }
             foreach ( $labels as $label_key => $label_value ) {
-                $row = [
+                $row = array(
                     'label'      => $label_value,
                     'practicing' => 0,
-                    'remaining'  => (int) $out_of
-                ];
+                    'remaining'  => (int) $out_of,
+                );
                 foreach ( $results as $result ) {
                     if ( $result['health_key'] === $label_key ) {
                         $row['practicing'] = (int) $result['count'];
@@ -162,10 +162,10 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
             }
         }
 
-        $results = [
+        $results = array(
             'total_groups' => $total,
             'teams' => $teams,
-        ];
+        );
 
         return $results;
     }
@@ -230,7 +230,5 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
 
         return $results;
     }
-
-
 }
 new DT_Metrics_Groups_Overview();

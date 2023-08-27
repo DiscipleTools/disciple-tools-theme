@@ -54,58 +54,58 @@ class Disciple_Tools_People_Groups_Endpoints
      */
     public function __construct() {
         $this->namespace = $this->context . '/v' . intval( $this->version );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     } // End __construct()
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/people-groups/compact', [
+            $this->namespace, '/people-groups/compact', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'get_people_groups_compact' ],
+                'callback' => array( $this, 'get_people_groups_compact' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/people-groups/search_csv', [
+            $this->namespace, '/people-groups/search_csv', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'search_csv' ],
+                'callback' => array( $this, 'search_csv' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/people-groups/search_csv_by_rop3', [
+            $this->namespace, '/people-groups/search_csv_by_rop3', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'search_csv_by_rop3' ],
+                'callback' => array( $this, 'search_csv_by_rop3' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/people-groups/add_single_people_group', [
+            $this->namespace, '/people-groups/add_single_people_group', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'add_single_people_group' ],
+                'callback' => array( $this, 'add_single_people_group' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/people-groups/add_bulk_people_groups', [
+            $this->namespace, '/people-groups/add_bulk_people_groups', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'add_bulk_people_groups' ],
+                'callback' => array( $this, 'add_bulk_people_groups' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/people-groups/get_bulk_people_groups_import_batches', [
+            $this->namespace, '/people-groups/get_bulk_people_groups_import_batches', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'get_bulk_people_groups_import_batches' ],
+                'callback' => array( $this, 'get_bulk_people_groups_import_batches' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/people-groups/link_or_update', [
+            $this->namespace, '/people-groups/link_or_update', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'link_or_update' ],
+                'callback' => array( $this, 'link_or_update' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
     }
 
@@ -161,7 +161,7 @@ class Disciple_Tools_People_Groups_Endpoints
     public function add_single_people_group( WP_REST_Request $request ) {
 
         if ( ! current_user_can( 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', [] );
+            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', array() );
         }
 
         $params = $request->get_params();
@@ -179,7 +179,7 @@ class Disciple_Tools_People_Groups_Endpoints
      */
     public function add_bulk_people_groups( WP_REST_Request $request ){
         if ( !current_user_can( 'manage_dt' ) ){
-            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', [] );
+            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', array() );
         }
 
         $params = $request->get_params();
@@ -197,7 +197,7 @@ class Disciple_Tools_People_Groups_Endpoints
      */
     public function get_bulk_people_groups_import_batches( WP_REST_Request $request ){
         if ( !current_user_can( 'manage_dt' ) ){
-            return new WP_Error( __METHOD__, 'You do not have permission to import people groups', [] );
+            return new WP_Error( __METHOD__, 'You do not have permission to import people groups', array() );
         }
 
         return Disciple_Tools_People_Groups::get_bulk_people_groups_import_batches();

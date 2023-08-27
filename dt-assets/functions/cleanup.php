@@ -58,7 +58,7 @@ function dt_remove_recent_comments_style() {
     if ( isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
         remove_action( 'wp_head', array(
             $wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
-            'recent_comments_style'
+            'recent_comments_style',
         ) );
     }
 }
@@ -176,28 +176,28 @@ function dt_remove_post_admin_menus() {
     /**
      * Filters allows added page removals and removing page removals.
      */
-    $elements = apply_filters('dt_remove_menu_pages', [
-        'posts' => [
+    $elements = apply_filters('dt_remove_menu_pages', array(
+        'posts' => array(
             'menu_slug' => 'edit.php', // Posts admin tab
-            'allowed_for' => []
-        ],
-        'media' => [
+            'allowed_for' => array(),
+        ),
+        'media' => array(
             'menu_slug' => 'upload.php', // Media admin tab (hidden because all media stored on WP is public accessible. Should not be used for anything secure.)
-            'allowed_for' => []
-        ],
-        'page' => [
+            'allowed_for' => array(),
+        ),
+        'page' => array(
             'menu_slug' => 'edit.php?post_type=page', // Pages admin tab
-            'allowed_for' => []
-        ],
-        'comments' => [
+            'allowed_for' => array(),
+        ),
+        'comments' => array(
             'menu_slug' => 'edit-comments.php', // Comments admin tab
-            'allowed_for' => []
-        ],
-        'tools' => [
+            'allowed_for' => array(),
+        ),
+        'tools' => array(
             'menu_slug' => 'tools.php',  // Tools admin tab
-            'allowed_for' => [ 'manage_dt' ]
-        ],
-    ] );
+            'allowed_for' => array( 'manage_dt' ),
+        ),
+    ) );
 
     foreach ( $elements as $page ) {
         if ( empty( $page['allowed_for'] ) ) {
@@ -228,7 +228,7 @@ function dt_disable_emojis_tinymce( $plugins ) {
     if ( is_array( $plugins ) ) {
         return array_diff( $plugins, array( 'wpemoji' ) );
     }
-    return [];
+    return array();
 }
 
 function dt_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {

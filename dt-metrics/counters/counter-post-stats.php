@@ -69,10 +69,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
 
 
-        return [
+        return array(
             'data' => $results,
             'cumulative_offset' => $cumulative_offset,
-        ];
+        );
     }
 
 
@@ -118,10 +118,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
 
 
-        return [
+        return array(
             'data' => $results,
             'cumulative_offset' => $cumulative_offset,
-        ];
+        );
     }
 
     /**
@@ -134,7 +134,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = mktime( 0, 0, 0, 1, 1, $year );
         $end = mktime( 24, 60, 60, 12, 31, $year );
 
-        $results = [];
+        $results = array();
         $cumulative_offset = 0;
 
         if ( self::isPostField( $field ) ) {
@@ -154,10 +154,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
             $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start );
 
-            return [
+            return array(
                 'data' => $results,
                 'cumulative_offset' => $cumulative_offset,
-            ];
+            );
         } else {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
@@ -181,10 +181,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         }
 
-        return [
+        return array(
             'data' => $results,
             'cumulative_offset' => $cumulative_offset,
-        ];
+        );
     }
 
     /**
@@ -198,7 +198,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
-        $results = [];
+        $results = array();
 
         if ( self::isPostField( $field ) ) {
             $results = $wpdb->get_results(
@@ -234,9 +234,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             );
         }
 
-        return [
+        return array(
             'data' => $results,
-        ];
+        );
     }
 
     public static function get_multi_field_by_month( $post_type, $field, $year ) {
@@ -246,10 +246,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $end = mktime( 24, 60, 60, 12, 31, $year );
 
         // get possible values of multi select field
-        $multi_values = [];
+        $multi_values = array();
 
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
-        $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : [];
+        $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : array();
 
         if ( !empty( $default_values ) ) {
             $multi_values = array_keys( $default_values );
@@ -303,10 +303,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         $cumulative_offset = self::get_multi_field_cumulative_offsets( $post_type, $field, $start, $multi_values );
 
-        return [
+        return array(
             'data' => $results,
             'cumulative_offset' => $cumulative_offset,
-        ];
+        );
     }
 
     public static function get_multi_field_by_year( $post_type, $field ) {
@@ -317,10 +317,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
         // get possible values of multi select field
-        $multi_values = [];
+        $multi_values = array();
 
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
-        $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : [];
+        $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : array();
 
         if ( !empty( $default_values ) ) {
             $multi_values = array_keys( $default_values );
@@ -371,9 +371,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             // phpcs:enable
         );
 
-        return [
+        return array(
             'data' => $results,
-        ];
+        );
     }
 
     public static function get_connection_field_by_month( $connection_type, $year ) {
@@ -401,10 +401,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         $cumulative_offset = self::get_connection_field_cumulative_offset( $connection_type, $start );
 
-        return [
+        return array(
             'data' => $results,
             'cumulative_offset' => $cumulative_offset,
-        ];
+        );
     }
 
     public static function get_connection_field_by_year( $connection_type ) {
@@ -431,9 +431,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
         );
 
-        return [
+        return array(
             'data' => $results,
-        ];
+        );
     }
 
     /**

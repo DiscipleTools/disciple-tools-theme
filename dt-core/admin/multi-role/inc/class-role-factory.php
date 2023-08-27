@@ -26,7 +26,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $roles = [];
+    public $roles = array();
 
     /**
      * Array of editable roles.
@@ -35,7 +35,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $editable = [];
+    public $editable = array();
 
     /**
      * Array of uneditable roles.
@@ -44,7 +44,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $uneditable = [];
+    public $uneditable = array();
 
     /**
      * Array of core WordPress roles.
@@ -53,7 +53,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $wordpress = [];
+    public $wordpress = array();
 
     /**
      * Private constructor method to prevent a new instance of the object.

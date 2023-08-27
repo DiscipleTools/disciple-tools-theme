@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * ]
  * @return void
  */
-function dt_activity_insert( $args = [] ) {
+function dt_activity_insert( $args = array() ) {
     disciple_tools()->logging_activity_api->insert( $args );
 }
 
@@ -46,7 +46,7 @@ class Disciple_Tools_Activity_Log_API {
 
         $args = wp_parse_args(
             $args,
-            [
+            array(
                 'action'         => '',
                 'object_type'    => 'unknown',
                 'object_subtype' => '',
@@ -60,8 +60,8 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_value'     => '0',
                 'meta_parent'    => '0',
                 'old_value'      => '',
-                'field_type'     => ''
-            ]
+                'field_type'     => '',
+            )
         );
         // only get the current user if the global user object is set.
         // this avoids an infinite loop where the `determine_current_user` filter
@@ -87,7 +87,7 @@ class Disciple_Tools_Activity_Log_API {
         }
 
         // trim values that are too long.
-        $text_fields = [ 'object_note', 'meta_value', 'old_value', 'action', 'object_type', 'object_subtype', 'object_name' ];
+        $text_fields = array( 'object_note', 'meta_value', 'old_value', 'action', 'object_type', 'object_subtype', 'object_name' );
         foreach ( $text_fields as $field ){
             if ( isset( $args[$field] ) && strlen( $args[$field] ) >= 250 ) {
                 $args[$field] = is_serialized( $args[$field] ) ? '' : substr( $args[$field], 0, 250 ) . '...';
@@ -100,7 +100,7 @@ class Disciple_Tools_Activity_Log_API {
 
         $wpdb->insert(
             $wpdb->dt_activity_log,
-            [
+            array(
                 'action'         => $args['action'],
                 'object_type'    => $args['object_type'],
                 'object_subtype' => $args['object_subtype'],
@@ -116,9 +116,9 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_value'     => $args['meta_value'],
                 'meta_parent'    => $args['meta_parent'],
                 'old_value'      => $args['old_value'],
-                'field_type'     => $args['field_type']
-            ],
-            [
+                'field_type'     => $args['field_type'],
+            ),
+            array(
                 '%s',
                 '%s',
                 '%s',
@@ -134,8 +134,8 @@ class Disciple_Tools_Activity_Log_API {
                 '%s',
                 '%s',
                 '%s',
-                '%s'
-            ]
+                '%s',
+            )
         );
 
         if ( isset( $args['object_id'] ) && isset( $args['object_subtype'] ) && $args['object_subtype'] !== 'last_modified' && ( isset( $args['object_type'] ) && $args['object_type'] !== 'User' ) && $args['action'] !== 'viewed' ){
@@ -146,5 +146,3 @@ class Disciple_Tools_Activity_Log_API {
         do_action( 'dt_insert_activity', $args );
     }
 }
-
-

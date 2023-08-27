@@ -12,7 +12,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
     public $slug = 'site-links'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/combined/site-links.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
 
     public function __construct() {
         parent::__construct();
@@ -24,9 +24,9 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     /**
@@ -43,31 +43,31 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
             get_template_directory_uri() . $this->js_file_name,
-            [
+            array(
                 'moment',
                 'jquery',
                 'jquery-ui-core',
                 'datepicker',
                 'amcharts-core',
                 'amcharts-charts',
-                'amcharts-themes-animated'
-            ],
+                'amcharts-themes-animated',
+            ),
             filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         // Localize script with array data
         wp_localize_script(
-            'dt_' . $this->slug . '_script', $this->js_object_name, [
+            'dt_' . $this->slug . '_script', $this->js_object_name, array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                'data'                => [
-                    'sites' => Site_Link_System::get_list_of_sites_by_type( [
+                'data'                => array(
+                    'sites' => Site_Link_System::get_list_of_sites_by_type( array(
                         'contact_sharing',
-                        'contact_sending'
-                    ] )
-                ],
-                'translations'        => [
-                    'headings' => [
+                        'contact_sending',
+                    ) ),
+                ),
+                'translations'        => array(
+                    'headings' => array(
                         'header'                     => __( 'Transferred Contacts', 'disciple_tools' ),
                         'sub_header'                 => __( 'Filter by date range and available site links', 'disciple_tools' ),
                         'date_range_header'          => __( 'Date Ranges', 'disciple_tools' ),
@@ -81,31 +81,31 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
                         'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['overall_status']['name'] ),
                         'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['seeker_path']['name'] ),
                         'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['milestones']['name'] ),
-                    ],
-                    'general'  => [
-                        'no_data_msg' => __( 'No Data Available', 'disciple_tools' )
-                    ]
-                ]
-            ]
+                    ),
+                    'general'  => array(
+                        'no_data_msg' => __( 'No Data Available', 'disciple_tools' ),
+                    ),
+                ),
+            )
         );
     }
 
     public function add_api_routes() {
         $namespace = "dt-metrics/$this->base_slug/$this->slug";
         register_rest_route(
-            $namespace, '/site-links/', [
-                [
+            $namespace, '/site-links/', array(
+                array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'site_links_endpoint' ],
+                    'callback'            => array( $this, 'site_links_endpoint' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function site_links_endpoint( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ) {
-            return new WP_Error( 'site-links', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'site-links', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
         if ( isset( $params['site_id'], $params['start'], $params['end'] ) ) {
@@ -116,7 +116,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( 'site-links', 'Missing required parameters', [ 'status' => 400 ] );
+            return new WP_Error( 'site-links', 'Missing required parameters', array( 'status' => 400 ) );
         }
     }
 
@@ -127,17 +127,17 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
         if ( ! is_wp_error( $site ) && ! empty( $start ) && ! empty( $end ) ) {
 
             // Prepare records metrics request payload
-            $args = [
+            $args = array(
                 'method'  => 'POST',
                 'timeout' => 20,
-                'body'    => [
+                'body'    => array(
                     'start' => $start,
-                    'end'   => $end
-                ],
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $site['transfer_token']
-                ]
-            ];
+                    'end'   => $end,
+                ),
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $site['transfer_token'],
+                ),
+            );
 
             // Request records metrics from remote site
             $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/metrics', $args );
@@ -149,7 +149,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
             }
         }
 
-        return [];
+        return array();
     }
 }
 

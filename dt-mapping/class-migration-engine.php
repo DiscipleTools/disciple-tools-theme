@@ -30,14 +30,14 @@ class DT_Mapping_Module_Migration_Engine
         if ( self::$migrations !== null ) {
             return self::$migrations;
         }
-        require_once( plugin_dir_path( __FILE__ ) . 'migrations/abstract.php' );
+        require_once plugin_dir_path( __FILE__ ) . 'migrations/abstract.php';
         $filenames = scandir( plugin_dir_path( __FILE__ ) . 'migrations/', SCANDIR_SORT_ASCENDING );
 
         if ( $filenames === false ) {
             throw new Exception( 'Could not scan migrations directory' );
         }
         $expected_migration_number = 0;
-        $rv = [];
+        $rv = array();
         foreach ( $filenames as $filename ) {
             if ( $filename[0] !== '.' && $filename !== 'abstract.php' ){
                 if ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
@@ -45,7 +45,7 @@ class DT_Mapping_Module_Migration_Engine
                     if ( $expected_migration_number !== $got_migration_number ) {
                         throw new Exception( sprintf( 'Expected to find migration number %04d', $expected_migration_number ) );
                     }
-                    require_once( plugin_dir_path( __FILE__ ) . "migrations/$filename" );
+                    require_once plugin_dir_path( __FILE__ ) . "migrations/$filename";
                     $migration_name = sprintf( 'DT_Mapping_Module_Migration_%04d', $got_migration_number );
                     $rv[] = new $migration_name();
                     $expected_migration_number++;
@@ -105,12 +105,12 @@ class DT_Mapping_Module_Migration_Engine
             try {
                 $migration->up();
             } catch ( Throwable $e ) {
-                update_option( 'dt_mapping_module_migrate_last_error', [
+                update_option( 'dt_mapping_module_migrate_last_error', array(
                     'message' => $e->getMessage(),
                     'code' => $e->getCode(),
                     'trace' => $e->getTrace(),
                     'time' => time(),
-                ] );
+                ) );
                 throw $e;
             }
             update_option( 'dt_mapping_module_migration_number', (string) $activating_migration_number );
@@ -139,7 +139,6 @@ class DT_Mapping_Module_Migration_Engine
     public static function get_current_db_migration(){
         return get_option( 'dt_mapping_module_migration_number' );
     }
-
 }
 
 

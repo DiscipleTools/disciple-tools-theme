@@ -9,5 +9,4 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 abstract class Disciple_Tools_Hook_Base {
 
     public function __construct() {}
-
 }

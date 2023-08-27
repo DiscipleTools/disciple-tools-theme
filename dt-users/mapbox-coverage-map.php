@@ -13,7 +13,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
     public $slug = 'mapbox-map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-users/mapbox-coverage-map.js'; // should be full file name plus extension
-    public $permissions = [ 'list_users', 'manage_dt' ];
+    public $permissions = array( 'list_users', 'manage_dt' );
     public $namespace = 'user-management/v1';
 
     public function __construct() {
@@ -24,15 +24,15 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
 
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, 'user-management' ) !== false ) {
-            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
+            add_filter( 'dt_metrics_menu', array( $this, 'add_menu' ), 20 );
         }
         if ( "$this->base_slug/$this->slug" === $url_path ) {
-            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 20 ); //load menu links
-            add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
-            add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_filter( 'dt_metrics_menu', array( $this, 'base_menu' ), 20 ); //load menu links
+            add_action( 'wp_enqueue_scripts', array( $this, 'base_scripts' ), 99 );
+            add_filter( 'dt_templates_for_urls', array( $this, 'dt_templates_for_urls' ) );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     public function dt_templates_for_urls( $template_for_url ) {
@@ -54,11 +54,11 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
     }
 
     public function scripts() {
-        $dependencies = [
+        $dependencies = array(
             'jquery',
             'moment',
-            'lodash'
-        ];
+            'lodash',
+        );
 
         wp_enqueue_script(
             'dt_user_map',
@@ -68,13 +68,13 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
             true
         );
         wp_localize_script(
-            'dt_user_map', 'dt_mapbox_metrics', [
-                'translations'       => [
+            'dt_user_map', 'dt_mapbox_metrics', array(
+                'translations'       => array(
                     'user_status' => __( 'User Status', 'disciple_tools' ),
                     'all' => __( 'All', 'disciple_tools' ),
-                    'add_user_to' => _x( 'Add user to: %s', 'Add user to: France', 'disciple_tools' )
-                ],
-                'settings' => [
+                    'add_user_to' => _x( 'Add user to: %s', 'Add user to: France', 'disciple_tools' ),
+                ),
+                'settings' => array(
                     'title' => __( 'Responsibility Coverage', 'disciple_tools' ),
                     'menu_slug' => $this->base_slug,
                     'map_key'            => DT_Mapbox_API::get_key(),
@@ -86,17 +86,17 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                     'rest_base_url' => $this->namespace,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
-                    'user_status_options' => Disciple_Tools_Users::get_users_fields()['user_status']['options'] ?? [],
-                ]
-            ]
+                    'user_status_options' => Disciple_Tools_Users::get_users_fields()['user_status']['options'] ?? array(),
+                ),
+            )
         );
         wp_enqueue_script( 'dt_mapbox_caller',
             get_template_directory_uri() .  $this->js_file_name,
-            [
+            array(
                 'jquery',
                 'lodash',
-                'dt_user_map'
-            ],
+                'dt_user_map',
+            ),
             filemtime( get_theme_file_path() .  $this->js_file_name ),
             true
         );
@@ -108,31 +108,31 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/user_grid_totals', [
-                [
+            $this->namespace, '/user_grid_totals', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'grid_totals' ],
+                    'callback' => array( $this, 'grid_totals' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
         register_rest_route(
-            $this->namespace, '/get_user_list', [
-                [
+            $this->namespace, '/get_user_list', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'get_user_list' ],
+                    'callback' => array( $this, 'get_user_list' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function grid_totals( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_json_params() ?? $request->get_body_params();
-        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
+        $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : array();
         $status = null;
         if ( isset( $query['status'] ) && $query['status'] !== 'all' ) {
             $status = sanitize_text_field( wp_unslash( $query['status'] ) );
@@ -141,12 +141,11 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( $status );
 
         return $results;
-
     }
 
     public function get_user_list( WP_REST_Request $request ){
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', array( 'status' => 400 ) );
         }
 
         global $wpdb;
@@ -157,16 +156,15 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                 WHERE lgm.post_type = 'users'
                 ", ARRAY_A );
 
-        $list = [];
+        $list = array();
         foreach ( $results as $result ) {
             if ( ! isset( $list[$result['grid_id']] ) ) {
-                $list[$result['grid_id']] = [];
+                $list[$result['grid_id']] = array();
             }
             $list[$result['grid_id']][] = $result;
         }
 
         return $list;
     }
-
 }
 new DT_Users_Mapbox_Coverage_Map();

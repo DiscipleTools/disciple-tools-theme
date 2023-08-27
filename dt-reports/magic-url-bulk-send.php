@@ -13,12 +13,12 @@ add_filter( 'dt_list_action_menu_items', 'dt_post_bulk_list_link_apps', 10, 2 );
 function dt_post_bulk_list_link_apps( $bulk_send_menu_items, $post_type ) {
     $dt_magic_apps = DT_Magic_URL::list_bulk_send( $post_type );
     if ( !empty( $dt_magic_apps ) && ( $post_type === 'contacts' || apply_filters( 'dt_bulk_email_connection_field', null, $post_type ) ) ) {
-        $bulk_send_menu_items['bulk-send-app'] = [
+        $bulk_send_menu_items['bulk-send-app'] = array(
             'label' => __( 'Bulk Send App', 'disciple_tools' ),
             'icon' => get_template_directory_uri() . '/dt-assets/images/connection.svg',
             'section_id' => 'bulk_send_app_picker',
             'show_list_checkboxes' => true,
-        ];
+        );
     }
     return $bulk_send_menu_items;
 }
@@ -35,7 +35,7 @@ function dt_post_bulk_list_section_apps( $post_type ){
                 <span aria-hidden="true">×</span>
             </button>
             <p style="font-weight:bold"><?php
-                echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                printf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
             <div class="grid-x grid-margin-x">
                 <div class="cell">
                     <label for="bulk_send_app_note"><?php echo esc_html__( 'Add optional greeting', 'disciple_tools' ); ?></label>

@@ -39,15 +39,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 99 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 10, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 99, 1 );
 
-        add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
-        add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
-        add_filter( 'dt_import_services', [ $this, 'export_import_services' ], 10, 1 );
-        add_filter( 'dt_import_services_details', [ $this, 'import_services_details' ], 10, 2 );
-        add_action( 'dt_import_payload', [ $this, 'import_payload' ], 10, 2 );
+        add_filter( 'dt_export_services', array( $this, 'export_import_services' ), 10, 1 );
+        add_filter( 'dt_export_payload', array( $this, 'export_payload' ), 10, 1 );
+        add_filter( 'dt_import_services', array( $this, 'export_import_services' ), 10, 1 );
+        add_filter( 'dt_import_services_details', array( $this, 'import_services_details' ), 10, 2 );
+        add_action( 'dt_import_payload', array( $this, 'import_payload' ), 10, 2 );
 
         parent::__construct();
     } // End __construct()
@@ -55,13 +55,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     private static $export_import_id = 'dt_custom_field_settings';
     private static $import_config_json_id = 'dt_settings';
     public function export_import_services( $services ){
-        $services[self::$export_import_id] = [
+        $services[self::$export_import_id] = array(
             'id' => self::$export_import_id,
             'config_json_id' => self::$import_config_json_id,
             'enabled' => true,
             'label' => __( 'D.T Custom Field Settings', 'disciple_tools' ),
-            'description' => __( 'Export/Import custom D.T field settings.', 'disciple_tools' )
-        ];
+            'description' => __( 'Export/Import custom D.T field settings.', 'disciple_tools' ),
+        );
 
         return $services;
     }
@@ -69,7 +69,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     public function export_payload( $export_payload ){
         if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ){
 
-            $payload = [];
+            $payload = array();
             $existing_custom_options = dt_get_option( 'dt_field_customizations' );
             $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
 
@@ -129,11 +129,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <?php
 
             // Fetch list of existing instance post types.
-            $existing_post_types = DT_Posts::get_post_types() ?? [];
+            $existing_post_types = DT_Posts::get_post_types() ?? array();
 
             // Ensure displayed post types are driven by incoming config.
-            $existing_fields = [];
-            foreach ( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'] ?? [] as $post_type => $field_config ){
+            $existing_fields = array();
+            foreach ( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'] ?? array() as $post_type => $field_config ){
 
                 // Target instance, must contain corresponding post type, in order for incoming fields to be set.
                 if ( in_array( $post_type, $existing_post_types ) ){
@@ -152,7 +152,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <?php
 
                     // Next, display fields available for import; disabling those already installed within target instance.
-                    foreach ( $field_config ?? [] as $field_id => $field ){
+                    foreach ( $field_config ?? array() as $field_id => $field ){
                         $already_has_field = isset( $post_type_settings['fields'], $post_type_settings['fields'][$field_id] );
                         ?>
                         <tr>
@@ -171,7 +171,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         // Keep a record of pre-existing fields.
                         if ( $already_has_field ){
                             if ( !isset( $existing_fields[$post_type] ) ){
-                                $existing_fields[$post_type] = [];
+                                $existing_fields[$post_type] = array();
                             }
                             $existing_fields[$post_type][] = $field_id;
                         }
@@ -257,13 +257,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $html_js_selection_handler_func = ob_get_clean();
 
         // Finally, package detail parts and return.
-        $details[self::$export_import_id] = [
+        $details[self::$export_import_id] = array(
             'id' => self::$export_import_id,
             'enabled' => true,
             'html' => $html,
             'html_js_handler_func' => $html_js_handler_func,
-            'html_js_selection_handler_func' => $html_js_selection_handler_func
-        ];
+            'html_js_selection_handler_func' => $html_js_selection_handler_func,
+        );
 
         return $details;
     }
@@ -283,7 +283,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $import_count = 0;
-        $existing_field_settings = [];
+        $existing_field_settings = array();
         $existing_field_options = dt_get_option( 'dt_field_customizations' );
 
         // Process selected service fields accordingly, based on instance existence.
@@ -301,7 +301,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
                 // Make field options provision if needed, before committing.
                 if ( !isset( $existing_field_options[$field_post_type] ) ){
-                    $existing_field_options[$field_post_type] = [];
+                    $existing_field_options[$field_post_type] = array();
                 }
                 $existing_field_options[$field_post_type][$field_id] = $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$field_post_type][$field_id];
 
@@ -320,7 +320,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Fields', 'disciple_tools' ), __( 'Fields', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-fields', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Fields', 'disciple_tools' ), __( 'Fields', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-fields', array( 'Disciple_Tools_Settings_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -389,7 +389,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( !wp_verify_nonce( sanitize_key( $_POST['field_add_nonce'] ), 'field_add' ) ) {
                     return;
                 }
-                $post_submission = [];
+                $post_submission = array();
                 foreach ( $_POST as $key => $value ){
                     $post_submission[sanitize_text_field( wp_unslash( $key ) )] = sanitize_text_field( wp_unslash( $value ) );
                 }
@@ -482,10 +482,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     private function field_select( $selected_post_type ){
         global $wp_post_types;
-        $select_options = [];
+        $select_options = array();
         $selected_post_type = sanitize_text_field( wp_unslash( $selected_post_type ) );
         $fields = $this->get_post_fields( $selected_post_type );
-        uasort($fields, function( $a, $b ) {
+        uasort($fields, function ( $a, $b ) {
             return $a['name'] <=> $b['name'];
         });
         if ( $fields ){
@@ -545,7 +545,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         }
         $field = $post_fields[$field_key];
 
-        $core_fields = [ 'languages' ];
+        $core_fields = array( 'languages' );
 
         if ( isset( $field['customizable'] ) && $field['customizable'] === false ){
             ?>
@@ -560,7 +560,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $defaults = apply_filters( 'dt_custom_fields_settings', $base_fields, $post_type );
 
-        $field_options = $field['default'] ?? [];
+        $field_options = $field['default'] ?? array();
         $first = true;
         $tile_options = DT_Posts::get_post_tiles( $post_type );
 
@@ -745,7 +745,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                     <?php
                     $custom_fields = dt_get_option( 'dt_field_customizations' );
-                    $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+                    $custom_field = $custom_fields[$post_type][$field_key] ?? array();
                     if ( isset( $custom_field['customizable'] ) && $custom_field['customizable'] == 'all' ) : ?>
                         <button type="button" name="delete" id='open-delete-confirm-modal' class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
                     <?php endif ?>
@@ -788,7 +788,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             <?php
                 $custom_fields = dt_get_option( 'dt_field_customizations' );
-                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+                $custom_field = $custom_fields[$post_type][$field_key] ?? array();
             ?>
 
             <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
@@ -1045,7 +1045,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             <p><?php echo esc_html( sprintf( __( 'This field will show up on %s records of type:', 'disciple_tools' ), strtolower( $post_settings['label_singular'] ) ) ) ?></p>
             <?php foreach ( $post_fields['type']['default'] as $type_key => $type ) :
-                $checked = dt_field_enabled_for_record_type( $field, [ 'type' => [ 'key' => $type_key ] ] );
+                $checked = dt_field_enabled_for_record_type( $field, array( 'type' => array( 'key' => $type_key ) ) );
                 ?>
                 <label style="margin-right:10px">
                     <input type="checkbox" name="field_type[]" value="<?php echo esc_html( $type_key ); ?>" <?php checked( $checked ) ?>>
@@ -1098,13 +1098,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         if ( isset( $post_submission['save_create_form'] ) ){
             $types_options = $post_fields['type']['default'];
-            $non_hidden_types = array_filter( $types_options, function ( $type ){
+            $non_hidden_types = array_filter( $types_options, function ( $type ) {
                 return !isset( $type['hidden'] ) || empty( $type['hidden'] );
             });
             $create_form_options = isset( $post_submission['create_form_options'] ) ? $post_submission['create_form_options'] : false;
 
             if ( !isset( $post_submission['create_form_options'] ) ){
-                $field_customizations[$post_type][$field_key]['in_create_form'] = [ 'hidden' ];
+                $field_customizations[$post_type][$field_key]['in_create_form'] = array( 'hidden' );
             } else if ( sizeof( $create_form_options ) === count( $non_hidden_types ) ){
                 $field_customizations[$post_type][$field_key]['in_create_form'] = true;
             } else {
@@ -1148,7 +1148,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         if ( isset( $post_fields[$post_submission['field_key']] ) ){
             if ( !isset( $field_customizations[$post_type][$field_key] ) ){
-                $field_customizations[$post_type][$field_key] = [];
+                $field_customizations[$post_type][$field_key] = array();
             }
             $custom_field = $field_customizations[$post_type][$field_key];
             $field = $post_fields[$field_key];
@@ -1185,7 +1185,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             //restore field icon
             if ( isset( $post_submission['restore_field_icon'] ) ) {
-                $restore_icon_defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+                $restore_icon_defaults = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
                 $custom_field['icon']  = $restore_icon_defaults[ $field_key ]['icon'];
             }
 
@@ -1262,7 +1262,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
                 //restore icon
                 if ( isset( $post_submission['restore_icon'] ) ) {
-                    $restore_icon_defaults                                               = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+                    $restore_icon_defaults                                               = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
                     $custom_field['default'][ $post_submission['restore_icon'] ]['icon'] = $restore_icon_defaults[ $field_key ]['default'][ $post_submission['restore_icon'] ]['icon'];
                     $field_options[ $post_submission['restore_icon'] ]['icon']           = $restore_icon_defaults[ $field_key ]['default'][ $post_submission['restore_icon'] ]['icon'];
                 }
@@ -1296,8 +1296,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $option_key = dt_create_field_key( $post_submission['add_option'] );
                     if ( !isset( $field_options[$option_key] ) ){
                         if ( !empty( $option_key ) && !empty( $post_submission['add_option'] ) ){
-                            $field_options[ $option_key ] = [ 'label' => $post_submission['add_option'] ];
-                            $custom_field['default'][$option_key] = [ 'label' => $post_submission['add_option'] ];
+                            $field_options[ $option_key ] = array( 'label' => $post_submission['add_option'] );
+                            $custom_field['default'][$option_key] = array( 'label' => $post_submission['add_option'] );
                         }
                     } else {
                         self::admin_notice( __( 'This option already exists', 'disciple_tools' ), 'error' );
@@ -1519,92 +1519,92 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 self::admin_notice( __( 'Field already exists', 'disciple_tools' ), 'error' );
                 return false;
             }
-            $new_field = [];
+            $new_field = array();
             if ( $field_type === 'key_select' ){
-                $new_field = [
+                $new_field = array(
                     'name' => $post_submission['new_field_name'],
-                    'default' => [],
+                    'default' => array(),
                     'type' => 'key_select',
                     'tile' => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'multi_select' ){
-                $new_field = [
+                $new_field = array(
                     'name' => $post_submission['new_field_name'],
-                    'default' => [],
+                    'default' => array(),
                     'type' => 'multi_select',
                     'tile' => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private,
-                ];
+                );
             } elseif ( $field_type === 'tags' ){
-                $new_field = [
+                $new_field = array(
                     'name' => $post_submission['new_field_name'],
-                    'default' => [],
+                    'default' => array(),
                     'type' => 'tags',
                     'tile' => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'date' ){
-                $new_field = [
+                $new_field = array(
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'date',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'datetime' ){
-                $new_field = [
+                $new_field = array(
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'datetime',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'text' ){
-                $new_field = [
+                $new_field = array(
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'text',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'textarea' ){
-                $new_field = [
+                $new_field = array(
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'textarea',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'number' ){
-                $new_field = [
+                $new_field = array(
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'number',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'link' ) {
-                $new_field = [
+                $new_field = array(
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'link',
-                    'default'     => [
-                        'default' => [
+                    'default'     => array(
+                        'default' => array(
                             'label' => 'Default',
-                        ],
-                    ],
+                        ),
+                    ),
                     'tile'     => $field_tile,
                     'customizable' => 'all',
-                    'private' => $field_private
-                ];
+                    'private' => $field_private,
+                );
             } elseif ( $field_type === 'connection' ){
                 if ( !$post_submission['connection_target'] ){
                     self::admin_notice( __( 'Please select a connection target', 'disciple_tools' ), 'error' );
@@ -1619,7 +1619,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( $post_type === $post_submission['connection_target'] ){
                     //default direction to "any". If not multidirectional, then from
                     $direction = isset( $post_submission['multidirectional'] ) ? 'any' : 'from';
-                    $custom_field_options[$post_type][$field_key] = [
+                    $custom_field_options[$post_type][$field_key] = array(
                         'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $post_submission['connection_target'],
@@ -1627,11 +1627,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         'p2p_key' => $p2p_key,
                         'tile'     => $field_tile,
                         'customizable' => 'all',
-                    ];
+                    );
                     //if not multidirectional, create the reverse direction field
                     if ( !isset( $post_submission['multidirectional'] ) ){
                         $reverse_name = $post_submission['reverse_connection_name'] ?? $post_submission['new_field_name'];
-                        $custom_field_options[$post_type][$field_key . '_reverse']  = [
+                        $custom_field_options[$post_type][$field_key . '_reverse']  = array(
                             'name'        => $reverse_name,
                             'type'        => 'connection',
                             'post_type' => $post_type,
@@ -1639,12 +1639,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             'p2p_key' => $p2p_key,
                             'tile'     => 'other',
                             'customizable' => 'all',
-                            'hidden' => isset( $post_submission['disable_reverse_connection'] )
-                        ];
+                            'hidden' => isset( $post_submission['disable_reverse_connection'] ),
+                        );
                     }
                 } else {
                     $direction = 'from';
-                    $custom_field_options[$post_type][$field_key] = [
+                    $custom_field_options[$post_type][$field_key] = array(
                         'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $post_submission['connection_target'],
@@ -1652,10 +1652,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         'p2p_key' => $p2p_key,
                         'tile'     => $field_tile,
                         'customizable' => 'all',
-                    ];
+                    );
                     //create the reverse fields on the connection post type
                     $reverse_name = empty( $post_submission['other_field_name'] ) ? $post_submission['new_field_name'] : $post_submission['other_field_name'];
-                    $custom_field_options[$post_submission['connection_target']][$field_key]  = [
+                    $custom_field_options[$post_submission['connection_target']][$field_key]  = array(
                         'name'        => $reverse_name,
                         'type'        => 'connection',
                         'post_type' => $post_type,
@@ -1663,8 +1663,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         'p2p_key' => $p2p_key,
                         'tile'     => 'other',
                         'customizable' => 'all',
-                        'hidden' => isset( $post_submission['disable_other_post_type_field'] )
-                    ];
+                        'hidden' => isset( $post_submission['disable_other_post_type_field'] ),
+                    );
                 }
             }
             if ( !empty( $new_field ) ){

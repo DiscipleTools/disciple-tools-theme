@@ -21,10 +21,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 99 );
         if ( isset( $_GET['page'] ) && $_GET['page'] === 'dt_customizations' ){
-            add_action( 'dt_customizations_tab_content', [ $this, 'content' ], 99, 1 );
-            add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+            add_action( 'dt_customizations_tab_content', array( $this, 'content' ), 99, 1 );
+            add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         }
         parent::__construct();
     }
@@ -33,7 +33,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $post_types = DT_Posts::get_post_types();
         foreach ( $post_types as $post_type ) {
             $post_type_label = DT_Posts::get_label_for_post_type( $post_type );
-            add_submenu_page( 'dt_customizations', esc_html( $post_type_label, 'disciple_tools' ), esc_html( $post_type_label, 'disciple_tools' ), 'manage_dt', "dt_customizations&post_type=$post_type", [ 'Disciple_Tools_Customizations_Menu', 'content' ] );
+            add_submenu_page( 'dt_customizations', esc_html( $post_type_label, 'disciple_tools' ), esc_html( $post_type_label, 'disciple_tools' ), 'manage_dt', "dt_customizations&post_type=$post_type", array( 'Disciple_Tools_Customizations_Menu', 'content' ) );
         }
     }
 
@@ -42,18 +42,18 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         //get field settings with deleted/hidden options
         $post_settings['fields'] = DT_Posts::get_post_field_settings( $post_type, false, true );
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
-        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
 
-        foreach ( $post_settings['fields'] ?? [] as $field_key => $field_settings ) {
+        foreach ( $post_settings['fields'] ?? array() as $field_key => $field_settings ) {
             // Check if field is not a default field and add a note in the array
             if ( !array_key_exists( $field_key, $all_non_custom_fields ) ) {
                 $post_settings['fields'][$field_key]['is_custom'] = true;
             }
             // check if a field options is not a default field option and add a note in the array
-            if ( in_array( $field_settings['type'], [ 'key_select', 'multi_select' ], true ) && isset( $field_settings['default'] ) && is_array( $field_settings['default'] ) ){
+            if ( in_array( $field_settings['type'], array( 'key_select', 'multi_select' ), true ) && isset( $field_settings['default'] ) && is_array( $field_settings['default'] ) ){
                 foreach ( $field_settings['default'] as $option_key => $option ) {
-                    if ( !array_key_exists( $option_key, $all_non_custom_fields[$field_key]['default'] ?? [] ) ) {
+                    if ( !array_key_exists( $option_key, $all_non_custom_fields[$field_key]['default'] ?? array() ) ) {
                         $post_settings['fields'][$field_key]['default'][$option_key]['is_custom'] = true;
                     }
                 }
@@ -67,31 +67,31 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public function admin_enqueue_scripts() {
-        wp_register_script( 'jquery-ui-js', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', [ 'jquery' ], '1.12.1', true );
+        wp_register_script( 'jquery-ui-js', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', array( 'jquery' ), '1.12.1', true );
         wp_enqueue_script( 'jquery-ui-js' );
         wp_register_style( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
 
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-        dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [ 'jquery', 'jquery-ui-js', 'dt_shared_scripts' ], true );
-        dt_theme_enqueue_script( 'dt-options', 'dt-core/admin/js/dt-options.js', [
+        dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', array( 'jquery', 'jquery-ui-js', 'dt_shared_scripts' ), true );
+        dt_theme_enqueue_script( 'dt-options', 'dt-core/admin/js/dt-options.js', array(
             'jquery',
             'jquery-ui-core',
             'jquery-ui-sortable',
             'jquery-ui-dialog',
             'lodash',
-            'jquery-ui-js'
-        ], true );
+            'jquery-ui-js',
+        ), true );
 
         dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
         wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css' );
 
-        wp_register_style( 'dt_settings_css', disciple_tools()->admin_css_url . 'dt-settings.css', [], filemtime( disciple_tools()->admin_css_path . 'dt-settings.css' ) );
+        wp_register_style( 'dt_settings_css', disciple_tools()->admin_css_url . 'dt-settings.css', array(), filemtime( disciple_tools()->admin_css_path . 'dt-settings.css' ) );
         wp_enqueue_style( 'dt_settings_css' );
 
         $post_type = self::get_parameter( 'post_type' );
 
-        $translations = [
+        $translations = array(
             'save' => __( 'Save', 'disciple_tools' ),
             'edit' => __( 'Edit', 'disciple_tools' ),
             'delete' => __( 'Delete', 'disciple_tools' ),
@@ -109,10 +109,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'make_selections_below' => __( 'Make Selections Below', 'disciple_tools' ),
             'sent' => _x( 'sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
             'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
-            'exclude_item' => __( 'Exclude Item', 'disciple_tools' )
-        ];
+            'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
+        );
 
-        $localized_array = [
+        $localized_array = array(
             'all_post_types' => self::get_all_post_types(),
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'languages' => dt_get_available_languages( true ),
@@ -120,11 +120,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'site_url' => get_site_url(),
             'template_dir' => get_template_directory_uri(),
-        ];
+        );
 
         if ( !empty( $post_type ) ) {
             $post_settings = self::get_post_settings_with_customization_status( $post_type );
-            $localized_array = array_merge( $localized_array, [
+            $localized_array = array_merge( $localized_array, array(
                 'post_type_settings' => $post_settings,
                 'post_type' => $post_type,
                 'post_type_label' => DT_Posts::get_label_for_post_type( $post_type ),
@@ -134,7 +134,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
                 'roles' => Disciple_Tools_Roles::get_dt_roles_and_permissions(),
                 'field_types' => DT_Posts::get_field_types(),
-            ]);
+            ));
         }
 
         wp_localize_script(
@@ -161,7 +161,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public static function get_all_post_types() {
-        $all_post_types = [];
+        $all_post_types = array();
         $post_type_keys = DT_Posts::get_post_types();
         foreach ( $post_type_keys as $key ) {
             $all_post_types[$key] = DT_Posts::get_label_for_post_type( $key );
@@ -170,8 +170,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     public static function get_default_tiles( $post_type ) {
-        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
-        $default_tiles = [];
+        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
+        $default_tiles = array();
         foreach ( $default_fields as $field ) {
             foreach ( $field as $field_key => $field_value ) {
                 if ( $field_key === 'tile' && !in_array( $field_value, $default_tiles ) ) {
@@ -445,21 +445,21 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         }
 
         // Build array containing both custom and default post types.
-        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+        $custom_post_types = get_option( 'dt_custom_post_types', array() );
         $post_types = DT_Posts::get_post_types();
-        $post_types_settings = [];
+        $post_types_settings = array();
         foreach ( $post_types as $post_type ){
             $post_types_settings[$post_type] = DT_Posts::get_post_settings( $post_type, false );
             if ( empty( $post_types_settings[$post_type] ) && isset( $custom_post_types[$post_type] ) ){
                 $post_types_settings[$post_type] = $custom_post_types[$post_type];
             }
         }
-        $this->display_post_type_settings( $request_post_type, $post_types_settings[$request_post_type] ?? [], ( isset( $custom_post_types[$request_post_type]['is_custom'] ) && $custom_post_types[$request_post_type]['is_custom'] ) );
+        $this->display_post_type_settings( $request_post_type, $post_types_settings[$request_post_type] ?? array(), ( isset( $custom_post_types[$request_post_type]['is_custom'] ) && $custom_post_types[$request_post_type]['is_custom'] ) );
     }
 
     private function display_post_type_settings( $post_type, $settings, $is_custom_post_type ){
-        $custom_settings = get_option( 'dt_custom_post_types', [] );
-        $post_type_custom_settings = $custom_settings[$post_type] ?? [];
+        $custom_settings = get_option( 'dt_custom_post_types', array() );
+        $post_type_custom_settings = $custom_settings[$post_type] ?? array();
         if ( !empty( $settings ) ){
             ?>
             <table class="widefat striped" style="margin-top: 12px;">
@@ -548,7 +548,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $tile_key = self::get_parameter( 'post_tile_key' );
 
         $tiles = DT_Posts::get_post_settings( $post_type, false );
-        $tile_fields = [];
+        $tile_fields = array();
         foreach ( $tiles['fields'] as $key => $values ) {
             if ( isset( $values['tile'] ) && $values['tile'] == $tile_key ) {
                 $tile_fields[$key] = $values;
@@ -562,10 +562,10 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         $post_settings = DT_Posts::get_post_settings( $post_type, false );
         // get field settings with deleted/hidden options
         $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
-        $post_settings['tiles']['no_tile'] = [
+        $post_settings['tiles']['no_tile'] = array(
             'label' => 'No Tile / Hidden',
             'tile_priority' => 9999,
-        ];
+        );
         ?>
         <!-- START TABLE -->
         <div class="field-settings-table">
@@ -589,7 +589,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         if ( isset( $tile_value['order'] ) ) {
                             $post_settings['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_settings['fields'] );
                         }
-                        $tile_field_order = $tile_value['order'] ?? [];
+                        $tile_field_order = $tile_value['order'] ?? array();
                         foreach ( $post_settings['fields'] as $field_key => $field_value ){
                             if ( self::field_option_in_tile( $field_key, $tile_key ) && !in_array( $field_key, $tile_field_order ) ) {
                                 $tile_field_order[] = $field_key;
@@ -668,7 +668,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function get_sortable_class( $tile_key ) {
         $sortable_class = 'sortable-tile';
-        if ( in_array( $tile_key, [ 'status', 'details', 'no-tile-hidden' ] ) ) {
+        if ( in_array( $tile_key, array( 'status', 'details', 'no-tile-hidden' ) ) ) {
             $sortable_class = 'unsortable-tile';
         }
         return $sortable_class;
@@ -698,7 +698,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             return false;
         }
         $field_type = $post_settings['fields'][$field_key]['type'];
-        if ( in_array( $field_type, [ 'hash', 'array' ] ) ){
+        if ( in_array( $field_type, array( 'hash', 'array' ) ) ){
             return false;
         }
         return true;

@@ -57,7 +57,7 @@ class Disciple_Tools_Migration_0029 extends Disciple_Tools_Migration {
                     key `meta_key_index` (`meta_key`),
                     key `object_type_index` (`object_type`),
                     key `user_id_index` (`user_id`)
-                ) $charset_collate;"
+                ) $charset_collate;",
         );
     }
 }

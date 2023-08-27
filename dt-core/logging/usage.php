@@ -16,13 +16,13 @@ class Disciple_Tools_Usage {
         $disabled = apply_filters( 'dt_disable_usage_report', $disable_usage );
         if ( ! $disabled ) {
             $url = 'https://disciple.tools/wp-json/dt-usage/v1/telemetry';
-            $args = [
+            $args = array(
                 'method' => 'POST',
                 'timeout' => 45,
                 'redirection' => 5,
                 'httpversion' => '1.0',
                 'body' => $this->telemetry(),
-            ];
+            );
 
             wp_remote_post( $url, $args );
         }
@@ -37,18 +37,18 @@ class Disciple_Tools_Usage {
         $activity = $this->activity();
         $regions = $this->regions();
         $languages = $this->languages();
-        $users = new WP_User_Query( [ 'count_total' => true ] );
+        $users = new WP_User_Query( array( 'count_total' => true ) );
 
         $site_url = get_site_url( null, '', 'https' );
         $site_url = str_replace( 'http://', 'https://', $site_url );
 
         //active plugins
-        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
-        $active_plugins_options = get_option( 'active_plugins', [] );
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', array() );
+        $active_plugins_options = get_option( 'active_plugins', array() );
         foreach ( $network_active_plugins as $plugin => $time ){
             $active_plugins_options[] = $plugin;
         }
-        $active_plugins = array_map( function ( $folder_slash_plugin ){
+        $active_plugins = array_map( function ( $folder_slash_plugin ) {
             return explode( '/', $folder_slash_plugin )[1];
         }, $active_plugins_options );
 
@@ -56,11 +56,11 @@ class Disciple_Tools_Usage {
         $using_mapbox = (bool) DT_Mapbox_API::get_key();
         $using_google_geocode = (bool) Disciple_Tools_Google_Geocode_API::get_key();
 
-        $data = [
+        $data = array(
             'validator' => hash( 'sha256', time() ),
             'site_id' => hash( 'sha256', $site_url ),
             'usage_version' => $this->version,
-            'payload' => [
+            'payload' => array(
 
                 // BASIC STATS
                 'site_id' => hash( 'sha256', $site_url ),
@@ -75,13 +75,13 @@ class Disciple_Tools_Usage {
                 // SYSTEM USAGE
                 'active_contacts' => (string) $system_usage['active_contacts'] ?: '0',
                 'total_contacts' => (string) $system_usage['total_contacts'] ?: '0',
-                'contacts_countries' => (array) $countries['contacts'] ?? [],
+                'contacts_countries' => (array) $countries['contacts'] ?? array(),
                 'active_groups' => (string) $system_usage['active_groups'] ?: '0',
                 'total_groups' => (string) $system_usage['total_groups'] ?: '0',
-                'group_countries' => (array) $countries['groups'] ?? [],
+                'group_countries' => (array) $countries['groups'] ?? array(),
                 'active_churches' => (string) $system_usage['active_churches'] ?: '0',
                 'total_churches' => (string) $system_usage['total_churches'] ?: '0',
-                'church_countries' => (array) $countries['churches'] ?? [],
+                'church_countries' => (array) $countries['churches'] ?? array(),
                 'active_users' => (string) $activity['active_users'] ?: '0',
                 'total_users' => (string) $users->get_total() ?: '0',
                 'user_languages' => $languages,
@@ -95,8 +95,8 @@ class Disciple_Tools_Usage {
                 'using_mapbox' => $using_mapbox,
                 'using_google_geocode' => $using_google_geocode,
                 'is_multisite' => is_multisite(),
-            ],
-        ];
+            ),
+        );
 
         return $data;
     }
@@ -200,13 +200,13 @@ class Disciple_Tools_Usage {
         return $data;
     }
 
-    public function countries_usage() : array {
+    public function countries_usage(): array {
         global $wpdb;
-        $usage = [
-            'contacts' => [],
-            'groups' => [],
-            'churches' => []
-        ];
+        $usage = array(
+            'contacts' => array(),
+            'groups' => array(),
+            'churches' => array(),
+        );
         $results = $wpdb->get_results("
             SELECT DISTINCT lg.admin0_grid_id, 'groups' as type_name
                 FROM $wpdb->posts as p
@@ -241,9 +241,9 @@ class Disciple_Tools_Usage {
         return $usage;
     }
 
-    private function languages() : array {
+    private function languages(): array {
         global $wpdb;
-        $data = [];
+        $data = array();
 
         $raw = $wpdb->get_results($wpdb->prepare( "
             SELECT um.meta_value as code, count(*) as total
@@ -261,7 +261,6 @@ class Disciple_Tools_Usage {
 
         return $data;
     }
-
 }
 
 class Disciple_Tools_Usage_Scheduler {
@@ -270,7 +269,7 @@ class Disciple_Tools_Usage_Scheduler {
         if ( ! wp_next_scheduled( 'usage' ) ) {
             wp_schedule_event( strtotime( 'today 1am' ), 'weekly', 'usage' );
         }
-        add_action( 'usage', [ $this, 'action' ] );
+        add_action( 'usage', array( $this, 'action' ) );
     }
 
     public static function action(){

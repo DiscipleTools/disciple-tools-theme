@@ -19,20 +19,20 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     public function __construct() {
-        add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ], 9, 1 );
-        add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 9, 1 );
+        add_action( 'dt_extensions_tab_content', array( $this, 'content' ), 99, 1 );
         parent::__construct();
     }
 
     public function admin_enqueue_scripts() {
         if ( isset( $_GET['page'] ) && $_GET['page'] === 'dt_extensions' ){
-            dt_theme_enqueue_script( 'dt-extensions', 'dt-core/admin/js/dt-extensions.js', [], true );
+            dt_theme_enqueue_script( 'dt-extensions', 'dt-core/admin/js/dt-extensions.js', array(), true );
             dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
             wp_localize_script(
                 'dt-extensions', 'plugins', array(
                     'can_install_plugins' => current_user_can( 'install_plugins' ),
                     'all_plugins' => self::get_dt_plugins(),
-                    'translations' => [
+                    'translations' => array(
                         'install' => __( 'Install', 'disciple_tools' ),
                         'delete' => __( 'Delete', 'disciple_tools' ),
                         'activate' => __( 'Activate', 'disciple_tools' ),
@@ -52,7 +52,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         'magic_links' => __( 'Magic Links', 'disciple_tools' ),
                         'laboratory' => __( 'Laboratory', 'disciple_tools' ),
                         'something_went_wrong' => __( 'Something went wrong', 'disciple_tools' ),
-                    ],
+                    ),
                 )
             );
         }
@@ -175,8 +175,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     //main page
     public function box_message( $tab ) {
-        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
-        $active_plugins = get_option( 'active_plugins', [] );
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', array() );
+        $active_plugins = get_option( 'active_plugins', array() );
         foreach ( $network_active_plugins as $plugin => $time ){
             $active_plugins[] = $plugin;
         }
@@ -280,7 +280,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $plugins = json_decode( trim( file_get_contents( 'https://disciple.tools/wp-content/themes/disciple-tools-public-site/plugin-feed.php' ) ) );
                 set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
         }
-        $distinct_categories = [ 'featured', 'all plugins' ];
+        $distinct_categories = array( 'featured', 'all plugins' );
         foreach ( $plugins as $plugin ) {
             $plugin_categories = explode( ',', $plugin->categories ?? false );
             foreach ( $plugin_categories as $plug_cat ) {
@@ -300,8 +300,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 set_transient( 'dt_plugins_feed', $plugins, HOUR_IN_SECONDS );
         }
 
-        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
-        $active_plugins = get_option( 'active_plugins', [] );
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', array() );
+        $active_plugins = get_option( 'active_plugins', array() );
 
         foreach ( $network_active_plugins as $plugin => $time ){
             $active_plugins[] = $plugin;

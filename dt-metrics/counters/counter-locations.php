@@ -55,9 +55,8 @@ class Disciple_Tools_Counter_Locations extends Disciple_Tools_Counter_Base
 
 
             default: // countable outreach
-                return [];
+                return array();
                 break;
         }
     }
-
 }

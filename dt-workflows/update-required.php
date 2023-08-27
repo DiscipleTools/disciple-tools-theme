@@ -14,13 +14,12 @@ class Disciple_Tools_Update_Needed {
         if ( ! wp_next_scheduled( 'update-required' ) ) {
             wp_schedule_event( strtotime( 'today 1am' ), 'daily', 'update-required' );
         }
-        add_action( 'update-required', [ $this, 'find_contacts_that_need_an_update' ] );
+        add_action( 'update-required', array( $this, 'find_contacts_that_need_an_update' ) );
     }
 
     public static function find_contacts_that_need_an_update(){
         do_action( 'dt_find_contacts_that_need_an_update' );
     }
-
 }
 
 class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
@@ -65,11 +64,11 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     foreach ( $contacts_need_update as $contact ) {
                         $user_name    = ( '@' . dt_get_assigned_name( $contact->ID, true ) . ' ' ) ?? '';
                         $comment_html = esc_html( $user_name . $setting['comment'] );
-                        DT_Posts::add_post_comment( 'contacts', $contact->ID, $comment_html, 'comment', [
+                        DT_Posts::add_post_comment( 'contacts', $contact->ID, $comment_html, 'comment', array(
                             'user_id'        => 0,
-                            'comment_author' => __( 'Update Needed', 'disciple_tools' )
-                        ], false, true );
-                        DT_Posts::update_post( 'contacts', $contact->ID, [ 'requires_update' => true ], false );
+                            'comment_author' => __( 'Update Needed', 'disciple_tools' ),
+                        ), false, true );
+                        DT_Posts::update_post( 'contacts', $contact->ID, array( 'requires_update' => true ), false );
                     }
                 }
             }
@@ -104,11 +103,11 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                 foreach ( $groups_need_update as $group ) {
                     $user_name    = ( '@' . dt_get_assigned_name( $group->ID, true ) . ' ' ) ?? '';
                     $comment_html = esc_html( $user_name . $setting['comment'] );
-                    DT_Posts::add_post_comment( 'groups', $group->ID, $comment_html, 'updated_needed', [
+                    DT_Posts::add_post_comment( 'groups', $group->ID, $comment_html, 'updated_needed', array(
                         'user_id' => 0,
-                        'comment_author' => __( 'Update Needed', 'disciple_tools' )
-                    ], false, true );
-                    DT_Posts::update_post( 'groups', $group->ID, [ 'requires_update' => true ], false );
+                        'comment_author' => __( 'Update Needed', 'disciple_tools' ),
+                    ), false, true );
+                    DT_Posts::update_post( 'groups', $group->ID, array( 'requires_update' => true ), false );
                 }
             }
         }

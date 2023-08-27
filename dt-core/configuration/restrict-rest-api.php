@@ -59,8 +59,8 @@ function dt_dra_disable_via_filters() {
 /*
  * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
  */
-add_filter( 'rest_endpoints', function( $endpoints ){
-    $allowed_wp_v2_paths = apply_filters( 'allowed_wp_v2_paths', [ '/wp/v2/users/me' ] ); // enable wp/v2 endpoints in certain circumstances
+add_filter( 'rest_endpoints', function ( $endpoints ) {
+    $allowed_wp_v2_paths = apply_filters( 'allowed_wp_v2_paths', array( '/wp/v2/users/me' ) ); // enable wp/v2 endpoints in certain circumstances
     foreach ( $endpoints as $path => $endpoint ){
         if ( trailingslashit( $path ) === '/wp/v2/' ){
             continue;
@@ -103,7 +103,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
         $authorized = true;
     }
 
-    $allowed_paths = get_option( 'dt_api_whitelist', [] );
+    $allowed_paths = get_option( 'dt_api_whitelist', array() );
 
     if ( in_array( $path, $allowed_paths ) ) {
         $authorized = true;
@@ -125,7 +125,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
             $site_link_token = str_replace( 'Bearer ', '', $auth_token );
             $authorized = Site_Link_System::verify_transfer_token( $site_link_token );
             if ( !$authorized ){
-                return new WP_Error( 'rest_cannot_access', 'Invalid token', [ 'status' => rest_authorization_required_code() ] );
+                return new WP_Error( 'rest_cannot_access', 'Invalid token', array( 'status' => rest_authorization_required_code() ) );
             }
         }
     }
@@ -134,7 +134,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
      * All other requests to the REST API require a person to be logged in to make a REST Request.
      */
     if ( !is_user_logged_in() && !$authorized ) {
-        return new WP_Error( 'rest_cannot_access', 'Only authenticated users can access the REST API.', [ 'status' => rest_authorization_required_code() ] );
+        return new WP_Error( 'rest_cannot_access', 'Only authenticated users can access the REST API.', array( 'status' => rest_authorization_required_code() ) );
     }
 
     return $access;

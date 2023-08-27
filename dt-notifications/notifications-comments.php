@@ -47,7 +47,7 @@ class Disciple_Tools_Notifications_Comments
             $users_to_notify = apply_filters( 'dt_filter_users_receiving_comment_notification', $users_to_notify, $post_type, $post_id, $comment );
 
             $source_user_id = $comment->user_id;
-            $notification = [
+            $notification = array(
                 'user_id'             => '',
                 'source_user_id'      => $source_user_id,
                 'post_id'             => (int) $post_id,
@@ -59,7 +59,7 @@ class Disciple_Tools_Notifications_Comments
                 'is_new'              => 1,
                 'field_key'           => 'comments',
                 'field_value'         => '',
-            ];
+            );
 
 
             foreach ( $users_to_notify as $user_to_notify ) {
@@ -86,9 +86,9 @@ class Disciple_Tools_Notifications_Comments
                         $notification['notification_note'] = Disciple_Tools_Notifications::get_notification_message_html( $notification );
 
                         if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
-                            do_action( 'send_notification_on_channels', $user_to_notify, $notification, 'mentions', [] );
+                            do_action( 'send_notification_on_channels', $user_to_notify, $notification, 'mentions', array() );
                         } else {
-                            do_action( 'send_notification_on_channels', $user_to_notify, $notification, 'comments', [] );
+                            do_action( 'send_notification_on_channels', $user_to_notify, $notification, 'comments', array() );
                         }
                     }
                 }
@@ -121,7 +121,7 @@ class Disciple_Tools_Notifications_Comments
     public static function match_mention( $comment_content ) {
         preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
 
-        $user_ids = [];
+        $user_ids = array();
         foreach ( $matches[2] as $match ) {
 
             // trim punctuation
@@ -135,10 +135,10 @@ class Disciple_Tools_Notifications_Comments
                 }
             }
         }
-        return [
+        return array(
             'user_ids' => $user_ids,
-            'comment' => Disciple_Tools_Notifications::format_comment( $comment_content )
-        ];
+            'comment' => Disciple_Tools_Notifications::format_comment( $comment_content ),
+        );
 
 //        return empty( $user_ids ) ? false : $user_ids;
     }
@@ -169,7 +169,7 @@ class Disciple_Tools_Notifications_Comments
     ) {
 
         dt_notification_insert(
-            [
+            array(
                 'user_id'             => $mentioned_user_id,
                 'source_user_id'      => $source_user_id,
                 'post_id'             => $post_id,
@@ -180,8 +180,8 @@ class Disciple_Tools_Notifications_Comments
                 'date_notified'       => $date_notified,
                 'is_new'              => 1,
                 'field_key'           => $field_key,
-                'field_value'           => $field_value
-            ]
+                'field_value'           => $field_value,
+            )
         );
     }
 
@@ -196,13 +196,13 @@ class Disciple_Tools_Notifications_Comments
     private static function delete_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, $date_notified ) {
 
         dt_notification_delete(
-            [
+            array(
                 'user_id'           => $mentioned_user_id,
                 'post_id'           => $post_id,
                 'secondary_item_id' => $comment_id,
                 'notification_name' => 'mention',
                 'date_notified'     => $date_notified,
-            ]
+            )
         );
     }
 }

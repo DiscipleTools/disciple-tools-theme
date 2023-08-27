@@ -25,18 +25,18 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 125, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 125, 1 );
-        add_action( 'admin_enqueue_scripts', [ $this, 'dt_utilities_workflows_scripts' ] );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 125 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 125, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 125, 1 );
+        add_action( 'admin_enqueue_scripts', array( $this, 'dt_utilities_workflows_scripts' ) );
         parent::__construct();
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Workflows', 'disciple_tools' ), __( 'Workflows', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=workflows', [
+        add_submenu_page( 'dt_options', __( 'Workflows', 'disciple_tools' ), __( 'Workflows', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=workflows', array(
             'Disciple_Tools_Settings_Menu',
-            'content'
-        ] );
+            'content',
+        ) );
     }
 
     /**
@@ -56,20 +56,20 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
                 wp_register_style( 'daterangepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css' );
                 wp_enqueue_style( 'daterangepicker-css' );
-                wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', [ 'moment' ], '3.1.0', true );
+                wp_enqueue_script( 'daterangepicker-js', 'https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.js', array( 'moment' ), '3.1.0', true );
 
-                $script_dependencies = [
+                $script_dependencies = array(
                     'moment',
                     'jquery',
                     'lodash',
                     'typeahead-jquery',
                     'daterangepicker-js',
-                ];
+                );
 
                 // Unique handling of Google API
                 if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
                     $api_key = Disciple_Tools_Google_Geocode_API::get_key();
-                    wp_enqueue_script( 'google-api-js', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' . $api_key, [ 'jquery' ], '1', true );
+                    wp_enqueue_script( 'google-api-js', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' . $api_key, array( 'jquery' ), '1', true );
                     $script_dependencies[] = 'google-api-js';
                 }
 
@@ -79,7 +79,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         'workflows_design_section_hidden_post_types'       => $this->fetch_post_types(),
                         'workflows_design_section_hidden_post_field_types' => $this->fetch_post_field_types(),
                         'workflows_design_section_hidden_custom_actions'   => $this->fetch_custom_actions(),
-                        'mappings'                                         => $this->fetch_mapping_config()
+                        'mappings'                                         => $this->fetch_mapping_config(),
                     )
                 );
             }
@@ -87,20 +87,20 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function fetch_mapping_config() {
-        $config = [
-            'mapbox' => [
+        $config = array(
+            'mapbox' => array(
                 'enabled'  => false,
                 'endpoint' => 'https://api.mapbox.com/geocoding/v5/mapbox.places/',
                 'settings' => '.json?types=country,region,postcode,district,place,locality,neighborhood,address&limit=6&access_token=',
-                'key'      => ''
-            ],
-            'google' => [
+                'key'      => '',
+            ),
+            'google' => array(
                 'enabled'  => false,
                 'endpoint' => '',
                 'settings' => '',
-                'key'      => ''
-            ]
-        ];
+                'key'      => '',
+            ),
+        );
 
         if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
             $config['mapbox']['enabled'] = true;
@@ -124,7 +124,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function final_post_param_sanitization( $str ) {
-        return str_replace( [ '&lt;', '&gt;' ], [ '<', '>' ], $str );
+        return str_replace( array( '&lt;', '&gt;' ), array( '<', '>' ), $str );
     }
 
     private function process_updates() {
@@ -156,16 +156,16 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                     $current_post_type_workflow->name = $post_type_name;
 
                     if ( ! isset( $current_post_type_workflow->workflows ) ) {
-                        $current_post_type_workflow->workflows = (object) [];
+                        $current_post_type_workflow->workflows = (object) array();
                     }
-                    $current_post_type_workflow->workflows->{$workflow_id} = (object) [
+                    $current_post_type_workflow->workflows->{$workflow_id} = (object) array(
                         'id'         => $workflow_id,
                         'name'       => $workflow_name,
                         'enabled'    => $workflow_enabled,
                         'trigger'    => $trigger,
                         'conditions' => $conditions,
-                        'actions'    => $actions
-                    ];
+                        'actions'    => $actions,
+                    );
 
                     // Save latest updates
                     $this->update_option_workflows( 'dt_workflows_post_types', $post_type_id, $current_post_type_workflow );
@@ -181,13 +181,13 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                     $workflow_enabled = $updating_post_type_workflow->workflow_enabled;
 
                     if ( ! isset( $current_default_workflow->workflows ) ) {
-                        $current_default_workflow->workflows = (object) [];
+                        $current_default_workflow->workflows = (object) array();
                     }
-                    $current_default_workflow->workflows->{$workflow_id} = (object) [
+                    $current_default_workflow->workflows->{$workflow_id} = (object) array(
                         'id'      => $workflow_id,
                         'name'    => $workflow_name,
-                        'enabled' => $workflow_enabled
-                    ];
+                        'enabled' => $workflow_enabled,
+                    );
 
                     // Save latest updates
                     $this->update_option_workflows( 'dt_workflows_defaults', $updating_post_type_workflow->post_type_id, $current_default_workflow );
@@ -221,14 +221,14 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
     private function get_option_workflows( $option_id, $post_type_id ) {
         $option           = get_option( $option_id );
-        $option_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
+        $option_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) array();
 
-        return ( isset( $option_workflows->{$post_type_id} ) ) ? $option_workflows->{$post_type_id} : (object) [];
+        return ( isset( $option_workflows->{$post_type_id} ) ) ? $option_workflows->{$post_type_id} : (object) array();
     }
 
     private function update_option_workflows( $option_id, $post_type_id, $workflow ) {
         $option           = get_option( $option_id );
-        $option_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) [];
+        $option_workflows = ( ! empty( $option ) ) ? json_decode( $option ) : (object) array();
 
         $option_workflows->{$post_type_id} = $workflow;
 
@@ -258,13 +258,13 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
         // Assuming we have a valid selection, return details
         if ( ! empty( $selected_post_type_id ) && ! empty( $selected_post_type_name ) ) {
-            return [
+            return array(
                 'id'   => $selected_post_type_id,
-                'name' => $selected_post_type_name
-            ];
+                'name' => $selected_post_type_name,
+            );
         }
 
-        return [];
+        return array();
     }
 
     public function content( $tab ) {
@@ -285,7 +285,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function workflows_post_types_section( $selected_post_type ) {
-        $this->box( 'top', 'Edit Workflows', [ 'col_span' => 1 ] );
+        $this->box( 'top', 'Edit Workflows', array( 'col_span' => 1 ) );
         ?>
 
         <table style="min-width: 100%; border: 0;">
@@ -343,10 +343,10 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             $option_default_workflows = $this->get_option_workflows( 'dt_workflows_defaults', $selected_post_type['id'] );
             echo '<input type="hidden" id="workflows_management_section_hidden_option_default_workflows" value="' . esc_attr( json_encode( $option_default_workflows ) ) . '">';
 
-            $filtered_workflows_defaults = apply_filters( 'dt_workflows', [], $selected_post_type['id'] );
+            $filtered_workflows_defaults = apply_filters( 'dt_workflows', array(), $selected_post_type['id'] );
             echo '<input type="hidden" id="workflows_management_section_hidden_filtered_workflows_defaults" value="' . esc_attr( json_encode( $filtered_workflows_defaults ) ) . '">';
 
-            $this->box( 'top', 'Add new workflows or modify existing ones on ' . $selected_post_type['name'], [ 'col_span' => 1 ] );
+            $this->box( 'top', 'Add new workflows or modify existing ones on ' . $selected_post_type['name'], array( 'col_span' => 1 ) );
             ?>
 
             <table style="min-width: 100%; border: 0;">
@@ -462,7 +462,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function fields_to_string_list( $fields ): string {
-        $names = [];
+        $names = array();
 
         if ( ! empty( $fields ) ) {
             foreach ( $fields as $field ) {
@@ -486,7 +486,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             echo '<input type="hidden" id="workflows_design_section_hidden_selected_post_type_name" value="' . esc_attr( $selected_post_type['name'] ?? '' ) . '">';
             echo '<input type="hidden" id="workflows_design_section_hidden_workflow_id" value="' . esc_attr( time() ) . '">';
 
-            $this->box( 'top', 'Workflow Steps', [ 'col_span' => 1 ] );
+            $this->box( 'top', 'Workflow Steps', array( 'col_span' => 1 ) );
             ?>
 
             <div id="workflows_design_section_steps" class="container">
@@ -858,18 +858,18 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function ignore_field_types(): array {
-        return [
+        return array(
             'array',
             'task',
             'post_user_meta',
             'datetime_series',
-            'hash'
-        ];
+            'hash',
+        );
     }
 
     private function fetch_post_types(): array {
 
-        $post_types = [];
+        $post_types = array();
 
         $dt_post_types = DT_Posts::get_post_types();
         if ( ! empty( $dt_post_types ) ) {
@@ -879,28 +879,28 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             foreach ( $dt_post_types as $dt_post_type ) {
                 $dt_post_type_settings = DT_Posts::get_post_settings( $dt_post_type );
 
-                $fields = [];
+                $fields = array();
                 foreach ( $dt_post_type_settings['fields'] as $key => $dt_field ) {
 
                     if ( ! in_array( $dt_field['type'], $field_types_to_ignore ) && ! ( $dt_field['hidden'] ?? false ) ) {
-                        $fields[] = [
+                        $fields[] = array(
                             'id'        => $key,
                             'name'      => $dt_field['name'],
                             'type'      => $dt_field['type'],
                             'defaults'  => $dt_field['default'] ?? '',
-                            'post_type' => $dt_field['post_type'] ?? ''
-                        ];
+                            'post_type' => $dt_field['post_type'] ?? '',
+                        );
                     }
                 }
 
                 $post_type                = $dt_post_type_settings['post_type'];
-                $post_types[ $post_type ] = [
+                $post_types[ $post_type ] = array(
                     'id'       => $post_type,
                     'name'     => $dt_post_type_settings['label_plural'],
                     'fields'   => $fields,
                     'base_url' => rest_url(),
-                    'wp_nonce' => esc_attr( wp_create_nonce( 'wp_rest' ) )
-                ];
+                    'wp_nonce' => esc_attr( wp_create_nonce( 'wp_rest' ) ),
+                );
             }
         }
 
@@ -909,7 +909,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
     private function fetch_post_field_types(): array {
 
-        $post_field_types = [];
+        $post_field_types = array();
 
         $dt_post_types = DT_Posts::get_post_types();
         if ( ! empty( $dt_post_types ) ) {
@@ -927,10 +927,10 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     private function fetch_custom_actions(): array {
-        $filtered_custom_actions = apply_filters( 'dt_workflows_custom_actions', [] );
+        $filtered_custom_actions = apply_filters( 'dt_workflows_custom_actions', array() );
 
         // Only focus on the actions which have been flagged for display
-        $actions = [];
+        $actions = array();
         foreach ( $filtered_custom_actions as $action ) {
             if ( ! empty( $action ) && $action->displayed ) {
                 $actions[] = $action;
@@ -950,7 +950,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
         return $workflows;
     }
-
 }
 
 Disciple_Tools_Tab_Workflows::instance();

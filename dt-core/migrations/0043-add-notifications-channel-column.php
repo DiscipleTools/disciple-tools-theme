@@ -18,7 +18,6 @@ class Disciple_Tools_Migration_0043 extends Disciple_Tools_Migration {
 
         // add parent_id
         $wpdb->query( "ALTER TABLE $wpdb->dt_notifications ADD `channels` VARCHAR(70) NULL DEFAULT NULL AFTER `is_new`" );
-
     }
 
     public function down() {
@@ -31,6 +30,6 @@ class Disciple_Tools_Migration_0043 extends Disciple_Tools_Migration {
     }
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }

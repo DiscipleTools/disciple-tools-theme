@@ -41,14 +41,14 @@
 
                 <?php if ( is_singular( 'contacts' ) ) :
                     $post_type = get_post_type();
-                    $sections = [
-                        [
+                    $sections = array(
+                        array(
                             'key' => 'comment',
                             'label' => __( 'Comments', 'disciple_tools' ),
                             'selected_by_default' => true,
                             'always_show' => true,
-                        ]
-                    ];
+                        ),
+                    );
                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
 
                         <div class="grid-x">
@@ -57,7 +57,7 @@
                             </div>
                             <select id="comment_type_selector" class="cell auto">
                                 <?php
-                                $section_keys = [ 'activity' ];
+                                $section_keys = array( 'activity' );
                                 foreach ( $sections as $section ) {
                                     if ( ! in_array( $section['key'], $section_keys ) && ( ! isset( $section['is_comment_type'] ) || ( isset( $section['enabled'] ) && $section['enabled'] ) ) ) {
                                         $section_keys[] = $section['key'] ?>
@@ -89,22 +89,22 @@
 
                     <?php
                     $post_type = get_post_type();
-                    $sections = [
-                        [
+                    $sections = array(
+                        array(
                             'key' => 'comment',
                             'label' => __( 'Comments', 'disciple_tools' ),
                             'selected_by_default' => true,
                             'always_show' => true,
-                        ],
-                        [
+                        ),
+                        array(
                             'key' => 'activity',
                             'label' => __( 'Activity', 'disciple_tools' ),
                             'selected_by_default' => true,
                             'always_show' => true,
-                        ]
-                    ];
+                        ),
+                    );
                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
-                    $section_keys = [];
+                    $section_keys = array();
                     foreach ( $sections as $section ) :
                         if ( isset( $section['key'] ) && isset( $section['label'] ) && !in_array( $section['key'], $section_keys ) ) :
                             $section_keys[] = $section['key'];
@@ -173,21 +173,21 @@
             <div class="cell small-12" id="edit_typeOfComment">
                 <?php if ( is_singular( 'contacts' ) ) :
                     $post_type = get_post_type();
-                    $sections = [
-                        [
+                    $sections = array(
+                        array(
                             'key' => 'comment',
                             'label' => __( 'Comments', 'disciple_tools' ),
                             'selected_by_default' => true,
                             'always_show' => true,
-                        ]
-                    ];
+                        ),
+                    );
                     $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
                         <div class="section-subheader">
                             <?php esc_html_e( 'Type of Comment', 'disciple_tools' ) ?>
                         </div>
                         <select id="edit_comment_type_selector" class="">
                             <?php
-                            $section_keys = [];
+                            $section_keys = array();
                             foreach ( $sections as $section ) {
                                 if ( !in_array( $section['key'], $section_keys ) ) {
                                     $section_keys[] = $section['key'] ?>

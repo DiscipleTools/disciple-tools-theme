@@ -44,7 +44,7 @@ class Disciple_Tools_Migration_0001 extends Disciple_Tools_Migration {
                     `old_value` VARCHAR(255) NOT NULL DEFAULT '',
                     `field_type` VARCHAR(255) NOT NULL DEFAULT '',
                     PRIMARY KEY (`histid`)
-                ) $charset_collate;"
+                ) $charset_collate;",
         );
     }
 }

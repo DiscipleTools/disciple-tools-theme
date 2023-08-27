@@ -7,4 +7,3 @@ if ( is_single() ){
 } else {
     dt_route_front_page();
 }
-

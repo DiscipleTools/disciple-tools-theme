@@ -24,14 +24,14 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 90 );
-        add_action( 'init', [ $this, 'process_data' ] );
-        add_action( 'dt_metrics_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 90 );
+        add_action( 'init', array( $this, 'process_data' ) );
+        add_action( 'dt_metrics_tab_content', array( $this, 'content' ), 99, 1 );
         parent::__construct();
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_metrics', __( 'Create New', 'disciple_tools' ), __( 'Create New', 'disciple_tools' ), 'manage_dt', 'dt_metrics&tab=new', [ 'Disciple_Tools_Metrics_Menu', 'content' ] );
+        add_submenu_page( 'dt_metrics', __( 'Create New', 'disciple_tools' ), __( 'Create New', 'disciple_tools' ), 'manage_dt', 'dt_metrics&tab=new', array( 'Disciple_Tools_Metrics_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -52,14 +52,14 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                     if ( isset( $_POST['create_report'], $_POST['report']['year'], $_POST['report']['month'] ) ){
                         $year = sanitize_key( wp_unslash( $_POST['report']['year'] ) );
                         $month = sanitize_key( wp_unslash( $_POST['report']['month'] ) );
-                        $report = [
+                        $report = array(
                             'post_id' => 0,
                             'type' => 'monthly_report',
                             'payload' => null,
                             'time_end' => strtotime( $year . '-' . $month . '-01' ),
                             'timestamp' => time(),
-                            'meta_input' => []
-                        ];
+                            'meta_input' => array(),
+                        );
 
                         foreach ( $post_report as $key => $value ){
                             $key = sanitize_text_field( wp_unslash( $key ) );
@@ -76,7 +76,7 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
                         if ( ! empty( $id ) ) {
                             global $wpdb;
                             $current_meta_raw = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reportmeta WHERE report_id = %s", $id ), ARRAY_A );
-                            $current_meta = [];
+                            $current_meta = array();
                             foreach ( $current_meta_raw as $value ){
                                 $current_meta[$value['meta_key']] = $value;
                             }
@@ -124,11 +124,11 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function table( $tab ) {
-        $sources = get_option( 'dt_critical_path_sources', [] );
-        $report = [
+        $sources = get_option( 'dt_critical_path_sources', array() );
+        $report = array(
             'year' => '',
-            'month' => ''
-        ];
+            'month' => '',
+        );
 
         if ( $tab == 'new' ){
             $this->box( 'top', 'Create new Report' );
@@ -230,7 +230,6 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
         $this->box( 'bottom' );
     }
-
 }
 Disciple_Tools_Metric_Edit_Tab::instance();
 

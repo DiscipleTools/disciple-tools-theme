@@ -54,12 +54,12 @@ final class Disciple_Tools_Dashboard
     public function __construct() {
         if ( is_admin() ) {
             /* Add dashboard widgets */
-            add_action( 'wp_dashboard_setup', [ $this, 'add_widgets' ] );
+            add_action( 'wp_dashboard_setup', array( $this, 'add_widgets' ) );
 
-            add_action( 'wp_dashboard_setup', [ $this, 'dt_dashboard_tile' ] );
+            add_action( 'wp_dashboard_setup', array( $this, 'dt_dashboard_tile' ) );
 
             /* Remove Dashboard defaults */
-            add_action( 'admin_init', [ $this, 'remove_dashboard_meta' ] );
+            add_action( 'admin_init', array( $this, 'remove_dashboard_meta' ) );
             remove_action( 'welcome_panel', 'wp_welcome_panel' );
         }
     } // End __construct()
@@ -71,7 +71,7 @@ final class Disciple_Tools_Dashboard
      * @access public
      */
     public function add_widgets() {
-        add_filter( 'dashboard_recent_posts_query_args', [ $this, 'add_page_to_dashboard_activity' ] );
+        add_filter( 'dashboard_recent_posts_query_args', array( $this, 'add_page_to_dashboard_activity' ) );
     }
 
 
@@ -119,7 +119,7 @@ final class Disciple_Tools_Dashboard
             //Set your post type
             $query_args['post_type'][] = 'contacts';
         } else {
-            $temp = [ $query_args['post_type'], 'contacts' ];
+            $temp = array( $query_args['post_type'], 'contacts' );
             $query_args['post_type'] = $temp;
         }
 
@@ -133,11 +133,11 @@ final class Disciple_Tools_Dashboard
         // Check for a dismissed item button click
         if ( ! empty( $_POST['dismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
             $item_key = sanitize_text_field( wp_unslash( $_POST['dismiss'] ) );
-            $setup_options = get_option( 'dt_setup_wizard_options', [] );
+            $setup_options = get_option( 'dt_setup_wizard_options', array() );
 
             // Create the option and populate it if it doesn't exist and/or is empty
             if ( ! isset( $setup_options[$item_key] ) ) {
-                $setup_options[$item_key] = [ 'dismissed' => true ];
+                $setup_options[$item_key] = array( 'dismissed' => true );
             } else {
                 $setup_options[$item_key]['dismissed'] = true;
             }
@@ -147,9 +147,9 @@ final class Disciple_Tools_Dashboard
         // Check for an un-dismissed item button click
         else if ( ! empty( $_POST['undismiss'] ) && ! empty( $_POST['setup_wizard_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['setup_wizard_nonce'] ) ), 'update_setup_wizard_items' ) ) {
             $item_key = sanitize_text_field( wp_unslash( $_POST['undismiss'] ) );
-            $setup_options = get_option( 'dt_setup_wizard_options', [] );
+            $setup_options = get_option( 'dt_setup_wizard_options', array() );
             if ( ! isset( $setup_options[$item_key] ) ) {
-                $setup_options[$item_key] = [ 'dismissed' => false ];
+                $setup_options[$item_key] = array( 'dismissed' => false );
             } else {
                 $setup_options[$item_key]['dismissed'] = false;
             }
@@ -157,7 +157,7 @@ final class Disciple_Tools_Dashboard
         }
 
         function dt_show_news_widget() {
-            include_once( ABSPATH . WPINC . '/feed.php' );
+            include_once ABSPATH . WPINC . '/feed.php';
 
             if ( function_exists( 'fetch_feed' ) ) {
                 $news_feed = fetch_feed( 'https://disciple.tools/news/feed/' );
@@ -231,17 +231,17 @@ final class Disciple_Tools_Dashboard
 
         add_meta_box( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), 'dt_show_news_widget', 'dashboard', 'side', 'high' );
 
-        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function () {
 
-            $setup_options = get_option( 'dt_setup_wizard_options', [] );
-            $default = [
-                'base_email' => [
+            $setup_options = get_option( 'dt_setup_wizard_options', array() );
+            $default = array(
+                'base_email' => array(
                     'label' => 'Base User',
                     'complete' => false,
                     'link' => admin_url( 'admin.php?page=dt_options&tab=general' ),
-                    'description' => 'Default Assigned to for new contacts'
-                ],
-            ];
+                    'description' => 'Default Assigned to for new contacts',
+                ),
+            );
 
             $dt_setup_wizard_items = apply_filters( 'dt_setup_wizard_items', $default, $setup_options );
 
@@ -254,7 +254,7 @@ final class Disciple_Tools_Dashboard
                 }
 
                 if ( $dt_setup_wizard_items[$item_key]['complete'] === true ) {
-                    $completed ++;
+                    $completed++;
                 }
             }
 
@@ -364,99 +364,99 @@ final class Disciple_Tools_Dashboard
 }
 
 
-add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
+add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ) {
     $mapbox_key = DT_Mapbox_API::get_key();
 
-    $items['https_check'] = [
+    $items['https_check'] = array(
         'label' => 'Upgrade HTTP to HTTPS',
         'description' => 'Encrypt your traffic from network sniffers',
         'link' => esc_url( 'https://wordpress.org/support/article/https-for-wordpress/' ),
         'complete' => is_ssl(),
-        'hide_mark_done' => true
-    ];
-    $items['mapbox_key'] = [
+        'hide_mark_done' => true,
+    );
+    $items['mapbox_key'] = array(
         'label' => 'Upgrade Mapping',
         'description' => 'Better results when search locations and better mapping',
         'link' => admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ),
         'complete' => (bool) $mapbox_key,
-    ];
+    );
     if ( $mapbox_key ) {
         $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
-        $items['upgraded_mapbox_records'] = [
+        $items['upgraded_mapbox_records'] = array(
             'label' => 'Upgrade Users and Record Mapping',
             'description' => ' Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.',
             'link' => admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ),
             'complete' => $mapbox_upgraded,
-            'hide_mark_done' => true
-        ];
+            'hide_mark_done' => true,
+        );
     }
 
-    $items['explore_user_invite'] = [
+    $items['explore_user_invite'] = array(
         'label' => 'Explore User Invite Area',
         'description' => 'Navigate the user invite area and have a friend or co-worker start using Disciple.Tools.',
         'link' => admin_url( 'user-new.php' ),
         'complete' => false,
-        'hide_mark_done' => false
-    ];
-    $items['explore_plugins'] = [
+        'hide_mark_done' => false,
+    );
+    $items['explore_plugins'] = array(
         'label' => 'Explore Recommended Plugins',
         'description' => "Navigate the recommended plugins section to see different ways to extend your Disciple.Tools experience.\r\n Also see https://disciple.tools/plugins/",
         'link' => admin_url( 'admin.php?page=dt_extensions' ),
         'complete' => false,
-        'hide_mark_done' => false
-    ];
-    $items['explore_custom_fields'] = [
+        'hide_mark_done' => false,
+    );
+    $items['explore_custom_fields'] = array(
         'label' => 'Explore Custom Fields',
         'description' => 'Explore the custom fields section and unlock its full potential.',
         'link' => admin_url( 'admin.php?page=dt_options&tab=custom-fields' ),
         'complete' => false,
-        'hide_mark_done' => false
-    ];
-    $items['explore_custom_tiles'] = [
+        'hide_mark_done' => false,
+    );
+    $items['explore_custom_tiles'] = array(
         'label' => 'Explore Custom Tiles',
         'description' => 'Explore the custom tiles section and personalize your Disicple.Tools instance.',
         'link' => admin_url( 'admin.php?page=dt_options&tab=custom-tiles' ),
         'complete' => false,
-        'hide_mark_done' => false
-    ];
-    $items['explore_site_link'] = [
+        'hide_mark_done' => false,
+    );
+    $items['explore_site_link'] = array(
         'label' => 'Explore Site Links',
         'description' => 'Did you know that you can link up several Disciple.Tools instances in a single place? Navigate the Site Link section to find out more!',
         'link' => 'https://disciple.tools/user-docs/getting-started-info/admin/site-links/',
         'complete' => false,
-        'hide_mark_done' => false
-    ];
-    $items['explore_subscribe_dt_new'] = [
+        'hide_mark_done' => false,
+    );
+    $items['explore_subscribe_dt_new'] = array(
         'label' => 'Subscribe to D.T News',
         'description' => 'Stay up to date with the latest features and news for all things Disciple.Tools',
         'link' => esc_url( 'https://disciple.tools/news/' ),
         'complete' => false,
-        'hide_mark_done' => false
-    ];
+        'hide_mark_done' => false,
+    );
 
-    $items['non_wp_cron'] = [
+    $items['non_wp_cron'] = array(
         'label' => 'Disable WP Cron',
         'description' => "By disabling the built in WP Cron and enabling an alternate solution this system will be able to rely on a better scheduler to send out notifications and scheduled tasks. \r\n See https://developers.disciple.tools/hosting/cron for more details.",
         'link' => esc_url( 'https://developers.disciple.tools/hosting/cron' ),
         'complete' => defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON === true,
-        'hide_mark_done' => true
-    ];
+        'hide_mark_done' => true,
+    );
     if ( version_compare( phpversion(), '7.3.0', '<=' ) ){
-        $items['update_php'] = [
+        $items['update_php'] = array(
             'label' => 'Update PHP',
             'description' => 'You are using an old version of PHP, please consider contacting your hosting provider to upgrade it',
             'link' => '',
             'complete' => version_compare( phpversion(), '7.3.0', '>=' ),
-            'hide_mark_done' => true
-        ];
+            'hide_mark_done' => true,
+        );
     }
-    $items['donation'] = [
+    $items['donation'] = array(
         'label' => 'Consider donating to Disciple.Tools',
         'description' => "Would you like to be part of the development and maintenance of Disciple Tools? We would love your help! \r\n\r\n Donation portal: https://disciple.tools/give/",
         'link' => 'https://disciple.tools/give/',
         'complete' => false,
-        'hide_mark_done' => false
-    ];
+        'hide_mark_done' => false,
+    );
 
     return $items;
 }, 10, 2);

@@ -1,27 +1,27 @@
 <?php
 
-add_filter( 'dt_post_type_modules', function( $modules ){
-    $modules['contacts_base'] = [
+add_filter( 'dt_post_type_modules', function ( $modules ) {
+    $modules['contacts_base'] = array(
         'name' => 'Contacts',
         'enabled' => true,
         'locked' => true,
         'post_type' => 'contacts',
-        'description' => 'Default contact functionality'
-    ];
-    $modules['dmm_module'] = [
+        'description' => 'Default contact functionality',
+    );
+    $modules['dmm_module'] = array(
         'name' => 'DMM Module',
         'enabled' => true,
-        'prerequisites' => [ 'contacts_base' ],
+        'prerequisites' => array( 'contacts_base' ),
         'post_type' => 'contacts',
-        'description' => 'Field and workflows for Disciple Making Movements'
-    ];
-    $modules['access_module'] = [
+        'description' => 'Field and workflows for Disciple Making Movements',
+    );
+    $modules['access_module'] = array(
         'name' => 'Access Module',
         'enabled' => true,
-        'prerequisites' => [ 'dmm_module', 'contacts_base' ],
+        'prerequisites' => array( 'dmm_module', 'contacts_base' ),
         'post_type' => 'contacts',
-        'description' => 'Field and workflows for follow-up ministries'
-    ];
+        'description' => 'Field and workflows for follow-up ministries',
+    );
     return $modules;
 }, 10, 1 );
 

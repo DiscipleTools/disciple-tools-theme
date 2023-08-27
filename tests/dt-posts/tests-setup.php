@@ -1,44 +1,44 @@
 <?php
 
 
-add_filter( 'dt_details_additional_tiles', function ( $tiles, $post_type ){
-    $tiles['a_beautiful_tile'] = [
-        'label' => 'A beautiful tile'
-    ];
+add_filter( 'dt_details_additional_tiles', function ( $tiles, $post_type ) {
+    $tiles['a_beautiful_tile'] = array(
+        'label' => 'A beautiful tile',
+    );
     return $tiles;
 }, 10, 2 );
 
-add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
+add_filter( 'dt_custom_fields_settings', function ( $fields, $post_type ) {
     //@todo connection
 
-    $fields['number_test'] = [
+    $fields['number_test'] = array(
         'name'        => __( 'Number field', 'disciple_tools' ),
         'type'        => 'number',
         'default'     => 0,
         'tile'        => 'a_beautiful_tile',
         'min_option'  => '5',
-    ];
-    $fields['number_test_private'] = [
+    );
+    $fields['number_test_private'] = array(
         'name'        => __( 'Number field private', 'disciple_tools' ),
         'type'        => 'number',
         'default'     => 0,
         'tile'        => 'a_beautiful_tile',
         'private'     => true,
         'max_option'  => '200',
-    ];
-    $fields['text_test'] = [
+    );
+    $fields['text_test'] = array(
         'name'        => __( 'Text', 'disciple_tools' ),
         'type'        => 'text',
         'default'     => 0,
         'tile'      => 'a_beautiful_tile',
-    ];
-    $fields['text_test_private'] = [
+    );
+    $fields['text_test_private'] = array(
         'name'        => __( 'Text', 'disciple_tools' ),
         'type'        => 'text',
         'default'     => 0,
         'tile'      => 'a_beautiful_tile',
-        'private'   => true
-    ];
+        'private'   => true,
+    );
     //@todo does not work without the 'contact_' prefix
     //$fields['communication_channel_test1'] = [
     //    'name'        => __( 'Communication Channel', 'disciple_tools' ),
@@ -46,159 +46,159 @@ add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
     //    'default'     => 0,
     //    'tile'      => 'a_beautiful_tile',
     //];
-    $fields['contact_communication_channel_test'] = [
+    $fields['contact_communication_channel_test'] = array(
         'name'        => __( 'Communication Channel', 'disciple_tools' ),
         'type'        => 'communication_channel',
         'default'     => 0,
         'tile'      => 'a_beautiful_tile',
-    ];
+    );
 
-    $fields['user_select_test'] = [
+    $fields['user_select_test'] = array(
         'name'        => __( 'User Select', 'disciple_tools' ),
         'type'        => 'user_select',
-        'tile'        => 'a_beautiful_tile'
-    ];
-    $fields['array_test'] = [
+        'tile'        => 'a_beautiful_tile',
+    );
+    $fields['array_test'] = array(
         'name'        => __( 'Array', 'disciple_tools' ),
         'type'        => 'array',
-        'tile'        => 'a_beautiful_tile'
-    ];
-    $fields['location_test'] = [
+        'tile'        => 'a_beautiful_tile',
+    );
+    $fields['location_test'] = array(
         'name' => 'location field',
         'type' => 'location',
-        'tile' => 'a_beautiful_tile'
-    ];
-    $fields['date_test'] = [
-        'name'        => __( ' Date Field', 'disciple_tools' ),
-        'description' => '',
-        'type'        => 'date',
-        'default'     => '',
-        'tile' => 'a_beautiful_tile'
-    ];
-    $fields['date_test_private'] = [
+        'tile' => 'a_beautiful_tile',
+    );
+    $fields['date_test'] = array(
         'name'        => __( ' Date Field', 'disciple_tools' ),
         'description' => '',
         'type'        => 'date',
         'default'     => '',
         'tile' => 'a_beautiful_tile',
-        'private'   => true
-    ];
-    $fields['datetime_test'] = [
+    );
+    $fields['date_test_private'] = array(
+        'name'        => __( ' Date Field', 'disciple_tools' ),
+        'description' => '',
+        'type'        => 'date',
+        'default'     => '',
+        'tile' => 'a_beautiful_tile',
+        'private'   => true,
+    );
+    $fields['datetime_test'] = array(
         'name'        => __( ' Date Time Field', 'disciple_tools' ),
         'description' => '',
         'type'        => 'datetime',
         'default'     => '',
-        'tile' => 'a_beautiful_tile'
-    ];
-    $fields['datetime_test_private'] = [
+        'tile' => 'a_beautiful_tile',
+    );
+    $fields['datetime_test_private'] = array(
         'name'        => __( ' Date Time Field', 'disciple_tools' ),
         'description' => '',
         'type'        => 'datetime',
         'default'     => '',
         'tile' => 'a_beautiful_tile',
-        'private'   => true
-    ];
-    $fields['boolean_test'] = [
+        'private'   => true,
+    );
+    $fields['boolean_test'] = array(
         'name'        => __( 'Boolean', 'disciple_tools' ),
         'type'        => 'boolean',
         'default'     => false,
-    ];
-    $fields['boolean_test_private'] = [
+    );
+    $fields['boolean_test_private'] = array(
         'name'        => __( 'Boolean', 'disciple_tools' ),
         'type'        => 'boolean',
         'default'     => false,
-        'private'   => true
-    ];
-    $fields['multi_select_test'] = [
+        'private'   => true,
+    );
+    $fields['multi_select_test'] = array(
         'name' => 'Random Options',
         'type' => 'multi_select',
-        'default' => [
-            'one' => [ 'label' => 'option 1' ],
-            'two' => [ 'label' => 'option 2' ],
-            'three' => [ 'label' => 'option 3' ],
-        ],
+        'default' => array(
+            'one' => array( 'label' => 'option 1' ),
+            'two' => array( 'label' => 'option 2' ),
+            'three' => array( 'label' => 'option 3' ),
+        ),
         'tile' => 'a_beautiful_tile',
-    ];
-    $fields['multi_select_test_private'] = [
+    );
+    $fields['multi_select_test_private'] = array(
         'name' => 'Random Options',
         'type' => 'multi_select',
-        'default' => [
-            'one_private' => [ 'label' => 'option 1' ],
-            'two_private' => [ 'label' => 'option 2' ],
-            'three_private' => [ 'label' => 'option 3' ],
-        ],
+        'default' => array(
+            'one_private' => array( 'label' => 'option 1' ),
+            'two_private' => array( 'label' => 'option 2' ),
+            'three_private' => array( 'label' => 'option 3' ),
+        ),
         'tile' => 'a_beautiful_tile',
-        'private'   => true
-    ];
-    $fields['key_select_test'] = [
+        'private'   => true,
+    );
+    $fields['key_select_test'] = array(
         'name' => 'Random Options',
         'type' => 'key_select',
-        'default' => [
-            'one' => [ 'label' => 'option 1' ],
-            'two' => [ 'label' => 'option 2' ],
-            'three' => [ 'label' => 'option 3' ],
-        ],
+        'default' => array(
+            'one' => array( 'label' => 'option 1' ),
+            'two' => array( 'label' => 'option 2' ),
+            'three' => array( 'label' => 'option 3' ),
+        ),
         'tile' => 'a_beautiful_tile',
-    ];
-    $fields['key_select_test_private'] = [
+    );
+    $fields['key_select_test_private'] = array(
         'name' => 'Random Options',
         'type' => 'key_select',
-        'default' => [
-            'one_private' => [ 'label' => 'option 1' ],
-            'two_private' => [ 'label' => 'option 2' ],
-            'three_private' => [ 'label' => 'option 3' ],
-        ],
+        'default' => array(
+            'one_private' => array( 'label' => 'option 1' ),
+            'two_private' => array( 'label' => 'option 2' ),
+            'three_private' => array( 'label' => 'option 3' ),
+        ),
         'tile' => 'a_beautiful_tile',
-        'private'   => true
-    ];
-    $fields['tags_test'] = [
+        'private'   => true,
+    );
+    $fields['tags_test'] = array(
         'name' => 'Random Options',
         'type' => 'tags',
-        'default' => [
-            'one' => [ 'label' => 'option 1' ],
-            'two' => [ 'label' => 'option 2' ],
-            'three' => [ 'label' => 'option 3' ],
-        ],
+        'default' => array(
+            'one' => array( 'label' => 'option 1' ),
+            'two' => array( 'label' => 'option 2' ),
+            'three' => array( 'label' => 'option 3' ),
+        ),
         'tile' => 'a_beautiful_tile',
-    ];
-    $fields['tags_test_private'] = [
+    );
+    $fields['tags_test_private'] = array(
         'name' => 'Random Options',
         'type' => 'tags',
-        'default' => [
-            'one' => [ 'label' => 'option 1' ],
-            'two' => [ 'label' => 'option 2' ],
-            'three' => [ 'label' => 'option 3' ],
-        ],
+        'default' => array(
+            'one' => array( 'label' => 'option 1' ),
+            'two' => array( 'label' => 'option 2' ),
+            'three' => array( 'label' => 'option 3' ),
+        ),
         'tile' => 'a_beautiful_tile',
-        'private'   => true
-    ];
+        'private'   => true,
+    );
     return $fields;
 }, 10, 2 );
 
 
 function dt_test_get_sample_record_fields( $assigned_to = null ){
-    return [
+    return array(
         'title' => 'Custom Record',
         'number_test' => 1013.3,
         'number_test_private' => 102,
         'text_test' => 'Some Random Text',
         'text_test_private' => 'Some Random Private Text',
-        'contact_communication_channel_test' => [ 'values' => [ [ 'value' => 'haha, you would love to contact me' ] ] ],
+        'contact_communication_channel_test' => array( 'values' => array( array( 'value' => 'haha, you would love to contact me' ) ) ),
 //        'communication_channel_test1' => [ "values" => [ [ "value" => "haha, you would love to contact me" ] ] ],
         'user_select_test' => (string) $assigned_to ?: '1',
-        'array_test' => [ 'test' => 'test array', 'key' => 'some funny key' ],
-        'location_test' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'array_test' => array( 'test' => 'test array', 'key' => 'some funny key' ),
+        'location_test' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
         'date_test' => '2018-12-31',
         'date_test_private' => '2019-12-31',
         'datetime_test' => '2018-12-31 12:15 GMT+02:00',
         'datetime_test_private' => '2019-12-31 00:30 GMt+01:00',
         'boolean_test' => true,
         'boolean_test_private' => true,
-        'multi_select_test' => [ 'values' => [ [ 'value' => 'one' ], [ 'value' => 'two' ] ] ],
-        'multi_select_test_private' => [ 'values' => [ [ 'value' => 'one_private' ], [ 'value' => 'two_private' ] ] ],
+        'multi_select_test' => array( 'values' => array( array( 'value' => 'one' ), array( 'value' => 'two' ) ) ),
+        'multi_select_test_private' => array( 'values' => array( array( 'value' => 'one_private' ), array( 'value' => 'two_private' ) ) ),
         'key_select_test' => 'two',
         'key_select_test_private' => 'two_private',
-        'tags_test' => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tagToDelete' ] ] ],
-        'tags_test_private' => [ 'values' => [ [ 'value' => 'tag1_private' ], [ 'value' => 'tagToDelete_private' ] ] ],
-    ];
+        'tags_test' => array( 'values' => array( array( 'value' => 'tag1' ), array( 'value' => 'tagToDelete' ) ) ),
+        'tags_test_private' => array( 'values' => array( array( 'value' => 'tag1_private' ), array( 'value' => 'tagToDelete_private' ) ) ),
+    );
 }

@@ -39,7 +39,7 @@ function set_task_notifications(){
 //                "comment_author" => __( "Tasks", 'disciple_tools' )
 //            ], false );
 
-            $notification = [
+            $notification = array(
                 'user_id'             => $task['user_id'],
                 'source_user_id'      => 0,
                 'post_id'             => (int) $task['post_id'],
@@ -51,20 +51,20 @@ function set_task_notifications(){
                 'is_new'              => 1,
                 'field_key'           => 'task',
                 'field_value'         => $task['id'],
-            ];
-            do_action( 'send_notification_on_channels', $task['user_id'], $notification, 'tasks', [] );
+            );
+            do_action( 'send_notification_on_channels', $task['user_id'], $notification, 'tasks', array() );
         }
         $val['notification'] = 'notification_sent';
         $wpdb->update( $wpdb->dt_post_user_meta,
-            [
-                'meta_value' => serialize( $val )
-            ],
-            [
+            array(
+                'meta_value' => serialize( $val ),
+            ),
+            array(
                 'id'       => $task['id'],
                 'user_id'  => $task['user_id'],
                 'post_id'  => $task['post_id'],
                 'meta_key' => 'tasks',
-            ]
+            )
         );
     }
 }

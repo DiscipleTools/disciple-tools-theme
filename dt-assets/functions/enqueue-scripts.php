@@ -64,11 +64,11 @@ function dt_theme_register_style( string $handle, string $rel_src, array $deps =
  */
 function dt_site_scripts() {
 
-    dt_theme_enqueue_script( 'modernizr-custom', 'dt-assets/js/modernizr-custom.js', [], true );
-    dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
+    dt_theme_enqueue_script( 'modernizr-custom', 'dt-assets/js/modernizr-custom.js', array(), true );
+    dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/js/check-browser-version.js', array( 'modernizr-custom' ), true );
 
-    wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css', [], '3.0.0' );
-    wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css', [], '6.6.96' );
+    wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css', array(), '3.0.0' );
+    wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css', array(), '6.6.96' );
 
     wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '1.12.1', 'all' );
     wp_deregister_script( 'jquery' );
@@ -123,7 +123,7 @@ function dt_site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'site_url' => get_site_url(),
             'template_dir' => get_template_directory_uri(),
-            'translations' => [
+            'translations' => array(
                 'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
                 'all_locations' => __( 'All Locations', 'disciple_tools' ),
                 'used_locations' => __( 'Used Locations', 'disciple_tools' ),
@@ -131,7 +131,7 @@ function dt_site_scripts() {
                 'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
                 'edit' => __( 'Edit', 'disciple_tools' ),
-            ],
+            ),
             'post_type' => $post_type,
             'url_path' => $url_path,
             'post_type_modules' => dt_get_option( 'dt_post_type_modules' ),
@@ -147,10 +147,10 @@ function dt_site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'current_user_login' => wp_get_current_user()->user_login,
             'current_user_id' => get_current_user_id(),
-            'translations' => [
+            'translations' => array(
                 'no-unread' => __( "You don't have any unread notifications", 'disciple_tools' ),
-                'no-notifications' => __( "You don't have any notifications", 'disciple_tools' )
-            ]
+                'no-notifications' => __( "You don't have any notifications", 'disciple_tools' ),
+            ),
         )
     );
 
@@ -176,24 +176,24 @@ function dt_site_scripts() {
                 'moment',
                 'jquery-mentions',
                 'jquery-mentions-elastic',
-                'wp-i18n'
+                'wp-i18n',
             ) );
             wp_localize_script(
-                'comments', 'commentsSettings', [
+                'comments', 'commentsSettings', array(
                     'post' => get_post(),
                     'post_with_fields' => $post,
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : '',
-                    'translations' => [
+                    'translations' => array(
                         'edit' => strtolower( __( 'Edit', 'disciple_tools' ) ),
                         'delete' => strtolower( __( 'Delete', 'disciple_tools' ) ),
                         'translate' => __( 'Translate with Google Translate', 'disciple_tools' ),
                         'hide_translation' => __( 'Hide Translation', 'disciple_tools' ),
                         'reaction_title_1' => _x( '%1$s reacted with %2$s emoji', 'Bob reacted with heart emoji', 'disciple_tools' ),
                         'reaction_title_many' => _x( '%3$s and %1$s reacted with %2$s emoji', 'Bob, Bill and Ben reacted with heart emoji', 'disciple_tools' ),
-                    ],
+                    ),
                     'current_user_id' => get_current_user_id(),
-                    'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
+                    'additional_sections' => apply_filters( 'dt_comments_additional_sections', array(), $post_type ),
                     /**
                      * Reaction aliases must be lowercase with no spaces.
                      * The emoji takes precedence if a path to an image is also given.
@@ -204,7 +204,7 @@ function dt_site_scripts() {
                     'comments' => DT_Posts::get_post_comments( $post_type, $post['ID'] ),
                     'activity' => DT_Posts::get_post_activity( $post_type, $post['ID'] ),
                     'google_translate_key' => get_option( 'dt_googletranslate_api_key' ),
-                ]
+                )
             );
             dt_theme_enqueue_script( 'details', 'dt-assets/js/details.js', array(
                 'jquery',
@@ -213,15 +213,15 @@ function dt_site_scripts() {
                 'web-components',
                 'web-components-services',
                 'typeahead-jquery',
-                'jquery-masonry'
+                'jquery-masonry',
             ) );
-            wp_localize_script( 'details', 'detailsSettings', [
+            wp_localize_script( 'details', 'detailsSettings', array(
                 'post_type' => $post_type,
                 'post_id' => get_the_ID(),
                 'post_settings' => $post_settings,
                 'current_user_id' => get_current_user_id(),
                 'post_fields' => $post,
-                'translations' => [
+                'translations' => array(
                     'remove' => __( 'Delete', 'disciple_tools' ),
                     'complete' => __( 'Mark as complete', 'disciple_tools' ),
                     'no_tasks' => __( 'No task created', 'disciple_tools' ),
@@ -237,34 +237,34 @@ function dt_site_scripts() {
                     'transfer_update_success' => __( 'Transfer update successful.', 'disciple_tools' ),
                     'created_on' => _x( 'Created on %s', 'Created on the 21st of August', 'disciple_tools' ),
                     'Open_with' => __( 'Open With', 'disciple_tools' ),
-                ]
-            ]);
+                ),
+            ));
 
             if ( DT_Mapbox_API::get_key() ) {
                 DT_Mapbox_API::load_mapbox_search_widget();
             }
 
-            dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', [
+            dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', array(
                 'jquery',
                 'lodash',
-                'moment'
-            ], true );
-            wp_localize_script( 'dt-record-history', 'record_history_settings', [
-                'post'          => is_singular( $post_types ) ? DT_Posts::get_post( get_post_type(), get_the_ID() ) : [],
-                'post_settings' => is_singular( $post_types ) ? DT_Posts::get_post_settings( get_post_type() ) : [],
+                'moment',
+            ), true );
+            wp_localize_script( 'dt-record-history', 'record_history_settings', array(
+                'post'          => is_singular( $post_types ) ? DT_Posts::get_post( get_post_type(), get_the_ID() ) : array(),
+                'post_settings' => is_singular( $post_types ) ? DT_Posts::get_post_settings( get_post_type() ) : array(),
                 'site_url'      => get_site_url( null, '/' ),
-                'translations'  => [
+                'translations'  => array(
                     'revert_but_tooltip'  => __( 'Revert Record Back To This Point', 'disciple_tools' ),
-                    'revert_confirm_text' => __( 'Are you sure you want to revert record state back to %s?', 'disciple_tools' )
-                ]
-            ] );
+                    'revert_confirm_text' => __( 'Are you sure you want to revert record state back to %s?', 'disciple_tools' ),
+                ),
+            ) );
         }
     }
 
 
     if ( 'settings' === $url_path ) {
 
-        $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment' ];
+        $dependencies = array( 'jquery', 'jquery-ui', 'lodash', 'moment' );
         $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
         if ( DT_Mapbox_API::get_key() ) {
             DT_Mapbox_API::load_mapbox_search_widget_users();
@@ -284,31 +284,31 @@ function dt_site_scripts() {
                 'current_user_id'       => get_current_user_id(),
                 'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => $contact_id,
-                'translations'          => apply_filters( 'dt_settings_js_translations', [
+                'translations'          => apply_filters( 'dt_settings_js_translations', array(
                     'delete' => __( 'Delete', 'disciple_tools' ),
                     'responsible_for_locations' => __( 'Locations you are responsible for', 'disciple_tools' ),
                     'add' => __( 'Add', 'disciple_tools' ),
                     'save' => __( 'Save', 'disciple_tools' ),
                     'link' => __( 'link', 'disciple_tools' ),
                     'copy' => __( 'copy', 'disciple_tools' ),
-                ] ),
+                ) ),
                 'google_translate_api_key' => get_option( 'dt_googletranslate_api_key' ),
-                'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
+                'custom_data'           => apply_filters( 'dt_settings_js_data', array() ), // nest associated array
                 'workload_status'       => get_user_option( 'workload_status', get_current_user_id() ),
-                'workload_status_options' => dt_get_site_custom_lists()['user_workload_status'] ?? [],
-                'user_people_groups' => DT_Posts::get_post_names_from_ids( get_user_option( 'user_people_groups', get_current_user_id() ) ?: [] ),
+                'workload_status_options' => dt_get_site_custom_lists()['user_workload_status'] ?? array(),
+                'user_people_groups' => DT_Posts::get_post_names_from_ids( get_user_option( 'user_people_groups', get_current_user_id() ) ?: array() ),
             )
         );
     }
 
     if ( 'view-duplicates' === $url_path ){
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/view-duplicates.js', [ 'jquery' ], true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/view-duplicates.js', array( 'jquery' ), true );
         wp_localize_script(
             'dt-settings', 'view_duplicates_settings', array(
-                'translations'          => apply_filters( 'dt_settings_js_translations', [
+                'translations'          => apply_filters( 'dt_settings_js_translations', array(
                     'matches_found' => _x( 'Matches Found:', 'Matches for duplicate contacts found: 230', 'disciple_tools' ),
                     'dismiss_all' => _x( 'Dismiss all matches for %s', 'Dismiss all duplicate matches for Bob', 'disciple_tools' ),
-                ] ),
+                ) ),
                 'fields' => DT_Posts::get_post_field_settings( 'contacts' ),
             )
         );
@@ -322,7 +322,7 @@ function dt_site_scripts() {
     if ( !get_post_type() && in_array( $path_without_params, $post_types ) ){
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $translations = [
+        $translations = array(
             'save' => __( 'Save', 'disciple_tools' ),
             'edit' => __( 'Edit', 'disciple_tools' ),
             'delete' => __( 'Delete', 'disciple_tools' ),
@@ -340,8 +340,8 @@ function dt_site_scripts() {
             'make_selections_below' => __( 'Make Selections Below', 'disciple_tools' ),
             'sent' => _x( 'sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
             'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
-            'exclude_item' => __( 'Exclude Item', 'disciple_tools' )
-        ];
+            'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
+        );
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
         dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
         wp_localize_script( 'modular-list-js', 'list_settings', array(
@@ -360,11 +360,11 @@ function dt_site_scripts() {
 
     if ( $is_new_post || $is_new_bulk_post ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $translations = [
+        $translations = array(
             'contact' => __( 'Contact', 'disciple_tools' ),
             'value_already_exists' => _x( '%s already exists', 'Communication channel already exists', 'disciple_tools' ),
-        ];
-        $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
+        );
+        $dependencies = array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' );
         if ( DT_Mapbox_API::get_key() ){
             DT_Mapbox_API::load_mapbox_search_widget();
             $dependencies[] = 'mapbox-search-widget';
@@ -381,10 +381,8 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'dt-advanced-search', 'dt-assets/js/advanced-search.js', array( 'jquery' ), true );
     wp_localize_script( 'dt-advanced-search', 'advanced_search_settings', array(
         'template_dir_uri' => esc_html( get_template_directory_uri() ),
-        'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
+        'fetch_more_text' => __( 'Load More', 'disciple_tools' ), // Support translations
     ) );
-
-
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
 
@@ -399,11 +397,11 @@ function dt_template_scripts( $slug, $name, $templates, $args ) {
     // 403
     if ( isset( $slug ) && ( $slug === '403' ) ) {
         dt_theme_enqueue_script( 'dt-request-record-access', 'dt-assets/js/request-record-access.js', array( 'jquery' ) );
-        wp_localize_script( 'dt-request-record-access', 'detailsSettings', [
+        wp_localize_script( 'dt-request-record-access', 'detailsSettings', array(
             'post_type'       => $post_type,
             'post_id'         => get_the_ID(),
-            'current_user_id' => get_current_user_id()
-        ] );
+            'current_user_id' => get_current_user_id(),
+        ) );
     }
 }
 add_action( 'get_template_part', 'dt_template_scripts', 999, 4 );

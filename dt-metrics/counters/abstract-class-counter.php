@@ -13,5 +13,4 @@ abstract class Disciple_Tools_Counter_Base
      * Disciple_Tools_Counter constructor.
      */
     public function __construct() {}
-
 }

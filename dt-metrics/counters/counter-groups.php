@@ -36,7 +36,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
      *
      * @return int|array
      */
-    public static function get_groups_count( string $status, int $start, int $end, $args = [] ) {
+    public static function get_groups_count( string $status, int $start, int $end, $args = array() ) {
 
         $status = strtolower( $status );
 
@@ -47,7 +47,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                 break;
             case 'church_generations':
                 $generations = self::get_group_generations( $start, $end );
-                $church_generations = [];
+                $church_generations = array();
                 foreach ( $generations as $gen_key => $gen_val ) {
                     if ( isset( $gen_val['church'] ) ) {
                         $church_generations[ $gen_val['generation'] ] = $gen_val['church'];
@@ -106,22 +106,22 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
      *
      * @return array
      */
-    public static function get_group_generations( $start, $end, $args = [] ){
+    public static function get_group_generations( $start, $end, $args = array() ){
         if ( !isset( self::$generations[$start.$end] ) ){
             global $wpdb;
             $groups_count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts where post_type = 'groups'" );
 
             if ( (int) $groups_count > 10000 ){
                 //bail for now because generation counting on a huge number of groups is limited
-                return [];
+                return array();
             }
             $raw_connections = self::query_get_all_group_connections();
             if ( is_wp_error( $raw_connections ) ){
                 return $raw_connections;
             }
             $groups_in_time_range = self::query_get_groups_id_list( $start, $end, $args );
-            $church_generation = self::build_group_generation_counts( $raw_connections, 0, 0, [], $groups_in_time_range );
-            $generations = [];
+            $church_generation = self::build_group_generation_counts( $raw_connections, 0, 0, array(), $groups_in_time_range );
+            $generations = array();
             foreach ( $church_generation as $k => $v ){
                 $generations[] = $v;
             }
@@ -192,7 +192,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
      *
      * @return array
      */
-    public static function query_get_groups_id_list( $start_date = 0, $end_date = PHP_INT_MAX, $args = [] ) {
+    public static function query_get_groups_id_list( $start_date = 0, $end_date = PHP_INT_MAX, $args = array() ) {
         global $wpdb;
 
         $results = $wpdb->get_col( $wpdb->prepare( "
@@ -243,14 +243,14 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
      *
      * @return array
      */
-    public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [], $ids_to_include = [] ) {
+    public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = array(), $ids_to_include = array() ) {
 
         $generation++;
         if ( !isset( $counts[$generation] ) ){
-            $counts[$generation] = [
+            $counts[$generation] = array(
                 'generation' => (string) $generation,
-                'total' => 0
-            ];
+                'total' => 0,
+            );
         }
         foreach ( $elements as $element ) {
 
@@ -294,6 +294,4 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         ", $start, $end ));
         return $count;
     }
-
-
 }

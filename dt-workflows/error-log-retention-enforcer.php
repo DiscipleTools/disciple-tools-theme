@@ -30,7 +30,6 @@ function enforce_error_log_retention_policy() {
             esc_attr( strtotime( '-' . $current_retention_period_count . ' day' ) )
         ) );
     }
-
 }
 
 function fetch_retention_period_count(): int {

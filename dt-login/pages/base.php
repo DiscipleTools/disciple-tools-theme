@@ -16,7 +16,7 @@ class DT_Login_Page_Base
 
     public function theme_redirect() {
         $path = get_theme_file_path( 'template-blank.php' );
-        include( $path );
+        include $path;
         die();
     }
 
@@ -26,7 +26,6 @@ class DT_Login_Page_Base
         $this->header_style();
         $this->header_javascript();
         do_action( 'dt_login_head_bottom' );
-
     }
     public function header_style(){
         ?>
@@ -43,12 +42,12 @@ class DT_Login_Page_Base
     public function header_javascript(){
         ?>
         <script>
-            let jsObject = [<?php echo json_encode([
+            let jsObject = [<?php echo json_encode(array(
                 'map_key' => DT_Mapbox_API::get_key(),
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
-                'translations' => [],
-            ]) ?>][0]
+                'translations' => array(),
+            )) ?>][0]
 
             jQuery(document).ready(function(){
                 clearInterval(window.fiveMinuteTimer)
@@ -61,11 +60,10 @@ class DT_Login_Page_Base
         wp_footer();
     }
     public function scripts() {
-
     }
     public function _print_scripts(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_js = [
+        $allowed_js = array(
             'jquery',
             'jquery-ui',
             'site-js',
@@ -75,7 +73,7 @@ class DT_Login_Page_Base
             'mapbox-cookie',
             'mapbox-search-widget',
             'google-search-widget',
-        ];
+        );
 
         $allowed_js = apply_filters( 'dt_login_allowed_js', $allowed_js );
 
@@ -92,12 +90,12 @@ class DT_Login_Page_Base
     }
     public function _print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_css = [
+        $allowed_css = array(
             'foundation-css',
             'jquery-ui-site-css',
             'site-css',
             'mapbox-gl-css',
-        ];
+        );
 
         $allowed_css = apply_filters( 'dt_login_allowed_css', $allowed_css );
 
@@ -112,6 +110,5 @@ class DT_Login_Page_Base
     }
 
     public function body(){
-
     }
 }

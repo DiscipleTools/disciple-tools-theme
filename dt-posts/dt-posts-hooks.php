@@ -2,11 +2,11 @@
 
 class DT_Posts_Hooks {
     public function __construct() {
-        add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_get_custom_fields_translation' ], 10, 1 );
-        add_filter( 'options_dt_custom_tiles', [ $this, 'dt_get_custom_tile_translations' ], 10, 1 );
-        add_action( 'post_connection_removed', [ $this, 'post_connection_removed' ], 10, 4 );
-        add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
-        add_filter( 'dt_create_check_for_duplicate_posts', [ $this, 'dt_create_check_for_duplicate_posts' ], 10, 5 );
+        add_filter( 'dt_custom_fields_settings_after_combine', array( $this, 'dt_get_custom_fields_translation' ), 10, 1 );
+        add_filter( 'options_dt_custom_tiles', array( $this, 'dt_get_custom_tile_translations' ), 10, 1 );
+        add_action( 'post_connection_removed', array( $this, 'post_connection_removed' ), 10, 4 );
+        add_action( 'post_connection_added', array( $this, 'post_connection_added' ), 10, 4 );
+        add_filter( 'dt_create_check_for_duplicate_posts', array( $this, 'dt_create_check_for_duplicate_posts' ), 10, 5 );
     }
 
     /**
@@ -119,13 +119,13 @@ class DT_Posts_Hooks {
      * @param string $action
      */
     public static function update_connection_count( $post_id, $field_setting, string $action = 'added' ){
-        $args = [
+        $args = array(
             'connected_type'   => $field_setting['p2p_key'],
             'connected_direction' => $field_setting['p2p_direction'],
             'connected_items'  => $post_id,
             'nopaging'         => true,
             'suppress_filters' => false,
-        ];
+        );
         $connect_posts = get_posts( $args );
         $connections_count = get_post_meta( $post_id, $field_setting['connection_count_field']['field_key'], true );
         if ( sizeof( $connect_posts ) > intval( $connections_count ) ){
@@ -148,7 +148,7 @@ class DT_Posts_Hooks {
         if ( ! empty( $fields ) && ! empty( $search_fields ) ) {
 
             // Extract search field values.
-            $search_values       = [];
+            $search_values       = array();
             $post_settings       = DT_Posts::get_post_settings( $post_type );
             $post_field_settings = $post_settings['fields'];
             foreach ( $search_fields as $search_field ) {
@@ -161,7 +161,7 @@ class DT_Posts_Hooks {
                         case 'key_select':
                         case 'date':
                         case 'user_select':
-                            $search_values[ $search_field ] = [ $fields[ $search_field ] ];
+                            $search_values[ $search_field ] = array( $fields[ $search_field ] );
                             break;
                         case 'multi_select':
                         case 'links':
@@ -170,12 +170,12 @@ class DT_Posts_Hooks {
                         case 'location_meta':
                         case 'connection':
                         case 'communication_channel':
-                            $values       = [];
+                            $values       = array();
                             $fields_array = ( $field_type == 'communication_channel' ) ? $fields[ $search_field ] : $fields[ $search_field ]['values'];
                             if ( isset( $fields_array['values'] ) ){
                                 $fields_array = $fields_array['values'];
                             }
-                            foreach ( $fields_array ?? [] as $value ) {
+                            foreach ( $fields_array ?? array() as $value ) {
                                 if ( isset( $value['value'] ) ) {
                                     $values[] = '^' . $value['value'];
                                 }
@@ -194,21 +194,21 @@ class DT_Posts_Hooks {
             // Query system for duplicates, based on identified search values and status key.
             if ( ! empty( $search_values ) ) {
                 $status_key = isset( $post_settings['status_field']['status_key'] ) ? $post_settings['status_field']['status_key'] : null;
-                $fields = [
+                $fields = array(
                     $search_values,
-                ];
+                );
                 if ( $post_type === 'contacts' ){
-                    $fields[] = [ 'type' => [ '-personal', '-placeholder' ] ];
+                    $fields[] = array( 'type' => array( '-personal', '-placeholder' ) );
                 }
-                $search_result = DT_Posts::search_viewable_post( $post_type, [
+                $search_result = DT_Posts::search_viewable_post( $post_type, array(
                     'sort'             => !empty( $status_key ) ? $status_key : '-post_date',
                     'fields'           => $fields,
-                    'fields_to_search' => array_keys( $search_values )
-                ], false );
+                    'fields_to_search' => array_keys( $search_values ),
+                ), false );
 
                 // Package identified duplicates.
                 if ( ! empty( $search_result ) && ! is_wp_error( $search_result ) && isset( $search_result['posts'] ) ) {
-                    foreach ( $search_result['posts'] ?? [] as $post ) {
+                    foreach ( $search_result['posts'] ?? array() as $post ) {
                         $duplicates[] = $post->ID;
                     }
                 }

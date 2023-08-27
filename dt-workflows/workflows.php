@@ -40,15 +40,15 @@ class Disciple_Tools_Workflows {
      * Disciple_Tools_Workflows constructor.
      */
     public function __construct() {
-        include( 'update-required.php' );
+        include 'update-required.php';
         new Disciple_Tools_Update_Needed();
         new Disciple_Tools_Update_Needed_Async();
-        include( 'tasks.php' );
-        include( 'error-log-dispatch-email.php' );
-        include( 'error-log-retention-enforcer.php' );
-        include( 'workflows-execution-handler.php' );
-        include( 'workflows-triggers.php' );
-        include( 'workflows-defaults.php' );
+        include 'tasks.php';
+        include 'error-log-dispatch-email.php';
+        include 'error-log-retention-enforcer.php';
+        include 'workflows-execution-handler.php';
+        include 'workflows-triggers.php';
+        include 'workflows-defaults.php';
         new Disciple_Tools_Workflows_Defaults();
     }
 }

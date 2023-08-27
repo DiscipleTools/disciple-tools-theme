@@ -1,14 +1,14 @@
 <?php
 
-add_filter( 'dt_post_type_modules', function( $modules ){
-    $modules['groups_base'] = [
+add_filter( 'dt_post_type_modules', function ( $modules ) {
+    $modules['groups_base'] = array(
         'name' => 'Groups',
         'enabled' => true,
         'locked' => true,
-        'prerequisites' => [ 'contacts_base' ],
+        'prerequisites' => array( 'contacts_base' ),
         'post_type' => 'groups',
-        'description' => 'Default group functionality'
-    ];
+        'description' => 'Default group functionality',
+    );
     return $modules;
 }, 20, 1 );
 

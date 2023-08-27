@@ -55,8 +55,8 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
 
         // Load variables
         global $wpdb;
-        $gen_count = [];
-        $full_p2p_array = [];
+        $gen_count = array();
+        $full_p2p_array = array();
 
         // Get records from P2P table
         $p2p_array = $wpdb->get_results( $wpdb->prepare(
@@ -86,7 +86,7 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
 
                 // While loop checks for the first generation and increments the generation above the target until it gets to the first generation.
                 $target_inc = $contact; // separates the target from the increment
-                $gen_ids = [];
+                $gen_ids = array();
                 $i = 1;
 
                 while ( true ) {

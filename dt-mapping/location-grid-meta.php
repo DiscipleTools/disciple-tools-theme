@@ -43,14 +43,14 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 $label = $grid_id['name'] . ', ' . $admin0_grid_id['name'];
             }
 
-            $location_grid_meta = [
+            $location_grid_meta = array(
                 'lng' => $ip_result['longitude'] ?? '',
                 'lat' => $ip_result['latitude'] ?? '',
                 'level' => $level,
                 'label' => $label,
                 'source' => 'ip',
                 'grid_id' => $grid_id['grid_id'] ?? '',
-            ];
+            );
 
             self::validate_location_grid_meta( $location_grid_meta );
 
@@ -67,7 +67,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
         {
 
             if ( empty( $location_grid_meta ) ) {
-                $location_grid_meta = [
+                $location_grid_meta = array(
                     'grid_meta_id' => '',
                     'post_id' => '',
                     'post_type' => '',
@@ -77,12 +77,12 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                     'level' => '',
                     'source' => '',
                     'label' => '',
-                ];
+                );
             } else if ( is_serialized( $location_grid_meta ) ) {
                 $location_grid_meta = maybe_unserialize( $location_grid_meta );
             }
 
-            $filtered_array = [];
+            $filtered_array = array();
 
             $filtered_array['grid_meta_id'] = isset( $location_grid_meta['grid_meta_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['grid_meta_id'] ) ) : '';
             $filtered_array['post_id'] = isset( $location_grid_meta['post_id'] ) ? sanitize_text_field( wp_unslash( $location_grid_meta['post_id'] ) ) : '';
@@ -128,7 +128,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 return new WP_Error( __METHOD__, 'Unable to create location_grid post meta and retrieve a key.' );
             }
 
-            $data = [
+            $data = array(
                 'post_id' => $post_id,
                 'post_type' => empty( $location_grid_meta['post_type'] ) ? get_post_type( $post_id ) : $location_grid_meta['post_type'],
                 'postmeta_id_location_grid' => $postmeta_id_location_grid,
@@ -138,9 +138,9 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 'level' => empty( $location_grid_meta['level'] ) ? 'place' : $location_grid_meta['level'],
                 'source' => empty( $location_grid_meta['source'] ) ? 'user' : $location_grid_meta['source'],
                 'label' => $location_grid_meta['label'],
-            ];
+            );
 
-            $format = [
+            $format = array(
                 '%d',
                 '%s',
                 '%d',
@@ -149,8 +149,8 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 '%s',
                 '%s',
                 '%s',
-                '%s'
-            ];
+                '%s',
+            );
 
             $wpdb->insert( $wpdb->dt_location_grid_meta, $data, $format );
             if ( !$wpdb->insert_id ) {
@@ -166,7 +166,6 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             }
 
             return $wpdb->insert_id;
-
         }
 
         public static function delete_location_grid_meta( int $post_id, $type, int $value, array $existing_post = null ) {
@@ -175,7 +174,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             $status = false;
 
             if ( 'all' === $type ) {
-                $wpdb->delete( $wpdb->dt_location_grid_meta, [ 'post_id' => $post_id ] );
+                $wpdb->delete( $wpdb->dt_location_grid_meta, array( 'post_id' => $post_id ) );
                 $status = true;
             }
 
@@ -186,10 +185,10 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                         $postmeta_id_location_grid = $wpdb->get_var( $wpdb->prepare( "SELECT postmeta_id_location_grid FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $value ) );
 
                         delete_metadata_by_mid( 'post', $postmeta_id_location_grid );
-                        $wpdb->delete($wpdb->dt_location_grid_meta, [
+                        $wpdb->delete($wpdb->dt_location_grid_meta, array(
                             'post_id' => $post_id,
-                            'grid_meta_id' => $value
-                        ]);
+                            'grid_meta_id' => $value,
+                        ));
                         delete_post_meta( $post_id, 'location_grid_meta', $value );
                         $status = true;
                         break;
@@ -235,7 +234,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 return new WP_Error( __METHOD__, 'Unable to create location_grid post meta and retrieve a key.' );
             }
 
-            $data = [
+            $data = array(
                 'post_id' => $user_id,
                 'post_type' => 'users',
                 'postmeta_id_location_grid' => $postmeta_id_location_grid,
@@ -245,9 +244,9 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 'level' => empty( $location_grid_meta['level'] ) ? 'place' : $location_grid_meta['level'],
                 'source' => empty( $location_grid_meta['source'] ) ? 'user' : $location_grid_meta['source'],
                 'label' => $location_grid_meta['label'],
-            ];
+            );
 
-            $format = [
+            $format = array(
                 '%d',
                 '%s',
                 '%d',
@@ -256,8 +255,8 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 '%s',
                 '%s',
                 '%s',
-                '%s'
-            ];
+                '%s',
+            );
 
             $wpdb->insert( $wpdb->dt_location_grid_meta, $data, $format );
             if ( !$wpdb->insert_id ) {
@@ -273,7 +272,6 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             }
 
             return $wpdb->insert_id;
-
         }
 
         public static function delete_user_location_grid_meta( int $user_id, $type, $grid_meta_id, array $existing_post = null ) {
@@ -282,10 +280,10 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             $status = false;
 
             if ( 'all' === $type ) {
-                $wpdb->delete( $wpdb->dt_location_grid_meta, [
+                $wpdb->delete( $wpdb->dt_location_grid_meta, array(
                     'post_id' => $user_id,
-                    'post_type' => 'users'
-                ] );
+                    'post_type' => 'users',
+                ) );
                 $status = true;
             }
 
@@ -296,15 +294,15 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                         $postmeta_id_location_grid = $wpdb->get_var( $wpdb->prepare( "SELECT postmeta_id_location_grid FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ) );
 
                         delete_metadata_by_mid( 'user', $postmeta_id_location_grid );
-                        $wpdb->delete($wpdb->dt_location_grid_meta, [
+                        $wpdb->delete($wpdb->dt_location_grid_meta, array(
                             'post_id' => $user_id,
-                            'grid_meta_id' => $grid_meta_id
-                        ]);
-                        $wpdb->delete($wpdb->usermeta, [
+                            'grid_meta_id' => $grid_meta_id,
+                        ));
+                        $wpdb->delete($wpdb->usermeta, array(
                             'user_id' => $user_id,
                             'meta_key' => $wpdb->prefix . 'location_grid_meta',
-                            'meta_value' => $grid_meta_id
-                        ]);
+                            'meta_value' => $grid_meta_id,
+                        ));
                         $status = true;
                         break;
 
@@ -315,6 +313,5 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
             return $status;
         }
-
     }
 }

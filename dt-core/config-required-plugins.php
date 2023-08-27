@@ -36,21 +36,21 @@ function dt_register_required_plugins() {
      * Array of plugin arrays. Required keys are name and slug.
      * If the source is NOT from the .org repo, then source is also required.
      */
-    $plugins = [
-        [
+    $plugins = array(
+        array(
             'name'                  => 'iThemes Security',
             'slug'                  => 'better-wp-security',
             'required'              => false,
             'version'               => '7.2.0',
-        ]
-    ];
+        ),
+    );
     if ( is_multisite() ){
-        $plugins[] = [
+        $plugins[] = array(
             'name' => 'Disciple.Tools Multisite Helper',
             'slug' => 'disciple-tools-multisite',
             'source' => 'https://github.com/DiscipleTools/disciple-tools-multisite/releases/latest/download/disciple-tools-multisite.zip',
-            'required' => false
-        ];
+            'required' => false,
+        );
     }
 
     /*

@@ -96,16 +96,16 @@ class Disciple_Tools_Notifications_Scheduler {
      */
     private function send_batch_emails( array $unsent_notifications, string $time_schedule ) {
 
-        $notifications_by_user_by_post = [];
+        $notifications_by_user_by_post = array();
         // sort the notifications by user, and then by record
         foreach ( $unsent_notifications as $notification ) {
             $user_id = $notification['user_id'];
             $post_id = $notification['post_id'];
             if ( ! isset( $notifications_by_user_by_post[$user_id] ) ) {
-                $notifications_by_user_by_post[$user_id] = [];
+                $notifications_by_user_by_post[$user_id] = array();
             }
             if ( ! isset( $notifications_by_user_by_post[$user_id][$post_id] ) ) {
-                $notifications_by_user_by_post[$user_id][$post_id] = [];
+                $notifications_by_user_by_post[$user_id][$post_id] = array();
             }
             $notifications_by_user_by_post[$user_id][$post_id][] = $notification;
         }
@@ -120,7 +120,7 @@ class Disciple_Tools_Notifications_Scheduler {
             dt_switch_locale_for_notifications( $user_id );
 
             $email_body = '';
-            $sent_notifications = [];
+            $sent_notifications = array();
             foreach ( $notifications_by_post as $post_id => $notifications ) {
                 $sent_notifications = array_merge( $sent_notifications, $notifications );
 
@@ -196,7 +196,7 @@ class Disciple_Tools_Notifications_Scheduler {
     public function debug_cron_schedules( $schedules ) {
         $schedules['minutely'] = array(
             'interval' => 60,
-            'display'  => 'Every Minute'
+            'display'  => 'Every Minute',
         );
         return $schedules;
     }

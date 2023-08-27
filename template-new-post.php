@@ -64,7 +64,7 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
                     </div>
                     <div class="type-options">
                         <?php if ( isset( $post_settings['fields']['type']['default'] ) ) {
-                            uasort( $post_settings['fields']['type']['default'], function ( $a, $b ){
+                            uasort( $post_settings['fields']['type']['default'], function ( $a, $b ) {
                                 return ( $a['order'] ?? 100 ) <=> ( $b['order'] ?? 100 );
                             });
                         }
@@ -133,7 +133,7 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
                             <div <?php echo esc_html( !$show_field ? 'style=display:none' : '' ); ?>
                                 class="form-field <?php echo esc_html( $classes ); ?>">
                                 <?php
-                                render_field_for_display( $field_key, $post_settings['fields'], [] );
+                                render_field_for_display( $field_key, $post_settings['fields'], array() );
                                 if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
                                     <p class="help-text" id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
                                 <?php } ?>

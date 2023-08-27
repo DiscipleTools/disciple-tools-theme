@@ -42,7 +42,7 @@ final class Disciple_Tools_Capabilities {
      */
     public function all() {
         $capabilities = $this->factory->get_capabilities();
-        usort($capabilities, function( $a, $b ) {
+        usort($capabilities, function ( $a, $b ) {
             return strcmp( $a->name, $b->name );
         });
         return $capabilities;
@@ -65,7 +65,7 @@ final class Disciple_Tools_Capabilities {
      * @return mixed
      */
     public function sources() {
-        return array_reduce($this->all(), function( $sources, $capability ) {
+        return array_reduce($this->all(), function ( $sources, $capability ) {
             if ( !$capability->source ) {
                 return $sources;
             }
@@ -75,7 +75,7 @@ final class Disciple_Tools_Capabilities {
             }
 
             return $sources;
-        }, []);
+        }, array());
     }
 
     /**

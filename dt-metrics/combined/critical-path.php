@@ -13,7 +13,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
     public $slug = 'critical_path'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/combined/critical-path.js'; // should be full file name plus extension
-    public $permissions = [ 'access_contacts', 'view_any_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'access_contacts', 'view_any_contacts', 'view_project_metrics' );
 
     public function __construct() {
         parent::__construct();
@@ -27,11 +27,11 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
 
         }
 
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     // TODO is this function being used anywhere?
@@ -55,32 +55,32 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, false, true );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, false, true );
 
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, array(
             'moment',
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
             'amcharts-charts',
             'datepicker',
-            'wp-i18n'
-        ], filemtime( get_theme_file_path() . $this->js_file_name ) );
+            'wp-i18n',
+        ), filemtime( get_theme_file_path() . $this->js_file_name ) );
 
         wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
+            'dt_metrics_project_script', 'dtMetricsProject', array(
                 'root'               => esc_url_raw( rest_url() ),
                 'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id'    => get_current_user_id(),
                 'data'               => $this->data(),
-                'translations'       => [
+                'translations'       => array(
                     'title_follow_up' => __( 'Follow Up', 'disciple_tools' ),
                     'title_outreach' => __( 'Outreach', 'disciple_tools' ),
                     'title_critical_path' => __( 'Critical Path', 'disciple_tools' ),
                     'filter_critical_path' => __( 'Filter Critical Path fields', 'disciple_tools' ),
                     'movement_training' => __( 'Movement Tracking', 'disciple_tools' ),
-                ]
-            ]
+                ),
+            )
         );
     }
 
@@ -90,9 +90,9 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
          * Apply Filters before final enqueue. This provides opportunity for complete override or modification of chart.
          */
 
-        return [
-            'cp' => self::critical_path_activity( dt_date_start_of_year(), time() )
-        ];
+        return array(
+            'cp' => self::critical_path_activity( dt_date_start_of_year(), time() ),
+        );
     }
 
     /**
@@ -103,28 +103,28 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
         $namespace = 'dt/v' . $version;
 
         register_rest_route(
-            $namespace, '/metrics/critical_path_by_year/(?P<id>[\w-]+)', [
-                [
+            $namespace, '/metrics/critical_path_by_year/(?P<id>[\w-]+)', array(
+                array(
                     'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'critical_path_by_year' ],
+                    'callback' => array( $this, 'critical_path_by_year' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
         register_rest_route(
-            $namespace, '/metrics/critical_path_activity', [
-                [
+            $namespace, '/metrics/critical_path_activity', array(
+                array(
                     'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'critical_path_activity_callback' ],
+                    'callback' => array( $this, 'critical_path_activity_callback' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function critical_path_by_year( WP_REST_Request $request ) {
         if ( !$this->has_permission() ) {
-            return new WP_Error( 'critical_path_by_year', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'critical_path_by_year', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
@@ -143,7 +143,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( 'critical_path_by_year', 'Missing a valid contact id', [ 'status' => 400 ] );
+            return new WP_Error( 'critical_path_by_year', 'Missing a valid contact id', array( 'status' => 400 ) );
         }
     }
 
@@ -161,7 +161,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
 
     public function critical_path_activity_callback( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( 'critical_path_activity_callback', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'critical_path_activity_callback', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
         if ( isset( $params['start'], $params['end'] ) ){
@@ -174,7 +174,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( 'critical_path_activity_callback', 'Missing a valid values', [ 'status' => 400 ] );
+            return new WP_Error( 'critical_path_activity_callback', 'Missing a valid values', array( 'status' => 400 ) );
         }
     }
 
@@ -192,47 +192,47 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
      * @return array
      */
     public static function critical_path_activity( $start = 0, $end = 0 ){
-        $data = [];
+        $data = array();
         $manual_additions = Disciple_Tools_Counter_Outreach::get_monthly_reports_count( $start, $end );
         foreach ( $manual_additions as $addition_key => $addition ) {
             if ( $addition['section'] == 'outreach' ) {
-                $data[] = [
+                $data[] = array(
                     'description' => $addition['description'],
                     'key' => $addition_key,
                     'label' => $addition['label'],
-                    'outreach' => $addition['sum']
-                ];
+                    'outreach' => $addition['sum'],
+                );
             }
         }
         $new_contacts = Disciple_Tools_Counter_Contacts::new_contact_count( $start, $end );
         $current_contacts = Disciple_Tools_Counter_Contacts::new_contact_count( 0, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'new_contacts',
             'label' => __( 'New Contacts', 'disciple_tools' ),
             'description' => __( 'Any new created contact', 'disciple_tools' ),
             'value' => (int) $new_contacts,
             'total' => (int) $current_contacts,
-            'type' => 'activity'
-        ];
+            'type' => 'activity',
+        );
         $status_at_date = Disciple_Tools_Counter_Contacts::overall_status_at_date( $end );
         $assigned_contacts = Disciple_Tools_Counter_Contacts::assigned_contacts_count( $start, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'assigned_contacts',
             'label' => __( 'Assigned Contacts', 'disciple_tools' ),
             'description' => __( 'Number of contacts assigned for a face-to-face visit', 'disciple_tools' ),
             'value' => (int) $assigned_contacts,
             'total' => (int) $status_at_date['assigned']['value'],
-            'type' => 'activity'
-        ];
+            'type' => 'activity',
+        );
         $active_contacts = Disciple_Tools_Counter_Contacts::active_contacts_count( $start, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'active_contacts',
             'label' => __( 'Active Contacts', 'disciple_tools' ),
             'description' => __( 'Number of contacts that had the active status', 'disciple_tools' ),
             'value' => (int) $active_contacts,
             'total' => (int) $status_at_date['active']['value'],
-            'type' => 'activity'
-        ];
+            'type' => 'activity',
+        );
         $seeker_path_counts = Disciple_Tools_Counter_Contacts::seeker_path_at_date( $end );
         $seeker_path_activity = Disciple_Tools_Counter_Contacts::seeker_path_activity( $start, $end );
         foreach ( $seeker_path_counts as $key => $val ){
@@ -242,26 +242,26 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
                 } else {
                     $description = sprintf( __( 'Number of contacts where %s was set on the seeker path', 'disciple_tools' ), $val['label'] );
                 }
-                $data[] = [
+                $data[] = array(
                     'key' => $key,
                     'label' => $val['label'],
                     'description' => $description,
                     'value' => (int) $seeker_path_activity[$key]['value'],
                     'total' => (int) $val['value'],
-                    'type' => ( $key == 'ongoing' || $key == 'coaching' ) ? 'ongoing' : 'activity'
-                ];
+                    'type' => ( $key == 'ongoing' || $key == 'coaching' ) ? 'ongoing' : 'activity',
+                );
             }
         }
         $baptisms = Disciple_Tools_Counter_Baptism::get_number_of_baptisms( $start, $end );
         $baptisms_total = Disciple_Tools_Counter_Baptism::get_number_of_baptisms( 0, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'baptisms',
             'label' => __( 'Baptisms', 'disciple_tools' ),
             'description' => __( 'Number of baptized contact with a baptism date in date range and baptized by connection', 'disciple_tools' ),
             'value' => (int) $baptisms,
             'total' => (int) $baptisms_total,
-            'type' => 'activity'
-        ];
+            'type' => 'activity',
+        );
         $baptism_generations = Disciple_Tools_Counter_Baptism::get_baptism_generations( $start, $end );
         $baptism_generations_total = Disciple_Tools_Counter_Baptism::get_baptism_generations( 0, $end );
         foreach ( $baptism_generations_total as $gen => $count ){
@@ -272,78 +272,78 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
                 }
             }
 
-            $data[] = [
+            $data[] = array(
                 'key' => "baptism_generation_$gen",
                 'label' => sprintf( __( 'Generation %s Baptisms', 'disciple_tools' ), $gen ),
                 'description' => sprintf( __( 'Number of generation %s baptisms', 'disciple_tools' ), $gen ),
                 'value' => (int) $value,
                 'total' => (int) $count,
-                'type' => 'activity'
-            ];
+                'type' => 'activity',
+            );
         }
         $baptizers = Disciple_Tools_Counter_Baptism::get_number_of_baptizers( $start, $end );
         $total_baptizers = Disciple_Tools_Counter_Baptism::get_number_of_baptizers( 0, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'baptizers',
             'label' => __( 'Baptizers', 'disciple_tools' ),
             'description' => __( 'Number of contacts or users who have baptized a contact', 'disciple_tools' ),
             'value' => (int) $baptizers,
             'total' => (int) $total_baptizers,
-            'type' => 'activity'
-        ];
+            'type' => 'activity',
+        );
         $active_groups = Disciple_Tools_Counter_Groups::get_groups_count( 'active_groups', $start, $end );
         $current_groups = Disciple_Tools_Counter_Groups::get_groups_count( 'active_groups', $end -1, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'active_groups',
             'label' => __( 'Active Groups', 'disciple_tools' ),
             'description' => __( 'Groups active at the end of the time range', 'disciple_tools' ),
             'value' => (int) $active_groups,
             'total' => (int) $current_groups,
-            'type' => 'ongoing'
-        ];
+            'type' => 'ongoing',
+        );
         $active_churches = Disciple_Tools_Counter_Groups::get_groups_count( 'active_churches', $start, $end );
         $current_churches = Disciple_Tools_Counter_Groups::get_groups_count( 'active_churches', $end - 1, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'active_churches',
             'label' => __( 'Active Churches', 'disciple_tools' ),
             'description' => __( 'Churches active at the end of the time range', 'disciple_tools' ),
             'value' => (int) $active_churches,
             'total' => (int) $current_churches,
-            'type' => 'ongoing'
-        ];
+            'type' => 'ongoing',
+        );
 //        @todo churches + groups
         $church_generations = Disciple_Tools_Counter_Groups::get_groups_count( 'church_generations', $start, $end );
         $current_church_generations = Disciple_Tools_Counter_Groups::get_groups_count( 'church_generations', $end - 1, $end );
         $max_gen = max( sizeof( $church_generations ), sizeof( $current_church_generations ) );
         for ( $i = 1;  $i <= $max_gen; $i++ ){
-            $data[] = [
+            $data[] = array(
                 'key' => "church_generation_$i",
                 'label' => sprintf( __( 'Generation %s Churches', 'disciple_tools' ), $i ),
                 'description' => sprintf( __( 'Number of generation %s churches at the end of the time range', 'disciple_tools' ), $i ),
                 'value' => (int) isset( $church_generations[$i] ) ? $church_generations[$i] : 0,
                 'total' => (int) isset( $current_church_generations[$i] ) ? $current_church_generations[$i] : 0,
-                'type' => 'ongoing'
-            ];
+                'type' => 'ongoing',
+            );
         }
         $church_planters = Disciple_Tools_Counter_Groups::get_groups_count( 'church_planters', $start, $end );
         $total_church_planters = Disciple_Tools_Counter_Groups::get_groups_count( 'church_planters', 0, $end );
-        $data[] = [
+        $data[] = array(
             'key' => 'church_planters',
             'label' => __( 'Church Planters', 'disciple_tools' ),
             'description' => __( 'Number of contacts or users who have started a church and are marked as the church coach', 'disciple_tools' ),
             'value' => (int) $church_planters,
             'total' => (int) $total_church_planters,
-            'type' => 'ongoing'
-        ];
+            'type' => 'ongoing',
+        );
         foreach ( $manual_additions as $addition_key => $addition ) {
             if ( $addition['section'] == 'movement' ) {
-                $data[] = [
+                $data[] = array(
                     'description' => $addition['description'],
                     'key' => $addition_key,
                     'label' => $addition['label'],
                     'total' => $addition['latest'],
-                    'type' => 'ongoing'
-                ];
+                    'type' => 'ongoing',
+                );
             }
         }
 

@@ -7,13 +7,12 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  */
 class Disciple_Tools_Migration_0044 extends Disciple_Tools_Migration {
     public function up(){
-        require_once( get_template_directory() . '/dt-core/setup-functions.php' );
+        require_once get_template_directory() . '/dt-core/setup-functions.php';
         dt_setup_roles_and_permissions();
     }
 
     public function down() {
         global $wpdb;
-
     }
 
     public function test() {
@@ -22,6 +21,6 @@ class Disciple_Tools_Migration_0044 extends Disciple_Tools_Migration {
 
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }

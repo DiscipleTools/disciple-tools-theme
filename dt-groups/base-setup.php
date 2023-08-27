@@ -19,31 +19,30 @@ class DT_Groups_Base extends DT_Module_Base {
         }
 
         //setup post type
-        add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
+        add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 100 );
+        add_filter( 'dt_set_roles_and_permissions', array( $this, 'dt_set_roles_and_permissions' ), 20, 1 ); //after contacts
 
         //setup tiles and fields
-        add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
-        add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
-        add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
-        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
-        add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+        add_filter( 'dt_custom_fields_settings', array( $this, 'dt_custom_fields_settings' ), 10, 2 );
+        add_filter( 'dt_details_additional_tiles', array( $this, 'dt_details_additional_tiles' ), 10, 2 );
+        add_filter( 'dt_custom_tiles_after_combine', array( $this, 'dt_custom_tiles_after_combine' ), 10, 2 );
+        add_action( 'dt_details_additional_section', array( $this, 'dt_details_additional_section' ), 20, 2 );
+        add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
 
-        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
+        add_filter( 'dt_record_icon', array( $this, 'dt_record_icon' ), 10, 3 );
 
         // hooks
-        add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
-        add_filter( 'dt_post_update_fields', [ $this, 'dt_post_update_fields' ], 10, 3 );
-        add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 10, 2 );
-        add_action( 'dt_post_created', [ $this, 'dt_post_created' ], 10, 3 );
-        add_action( 'dt_comment_created', [ $this, 'dt_comment_created' ], 10, 4 );
-        add_filter( 'dt_after_get_post_fields_filter', [ $this, 'dt_after_get_post_fields_filter' ], 10, 2 );
-        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
+        add_action( 'post_connection_added', array( $this, 'post_connection_added' ), 10, 4 );
+        add_filter( 'dt_post_update_fields', array( $this, 'dt_post_update_fields' ), 10, 3 );
+        add_filter( 'dt_post_create_fields', array( $this, 'dt_post_create_fields' ), 10, 2 );
+        add_action( 'dt_post_created', array( $this, 'dt_post_created' ), 10, 3 );
+        add_action( 'dt_comment_created', array( $this, 'dt_comment_created' ), 10, 4 );
+        add_filter( 'dt_after_get_post_fields_filter', array( $this, 'dt_after_get_post_fields_filter' ), 10, 2 );
+        add_filter( 'dt_get_post_type_settings', array( $this, 'dt_get_post_type_settings' ), 20, 2 );
 
         //list
-        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
-        add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 20, 2 );
-
+        add_filter( 'dt_user_list_filters', array( $this, 'dt_user_list_filters' ), 10, 2 );
+        add_filter( 'dt_filter_access_permissions', array( $this, 'dt_filter_access_permissions' ), 20, 2 );
     }
 
     public function after_setup_theme(){
@@ -62,10 +61,10 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type === $this->post_type ){
             $settings['label_singular'] = __( 'Group', 'disciple_tools' );
             $settings['label_plural'] = __( 'Groups', 'disciple_tools' );
-            $settings['status_field'] = [
+            $settings['status_field'] = array(
                 'status_key' => 'group_status',
                 'archived_key' => 'inactive',
-            ];
+            );
         }
         return $settings;
     }
@@ -100,40 +99,40 @@ class DT_Groups_Base extends DT_Module_Base {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'groups' ){
-            $fields['requires_update'] = [
+            $fields['requires_update'] = array(
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'boolean',
                 'default'     => false,
-            ];
-            $fields['duplicate_data'] = [
+            );
+            $fields['duplicate_data'] = array(
                 'name' => 'Duplicates', //system string does not need translation
                 'type' => 'array',
-                'default' => [],
-            ];
-            $fields['group_status'] = [
+                'default' => array(),
+            );
+            $fields['group_status'] = array(
                 'name'        => __( 'Group Status', 'disciple_tools' ),
                 'description' => _x( 'Set the current status of the group.', 'field description', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default'     => [
-                    'active'   => [
+                'default'     => array(
+                    'active'   => array(
                         'label' => __( 'Active', 'disciple_tools' ),
                         'description' => _x( 'The group is actively meeting.', 'field description', 'disciple_tools' ),
-                        'color' => '#4CAF50'
-                    ],
-                    'inactive' => [
+                        'color' => '#4CAF50',
+                    ),
+                    'inactive' => array(
                         'label' => __( 'Inactive', 'disciple_tools' ),
                         'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
-                        'color' => '#808080'
-                    ],
-                ],
+                        'color' => '#808080',
+                    ),
+                ),
                 'tile'     => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg?v=2',
                 'default_color' => '#366184',
                 'show_in_table' => 10,
-                'select_cannot_be_empty' => true
-            ];
-            $fields['assigned_to'] = [
+                'select_cannot_be_empty' => true,
+            );
+            $fields['assigned_to'] = array(
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
                 'description' => __( 'Select the main person who is responsible for reporting on this group.', 'disciple_tools' ),
                 'type'        => 'user_select',
@@ -141,8 +140,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg?v=2',
                 'show_in_table' => 16,
-            ];
-            $fields['coaches'] = [
+            );
+            $fields['coaches'] = array(
                 'name' => __( 'Group Coach / Church Planter', 'disciple_tools' ),
                 'description' => _x( 'The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -152,112 +151,112 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-contact.svg?v=2',
-            ];
+            );
 
 
-            $fields['group_type'] = [
+            $fields['group_type'] = array(
                 'name'        => __( 'Group Type', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'key_select',
-                'default'     => [
-                    'pre-group' => [
+                'default'     => array(
+                    'pre-group' => array(
                         'label' => __( 'Pre-Group', 'disciple_tools' ),
                         'description' => _x( 'A group predominantly of non-believers.', 'Optional Documentation', 'disciple_tools' ),
-                    ],
-                    'group'     => [
+                    ),
+                    'group'     => array(
                         'label' => __( 'Group', 'disciple_tools' ),
                         'description' => _x( 'A group having 3 or more believers but not identifying as church.', 'Optional Documentation', 'disciple_tools' ),
-                    ],
-                    'church'    => [
+                    ),
+                    'church'    => array(
                         'label' => __( 'Church', 'disciple_tools' ),
                         'description' => _x( 'A group having 3 or more believers and identifying as church.', 'Optional Documentation', 'disciple_tools' ),
-                    ],
-                    'team'    => [
+                    ),
+                    'team'    => array(
                         'label' => __( 'Team', 'disciple_tools' ),
                         'description' => _x( 'A special group that is not meeting as a church (or trying to become church).', 'Optional Documentation', 'disciple_tools' ),
-                    ],
-                ],
+                    ),
+                ),
                 'customizable' => 'add_only',
                 'tile' => 'groups',
                 'in_create_form' => true,
                 'show_in_table' => 15,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
-                'select_cannot_be_empty' => true
-            ];
+                'select_cannot_be_empty' => true,
+            );
 
 
 
 
-            $fields['health_metrics'] = [
+            $fields['health_metrics'] = array(
                 'name' => __( 'Church Health', 'disciple_tools' ),
                 'description' => _x( 'Track the progress and health of a group/church.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'multi_select',
-                'default' => [
-                    'church_baptism' => [
+                'default' => array(
+                    'church_baptism' => array(
                         'label' => __( 'Baptism', 'disciple_tools' ),
                         'description' => _x( 'The group is baptising.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/baptism-2.svg'
-                    ],
-                    'church_bible' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/baptism-2.svg',
+                    ),
+                    'church_bible' => array(
                         'label' => __( 'Bible Study', 'disciple_tools' ),
                         'description' => _x( 'The group is studying the bible.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/word-2.svg'
-                    ],
-                    'church_communion' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/word-2.svg',
+                    ),
+                    'church_communion' => array(
                         'label' => __( 'Communion', 'disciple_tools' ),
                         'description' => _x( 'The group is practicing communion.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/communion-2.svg'
-                    ],
-                    'church_fellowship' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/communion-2.svg',
+                    ),
+                    'church_fellowship' => array(
                         'label' => __( 'Fellowship', 'disciple_tools' ),
                         'description' => _x( 'The group is fellowshiping.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/heart-2.svg'
-                    ],
-                    'church_giving' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/heart-2.svg',
+                    ),
+                    'church_giving' => array(
                         'label' => __( 'Giving', 'disciple_tools' ),
                         'description' => _x( 'The group is giving.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/giving-2.svg'
-                    ],
-                    'church_prayer' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/giving-2.svg',
+                    ),
+                    'church_prayer' => array(
                         'label' => __( 'Prayer', 'disciple_tools' ),
                         'description' => _x( 'The group is praying.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/prayer-2.svg'
-                    ],
-                    'church_praise' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/prayer-2.svg',
+                    ),
+                    'church_praise' => array(
                         'label' => __( 'Praise', 'disciple_tools' ),
                         'description' => _x( 'The group is praising.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/praise-2.svg'
-                    ],
-                    'church_sharing' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/praise-2.svg',
+                    ),
+                    'church_sharing' => array(
                         'label' => __( 'Sharing the Gospel', 'disciple_tools' ),
                         'description' => _x( 'The group is sharing the gospel.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/evangelism-2.svg'
-                    ],
-                    'church_leaders' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/evangelism-2.svg',
+                    ),
+                    'church_leaders' => array(
                         'label' => __( 'Leaders', 'disciple_tools' ),
                         'description' => _x( 'The group has leaders.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/leadership-2.svg'
-                    ],
-                    'church_commitment' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/leadership-2.svg',
+                    ),
+                    'church_commitment' => array(
                         'label' => __( 'Church Commitment', 'disciple_tools' ),
                         'description' => _x( 'The group has committed to be church.', 'Optional Documentation', 'disciple_tools' ),
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
-                    ],
-                ],
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg',
+                    ),
+                ),
                 'customizable' => 'add_only',
                 'tile' => 'health-metrics',
-                'custom_display' => true
-            ];
+                'custom_display' => true,
+            );
 
-            $fields['start_date'] = [
+            $fields['start_date'] = array(
                 'name'        => __( 'Start Date', 'disciple_tools' ),
                 'description' => _x( 'The date this group began meeting.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'date',
                 'default'     => time(),
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-plus.svg?v=2',
-            ];
-            $fields['church_start_date'] =[
+            );
+            $fields['church_start_date'] =array(
                 'name' => __( 'Church Start Date', 'disciple_tools' ),
                 'description' => _x( 'The date this group first identified as being a church.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'date',
@@ -265,19 +264,19 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-check.svg?v=2',
 
-            ];
-            $fields['end_date'] = [
+            );
+            $fields['end_date'] = array(
                 'name'        => __( 'End Date', 'disciple_tools' ),
                 'description' => _x( 'The date this group stopped meeting (if applicable).', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'date',
                 'default'     => '',
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-remove.svg?v=2',
-            ];
+            );
 
 
 
-            $fields['member_count'] = [
+            $fields['member_count'] = array(
                 'name' => __( 'Member Count', 'disciple_tools' ),
                 'description' => _x( 'The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'number',
@@ -285,8 +284,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'relationships',
                 'show_in_table' => 25,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/tally.svg?v=2',
-            ];
-            $fields['members'] = [
+            );
+            $fields['members'] = array(
                 'name' => __( 'Member List', 'disciple_tools' ),
                 'description' => _x( 'The contacts who are members of this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -294,9 +293,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 'p2p_direction' => 'to',
                 'p2p_key' => 'contacts_to_groups',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/list.svg?v=2',
-                'connection_count_field' => [ 'post_type' => 'groups', 'field_key' => 'member_count', 'connection_field' => 'members' ]
-            ];
-            $fields['leaders'] = [
+                'connection_count_field' => array( 'post_type' => 'groups', 'field_key' => 'member_count', 'connection_field' => 'members' ),
+            );
+            $fields['leaders'] = array(
                 'name' => __( 'Leaders', 'disciple_tools' ),
                 'description' => '',
                 'type' => 'connection',
@@ -304,17 +303,17 @@ class DT_Groups_Base extends DT_Module_Base {
                 'p2p_direction' => 'from',
                 'p2p_key' => 'groups_to_leaders',
                 'show_in_table' => 30,
-                'connection_count_field' => [ 'post_type' => 'groups', 'field_key' => 'leader_count', 'connection_field' => 'leaders' ]
-            ];
-            $fields['leader_count'] = [
+                'connection_count_field' => array( 'post_type' => 'groups', 'field_key' => 'leader_count', 'connection_field' => 'leaders' ),
+            );
+            $fields['leader_count'] = array(
                 'name' => __( 'Leader Count', 'disciple_tools' ),
                 'type' => 'number',
                 'default' => '',
                 'tile' => 'relationships',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/groups/leaders.svg',
-            ];
+            );
 
-            $fields['parent_groups'] = [
+            $fields['parent_groups'] = array(
                 'name' => __( 'Parent Group', 'disciple_tools' ),
                 'description' => _x( 'A group that founded this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -324,9 +323,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'groups',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/group-parent.svg?v=2',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2',
-            ];
+            );
 
-            $fields['peer_groups'] = [
+            $fields['peer_groups'] = array(
                 'name' => __( 'Peer Group', 'disciple_tools' ),
                 'description' => _x( "A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc.", 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -336,9 +335,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'groups',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/group-peer.svg?v=2',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2',
-            ];
+            );
 
-            $fields['child_groups'] = [
+            $fields['child_groups'] = array(
                 'name' => __( 'Child Group', 'disciple_tools' ),
                 'description' => _x( 'A group that has been birthed out of this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -348,14 +347,14 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'groups',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/group-child.svg?v=2',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2',
-            ];
+            );
 
 
 
 
 
             // Group Locations
-            $fields['location_grid'] = [
+            $fields['location_grid'] = array(
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
@@ -363,25 +362,25 @@ class DT_Groups_Base extends DT_Module_Base {
                 'in_create_form' => true,
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
-            ];
+            );
 
-            $fields['location_grid_meta'] = [
+            $fields['location_grid_meta'] = array(
                 'name'        => __( 'Locations or Address', 'disciple_tools' ),
                 'type'        => 'location_meta',
                 'tile'      => 'details',
                 'mapbox'    => false,
                 'hidden' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
-            ];
+            );
 
-            $fields['contact_address'] = [
+            $fields['contact_address'] = array(
                 'name' => __( 'Address', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/house.svg?v=2',
                 'type' => 'communication_channel',
                 'tile' => 'details',
                 'mapbox'    => false,
-                'customizable' => false
-            ];
+                'customizable' => false,
+            );
 
             if ( DT_Mapbox_API::get_key() ){
                 $fields['contact_address']['custom_display'] = true;
@@ -395,7 +394,7 @@ class DT_Groups_Base extends DT_Module_Base {
 
 
 
-            $fields['people_groups'] = [
+            $fields['people_groups'] = array(
                 'name' => __( 'People Groups', 'disciple_tools' ),
                 'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg?v=2',
@@ -404,12 +403,12 @@ class DT_Groups_Base extends DT_Module_Base {
                 'p2p_direction' => 'from',
                 'p2p_key' => 'groups_to_peoplegroups',
                 'tile' => 'details',
-                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'group_total', 'connection_field' => 'groups' ]
-            ];
+                'connection_count_field' => array( 'post_type' => 'peoplegroups', 'field_key' => 'group_total', 'connection_field' => 'groups' ),
+            );
 
             $field_fields_enabled = self::four_fields_is_enabled();
 
-            $fields['four_fields_unbelievers'] = [
+            $fields['four_fields_unbelievers'] = array(
                 'name' => __( 'Unbelievers', 'disciple_tools' ),
                 'description' => _x( 'Number of unbelievers in this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
@@ -417,8 +416,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'four-fields',
                 'custom_display' => true,
                 'hidden' => !$field_fields_enabled,
-            ];
-            $fields['four_fields_believers'] = [
+            );
+            $fields['four_fields_believers'] = array(
                 'name' => __( 'Believers', 'disciple_tools' ),
                 'description' => _x( 'Number of believers in this group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
@@ -426,8 +425,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'four-fields',
                 'custom_display' => true,
                 'hidden' => !$field_fields_enabled,
-            ];
-            $fields['four_fields_accountable'] = [
+            );
+            $fields['four_fields_accountable'] = array(
                 'name' => __( 'Accountable', 'disciple_tools' ),
                 'description' => _x( 'Number of people in accountability group.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
@@ -435,8 +434,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'four-fields',
                 'custom_display' => true,
                 'hidden' => !$field_fields_enabled,
-            ];
-            $fields['four_fields_church_commitment'] = [
+            );
+            $fields['four_fields_church_commitment'] = array(
                 'name' => __( 'Church Commitment', 'disciple_tools' ),
                 'description' => _x( 'Is this a church - yes or no?', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
@@ -444,8 +443,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'four-fields',
                 'custom_display' => true,
                 'hidden' => !$field_fields_enabled,
-            ];
-            $fields['four_fields_multiplying'] = [
+            );
+            $fields['four_fields_multiplying'] = array(
                 'name' => __( 'Multiplying', 'disciple_tools' ),
                 'description' => _x( 'Number of people helping start other groups. How many members are multiplying?', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'text',
@@ -453,12 +452,12 @@ class DT_Groups_Base extends DT_Module_Base {
                 'tile' => 'four-fields',
                 'custom_display' => true,
                 'hidden' => !$field_fields_enabled,
-            ];
+            );
 
         }
 
         if ( $post_type === 'contacts' ){
-            $fields['groups'] = [
+            $fields['groups'] = array(
                 'name' => __( 'Groups', 'disciple_tools' ),
                 'description' => _x( 'Groups this contact is a member of.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -469,9 +468,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/group-type.svg?v=2',
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg?v=2',
                 'show_in_table' => 35,
-                'connection_count_field' => [ 'post_type' => 'groups', 'field_key' => 'member_count', 'connection_field' => 'members' ]
-            ];
-            $fields['group_leader'] = [
+                'connection_count_field' => array( 'post_type' => 'groups', 'field_key' => 'member_count', 'connection_field' => 'members' ),
+            );
+            $fields['group_leader'] = array(
                 'name' => __( 'Leader of Group', 'disciple_tools' ),
                 'type' => 'connection',
                 'p2p_direction' => 'to',
@@ -479,9 +478,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 'post_type' => 'groups',
                 'tile' => 'no_tile',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/foot.svg?v=2',
-                'connection_count_field' => [ 'post_type' => 'groups', 'field_key' => 'leader_count', 'connection_field' => 'leaders' ]
-            ];
-            $fields['group_coach'] = [
+                'connection_count_field' => array( 'post_type' => 'groups', 'field_key' => 'leader_count', 'connection_field' => 'leaders' ),
+            );
+            $fields['group_coach'] = array(
                 'name' => __( 'Coach of Group', 'disciple_tools' ),
                 'type' => 'connection',
                 'p2p_direction' => 'to',
@@ -489,7 +488,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'post_type' => 'groups',
                 'tile' => 'no_tile',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
-            ];
+            );
         }
         return $fields;
     }
@@ -635,16 +634,16 @@ class DT_Groups_Base extends DT_Module_Base {
     public function dt_details_additional_tiles( $tiles, $post_type = '' ){
 
         if ( $post_type === 'groups' ){
-            $tiles['relationships'] = [ 'label' => __( 'Member List', 'disciple_tools' ) ];
-            $tiles['health-metrics'] = [ 'label' => __( 'Church Health', 'disciple_tools' ) ];
+            $tiles['relationships'] = array( 'label' => __( 'Member List', 'disciple_tools' ) );
+            $tiles['health-metrics'] = array( 'label' => __( 'Church Health', 'disciple_tools' ) );
             if ( self::four_fields_is_enabled() ){
-                $tiles['four-fields'] = [
+                $tiles['four-fields'] = array(
                     'label' => __( 'Four Fields', 'disciple_tools' ),
                     'description' => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( 'There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:', 'Optional Documentation', 'disciple_tools' ),
-                ];
+                );
             }
-            $tiles['groups'] = [ 'label' => __( 'Groups', 'disciple_tools' ) ];
-            $tiles['other'] = [ 'label' => __( 'Other', 'disciple_tools' ) ];
+            $tiles['groups'] = array( 'label' => __( 'Groups', 'disciple_tools' ) );
+            $tiles['other'] = array( 'label' => __( 'Other', 'disciple_tools' ) );
         }
         return $tiles;
     }
@@ -667,7 +666,7 @@ class DT_Groups_Base extends DT_Module_Base {
      * Is the tile disabled by some higher preference
      */
     public function is_tile_enabled( $post_type, $tile_key ) {
-        $preferences = [];
+        $preferences = array();
 
         if ( $post_type === 'groups' ) {
             $preferences = dt_get_option( 'group_preferences' );
@@ -679,10 +678,10 @@ class DT_Groups_Base extends DT_Module_Base {
 
         // get the correct key for the preferences
         // If the same key as the tile is used in the preferences option then we have no need for the map.
-        $key_map = [
+        $key_map = array(
             'four-fields' => 'four_fields',
             'health-metrics' => 'church_metrics',
-        ];
+        );
 
         $preference_key = $tile_key;
 
@@ -753,9 +752,9 @@ class DT_Groups_Base extends DT_Module_Base {
                         }
                     }
                     if ( !$is_in_group && empty( $leader['delete'] ) ){
-                        $fields['groups']['values'][] = [
-                            'value' => $leader['value']
-                        ];
+                        $fields['groups']['values'][] = array(
+                            'value' => $leader['value'],
+                        );
                     }
                 }
             }
@@ -803,10 +802,10 @@ class DT_Groups_Base extends DT_Module_Base {
         $overall_status_settings = $field_settings['overall_status']['default'];
         $milestone_settings = $field_settings['milestones']['default'];
 
-        $defaults_to_display = [
+        $defaults_to_display = array(
             'baptized',
             'has_bible',
-        ];
+        );
         $default_milestones_to_display = apply_filters( 'dt_members_extra_data', $defaults_to_display );
 
         $default_milestone_keys = array_map( function ( $milestone ) {
@@ -814,7 +813,7 @@ class DT_Groups_Base extends DT_Module_Base {
         }, $default_milestones_to_display);
 
         // set up the MySQL OR string to get multiple posts at once
-        $members_post_ids = [];
+        $members_post_ids = array();
         foreach ( $fields['members'] as $member ) {
             $member_id = $member['ID'];
             $members_post_ids[] = "post_id = $member_id";
@@ -835,10 +834,10 @@ class DT_Groups_Base extends DT_Module_Base {
         ", $members_or_string ) );
 
         // order the results by id in a lookup array
-        $results_by_post_id = [];
+        $results_by_post_id = array();
         foreach ( $results as $result ) {
             if ( !key_exists( $result->post_id, $results_by_post_id ) ) {
-                $results_by_post_id[$result->post_id] = [];
+                $results_by_post_id[$result->post_id] = array();
             }
             $results_by_post_id[$result->post_id][] = $result;
         }
@@ -846,10 +845,10 @@ class DT_Groups_Base extends DT_Module_Base {
         // pump the member metadata into the members array of the post
         foreach ( $fields['members'] as $key => $member ) {
             $member_id = $member['ID'];
-            $member_data = key_exists( $member_id, $results_by_post_id ) ? $results_by_post_id[$member_id] : [];
-            $data = [
-                'milestones' => [],
-            ];
+            $member_data = key_exists( $member_id, $results_by_post_id ) ? $results_by_post_id[$member_id] : array();
+            $data = array(
+                'milestones' => array(),
+            );
             foreach ( $member_data as $meta ) {
                 if ( $meta->meta_key === 'milestones' && in_array( $meta->meta_value, $default_milestone_keys, true ) ) {
                     $data['milestones'][] = $milestone_settings[$meta->meta_value];
@@ -858,13 +857,13 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
             // uniqueify the milestones array
-            $data['milestones'] = array_reduce( $data['milestones'], function ( $array, $milestone ){
+            $data['milestones'] = array_reduce( $data['milestones'], function ( $array, $milestone ) {
                 if ( !in_array( $milestone, $array, true ) ) {
                     $array[] = $milestone;
                     return $array;
                 }
                 return $array;
-            }, []);
+            }, array());
             $fields['members'][$key]['data'] = $data;
         }
 
@@ -961,9 +960,9 @@ class DT_Groups_Base extends DT_Module_Base {
             /**
              * Setup my group filters
              */
-            $active_counts = [];
+            $active_counts = array();
             $update_needed = 0;
-            $status_counts = [];
+            $status_counts = array();
             $total_my = 0;
             foreach ( $counts as $count ){
                 $total_my += $count['count'];
@@ -977,66 +976,66 @@ class DT_Groups_Base extends DT_Module_Base {
             }
 
 
-            $filters['tabs'][] = [
+            $filters['tabs'][] = array(
                 'key' => 'assigned_to_me',
                 'label' => __( 'Assigned to me', 'disciple_tools' ),
                 'count' => $total_my,
-                'order' => 20
-            ];
+                'order' => 20,
+            );
             // add assigned to me filters
-            $filters['filters'][] = [
+            $filters['filters'][] = array(
                 'ID' => 'my_all',
                 'tab' => 'assigned_to_me',
                 'name' => __( 'All', 'disciple_tools' ),
-                'query' => [
-                    'assigned_to' => [ 'me' ],
-                    'sort' => 'group_status'
-                ],
+                'query' => array(
+                    'assigned_to' => array( 'me' ),
+                    'sort' => 'group_status',
+                ),
                 'count' => $total_my,
-            ];
+            );
             foreach ( $fields['group_status']['default'] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) ){
-                    $filters['filters'][] = [
+                    $filters['filters'][] = array(
                         'ID' => 'my_' . $status_key,
                         'tab' => 'assigned_to_me',
                         'name' => $status_value['label'],
-                        'query' => [
-                            'assigned_to' => [ 'me' ],
-                            'group_status' => [ $status_key ],
-                            'sort' => 'group_type'
-                        ],
-                        'count' => $status_counts[$status_key]
-                    ];
+                        'query' => array(
+                            'assigned_to' => array( 'me' ),
+                            'group_status' => array( $status_key ),
+                            'sort' => 'group_type',
+                        ),
+                        'count' => $status_counts[$status_key],
+                    );
                     if ( $status_key === 'active' ){
                         if ( $update_needed > 0 ){
-                            $filters['filters'][] = [
+                            $filters['filters'][] = array(
                                 'ID' => 'my_update_needed',
                                 'tab' => 'assigned_to_me',
                                 'name' => $fields['requires_update']['name'],
-                                'query' => [
-                                    'assigned_to' => [ 'me' ],
-                                    'group_status' => [ 'active' ],
-                                    'requires_update' => [ true ],
-                                ],
+                                'query' => array(
+                                    'assigned_to' => array( 'me' ),
+                                    'group_status' => array( 'active' ),
+                                    'requires_update' => array( true ),
+                                ),
                                 'count' => $update_needed,
-                                'subfilter' => true
-                            ];
+                                'subfilter' => true,
+                            );
                         }
                         foreach ( $fields['group_type']['default'] as $group_type_key => $group_type_value ) {
                             if ( isset( $active_counts[$group_type_key] ) ) {
-                                $filters['filters'][] = [
+                                $filters['filters'][] = array(
                                     'ID' => 'my_' . $group_type_key,
                                     'tab' => 'assigned_to_me',
                                     'name' => $group_type_value['label'],
-                                    'query' => [
-                                        'assigned_to' => [ 'me' ],
-                                        'group_status' => [ 'active' ],
-                                        'group_type' => [ $group_type_key ],
-                                        'sort' => 'name'
-                                    ],
+                                    'query' => array(
+                                        'assigned_to' => array( 'me' ),
+                                        'group_status' => array( 'active' ),
+                                        'group_type' => array( $group_type_key ),
+                                        'sort' => 'name',
+                                    ),
                                     'count' => $active_counts[$group_type_key],
-                                    'subfilter' => true
-                                ];
+                                    'subfilter' => true,
+                                );
                             }
                         }
                     }
@@ -1044,9 +1043,9 @@ class DT_Groups_Base extends DT_Module_Base {
             }
 
             $counts = self::get_all_groups_status_type();
-            $active_counts = [];
+            $active_counts = array();
             $update_needed = 0;
-            $status_counts = [];
+            $status_counts = array();
             $total_all = 0;
             foreach ( $counts as $count ){
                 $total_all += $count['count'];
@@ -1058,86 +1057,86 @@ class DT_Groups_Base extends DT_Module_Base {
                     dt_increment( $active_counts[$count['group_type']], $count['count'] );
                 }
             }
-            $filters['tabs'][] = [
+            $filters['tabs'][] = array(
                 'key' => 'all',
                 'label' => __( 'Default Filters', 'disciple_tools' ),
                 'count' => $total_all,
-                'order' => 10
-            ];
+                'order' => 10,
+            );
             // add assigned to me filters
-            $filters['filters'][] = [
+            $filters['filters'][] = array(
                 'ID' => 'all',
                 'tab' => 'all',
                 'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
-                'query' => [
-                    'sort' => 'group_type'
-                ],
-                'count' => $total_all
-            ];
-            $filters['filters'][] = [
+                'query' => array(
+                    'sort' => 'group_type',
+                ),
+                'count' => $total_all,
+            );
+            $filters['filters'][] = array(
                 'ID' => 'favorite',
                 'tab' => 'all',
                 'name' => sprintf( _x( 'Favorite %s', 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
-                'query' => [
-                    'fields' => [ 'favorite' => [ '1' ] ],
-                    'sort' => 'name'
-                ],
-                'labels' => [
-                    [ 'id' => '1', 'name' => __( 'Favorite', 'disciple_tools' ) ]
-                ]
-            ];
-            $filters['filters'][] = [
+                'query' => array(
+                    'fields' => array( 'favorite' => array( '1' ) ),
+                    'sort' => 'name',
+                ),
+                'labels' => array(
+                    array( 'id' => '1', 'name' => __( 'Favorite', 'disciple_tools' ) ),
+                ),
+            );
+            $filters['filters'][] = array(
                 'ID' => 'recent',
                 'tab' => 'all',
                 'name' => __( 'My Recently Viewed', 'disciple_tools' ),
-                'query' => [
-                    'dt_recent' => true
-                ],
-                'labels' => [
-                    [ 'id' => 'recent', 'name' => __( 'Last 30 viewed', 'disciple_tools' ) ]
-                ]
-            ];
+                'query' => array(
+                    'dt_recent' => true,
+                ),
+                'labels' => array(
+                    array( 'id' => 'recent', 'name' => __( 'Last 30 viewed', 'disciple_tools' ) ),
+                ),
+            );
 
             foreach ( $fields['group_status']['default'] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) ){
-                    $filters['filters'][] = [
+                    $filters['filters'][] = array(
                         'ID' => 'all_' . $status_key,
                         'tab' => 'all',
                         'name' => $status_value['label'],
-                        'query' => [
-                            'group_status' => [ $status_key ],
-                            'sort' => 'group_type'
-                        ],
-                        'count' => $status_counts[$status_key]
-                    ];
+                        'query' => array(
+                            'group_status' => array( $status_key ),
+                            'sort' => 'group_type',
+                        ),
+                        'count' => $status_counts[$status_key],
+                    );
                     if ( $status_key === 'active' ){
                         if ( $update_needed > 0 ){
-                            $filters['filters'][] = [
+                            $filters['filters'][] = array(
                                 'ID' => 'all_update_needed',
                                 'tab' => 'all',
                                 'name' => $fields['requires_update']['name'],
-                                'query' => [
-                                    'group_status' => [ 'active' ],
-                                    'requires_update' => [ true ],
-                                ],
+                                'query' => array(
+                                    'group_status' => array( 'active' ),
+                                    'requires_update' => array( true ),
+                                ),
                                 'count' => $update_needed,
-                                'subfilter' => true
-                            ];
+                                'subfilter' => true,
+                            );
                         }
                         foreach ( $fields['group_type']['default'] as $group_type_key => $group_type_value ) {
                             if ( isset( $active_counts[$group_type_key] ) ) {
-                                $filters['filters'][] = [
+                                $filters['filters'][] = array(
                                     'ID' => 'all_' . $group_type_key,
                                     'tab' => 'all',
                                     'name' => $group_type_value['label'],
-                                    'query' => [
-                                        'group_status' => [ 'active' ],
-                                        'group_type' => [ $group_type_key ],
-                                        'sort' => 'name'
-                                    ],
+                                    'query' => array(
+                                        'group_status' => array( 'active' ),
+                                        'group_type' => array( $group_type_key ),
+                                        'sort' => 'name',
+                                    ),
                                     'count' => $active_counts[$group_type_key],
-                                    'subfilter' => true
-                                ];
+                                    'subfilter' => true,
+                                );
                             }
                         }
                     }
@@ -1150,7 +1149,7 @@ class DT_Groups_Base extends DT_Module_Base {
     public static function dt_filter_access_permissions( $permissions, $post_type ){
         if ( $post_type === 'groups' ){
             if ( DT_Posts::can_view_all( $post_type ) ){
-                $permissions = [];
+                $permissions = array();
             }
         }
         return $permissions;
@@ -1158,10 +1157,10 @@ class DT_Groups_Base extends DT_Module_Base {
 
     public function scripts(){
         if ( is_singular( 'groups' ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
-            wp_enqueue_script( 'dt_groups', get_template_directory_uri() . '/dt-groups/groups.js', [
+            wp_enqueue_script( 'dt_groups', get_template_directory_uri() . '/dt-groups/groups.js', array(
                 'jquery',
-                'details'
-            ], filemtime( get_theme_file_path() . '/dt-groups/groups.js' ), true );
+                'details',
+            ), filemtime( get_theme_file_path() . '/dt-groups/groups.js' ), true );
         }
     }
 

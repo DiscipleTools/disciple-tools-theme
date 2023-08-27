@@ -35,15 +35,15 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 99 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 10, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 99, 1 );
 
-        add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
-        add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
-        add_filter( 'dt_import_services', [ $this, 'export_import_services' ], 10, 1 );
-        add_filter( 'dt_import_services_details', [ $this, 'import_services_details' ], 10, 2 );
-        add_action( 'dt_import_payload', [ $this, 'import_payload' ], 10, 2 );
+        add_filter( 'dt_export_services', array( $this, 'export_import_services' ), 10, 1 );
+        add_filter( 'dt_export_payload', array( $this, 'export_payload' ), 10, 1 );
+        add_filter( 'dt_import_services', array( $this, 'export_import_services' ), 10, 1 );
+        add_filter( 'dt_import_services_details', array( $this, 'import_services_details' ), 10, 2 );
+        add_action( 'dt_import_payload', array( $this, 'import_payload' ), 10, 2 );
 
         parent::__construct();
     } // End __construct()
@@ -51,13 +51,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     private static $export_import_id = 'dt_custom_tile_settings';
     private static $import_config_json_id = 'dt_settings';
     public function export_import_services( $services ){
-        $services[self::$export_import_id] = [
+        $services[self::$export_import_id] = array(
             'id' => self::$export_import_id,
             'config_json_id' => self::$import_config_json_id,
             'enabled' => true,
             'label' => __( 'D.T Custom Tile Settings', 'disciple_tools' ),
-            'description' => __( 'Export/Import custom D.T tile settings.', 'disciple_tools' )
-        ];
+            'description' => __( 'Export/Import custom D.T tile settings.', 'disciple_tools' ),
+        );
 
         return $services;
     }
@@ -65,7 +65,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     public function export_payload( $export_payload ){
         if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ){
 
-            $payload = [];
+            $payload = array();
             $existing_custom_options = dt_get_option( 'dt_custom_tiles' );
             $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
 
@@ -125,11 +125,11 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             <?php
 
             // Fetch list of existing instance post types.
-            $existing_post_types = DT_Posts::get_post_types() ?? [];
+            $existing_post_types = DT_Posts::get_post_types() ?? array();
 
             // Ensure displayed post types are driven by incoming config.
-            $existing_tiles = [];
-            foreach ( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'] ?? [] as $post_type => $tile_config ) {
+            $existing_tiles = array();
+            foreach ( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'] ?? array() as $post_type => $tile_config ) {
 
                 // Target instance, must contain corresponding post type, in order for incoming tiles to be set.
                 if ( in_array( $post_type, $existing_post_types ) ){
@@ -147,7 +147,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     <?php
 
                     // Next, display tiles available for import; disabling those already installed within target instance.
-                    foreach ( $tile_config ?? [] as $tile_id => $tile ) {
+                    foreach ( $tile_config ?? array() as $tile_id => $tile ) {
                         $already_has_tile = isset( $post_type_settings['tiles'], $post_type_settings['tiles'][$tile_id] );
                         ?>
                         <tr>
@@ -166,7 +166,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         // Keep a record of pre-existing tiles.
                         if ( $already_has_tile ){
                             if ( !isset( $existing_tiles[$post_type] ) ){
-                                $existing_tiles[$post_type] = [];
+                                $existing_tiles[$post_type] = array();
                             }
                             $existing_tiles[$post_type][] = $tile_id;
                         }
@@ -252,13 +252,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         $html_js_selection_handler_func = ob_get_clean();
 
         // Finally, package detail parts and return.
-        $details[self::$export_import_id] = [
+        $details[self::$export_import_id] = array(
             'id' => self::$export_import_id,
             'enabled' => true,
             'html' => $html,
             'html_js_handler_func' => $html_js_handler_func,
-            'html_js_selection_handler_func' => $html_js_selection_handler_func
-        ];
+            'html_js_selection_handler_func' => $html_js_selection_handler_func,
+        );
 
         return $details;
     }
@@ -278,7 +278,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $import_count = 0;
-        $existing_tile_settings = [];
+        $existing_tile_settings = array();
         $existing_tile_options = dt_get_option( 'dt_custom_tiles' );
 
         // Process selected service tiles accordingly, based on instance existence.
@@ -296,7 +296,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
                 // Make tile options provision if needed, before committing.
                 if ( !isset( $existing_tile_options[$tile_post_type] ) ){
-                    $existing_tile_options[$tile_post_type] = [];
+                    $existing_tile_options[$tile_post_type] = array();
                 }
                 $existing_tile_options[$tile_post_type][$tile_id] = $imported_config[self::$import_config_json_id][self::$export_import_id]['values'][$tile_post_type][$tile_id];
 
@@ -315,7 +315,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Tiles', 'disciple_tools' ), __( 'Tiles', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-tiles', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Tiles', 'disciple_tools' ), __( 'Tiles', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-tiles', array( 'Disciple_Tools_Settings_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -381,7 +381,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 if ( !wp_verify_nonce( sanitize_key( $_POST['tile_add_nonce'] ), 'tile_add' ) ) {
                     return;
                 }
-                $post_submission = [];
+                $post_submission = array();
                 foreach ( $_POST as $key => $value ){
                     $post_submission[sanitize_text_field( wp_unslash( $key ) )] = sanitize_text_field( wp_unslash( $value ) );
                 }
@@ -413,7 +413,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 if ( !wp_verify_nonce( sanitize_key( $_POST['tile_edit_nonce'] ), 'tile_edit' ) ) {
                     return;
                 }
-                $post_submission = [];
+                $post_submission = array();
                 foreach ( $_POST as $key => $value ){
                     $post_submission[sanitize_text_field( wp_unslash( $key ) )] = sanitize_text_field( wp_unslash( $value ) );
                 }
@@ -556,18 +556,18 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     }
 
                     //@todo display hidden tile greyed out
-                    $disabled_ui = !in_array( $tile_key, [ 'status', 'details' ] ) ? 'draggable-header' : 'disabled-drag';
+                    $disabled_ui = !in_array( $tile_key, array( 'status', 'details' ) ) ? 'draggable-header' : 'disabled-drag';
                     ?>
                     <div class="sort-tile <?php echo esc_html( $disabled_ui ); ?>" id="<?php echo esc_html( $tile_key ); ?>">
                         <div class="field-container">
                             <h3 class="column-header <?php echo esc_html( $disabled_ui ); ?>">
-                                <?php if ( !in_array( $tile_key, [ 'status', 'details' ] ) ) : ?>
+                                <?php if ( !in_array( $tile_key, array( 'status', 'details' ) ) ) : ?>
                                     <span class="ui-icon ui-icon-arrow-4"></span>
                                 <?php endif ?>
                                 <?php echo esc_html( isset( $tile['label'] ) ? $tile['label'] : $tile_key ); ?>
                             </h3>
                             <ul class="connectedSortable">
-                                <?php foreach ( $tile['order'] ?? [] as $order_key ):
+                                <?php foreach ( $tile['order'] ?? array() as $order_key ):
                                     if ( isset( $fields[$order_key]['tile'] ) && $fields[$order_key]['tile'] === $tile_key ) : ?>
                                         <li class="ui-state-default" id="<?php echo esc_html( $order_key ); ?>">
                                             <span class="ui-icon ui-icon-arrow-4"></span>
@@ -579,7 +579,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
 
                                 <?php foreach ( $fields as $field_key => $field_value ) :
-                                    if ( isset( $field_value['tile'] ) && $field_value['tile'] === $tile_key && !in_array( $field_key, $tile['order'] ?? [] ) ) :?>
+                                    if ( isset( $field_value['tile'] ) && $field_value['tile'] === $tile_key && !in_array( $field_key, $tile['order'] ?? array() ) ) :?>
                                         <li class="ui-state-default" id="<?php echo esc_html( $field_key ); ?>">
                                             <span class="ui-icon ui-icon-arrow-4"></span>
                                             <?php echo esc_html( $field_value['name'] ); ?>
@@ -618,7 +618,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
 
         <?php
-
     }
 
     private function process_tile_order( $post_type ){
@@ -629,7 +628,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             $order = dt_recursive_sanitize_array( json_decode( sanitize_text_field( wp_unslash( $_POST['order'] ) ), true ) );
             $tile_options = dt_get_option( 'dt_custom_tiles' );
             if ( !isset( $tile_options[$post_type] ) ){
-                $tile_options[$post_type] = [];
+                $tile_options[$post_type] = array();
             }
 
             if ( !empty( $order ) ){
@@ -637,7 +636,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 foreach ( $order as $index => $tile_order ){
                     if ( $tile_order['key'] !== 'no_tile' ){
                         if ( !isset( $tile_options[$post_type][$tile_order['key']] ) ){
-                            $tile_options[$post_type][$tile_order['key']] = [];
+                            $tile_options[$post_type][$tile_order['key']] = array();
                         }
                         $tile_options[$post_type][$tile_order['key']]['order'] = $tile_order['fields'];
                         $tile_options[$post_type][$tile_order['key']]['tile_priority'] = ( $index + 1 ) * 10;
@@ -650,7 +649,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 foreach ( $order as $tile_order ){
                     foreach ( $tile_order['fields'] as $field_key ){
                         if ( !isset( $custom_fields[$post_type][$field_key] ) ){
-                            $custom_fields[$post_type][$field_key] = [];
+                            $custom_fields[$post_type][$field_key] = array();
                         }
                         if ( $tile_order['key'] === 'no_tile' ){
                             $custom_fields[$post_type][$field_key]['tile'] = 'no_tile';
@@ -817,10 +816,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 <?php
                 foreach ( $fields as $field_id => $field )
                     {
-                    if ( in_array( $field['type'], [ 'key_select', 'multi_select', 'tags' ] ) && isset( $field['default'] ) ) {
+                    if ( in_array( $field['type'], array( 'key_select', 'multi_select', 'tags' ) ) && isset( $field['default'] ) ) {
                         echo '<optgroup label="'.esc_html( $field['name'] ).'">';
                         $options = ( $field['type'] == 'tags' ) ? DT_Posts::get_multi_select_options( $post_type, $field_id ) : $field['default'];
-                        foreach ( $options ?? [] as $option_id => $option ) {
+                        foreach ( $options ?? array() as $option_id => $option ) {
                             $html_val = $field_id.'___'. ( ( $field['type'] == 'tags' ) ? $option : $option_id );
                             $html_label = ( $field['type'] == 'tags' ) ? $option : $option['label'] ?? $option_id;
                             ?>
@@ -847,9 +846,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                     <?php
                     if ( !isset( $tile['display_conditions']['conditions'] ) || !is_array( $tile['display_conditions']['conditions'] ) ) {
-                        $tile['display_conditions']['conditions'] = [];
+                        $tile['display_conditions']['conditions'] = array();
                     }
-                    foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
+                    foreach ( $tile['display_conditions']['conditions'] ?? array() as $condition ) {
                         $key_label = $fields[$condition['key']]['name'] ?? $condition['key'];
                         $value_label = $condition['value'];
                         if ( isset( $fields[$condition['key']]['default'][$condition['value']]['label'] ) ){
@@ -931,11 +930,11 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
 
         if ( !isset( $tile_options[$post_type][$tile_key] ) ){
-            $tile_options[$post_type][$tile_key] = [];
+            $tile_options[$post_type][$tile_key] = array();
         }
         $post_fields = $this->get_post_fields( $post_type );
         if ( !isset( $tile_options[$post_type][$tile_key] ) ){
-            $tile_options[$post_type][$tile_key] = [];
+            $tile_options[$post_type][$tile_key] = array();
         }
         $custom_tile = $tile_options[$post_type][$tile_key];
 
@@ -948,13 +947,13 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         // Display Conditions.
         if ( empty( $custom_tile['display_conditions'] ) || !is_array( $custom_tile['display_conditions'] ) ) {
-            $custom_tile['display_conditions'] = [];
+            $custom_tile['display_conditions'] = array();
         }
 
         // Requested Visibility State.
-        if ( isset( $post_submission['tile_display_option'] ) && in_array( $post_submission['tile_display_option'], [ 'hidden','visible','custom' ] ) ){
+        if ( isset( $post_submission['tile_display_option'] ) && in_array( $post_submission['tile_display_option'], array( 'hidden', 'visible', 'custom' ) ) ){
             $custom_tile['display_conditions']['visibility'] = $post_submission['tile_display_option'];
-            $custom_tile['hidden'] = in_array( $post_submission['tile_display_option'], [ 'hidden' ] );
+            $custom_tile['hidden'] = in_array( $post_submission['tile_display_option'], array( 'hidden' ) );
 
             // Custom Visibility.
             if ( $post_submission['tile_display_option'] == 'custom' ) {
@@ -965,7 +964,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
                         // If needed, initialise conditions array.
                         if ( empty( $custom_tile['display_conditions']['conditions'] ) || !is_array( $custom_tile['display_conditions']['conditions'] ) ) {
-                            $custom_tile['display_conditions']['conditions'] = [];
+                            $custom_tile['display_conditions']['conditions'] = array();
                         }
 
                         // Extract tile display condition parts.
@@ -976,10 +975,10 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                         // Append latest entry, ensuring uniqueness.
                         if ( isset( $field_id, $option_id ) ) {
                             // Package and return....
-                            $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] = [
+                            $custom_tile['display_conditions']['conditions'][$field_id.'___'.$option_id] = array(
                                 'key' => $field_id,
                                 'value' => $option_id,
-                            ];
+                            );
                         }
                     }
                 }
@@ -1017,7 +1016,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $post_submission['move_up'] ) || isset( $post_submission['move_down'] ) ){
             $option_key = $post_submission['move_up'] ?? $post_submission['move_down'];
             $direction = isset( $post_submission['move_up'] ) ? -1 : 1;
-            $keys = $custom_tile['order'] ?? [];
+            $keys = $custom_tile['order'] ?? array();
             foreach ( $post_fields as $field_key => $field_val ){
                 if ( ( isset( $field_val['tile'] ) && $field_val['tile'] == $tile_key ) ){
                     if ( !in_array( $field_key, $keys ) ){
@@ -1030,7 +1029,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             unset( $keys[ $index ] );
             $keys = array_merge(
                 array_slice( $keys, 0, $pos ),
-                [ $option_key ],
+                array( $option_key ),
                 array_slice( $keys, $pos )
             );
             $order = $keys;
@@ -1085,9 +1084,9 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 return false;
             }
             if ( !isset( $tile_options[$post_type] ) ){
-                $tile_options[$post_type] = [];
+                $tile_options[$post_type] = array();
             }
-            $tile_options[$post_type][$tile_key] = [ 'label' => $post_submission['new_tile_name'] ];
+            $tile_options[$post_type][$tile_key] = array( 'label' => $post_submission['new_tile_name'] );
 
             update_option( 'dt_custom_tiles', $tile_options );
             self::admin_notice( __( 'tile added successfully', 'disciple_tools' ), 'success' );

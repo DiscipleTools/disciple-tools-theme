@@ -50,35 +50,34 @@ class Disciple_Tools_Magic_Endpoints
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     } // End __construct()
 
     public function add_api_routes() {
         $version = '1';
         $namespace = 'dt/v' . $version;
 
-        $arg_schemas = [
-            'post_type' => [
+        $arg_schemas = array(
+            'post_type' => array(
                 'description' => 'The post type',
                 'type' => 'string',
                 'required' => true,
-                'validate_callback' => [ 'Disciple_Tools_Posts_Endpoints', 'prefix_validate_args_static' ]
-            ],
-        ];
-
-        register_rest_route(
-            $namespace, '/(?P<post_type>\w+)/email_magic', [
-                [
-                    'methods'  => 'POST',
-                    'callback' => [ $this, 'email_magic' ],
-                    'args' => [
-                        'post_type' => $arg_schemas['post_type'],
-                    ],
-                    'permission_callback' => '__return_true',
-                ]
-            ]
+                'validate_callback' => array( 'Disciple_Tools_Posts_Endpoints', 'prefix_validate_args_static' ),
+            ),
         );
 
+        register_rest_route(
+            $namespace, '/(?P<post_type>\w+)/email_magic', array(
+                array(
+                    'methods'  => 'POST',
+                    'callback' => array( $this, 'email_magic' ),
+                    'args' => array(
+                        'post_type' => $arg_schemas['post_type'],
+                    ),
+                    'permission_callback' => '__return_true',
+                ),
+            )
+        );
     }
 
     /**
@@ -94,24 +93,24 @@ class Disciple_Tools_Magic_Endpoints
         $params = $request->get_params();
 
         if ( ! isset( $params['root'], $params['type'], $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing essential params', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing essential params', array( 'status' => 400 ) );
         }
 
         if ( ! isset( $params['post_ids'] ) || empty( $params['post_ids'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing list of post ids', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing list of post ids', array( 'status' => 400 ) );
         }
 
         $magic = new DT_Magic_URL( $params['root'] );
         $type = $magic->list_types();
         if ( ! isset( $type[$params['type']] ) ) {
-            return new WP_Error( __METHOD__, 'Magic link type not found', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Magic link type not found', array( 'status' => 400 ) );
         } else {
             $name = $type[$params['type']]['name'] ?? '';
             $meta_key = $type[$params['type']]['meta_key'];
         }
 
-        $errors = [];
-        $success = [];
+        $errors = array();
+        $success = array();
 
         /**
          * Bulk Field Filter
@@ -132,7 +131,7 @@ class Disciple_Tools_Magic_Endpoints
             }
 
             // check if email exists to send to
-            $emails = [];
+            $emails = array();
             if ( isset( $params['email'] ) && ! empty( $params['email'] ) ){
                 $emails[]   = $params['email'];
             }
@@ -182,25 +181,24 @@ class Disciple_Tools_Magic_Endpoints
                 }
                 else {
                     $success[$post_id] = $sent;
-                    dt_activity_insert( [
+                    dt_activity_insert( array(
                         'action'            => 'sent_app_link',
                         'object_type'       => $params['post_type'],
                         'object_subtype'    => 'email',
                         'object_id'         => $post_id,
                         'object_name'       => $post_record['title'],
                         'object_note'       => $name . ' (app) sent to ' . $email,
-                    ] );
+                    ) );
                 }
             }
         }
 
-        return [
+        return array(
             'total_unsent' => ( ! empty( $success ) ) ? count( $errors ) : 0,
             'total_sent' => ( ! empty( $success ) ) ? count( $success ) : 0,
             'errors' => $errors,
-            'success' => $success
-        ];
+            'success' => $success,
+        );
     }
-
 }
 Disciple_Tools_Magic_Endpoints::instance();

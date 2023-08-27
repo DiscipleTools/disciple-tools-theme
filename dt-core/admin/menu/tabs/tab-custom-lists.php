@@ -40,15 +40,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 99 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 10, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 99, 1 );
 
         parent::__construct();
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Custom Lists', 'disciple_tools' ), __( 'Custom Lists', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-lists', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Custom Lists', 'disciple_tools' ), __( 'Custom Lists', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=custom-lists', array( 'Disciple_Tools_Settings_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -135,7 +135,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
         }
         $user_fields = $site_custom_lists['user_fields'];
-        $user_fields_types = $site_custom_lists['user_fields_types'] ?? [];
+        $user_fields_types = $site_custom_lists['user_fields_types'] ?? array();
         foreach ( $user_fields as $field ) {
             echo '<tr>
                         <td>' . esc_attr( $field['label'] ) . '</td>
@@ -216,13 +216,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $enabled = true;
 
                 // strip and make lowercase process
-                $site_custom_lists['user_fields'][ $key ] = [
+                $site_custom_lists['user_fields'][ $key ] = array(
                     'label'       => $label,
                     'key'         => $key,
                     'type'        => $type,
                     'description' => $description,
                     'enabled'     => $enabled,
-                ];
+                );
             }
 
             // Process a field to delete.
@@ -260,16 +260,16 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
             $langs                 = dt_get_available_languages();
             $comment_type_options  = dt_get_option( 'dt_comment_types' );
-            $comment_type_fields = $comment_type_options['contacts'] ?? [];
-            $comment_types         = isset( $_POST['type_keys'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['type_keys'] ) ) : [];
+            $comment_type_fields = $comment_type_options['contacts'] ?? array();
+            $comment_types         = isset( $_POST['type_keys'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['type_keys'] ) ) : array();
 
             // Handle general updates.
             foreach ( $comment_types as $type ){
 
                 // Ensure 3rd party custom comment type extra parameters are also persisted.
                 if ( !isset( $comment_type_fields[$type] ) ){
-                    $filtered_types = apply_filters( 'dt_comments_additional_sections', [], 'contacts' );
-                    foreach ( $filtered_types ?? [] as $filtered_type ){
+                    $filtered_types = apply_filters( 'dt_comments_additional_sections', array(), 'contacts' );
+                    foreach ( $filtered_types ?? array() as $filtered_type ){
                         if ( $filtered_type['key'] == $type ){
                             $comment_type_fields[$type] = $filtered_type;
                             $comment_type_fields[$type]['is_comment_type'] = true;
@@ -314,12 +314,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     if ( isset( $comment_type_fields[ $key ] ) ) {
                         self::admin_notice( __( 'This comment type already exists', 'disciple_tools' ), 'error' );
                     } else {
-                        $comment_type_fields[$key] = [
+                        $comment_type_fields[$key] = array(
                             'name' => $label,
                             'enabled' => true,
                             'is_comment_type' => true,
-                            'key_prefix' => $custom_key_prefix
-                        ];
+                            'key_prefix' => $custom_key_prefix,
+                        );
                     }
                 }
             }
@@ -348,9 +348,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php
                 // Display comment types, ignoring contact_ communication channel fields.
-                $comment_types  = apply_filters( 'dt_comments_additional_sections', [], 'contacts' );
-                foreach ( $comment_types ?? [] as $type ) {
-                    if ( ( ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ) || ( strpos( $type['key'], 'contact_' ) === false ) ) && !in_array( $type['key'], [ 'activity' ] ) ){
+                $comment_types  = apply_filters( 'dt_comments_additional_sections', array(), 'contacts' );
+                foreach ( $comment_types ?? array() as $type ) {
+                    if ( ( ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ) || ( strpos( $type['key'], 'contact_' ) === false ) ) && !in_array( $type['key'], array( 'activity' ) ) ){
                         $enabled = ! isset( $type['enabled'] ) || $type['enabled'] !== false;
                         $supported_key_prefixes = isset( $type['key_prefix'] ) && substr( $type['key'], 0, strlen( $type['key_prefix'] ) ) === $type['key_prefix'];
                         ?>
@@ -375,7 +375,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {
                                         if ( ! empty( $type['translations'][ $val['language'] ] ) ) {
-                                            $number_of_translations ++;
+                                            $number_of_translations++;
                                         }
                                     }
                                     ?>
@@ -524,7 +524,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 return;
             }
 
-            $channel_fields        = isset( $_POST['channel_fields'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['channel_fields'] ) ) : [];
+            $channel_fields        = isset( $_POST['channel_fields'] ) ? array_keys( dt_recursive_sanitize_array( $_POST['channel_fields'] ) ) : array();
             $langs                 = dt_get_available_languages();
             $custom_field_options  = dt_get_option( 'dt_field_customizations' );
             $custom_contact_fields = $custom_field_options['contacts'];
@@ -583,12 +583,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     if ( isset( $custom_contact_fields[$key] ) ){
                         self::admin_notice( __( 'This channel already exists', 'disciple_tools' ), 'error' );
                     } else {
-                        $custom_contact_fields[ $key ] = [
+                        $custom_contact_fields[ $key ] = array(
                             'name'       => $label,
                             'type'       => 'communication_channel',
                             'tile'       => 'details',
-                            'enabled'    => true
-                        ];
+                            'enabled'    => true,
+                        );
                         wp_cache_delete( 'contacts_field_settings' );
                     }
                 }
@@ -617,9 +617,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      * UI for picking languages
      */
     private function languages_box(){
-        $languages = dt_get_option( 'dt_working_languages' ) ?: [];
+        $languages = dt_get_option( 'dt_working_languages' ) ?: array();
         $dt_global_languages_list = dt_get_global_languages_list();
-        uasort($dt_global_languages_list, function( $a, $b ) {
+        uasort($dt_global_languages_list, function ( $a, $b ) {
             return strcmp( $a['label'], $b['label'] );
         });
         $form_name = 'languages_box';
@@ -718,7 +718,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        $languages = dt_get_option( 'dt_working_languages' ) ?: [];
+        $languages = dt_get_option( 'dt_working_languages' ) ?: array();
         $dt_global_languages_list = dt_get_global_languages_list();
 
         $langs = dt_get_available_languages();
@@ -767,10 +767,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $dt_global_languages_list[$lang_key] ) || isset( $languages[$lang_key] ) ) {
                 $lang_key = dt_create_field_key( $language, true );
             }
-            $languages[$lang_key] = [
+            $languages[$lang_key] = array(
                 'label' => $language,
-                'enabled' => true
-            ];
+                'enabled' => true,
+            );
             if ( !empty( $code ) ){
                 $languages[$lang_key]['iso_639-3'] = $code;
             }
@@ -785,7 +785,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     private function quick_actions_box(){
         $fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
-        $default_fields = apply_filters( 'dt_custom_fields_settings', [], 'contacts' );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), 'contacts' );
         $form_name = 'quick_actions_box';
         ?>
         <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="quick-actions">
@@ -848,7 +848,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {
                                         if ( !empty( $fields[$field_key]['translations'][$val['language']] ) ) {
-                                            $number_of_translations ++;
+                                            $number_of_translations++;
                                         }
                                     }
                                     ?>
@@ -956,7 +956,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             } else {
                 // Add new Quick Action
                 $key = dt_create_field_key( $key, true );
-                $custom_field_options['contacts'][$key] = [
+                $custom_field_options['contacts'][$key] = array(
                     'name'        => $label,
                     'description' => '',
                     'type'        => 'number',
@@ -964,7 +964,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     'section'     => 'quick_buttons',
                     'icon'        => $icon_url,
                     'customizable' => false,
-                ];
+                );
 
                 update_option( 'dt_field_customizations', $custom_field_options, true );
                 wp_cache_delete( 'contacts_field_settings' );

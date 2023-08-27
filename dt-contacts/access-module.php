@@ -19,62 +19,62 @@ class DT_Contacts_Access extends DT_Module_Base {
             return;
         }
         //permissions
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
-        add_filter( 'dt_can_view_permission', [ $this, 'can_view_permission_filter' ], 10, 3 );
-        add_filter( 'dt_can_update_permission', [ $this, 'can_update_permission_filter' ], 10, 3 );
+        add_filter( 'dt_set_roles_and_permissions', array( $this, 'dt_set_roles_and_permissions' ), 10, 1 );
+        add_filter( 'dt_can_view_permission', array( $this, 'can_view_permission_filter' ), 10, 3 );
+        add_filter( 'dt_can_update_permission', array( $this, 'can_update_permission_filter' ), 10, 3 );
 
         //setup fields
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-        add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
+        add_filter( 'dt_custom_fields_settings', array( $this, 'dt_custom_fields_settings' ), 20, 2 );
         //display tiles and fields
-        add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
-        add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
-        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 6 );
+        add_filter( 'dt_details_additional_tiles', array( $this, 'dt_details_additional_tiles' ), 20, 2 );
+        add_action( 'dt_record_top_above_details', array( $this, 'dt_record_top_above_details' ), 20, 2 );
+        add_action( 'dt_render_field_for_display_template', array( $this, 'dt_render_field_for_display_template' ), 20, 6 );
 
-        add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+        add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
 
         //list
-        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 20, 2 );
-        add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 20, 2 );
+        add_filter( 'dt_user_list_filters', array( $this, 'dt_user_list_filters' ), 20, 2 );
+        add_filter( 'dt_filter_access_permissions', array( $this, 'dt_filter_access_permissions' ), 20, 2 );
 
         //api
-        add_filter( 'dt_post_update_fields', [ $this, 'dt_post_update_fields' ], 10, 4 );
-        add_action( 'dt_comment_created', [ $this, 'dt_comment_created' ], 20, 4 );
-        add_action( 'dt_post_created', [ $this, 'dt_post_created' ], 10, 3 );
-        add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 5, 2 );
-        add_action( 'dt_post_updated', [ $this, 'dt_post_updated' ], 10, 5 );
+        add_filter( 'dt_post_update_fields', array( $this, 'dt_post_update_fields' ), 10, 4 );
+        add_action( 'dt_comment_created', array( $this, 'dt_comment_created' ), 20, 4 );
+        add_action( 'dt_post_created', array( $this, 'dt_post_created' ), 10, 3 );
+        add_filter( 'dt_post_create_fields', array( $this, 'dt_post_create_fields' ), 5, 2 );
+        add_action( 'dt_post_updated', array( $this, 'dt_post_updated' ), 10, 5 );
 
-        add_filter( 'dt_filter_users_receiving_comment_notification', [ $this, 'dt_filter_users_receiving_comment_notification' ], 10, 4 );
+        add_filter( 'dt_filter_users_receiving_comment_notification', array( $this, 'dt_filter_users_receiving_comment_notification' ), 10, 4 );
 
         //users table fields
-        add_filter( 'dt_users_fields', [ $this, 'dt_users_fields' ], 10, 1 );
+        add_filter( 'dt_users_fields', array( $this, 'dt_users_fields' ), 10, 1 );
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        $base_contacts_permissions = [ 'access_contacts' => true, 'create_contacts' => true ];
+        $base_contacts_permissions = array( 'access_contacts' => true, 'create_contacts' => true );
         $all_user_caps = Disciple_Tools_Roles::default_user_caps();
         $metrics_caps = Disciple_Tools_Roles::default_all_metrics_caps();
-        $expected_roles['dispatcher'] = [
+        $expected_roles['dispatcher'] = array(
             'label' => __( 'Dispatcher', 'disciple_tools' ),
             'description' => 'Monitor new D.T contacts and assign them to waiting Multipliers',
             'permissions' => array_merge( $base_contacts_permissions, $all_user_caps, $metrics_caps ),
-            'type' => [ 'base', 'access' ],
-            'order' => 20
-        ];
-        $expected_roles['partner'] = [
+            'type' => array( 'base', 'access' ),
+            'order' => 20,
+        );
+        $expected_roles['partner'] = array(
             'label' => __( 'Partner', 'disciple_tools' ),
             'description' => 'Allow access to a specific contact source so a partner can see progress',
             'permissions' => array_merge( $base_contacts_permissions, $all_user_caps ),
-            'type' => [ 'base', 'access' ],
-            'order' => 35
-        ];
-        $expected_roles['marketer'] = [
+            'type' => array( 'base', 'access' ),
+            'order' => 35,
+        );
+        $expected_roles['marketer'] = array(
             'label' => __( 'Digital Responder', 'disciple_tools' ),
             'description' => 'Talk to leads online and report in D.T when Contacts are ready for follow-up',
             'permissions' => array_merge( $base_contacts_permissions, $all_user_caps, $metrics_caps ),
-            'type' => [ 'base', 'access' ],
-            'order' => 50
-        ];
+            'type' => array( 'base', 'access' ),
+            'order' => 50,
+        );
 
         $expected_roles['marketer']['permissions']['access_specific_sources'] = true;
         $expected_roles['marketer']['permissions']['assign_any_contacts'] = true;
@@ -99,7 +99,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( isset( $fields['type']['default']['personal'] ) ){
                 $fields['type']['default']['personal']['default'] = false;
             }
-            $fields['type']['default']['access'] = [
+            $fields['type']['default']['access'] = array(
                 'label' => __( 'Standard Contact', 'disciple_tools' ),
                 'color' => '#2196F3',
                 'description' => __( 'A contact to collaborate on', 'disciple_tools' ),
@@ -107,8 +107,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/share.svg?v=2',
                 'order' => 20,
                 'default' => true,
-            ];
-            $fields['type']['default']['access_placeholder'] = [
+            );
+            $fields['type']['default']['access_placeholder'] = array(
                 'label' => __( 'Connection', 'disciple_tools' ),
                 'color' => '#FF9800',
                 'description' => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
@@ -116,9 +116,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'order' => 40,
                 'visibility' => __( 'Collaborators', 'disciple_tools' ),
                 'in_create_form' => false,
-            ];
+            );
 
-            $fields['assigned_to'] = [
+            $fields['assigned_to'] = array(
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
                 'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
                 'type'        => 'user_select',
@@ -126,197 +126,197 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'        => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg?v=2',
                 'show_in_table' => 25,
-                'only_for_types' => [ 'access', 'user' ],
-                'custom_display' => true
-            ];
-            $fields['seeker_path'] = [
+                'only_for_types' => array( 'access', 'user' ),
+                'custom_display' => true,
+            );
+            $fields['seeker_path'] = array(
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
                 'description' => _x( 'Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward.', 'Seeker Path field description', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default'     => [
-                    'none'        => [
+                'default'     => array(
+                    'none'        => array(
                       'label' => __( 'Contact Attempt Needed', 'disciple_tools' ),
-                      'description' => ''
-                    ],
-                    'attempted'   => [
+                      'description' => '',
+                    ),
+                    'attempted'   => array(
                       'label' => __( 'Contact Attempted', 'disciple_tools' ),
-                      'description' => ''
-                    ],
-                    'established' => [
+                      'description' => '',
+                    ),
+                    'established' => array(
                       'label' => __( 'Contact Established', 'disciple_tools' ),
-                      'description' => ''
-                    ],
-                    'scheduled'   => [
+                      'description' => '',
+                    ),
+                    'scheduled'   => array(
                       'label' => __( 'First Meeting Scheduled', 'disciple_tools' ),
-                      'description' => ''
-                    ],
-                    'met'         => [
+                      'description' => '',
+                    ),
+                    'met'         => array(
                       'label' => __( 'First Meeting Complete', 'disciple_tools' ),
-                      'description' => ''
-                    ],
-                    'ongoing'     => [
+                      'description' => '',
+                    ),
+                    'ongoing'     => array(
                       'label' => __( 'Ongoing Meetings', 'disciple_tools' ),
-                      'description' => ''
-                    ],
-                    'coaching'    => [
+                      'description' => '',
+                    ),
+                    'coaching'    => array(
                       'label' => __( 'Being Coached', 'disciple_tools' ),
-                      'description' => ''
-                    ],
-                ],
+                      'description' => '',
+                    ),
+                ),
                 'customizable' => 'add_only',
                 'tile' => 'followup',
                 'show_in_table' => 15,
-                'only_for_types' => [ 'access' ],
+                'only_for_types' => array( 'access' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/sign-post.svg?v=2',
-            ];
+            );
 
-            $fields['overall_status'] = [
+            $fields['overall_status'] = array(
                 'name'        => __( 'Contact Status', 'disciple_tools' ),
                 'type'        => 'key_select',
                 'default_color' => '#366184',
-                'default'     => [
-                    'new'   => [
+                'default'     => array(
+                    'new'   => array(
                         'label' => __( 'New Contact', 'disciple_tools' ),
                         'description' => _x( 'The contact is new in the system.', 'Contact Status field description', 'disciple_tools' ),
                         'color' => '#F43636',
-                    ],
-                    'unassignable' => [
+                    ),
+                    'unassignable' => array(
                         'label' => __( 'Not Ready', 'disciple_tools' ),
                         'description' => _x( 'There is not enough information to move forward with the contact at this time.', 'Contact Status field description', 'disciple_tools' ),
                         'color' => '#FF9800',
-                    ],
-                    'unassigned'   => [
+                    ),
+                    'unassigned'   => array(
                         'label' => __( 'Dispatch Needed', 'disciple_tools' ),
                         'description' => _x( 'This contact needs to be assigned to a multiplier.', 'Contact Status field description', 'disciple_tools' ),
                         'color' => '#F43636',
-                    ],
-                    'assigned'     => [
+                    ),
+                    'assigned'     => array(
                         'label' => __( 'Waiting to be accepted', 'disciple_tools' ),
                         'description' => _x( 'The contact has been assigned to someone, but has not yet been accepted by that person.', 'Contact Status field description', 'disciple_tools' ),
                         'color' => '#FF9800',
-                    ],
-                    'active'       => [], //already declared. Here to indicate order
-                    'paused'       => [
+                    ),
+                    'active'       => array(), //already declared. Here to indicate order
+                    'paused'       => array(
                         'label' => __( 'Paused', 'disciple_tools' ),
                         'description' => _x( 'This contact is currently on hold (i.e. on vacation or not responding).', 'Contact Status field description', 'disciple_tools' ),
                         'color' => '#FF9800',
-                    ],
-                    'closed' => [] //already declared. Here to indicate order
-                ],
+                    ),
+                    'closed' => array(), //already declared. Here to indicate order
+                ),
                 'tile'     => 'status',
                 'customizable' => 'add_only',
                 'custom_display' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg?v=2',
                 'show_in_table' => 10,
-                'only_for_types' => [ 'access' ],
-                'select_cannot_be_empty' => true
-            ];
+                'only_for_types' => array( 'access' ),
+                'select_cannot_be_empty' => true,
+            );
 
-            $fields['reason_unassignable'] = [
+            $fields['reason_unassignable'] = array(
                 'name'        => __( 'Reason Not Ready', 'disciple_tools' ),
                 'description' => _x( 'The main reason the contact is not ready to be assigned to a user.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default'     => [
-                    'none'         => [
+                'default'     => array(
+                    'none'         => array(
                         'label' => '',
-                    ],
-                    'insufficient' => [
-                        'label' => __( 'Insufficient Contact Information', 'disciple_tools' )
-                    ],
-                    'location'     => [
-                        'label' => __( 'Unknown Location', 'disciple_tools' )
-                    ],
-                    'media'        => [
-                        'label' => __( 'Only wants media', 'disciple_tools' )
-                    ],
-                    'outside_area' => [
-                        'label' => __( 'Outside Area', 'disciple_tools' )
-                    ],
-                    'needs_review' => [
-                        'label' => __( 'Needs Review', 'disciple_tools' )
-                    ],
-                    'awaiting_confirmation' => [
-                        'label' => __( 'Waiting for Confirmation', 'disciple_tools' )
-                    ],
-                ],
+                    ),
+                    'insufficient' => array(
+                        'label' => __( 'Insufficient Contact Information', 'disciple_tools' ),
+                    ),
+                    'location'     => array(
+                        'label' => __( 'Unknown Location', 'disciple_tools' ),
+                    ),
+                    'media'        => array(
+                        'label' => __( 'Only wants media', 'disciple_tools' ),
+                    ),
+                    'outside_area' => array(
+                        'label' => __( 'Outside Area', 'disciple_tools' ),
+                    ),
+                    'needs_review' => array(
+                        'label' => __( 'Needs Review', 'disciple_tools' ),
+                    ),
+                    'awaiting_confirmation' => array(
+                        'label' => __( 'Waiting for Confirmation', 'disciple_tools' ),
+                    ),
+                ),
                 'customizable' => 'all',
-                'only_for_types' => [ 'access' ]
-            ];
+                'only_for_types' => array( 'access' ),
+            );
 
-            $fields['reason_paused'] = [
+            $fields['reason_paused'] = array(
                 'name'        => __( 'Reason Paused', 'disciple_tools' ),
                 'description' => _x( 'A paused contact is one you are not currently interacting with but expect to in the future.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default' => [
-                    'none'                 => [ 'label' => '' ],
-                    'vacation'             => [ 'label' => _x( 'Contact on vacation', 'Reason Paused label', 'disciple_tools' ) ],
-                    'not_responding'       => [ 'label' => _x( 'Contact not responding', 'Reason Paused label', 'disciple_tools' ) ],
-                    'not_available'        => [ 'label' => _x( 'Contact not available', 'Reason Paused label', 'disciple_tools' ) ],
-                    'little_interest'      => [ 'label' => _x( 'Contact has little interest/hunger', 'Reason Paused label', 'disciple_tools' ) ],
-                    'no_initiative'        => [ 'label' => _x( 'Contact shows no initiative', 'Reason Paused label', 'disciple_tools' ) ],
-                    'questionable_motives' => [ 'label' => _x( 'Contact has questionable motives', 'Reason Paused label', 'disciple_tools' ) ],
-                    'ball_in_their_court'  => [ 'label' => _x( 'Ball is in the contact\'s court', 'Reason Paused label', 'disciple_tools' ) ],
-                    'wait_and_see'         => [ 'label' => _x( 'We want to see if/how the contact responds to automated text messages', 'Reason Paused label', 'disciple_tools' ) ],
-                ],
+                'default' => array(
+                    'none'                 => array( 'label' => '' ),
+                    'vacation'             => array( 'label' => _x( 'Contact on vacation', 'Reason Paused label', 'disciple_tools' ) ),
+                    'not_responding'       => array( 'label' => _x( 'Contact not responding', 'Reason Paused label', 'disciple_tools' ) ),
+                    'not_available'        => array( 'label' => _x( 'Contact not available', 'Reason Paused label', 'disciple_tools' ) ),
+                    'little_interest'      => array( 'label' => _x( 'Contact has little interest/hunger', 'Reason Paused label', 'disciple_tools' ) ),
+                    'no_initiative'        => array( 'label' => _x( 'Contact shows no initiative', 'Reason Paused label', 'disciple_tools' ) ),
+                    'questionable_motives' => array( 'label' => _x( 'Contact has questionable motives', 'Reason Paused label', 'disciple_tools' ) ),
+                    'ball_in_their_court'  => array( 'label' => _x( 'Ball is in the contact\'s court', 'Reason Paused label', 'disciple_tools' ) ),
+                    'wait_and_see'         => array( 'label' => _x( 'We want to see if/how the contact responds to automated text messages', 'Reason Paused label', 'disciple_tools' ) ),
+                ),
                 'customizable' => 'all',
-                'only_for_types' => [ 'access' ]
-            ];
+                'only_for_types' => array( 'access' ),
+            );
 
-            $fields['reason_closed'] = [
+            $fields['reason_closed'] = array(
                 'name'        => __( 'Reason Archived', 'disciple_tools' ),
                 'description' => _x( "A closed contact is one you can't or don't wish to interact with.", 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default'     => [
-                    'none'                 => [ 'label' => '' ],
-                    'duplicate'            => [ 'label' => _x( 'Duplicate', 'Reason Closed label', 'disciple_tools' ) ],
-                    'insufficient'         => [ 'label' => _x( 'Insufficient contact info', 'Reason Closed label', 'disciple_tools' ) ],
-                    'denies_submission'    => [ 'label' => _x( 'Denies submitting contact request', 'Reason Closed label', 'disciple_tools' ) ],
-                    'hostile_self_gain'    => [ 'label' => _x( 'Hostile, playing games or self gain', 'Reason Closed label', 'disciple_tools' ) ],
-                    'apologetics'          => [ 'label' => _x( 'Only wants to argue or debate', 'Reason Closed label', 'disciple_tools' ) ],
-                    'media_only'           => [ 'label' => _x( 'Just wanted media or book', 'Reason Closed label', 'disciple_tools' ) ],
-                    'no_longer_interested' => [ 'label' => _x( 'No longer interested', 'Reason Closed label', 'disciple_tools' ) ],
-                    'no_longer_responding' => [ 'label' => _x( 'No longer responding', 'Reason Closed label', 'disciple_tools' ) ],
-                    'already_connected'    => [ 'label' => _x( 'Already in church or connected with others', 'Reason Closed label', 'disciple_tools' ) ],
-                    'transfer'             => [ 'label' => _x( 'Transferred contact to partner', 'Reason Closed label', 'disciple_tools' ) ],
-                    'martyred'             => [ 'label' => _x( 'Martyred', 'Reason Closed label', 'disciple_tools' ) ],
-                    'moved'                => [ 'label' => _x( 'Moved or relocated', 'Reason Closed label', 'disciple_tools' ) ],
-                    'gdpr'                 => [ 'label' => _x( 'GDPR request', 'Reason Closed label', 'disciple_tools' ) ],
-                    'unknown'              => [ 'label' => _x( 'Unknown', 'Reason Closed label', 'disciple_tools' ) ]
-                ],
+                'default'     => array(
+                    'none'                 => array( 'label' => '' ),
+                    'duplicate'            => array( 'label' => _x( 'Duplicate', 'Reason Closed label', 'disciple_tools' ) ),
+                    'insufficient'         => array( 'label' => _x( 'Insufficient contact info', 'Reason Closed label', 'disciple_tools' ) ),
+                    'denies_submission'    => array( 'label' => _x( 'Denies submitting contact request', 'Reason Closed label', 'disciple_tools' ) ),
+                    'hostile_self_gain'    => array( 'label' => _x( 'Hostile, playing games or self gain', 'Reason Closed label', 'disciple_tools' ) ),
+                    'apologetics'          => array( 'label' => _x( 'Only wants to argue or debate', 'Reason Closed label', 'disciple_tools' ) ),
+                    'media_only'           => array( 'label' => _x( 'Just wanted media or book', 'Reason Closed label', 'disciple_tools' ) ),
+                    'no_longer_interested' => array( 'label' => _x( 'No longer interested', 'Reason Closed label', 'disciple_tools' ) ),
+                    'no_longer_responding' => array( 'label' => _x( 'No longer responding', 'Reason Closed label', 'disciple_tools' ) ),
+                    'already_connected'    => array( 'label' => _x( 'Already in church or connected with others', 'Reason Closed label', 'disciple_tools' ) ),
+                    'transfer'             => array( 'label' => _x( 'Transferred contact to partner', 'Reason Closed label', 'disciple_tools' ) ),
+                    'martyred'             => array( 'label' => _x( 'Martyred', 'Reason Closed label', 'disciple_tools' ) ),
+                    'moved'                => array( 'label' => _x( 'Moved or relocated', 'Reason Closed label', 'disciple_tools' ) ),
+                    'gdpr'                 => array( 'label' => _x( 'GDPR request', 'Reason Closed label', 'disciple_tools' ) ),
+                    'unknown'              => array( 'label' => _x( 'Unknown', 'Reason Closed label', 'disciple_tools' ) ),
+                ),
                 'customizable' => 'all',
-                'only_for_types' => [ 'access' ]
-            ];
+                'only_for_types' => array( 'access' ),
+            );
 
-            $fields['accepted'] = [
+            $fields['accepted'] = array(
                 'name'        => __( 'Accepted', 'disciple_tools' ),
                 'type'        => 'boolean',
                 'default'     => false,
                 'hidden'      => true,
-                'only_for_types' => [ 'access' ]
-            ];
-            $sources_default = [
-                'personal'           => [
+                'only_for_types' => array( 'access' ),
+            );
+            $sources_default = array(
+                'personal'           => array(
                     'label'       => __( 'Personal', 'disciple_tools' ),
                     'key'         => 'personal',
-                ],
-                'web'           => [
+                ),
+                'web'           => array(
                     'label'       => __( 'Web', 'disciple_tools' ),
                     'key'         => 'web',
-                ],
-                'facebook'      => [
+                ),
+                'facebook'      => array(
                     'label'       => __( 'Facebook', 'disciple_tools' ),
                     'key'         => 'facebook',
-                ],
-                'twitter'       => [
+                ),
+                'twitter'       => array(
                     'label'       => __( 'Twitter', 'disciple_tools' ),
                     'key'         => 'twitter',
-                ],
-                'transfer' => [
+                ),
+                'transfer' => array(
                     'label'       => __( 'Transfer', 'disciple_tools' ),
                     'key'         => 'transfer',
                     'description' => __( 'Contacts transferred from a partnership with another Disciple.Tools site.', 'disciple_tools' ),
-                ]
-            ];
+                ),
+            );
             foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
                 if ( !isset( $sources_default[$key] ) ) {
                     if ( isset( $value['enabled'] ) && $value['enabled'] === false ) {
@@ -326,7 +326,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 }
             }
 
-            $fields['sources'] = [
+            $fields['sources'] = array(
                 'name'        => __( 'Sources', 'disciple_tools' ),
                 'description' => _x( 'The website, event or location this contact came from.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'multi_select',
@@ -335,32 +335,32 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'customizable' => 'all',
                 'display' => 'typeahead',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/arrow-collapse-all.svg?v=2',
-                'only_for_types' => [ 'access' ],
-                'in_create_form' => [ 'access' ]
-            ];
+                'only_for_types' => array( 'access' ),
+                'in_create_form' => array( 'access' ),
+            );
 
-            $fields['campaigns'] = [
+            $fields['campaigns'] = array(
                 'name' => __( 'Campaigns', 'disciple_tools' ),
                 'description' => _x( 'Marketing campaigns or access activities that this contact interacted with.', 'Optional Documentation', 'disciple_tools' ),
                 'tile' => 'details',
                 'type'        => 'tags',
-                'default'     => [],
+                'default'     => array(),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/megaphone.svg?v=2',
-                'only_for_types' => [ 'access' ],
-            ];
+                'only_for_types' => array( 'access' ),
+            );
 
             if ( empty( $fields['contact_phone']['in_create_form'] ) ){
-                $fields['contact_phone']['in_create_form'] = [ 'access' ];
+                $fields['contact_phone']['in_create_form'] = array( 'access' );
             } elseif ( is_array( $fields['contact_phone']['in_create_form'] ) ){
                 $fields['contact_phone']['in_create_form'][] = 'access';
             }
             if ( empty( $fields['contact_email']['in_create_form'] ) ){
-                $fields['contact_email']['in_create_form'] = [ 'access' ];
+                $fields['contact_email']['in_create_form'] = array( 'access' );
             } elseif ( is_array( $fields['contact_email']['in_create_form'] ) ){
                 $fields['contact_email']['in_create_form'][] = 'access';
             }
             if ( empty( $fields['contact_address']['in_create_form'] ) ){
-                $fields['contact_address']['in_create_form'] = [ 'access' ];
+                $fields['contact_address']['in_create_form'] = array( 'access' );
             } elseif ( is_array( $fields['contact_address']['in_create_form'] ) ){
                 $fields['contact_address']['in_create_form'][] = 'access';
             }
@@ -368,35 +368,32 @@ class DT_Contacts_Access extends DT_Module_Base {
             $declared_fields  = dt_array_merge_recursive_distinct( $declared_fields, $fields );
 
             //order overall status options
-            uksort( $declared_fields['overall_status']['default'], function ( $a, $b ) use ( $fields ){
+            uksort( $declared_fields['overall_status']['default'], function ( $a, $b ) use ( $fields ) {
                 return array_search( $a, array_keys( $fields['overall_status']['default'] ) ) <=> array_search( $b, array_keys( $fields['overall_status']['default'] ) );
             } );
             $fields = $declared_fields;
         }
 
         return $fields;
-
-
     }
 
     public function add_api_routes(){
         $namespace = 'dt-posts/v2';
         register_rest_route(
-            $namespace, '/contacts/(?P<id>\d+)/accept', [
+            $namespace, '/contacts/(?P<id>\d+)/accept', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'accept_contact' ],
+                'callback' => array( $this, 'accept_contact' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
 
         register_rest_route(
-            $namespace, '/contacts/assignment-list', [
+            $namespace, '/contacts/assignment-list', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'get_dispatch_list' ],
+                'callback' => array( $this, 'get_dispatch_list' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
-
     }
 
     public function dt_details_additional_tiles( $sections, $post_type = '' ){
@@ -407,14 +404,14 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
         }
         if ( $post_type === 'contacts' ){
-            $sections['followup'] = [
+            $sections['followup'] = array(
                 'label' => __( 'Follow Up', 'disciple_tools' ),
-                'display_for' => [
-                    'type' => [ 'access' ],
-                ]
-            ];
+                'display_for' => array(
+                    'type' => array( 'access' ),
+                ),
+            );
             if ( isset( $sections['status']['order'] ) && !in_array( 'overall_status', $sections['status']['order'], true ) ){
-                $sections['status']['order'] = array_merge( [ 'overall_status', 'assigned_to' ], $sections['status']['order'] );
+                $sections['status']['order'] = array_merge( array( 'overall_status', 'assigned_to' ), $sections['status']['order'] );
             }
         }
         return $sections;
@@ -446,12 +443,12 @@ class DT_Contacts_Access extends DT_Module_Base {
                 </div>
                 <?php
                 $options_array = $contact_fields[$field_key]['default'];
-                $options_array = array_map( function( $key, $value ) {
-                    return [
+                $options_array = array_map( function ( $key, $value ) {
+                    return array(
                         'id' => $key,
                         'label' => $value['label'],
                         'color' => $value['color'] ?? null,
-                    ];
+                    );
                 }, array_keys( $options_array ), $options_array );
 
                 if ( isset( $contact_fields[$field_key]['icon'] ) && !empty( $contact_fields[$field_key]['icon'] ) ) {
@@ -482,10 +479,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                         } else if ( $status_key === 'unassignable' &&
                             isset( $contact['reason_unassignable']['label'] ) ){
                             echo '(' . esc_html( $contact['reason_unassignable']['label'] ) . ')';
-                        } else {
-                            if ( !in_array( $status_key, [ 'paused', 'closed', 'unassignable' ] ) ){
+                        } elseif ( !in_array( $status_key, array( 'paused', 'closed', 'unassignable' ) ) ) {
                                 $hide_edit_button = true;
-                            }
                         }
                         ?>
                     </span>
@@ -617,17 +612,17 @@ class DT_Contacts_Access extends DT_Module_Base {
             </div>
             <?php
             $is_dispatcher = dt_current_user_has_role( 'dispatcher' ) || current_user_can( 'dt_all_access_contacts' );
-            $roles = [
-                'multiplier' => [
-                    'label' => __( 'Multipliers', 'disciple_tools' )
-                ],
-                'dispatcher' => [
-                    'label' => __( 'Dispatchers', 'disciple_tools' )
-                ],
-                'marketer' => [
-                    'label' => __( 'Digital Responders', 'disciple_tools' )
-                ],
-            ];
+            $roles = array(
+                'multiplier' => array(
+                    'label' => __( 'Multipliers', 'disciple_tools' ),
+                ),
+                'dispatcher' => array(
+                    'label' => __( 'Dispatchers', 'disciple_tools' ),
+                ),
+                'marketer' => array(
+                    'label' => __( 'Digital Responders', 'disciple_tools' ),
+                ),
+            );
             if ( $is_dispatcher ) { ?>
             <div class="reveal" id="assigned_to_user_modal" data-reveal>
                 <section class="small-12 grid-y grid-margin-y cell dispatcher-tile">
@@ -724,7 +719,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
             foreach ( $fields as $field_key => $value ){
                 if ( strpos( $field_key, 'quick_button' ) !== false ){
-                    self::handle_quick_action_button_event( $post_id, [ $field_key => $value ] );
+                    self::handle_quick_action_button_event( $post_id, array( $field_key => $value ) );
                 }
             }
             if ( isset( $fields['overall_status'], $fields['reason_paused'] ) && $fields['overall_status'] === 'paused' ){
@@ -800,7 +795,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             } else {
                 $base_id = dt_get_base_user( true );
                 if ( is_wp_error( $base_id ) ) { // if default editor does not exist, get available administrator
-                    $users = get_users( [ 'role' => 'administrator' ] );
+                    $users = get_users( array( 'role' => 'administrator' ) );
                     if ( count( $users ) > 0 ) {
                         foreach ( $users as $user ) {
                             $base_id = $user->ID;
@@ -820,7 +815,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
         }
         if ( !isset( $fields['sources'] ) ) {
-            $fields['sources'] = [ 'values' => [ [ 'value' => 'personal' ] ] ];
+            $fields['sources'] = array( 'values' => array( array( 'value' => 'personal' ) ) );
         }
         return $fields;
     }
@@ -862,7 +857,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     WHERE object_id = %s
                     AND meta_key = 'seeker_path'
                 ", $contact_id), ARRAY_A );
-                $existing_keys = [];
+                $existing_keys = array();
                 $most_recent = 0;
                 $meta_id = 0;
                 foreach ( $seeker_path_activity as $activity ){
@@ -872,7 +867,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                     }
                     $meta_id = $activity['meta_id'];
                 }
-                $activity_to_create = [];
+                $activity_to_create = array();
                 for ( $i = $current_index; $i > 0; $i-- ){
                     if ( !in_array( $option_keys[$i], $existing_keys ) ){
                         $activity_to_create[] = $option_keys[$i];
@@ -899,9 +894,9 @@ class DT_Contacts_Access extends DT_Module_Base {
             /**
              * Setup my contacts filters
              */
-            $active_counts = [];
+            $active_counts = array();
             $update_needed = 0;
-            $status_counts = [];
+            $status_counts = array();
             $total_my = 0;
             foreach ( $counts as $count ){
                 $total_my += $count['count'];
@@ -918,95 +913,95 @@ class DT_Contacts_Access extends DT_Module_Base {
             }
 
             // add assigned to me filters
-            $filters['filters'][] = [
+            $filters['filters'][] = array(
                 'ID' => 'my_all',
                 'tab' => 'default',
                 'name' => __( 'My Follow-Up', 'disciple_tools' ),
-                'query' => [
-                    'assigned_to' => [ 'me' ],
-                    'subassigned' => [ 'me' ],
-                    'combine' => [ 'subassigned' ],
-                    'overall_status' => [ '-closed' ],
-                    'type' => [ 'access' ],
+                'query' => array(
+                    'assigned_to' => array( 'me' ),
+                    'subassigned' => array( 'me' ),
+                    'combine' => array( 'subassigned' ),
+                    'overall_status' => array( '-closed' ),
+                    'type' => array( 'access' ),
                     'sort' => 'overall_status',
-                ],
-                'labels' => [
-                    [ 'name' => __( 'My Follow-Up', 'disciple_tools' ), 'field' => 'combine', 'id' => 'subassigned' ],
-                    [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
-                    [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
-                ],
+                ),
+                'labels' => array(
+                    array( 'name' => __( 'My Follow-Up', 'disciple_tools' ), 'field' => 'combine', 'id' => 'subassigned' ),
+                    array( 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ),
+                    array( 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ),
+                ),
                 'count' => $total_my,
-            ];
+            );
             foreach ( $fields['overall_status']['default'] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) ) {
-                    $filters['filters'][] = [
+                    $filters['filters'][] = array(
                         'ID' => 'my_' . $status_key,
                         'tab' => 'default',
                         'name' => $status_value['label'],
-                        'query' => [
-                            'assigned_to' => [ 'me' ],
-                            'subassigned' => [ 'me' ],
-                            'combine' => [ 'subassigned' ],
-                            'type' => [ 'access' ],
-                            'overall_status' => [ $status_key ],
-                            'sort' => 'seeker_path'
-                        ],
-                        'labels' => [
-                            [ 'name' => $status_value['label'] ],
-                            [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
-                            [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
-                        ],
+                        'query' => array(
+                            'assigned_to' => array( 'me' ),
+                            'subassigned' => array( 'me' ),
+                            'combine' => array( 'subassigned' ),
+                            'type' => array( 'access' ),
+                            'overall_status' => array( $status_key ),
+                            'sort' => 'seeker_path',
+                        ),
+                        'labels' => array(
+                            array( 'name' => $status_value['label'] ),
+                            array( 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ),
+                            array( 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ),
+                        ),
                         'count' => $status_counts[$status_key],
-                        'subfilter' => 1
-                    ];
+                        'subfilter' => 1,
+                    );
                     if ( $status_key === 'active' ){
                         if ( $update_needed > 0 ){
-                            $filters['filters'][] = [
+                            $filters['filters'][] = array(
                                 'ID' => 'my_update_needed',
                                 'tab' => 'default',
                                 'name' => $fields['requires_update']['name'],
-                                'query' => [
-                                    'assigned_to' => [ 'me' ],
-                                    'subassigned' => [ 'me' ],
-                                    'combine' => [ 'subassigned' ],
-                                    'overall_status' => [ 'active' ],
-                                    'requires_update' => [ true ],
-                                    'type' => [ 'access' ],
-                                    'sort' => 'seeker_path'
-                                ],
-                                'labels' => [
-                                    [ 'name' => $fields['requires_update']['name'] ],
-                                    [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
-                                    [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
-                                ],
+                                'query' => array(
+                                    'assigned_to' => array( 'me' ),
+                                    'subassigned' => array( 'me' ),
+                                    'combine' => array( 'subassigned' ),
+                                    'overall_status' => array( 'active' ),
+                                    'requires_update' => array( true ),
+                                    'type' => array( 'access' ),
+                                    'sort' => 'seeker_path',
+                                ),
+                                'labels' => array(
+                                    array( 'name' => $fields['requires_update']['name'] ),
+                                    array( 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ),
+                                    array( 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ),
+                                ),
                                 'count' => $update_needed,
-                                'subfilter' => 2
-                            ];
+                                'subfilter' => 2,
+                            );
                         }
                         if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ){
                             foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ){
                                 if ( isset( $active_counts[$seeker_path_key] ) ){
-                                    $filters['filters'][] = [
+                                    $filters['filters'][] = array(
                                         'ID' => 'my_' . $seeker_path_key,
                                         'tab' => 'default',
                                         'name' => $seeker_path_value['label'],
-                                        'query' => [
-                                            'assigned_to' => [ 'me' ],
-                                            'subassigned' => [ 'me' ],
-                                            'combine' => [ 'subassigned' ],
-                                            'overall_status' => [ 'active' ],
-                                            'seeker_path' => [ $seeker_path_key ],
-                                            'type' => [ 'access' ],
-                                            'sort' => 'name'
-                                        ],
-                                        'labels' => [
-                                            [ 'name' => $seeker_path_value['label'] ],
-                                            [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
-                                            [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
-                                        ],
+                                        'query' => array(
+                                            'assigned_to' => array( 'me' ),
+                                            'subassigned' => array( 'me' ),
+                                            'combine' => array( 'subassigned' ),
+                                            'overall_status' => array( 'active' ),
+                                            'seeker_path' => array( $seeker_path_key ),
+                                            'type' => array( 'access' ),
+                                            'sort' => 'name',
+                                        ),
+                                        'labels' => array(
+                                            array( 'name' => $seeker_path_value['label'] ),
+                                            array( 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ),
+                                            array( 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ),
+                                        ),
                                         'count' => $active_counts[$seeker_path_key],
-                                        'subfilter' => 2
-                                    ];
+                                        'subfilter' => 2,
+                                    );
                                 }
                             }
                         }
@@ -1019,9 +1014,9 @@ class DT_Contacts_Access extends DT_Module_Base {
              */
             if ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'access_specific_sources' ) ) {
                 $counts = self::get_all_contacts_status_seeker_path();
-                $all_active_counts = [];
+                $all_active_counts = array();
                 $all_update_needed = 0;
-                $all_status_counts = [];
+                $all_status_counts = array();
                 $total_all = 0;
                 foreach ( $counts as $count ){
                     $total_all += $count['count'];
@@ -1036,71 +1031,71 @@ class DT_Contacts_Access extends DT_Module_Base {
                 if ( !isset( $all_status_counts['closed'] ) ) {
                     $all_status_counts['closed'] = '';
                 }
-                $filters['tabs'][] = [
+                $filters['tabs'][] = array(
                     'key' => 'all_dispatch',
 //                    "label" => __( "Follow-Up", 'disciple_tools' ),
                     'label' => sprintf( _x( 'Follow-Up %s', 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
                     'count' => $total_all,
-                    'order' => 10
-                ];
+                    'order' => 10,
+                );
                 // add assigned to me filters
-                $filters['filters'][] = [
+                $filters['filters'][] = array(
                     'ID' => 'all_dispatch',
                     'tab' => 'all_dispatch',
                     'name' => __( 'All Follow-Up', 'disciple_tools' ),
-                    'query' => [
-                        'overall_status' => [ '-closed' ],
-                        'type' => [ 'access' ],
-                        'sort' => 'overall_status'
-                    ],
+                    'query' => array(
+                        'overall_status' => array( '-closed' ),
+                        'type' => array( 'access' ),
+                        'sort' => 'overall_status',
+                    ),
                     'count' => $total_all,
-                ];
+                );
 
                 foreach ( $fields['overall_status']['default'] as $status_key => $status_value ) {
                     if ( isset( $all_status_counts[$status_key] ) ) {
-                        $filters['filters'][] = [
+                        $filters['filters'][] = array(
                             'ID' => 'all_' . $status_key,
                             'tab' => 'all_dispatch',
                             'name' => $status_value['label'],
-                            'query' => [
-                                'overall_status' => [ $status_key ],
-                                'type' => [ 'access' ],
-                                'sort' => 'seeker_path'
-                            ],
-                            'count' => $all_status_counts[$status_key]
-                        ];
+                            'query' => array(
+                                'overall_status' => array( $status_key ),
+                                'type' => array( 'access' ),
+                                'sort' => 'seeker_path',
+                            ),
+                            'count' => $all_status_counts[$status_key],
+                        );
                         if ( $status_key === 'active' ){
                             if ( $all_update_needed > 0 ){
-                                $filters['filters'][] = [
+                                $filters['filters'][] = array(
                                     'ID' => 'all_update_needed',
                                     'tab' => 'all_dispatch',
                                     'name' => $fields['requires_update']['name'],
-                                    'query' => [
-                                        'overall_status' => [ 'active' ],
-                                        'requires_update' => [ true ],
-                                        'type' => [ 'access' ],
-                                        'sort' => 'seeker_path'
-                                    ],
+                                    'query' => array(
+                                        'overall_status' => array( 'active' ),
+                                        'requires_update' => array( true ),
+                                        'type' => array( 'access' ),
+                                        'sort' => 'seeker_path',
+                                    ),
                                     'count' => $all_update_needed,
-                                    'subfilter' => true
-                                ];
+                                    'subfilter' => true,
+                                );
                             }
                             if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ) {
                                 foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
                                     if ( isset( $all_active_counts[$seeker_path_key] ) ) {
-                                        $filters['filters'][] = [
+                                        $filters['filters'][] = array(
                                             'ID' => 'all_' . $seeker_path_key,
                                             'tab' => 'all_dispatch',
                                             'name' => $seeker_path_value['label'],
-                                            'query' => [
-                                                'overall_status' => [ 'active' ],
-                                                'seeker_path' => [ $seeker_path_key ],
-                                                'type' => [ 'access' ],
-                                                'sort' => 'name'
-                                            ],
+                                            'query' => array(
+                                                'overall_status' => array( 'active' ),
+                                                'seeker_path' => array( $seeker_path_key ),
+                                                'type' => array( 'access' ),
+                                                'sort' => 'name',
+                                            ),
                                             'count' => $all_active_counts[$seeker_path_key],
-                                            'subfilter' => true
-                                        ];
+                                            'subfilter' => true,
+                                        );
                                     }
                                 }
                             }
@@ -1116,29 +1111,29 @@ class DT_Contacts_Access extends DT_Module_Base {
     //list page filters function
     private static function add_default_custom_list_filters( $filters ){
         if ( empty( $filters ) ){
-            $filters = [];
+            $filters = array();
         }
-        $default_filters = [
-            [
+        $default_filters = array(
+            array(
                 'ID' => 'my_subassigned',
                 'visible' => '1',
                 'type' => 'default',
                 'tab' => 'custom',
                 'name' => 'Subassigned to me',
-                'query' => [
-                    'subassigned' => [ 'me' ],
+                'query' => array(
+                    'subassigned' => array( 'me' ),
                     'sort' => 'overall_status',
-                ],
-                'labels' => [
-                    [
+                ),
+                'labels' => array(
+                    array(
                         'id' => 'me',
                         'name' => 'Subassigned to me',
                         'field' => 'subassigned',
-                    ],
-                ],
-            ],
-        ];
-        $contact_filter_ids = array_map( function ( $a ){
+                    ),
+                ),
+            ),
+        );
+        $contact_filter_ids = array_map( function ( $a ) {
             return $a['ID'];
         }, $filters );
         foreach ( $default_filters as $filter ) {
@@ -1159,11 +1154,11 @@ class DT_Contacts_Access extends DT_Module_Base {
     //list page filters function
     private static function get_all_contacts_status_seeker_path(){
         global $wpdb;
-        $results = [];
+        $results = array();
 
         $can_view_all = false;
         if ( current_user_can( 'access_specific_sources' ) ) {
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: array();
             if ( empty( $sources ) || in_array( 'all', $sources ) ) {
                 $can_view_all = true;
             }
@@ -1181,7 +1176,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 GROUP BY status.meta_value, pm.meta_value
             ", ARRAY_A);
         } else if ( current_user_can( 'access_specific_sources' ) ) {
-            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
+            $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: array();
             $sources_sql = dt_array_to_sql( $sources );
             // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
@@ -1227,17 +1222,17 @@ class DT_Contacts_Access extends DT_Module_Base {
     public static function dt_filter_access_permissions( $permissions, $post_type ){
         if ( $post_type === 'contacts' ){
             if ( DT_Posts::can_view_all( $post_type ) ){
-                $permissions['type'] = [ 'access', 'user', 'access_placeholder' ];
+                $permissions['type'] = array( 'access', 'user', 'access_placeholder' );
             } else if ( current_user_can( 'dt_all_access_contacts' ) ){
                 //give user permission to all contacts af type 'access'
-                $permissions[] = [ 'type' => [ 'access', 'user', 'access_placeholder' ] ];
+                $permissions[] = array( 'type' => array( 'access', 'user', 'access_placeholder' ) );
             } else if ( current_user_can( 'access_specific_sources' ) ){
                 //give user permission to all 'access' that also have a source the user can view.
-                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
+                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: array();
                 if ( empty( $allowed_sources ) || in_array( 'all', $allowed_sources, true ) ){
-                    $permissions['type'] = [ 'access', 'access_placeholder' ];
+                    $permissions['type'] = array( 'access', 'access_placeholder' );
                 } elseif ( !in_array( 'restrict_all_sources', $allowed_sources ) ){
-                    $permissions[] = [ 'type' => [ 'access' ], 'sources' => $allowed_sources];
+                    $permissions[] = array( 'type' => array( 'access' ), 'sources' => $allowed_sources );
                 }
             }
         }
@@ -1257,7 +1252,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( current_user_can( 'access_specific_sources' ) ){
                 $contact_type = get_post_meta( $post_id, 'type', true );
                 if ( $contact_type === 'access' || $contact_type === 'access_placeholder' ){
-                    $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
+                    $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: array();
                     if ( empty( $sources ) || in_array( 'all', $sources ) ) {
                         return true;
                     }
@@ -1283,7 +1278,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( current_user_can( 'access_specific_sources' ) ){
             $contact_type = get_post_meta( $post_id, 'type', true );
             if ( $contact_type === 'access' || $contact_type === 'access_placeholder' ){
-                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
+                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: array();
                 if ( empty( $sources ) || in_array( 'all', $sources ) ){
                     return true;
                 }
@@ -1300,11 +1295,11 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     public function scripts(){
         if ( is_singular( 'contacts' ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
-            wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
+            wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', array(
                 'jquery',
-            ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
-            wp_localize_script( 'dt_contacts_access', 'dt_contacts_access', [
-                'translations' => [
+            ), filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
+            wp_localize_script( 'dt_contacts_access', 'dt_contacts_access', array(
+                'translations' => array(
                     'all' => __( 'All', 'disciple_tools' ),
                     'ready' => __( 'Ready', 'disciple_tools' ),
                     'recent' => __( 'Recent', 'disciple_tools' ),
@@ -1312,13 +1307,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                     'assign' => __( 'Assign', 'disciple_tools' ),
                     'language' => __( 'Language', 'disciple_tools' ),
                     'gender' => __( 'Gender', 'disciple_tools' ),
-                ],
-            ] );
+                ),
+            ) );
         }
     }
 
     private static function handle_quick_action_button_event( int $contact_id, array $field, bool $check_permissions = true ) {
-        $update = [];
+        $update = array();
         $key = key( $field );
 
         if ( $key == 'quick_button_no_answer' ) {
@@ -1372,18 +1367,18 @@ class DT_Contacts_Access extends DT_Module_Base {
         $new_index = array_search( $path_option, $option_keys );
         if ( $new_index > $current_index ) {
             $current_index = $new_index;
-            $update = DT_Posts::update_post( 'contacts', $contact_id, [ 'seeker_path' => $path_option ], $check_permissions );
+            $update = DT_Posts::update_post( 'contacts', $contact_id, array( 'seeker_path' => $path_option ), $check_permissions );
             if ( is_wp_error( $update ) ) {
                 return $update;
             }
             $current_seeker_path = $path_option;
         }
 
-        return [
+        return array(
             'currentKey' => $current_seeker_path,
             'current' => $seeker_path_options[ $option_keys[ $current_index ] ],
             'next'    => isset( $option_keys[ $current_index + 1 ] ) ? $seeker_path_options[ $option_keys[ $current_index + 1 ] ] : '',
-        ];
+        );
     }
 
     //check to see if the contact is marked as needing an update
@@ -1408,21 +1403,21 @@ class DT_Contacts_Access extends DT_Module_Base {
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         if ( !isset( $params['id'] ) ) {
-            return new WP_Error( 'accept_contact', 'Missing a valid contact id', [ 'status' => 400 ] );
+            return new WP_Error( 'accept_contact', 'Missing a valid contact id', array( 'status' => 400 ) );
         } else {
             $contact_id = $params['id'];
             $accepted = $body['accept'];
             if ( !DT_Posts::can_update( 'contacts', $contact_id ) ) {
-                return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, 'You do not have permission for this', array( 'status' => 403 ) );
             }
 
             if ( $accepted ) {
-                $update = [
+                $update = array(
                     'overall_status' => 'active',
-                    'accepted' => true
-                ];
+                    'accepted' => true,
+                );
                 dt_activity_insert(
-                    [
+                    array(
                         'action'         => 'assignment_accepted',
                         'object_type'    => get_post_type( $contact_id ),
                         'object_subtype' => '',
@@ -1433,7 +1428,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                         'meta_value'     => '',
                         'meta_parent'    => '',
                         'object_note'    => '',
-                    ]
+                    )
                 );
                 return DT_Posts::update_post( 'contacts', $contact_id, $update, true );
             } else {
@@ -1448,14 +1443,14 @@ class DT_Contacts_Access extends DT_Module_Base {
                     }
                 }
 
-                $update = [
+                $update = array(
                     'assigned_to' => $assign_to_id,
-                    'overall_status' => 'unassigned'
-                ];
+                    'overall_status' => 'unassigned',
+                );
                 $contact = DT_Posts::update_post( 'contacts', $contact_id, $update, true );
                 $current_user = wp_get_current_user();
                 dt_activity_insert(
-                    [
+                    array(
                         'action'         => 'assignment_decline',
                         'object_type'    => get_post_type( $contact_id ),
                         'object_subtype' => 'decline',
@@ -1465,8 +1460,8 @@ class DT_Contacts_Access extends DT_Module_Base {
                         'meta_key'       => '',
                         'meta_value'     => '',
                         'meta_parent'    => '',
-                        'object_note'    => ''
-                    ]
+                        'object_note'    => '',
+                    )
                 );
                 Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
                 return $contact;
@@ -1488,10 +1483,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                 foreach ( $dup_ids['ids'] as $id_of_duplicate ){
                     $comment .= " \n -  [$id_of_duplicate]($id_of_duplicate)";
                 }
-                $args = [
+                $args = array(
                     'user_id' => 0,
-                    'comment_author' => __( 'Duplicate Checker', 'disciple_tools' )
-                ];
+                    'comment_author' => __( 'Duplicate Checker', 'disciple_tools' ),
+                );
                 DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'duplicate', $args, false, true );
             }
             if ( !$had_cap ){
@@ -1504,10 +1499,10 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( $post_type === 'contacts' ){
             $post = DT_Posts::get_post( $post_type, $post_id );
             if ( !is_wp_error( $post ) && isset( $post['type']['key'] ) && $post['type']['key'] === 'access' ){
-                $following_all = get_users( [
+                $following_all = get_users( array(
                     'meta_key' => 'dt_follow_all',
-                    'meta_value' => true
-                ] );
+                    'meta_value' => true,
+                ) );
                 foreach ( $following_all as $user ){
                     if ( !in_array( $user->ID, $users_to_notify ) ){
                         $users_to_notify[] = $user->ID;
@@ -1521,7 +1516,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     public function get_dispatch_list( WP_REST_Request $request ) {
         if ( !current_user_can( 'dt_all_access_contacts' ) || !current_user_can( 'list_users' ) ){
-            return new WP_Error( __FUNCTION__, __( 'No permission' ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, __( 'No permission' ), array( 'status' => 403 ) );
         }
         $params = $request->get_query_params();
 
@@ -1531,22 +1526,22 @@ class DT_Contacts_Access extends DT_Module_Base {
         $location_data = $this->get_location_data( $params['location_ids'] );
         $gender_data = $this->get_gender_data();
 
-        $list = [];
+        $list = array();
         $user_fields = Disciple_Tools_Users::get_users_fields();
         $workload_status_options = $user_fields['workload_status']['options'];
         foreach ( $user_data as $user ) {
             $roles = maybe_unserialize( $user['roles'] );
             if ( isset( $roles['multiplier'] ) || isset( $roles['dt_admin'] ) || isset( $roles['dispatcher'] ) || isset( $roles['marketer'] ) ) {
-                $u = [
+                $u = array(
                     'name' => wp_specialchars_decode( $user['display_name'] ),
                     'ID' => $user['ID'],
-                    'avatar' => get_avatar_url( $user['ID'], [ 'size' => '16' ] ),
+                    'avatar' => get_avatar_url( $user['ID'], array( 'size' => '16' ) ),
                     'last_assignment' => $last_assignments[$user['ID']] ?? null,
                     'roles' => array_keys( $roles ),
                     'location' => null,
-                    'languages' => [],
+                    'languages' => array(),
                     'gender' => null,
-                ];
+                );
                 $user_languages = get_user_option( 'user_languages', $user['ID'] );
                 if ( $user_languages ) {
                     $u['languages'] = $user_languages;
@@ -1582,7 +1577,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             WHERE meta_key = 'assigned_to'
             GROUP by meta_value",
         ARRAY_A );
-        $last_assignments =[];
+        $last_assignments =array();
         foreach ( $last_assignment_query as $assignment ){
             $user_id = str_replace( 'user-', '', $assignment['user'] );
             $last_assignments[$user_id] = $assignment['assignment_date'];
@@ -1594,18 +1589,18 @@ class DT_Contacts_Access extends DT_Module_Base {
     private function get_location_data( $location_ids ) {
         global $wpdb;
 
-        $location_data = [];
+        $location_data = array();
         if ( isset( $location_ids ) ) {
             foreach ( $location_ids as $grid_id ){
                 $location = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %s", esc_sql( $grid_id ) ), ARRAY_A );
-                $levels = [];
+                $levels = array();
 
                 if ( $grid_id === '1' ){
                     $match_location_ids = '( 1 )';
                 } else {
                     $match_location_ids = '( ';
                     for ( $i = 0; $i <= ( (int) $location['level'] ); $i++ ) {
-                        $levels[ $location['admin'. $i . '_grid_id']] = [ 'level' => $i ];
+                        $levels[ $location['admin'. $i . '_grid_id']] = array( 'level' => $i );
                         $match_location_ids .= $location['admin'. $i . '_grid_id'] . ', ';
                     }
                     $match_location_ids .= ')';
@@ -1640,10 +1635,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                 foreach ( $users_in_location as $l ){
                     $level = (int) $location['level'] - $levels[$l['grid_id']]['level'];
                     if ( !isset( $location_data[$l['user_id']] ) || $location_data[$l['user_id']]['level'] > $level ){
-                        $location_data[$l['user_id']] = [
+                        $location_data[$l['user_id']] = array(
                             'level' => $level,
-                            'match_name' => $levels[$l['grid_id']]['name']
-                        ];
+                            'match_name' => $levels[$l['grid_id']]['name'],
+                        );
                     }
                 }
             }
@@ -1653,7 +1648,7 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     private function get_gender_data() {
         global $wpdb;
-        $gender_data = [];
+        $gender_data = array();
 
         $gender_query = $wpdb->get_results( $wpdb->prepare("
             SELECT user_id, meta_value as gender
@@ -1675,34 +1670,34 @@ class DT_Contacts_Access extends DT_Module_Base {
      * @return mixed
      */
     public function dt_users_fields( $fields ){
-        $fields['number_new_assigned'] = [
+        $fields['number_new_assigned'] = array(
             'label' => 'Accept Needed',
             'type' => 'number',
             'table' => 'postmeta',
             'meta_key' => 'overall_status',
             'meta_value' => 'assigned',
-        ];
-        $fields['number_active'] = [
+        );
+        $fields['number_active'] = array(
             'label' => 'Active',
             'type' => 'number',
             'table' => 'postmeta',
             'meta_key' => 'overall_status',
             'meta_value' => 'active',
-        ];
-        $fields['number_assigned_to'] = [
+        );
+        $fields['number_assigned_to'] = array(
             'label' => 'Assigned',
             'type' => 'number',
             'table' => 'postmeta',
             'meta_key' => 'assigned_to',
             'hidden' => true,
-        ];
-        $fields['number_update'] = [
+        );
+        $fields['number_update'] = array(
             'label' => 'Update Needed',
             'type' => 'number',
             'table' => 'postmeta',
             'meta_key' => 'requires_update',
             'meta_value' => '1',
-        ];
+        );
 
 
         return $fields;

@@ -29,15 +29,15 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
     } // End instance()
 
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 1 );
-        add_action( 'dt_metrics_tab_menu', [ $this, 'add_tab' ], 1, 1 );
-        add_action( 'dt_metrics_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 1 );
+        add_action( 'dt_metrics_tab_menu', array( $this, 'add_tab' ), 1, 1 );
+        add_action( 'dt_metrics_tab_content', array( $this, 'content' ), 99, 1 );
 
         parent::__construct();
     }
 
     public function add_submenu() {
-        add_submenu_page( 'dt_metrics', __( 'Report List', 'disciple_tools' ), __( 'Report List', 'disciple_tools' ), 'manage_dt', 'dt_metrics', [ 'Disciple_Tools_Metrics_Menu', 'content' ] );
+        add_submenu_page( 'dt_metrics', __( 'Report List', 'disciple_tools' ), __( 'Report List', 'disciple_tools' ), 'manage_dt', 'dt_metrics', array( 'Disciple_Tools_Metrics_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -92,7 +92,7 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     'type' => $submitted_records['source'],
                     'value' => 0,
                     'time_end' => strtotime( $submitted_records['submit_date'] ) ?? time(),
-                    'timestamp' => strtotime( $submitted_records['submit_date'] ) ?? time()
+                    'timestamp' => strtotime( $submitted_records['submit_date'] ) ?? time(),
                 ),
                 array(
                     '%d',
@@ -100,7 +100,7 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 '%s',
                 '%d',
                 '%d',
-                '%d'
+                '%d',
                 )
             );
 
@@ -110,22 +110,22 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
 
             $record_id = $wpdb->insert_id;
-            $meta_result = [];
+            $meta_result = array();
             unset( $submitted_records['dt_add_new_box_nonce'] );
 
             foreach ( $submitted_records as $key => $value ) {
                 $meta_result[] = $wpdb->insert(
                     $wpdb->dt_reportmeta,
-                    [
+                    array(
                                 'report_id' => $record_id,
                                 'meta_key' => $key,
                                 'meta_value' => $value,
-                        ],
-                    [
+                        ),
+                    array(
                                 '%d',
                                 '%s',
                                 '%s',
-                        ]
+                        )
                 );
             }
 
@@ -144,7 +144,7 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
     public function list_reports() {
 
         global $wpdb;
-        $sources = get_option( 'dt_critical_path_sources', [] );
+        $sources = get_option( 'dt_critical_path_sources', array() );
 
         $results = $wpdb->get_results("
             SELECT * FROM $wpdb->dt_reports report
@@ -153,13 +153,13 @@ class Disciple_Tools_Metric_Reports_Tab extends Disciple_Tools_Abstract_Menu_Bas
             GROUP BY report.id, rm.meta_key
             ORDER BY report.time_end DESC
         ", ARRAY_A );
-        $reports = [];
+        $reports = array();
         foreach ( $results as $result ){
             if ( !isset( $reports[ $result['id'] ] ) ) {
-                $reports[ $result['id'] ] = [
+                $reports[ $result['id'] ] = array(
                     'report_date' => gmdate( 'F Y', $result['time_end'] ),
-                    'report_values' => []
-                ];
+                    'report_values' => array(),
+                );
             }
             $reports[ $result['id'] ]['values'][ $result['meta_key'] ] = $result['meta_value'];
         }

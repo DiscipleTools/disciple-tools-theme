@@ -24,9 +24,9 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_metrics_tab_menu', [ $this, 'add_tab' ], 99, 1 ); // use the priority setting to control load order
-        add_action( 'dt_metrics_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 99 );
+        add_action( 'dt_metrics_tab_menu', array( $this, 'add_tab' ), 99, 1 ); // use the priority setting to control load order
+        add_action( 'dt_metrics_tab_content', array( $this, 'content' ), 99, 1 );
 
 
         parent::__construct();
@@ -34,7 +34,7 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_metrics', __( 'Sources and Fields', 'disciple_tools' ), __( 'Sources and Fields', 'disciple_tools' ), 'manage_dt', 'dt_metrics&tab=sources', [ 'Disciple_Tools_Metrics_Menu', 'content' ] );
+        add_submenu_page( 'dt_metrics', __( 'Sources and Fields', 'disciple_tools' ), __( 'Sources and Fields', 'disciple_tools' ), 'manage_dt', 'dt_metrics&tab=sources', array( 'Disciple_Tools_Metrics_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -63,7 +63,7 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public function table() {
         $this->box( 'top', 'Add or Edit Custom metrics to track' );
-        $sources = get_option( 'dt_critical_path_sources', [] );
+        $sources = get_option( 'dt_critical_path_sources', array() );
         ?>
         <p></p>
 
@@ -159,22 +159,22 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
             if ( isset( $_POST['sources_edit_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['sources_edit_nonce'] ), 'sources_edit' ) ) {
                 if ( isset( $_POST['add_source'], $_POST['new_label'], $_POST['new_description'], $_POST['new_section'] ) ){
                     $label = sanitize_text_field( wp_unslash( $_POST['new_label'] ) );
-                    $sources = get_option( 'dt_critical_path_sources', [] );
+                    $sources = get_option( 'dt_critical_path_sources', array() );
                     $key = dt_create_field_key( $label );
                     $cols = array_column( $sources, 'key' );
                     //if the key is not unique, add a hash
                     if ( in_array( $key, $cols ) ){
                         $key = dt_create_field_key( $label, true );
                     }
-                    $sources[] = [
+                    $sources[] = array(
                         'label' => $label,
                         'key' => $key,
                         'description' => sanitize_text_field( wp_unslash( $_POST['new_description'] ) ),
-                        'section' => sanitize_key( wp_unslash( $_POST['new_section'] ) )
-                    ];
+                        'section' => sanitize_key( wp_unslash( $_POST['new_section'] ) ),
+                    );
                     update_option( 'dt_critical_path_sources', $sources );
                 } elseif ( isset( $_POST['save_changes'], $_POST['label'], $_POST['description'], $_POST['section'] ) ){
-                    $sources = get_option( 'dt_critical_path_sources', [] );
+                    $sources = get_option( 'dt_critical_path_sources', array() );
                     $key = sanitize_key( wp_unslash( $_POST['save_changes'] ) );
                     $index = array_search( $key, array_column( $sources, 'key' ) );
                     if ( isset( $_POST['label'][ $key ], $_POST['description'][ $key ], $_POST['section'][ $key ] ) ){
@@ -186,7 +186,7 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
                 } elseif ( isset( $_POST['delete_source'] ) ){
 
-                    $sources = get_option( 'dt_critical_path_sources', [] );
+                    $sources = get_option( 'dt_critical_path_sources', array() );
                     $key = sanitize_key( wp_unslash( $_POST['delete_source'] ) );
                     $index = array_search( $key, array_column( $sources, 'key' ) );
                     array_splice( $sources, $index, 1 );
@@ -196,7 +196,7 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     $up = isset( $_POST['order_up'] );
                     $option_key = $up ? sanitize_text_field( wp_unslash( $_POST['order_up'] ) ) : sanitize_text_field( wp_unslash( $_POST['order_down'] ) );
                     $direction = $up ? -1 : 1;
-                    $sources = get_option( 'dt_critical_path_sources', [] );
+                    $sources = get_option( 'dt_critical_path_sources', array() );
                     $index = array_search( $option_key, array_column( $sources, 'key' ) );
                     $out = array_splice( $sources, $index, 1 );
                     array_splice( $sources, $index + $direction, 0, $out );
@@ -205,7 +205,5 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
         }
     }
-
-
 }
 Disciple_Tools_Metric_Sources_Tab::instance();

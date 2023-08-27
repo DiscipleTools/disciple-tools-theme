@@ -1,24 +1,24 @@
 <?php
-require_once( get_template_directory() . '/tests/dt-posts/tests-setup.php' );
+require_once get_template_directory() . '/tests/dt-posts/tests-setup.php';
 
 /**
  * @testdox DT_Posts::update_post
  */
 class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
-    public static $sample_contact = [
+    public static $sample_contact = array(
         'title' => 'Bob',
         'overall_status' => 'active',
-        'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'milestone_baptizing' ] ] ],
+        'milestones' => array( 'values' => array( array( 'value' => 'milestone_has_bible' ), array( 'value' => 'milestone_baptizing' ) ) ),
         'baptism_date' => '2018-12-31',
-        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'location_grid' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
         'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
-        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
-        'tags' => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tagToDelete' ] ] ],
-    ];
+        'contact_phone' => array( 'values' => array( array( 'value' => '798456780' ) ) ),
+        'contact_email' => array( 'values' => array( array( 'value' => 'bob@example.com' ) ) ),
+        'tags' => array( 'values' => array( array( 'value' => 'tag1' ), array( 'value' => 'tagToDelete' ) ) ),
+    );
     public static $contact = null;
 
     public static function setupBeforeClass(): void  {
@@ -71,11 +71,11 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
     public function test_custom_number_field_min_max_error() {
         // test that lower than the minimum creates an error
-        $result1 = DT_Posts::update_post( 'contacts', self::$contact['ID'], [ 'number_test' => -1 ], true, false );
+        $result1 = DT_Posts::update_post( 'contacts', self::$contact['ID'], array( 'number_test' => -1 ), true, false );
         $this->assertWPError( $result1 );
 
         // test that higher than the maximum creates an error
-        $contact2 = DT_Posts::update_post( 'contacts', self::$contact['ID'], [ 'number_test_private' => 300 ], true, false );
+        $contact2 = DT_Posts::update_post( 'contacts', self::$contact['ID'], array( 'number_test_private' => 300 ), true, false );
         $this->assertWPError( $contact2 );
     }
 
@@ -85,14 +85,14 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     public function test_tags_add() {
         //force values with update
         $initial_count = sizeof( self::$contact['tags'] );
-        $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], [
-            'tags' => [
-                'values' => [
-                    [ 'value' => 'tag2', ],
-                    [ 'value' => 'tag3', ],
-                ],
-            ], //@phpcs:ignore
-        ], true, false );
+        $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], array(
+            'tags' => array(
+                'values' => array(
+                    array( 'value' => 'tag2' ),
+                    array( 'value' => 'tag3' ),
+                ),
+            ), //@phpcs:ignore
+        ), true, false );
 
         $this->assertNotWPError( $result );
         $this->assertContains( 'tag2', $result['tags'] );
@@ -105,13 +105,13 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     public function test_tags_remove() {
         //force values with update
         $initial_count = sizeof( self::$contact['tags'] );
-        $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], [
-            'tags' => [
-                'values' => [
-                    [ 'value' => 'tagToDelete', 'delete' => true, ],
-                ],
-            ], //@phpcs:ignore
-        ], true, false );
+        $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], array(
+            'tags' => array(
+                'values' => array(
+                    array( 'value' => 'tagToDelete', 'delete' => true ),
+                ),
+            ), //@phpcs:ignore
+        ), true, false );
 
         $this->assertNotWPError( $result );
         $this->assertNotContains( 'tagToDelete', $result['tags'] );
@@ -122,15 +122,15 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
      */
     public function test_tags_force() {
         //force values with update
-        $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], [
-            'tags' => [
-                'values' => [
-                    [ 'value' => 'tag98', ],
-                    [ 'value' => 'tag99', ],
-                ],
+        $result = DT_Posts::update_post( 'contacts', self::$contact['ID'], array(
+            'tags' => array(
+                'values' => array(
+                    array( 'value' => 'tag98' ),
+                    array( 'value' => 'tag99' ),
+                ),
                 'force_values' => true,
-            ], //@phpcs:ignore
-        ], true, false );
+            ), //@phpcs:ignore
+        ), true, false );
         $this->assertNotWPError( $result );
 
         $this->assertContains( 'tag98', $result['tags'] );
@@ -177,7 +177,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertArrayNotHasKey( 'number_test_private', $result );
 
         //Second user should not see private values in the contact updated by the first user
-        $contact2 = DT_Posts::create_post( 'contacts', [ 'title' => 'empty' ], true, true );
+        $contact2 = DT_Posts::create_post( 'contacts', array( 'title' => 'empty' ), true, true );
         DT_Posts::add_shared( 'contacts', $contact2['ID'], $user_id, null, false, false );
         wp_set_current_user( $user_id );
         $res = DT_Posts::update_post( 'contacts', $contact2['ID'], $create_values );

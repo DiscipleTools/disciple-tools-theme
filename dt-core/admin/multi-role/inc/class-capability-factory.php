@@ -27,7 +27,7 @@ final class Disciple_Tools_Capability_Factory {
      * @access public
      * @var    array
      */
-    public $capabilities = [];
+    public $capabilities = array();
 
     /**
      * Private constructor method to prevent a new instance of the object.
@@ -37,7 +37,7 @@ final class Disciple_Tools_Capability_Factory {
      * @access public
      */
     public function __construct() {
-        add_action( 'init', [ $this, 'setup_capabilities' ] );
+        add_action( 'init', array( $this, 'setup_capabilities' ) );
     }
 
     /**
@@ -45,7 +45,7 @@ final class Disciple_Tools_Capability_Factory {
      * @return array
      */
     private function default_descriptions() {
-        return [
+        return array(
             'access_contacts'         => __( 'In Disciple.Tools, allows user to access contacts.', 'disciple_tools' ),
             'access_disciple_tools'   => __( 'In Disicple.Tools, allows user to login to Disciple.Tools.', 'disciple_tools' ),
             'access_groups'           => __( 'In Disciple.Tools, allows user to access groups.', 'disciple_tools' ),
@@ -131,12 +131,12 @@ final class Disciple_Tools_Capability_Factory {
             'update_themes'           => '',
             'upload_files'            => '',
             'view_any_groups'         => '',
-            'view_project_metrics'    => ''
-        ];
+            'view_project_metrics'    => '',
+        );
     }
 
     private function restricted_capabilities() {
-        return [
+        return array(
             'level_0',
             'level_1',
             'level_10',
@@ -148,7 +148,7 @@ final class Disciple_Tools_Capability_Factory {
             'level_7',
             'level_8',
             'level_9',
-        ];
+        );
     }
 
     /**
@@ -230,7 +230,7 @@ final class Disciple_Tools_Capability_Factory {
      * @since  0.1.0
      * @access public
      */
-    public function get_capabilities( $capabilities = [] ) {
+    public function get_capabilities( $capabilities = array() ) {
         if ( !count( $capabilities ) ) {
             return $this->capabilities;
         }
@@ -262,7 +262,7 @@ final class Disciple_Tools_Capability_Factory {
      * Register all capabilities from multi-role, the dt_capabilities filter
      */
     public function setup_capabilities() {
-        $capabilities = [];
+        $capabilities = array();
 
         $dt_capabilities = array_merge(
             dt_multi_role_get_role_capabilities(),
@@ -271,22 +271,22 @@ final class Disciple_Tools_Capability_Factory {
 
 
         foreach ( $dt_capabilities as $capability ) {
-            $capabilities[ $capability ] = [
+            $capabilities[ $capability ] = array(
                 'source'      => __( 'Disciple Tools', 'disciple_tools' ),
-                'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : ''
-            ];
+                'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : '',
+            );
         }
 
         $wordpress_capabilities = dt_multi_role_get_wp_capabilities();
         foreach ( $wordpress_capabilities as $key => $capability ) {
-            $capabilities[ $capability ] = [
+            $capabilities[ $capability ] = array(
                 'source'      => __( 'WordPress', 'disciple_tools' ),
-                'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : ''
-            ];
+                'description' => isset( $this->default_descriptions()[ $capability ] ) ? $this->default_descriptions()[ $capability ] : '',
+            );
         }
 
         //Filter our restricted capabilities
-        $capabilities = array_filter($capabilities, function( $key ) {
+        $capabilities = array_filter($capabilities, function ( $key ) {
             return !in_array( $key, $this->restricted_capabilities() );
         }, ARRAY_FILTER_USE_KEY);
 

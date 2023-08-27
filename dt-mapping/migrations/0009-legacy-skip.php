@@ -24,7 +24,6 @@ class DT_Mapping_Module_Migration_0009 extends DT_Mapping_Module_Migration {
     }
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }
-

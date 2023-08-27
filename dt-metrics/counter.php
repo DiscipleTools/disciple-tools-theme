@@ -33,15 +33,15 @@ class Disciple_Tools_Counter
 
     public function __construct() {
         // Load required files
-        require_once( 'counters/abstract-class-counter.php' );
-        require_once( 'counters/counter-connected.php' );
-        require_once( 'counters/counter-generations-status.php' );
-        require_once( 'counters/counter-baptism.php' );
-        require_once( 'counters/counter-groups.php' );
-        require_once( 'counters/counter-contacts.php' );
-        require_once( 'counters/counter-outreach.php' );
-        require_once( 'counters/counter-locations.php' );
-        require_once( 'counters/counter-post-stats.php' );
+        require_once 'counters/abstract-class-counter.php';
+        require_once 'counters/counter-connected.php';
+        require_once 'counters/counter-generations-status.php';
+        require_once 'counters/counter-baptism.php';
+        require_once 'counters/counter-groups.php';
+        require_once 'counters/counter-contacts.php';
+        require_once 'counters/counter-outreach.php';
+        require_once 'counters/counter-locations.php';
+        require_once 'counters/counter-post-stats.php';
     } // End __construct
 
     /**
@@ -55,7 +55,7 @@ class Disciple_Tools_Counter
      *
      * @return int|array
      */
-    public static function critical_path( string $step_name = 'all', $start = null, $end = null, $args = [] ) {
+    public static function critical_path( string $step_name = 'all', $start = null, $end = null, $args = array() ) {
 
         if ( $start === null ){
             $start = 0;
@@ -125,67 +125,67 @@ class Disciple_Tools_Counter
 //                        ];
 //                    }
 //                }
-                $data[] = [
+                $data[] = array(
                     'key' => 'new_contacts',
                     'label' => __( 'New Contacts', 'disciple_tools' ),
-                    'value' => self::critical_path( 'new_contacts', $start, $end )
-                ];
-                $data[] = [
+                    'value' => self::critical_path( 'new_contacts', $start, $end ),
+                );
+                $data[] = array(
                     'key' => 'first_meetings',
                     'label' => __( 'First Meetings', 'disciple_tools' ),
-                    'value' => self::critical_path( 'first_meetings', $start, $end )
-                    ];
-                $data[] = [
+                    'value' => self::critical_path( 'first_meetings', $start, $end ),
+                    );
+                $data[] = array(
                     'key' => 'ongoing_meetings',
                     'label' => __( 'Ongoing Meetings', 'disciple_tools' ),
-                    'value' => self::critical_path( 'ongoing_meetings', $start, $end )
-                    ];
-                $data[] = [
+                    'value' => self::critical_path( 'ongoing_meetings', $start, $end ),
+                    );
+                $data[] = array(
                     'key' => 'baptisms',
                     'label' => __( 'Total Baptisms', 'disciple_tools' ),
-                    'value' => self::critical_path( 'baptisms', $start, $end )
-                ];
-                $data[] = [
+                    'value' => self::critical_path( 'baptisms', $start, $end ),
+                );
+                $data[] = array(
                     'key' => 'baptizers',
                     'label' => __( 'Total Baptizers', 'disciple_tools' ),
-                    'value' => self::critical_path( 'baptizers', $start, $end )
-                ];
+                    'value' => self::critical_path( 'baptizers', $start, $end ),
+                );
                 $baptism_generations = self::critical_path( 'baptism_generations', $start, $end );
                 foreach ( $baptism_generations as $generation => $num ){
-                    $data[] = [
+                    $data[] = array(
                         'key' => "baptism_generation_$generation",
                         'label' => __( 'Baptism Generation', 'disciple_tools' ) . ' ' . $generation,
-                        'value' => $num
-                    ];
+                        'value' => $num,
+                    );
                 }
-                $data[] = [
+                $data[] = array(
                     'key' => 'churches_and_groups',
                     'label' => __( 'Total Churches and Groups', 'disciple_tools' ),
-                    'value' => self::critical_path( 'churches_and_groups', $start, $end )
-                ];
-                $data[] = [
+                    'value' => self::critical_path( 'churches_and_groups', $start, $end ),
+                );
+                $data[] = array(
                     'key' => 'active_groups',
                     'label' => __( 'Active Groups', 'disciple_tools' ),
-                    'value' => self::critical_path( 'active_groups', $start, $end )
-                ];
-                $data[] = [
+                    'value' => self::critical_path( 'active_groups', $start, $end ),
+                );
+                $data[] = array(
                     'key' => 'active_churches',
                     'label' => __( 'Active Churches', 'disciple_tools' ),
-                    'value' => self::critical_path( 'active_churches', $start, $end )
-                ];
+                    'value' => self::critical_path( 'active_churches', $start, $end ),
+                );
                 $church_generations = self::critical_path( 'church_generations', $start, $end );
                 foreach ( $church_generations as $generation => $num ){
-                    $data[] = [
+                    $data[] = array(
                         'key' => "church_generation_$generation",
                         'label' => __( 'Church Generation', 'disciple_tools' ) . ' ' . $generation,
-                        'value' => $num
-                    ];
+                        'value' => $num,
+                    );
                 }
-                $data[] = [
+                $data[] = array(
                     'key' => 'church_planters',
                     'label' => __( 'Church Planters', 'disciple_tools' ),
-                    'value' => self::critical_path( 'church_planters', $start, $end )
-                ];
+                    'value' => self::critical_path( 'church_planters', $start, $end ),
+                );
 //                @todo ppl groups
 //                foreach ( $manual_additions as $addition ){
 //                    if ( $addition["section"] == "after") {
@@ -230,11 +230,11 @@ class Disciple_Tools_Counter
      * @return int
      */
     public function contacts_meta_counter( $meta_key, $meta_value ) {
-        $query = new WP_Query( [
+        $query = new WP_Query( array(
             'meta_key' => $meta_key,
             'meta_value' => $meta_value,
             'post_type' => 'contacts',
-        ] );
+        ) );
 
         return $query->found_posts;
     }
@@ -250,11 +250,11 @@ class Disciple_Tools_Counter
      * @return int
      */
     public function groups_meta_counter( $meta_key, $meta_value ) {
-        $query = new WP_Query( [
+        $query = new WP_Query( array(
             'meta_key' => $meta_key,
             'meta_value' => $meta_value,
             'post_type' => 'groups',
-        ] );
+        ) );
 
         return $query->found_posts;
     }
@@ -374,7 +374,6 @@ class Disciple_Tools_Counter
 
         return $type;
     }
-
 }
 Disciple_Tools_Counter::instance();
 
@@ -397,9 +396,9 @@ class Disciple_Tools_Queries
         // Load required files
     } // End __construct
 
-    public function tree( $query_name, $args = [] ) {
+    public function tree( $query_name, $args = array() ) {
         global $wpdb;
-        $query = [];
+        $query = array();
 
         switch ( $query_name ) {
 
@@ -683,14 +682,12 @@ class Disciple_Tools_Queries
         }
 
         // guarantee only one record with one parent.
-        $list = [];
+        $list = array();
         foreach ( $query as $q ) {
             $list[$q['id']] = $q;
         }
 
         return $this->check_tree_health( $list );
-
-
     }
 
     /**
@@ -705,11 +702,11 @@ class Disciple_Tools_Queries
         $nodes = $tree;
         $not_circular = $this->check_circular_logic( $nodes );
         if ( is_numeric( $not_circular ) ){
-            return new WP_Error( 500, 'Circular tree structure detected with record: ' . $not_circular . '.', [ 'record' => $not_circular, 'link' => get_permalink( $not_circular ) ] );
+            return new WP_Error( 500, 'Circular tree structure detected with record: ' . $not_circular . '.', array( 'record' => $not_circular, 'link' => get_permalink( $not_circular ) ) );
         }
         foreach ( $nodes as $node ){
             if ( !isset( $node['done'] ) ){
-                return new WP_Error( 500, 'Orphaned tree structure detected with record: ' . $node['id'] . '.', [ 'record' => $node['id'], 'link' => get_permalink( $node['id'] ) ] );
+                return new WP_Error( 500, 'Orphaned tree structure detected with record: ' . $node['id'] . '.', array( 'record' => $node['id'], 'link' => get_permalink( $node['id'] ) ) );
             }
         }
         return $tree;
@@ -723,7 +720,7 @@ class Disciple_Tools_Queries
      * @param array $parents
      * @return bool|int true if good, int of the record ID if circular tree detected
      */
-    private function check_circular_logic( &$nodes, $node_ids = [ 0 ], $parents = [] ){
+    private function check_circular_logic( &$nodes, $node_ids = array( 0 ), $parents = array() ){
 
         foreach ( $nodes as &$node ){
             $parent_id = $node['parent_id'] ?? $node['parentId'];
@@ -735,7 +732,7 @@ class Disciple_Tools_Queries
                 $node['done'] = true; //lets us look at what nodes where not processed later
                 //continue with children
                 if ( !isset( $node['children'] ) || !empty( $node['children'] ) ){
-                    $d = $this->check_circular_logic( $nodes, [ (int) $node['id'] ], array_merge( $parents, [ (int) $node['id'] ] ) );
+                    $d = $this->check_circular_logic( $nodes, array( (int) $node['id'] ), array_merge( $parents, array( (int) $node['id'] ) ) );
                     if ( is_numeric( $d ) ){
                         return $d;
                     }
@@ -747,8 +744,8 @@ class Disciple_Tools_Queries
 
 
     public function get_node_descendants( $nodes, $node_ids ){
-        $descendants = [];
-        $children = [];
+        $descendants = array();
+        $children = array();
         foreach ( $nodes as $node ){
             $parent_id = $node['parent_id'] ?? $node['parentId'];
             if ( in_array( $parent_id, $node_ids ) ){
@@ -761,5 +758,4 @@ class Disciple_Tools_Queries
         }
         return $descendants;
     }
-
 }

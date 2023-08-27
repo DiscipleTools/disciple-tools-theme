@@ -11,7 +11,7 @@ class Disciple_Tools_Migration_0037 extends Disciple_Tools_Migration {
      */
     public function up() {
         global $wpdb;
-        $old_table_data = [];
+        $old_table_data = array();
         $renamed_table = $wpdb->prefix . 'dt_reports_old';
 
         // get old report data
@@ -45,34 +45,32 @@ class Disciple_Tools_Migration_0037 extends Disciple_Tools_Migration {
         if ( ! empty( $old_table_data ) ) {
             foreach ( $old_table_data as $row ){
                 $wpdb->insert( $wpdb->dt_reports,
-                    [
+                    array(
                         'id' => $row['id'],
                         'post_id' => 0,
                         'type' => $row['report_source'],
                         'value' => 0,
                         'time_end' => strtotime( $row['report_date'] ),
-                        'timestamp' => strtotime( $row['report_date'] )
-                    ],
-                    [
+                        'timestamp' => strtotime( $row['report_date'] ),
+                    ),
+                    array(
                         '%d',
                     '%d',
                     '%s',
                     '%d',
                     '%d',
-                    '%d'
-                    ]
+                    '%d',
+                    )
                 );
 
             }
         }
-
     }
 
     /**
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
@@ -120,5 +118,4 @@ class Disciple_Tools_Migration_0037 extends Disciple_Tools_Migration {
     public function test() {
         $this->test_expected_tables();
     }
-
 }

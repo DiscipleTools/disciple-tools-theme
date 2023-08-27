@@ -8,7 +8,7 @@
 class DT_User_Metrics {
 
     public function __construct() {
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
 
@@ -16,7 +16,7 @@ class DT_User_Metrics {
         /*
          * Permission check if the current user can view the requested user
          */
-        $can_view_user_stats = function ( WP_REST_Request $request ){
+        $can_view_user_stats = function ( WP_REST_Request $request ) {
             $params = $request->get_params();
             $user_id = get_current_user_id();
             if ( isset( $params['user_id'] ) && !empty( $params['user_id'] ) ){
@@ -27,11 +27,11 @@ class DT_User_Metrics {
 
         $namespace = 'dt-users/v1';
         register_rest_route(
-            $namespace, 'activity-log', [
+            $namespace, 'activity-log', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'get_activity_endpoint' ],
-                'permission_callback' => $can_view_user_stats
-            ]
+                'callback' => array( $this, 'get_activity_endpoint' ),
+                'permission_callback' => $can_view_user_stats,
+            )
         );
     }
 
@@ -41,16 +41,15 @@ class DT_User_Metrics {
         if ( isset( $params['user_id'] ) && !empty( $params['user_id'] ) ){
             $user_id = (int) $params['user_id'];
         }
-        $include = [ 'comment', 'field_update', 'created' ];
+        $include = array( 'comment', 'field_update', 'created' );
         return self::get_user_activity( $user_id, $include );
-
     }
 
-    public static function get_user_activity( $user_id, $include = [] ) {
+    public static function get_user_activity( $user_id, $include = array() ) {
         global $wpdb;
 
         if ( empty( $include ) ) {
-            $allowed_actions = [ 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' ];
+            $allowed_actions = array( 'comment', 'field_update', 'connected_to', 'logged_in', 'created', 'disconnected_from', 'decline', 'assignment_decline' );
         } else {
             $allowed_actions = $include;
         }
@@ -64,10 +63,10 @@ class DT_User_Metrics {
          * This hard coded array has come from the filter dt_render_field_for_display_allowed_types
          * and needs to be refactored for both here and there.
          */
-        $allowed_field_types = [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ];
+        $allowed_field_types = array( 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' );
         array_push( $allowed_field_types, '' );
         $allowed_field_types_sql = dt_array_to_sql( $allowed_field_types );
-        $allowed_post_statuses_sql = dt_array_to_sql( [ 'publish' ] );
+        $allowed_post_statuses_sql = dt_array_to_sql( array( 'publish' ) );
 
         //phpcs:disable
         $user_activity = $wpdb->get_results( $wpdb->prepare( "
@@ -92,7 +91,7 @@ class DT_User_Metrics {
                 $post_fields = DT_Posts::get_post_field_settings( $a->post_type );
                 $a->object_note = DT_Posts::format_activity_message( $a, $post_settings );
 
-                $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, [] );
+                $a->icon = apply_filters( 'dt_record_icon', null, $a->post_type, array() );
                 $a->post_type_label = $a->post_type ? DT_Posts::get_label_for_post_type( $a->post_type ) : null;
 
                 if ( $a->object_name ){
@@ -201,7 +200,6 @@ class DT_User_Metrics {
     }
 
     public static function get_user_last_activity(){
-
     }
 
     /**
@@ -374,26 +372,26 @@ class DT_User_Metrics {
             $user_id,
             $one_year
         ), ARRAY_A );
-        $days_active = [];
+        $days_active = array();
         foreach ( $days_active_results as $a ) {
             $days_active[$a['day']] = $a;
         }
         $first = isset( $days_active_results[0]['day'] ) ? strtotime( $days_active_results[0]['day'] ) : time();
         $first_week_start = gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $first ) . ' days', $first ) );
         $current = strtotime( $first_week_start );
-        $daily_activity = [];
+        $daily_activity = array();
         while ( $current < time() ) {
 
             $activity = $days_active[gmdate( 'Y-m-d', $current )]['activity_count'] ?? 0;
 
-            $daily_activity[] = [
+            $daily_activity[] = array(
                 'day' => dt_format_date( $current ),
                 'weekday' => gmdate( 'l', $current ),
                 'weekday_number' => gmdate( 'N', $current ),
                 'week_start' => gmdate( 'Y-m-d', strtotime( '-' . gmdate( 'w', $current ) . ' days', $current ) ),
                 'activity_count' => $activity,
-                'activity' => $activity > 0 ? 1 : 0
-            ];
+                'activity' => $activity > 0 ? 1 : 0,
+            );
 
             $current += 24 * 60 * 60;
         }

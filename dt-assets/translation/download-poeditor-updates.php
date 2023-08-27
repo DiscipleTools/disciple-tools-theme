@@ -1,7 +1,7 @@
 <?php
 
 
-$args = getopt( null, [ 'token:', 'app-id:' ] );
+$args = getopt( null, array( 'token:', 'app-id:' ) );
 if ( !isset( $args['token'], $args['app-id'] ) ){
     echo 'Missing token or app id';
 }
@@ -35,7 +35,7 @@ if ( !isset( $output['result']['languages'], $output['response']['code'] ) || $o
 }
 
 
-$lang_codes = [
+$lang_codes = array(
     'am' => 'am_ET',
     'ar-ma' => 'ar_MA',
     'bg' => 'bg_BG',
@@ -67,8 +67,8 @@ $lang_codes = [
     'ro' => 'ro_RO',
     'pa' => 'pa_IN',
     'it' => 'it_IT',
-    'hu' => 'hu_HU'
-];
+    'hu' => 'hu_HU',
+);
 
 
 /**
@@ -101,7 +101,7 @@ foreach ( $output['result']['languages'] as $lang ){
             'api_token' => $api_token,
             'id' => $app_id,
             'language' => $lang_code,
-            'type' => 'po'
+            'type' => 'po',
         );
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
         $download_link_response = curl_exec( $ch );
@@ -127,7 +127,7 @@ foreach ( $output['result']['languages'] as $lang ){
             'api_token' => $api_token,
             'id' => $app_id,
             'language' => $lang_code,
-            'type' => 'mo'
+            'type' => 'mo',
         );
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
         $download_link_response = curl_exec( $ch );
@@ -144,4 +144,3 @@ foreach ( $output['result']['languages'] as $lang ){
 
 echo 'done downloading';
 return;
-

@@ -24,9 +24,9 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 99 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 50, 1 ); // use the priority setting to control load order
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 99, 1 );
 
 
         parent::__construct();
@@ -34,7 +34,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Security', 'disciple_tools' ), __( 'Security', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=security', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Security', 'disciple_tools' ), __( 'Security', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=security', array( 'Disciple_Tools_Settings_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -203,20 +203,19 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             preg_match_all( $re, $api_whitelist, $matches, PREG_SET_ORDER, 0 );
             if ( isset( $matches ) && count( $matches ) ) {
-                $api_whitelist = array_map( function( $match ) {
+                $api_whitelist = array_map( function ( $match ) {
                     return 'wp-json/' . $match[1];
                 }, $matches );
             }
 
             update_option( 'dt_api_whitelist', $api_whitelist, true );
         }
-
     }
 
     public function show_dt_api_whitelist(){
         $this->box( 'top', 'API Whitelist' );
 
-        $api_whitelist = get_option( 'dt_api_whitelist', [] );
+        $api_whitelist = get_option( 'dt_api_whitelist', array() );
         $textarea_value = join( PHP_EOL, $api_whitelist );
         ?>
         <form method="post" >
@@ -234,7 +233,5 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
         $this->box( 'bottom' );
     }
-
-
 }
 Disciple_Tools_Security_Tab::instance();

@@ -16,7 +16,7 @@ function dt_user_initial_setup_modal(): void{
 
     // Ensure currently within D.T front end page.
     $url = dt_get_url_path( true );
-    if ( !is_archive() && !is_single() && !isset( apply_filters( 'desktop_navbar_menu_options', [] )[untrailingslashit( $url )] ) ){
+    if ( !is_archive() && !is_single() && !isset( apply_filters( 'desktop_navbar_menu_options', array() )[untrailingslashit( $url )] ) ){
         return;
     }
 

@@ -11,7 +11,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/personal/overview.js'; // should be full file name plus extension
-    public $permissions = [ 'access_contacts' ];
+    public $permissions = array( 'access_contacts' );
     public $namespace = null;
 
     public function __construct() {
@@ -25,33 +25,33 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
 
         $url_path = dt_get_url_path();
         if ( "metrics/$this->base_slug/$this->slug" === $url_path || 'metrics' === $url_path || 'metrics/' === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 10 );
         }
-        add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
+        add_action( 'rest_api_init', array( $this, 'rest_api_init' ) );
     }
 
     public function scripts() {
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
+        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', array( 'amcharts-core' ), '4' );
 
-        wp_enqueue_script( 'dt_metrics_personal_script', get_template_directory_uri() . $this->js_file_name, [
+        wp_enqueue_script( 'dt_metrics_personal_script', get_template_directory_uri() . $this->js_file_name, array(
             'jquery',
             'jquery-ui-core',
             'amcharts-core',
             'amcharts-charts',
-            'lodash'
-        ], filemtime( get_theme_file_path() .  $this->js_file_name ), true );
+            'lodash',
+        ), filemtime( get_theme_file_path() .  $this->js_file_name ), true );
 
         wp_localize_script(
-            'dt_metrics_personal_script', 'dtMetricsPersonal', [
+            'dt_metrics_personal_script', 'dtMetricsPersonal', array(
                 'root' => esc_url_raw( rest_url() ),
                 'rest_url' => esc_url_raw( rest_url( $this->namespace ) ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'translations' => [
+                'translations' => array(
                     'title' => __( 'My Overview', 'disciple_tools' ),
                     'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
                     'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
@@ -67,31 +67,31 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
                     'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                     'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
                     'label_generation' => __( 'Generation', 'disciple_tools' ),
-                ]
-            ]
+                ),
+            )
         );
     }
 
     public function rest_api_init(){
         register_rest_route(
-            $this->namespace, 'data', [
+            $this->namespace, 'data', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'overview' ],
-                'permission_callback' => function(){
+                'callback' => array( $this, 'overview' ),
+                'permission_callback' => function () {
                     return $this->has_permission();
                 },
-            ]
+            )
         );
     }
 
     public function overview() {
-        $data = [
+        $data = array(
             'preferences'       => $this->preferences(),
             'hero_stats'        => $this->chart_my_hero_stats(),
             'group_types'       => $this->chart_group_types(),
             'group_health'      => $this->chart_group_health(),
             'group_generations' => $this->chart_group_generations(),
-        ];
+        );
         $modules = dt_get_option( 'dt_post_type_modules' );
         if ( !empty( $modules['access_module']['enabled'] ) ){
             $data['contacts_progress'] = $this->chart_contacts_progress();
@@ -101,14 +101,14 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
     }
 
     public function preferences() {
-        $data = [];
+        $data = array();
 
         /* Add group preferences*/
         $group_preferences = dt_get_option( 'group_preferences' );
-        $data['groups'] = [
+        $data['groups'] = array(
             'church_metrics' => $group_preferences['church_metrics'] ?? false,
             'four_fields' => $group_preferences['four_fields'] ?? false,
-        ];
+        );
 
         /* Add other preferences. Please, categorize by section, i.e. contacts, groups, etc */
 
@@ -137,7 +137,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             }
         }
 
-        $chart = [
+        $chart = array(
             'contacts' => $results['contacts'],
             'needs_accept' => $results['needs_accept'],
             'needs_update' => $results['needs_update'],
@@ -145,26 +145,26 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             'needs_training' => $needs_training,
             'fully_practicing' => (int) $results['groups'] - (int) $needs_training,
             'teams' => (int) $results['teams'],
-        ];
+        );
 
         return $chart;
     }
 
     public static function chart_group_generations( $type = 'personal' ) {
         $user_id = get_current_user_id();
-        $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX, [ 'assigned_to' => $user_id ] );
+        $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX, array( 'assigned_to' => $user_id ) );
         return $generation_tree;
     }
 
     public function chart_contacts_progress( $type = 'personal' ) {
-        $chart = [];
+        $chart = array();
 
         $results = $this->query_my_contacts_progress( get_current_user_id() );
         foreach ( $results as $value ) {
-            $chart[] = [
+            $chart[] = array(
                 'label' => $value['label'],
-                'value' => $value['count']
-            ];
+                'value' => $value['count'],
+            );
         }
 
         return $chart;
@@ -172,7 +172,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
 
     public function chart_group_types( $type = 'personal' ) {
 
-        $chart = [];
+        $chart = array();
 
         $group_fields = DT_Posts::get_post_field_settings( 'groups' );
         $types = $group_fields['group_type']['default'];
@@ -190,13 +190,13 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
 
         // Make key list
         $group_fields = DT_Posts::get_post_field_settings( 'groups' );
-        $labels = [];
+        $labels = array();
 
         foreach ( $group_fields['health_metrics']['default'] as $key => $option ) {
             $labels[$key] = $option['label'];
         }
 
-        $chart = [];
+        $chart = array();
 
         $results = $this->query_my_group_health();
 
@@ -206,11 +206,11 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
                 $out_of = $results[0]['out_of'];
             }
             foreach ( $labels as $label_key => $label_value ) {
-                $row = [
+                $row = array(
                     'label'      => $label_value,
                     'practicing' => 0,
-                    'remaining'  => (int) $out_of
-                ];
+                    'remaining'  => (int) $out_of,
+                );
                 foreach ( $results as $result ) {
                     if ( $result['health_key'] === $label_key ) {
                         $row['practicing'] = (int) $result['count'];
@@ -225,7 +225,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
 
     public function query_my_hero_stats( $user_id = null ) {
         global $wpdb;
-        $numbers = [];
+        $numbers = array();
 
         if ( is_null( $user_id ) ) {
             $user_id = get_current_user_id();
@@ -491,14 +491,14 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             $user_id = get_current_user_id();
         }
 
-        $defaults = [];
+        $defaults = array();
         $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
         $seeker_path_options = $contact_fields['seeker_path']['default'];
         foreach ( $seeker_path_options as $key => $option ) {
-            $defaults[$key] = [
+            $defaults[$key] = array(
                 'label' => $option['label'],
                 'count' => 0,
-            ];
+            );
         }
 
         $results = $wpdb->get_results( $wpdb->prepare( "
@@ -526,15 +526,15 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         ",
         'user-'. $user_id ), ARRAY_A );
 
-        $query_results = [];
+        $query_results = array();
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
                 if ( isset( $defaults[$result['seeker_path']] ) ) {
-                    $query_results[$result['seeker_path']] = [
+                    $query_results[$result['seeker_path']] = array(
                         'label' => $defaults[$result['seeker_path']]['label'],
                         'count' => intval( $result['count'] ),
-                    ];
+                    );
                 }
             }
         }

@@ -13,7 +13,7 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
     public $slug = 'hover-map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-users/hover-coverage-map.js'; // should be full file name plus extension
-    public $permissions = [ 'list_users', 'manage_dt' ];
+    public $permissions = array( 'list_users', 'manage_dt' );
     public $namespace = null;
 
     public function __construct() {
@@ -26,17 +26,17 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, 'user-management' ) !== false ) {
-            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 20 );
+            add_filter( 'dt_metrics_menu', array( $this, 'add_menu' ), 20 );
         }
         if ( "$this->base_slug/$this->slug" === $url_path ) {
 
-            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 20 ); //load menu links
-            add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 100 );
-            add_filter( 'dt_templates_for_urls', [ $this, 'dt_templates_for_urls' ] );
+            add_filter( 'dt_metrics_menu', array( $this, 'base_menu' ), 20 ); //load menu links
+            add_action( 'wp_enqueue_scripts', array( $this, 'base_scripts' ), 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'mapping_scripts' ), 89 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 100 );
+            add_filter( 'dt_templates_for_urls', array( $this, 'dt_templates_for_urls' ) );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     public function dt_templates_for_urls( $template_for_url ) {
@@ -64,16 +64,16 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
         // Milestones Script
         wp_enqueue_script( 'dt_'.$this->slug.'_script',
             get_template_directory_uri() . $this->js_file_name,
-            [
+            array(
                 'jquery',
                 'dt_mapping_js',
-                'lodash'
-            ],
+                'lodash',
+            ),
             filemtime( get_theme_file_path() . $this->js_file_name ),
             true
         );
         wp_localize_script(
-            'dt_'.$this->slug.'_script', $this->js_object_name, [
+            'dt_'.$this->slug.'_script', $this->js_object_name, array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "$this->base_slug/$this->slug",
                 'base_slug' => $this->base_slug,
                 'root' => esc_url_raw( rest_url() ),
@@ -81,10 +81,10 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'translations' => [
-                    'title' => __( 'Coverage Map', 'disciple_tools' )
-                ]
-            ]
+                'translations' => array(
+                    'title' => __( 'Coverage Map', 'disciple_tools' ),
+                ),
+            )
         );
     }
 
@@ -105,19 +105,19 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/data', [
-                [
+            $this->namespace, '/data', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'system_map_endpoint' ],
+                    'callback' => array( $this, 'system_map_endpoint' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function system_map_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( 'hover_map', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'hover_map', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
 
@@ -125,8 +125,8 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
     }
 
     public function add_all_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
 
         if ( empty( $column_labels ) ) {
             $next_column_number = 0;
@@ -136,10 +136,10 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             $next_column_number = count( $column_labels );
         }
 
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'all',
-            'label' => __( 'Locations Covered', 'disciple_tools' )
-        ];
+            'label' => __( 'Locations Covered', 'disciple_tools' ),
+        );
 
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
@@ -156,11 +156,11 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[$grid_id] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -176,8 +176,8 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
     }
 
     public function add_active_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
 
         if ( empty( $column_labels ) ) {
             $next_column_number = 0;
@@ -187,10 +187,10 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             $next_column_number = count( $column_labels );
         }
 
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'active',
-            'label' => __( 'Locations with Active Users', 'disciple_tools' )
-        ];
+            'label' => __( 'Locations with Active Users', 'disciple_tools' ),
+        );
 
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
@@ -207,11 +207,11 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[$grid_id] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -227,8 +227,8 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
     }
 
     public function add_inactive_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
 
         if ( empty( $column_labels ) ) {
             $next_column_number = 0;
@@ -238,10 +238,10 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
             $next_column_number = count( $column_labels );
         }
 
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'inactive',
-            'label' => __( 'Locations with Inactive Assigned', 'disciple_tools' )
-        ];
+            'label' => __( 'Locations with Inactive Assigned', 'disciple_tools' ),
+        );
 
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
@@ -258,11 +258,11 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[$grid_id] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -276,6 +276,5 @@ class DT_Users_Hover_Map extends DT_Metrics_Chart_Base
         $data['custom_column_data']   = $column_data;
         return $data;
     }
-
 }
 new DT_Users_Hover_Map();

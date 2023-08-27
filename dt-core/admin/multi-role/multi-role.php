@@ -26,7 +26,7 @@ class Disciple_Tools_Multi_Roles {
      */
     private static $_instance = null;
 
-    public $role_user_count = [];
+    public $role_user_count = array();
 
     /**
      * Main Disciple_Tools_Multi_Roles Instance
@@ -53,29 +53,27 @@ class Disciple_Tools_Multi_Roles {
     public function __construct() {
 
         // Load class files.
-        require_once( 'inc/class-role.php' );
-        require_once( 'inc/class-role-factory.php' );
-        require_once( 'inc/class-capability.php' );
-        require_once( 'inc/class-capability-factory.php' );
-        require_once( 'inc/class-capabilities.php' );
+        require_once 'inc/class-role.php';
+        require_once 'inc/class-role-factory.php';
+        require_once 'inc/class-capability.php';
+        require_once 'inc/class-capability-factory.php';
+        require_once 'inc/class-capabilities.php';
 
         // Load includes files.
-        require_once( 'inc/functions.php' );
-        require_once( 'inc/functions-capabilities.php' );
-        require_once( 'inc/functions-options.php' );
-        require_once( 'inc/functions-roles.php' );
-        require_once( 'inc/functions-users.php' );
+        require_once 'inc/functions.php';
+        require_once 'inc/functions-capabilities.php';
+        require_once 'inc/functions-options.php';
+        require_once 'inc/functions-roles.php';
+        require_once 'inc/functions-users.php';
 
         if ( is_admin() ) {
 
             // General admin functions.
-            require_once( 'functions-admin.php' );
+            require_once 'functions-admin.php';
             // require_once( 'functions-help.php'  );
 
             // Edit users.
-            require_once( 'class-user-edit.php' );
+            require_once 'class-user-edit.php';
         }
-
     } // End __construct()
-
 }

@@ -20,8 +20,8 @@ function dt_mm_add_workers_column( $data ) {
          *
          * @note        No modification to this section needed.
          */
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
 
         /**
          * Step 2
@@ -51,10 +51,10 @@ function dt_mm_add_workers_column( $data ) {
          *
          * @note     Modify this! Add your column name and key.
          */
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'workers',
-            'label' => __( 'Users', 'disciple_tools' )
-        ];
+            'label' => __( 'Users', 'disciple_tools' ),
+        );
 
         /**
          * Step 4
@@ -88,11 +88,11 @@ function dt_mm_add_workers_column( $data ) {
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[$grid_id] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 

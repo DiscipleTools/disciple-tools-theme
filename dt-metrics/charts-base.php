@@ -12,7 +12,7 @@ abstract class DT_Metrics_Chart_Base
     public $slug = '';
     public $js_object_name = ''; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = ''; // should be full file name plus extension
-    public $permissions = [];
+    public $permissions = array();
     /**
      * Disciple_Tools_Counter constructor.
      */
@@ -24,14 +24,13 @@ abstract class DT_Metrics_Chart_Base
             if ( !$this->has_permission() ){
                 return;
             }
-            add_filter( 'dt_metrics_menu', [ $this, 'base_menu' ], 20 ); //load menu links
+            add_filter( 'dt_metrics_menu', array( $this, 'base_menu' ), 20 ); //load menu links
 
             if ( strpos( $url_path, "metrics/$this->base_slug/$this->slug" ) === 0 ) {
-                add_filter( 'dt_templates_for_urls', [ $this, 'base_add_url' ] ); // add custom URLs
-                add_action( 'wp_enqueue_scripts', [ $this, 'base_scripts' ], 99 );
+                add_filter( 'dt_templates_for_urls', array( $this, 'base_add_url' ) ); // add custom URLs
+                add_action( 'wp_enqueue_scripts', array( $this, 'base_scripts' ), 99 );
             }
         }
-
     }
 
     /**
@@ -75,14 +74,14 @@ abstract class DT_Metrics_Chart_Base
 
     public function base_scripts() {
         wp_localize_script(
-            'dt_'.$this->base_slug.'_script', 'wpMetricsBase', [
+            'dt_'.$this->base_slug.'_script', 'wpMetricsBase', array(
             'slug' => $this->base_slug,
             'root' => esc_url_raw( rest_url() ),
             'plugin_uri' => plugin_dir_url( __DIR__ ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'current_user_login' => wp_get_current_user()->user_login,
-            'current_user_id' => get_current_user_id()
-            ]
+            'current_user_id' => get_current_user_id(),
+            )
         );
     }
 
@@ -98,11 +97,11 @@ abstract class DT_Metrics_Chart_Base
     }
 
     public function my_list() {
-        $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', [ 'assigned_to' => [ 'shared', 'me' ] ] );
+        $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', array( 'assigned_to' => array( 'shared', 'me' ) ) );
         if ( is_wp_error( $list ) ) {
-            return [];
+            return array();
         }
-        $my_list = [];
+        $my_list = array();
         foreach ( $list['posts'] as $post ) {
             $my_list[] = $post->ID;
         }
@@ -110,11 +109,11 @@ abstract class DT_Metrics_Chart_Base
     }
 
     public function my_groups_list() {
-        $list = Disciple_Tools_Posts::search_viewable_post( 'groups', [ 'assigned_to' => [ 'shared', 'me' ] ] );
+        $list = Disciple_Tools_Posts::search_viewable_post( 'groups', array( 'assigned_to' => array( 'shared', 'me' ) ) );
         if ( is_wp_error( $list ) ) {
-            return [];
+            return array();
         }
-        $my_list = [];
+        $my_list = array();
         foreach ( $list['posts'] as $post ) {
             $my_list[] = $post->ID;
         }
@@ -124,7 +123,7 @@ abstract class DT_Metrics_Chart_Base
     public function _empty_geojson() {
         return array(
         'type' => 'FeatureCollection',
-        'features' => []
+        'features' => array(),
         );
     }
 

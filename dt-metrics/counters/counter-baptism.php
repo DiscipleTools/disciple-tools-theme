@@ -150,7 +150,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
 
     public static function build_baptism_generations_in_range( $all_baptisms, $start_date = null, $end_date = null ) {
 
-        $count = [];
+        $count = array();
         foreach ( $all_baptisms as $k => $v ) {
             $count[$k] = 0;
         }
@@ -211,15 +211,15 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         return dt_queries()->check_tree_health( $results );
     }
 
-    public static function build_baptism_generation_counts( array $elements, $parent_id = 0, $generation = -1, $counts = [] ) {
+    public static function build_baptism_generation_counts( array $elements, $parent_id = 0, $generation = -1, $counts = array() ) {
 
         $generation++;
         if ( !isset( $counts[$generation] ) ){
-            $counts[$generation] = [
+            $counts[$generation] = array(
                 'generation' => (string) $generation,
                 'total' => 0,
-                'ids' => []
-            ];
+                'ids' => array(),
+            );
         }
         foreach ( $elements as $element_i => $element ) {
             if ( $element['parent_id'] == $parent_id ) {
@@ -232,10 +232,8 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
                             $counts[ $count_i ]['total']--;
                             unset( $counts[ $count_i ]['ids'][array_search( $element['id'], $count['ids'] )] );
                         }
-                    } else {
-                        if ( in_array( $element['id'], $count['ids'] ) ){
+                    } elseif ( in_array( $element['id'], $count['ids'] ) ) {
                             $already_counted_in_deeper_path = true;
-                        }
                     }
                 }
                 if ( !$already_counted_in_deeper_path ){
@@ -272,7 +270,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
      * Check parent's baptism generation and cascade to children
      * $parent_ids array is used to avoid infinite loops.
      */
-    public static function reset_baptism_generations_on_contact_tree( $contact_id, $parent_ids = [] ){
+    public static function reset_baptism_generations_on_contact_tree( $contact_id, $parent_ids = array() ){
         global $wpdb;
         $parents = $wpdb->get_results( $wpdb->prepare("
             SELECT contact.ID as contact_id, gen.meta_value as baptism_generation
@@ -316,7 +314,4 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
             }
         }
     }
-
-
-
 }

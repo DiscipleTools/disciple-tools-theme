@@ -24,7 +24,6 @@ class Disciple_Tools_Migration_0032 extends Disciple_Tools_Migration {
             WHERE meta_key = 'type'
             AND meta_value = 'next_gen'
         " );
-
     }
 
     public function down() {
@@ -35,6 +34,6 @@ class Disciple_Tools_Migration_0032 extends Disciple_Tools_Migration {
 
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }

@@ -79,12 +79,12 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
             if ( empty( $this->action ) ) {
                 throw new Exception( 'Action not defined for class ' . __CLASS__ );
             }
-            add_action( $this->action, [ $this, 'launch' ], (int) $this->priority, (int) $this->argument_count );
+            add_action( $this->action, array( $this, 'launch' ), (int) $this->priority, (int) $this->argument_count );
             if ( $auth_level & self::LOGGED_IN ) {
-                add_action( "admin_post_dt_async_$this->action", [ $this, 'handle_postback' ] );
+                add_action( "admin_post_dt_async_$this->action", array( $this, 'handle_postback' ) );
             }
             if ( $auth_level & self::LOGGED_OUT ) {
-                add_action( "admin_post_nopriv_dt_async_$this->action", [ $this, 'handle_postback' ] );
+                add_action( "admin_post_nopriv_dt_async_$this->action", array( $this, 'handle_postback' ) );
             }
         }
 
@@ -107,8 +107,8 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
             $data['_wp_nonce'] = wp_create_nonce();
 
             $this->_body_data = $data;
-            if ( !has_action( 'shutdown', [ $this, 'launch_on_shutdown' ] ) ) {
-                add_action( 'shutdown', [ $this, 'launch_on_shutdown' ] );
+            if ( !has_action( 'shutdown', array( $this, 'launch_on_shutdown' ) ) ) {
+                add_action( 'shutdown', array( $this, 'launch_on_shutdown' ) );
             }
         }
 
@@ -128,20 +128,20 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
          */
         public function launch_on_shutdown() {
             if ( !empty( $this->_body_data ) ) {
-                $cookies = [];
+                $cookies = array();
                 foreach ( $_COOKIE as $name => $value ) {
                     $cookies[] = "$name=" . urlencode( is_array( $value ) ? serialize( $value ) : $value );
                 }
 
-                $request_args = [
+                $request_args = array(
                     'timeout'   => 0.01,
                     'blocking'  => false,
                     'sslverify' => apply_filters( 'dt_https_local_ssl_verify', true ),
                     'body'      => $this->_body_data,
-                    'headers'   => [
+                    'headers'   => array(
                         'cookie' => implode( '; ', $cookies ),
-                    ],
-                ];
+                    ),
+                );
 
                 $url = admin_url( 'admin-post.php' );
 
@@ -167,7 +167,7 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
                 $this->run_action();
             }
 
-            add_filter( 'dt_die_handler', function() {
+            add_filter( 'dt_die_handler', function () {
                 die();
             } );
             wp_die();
@@ -258,6 +258,5 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
          * The action should be constructed as "dt_async_task_$this->action"
          */
         abstract protected function run_action();
-
     }
 }

@@ -26,7 +26,7 @@
             <?php if ( current_user_can( 'dt_all_access_contacts' ) ) : ?>
                 <p><strong><?php echo esc_html_x( 'User workload status icons legend:', 'Optional Documentation', 'disciple_tools' ) ?></strong></p>
                 <ul style="list-style-type:none">
-                    <?php $workload_status_options = Disciple_Tools_Users::get_users_fields()['workload_status']['options'] ?? [];
+                    <?php $workload_status_options = Disciple_Tools_Users::get_users_fields()['workload_status']['options'] ?? array();
                     foreach ( $workload_status_options as $option_key => $option_val ): ?>
                         <li><span style="background-color: <?php echo esc_html( $option_val['color'] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val['label'] ) ?></li>
                     <?php endforeach ?>

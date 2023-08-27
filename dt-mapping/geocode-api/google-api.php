@@ -26,7 +26,6 @@ if ( !defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
     class Disciple_Tools_Google_Geocode_API {
         public function __construct() {
-
         }
 
         public static function get_key() {
@@ -69,32 +68,32 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                         $g_lat = $details['results'][0]['geometry']['location']['lat'];
                         $g_lng = $details['results'][0]['geometry']['location']['lng'];
 
-                        return [
+                        return array(
                             'lng' => $g_lng,
                             'lat' => $g_lat,
                             'raw' => $details,
-                        ];
+                        );
                         break;
                     case 'core':
                         $g_lat               = $details['results'][0]['geometry']['location']['lat'];
                         $g_lng               = $details['results'][0]['geometry']['location']['lng'];
                         $g_formatted_address = $details['results'][0]['formatted_address'];
 
-                        return [
+                        return array(
                             'lng'               => $g_lng,
                             'lat'               => $g_lat,
                             'formatted_address' => $g_formatted_address,
                             'raw'               => $details,
-                        ];
+                        );
                         break;
                     case 'all_points':
-                        return [
+                        return array(
                             'center'            => $details['results'][0]['geometry']['location'],
                             'northeast'         => $details['results'][0]['geometry']['bounds']['northeast'],
                             'southwest'         => $details['results'][0]['geometry']['bounds']['southwest'],
                             'formatted_address' => $details['results'][0]['formatted_address'],
                             'raw'               => $details,
-                        ];
+                        );
                         break;
                     default:
                         return $details; // raw response
@@ -103,14 +102,14 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             }
         }
 
-        public static function query_google_api_with_components( $address, $components = [] ) {
+        public static function query_google_api_with_components( $address, $components = array() ) {
             $address = str_replace( '   ', ' ', $address );
             $address = str_replace( '  ', ' ', $address );
             $address = urlencode( trim( $address ) );
 
-            $components = wp_parse_args( $components, [
+            $components = wp_parse_args( $components, array(
                 'country' => '',
-            ] );
+            ) );
 
             $component_string = '';
             $i                = 0;
@@ -504,7 +503,7 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                     break;
 
                 case 'political':
-                    $political = [];
+                    $political = array();
                     foreach ( $raw['address_components'] as $component ) {
                         $designation = $component['types'][1] ?? '';
                         if ( 'political' == $designation ) {
@@ -625,44 +624,43 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             // Return response accordingly, based on returning status
             $default_error_msg = 'API NOT CONFIGURED.';
             if ( ( $response_api === false ) && ( $response_api_reverse === false ) && ( $response_api_with_components === false ) ) {
-                return [
+                return array(
                     'success' => false,
-                    'message' => $default_error_msg
-                ];
+                    'message' => $default_error_msg,
+                );
             }
 
             // Individually check response statuses
             if ( ! isset( $response_api['status'] ) || $response_api['status'] !== 'OK' ) {
-                return [
+                return array(
                     'success' => false,
-                    'message' => ( isset( $response_api['error_message'] ) && ! empty( $response_api['error_message'] ) ) ? $response_api['error_message'] : $default_error_msg
-                ];
+                    'message' => ( isset( $response_api['error_message'] ) && ! empty( $response_api['error_message'] ) ) ? $response_api['error_message'] : $default_error_msg,
+                );
             }
             if ( ! isset( $response_api_reverse['status'] ) || $response_api_reverse['status'] !== 'OK' ) {
-                return [
+                return array(
                     'success' => false,
-                    'message' => ( isset( $response_api_reverse['error_message'] ) && ! empty( $response_api_reverse['error_message'] ) ) ? $response_api_reverse['error_message'] : $default_error_msg
-                ];
+                    'message' => ( isset( $response_api_reverse['error_message'] ) && ! empty( $response_api_reverse['error_message'] ) ) ? $response_api_reverse['error_message'] : $default_error_msg,
+                );
             }
             if ( ! isset( $response_api_with_components['status'] ) || $response_api_with_components['status'] !== 'OK' ) {
-                return [
+                return array(
                     'success' => false,
-                    'message' => ( isset( $response_api_with_components['error_message'] ) && ! empty( $response_api_with_components['error_message'] ) ) ? $response_api_with_components['error_message'] : $default_error_msg
-                ];
+                    'message' => ( isset( $response_api_with_components['error_message'] ) && ! empty( $response_api_with_components['error_message'] ) ) ? $response_api_with_components['error_message'] : $default_error_msg,
+                );
             }
 
             // If this point is reached, then simply return true
-            return [
+            return array(
                 'success' => true,
-                'message' => ''
-            ];
+                'message' => '',
+            );
         }
 
         public static function load_google_geocoding_scripts() {
             $api_key = self::get_key();
-            wp_enqueue_script( 'google-search-widget', 'https://maps.googleapis.com/maps/api/js?libraries=places&key='.$api_key, [ 'jquery', 'mapbox-gl', 'shared-functions' ], '1', false );
+            wp_enqueue_script( 'google-search-widget', 'https://maps.googleapis.com/maps/api/js?libraries=places&key='.$api_key, array( 'jquery', 'mapbox-gl', 'shared-functions' ), '1', false );
         }
-
     }
 }
 /**

@@ -22,9 +22,9 @@ class DT_Login_Endpoints {
 
 
     public function __construct() {
-        add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
+        add_filter( 'dt_allow_rest_access', array( $this, 'authorize_url' ), 10, 1 );
         if ( dt_is_rest() ) {
-            add_action( 'rest_api_init', [ $this, 'add_endpoints' ] );
+            add_action( 'rest_api_init', array( $this, 'add_endpoints' ) );
         }
     }
 
@@ -35,10 +35,10 @@ class DT_Login_Endpoints {
     public function add_endpoints() {
         $namespace = $this->root . '/v' . $this->version;
 
-        DT_Route::get( $namespace, "/$this->type/user", [ $this, 'get_user' ] );
+        DT_Route::get( $namespace, "/$this->type/user", array( $this, 'get_user' ) );
 
-        DT_Route::post( $namespace, "/$this->type/login", [ $this, 'login' ] );
-        DT_Route::post( $namespace, "/$this->type/check_auth", [ $this, 'check_auth' ] );
+        DT_Route::post( $namespace, "/$this->type/login", array( $this, 'login' ) );
+        DT_Route::post( $namespace, "/$this->type/check_auth", array( $this, 'check_auth' ) );
     }
 
     public function authorize_url( $authorized ){
@@ -64,7 +64,7 @@ class DT_Login_Endpoints {
         try {
             $payload = $this->verify_firebase_token( $token );
         } catch ( \Throwable $th ) {
-            return new WP_Error( 'bad_token', $th->getMessage(), [ 'status' => 401 ] );
+            return new WP_Error( 'bad_token', $th->getMessage(), array( 'status' => 401 ) );
         }
 
         if ( !isset( $payload['name'] ) ) {
@@ -76,20 +76,20 @@ class DT_Login_Endpoints {
         try {
             $response = $user_manager->login();
         } catch ( \Throwable $th ) {
-            return new WP_Error( $th->getCode(), $th->getMessage(), [ 'status' => 401 ] );
+            return new WP_Error( $th->getCode(), $th->getMessage(), array( 'status' => 401 ) );
         }
 
         if ( is_wp_error( $response ) ) {
             return $response;
         }
         if ( !$response ) {
-            return new WP_Error( 'login_error', 'Something went wrong with the login', [ 'status' => 401 ] );
+            return new WP_Error( 'login_error', 'Something went wrong with the login', array( 'status' => 401 ) );
         }
 
-        return new WP_REST_Response( [
+        return new WP_REST_Response( array(
             'status' => 200,
             'body' => $response,
-        ] );
+        ) );
     }
 
     /**
@@ -102,18 +102,18 @@ class DT_Login_Endpoints {
         $login_method = DT_Login_Fields::get_login_method();
 
         if ( DT_Login_Methods::WORDPRESS === $login_method && is_user_logged_in() ) {
-            return new WP_REST_Response( [
-                'data' => [
+            return new WP_REST_Response( array(
+                'data' => array(
                     'status' => 200,
-                ],
-            ] );
+                ),
+            ) );
         }
 
         if ( DT_Login_Methods::MOBILE === $login_method ) {
             /* Make sure that any WP login tokens are cleared before logging in with JWT */
             wp_logout();
 
-            require_once( get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php' );
+            require_once get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php';
             $response = Jwt_Auth_Public::validate_token( $request );
 
             return $response;
@@ -122,9 +122,9 @@ class DT_Login_Endpoints {
         return new WP_Error(
             'dt_login_not_logged_in',
             'User is not authenticated',
-            [
+            array(
                 'status' => 401,
-            ]
+            )
         );
     }
 
@@ -170,6 +170,5 @@ class DT_Login_Endpoints {
 
         return $payload;
     }
-
 }
 DT_Login_Endpoints::instance();

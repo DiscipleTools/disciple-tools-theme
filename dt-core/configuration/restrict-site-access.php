@@ -170,16 +170,18 @@ function disciple_tools_login_css() {
 }
 
 // changing the logo link from wordpress.org to your site
-function disciple_tools_login_url() {  return home_url(); }
+function disciple_tools_login_url() {
+    return home_url(); }
 
 // changing the alt text on the logo to show your site name
-function disciple_tools_login_title() { return get_option( 'blogname' ); }
+function disciple_tools_login_title() {
+    return get_option( 'blogname' ); }
 
 // calling it only on the login page
 add_action( 'login_enqueue_scripts', 'disciple_tools_login_css', 10 );
 
 add_filter( 'login_redirect',
-    function( $url, $query, $user ) {
+    function ( $url, $query, $user ) {
         if ( isset( $_REQUEST['redirect_to'] ) ) {
             return sanitize_text_field( wp_unslash( $_REQUEST['redirect_to'] ) );
         } elseif ( $url != admin_url() ){
@@ -272,7 +274,7 @@ add_filter('lostpassword_url', function ( $url, $redirect ) {
 }, 10, 2);
 
 // fixes other password reset related urls
-add_filter( 'network_site_url', function( $url, $path, $scheme ) {
+add_filter( 'network_site_url', function ( $url, $path, $scheme ) {
 
     if ( stripos( $url, 'action=lostpassword' ) !== false ) {
         return site_url( 'wp-login.php?action=lostpassword', $scheme );
@@ -300,7 +302,7 @@ function dt_multisite_retrieve_password_message( $message, $key, $user_login, $u
 add_filter( 'retrieve_password_message', 'dt_multisite_retrieve_password_message', 99, 4 );
 
 // fixes email title
-add_filter('retrieve_password_title', function( $title ) {
+add_filter('retrieve_password_title', function ( $title ) {
     return '[' . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . '] Password Reset';
 });
 //add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' ); //this breaks uploading plugins and themes
@@ -316,11 +318,11 @@ function restrict_super_admin( $caps, $cap, $user_id, $args ){
     if ( is_multisite() && is_super_admin( $user_id ) ){
         $user = get_user_by( 'ID', $user_id );
         $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
-        $dt_roles = array_map( function ( $a ){
+        $dt_roles = array_map( function ( $a ) {
             return array_keys( $a['permissions'] );
         }, $expected_roles );
         $dt_permissions = array_merge( ...array_values( $dt_roles ) );
-        $dt_permission_prefixes = [ 'view_any_', 'update_any', 'delete_any', 'access_' ];
+        $dt_permission_prefixes = array( 'view_any_', 'update_any', 'delete_any', 'access_' );
         foreach ( $dt_permission_prefixes as $prefix ){
             if ( strpos( $cap, $prefix ) !== false ){
                 $dt_permissions[] = $cap;
@@ -331,7 +333,7 @@ function restrict_super_admin( $caps, $cap, $user_id, $args ){
             return $caps;
         }
         //limit the super admin to the actions the administrator or dt_admin can take on a site.
-        $roles = empty( $user->roles ) ? [ 'administrator', 'dt_admin' ] : $user->roles;
+        $roles = empty( $user->roles ) ? array( 'administrator', 'dt_admin' ) : $user->roles;
         //limit the super admin to the the roles they have on that site.
         $has_cap = false;
         foreach ( $roles as $role_key ){

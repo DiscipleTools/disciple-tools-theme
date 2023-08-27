@@ -16,10 +16,10 @@ if ( !defined( 'ABSPATH' ) ) {
 
 class Disciple_Tools_Notifications_Queue {
 
-    const DEFAULT_ALLOWED_SCHEDULES = [
+    const DEFAULT_ALLOWED_SCHEDULES = array(
         'hourly',
         'daily',
-    ];
+    );
 
     private $allowed_schedules;
 
@@ -32,11 +32,11 @@ class Disciple_Tools_Notifications_Queue {
 
         $wpdb->insert(
             $wpdb->dt_notifications_queue,
-            [
+            array(
                 'notification_id' => $notification->id,
                 'type' => $type,
-            ],
-            [ '%d', '%s' ]
+            ),
+            array( '%d', '%s' )
         );
     }
 

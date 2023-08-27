@@ -32,7 +32,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      */
     function dt_theme_loaded() {
         /** We want to make sure roles are up-to-date. */
-        require_once( 'dt-core/configuration/class-roles.php' );
+        require_once 'dt-core/configuration/class-roles.php';
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
         disciple_tools();
@@ -50,17 +50,17 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
     /**
      * Run migrations after theme is loaded
      */
-    add_action( 'init', function (){
+    add_action( 'init', function () {
         /**
          * We want to make sure migrations are run on updates.
          *
          * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
          */
         try {
-            require_once( 'dt-core/configuration/class-migration-engine.php' );
+            require_once 'dt-core/configuration/class-migration-engine.php';
             Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
         } catch ( Throwable $e ) {
-            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
+            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', array( 'message' => $e->getMessage() ) );
         }
     } );
 
@@ -174,55 +174,55 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             /**
              * Load first files
              */
-            require_once( 'dt-core/global-functions.php' );
-            require_once( 'dt-core/utilities/loader.php' );
+            require_once 'dt-core/global-functions.php';
+            require_once 'dt-core/utilities/loader.php';
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
-            require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
-            require_once( 'dt-core/libraries/wp-queue/wp-queue.php' ); //w
+            require_once 'dt-core/libraries/posts-to-posts/posts-to-posts.php'; // P2P library/plugin. Required before DT instance
+            require_once 'dt-core/libraries/wp-queue/wp-queue.php'; //w
             if ( !class_exists( 'Jwt_Auth' ) ) {
-                require_once( 'dt-core/libraries/wp-api-jwt-auth/jwt-auth.php' );
+                require_once 'dt-core/libraries/wp-api-jwt-auth/jwt-auth.php';
             }
-            require_once( 'dt-core/configuration/config-site-defaults.php' ); // Force required site configurations
-            require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
-            require_once( 'dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-            require_once( 'dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
-            require_once( 'dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
-            require_once( 'dt-core/dt-route.php' ); // utility class wrapping registering rest routes
-            require_once( 'dt-reports/magic-url-class.php' );
-            require_once( 'dt-reports/magic-url-base.php' );
-            require_once( 'dt-reports/magic-url-endpoints.php' );
-            require_once( 'dt-reports/magic-url-setup.php' );
-            require_once( 'dt-reports/magic-url-bulk-send.php' );
+            require_once 'dt-core/configuration/config-site-defaults.php'; // Force required site configurations
+            require_once 'dt-core/wp-async-request.php'; // Async Task Processing
+            require_once 'dt-core/configuration/restrict-rest-api.php'; // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+            require_once 'dt-core/configuration/restrict-site-access.php'; // protect against DDOS attacks.
+            require_once 'dt-core/configuration/dt-configuration.php'; //settings and configuration to alter default WP
+            require_once 'dt-core/dt-route.php'; // utility class wrapping registering rest routes
+            require_once 'dt-reports/magic-url-class.php';
+            require_once 'dt-reports/magic-url-base.php';
+            require_once 'dt-reports/magic-url-endpoints.php';
+            require_once 'dt-reports/magic-url-setup.php';
+            require_once 'dt-reports/magic-url-bulk-send.php';
 
 
             /**
              * User Groups & Multi Roles
              */
-            require_once( 'dt-core/admin/multi-role/multi-role.php' );
+            require_once 'dt-core/admin/multi-role/multi-role.php';
             $this->multi = Disciple_Tools_Multi_Roles::instance();
 
             /**
              * Theme specific files
              */
             if ( !$is_rest ){
-                require_once( 'dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
-                require_once( 'dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-                require_once( 'dt-assets/functions/menu.php' ); // Register menus and menu walkers
-                require_once( 'dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
+                require_once 'dt-assets/functions/cleanup.php'; // WP Head and other cleanup functions
+                require_once 'dt-assets/functions/enqueue-scripts.php'; // Register scripts and stylesheets
+                require_once 'dt-assets/functions/menu.php'; // Register menus and menu walkers
+                require_once 'dt-assets/functions/details-bar.php'; // Breadcrumbs bar
             }
 
 
             /**
              * URL loader
              */
-            add_action( 'wp_loaded', function() {
-                $template_for_url = [
+            add_action( 'wp_loaded', function () {
+                $template_for_url = array(
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
                     'notifications'         => 'template-notifications.php',
-                    'view-duplicates'       => 'template-view-duplicates.php'
-                ];
+                    'view-duplicates'       => 'template-view-duplicates.php',
+                );
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
 
@@ -243,7 +243,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              *
              * @return string
              */
-            add_filter( 'locale', function() {
+            add_filter( 'locale', function () {
                 if ( is_admin() ) {
                     return $this->site_locale;
                 } else {
@@ -254,9 +254,9 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             /**
              * Versioning System
              */
-            require_once( 'dt-core/config-required-plugins.php' );
-            require_once( 'dt-core/libraries/class-tgm-plugin-activation.php' );
-            require_once( 'dt-core/release-notifications.php' );
+            require_once 'dt-core/config-required-plugins.php';
+            require_once 'dt-core/libraries/class-tgm-plugin-activation.php';
+            require_once 'dt-core/release-notifications.php';
 
             /**
              * Data model
@@ -268,152 +268,152 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              * @service    User groups via taxonomies
              */
 
-            require_once( 'dt-core/admin/site-link-post-type.php' );
+            require_once 'dt-core/admin/site-link-post-type.php';
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
 
 
             /**
              * dt-posts
              */
-            require_once( 'dt-posts/posts.php' );
+            require_once 'dt-posts/posts.php';
             new Disciple_Tools_Posts();
-            require_once( 'dt-posts/custom-post-type.php' );
-            require_once( 'dt-posts/dt-posts.php' );
-            require_once( 'dt-posts/dt-posts-endpoints.php' );
-            require_once( 'dt-posts/dt-posts-hooks.php' );
-            require_once( 'dt-posts/dt-posts-metrics.php' );
+            require_once 'dt-posts/custom-post-type.php';
+            require_once 'dt-posts/dt-posts.php';
+            require_once 'dt-posts/dt-posts-endpoints.php';
+            require_once 'dt-posts/dt-posts-hooks.php';
+            require_once 'dt-posts/dt-posts-metrics.php';
             Disciple_Tools_Posts_Endpoints::instance();
             new DT_Posts_Hooks();
-            require_once( 'dt-posts/module-base.php' );
+            require_once 'dt-posts/module-base.php';
 
             /**
              * dt-contacts
              */
-            require_once( 'dt-contacts/contacts.php' );
+            require_once 'dt-contacts/contacts.php';
 
-            require_once( 'dt-contacts/contacts-transfer.php' ); // Functions to support theme
+            require_once 'dt-contacts/contacts-transfer.php'; // Functions to support theme
 
             /**
              * dt-groups
              */
-            require_once( 'dt-groups/groups.php' );
+            require_once 'dt-groups/groups.php';
             /**
              * dt-mapping
              */
-            require_once( 'dt-mapping/loader.php' );
+            require_once 'dt-mapping/loader.php';
             new DT_Mapping_Module_Loader();
 
 
             /**
              * dt-people-groups
              */
-            require_once( 'dt-people-groups/people-groups.php' );
-            require_once( 'dt-people-groups/people-groups-base.php' );
+            require_once 'dt-people-groups/people-groups.php';
+            require_once 'dt-people-groups/people-groups-base.php';
             new Disciple_Tools_People_Groups_Base();
 
-            require_once( 'dt-people-groups/people-groups-post-type.php' );
+            require_once 'dt-people-groups/people-groups-post-type.php';
             Disciple_Tools_People_Groups_Post_Type::instance();
 
             if ( strpos( $url_path, 'people-groups' ) !== false ){
-                require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
+                require_once 'dt-people-groups/people-groups-endpoints.php'; // builds rest endpoints
                 Disciple_Tools_People_Groups_Endpoints::instance();
             }
 
             /**
              * dt-metrics
              */
-            require_once( 'dt-metrics/counter.php' );
-            require_once( 'dt-metrics/charts-base.php' );
-            require_once( 'dt-metrics/metrics.php' );
+            require_once 'dt-metrics/counter.php';
+            require_once 'dt-metrics/charts-base.php';
+            require_once 'dt-metrics/metrics.php';
 
 
             /**
              * dt-users
              */
-            require_once( 'dt-users/users.php' );
+            require_once 'dt-users/users.php';
             new Disciple_Tools_Users();
-            require_once( 'dt-users/user-hooks-and-config.php' );
+            require_once 'dt-users/user-hooks-and-config.php';
             new DT_User_Hooks_And_Configuration();
-            require_once( 'dt-users/user-metrics.php' );
+            require_once 'dt-users/user-metrics.php';
             new DT_User_Metrics();
-            require_once( 'dt-users/users-template.php' );
-            require_once( 'dt-users/users-endpoints.php' );
+            require_once 'dt-users/users-template.php';
+            require_once 'dt-users/users-endpoints.php';
             new Disciple_Tools_Users_Endpoints();
-            require_once( 'dt-users/user-management.php' );
-            require_once( 'dt-users/user-initial-setup.php' );
-            require_once( 'dt-users/hover-coverage-map.php' );
-            require_once( 'dt-users/mapbox-coverage-map.php' );
-            require_once( 'dt-users/template-no-permission.php' );
+            require_once 'dt-users/user-management.php';
+            require_once 'dt-users/user-initial-setup.php';
+            require_once 'dt-users/hover-coverage-map.php';
+            require_once 'dt-users/mapbox-coverage-map.php';
+            require_once 'dt-users/template-no-permission.php';
 
 
 
             /**
              * dt-notifications
              */
-            require_once( 'dt-notifications/notifications-template.php' );
-            require_once( 'dt-notifications/notifications.php' );
+            require_once 'dt-notifications/notifications-template.php';
+            require_once 'dt-notifications/notifications.php';
             Disciple_Tools_Notifications::instance();
-            require_once( 'dt-notifications/notifications-endpoints.php' );
+            require_once 'dt-notifications/notifications-endpoints.php';
             Disciple_Tools_Notifications_Endpoints::instance();
-            require_once( 'dt-notifications/notifications-email.php' ); // sends notification emails through the async task process
-            require_once( 'dt-core/logging/usage.php' );
+            require_once 'dt-notifications/notifications-email.php'; // sends notification emails through the async task process
+            require_once 'dt-core/logging/usage.php';
 
             /**
              * dt-notifications queue
              */
-            require_once( 'dt-notifications/notifications-queue.php' );
-            require_once( 'dt-notifications/notifications-scheduler.php' );
+            require_once 'dt-notifications/notifications-queue.php';
+            require_once 'dt-notifications/notifications-scheduler.php';
             new Disciple_Tools_Notifications_Scheduler( Disciple_Tools_Notifications::instance() );
 
             /**
              * dt-login
              */
-            require_once( 'dt-login/login-methods.php' );
-            require_once( 'dt-login/login-firebase-token.php' );
-            require_once( 'dt-login/login-user-manager.php' );
-            require_once( 'dt-login/login-fields.php' );
-            require_once( 'dt-login/login-shortcodes.php' );
-            require_once( 'dt-login/login-endpoints.php' );
+            require_once 'dt-login/login-methods.php';
+            require_once 'dt-login/login-firebase-token.php';
+            require_once 'dt-login/login-user-manager.php';
+            require_once 'dt-login/login-fields.php';
+            require_once 'dt-login/login-shortcodes.php';
+            require_once 'dt-login/login-endpoints.php';
 
-            require_once( 'dt-login/pages/base.php' );
-            require_once( 'dt-login/login-functions.php' );
-            require_once( 'dt-login/login-email.php' );
+            require_once 'dt-login/pages/base.php';
+            require_once 'dt-login/login-functions.php';
+            require_once 'dt-login/login-email.php';
 
             // pages
-            require_once( 'dt-login/login-page.php' );
-            require_once( 'dt-login/pages/privacy-policy.php' ); // {site}/privacy-policy
-            require_once( 'dt-login/pages/terms-of-service.php' ); // {site}/terms-of-service
+            require_once 'dt-login/login-page.php';
+            require_once 'dt-login/pages/privacy-policy.php'; // {site}/privacy-policy
+            require_once 'dt-login/pages/terms-of-service.php'; // {site}/terms-of-service
             //require_once( 'dt-login/pages/registration-holding.php' ); // {site}/reghold
 
 
             /**
              * Logging
              */
-            require_once( 'dt-core/logging/class-activity-api.php' );
+            require_once 'dt-core/logging/class-activity-api.php';
             $this->logging_activity_api = new Disciple_Tools_Activity_Log_API();
-            require_once( 'dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
+            require_once 'dt-core/logging/class-activity-hooks.php'; // contacts and groups report building
             Disciple_Tools_Activity_Hooks::instance();
 
             /**
              * Reports
              */
-            require_once( 'dt-reports/reports.php' );
+            require_once 'dt-reports/reports.php';
 
             /**
              * Workflows
              */
-            require_once( 'dt-workflows/workflows.php' );
+            require_once 'dt-workflows/workflows.php';
             Disciple_Tools_Workflows::instance();
 
 
-            require_once( 'dt-core/multisite.php' );
+            require_once 'dt-core/multisite.php';
 
             /**
              * core
              */
-            require_once( 'dt-core/core-endpoints.php' );
+            require_once 'dt-core/core-endpoints.php';
             new Disciple_Tools_Core_Endpoints();
-            require_once( 'dt-core/admin/admin-settings-endpoints.php' );
+            require_once 'dt-core/admin/admin-settings-endpoints.php';
             new Disciple_Tools_Admin_Settings_Endpoints();
 
             /**
@@ -423,8 +423,8 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              */
             if ( is_admin() || wp_doing_cron() ){
 
-                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
-                $theme_folder_name = basename( dirname( __FILE__ ) );
+                require get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php';
+                $theme_folder_name = basename( __DIR__ );
                 PucFactory::buildUpdateChecker(
                     'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
                     __FILE__,
@@ -434,56 +434,55 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             if ( is_admin() ){
 
                 // Administration
-                require_once( 'dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts
-                require_once( 'dt-core/admin/admin-functions.php' ); // Load admin functions
-                require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
-                require_once( 'dt-core/admin/config-dashboard.php' );
+                require_once 'dt-core/admin/admin-enqueue-scripts.php'; // Load admin scripts
+                require_once 'dt-core/admin/admin-functions.php'; // Load admin functions
+                require_once 'dt-core/admin/admin-theme-design.php'; // Configures elements of the admin enviornment
+                require_once 'dt-core/admin/config-dashboard.php';
                 Disciple_Tools_Dashboard::instance();
 
                 // Admin Menus
                 /* Note: The load order matters for the menus and submenus. Submenu must load after menu. */
-                require_once( 'dt-core/admin/menu/tabs/abstract-tabs-base.php' ); // registers all the menu pages and tabs
-                require_once( 'dt-core/admin/menu/menu-settings.php' );
+                require_once 'dt-core/admin/menu/tabs/abstract-tabs-base.php'; // registers all the menu pages and tabs
+                require_once 'dt-core/admin/menu/menu-settings.php';
 
-                require_once( 'dt-core/admin/menu/menu-extensions.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-featured-extensions.php' );
+                require_once 'dt-core/admin/menu/menu-extensions.php';
+                require_once 'dt-core/admin/menu/tabs/tab-featured-extensions.php';
 
-                require_once( 'dt-core/admin/menu/menu-utilities.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-people-groups.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-utilities-overview.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-fields.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-scripts.php' );
+                require_once 'dt-core/admin/menu/menu-utilities.php';
+                require_once 'dt-core/admin/menu/tabs/tab-people-groups.php';
+                require_once 'dt-core/admin/menu/tabs/tab-utilities-overview.php';
+                require_once 'dt-core/admin/menu/tabs/tab-fields.php';
+                require_once 'dt-core/admin/menu/tabs/tab-scripts.php';
 
-                require_once( 'dt-core/admin/menu/tabs/tab-gdpr.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-email-logs.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-error-logs.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-workflows.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-exports.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-imports.php' );
+                require_once 'dt-core/admin/menu/tabs/tab-gdpr.php';
+                require_once 'dt-core/admin/menu/tabs/tab-email-logs.php';
+                require_once 'dt-core/admin/menu/tabs/tab-error-logs.php';
+                require_once 'dt-core/admin/menu/tabs/tab-workflows.php';
+                require_once 'dt-core/admin/menu/tabs/tab-exports.php';
+                require_once 'dt-core/admin/menu/tabs/tab-imports.php';
 
-                require_once( 'dt-core/admin/menu/menu-metrics.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-metrics-reports.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-metrics-sources.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-metrics-edit.php' );
+                require_once 'dt-core/admin/menu/menu-metrics.php';
+                require_once 'dt-core/admin/menu/tabs/tab-metrics-reports.php';
+                require_once 'dt-core/admin/menu/tabs/tab-metrics-sources.php';
+                require_once 'dt-core/admin/menu/tabs/tab-metrics-edit.php';
 
-                require_once( 'dt-core/admin/menu/menu-customizations.php' );
-                require_once( 'dt-core/admin/menu/tabs/tab-customizations.php' );
+                require_once 'dt-core/admin/menu/menu-customizations.php';
+                require_once 'dt-core/admin/menu/tabs/tab-customizations.php';
                 /* End menu tab section */
 
-                require_once( 'dt-core/setup-functions.php' );
+                require_once 'dt-core/setup-functions.php';
 
             }
-            require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
+            require_once 'dt-core/admin/menu/tabs/admin-endpoints.php';
 
             //create scheduler for job queue
             wp_queue()->cron();
 
             /* End Admin configuration section */
 
-            require_once( 'dt-core/dependencies/deprecated-dt-functions.php' );
+            require_once 'dt-core/dependencies/deprecated-dt-functions.php';
 
             add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
-
         } // End __construct()
 
         /**
@@ -505,7 +504,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         public function __wakeup() {
             wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
-
     } // End Class
 
 
@@ -547,7 +545,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
         $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
-        $more_tables = apply_filters( 'dt_custom_tables', [] );
+        $more_tables = apply_filters( 'dt_custom_tables', array() );
         foreach ( $more_tables as $table ){
             $wpdb->$table = $wpdb->prefix . $table;
         }

@@ -41,9 +41,9 @@ dt_please_log_in();
                     <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                         <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
                         <?php
-                        $fields_to_search = [];
+                        $fields_to_search = array();
                         $all_searchable_fields = $post_settings['fields'];
-                        $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', 'disciple_tools' ), 'type' => 'text' ];
+                        $all_searchable_fields['comment'] = array( 'name' => __( 'Comments', 'disciple_tools' ), 'type' => 'text' );
                         if ( isset( $_COOKIE['fields_to_search'] ) ) {
                             $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                             if ( $fields_to_search ){
@@ -51,7 +51,7 @@ dt_please_log_in();
                             }
                         }
                         //order fields alphabetically by Name
-                        uasort( $all_searchable_fields, function ( $a, $b ){
+                        uasort( $all_searchable_fields, function ( $a, $b ) {
                             return $a['name'] <=> $b['name'];
                         });
                         ?>
@@ -131,9 +131,9 @@ dt_please_log_in();
                 <a class="advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
                     <?php
-                    $fields_to_search = [];
+                    $fields_to_search = array();
                     $all_searchable_fields = $post_settings['fields'];
-                    $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
+                    $all_searchable_fields['comment'] = array( 'name' => 'Comments', 'type' => 'text' );
                     if ( isset( $_COOKIE['fields_to_search'] ) ) {
                         $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                         if ( $fields_to_search ){
@@ -141,7 +141,7 @@ dt_please_log_in();
                         }
                     }
                     //order fields alphabetically by Name
-                    uasort( $all_searchable_fields, function ( $a, $b ){
+                    uasort( $all_searchable_fields, function ( $a, $b ) {
                         return $a['name'] <=> $b['name'];
                     });
                     ?>
@@ -234,9 +234,9 @@ dt_please_log_in();
                                     <select id="split_by_current_filter_select" style="margin-bottom: 0">
                                         <option value="" disabled selected><?php echo esc_html( _x( 'select split by field', 'disciple_tools' ) ) ?></option>
                                         <?php
-                                        $split_by_fields = [];
-                                        foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? [] as $key => $field ){
-                                            if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection' ] ) ){
+                                        $split_by_fields = array();
+                                        foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? array() as $key => $field ){
+                                            if ( in_array( $field['type'], array( 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection' ) ) ){
                                                 if ( !isset( $field['private'] ) || !$field['private'] ){
                                                     $split_by_fields[$key] = $field;
                                                 }
@@ -244,7 +244,7 @@ dt_please_log_in();
                                         }
 
                                         // Sort identified list of split by fields;
-                                        uasort( $split_by_fields, function ( $a, $b ){
+                                        uasort( $split_by_fields, function ( $a, $b ) {
                                             if ( $a['name'] == $b['name'] ){
                                                 return 0;
                                             }
@@ -319,22 +319,22 @@ dt_please_log_in();
                             </ul>
                         </div>
                         <?php
-                        $dropdown_items = [
+                        $dropdown_items = array(
                             'options' =>
-                                [
+                                array(
                                     'label' => __( 'Fields', 'disciple_tools' ),
                                     'icon' => get_template_directory_uri() . '/dt-assets/images/options.svg',
                                     'section_id' => 'list_column_picker',
                                     'show_list_checkboxes' => false,
-                                ],
+                                ),
                             'bulk-edit' =>
-                                [
+                                array(
                                     'label' => __( 'Bulk Edit', 'disciple_tools' ),
                                     'icon' => get_template_directory_uri() . '/dt-assets/images/bulk-edit.svg',
                                     'section_id' => 'bulk_edit_picker',
                                     'show_list_checkboxes' => true,
-                                ],
-                        ];
+                                ),
+                        );
 
                         // Add custom menu items
                         $dropdown_items = apply_filters( 'dt_list_action_menu_items', $dropdown_items, $post_type );
@@ -390,7 +390,7 @@ dt_please_log_in();
                         </button>
                         <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
                         <?php
-                        $fields_to_show_in_table = [];
+                        $fields_to_show_in_table = array();
                         if ( isset( $_COOKIE['fields_to_show_in_table'] ) ) {
                             $fields_to_show_in_table = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_show_in_table'] ) ) ) );
                             if ( $fields_to_show_in_table ){
@@ -399,7 +399,7 @@ dt_please_log_in();
                         }
 
                         //order fields alphabetically by Name
-                        uasort( $post_settings['fields'], function ( $a, $b ){
+                        uasort( $post_settings['fields'], function ( $a, $b ) {
                             return $a['name'] <=> $b['name'];
                         });
 
@@ -431,7 +431,7 @@ dt_please_log_in();
                             <span aria-hidden="true">×</span>
                         </button>
                         <p style="font-weight:bold"><?php
-                        echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                        printf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                         <div class="grid-x grid-margin-x">
                             <?php if ( isset( $field_options['assigned_to'] ) ) : ?>
                             <div class="cell small-12 medium-4">
@@ -565,7 +565,7 @@ dt_please_log_in();
                                         ></textarea>
 
                                         <?php if ( $post_type == 'contacts' ) :
-                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
+                                            $sections = apply_filters( 'dt_comments_additional_sections', array(), $post_type );?>
 
                                                 <div class="grid-x">
                                                     <div class="section-subheader cell shrink">
@@ -573,7 +573,7 @@ dt_please_log_in();
                                                     </div>
                                                     <select id="comment_type_selector" class="cell auto">
                                                         <?php
-                                                        $section_keys = [ 'activity' ];
+                                                        $section_keys = array( 'activity' );
                                                         foreach ( $sections as $section ) {
                                                             if ( !in_array( $section['key'], $section_keys ) ) {
                                                                 $section_keys[] = $section['key'] ?>
@@ -610,8 +610,8 @@ dt_please_log_in();
                                     return ( $a['type'] ?? '' === 'multi_select' && ( $a['display'] ?? '' ) !== 'typeahead' ) ? 1 : 0;
                                 };
                                 uasort( $field_options, 'multiselect_at_end' );
-                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
-                                $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
+                                $already_done = array( 'subassigned', 'location_grid', 'assigned_to', 'overall_status' );
+                                $allowed_types = array( 'user_select', 'multi_select', 'key_select', 'date', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' );
                                 foreach ( $field_options as $field_option => $value ) :
                                     if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
                                         && $value['type'] != 'communication_channel' && empty( $value['hidden'] ) ) : ?>
@@ -644,7 +644,7 @@ dt_please_log_in();
                                     </th>
                                     <th style="width:32px; background-image:none; cursor:default"></th>
 
-                                    <?php $columns = [];
+                                    <?php $columns = array();
                                     if ( empty( $fields_to_show_in_table ) ){
                                         $columns = DT_Posts::get_default_list_column_order( $post_type );
                                     }
@@ -655,7 +655,7 @@ dt_please_log_in();
                                         <?php
                                     }
                                     foreach ( $columns as $field_key ):
-                                        if ( ! in_array( $field_key, [ 'favorite' ] ) ):
+                                        if ( ! in_array( $field_key, array( 'favorite' ) ) ):
                                             if ( $field_key === 'name' ): ?>
                                                 <th class="all"
                                                     data-id="name"><?php esc_html_e( 'Name', 'disciple_tools' ); ?></th>
@@ -696,10 +696,10 @@ dt_please_log_in();
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [];
-                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'location', 'location_meta', 'connection', 'tags' ];
+                    <?php $fields = array();
+                    $allowed_types = array( 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'location', 'location_meta', 'connection', 'tags' );
                     //order fields alphabetically by Name
-                    uasort( $field_options, function ( $a, $b ){
+                    uasort( $field_options, function ( $a, $b ) {
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
                     });
                     foreach ( $field_options as $field_key => $field ){
@@ -728,7 +728,7 @@ dt_please_log_in();
 
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
-                        $is_multi_select = isset( $field_options[$field] ) && ( in_array( $field_options[$field]['type'], [ 'multi_select', 'tags' ] ) );
+                        $is_multi_select = isset( $field_options[$field] ) && ( in_array( $field_options[$field]['type'], array( 'multi_select', 'tags' ) ) );
                         if ( isset( $field_options[$field] ) && ( $field_options[$field]['type'] === 'connection' || $field_options[$field]['type'] === 'location' || $field_options[$field]['type'] === 'location_meta' || $field_options[$field]['type'] === 'user_select' || $is_multi_select ) ) : ?>
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo 'is-active'; } ?>" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field_options[$field]['name'] ) ?></div>

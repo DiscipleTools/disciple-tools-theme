@@ -24,7 +24,7 @@ class DT_Mapping_Module_Migration_0016 extends DT_Mapping_Module_Migration
             try {
                 DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
             } catch ( Throwable $e ) {
-                $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
+                $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', array( 'error' => $e ) );
                 dt_write_log( $migration_error );
             }
         }
@@ -34,7 +34,6 @@ class DT_Mapping_Module_Migration_0016 extends DT_Mapping_Module_Migration
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
@@ -42,7 +41,7 @@ class DT_Mapping_Module_Migration_0016 extends DT_Mapping_Module_Migration
      */
     public function get_expected_tables(): array
     {
-        return [];
+        return array();
     }
 
     /**
@@ -50,5 +49,4 @@ class DT_Mapping_Module_Migration_0016 extends DT_Mapping_Module_Migration
      */
     public function test() {
     }
-
 }

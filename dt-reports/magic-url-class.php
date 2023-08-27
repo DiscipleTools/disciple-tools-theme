@@ -68,10 +68,10 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         public function __construct( string $root ) {
             $this->root = $root;
 
-            add_filter( 'dt_custom_fields_settings', [ $this, '_register_custom_fields' ], 10, 2 );
+            add_filter( 'dt_custom_fields_settings', array( $this, '_register_custom_fields' ), 10, 2 );
         }
 
-        public function registered_types() : array {
+        public function registered_types(): array {
             /**
              * Expected structure of type response
              * 'root_name' => [
@@ -117,11 +117,11 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
              *      ] (array)
              * ] (array)
              */
-            return apply_filters( 'dt_magic_url_register_types', $types = [] );
+            return apply_filters( 'dt_magic_url_register_types', $types = array() );
         }
 
-        public static function registered_types_static() : array {
-            return apply_filters( 'dt_magic_url_register_types', $types = [] );
+        public static function registered_types_static(): array {
+            return apply_filters( 'dt_magic_url_register_types', $types = array() );
         }
 
         /**
@@ -140,11 +140,11 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             foreach ( $types as $type ){
                 if ( $post_type === $type['post_type'] ){
                     if ( !isset( $fields[$type['meta_key']] ) ){
-                        $fields[$type['meta_key']] = [
+                        $fields[$type['meta_key']] = array(
                             'name'   => $type['name'],
                             'type'   => 'hash',
                             'hidden' => true,
-                        ];
+                        );
                     }
                 }
             }
@@ -155,12 +155,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Extract type list from registered root
          * @return array
          */
-        public function list_types() : array {
+        public function list_types(): array {
             $all_types = $this->registered_types();
             if ( isset( $all_types[$this->root] ) ) {
                 return $all_types[$this->root];
             }
-            return [];
+            return array();
         }
 
         /**
@@ -168,12 +168,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * @param $type
          * @return array
          */
-        public function list_actions( $type ) : array {
+        public function list_actions( $type ): array {
             $types = self::list_types();
             if ( isset( $types[$type]['actions'] ) && ! empty( $types[$type]['actions'] ) && is_array( $types[$type]['actions'] ) ) {
                 return $types[$type]['actions'];
             }
-            return [];
+            return array();
         }
 
         /**
@@ -181,8 +181,8 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * @example root/type1, root/type2, root/type3
          * @return array
          */
-        public function list_url_bases() : array{
-            $url = [];
+        public function list_url_bases(): array{
+            $url = array();
             $root = $this->root;
             $types = self::list_types();
             foreach ( $types as $type ){
@@ -206,7 +206,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             // correct root
             // approved type
             if ( isset( $parts[0] ) && $root === $parts[0] && isset( $parts[1] ) && isset( $types[$parts[1]] ) ){
-                $elements = [
+                $elements = array(
                     'root' => '',
                     'type' => '',
                     'meta_key' => '',
@@ -214,8 +214,8 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     'action' => '',
                     'post_id' => '',
                     'post_type' => '',
-                    'instance_id' => ''
-                ];
+                    'instance_id' => '',
+                );
                 if ( isset( $parts[0] ) && ! empty( $parts[0] ) ){
                     $elements['root'] = $parts[0];
 
@@ -294,7 +294,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             // correct root
             // approved type
             if ( isset( $parts[0] ) && 'wp-json' === $parts[0] && isset( $parts[1] ) && $root === $parts[1] && isset( $parts[3] ) && isset( $types[$parts[3]] ) ){
-                $elements = [
+                $elements = array(
                     'root' => '',
                     'type' => '',
                     'meta_key' => '',
@@ -302,7 +302,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     'action' => '',
                     'post_id' => '',
                     'post_type' => '',
-                ];
+                );
                 if ( isset( $parts[1] ) && ! empty( $parts[1] ) ){
                     $elements['root'] = $parts[1];
 
@@ -448,7 +448,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * Generates a unique id key
          * @return string
          */
-        public static function create_unique_key() : string {
+        public static function create_unique_key(): string {
             return dt_create_unique_key();
         }
 
@@ -521,13 +521,13 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          */
         public function add_api_routes() {
             register_rest_route(
-                $this->namespace, '/create_key', [
-                    [
+                $this->namespace, '/create_key', array(
+                    array(
                         'methods'  => WP_REST_Server::READABLE,
-                        'callback' => [ $this, 'api_create_key' ],
+                        'callback' => array( $this, 'api_create_key' ),
                         'permission_callback' => '__return_true',
-                    ],
-                ]
+                    ),
+                )
             );
         }
 
@@ -541,12 +541,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          */
         public static function list_bulk_send( $post_type = null ) {
             $registered_list = self::registered_types_static();
-            $bulk_send_list = [];
+            $bulk_send_list = array();
             foreach ( $registered_list as $root_key => $root_values ) {
                 foreach ( $root_values as $type_key => $type_values ) {
                     if ( isset( $type_values['show_bulk_send'] ) && $type_values['show_bulk_send'] && ( !$post_type || $type_values['post_type'] === $post_type ) ){
                         if ( ! isset( $bulk_send_list[$root_key] ) ) {
-                            $bulk_send_list[$root_key] = [];
+                            $bulk_send_list[$root_key] = array();
                         }
                         $bulk_send_list[$root_key][$type_key] = $type_values;
                     }
@@ -557,7 +557,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
         public function redirect_to_expired_landing_page(){
             $path = get_theme_file_path( 'dt-reports/magic-url-landing-page.php' );
-            include( $path );
+            include $path;
             die();
         }
     }

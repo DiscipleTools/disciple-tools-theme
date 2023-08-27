@@ -14,13 +14,12 @@ class Disciple_Tools_Migration_0047 extends Disciple_Tools_Migration {
 
         if ( empty( $at_install ) ){
             $first_activity_time = $wpdb->get_var( "SELECT MIN(hist_time) FROM $wpdb->dt_activity_log" );
-            update_option( 'dt_initial_install_meta', [
+            update_option( 'dt_initial_install_meta', array(
                 'time' => $first_activity_time,
                 'migration_number' => 0,
                 'theme_version' => 0,
-            ] );
+            ) );
         }
-
     }
 
     public function down() {
@@ -30,6 +29,6 @@ class Disciple_Tools_Migration_0047 extends Disciple_Tools_Migration {
     }
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }

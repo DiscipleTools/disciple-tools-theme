@@ -14,7 +14,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
     public $slug = 'hover_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/combined/hover-map.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
     public $namespace = null;
 
     public function __construct() {
@@ -30,11 +30,11 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'mapping_scripts' ), 89 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
 
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
 
@@ -45,15 +45,15 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         // Milestones Script
         wp_enqueue_script( 'dt_'.$this->slug.'_script',
             get_template_directory_uri() . $this->js_file_name,
-            [
+            array(
                 'jquery',
-                'dt_mapping_js'
-            ],
+                'dt_mapping_js',
+            ),
             filemtime( get_theme_file_path() . $this->js_file_name ),
             true
         );
         wp_localize_script(
-            'dt_'.$this->slug.'_script', $this->js_object_name, [
+            'dt_'.$this->slug.'_script', $this->js_object_name, array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
                 'base_slug' => $this->base_slug,
                 'root' => esc_url_raw( rest_url() ),
@@ -61,10 +61,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'translations' => [
-                    'title' => __( 'Hover Map', 'disciple_tools' )
-                ]
-            ]
+                'translations' => array(
+                    'title' => __( 'Hover Map', 'disciple_tools' ),
+                ),
+            )
         );
     }
 
@@ -86,25 +86,25 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
     }
 
     public function translations() {
-        $translations = [];
+        $translations = array();
         return $translations;
     }
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/data', [
-                [
+            $this->namespace, '/data', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'system_map_endpoint' ],
+                    'callback' => array( $this, 'system_map_endpoint' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function system_map_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( 'hover_map', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'hover_map', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
 
@@ -114,8 +114,8 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 
 
     public function add_contacts_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
         if ( empty( $column_labels ) ) {
             $next_column_number = 0;
         } else if ( count( $column_labels ) === 1 ) {
@@ -123,10 +123,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         } else {
             $next_column_number = count( $column_labels );
         }
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'contacts',
-            'label' => __( 'Contacts', 'disciple_tools' )
-        ];
+            'label' => __( 'Contacts', 'disciple_tools' ),
+        );
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
                 $column_data[$key][$next_column_number] = 0;
@@ -140,11 +140,11 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[ $grid_id ] = [];
+                        $column_data[ $grid_id ] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -159,8 +159,8 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
     }
 
     public function add_groups_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
         if ( empty( $column_labels ) ) {
             $next_column_number = 0;
         } else if ( count( $column_labels ) === 1 ) {
@@ -168,10 +168,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         } else {
             $next_column_number = count( $column_labels );
         }
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'groups',
-            'label' => __( 'Groups', 'disciple_tools' )
-        ];
+            'label' => __( 'Groups', 'disciple_tools' ),
+        );
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
                 $column_data[$key][$next_column_number] = 0;
@@ -185,11 +185,11 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -204,8 +204,8 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
     }
 
     public function add_churches_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
         if ( empty( $column_labels ) ) {
             $next_column_number = 0;
         } else if ( count( $column_labels ) === 1 ) {
@@ -213,10 +213,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         } else {
             $next_column_number = count( $column_labels );
         }
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'churches',
-            'label' => __( 'Churches', 'disciple_tools' )
-        ];
+            'label' => __( 'Churches', 'disciple_tools' ),
+        );
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
                 $column_data[$key][$next_column_number] = 0;
@@ -230,11 +230,11 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -249,8 +249,8 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
     }
 
     public function add_users_column( $data ) {
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
 
         if ( empty( $column_labels ) ) {
             $next_column_number = 0;
@@ -260,10 +260,10 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
             $next_column_number = count( $column_labels );
         }
 
-        $column_labels[ $next_column_number ] = [
+        $column_labels[ $next_column_number ] = array(
             'key'   => 'users',
-            'label' => __( 'Users', 'disciple_tools' )
-        ];
+            'label' => __( 'Users', 'disciple_tools' ),
+        );
 
         if ( ! empty( $column_data ) ) {
             foreach ( $column_data as $key => $value ) {
@@ -280,11 +280,11 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[$grid_id] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -298,8 +298,5 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         $data['custom_column_data']   = $column_data;
         return $data;
     }
-
 }
 new DT_Metrics_Hover_Map();
-
-

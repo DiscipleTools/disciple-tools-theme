@@ -244,7 +244,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
 
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $seeker_path_options = $field_settings['seeker_path']['default'];
-        $seeker_path_data = [];
+        $seeker_path_data = array();
         foreach ( $seeker_path_options as $option_key => $option_value ){
             $value = 0;
             foreach ( $res as $r ){
@@ -252,10 +252,10 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     $value = $r['value'];
                 }
             }
-            $seeker_path_data[$option_key] = [
+            $seeker_path_data[$option_key] = array(
                 'label' => $option_value['label'],
-                'value' => $value
-            ];
+                'value' => $value,
+            );
         }
 
         return $seeker_path_data;
@@ -309,7 +309,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
         );
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $seeker_path_options = $field_settings['seeker_path']['default'];
-        $seeker_path_data = [];
+        $seeker_path_data = array();
         foreach ( $seeker_path_options as $option_key => $option_value ){
             $value = 0;
             foreach ( $res as $r ){
@@ -317,10 +317,10 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     $value = $r['value'];
                 }
             }
-            $seeker_path_data[$option_key] = [
+            $seeker_path_data[$option_key] = array(
                 'label' => $option_value['label'],
-                'value' => $value
-            ];
+                'value' => $value,
+            );
         }
 
         return $seeker_path_data;
@@ -365,7 +365,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
         );
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $overall_status_options = $field_settings['overall_status']['default'];
-        $overall_status_data = [];
+        $overall_status_data = array();
         foreach ( $overall_status_options as $option_key => $option_value ){
             $value = 0;
             foreach ( $res as $r ){
@@ -373,10 +373,10 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                     $value = $r['value'];
                 }
             }
-            $overall_status_data[$option_key] = [
+            $overall_status_data[$option_key] = array(
                 'label' => $option_value['label'],
-                'value' => $value
-            ];
+                'value' => $value,
+            );
         }
 
         return $overall_status_data;
@@ -484,7 +484,7 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             } elseif ( $status['status'] === 'unassignable' ){
                 $status['reasons'] = $reason_unassignable;
             } else {
-                $status['reasons'] = [];
+                $status['reasons'] = array();
             }
             if ( isset( $post_settings['fields']['overall_status']['default'][ $status['status'] ]['label'] ) ) {
                 $status['status'] = $post_settings['fields']['overall_status']['default'][$status['status']]['label'];

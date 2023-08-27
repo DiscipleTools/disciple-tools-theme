@@ -53,7 +53,7 @@ class Disciple_Tools_Migration_0026 extends Disciple_Tools_Migration {
                     PRIMARY KEY (`histid`),
                     key `object_id_index` (`object_id`),
                     key `meta_key_index` (`meta_key`)
-                ) $charset_collate;"
+                ) $charset_collate;",
         );
     }
 }

@@ -9,47 +9,47 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Workflows_Defaults {
 
-    public static $trigger_created = [ 'id' => 'created', 'label' => 'Record Created' ];
-    public static $trigger_updated = [ 'id' => 'updated', 'label' => 'Field Updated' ];
+    public static $trigger_created = array( 'id' => 'created', 'label' => 'Record Created' );
+    public static $trigger_updated = array( 'id' => 'updated', 'label' => 'Field Updated' );
 
-    public static $condition_equals = [ 'id' => 'equals', 'label' => 'Equals' ];
-    public static $condition_not_equals = [ 'id' => 'not_equals', 'label' => "Doesn't equal" ];
-    public static $condition_greater = [ 'id' => 'greater', 'label' => 'Greater than' ];
-    public static $condition_less = [ 'id' => 'less', 'label' => 'Less than' ];
-    public static $condition_greater_equals = [ 'id' => 'greater_equals', 'label' => 'Greater than or equals' ];
-    public static $condition_less_equals = [ 'id' => 'less_equals', 'label' => 'Less than or equals' ];
-    public static $condition_contains = [ 'id' => 'contains', 'label' => 'Contains' ];
-    public static $condition_not_contain = [ 'id' => 'not_contain', 'label' => "Doesn't contain" ];
-    public static $condition_is_set = [ 'id' => 'is_set', 'label' => 'Has any value and not empty' ];
-    public static $condition_not_set = [ 'id' => 'not_set', 'label' => 'Has no value or is empty' ];
+    public static $condition_equals = array( 'id' => 'equals', 'label' => 'Equals' );
+    public static $condition_not_equals = array( 'id' => 'not_equals', 'label' => "Doesn't equal" );
+    public static $condition_greater = array( 'id' => 'greater', 'label' => 'Greater than' );
+    public static $condition_less = array( 'id' => 'less', 'label' => 'Less than' );
+    public static $condition_greater_equals = array( 'id' => 'greater_equals', 'label' => 'Greater than or equals' );
+    public static $condition_less_equals = array( 'id' => 'less_equals', 'label' => 'Less than or equals' );
+    public static $condition_contains = array( 'id' => 'contains', 'label' => 'Contains' );
+    public static $condition_not_contain = array( 'id' => 'not_contain', 'label' => "Doesn't contain" );
+    public static $condition_is_set = array( 'id' => 'is_set', 'label' => 'Has any value and not empty' );
+    public static $condition_not_set = array( 'id' => 'not_set', 'label' => 'Has no value or is empty' );
 
-    public static $action_update = [ 'id' => 'update', 'label' => 'Updated To' ];
-    public static $action_append = [ 'id' => 'append', 'label' => 'Appended With' ];
-    public static $action_connect = [ 'id' => 'connect', 'label' => 'Connect To' ];
-    public static $action_remove = [ 'id' => 'remove', 'label' => 'Removal Of' ];
-    public static $action_custom = [ 'id' => 'custom', 'label' => 'Custom Action' ];
+    public static $action_update = array( 'id' => 'update', 'label' => 'Updated To' );
+    public static $action_append = array( 'id' => 'append', 'label' => 'Appended With' );
+    public static $action_connect = array( 'id' => 'connect', 'label' => 'Connect To' );
+    public static $action_remove = array( 'id' => 'remove', 'label' => 'Removal Of' );
+    public static $action_custom = array( 'id' => 'custom', 'label' => 'Custom Action' );
 
-    private static $custom_action_people_group_connections = [
+    private static $custom_action_people_group_connections = array(
         'id'    => 'groups_00003_custom_action_people_group_connections',
-        'label' => 'Auto-Add People Groups'
-    ];
+        'label' => 'Auto-Add People Groups',
+    );
 
     public function __construct() {
-        add_filter( 'dt_workflows', [ $this, 'fetch_default_workflows_filter' ], 10, 2 );
+        add_filter( 'dt_workflows', array( $this, 'fetch_default_workflows_filter' ), 10, 2 );
         add_filter( 'dt_workflows_custom_actions', function ( $actions ) {
-            $actions[] = (object) [
+            $actions[] = (object) array(
                 'id'        => self::$custom_action_people_group_connections['id'],
                 'name'      => self::$custom_action_people_group_connections['label'],
-                'displayed' => true // Within admin workflow builder view?
-            ];
+                'displayed' => true, // Within admin workflow builder view?
+            );
 
             return $actions;
         }, 10, 1 );
 
-        add_action( self::$custom_action_people_group_connections['id'], [
+        add_action( self::$custom_action_people_group_connections['id'], array(
             $this,
-            'custom_action_people_group_connections'
-        ], 10, 3 );
+            'custom_action_people_group_connections',
+        ), 10, 3 );
     }
 
     public function fetch_default_workflows_filter( $workflows, $post_type ) {
@@ -84,14 +84,14 @@ class Disciple_Tools_Workflows_Defaults {
     }
 
     private static function new_event( $event, $field, $value ) {
-        return (object) [
+        return (object) array(
             'id'         => $event['id'],
             'name'       => $event['label'],
             'field_id'   => $field['id'],
             'field_name' => $field['label'],
             'value'      => $value['id'],
-            'value_name' => $value['label']
-        ];
+            'value_name' => $value['label'],
+        );
     }
 
     private function build_default_workflows_contacts( &$workflows ) {
@@ -100,123 +100,123 @@ class Disciple_Tools_Workflows_Defaults {
             return;
         }
 
-        $workflows[] = (object) [
+        $workflows[] = (object) array(
             'id'         => 'contacts_220808',
             'name'       => 'Select In Church/Group Following Group Addition',
             'enabled'    => false, // Can be enabled via admin view
             'trigger'    => self::$trigger_updated['id'],
-            'conditions' => [
+            'conditions' => array(
                 self::new_condition( self::$condition_is_set,
-                    [
+                    array(
                         'id'    => 'groups',
-                        'label' => $dt_fields['groups']['name']
-                    ], [
+                        'label' => $dt_fields['groups']['name'],
+                    ), array(
                         'id'    => '',
-                        'label' => ''
-                    ]
-                )
-            ],
-            'actions'    => [
+                        'label' => '',
+                    )
+                ),
+            ),
+            'actions'    => array(
                 self::new_action( self::$action_append,
-                    [
+                    array(
                         'id'    => 'milestones',
-                        'label' => $dt_fields['milestones']['name']
-                    ], [
+                        'label' => $dt_fields['milestones']['name'],
+                    ), array(
                         'id'    => 'milestone_in_group',
-                        'label' => $dt_fields['milestones']['default']['milestone_in_group']['label']
-                    ]
-                )
-            ]
-        ];
+                        'label' => $dt_fields['milestones']['default']['milestone_in_group']['label'],
+                    )
+                ),
+            ),
+        );
     }
 
     private function build_default_workflows_groups( &$workflows ) {
         $dt_fields = DT_Posts::get_post_field_settings( 'groups' );
 
-        $workflows[] = (object) [
+        $workflows[] = (object) array(
             'id'         => 'groups_00001',
             'name'       => 'Link Church Health Commitment -> Church Group Type',
             'enabled'    => false, // Can be enabled via admin view
             'trigger'    => self::$trigger_updated['id'],
-            'conditions' => [
+            'conditions' => array(
                 self::new_condition( self::$condition_contains,
-                    [
+                    array(
                         'id'    => 'health_metrics',
-                        'label' => $dt_fields['health_metrics']['name']
-                    ], [
+                        'label' => $dt_fields['health_metrics']['name'],
+                    ), array(
                         'id'    => 'church_commitment',
-                        'label' => $dt_fields['health_metrics']['default']['church_commitment']['label']
-                    ]
-                )
-            ],
-            'actions'    => [
+                        'label' => $dt_fields['health_metrics']['default']['church_commitment']['label'],
+                    )
+                ),
+            ),
+            'actions'    => array(
                 self::new_action( self::$action_update,
-                    [
+                    array(
                         'id'    => 'group_type',
-                        'label' => $dt_fields['group_type']['name']
-                    ], [
+                        'label' => $dt_fields['group_type']['name'],
+                    ), array(
                         'id'    => 'church',
-                        'label' => $dt_fields['group_type']['default']['church']['label']
-                    ]
-                )
-            ]
-        ];
-        $workflows[] = (object) [
+                        'label' => $dt_fields['group_type']['default']['church']['label'],
+                    )
+                ),
+            ),
+        );
+        $workflows[] = (object) array(
             'id'         => 'groups_00002',
             'name'       => 'Link Church Group Type -> Church Health Commitment',
             'enabled'    => false, // Can be enabled via admin view
             'trigger'    => self::$trigger_updated['id'],
-            'conditions' => [
+            'conditions' => array(
                 self::new_condition( self::$condition_contains,
-                    [
+                    array(
                         'id'    => 'group_type',
-                        'label' => $dt_fields['group_type']['name']
-                    ], [
+                        'label' => $dt_fields['group_type']['name'],
+                    ), array(
                         'id'    => 'church',
-                        'label' => $dt_fields['group_type']['default']['church']['label']
-                    ]
-                )
-            ],
-            'actions'    => [
+                        'label' => $dt_fields['group_type']['default']['church']['label'],
+                    )
+                ),
+            ),
+            'actions'    => array(
                 self::new_action( self::$action_append,
-                    [
+                    array(
                         'id'    => 'health_metrics',
-                        'label' => $dt_fields['health_metrics']['name']
-                    ], [
+                        'label' => $dt_fields['health_metrics']['name'],
+                    ), array(
                         'id'    => 'church_commitment',
-                        'label' => $dt_fields['health_metrics']['default']['church_commitment']['label']
-                    ]
-                )
-            ]
-        ];
-        $workflows[] = (object) [
+                        'label' => $dt_fields['health_metrics']['default']['church_commitment']['label'],
+                    )
+                ),
+            ),
+        );
+        $workflows[] = (object) array(
             'id'         => 'groups_00003',
             'name'       => 'Auto-Adding People Groups',
             'enabled'    => false, // Can be enabled via admin view
             'trigger'    => self::$trigger_updated['id'],
-            'conditions' => [
+            'conditions' => array(
                 self::new_condition( self::$condition_is_set,
-                    [
+                    array(
                         'id'    => 'members',
-                        'label' => $dt_fields['members']['name']
-                    ], [
+                        'label' => $dt_fields['members']['name'],
+                    ), array(
                         'id'    => '',
-                        'label' => ''
-                    ]
-                )
-            ],
-            'actions'    => [
+                        'label' => '',
+                    )
+                ),
+            ),
+            'actions'    => array(
                 self::new_action( self::$action_custom,
-                    [
+                    array(
                         'id'    => 'people_groups', // Field to be updated or an arbitrary selection!
-                        'label' => $dt_fields['people_groups']['name']
-                    ], [
+                        'label' => $dt_fields['people_groups']['name'],
+                    ), array(
                         'id'    => self::$custom_action_people_group_connections['id'], // Action Hook
-                        'label' => self::$custom_action_people_group_connections['label']
-                    ]
-                )
-            ]
-        ];
+                        'label' => self::$custom_action_people_group_connections['label'],
+                    )
+                ),
+            ),
+        );
     }
 
     /**
@@ -237,11 +237,11 @@ class Disciple_Tools_Workflows_Defaults {
         // Ensure post is a valid groups type
         if ( ! empty( $post ) && ( $post['post_type'] === 'groups' ) ) {
 
-            $new_people_groups                            = [];
-            $new_people_groups['people_groups']['values'] = [];
+            $new_people_groups                            = array();
+            $new_people_groups['people_groups']['values'] = array();
 
             // Iterate over group members in search of members with assigned people groups
-            $members = $post['members'] ?? [];
+            $members = $post['members'] ?? array();
             foreach ( $members as $member ) {
 
                 if ( ! empty( $member ) && $member['post_type'] === 'contacts' ) {
@@ -253,10 +253,10 @@ class Disciple_Tools_Workflows_Defaults {
                         foreach ( $member_post['people_groups'] as $connection ) {
 
                             // Ensure member's people group is not already assigned to parent group -> safeguard against infinite post update loops!
-                            if ( ! $this->already_assigned_people_group( $post['people_groups'] ?? [], $connection['ID'] ) ) {
+                            if ( ! $this->already_assigned_people_group( $post['people_groups'] ?? array(), $connection['ID'] ) ) {
 
                                 // Prepare new people group for parent group addition
-                                $new_people_groups['people_groups']['values'][] = [ 'value' => $connection['ID'] ];
+                                $new_people_groups['people_groups']['values'][] = array( 'value' => $connection['ID'] );
                             }
                         }
                     }

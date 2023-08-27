@@ -28,7 +28,7 @@ class DT_Login_Fields {
     public static function all_values() {
         $fields = self::all();
 
-        $all_values = [];
+        $all_values = array();
 
         foreach ( $fields as $key => $field ) {
             $field_key = $field['key'];
@@ -70,8 +70,8 @@ class DT_Login_Fields {
         }
 
         if ( is_multisite() ) {
-            $multisite_vars = [];
-            $site_vars = [];
+            $multisite_vars = array();
+            $site_vars = array();
 
             [ $site_vars, $multisite_vars ] = self::split_site_and_multisite_vars( $vars );
 
@@ -99,9 +99,9 @@ class DT_Login_Fields {
         $defaults_count = count( $defaults );
 
         if ( $is_multisite_vars === true ) {
-            $saved_values = get_network_option( get_main_network_id(), $option_name, [] );
+            $saved_values = get_network_option( get_main_network_id(), $option_name, array() );
         } else {
-            $saved_values = get_network_option( get_current_blog_id(), $option_name, [] );
+            $saved_values = get_network_option( get_current_blog_id(), $option_name, array() );
         }
 
         $saved_fields = self::hydrate_values( $defaults, $saved_values );
@@ -111,12 +111,12 @@ class DT_Login_Fields {
 
         if ( $saved_count === 0 ) { // this site hasn't saved these options yet, so copy the main site options
 
-            $saved_values = get_network_option( get_main_network_id(), $option_name, [] );
+            $saved_values = get_network_option( get_main_network_id(), $option_name, array() );
 
             $saved_fields = self::hydrate_values( $defaults, $saved_values );
             $saved_fields = self::filter_fields( $defaults, $saved_fields );
         } else if ( $saved_count !== $defaults_count ) {
-            $network_values = get_network_option( get_main_network_id(), $option_name, [] );
+            $network_values = get_network_option( get_main_network_id(), $option_name, array() );
 
             $network_fields = self::hydrate_values( $defaults, $network_values );
             $network_fields = self::filter_fields( $defaults, $network_fields );
@@ -175,7 +175,7 @@ class DT_Login_Fields {
     }
 
     private static function filter_fields( $defaults, $fields ) {
-        $filtered_fields = [];
+        $filtered_fields = array();
 
         foreach ( $fields as $key => $field ) {
             if ( array_key_exists( $key, $defaults ) ) {
@@ -187,7 +187,7 @@ class DT_Login_Fields {
     }
 
     private static function hydrate_values( $defaults, $values ) {
-        $vars = [];
+        $vars = array();
 
         foreach ( $values as $key => $param ) {
             if ( isset( $defaults[$key] ) ) {
@@ -201,7 +201,7 @@ class DT_Login_Fields {
     }
 
     private static function dehydrate_fields( $fields ) {
-        $values = [];
+        $values = array();
 
         foreach ( $fields as $key => $param ) {
             $values[$key] = $param['value'];
@@ -211,8 +211,8 @@ class DT_Login_Fields {
     }
 
     private static function split_site_and_multisite_vars( $vars ) {
-        $site_vars = [];
-        $multisite_vars = [];
+        $site_vars = array();
+        $multisite_vars = array();
 
         foreach ( $vars as $key => $param ) {
             if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
@@ -222,17 +222,17 @@ class DT_Login_Fields {
             }
         }
 
-        return [
+        return array(
             $site_vars,
             $multisite_vars,
-        ];
+        );
     }
 
     private static function merge_site_and_multisite_vars( $site_fields, $multisite_fields ) {
 
         $defaults = self::get_defaults();
 
-        $merged_fields = [];
+        $merged_fields = array();
 
         foreach ( $defaults as $key => $param ) {
             if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
@@ -241,12 +241,10 @@ class DT_Login_Fields {
                 } else {
                     $merged_fields[$key] = $param;
                 }
-            } else {
-                if ( isset( $site_fields[$key] ) ) {
+            } elseif ( isset( $site_fields[$key] ) ) {
                     $merged_fields[$key] = $site_fields[$key];
-                } else {
-                    $merged_fields[$key] = $param;
-                }
+            } else {
+                $merged_fields[$key] = $param;
             }
         }
 
@@ -256,16 +254,16 @@ class DT_Login_Fields {
     private static function get_defaults() {
         $roles = dt_list_roles();
 
-        $role_list = [];
+        $role_list = array();
         foreach ( $roles as $role_key => $role ) {
             if ( $role['disabled'] === false ) {
                 $role_list[$role_key] = $role['label'];
             }
         }
 
-        $defaults = [
+        $defaults = array(
             // firebase
-            'firebase_config_label' => [
+            'firebase_config_label' => array(
                 'tab' => 'firebase',
                 'key' => 'firebase_config_label',
                 'label' => 'Where to find the config details',
@@ -274,8 +272,8 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'label',
                 'multisite_level' => true,
-            ],
-            'firebase_api_key' => [
+            ),
+            'firebase_api_key' => array(
                 'tab' => 'firebase',
                 'key' => 'firebase_api_key',
                 'label' => 'Firebase API Key',
@@ -283,8 +281,8 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'text',
                 'multisite_level' => true,
-            ],
-            'firebase_project_id' => [
+            ),
+            'firebase_project_id' => array(
                 'tab' => 'firebase',
                 'key' => 'firebase_project_id',
                 'label' => 'Firebase Project ID',
@@ -292,8 +290,8 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'text',
                 'multisite_level' => true,
-            ],
-            'firebase_app_id' => [
+            ),
+            'firebase_app_id' => array(
                 'tab' => 'firebase',
                 'key' => 'firebase_app_id',
                 'label' => 'Firebase App ID',
@@ -301,40 +299,40 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'text',
                 'multisite_level' => true,
-            ],
+            ),
 
             // general
-            'general_label' => [
+            'general_label' => array(
                 'tab' => 'general',
                 'key' => 'general_label',
                 'label' => 'GENERAL',
                 'description' => '',
                 'value' => '',
                 'type' => 'label',
-            ],
-            'login_enabled' => [
+            ),
+            'login_enabled' => array(
                 'tab' => 'general',
                 'key' => 'login_enabled',
                 'label' => 'Enable Custom Login Page',
                 'description' => '',
-                'default' => [
+                'default' => array(
                     'on' => 'on',
                     'off' => 'off',
-                ],
+                ),
                 'value' => 'off',
                 'type' => 'select',
                 'multisite_level' => true,
-            ],
+            ),
 
-            'navigation' => [
+            'navigation' => array(
                 'tab' => 'general',
                 'key' => 'navigation',
                 'label' => 'Navigation',
                 'description' => '',
                 'value' => '',
                 'type' => 'label',
-            ],
-            'redirect_url' => [
+            ),
+            'redirect_url' => array(
                 'tab' => 'general',
                 'key' => 'redirect_url',
                 'label' => 'Redirect Path',
@@ -342,8 +340,8 @@ class DT_Login_Fields {
                 'value' => '',
                 'type' => 'text',
                 'multisite_level' => true,
-            ],
-            'login_url' => [
+            ),
+            'login_url' => array(
                 'tab' => 'general',
                 'key' => 'login_url',
                 'label' => 'Login Path',
@@ -351,29 +349,29 @@ class DT_Login_Fields {
                 'value' => 'login',
                 'type' => 'text',
                 'multisite_level' => true,
-            ],
-            'ui_label' => [
+            ),
+            'ui_label' => array(
                 'tab' => 'general',
                 'key' => 'ui_label',
                 'label' => 'UI',
                 'description' => '',
                 'value' => '',
                 'type' => 'label',
-            ],
-            'ui_smallprint' => [
+            ),
+            'ui_smallprint' => array(
                 'tab' => 'general',
                 'key' => 'ui_smallprint',
                 'label' => 'Login UI smallprint',
                 'description' => 'Do you want the text with the terms and conditions and privacy policy links to show',
                 'value' => 'off',
                 'type' => 'select',
-                'default' => [
+                'default' => array(
                     'on' => 'on',
                     'off' => 'off',
-                ],
+                ),
                 'multisite_level' => true,
-            ],
-            'default_role' => [
+            ),
+            'default_role' => array(
                 'tab' => 'general',
                 'key' => 'default_role',
                 'label' => 'Default Role',
@@ -382,10 +380,10 @@ class DT_Login_Fields {
                 'type' => 'select',
                 'default' => $role_list,
                 'multisite_level' => true,
-            ],
+            ),
 
 
-            'shortcode_firebase_logon_buttons' => [
+            'shortcode_firebase_logon_buttons' => array(
                 'tab' => 'shortcodes',
                 'key' => 'shortcode_firebase_logon_buttons',
                 'label' => 'Firebase Logon Buttons',
@@ -393,9 +391,9 @@ class DT_Login_Fields {
                 'description_2' => '',
                 'value' => '',
                 'type' => 'label',
-            ],
+            ),
 
-            'shortcode_firebase_logout_script' => [
+            'shortcode_firebase_logout_script' => array(
                 'tab' => 'shortcodes',
                 'key' => 'shortcode_firebase_logout_script',
                 'label' => 'shortcode to add on your logout screen to log the user out if using the mobile login',
@@ -403,84 +401,84 @@ class DT_Login_Fields {
                 'description_2' => '',
                 'value' => '',
                 'type' => 'label',
-            ],
+            ),
 
 
-            'identity_providers' => [
+            'identity_providers' => array(
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_label',
                 'label' => 'SSO Identity Providers',
                 'description' => 'Choose which identity providers you are using. These also need to be set up in the Firebase project.',
                 'value' => '',
                 'type' => 'label',
-            ],
-            'identity_providers_email' => [
+            ),
+            'identity_providers_email' => array(
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_email',
                 'label' => 'Email and Password',
                 'description' => '',
                 'value' => 'off',
                 'type' => 'select',
-                'default' => [
+                'default' => array(
                     'on' => 'on',
                     'off' => 'off',
-                ],
+                ),
                 'multisite_level' => true,
-            ],
-            'identity_providers_google' => [
+            ),
+            'identity_providers_google' => array(
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_google',
                 'label' => 'Google',
                 'description' => '',
                 'value' => 'on',
                 'type' => 'select',
-                'default' => [
+                'default' => array(
                     'on' => 'on',
                     'off' => 'off',
-                ],
+                ),
                 'multisite_level' => true,
-            ],
-            'identity_providers_facebook' => [
+            ),
+            'identity_providers_facebook' => array(
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_facebook',
                 'label' => 'Facebook',
                 'description' => '',
                 'value' => 'off',
                 'type' => 'select',
-                'default' => [
+                'default' => array(
                     'on' => 'on',
                     'off' => 'off',
-                ],
+                ),
                 'multisite_level' => true,
-            ],
-            'identity_providers_github' => [
+            ),
+            'identity_providers_github' => array(
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_github',
                 'label' => 'Github',
                 'description' => '',
                 'value' => 'off',
                 'type' => 'select',
-                'default' => [
+                'default' => array(
                     'on' => 'on',
                     'off' => 'off',
-                ],
+                ),
                 'multisite_level' => true,
-            ],
-            'identity_providers_twitter' => [
+            ),
+            'identity_providers_twitter' => array(
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_twitter',
                 'label' => 'Twitter',
                 'description' => '',
                 'value' => 'off',
                 'type' => 'select',
-                'default' => [
+                'default' => array(
                     'on' => 'on',
                     'off' => 'off',
-                ],
+                ),
                 'multisite_level' => true,
-            ],
+            ),
 
-        ];
+        );
 
         return $defaults;
     }

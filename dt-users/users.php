@@ -22,8 +22,8 @@ class Disciple_Tools_Users
      */
     public function __construct() {
         //wp admin user list customization
-        add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list' ], 10, 1 );
-        add_filter( 'dt_settings_js_data', [ $this, 'get_date_availability_hook' ], 10, 1 );
+        add_filter( 'dt_settings_js_data', array( $this, 'add_current_locations_list' ), 10, 1 );
+        add_filter( 'dt_settings_js_data', array( $this, 'get_date_availability_hook' ), 10, 1 );
     }
 
 
@@ -118,83 +118,83 @@ class Disciple_Tools_Users
             return $cache;
         }
 
-        $fields = [
-            'ID' => [
+        $fields = array(
+            'ID' => array(
                 'table' => 'users_table',
                 'label' => __( 'ID', 'disciple_tools' ),
                 'type' => 'number',
-            ],
-            'user_email' => [
+            ),
+            'user_email' => array(
                 'table' => 'users_table',
                 'label' => __( 'Email', 'disciple_tools' ),
                 'type' => 'text',
-                'hidden' => true
-            ],
-            'user_login' => [
+                'hidden' => true,
+            ),
+            'user_login' => array(
                 'table' => 'users_table',
                 'label' => __( 'Username', 'disciple_tools' ),
                 'type' => 'text',
-                'hidden' => true
-            ],
-            'display_name' => [
+                'hidden' => true,
+            ),
+            'display_name' => array(
                 'table' => 'users_table',
                 'label' => __( 'Display Name', 'disciple_tools' ),
                 'type' => 'text',
-            ],
-            'capabilities' => [
+            ),
+            'capabilities' => array(
                 'table' => 'usermeta_table',
                 'key' => $wpdb->prefix . 'user_languages',
                 'label' => __( 'Roles', 'disciple_tools' ),
                 'options' => Disciple_Tools_Roles::get_dt_roles_and_permissions(),
                 'type' => 'array_keys',
-            ],
-            'locale' => [
+            ),
+            'locale' => array(
                 'table' => 'usermeta_table',
                 'key' => 'locale',
                 'label' => __( 'Locale', 'disciple_tools' ),
                 'options' => dt_get_available_languages( true ),
                 'type' => 'key_select',
                 'hidden' => true,
-            ],
-            'user_languages' => [
+            ),
+            'user_languages' => array(
                 'table' => 'usermeta_table',
                 'key' => $wpdb->prefix . 'user_languages',
                 'label' => __( 'Languages', 'disciple_tools' ),
-                'options' => dt_get_option( 'dt_working_languages' ) ?: [],
+                'options' => dt_get_option( 'dt_working_languages' ) ?: array(),
                 'type' => 'array',
-            ],
-            'location_grid' => [
+            ),
+            'location_grid' => array(
                 'table' => 'usermeta_table',
                 'key' => $wpdb->prefix . 'location_grid',
                 'label' => __( 'Locations', 'disciple_tools' ),
                 'type' => 'location_grid',
-            ],
-            'user_status' => [
+            ),
+            'user_status' => array(
                 'table' => 'usermeta_table',
                 'key' => $wpdb->prefix . 'user_status',
                 'label' => __( 'Status', 'disciple_tools' ),
-                'options' => [
-                    'active' => [ 'label' => __( 'Active', 'disciple_tools' ) ],
-                    'away' => [ 'label' => __( 'Away', 'disciple_tools' ) ],
-                    'inconsistent' => [ 'label' => __( 'Inconsistent', 'disciple_tools' ) ],
-                    'inactive' => [ 'label' => __( 'Inactive', 'disciple_tools' ) ],
-                ],
+                'options' => array(
+                    'active' => array( 'label' => __( 'Active', 'disciple_tools' ) ),
+                    'away' => array( 'label' => __( 'Away', 'disciple_tools' ) ),
+                    'inconsistent' => array( 'label' => __( 'Inconsistent', 'disciple_tools' ) ),
+                    'inactive' => array( 'label' => __( 'Inactive', 'disciple_tools' ) ),
+                ),
                 'type' => 'key_select',
-            ],
-            'workload_status' => [
+            ),
+            'workload_status' => array(
                 'table' => 'usermeta_table',
                 'key' => $wpdb->prefix . 'workload_status',
                 'label' => __( 'Workload Status', 'disciple_tools' ),
-                'options' => dt_get_site_custom_lists()['user_workload_status'] ?? [],
+                'options' => dt_get_site_custom_lists()['user_workload_status'] ?? array(),
                 'type' => 'key_select',
-            ],
-            'last_activity' => [
+            ),
+            'last_activity' => array(
                 'label' => 'Last Activity',
                 'type' => 'date',
                 'table' => 'dt_activity_log',
                 'meta_key' => 'activity_date',
-            ]
-        ];
+            ),
+        );
 
         $fields = apply_filters( 'dt_users_fields', $fields );
         wp_cache_set( 'dt_users_fields', $fields );
@@ -210,13 +210,13 @@ class Disciple_Tools_Users
      */
     public static function get_assignable_users_compact( string $search_string = null, bool $get_all = false ) {
         if ( !current_user_can( 'access_contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( 'No permissions to assign', 'disciple_tools' ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, __( 'No permissions to assign', 'disciple_tools' ), array( 'status' => 403 ) );
         }
 
         global $wpdb;
         $user_id = get_current_user_id();
-        $users = [];
-        $update_needed = [];
+        $users = array();
+        $update_needed = array();
         if ( !current_user_can( 'dt_all_access_contacts' ) && !current_user_can( 'dt_list_users' ) ){
             // users that are shared posts that are shared with me
             if ( $search_string ){
@@ -266,7 +266,7 @@ class Disciple_Tools_Users
                 ");
             }
 
-            $assure_unique = [];
+            $assure_unique = array();
             foreach ( $dispatchers as $index ){
                 $id = $index->user_id;
                 if ( $id && !in_array( $id, $assure_unique ) ){
@@ -284,17 +284,17 @@ class Disciple_Tools_Users
         } else {
             $correct_roles = dt_multi_role_get_cap_roles( 'access_contacts' );
             $search_string = esc_attr( $search_string );
-            $user_query = new WP_User_Query( [
+            $user_query = new WP_User_Query( array(
                 'search'         => '*' . $search_string . '*',
-                'search_columns' => [
+                'search_columns' => array(
                     'user_login',
                     'user_nicename',
                     'user_email',
-                    'display_name'
-                ],
+                    'display_name',
+                ),
                 'role__in' => $correct_roles,
-                'number' => $get_all ? 1000 : 50
-            ] );
+                'number' => $get_all ? 1000 : 50,
+            ) );
 
             $users = $user_query->get_results();
 
@@ -306,7 +306,7 @@ class Disciple_Tools_Users
                     $update_needed['user-' . $uid] = $val['number_update'];
                 }
             } else {
-                $ids = [];
+                $ids = array();
                 foreach ( $users as $a ){
                     $ids[] = 'user-' . $a->ID;
                 }
@@ -325,18 +325,18 @@ class Disciple_Tools_Users
                 }
             }
         }
-        $list = [];
+        $list = array();
 
-        $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
+        $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? array();
 
         foreach ( $users as $user ) {
             if ( user_can( $user, 'access_contacts' ) ) {
-                $u = [
+                $u = array(
                     'name' => wp_specialchars_decode( $user->display_name ),
                     'ID'   => $user->ID,
-                    'avatar' => get_avatar_url( $user->ID, [ 'size' => '16' ] ),
-                    'contact_id' => self::get_contact_for_user( $user->ID )
-                ];
+                    'avatar' => get_avatar_url( $user->ID, array( 'size' => '16' ) ),
+                    'contact_id' => self::get_contact_for_user( $user->ID ),
+                );
                 //extra information for the dispatcher
                 if ( current_user_can( 'dt_all_access_contacts' ) && !$get_all ){
                     $workload_status = get_user_option( 'workload_status', $user->ID );
@@ -371,27 +371,27 @@ class Disciple_Tools_Users
      */
     public static function get_contact_for_user( $user_id ){
         if ( !current_user_can( 'access_contacts' ) ){
-            return new WP_Error( 'no_permission', __( 'Insufficient permissions', 'disciple_tools' ), [ 'status' => 403 ] );
+            return new WP_Error( 'no_permission', __( 'Insufficient permissions', 'disciple_tools' ), array( 'status' => 403 ) );
         }
         $contact_id = get_user_option( 'corresponds_to_contact', $user_id );
 
         if ( !empty( $contact_id ) && get_post( $contact_id ) ){
             return (int) $contact_id;
         }
-        $args = [
+        $args = array(
             'post_type'  => 'contacts',
             'relation'   => 'AND',
-            'meta_query' => [
-                [
+            'meta_query' => array(
+                array(
                     'key' => 'corresponds_to_user',
-                    'value' => $user_id
-                ],
-                [
+                    'value' => $user_id,
+                ),
+                array(
                     'key' => 'type',
-                    'value' => 'user'
-                ],
-            ],
-        ];
+                    'value' => 'user',
+                ),
+            ),
+        );
         $contacts = new WP_Query( $args );
         if ( isset( $contacts->post->ID ) ){
             update_user_option( $user_id, 'corresponds_to_contact', $contacts->post->ID );
@@ -451,15 +451,15 @@ class Disciple_Tools_Users
      * @param bool $return_contact_id
      * @return int|WP_Error|array
      */
-    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = [ 'multiplier' ], $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false, $password = null, $optional_fields = null, $archive_comments = false ){
+    public static function create_user( $user_name, $user_email, $display_name, array $user_roles = array( 'multiplier' ), $corresponds_to_contact = null, $locale = null, bool $return_contact_id = false, $password = null, $optional_fields = null, $archive_comments = false ){
         if ( !current_user_can( 'create_users' ) && !DT_User_Management::non_admins_can_make_users() ){
-            return new WP_Error( 'no_permissions', "You don't have permissions to create users", [ 'status' => 401 ] );
+            return new WP_Error( 'no_permissions', "You don't have permissions to create users", array( 'status' => 401 ) );
         }
 
         if ( !current_user_can( 'create_users' ) && DT_User_Management::non_admins_can_make_users() ) {
-            $user_roles = [ 'multiplier' ];
+            $user_roles = array( 'multiplier' );
             if ( $corresponds_to_contact && ! DT_Posts::can_view( 'contacts', (int) $corresponds_to_contact ) ) {
-                return new WP_Error( 'no_permissions', "You don't have permission to create a user for this contact", [ 'status' => 401 ] );
+                return new WP_Error( 'no_permissions', "You don't have permission to create a user for this contact", array( 'status' => 401 ) );
             }
         }
         if ( $corresponds_to_contact ){
@@ -480,13 +480,13 @@ class Disciple_Tools_Users
                     return $user_id;
                 }
 
-                return new WP_Error( 'email_exists', __( 'Email already exists and is a user on this site', 'disciple_tools' ), [ 'status' => 409 ] );
+                return new WP_Error( 'email_exists', __( 'Email already exists and is a user on this site', 'disciple_tools' ), array( 'status' => 409 ) );
             } else {
 
                 $blog_id = get_current_blog_id();
                 $addition = add_user_to_blog( $blog_id, $user_id, $user_roles[0] ?? 'multiplier' );
                 if ( is_wp_error( $addition ) ) {
-                    return new WP_Error( 'failed_to_add_user', __( 'Failed to add user to site.', 'disciple_tools' ), [ 'status' => 409 ] );
+                    return new WP_Error( 'failed_to_add_user', __( 'Failed to add user to site.', 'disciple_tools' ), array( 'status' => 409 ) );
                 }
                 self::save_user_roles( $user_id, $user_roles );
             }
@@ -524,11 +524,11 @@ class Disciple_Tools_Users
             update_post_meta( $corresponds_to_contact, 'type', 'user' );
 
             if ( $archive_comments && !is_wp_error( $existing_contact ) ){
-                $archive_contact = DT_Posts::create_post( 'contacts', [
+                $archive_contact = DT_Posts::create_post( 'contacts', array(
                     'type' => 'placeholder',
                     'overall_status' => 'closed',
                     'title' => $existing_contact['title'] . ' - ' . __( 'Archived', 'disciple_tools' ),
-                ] );
+                ) );
                 if ( isset( $archive_contact['ID'] ) ){
                     $current_user_id = get_current_user_id();
                     //move comments to new archive post
@@ -539,13 +539,13 @@ class Disciple_Tools_Users
                     $mention = dt_get_user_mention_syntax( $current_user_id );
                     $comment = sprintf( _x( 'These are archived comments for %1$s', 'These are archived comments for contact John Doe', 'disciple_tools' ), '[' . $existing_contact['title'] . '](' . $existing_contact['permalink'] .')' );
                     wp_set_current_user( 0 );
-                    DT_Posts::add_post_comment( 'contacts', $archive_contact['ID'], $mention . ' ' . $comment, 'comment', [], false, false );
+                    DT_Posts::add_post_comment( 'contacts', $archive_contact['ID'], $mention . ' ' . $comment, 'comment', array(), false, false );
                     wp_set_current_user( $current_user_id );
                 }
             }
 
             // Transfer any existing sub-assignments
-            foreach ( p2p_get_connections( 'contacts_to_subassigned', [ 'from' => $corresponds_to_contact ] ) as $p2p ) {
+            foreach ( p2p_get_connections( 'contacts_to_subassigned', array( 'from' => $corresponds_to_contact ) ) as $p2p ) {
                 if ( isset( $p2p->p2p_to ) ) {
                     DT_Posts::add_shared( 'contacts', $p2p->p2p_to, $user_id );
                 }
@@ -554,10 +554,10 @@ class Disciple_Tools_Users
 
         do_action( 'dt_user_created', $user_id );
         if ( $return_contact_id ) {
-            return [
+            return array(
                 'user_id' => $user_id,
                 'corresponds_to_contact' => self::get_contact_for_user( $user_id ),
-            ];
+            );
         }
         return $user_id;
     }
@@ -573,20 +573,20 @@ class Disciple_Tools_Users
         $corresponds_to_contact = get_user_option( 'corresponds_to_contact', $user_id );
         if ( $user && $user->has_cap( 'access_contacts' ) && is_user_member_of_blog( $user_id ) ) {
             if ( empty( $corresponds_to_contact ) ){
-                $args = [
+                $args = array(
                     'post_type'  => 'contacts',
                     'relation'   => 'AND',
-                    'meta_query' => [
-                        [
+                    'meta_query' => array(
+                        array(
                             'key' => 'corresponds_to_user',
-                            'value' => $user_id
-                        ],
-                        [
+                            'value' => $user_id,
+                        ),
+                        array(
                             'key' => 'type',
-                            'value' => 'user'
-                        ],
-                    ],
-                ];
+                            'value' => 'user',
+                        ),
+                    ),
+                );
                 $contacts = new WP_Query( $args );
                 if ( isset( $contacts->post->ID ) ){
                     $corresponds_to_contact = $contacts->post->ID;
@@ -594,16 +594,16 @@ class Disciple_Tools_Users
                 }
             }
             if ( empty( $corresponds_to_contact ) ){
-                $args = [
+                $args = array(
                     'post_type'  => 'contacts',
                     'relation'   => 'AND',
-                    'meta_query' => [
-                        [
+                    'meta_query' => array(
+                        array(
                             'key' => 'corresponds_to_user_name',
-                            'value' => $user->user_login
-                        ]
-                    ],
-                ];
+                            'value' => $user->user_login,
+                        ),
+                    ),
+                );
                 $contacts = new WP_Query( $args );
                 if ( isset( $contacts->post->ID ) ){
                     $corresponds_to_contact = $contacts->post->ID;
@@ -613,12 +613,12 @@ class Disciple_Tools_Users
             }
 
             if ( empty( $corresponds_to_contact ) || get_post( $corresponds_to_contact ) === null ) {
-                $new_user_contact = DT_Posts::create_post( 'contacts', [
+                $new_user_contact = DT_Posts::create_post( 'contacts', array(
                     'title'               => $user->display_name,
                     'type'                => 'user',
                     'corresponds_to_user' => $user_id,
-                    'contact_email'       => [ 'values' => [ [ 'value' => $user->user_email ] ] ],
-                ], true, false );
+                    'contact_email'       => array( 'values' => array( array( 'value' => $user->user_email ) ) ),
+                ), true, false );
                 if ( !is_wp_error( $new_user_contact ) ){
                     update_user_option( $user_id, 'corresponds_to_contact', $new_user_contact['ID'] );
 
@@ -635,9 +635,9 @@ class Disciple_Tools_Users
             } else {
                 $contact = get_post( $corresponds_to_contact );
                 if ( $contact && $contact->post_title != $user->display_name && $user->display_name != $user->user_login ){
-                    DT_Posts::update_post( 'contacts', $corresponds_to_contact, [
-                        'title' => $user->display_name
-                    ], false, false );
+                    DT_Posts::update_post( 'contacts', $corresponds_to_contact, array(
+                        'title' => $user->display_name,
+                    ), false, false );
                 }
 
                 /**
@@ -656,12 +656,12 @@ class Disciple_Tools_Users
 
     public static function save_user_roles( $user_id, $roles ){
         if ( !self::current_user_can_upgrade_users() ){
-            $roles = [ 'multiplier' ];
+            $roles = array( 'multiplier' );
         }
 
-        $can_not_promote_to_roles = [];
+        $can_not_promote_to_roles = array();
         if ( !dt_is_administrator() ){
-            $can_not_promote_to_roles = [ 'administrator' ];
+            $can_not_promote_to_roles = array( 'administrator' );
         }
         if ( !current_user_can( 'manage_dt' ) ){
             // get roles that can `manage_dt`
@@ -706,24 +706,24 @@ class Disciple_Tools_Users
 
     public static function get_user_filters( $post_type, $force_refresh = false ){
         $current_user_id = get_current_user_id();
-        $filters = [];
+        $filters = array();
         if ( $current_user_id ){
             $filters = get_user_option( "dt_cached_filters_$post_type", $current_user_id );
             if ( !empty( $filters ) && $force_refresh === false ) {
                 return $filters;
             }
             $custom_filters = maybe_unserialize( get_user_option( 'saved_filters', $current_user_id ) );
-            $filters = [
-                'tabs' => [
-                    [
+            $filters = array(
+                'tabs' => array(
+                    array(
                         'key' => 'custom',
                         'label' => _x( 'Custom Filters', 'List Filters', 'disciple_tools' ),
-                        'order' => 99
-                    ]
-                ],
-                'filters' => []
-            ];
-            foreach ( $custom_filters[$post_type] ?? [] as $filter ){
+                        'order' => 99,
+                    ),
+                ),
+                'filters' => array(),
+            );
+            foreach ( $custom_filters[$post_type] ?? array() as $filter ){
                 $filter['tab'] = 'custom';
                 $filter['ID'] = (string) $filter['ID'];
                 $filters['filters'][] = $filter;
@@ -745,7 +745,7 @@ class Disciple_Tools_Users
             $filter = filter_var_array( $filter, FILTER_SANITIZE_STRING );
             $filters = get_user_option( 'saved_filters', $current_user_id );
             if ( !isset( $filters[$post_type] ) ){
-                $filters[$post_type] = [];
+                $filters[$post_type] = array();
             }
 
             $updated = false;
@@ -759,7 +759,7 @@ class Disciple_Tools_Users
                 $filters[$post_type][] = $filter;
             }
             update_user_option( $current_user_id, 'saved_filters', $filters );
-            update_user_option( $current_user_id, "dt_cached_filters_$post_type", [] );
+            update_user_option( $current_user_id, "dt_cached_filters_$post_type", array() );
         }
         return true;
     }
@@ -769,7 +769,7 @@ class Disciple_Tools_Users
         if ( $current_user_id ){
             $filters = get_user_option( 'saved_filters', $current_user_id );
             if ( !isset( $filters[$post_type] ) ){
-                $filters[$post_type] = [];
+                $filters[$post_type] = array();
             }
             $index_to_remove = null;
             foreach ( $filters[$post_type] as $index => $filter ){
@@ -796,12 +796,12 @@ class Disciple_Tools_Users
 
     public static function update_settings_on_user( int $user_id, $body ){
         if ( !self::can_update( $user_id ) ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 401 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', array( 'status' => 401 ) );
         }
         delete_transient( 'dispatcher_user_data' );
         $user = get_user_by( 'ID', $user_id );
         if ( !$user ){
-            return new WP_Error( 'user_id', 'User does not exist', [ 'status' => 400 ] );
+            return new WP_Error( 'user_id', 'User does not exist', array( 'status' => 400 ) );
         }
         if ( isset( $body['user_status'] ) ) {
             return update_user_option( $user->ID, 'user_status', $body['user_status'] );
@@ -829,12 +829,12 @@ class Disciple_Tools_Users
             if ( !current_user_can( 'promote_users' ) ) {
                 return false;
             }
-            $allowed_sources = [];
+            $allowed_sources = array();
             foreach ( $body['allowed_sources'] as $s ){
                 $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
             }
             if ( in_array( 'restrict_all_sources', $allowed_sources ) ){
-                $allowed_sources = [ 'restrict_all_sources' ];
+                $allowed_sources = array( 'restrict_all_sources' );
             }
             update_user_option( $user->ID, 'allowed_sources', $allowed_sources );
             return $allowed_sources;
@@ -843,7 +843,7 @@ class Disciple_Tools_Users
             $display_name = sanitize_text_field( wp_unslash( $body['update_display_name'] ) );
             $result = wp_update_user( array(
                 'ID' => $user->ID,
-                'display_name' => $display_name
+                'display_name' => $display_name,
             ) );
             if ( is_wp_error( $result ) ) {
                 return false;
@@ -859,7 +859,7 @@ class Disciple_Tools_Users
             return self::update_user_locale( $user->ID, $body['locale'] );
         }
         if ( !empty( $body['add_languages'] ) ){
-            $languages = get_user_option( 'user_languages', $user->ID ) ?: [];
+            $languages = get_user_option( 'user_languages', $user->ID ) ?: array();
             if ( !in_array( $body['add_languages'], $languages ) ){
                 $languages[] = $body['add_languages'];
             }
@@ -875,7 +875,7 @@ class Disciple_Tools_Users
             return $languages;
         }
         if ( !empty( $body['add_people_groups'] ) ){
-            $people_groups = get_user_option( 'user_people_groups', $user->ID ) ?: [];
+            $people_groups = get_user_option( 'user_people_groups', $user->ID ) ?: array();
             if ( !in_array( $body['add_people_groups'], $people_groups ) ){
                 $people_groups[] = $body['add_people_groups'];
             }
@@ -909,7 +909,7 @@ class Disciple_Tools_Users
         try {
             do_action( 'dt_update_user', $user, $body );
         } catch ( Exception $e ) {
-            return new WP_Error( __FUNCTION__, $e->getMessage(), [ 'status' => $e->getCode() ] );
+            return new WP_Error( __FUNCTION__, $e->getMessage(), array( 'status' => $e->getCode() ) );
         }
         return true;
     }
@@ -945,15 +945,15 @@ class Disciple_Tools_Users
         }
 
         if ( $status ) {
-            return [
+            return array(
                 'status'   => true,
                 'response' => $status,
-            ];
+            );
         } else {
-            return [
+            return array(
                 'status'  => false,
-                'message' => 'Unable to update_user_option ' . $preference_key . ' to ' . $label
-            ];
+                'message' => 'Unable to update_user_option ' . $preference_key . ' to ' . $label,
+            );
         }
     }
 
@@ -986,15 +986,15 @@ class Disciple_Tools_Users
         }
 
         if ( $status ) {
-            return [
+            return array(
                 'status'   => true,
                 'response' => $action,
-            ];
+            );
         } else {
-            return [
+            return array(
                 'status'  => false,
-                'message' => 'Unable to update_user_option.'
-            ];
+                'message' => 'Unable to update_user_option.',
+            );
         }
     }
 
@@ -1009,7 +1009,7 @@ class Disciple_Tools_Users
             return new WP_Error( 'fail_nonce_verification', 'The form requires a valid nonce, in order to process.' );
         }
 
-        $args = [];
+        $args = array();
         $args['ID'] = $current_user->ID;
 
         // build user name variables
@@ -1048,7 +1048,7 @@ class Disciple_Tools_Users
         }
 
         // Update custom site fields
-        $fields = array_keys( $site_custom_lists = dt_get_option( 'dt_site_custom_lists' )['user_fields'] ?? [] );
+        $fields = array_keys( $site_custom_lists = dt_get_option( 'dt_site_custom_lists' )['user_fields'] ?? array() );
 
         foreach ( $fields as $f ) {
 
@@ -1070,7 +1070,7 @@ class Disciple_Tools_Users
             //set display name to nickname
             wp_update_user( array(
                     'ID' => (int) $args['ID'],
-                    'display_name' => $args['nickname']
+                    'display_name' => $args['nickname'],
                 )
             );
 
@@ -1083,9 +1083,9 @@ class Disciple_Tools_Users
     public function get_date_availability_hook( $settings ){
         $dates_unavailable = get_user_option( 'user_dates_unavailable', get_current_user_id() );
         if ( !$dates_unavailable ) {
-            $dates_unavailable = [];
+            $dates_unavailable = array();
         }
-        foreach ( $dates_unavailable ?? [] as &$range ) {
+        foreach ( $dates_unavailable ?? array() as &$range ) {
             $range['start_date'] = dt_format_date( $range['start_date'] );
             $range['end_date'] = dt_format_date( $range['end_date'] );
         }
@@ -1095,7 +1095,7 @@ class Disciple_Tools_Users
 
     public static function add_date_availability( array $data, int $user_id ) {
         if ( !self::can_update( $user_id ) ){
-            return new WP_Error( 'add_date_availability', 'permission denied', [ 'status' => 404 ] );
+            return new WP_Error( 'add_date_availability', 'permission denied', array( 'status' => 404 ) );
         }
         if ( empty( $data['start_date'] ) || empty( $data['end_date'] ) ) {
             return new WP_Error( __FUNCTION__, 'missing parameters' );
@@ -1103,25 +1103,25 @@ class Disciple_Tools_Users
 
         $dates_unavailable = get_user_option( 'user_dates_unavailable', $user_id );
         if ( !$dates_unavailable ){
-            $dates_unavailable = [];
+            $dates_unavailable = array();
         }
         $max_id = 0;
         foreach ( $dates_unavailable as $range ){
             $max_id = max( $max_id, $range['id'] ?? 0 );
         }
 
-        $dates_unavailable[] = [
+        $dates_unavailable[] = array(
             'id' => $max_id + 1,
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
-        ];
+        );
         update_user_option( $user_id, 'user_dates_unavailable', $dates_unavailable );
         return $dates_unavailable;
     }
 
     public static function remove_date_availability( int $entry_id, int $user_id ) {
         if ( !self::can_update( $user_id ) ){
-            return new WP_Error( 'add_date_availability', 'permission denied', [ 'status' => 404 ] );
+            return new WP_Error( 'add_date_availability', 'permission denied', array( 'status' => 404 ) );
         }
         $dates_unavailable = get_user_option( 'user_dates_unavailable', $user_id );
         foreach ( $dates_unavailable as $index => $range ) {
@@ -1136,12 +1136,12 @@ class Disciple_Tools_Users
 
     public static function update_user_locale( int $user_id, $locale ){
         if ( !self::can_update( $user_id ) ){
-            return new WP_Error( __FUNCTION__, 'permission denied', [ 'status' => 404 ] );
+            return new WP_Error( __FUNCTION__, 'permission denied', array( 'status' => 404 ) );
         }
-        return wp_update_user( [
+        return wp_update_user( array(
             'ID' => $user_id,
-            'locale' => $locale
-        ] );
+            'locale' => $locale,
+        ) );
     }
 
 
@@ -1153,37 +1153,37 @@ class Disciple_Tools_Users
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-        $grid = [];
+        $grid = array();
 
         global $wpdb;
         if ( DT_Mapbox_API::get_key() ) {
             $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid_meta' );
             if ( ! empty( $location_grid ) ) {
-                $grid['location_grid_meta'] = [];
+                $grid['location_grid_meta'] = array();
                 foreach ( $location_grid as $meta ) {
                     $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta );
                     if ( $location_grid_meta ) {
                         $grid['location_grid_meta'][] = $location_grid_meta;
                     }
                 }
-                $grid['location_grid'] = [];
+                $grid['location_grid'] = array();
                 foreach ( $grid['location_grid_meta'] as $meta ) {
-                    $grid['location_grid'][] = [
+                    $grid['location_grid'][] = array(
                         'id' => (int) $meta['grid_id'],
-                        'label' => $meta['label']
-                    ];
+                        'label' => $meta['label'],
+                    );
                 }
             }
         } else {
             $location_grid = get_user_meta( $user_id, $wpdb->prefix . 'location_grid' );
             if ( ! empty( $location_grid ) ) {
                 $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( $location_grid );
-                $grid['location_grid'] = [];
+                $grid['location_grid'] = array();
                 foreach ( $names as $id => $name ) {
-                    $grid['location_grid'][] = [
+                    $grid['location_grid'][] = array(
                         'id' => $id,
-                        'label' => $name
-                    ];
+                        'label' => $name,
+                    );
                 }
             }
         }
@@ -1240,7 +1240,7 @@ class Disciple_Tools_Users
 
             $grid = $geocoder->query_by_grid_id( $location_grid_meta['grid_id'] );
             if ( $grid ) {
-                $lgm = [];
+                $lgm = array();
 
                 Location_Grid_Meta::validate_location_grid_meta( $lgm );
                 $lgm['post_id'] = $user_id;
@@ -1281,17 +1281,17 @@ class Disciple_Tools_Users
     }
 
     public static function get_user_settings( $user ): array {
-        return [
+        return array(
             'profile'        => self::get_user_settings_profile( $user ),
             'apps'           => self::get_user_settings_apps(),
             'preferences'    => self::get_user_settings_preferences( $user ),
             'unavailability' => self::get_user_settings_unavailability( $user ),
-            'notifications'  => self::get_user_settings_notifications( $user )
-        ];
+            'notifications'  => self::get_user_settings_notifications( $user ),
+        );
     }
 
     private static function get_user_settings_profile( $user ): array {
-        return [
+        return array(
             'ID'           => $user->ID,
             'name'         => trim( $user->first_name . ' ' . $user->last_name ),
             'username'     => $user->user_login,
@@ -1299,12 +1299,12 @@ class Disciple_Tools_Users
             'nickname'     => $user->nickname,
             'display_name' => $user->display_name,
             'roles'        => dt_get_user_role_names( $user->ID ),
-            'email'        => self::get_user_settings_profile_field( $user, 'email', [
-                [
+            'email'        => self::get_user_settings_profile_field( $user, 'email', array(
+                array(
                     'value' => $user->user_email,
-                    'label' => __( 'System Email', 'disciple_tools' )
-                ]
-            ] ),
+                    'label' => __( 'System Email', 'disciple_tools' ),
+                ),
+            ) ),
             'phone'        => self::get_user_settings_profile_field( $user, 'phone' ),
             'address'      => self::get_user_settings_profile_field( $user, 'address' ),
             'social'       => self::get_user_settings_profile_field( $user, 'social' ),
@@ -1312,19 +1312,19 @@ class Disciple_Tools_Users
             'locale'       => get_user_locale( $user->ID ),
             'language'     => self::get_user_settings_profile_language( $user ),
             'bio'          => $user->user_description,
-            'gender'       => self::get_user_settings_profile_gender( $user )
-        ];
+            'gender'       => self::get_user_settings_profile_gender( $user ),
+        );
     }
 
-    private static function get_user_settings_profile_field( $user, $field_key, $entries = [] ): array {
+    private static function get_user_settings_profile_field( $user, $field_key, $entries = array() ): array {
         $user_array = get_user_meta( $user->ID );
         if ( is_array( $user_array ) ) {
-            foreach ( dt_build_user_fields_display( $user_array ) ?? [] as $field ) {
+            foreach ( dt_build_user_fields_display( $user_array ) ?? array() as $field ) {
                 if ( $field['type'] == $field_key && ! empty( $field['value'] ) ) {
-                    $entries[] = [
+                    $entries[] = array(
                         'value' => $field['value'],
-                        'label' => $field['label']
-                    ];
+                        'label' => $field['label'],
+                    );
                 }
             }
         }
@@ -1349,14 +1349,14 @@ class Disciple_Tools_Users
     }
 
     private static function get_user_settings_apps(): array {
-        $apps = [];
-        foreach ( apply_filters( 'dt_settings_apps_list', [] ) ?? [] as $app_key => $app_value ) {
+        $apps = array();
+        foreach ( apply_filters( 'dt_settings_apps_list', array() ) ?? array() as $app_key => $app_value ) {
             if ( $app_value['settings_display'] ?? true ) {
-                $apps[] = [
+                $apps[] = array(
                     'label'       => $app_value['label'],
                     'description' => $app_value['description'],
-                    'link'        => get_user_option( $app_key ) ? trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . get_user_option( $app_key ) : ''
-                ];
+                    'link'        => get_user_option( $app_key ) ? trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] ) . get_user_option( $app_key ) : '',
+                );
             }
         }
 
@@ -1364,25 +1364,25 @@ class Disciple_Tools_Users
     }
 
     private static function get_user_settings_preferences( $user ): array {
-        return [
+        return array(
             'languages'     => self::get_user_settings_preferences_languages( $user ),
             'locations'     => self::get_user_location( $user->ID ),
             'people_groups' => self::get_user_settings_preferences_people_groups( $user ),
-            'workload'      => self::get_user_settings_preferences_workload( $user )
-        ];
+            'workload'      => self::get_user_settings_preferences_workload( $user ),
+        );
     }
 
     private static function get_user_settings_preferences_languages( $user ): array {
         $contact_fields = DT_Posts::get_post_settings( 'contacts', false )['fields'];
 
-        $languages      = [];
+        $languages      = array();
         $user_languages = get_user_option( 'user_languages', $user->ID );
         foreach ( $contact_fields['languages']['default'] as $option_key => $option_value ) {
-            if ( in_array( $option_key, $user_languages ?: [] ) ) {
-                $languages[] = [
+            if ( in_array( $option_key, $user_languages ?: array() ) ) {
+                $languages[] = array(
                     'key'   => $option_key,
-                    'label' => $option_value['label']
-                ];
+                    'label' => $option_value['label'],
+                );
             }
         }
 
@@ -1391,14 +1391,14 @@ class Disciple_Tools_Users
 
     private static function get_user_settings_preferences_people_groups( $user ): array {
         $user_people_groups = get_user_option( 'user_people_groups', $user->ID );
-        return DT_Posts::get_post_names_from_ids( $user_people_groups ? $user_people_groups : [] );
+        return DT_Posts::get_post_names_from_ids( $user_people_groups ? $user_people_groups : array() );
     }
 
     private static function get_user_settings_preferences_workload( $user ): array {
         $workload = get_user_option( 'workload_status', $user->ID );
-        $options  = dt_get_site_custom_lists()['user_workload_status'] ?? [];
+        $options  = dt_get_site_custom_lists()['user_workload_status'] ?? array();
 
-        $workload_response = [];
+        $workload_response = array();
         if ( isset( $options[ $workload ] ) ) {
             $workload_response       = $options[ $workload ];
             $workload_response['id'] = $workload;
@@ -1410,9 +1410,9 @@ class Disciple_Tools_Users
     private static function get_user_settings_unavailability( $user ): array {
         $dates_unavailable = get_user_option( 'user_dates_unavailable', $user->ID );
         if ( ! $dates_unavailable ) {
-            $dates_unavailable = [];
+            $dates_unavailable = array();
         }
-        foreach ( $dates_unavailable ?? [] as &$range ) {
+        foreach ( $dates_unavailable ?? array() as &$range ) {
             $range['start_date'] = dt_format_date( $range['start_date'] );
             $range['end_date']   = dt_format_date( $range['end_date'] );
         }
@@ -1421,11 +1421,11 @@ class Disciple_Tools_Users
     }
 
     private static function get_user_settings_notifications( $user ): array {
-        return [
+        return array(
             'email_preference' => self::get_user_settings_notifications_email_preference( $user ),
             'notify_types'     => self::get_user_settings_notifications_type( $user ),
-            'follow_all'       => self::get_user_settings_notifications_follow_all( $user )
-        ];
+            'follow_all'       => self::get_user_settings_notifications_follow_all( $user ),
+        );
     }
 
     private static function get_user_settings_notifications_email_preference( $user ): array {
@@ -1433,32 +1433,32 @@ class Disciple_Tools_Users
 
         $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null;
 
-        return [
+        return array(
             'realtime' => ( ! $email_preference || $email_preference === 'real-time' ),
             'hourly'   => ( $email_preference === 'hourly' ),
-            'daily'    => ( $email_preference === 'daily' )
-        ];
+            'daily'    => ( $email_preference === 'daily' ),
+        );
     }
 
     private static function get_user_settings_notifications_type( $user ): array {
         $dt_user_meta                  = get_user_meta( $user->ID );
         $dt_site_notification_defaults = dt_get_site_notification_defaults();
 
-        $types = [];
+        $types = array();
         foreach ( $dt_site_notification_defaults['types'] as $dt_notification_key => $dt_notification_default ) {
-            $type             = [];
+            $type             = array();
             $type['key']      = $dt_notification_key;
             $type['label']    = $dt_notification_default['label'];
-            $type['channels'] = [];
+            $type['channels'] = array();
 
             foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ) {
                 $channel_notification_key = $dt_notification_key . '_' . $channel_key;
 
-                $type['channels'][] = [
+                $type['channels'][] = array(
                     'key'     => $channel_key,
                     'label'   => $channel_value['label'],
-                    'enabled' => ( $dt_notification_default[ $channel_key ] ) || ( isset( $dt_user_meta[ $channel_notification_key ] ) && $dt_user_meta[ $channel_notification_key ][0] == true )
-                ];
+                    'enabled' => ( $dt_notification_default[ $channel_key ] ) || ( isset( $dt_user_meta[ $channel_notification_key ] ) && $dt_user_meta[ $channel_notification_key ][0] == true ),
+                );
             }
 
             $types[] = $type;
@@ -1472,5 +1472,4 @@ class Disciple_Tools_Users
 
         return user_can( $user, 'dt_all_access_contacts' ) && ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true );
     }
-
 }

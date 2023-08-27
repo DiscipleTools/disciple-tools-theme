@@ -21,7 +21,7 @@ class DT_Login_User_Manager {
         $this->email = $this->firebase_auth['email'];
         $this->name = $this->firebase_auth['name'];
         $this->identities = (array) $this->firebase_auth['firebase']->identities;
-        add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
+        add_filter( 'dt_allow_rest_access', array( $this, 'authorize_url' ), 10, 1 );
     }
 
     public function authorize_url( $authorized ){
@@ -72,14 +72,14 @@ class DT_Login_User_Manager {
         $password = wp_generate_password();
 
         $user_role = $this->get_default_role();
-        $userdata = [
+        $userdata = array(
             'user_email' => $this->email,
             'user_login' => $this->uid,
             'user_pass' => $password,
             'display_name' => $this->name,
             'nickname' => $this->name,
             'role' => $user_role,
-        ];
+        );
 
         $user_id = wp_insert_user( $userdata );
 
@@ -129,20 +129,20 @@ class DT_Login_User_Manager {
             wp_logout();
         }
 
-        add_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );    // hook in earlier than other callbacks to short-circuit them
+        add_filter( 'authenticate', array( $this, 'allow_programmatic_login' ), 10, 3 );    // hook in earlier than other callbacks to short-circuit them
 
         $user = wp_signon( array( 'user_login' => $this->email ) );
 
-        remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
+        remove_filter( 'authenticate', array( $this, 'allow_programmatic_login' ), 10 );
 
         if ( is_a( $user, 'WP_User' ) ) {
             wp_set_current_user( $user->ID, $user->user_login );
 
             if ( is_user_logged_in() ) {
-                return [
+                return array(
                     'login_method' => DT_Login_Methods::WORDPRESS,
                     'jwt' => null,
-                ];
+                );
             }
         }
 
@@ -159,7 +159,7 @@ class DT_Login_User_Manager {
             wp_logout();
         }
 
-        add_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );    // hook in earlier than other callbacks to short-circuit them
+        add_filter( 'authenticate', array( $this, 'allow_programmatic_login' ), 10, 3 );    // hook in earlier than other callbacks to short-circuit them
 
         $auth_service_endpoint = DT_Login_Fields::get( 'auth_service_endpoint' );
 
@@ -167,16 +167,16 @@ class DT_Login_User_Manager {
             $auth_service_endpoint = 'http://localhost:8000/' . static::DEFAULT_AUTH_SERVICE_ENDPOINT;
         }
 
-        require_once( get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php' );
+        require_once get_template_directory() . '/dt-core/libraries/wp-api-jwt-auth/public/class-jwt-auth-public.php';
         $token = Jwt_Auth_Public::generate_token_static( $this->email, 'dummy-password' );
 
-        remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
+        remove_filter( 'authenticate', array( $this, 'allow_programmatic_login' ), 10 );
 
         if ( $token ) {
-            return [
+            return array(
                 'login_method' => DT_Login_Methods::MOBILE,
                 'jwt' => $token,
-            ];
+            );
         }
 
         return false;

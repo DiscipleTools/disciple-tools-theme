@@ -25,22 +25,22 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
      * @since   0.1.0
      */
     public function __construct(){
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 125, 1 );
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 125, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 125 );
+        add_action( 'dt_utilities_tab_menu', array( $this, 'add_tab' ), 125, 1 );
+        add_action( 'dt_utilities_tab_content', array( $this, 'content' ), 125, 1 );
 
         parent::__construct();
     } // End __construct()
 
     public function add_submenu(){
-        add_submenu_page( 'edit.php?post_type=imports', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
+        add_submenu_page( 'edit.php?post_type=imports', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', array(
             'Disciple_Tools_Settings_Menu',
-            'content'
-        ] );
-        add_submenu_page( 'dt_utilities', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
+            'content',
+        ) );
+        add_submenu_page( 'dt_utilities', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', array(
             'Disciple_Tools_Settings_Menu',
-            'content'
-        ] );
+            'content',
+        ) );
     }
 
     public function add_tab( $tab ){
@@ -60,7 +60,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
             if ( $this->file_upload_detected_and_correct() && isset( $_FILES['dt_import_file_upload_prompt_file']['tmp_name'] ) ){
 
                 // Convert uploaded file into a usable configuration object.
-                $uploaded_config = [];
+                $uploaded_config = array();
                 $uploaded_file_contents = file_get_contents( sanitize_text_field( wp_unslash( $_FILES['dt_import_file_upload_prompt_file']['tmp_name'] ) ) );
                 if ( $uploaded_file_contents ){
                     $uploaded_config = json_decode( $uploaded_file_contents, true );
@@ -113,7 +113,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
     }
 
     private function display_file_upload_prompt(){
-        $this->box( 'top', 'Upload D.T Import Configuration File', [ 'col_span' => 4 ] );
+        $this->box( 'top', 'Upload D.T Import Configuration File', array( 'col_span' => 4 ) );
         ?>
         <p>
             Select a previously exported json configuration file.
@@ -144,7 +144,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
     private function display_services( $uploaded_config ){
 
-        $this->box( 'top', 'Available Import Services', [ 'col_span' => 4 ] );
+        $this->box( 'top', 'Available Import Services', array( 'col_span' => 4 ) );
 
         ?>
         <p>
@@ -193,7 +193,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                 </thead>
                 <tbody>
                 <?php
-                $import_services = apply_filters( 'dt_import_services', [] );
+                $import_services = apply_filters( 'dt_import_services', array() );
                 foreach ( $import_services as $id => $service ){
 
                     // Only display enabled services; which are also present within uploaded import configuration.
@@ -245,9 +245,9 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
     }
 
     private function display_service_details( $uploaded_config ){
-        $this->box( 'top', 'Service Details', [ 'col_span' => 3 ] );
+        $this->box( 'top', 'Service Details', array( 'col_span' => 3 ) );
 
-        $import_services_details = apply_filters( 'dt_import_services_details', [], $uploaded_config );
+        $import_services_details = apply_filters( 'dt_import_services_details', array(), $uploaded_config );
         foreach ( $import_services_details as $id => $service ){
             if ( isset( $service['id'], $service['enabled'], $service['html'], $service['html_js_handler_func'], $service['html_js_selection_handler_func'] ) && $service['enabled'] ){
                 ?>
@@ -283,7 +283,6 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
         $this->box( 'bottom' );
     }
-
 }
 
 Disciple_Tools_Tab_Imports::instance();

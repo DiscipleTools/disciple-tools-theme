@@ -38,458 +38,458 @@ class Disciple_Tools_Posts_Endpoints {
      */
     public function __construct() {
         $this->namespace = $this->context . '/v' . intval( $this->version );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     /**
      * Add the api routes
      */
     public function add_api_routes() {
-        $arg_schemas = [
-            'post_type' => [
+        $arg_schemas = array(
+            'post_type' => array(
                 'description' => 'The post type',
                 'type' => 'string',
                 'required' => true,
-                'validate_callback' => [ $this, 'prefix_validate_args' ]
-            ],
-            'id' => [
+                'validate_callback' => array( $this, 'prefix_validate_args' ),
+            ),
+            'id' => array(
                 'description' => 'The id of the post',
                 'type' => 'integer',
                 'required' => true,
-                'validate_callback' => [ $this, 'prefix_validate_args' ]
-            ],
-            'comment_id' => [
+                'validate_callback' => array( $this, 'prefix_validate_args' ),
+            ),
+            'comment_id' => array(
                 'description' => 'The id of the comment',
                 'type' => 'integer',
                 'required' => true,
-                'validate_callback' => [ $this, 'prefix_validate_args' ]
-            ],
-            'date' => [
+                'validate_callback' => array( $this, 'prefix_validate_args' ),
+            ),
+            'date' => array(
                 'description' => 'The date the comment was made',
                 'type' => 'string',
                 'required' => false,
-                'validate_callback' => [ $this, 'prefix_validate_args' ]
-            ],
-            'comment_type' => [
+                'validate_callback' => array( $this, 'prefix_validate_args' ),
+            ),
+            'comment_type' => array(
                 'description' => 'The type of the comment',
                 'type' => 'string',
                 'required' => false,
-                'validate_callback' => [ $this, 'prefix_validate_args' ]
-            ]
-        ];
+                'validate_callback' => array( $this, 'prefix_validate_args' ),
+            ),
+        );
 
         //create_post
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'create_post' ],
-                    'args' => [
+                    'callback' => array( $this, 'create_post' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //get_post
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_post' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_post' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //update_post
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'update_post' ],
-                    'args' => [
+                    'callback' => array( $this, 'update_post' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //delete_post
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)', array(
+                array(
                     'methods'  => 'DELETE',
-                    'callback' => [ $this, 'delete_post' ],
-                    'args' => [
+                    'callback' => array( $this, 'delete_post' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
 
         //get_posts
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_list' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_list' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //list posts
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/list', [
-                [
-                    'methods'  => [ 'GET', 'POST' ],
-                    'callback' => [ $this, 'get_list' ],
-                    'args' => [
+            $this->namespace, '/(?P<post_type>\w+)/list', array(
+                array(
+                    'methods'  => array( 'GET', 'POST' ),
+                    'callback' => array( $this, 'get_list' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
 
         //split_by
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/split_by', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/split_by', array(
+                array(
                     'methods' => 'POST',
-                    'callback' => [ $this, 'split_by' ],
-                    'args' => [
+                    'callback' => array( $this, 'split_by' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
 
         //get_posts_for_typeahead
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/compact', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/compact', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_posts_for_typeahead' ],
-                    'args' => [
-                        's' => [
+                    'callback' => array( $this, 'get_posts_for_typeahead' ),
+                    'args' => array(
+                        's' => array(
                             'description' => 'The text to search for',
                             'type' => 'string',
                             'required' => false,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
 
         //get_comments
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_comments' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_comments' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //add_comment
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'add_comment' ],
-                    'args' => [
-                        'comment' => [
+                    'callback' => array( $this, 'add_comment' ),
+                    'args' => array(
+                        'comment' => array(
                             'description' => 'The comment text',
                             'type' => 'string',
                             'required' => true,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
                         'date' => $arg_schemas['date'],
-                        'comment_type' => $arg_schemas['comment_type']
-                    ],
+                        'comment_type' => $arg_schemas['comment_type'],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //update_comment
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'update_comment' ],
-                    'args' => [
-                        'comment' => [
+                    'callback' => array( $this, 'update_comment' ),
+                    'args' => array(
+                        'comment' => array(
                             'description' => 'The comment text',
                             'type' => 'string',
                             'required' => true,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
                         'comment_id' => $arg_schemas['comment_id'],
-                        'comment_type' => $arg_schemas['comment_type']
-                    ],
+                        'comment_type' => $arg_schemas['comment_type'],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //delete_comment
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)', array(
+                array(
                     'methods'  => 'DELETE',
-                    'callback' => [ $this, 'delete_comment' ],
-                    'args' => [
+                    'callback' => array( $this, 'delete_comment' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
                         'comment_id' => $arg_schemas['comment_id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //toggle comment reaction
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)/react', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/comments/(?P<comment_id>\d+)/react', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'toggle_comment_reaction' ],
-                    'args' => [
+                    'callback' => array( $this, 'toggle_comment_reaction' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
                         'comment_id' => $arg_schemas['comment_id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //get_activity
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_activity' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_activity' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //revert_activity_history
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/revert_activity_history', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/revert_activity_history', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'revert_activity_history' ],
-                    'args' => [
+                    'callback' => array( $this, 'revert_activity_history' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //get_single_activity
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity/(?P<activity_id>\d+)', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/activity/(?P<activity_id>\d+)', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_single_activity' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_single_activity' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                        'activity_id' => [
+                        'activity_id' => array(
                             'description' => 'The id of the activity',
                             'type' => 'integer',
                             'required' => true,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ]
-                    ],
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //get_shares
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/shares', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/shares', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_shares' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_shares' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //add_share
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/shares', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/shares', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'add_share' ],
-                    'args' => [
-                        'user_id' => [
+                    'callback' => array( $this, 'add_share' ),
+                    'args' => array(
+                        'user_id' => array(
                             'description' => 'The ID of the user to share the record with',
                             'type' => 'integer',
                             'required' => true,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
 
         //add_share
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/shares', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/shares', array(
+                array(
                     'methods'  => 'DELETE',
-                    'callback' => [ $this, 'remove_share' ],
-                    'args' => [
-                        'user_id' => [
+                    'callback' => array( $this, 'remove_share' ),
+                    'args' => array(
+                        'user_id' => array(
                             'description' => 'The ID of the user to unshared the record with',
                             'type' => 'integer',
                             'required' => true,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //get_following
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/following', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/following', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_following' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_following' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //Get multiselect values
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/multi-select-values', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/multi-select-values', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_multi_select_values' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_multi_select_values' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                        'field' => [
+                        'field' => array(
                             'description' => 'The field key',
                             'type' => 'string',
                             'required' => true,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
-                        's' => [
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
+                        's' => array(
                             'description' => 'Filter values to this query',
                             'type' => 'string',
                             'required' => false,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
-                    ],
+                            'validate_callback' => array( $this, 'prefix_validate_args' ),
+                        ),
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //Get Post Settings
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/settings', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/settings', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'get_post_settings' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_post_settings' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //Get Post Field Settings
         register_rest_route(
-            'dt-public/v' . intval( $this->version ), '/(?P<post_type>\w+)/settings_fields', [
-                [
+            'dt-public/v' . intval( $this->version ), '/(?P<post_type>\w+)/settings_fields', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'get_post_field_settings' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_post_field_settings' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
 
         //Request Record Access
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/request_record_access', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/request_record_access', array(
+                array(
                     'methods'  => 'POST',
-                    'callback' => [ $this, 'request_record_access' ],
+                    'callback' => array( $this, 'request_record_access' ),
                     'permission_callback' => '__return_true',
-                    'args'     => [
+                    'args'     => array(
                         'post_type' => $arg_schemas['post_type'],
-                        'id'        => $arg_schemas['id']
-                    ]
-                ]
-            ]
+                        'id'        => $arg_schemas['id'],
+                    ),
+                ),
+            )
         );
 
         //Advanced Search
         register_rest_route(
-            $this->namespace . '/posts/search', '/advanced_search', [
+            $this->namespace . '/posts/search', '/advanced_search', array(
                 'methods'             => 'GET',
-                'callback'            => [ $this, 'advanced_search' ],
+                'callback'            => array( $this, 'advanced_search' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
 
         //Check if a field value exists in the database, given the post type and field key
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/check_field_value_exists', [
+            $this->namespace, '/(?P<post_type>\w+)/check_field_value_exists', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'check_field_value_exists' ],
-                'args'     => [
+                'callback' => array( $this, 'check_field_value_exists' ),
+                'args'     => array(
                     'post_type' => $arg_schemas['post_type'],
-                ],
-                'permission_callback' => function ( WP_REST_Request $request ){
+                ),
+                'permission_callback' => function ( WP_REST_Request $request ) {
                     $params = $request->get_params();
                     $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
                     return DT_Posts::can_create( $post_type );
                 },
-            ]
+            )
         );
     }
 
@@ -538,10 +538,10 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent     = isset( $get_params['silent'] ) && $get_params['silent'] === 'true';
-        $check_dups = ! empty( $get_params['check_for_duplicates'] ) ? explode( ',', $get_params['check_for_duplicates'] ) : [];
-        $post       = DT_Posts::create_post( $url_params['post_type'], $fields, $silent, true, [
-            'check_for_duplicates' => $check_dups
-        ] );
+        $check_dups = ! empty( $get_params['check_for_duplicates'] ) ? explode( ',', $get_params['check_for_duplicates'] ) : array();
+        $post       = DT_Posts::create_post( $url_params['post_type'], $fields, $silent, true, array(
+            'check_for_duplicates' => $check_dups,
+        ) );
         return $post;
     }
 
@@ -620,10 +620,10 @@ class Disciple_Tools_Posts_Endpoints {
     public function get_comments( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
-        return DT_Posts::get_post_comments( $url_params['post_type'], $url_params['id'], true, 'all', [
+        return DT_Posts::get_post_comments( $url_params['post_type'], $url_params['id'], true, 'all', array(
             'offset' => $get_params['offset'] ?? 0,
-            'number' => $get_params['number'] ?? ''
-        ] );
+            'number' => $get_params['number'] ?? '',
+        ) );
     }
 
     public function add_comment( WP_REST_Request $request ){
@@ -631,7 +631,7 @@ class Disciple_Tools_Posts_Endpoints {
         $get_params = $request->get_query_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         $silent = isset( $get_params['silent'] ) && $get_params['silent'] === 'true';
-        $args = [];
+        $args = array();
         if ( isset( $body['date'] ) ){
             $args['comment_date'] = $body['date'];
         }
@@ -691,7 +691,7 @@ class Disciple_Tools_Posts_Endpoints {
     public function get_post_settings( WP_REST_Request $request ){
         $url_params = $request->get_url_params();
         if ( ! ( DT_Posts::can_access( $url_params['post_type'] ) || DT_Posts::can_create( $url_params['post_type'] ) ) ){
-            return new WP_Error( __FUNCTION__, 'No permissions to read ' . $url_params['post_type'], [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, 'No permissions to read ' . $url_params['post_type'], array( 'status' => 403 ) );
         }
         return DT_Posts::get_post_settings( $url_params['post_type'] );
     }
@@ -730,12 +730,12 @@ class Disciple_Tools_Posts_Endpoints {
         $meta      = ( strtolower( $request->get_param( 'meta' ) ) === 'true' );
         $status    = $request->get_param( 'status' );
 
-        return DT_Posts::advanced_search( $query, $post_type, $offset, [
+        return DT_Posts::advanced_search( $query, $post_type, $offset, array(
             'post'    => $post,
             'comment' => $comment,
             'meta'    => $meta,
-            'status'  => $status
-        ] );
+            'status'  => $status,
+        ) );
     }
 
     public function check_field_value_exists( WP_REST_Request $request ) {
@@ -753,6 +753,6 @@ class Disciple_Tools_Posts_Endpoints {
                     AND meta_value = %s;", $params['communication_channel'] . '_%', $params['field_value'] ) );
             return $result;
         }
-        return [];
+        return array();
     }
 }

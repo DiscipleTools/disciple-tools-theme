@@ -13,7 +13,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/groups/tree.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
     public $namespace = null;
 
     public function __construct() {
@@ -26,11 +26,11 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
         }
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     public function add_api_routes() {
@@ -38,32 +38,31 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         $version = '1';
         $namespace = 'dt/v' . $version;
         register_rest_route(
-            $namespace, '/metrics/group/tree', [
-                [
+            $namespace, '/metrics/group/tree', array(
+                array(
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'tree' ],
+                    'callback' => array( $this, 'tree' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
-
     }
 
     public function tree( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
-            return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing Permissions', array( 'status' => 400 ) );
         }
         return $this->get_group_generations_tree();
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, [
+        wp_enqueue_script( 'dt_metrics_project_script', get_template_directory_uri() . $this->js_file_name, array(
             'jquery',
-            'lodash'
-        ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
+            'lodash',
+        ), filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
         wp_localize_script(
-            'dt_metrics_project_script', 'dtMetricsProject', [
+            'dt_metrics_project_script', 'dtMetricsProject', array(
                 'root' => esc_url_raw( rest_url() ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
@@ -71,13 +70,13 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
                 'current_user_id' => get_current_user_id(),
                 'map_key' => empty( DT_Mapbox_API::get_key() ) ? '' : DT_Mapbox_API::get_key(),
                 'data' => $this->data(),
-            ]
+            )
         );
     }
 
     public function data() {
-        return [
-            'translations' => [
+        return array(
+            'translations' => array(
                 'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
                 'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                 'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
@@ -88,9 +87,9 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
                 'total_members' => __( 'Total Members', 'disciple_tools' ),
                 'view_group' => __( 'View Group', 'disciple_tools' ),
 
-            ],
+            ),
             'group_generation_tree' => $this->get_group_generations_tree(),
-        ];
+        );
     }
 
     public function get_group_generations_tree(){
@@ -109,7 +108,7 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         // prepare special array with parent-child relations
         $menu_data = array(
             'items' => array(),
-            'parents' => array()
+            'parents' => array(),
         );
 
         foreach ( $query as $menu_item )
@@ -147,9 +146,5 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
         }
         return $html;
     }
-
-
 }
 new DT_Metrics_Groups_Tree();
-
-

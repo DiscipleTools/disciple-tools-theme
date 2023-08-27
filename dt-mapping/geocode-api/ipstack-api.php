@@ -37,12 +37,12 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
          *************************************************************************************************************/
         public static function geocode_ip_address( $ip_address, $type = null ) {
             if ( empty( self::get_key() ) ) {
-                return [];
+                return array();
             }
-            $data = [];
+            $data = array();
 
             if ( ! self::check_valid_ip_address( $ip_address ) ) {
-                return [ 'error' => 'Invalid IP Address' ];
+                return array( 'error' => 'Invalid IP Address' );
             }
 
             if ( is_null( $ip_address ) || empty( $ip_address ) ) {
@@ -70,16 +70,16 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             }
         }
 
-        public static function geocode_current_visitor() : array {
+        public static function geocode_current_visitor(): array {
             if ( empty( self::get_key() ) ) {
-                return [];
+                return array();
             }
             $response = self::geocode_ip_address( self::get_real_ip_address() );
 
             if ( ! isset( $response['longitude'] ) || empty( $response['longitude'] ) ) {
-                return [];
+                return array();
             }
-            return $response ?? [];
+            return $response ?? array();
         }
 
         /**************************************************************************************************************
@@ -210,7 +210,7 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
             return self::$ipstack_endpoint . $ip_address . '?access_key=' . $key;
         }
 
-        public static function is_active_ipstack_key() : bool {
+        public static function is_active_ipstack_key(): bool {
             $response = self::geocode_current_visitor();
             return ! empty( $response ); // false if empty response, true if successful geocode
         }
@@ -278,31 +278,31 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
                     break;
 
                 case 'languages':
-                    return $raw_response['location']['languages'] ?? [];
+                    return $raw_response['location']['languages'] ?? array();
                     break;
 
                 case 'geoname_id':
-                    return $raw_response['location']['geoname_id'] ?? [];
+                    return $raw_response['location']['geoname_id'] ?? array();
                     break;
 
                 case 'capital':
-                    return $raw_response['location']['capital'] ?? [];
+                    return $raw_response['location']['capital'] ?? array();
                     break;
 
                 case 'country_flag':
-                    return $raw_response['location']['country_flag'] ?? [];
+                    return $raw_response['location']['country_flag'] ?? array();
                     break;
 
                 case 'country_flag_emoji':
-                    return $raw_response['location']['country_flag_emoji'] ?? [];
+                    return $raw_response['location']['country_flag_emoji'] ?? array();
                     break;
 
                 case 'country_flag_emoji_unicode':
-                    return $raw_response['location']['country_flag_emoji_unicode'] ?? [];
+                    return $raw_response['location']['country_flag_emoji_unicode'] ?? array();
                     break;
 
                 case 'calling_code':
-                    return $raw_response['location']['calling_code'] ?? [];
+                    return $raw_response['location']['calling_code'] ?? array();
                     break;
 
                 case 'lnglat':
@@ -367,14 +367,14 @@ if ( ! class_exists( 'DT_Ipstack_API' ) ) {
                 $label = $geocoder->_format_full_name( $grid_id );
             }
 
-            $location_grid_meta = [
+            $location_grid_meta = array(
                 'lng' => $ip_result['longitude'] ?? '',
                 'lat' => $ip_result['latitude'] ?? '',
                 'level' => $level,
                 'label' => $label,
                 'source' => 'ip',
                 'grid_id' => $grid_id['grid_id'] ?? '',
-            ];
+            );
 
             Location_Grid_Meta::validate_location_grid_meta( $location_grid_meta );
 

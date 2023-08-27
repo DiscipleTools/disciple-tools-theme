@@ -12,25 +12,25 @@ class DT_Contacts_User {
 
     public function __construct() {
 
-        add_filter( 'dt_can_view_permission', [ $this, 'can_update_permission_filter' ], 10, 3 );
-        add_filter( 'dt_can_update_permission', [ $this, 'can_update_permission_filter' ], 10, 3 );
+        add_filter( 'dt_can_view_permission', array( $this, 'can_update_permission_filter' ), 10, 3 );
+        add_filter( 'dt_can_update_permission', array( $this, 'can_update_permission_filter' ), 10, 3 );
 
         //setup fields
-        add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
+        add_filter( 'dt_custom_fields_settings', array( $this, 'dt_custom_fields_settings' ), 20, 2 );
 
         //display tiles and fields
-        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
-        add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
-        add_action( 'dt_record_notifications_section', [ $this, 'dt_record_notifications_section' ], 10, 2 );
+        add_action( 'dt_details_additional_section', array( $this, 'dt_details_additional_section' ), 20, 2 );
+        add_filter( 'dt_details_additional_tiles', array( $this, 'dt_details_additional_tiles' ), 20, 2 );
+        add_action( 'dt_record_notifications_section', array( $this, 'dt_record_notifications_section' ), 10, 2 );
 
         //list
-        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 20, 2 );
+        add_filter( 'dt_user_list_filters', array( $this, 'dt_user_list_filters' ), 20, 2 );
 
         //api
-        add_action( 'post_connection_removed', [ $this, 'post_connection_removed' ], 20, 4 );
-        add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 20, 4 );
+        add_action( 'post_connection_removed', array( $this, 'post_connection_removed' ), 20, 4 );
+        add_action( 'post_connection_added', array( $this, 'post_connection_added' ), 20, 4 );
 
-        add_action( 'dt_record_admin_actions', [ $this, 'dt_record_admin_actions' ], 10, 2 );
+        add_action( 'dt_record_admin_actions', array( $this, 'dt_record_admin_actions' ), 10, 2 );
     }
 
 
@@ -38,21 +38,21 @@ class DT_Contacts_User {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
-            $fields['corresponds_to_user'] = [
+            $fields['corresponds_to_user'] = array(
                 'name' => __( 'Corresponds to user', 'disciple_tools' ),
                 'description' => _x( 'The id of the user this contact corresponds to', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'number',
                 'default' => 0,
                 'customizable' => false,
-                'hidden' => true
-            ];
-            $fields['corresponds_to_user_name'] = [
+                'hidden' => true,
+            );
+            $fields['corresponds_to_user_name'] = array(
                 'name' => 'Corresponds to user_name', //untranslated.
                 'description' => 'Field used in the multisite invite process', //untranslated.
                 'type' => 'text',
                 'customizable' => false,
-                'hidden' => true
-            ];
+                'hidden' => true,
+            );
         }
 
         return $fields;

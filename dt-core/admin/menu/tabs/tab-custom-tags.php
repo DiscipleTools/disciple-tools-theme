@@ -36,15 +36,15 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 99 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 10, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 99, 1 );
 
         parent::__construct();
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Tags', 'disciple_tools' ), __( 'Tags', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=tags', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Tags', 'disciple_tools' ), __( 'Tags', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=tags', array( 'Disciple_Tools_Settings_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -169,7 +169,7 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     private function get_all_tags() {
         global $wpdb;
 
-        $tag_fields = [];
+        $tag_fields = array();
         $post_types = DT_Posts::get_post_types();
         foreach ( $post_types as $post_type ) {
             $post_fields = DT_Posts::get_post_field_settings( $post_type );
@@ -197,10 +197,10 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
     private function process_delete_tag( string $tag_type, string $tag_delete ) {
         global $wpdb;
 
-            $retval = $wpdb->delete( $wpdb->postmeta, [
+            $retval = $wpdb->delete( $wpdb->postmeta, array(
                 'meta_key' => esc_sql( $tag_type ),
                 'meta_value' => esc_sql( $tag_delete ),
-            ] );
+            ) );
 
         if ( $retval ) {
                 self::admin_notice( "Tag '" . esc_html( $tag_delete ) . "' deleted successfully ", 'success' );
@@ -277,13 +277,13 @@ class Disciple_Tools_Tab_Custom_Tags extends Disciple_Tools_Abstract_Menu_Base
 
             $retval = $wpdb->update(
                 $wpdb->postmeta,
-                [
+                array(
                     'meta_value' => esc_sql( $tag_new ),
-                ],
-                [
+                ),
+                array(
                     'meta_key' => esc_sql( $tag_type ),
                     'meta_value' => esc_sql( $tag_old ),
-                ]
+                )
             );
 
             if ( $retval ) {

@@ -24,9 +24,9 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 10 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 20, 1 ); // use the priority setting to control load order
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 10, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 10 );
+        add_action( 'dt_utilities_tab_menu', array( $this, 'add_tab' ), 20, 1 ); // use the priority setting to control load order
+        add_action( 'dt_utilities_tab_content', array( $this, 'content' ), 10, 1 );
 
 
         parent::__construct();
@@ -34,7 +34,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_utilities', __( 'Overview', 'disciple_tools' ), __( 'Overview', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=overview', [ 'Disciple_Tools_Utilities_Menu', 'content' ] );
+        add_submenu_page( 'dt_utilities', __( 'Overview', 'disciple_tools' ), __( 'Overview', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=overview', array( 'Disciple_Tools_Utilities_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -74,7 +74,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         <form method="post">
         <?php
         wp_nonce_field( 'utilities_overview' );
-        $this->box( 'top', 'System Details', [ 'col_span' => 2 ] );
+        $this->box( 'top', 'System Details', array( 'col_span' => 2 ) );
         ?>
         <tr>
             <td><?php echo esc_html( sprintf( __( 'WordPress version: %1$s | PHP version: %2$s' ), get_bloginfo( 'version' ), phpversion() ) ); ?></td>
@@ -126,8 +126,8 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         </tr>
         <?php
         $plugins = get_plugins();
-        $network_active_plugins = get_site_option( 'active_sitewide_plugins', [] );
-        $active_plugins = get_option( 'active_plugins', [] );
+        $network_active_plugins = get_site_option( 'active_sitewide_plugins', array() );
+        $active_plugins = get_option( 'active_plugins', array() );
         foreach ( $network_active_plugins as $plugin => $time ){
             $active_plugins[] = $plugin;
         }

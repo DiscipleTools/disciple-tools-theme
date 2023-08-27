@@ -17,7 +17,7 @@ class CapabilitiesTest extends WP_UnitTestCase {
     }
 
     public function test_filter_capabilities() {
-        $slugs = [ 'update_any_groups', 'unfiltered_upload' ];
+        $slugs = array( 'update_any_groups', 'unfiltered_upload' );
         $factory = Disciple_Tools_Capability_Factory::get_instance();
         $factory->setup_capabilities();
         $capabilities = $factory->get_capabilities( $slugs );
@@ -31,7 +31,7 @@ class CapabilitiesTest extends WP_UnitTestCase {
 
 
     public function test_has_capabilities() {
-        $slugs = [ 'update_any_groups', 'unfiltered_upload' ];
+        $slugs = array( 'update_any_groups', 'unfiltered_upload' );
         $factory = Disciple_Tools_Capability_Factory::get_instance();
         $factory->setup_capabilities();
         $capabilities = $factory->get_capabilities( $slugs );
@@ -42,6 +42,4 @@ class CapabilitiesTest extends WP_UnitTestCase {
             $this->assertArrayHasKey( $slug, $capabilities );
         }
     }
-
 }
-

@@ -12,9 +12,9 @@ add_shortcode( 'dt_firebase_login_ui', 'dt_firebase_login_ui' );
 function dt_firebase_login_ui( $atts ) {
 
     $default_lang = 'en';
-    $atts = shortcode_atts( [
+    $atts = shortcode_atts( array(
         'lang_code' => $default_lang,
-    ], $atts );
+    ), $atts );
 
     $lang_code = $atts['lang_code'];
 
@@ -27,7 +27,7 @@ function dt_firebase_login_ui( $atts ) {
         $lang_prefix = '__' . $lang_code;
     }
 
-    $config = [];
+    $config = array();
     $config['api_key'] = DT_Login_Fields::get( 'firebase_api_key' );
     $config['project_id'] = DT_Login_Fields::get( 'firebase_project_id' );
     $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
@@ -35,7 +35,7 @@ function dt_firebase_login_ui( $atts ) {
     $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
     $config['disable_sign_up_status'] = !DT_Login_Fields::can_users_register();
 
-    $sign_in_options = [];
+    $sign_in_options = array();
     $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
     $sign_in_options['facebook'] = DT_Login_Fields::get( 'identity_providers_facebook' ) === 'on' ? true : false;
     $sign_in_options['email'] = DT_Login_Fields::get( 'identity_providers_email' ) === 'on' ? true : false;
@@ -224,7 +224,7 @@ function dt_firebase_login_ui( $atts ) {
 }
 
 function dt_login_firebase_supported_languages() {
-    return [
+    return array(
         'ar',
         'bg',
         'ca',
@@ -267,7 +267,7 @@ function dt_login_firebase_supported_languages() {
         'tr',
         'uk',
         'vi',
-    ];
+    );
 }
 
 add_shortcode( 'dt_firebase_logout_script', 'dt_firebase_logout_script' );
@@ -279,9 +279,9 @@ add_shortcode( 'dt_firebase_logout_script', 'dt_firebase_logout_script' );
  */
 function dt_firebase_logout_script( $atts ) {
 
-    $atts = shortcode_atts( [
+    $atts = shortcode_atts( array(
         'redirect_to' => '/',
-    ], $atts );
+    ), $atts );
 
     $redirect_to = $atts['redirect_to'];
 

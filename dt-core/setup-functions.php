@@ -15,10 +15,10 @@ function dt_setup_roles_and_permissions(){
         update_option( 'default_role', 'multiplier' );
     }
 
-    $expected_roles_options = get_option( 'dt_options_roles_and_permissions', [] );
+    $expected_roles_options = get_option( 'dt_options_roles_and_permissions', array() );
     $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );
     $expected_roles = dt_array_merge_recursive_distinct( $expected_roles, $expected_roles_options );
-    $dt_roles = array_map( function ( $a ){
+    $dt_roles = array_map( function ( $a ) {
         return array_keys( $a['permissions'] );
     }, $expected_roles );
     $dt_permissions = array_merge( ...array_values( $dt_roles ) );
@@ -26,14 +26,14 @@ function dt_setup_roles_and_permissions(){
     $role_keys = dt_multi_role_get_role_slugs();
     foreach ( $expected_roles as $role_key => $role_values ){
         if ( !in_array( $role_key, $role_keys, true ) ){
-            add_role( $role_key, $role_values['label'] ?? '', $role_values['permissions'] ?? [] );
+            add_role( $role_key, $role_values['label'] ?? '', $role_values['permissions'] ?? array() );
         }
     }
     //get all the roles
     $roles = dt_multi_role_get_roles();
 
     foreach ( $roles as $role_key => $role_value ){
-        if ( in_array( $role_key, [ 'registered' ] ) ){
+        if ( in_array( $role_key, array( 'registered' ) ) ){
             continue;
         }
         $role = get_role( $role_key );
@@ -57,19 +57,15 @@ function dt_setup_roles_and_permissions(){
             foreach ( $role->capabilities as $cap_key => $cap_grant ){
                 if ( $cap_grant === true && !isset( $expected_roles[$role_key]['permissions'][$cap_key] ) ){
                     $wp_capabilities = dt_multi_role_get_wp_capabilities();
-                    if ( in_array( $role_key, [ 'administrator' ], true ) && ( !in_array( $cap_key, $dt_permissions, true ) || in_array( $cap_key, $wp_capabilities, true ) ) ){
+                    if ( in_array( $role_key, array( 'administrator' ), true ) && ( !in_array( $cap_key, $dt_permissions, true ) || in_array( $cap_key, $wp_capabilities, true ) ) ){
                         continue; //don't remove a non D.T cap from the administrator
                     }
                     $role->remove_cap( $cap_key );
                 }
             }
-        } else {
-            if ( !in_array( $role_key, [ 'administrator' ], true ) ){
+        } elseif ( !in_array( $role_key, array( 'administrator' ), true ) ) {
                 // remove roles that are no longer defined.
                 remove_role( $role_key );
-            }
         }
     }
 }
-
-

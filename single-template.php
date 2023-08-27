@@ -25,10 +25,10 @@ function dt_display_tile( $tile, $post ): bool {
     }
 
     // Determine if all specified fields must be present & iterate.
-    $field_presence      = [];
+    $field_presence      = array();
     $all_fields_required = isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] == 'and';
     $field_settings      = DT_Posts::get_post_field_settings( get_post_type() );
-    foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
+    foreach ( $tile['display_conditions']['conditions'] ?? array() as $condition ) {
 
         // Extract tile display condition options.
         $field_id  = $condition['key'];
@@ -73,9 +73,8 @@ function dt_display_tile( $tile, $post ): bool {
     $tiles = DT_Posts::get_post_tiles( $post_type );
 
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
-    add_action( 'dt_nav_add_after', function ( $desktop = true ){
+    add_action( 'dt_nav_add_after', function ( $desktop = true ) {
         dt_print_details_bar( $desktop );
-
     }, 10, 1);
     get_header();
 
@@ -135,7 +134,7 @@ function dt_display_tile( $tile, $post ): bool {
                         <div class="grid-x grid-margin-x">
                         <?php
                         //setup the order of the tile fields
-                        $order = $tiles['status']['order'] ?? [];
+                        $order = $tiles['status']['order'] ?? array();
                         foreach ( $post_settings['fields'] as $key => $option ){
                             if ( isset( $option['tile'] ) && $option['tile'] === 'status' ){
                                 if ( !in_array( $key, $order ) ){
@@ -194,7 +193,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <div class="detail-snippet-row">
                             <?php
                             //setup the order of the tile fields
-                            $order = $tiles['details']['order'] ?? [];
+                            $order = $tiles['details']['order'] ?? array();
                             foreach ( $post_settings['fields'] as $key => $option ){
                                 if ( isset( $option['tile'] ) && $option['tile'] === 'details' && ( $option['type'] === 'communication_channel' || $key === 'name' ) ){
                                     if ( !in_array( $key, $order ) ){
@@ -223,7 +222,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <!-- row for misc elements -->
                             <div class="detail-snippet-row">
                             <?php
-                            $order = $tiles['details']['order'] ?? [];
+                            $order = $tiles['details']['order'] ?? array();
                             foreach ( $post_settings['fields'] as $key => $option ){
                                 if ( isset( $option['tile'] ) && $option['tile'] === 'details' && $option['type'] !== 'communication_channel' ){
                                     if ( !in_array( $key, $order ) ) {
@@ -262,7 +261,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <div class="grid-x grid-margin-x">
                                 <?php
                                 //setup the order of the tile fields
-                                $order = $tiles['details']['order'] ?? [];
+                                $order = $tiles['details']['order'] ?? array();
                                 foreach ( $post_settings['fields'] as $key => $option ){
                                     if ( isset( $option['tile'] ) && $option['tile'] === 'details' ){
                                         if ( !in_array( $key, $order ) ){
@@ -303,7 +302,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <?php
                             foreach ( $tiles as $tile_key => $tile_options ){
                                 $class = '';
-                                if ( in_array( $tile_key, [ 'details', 'status' ] ) ){
+                                if ( in_array( $tile_key, array( 'details', 'status' ) ) ){
                                     continue;
                                 }
                                 if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] ) ) {
@@ -341,12 +340,12 @@ function dt_display_tile( $tile, $post ): bool {
                                         <div class="section-body">
                                             <?php
                                             // let the plugin add section content
-                                            add_action( 'dt_details_additional_section', function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ){
+                                            add_action( 'dt_details_additional_section', function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ) {
                                                 if ( $pt !== $post_type || $tile_key !== $t_key ){
                                                     return;
                                                 }
                                                 //setup the order of the tile fields
-                                                $order = $tile_options['order'] ?? [];
+                                                $order = $tile_options['order'] ?? array();
                                                 foreach ( $post_settings['fields'] as $key => $option ){
                                                     if ( isset( $option['tile'] ) && $option['tile'] === $tile_key && !in_array( $key, $order ) ){
                                                         $order[] = $key;

@@ -3,8 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class DT_Magic_URL_Setup {
     public function __construct(){
-         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 110, 2 );
-         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 110, 2 );
+         add_filter( 'dt_details_additional_tiles', array( $this, 'dt_details_additional_tiles' ), 110, 2 );
+         add_action( 'dt_details_additional_section', array( $this, 'dt_details_additional_section' ), 110, 2 );
     }
 
     /**
@@ -26,10 +26,10 @@ class DT_Magic_URL_Setup {
                 }
             }
             if ( $post_types_has_registered_apps ){
-                $tiles['apps'] = [
+                $tiles['apps'] = array(
                     'label' => __( 'Magic Links', 'disciple_tools' ),
-                    'description' => __( 'Magic Links available on this record.', 'disciple_tools' )
-                ];
+                    'description' => __( 'Magic Links available on this record.', 'disciple_tools' ),
+                );
             }
         }
         return $tiles;

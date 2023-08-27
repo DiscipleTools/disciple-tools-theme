@@ -174,7 +174,7 @@ class Disciple_Tools_Migration_0035 extends Disciple_Tools_Migration {
                     key `user_id_index` (`user_id`),
                     key `dt_user_id_action_object_type` (`user_id`,`action`(100),`object_type`(100)),
                     key `dt_meta_key_object_type` (`meta_key`(100),`object_type`(100))
-                ) $charset_collate;"
+                ) $charset_collate;",
         );
     }
 }

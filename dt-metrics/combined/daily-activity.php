@@ -12,7 +12,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
     public $slug = 'daily-activity'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/combined/daily-activity.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
 
     public function __construct() {
         parent::__construct();
@@ -24,9 +24,9 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     /**
@@ -45,7 +45,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
             get_template_directory_uri() . $this->js_file_name,
-            [
+            array(
                 'moment',
                 'jquery',
                 'jquery-ui-core',
@@ -54,24 +54,24 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 'amcharts-charts',
                 'amcharts-plugins-timeline',
                 'amcharts-plugins-bullets',
-                'amcharts-themes-animated'
-            ],
+                'amcharts-themes-animated',
+            ),
             filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
         // Localize script with array data
         wp_localize_script(
-            'dt_' . $this->slug . '_script', $this->js_object_name, [
+            'dt_' . $this->slug . '_script', $this->js_object_name, array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                'data'                => [
-                    'activities' => $this->daily_activity( 'this-week' )
-                ],
-                'translations'        => [
-                    'headings'   => [
+                'data'                => array(
+                    'activities' => $this->daily_activity( 'this-week' ),
+                ),
+                'translations'        => array(
+                    'headings'   => array(
                         'header'     => __( 'Activity by Day', 'disciple_tools' ),
-                        'sub_header' => __( 'Filter to date range', 'disciple_tools' )
-                    ],
-                    'selections' => [
+                        'sub_header' => __( 'Filter to date range', 'disciple_tools' ),
+                    ),
+                    'selections' => array(
                         'this_week'        => __( 'This Week', 'disciple_tools' ),
                         'this_month'       => __( 'This Month', 'disciple_tools' ),
                         'last_month'       => __( 'Last Month', 'disciple_tools' ),
@@ -80,37 +80,37 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                         'four_months_ago'  => sprintf( _n( '%s month ago', '%s months ago', 4, 'disciple_tools' ), 4 ),
                         'five_months_ago'  => sprintf( _n( '%s month ago', '%s months ago', 5, 'disciple_tools' ), 5 ),
                         'six_months_ago'   => sprintf( _n( '%s month ago', '%s months ago', 6, 'disciple_tools' ), 6 ),
-                    ],
-                    'chart'      => [
+                    ),
+                    'chart'      => array(
                         'instructions' => __( 'Click on a timeline day summary to display a detailed list of metrics below.', 'disciple_tools' ),
                         'metrics'       => __( 'Metrics', 'disciple_tools' ),
                         'count'        => __( 'Count', 'disciple_tools' ),
                         'no_activity'  => __( 'No Activity Detected!', 'disciple_tools' ),
                         'new_contacts' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ) ),
                         'new_groups'   => sprintf( esc_html__( 'New %s', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ) ),
-                        'baptisms'     => __( 'Baptisms', 'disciple_tools' )
-                    ]
-                ]
-            ]
+                        'baptisms'     => __( 'Baptisms', 'disciple_tools' ),
+                    ),
+                ),
+            )
         );
     }
 
     public function add_api_routes() {
         $namespace = "dt-metrics/$this->base_slug/$this->slug";
         register_rest_route(
-            $namespace, '/daily-activity/', [
-                [
+            $namespace, '/daily-activity/', array(
+                array(
                     'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'daily_activity_endpoint' ],
+                    'callback'            => array( $this, 'daily_activity_endpoint' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function daily_activity_endpoint( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ) {
-            return new WP_Error( 'daily-activity', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'daily-activity', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
         if ( isset( $params['date_range'] ) ) {
@@ -121,7 +121,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( 'daily-activity', 'Missing required parameters', [ 'status' => 400 ] );
+            return new WP_Error( 'daily-activity', 'Missing required parameters', array( 'status' => 400 ) );
         }
     }
 
@@ -197,7 +197,7 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 $group_fields_settings  = DT_Posts::get_post_field_settings( 'groups' );
 
                 // Cycle through each day with range and obtain required metric counts
-                $daily_activities = [];
+                $daily_activities = array();
 
                 // Iterate each day, sourcing relevant counts.
                 foreach ( $days as $day ) {
@@ -214,52 +214,52 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                     $health              = $this->health_metrics( $current_day_ts, $next_day_ts, $group_fields_settings );
                     $baptisms            = $this->baptisms_count( $current_day_ts, $next_day_ts );
 
-                    $multiselect_fields = [];
+                    $multiselect_fields = array();
                     foreach ( $contact_field_settings as $field_key => $field_settings ) {
-                        if ( isset( $field_settings['type'] ) && ( $field_settings['type'] === 'multi_select' ) && in_array( $field_key, [ 'milestones' ] ) ) {
+                        if ( isset( $field_settings['type'] ) && ( $field_settings['type'] === 'multi_select' ) && in_array( $field_key, array( 'milestones' ) ) ) {
                             $metrics = $this->multiselect_field_metrics( $current_day_ts, $next_day_ts, $field_key );
                             if ( ! empty( $metrics ) ) {
                                 foreach ( $metrics as $metric ) {
-                                    $multiselect_fields[ $field_settings['name'] ][] = [
+                                    $multiselect_fields[ $field_settings['name'] ][] = array(
                                         'label' => $field_settings['default'][ $metric->label ]['label'] ?? $metric->label,
-                                        'value' => $metric->value
-                                    ];
+                                        'value' => $metric->value,
+                                    );
                                 }
                             }
                         }
                     }
 
                     // Package counts
-                    $daily_activities[ $current_day_format ] = [
+                    $daily_activities[ $current_day_format ] = array(
                         'new_contacts'        => $new_contacts,
                         'new_groups'          => $new_groups,
                         'seeker_path_updates' => $seeker_path_updates,
                         'health'              => $health,
                         'multiselect_fields'  => $multiselect_fields,
-                        'baptisms'            => $baptisms
-                    ];
+                        'baptisms'            => $baptisms,
+                    );
                 }
 
-                return [
+                return array(
                     'start' => $start,
                     'end'   => $end,
-                    'days'  => $daily_activities
-                ];
+                    'days'  => $daily_activities,
+                );
             }
         }
 
-        return [];
+        return array();
     }
 
     private function health_metrics( $start, $end, $group_fields ): array {
         global $wpdb;
 
-        $labels = [];
+        $labels = array();
         foreach ( $group_fields['health_metrics']['default'] as $key => $option ) {
             $labels[ $key ] = $option['label'];
         }
 
-        $chart         = [];
+        $chart         = array();
         $chart['name'] = $group_fields['health_metrics']['name'];
 
         $results = $wpdb->get_results( $wpdb->prepare(
@@ -291,11 +291,11 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
                 $out_of = $results[0]['out_of'];
             }
             foreach ( $labels as $label_key => $label_value ) {
-                $row = [
+                $row = array(
                     'label'      => $label_value,
                     'practicing' => 0,
-                    'remaining'  => (int) $out_of
-                ];
+                    'remaining'  => (int) $out_of,
+                );
                 foreach ( $results as $result ) {
                     if ( $result['health_key'] === $label_key ) {
                         $row['practicing'] = (int) $result['count'];
@@ -333,7 +333,6 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         AND log.hist_time BETWEEN %d AND %d
         GROUP BY log.meta_value
         ", $field_name, $field_name, $start, $end ) );
-
     }
 
     private function new_groups_count( $start, $end ): int {

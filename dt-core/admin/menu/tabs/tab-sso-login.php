@@ -30,7 +30,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     public function __construct() {
         //add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         //add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 99, 1 );
 
         $user_id = get_current_user_id();
 
@@ -41,7 +41,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'SSO Login', 'disciple_tools' ), __( 'SSO Login', 'disciple_tools' ), 'manage_dt', 'dt_options&tab='.$this->token, [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'SSO Login', 'disciple_tools' ), __( 'SSO Login', 'disciple_tools' ), 'manage_dt', 'dt_options&tab='.$this->token, array( 'Disciple_Tools_Settings_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -71,7 +71,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
         }
 
         $vars = $this->process_postback();
-        $tabs = [];
+        $tabs = array();
         foreach ( $vars as $val ) {
             $tabs[$val['tab']] = ucwords( str_replace( '_', ' ', $val['tab'] ) );
         }

@@ -8,36 +8,35 @@ class Disciple_Tools_Migration_0005 extends Disciple_Tools_Migration {
             return;
         }
 
-        $query_args = [
+        $query_args = array(
             'post_type' => 'contacts',
             'nopaging'  => true,
-            'meta_query' => [
-                [
+            'meta_query' => array(
+                array(
                     'key' => 'is_a_user',
                     'value' => 'yes',
-                    'compare' => '='
-                ],
-            ],
-        ];
+                    'compare' => '=',
+                ),
+            ),
+        );
         $queried_contacts = new WP_Query( $query_args );
         foreach ( $queried_contacts->posts as $user_contact ){
             update_post_meta( $user_contact->ID, 'type', 'user' );
         }
-
     }
 
     public function down() {
-        $query_args       = [
+        $query_args       = array(
             'post_type'  => 'contacts',
             'nopaging'   => true,
-            'meta_query' => [
-                [
+            'meta_query' => array(
+                array(
                     'key'     => 'type',
                     'value'   => 'user',
-                    'compare' => '='
-                ],
-            ],
-        ];
+                    'compare' => '=',
+                ),
+            ),
+        );
         $queried_contacts = new WP_Query( $query_args );
         foreach ( $queried_contacts->posts as $user_contact ) {
             update_post_meta( $user_contact->ID, 'is_a_user', 'yes' );

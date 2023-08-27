@@ -4,15 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
 
     public function __construct() {
-        add_action( 'wp_login', [ &$this, 'hooks_wp_login' ], 10, 2 );
-        add_action( 'rest_pre_echo_response', [ $this, 'better_user_login_tracking' ], 10, 3 );
+        add_action( 'wp_login', array( &$this, 'hooks_wp_login' ), 10, 2 );
+        add_action( 'rest_pre_echo_response', array( $this, 'better_user_login_tracking' ), 10, 3 );
 
         parent::__construct();
     }
 
     public function hooks_wp_login( $user_login, $user ) {
         dt_activity_insert(
-            [
+            array(
                 'action' => 'logged_in',
                 'object_type' => 'User',
                 'object_subtype' => '',
@@ -23,7 +23,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
                 'meta_value'        => ' ',
                 'meta_parent'        => ' ',
                 'object_note'       => ' ',
-            ]
+            )
         );
     }
 
@@ -34,7 +34,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
             $last_call = get_user_option( 'last_rest_call', get_current_user_id() );
             if ( !$last_call || $last_call !== $today ){
                 dt_activity_insert(
-                    [
+                    array(
                         'action' => 'logged_in',
                         'object_type' => 'User',
                         'object_subtype' => '',
@@ -45,7 +45,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
                         'meta_value'        => ' ',
                         'meta_parent'        => ' ',
                         'object_note'       => ' ',
-                    ]
+                    )
                 );
                 update_user_option( get_current_user_id(), 'last_rest_call', $today );
             }

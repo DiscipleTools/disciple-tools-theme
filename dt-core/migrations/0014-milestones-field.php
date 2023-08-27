@@ -59,34 +59,34 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
         $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
         $custom_field_options = dt_get_option( 'dt_field_customizations' );
         $custom_lists = dt_get_option( 'dt_site_custom_lists' );
-        $custom_milestones = $custom_lists['custom_milestones'] ?? [];
+        $custom_milestones = $custom_lists['custom_milestones'] ?? array();
         foreach ( $custom_milestones as $k => $v ){
             if ( ! isset( $custom_field_options['contacts']['milestones'] ) ) {
-                $custom_field_options['contacts']['milestones'] = [
-                    'default' => []
-                ];
+                $custom_field_options['contacts']['milestones'] = array(
+                    'default' => array(),
+                );
             }
             if ( !isset( $contact_fields['milestones']['default'][$k] ) &&
                  !isset( $custom_field_options['contacts']['milestones']['default'][$k] ) ){
-                $custom_field_options['contacts']['milestones']['default'][$k] = [
-                    'label' => $v['name']
-                ];
+                $custom_field_options['contacts']['milestones']['default'][$k] = array(
+                    'label' => $v['name'],
+                );
             }
         }
 
         $group_fields = DT_Posts::get_post_field_settings( 'groups' );
-        $custom_church = $custom_lists['custom_church'] ?? [];
+        $custom_church = $custom_lists['custom_church'] ?? array();
         foreach ( $custom_church as $k => $v ){
             if ( ! isset( $custom_field_options['groups']['health_metrics'] ) ) {
-                $custom_field_options['groups']['health_metrics'] = [
-                    'default' => []
-                ];
+                $custom_field_options['groups']['health_metrics'] = array(
+                    'default' => array(),
+                );
             }
             if ( !isset( $group_fields['health_metrics']['default'][$k] ) &&
                  !isset( $custom_field_options['groups']['health_metrics']['default'][$k] ) ){
-                $custom_field_options['groups']['health_metrics']['default'][$k] = [
-                    'label' => $v['name']
-                ];
+                $custom_field_options['groups']['health_metrics']['default'][$k] = array(
+                    'label' => $v['name'],
+                );
             }
         }
 

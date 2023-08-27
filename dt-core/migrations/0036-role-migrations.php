@@ -72,13 +72,12 @@ class Disciple_Tools_Migration_0036 extends Disciple_Tools_Migration {
         $admin_role->remove_cap( 'delete_any_peoplegroup' );
         $admin_role->remove_cap( 'access_peoplegroups' );
         $admin_role->remove_cap( 'list_peoplegroups' );
-        require_once( get_template_directory() . '/dt-core/setup-functions.php' );
+        require_once get_template_directory() . '/dt-core/setup-functions.php';
         dt_setup_roles_and_permissions();
     }
 
     public function down() {
         global $wpdb;
-
     }
 
     public function test() {
@@ -87,6 +86,6 @@ class Disciple_Tools_Migration_0036 extends Disciple_Tools_Migration {
 
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }

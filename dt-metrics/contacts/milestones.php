@@ -13,7 +13,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
     public $slug = 'milestones'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/milestones.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
 
     public function __construct() {
         parent::__construct();
@@ -25,9 +25,9 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     /**
@@ -44,50 +44,50 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
             get_template_directory_uri() . $this->js_file_name,
-            [
+            array(
                 'moment',
                 'jquery',
                 'jquery-ui-core',
                 'datepicker',
                 'amcharts-core',
                 'amcharts-charts',
-            ],
+            ),
             filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
         // Localize script with array data
         wp_localize_script(
-            'dt_'.$this->slug.'_script', $this->js_object_name, [
+            'dt_'.$this->slug.'_script', $this->js_object_name, array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                'data' => [
-                    'milestones' => $this->milestones()
-                ],
-                'translations' => [
+                'data' => array(
+                    'milestones' => $this->milestones(),
+                ),
+                'translations' => array(
                     'milestones' => __( 'Milestones', 'disciple_tools' ),
                     'filter_contacts_to_date_range' => __( 'Filter contacts to date range:', 'disciple_tools' ),
                     'all_time' => __( 'All Time', 'disciple_tools' ),
                     'filter_to_date_range' => __( 'Filter to date range', 'disciple_tools' ),
-                ]
-            ]
+                ),
+            )
         );
     }
 
     public function add_api_routes() {
         $namespace = "dt-metrics/$this->base_slug/$this->slug";
         register_rest_route(
-            $namespace, '/milestones/', [
-                [
+            $namespace, '/milestones/', array(
+                array(
                     'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'milestones_endpoint' ],
+                    'callback' => array( $this, 'milestones_endpoint' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function milestones_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( 'milestones', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'milestones', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
         if ( isset( $params['start'], $params['end'] ) ){
@@ -100,7 +100,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( 'milestones', 'Missing a valid values', [ 'status' => 400 ] );
+            return new WP_Error( 'milestones', 'Missing a valid values', array( 'status' => 400 ) );
         }
     }
 
@@ -139,7 +139,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
 
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $milestones_options = $field_settings['milestones']['default'];
-        $milestones_data = [];
+        $milestones_data = array();
 
         foreach ( $milestones_options as $option_key => $option_value ){
             $milestones_data[$option_value['label']] = 0;
@@ -149,12 +149,12 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
                 }
             }
         }
-        $return = [];
+        $return = array();
         foreach ( $milestones_data as $k => $v ){
-            $return[] = [
+            $return[] = array(
                 'milestones' => $k,
-                'value' => (int) $v
-            ];
+                'value' => (int) $v,
+            );
         }
 
         return $return;

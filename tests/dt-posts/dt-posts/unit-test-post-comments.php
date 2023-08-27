@@ -1,26 +1,26 @@
 <?php
-require_once( get_template_directory() . '/tests/dt-posts/tests-setup.php' );
+require_once get_template_directory() . '/tests/dt-posts/tests-setup.php';
 
 class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
 
-    public static $sample_contact = [
+    public static $sample_contact = array(
         'title'           => 'Bob',
         'overall_status'  => 'active',
-        'milestones'      => [
-            'values' => [
-                [ 'value' => 'milestone_has_bible' ],
-                [ 'value' => 'milestone_baptizing' ]
-            ]
-        ],
+        'milestones'      => array(
+            'values' => array(
+                array( 'value' => 'milestone_has_bible' ),
+                array( 'value' => 'milestone_baptizing' ),
+            ),
+        ),
         'baptism_date'    => '2022-01-13',
-        'location_grid'   => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'location_grid'   => array( 'values' => array( array( 'value' => '100089589' ) ) ),
         'assigned_to'     => '1',
         'requires_update' => true,
         'nickname'        => 'Bob the builder',
-        'contact_phone'   => [ 'values' => [ [ 'value' => '798456780' ] ] ],
-        'contact_email'   => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
-        'tags'            => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tagToDelete' ] ] ],
-    ];
+        'contact_phone'   => array( 'values' => array( array( 'value' => '798456780' ) ) ),
+        'contact_email'   => array( 'values' => array( array( 'value' => 'bob@example.com' ) ) ),
+        'tags'            => array( 'values' => array( array( 'value' => 'tag1' ), array( 'value' => 'tagToDelete' ) ) ),
+    );
     public static $contact = null;
 
     public static function setupBeforeClass(): void {
@@ -39,9 +39,9 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
      */
     public function test_comment_creation_with_valid_data( $comment_date ) {
 
-        $comment_args = [
-            'comment_date' => $comment_date
-        ];
+        $comment_args = array(
+            'comment_date' => $comment_date,
+        );
         $comment_html = 'Valid data comments test';
         $comment_id   = DT_Posts::add_post_comment( self::$contact['post_type'], self::$contact['ID'], $comment_html, 'comment', $comment_args, false, true );
         $comments     = DT_Posts::get_post_comments( self::$contact['post_type'], self::$contact['ID'], false );
@@ -52,11 +52,11 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
     }
 
     public function valid_dates_data_provider(): array {
-        return [
-            [ '' ],
-            [ '2022-01-13 12:00:00' ],
-            [ '2019-12-25T15:54:55+0000' ],
-        ];
+        return array(
+            array( '' ),
+            array( '2022-01-13 12:00:00' ),
+            array( '2019-12-25T15:54:55+0000' ),
+        );
     }
 
     /**
@@ -64,9 +64,9 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
      */
     public function test_comment_creation_with_invalid_data( $comment_date ) {
 
-        $comment_args  = [
-            'comment_date' => $comment_date
-        ];
+        $comment_args  = array(
+            'comment_date' => $comment_date,
+        );
         $comment_html  = 'Invalid data comments test';
         $comment_error = DT_Posts::add_post_comment( self::$contact['post_type'], self::$contact['ID'], $comment_html, 'comment', $comment_args, false, true );
 
@@ -76,19 +76,19 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
     }
 
     public function invalid_dates_data_provider(): array {
-        return [
-            [ 'null' ],
-            [ '7/6/2009 14:16' ],
-            [ 'Y-m-d H:i:s' ],
-            [ '0000-00-00 00:00:00' ]
-        ];
+        return array(
+            array( 'null' ),
+            array( '7/6/2009 14:16' ),
+            array( 'Y-m-d H:i:s' ),
+            array( '0000-00-00 00:00:00' ),
+        );
     }
 
     public function test_comment_updates() {
 
-        $comment_args         = [
-            'comment_date' => '2022-01-13 13:00:00'
-        ];
+        $comment_args         = array(
+            'comment_date' => '2022-01-13 13:00:00',
+        );
         $comment_html         = 'Initial comment....';
         $comment_id           = DT_Posts::add_post_comment( self::$contact['post_type'], self::$contact['ID'], $comment_html, 'comment', $comment_args, false, true );
         $comments             = DT_Posts::get_post_comments( self::$contact['post_type'], self::$contact['ID'], false );
@@ -105,9 +105,9 @@ class DT_Posts_DT_Posts_Post_Comments extends WP_UnitTestCase {
 
     public function test_comment_deletes() {
 
-        $comment_args   = [
-            'comment_date' => '2022-01-13 14:00:00'
-        ];
+        $comment_args   = array(
+            'comment_date' => '2022-01-13 14:00:00',
+        );
         $comment_html   = 'Deleted comment test....';
         $comment_id     = DT_Posts::add_post_comment( self::$contact['post_type'], self::$contact['ID'], $comment_html, 'comment', $comment_args, false, true );
         $comments       = DT_Posts::get_post_comments( self::$contact['post_type'], self::$contact['ID'], false );

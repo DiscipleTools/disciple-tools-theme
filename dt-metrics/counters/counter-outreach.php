@@ -140,16 +140,16 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
             $start,
             $end
         ), ARRAY_A );
-        $sources = get_option( 'dt_critical_path_sources', [] );
-        $reports = [];
+        $sources = get_option( 'dt_critical_path_sources', array() );
+        $reports = array();
         foreach ( $sources as $source ){
-            $reports[ $source['key'] ] = [
+            $reports[ $source['key'] ] = array(
                 'label' => $source['label'],
                 'section' => $source['section'] ?? 'none',
                 'description' => $source['description'] ?? '',
                 'sum' => 0,
-                'latest' => null
-            ];
+                'latest' => null,
+            );
         }
         foreach ( $results as $res ){
             if ( isset( $reports[ $res['meta_key'] ] ) ) {

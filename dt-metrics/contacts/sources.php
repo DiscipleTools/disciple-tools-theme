@@ -14,7 +14,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
     public $slug = 'sources'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/contacts/sources.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
 
     public function __construct() {
         parent::__construct();
@@ -27,9 +27,9 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
 
@@ -42,24 +42,24 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
 
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
-        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4' );
+        wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', array( 'amcharts-core' ), '4' );
 
         wp_enqueue_script( 'dt_' . $this->slug . '_script',
             get_template_directory_uri() . $this->js_file_name,
-            [
+            array(
                 'moment',
                 'jquery',
                 'jquery-ui-core',
                 'datepicker',
                 'amcharts-core',
                 'amcharts-charts',
-                'lodash'
-            ],
+                'lodash',
+            ),
             filemtime( get_theme_file_path() . $this->js_file_name )
         );
 
         $contacts_custom_field_settings = DT_Posts::get_post_field_settings( 'contacts' );
-        $sources = [];
+        $sources = array();
         foreach ( $contacts_custom_field_settings['sources']['default'] as $key => $values ){
             $sources[ $key ] = $values['label'];
         }
@@ -67,23 +67,23 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         $seeker_path_settings['order'] = array_keys( $seeker_path_settings['default'] );
         $overall_status_settings = $contacts_custom_field_settings['overall_status'];
         $overall_status_settings['order'] = array_keys( $overall_status_settings['default'] );
-        $milestone_settings = [];
+        $milestone_settings = array();
         foreach ( $contacts_custom_field_settings['milestones']['default'] as $key => $option ){
             $milestone_settings[$key] = $option['label'];
         }
         // Localize script with array data
         wp_localize_script(
-            'dt_'.$this->slug.'_script', $this->js_object_name, [
+            'dt_'.$this->slug.'_script', $this->js_object_name, array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
-                'data' => [
+                'data' => array(
                     'sources' => $this->get_source_data_from_db(),
-                ],
+                ),
                 'sources' => $sources,
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
                 'seeker_path_settings' => $seeker_path_settings,
                 'overall_status_settings' => $overall_status_settings,
                 'milestone_settings' => $milestone_settings,
-                'translations' => [
+                'translations' => array(
                     'filter_contacts_to_date_range' => __( 'Filter contacts to date range:', 'disciple_tools' ),
                     'all_time' => __( 'All Time', 'disciple_tools' ),
                     'filter_to_date_range' => __( 'Filter to date range', 'disciple_tools' ),
@@ -96,33 +96,33 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                     'sources_active_milestone' => __( 'Active contacts, by source and faith milestone', 'disciple_tools' ),
                     'sources_active_status_warning' => __( "This is displaying only the contacts with an 'active' status right now.", 'disciple_tools' ),
                     'sources_contacts_warning_milestones' => __( 'A contact can come from more than one source, and it can have more than one faith milestone at the same time.', 'disciple_tools' ),
-                ]
-            ]
+                ),
+            )
         );
     }
 
     public function add_api_routes() {
         $namespace = "dt-metrics/$this->base_slug/$this->slug";
         register_rest_route(
-            $namespace, '/sources_chart_data', [
+            $namespace, '/sources_chart_data', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'api_sources_chart_data' ],
+                'callback' => array( $this, 'api_sources_chart_data' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $namespace, '/sources_chart_data', [
+            $namespace, '/sources_chart_data', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'api_sources_chart_data' ],
+                'callback' => array( $this, 'api_sources_chart_data' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
     }
 
     public function api_sources_chart_data( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( !( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'view_project_metrics' ) ) ) {
-            return new WP_Error( __FUNCTION__, 'Permission required: view all contacts', [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, 'Permission required: view all contacts', array( 'status' => 403 ) );
         }
         try {
             if ( isset( $params['from'] ) && isset( $params['to'] ) ) {
@@ -138,7 +138,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             }
         } catch ( Exception $e ) {
             error_log( $e );
-            return new WP_Error( __FUNCTION__, 'got error ', [ 'status' => 500 ] );
+            return new WP_Error( __FUNCTION__, 'got error ', array( 'status' => 500 ) );
         }
     }
     private static function check_date_string( string $str ) {
@@ -166,7 +166,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
     public static function get_source_data_from_db( string $from = null, string $to = null ) {
         global $wpdb;
 
-        $prepare_args = [ '1' ];
+        $prepare_args = array( '1' );
         if ( $from ) {
             $prepare_args[] = $from;
         }
@@ -200,7 +200,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        $rv = [];
+        $rv = array();
 
         foreach ( $rows as $row ) {
             $source = $row['sources'] ?? 'null';
@@ -216,7 +216,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
                 $rv[$source]['active_seeker_path_' . ( $row['seeker_path'] ?? 'null' )] = (int) $row['count'];
             }
         }
-        uasort( $rv, function( $a, $b ) {
+        uasort( $rv, function ( $a, $b ) {
             if ( $a['total'] != $b['total'] ) {
                 return $a['total'] - $b['total'];
             } else {
@@ -239,7 +239,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
     public static function get_sources_milestones( string $from = null, string $to = null ) {
         global $wpdb;
 
-        $prepare_args = [ 'milestones' ];
+        $prepare_args = array( 'milestones' );
         if ( $from ) {
             $prepare_args[] = $from;
         }
@@ -274,7 +274,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        $rv = [];
+        $rv = array();
         foreach ( $rows as $row ) {
             $source = $row['sources'] ?? 'null';
             $rv[$source]['name_of_source'] = $source;
@@ -282,7 +282,5 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         }
         return $rv;
     }
-
-
 }
 new DT_Metrics_Sources_Chart();

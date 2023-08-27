@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * Legacy migration placeholder.
  */
 
-require_once( 'abstract.php' );
+require_once 'abstract.php';
 
 /**
  * Class DT_Mapping_Module_Migration_0000
@@ -29,7 +29,7 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
      * @return array
      */
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 
     /**
@@ -37,5 +37,4 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

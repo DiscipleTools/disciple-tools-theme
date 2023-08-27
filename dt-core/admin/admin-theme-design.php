@@ -55,15 +55,15 @@ function dt_modify_admin_bar( $wp_admin_bar ) {
         $class = empty( $avatar ) ? '' : 'with-avatar';
 
         $wp_admin_bar->add_menu(
-            [
+            array(
                 'id'     => 'my-account',
                 'parent' => 'top-secondary',
                 'title'  => $howdy . $avatar,
                 'href'   => $profile_url,
-                'meta'   => [
+                'meta'   => array(
                     'class' => $class,
-                ],
-            ]
+                ),
+            )
         );
     } // end if
 }

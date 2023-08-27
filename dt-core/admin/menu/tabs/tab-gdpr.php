@@ -24,16 +24,16 @@ class Disciple_Tools_GDPR_Tab extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 120 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 120, 1 ); // use the priority setting to control load order
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 120, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 120 );
+        add_action( 'dt_utilities_tab_menu', array( $this, 'add_tab' ), 120, 1 ); // use the priority setting to control load order
+        add_action( 'dt_utilities_tab_content', array( $this, 'content' ), 120, 1 );
 
         parent::__construct();
     } // End __construct()
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_utilities', __( 'GDPR', 'disciple_tools' ), __( 'GDPR', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=gdpr', [ 'Disciple_Tools_Utilities_Menu', 'content' ] );
+        add_submenu_page( 'dt_utilities', __( 'GDPR', 'disciple_tools' ), __( 'GDPR', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=gdpr', array( 'Disciple_Tools_Utilities_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -51,7 +51,7 @@ class Disciple_Tools_GDPR_Tab extends Disciple_Tools_Abstract_Menu_Base
             self::template( 'begin', 2 );
 
             // box - export
-            self::box( 'top', $title = 'Show Personal Data', $args = [] );
+            self::box( 'top', $title = 'Show Personal Data', $args = array() );
             ?>
             <form method="POST">
                 <?php wp_nonce_field( 'export' . get_current_user_id(), '_wpnonce', true, true ) ?>
@@ -68,7 +68,7 @@ class Disciple_Tools_GDPR_Tab extends Disciple_Tools_Abstract_Menu_Base
                 && isset( $_POST['contact_id'] )
                 && ! empty( $_POST['contact_id'] )
             ) {
-                self::box( 'top', $title = 'Personal Data Report', $args = [] );
+                self::box( 'top', $title = 'Personal Data Report', $args = array() );
 
                 $contact_id = sanitize_text_field( wp_unslash( $_POST['contact_id'] ) );
                 $contact_references = $this->query_contact_references( $contact_id );
@@ -105,7 +105,7 @@ foreach ( $contact_references as $key => $record ) {
                 self::box( 'bottom' );
 
                 // box - erase
-                self::box( 'top', $title = 'Erase Personal Data', $args = [] );
+                self::box( 'top', $title = 'Erase Personal Data', $args = array() );
                 ?>
                 <form method="POST">
                     <?php wp_nonce_field( 'erase' . get_current_user_id(), '_wpnonce', true, true )  ?>
@@ -159,7 +159,7 @@ foreach ( $contact_references as $key => $record ) {
 
             self::template( 'right_column', 2 );
 
-            self::box( 'top', $title = 'Instructions', $args = [] );
+            self::box( 'top', $title = 'Instructions', $args = array() );
             ?>
             <p>Get the contact id of the requested contact. You can find this number in the url over the contact record.</p>
             <p>For example: {your url}/contacts/5124. 5124 is the contact id.</p>
@@ -177,13 +177,13 @@ foreach ( $contact_references as $key => $record ) {
 
         $record = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID = %d", $contact_id ), ARRAY_A );
         if ( empty( $record ) ) {
-            return [];
+            return array();
         }
         else {
-            $results[$record['ID']] = [
-            'post' => [],
-            'meta' => []
-            ];
+            $results[$record['ID']] = array(
+            'post' => array(),
+            'meta' => array(),
+            );
             $results[$record['ID']]['post'] = $record;
         }
 
@@ -200,6 +200,5 @@ foreach ( $contact_references as $key => $record ) {
 
         return $results;
     }
-
 }
 Disciple_Tools_GDPR_Tab::instance();

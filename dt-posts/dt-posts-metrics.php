@@ -21,10 +21,10 @@ class DT_Posts_Metrics {
             AND ( archive_meta.meta_value != 'closed' OR archive_meta.meta_value IS NULL )
             GROUP BY pm.meta_value
         ", esc_sql( $post_type ), esc_sql( $meta_key ), esc_sql( get_current_user_id() ) ), ARRAY_A );
-        $counts = [
+        $counts = array(
             'total' => 0,
-            'keys' => []
-        ];
+            'keys' => array(),
+        );
         foreach ( $key_query as $key ){
             $counts['total'] += $key['count'];
             $counts['keys'][$key['key']] = $key['count'];
@@ -32,5 +32,4 @@ class DT_Posts_Metrics {
 
         return $counts;
     }
-
 }

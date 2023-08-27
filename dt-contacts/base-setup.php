@@ -14,35 +14,34 @@ class DT_Contacts_Base {
 
     public function __construct() {
         //setup post type
-        add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
-        add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
+        add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 100 );
+        add_filter( 'dt_set_roles_and_permissions', array( $this, 'dt_set_roles_and_permissions' ), 10, 1 );
+        add_filter( 'dt_capabilities', array( $this, 'dt_capabilities' ), 100, 1 );
 
         //setup tiles and fields
-        add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-        add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 5, 2 );
-        add_filter( 'dt_custom_fields_settings_after_combine', [ $this, 'dt_custom_fields_settings_after_combine' ], 10, 2 );
-        add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
-        add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles_after' ], 100, 2 );
-        add_action( 'dt_record_admin_actions', [ $this, 'dt_record_admin_actions' ], 10, 2 );
-        add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
-        add_action( 'dt_record_notifications_section', [ $this, 'dt_record_notifications_section' ], 10, 2 );
-        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 10, 3 );
-        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 20, 2 );
+        add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
+        add_filter( 'dt_custom_fields_settings', array( $this, 'dt_custom_fields_settings' ), 5, 2 );
+        add_filter( 'dt_custom_fields_settings_after_combine', array( $this, 'dt_custom_fields_settings_after_combine' ), 10, 2 );
+        add_filter( 'dt_details_additional_tiles', array( $this, 'dt_details_additional_tiles' ), 10, 2 );
+        add_filter( 'dt_details_additional_tiles', array( $this, 'dt_details_additional_tiles_after' ), 100, 2 );
+        add_action( 'dt_record_admin_actions', array( $this, 'dt_record_admin_actions' ), 10, 2 );
+        add_action( 'dt_record_footer', array( $this, 'dt_record_footer' ), 10, 2 );
+        add_action( 'dt_record_notifications_section', array( $this, 'dt_record_notifications_section' ), 10, 2 );
+        add_filter( 'dt_record_icon', array( $this, 'dt_record_icon' ), 10, 3 );
+        add_filter( 'dt_get_post_type_settings', array( $this, 'dt_get_post_type_settings' ), 20, 2 );
 
         // hooks
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-        add_action( 'post_connection_removed', [ $this, 'post_connection_removed' ], 10, 4 );
-        add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
-        add_filter( 'dt_post_update_fields', [ $this, 'update_post_field_hook' ], 10, 3 );
-        add_filter( 'dt_post_updated', [ $this, 'dt_post_updated' ], 10, 5 );
-        add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 20, 2 );
-        add_filter( 'dt_comments_additional_sections', [ $this, 'add_comm_channel_comment_section' ], 100, 2 );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
+        add_action( 'post_connection_removed', array( $this, 'post_connection_removed' ), 10, 4 );
+        add_action( 'post_connection_added', array( $this, 'post_connection_added' ), 10, 4 );
+        add_filter( 'dt_post_update_fields', array( $this, 'update_post_field_hook' ), 10, 3 );
+        add_filter( 'dt_post_updated', array( $this, 'dt_post_updated' ), 10, 5 );
+        add_filter( 'dt_post_create_fields', array( $this, 'dt_post_create_fields' ), 20, 2 );
+        add_filter( 'dt_comments_additional_sections', array( $this, 'add_comm_channel_comment_section' ), 100, 2 );
 
 
         //list
-        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
-
+        add_filter( 'dt_user_list_filters', array( $this, 'dt_user_list_filters' ), 10, 2 );
     }
 
 
@@ -62,21 +61,21 @@ class DT_Contacts_Base {
         if ( $post_type === $this->post_type ){
             $settings['label_singular'] = __( 'Contact', 'disciple_tools' );
             $settings['label_plural'] = __( 'Contacts', 'disciple_tools' );
-            $settings['status_field'] = [
+            $settings['status_field'] = array(
                 'status_key' => 'overall_status',
                 'archived_key' => 'closed',
-            ];
+            );
         }
         return $settings;
     }
 
     public function dt_capabilities( $capabilities ){
-        $capabilities['dt_all_access_' . $this->post_type] = [
+        $capabilities['dt_all_access_' . $this->post_type] = array(
             'source' => DT_Posts::get_label_for_post_type( $this->post_type, false, false ),
             'label' => 'Manage all access and media contacts',
             'description' => 'View and update all access and media contacts',
-            'post_type' => $this->post_type
-        ];
+            'post_type' => $this->post_type,
+        );
         if ( isset( $capabilities['view_any_contacts'] ) ){
             $capabilities['view_any_contacts']['label'] = 'View all, including private';
             $capabilities['view_any_contacts']['description'] = 'The user can view any contact, including private contacts';
@@ -100,25 +99,25 @@ class DT_Contacts_Base {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
-            $fields['nickname'] = [
+            $fields['nickname'] = array(
                 'name' => __( 'Nickname', 'disciple_tools' ),
                 'type' => 'text',
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/nametag.svg?v=2',
-            ];
-            $contact_preferences = get_option( 'dt_contact_preferences', [] );
-            $fields['type'] = [
+            );
+            $contact_preferences = get_option( 'dt_contact_preferences', array() );
+            $fields['type'] = array(
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default'     => [
-                    'user' => [
+                'default'     => array(
+                    'user' => array(
                         'label' => __( 'User', 'disciple_tools' ),
                         'description' => __( 'Representing a User in the system', 'disciple_tools' ),
                         'color' => '#3F729B',
                         'hidden' => true,
                         'in_create_form' => false,
-                    ],
-                    'personal' => [
+                    ),
+                    'personal' => array(
                         'label' => __( 'Private Contact', 'disciple_tools' ),
                         'color' => '#9b379b',
                         'description' => __( 'A friend, family member or acquaintance', 'disciple_tools' ),
@@ -126,69 +125,69 @@ class DT_Contacts_Base {
                         'icon' => get_template_directory_uri() . '/dt-assets/images/locked.svg?v=2',
                         'order' => 50,
                         'hidden' => !empty( $contact_preferences['hide_personal_contact_type'] ),
-                        'default' => true
-                    ],
-                ],
+                        'default' => true,
+                    ),
+                ),
                 'description' => 'See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
-                'customizable' => false
-            ];
-            $fields['duplicate_data'] = [
+                'customizable' => false,
+            );
+            $fields['duplicate_data'] = array(
                 'name' => 'Duplicates', //system string does not need translation
                 'type' => 'array',
-                'default' => [],
-                'hidden' => true
-            ];
-            $fields['duplicate_of'] = [
+                'default' => array(),
+                'hidden' => true,
+            );
+            $fields['duplicate_of'] = array(
                 'name' => 'Duplicate of', //system string does not need translation
                 'type' => 'text',
-                'hidden' => true
-            ];
+                'hidden' => true,
+            );
 
-            $fields['languages'] = [
+            $fields['languages'] = array(
                 'name' => __( 'Languages', 'disciple_tools' ),
                 'type' => 'multi_select',
-                'default' => dt_get_option( 'dt_working_languages' ) ?: [],
+                'default' => dt_get_option( 'dt_working_languages' ) ?: array(),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/languages.svg?v=2',
-                'tile' => 'no_tile'
-            ];
+                'tile' => 'no_tile',
+            );
 
             //add communication channels
-            $fields['contact_phone'] = [
+            $fields['contact_phone'] = array(
                 'name' => __( 'Phone', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/phone.svg?v=2',
                 'type' => 'communication_channel',
                 'tile' => 'details',
                 'customizable' => false,
                 'in_create_form' => true,
-                'messagingServices' => [
-                    'Signal' => [
+                'messagingServices' => array(
+                    'Signal' => array(
                         'name' => __( 'Signal', 'disciple_tools' ),
                         'link' => 'https://signal.me/#p/PHONE_NUMBER',
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/signal.svg'
-                    ],
-                    'Viber' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/signal.svg',
+                    ),
+                    'Viber' => array(
                         'name' => __( 'Viber', 'disciple_tools' ),
                         'link' => 'viber://chat?number=PHONE_NUMBER',
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/viber.svg'
-                    ],
-                    'Whatsapp' => [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/viber.svg',
+                    ),
+                    'Whatsapp' => array(
                         'name' => __( 'WhatsApp', 'disciple_tools' ),
                         'link' => 'https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS',
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/signal.svg'
-                    ],
-                ]
-            ];
-            $fields['contact_email'] = [
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/signal.svg',
+                    ),
+                ),
+            );
+            $fields['contact_email'] = array(
                 'name' => __( 'Email', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/email.svg?v=2',
                 'type' => 'communication_channel',
                 'tile' => 'details',
-                'customizable' => false
-            ];
+                'customizable' => false,
+            );
 
             // add location fields
-            $fields['location_grid'] = [
+            $fields['location_grid'] = array(
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'location',
@@ -196,8 +195,8 @@ class DT_Contacts_Base {
                 'in_create_form' => true,
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
-            ];
-            $fields['location_grid_meta'] = [
+            );
+            $fields['location_grid_meta'] = array(
                 'name'        => __( 'Locations or Address', 'disciple_tools' ),
                 'type'        => 'location_meta',
                 'tile'      => 'details',
@@ -205,15 +204,15 @@ class DT_Contacts_Base {
                 'hidden' => true,
                 'in_create_form' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
-            ];
-            $fields['contact_address'] = [
+            );
+            $fields['contact_address'] = array(
                 'name' => __( 'Address', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/house.svg?v=2',
                 'type' => 'communication_channel',
                 'tile' => 'details',
                 'mapbox'    => false,
-                'customizable' => false
-            ];
+                'customizable' => false,
+            );
             if ( DT_Mapbox_API::get_key() ){
                 $fields['contact_address']['custom_display'] = true;
                 $fields['contact_address']['mapbox'] = true;
@@ -226,32 +225,32 @@ class DT_Contacts_Base {
             }
 
             // add social media
-            $fields['contact_facebook'] = [
+            $fields['contact_facebook'] = array(
                 'name' => __( 'Facebook', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/facebook.svg?v=2',
                 'hide_domain' => true,
                 'type' => 'communication_channel',
                 'tile' => 'details',
-                'customizable' => false
-            ];
-            $fields['contact_twitter'] = [
+                'customizable' => false,
+            );
+            $fields['contact_twitter'] = array(
                 'name' => __( 'Twitter', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/twitter.svg?v=2',
                 'hide_domain' => true,
                 'type' => 'communication_channel',
                 'tile' => 'details',
-                'customizable' => false
-            ];
-            $fields['contact_other'] = [
+                'customizable' => false,
+            );
+            $fields['contact_other'] = array(
                 'name' => __( 'Other Social Links', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/chat.svg?v=2',
                 'hide_domain' => false,
                 'type' => 'communication_channel',
                 'tile' => 'details',
-                'customizable' => false
-            ];
+                'customizable' => false,
+            );
 
-            $fields['relation'] = [
+            $fields['relation'] = array(
                 'name' => sprintf( _x( 'Connections to other %s', 'connections to other records', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ) ),
                 'description' => _x( 'Relationship this contact has with another contact in the system.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -259,59 +258,59 @@ class DT_Contacts_Base {
                 'p2p_direction' => 'any',
                 'p2p_key' => 'contacts_to_relation',
                 'tile' => 'other',
-                'in_create_form' => [ 'placeholder' ],
+                'in_create_form' => array( 'placeholder' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/connection-people.svg?v=2',
-            ];
+            );
 
-            $fields['gender'] = [
+            $fields['gender'] = array(
                 'name'        => __( 'Gender', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default'     => [
-                    'male'    => [ 'label' => __( 'Male', 'disciple_tools' ) ],
-                    'female'  => [ 'label' => __( 'Female', 'disciple_tools' ) ],
-                ],
+                'default'     => array(
+                    'male'    => array( 'label' => __( 'Male', 'disciple_tools' ) ),
+                    'female'  => array( 'label' => __( 'Female', 'disciple_tools' ) ),
+                ),
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/gender-male-female.svg',
-            ];
+            );
 
-            $fields['age'] = [
+            $fields['age'] = array(
                 'name'        => __( 'Age', 'disciple_tools' ),
                 'type'        => 'key_select',
-                'default'     => [
-                    'not-set' => [ 'label' => '' ],
-                    '<19'     => [ 'label' => __( 'Under 18 years old', 'disciple_tools' ) ],
-                    '<26'     => [ 'label' => __( '18-25 years old', 'disciple_tools' ) ],
-                    '<41'     => [ 'label' => __( '26-40 years old', 'disciple_tools' ) ],
-                    '>41'     => [ 'label' => __( 'Over 40 years old', 'disciple_tools' ) ],
-                ],
+                'default'     => array(
+                    'not-set' => array( 'label' => '' ),
+                    '<19'     => array( 'label' => __( 'Under 18 years old', 'disciple_tools' ) ),
+                    '<26'     => array( 'label' => __( '18-25 years old', 'disciple_tools' ) ),
+                    '<41'     => array( 'label' => __( '26-40 years old', 'disciple_tools' ) ),
+                    '>41'     => array( 'label' => __( 'Over 40 years old', 'disciple_tools' ) ),
+                ),
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/contact-age.svg?v=2',
-                'select_cannot_be_empty' => true //backwards compatible since we already have an "none" value
-            ];
+                'select_cannot_be_empty' => true, //backwards compatible since we already have an "none" value
+            );
 
-            $fields['requires_update'] = [
+            $fields['requires_update'] = array(
                 'name'        => __( 'Requires Update', 'disciple_tools' ),
                 'type'        => 'boolean',
                 'default'     => false,
-            ];
+            );
 
-            $fields['overall_status'] = [
+            $fields['overall_status'] = array(
                 'name' => __( 'Contact Status', 'disciple_tools' ),
                 'description' => _x( 'The Contact Status describes the progress in communicating with the contact.', 'Contact Status field description', 'disciple_tools' ),
                 'type' => 'key_select',
-                'default' => [
-                    'active'       => [
+                'default' => array(
+                    'active'       => array(
                         'label' => __( 'Active', 'disciple_tools' ),
                         'description' => _x( 'The contact is progressing and/or continually being updated.', 'Contact Status field description', 'disciple_tools' ),
                         'color' => '#4CAF50',
-                    ],
-                    'closed' => [
+                    ),
+                    'closed' => array(
                         'label' => __( 'Archived', 'disciple_tools' ),
                         'color' => '#808080',
                         'description' => _x( 'This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.', 'Contact Status field description', 'disciple_tools' ),
-                    ]
-                ]
-            ];
+                    ),
+                ),
+            );
         }
         return $fields;
     }
@@ -439,7 +438,7 @@ class DT_Contacts_Base {
 
     public function dt_details_additional_tiles_after( $tiles, $post_type = '' ){
         if ( $post_type === 'contacts' ){
-            $tiles['other'] = [ 'label' => __( 'Other', 'disciple_tools' ) ];
+            $tiles['other'] = array( 'label' => __( 'Other', 'disciple_tools' ) );
         }
         return $tiles;
     }
@@ -479,60 +478,60 @@ class DT_Contacts_Base {
             $shared_by_type_counts = DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
 
-            $filters['tabs'][] = [
+            $filters['tabs'][] = array(
                 'key' => 'default',
                 'label' => __( 'Default Filters', 'disciple_tools' ),
-                'order' => 7
-            ];
-            $filters['filters'][] = [
+                'order' => 7,
+            );
+            $filters['filters'][] = array(
                 'ID' => 'all_my_contacts',
                 'tab' => 'default',
                 'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
-                'labels' =>[
-                    [
+                'labels' =>array(
+                    array(
                         'id' => 'all',
                         'name' => sprintf( _x( 'All %s I can view', 'All records I can view', 'disciple_tools' ), $post_label_plural ),
-                    ]
-                ],
-                'query' => [
+                    ),
+                ),
+                'query' => array(
                     'sort' => '-post_date',
-                ],
-            ];
+                ),
+            );
 
-            $filters['filters'][] = [
+            $filters['filters'][] = array(
                 'ID' => 'favorite',
                 'tab' => 'default',
                 'name' => sprintf( _x( 'Favorite %s', 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
-                'query' => [
-                    'fields' => [ 'favorite' => [ '1' ] ],
-                    'sort' => 'name'
-                ],
-                'labels' => [
-                    [ 'id' => '1', 'name' => __( 'Favorite', 'disciple_tools' ) ]
-                ]
-            ];
-            $filters['filters'][] = [
+                'query' => array(
+                    'fields' => array( 'favorite' => array( '1' ) ),
+                    'sort' => 'name',
+                ),
+                'labels' => array(
+                    array( 'id' => '1', 'name' => __( 'Favorite', 'disciple_tools' ) ),
+                ),
+            );
+            $filters['filters'][] = array(
                 'ID' => 'recent',
                 'tab' => 'default',
                 'name' => __( 'My Recently Viewed', 'disciple_tools' ),
-                'query' => [
-                    'dt_recent' => true
-                ],
-                'labels' => [
-                    [ 'id' => 'recent', 'name' => __( 'Last 30 viewed', 'disciple_tools' ) ]
-                ]
-            ];
-            $filters['filters'][] = [
+                'query' => array(
+                    'dt_recent' => true,
+                ),
+                'labels' => array(
+                    array( 'id' => 'recent', 'name' => __( 'Last 30 viewed', 'disciple_tools' ) ),
+                ),
+            );
+            $filters['filters'][] = array(
                 'ID' => 'personal',
                 'tab' => 'default',
                 'name' => __( 'Personal', 'disciple_tools' ),
-                'query' => [
-                    'type' => [ 'personal' ],
+                'query' => array(
+                    'type' => array( 'personal' ),
                     'sort' => 'name',
-                    'overall_status' => [ '-closed' ],
-                ],
+                    'overall_status' => array( '-closed' ),
+                ),
                 'count' => $shared_by_type_counts['keys']['personal'] ?? 0,
-            ];
+            );
             $filters['filters'] = self::add_default_custom_list_filters( $filters['filters'] );
         }
         return $filters;
@@ -541,30 +540,30 @@ class DT_Contacts_Base {
     //list page filters function
     private static function add_default_custom_list_filters( $filters ){
         if ( empty( $filters ) ){
-            $filters = [];
+            $filters = array();
         }
-        $default_filters = [
-            [
+        $default_filters = array(
+            array(
                 'ID' => 'my_shared',
                 'visible' => '1',
                 'type' => 'default',
                 'tab' => 'custom',
                 'name' => __( 'Shared with me', 'disciple_tools' ),
-                'query' => [
-                    'shared_with' => [ 'me' ],
+                'query' => array(
+                    'shared_with' => array( 'me' ),
                     'sort' => 'name',
-                ],
-                'labels' => [
-                    [
+                ),
+                'labels' => array(
+                    array(
                         'id' => 'me',
                         'name' => __( 'Shared with me', 'disciple_tools' ),
-                        'field' => 'shared_with'
-                    ],
-                ],
-            ]
-        ];
+                        'field' => 'shared_with',
+                    ),
+                ),
+            ),
+        );
         //prepend filter if it is not already created.
-        $contact_filter_ids = array_map( function ( $a ){
+        $contact_filter_ids = array_map( function ( $a ) {
             return $a['ID'];
         }, $filters );
         foreach ( $default_filters as $filter ) {
@@ -585,15 +584,14 @@ class DT_Contacts_Base {
 
     public function scripts(){
         if ( is_singular( 'contacts' ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
-            wp_enqueue_script( 'dt_contacts', get_template_directory_uri() . '/dt-contacts/contacts.js', [
+            wp_enqueue_script( 'dt_contacts', get_template_directory_uri() . '/dt-contacts/contacts.js', array(
                 'jquery',
-            ], filemtime( get_theme_file_path() . '/dt-contacts/contacts.js' ), true );
+            ), filemtime( get_theme_file_path() . '/dt-contacts/contacts.js' ), true );
         }
     }
 
     public function add_api_routes() {
         $namespace = 'dt-posts/v2';
-
     }
 
 
@@ -609,16 +607,16 @@ class DT_Contacts_Base {
                 if ( $channel_key == 'contact_phone' || $channel_key == 'contact_email' || $channel_key == 'contact_address' || !$enabled ){
                     continue;
                 }
-                $sections[] = [
+                $sections[] = array(
                     'key' => $channel_key,
-                    'label' => esc_html( $channel_option['name'] ?? $channel_key )
-                ];
+                    'label' => esc_html( $channel_option['name'] ?? $channel_key ),
+                );
             }
 
             // Extract custom comment types.
             $comment_type_options  = dt_get_option( 'dt_comment_types' );
-            $comment_type_fields = $comment_type_options[ $post_type ] ?? [];
-            foreach ( $comment_type_fields ?? [] as $key => $type ){
+            $comment_type_fields = $comment_type_options[ $post_type ] ?? array();
+            foreach ( $comment_type_fields ?? array() as $key => $type ){
                 if ( isset( $type['is_comment_type'] ) && $type['is_comment_type'] ){
 
                     // Ensure label adopts the correct name translation.
@@ -649,7 +647,7 @@ class DT_Contacts_Base {
             }
 
             // Finally, move all original custom comment types to bottom spots!
-            foreach ( $sections ?? [] as $section ){
+            foreach ( $sections ?? array() as $section ){
                 if ( isset( $section['is_comment_type'] ) && $section['is_comment_type'] && ( substr( $section['key'], 0, strlen( $section['key_prefix'] ) ) === $section['key_prefix'] ) ){
                     $section_idx = $this->comm_channel_comment_section_already_assigned( $sections, $section['key'] );
                     if ( $section_idx !== false ){
@@ -666,7 +664,7 @@ class DT_Contacts_Base {
 
     private function comm_channel_comment_section_already_assigned( $sections, $key ){
         $found = false;
-        foreach ( $sections ?? [] as $idx => $section ){
+        foreach ( $sections ?? array() as $idx => $section ){
             if ( isset( $section['key'] ) && $section['key'] == $key ){
                 $found = $idx;
             }
@@ -691,7 +689,6 @@ class DT_Contacts_Base {
                 </div>
             </section>
         <?php endif;
-
     }
     public function dt_record_icon( $icon, $post_type, $dt_post ){
         if ( $post_type == 'contacts' ) {

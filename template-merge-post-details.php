@@ -49,7 +49,7 @@ $fields_to_display = determine_post_fields_to_display( $post_settings_fields, $d
 // Load supporting merge scripts
 function merge_post_details_scripts( $args ) {
 
-    $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
+    $dependencies = array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' );
     if ( DT_Mapbox_API::get_key() ) {
         DT_Mapbox_API::load_mapbox_header_scripts();
         DT_Mapbox_API::load_mapbox_search_widget();
@@ -63,38 +63,38 @@ function merge_post_details_scripts( $args ) {
 }
 
 add_action( 'wp_enqueue_scripts', function () use ( $dt_current_post, $dt_duplicate_post, $post_settings, $fields_to_display ) {
-    merge_post_details_scripts( [
-        'posts'                    => [
-            $dt_current_post['ID']   => [
+    merge_post_details_scripts( array(
+        'posts'                    => array(
+            $dt_current_post['ID']   => array(
                 'record' => $dt_current_post,
-                'html'   => render_post_fields_html( $dt_current_post, $fields_to_display, $post_settings['fields'], $dt_current_post['ID'] . '_', true )
-            ],
-            $dt_duplicate_post['ID'] => [
+                'html'   => render_post_fields_html( $dt_current_post, $fields_to_display, $post_settings['fields'], $dt_current_post['ID'] . '_', true ),
+            ),
+            $dt_duplicate_post['ID'] => array(
                 'record' => $dt_duplicate_post,
-                'html'   => render_post_fields_html( $dt_duplicate_post, $fields_to_display, $post_settings['fields'], $dt_duplicate_post['ID'] . '_', true )
-            ]
-        ],
+                'html'   => render_post_fields_html( $dt_duplicate_post, $fields_to_display, $post_settings['fields'], $dt_duplicate_post['ID'] . '_', true ),
+            ),
+        ),
         'post_settings'            => $post_settings,
         'post_fields_default_html' => render_post_fields_html( $dt_current_post, $fields_to_display, $post_settings['fields'], '', false ),
         'site_url'                 => esc_url( site_url( '/' ) ),
         'url_root'                 => esc_url_raw( rest_url() ),
         'nonce'                    => wp_create_nonce( 'wp_rest' ),
-        'mapbox'                   => [
+        'mapbox'                   => array(
             'map_key'        => DT_Mapbox_API::get_key(),
             'google_map_key' => Disciple_Tools_Google_Geocode_API::get_key(),
-            'translations'   => [
+            'translations'   => array(
                 'search_location' => __( 'Search Location', 'disciple_tools' ),
                 'delete_location' => __( 'Delete Location', 'disciple_tools' ),
                 'use'             => __( 'Use', 'disciple_tools' ),
-                'open_modal'      => __( 'Open Modal', 'disciple_tools' )
-            ]
-        ],
-        'translations'             => [
+                'open_modal'      => __( 'Open Modal', 'disciple_tools' ),
+            ),
+        ),
+        'translations'             => array(
             'regions_of_focus' => __( 'Regions of Focus', 'disciple_tools' ),
             'all_locations'    => __( 'All Locations', 'disciple_tools' ),
-            'error_msg'        => __( 'Sorry, something went wrong', 'disciple_tools' )
-        ]
-    ] );
+            'error_msg'        => __( 'Sorry, something went wrong', 'disciple_tools' ),
+        ),
+    ) );
 }, 10 );
 
 // Render dt header
@@ -187,8 +187,8 @@ get_header();
 <?php
 
 function determine_post_fields_to_display( $settings_fields, $current_post, $duplicate_post ) {
-    $fields_to_display = [];
-    foreach ( $settings_fields ?? [] as $key => $field ) {
+    $fields_to_display = array();
+    foreach ( $settings_fields ?? array() as $key => $field ) {
 
         // Ignore/Hide fields not present within both post records
         if ( ! empty( $current_post[ $key ] ) || ! empty( $duplicate_post[ $key ] ) ) {
@@ -279,14 +279,14 @@ function render_post_fields( $post, $fields, $settings_fields, $field_id_prefix,
 }
 
 function list_merge_capable_field_types(): array {
-    return [
+    return array(
         'communication_channel',
         'multi_select',
         'location_meta',
         'location',
         'tags',
-        'connection'
-    ];
+        'connection',
+    );
 }
 
 // Render dt footer; which should contain the majority of scripts

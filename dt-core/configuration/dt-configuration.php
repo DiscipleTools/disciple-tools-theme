@@ -49,7 +49,7 @@ function dt_permalink_structure_changed_callback( $permalink_structure ) {
 }
 
 function dt_override_comment_notice_recipients() {
-    return [];
+    return array();
 }
 
 /**
@@ -103,15 +103,15 @@ function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $titl
 function dt_cron_schedules( $schedules ) {
     $schedules['weekly'] = array(
         'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
-        'display'  => 'Weekly'
+        'display'  => 'Weekly',
     );
     $schedules['15min'] = array(
         'interval' => 15 * 60,
-        'display'  => __( 'Once every 15 minutes' )
+        'display'  => __( 'Once every 15 minutes' ),
     );
     $schedules['5min'] = array(
         'interval' => 5 * 60,
-        'display'  => __( 'Once every 5 minutes' )
+        'display'  => __( 'Once every 5 minutes' ),
     );
     return $schedules;
 }
@@ -133,12 +133,12 @@ add_action( 'admin_init', function () {
 function dt_log_sent_emails( $mail_data ){
     $dt_email_logs_enabled = get_option( 'dt_email_logs_enabled' );
     if ( isset( $dt_email_logs_enabled ) && $dt_email_logs_enabled ){
-        dt_activity_insert( [
+        dt_activity_insert( array(
             'action' => 'mail_sent',
             'object_name' => $mail_data['subject'] ?? '',
-            'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : [],
-            'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message']
-        ] );
+            'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : array(),
+            'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message'],
+        ) );
     }
 
     return $mail_data;

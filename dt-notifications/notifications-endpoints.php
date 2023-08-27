@@ -51,7 +51,7 @@ class Disciple_Tools_Notifications_Endpoints
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     } // End __construct()
 
     public function add_api_routes() {
@@ -59,55 +59,54 @@ class Disciple_Tools_Notifications_Endpoints
         $namespace = 'dt/v' . $version;
 
         register_rest_route(
-            $namespace, '/notifications/mark_viewed/(?P<notification_id>\d+)', [
-                [
+            $namespace, '/notifications/mark_viewed/(?P<notification_id>\d+)', array(
+                array(
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'mark_viewed' ],
+                    'callback' => array( $this, 'mark_viewed' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
 
         register_rest_route(
-            $namespace, '/notifications/mark_all_viewed/(?P<user_id>\d+)', [
-                [
+            $namespace, '/notifications/mark_all_viewed/(?P<user_id>\d+)', array(
+                array(
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'mark_all_viewed' ],
+                    'callback' => array( $this, 'mark_all_viewed' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
 
         register_rest_route(
-            $namespace, '/notifications/get_notifications', [
-                [
+            $namespace, '/notifications/get_notifications', array(
+                array(
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'get_notifications' ],
+                    'callback' => array( $this, 'get_notifications' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
 
         register_rest_route(
-            $namespace, '/notifications/get_new_notifications_count', [
-                [
+            $namespace, '/notifications/get_new_notifications_count', array(
+                array(
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'get_new_notifications_count' ],
+                    'callback' => array( $this, 'get_new_notifications_count' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
 
         register_rest_route(
-            $namespace, '/notifications/mark_unread/(?P<notification_id>\d+)', [
-                [
+            $namespace, '/notifications/mark_unread/(?P<notification_id>\d+)', array(
+                array(
                     'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'mark_unread' ],
+                    'callback' => array( $this, 'mark_unread' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
-
     }
 
     /**
@@ -126,10 +125,10 @@ class Disciple_Tools_Notifications_Endpoints
             if ( $result['status'] ) {
                 return $result['rows_affected'];
             } else {
-                return new WP_Error( 'mark_viewed_processing_error', $result['message'], [ 'status' => 400 ] );
+                return new WP_Error( 'mark_viewed_processing_error', $result['message'], array( 'status' => 400 ) );
             }
         } else {
-            return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please provide a valid array', array( 'status' => 400 ) );
         }
     }
 
@@ -149,10 +148,10 @@ class Disciple_Tools_Notifications_Endpoints
             if ( $result['status'] ) {
                 return $result['rows_affected'];
             } else {
-                return new WP_Error( 'mark_viewed_processing_error', $result['message'], [ 'status' => 400 ] );
+                return new WP_Error( 'mark_viewed_processing_error', $result['message'], array( 'status' => 400 ) );
             }
         } else {
-            return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please provide a valid array', array( 'status' => 400 ) );
         }
     }
 
@@ -173,10 +172,10 @@ class Disciple_Tools_Notifications_Endpoints
             if ( !is_wp_error( $result ) ) {
                 return $result;
             } else {
-                return new WP_Error( 'get_user_notification_results', 'Something went wrong', [ 'status' => 400 ] );
+                return new WP_Error( 'get_user_notification_results', 'Something went wrong', array( 'status' => 400 ) );
             }
         } else {
-            return new WP_Error( 'notification_param_error', 'Please set the page and limit query parameters', [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please set the page and limit query parameters', array( 'status' => 400 ) );
         }
     }
 
@@ -192,7 +191,7 @@ class Disciple_Tools_Notifications_Endpoints
         if ( !is_wp_error( $result ) ){
             return $result;
         } else {
-            return new WP_Error( 'get_user_notification_results', 'Something went wrong', [ 'status' => 400 ] );
+            return new WP_Error( 'get_user_notification_results', 'Something went wrong', array( 'status' => 400 ) );
         }
     }
 
@@ -212,11 +211,10 @@ class Disciple_Tools_Notifications_Endpoints
             if ( $result['status'] ) {
                 return $result['rows_affected'];
             } else {
-                return new WP_Error( 'mark_viewed_processing_error', $result['message'], [ 'status' => 400 ] );
+                return new WP_Error( 'mark_viewed_processing_error', $result['message'], array( 'status' => 400 ) );
             }
         } else {
-            return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
+            return new WP_Error( 'notification_param_error', 'Please provide a valid array', array( 'status' => 400 ) );
         }
     }
-
 }

@@ -54,7 +54,7 @@ function dt_multi_role_get_roles() {
  * @return array
  */
 function dt_multi_role_get_role_names() {
-    $roles = [];
+    $roles = array();
 
     foreach ( dt_multi_role_role_factory()->roles as $role ) {
         $roles[ $role->slug ] = $role->name;
@@ -82,7 +82,7 @@ function dt_multi_role_get_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_active_role_names() {
-    $has_users = [];
+    $has_users = array();
 
     foreach ( dt_multi_role_get_active_role_slugs() as $role ) {
         $has_users[ $role ] = dt_multi_role_get_role_name( $role );
@@ -100,7 +100,7 @@ function dt_multi_role_get_active_role_names() {
  */
 function dt_multi_role_get_active_role_slugs() {
 
-    $has_users = [];
+    $has_users = array();
 
     foreach ( dt_multi_role_get_role_user_count() as $role => $count ) {
 
@@ -142,7 +142,7 @@ function dt_multi_role_get_inactive_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_editable_role_names() {
-    $editable = [];
+    $editable = array();
 
     foreach ( dt_multi_role_role_factory()->editable as $role ) {
         $editable[ $role->slug ] = $role->name;
@@ -170,7 +170,7 @@ function dt_multi_role_get_editable_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_uneditable_role_names() {
-    $uneditable = [];
+    $uneditable = array();
 
     foreach ( dt_multi_role_role_factory()->uneditable as $role ) {
         $uneditable[ $role->slug ] = $role->name;
@@ -198,7 +198,7 @@ function dt_multi_role_get_uneditable_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_wordpress_role_names() {
-    $names = [];
+    $names = array();
 
     foreach ( dt_multi_role_role_factory()->wordpress as $role ) {
         $names[ $role->slug ] = $role->name;
@@ -391,7 +391,7 @@ function dt_multi_role_is_role_editable( $role ) {
  * @return bool
  */
 function dt_multi_role_is_wordpress_role( $role ) {
-    return in_array( $role, [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ] );
+    return in_array( $role, array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' ) );
 }
 
 /* ====== URLs ====== */
@@ -451,10 +451,10 @@ function dt_multi_role_get_role_view_url( $view ) {
  * @return string
  */
 function dt_multi_role_get_edit_role_url( $role ) {
-    return add_query_arg( [
+    return add_query_arg( array(
         'action' => 'edit',
-        'role' => $role
-    ], dt_multi_role_get_edit_roles_url() );
+        'role' => $role,
+    ), dt_multi_role_get_edit_roles_url() );
 }
 
 /**
@@ -466,10 +466,10 @@ function dt_multi_role_get_edit_role_url( $role ) {
  * @return string
  */
 function dt_multi_role_get_delete_role_url( $role ) {
-    $url = add_query_arg( [
+    $url = add_query_arg( array(
         'action' => 'delete',
-        'role' => $role
-    ], dt_multi_role_get_edit_roles_url() );
+        'role' => $role,
+    ), dt_multi_role_get_edit_roles_url() );
 
     return wp_nonce_url( $url, 'delete_role', 'dt_multi_role_delete_role_nonce' );
 }

@@ -17,5 +17,4 @@ abstract class DT_Module_Base{
         }
         return $module_enabled;
     }
-
 }

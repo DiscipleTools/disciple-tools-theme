@@ -19,11 +19,11 @@ class Disciple_Tools_Contacts_Transfer {
      * Disciple_Tools_Contacts_Transfer constructor.
      */
     public function __construct() {
-        add_action( 'dt_share_panel', [ $this, 'share_panel' ], 10, 1 );
-        add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
-        add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 1 );
-        add_action( 'dt_record_top_above_details', [ $this, 'contact_transfer_notification' ], 10, 2 );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'dt_share_panel', array( $this, 'share_panel' ), 10, 1 );
+        add_filter( 'site_link_type', array( $this, 'site_link_type' ), 10, 1 );
+        add_filter( 'site_link_type_capabilities', array( $this, 'site_link_capabilities' ), 10, 1 );
+        add_action( 'dt_record_top_above_details', array( $this, 'contact_transfer_notification' ), 10, 2 );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     // Adds the type of connection to the site link system
@@ -80,17 +80,17 @@ class Disciple_Tools_Contacts_Transfer {
             if ( ! is_wp_error( $site ) ) {
 
                 // Prepare record summary request payload
-                $args = [
+                $args = array(
                     'method'  => 'POST',
                     'timeout' => 20,
-                    'body'    => [
+                    'body'    => array(
                         'contact_id'           => $contact['ID'],
-                        'transfer_foreign_key' => $contact['transfer_foreign_key']
-                    ],
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $site['transfer_token']
-                    ]
-                ];
+                        'transfer_foreign_key' => $contact['transfer_foreign_key'],
+                    ),
+                    'headers' => array(
+                        'Authorization' => 'Bearer ' . $site['transfer_token'],
+                    ),
+                );
 
                 // Request record summary from remote site
                 $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/summary', $args );
@@ -102,19 +102,19 @@ class Disciple_Tools_Contacts_Transfer {
                         // Fetch desired remote record contact summary information
                         $field_settings      = DT_Posts::get_post_field_settings( 'contacts' );
 
-                        $status          = $remote_contact['overall_status'] ?? [
+                        $status          = $remote_contact['overall_status'] ?? array(
                                 'key'   => 'empty',
-                                'label' => __( 'Status Currently Unavailable', 'disciple_tools' )
-                            ];
+                                'label' => __( 'Status Currently Unavailable', 'disciple_tools' ),
+                            );
                         $status_settings = $field_settings['overall_status'];
 
-                        $seeker          = $remote_contact['seeker_path'] ?? [
+                        $seeker          = $remote_contact['seeker_path'] ?? array(
                                 'key'   => 'empty',
-                                'label' => __( 'Seeker Path Currently Unavailable', 'disciple_tools' )
-                            ];
+                                'label' => __( 'Seeker Path Currently Unavailable', 'disciple_tools' ),
+                            );
                         $seeker_settings = $field_settings['seeker_path'];
 
-                        $milestones          = $remote_contact['milestones'] ?? [];
+                        $milestones          = $remote_contact['milestones'] ?? array();
                         $milestones_settings = $field_settings['milestones'];
 
                         ?>
@@ -146,7 +146,7 @@ class Disciple_Tools_Contacts_Transfer {
                                 </div>
 
                                 <?php
-                                foreach ( $milestones_settings['default'] ?? [] as $key => $milestone ) {
+                                foreach ( $milestones_settings['default'] ?? array() as $key => $milestone ) {
                                     if ( in_array( $key, $milestones ) ) {
                                         dt_render_field_icon( $milestone );
                                         echo esc_html( $milestone['label'] ); ?>
@@ -188,57 +188,57 @@ class Disciple_Tools_Contacts_Transfer {
         $namespace = 'dt-posts/v2';
         //Transfer a contact to another instance
         register_rest_route(
-            $namespace, '/contacts/transfer', [
+            $namespace, '/contacts/transfer', array(
                 'methods'             => 'POST',
-                'callback'            => [ $this, 'contact_transfer_endpoint' ],
+                'callback'            => array( $this, 'contact_transfer_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         //Provide global metrics on contacts received by transfer
         register_rest_route(
-            $namespace, '/contacts/transfer/metrics', [
+            $namespace, '/contacts/transfer/metrics', array(
                 'methods'             => 'POST',
-                'callback'            => [ $this, 'contact_transfer_metrics_endpoint' ],
+                'callback'            => array( $this, 'contact_transfer_metrics_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         //Provide summary details on a contact received by transfer
         register_rest_route(
-            $namespace, '/contacts/transfer/summary', [
+            $namespace, '/contacts/transfer/summary', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'contact_transfer_summary_endpoint' ],
+                'callback' => array( $this, 'contact_transfer_summary_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         //Send an update to a transferred contact
         register_rest_route(
-            $namespace, '/contacts/transfer/summary/send-update', [
+            $namespace, '/contacts/transfer/summary/send-update', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'contact_transfer_summary_send_update_endpoint' ],
+                'callback' => array( $this, 'contact_transfer_summary_send_update_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         //Receive an update on a contact received by transfer
         register_rest_route(
-            $namespace, '/contacts/transfer/summary/receive-update', [
+            $namespace, '/contacts/transfer/summary/receive-update', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'contact_transfer_summary_receive_update_endpoint' ],
+                'callback' => array( $this, 'contact_transfer_summary_receive_update_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $namespace, '/contacts/receive-transfer', [
+            $namespace, '/contacts/receive-transfer', array(
                 'methods'             => 'POST',
-                'callback'            => [ $this, 'receive_transfer_endpoint' ],
+                'callback'            => array( $this, 'receive_transfer_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         register_rest_route(
-            $namespace, '/contacts/receive-transfer/comments', [
+            $namespace, '/contacts/receive-transfer/comments', array(
                 'methods'             => 'POST',
-                'callback'            => [ $this, 'receive_transfer_comments_endpoint' ],
+                'callback'            => array( $this, 'receive_transfer_comments_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
     }
 
@@ -253,7 +253,7 @@ class Disciple_Tools_Contacts_Transfer {
         }
 
         if ( isset( $post->post_type ) && 'contacts' === $post->post_type && current_user_can( 'dt_all_access_contacts' ) ) {
-            $list = Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
+            $list = Site_Link_System::get_list_of_sites_by_type( array( 'contact_sharing', 'contact_sending' ) );
             if ( empty( $list ) ) {
                 return;
             }
@@ -273,7 +273,7 @@ class Disciple_Tools_Contacts_Transfer {
                 <?php if ( $foreign_key_exists ) : ?>
                     <div class="cell" id="transfer-warning">
 
-                        <h6><?php echo sprintf( esc_html__( 'Already transfered to %s', 'disciple_tools' ), esc_html( $site_title ) ) ?></h6>
+                        <h6><?php printf( esc_html__( 'Already transfered to %s', 'disciple_tools' ), esc_html( $site_title ) ) ?></h6>
                         <p><?php esc_html_e( 'NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?', 'disciple_tools' ) ?></p>
                         <p>
                             <button type="button"
@@ -311,7 +311,7 @@ class Disciple_Tools_Contacts_Transfer {
     }
 
     public function get_available_transfer_sites() {
-        return Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
+        return Site_Link_System::get_list_of_sites_by_type( array( 'contact_sharing', 'contact_sending' ) );
     }
 
     public static function get_activity_log_for_id( $id ) {
@@ -353,23 +353,23 @@ class Disciple_Tools_Contacts_Transfer {
         $comments       = dt_get_comments_with_redacted_user_data( $contact_id );
         $comment_chunks = array_chunk( $comments, 200 );
 
-        $args = [
+        $args = array(
             'method'  => 'POST',
             'timeout' => 20,
-            'body'    => [
+            'body'    => array(
                 'transfer_token' => $site['transfer_token'],
-                'contact_data'   => [
+                'contact_data'   => array(
                     'post'                 => $post_data,
                     'postmeta'             => $postmeta_data,
-                    'comments'             => isset( $comment_chunks[0] ) ? $comment_chunks[0] : [],
+                    'comments'             => isset( $comment_chunks[0] ) ? $comment_chunks[0] : array(),
                     'people_groups'        => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
-                ],
-            ],
-            'headers' => [
+                ),
+            ),
+            'headers' => array(
                 'Authorization' => 'Bearer ' . $site['transfer_token'],
-            ],
-        ];
+            ),
+        );
 
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/receive-transfer', $args );
         if ( is_wp_error( $result ) ) {
@@ -385,20 +385,20 @@ class Disciple_Tools_Contacts_Transfer {
 
         if ( sizeof( $comment_chunks ) > 1 && isset( $result_body->transfer_foreign_key, $result_body->created_id ) ) {
             $size = sizeof( $comment_chunks );
-            for ( $i = 1; $i < $size; $i ++ ) {
+            for ( $i = 1; $i < $size; $i++ ) {
 
-                $args = [
+                $args = array(
                     'method'  => 'POST',
                     'timeout' => 20,
-                    'body'    => [
+                    'body'    => array(
                         'post_id'              => $result_body->created_id,
                         'comments'             => $comment_chunks[ $i ],
-                        'transfer_foreign_key' => $result_body->transfer_foreign_key
-                    ],
-                    'headers' => [
+                        'transfer_foreign_key' => $result_body->transfer_foreign_key,
+                    ),
+                    'headers' => array(
                         'Authorization' => 'Bearer ' . $site['transfer_token'],
-                    ],
-                ];
+                    ),
+                );
 
                 $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/receive-transfer/comments', $args );
             }
@@ -408,7 +408,7 @@ class Disciple_Tools_Contacts_Transfer {
         if ( ! empty( $result_body->error ) ) {
             foreach ( $result_body->error->errors as $key => $value ) {
                 $time_in_mysql_format = current_time( 'mysql' );
-                wp_insert_comment( [
+                wp_insert_comment( array(
                     'comment_post_ID'  => $contact_id,
                     'comment_content'  => __( 'Minor transfer error.', 'disciple_tools' ) . ' ' . $key,
                     'comment_type'     => '',
@@ -416,7 +416,7 @@ class Disciple_Tools_Contacts_Transfer {
                     'user_id'          => get_current_user_id(),
                     'comment_date'     => $time_in_mysql_format,
                     'comment_approved' => 1,
-                ] );
+                ) );
             }
         }
 
@@ -438,7 +438,7 @@ class Disciple_Tools_Contacts_Transfer {
         }
         // add note that the record was transferred
         $time_in_mysql_format = current_time( 'mysql' );
-        $comment_result       = wp_insert_comment( [
+        $comment_result       = wp_insert_comment( array(
             'comment_post_ID'  => $contact_id,
             'comment_content'  => $comment,
             'comment_type'     => '',
@@ -446,7 +446,7 @@ class Disciple_Tools_Contacts_Transfer {
             'user_id'          => get_current_user_id(),
             'comment_date'     => $time_in_mysql_format,
             'comment_approved' => 1,
-        ] );
+        ) );
         if ( is_wp_error( $comment_result ) ) {
             $errors->add( __METHOD__, $result->get_error_message() );
         }
@@ -487,9 +487,9 @@ class Disciple_Tools_Contacts_Transfer {
         // set variables
         $contact_data       = $params['contact_data'];
         $post_args          = $contact_data['post'];
-        $comment_data       = $contact_data['comments'] ?? [];
-        $meta_input         = [];
-        $lagging_meta_input = [];
+        $comment_data       = $contact_data['comments'] ?? array();
+        $meta_input         = array();
+        $lagging_meta_input = array();
         $errors             = new WP_Error();
         $site_link_post_id  = Site_Link_System::get_post_id_by_site_key( Site_Link_System::decrypt_transfer_token( $params['transfer_token'] ) );
 
@@ -500,7 +500,7 @@ class Disciple_Tools_Contacts_Transfer {
         foreach ( $contact_data['postmeta'] as $key => $value ) {
             if ( isset( $value[1] ) ) {
                 foreach ( $value as $item ) {
-                    $lagging_meta_input[] = [ $key => $item ];
+                    $lagging_meta_input[] = array( $key => $item );
                 }
             } else {
                 if ( $key === 'type' && $value[0] === 'media' ) {
@@ -567,10 +567,10 @@ class Disciple_Tools_Contacts_Transfer {
 
         // Add transfer record comment
         $comment          = '@[' . $base_user->display_name . '](' . $base_user->ID . '), ' . __( 'Contact transferred from site', 'disciple_tools' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"';
-        $transfer_comment = DT_Posts::add_post_comment( 'contacts', $post_id, $comment, 'comment', [
+        $transfer_comment = DT_Posts::add_post_comment( 'contacts', $post_id, $comment, 'comment', array(
             'user_id'        => 0,
             'comment_author' => __( 'Transfer Bot', 'disciple_tools' ),
-        ], false );
+        ), false );
         if ( is_wp_error( $transfer_comment ) ) {
             $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
         }
@@ -581,24 +581,24 @@ class Disciple_Tools_Contacts_Transfer {
                 $message = $message . ' <a href="' . esc_url( site_url() ) . '/contacts/' . esc_attr( $duplicate_post_id ) . '">' . esc_attr( get_the_title( $duplicate_post_id ) ) . '</a>';
             }
             // Add transfer record comment
-            $transfer_comment = wp_insert_comment( [
+            $transfer_comment = wp_insert_comment( array(
                 'user_id'          => 0,
                 'comment_post_ID'  => $post_id,
                 'comment_author'   => __( 'Transfer Bot', 'disciple_tools' ),
                 'comment_approved' => 1,
                 'comment_content'  => $message,
-            ] );
+            ) );
             if ( is_wp_error( $transfer_comment ) ) {
                 $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
             }
         }
 
-        return [
+        return array(
             'status'               => 'OK',
             'transfer_foreign_key' => $post_args['meta_input']['transfer_foreign_key'],
             'errors'               => $errors,
-            'created_id'           => $post_id
-        ];
+            'created_id'           => $post_id,
+        );
     }
 
     private static function insert_bulk_comments( $comments, $post_id ) {
@@ -693,11 +693,10 @@ class Disciple_Tools_Contacts_Transfer {
 
         $params = $request->get_params();
         if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing required parameters.', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing required parameters.', array( 'status' => 400 ) );
         }
 
         return self::contact_transfer( $params['contact_id'], $params['site_post_id'] );
-
     }
 
     /**
@@ -708,26 +707,26 @@ class Disciple_Tools_Contacts_Transfer {
     public function contact_transfer_summary_endpoint( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( ! isset( $params['contact_id'], $params['transfer_foreign_key'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key', array( 'status' => 400 ) );
         }
 
         if ( ! current_user_can( 'update_own_contacts' ) ) {
-            return new WP_Error( __METHOD__, 'Missing permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing permissions', array( 'status' => 400 ) );
         }
         global $wp_session;
         if ( ! isset( $wp_session['logged_in_as_site_link'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing permissions', array( 'status' => 400 ) );
         }
 
         // Fetch local post id for summary details
         $post_id = $this->get_local_post_id( $params['contact_id'], $params['transfer_foreign_key'] );
         if ( empty( $post_id ) ) {
-            return new WP_Error( __METHOD__, 'Could not find post id to fetch summary', [ 'status' => 404 ] );
+            return new WP_Error( __METHOD__, 'Could not find post id to fetch summary', array( 'status' => 404 ) );
 
         } else {
             $post = DT_Posts::get_post( 'contacts', $post_id, true, false, true );
             if ( ! empty( $post ) && ! is_wp_error( $post ) ) {
-                $response = [];
+                $response = array();
 
                 if ( isset( $post['overall_status'] ) ) {
                     $response['overall_status'] = $post['overall_status'];
@@ -742,7 +741,7 @@ class Disciple_Tools_Contacts_Transfer {
                 return $response;
 
             } else {
-                return new WP_Error( __METHOD__, 'Could not find post record to fetch summary', [ 'status' => 404 ] );
+                return new WP_Error( __METHOD__, 'Could not find post record to fetch summary', array( 'status' => 404 ) );
             }
         }
     }
@@ -757,7 +756,7 @@ class Disciple_Tools_Contacts_Transfer {
     public function contact_transfer_summary_send_update_endpoint( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( ! isset( $params['contact_id'], $params['update'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing contact_id or update', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing contact_id or update', array( 'status' => 400 ) );
         }
         if ( ! ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
             return new WP_Error( __METHOD__, 'Insufficient permissions' );
@@ -774,18 +773,18 @@ class Disciple_Tools_Contacts_Transfer {
             if ( ! empty( $site ) && ! is_wp_error( $site ) ) {
 
                 // Prepare record summary update request payload
-                $args = [
+                $args = array(
                     'method'  => 'POST',
                     'timeout' => 20,
-                    'body'    => [
+                    'body'    => array(
                         'contact_id'           => $contact['ID'],
                         'transfer_foreign_key' => $contact['transfer_foreign_key'],
-                        'update'               => $params['update']
-                    ],
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $site['transfer_token']
-                    ]
-                ];
+                        'update'               => $params['update'],
+                    ),
+                    'headers' => array(
+                        'Authorization' => 'Bearer ' . $site['transfer_token'],
+                    ),
+                );
 
                 // Post summary update payload
                 $response = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-posts/v2/contacts/transfer/summary/receive-update', $args );
@@ -796,9 +795,9 @@ class Disciple_Tools_Contacts_Transfer {
             }
         }
 
-        return [
-            'success' => $success
-        ];
+        return array(
+            'success' => $success,
+        );
     }
 
     /**
@@ -809,35 +808,35 @@ class Disciple_Tools_Contacts_Transfer {
     public function contact_transfer_summary_receive_update_endpoint( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( ! isset( $params['contact_id'], $params['transfer_foreign_key'], $params['update'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key or update', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing contact_id or transfer_foreign_key or update', array( 'status' => 400 ) );
         }
 
         if ( !current_user_can( 'update_own_contacts' ) ){
-            return new WP_Error( __METHOD__, 'Missing permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing permissions', array( 'status' => 400 ) );
         }
         global $wp_session;
         if ( !isset( $wp_session['logged_in_as_site_link'] ) ){
-            return new WP_Error( __METHOD__, 'Missing permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing permissions', array( 'status' => 400 ) );
         }
 
         // Fetch local post id to be updated
         $post_id = $this->get_local_post_id( $params['contact_id'], $params['transfer_foreign_key'] );
         if ( empty( $post_id ) ) {
-            return new WP_Error( __METHOD__, 'Could not find post id to update', [ 'status' => 404 ] );
+            return new WP_Error( __METHOD__, 'Could not find post id to update', array( 'status' => 404 ) );
 
         } else {
 
-            $args               = [
+            $args               = array(
                 'user_id'        => 0,
                 'comment_author' => __( 'Transfer Bot', 'disciple_tools' ) . ' - ' . $wp_session['logged_in_as_site_link']['label'],
-            ];
+            );
             $created_comment_id = DT_Posts::add_post_comment( 'contacts', $post_id, $params['update'], 'comment', $args, false, true );
             $success            = ( ! empty( $created_comment_id ) && ! is_wp_error( $created_comment_id ) );
         }
 
-        return [
-            'success' => $success
-        ];
+        return array(
+            'success' => $success,
+        );
     }
 
     /**
@@ -850,27 +849,27 @@ class Disciple_Tools_Contacts_Transfer {
     public function contact_transfer_metrics_endpoint( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( ! isset( $params['start'], $params['end'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing date range', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing date range', array( 'status' => 400 ) );
         }
 
         if ( ! current_user_can( 'update_own_contacts' ) ) {
-            return new WP_Error( __METHOD__, 'Missing permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing permissions', array( 'status' => 400 ) );
         }
         global $wp_session;
         if ( ! isset( $wp_session['logged_in_as_site_link'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing permissions', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing permissions', array( 'status' => 400 ) );
         }
 
         $site_link_post_id = $wp_session['logged_in_as_site_link']['post_id'];
 
-        $metrics = [
-            'statuses_current'     => [],
-            'statuses_changes'     => [],
-            'seeker_paths_current' => [],
-            'seeker_paths_changes' => [],
-            'milestones_current'   => [],
-            'milestones_changes'   => []
-        ];
+        $metrics = array(
+            'statuses_current'     => array(),
+            'statuses_changes'     => array(),
+            'seeker_paths_current' => array(),
+            'seeker_paths_changes' => array(),
+            'milestones_current'   => array(),
+            'milestones_changes'   => array(),
+        );
 
         $start = $params['start'];
         $end   = $params['end'];
@@ -901,12 +900,12 @@ class Disciple_Tools_Contacts_Transfer {
         AND log.object_type = 'contacts'
         AND log.hist_time BETWEEN %d AND %d
         GROUP BY os.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
-        foreach ( $statuses_current ?? [] as $row ) {
+        foreach ( $statuses_current ?? array() as $row ) {
             if ( ! empty( $row['status'] && ! empty( $row['count'] ) ) ) {
-                $metrics['statuses_current'][] = [
+                $metrics['statuses_current'][] = array(
                     'status' => $field_settings['overall_status']['default'][ $row['status'] ]['label'],
-                    'count'  => $row['count']
-                ];
+                    'count'  => $row['count'],
+                );
             }
         }
 
@@ -919,12 +918,12 @@ class Disciple_Tools_Contacts_Transfer {
         AND log.object_type = 'contacts'
         AND log.hist_time BETWEEN %d AND %d
         GROUP BY log.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
-        foreach ( $statuses_changes ?? [] as $row ) {
+        foreach ( $statuses_changes ?? array() as $row ) {
             if ( ! empty( $row['status'] && ! empty( $row['count'] ) ) ) {
-                $metrics['statuses_changes'][] = [
+                $metrics['statuses_changes'][] = array(
                     'status' => $field_settings['overall_status']['default'][ $row['status'] ]['label'],
-                    'count'  => $row['count']
-                ];
+                    'count'  => $row['count'],
+                );
             }
         }
 
@@ -956,12 +955,12 @@ class Disciple_Tools_Contacts_Transfer {
             GROUP BY post_id
         )
         GROUP BY b.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
-        foreach ( $seeker_paths_current ?? [] as $row ) {
+        foreach ( $seeker_paths_current ?? array() as $row ) {
             if ( ! empty( $row['seeker_path'] && ! empty( $row['count'] ) ) ) {
-                $metrics['seeker_paths_current'][] = [
+                $metrics['seeker_paths_current'][] = array(
                     'seeker_path' => $field_settings['seeker_path']['default'][ $row['seeker_path'] ]['label'],
-                    'count'       => $row['count']
-                ];
+                    'count'       => $row['count'],
+                );
             }
         }
 
@@ -993,12 +992,12 @@ class Disciple_Tools_Contacts_Transfer {
             GROUP BY post_id
         )
         GROUP BY log.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
-        foreach ( $seeker_paths_changes ?? [] as $row ) {
+        foreach ( $seeker_paths_changes ?? array() as $row ) {
             if ( ! empty( $row['seeker_path'] && ! empty( $row['count'] ) ) ) {
-                $metrics['seeker_paths_changes'][] = [
+                $metrics['seeker_paths_changes'][] = array(
                     'seeker_path' => $field_settings['seeker_path']['default'][ $row['seeker_path'] ]['label'],
-                    'count'       => $row['count']
-                ];
+                    'count'       => $row['count'],
+                );
             }
         }
 
@@ -1033,12 +1032,12 @@ class Disciple_Tools_Contacts_Transfer {
         AND log.object_type = 'contacts'
         AND log.hist_time BETWEEN %d AND %d
         GROUP BY pm.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
-        foreach ( $milestones_current ?? [] as $row ) {
+        foreach ( $milestones_current ?? array() as $row ) {
             if ( ! empty( $row['milestones'] && ! empty( $row['value'] ) ) ) {
-                $metrics['milestones_current'][] = [
+                $metrics['milestones_current'][] = array(
                     'milestone' => $field_settings['milestones']['default'][ $row['milestones'] ]['label'],
-                    'count'     => $row['value']
-                ];
+                    'count'     => $row['value'],
+                );
             }
         }
 
@@ -1070,12 +1069,12 @@ class Disciple_Tools_Contacts_Transfer {
         AND (log.meta_value != '')
         AND log.hist_time BETWEEN %d AND %d
         GROUP BY log.meta_value", $site_link_post_id, $start, $end ), ARRAY_A );
-        foreach ( $milestones_changes ?? [] as $row ) {
+        foreach ( $milestones_changes ?? array() as $row ) {
             if ( ! empty( $row['milestones'] && ! empty( $row['value'] ) ) ) {
-                $metrics['milestones_changes'][] = [
+                $metrics['milestones_changes'][] = array(
                     'milestone' => $field_settings['milestones']['default'][ $row['milestones'] ]['label'],
-                    'count'     => $row['value']
-                ];
+                    'count'     => $row['value'],
+                );
             }
         }
 
@@ -1091,18 +1090,18 @@ class Disciple_Tools_Contacts_Transfer {
         if ( isset( $params['contact_data'] ) ) {
             $result = self::receive_transferred_contact( $params );
             if ( is_wp_error( $result ) ) {
-                return [
+                return array(
                     'status' => 'FAIL',
                     'error'  => $result->get_error_message(),
-                ];
+                );
             } else {
                 return $result;
             }
         } else {
-            return [
+            return array(
                 'status' => 'FAIL',
-                'error'  => 'Missing required parameter'
-            ];
+                'error'  => 'Missing required parameter',
+            );
         }
     }
 
@@ -1112,7 +1111,7 @@ class Disciple_Tools_Contacts_Transfer {
             return new WP_Error( __METHOD__, 'Insufficient permissions' );
         }
         if ( ! isset( $params['comments'], $params['transfer_foreign_key'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing comments or transfer_foreign_key', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Missing comments or transfer_foreign_key', array( 'status' => 400 ) );
         }
 
         global $wpdb;
@@ -1126,7 +1125,7 @@ class Disciple_Tools_Contacts_Transfer {
         );
 
         if ( empty( $post_id ) ) {
-            return new WP_Error( __METHOD__, 'Could not find post to update', [ 'status' => 404 ] );
+            return new WP_Error( __METHOD__, 'Could not find post to update', array( 'status' => 404 ) );
         }
 
         $insert_comments = self::insert_bulk_comments( $params['comments'], $post_id );
@@ -1140,7 +1139,7 @@ Disciple_Tools_Contacts_Transfer::instance();
 function dt_get_comments_with_redacted_user_data( $post_id ) {
     $comments = DT_Posts::get_post_comments( 'contacts', $post_id );
     if ( is_wp_error( $comments ) || ! isset( $comments['comments'] ) ) {
-        return [];
+        return array();
     }
     $comments = $comments['comments'];
     if ( empty( $comments ) ) {

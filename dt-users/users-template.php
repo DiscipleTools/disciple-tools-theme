@@ -121,12 +121,12 @@ if ( is_admin() ) {
  */
 function dt_build_user_fields_display( array $usermeta ): array
 {
-    $fields = [];
+    $fields = array();
 
     $default_user_fields = dt_get_site_custom_lists()['user_fields'];
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
     if ( ! $site_custom_lists ) {
-        return [];
+        return array();
     }
     $site_user_fields = $site_custom_lists['user_fields'];
 
@@ -139,13 +139,13 @@ function dt_build_user_fields_display( array $usermeta ): array
 
             foreach ( $usermeta as $k => $v ) {
                 if ( $key == $k ) {
-                    $fields[] = array_merge( $value, [ 'value' => $v[0] ] );
+                    $fields[] = array_merge( $value, array( 'value' => $v[0] ) );
                     $i++;
                 }
             }
 
             if ( $i === 0 ) { // if usermeta has no matching field to the standard site fields, then set value to empty string.
-                $fields[] = array_merge( $value, [ 'value' => '' ] );
+                $fields[] = array_merge( $value, array( 'value' => '' ) );
             }
         }
     }
@@ -183,7 +183,6 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
 
     //by default a notification is enabled unless set to false
     return isset( $user_meta_data[ $notification_name . '_' . $channel ] ) ? $user_meta_data[ $notification_name . '_' . $channel ][0] == true : true;
-
 }
 
 /**
@@ -196,4 +195,3 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
 function dt_get_base_user( $id_only = false ) {
     return Disciple_Tools_Users::get_base_user( $id_only );
 }
-

@@ -3,36 +3,36 @@
 class DT_Admin_Endpoints {
     public $namespace = 'dt-admin';
     public function __construct(){
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     public function add_api_routes(){
         register_rest_route(
-            $this->namespace, '/scripts/reset_count_field', [
+            $this->namespace, '/scripts/reset_count_field', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'reset_count_field' ],
-                'permission_callback' => function(){
+                'callback' => array( $this, 'reset_count_field' ),
+                'permission_callback' => function () {
                     return current_user_can( 'manage_dt' );
                 },
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/scripts/reset_count_field_progress', [
+            $this->namespace, '/scripts/reset_count_field_progress', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'reset_count_field_progress' ],
-                'permission_callback' => function(){
+                'callback' => array( $this, 'reset_count_field_progress' ),
+                'permission_callback' => function () {
                     return current_user_can( 'manage_dt' );
                 },
-            ]
+            )
         );
         register_rest_route(
-            $this->namespace, '/scripts/update_custom_field_translations', [
+            $this->namespace, '/scripts/update_custom_field_translations', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'update_custom_field_translations' ],
-                'permission_callback' => function(){
+                'callback' => array( $this, 'update_custom_field_translations' ),
+                'permission_callback' => function () {
                     return current_user_can( 'manage_dt' );
                 },
-            ]
+            )
         );
     }
 
@@ -47,9 +47,9 @@ class DT_Admin_Endpoints {
                 foreach ( $posts_to_update as $row ){
                     wp_queue()->push( new DT_Reset_Count_On_Field_Job( $params['post_type'], $row['ID'], $params['field_key'] ), 0, $params['post_type'] . '_' . $params['field_key'] );
                 }
-                return [
-                    'count' => wp_queue_count_jobs( $params['post_type'] . '_' . $params['field_key'] )
-                ];
+                return array(
+                    'count' => wp_queue_count_jobs( $params['post_type'] . '_' . $params['field_key'] ),
+                );
             }
         } else {
             return new WP_Error( __FILE__, 'Missing Params post_type or field_key' );
@@ -62,9 +62,9 @@ class DT_Admin_Endpoints {
             if ( isset( $params['process'] ) && !empty( $params['process'] ) ){
                 wp_queue()->cron()->cron_worker();
             }
-            return [
+            return array(
                 'count' => (int) wp_queue_count_jobs( $params['post_type'] . '_' . $params['field_key'] ),
-            ];
+            );
         } else {
             return new WP_Error( __FILE__, 'Missing Params post_type or field_key' );
         }
@@ -77,51 +77,51 @@ class DT_Admin_Endpoints {
             $field_id = $params['field_id'];
             $field_type = $params['field_type'];
             $translations = $params['translations'];
-            $option_translations = $params['option_translations'] ?? [];
+            $option_translations = $params['option_translations'] ?? array();
 
             // Fetch existing field customizations and if needed, create relevant spaces!
             $field_customizations = dt_get_option( 'dt_field_customizations' );
             if ( !isset( $field_customizations[$post_type][$field_id] ) ){
-                $field_customizations[$post_type][$field_id] = [];
+                $field_customizations[$post_type][$field_id] = array();
             }
             $custom_field = $field_customizations[$post_type][$field_id];
 
             // Capture available field name translations.
-            $custom_field['translations'] = [];
-            foreach ( $translations['translations'] ?? [] as $translation ){
+            $custom_field['translations'] = array();
+            foreach ( $translations['translations'] ?? array() as $translation ){
                 if ( !empty( $translation['locale'] ) && !empty( $translation['value'] ) ){
                     $custom_field['translations'][$translation['locale']] = $translation['value'];
                 }
             }
 
             // Capture available field description translations.
-            $custom_field['description_translations'] = [];
-            foreach ( $translations['description_translations'] ?? [] as $translation ){
+            $custom_field['description_translations'] = array();
+            foreach ( $translations['description_translations'] ?? array() as $translation ){
                 if ( !empty( $translation['locale'] ) && !empty( $translation['value'] ) ){
                     $custom_field['description_translations'][$translation['locale']] = $translation['value'];
                 }
             }
 
             // If required, update custom field default options.
-            if ( in_array( $field_type, [ 'key_select', 'multi_select', 'link' ] ) ){
-                $defaults = [];
+            if ( in_array( $field_type, array( 'key_select', 'multi_select', 'link' ) ) ){
+                $defaults = array();
                 foreach ( $option_translations as $option ){
                     $option_key = $option['option_key'];
 
                     if ( !empty( $option_key ) ){
-                        $defaults[$option_key] = [];
-                        $defaults[$option_key]['translations'] = [];
-                        $defaults[$option_key]['description_translations'] = [];
+                        $defaults[$option_key] = array();
+                        $defaults[$option_key]['translations'] = array();
+                        $defaults[$option_key]['description_translations'] = array();
 
                         // Capture option translations.
-                        foreach ( $option['option_translations'] ?? [] as $option_translation ){
+                        foreach ( $option['option_translations'] ?? array() as $option_translation ){
                             if ( !empty( $option_translation['locale'] ) && !empty( $option_translation['value'] ) ){
                                 $defaults[$option_key]['translations'][$option_translation['locale']] = $option_translation['value'];
                             }
                         }
 
                         // Capture option description translations.
-                        foreach ( $option['option_description_translations'] ?? [] as $option_description_translations ){
+                        foreach ( $option['option_description_translations'] ?? array() as $option_description_translations ){
                             if ( !empty( $option_description_translations['locale'] ) && !empty( $option_description_translations['value'] ) ){
                                 $defaults[$option_key]['description_translations'][$option_description_translations['locale']] = $option_description_translations['value'];
                             }
@@ -136,17 +136,16 @@ class DT_Admin_Endpoints {
             update_option( 'dt_field_customizations', $field_customizations );
 
             // For completeness, return updated shape!
-            return [
-                'translations' => $custom_field['translations'] ?? [],
-                'description_translations' => $custom_field['description_translations'] ?? [],
-                'defaults' => $custom_field['default'] ?? []
-            ];
+            return array(
+                'translations' => $custom_field['translations'] ?? array(),
+                'description_translations' => $custom_field['description_translations'] ?? array(),
+                'defaults' => $custom_field['default'] ?? array(),
+            );
 
         } else {
             return new WP_Error( __FILE__, 'Missing required parameters.' );
         }
     }
-
 }
 
 use WP_Queue\Job;

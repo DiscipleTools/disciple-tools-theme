@@ -8,13 +8,13 @@
 
 class SiteLinkTest extends WP_UnitTestCase {
 
-    public static $sample_contact = [
+    public static $sample_contact = array(
         'title' => 'Bob',
         'overall_status' => 'active',
-        'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'milestone_baptizing' ] ] ],
+        'milestones' => array( 'values' => array( array( 'value' => 'milestone_has_bible' ), array( 'value' => 'milestone_baptizing' ) ) ),
         'baptism_date' => '2018-12-31',
-        'location_grid' => [ 'values' => [ [ 'value' => '3017382' ] ] ]
-    ];
+        'location_grid' => array( 'values' => array( array( 'value' => '3017382' ) ) ),
+    );
 
 
     public function test_create(){
@@ -35,7 +35,7 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertCount( 1, array_keys( $create_with_permissions ) );
 
         // test to make sure we can't updated the contact
-        $update_contact = DT_Posts::update_post( 'contacts', $create_with_permissions['ID'], [ 'title' => 'test' ] );
+        $update_contact = DT_Posts::update_post( 'contacts', $create_with_permissions['ID'], array( 'title' => 'test' ) );
         $this->assertWPError( $update_contact );
     }
 
@@ -57,7 +57,7 @@ class SiteLinkTest extends WP_UnitTestCase {
         $this->assertNotWPError( $create_with_permissions );
 
         // try updating the post
-        $update_contact = DT_Posts::update_post( 'contacts', $create_with_permissions['ID'], [ 'title' => 'test' ] );
+        $update_contact = DT_Posts::update_post( 'contacts', $create_with_permissions['ID'], array( 'title' => 'test' ) );
         $this->assertNotWPError( $update_contact );
 
         //check that we don't have access to the post because we don't have the view_any_contacts permission
@@ -85,15 +85,15 @@ class SiteLinkTest extends WP_UnitTestCase {
         $contact = DT_Posts::get_post( 'contacts', $contact_id, false, false );
 
         //updating
-        $update_with_no_permissions = DT_Posts::update_post( 'contacts', $contact_id, [ 'title' => 'test' ] );
+        $update_with_no_permissions = DT_Posts::update_post( 'contacts', $contact_id, array( 'title' => 'test' ) );
         $this->assertWPError( $update_with_no_permissions );
 
         //listing
-        $list_contacts = DT_Posts::search_viewable_post( 'contacts', [ 'text' => 'test' ] );
+        $list_contacts = DT_Posts::search_viewable_post( 'contacts', array( 'text' => 'test' ) );
         $this->assertWPError( $list_contacts );
 
         //comments
-        $comment_id = DT_Posts::add_post_comment( 'contacts', $contact_id, 'hello', 'comment', [], false );
+        $comment_id = DT_Posts::add_post_comment( 'contacts', $contact_id, 'hello', 'comment', array(), false );
         $this->assertFalse( DT_Posts::can_update( 'contacts', $contact_id ) );
         $this->assertWPError( DT_Posts::add_post_comment( 'contacts', $contact_id, 'hello' ) );
         $this->assertWPError( DT_Posts::update_post_comment( $comment_id, 'hello world' ) );
@@ -106,16 +106,16 @@ class SiteLinkTest extends WP_UnitTestCase {
         $current_user = wp_get_current_user();
         $current_user->set_role( 'multiplier' );
         $contact1 = DT_Posts::create_post( 'contacts', self::$sample_contact );
-        $group1 = DT_Posts::create_post( 'groups', [ 'title' => 'group1' ] );
+        $group1 = DT_Posts::create_post( 'groups', array( 'title' => 'group1' ) );
 
         //try getting a comment but with post type: group
         $view_contact_as_group = DT_Posts::get_post( 'groups', $contact1['ID'] );
         $this->assertWPError( $view_contact_as_group );
 
         // try update contacts and groups with the wrong post type
-        $update_contact_as_group = DT_Posts::update_post( 'groups', $contact1['ID'], [ 'title' => 'hacker' ] );
+        $update_contact_as_group = DT_Posts::update_post( 'groups', $contact1['ID'], array( 'title' => 'hacker' ) );
         $this->assertWPError( $update_contact_as_group );
-        $update_group_as_contact = DT_Posts::update_post( 'contacts', $group1['ID'], [ 'title' => 'hacker' ] );
+        $update_group_as_contact = DT_Posts::update_post( 'contacts', $group1['ID'], array( 'title' => 'hacker' ) );
         $this->assertWPError( $update_group_as_contact );
 
         // try adding a comment with the wrong post type
@@ -124,13 +124,13 @@ class SiteLinkTest extends WP_UnitTestCase {
 
         //try using a connection with the wrong post type
         $contact2 = DT_Posts::create_post( 'contacts', self::$sample_contact );
-        $wrong_connection = DT_Posts::update_post( 'contacts', $contact1['ID'], [
-            'groups' => [ 'values' => [ [ 'value' => $contact2['ID'] ] ] ]
-        ] );
+        $wrong_connection = DT_Posts::update_post( 'contacts', $contact1['ID'], array(
+            'groups' => array( 'values' => array( array( 'value' => $contact2['ID'] ) ) ),
+        ) );
         $shared_with = DT_Posts::get_shared_with( 'contacts', $contact1['ID'] );
-        $good_connection = DT_Posts::update_post( 'contacts', $contact1['ID'], [
-            'groups' => [ 'values' => [ [ 'value' => $group1['ID'] ] ] ]
-        ] );
+        $good_connection = DT_Posts::update_post( 'contacts', $contact1['ID'], array(
+            'groups' => array( 'values' => array( array( 'value' => $group1['ID'] ) ) ),
+        ) );
         $this->assertWPError( $wrong_connection );
         $this->assertNotWPError( $good_connection );
     }
@@ -142,22 +142,21 @@ class SiteLinkTest extends WP_UnitTestCase {
         $site2 = 'localhost/dt';
         $token = Site_Link_System::generate_token();
         $key = Site_Link_System::generate_key( $token, $site1, $site2 );
-        $post = [
+        $post = array(
             'post_title'  => 'Test',
             'post_type'   => 'site_link_system',
             'post_status' => 'publish',
-            'meta_input'  => [
+            'meta_input'  => array(
                 'site_key' => $key,
                 'token' => $token,
                 'site1' => $site1,
                 'site2' => $site2,
-                'type' => $type
-            ],
-        ];
+                'type' => $type,
+            ),
+        );
         $site_link_id = wp_insert_post( $post );
         Site_Link_System::build_cached_option();
         return $site_link_id;
-
     }
 
     public static function setUpBeforeClass(): void {

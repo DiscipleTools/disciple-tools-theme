@@ -112,7 +112,7 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                         <!-- Workload Status -->
                                         <h4><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></h4>
                                         <select id="workload_status" class="select-field">
-                                            <?php $workload_status_options = $dt_user_fields['workload_status']['options'] ?? [] ?>
+                                            <?php $workload_status_options = $dt_user_fields['workload_status']['options'] ?? array() ?>
                                             <option></option>
                                             <?php foreach ( $workload_status_options as $key => $val ) : ?>
                                                 <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $val['label'] ) ?></option>
@@ -309,7 +309,7 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                             <div id="allowed_sources_options" style="display: none">
                                                 <?php
                                                 $post_settings = DT_Posts::get_post_settings( 'contacts' );
-                                                $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : [];
+                                                $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : array();
                                                 ?>
                                                 <h3><?php esc_html_e( 'Access by Source', 'disciple_tools' ); ?></h3>
 

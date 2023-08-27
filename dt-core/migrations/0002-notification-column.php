@@ -39,7 +39,7 @@ class Disciple_Tools_Migration_0002 extends Disciple_Tools_Migration {
                     `field_key` VARCHAR(255) NOT NULL DEFAULT '',
                     `field_value` VARCHAR(255) NOT NULL DEFAULT '',
                     PRIMARY KEY (`id`)
-            ) $charset_collate;"
+            ) $charset_collate;",
         );
     }
 }

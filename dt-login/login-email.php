@@ -13,7 +13,7 @@ class DT_Login_Email {
 
     public function __construct() {
         // api vars
-        add_action( 'dt_login_head_bottom', [ $this, 'dt_login_head_bottom' ], 20 );
+        add_action( 'dt_login_head_bottom', array( $this, 'dt_login_head_bottom' ), 20 );
     }
 
     public function dt_login_head_bottom() {
@@ -99,13 +99,13 @@ class DT_Login_Email {
         }
 
         $user_role = !empty( $dt_login['default_role'] ) ? $dt_login['default_role'] : 'registered';
-        $userdata = [
+        $userdata = array(
             'user_email' => $email,
             'user_login' => $username,
             'display_name' => $display_name,
             'user_pass' => $password,
             'role' => $user_role,
-        ];
+        );
 
         $user_id = wp_insert_user( $userdata );
 

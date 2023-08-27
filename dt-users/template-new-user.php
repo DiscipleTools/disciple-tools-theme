@@ -137,7 +137,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                 <dt><?php esc_html_e( 'Role', 'disciple_tools' ); ?></dt>
                                                 <dd>
                                                     <?php
-                                                    $user_roles = [ 'multiplier' ];
+                                                    $user_roles = array( 'multiplier' );
                                                     $roles = dt_list_roles();
                                                     ?>
                                                     <ul id="user_roles_list" class="no-bullet">

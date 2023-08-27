@@ -22,7 +22,7 @@ class Disciple_Tools_People_Groups
      * @return array
      */
     public static function get_jp_source() {
-        $jp_csv = [];
+        $jp_csv = array();
         $handle = fopen( __DIR__ . '/csv/jp.csv', 'r' );
         if ( $handle !== false ) {
             while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
@@ -38,7 +38,7 @@ class Disciple_Tools_People_Groups
      * @return array
      */
     public static function get_imb_source() {
-        $imb_csv = [];
+        $imb_csv = array();
         $handle = fopen( __DIR__ . '/csv/imb.csv', 'r' );
         if ( $handle !== false ) {
             while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
@@ -49,12 +49,13 @@ class Disciple_Tools_People_Groups
         return $imb_csv;
     }
 
-    public static function search_csv( $search ) { // gets a list by country
+    public static function search_csv( $search ) {
+ // gets a list by country
         if ( ! current_user_can( 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+            return new WP_Error( __METHOD__, 'Insufficient permissions', array() );
         }
         $data = self::get_jp_source();
-        $result = [];
+        $result = array();
         foreach ( $data as $row ) {
             if ( $row[1] === $search ) {
                 $row[] = ( self::duplicate_db_checker_by_rop3( $row[3] ) > 0 );
@@ -64,12 +65,13 @@ class Disciple_Tools_People_Groups
         return $result;
     }
 
-    public static function search_csv_by_rop3( $search ) { // gets a list by country
+    public static function search_csv_by_rop3( $search ) {
+ // gets a list by country
         if ( ! current_user_can( 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+            return new WP_Error( __METHOD__, 'Insufficient permissions', array() );
         }
         $data = self::get_jp_source();
-        $result = [];
+        $result = array();
         foreach ( $data as $row ) {
             if ( $row[3] === $search ) {
                 $result[] = $row;
@@ -94,7 +96,7 @@ class Disciple_Tools_People_Groups
             $geocoder = new Location_Grid_Geocoder();
             $grid = $geocoder->query_by_grid_id( $grid_id );
             if ( $grid ) {
-                $location_meta_grid = [];
+                $location_meta_grid = array();
 
                 // creates the full record from the grid_id
                 Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
@@ -115,7 +117,7 @@ class Disciple_Tools_People_Groups
 
     public static function get_country_dropdown() {
         if ( ! current_user_can( 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+            return new WP_Error( __METHOD__, 'Insufficient permissions', array() );
         }
         $data = self::get_jp_source();
         $all_names = array_column( $data, 1 );
@@ -136,7 +138,7 @@ class Disciple_Tools_People_Groups
      */
     public static function add_single_people_group( $rop3, $country, $location_grid ) {
         if ( ! current_user_can( 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+            return new WP_Error( __METHOD__, 'Insufficient permissions', array() );
         }
 
         // get matching rop3 row for JP
@@ -150,10 +152,10 @@ class Disciple_Tools_People_Groups
             }
         }
         if ( empty( $rop3_row ) || ! is_array( $rop3_row ) ) {
-            return [
+            return array(
                     'status' => 'Fail',
-                    'message' => 'ROP3 number not found in JP data.'
-            ];
+                    'message' => 'ROP3 number not found in JP data.',
+            );
         }
 
         // get matching IMB data
@@ -171,28 +173,28 @@ class Disciple_Tools_People_Groups
         // get current people groups
         // check for duplicate and return fail install because of duplicate.
         if ( self::duplicate_db_checker_by_rop3( $rop3 ) > 0 ) {
-            return [
+            return array(
                 'status' => 'Duplicate',
-                'message' => 'Duplicate found. Already installed.'
-            ];
+                'message' => 'Duplicate found. Already installed.',
+            );
         }
 
         if ( ! isset( $rop3_row[4] ) ) {
-            return [
+            return array(
                 'status' => 'Fail',
                 'message' => 'ROP3 title not found.',
-            ];
+            );
         }
 
 
         // if no duplicate, then install full people group
-        $post = [
+        $post = array(
               'post_title' => $rop3_row[4] . ' (' . $rop3_row[1] . ' | ' . $rop3_row[3] . ')',
               'post_type' => 'peoplegroups',
               'post_status' => 'publish',
               'comment_status' => 'closed',
               'ping_status' => 'closed',
-        ];
+        );
         foreach ( $rop3_row as $key => $value ) {
             $post['meta_input']['jp_'.$columns[$key]] = $value;
         }
@@ -209,15 +211,15 @@ class Disciple_Tools_People_Groups
             // Capture corresponding location_grid_meta to above location_grid for newly created post id.
             self::add_location_grid_meta( 'peoplegroups', $post_id, $location_grid );
 
-            return [
+            return array(
                 'status' => 'Success',
                 'message' => 'New people group has been added! ( <a href="'.admin_url() . 'post.php?post=' . $post_id . '&action=edit">View new record</a> )',
-            ];
+            );
         } else {
-            return [
+            return array(
                 'status' => 'Fail',
                 'message' => 'Unable to insert ' . $rop3_row[4],
-            ];
+            );
         }
     }
 
@@ -230,15 +232,15 @@ class Disciple_Tools_People_Groups
      */
     public static function add_bulk_people_groups( $groups ){
         if ( !current_user_can( 'manage_dt' ) ){
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+            return new WP_Error( __METHOD__, 'Insufficient permissions', array() );
         }
 
         global $wpdb;
 
-        $group_results = [];
-        $posts_tb_values = [];
-        $postmeta_tb_values = [];
-        $location_grid_meta_tb_values = [];
+        $group_results = array();
+        $posts_tb_values = array();
+        $postmeta_tb_values = array();
+        $location_grid_meta_tb_values = array();
 
         // Determine sql id starting points + sql assets.
         $last_posts_tb_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(ID) FROM `{$wpdb->posts}`" ) );
@@ -252,7 +254,7 @@ class Disciple_Tools_People_Groups
         $imb_columns = $imb_data[0];
 
         // Proceed with people group installation.
-        foreach ( $groups ?? [] as $group ){
+        foreach ( $groups ?? array() as $group ){
             if ( !empty( $group['rop3'] ) && !empty( $group['country'] ) ){
                 $rop3 = $group['rop3'];
                 $country = $group['country'];
@@ -335,11 +337,11 @@ class Disciple_Tools_People_Groups
 
                     // Capture location grid meta references.
                     if ( !empty( $jp_data_rop3_row[33] ) ){
-                        $location_grid_meta_tb_values[] = [
+                        $location_grid_meta_tb_values[] = array(
                             'post_type' => 'peoplegroups',
                             'post_id' => $posts_tb_id,
-                            'grid_id' => $jp_data_rop3_row[33]
-                        ];
+                            'grid_id' => $jp_data_rop3_row[33],
+                        );
                     }
 
                     // Work on the assumption all will be/has been well, if this point is reached..!
@@ -409,12 +411,12 @@ class Disciple_Tools_People_Groups
             }
         }
 
-        return [
+        return array(
             'total_groups_count' => $total_groups_count,
             'total_groups_insert_success' => $posts_tb_insert_count,
             'total_groups_insert_fail' => ( $total_groups_count - $posts_tb_insert_count ),
-            'groups' => $group_results
-        ];
+            'groups' => $group_results,
+        );
     }
 
     /**
@@ -423,7 +425,7 @@ class Disciple_Tools_People_Groups
      * @return array|WP_Error
      */
     public static function get_bulk_people_groups_import_batches(){
-        $batches = [];
+        $batches = array();
 
         // Load jp csv data, removing heading.
         $jp_data = self::get_jp_source();
@@ -439,21 +441,21 @@ class Disciple_Tools_People_Groups
 
                 // Instantiate if need be.
                 if ( !isset( $batches[$country] ) ){
-                    $batches[$country] = [];
+                    $batches[$country] = array();
                 }
 
-                $batches[$country][] = [
+                $batches[$country][] = array(
                     'country' => $country,
-                    'rop3' => $rop3
-                ];
+                    'rop3' => $rop3,
+                );
             }
         }
 
-        return [
+        return array(
             'total_batches' => count( $batches ),
             'total_records' => $total_records,
-            'batches' => $batches
-        ];
+            'batches' => $batches,
+        );
     }
 
     /**
@@ -467,7 +469,7 @@ class Disciple_Tools_People_Groups
      */
     public static function link_or_update( $rop3, $country, $post_id ) {
         if ( ! current_user_can( 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+            return new WP_Error( __METHOD__, 'Insufficient permissions', array() );
         }
 
         // get matching rop3 row for JP
@@ -481,10 +483,10 @@ class Disciple_Tools_People_Groups
             }
         }
         if ( empty( $rop3_row ) || ! is_array( $rop3_row ) ) {
-            return [
+            return array(
                 'status' => 'Fail',
-                'message' => 'ROP3 number not found in JP data.'
-            ];
+                'message' => 'ROP3 number not found in JP data.',
+            );
         }
 
         // get matching IMB data
@@ -500,15 +502,15 @@ class Disciple_Tools_People_Groups
 
         // remove previous metadata
         global $wpdb;
-        $wpdb->delete( $wpdb->postmeta, [ 'post_id' => $post_id ] );
+        $wpdb->delete( $wpdb->postmeta, array( 'post_id' => $post_id ) );
 
         // if no duplicate, then install full people group
-        $post = [
+        $post = array(
             'ID' => $post_id,
             'post_status' => 'publish',
             'comment_status' => 'closed',
             'ping_status' => 'closed',
-        ];
+        );
         foreach ( $rop3_row as $key => $value ) {
             $post['meta_input']['jp_'.$columns[$key]] = $value;
         }
@@ -521,15 +523,15 @@ class Disciple_Tools_People_Groups
 
         // return success
         if ( ! is_wp_error( $post_id ) ) {
-            return [
+            return array(
                 'status' => 'Success',
                 'message' => 'The current people group data has been updated with this info! <a href="">Refresh to see data</a>',
-            ];
+            );
         } else {
-            return [
+            return array(
                 'status' => 'Fail',
                 'message' => 'Unable to update ' . $rop3_row[4],
-            ];
+            );
         }
     }
 
@@ -585,19 +587,19 @@ class Disciple_Tools_People_Groups
      */
     public static function get_people_groups_compact( $search ) {
         if ( !current_user_can( 'access_contacts' ) ){
-            return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, 'You do not have permission for this', array( 'status' => 403 ) );
         }
         $locale = get_user_locale();
-        $query_args = [
+        $query_args = array(
             'post_type' => 'peoplegroups',
             'orderby'   => 'title',
             'order' => 'ASC',
             'nopaging'  => true,
             's'         => $search,
-        ];
+        );
         $query = new WP_Query( $query_args );
 
-        $list = [];
+        $list = array();
         foreach ( $query->posts as $post ) {
             $translation = get_post_meta( $post->ID, $locale, true );
             if ( $translation !== '' ) {
@@ -606,13 +608,13 @@ class Disciple_Tools_People_Groups
                 $label = $post->post_title;
             }
 
-            $list[] = [
+            $list[] = array(
             'ID' => $post->ID,
             'name' => $post->post_title,
-            'label' => $label
-            ];
+            'label' => $label,
+            );
         }
-        $meta_query_args = [
+        $meta_query_args = array(
             'post_type' => 'peoplegroups',
             'orderby'   => 'title',
             'order' => 'ASC',
@@ -621,10 +623,10 @@ class Disciple_Tools_People_Groups
                 array(
                     'key' => $locale,
                     'value' => $search,
-                    'compare' => 'LIKE'
-                )
+                    'compare' => 'LIKE',
+                ),
             ),
-        ];
+        );
 
         $meta_query = new WP_Query( $meta_query_args );
         foreach ( $meta_query->posts as $post ) {
@@ -634,11 +636,11 @@ class Disciple_Tools_People_Groups
             } else {
                 $label = $post->post_title;
             }
-            $list[] = [
+            $list[] = array(
             'ID' => $post->ID,
             'name' => $post->post_title,
-            'label' => $label
-            ];
+            'label' => $label,
+            );
         }
 
         $total_found_posts = $query->found_posts + $meta_query->found_posts;
@@ -647,9 +649,9 @@ class Disciple_Tools_People_Groups
             return $el['ID'];
         }, $list ) ) );
 
-        return [
+        return array(
         'total' => $total_found_posts,
-        'posts' => $list
-        ];
+        'posts' => $list,
+        );
     }
 }

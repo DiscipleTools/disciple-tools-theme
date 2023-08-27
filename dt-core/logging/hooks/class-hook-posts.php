@@ -9,17 +9,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function __construct() {
-        add_action( 'wp_insert_post', [ &$this, 'hooks_new_post' ], 10, 3 );
-        add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
+        add_action( 'wp_insert_post', array( &$this, 'hooks_new_post' ), 10, 3 );
+        add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
 
-        add_action( 'added_post_meta', [ &$this, 'hooks_added_post_meta' ], 10, 4 );
-        add_action( 'updated_post_meta', [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
-        add_action( 'delete_post_meta', [ &$this, 'post_meta_deleted' ], 10, 4 );
+        add_action( 'added_post_meta', array( &$this, 'hooks_added_post_meta' ), 10, 4 );
+        add_action( 'updated_post_meta', array( &$this, 'hooks_updated_post_meta' ), 10, 4 );
+        add_action( 'delete_post_meta', array( &$this, 'post_meta_deleted' ), 10, 4 );
 
-        add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created' ], 10, 1 );
-        add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted' ], 10, 1 );
+        add_action( 'p2p_created_connection', array( &$this, 'hooks_p2p_created' ), 10, 1 );
+        add_action( 'p2p_delete_connections', array( &$this, 'hooks_p2p_deleted' ), 10, 1 );
 
-        add_action( 'wp_error_added', [ &$this, 'hooks_error_post' ], 10, 4 );
+        add_action( 'wp_error_added', array( &$this, 'hooks_error_post' ), 10, 4 );
 
         parent::__construct();
     }
@@ -45,7 +45,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      */
     public function hooks_new_post( $post_ID, $post, $update ) {
         if ( ! $update ) {
-            $activity = [
+            $activity = array(
                 'action'         => 'created',
                 'object_type'    => $post->post_type,
                 'object_subtype' => '',
@@ -57,7 +57,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_parent'    => '',
                 'object_note'    => '',
                 'hist_time'      => time() - 1,
-            ];
+            );
             if ( ! get_current_user_id() ) {
                 $user = wp_get_current_user();
                 if ( $user->display_name ) {
@@ -80,7 +80,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         $post = get_post( $post_id );
 
-        if ( in_array( $post->post_status, [ 'auto-draft', 'inherit' ] ) ) {
+        if ( in_array( $post->post_status, array( 'auto-draft', 'inherit' ) ) ) {
             return;
         }
 
@@ -90,7 +90,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
         dt_activity_insert(
-            [
+            array(
                 'action'         => 'deleted',
                 'object_type'    => $post->post_type,
                 'object_subtype' => '',
@@ -101,14 +101,13 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_value'     => ' ',
                 'meta_parent'    => ' ',
                 'object_note'    => ' ',
-            ]
+            )
         );
     }
 
     public function hooks_added_post_meta( $mid, $object_id, $meta_key, $meta_value ) {
 
         return $this->hooks_updated_post_meta( $mid, $object_id, $meta_key, $meta_value, true );
-
     }
 
 
@@ -119,7 +118,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        $ignore_fields = [ '_edit_lock', '_edit_last', 'last_modified', 'follow', 'unfollow' ];
+        $ignore_fields = array( '_edit_lock', '_edit_last', 'last_modified', 'follow', 'unfollow' );
         $ignore_fields = apply_filters( 'dt_ignore_fields_logging', $ignore_fields );
 
         if ( in_array( $meta_key, $ignore_fields ) ) {
@@ -241,7 +240,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         if ( empty( $field_type ) ) {
 
             // Handle any potential link field types.
-            foreach ( DT_Posts::get_field_settings_by_type( $parent_post['post_type'], 'link' ) ?? [] as $link_field ) {
+            foreach ( DT_Posts::get_field_settings_by_type( $parent_post['post_type'], 'link' ) ?? array() as $link_field ) {
                 if ( strpos( $meta_key, $link_field ) !== false ) {
                     $field_type = $fields[$link_field]['type'] ?? '';
                 }
@@ -249,7 +248,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
         dt_activity_insert( // insert activity record
-            [
+            array(
                 'action'         => 'field_update',
                 'object_type'    => ( empty( $parent_post['post_type'] ) ) ? 'unknown' : $parent_post['post_type'],
                 'object_subtype' => $meta_key,
@@ -262,7 +261,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'object_note'    => $object_note,
                 'old_value'      => is_array( $prev_value ) ? serialize( $prev_value ) : $prev_value,
                 'field_type'     => $field_type,
-            ]
+            )
         );
     }
 
@@ -280,7 +279,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         } else {
             return $meta_key;
         }
-
     }
 
     /**
@@ -301,19 +299,18 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
             if ( ! is_array( $fields[ $meta_key ]['default'] ) ) { // test if array
                 return $meta_value;
-            } else {
-                if ( is_array( $fields[ $meta_key ]['default'][ $meta_value ] ) ) {
+            } elseif ( is_array( $fields[ $meta_key ]['default'][ $meta_value ] ) ) {
                     return $fields[ $meta_key ]['default'][ $meta_value ]['label'] ?? '';
-                } else {
-                    return $fields[ $meta_key ]['default'][ $meta_value ];
-                }
+            } else {
+                return $fields[ $meta_key ]['default'][ $meta_value ];
             }
         } else { // if field not set
             return $meta_value;
         }
     }
 
-    public function hooks_p2p_created( $p2p_id, $action = 'connected to' ) { // I need to create two records. One for each end of the connection.
+    public function hooks_p2p_created( $p2p_id, $action = 'connected to' ) {
+ // I need to create two records. One for each end of the connection.
         // Get p2p record
         $p2p_record = p2p_get_connection( $p2p_id ); // returns object
         $p2p_from   = get_post( $p2p_record->p2p_from, ARRAY_A );
@@ -346,7 +343,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         // Log for both records
         dt_activity_insert( // From
-            [
+            array(
                 'action'         => $action,
                 'object_type'    => $p2p_from['post_type'],
                 'object_subtype' => $from_field_key,
@@ -357,12 +354,12 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_value'     => $p2p_to['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'    => '',
                 'object_note'    => 'connection from',
-                'field_type'     => 'connection'
-            ]
+                'field_type'     => 'connection',
+            )
         );
 
         dt_activity_insert( // To
-            [
+            array(
                 'action'         => $action,
                 'object_type'    => $p2p_to['post_type'],
                 'object_subtype' => $to_field_key,
@@ -374,9 +371,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_parent'    => '',
                 'object_note'    => 'connection to',
                 'field_type'     => 'connection',
-            ]
+            )
         );
-
     }
 
     //note: delete is given an array of ids
@@ -406,7 +402,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 return;
             }
             $url = ( isset( $_SERVER['HTTP_HOST'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
-            $activity = [
+            $activity = array(
                 'action'         => 'error_log',
                 'object_type'    => '',
                 'object_subtype' => '',
@@ -418,10 +414,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_value'     => maybe_serialize( $data ),
                 'meta_parent'    => '',
                 'hist_time'      => time() - 1,
-            ];
+            );
 
             dt_activity_insert( $activity );
         }
     }
-
 }

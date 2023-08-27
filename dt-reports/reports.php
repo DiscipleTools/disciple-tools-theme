@@ -14,7 +14,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return false|int
  */
-function dt_report_insert( array $args = [], bool $save_hash = true, bool $duplicate_check = true ) {
+function dt_report_insert( array $args = array(), bool $save_hash = true, bool $duplicate_check = true ) {
     return Disciple_Tools_Reports::insert( $args, $save_hash, $duplicate_check );
 }
 
@@ -41,7 +41,7 @@ class Disciple_Tools_Reports
 
         $args = wp_parse_args(
             $args,
-            [
+            array(
                 'user_id' => null,
                 'parent_id' => null,
                 'post_id' => null,
@@ -58,8 +58,8 @@ class Disciple_Tools_Reports
                 'time_begin' => null,
                 'time_end' => null,
                 'hash' => null,
-                'meta_input' => [],
-            ]
+                'meta_input' => array(),
+            )
         );
 
         if ( $save_hash ) {
@@ -93,7 +93,7 @@ class Disciple_Tools_Reports
 
         $wpdb->insert(
             $wpdb->dt_reports,
-            [
+            array(
                 'user_id' => $args['user_id'],
                 'parent_id' => $args['parent_id'],
                 'post_id' => $args['post_id'],
@@ -111,8 +111,8 @@ class Disciple_Tools_Reports
                 'time_end' => $args['time_end'],
                 'timestamp' => time(),
                 'hash' => $args['hash'],
-            ],
-            [
+            ),
+            array(
                 '%d', // user_id
                 '%d', // parent_id
                 '%d', // post_id
@@ -130,7 +130,7 @@ class Disciple_Tools_Reports
                 '%d', // time_end
                 '%d', // timestamp
                 '%s', // hash
-            ]
+            )
         );
 
         $report_id = $wpdb->insert_id;
@@ -148,16 +148,16 @@ class Disciple_Tools_Reports
         }
 
         dt_activity_insert(
-            [
+            array(
                 'action'            => 'create_report',
                 'object_type'       => $args['type'],
                 'object_subtype'    => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
                 'object_id'         => $args['post_id'],
                 'object_name'       => 'report',
-                'meta_id'           => $report_id ,
+                'meta_id'           => $report_id,
                 'meta_key'          => ' ',
                 'object_note'       => __( 'Added new report', 'disciple_tools' ),
-            ]
+            )
         );
 
         // Final action on insert.
@@ -191,7 +191,7 @@ class Disciple_Tools_Reports
 
         $wpdb->update(
             $wpdb->dt_reports,
-            [
+            array(
                 'user_id' => $args['user_id'],
                 'post_id' => $args['post_id'],
                 'post_type' => $args['post_type'],
@@ -208,11 +208,11 @@ class Disciple_Tools_Reports
                 'time_end' => $args['time_end'],
                 'timestamp' => time(),
                 'hash' => $args['hash'],
-            ],
-            [
+            ),
+            array(
                 'id' => $args['id'],
-            ],
-            [
+            ),
+            array(
                 '%d', // user_id
                 '%d', // post_id
                 '%s', // post_type
@@ -229,7 +229,7 @@ class Disciple_Tools_Reports
                 '%d', // time_end
                 '%d', // timestamp
                 '%s', // hash
-            ]
+            )
         );
 
         $report_id = $wpdb->insert_id;
@@ -241,7 +241,7 @@ class Disciple_Tools_Reports
         }
 
         dt_activity_insert(
-            [
+            array(
                 'action' => 'update_report',
                 'object_type' => $args['type'],
                 'object_subtype' => $args['subtype'],
@@ -250,7 +250,7 @@ class Disciple_Tools_Reports
                 'meta_id'      => $report_id,
                 'meta_key'     => ' ',
                 'object_note'  => __( 'Updated report', 'disciple_tools' ),
-            ]
+            )
         );
 
         // Final action on insert.
@@ -266,9 +266,9 @@ class Disciple_Tools_Reports
      * @param $type string (post_id, id)
      * @return array|false|object|null
      */
-    public static function get( $value, $type ) : array {
+    public static function get( $value, $type ): array {
         global $wpdb;
-        $report = [];
+        $report = array();
         switch ( $type ){
 
             case 'post_id':
@@ -317,13 +317,13 @@ class Disciple_Tools_Reports
         global $wpdb;
         $wpdb->delete(
             $wpdb->dt_reportmeta,
-            [ 'report_id' => $report_id ],
-            [ '%d' ]
+            array( 'report_id' => $report_id ),
+            array( '%d' )
         );
         return $wpdb->delete(
             $wpdb->dt_reports,
-            [ 'id' => $report_id ],
-            [ '%d' ]
+            array( 'id' => $report_id ),
+            array( '%d' )
         );
     }
 
@@ -342,12 +342,12 @@ class Disciple_Tools_Reports
         global $wpdb;
         $wpdb->insert(
             $wpdb->dt_reportmeta,
-            [
+            array(
                 'report_id'  => $report_id,
                 'meta_key'   => $meta_key,
                 'meta_value' => $meta_value,
-            ],
-            [ '%d', '%s', '%s' ]
+            ),
+            array( '%d', '%s', '%s' )
         );
     }
 
@@ -357,9 +357,9 @@ class Disciple_Tools_Reports
      * @param $report_id
      * @return array
      */
-    public static function get_meta( $report_id ) : array {
+    public static function get_meta( $report_id ): array {
         global $wpdb;
-        $meta = [];
+        $meta = array();
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM $wpdb->dt_reportmeta WHERE report_id = %s", $report_id ), ARRAY_A );
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ){
@@ -373,18 +373,16 @@ class Disciple_Tools_Reports
         global $wpdb;
         $wpdb->update(
             $wpdb->dt_reportmeta,
-            [
+            array(
                 'meta_value' => $meta_value,
-            ],
-            [
+            ),
+            array(
                 'report_id'  => $report_id,
                 'meta_key'   => $meta_key,
-            ],
-            [ '%s' ],
-            [ '%d', '%s' ]
+            ),
+            array( '%s' ),
+            array( '%d', '%s' )
         );
-
-
     }
 
 
@@ -461,5 +459,4 @@ class Disciple_Tools_Reports
 
         return $meta_value['meta_value'];
     }
-
 }

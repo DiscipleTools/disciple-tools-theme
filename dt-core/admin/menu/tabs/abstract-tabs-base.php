@@ -102,13 +102,13 @@ abstract class Disciple_Tools_Abstract_Menu_Base
      *                    col_span sets the number of columns the header should span
      *                    striped can remove the striped class from the table
      */
-    public function box( $section, $title = '', $args = [] ) {
+    public function box( $section, $title = '', $args = array() ) {
 
-        $args = wp_parse_args( $args, [
+        $args = wp_parse_args( $args, array(
                 'row_container' => true,
                 'col_span' => 1,
                 'striped' => true,
-        ] );
+        ) );
 
         switch ( $section ) {
             case 'top':
@@ -132,5 +132,4 @@ abstract class Disciple_Tools_Abstract_Menu_Base
                 break;
         }
     }
-
 }

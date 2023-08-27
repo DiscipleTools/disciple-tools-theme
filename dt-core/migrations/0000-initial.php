@@ -4,7 +4,7 @@ declare(strict_types=1);
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 
-require_once( 'abstract.php' );
+require_once 'abstract.php';
 
 /**
  * Class Disciple_Tools_Migration_0000
@@ -15,14 +15,14 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
      * @throws \Exception  Got error when creating table $name.
      */
     public function up() {
-        $initial_install_meta = get_option( 'dt_initial_install_meta', [] );
+        $initial_install_meta = get_option( 'dt_initial_install_meta', array() );
         if ( empty( $initial_install_meta ) ){
-            $initial_install_meta = apply_filters( 'dt_set_initial_install_meta', [
+            $initial_install_meta = apply_filters( 'dt_set_initial_install_meta', array(
                 'initial_meta_version' => 1,
                 'time' => time(),
                 'migration_number' => Disciple_Tools_Migration_Engine::$migration_number,
                 'theme_version' => wp_get_theme()->version,
-            ] );
+            ) );
             update_option( 'dt_initial_install_meta', $initial_install_meta );
         }
 
@@ -125,5 +125,4 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
     public function test() {
         $this->test_expected_tables();
     }
-
 }

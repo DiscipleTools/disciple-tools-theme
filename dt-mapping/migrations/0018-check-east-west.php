@@ -32,14 +32,13 @@ class DT_Mapping_Module_Migration_0018 extends DT_Mapping_Module_Migration {
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
      * @return array
      */
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 
     /**
@@ -47,5 +46,4 @@ class DT_Mapping_Module_Migration_0018 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

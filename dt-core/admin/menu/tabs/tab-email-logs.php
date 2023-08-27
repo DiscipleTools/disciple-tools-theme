@@ -25,22 +25,22 @@ class Disciple_Tools_Tab_Email_Logs extends Disciple_Tools_Abstract_Menu_Base{
      * @since   0.1.0
      */
     public function __construct(){
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 125, 1 );
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 125, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 125 );
+        add_action( 'dt_utilities_tab_menu', array( $this, 'add_tab' ), 125, 1 );
+        add_action( 'dt_utilities_tab_content', array( $this, 'content' ), 125, 1 );
 
         parent::__construct();
     } // End __construct()
 
     public function add_submenu(){
-        add_submenu_page( 'edit.php?post_type=email_logs', __( 'Email Logs', 'disciple_tools' ), __( 'Email Logs', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=email_logs', [
+        add_submenu_page( 'edit.php?post_type=email_logs', __( 'Email Logs', 'disciple_tools' ), __( 'Email Logs', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=email_logs', array(
             'Disciple_Tools_Settings_Menu',
-            'content'
-        ] );
-        add_submenu_page( 'dt_utilities', __( 'Email Logs', 'disciple_tools' ), __( 'Email Logs', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=email_logs', [
+            'content',
+        ) );
+        add_submenu_page( 'dt_utilities', __( 'Email Logs', 'disciple_tools' ), __( 'Email Logs', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=email_logs', array(
             'Disciple_Tools_Settings_Menu',
-            'content'
-        ] );
+            'content',
+        ) );
     }
 
     public function add_tab( $tab ){
@@ -85,7 +85,7 @@ class Disciple_Tools_Tab_Email_Logs extends Disciple_Tools_Abstract_Menu_Base{
 
     private function display_settings(){
 
-        $this->box( 'top', 'Logging Settings', [ 'col_span' => 4 ] );
+        $this->box( 'top', 'Logging Settings', array( 'col_span' => 4 ) );
 
         ?>
         <form method="POST">
@@ -129,7 +129,7 @@ WHERE (act.action = 'mail_sent')
 ORDER BY act.hist_time
 DESC LIMIT %d", $this->fetch_display_count() ) );
 
-        $this->box( 'top', 'Email Logs', [ 'col_span' => 4 ] );
+        $this->box( 'top', 'Email Logs', array( 'col_span' => 4 ) );
 
         ?>
         <table class="widefat striped">

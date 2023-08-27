@@ -24,9 +24,9 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 10 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 20, 1 ); // use the priority setting to control load order
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 10, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 10 );
+        add_action( 'dt_utilities_tab_menu', array( $this, 'add_tab' ), 20, 1 ); // use the priority setting to control load order
+        add_action( 'dt_utilities_tab_content', array( $this, 'content' ), 10, 1 );
 
 
         parent::__construct();
@@ -34,7 +34,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_utilities', __( 'Field Explorer', 'disciple_tools' ), __( 'Fields Explorer', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=fields', [ 'Disciple_Tools_Utilities_Menu', 'content' ] );
+        add_submenu_page( 'dt_utilities', __( 'Field Explorer', 'disciple_tools' ), __( 'Fields Explorer', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=fields', array( 'Disciple_Tools_Utilities_Menu', 'content' ) );
     }
 
     public function add_tab( $tab ) {
@@ -95,7 +95,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         $fields = $post_settings['fields'];
 
         /* breadcrumb: new-field-type Add field type to field explorer */
-        $types = [ 'text', 'textarea', 'date', 'datetime', 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'number', 'link', 'communication_channel', 'tags', 'user_select', 'task', 'location', 'location_meta' ];
+        $types = array( 'text', 'textarea', 'date', 'datetime', 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'number', 'link', 'communication_channel', 'tags', 'user_select', 'task', 'location', 'location_meta' );
         foreach ( $types as $type ){
             ?>
             <h3>Field type: <?php echo esc_html( $type ) ?></h3>

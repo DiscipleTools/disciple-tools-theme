@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class DT_Contacts_DMM  extends DT_Module_Base {
+class DT_Contacts_DMM extends DT_Module_Base {
     public $post_type = 'contacts';
     public $module = 'dmm_module';
 
@@ -19,33 +19,32 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             return;
         }
         //setup fields
-        add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_filter( 'dt_custom_fields_settings', array( $this, 'dt_custom_fields_settings' ), 10, 2 );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
 
          //display tiles and fields
-        add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
-        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
-        add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
+        add_filter( 'dt_details_additional_tiles', array( $this, 'dt_details_additional_tiles' ), 10, 2 );
+        add_action( 'dt_details_additional_section', array( $this, 'dt_details_additional_section' ), 20, 2 );
+        add_action( 'dt_record_footer', array( $this, 'dt_record_footer' ), 10, 2 );
 
         //hooks
-        add_action( 'post_connection_removed', [ $this, 'post_connection_removed' ], 10, 4 );
-        add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
-        add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 10, 2 );
+        add_action( 'post_connection_removed', array( $this, 'post_connection_removed' ), 10, 4 );
+        add_action( 'post_connection_added', array( $this, 'post_connection_added' ), 10, 4 );
+        add_filter( 'dt_post_create_fields', array( $this, 'dt_post_create_fields' ), 10, 2 );
 
         //list
-        add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
-        add_filter( 'dt_search_viewable_posts_query', [ $this, 'dt_search_viewable_posts_query' ], 10, 1 );
-        add_action( 'dt_comment_action_quick_action', [ $this, 'dt_comment_action_quick_action' ], 10, 1 );
+        add_filter( 'dt_user_list_filters', array( $this, 'dt_user_list_filters' ), 10, 2 );
+        add_filter( 'dt_search_viewable_posts_query', array( $this, 'dt_search_viewable_posts_query' ), 10, 1 );
+        add_action( 'dt_comment_action_quick_action', array( $this, 'dt_comment_action_quick_action' ), 10, 1 );
 
-        add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-
+        add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
     }
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
-            $contact_preferences = get_option( 'dt_contact_preferences', [] );
-            $fields['type']['default']['placeholder'] = [
+            $contact_preferences = get_option( 'dt_contact_preferences', array() );
+            $fields['type']['default']['placeholder'] = array(
                 'label' => __( 'Private Connection', 'disciple_tools' ),
                 'color' => '#FF9800',
                 'description' => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
@@ -54,83 +53,83 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'visibility' => __( 'Only me', 'disciple_tools' ),
                 'in_create_form' => false,
                 'hidden' => !empty( $contact_preferences['hide_personal_contact_type'] ),
-            ];
-            $fields['milestones'] = [
+            );
+            $fields['milestones'] = array(
                 'name'    => __( 'Faith Milestones', 'disciple_tools' ),
                 'description' => _x( 'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.', 'Optional Documentation', 'disciple_tools' ),
                 'type'    => 'multi_select',
-                'default' => [
-                    'milestone_has_bible'     => [
+                'default' => array(
+                    'milestone_has_bible'     => array(
                         'label' => __( 'Has Bible', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/bible.svg?v=2',
-                    ],
-                    'milestone_reading_bible' => [
+                    ),
+                    'milestone_reading_bible' => array(
                         'label' => __( 'Reading Bible', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/reading.svg?v=2',
-                    ],
-                    'milestone_belief'        => [
+                    ),
+                    'milestone_belief'        => array(
                         'label' => __( 'States Belief', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/speak.svg?v=2',
-                    ],
-                    'milestone_can_share'     => [
+                    ),
+                    'milestone_can_share'     => array(
                         'label' => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/hand-heart.svg?v=2',
-                    ],
-                    'milestone_sharing'       => [
+                    ),
+                    'milestone_sharing'       => array(
                         'label' => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/account-voice.svg?v=2',
-                    ],
-                    'milestone_baptized'      => [
+                    ),
+                    'milestone_baptized'      => array(
                         'label' => __( 'Baptized', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/baptism.svg?v=2',
-                    ],
-                    'milestone_baptizing'     => [
+                    ),
+                    'milestone_baptizing'     => array(
                         'label' => __( 'Baptizing', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/child.svg?v=2',
-                    ],
-                    'milestone_in_group'      => [
+                    ),
+                    'milestone_in_group'      => array(
                         'label' => __( 'In Church/Group', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/group-type.svg?v=2',
-                    ],
-                    'milestone_planting'      => [
+                    ),
+                    'milestone_planting'      => array(
                     'label' => __( 'Starting Churches', 'disciple_tools' ),
                         'description' => '',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/stream.svg?v=2',
-                    ],
-                ],
+                    ),
+                ),
                 'customizable' => 'add_only',
                 'tile' => 'faith',
                 'show_in_table' => 20,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/bible.svg?v=2',
-            ];
-            $fields['faith_status'] =[
+            );
+            $fields['faith_status'] =array(
                 'name' => __( 'Faith Status', 'disciple_tools' ),
                 'description' => '',
                 'type' => 'key_select',
-                'default' => [
-                    'seeker'     => [
+                'default' => array(
+                    'seeker'     => array(
                         'label' => __( 'Seeker', 'disciple_tools' ),
-                    ],
-                    'believer'     => [
+                    ),
+                    'believer'     => array(
                         'label' => __( 'Believer', 'disciple_tools' ),
-                    ],
-                    'leader'     => [
+                    ),
+                    'leader'     => array(
                         'label' => __( 'Leader', 'disciple_tools' ),
-                    ],
-                ],
+                    ),
+                ),
                 'tile' => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/cross.svg?v=2',
-                'in_create_form' => true
-            ];
-            $fields['subassigned'] = [
+                'in_create_form' => true,
+            );
+            $fields['subassigned'] = array(
                 'name' => __( 'Sub-assigned to', 'disciple_tools' ),
                 'description' => __( 'Contact or User assisting the Assigned To user to follow up with the contact.', 'disciple_tools' ),
                 'type' => 'connection',
@@ -140,9 +139,9 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'tile' => 'status',
                 'custom_display' => false,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/subassigned.svg?v=2',
-            ];
+            );
 
-            $fields['subassigned_on'] = [
+            $fields['subassigned_on'] = array(
                 'name' => __( 'Sub-assigned on other Contacts', 'disciple_tools' ),
                 'description' => __( 'Contacts this contacts is subassigned on', 'disciple_tools' ),
                 'type' => 'connection',
@@ -152,10 +151,10 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'tile' => 'no_tile',
                 'custom_display' => false,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/subassigned.svg?v=2',
-            ];
+            );
 
 
-            $fields['coaching'] = [
+            $fields['coaching'] = array(
                 'name' => __( 'Is Coaching', 'disciple_tools' ),
                 'description' => _x( 'Who is this contact coaching', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -164,21 +163,21 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'p2p_key' => 'contacts_to_contacts',
                 'tile' => 'other',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/coaching.svg?v=2',
-            ];
-            $fields['baptism_date'] = [
+            );
+            $fields['baptism_date'] = array(
                 'name' => __( 'Baptism Date', 'disciple_tools' ),
                 'description' => '',
                 'type' => 'date',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-heart.svg?v=2',
                 'tile' => 'details',
-            ];
+            );
 
-            $fields['baptism_generation'] = [
+            $fields['baptism_generation'] = array(
                 'name'        => __( 'Baptism Generation', 'disciple_tools' ),
                 'type'        => 'number',
                 'default'     => '',
-            ];
-            $fields['coached_by'] = [
+            );
+            $fields['coached_by'] = array(
                 'name' => __( 'Coached by', 'disciple_tools' ),
                 'description' => _x( 'Who is coaching this contact', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -187,8 +186,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'p2p_key' => 'contacts_to_contacts',
                 'tile' => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
-            ];
-            $fields['baptized_by'] = [
+            );
+            $fields['baptized_by'] = array(
                 'name' => __( 'Baptized by', 'disciple_tools' ),
                 'description' => _x( 'Who baptized this contact', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -197,8 +196,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'p2p_key' => 'baptizer_to_baptized',
                 'tile'     => 'faith',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/baptism.svg?v=2',
-            ];
-            $fields['baptized'] = [
+            );
+            $fields['baptized'] = array(
                 'name' => __( 'Baptized', 'disciple_tools' ),
                 'description' => _x( 'Who this contact has baptized', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -207,8 +206,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'p2p_key' => 'baptizer_to_baptized',
                 'tile'     => 'faith',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/child.svg?v=2',
-            ];
-            $fields['people_groups'] = [
+            );
+            $fields['people_groups'] = array(
                 'name' => __( 'People Groups', 'disciple_tools' ),
                 'description' => _x( 'The people groups represented by this contact.', 'Optional Documentation', 'disciple_tools' ),
                 'type' => 'connection',
@@ -217,53 +216,53 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'p2p_key' => 'contacts_to_peoplegroups',
                 'tile'     => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg?v=2',
-                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'contact_count', 'connection_field' => 'contacts' ]
-            ];
-            $fields['quick_button_no_answer'] = [
+                'connection_count_field' => array( 'post_type' => 'peoplegroups', 'field_key' => 'contact_count', 'connection_field' => 'contacts' ),
+            );
+            $fields['quick_button_no_answer'] = array(
                 'name'        => __( 'No Answer', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . '/dt-assets/images/account-voice-off.svg?v=2',
-                'customizable' => false
-            ];
-            $fields['quick_button_contact_established'] = [
+                'customizable' => false,
+            );
+            $fields['quick_button_contact_established'] = array(
                 'name'        => __( 'Contact Established', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . '/dt-assets/images/account-voice.svg?v=2',
-                'customizable' => false
-            ];
-            $fields['quick_button_meeting_scheduled'] = [
+                'customizable' => false,
+            );
+            $fields['quick_button_meeting_scheduled'] = array(
                 'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . '/dt-assets/images/calendar-plus.svg?v=2',
-                'customizable' => false
-            ];
-            $fields['quick_button_meeting_complete'] = [
+                'customizable' => false,
+            );
+            $fields['quick_button_meeting_complete'] = array(
                 'name'        => __( 'Meeting Complete', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . '/dt-assets/images/calendar-check.svg?v=2',
-                'customizable' => false
-            ];
-            $fields['quick_button_no_show'] = [
+                'customizable' => false,
+            );
+            $fields['quick_button_no_show'] = array(
                 'name'        => __( 'Meeting No-show', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
                 'icon'        => get_template_directory_uri() . '/dt-assets/images/calendar-remove.svg?v=2',
-                'customizable' => false
-            ];
+                'customizable' => false,
+            );
 
 
 
@@ -273,11 +272,11 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
     public function dt_details_additional_tiles( $tiles, $post_type = '' ){
         if ( $post_type === 'contacts' ){
-            $tiles['faith'] = [
-                'label' => __( 'Faith', 'disciple_tools' )
-            ];
+            $tiles['faith'] = array(
+                'label' => __( 'Faith', 'disciple_tools' ),
+            );
             if ( isset( $tiles['status'] ) && !isset( $tiles['status']['order'] ) ){
-                $tiles['status']['order'] = [ 'subassigned', 'faith_status', 'coached_by' ];
+                $tiles['status']['order'] = array( 'subassigned', 'faith_status', 'coached_by' );
             }
         }
         return $tiles;
@@ -337,7 +336,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             if ( $fields['type'] === 'user' ){
                 $current_user_contact = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
                 if ( $current_user_contact && !is_wp_error( $current_user_contact ) ){
-                    $fields['coached_by'] = [ 'values' => [ [ 'value' => $current_user_contact ] ] ];
+                    $fields['coached_by'] = array( 'values' => array( array( 'value' => $current_user_contact ) ) );
                 }
             }
         }
@@ -354,37 +353,37 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             $shared_by_type_counts = DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
-            $filters['filters'][] = [
+            $filters['filters'][] = array(
                 'ID' => 'placeholder',
                 'tab' => 'default',
                 'name' => sprintf( _x( 'Connected %s', 'Personal records', 'disciple_tools' ), $post_label_plural ),
-                'query' => [
-                    'type' => [ 'placeholder' ],
-                    'overall_status' => [ '-closed' ],
-                    'sort' => 'name'
-                ],
+                'query' => array(
+                    'type' => array( 'placeholder' ),
+                    'overall_status' => array( '-closed' ),
+                    'sort' => 'name',
+                ),
                 'count' => $shared_by_type_counts['keys']['placeholder'] ?? 0,
-            ];
-            $filters['filters'][] = [
+            );
+            $filters['filters'][] = array(
                 'ID' => 'my_coached',
                 'visible' => '1',
                 'type' => 'default',
                 'tab' => 'default',
                 'name' => __( 'Coached by me', 'disciple_tools' ),
                 'count' => $coached_by_me,
-                'query' => [
-                    'coached_by' => [ 'me' ],
-                    'overall_status' => [ '-closed' ],
+                'query' => array(
+                    'coached_by' => array( 'me' ),
+                    'overall_status' => array( '-closed' ),
                     'sort' => 'seeker_path',
-                ],
-                'labels' => [
-                    [
+                ),
+                'labels' => array(
+                    array(
                         'id' => 'me',
                         'name' => __( 'Coached by me', 'disciple_tools' ),
                         'field' => 'coached_by',
-                    ],
-                ],
-            ];
+                    ),
+                ),
+            );
         }
 
         //translation for default fields
@@ -442,19 +441,19 @@ class DT_Contacts_DMM  extends DT_Module_Base {
 
     public function scripts(){
         if ( is_singular( 'contacts' ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
-            wp_enqueue_script( 'dt_contacts_dmm', get_template_directory_uri() . '/dt-contacts/contacts_dmm.js', [
+            wp_enqueue_script( 'dt_contacts_dmm', get_template_directory_uri() . '/dt-contacts/contacts_dmm.js', array(
                 'jquery',
-            ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_dmm.js' ), true );
+            ), filemtime( get_theme_file_path() . '/dt-contacts/contacts_dmm.js' ), true );
         }
     }
     public function add_api_routes() {
         $namespace = 'dt-posts/v2';
         register_rest_route(
-            $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
+            $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'revert_activity' ],
+                'callback' => array( $this, 'revert_activity' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
     }
     public function revert_activity( WP_REST_Request $request ) {
@@ -463,7 +462,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $contact_id = $params['id'];
             $activity_id = $params['activity_id'];
             if ( !DT_Posts::can_update( 'contacts', $contact_id ) ) {
-                return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, 'You do not have permission for this', array( 'status' => 403 ) );
             }
             $activity = DT_Posts::get_post_single_activity( 'contacts', $contact_id, $activity_id );
             if ( empty( $activity->old_value ) ){
@@ -474,7 +473,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             update_post_meta( $contact_id, $activity->meta_key, $activity->old_value ?? '' );
             return DT_Posts::get_post( 'contacts', $contact_id );
         } else {
-            return new WP_Error( 'get_activity', 'Missing a valid contact id or activity id', [ 'status' => 400 ] );
+            return new WP_Error( 'get_activity', 'Missing a valid contact id or activity id', array( 'status' => 400 ) );
         }
     }
 
@@ -536,9 +535,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $s = $query['subassigned'];
             unset( $query['assigned_to'] );
             unset( $query['subassigned'] );
-            $query[] = [ 'assigned_to' => $a, 'subassigned' => $s ];
+            $query[] = array( 'assigned_to' => $a, 'subassigned' => $s );
         }
         return $query;
     }
-
 }

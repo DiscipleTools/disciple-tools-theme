@@ -1,39 +1,39 @@
 <?php
-require_once( get_template_directory() . '/tests/dt-posts/tests-setup.php' );
+require_once get_template_directory() . '/tests/dt-posts/tests-setup.php';
 
 /**
  * @testdox DT_Posts::advanced_search
  */
 class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
 
-    public static $sample_contact = [
+    public static $sample_contact = array(
         'title' => 'Bob List',
         'overall_status' => 'active',
-        'milestones' => [
-            'values' => [
-                [ 'value' => 'milestone_has_bible' ],
-                [ 'value' => 'milestone_baptizing' ]
-            ]
-        ],
+        'milestones' => array(
+            'values' => array(
+                array( 'value' => 'milestone_has_bible' ),
+                array( 'value' => 'milestone_baptizing' ),
+            ),
+        ),
         'baptism_date' => '2018-12-31',
-        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'location_grid' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
-        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
-        'tags' => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
+        'contact_phone' => array( 'values' => array( array( 'value' => '798456780' ) ) ),
+        'contact_email' => array( 'values' => array( array( 'value' => 'bob@example.com' ) ) ),
+        'tags' => array( 'values' => array( array( 'value' => 'tag1' ) ) ),
         'baptism_generation' => 4,
-        'notes' => [
-            'Test comment for bob!'
-        ]
-    ];
+        'notes' => array(
+            'Test comment for bob!',
+        ),
+    );
 
-    public static $sample_group = [
+    public static $sample_group = array(
         'name' => 'Bob\'s group',
         'group_type' => 'church',
-        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
-        'member_count' => 5
-    ];
+        'location_grid' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
+        'member_count' => 5,
+    );
 
     public static $user = null;
     public static $contact = null;
@@ -66,168 +66,167 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
     }
 
     public function provide_global_search_query_data(): array{
-        return [
-            'match all bob references' => [
-                [
+        return array(
+            'match all bob references' => array(
+                array(
                     'query' => 'Bob',
                     'post_type' => 'all',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 2
-                ]
-            ],
-            'match all bob references in contacts' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 2,
+                ),
+            ),
+            'match all bob references in contacts' => array(
+                array(
                     'query' => 'bob',
                     'post_type' => 'contacts',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 1
-                ]
-            ],
-            'match all bob references in contacts comments' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 1,
+                ),
+            ),
+            'match all bob references in contacts comments' => array(
+                array(
                     'query' => 'comment for bob',
                     'post_type' => 'contacts',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 1
-                ]
-            ],
-            'no match across all post types' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 1,
+                ),
+            ),
+            'no match across all post types' => array(
+                array(
                     'query' => 'Frank',
                     'post_type' => 'all',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 0
-                ]
-            ],
-            'match all bob references in groups' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 0,
+                ),
+            ),
+            'match all bob references in groups' => array(
+                array(
                     'query' => 'Bob',
                     'post_type' => 'groups',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 1
-                ]
-            ],
-            'find all records by phone number' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 1,
+                ),
+            ),
+            'find all records by phone number' => array(
+                array(
                     'query' => '798456780',
                     'post_type' => 'all',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 1
-                ]
-            ],
-            'find all records by email address' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 1,
+                ),
+            ),
+            'find all records by email address' => array(
+                array(
                     'query' => 'bob@example.com',
                     'post_type' => 'all',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 1
-                ]
-            ],
-            'no email found if meta filter disabled' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 1,
+                ),
+            ),
+            'no email found if meta filter disabled' => array(
+                array(
                     'query' => 'bob@example.com',
                     'post_type' => 'all',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => false,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 0
-                ]
-            ],
-            'no records found with incorrect offset' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 0,
+                ),
+            ),
+            'no records found with incorrect offset' => array(
+                array(
                     'query' => 'Bob',
                     'post_type' => 'all',
                     'offset' => 10,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 0
-                ]
-            ],
-            'partial query search' => [
-                [
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 0,
+                ),
+            ),
+            'partial query search' => array(
+                array(
                     'query' => 'b list',
                     'post_type' => 'all',
                     'offset' => 0,
-                    'filters' => [
+                    'filters' => array(
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
-                        'status' => 'all'
-                    ]
-                ],
-                [
-                    'total' => 1
-                ]
-            ]
-        ];
+                        'status' => 'all',
+                    ),
+                ),
+                array(
+                    'total' => 1,
+                ),
+            ),
+        );
     }
-
 }

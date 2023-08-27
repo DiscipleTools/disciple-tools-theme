@@ -13,7 +13,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
     public $slug = 'milestones_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = 'milestones_map.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = array( 'dt_all_access_contacts', 'view_project_metrics' );
     public $namespace = null;
 
     public function __construct() {
@@ -28,11 +28,11 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'mapping_scripts' ], 89 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'mapping_scripts' ), 89 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 99 );
 
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
 
@@ -44,16 +44,16 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         // Milestones Script
         wp_enqueue_script( 'dt_'.$this->slug.'_script',
             get_template_directory_uri() . '/dt-metrics/contacts/' . $this->js_file_name,
-            [
+            array(
                 'jquery',
                 'dt_mapping_js',
-                'lodash'
-            ],
+                'lodash',
+            ),
             filemtime( get_theme_file_path() . '/dt-metrics/contacts/' . $this->js_file_name ),
             true
         );
         wp_localize_script(
-            'dt_'.$this->slug.'_script', $this->js_object_name, [
+            'dt_'.$this->slug.'_script', $this->js_object_name, array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . "dt-metrics/$this->base_slug/$this->slug",
                 'base_slug' => $this->base_slug,
                 'root' => esc_url_raw( rest_url() ),
@@ -61,10 +61,10 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
-                'translations' => [
-                    'title' => __( 'Milestones', 'disciple_tools' )
-                ]
-            ]
+                'translations' => array(
+                    'title' => __( 'Milestones', 'disciple_tools' ),
+                ),
+            )
         );
     }
 
@@ -84,25 +84,25 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
     }
 
     public function translations() {
-        $translations = [];
+        $translations = array();
         return $translations;
     }
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/data', [
-                [
+            $this->namespace, '/data', array(
+                array(
                     'methods'  => 'GET',
-                    'callback' => [ $this, 'milestones_map_endpoint' ],
+                    'callback' => array( $this, 'milestones_map_endpoint' ),
                     'permission_callback' => '__return_true',
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function milestones_map_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( 'milestones_map', 'Missing Permissions', [ 'status' => 400 ] );
+            return new WP_Error( 'milestones_map', 'Missing Permissions', array( 'status' => 400 ) );
         }
         $params = $request->get_params();
 
@@ -129,8 +129,8 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
          *
          * @note        No modification to this section needed.
          */
-        $column_labels = $data['custom_column_labels'] ?? [];
-        $column_data   = $data['custom_column_data'] ?? [];
+        $column_labels = $data['custom_column_labels'] ?? array();
+        $column_data   = $data['custom_column_data'] ?? array();
 
         /**
          * Step 2
@@ -167,10 +167,10 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $milestones_options = $field_settings['milestones']['default'];
         foreach ( $milestones_options as $option_key => $option_value ){
-            $column_labels[] = [
+            $column_labels[] = array(
                 'key'   => $option_key,
-                'label' => $option_value['label']
-            ];
+                'label' => $option_value['label'],
+            );
         }
         $next_column_number = count( $column_labels );
 
@@ -208,11 +208,11 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 
                     // test if grid_id exists, else prepare it with 0 values
                     if ( ! isset( $column_data[ $grid_id ] ) ) {
-                        $column_data[$grid_id] = [];
+                        $column_data[$grid_id] = array();
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -233,8 +233,5 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
 
         return $data;
     }
-
 }
 new DT_Metrics_Milestones_Map_Chart();
-
-

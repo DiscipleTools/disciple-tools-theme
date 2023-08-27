@@ -19,7 +19,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
                  * it can be included in functions like other globals:
                  *      global $dt_mapping;
                  */
-                $dt_mapping = [];
+                $dt_mapping = array();
             }
             if ( ! isset( $dt_mapping['environment'] ) ) {
                 /**
@@ -41,37 +41,36 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
             if ( ! isset( $dt_mapping['version'] ) ) {
                 $dt_mapping['version'] = '3.0';
             }
-            require_once( 'globals.php' );
+            require_once 'globals.php';
             /** end create globals */
 
             /** Configurations */
-            require_once( 'mapping-module-config.php' );
+            require_once 'mapping-module-config.php';
 
 
             /** Additional columns */
             if ( ! $custom_columns ) {
-                require_once( 'columns/add-contacts-column.php' );
-                require_once( 'columns/add-groups-column.php' );
-                require_once( 'columns/add-churches-column.php' );
-                require_once( 'columns/add-users-column.php' );
+                require_once 'columns/add-contacts-column.php';
+                require_once 'columns/add-groups-column.php';
+                require_once 'columns/add-churches-column.php';
+                require_once 'columns/add-users-column.php';
             }
 
             /** Queries */
-            require_once( 'mapping-queries.php' );
+            require_once 'mapping-queries.php';
 
             /** Geocoding */
-            require_once( 'geocode-api/google-api.php' );
-            require_once( 'geocode-api/ipstack-api.php' );
-            require_once( 'geocode-api/location-grid-geocoder.php' );
-            require_once( 'geocode-api/mapbox-api.php' );
+            require_once 'geocode-api/google-api.php';
+            require_once 'geocode-api/ipstack-api.php';
+            require_once 'geocode-api/location-grid-geocoder.php';
+            require_once 'geocode-api/mapbox-api.php';
 
             /** Admin */
-            require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
+            require_once 'mapping-admin.php'; // can't filter for is_admin because of REST dependencies
 
             /** Core */
-            require_once( 'mapping.php' );
-            require_once( 'location-grid-meta.php' );
-
+            require_once 'mapping.php';
+            require_once 'location-grid-meta.php';
         }
     }
 }

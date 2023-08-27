@@ -86,16 +86,16 @@ class Disciple_Tools_People_Groups_Post_Type
         if ( is_admin() ) {
             global $pagenow;
 
-            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
-            add_action( 'save_post', [ $this, 'meta_box_save' ] );
-            add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
+            add_action( 'admin_menu', array( $this, 'meta_box_setup' ), 20 );
+            add_action( 'save_post', array( $this, 'meta_box_save' ) );
+            add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 //            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) ) {
                 $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
                 if ( $pt == $this->post_type ) {
-                    add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
-                    add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
+                    add_filter( 'manage_edit-' . $this->post_type . '_columns', array( $this, 'register_custom_column_headings' ), 10, 1 );
+                    add_action( 'manage_posts_custom_column', array( $this, 'register_custom_columns' ), 10, 2 );
                 }
             }
 
@@ -132,9 +132,9 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function register_custom_column_headings( $defaults ) {
         //      $new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
-        $new_columns = []; // TODO: restore above column once we know what columns we need to show.
+        $new_columns = array(); // TODO: restore above column once we know what columns we need to show.
 
-        $last_item = [];
+        $last_item = array();
 
         if ( isset( $defaults['date'] ) ) {
             unset( $defaults['date'] );
@@ -201,9 +201,9 @@ class Disciple_Tools_People_Groups_Post_Type
      * @return void
      */
     public function meta_box_setup() {
-          add_meta_box( $this->post_type . '_update', __( 'Add/Update People Group', 'disciple_tools' ), [ $this, 'load_add_update_meta_box' ], $this->post_type, 'normal', 'high' );
-          add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
-          add_meta_box( $this->post_type . '_translate', __( 'Translations', 'disciple_tools' ), [ $this, 'load_translation_meta_box' ], $this->post_type, 'side', 'low' );
+          add_meta_box( $this->post_type . '_update', __( 'Add/Update People Group', 'disciple_tools' ), array( $this, 'load_add_update_meta_box' ), $this->post_type, 'normal', 'high' );
+          add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
+          add_meta_box( $this->post_type . '_translate', __( 'Translations', 'disciple_tools' ), array( $this, 'load_translation_meta_box' ), $this->post_type, 'side', 'low' );
     } // End meta_box_setup()
 
     public function load_add_update_meta_box( $post ) {
@@ -261,7 +261,7 @@ class Disciple_Tools_People_Groups_Post_Type
         ), ARRAY_A );
 
         if ( ! empty( $results ) ) {
-            $record = [];
+            $record = array();
             foreach ( $results as $item ) {
                 $record[$item['meta_key']] = $item['meta_value'];
             }
@@ -446,10 +446,8 @@ class Disciple_Tools_People_Groups_Post_Type
             if ( !current_user_can( 'edit_page', $post_id ) ) {
                 return $post_id;
             }
-        } else {
-            if ( !current_user_can( 'edit_post', $post_id ) ) {
+        } elseif ( !current_user_can( 'edit_post', $post_id ) ) {
                 return $post_id;
-            }
         }
 
         $field_data = $this->get_custom_fields_settings();
@@ -460,10 +458,10 @@ class Disciple_Tools_People_Groups_Post_Type
             $type = $k[1];
             $number_key = dt_address_metabox()->create_channel_metakey( 'address' );
             $details_key = $number_key . '_details';
-            $details = [
+            $details = array(
             'type' => $type,
-            'verified' => false
-            ];
+            'verified' => false,
+            );
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
@@ -524,7 +522,7 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function get_custom_fields_settings() {
         //        global $post;
-        $fields = [];
+        $fields = array();
 
         //        /* Sample */
         //        $fields['overall_status'] = [
@@ -545,8 +543,8 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function people_group_fields() {
         global $wpdb, $post;
-        $fields = [];
-        $current_fields = [];
+        $fields = array();
+        $current_fields = array();
         if ( isset( $post->ID ) ) {
             $current_fields = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
@@ -568,10 +566,10 @@ class Disciple_Tools_People_Groups_Post_Type
             if ( $names[1] != $names[2] ) {
                 $tag = ' (' . ucwords( $names[2] ) . ')';
             }
-            $fields[ $value['meta_key'] ] = [
+            $fields[ $value['meta_key'] ] = array(
                 'name' => ucwords( $names[1] ) . $tag,
                 'tag'  => $names[1],
-            ];
+            );
         }
 
         return $fields;
@@ -607,5 +605,4 @@ class Disciple_Tools_People_Groups_Post_Type
             $submenu['edit.php?post_type=peoplegroups'][10]
         );
     }
-
 } // End Class

@@ -41,6 +41,6 @@ class Disciple_Tools_Migration_0033 extends Disciple_Tools_Migration {
 
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }

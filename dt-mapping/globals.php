@@ -38,11 +38,11 @@ if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
     function dt_get_location_grid_mirror( $url_only = false ) {
         $mirror = get_option( 'dt_location_grid_mirror' );
         if ( empty( $mirror ) ) {
-            $array = [
+            $array = array(
                 'key'   => 'google',
                 'label' => 'Google',
                 'url'   => 'https://storage.googleapis.com/location-grid-mirror-v2/',
-            ];
+            );
             update_option( 'dt_location_grid_mirror', $array, true );
             $mirror = $array;
         }
@@ -55,7 +55,7 @@ if ( ! function_exists( 'dt_get_location_grid_mirror' ) ) {
     }
 }
 if ( ! function_exists( 'dt_get_mapbox_endpoint' ) ) {
-    function dt_get_mapbox_endpoint( $type = 'places' ) : string {
+    function dt_get_mapbox_endpoint( $type = 'places' ): string {
         switch ( $type ) {
             case 'permanent':
                 return 'https://api.mapbox.com/geocoding/v5/mapbox.places-permanent/';
@@ -159,7 +159,7 @@ if ( ! isset( $dt_mapping['module_config_path'] ) ) {
 /** Add dt options */
 if ( ! isset( $dt_mapping['options'] ) ) {
     $all_options = wp_load_alloptions();
-    $dt_mapping['options'] = [];
+    $dt_mapping['options'] = array();
     foreach ( $all_options as $key => $value ) {
         if ( substr( $key, 0, 3 ) === 'dt_' ) {
             $dt_mapping['options'][$key] = $value;
@@ -180,10 +180,10 @@ if ( ! isset( $dt_mapping['spinner'] ) ) {
 /** Add theme info */
 if ( ! isset( $dt_mapping['theme'] ) ) {
     $wp_theme = wp_get_theme();
-    $dt_mapping['theme'] = [
+    $dt_mapping['theme'] = array(
         'current_theme_name' => $wp_theme->name,
         'current_theme_version' => $wp_theme->version,
-    ];
+    );
 }
 
 /** Add globals to global object */
@@ -197,12 +197,12 @@ $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 /*******************************************************************************************************************
  * MIGRATION ENGINE
  ******************************************************************************************************************/
-add_action( 'init', function (){
-    require_once( 'class-migration-engine.php' );
+add_action( 'init', function () {
+    require_once 'class-migration-engine.php';
     try {
         DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
     } catch ( Throwable $e ) {
-        $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', [ 'error' => $e ] );
+        $migration_error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', array( 'error' => $e ) );
         dt_write_log( $migration_error );
     }
 }, 99 );

@@ -31,17 +31,17 @@ function dt_multi_role_admin_register_scripts() {
 
     $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-    dt_theme_register_script( 'members-settings', "dt-core/admin/multi-role/js/settings{$min}.js", [ 'jquery' ], true );
-    dt_theme_register_script( 'members-edit-role', "dt-core/admin/multi-role/js/edit-role{$min}.js", [ 'postbox', 'wp-util' ], true );
+    dt_theme_register_script( 'members-settings', "dt-core/admin/multi-role/js/settings{$min}.js", array( 'jquery' ), true );
+    dt_theme_register_script( 'members-edit-role', "dt-core/admin/multi-role/js/edit-role{$min}.js", array( 'postbox', 'wp-util' ), true );
 
     // Localize our script with some text we want to pass in.
-    $i18n = [
+    $i18n = array(
         'button_role_edit' => esc_html__( 'Edit', 'members' ),
         'button_role_ok'   => esc_html__( 'OK', 'members' ),
         'label_grant_cap'  => esc_html__( 'Grant %s capability', 'members' ),
         'label_deny_cap'   => esc_html__( 'Deny %s capability', 'members' ),
-        'ays_delete_role'  => esc_html__( 'Are you sure you want to delete this role? This is a permanent action and cannot be undone.', 'members' )
-    ];
+        'ays_delete_role'  => esc_html__( 'Are you sure you want to delete this role? This is a permanent action and cannot be undone.', 'members' ),
+    );
 
     wp_localize_script( 'members-edit-role', 'dt_multi_role_i18n', $i18n );
 }
@@ -81,7 +81,7 @@ function dt_multi_role_delete_role( $role ) {
     }
 
     // Get all users with the role to be deleted.
-    $users = get_users( [ 'role' => $role ] );
+    $users = get_users( array( 'role' => $role ) );
 
     // Check if there are any users with the role we're deleting.
     if ( is_array( $users ) ) {
@@ -171,7 +171,7 @@ function dt_multi_role_manage_users_custom_column( $output, $column, $user_id ) 
 
         $user = new WP_User( $user_id );
 
-        $user_roles = [];
+        $user_roles = array();
         $output = esc_html__( 'None', 'members' );
 
         if ( is_array( $user->roles ) ) {

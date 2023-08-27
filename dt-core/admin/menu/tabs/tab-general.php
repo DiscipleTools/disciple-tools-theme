@@ -29,8 +29,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function __construct() {
 //        add_action( 'admin_menu', [ $this, 'add_submenu' ] );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 5, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 10, 1 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 5, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 10, 1 );
 
         parent::__construct();
     }
@@ -205,11 +205,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function base_user() {
         $base_user = dt_get_base_user();
         $potential_user_list = get_users(
-            [
-                'role__in' => [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ],
+            array(
+                'role__in' => array( 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ),
                 'order'    => 'ASC',
                 'orderby'  => 'display_name',
-            ]
+            )
         );
 
         echo '<form method="post" name="extension_modules_form">';
@@ -507,8 +507,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             $site_options = dt_get_option( 'dt_site_options' );
             $tile_options = dt_get_option( 'dt_custom_tiles' );
-            $four_fields_tile = $tile_options['groups']['four-fields'] ?? [];
-            $church_metrics_tile = $tile_options['groups']['health-metrics'] ?? [];
+            $four_fields_tile = $tile_options['groups']['four-fields'] ?? array();
+            $church_metrics_tile = $tile_options['groups']['health-metrics'] ?? array();
 
             if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
                 $site_options['group_preferences']['church_metrics'] = true;
@@ -535,7 +535,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_options', $site_options, true );
             update_option( 'dt_custom_tiles', $tile_options, true );
         }
-
     }
 
     public function update_group_preferences(){
@@ -569,7 +568,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function process_user_preferences(){
         if ( isset( $_POST['user_preferences_nonce'] ) &&
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['user_preferences_nonce'] ) ), 'user_preferences' . get_current_user_id() ) ) {
-            $role_options = get_option( 'dt_options_roles_and_permissions', [] );
+            $role_options = get_option( 'dt_options_roles_and_permissions', array() );
             $dt_roles = dt_multi_role_get_editable_role_names();
             foreach ( $dt_roles as $role_key => $name ) :
                 $role_object = get_role( $role_key );
@@ -683,11 +682,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_contact_preferences', $contact_preferences, true );
         }
-
     }
 
     public function show_dt_contact_preferences(){
-        $contact_preferences = get_option( 'dt_contact_preferences', [] );
+        $contact_preferences = get_option( 'dt_contact_preferences', array() );
         ?>
         <form method="post" >
             <table class="widefat">
@@ -732,9 +730,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                    <?php checked( $module_values['enabled'] ) ?> />
                         </td>
                         <td>
-                            <?php echo esc_html( join( ', ', array_map( function ( $req_key ) use ( $modules ){
+                            <?php echo esc_html( join( ', ', array_map( function ( $req_key ) use ( $modules ) {
                                 return $modules[$req_key]['name'];
-                            }, ( $module_values['prerequisites'] ?? [] ) ) ) );
+                            }, ( $module_values['prerequisites'] ?? array() ) ) ) );
                             ?>
                         </td>
                         <td>
@@ -755,14 +753,14 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['contact_modules_nonce'] ) ), 'contact_modules' ) ) {
 
             $module_settings = dt_get_option( 'dt_post_type_modules' );
-            $module_option = get_option( 'dt_post_type_modules', [] );
+            $module_option = get_option( 'dt_post_type_modules', array() );
             foreach ( $module_settings as $module_key => $module_values ){
                 if ( !isset( $module_option[$module_key] ) ){
-                    $module_option[$module_key] = [ 'enabled' => false ];
+                    $module_option[$module_key] = array( 'enabled' => false );
                 }
                 $module_option[$module_key]['enabled'] = isset( $_POST[$module_key] ) || ( $module_settings[$module_key]['locked'] ?? false );
                 if ( isset( $_POST[$module_key] ) ){
-                    foreach ( $module_settings[$module_key]['prerequisites'] ?? [] as $prereq ){
+                    foreach ( $module_settings[$module_key]['prerequisites'] ?? array() as $prereq ){
                         if ( !isset( $_POST[$prereq] ) && !( $module_settings[$prereq]['locked'] ?? false ) ){
                             $module_option[$module_key]['enabled'] = false;
                         }

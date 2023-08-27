@@ -24,21 +24,21 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              *
              * @see    mapping.php:56
              */
-            add_filter( 'dt_mapping_module_has_permissions', [ $this, 'custom_permission_check' ] );
+            add_filter( 'dt_mapping_module_has_permissions', array( $this, 'custom_permission_check' ) );
 
             /**
              * dt_mapping_module_translations
              *
              * @see     mapping.php:119 125
              */
-            add_filter( 'dt_mapping_module_translations', [ $this, 'custom_translations_filter' ] );
+            add_filter( 'dt_mapping_module_translations', array( $this, 'custom_translations_filter' ) );
 
             /**
              * dt_mapping_module_settings
              *
              * @see     mapping.php:241
              */
-            add_filter( 'dt_mapping_module_settings', [ $this, 'custom_settings_filter' ] );
+            add_filter( 'dt_mapping_module_settings', array( $this, 'custom_settings_filter' ) );
 
             /**
              * Use this filter to add data to sub levels by location_grid
@@ -46,22 +46,21 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              *
              * @see     mapping.php:389
              */
-            add_filter( 'dt_mapping_module_map_level_by_grid_id', [ $this, 'map_level_by_grid_id_filter' ], 10, 1 );
+            add_filter( 'dt_mapping_module_map_level_by_grid_id', array( $this, 'map_level_by_grid_id_filter' ), 10, 1 );
 
             /**
              * dt_mapping_module_url_base
              *
              * @see     mapping.php:102
              */
-            add_filter( 'dt_mapping_module_url_base', [ $this, 'custom_url_base' ] );
+            add_filter( 'dt_mapping_module_url_base', array( $this, 'custom_url_base' ) );
 
             /**
              * dt_mapping_module_endpoints
              *
              * @see     mapping.php:77
              */
-            add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints' ], 10, 1 );
-
+            add_filter( 'dt_mapping_module_endpoints', array( $this, 'add_custom_endpoints' ), 10, 1 );
         }
 
         /**
@@ -156,7 +155,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              */
             return $base_url;
         }
-
     }
     DT_Mapping_Module_Config::instance();
 }

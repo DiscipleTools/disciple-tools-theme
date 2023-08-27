@@ -48,22 +48,22 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
      * @since   0.1.0
      */
     public function __construct(){
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 125, 1 );
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 125, 1 );
+        add_action( 'admin_menu', array( $this, 'add_submenu' ), 125 );
+        add_action( 'dt_utilities_tab_menu', array( $this, 'add_tab' ), 125, 1 );
+        add_action( 'dt_utilities_tab_content', array( $this, 'content' ), 125, 1 );
 
         parent::__construct();
     } // End __construct()
 
     public function add_submenu(){
-        add_submenu_page( 'edit.php?post_type=exports', __( 'Exports', 'disciple_tools' ), __( 'Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', [
+        add_submenu_page( 'edit.php?post_type=exports', __( 'Exports', 'disciple_tools' ), __( 'Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', array(
             'Disciple_Tools_Settings_Menu',
-            'content'
-        ] );
-        add_submenu_page( 'dt_utilities', __( 'Exports', 'disciple_tools' ), __( 'Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', [
+            'content',
+        ) );
+        add_submenu_page( 'dt_utilities', __( 'Exports', 'disciple_tools' ), __( 'Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', array(
             'Disciple_Tools_Settings_Menu',
-            'content'
-        ] );
+            'content',
+        ) );
     }
 
     public function add_tab( $tab ){
@@ -98,36 +98,36 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
 
                 // Assuming services have been selected, proceed with export payload generation.
                 if ( !empty( $services ) ){
-                    $export_payload = apply_filters( 'dt_export_payload', [
+                    $export_payload = apply_filters( 'dt_export_payload', array(
                         'services' => $services,
-                        'payload' => []
-                    ] );
+                        'payload' => array(),
+                    ) );
 
                     // Assuming valid export payloads have been returned, force a download.
                     if ( !empty( $export_payload['payload'] ) ){
 
                         // Take a quick snapshot of existing plugins.
                         $plugins = get_plugins();
-                        $active_plugins = get_option( 'active_plugins', [] );
-                        foreach ( get_site_option( 'active_sitewide_plugins', [] ) as $plugin => $time ){
+                        $active_plugins = get_option( 'active_plugins', array() );
+                        foreach ( get_site_option( 'active_sitewide_plugins', array() ) as $plugin => $time ){
                             $active_plugins[] = $plugin;
                         }
 
-                        $filtered_plugins = [];
+                        $filtered_plugins = array();
                         foreach ( $plugins as $i => $v ){
                             if ( isset( $v['Name'], $v['Version'] ) ){
-                                $filtered_plugins[] = [
+                                $filtered_plugins[] = array(
                                     'id' => $i,
                                     'name' => $v['Name'],
                                     'version' => $v['Version'],
-                                    'active' => in_array( $i, $active_plugins )
-                                ];
+                                    'active' => in_array( $i, $active_plugins ),
+                                );
                             }
                         }
 
                         // Package into a downloadable object.
-                        $downloadable = [
-                            'site_meta' => [
+                        $downloadable = array(
+                            'site_meta' => array(
                                 'timestamp' => time(),
                                 'wp_version' => get_bloginfo( 'version' ),
                                 'php_version' => phpversion(),
@@ -135,12 +135,12 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                                 'dt_version' => wp_get_theme()->version,
                                 'site_url' => get_site_url(),
                                 'multisite' => is_multisite(),
-                                'plugins' => $filtered_plugins
-                            ],
+                                'plugins' => $filtered_plugins,
+                            ),
                             'dt_settings' => $export_payload['payload'],
-                            'wp_settings' => [],
-                            'multisite_settings' => []
-                        ];
+                            'wp_settings' => array(),
+                            'multisite_settings' => array(),
+                        );
 
                         $dt_export_downloadable_filename = 'dt-' . time() . '.json';
                         ?>
@@ -172,7 +172,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
 
     private function display_services(){
 
-        $this->box( 'top', 'Available Export Services', [ 'col_span' => 4 ] );
+        $this->box( 'top', 'Available Export Services', array( 'col_span' => 4 ) );
 
         ?>
         <p>
@@ -215,7 +215,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                 </thead>
                 <tbody>
                 <?php
-                $export_services = apply_filters( 'dt_export_services', [] );
+                $export_services = apply_filters( 'dt_export_services', array() );
                 foreach ( $export_services as $id => $service ){
                     if ( isset( $service['id'], $service['enabled'], $service['label'] ) && $service['enabled'] ){
                         ?>
@@ -263,7 +263,6 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
 
         $this->box( 'bottom' );
     }
-
 }
 
 Disciple_Tools_Tab_Exports::instance();

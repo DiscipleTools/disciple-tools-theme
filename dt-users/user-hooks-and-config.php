@@ -6,51 +6,51 @@ if ( !defined( 'ABSPATH' ) ) {
 class DT_User_Hooks_And_Configuration {
 
     public function __construct() {
-        add_action( 'dt_contact_merged', [ $this, 'dt_contact_merged' ], 10, 2 );
+        add_action( 'dt_contact_merged', array( $this, 'dt_contact_merged' ), 10, 2 );
 
         //Make sure a contact exists for users
-        add_action( 'wpmu_new_blog', [ &$this, 'create_contacts_for_existing_users' ] );
-        add_action( 'after_switch_theme', [ &$this, 'create_contacts_for_existing_users' ] );
-        add_action( 'invite_user', [ $this, 'user_register_hook' ], 10, 1 );
-        add_action( 'after_signup_user', [ $this, 'after_signup_user' ], 10, 2 );
-        add_action( 'wp_login', [ &$this, 'user_login_hook' ], 10, 2 );
-        add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
-        add_action( 'user_register', [ &$this, 'user_register_hook' ] ); // used on non multisite?
-        add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
-        add_action( 'signup_user_meta', [ $this, 'signup_user_meta' ], 10, 1 );
-        add_action( 'wpmu_activate_user', [ $this, 'wpmu_activate_user' ], 10, 3 );
-        add_action( 'dt_user_created', [ $this, 'dt_user_created' ], 10, 1 );
-        add_filter( 'wp_send_new_user_notification_to_user', [ $this, 'wp_send_new_user_notification' ], 10, 2 );
+        add_action( 'wpmu_new_blog', array( &$this, 'create_contacts_for_existing_users' ) );
+        add_action( 'after_switch_theme', array( &$this, 'create_contacts_for_existing_users' ) );
+        add_action( 'invite_user', array( $this, 'user_register_hook' ), 10, 1 );
+        add_action( 'after_signup_user', array( $this, 'after_signup_user' ), 10, 2 );
+        add_action( 'wp_login', array( &$this, 'user_login_hook' ), 10, 2 );
+        add_action( 'add_user_to_blog', array( &$this, 'user_register_hook' ) );
+        add_action( 'user_register', array( &$this, 'user_register_hook' ) ); // used on non multisite?
+        add_action( 'profile_update', array( &$this, 'profile_update_hook' ), 99 );
+        add_action( 'signup_user_meta', array( $this, 'signup_user_meta' ), 10, 1 );
+        add_action( 'wpmu_activate_user', array( $this, 'wpmu_activate_user' ), 10, 3 );
+        add_action( 'dt_user_created', array( $this, 'dt_user_created' ), 10, 1 );
+        add_filter( 'wp_send_new_user_notification_to_user', array( $this, 'wp_send_new_user_notification' ), 10, 2 );
 
         //invite user and edit user page modifications
-        add_action( 'user_new_form', [ &$this, 'custom_user_profile_fields' ] );
-        add_action( 'show_user_profile', [ &$this, 'custom_user_profile_fields' ] );
-        add_action( 'edit_user_profile', [ &$this, 'custom_user_profile_fields' ] );
-        add_action( 'add_user_role', [ $this, 'add_user_role' ], 10, 2 );
+        add_action( 'user_new_form', array( &$this, 'custom_user_profile_fields' ) );
+        add_action( 'show_user_profile', array( &$this, 'custom_user_profile_fields' ) );
+        add_action( 'edit_user_profile', array( &$this, 'custom_user_profile_fields' ) );
+        add_action( 'add_user_role', array( $this, 'add_user_role' ), 10, 2 );
 
         //wp admin user list customization
-        add_filter( 'user_row_actions', [ $this, 'dt_edit_user_row_actions' ], 10, 2 );
-        add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
-        add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
+        add_filter( 'user_row_actions', array( $this, 'dt_edit_user_row_actions' ), 10, 2 );
+        add_filter( 'manage_users_columns', array( $this, 'new_modify_user_table' ) );
+        add_filter( 'manage_users_custom_column', array( $this, 'new_modify_user_table_row' ), 10, 3 );
 
-        add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_from_blog' ], 10, 2 );
-        add_action( 'wpmu_delete_user', [ $this, 'dt_multisite_delete_user_contact_meta' ], 10, 1 );
-        add_action( 'delete_user', [ $this,'dt_delete_user' ], 10, 1 );
+        add_action( 'remove_user_from_blog', array( $this, 'dt_delete_user_from_blog' ), 10, 2 );
+        add_action( 'wpmu_delete_user', array( $this, 'dt_multisite_delete_user_contact_meta' ), 10, 1 );
+        add_action( 'delete_user', array( $this, 'dt_delete_user' ), 10, 1 );
 
         // translate emails
-        add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
-        add_action( 'add_user_to_blog', [ $this, 'wp_existing_user_notification_email' ], 10, 3 );
+        add_filter( 'wp_new_user_notification_email', array( $this, 'wp_new_user_notification_email' ), 10, 3 );
+        add_action( 'add_user_to_blog', array( $this, 'wp_existing_user_notification_email' ), 10, 3 );
 
         //permissions when editing user roles
-        add_filter( 'editable_roles', [ $this, 'editable_roles' ] );
-        add_action( 'remove_user_role', [ $this, 'remove_user_role' ], 10, 2 );
+        add_filter( 'editable_roles', array( $this, 'editable_roles' ) );
+        add_action( 'remove_user_role', array( $this, 'remove_user_role' ), 10, 2 );
     }
 
     /** Remove admin roles from editable roles if user is not an admin. */
     public function editable_roles( $roles ){
-        $can_not_promote_to_roles = [];
+        $can_not_promote_to_roles = array();
         if ( !dt_is_administrator() ){
-            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, array( 'administrator' ) );
         }
         if ( !current_user_can( 'manage_dt' ) ){
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
@@ -143,10 +143,10 @@ class DT_User_Hooks_And_Configuration {
             if ( isset( $data['corresponds_to_contact'] ) ){
                 $corresponds_to_contact = $data['corresponds_to_contact'];
                 update_user_option( $user_id, 'corresponds_to_contact', $corresponds_to_contact );
-                $contact = DT_Posts::update_post( 'contacts', (int) $corresponds_to_contact, [
+                $contact = DT_Posts::update_post( 'contacts', (int) $corresponds_to_contact, array(
                     'corresponds_to_user' => $user_id,
-                    'type' => 'user'
-                ]);
+                    'type' => 'user',
+                ));
                 $user = get_user_by( 'id', $user_id );
                 $user->display_name = $contact['title'];
                 wp_update_user( $user );
@@ -162,10 +162,10 @@ class DT_User_Hooks_And_Configuration {
         if ( isset( $_POST['corresponds_to_contact_id'] ) && !empty( $_POST['corresponds_to_contact_id'] ) ) {
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST['corresponds_to_contact_id'] ) );
             update_user_option( $user_id, 'corresponds_to_contact', $corresponds_to_contact );
-            $contact = DT_Posts::update_post( 'contacts', (int) $corresponds_to_contact, [
+            $contact = DT_Posts::update_post( 'contacts', (int) $corresponds_to_contact, array(
                 'corresponds_to_user' => $user_id,
-                'type' => 'user'
-            ], false, true );
+                'type' => 'user',
+            ), false, true );
             $user = get_user_by( 'id', $user_id );
             $user->display_name = $contact['title'];
             wp_update_user( $user );
@@ -193,7 +193,7 @@ class DT_User_Hooks_And_Configuration {
         if ( !empty( $contact_id ) && ! is_wp_error( $contact_id ) ){
             $mention = dt_get_user_mention_syntax( $user_id );
             $comment_html = sprintf( __( 'Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users', 'disciple_tools' ), $mention );
-            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', [], false, get_option( 'dt_disable_dt_new_user_email_notifications', false ) );
+            DT_Posts::add_post_comment( 'contacts', $contact_id, $comment_html, 'comment', array(), false, get_option( 'dt_disable_dt_new_user_email_notifications', false ) );
         }
     }
 
@@ -224,21 +224,21 @@ class DT_User_Hooks_And_Configuration {
         if ( isset( $_POST['corresponds_to_contact_id'] ) && !empty( $_POST['corresponds_to_contact_id'] ) ){
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST['corresponds_to_contact_id'] ) );
             update_user_option( $user_id, 'corresponds_to_contact', $corresponds_to_contact );
-            DT_Posts::update_post( 'contacts', (int) $corresponds_to_contact, [
-                'corresponds_to_user' => $user_id
-            ], true, false );
+            DT_Posts::update_post( 'contacts', (int) $corresponds_to_contact, array(
+                'corresponds_to_user' => $user_id,
+            ), true, false );
         }
 
         if ( !empty( $_POST['allowed_sources'] ) && current_user_can( 'promote_users' ) ) {
             if ( isset( $_REQUEST['action'] ) && 'update' == $_REQUEST['action'] ) {
                 check_admin_referer( 'update-user_' . $user_id );
             }
-            $allowed_sources = [];
+            $allowed_sources = array();
             foreach ( $_POST["allowed_sources"] as $s ) {  // @codingStandardsIgnoreLine
                 $allowed_sources[] = sanitize_key( wp_unslash( $s ) );
             }
             if ( in_array( 'restrict_all_sources', $allowed_sources ) ){
-                $allowed_sources = [ 'restrict_all_sources' ];
+                $allowed_sources = array( 'restrict_all_sources' );
             }
             update_user_option( $user_id, 'allowed_sources', $allowed_sources );
         }
@@ -249,9 +249,9 @@ class DT_User_Hooks_And_Configuration {
 
     public static function add_user_role( $user_id, $role ){
         if ( user_can( $user_id, 'access_specific_sources' ) ){
-            $allowed_sources = get_user_option( 'allowed_sources', $user_id ) ?: [];
+            $allowed_sources = get_user_option( 'allowed_sources', $user_id ) ?: array();
             if ( in_array( 'restrict_all_sources', $allowed_sources ) ){
-                $allowed_sources = [ 'restrict_all_sources' ];
+                $allowed_sources = array( 'restrict_all_sources' );
                 update_user_option( $user_id, 'allowed_sources', $allowed_sources );
             }
         }
@@ -344,12 +344,12 @@ class DT_User_Hooks_And_Configuration {
         $message = self::common_user_invite_text( $user->user_email, $site->blogname, $site->siteurl, $user->display_name );
         $message .= sprintf( __( 'To log in click here: %s', 'disciple_tools' ), wp_login_url() )  . "\r\n";
 
-        $dt_existing_user_notification_email = [
+        $dt_existing_user_notification_email = array(
             'to' => $user->user_email,
             'subject' => __( '[%s] Login Details', 'disciple_tools' ),
             'message' => $message,
             'headers' => '',
-        ];
+        );
 
         /**
          * Filters the contents of the existing user notification email sent to the new user.
@@ -561,7 +561,7 @@ class DT_User_Hooks_And_Configuration {
         <?php if ( isset( $user->ID ) && user_can( $user->ID, 'access_specific_sources' ) && current_user_can( 'promote_users' ) ) :
             $selected_sources = get_user_option( 'allowed_sources', $user->ID );
             $post_settings = DT_Posts::get_post_settings( 'contacts' );
-            $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : [];
+            $sources = isset( $post_settings['fields']['sources']['default'] ) ? $post_settings['fields']['sources']['default'] : array();
             ?>
             <h3>Access by Source</h3>
             <table class="form-table">
@@ -570,21 +570,21 @@ class DT_User_Hooks_And_Configuration {
                     <td>
                         <ul>
                             <li>
-                                <?php $checked = in_array( 'all', $selected_sources === false ? [ 'all' ] : $selected_sources ) ? 'checked' : ''; ?>
+                                <?php $checked = in_array( 'all', $selected_sources === false ? array( 'all' ) : $selected_sources ) ? 'checked' : ''; ?>
                                 <label>
                                     <input type="radio" name="allowed_sources[]" value="all" <?php echo esc_html( $checked ) ?>/>
                                     <?php esc_html_e( 'All Sources - gives access to all contacts', 'disciple_tools' ); ?>
                                 </label>
                             </li>
                             <li>
-                                <?php $checked = in_array( 'custom_source_restrict', $selected_sources === false ? [] : $selected_sources ) ? 'checked' : ''; ?>
+                                <?php $checked = in_array( 'custom_source_restrict', $selected_sources === false ? array() : $selected_sources ) ? 'checked' : ''; ?>
                                 <label>
                                     <input type="radio" name="allowed_sources[]" value="custom_source_restrict" <?php echo esc_html( $checked ) ?>/>
                                     <?php esc_html_e( 'Custom - Access own contacts and all the contacts of the selected sources below', 'disciple_tools' ); ?>
                                 </label>
                             </li>
                             <li>
-                                <?php $checked = in_array( 'restrict_all_sources', $selected_sources === false ? [] : $selected_sources ) ? 'checked' : ''; ?>
+                                <?php $checked = in_array( 'restrict_all_sources', $selected_sources === false ? array() : $selected_sources ) ? 'checked' : ''; ?>
                                 <label>
                                     <input type="radio" name="allowed_sources[]" value="restrict_all_sources" <?php echo esc_html( $checked ) ?>/>
                                     <?php esc_html_e( 'No Sources - only own contacts', 'disciple_tools' ); ?>
@@ -594,7 +594,7 @@ class DT_User_Hooks_And_Configuration {
                                 &nbsp;
                             </li>
                             <?php foreach ( $sources as $source_key => $source_value ) :
-                                $checked = in_array( $source_key, $selected_sources === false ? [] : $selected_sources ) ? 'checked' : '';
+                                $checked = in_array( $source_key, $selected_sources === false ? array() : $selected_sources ) ? 'checked' : '';
                                 ?>
                                 <li>
                                     <label>

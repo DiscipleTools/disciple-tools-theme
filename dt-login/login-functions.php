@@ -37,7 +37,7 @@ function dt_login_redirect_login_page() {
 }
 // END LOGIN PAGE REDIRECT
 
-function dt_login_url( string $name, string $url = '' ) : string {
+function dt_login_url( string $name, string $url = '' ): string {
     $dt_login = DT_Login_Fields::all_values();
 
     $url = new DT_URL( $url );
@@ -66,7 +66,7 @@ function dt_login_url( string $name, string $url = '' ) : string {
      */
     $login_url = apply_filters( 'dt_login_url', $login_url );
 
-    $redirect_params = empty( $redirect_url ) ? [] : [ 'redirect_to' => rawurlencode( $redirect_url ) ];
+    $redirect_params = empty( $redirect_url ) ? array() : array( 'redirect_to' => rawurlencode( $redirect_url ) );
 
     switch ( $name ) {
         case 'home':
@@ -78,23 +78,23 @@ function dt_login_url( string $name, string $url = '' ) : string {
         case 'success':
             return $redirect_url;
         case 'logout':
-            return dt_create_site_url( $login_url, [ 'action' => 'logout' ] );
+            return dt_create_site_url( $login_url, array( 'action' => 'logout' ) );
         case 'register':
-            return dt_create_site_url( $login_url, [ 'action' => 'register' ] );
+            return dt_create_site_url( $login_url, array( 'action' => 'register' ) );
         case 'lostpassword':
-            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword' ] );
+            return dt_create_site_url( $login_url, array( 'action' => 'lostpassword' ) );
         case 'resetpass':
-            return dt_create_site_url( $login_url, [ 'action' => 'resetpass' ] );
+            return dt_create_site_url( $login_url, array( 'action' => 'resetpass' ) );
         case 'expiredkey':
-            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword', 'error' => 'expiredkey' ] );
+            return dt_create_site_url( $login_url, array( 'action' => 'lostpassword', 'error' => 'expiredkey' ) );
         case 'invalidkey':
-            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword', 'error' => 'invalidkey' ] );
+            return dt_create_site_url( $login_url, array( 'action' => 'lostpassword', 'error' => 'invalidkey' ) );
         default:
             return '';
     }
 }
 
-function dt_create_site_url( $path = '', $params = [] ) {
+function dt_create_site_url( $path = '', $params = array() ) {
     $site_url = site_url( $path );
 
     if ( !empty( $params ) ) {
@@ -105,7 +105,7 @@ function dt_create_site_url( $path = '', $params = [] ) {
 }
 
 
-function dt_login_spinner() : string {
+function dt_login_spinner(): string {
     return plugin_dir_url( __DIR__ ) . 'spinner.svg';
 }
 /**

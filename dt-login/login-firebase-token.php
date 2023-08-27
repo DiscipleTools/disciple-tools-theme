@@ -22,7 +22,7 @@ class DT_Login_Firebase_Token {
      * @throws Error Firebase token payload is invalid.
      * @return array
      */
-    public function verify( string $project_id ) : array {
+    public function verify( string $project_id ): array {
         $keys = $this->get_public_keys();
 
         $payload = JWT::decode( $this->token, $keys );
@@ -40,7 +40,7 @@ class DT_Login_Firebase_Token {
      * Returns googles current public keys. Caches them until they need refetching.
      * @return array
      */
-    private function get_public_keys() : array {
+    private function get_public_keys(): array {
 
         $public_keys = get_transient( static::PUBLIC_KEYS_CACHE );
         if ( $public_keys ) {
@@ -59,7 +59,7 @@ class DT_Login_Firebase_Token {
         }
 
         $cache_control = wp_remote_retrieve_header( $response, 'Cache-Control' );
-        $matches = [];
+        $matches = array();
         preg_match( '/max-age=(\d*),/', $cache_control, $matches );
 
         $max_age = (int) $matches[1];
@@ -75,7 +75,7 @@ class DT_Login_Firebase_Token {
      * @param string $project_id
      * @return bool
      */
-    private function validate_payload( object $payload, string $project_id ) : bool {
+    private function validate_payload( object $payload, string $project_id ): bool {
 
         /* Expiry must be in the future */
         if ( $payload->exp < time() ) {
@@ -103,5 +103,4 @@ class DT_Login_Firebase_Token {
 
         return true;
     }
-
 }

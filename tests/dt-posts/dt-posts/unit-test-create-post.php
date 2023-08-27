@@ -1,30 +1,30 @@
 <?php
-require_once( get_template_directory() . '/tests/dt-posts/tests-setup.php' );
+require_once get_template_directory() . '/tests/dt-posts/tests-setup.php';
 /**
  * @testdox DT_Posts::create_post
  */
 class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
-    public $sample_contact = [
+    public $sample_contact = array(
         'title' => 'Bob',
         'overall_status' => 'active',
-        'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'milestone_baptizing' ] ] ],
+        'milestones' => array( 'values' => array( array( 'value' => 'milestone_has_bible' ), array( 'value' => 'milestone_baptizing' ) ) ),
         'baptism_date' => '2018-12-31',
-        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'location_grid' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
         'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
-        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
-        'tags' => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
-    ];
+        'contact_phone' => array( 'values' => array( array( 'value' => '798456780' ) ) ),
+        'contact_email' => array( 'values' => array( array( 'value' => 'bob@example.com' ) ) ),
+        'tags' => array( 'values' => array( array( 'value' => 'tag1' ) ) ),
+    );
 
-    public $sample_group = [
+    public $sample_group = array(
         'name' => 'Bob\'s group',
         'group_type' => 'church',
-        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
-        'member_count' => 5
-    ];
+        'location_grid' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
+        'member_count' => 5,
+    );
 
     public static function setupBeforeClass(): void  {
         $user_id = wp_create_user( 'dispatcher1', 'test', 'test2@example.com' );
@@ -41,7 +41,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $base_user = get_option( 'dt_base_user' );
         $this->sample_contact['assigned_to'] = $base_user;
         $group1 = DT_Posts::create_post( 'groups', $this->sample_group );
-        $this->sample_contact['groups'] = [ 'values' => [ [ 'value' => $group1['ID'] ] ] ];
+        $this->sample_contact['groups'] = array( 'values' => array( array( 'value' => $group1['ID'] ) ) );
         $contact1 = DT_Posts::create_post( 'contacts', $this->sample_contact );
         $this->assertSame( 'Bob', $contact1['title'] );
         $this->assertSame( 'Bob', $contact1['name'] );
@@ -105,14 +105,14 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         //test contacts create
         $contact_shared_with = DT_Posts::get_shared_with( 'contacts', $contact['ID'], false );
-        $user_ids = array_map(  function ( $post ){
+        $user_ids = array_map(  function ( $post ) {
             return (int) $post['user_id'];
         }, $contact_shared_with );
         $this->assertContains( (int) $user_id, $user_ids );
 
         //test group create
         $group_shared_with = DT_Posts::get_shared_with( 'groups', $group['ID'], false );
-        $user_ids = array_map(  function ( $post ){
+        $user_ids = array_map(  function ( $post ) {
             return (int) $post['user_id'];
         }, $group_shared_with );
         $this->assertContains( (int) $user_id, $user_ids );
@@ -121,10 +121,10 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $user_2 = wp_create_user( 'multiplier_user_select2', 'test', 'multiplier_user_select2@example.com' );
         $user2 = get_user_by( 'ID', $user_2 );
         $user2->set_role( 'multiplier' );
-        $update = DT_Posts::update_post( 'contacts', $contact['ID'], [ 'assigned_to' => $user_2 ], true, false );
+        $update = DT_Posts::update_post( 'contacts', $contact['ID'], array( 'assigned_to' => $user_2 ), true, false );
         $this->assertNotWPError( $update );
         $contact_shared_with = DT_Posts::get_shared_with( 'contacts', $contact['ID'], false );
-        $user_ids = array_map(  function ( $post ){
+        $user_ids = array_map(  function ( $post ) {
             return (int) $post['user_id'];
         }, $contact_shared_with );
         $this->assertContains( (int) $user_id, $user_ids );
@@ -132,16 +132,16 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_connection_creation_via_additional_meta(){
-        $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'one' ], true, false );
+        $contact1 = DT_Posts::create_post( 'contacts', array( 'name' => 'one' ), true, false );
         $this->assertNotWPError( $contact1 );
         //indicated that the new contact is created from the "baptized" field
-        $contact2 = DT_Posts::create_post( 'contacts', [ 'name' => 'two', 'additional_meta' => [ 'created_from' => $contact1['ID'], 'add_connection' => 'baptized' ] ], true, false );
+        $contact2 = DT_Posts::create_post( 'contacts', array( 'name' => 'two', 'additional_meta' => array( 'created_from' => $contact1['ID'], 'add_connection' => 'baptized' ) ), true, false );
         $this->assertNotWPError( $contact2 );
         //check that the new contact has the "baptized_by" field set correctly
         $this->assertSame( (int) $contact2['baptized_by'][0]['ID'], (int) $contact1['ID'] );
 
         //indicate the the new group is created from the contact's groups field
-        $group1 = DT_Posts::create_post( 'groups', [ 'name' => 'group1', 'additional_meta' => [ 'created_from' => $contact1['ID'], 'add_connection' => 'groups' ] ], true, false );
+        $group1 = DT_Posts::create_post( 'groups', array( 'name' => 'group1', 'additional_meta' => array( 'created_from' => $contact1['ID'], 'add_connection' => 'groups' ) ), true, false );
         $this->assertNotWPError( $group1 );
         //check that the new group has the contact in it's members field
         $this->assertSame( (int) $group1['members'][0]['ID'], (int) $contact1['ID'] );
@@ -151,26 +151,23 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertNotWPError( $contact1 );
         $this->assertSame( (int) $contact1['groups'][0]['ID'], (int) $group1['ID'] );
         $this->assertSame( (int) $contact1['baptized'][0]['ID'], (int) $contact2['ID'] );
-
     }
 
     public function test_custom_number_field_min_max_error() {
         // test that lower than the minimum creates an error
-        $contact1 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => -1 ], true, false );
+        $contact1 = DT_Posts::create_post( 'contacts', array( 'name' => 'one', 'number_test' => -1 ), true, false );
         $this->assertWPError( $contact1 );
 
         // test that lower than the minimum creates an error
-        $contact2 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => 0 ], true, false );
+        $contact2 = DT_Posts::create_post( 'contacts', array( 'name' => 'one', 'number_test' => 0 ), true, false );
         $this->assertWPError( $contact2 );
 
         // test that higher than the maximum creates an error
-        $contact3 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test_private' => 300 ], true, false );
+        $contact3 = DT_Posts::create_post( 'contacts', array( 'name' => 'one', 'number_test_private' => 300 ), true, false );
         $this->assertWPError( $contact3 );
 
         // test that clearing the field is not an error
-        $contact4 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => '' ], true, false );
+        $contact4 = DT_Posts::create_post( 'contacts', array( 'name' => 'one', 'number_test' => '' ), true, false );
         $this->assertNotWPError( $contact4 );
-
     }
-
 }

@@ -8,78 +8,78 @@ class DT_Duplicate_Checker_And_Merging {
 
     public function __construct(){
         $this->namespace = $this->context . '/v' . intval( $this->version );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-        add_action( 'archive_template_action_bar_buttons', [ $this, 'archive_template_action_bar_buttons' ], 10, 1 );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
+        add_action( 'archive_template_action_bar_buttons', array( $this, 'archive_template_action_bar_buttons' ), 10, 1 );
     }
     public function add_api_routes(){
-        $arg_schemas = [
-            'post_type' => [
+        $arg_schemas = array(
+            'post_type' => array(
                 'description' => 'The post type',
                 'type' => 'post_type',
                 'required' => true,
-                'validate_callback' => [ 'Disciple_Tools_Posts_Endpoints', 'prefix_validate_args_static' ]
-            ],
-            'id' => [
+                'validate_callback' => array( 'Disciple_Tools_Posts_Endpoints', 'prefix_validate_args_static' ),
+            ),
+            'id' => array(
                 'description' => 'The id of the post',
                 'type' => 'integer',
                 'required' => true,
-                'validate_callback' => [ 'Disciple_Tools_Posts_Endpoints', 'prefix_validate_args_static' ]
-            ],
-        ];
+                'validate_callback' => array( 'Disciple_Tools_Posts_Endpoints', 'prefix_validate_args_static' ),
+            ),
+        );
         //get duplicates
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/duplicates', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/duplicates', array(
+                array(
                     'methods' => 'GET',
-                    'callback' => [ $this, 'get_ids_of_non_dismissed_duplicates_endpoint' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_ids_of_non_dismissed_duplicates_endpoint' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //get all post duplicates
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/all_duplicates', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/all_duplicates', array(
+                array(
                     'methods' => 'GET',
-                    'callback' => [ $this, 'get_all_duplicates_on_post_endpoint' ],
-                    'args' => [
+                    'callback' => array( $this, 'get_all_duplicates_on_post_endpoint' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //dismiss post duplicates
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/dismiss-duplicates', [
-                [
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/dismiss-duplicates', array(
+                array(
                     'methods' => 'POST',
-                    'callback' => [ $this, 'dismiss_post_duplicate_endpoint' ],
-                    'args' => [
+                    'callback' => array( $this, 'dismiss_post_duplicate_endpoint' ),
+                    'args' => array(
                         'post_type' => $arg_schemas['post_type'],
-                    ],
+                    ),
                     'permission_callback' => '__return_true',
-                ]
-            ]
+                ),
+            )
         );
         //Merge Posts
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/merge', [
+            $this->namespace, '/(?P<post_type>\w+)/merge', array(
                 'methods'  => 'POST',
-                'callback' => [ $this, 'merge_posts_endpoint' ],
+                'callback' => array( $this, 'merge_posts_endpoint' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
         //Merge Posts
         register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/all-duplicates', [
+            $this->namespace, '/(?P<post_type>\w+)/all-duplicates', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'get_access_duplicates' ],
+                'callback' => array( $this, 'get_access_duplicates' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
     }
 
@@ -90,7 +90,7 @@ class DT_Duplicate_Checker_And_Merging {
         if ( $post_id ){
             return self::ids_of_non_dismissed_duplicates( $post_type, $post_id );
         } else {
-            return new WP_Error( __FUNCTION__, 'Missing field for request', [ 'status' => 400 ] );
+            return new WP_Error( __FUNCTION__, 'Missing field for request', array( 'status' => 400 ) );
         }
     }
 
@@ -98,16 +98,16 @@ class DT_Duplicate_Checker_And_Merging {
     private static function query_for_duplicate_searches( $post_type, $post_id, $exact = true ){
         $post = DT_Posts::get_post( $post_type, $post_id );
         $fields = DT_Posts::get_post_field_settings( $post_type );
-        $search_query = [];
+        $search_query = array();
         $exact_template = $exact ? '^' : '';
-        $fields_with_values = [];
+        $fields_with_values = array();
         foreach ( $post as $field_key => $field_value ){
             if ( ! isset( $fields[$field_key]['type'] ) || empty( $fields[$field_key]['type'] ) ){
                 continue;
             }
             if ( $fields[$field_key]['type'] === 'communication_channel' ){
                 if ( !empty( $field_value ) ){
-                    $channel_queries = [];
+                    $channel_queries = array();
                     foreach ( $field_value as $value ){
                         if ( !empty( $value['value'] ) ){
                              $channel_queries[] = $exact_template . $value['value'];
@@ -115,19 +115,19 @@ class DT_Duplicate_Checker_And_Merging {
                     }
                     if ( !empty( $channel_queries ) ){
                         $fields_with_values[] = $field_key;
-                        $search_query[$field_key] = [];
+                        $search_query[$field_key] = array();
                         $search_query[$field_key] = $channel_queries;
                     }
                 }
             } else if ( $field_key === 'name' && !empty( $field_value ) ){
                 $fields_with_values[] = $field_key;
-                $search_query[$field_key] = [ $exact_template . $field_value ];
+                $search_query[$field_key] = array( $exact_template . $field_value );
             }
         }
-        return [
+        return array(
             'query' => $search_query,
             'fields' => $fields_with_values,
-        ];
+        );
     }
 
     /**
@@ -142,23 +142,23 @@ class DT_Duplicate_Checker_And_Merging {
             return $post;
         }
         $search_query = self::query_for_duplicate_searches( $post_type, $post_id, $exact );
-        $res = DT_Posts::search_viewable_post( 'contacts', [ $search_query['query'] ] );
+        $res = DT_Posts::search_viewable_post( 'contacts', array( $search_query['query'] ) );
         if ( is_wp_error( $res ) ){
             return $res;
         }
-        $ids = array_map( function ( $post ){
+        $ids = array_map( function ( $post ) {
             return $post->ID;
         }, $res['posts'] );
 
         //already dismissed duplicates
-        $dismissed = isset( $post['duplicate_data']['override'] ) ? $post['duplicate_data']['override'] : [];
+        $dismissed = isset( $post['duplicate_data']['override'] ) ? $post['duplicate_data']['override'] : array();
 
         //exclude already dismissed duplicates and self
-        $ids = array_values( array_diff( $ids, array_merge( $dismissed, [ $post_id ] ) ) );
+        $ids = array_values( array_diff( $ids, array_merge( $dismissed, array( $post_id ) ) ) );
 
-        return [
-            'ids' => $ids
-        ];
+        return array(
+            'ids' => $ids,
+        );
     }
 
     public function get_all_duplicates_on_post_endpoint( WP_REST_Request $request ){
@@ -168,47 +168,47 @@ class DT_Duplicate_Checker_And_Merging {
         if ( $post_id ){
             return self::get_all_duplicates_on_post( $post_type, $post_id );
         } else {
-            return new WP_Error( 'get_duplicates_on_contact', 'Missing field for request', [ 'status' => 400 ] );
+            return new WP_Error( 'get_duplicates_on_contact', 'Missing field for request', array( 'status' => 400 ) );
         }
     }
     public static function get_all_duplicates_on_post( $post_type, $post_id ){
         if ( !DT_Posts::can_access( $post_type ) ) {
-            return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, 'You do not have permission for this', array( 'status' => 403 ) );
         }
 
         $post = DT_Posts::get_post( $post_type, $post_id );
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
         $exact_query = self::query_for_duplicate_searches( $post_type, $post_id, true );
-        $exact_query['fields'] = array_merge( $exact_query['fields'], [ 'overall_status', 'reason_closed' ] );
-        $search_query = [ $exact_query['query'], 'fields_to_return' => $exact_query['fields']];
+        $exact_query['fields'] = array_merge( $exact_query['fields'], array( 'overall_status', 'reason_closed' ) );
+        $search_query = array( $exact_query['query'], 'fields_to_return' => $exact_query['fields'] );
         $exact_duplicates = DT_Posts::list_posts( $post_type, $search_query );
 
         $fuzzy_query = self::query_for_duplicate_searches( $post_type, $post_id, false );
-        $fuzzy_query['fields'] = array_merge( $fuzzy_query['fields'], [ 'overall_status', 'reason_closed' ] );
+        $fuzzy_query['fields'] = array_merge( $fuzzy_query['fields'], array( 'overall_status', 'reason_closed' ) );
 
-        $search_query = [ $fuzzy_query['query'], 'fields_to_return' => $fuzzy_query['fields']];
+        $search_query = array( $fuzzy_query['query'], 'fields_to_return' => $fuzzy_query['fields'] );
         $possible_duplicates = DT_Posts::list_posts( $post_type, $search_query );
 
         $possible_duplicates = array_merge( $exact_duplicates['posts'], $possible_duplicates['posts'] );
 
 
-        $ordered = [];
-        $ids = [];
+        $ordered = array();
+        $ids = array();
         foreach ( $possible_duplicates as $possible_duplicate ){
             if ( $possible_duplicate['ID'] === $post_id || in_array( $possible_duplicate['ID'], $ids ) ){
                 continue; // exclude self and records already processed
             }
             $ids[] = $possible_duplicate['ID'];
-            $match_on = [];
+            $match_on = array();
             $points = 0;
             foreach ( $fuzzy_query['fields'] as $field_key ){
                 if ( $field_settings[$field_key]['type'] === 'text' ){
                     if ( $post[$field_key] === $possible_duplicate[$field_key] ){
-                        $match_on[] = [ 'field' => $field_key, 'value' => $post[$field_key] ];
+                        $match_on[] = array( 'field' => $field_key, 'value' => $post[$field_key] );
                         $points += 4;
                     } else if ( stripos( $post[$field_key], $possible_duplicate[$field_key] ) !== false || stripos( $possible_duplicate[$field_key], $post[$field_key] ) !== false ){
-                        $match_on[] = [ 'field' => $field_key, 'value' => $post[$field_key] ];
+                        $match_on[] = array( 'field' => $field_key, 'value' => $post[$field_key] );
                         $points++;
                     }
                 }
@@ -217,10 +217,10 @@ class DT_Duplicate_Checker_And_Merging {
                         foreach ( $possible_duplicate[$field_key] as $dup_value ){
                             $points +=1;
                             if ( $value['value'] === $dup_value['value'] ){
-                                $match_on[] = [ 'field' => $field_key, 'value' => $dup_value['value'] ];
+                                $match_on[] = array( 'field' => $field_key, 'value' => $dup_value['value'] );
                                 $points += 4;
                             } else if ( stripos( $value['value'], $dup_value['value'] ) !== false || stripos( $dup_value['value'], $value['value'] ) !== false ){
-                                $match_on[] = [ 'field' => $field_key, 'value' => $dup_value['value'] ];
+                                $match_on[] = array( 'field' => $field_key, 'value' => $dup_value['value'] );
                                 $points++;
                             }
                         }
@@ -228,16 +228,16 @@ class DT_Duplicate_Checker_And_Merging {
                 }
             }
             if ( !isset( $ordered[$possible_duplicate['ID']] ) ) {
-                $ordered[$possible_duplicate['ID']] = [
+                $ordered[$possible_duplicate['ID']] = array(
                     'ID' => $possible_duplicate['ID'],
                     'points' => $points,
                     'fields' => $match_on,
-                    'post' => $possible_duplicate
-                ];
+                    'post' => $possible_duplicate,
+                );
             }
         }
 
-        $return = [];
+        $return = array();
         foreach ( $ordered as $id => $dup ) {
             $return[] = $dup;
         }
@@ -265,8 +265,8 @@ class DT_Duplicate_Checker_And_Merging {
         if ( is_wp_error( $post ) ){
             return $post;
         }
-        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : [];
-        if ( !in_array( $dismiss_id, $duplicate_data['override'] ?? [] ) ) {
+        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : array();
+        if ( !in_array( $dismiss_id, $duplicate_data['override'] ?? array() ) ) {
             $duplicate_data['override'][] = $dismiss_id;
         }
         update_post_meta( $post_id, 'duplicate_data', $duplicate_data );
@@ -277,11 +277,11 @@ class DT_Duplicate_Checker_And_Merging {
         if ( is_wp_error( $post ) ){
             return $post;
         }
-        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : [];
+        $duplicate_data = isset( $post['duplicate_data'] ) ? ( is_array( $post['duplicate_data'] ) ? $post['duplicate_data'] : unserialize( $post['duplicate_data'] ) ) : array();
         $possible_duplicates = self::ids_of_non_dismissed_duplicates( $post_type, $post_id, false );
 
         foreach ( $possible_duplicates['ids'] as $dup_id ){
-            if ( !in_array( $dup_id, $duplicate_data['override'] ?? [] ) ) {
+            if ( !in_array( $dup_id, $duplicate_data['override'] ?? array() ) ) {
                 $duplicate_data['override'][] = $dup_id;
             }
         }
@@ -313,9 +313,9 @@ class DT_Duplicate_Checker_And_Merging {
         }
 
         // Ignore specified fields
-        $ignored_fields = [
-            'post_date'
-        ];
+        $ignored_fields = array(
+            'post_date',
+        );
         foreach ( $ignored_fields as $field_id ) {
             if ( isset( $args[ $field_id ] ) ) {
                 unset( $args[ $field_id ] );
@@ -326,14 +326,14 @@ class DT_Duplicate_Checker_And_Merging {
         $update = $args;
 
         // Merge other hidden fields & types not previously captured during manual field selections
-        $update_for_duplicate = [];
+        $update_for_duplicate = array();
         foreach ( $archiving_post as $key => $fields ) {
             $field_type = $field_settings[ $key ]['type'] ?? null;
             if ( ! isset( $update[ $key ] ) && ! empty( $fields ) && isset( $field_settings[ $key ] ) ) {
                 if ( $field_type === 'multi_select' ) {
-                    $update[ $key ]['values'] = [];
+                    $update[ $key ]['values'] = array();
                     foreach ( $fields as $field_value ) {
-                        $update[ $key ]['values'][] = [ 'value' => $field_value ];
+                        $update[ $key ]['values'][] = array( 'value' => $field_value );
                     }
                 }
                 if ( $field_type === 'key_select' && ( ! isset( $primary_post[ $key ] ) || $primary_post[ $key ]['key'] === 'none' || $primary_post[ $key ]['key'] === 'not-set' || $primary_post[ $key ]['key'] === '' ) ) {
@@ -360,45 +360,45 @@ class DT_Duplicate_Checker_And_Merging {
                     $update[ $key ] = $fields;
                 }
                 if ( $field_type === 'tags' ) {
-                    $update[ $key ]['values'] = [];
+                    $update[ $key ]['values'] = array();
                     foreach ( $fields as $field_value ) {
-                        $update[ $key ]['values'][] = [ 'value' => $field_value ];
+                        $update[ $key ]['values'][] = array( 'value' => $field_value );
                     }
                 }
                 if ( $field_type === 'location_meta' ) {
-                    $update[ $key ]['values'] = [];
+                    $update[ $key ]['values'] = array();
                     foreach ( $fields as $field_value ) {
                         if ( isset( $field_value['lng'] ) && isset( $field_value['lat'] ) && isset( $field_value['level'] ) && isset( $field_value['label'] ) && isset( $field_value['source'] ) ) {
                             if ( ! self::has_location_meta_label_duplicates( $primary_post, $key, $field_value['label'] ) ) {
-                                $update[ $key ]['values'][] = [
+                                $update[ $key ]['values'][] = array(
                                     'lng'    => $field_value['lng'],
                                     'lat'    => $field_value['lat'],
                                     'level'  => $field_value['level'],
                                     'label'  => $field_value['label'],
                                     'source' => $field_value['source'],
-                                ];
+                                );
                             }
                         }
                     }
                 }
                 if ( $field_type === 'location' ) {
-                    $update[ $key ]['values'] = [];
+                    $update[ $key ]['values'] = array();
                     foreach ( $fields as $field_value ) {
-                        $update[ $key ]['values'][] = [ 'value' => $field_value['id'] ];
+                        $update[ $key ]['values'][] = array( 'value' => $field_value['id'] );
                     }
                 }
                 if ( $field_type === 'connection' ) {
-                    $update[ $key ]['values']               = [];
+                    $update[ $key ]['values']               = array();
                     foreach ( $fields as $field_value ) {
-                        $update[ $key ]['values'][]               = [ 'value' => $field_value['ID'] ];
+                        $update[ $key ]['values'][]               = array( 'value' => $field_value['ID'] );
                     }
                 }
                 if ( $field_type === 'communication_channel' ) {
-                    $update[ $key ] = [
-                        'values' => []
-                    ];
+                    $update[ $key ] = array(
+                        'values' => array(),
+                    );
                     foreach ( $fields as $values ) {
-                        $update[ $key ]['values'][] = [ 'value' => $values['value'] ];
+                        $update[ $key ]['values'][] = array( 'value' => $values['value'] );
                     }
                 }
             }
@@ -419,13 +419,13 @@ class DT_Duplicate_Checker_And_Merging {
         foreach ( $update as $key => $value ){
             $field_type = $field_settings[ $key ]['type'] ?? null;
             if ( $field_type === 'connection' ){
-                $update_for_duplicate[ $key ]['values'] = [];
+                $update_for_duplicate[ $key ]['values'] = array();
                 foreach ( $value['values'] as $update_value ) {
                     if ( empty( $update_value['deleted'] ) ){
-                        $update_for_duplicate[ $key ]['values'][] = [
+                        $update_for_duplicate[ $key ]['values'][] = array(
                             'value'  => $update_value['value'],
-                            'delete' => true
-                        ];
+                            'delete' => true,
+                        );
                     }
                 }
             }
@@ -473,7 +473,7 @@ class DT_Duplicate_Checker_And_Merging {
 
         //Keep duplicate data override info.
         if ( isset( $field_settings['duplicate_data'] ) ) {
-            $primary_post['duplicate_data']['override'] = array_merge( $primary_post['duplicate_data']['override'] ?? [], $archiving_post['duplicate_data']['override'] ?? [] );
+            $primary_post['duplicate_data']['override'] = array_merge( $primary_post['duplicate_data']['override'] ?? array(), $archiving_post['duplicate_data']['override'] ?? array() );
             $update['duplicate_data']                   = $primary_post['duplicate_data'];
         }
 
@@ -514,7 +514,7 @@ class DT_Duplicate_Checker_And_Merging {
         return false;
     }
 
-    private static function remove_fields( $contact_id, $fields = [], $ignore = [] ){
+    private static function remove_fields( $contact_id, $fields = array(), $ignore = array() ){
         global $wpdb;
         foreach ( $fields as $field ){
             $ignore_keys = preg_grep( "/$field/", $ignore );
@@ -539,7 +539,7 @@ class DT_Duplicate_Checker_And_Merging {
         $duplicate = DT_Posts::get_post( $post_type, $duplicate_id );
         $contact = DT_Posts::get_post( $post_type, $contact_id );
 
-        $updates       = [];
+        $updates       = array();
         $post_settings = DT_Posts::get_post_settings( $post_type, false );
         if ( isset( $post_settings['status_field'] ) ) {
             $updates[ $post_settings['status_field']['status_key'] ] = $post_settings['status_field']['archived_key'];
@@ -560,10 +560,10 @@ class DT_Duplicate_Checker_And_Merging {
         $link = '[' . $contact['title'] .  '](' .  $contact_id . ')';
         $comment = sprintf( esc_html_x( 'This record is a duplicate and was merged into %2$s', 'This record duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
 
-        $args = [
+        $args = array(
             'user_id' => 0,
-            'comment_author' => __( 'Duplicate Checker', 'disciple_tools' )
-        ];
+            'comment_author' => __( 'Duplicate Checker', 'disciple_tools' ),
+        );
 
         DT_Posts::add_post_comment( $post_type, $duplicate_id, $comment, 'duplicate', $args, true, true );
         self::dismiss_all_duplicates( $post_type, $duplicate_id );
@@ -597,17 +597,17 @@ class DT_Duplicate_Checker_And_Merging {
 
     public static function get_access_duplicates( WP_REST_Request $request ){
         if ( !current_user_can( 'dt_all_access_contacts' ) ){
-            return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, 'You do not have permission for this', array( 'status' => 403 ) );
         }
         if ( !dt_is_module_enabled( 'access_module' ) ){
-            return new WP_Error( __FUNCTION__, 'Access Module is not enabled', [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, 'Access Module is not enabled', array( 'status' => 403 ) );
         }
         $params = $request->get_params();
         $limit = $params['limit'] ?? 0;
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
-        $return = [];
+        $return = array();
 
-        $types_to_search = dt_array_to_sql( apply_filters( 'dt_duplicates_find_types', [ 'access' ] ) );
+        $types_to_search = dt_array_to_sql( apply_filters( 'dt_duplicates_find_types', array( 'access' ) ) );
 
         //get all the most recently modified access contacts
         global $wpdb;
@@ -635,10 +635,10 @@ class DT_Duplicate_Checker_And_Merging {
         foreach ( $recent_contacts as &$contact ){
             $dups = self::query_for_duplicate_searches_v2( 'contacts', $contact['ID'] );
             $post = DT_Posts::get_post( 'contacts', $contact['ID'] );
-            $contact['dups'] = [];
+            $contact['dups'] = array();
             $contact['overall_status'] = $post['overall_status'];
             $contact['overall_status']['color'] = isset( $field_settings['overall_status']['default'][$post['overall_status']['key']]['color'] ) ? $field_settings['overall_status']['default'][$post['overall_status']['key']]['color'] : 'blue';
-            $contact['info'] = [];
+            $contact['info'] = array();
             foreach ( $field_settings as $field_key => $field_value ){
                 if ( isset( $field_value['type'] ) && $field_value['type'] === 'communication_channel' && isset( $post[$field_key] ) ){
                     foreach ( $post[$field_key] as $channel ){
@@ -646,7 +646,7 @@ class DT_Duplicate_Checker_And_Merging {
                     }
                 }
             }
-            $fields = [];
+            $fields = array();
             foreach ( $dups as $dup ){
                 if ( !isset( $post['duplicate_data']['override'] ) || !in_array( (int) $dup['ID'], $post['duplicate_data']['override'] ) ){
                     $fields[$dup['field']][] = $dup;
@@ -668,11 +668,11 @@ class DT_Duplicate_Checker_And_Merging {
             }
         }
 
-        return [
+        return array(
             'scanned' => $limit + 100,
             'posts_with_matches' => $return,
             'reached_the_end' => $limit > $total,
-        ];
+        );
     }
 
     /**
@@ -686,9 +686,9 @@ class DT_Duplicate_Checker_And_Merging {
     private static function query_for_duplicate_searches_v2( $post_type, $post_id, bool $exact = true ){
         $post = DT_Posts::get_post( $post_type, $post_id );
         $fields = DT_Posts::get_post_field_settings( $post_type );
-        $search_query = [];
+        $search_query = array();
         $exact_template = $exact ? '^' : '';
-        $fields_with_values = [];
+        $fields_with_values = array();
         global $wpdb;
         $all_sql = '';
         foreach ( $post as $field_key => $field_value ){
@@ -702,7 +702,7 @@ class DT_Duplicate_Checker_And_Merging {
                     $where_sql = '';
                     $sql_joins .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $field_key ) . "%' AND $table_key.meta_key NOT LIKE '%_details' )";
                     $sql_joins .= " INNER JOIN $wpdb->postmeta as type ON ( type.post_id = p.ID AND type.meta_key = 'type' AND type.meta_value = 'access' )";
-                    $channel_queries = [];
+                    $channel_queries = array();
                     foreach ( $field_value as $value ){
                         if ( !empty( $value['value'] ) ){
                             $where_sql .= ( empty( $where_sql ) ? '' : ' OR ' ) .  " $table_key.meta_value = '" . esc_sql( $value['value'] ) . "'";
@@ -737,7 +737,7 @@ class DT_Duplicate_Checker_And_Merging {
                 ';
 
                 $fields_with_values[] = $field_key;
-                $search_query[$field_key] = [ $exact_template . $field_value ];
+                $search_query[$field_key] = array( $exact_template . $field_value );
             }
         }
         $contacts = $wpdb->get_results( $all_sql, ARRAY_A ); // @phpcs:ignore

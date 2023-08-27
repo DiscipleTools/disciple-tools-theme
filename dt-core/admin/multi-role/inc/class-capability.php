@@ -73,11 +73,11 @@ class Disciple_Tools_Capability {
      * @return array
      */
     public function to_array() {
-        return [
+        return array(
             'slug' => $this->slug,
             'name' => $this->name,
             'description' => $this->description,
-            'source' => $this->source
-        ];
+            'source' => $this->source,
+        );
     }
 }

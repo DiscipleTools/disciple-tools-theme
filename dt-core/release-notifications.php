@@ -13,7 +13,7 @@ function dt_release_modal() {
     }
     $url = dt_get_url_path( true );
     //bail if not an a D.T front end page.
-    if ( !is_archive() && !is_single() && !isset( apply_filters( 'desktop_navbar_menu_options', [] )[untrailingslashit( $url )] ) ){
+    if ( !is_archive() && !is_single() && !isset( apply_filters( 'desktop_navbar_menu_options', array() )[untrailingslashit( $url )] ) ){
         return;
     }
     $show_notification_for_theme_version = '1.47.0'; // increment this number with each new release modal
@@ -28,7 +28,7 @@ function dt_release_modal() {
     if ( version_compare( $last_release_notification, $show_notification_for_theme_version, '>=' ) ){
         return;
     }
-    require_once( get_template_directory().'/dt-core/libraries/parsedown/Parsedown.php' );
+    require_once get_template_directory().'/dt-core/libraries/parsedown/Parsedown.php';
 
     update_user_meta( get_current_user_id(), 'dt_release_notification', $show_notification_for_theme_version );
 
@@ -56,7 +56,7 @@ function dt_release_modal() {
                 <div class="release-banner">
                     <div class="release-banner-text">
                         <h3><?php esc_html_e( 'Release Announcement!', 'disciple_tools' ); ?></h3>
-                        <h4><?php echo sprintf( esc_html__( 'Disciple.Tools Theme Version %1$s', 'disciple_tools' ), esc_html( $show_notification_for_theme_version ) ); ?></h4>
+                        <h4><?php printf( esc_html__( 'Disciple.Tools Theme Version %1$s', 'disciple_tools' ), esc_html( $show_notification_for_theme_version ) ); ?></h4>
                     </div>
                 </div>
                 <div id="release-modal-content">
@@ -163,12 +163,12 @@ function dt_get_plugins_news_links() {
     $feed->set_cache_duration( 86400 );
     $limit = $feed->get_item_quantity( 10 );
     $feed_items = $feed->get_items( 0, $limit );
-    $plugin_news_items = [];
+    $plugin_news_items = array();
     foreach ( $feed_items as $feed_item ) {
-        $plugin_news_items[] = [
+        $plugin_news_items[] = array(
             'url' => $feed_item->get_permalink(),
             'title' => $feed_item->get_title(),
-        ];
+        );
     }
     set_transient( 'dt_plugin_news_items', $plugin_news_items, DAY_IN_SECONDS );
     return $plugin_news_items;

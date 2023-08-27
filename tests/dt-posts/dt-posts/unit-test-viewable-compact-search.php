@@ -1,62 +1,62 @@
 <?php
-require_once( get_template_directory() . '/tests/dt-posts/tests-setup.php' );
+require_once get_template_directory() . '/tests/dt-posts/tests-setup.php';
 
 class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
 
-    public static $sample_contact_bob = [
+    public static $sample_contact_bob = array(
         'title' => 'Bob List',
         'overall_status' => 'active',
-        'milestones' => [
-            'values' => [
-                [ 'value' => 'milestone_has_bible' ],
-                [ 'value' => 'milestone_baptizing' ]
-            ]
-        ],
+        'milestones' => array(
+            'values' => array(
+                array( 'value' => 'milestone_has_bible' ),
+                array( 'value' => 'milestone_baptizing' ),
+            ),
+        ),
         'baptism_date' => '2018-12-31',
-        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
+        'location_grid' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
         'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
-        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
-        'tags' => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
-        'baptism_generation' => 4
-    ];
-    public static $sample_contact_john_doe = [
+        'contact_phone' => array( 'values' => array( array( 'value' => '798456780' ) ) ),
+        'contact_email' => array( 'values' => array( array( 'value' => 'bob@example.com' ) ) ),
+        'tags' => array( 'values' => array( array( 'value' => 'tag1' ) ) ),
+        'baptism_generation' => 4,
+    );
+    public static $sample_contact_john_doe = array(
         'title' => 'John Doe',
-        'overall_status' => 'active'
-    ];
-    public static $sample_contact_john_bob_doe = [
+        'overall_status' => 'active',
+    );
+    public static $sample_contact_john_bob_doe = array(
         'title' => 'John bob Doe',
-        'overall_status' => 'active'
-    ];
-    public static $sample_contact_john = [
+        'overall_status' => 'active',
+    );
+    public static $sample_contact_john = array(
         'title' => 'John',
-        'overall_status' => 'active'
-    ];
-    public static $sample_contact_johndoe = [
+        'overall_status' => 'active',
+    );
+    public static $sample_contact_johndoe = array(
         'title' => 'JohnDoe',
-        'overall_status' => 'active'
-    ];
-    public static $sample_contact_doe_john = [
+        'overall_status' => 'active',
+    );
+    public static $sample_contact_doe_john = array(
         'title' => 'Doe John',
-        'overall_status' => 'active'
-    ];
-    public static $sample_contact_jane_sally_doe = [
+        'overall_status' => 'active',
+    );
+    public static $sample_contact_jane_sally_doe = array(
         'title' => 'Jane Sally Doe',
-        'overall_status' => 'active'
-    ];
-    public static $sample_contact_andrew = [
+        'overall_status' => 'active',
+    );
+    public static $sample_contact_andrew = array(
         'title' => 'Andrew',
-        'overall_status' => 'active'
-    ];
+        'overall_status' => 'active',
+    );
 
-    public static $sample_group = [
+    public static $sample_group = array(
         'name' => 'Bobs group',
         'group_type' => 'church',
-        'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
-        'member_count' => 5
-    ];
+        'location_grid' => array( 'values' => array( array( 'value' => '100089589' ) ) ),
+        'member_count' => 5,
+    );
 
     public static $contact_bob = null;
     public static $contact_john_doe = null;
@@ -131,15 +131,15 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
 
         // User 1 [Dispatcher] Search
         wp_set_current_user( self::$user_1->ID );
-        $user_1_results = DT_Posts::get_viewable_compact( 'contacts', '', [
-            'field_key' => 'coaching'
-        ] );
+        $user_1_results = DT_Posts::get_viewable_compact( 'contacts', '', array(
+            'field_key' => 'coaching',
+        ) );
 
         // User 2 [Multiplier] Search
         wp_set_current_user( self::$user_2->ID );
-        $user_2_results = DT_Posts::get_viewable_compact( 'contacts', '', [
-            'field_key' => 'coaching'
-        ] );
+        $user_2_results = DT_Posts::get_viewable_compact( 'contacts', '', array(
+            'field_key' => 'coaching',
+        ) );
 
         // fwrite( STDERR, print_r( $user_1_results, TRUE ) );
         // fwrite( STDERR, print_r( $user_2_results, TRUE ) );
@@ -149,7 +149,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
         $this->assertNotWPError( $user_2_results );
 
         // Ensure user 1's results do not contain user 2's contact.
-        foreach ( $user_1_results['posts'] ?? [] as $post ){
+        foreach ( $user_1_results['posts'] ?? array() as $post ){
             $this->assertNotSame( self::$sample_contact_andrew['title'], $post['name'] );
         }
     }
@@ -182,7 +182,7 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
                     break;
                 case self::$assert_type_count:
                     $test_count = 0;
-                    foreach ( $result['posts'] ?? [] as $post ){
+                    foreach ( $result['posts'] ?? array() as $post ){
                         if ( in_array( $post[$expected['totals']['key']], $expected['totals']['values'] ) ){
                             $test_count++;
                         }
@@ -199,95 +199,95 @@ class DT_Posts_DT_Posts_Viewable_Compact_Search extends WP_UnitTestCase{
     }
 
     public function provide_filter_query_data(): array{
-        return [
-            'groups field search' => [
+        return array(
+            'groups field search' => array(
                 'groups',
                 '',
-                [
-                    'field_key' => 'groups'
-                ],
-                [
-                    'totals' => [
+                array(
+                    'field_key' => 'groups',
+                ),
+                array(
+                    'totals' => array(
                         'assert_type' => self::$assert_type_equal,
-                        'value' => 1
-                    ],
-                    'posts' => []
-                ]
-            ],
-            'groups search by name' => [
+                        'value' => 1,
+                    ),
+                    'posts' => array(),
+                ),
+            ),
+            'groups search by name' => array(
                 'groups',
                 self::$sample_group['name'],
-                [],
-                [
-                    'totals' => [
+                array(),
+                array(
+                    'totals' => array(
                         'assert_type' => self::$assert_type_equal,
-                        'value' => 1
-                    ],
-                    'posts' => [
+                        'value' => 1,
+                    ),
+                    'posts' => array(
                         'idx' => 0,
                         'key' => 'name',
-                        'value' => self::$sample_group['name']
-                    ]
-                ]
-            ],
-            'subassigned field search by john' => [
+                        'value' => self::$sample_group['name'],
+                    ),
+                ),
+            ),
+            'subassigned field search by john' => array(
                 'contacts',
                 'John',
-                [
-                    'field_key' => 'subassigned'
-                ],
-                [
-                    'totals' => [
+                array(
+                    'field_key' => 'subassigned',
+                ),
+                array(
+                    'totals' => array(
                         'assert_type' => self::$assert_type_count,
                         'count' => 5,
                         'key' => 'name',
-                        'values' => [
+                        'values' => array(
                             self::$sample_contact_john_doe['title'],
                             self::$sample_contact_john_bob_doe['title'],
                             self::$sample_contact_john['title'],
                             self::$sample_contact_johndoe['title'],
-                            self::$sample_contact_doe_john['title']
-                        ]
-                    ],
-                    'posts' => []
-                ]
-            ],
-            'subassigned field search by john doe' => [
+                            self::$sample_contact_doe_john['title'],
+                        ),
+                    ),
+                    'posts' => array(),
+                ),
+            ),
+            'subassigned field search by john doe' => array(
                 'contacts',
                 'John Doe',
-                [
-                    'field_key' => 'subassigned'
-                ],
-                [
-                    'totals' => [
+                array(
+                    'field_key' => 'subassigned',
+                ),
+                array(
+                    'totals' => array(
                         'assert_type' => self::$assert_type_count,
                         'count' => 3,
                         'key' => 'name',
-                        'values' => [
+                        'values' => array(
                             self::$sample_contact_john_doe['title'],
                             self::$sample_contact_john_bob_doe['title'],
                             self::$sample_contact_johndoe['title'],
-                        ]
-                    ],
-                    'posts' => []
-                ]
-            ],
-            'field search by jane doe wildcard' => [
+                        ),
+                    ),
+                    'posts' => array(),
+                ),
+            ),
+            'field search by jane doe wildcard' => array(
                 'contacts',
                 'Jane Doe',
-                [],
-                [
-                    'totals' => [
+                array(),
+                array(
+                    'totals' => array(
                         'assert_type' => self::$assert_type_count,
                         'count' => 1,
                         'key' => 'name',
-                        'values' => [
-                            self::$sample_contact_jane_sally_doe['title']
-                        ]
-                    ],
-                    'posts' => []
-                ]
-            ]
-        ];
+                        'values' => array(
+                            self::$sample_contact_jane_sally_doe['title'],
+                        ),
+                    ),
+                    'posts' => array(),
+                ),
+            ),
+        );
     }
 }

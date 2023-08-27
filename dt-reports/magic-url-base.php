@@ -11,16 +11,16 @@ abstract class DT_Magic_Url_Base {
     private $meta_key;
     public $page_title = '';
     public $page_description = '';
-    public $type_actions = [
+    public $type_actions = array(
         '' => 'Manage',
-    ];
+    );
     public $show_bulk_send = false; // enables bulk send of magic links from list page
     public $show_app_tile = false; // enables addition to "app" tile sharing features
 
     public $module = ''; // Lets a magic url be a module as well
     public $instance_id = ''; // Allows having multiple versions of the same magic link for a user. Creating different meta_keys.
-    public $meta = []; // Allows for instance specific data.
-    public $translatable = [ 'query' ]; // Order of translatable flags to be checked. Translate on first hit..!
+    public $meta = array(); // Allows for instance specific data.
+    public $translatable = array( 'query' ); // Order of translatable flags to be checked. Translate on first hit..!
 
     public function __construct() {
 
@@ -30,11 +30,11 @@ abstract class DT_Magic_Url_Base {
 
         // register type
         $this->magic = new DT_Magic_URL( $this->root );
-        add_filter( 'dt_magic_url_register_types', [ $this, 'dt_magic_url_register_types' ], 10, 1 );
+        add_filter( 'dt_magic_url_register_types', array( $this, 'dt_magic_url_register_types' ), 10, 1 );
         // register REST and REST access
-        add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
+        add_filter( 'dt_allow_rest_access', array( $this, 'authorize_url' ), 10, 1 );
         // add send and tiles
-        add_filter( 'dt_settings_apps_list', [ $this, 'dt_settings_apps_list' ], 10, 1 );
+        add_filter( 'dt_settings_apps_list', array( $this, 'dt_settings_apps_list' ), 10, 1 );
 
         // fail if not valid url
         $this->parts = $this->magic->parse_url_parts();
@@ -49,18 +49,19 @@ abstract class DT_Magic_Url_Base {
         }
 
         // register url and access
-        add_filter( 'dt_blank_access', [ $this, '_has_access' ] ); // gives access once above tests are passed
-        add_filter( 'dt_templates_for_urls', [ $this, 'register_url' ], 199, 1 ); // registers url as valid once tests are passed
-        add_filter( 'dt_allow_non_login_access', function (){ // allows non-logged in visit
+        add_filter( 'dt_blank_access', array( $this, '_has_access' ) ); // gives access once above tests are passed
+        add_filter( 'dt_templates_for_urls', array( $this, 'register_url' ), 199, 1 ); // registers url as valid once tests are passed
+        add_filter( 'dt_allow_non_login_access', function () {
+            // allows non-logged in visit
             return true;
         }, 100, 1 );
-        add_filter( 'dt_blank_title', [ $this, 'page_tab_title' ] ); // adds basic title to browser tab
-        add_action( 'wp_print_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
-        add_action( 'wp_print_footer_scripts', [ $this, 'print_scripts' ], 5 ); // authorizes scripts
-        add_action( 'wp_print_styles', [ $this, 'print_styles' ], 1500 ); // authorizes styles
+        add_filter( 'dt_blank_title', array( $this, 'page_tab_title' ) ); // adds basic title to browser tab
+        add_action( 'wp_print_scripts', array( $this, 'print_scripts' ), 5 ); // authorizes scripts
+        add_action( 'wp_print_footer_scripts', array( $this, 'print_scripts' ), 5 ); // authorizes scripts
+        add_action( 'wp_print_styles', array( $this, 'print_styles' ), 1500 ); // authorizes styles
 
-        add_action( 'dt_blank_head', [ $this, '_header' ] );
-        add_action( 'dt_blank_footer', [ $this, '_footer' ] );
+        add_action( 'dt_blank_head', array( $this, '_header' ) );
+        add_action( 'dt_blank_footer', array( $this, '_footer' ) );
 
         // determine language locale to be adopted
         $this->determine_language_locale( $this->parts );
@@ -93,7 +94,7 @@ abstract class DT_Magic_Url_Base {
         return '';
     }
 
-    public function fetch_incoming_user_lang( $parts = [] ): string {
+    public function fetch_incoming_user_lang( $parts = array() ): string {
         if ( ! empty( $parts['post_type'] ) && ! empty( $parts['post_id'] ) ) {
             if ( $parts['post_type'] === 'user' ) {
                 return get_user_locale( $parts['post_id'] );
@@ -103,7 +104,7 @@ abstract class DT_Magic_Url_Base {
         return '';
     }
 
-    public function fetch_incoming_contact_lang( $parts = [] ): string {
+    public function fetch_incoming_contact_lang( $parts = array() ): string {
         if ( ! empty( $parts['post_type'] ) && ! empty( $parts['post_id'] ) ) {
             if ( $parts['post_type'] === 'contacts' ) {
                 $languages = get_post_meta( $parts['post_id'], 'languages', false );
@@ -122,7 +123,7 @@ abstract class DT_Magic_Url_Base {
                         }
 
                         // If not found, then attempt to locate within available languages list
-                        foreach ( dt_get_available_languages() ?? [] as $avail_lang ) {
+                        foreach ( dt_get_available_languages() ?? array() as $avail_lang ) {
                             if ( isset( $avail_lang['language'] ) && $avail_lang['language'] === $lang ) {
                                 return $avail_lang['language'];
                             }
@@ -142,13 +143,13 @@ abstract class DT_Magic_Url_Base {
      *
      * @return void
      */
-    public function determine_language_locale( array $parts = [] ): void {
+    public function determine_language_locale( array $parts = array() ): void {
 
         $lang           = null;
         $flag_satisfied = false;
 
         // Determine language locale to be adopted
-        foreach ( $this->translatable ?? [] as $flag ) {
+        foreach ( $this->translatable ?? array() as $flag ) {
             if ( ! $flag_satisfied ) {
                 switch ( $flag ) {
                     case 'query':
@@ -196,18 +197,16 @@ abstract class DT_Magic_Url_Base {
                     return true;
                 }
             }
-        } else {
-            if ( isset( $this->parts['root'], $this->parts['type'] ) ){
-                if ( $this->type === $this->parts['type'] && $this->root === $this->parts['root'] ){
-                    return true;
-                }
+        } elseif ( isset( $this->parts['root'], $this->parts['type'] ) ) {
+            if ( $this->type === $this->parts['type'] && $this->root === $this->parts['root'] ){
+                return true;
             }
         }
 
         return false;
     }
 
-    public function _has_access() : bool {
+    public function _has_access(): bool {
         $parts = $this->parts;
 
         // test 1 : correct url root and type
@@ -234,12 +233,12 @@ abstract class DT_Magic_Url_Base {
      */
     public function dt_magic_url_register_types( array $types ): array {
         if ( ! isset( $types[ $this->root ] ) ) {
-            $types[ $this->root ] = [];
+            $types[ $this->root ] = array();
         }
 
         $meta_key_appendage                  = ( ! empty( $this->instance_id ) ) ? '_' . $this->instance_id : '';
         $this->meta_key                      = $this->root . '_' . $this->type . '_magic_key' . $meta_key_appendage;
-        $types[ $this->root ][ $this->type ] = [
+        $types[ $this->root ][ $this->type ] = array(
             'name'           => $this->type_name,
             'root'           => $this->root,
             'type'           => $this->type,
@@ -253,8 +252,8 @@ abstract class DT_Magic_Url_Base {
             'url_base'       => $this->root . '/' . $this->type,
             'label'          => $this->page_title,
             'description'    => $this->page_description,
-            'meta'           => $this->meta
-        ];
+            'meta'           => $this->meta,
+        );
 
         return $types;
     }
@@ -298,7 +297,7 @@ abstract class DT_Magic_Url_Base {
      */
     public function theme_redirect() {
         $path = get_theme_file_path( 'template-blank.php' );
-        include( $path );
+        include $path;
         die();
     }
 
@@ -322,7 +321,7 @@ abstract class DT_Magic_Url_Base {
      */
     public function print_scripts(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_js = apply_filters( 'dt_magic_url_base_allowed_js', [
+        $allowed_js = apply_filters( 'dt_magic_url_base_allowed_js', array(
             'jquery',
             'jquery-ui',
             'lodash',
@@ -330,8 +329,8 @@ abstract class DT_Magic_Url_Base {
             'site-js',
             'shared-functions',
             'moment',
-            'datepicker'
-        ]);
+            'datepicker',
+        ));
 
         global $wp_scripts;
 
@@ -362,12 +361,12 @@ abstract class DT_Magic_Url_Base {
      */
     public function print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_css = apply_filters( 'dt_magic_url_base_allowed_css', [
+        $allowed_css = apply_filters( 'dt_magic_url_base_allowed_css', array(
             'jquery-ui-site-css',
             'foundation-css',
             'site-css',
-            'datepicker-css'
-        ]);
+            'datepicker-css',
+        ));
 
         global $wp_styles;
         if ( isset( $wp_styles ) ) {
@@ -430,14 +429,13 @@ abstract class DT_Magic_Url_Base {
 
     public function dt_settings_apps_list( $apps_list ) {
         if ( 'user' === $this->post_type ) {
-            $apps_list[$this->meta_key] = [
+            $apps_list[$this->meta_key] = array(
                 'key' => $this->meta_key,
                 'url_base' => $this->root. '/'. $this->type,
                 'label' => $this->page_title,
                 'description' => $this->page_description,
-            ];
+            );
         }
         return $apps_list;
     }
-
 }

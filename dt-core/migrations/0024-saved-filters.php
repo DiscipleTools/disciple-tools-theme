@@ -15,7 +15,7 @@ class Disciple_Tools_Migration_0024 extends Disciple_Tools_Migration
 
         //get users with saved filters
         //save those filters to options instead
-        $users = get_users( [ 'meta_key' => 'saved_filters' ] );
+        $users = get_users( array( 'meta_key' => 'saved_filters' ) );
         foreach ( $users as $user ) {
             $filters = get_user_meta( $user->ID, 'saved_filters', true );
             update_user_option( $user->ID, 'saved_filters', $filters );
@@ -32,6 +32,6 @@ class Disciple_Tools_Migration_0024 extends Disciple_Tools_Migration
 
     public function get_expected_tables(): array
     {
-        return [];
+        return array();
     }
 }

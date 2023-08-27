@@ -37,8 +37,8 @@ final class Disciple_Tools_Admin_User_Edit {
     public function __construct() {
 
         // Only run our customization on the 'user-edit.php' page in the admin.
-        add_action( 'load-user-edit.php', [ $this, 'load_user_edit' ] );
-        add_action( 'load-profile.php', [ $this, 'load_user_edit' ] );
+        add_action( 'load-user-edit.php', array( $this, 'load_user_edit' ) );
+        add_action( 'load-profile.php', array( $this, 'load_user_edit' ) );
     }
 
     /**
@@ -50,13 +50,13 @@ final class Disciple_Tools_Admin_User_Edit {
      */
     public function load_user_edit() {
 
-        add_action( 'admin_head', [ $this, 'print_styles' ] );
+        add_action( 'admin_head', array( $this, 'print_styles' ) );
 
-        add_action( 'show_user_profile', [ $this, 'profile_fields' ] );
-        add_action( 'edit_user_profile', [ $this, 'profile_fields' ] );
+        add_action( 'show_user_profile', array( $this, 'profile_fields' ) );
+        add_action( 'edit_user_profile', array( $this, 'profile_fields' ) );
 
         // Must use `profile_update` to change role. Otherwise, WP will wipe it out.
-        add_action( 'profile_update', [ $this, 'role_update' ], 0 );
+        add_action( 'profile_update', array( $this, 'role_update' ), 0 );
     }
 
     /**
@@ -147,9 +147,9 @@ final class Disciple_Tools_Admin_User_Edit {
         // Create a new user object.
         $user = new WP_User( $user_id );
 
-        $can_not_promote_to_roles = [];
+        $can_not_promote_to_roles = array();
         if ( !dt_is_administrator() ){
-            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
+            $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, array( 'administrator' ) );
         }
         if ( !current_user_can( 'manage_dt' ) ){
             $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
@@ -208,7 +208,8 @@ final class Disciple_Tools_Admin_User_Edit {
      * @access public
      * @return void
      */
-    public function print_styles() { ?>
+    public function print_styles() {
+        ?>
 
         <style type="text/css">.user-role-wrap{ display: none !important; }</style>
 

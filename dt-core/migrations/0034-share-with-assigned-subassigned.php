@@ -41,7 +41,6 @@ class Disciple_Tools_Migration_0034 extends Disciple_Tools_Migration {
             WHERE sub.p2p_type = 'contacts_to_contacts'
             AND sub.p2p_to NOT IN ( SELECT post_id FROM $wpdb->dt_share WHERE post_id = sub.p2p_to AND user_id = pm.meta_value )
         ");
-
     }
 
     public function down() {
@@ -52,6 +51,6 @@ class Disciple_Tools_Migration_0034 extends Disciple_Tools_Migration {
 
 
     public function get_expected_tables(): array {
-        return [];
+        return array();
     }
 }

@@ -11,7 +11,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/personal/activity-highlights.js'; // should be full file name plus extension
-    public $permissions = [];
+    public $permissions = array();
     public $namespace = null;
 
     public function __construct() {
@@ -25,20 +25,20 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 10 );
+            add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 10 );
         }
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_activity_script', get_template_directory_uri() . $this->js_file_name, [
+        wp_enqueue_script( 'dt_metrics_activity_script', get_template_directory_uri() . $this->js_file_name, array(
             'jquery',
             'jquery-ui-core',
-            'lodash'
-        ], filemtime( get_theme_file_path() .  $this->js_file_name ), true );
+            'lodash',
+        ), filemtime( get_theme_file_path() .  $this->js_file_name ), true );
 
         wp_localize_script(
-            'dt_metrics_activity_script', 'dtMetricsActivity', [
+            'dt_metrics_activity_script', 'dtMetricsActivity', array(
                 'rest_endpoints_base' => esc_url_raw( rest_url() ) . $this->namespace,
                 'root' => esc_url_raw( rest_url() ),
                 'theme_uri' => get_template_directory_uri(),
@@ -46,10 +46,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'reaction_options' => apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) ),
-                'data' => [
-                    'highlights' => self::get_user_highlights( '1970-01-01' )
-                ],
-                'translations' => [
+                'data' => array(
+                    'highlights' => self::get_user_highlights( '1970-01-01' ),
+                ),
+                'translations' => array(
                     'title' => __( 'Activity Highlights', 'disciple_tools' ),
                     'all_time' => __( 'All Time', 'disciple_tools' ),
                     'filter_to_date_range' => __( 'Filter to date range', 'disciple_tools' ),
@@ -66,18 +66,18 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                     'comments_I_posted' => __( 'Comments I Posted', 'disciple_tools' ),
                     'date' => __( 'Date', 'disciple_tools' ),
                     'baptized_by' => __( 'Baptized by', 'disciple_tools' ),
-                ],
-            ]
+                ),
+            )
         );
     }
 
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, 'highlights_data', [
+            $this->namespace, 'highlights_data', array(
                 'methods'  => 'GET',
-                'callback' => [ $this, 'api_highlights_data' ],
+                'callback' => array( $this, 'api_highlights_data' ),
                 'permission_callback' => '__return_true',
-            ]
+            )
         );
     }
 
@@ -97,7 +97,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             }
         } catch ( Exception $e ) {
             error_log( $e );
-            return new WP_Error( __FUNCTION__, 'got error ', [ 'status' => 500 ] );
+            return new WP_Error( __FUNCTION__, 'got error ', array( 'status' => 500 ) );
         }
     }
 
@@ -111,7 +111,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $contact_field_settings = DT_Posts::get_post_field_settings( 'contacts' );
 
-        $data = [];
+        $data = array();
         $data['contacts_created'] = self::get_records_created( $from, $to, 'contacts' );
         $data['quick_actions_done'] = self::get_quick_actions_done( $from, $to, $contact_field_settings );
         $data['seeker_path_changed'] = self::get_info_added( $from, $to, 'contacts', 'seeker_path', '%', $contact_field_settings );
@@ -140,9 +140,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
     private static function get_records_created( $from, $to, $post_type = 'contacts' ) {
         global $wpdb;
 
-        $post_settings = apply_filters( 'dt_get_post_type_settings', [], $post_type );
+        $post_settings = apply_filters( 'dt_get_post_type_settings', array(), $post_type );
 
-        $prepare_args = [ $post_type, get_current_user_id() ];
+        $prepare_args = array( $post_type, get_current_user_id() );
         self::insert_dates( $from, $to, $prepare_args );
 
         // phpcs:disable WordPress.DB.PreparedSQL
@@ -170,17 +170,17 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $records_created = empty( $rows ) ? 0 : $rows[0]['records_created'];
 
-        return [
+        return array(
             'field_label' => $post_settings['label_plural'],
             'count' => $records_created,
             'label' => sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural'] ),
-        ];
+        );
     }
 
     private static function get_quick_actions_done( $from, $to, $contact_field_settings ) {
         global $wpdb;
 
-        $prepare_args = [ get_current_user_id() ];
+        $prepare_args = array( get_current_user_id() );
         self::insert_dates( $from, $to, $prepare_args );
 
 
@@ -209,21 +209,21 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         if ( !empty( $rows ) ) {
             foreach ( $rows as $i => $row ) {
-                $rows[$i] = array_merge([
+                $rows[$i] = array_merge(array(
                     'label' => key_exists( $row['quick_button'], $contact_field_settings ) ? $contact_field_settings[$row['quick_button']]['name'] : '--',
-                ], $row);
+                ), $row);
             }
         }
-        return [
+        return array(
             'field_label' => __( 'Quick Actions', 'disciple_tools' ),
             'rows' => $rows,
-        ];
+        );
     }
 
     private static function get_info_added( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
         global $wpdb;
 
-        $prepare_args = [ $post_type, $subtype, $meta_value_like, get_current_user_id() ];
+        $prepare_args = array( $post_type, $subtype, $meta_value_like, get_current_user_id() );
         self::insert_dates( $from, $to, $prepare_args );
 
         $postmeta_join_sql = self::get_postmeta_join_sql();
@@ -257,10 +257,10 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
-        return [
+        return array(
             'field_label' => $field_settings[$subtype]['name'],
             'rows' => $rows,
-        ];
+        );
     }
 
     private static function get_info_added_by_others( $from, $to, $post_type, $subtype, $meta_value_like, $field_settings ) {
@@ -270,7 +270,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $postmeta_join_sql = self::get_postmeta_join_sql();
 
-        $prepare_args = [ $post_type, $subtype, get_current_user_id() ];
+        $prepare_args = array( $post_type, $subtype, get_current_user_id() );
 
         self::insert_dates( $from, $to, $prepare_args );
 
@@ -304,13 +304,13 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
-        $post_settings = apply_filters( 'dt_get_post_type_settings', [], $post_type );
+        $post_settings = apply_filters( 'dt_get_post_type_settings', array(), $post_type );
 
-        return [
+        return array(
             'field_label' => $field_settings[$subtype]['name'],
             'post_type_label' => $post_settings['label_plural'],
             'rows' => $rows,
-        ];
+        );
     }
 
     private static function get_baptisms( $from, $to ) {
@@ -319,7 +319,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $user_id = get_current_user_id();
         $users_contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
 
-        $prepare_args = [ $users_contact_id ];
+        $prepare_args = array( $users_contact_id );
         self::insert_dates( $from, $to, $prepare_args );
 
         $postmeta_join_sql = self::get_postmeta_join_sql();
@@ -375,7 +375,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $user_id = get_current_user_id();
         $users_contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
 
-        $prepare_args = [ $users_contact_id ];
+        $prepare_args = array( $users_contact_id );
         self::insert_dates( $from, $to, $prepare_args );
 
         $activity_by_others_sql = self::get_activity_logs_by_others_sql( 'contacts' );
@@ -440,7 +440,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $user_id = get_current_user_id();
 
-        $prepare_args = [ $user_id ];
+        $prepare_args = array( $user_id );
         self::insert_dates( $from, $to, $prepare_args, false );
 
         // phpcs:disable WordPress.DB.PreparedSQL
@@ -466,7 +466,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = $wpdb->get_results( $sql, ARRAY_A );
         // phpcs:enable
 
-        foreach ( $rows ?? [] as &$comment ){
+        foreach ( $rows ?? array() as &$comment ){
             $comment['comment_content'] = wp_kses( $comment['comment_content'], DT_Posts::$allowable_comment_tags );
         }
 
@@ -478,7 +478,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $user_id = get_current_user_id();
 
-        $prepare_args = [ $user_id ];
+        $prepare_args = array( $user_id );
         self::insert_dates( $from, $to, $prepare_args, false );
 
         // phpcs:disable WordPress.DB.PreparedSQL
@@ -512,7 +512,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $reaction_options = apply_filters( 'dt_comments_reaction_options', dt_get_site_custom_lists( 'comment_reaction_options' ) );
 
-        $comments = [];
+        $comments = array();
 
         if ( !empty( $rows ) ) {
             foreach ( $rows as $row ) {
@@ -524,17 +524,17 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 $reaction['key'] = $reaction_key;
 
                 $comment_id = $row['comment_id'];
-                $comments[$comment_id] = array_merge([
+                $comments[$comment_id] = array_merge(array(
                     'reactions' => isset( $comments[$comment_id] )
-                        ? array_merge( $comments[$comment_id]['reactions'], [ $reaction ] )
-                        : [ $reaction ],
-                ], $row);
+                        ? array_merge( $comments[$comment_id]['reactions'], array( $reaction ) )
+                        : array( $reaction ),
+                ), $row);
 
                 $comments['comment_content'] = wp_kses( $comments['comment_content'], DT_Posts::$allowable_comment_tags );
             }
         }
 
-        $merged_comments = [];
+        $merged_comments = array();
 
         foreach ( $comments as $comment ) {
             $merged_comments[] = $comment;
@@ -551,7 +551,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
         $coaching_p2p_key = $post_type === 'contacts' ? 'contacts_to_contacts' : 'groups_to_coaches';
 
-        $prepare_args = [ "user-$user_id", $coaching_p2p_key, $users_contact_id ];
+        $prepare_args = array( "user-$user_id", $coaching_p2p_key, $users_contact_id );
 
         if ( $post_type === 'contacts' ) {
             $prepare_args[] = $users_contact_id;
@@ -623,9 +623,9 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                 $label = ( isset( $field_settings[$subtype]['default'][$row['meta_changed']] ) )
                     ? $field_settings[$subtype]['default'][$row['meta_changed']]['label']
                     : null;
-                $rows[$i] = array_merge([
+                $rows[$i] = array_merge(array(
                     'label' => $label,
-                ], $row);
+                ), $row);
             }
         }
 
@@ -640,6 +640,5 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             $prepare_args[] = $epoch_timestamp ? strtotime( $to ) : $to;
         }
     }
-
 }
 new Disciple_Tools_Metrics_Personal_Activity_Highlights();

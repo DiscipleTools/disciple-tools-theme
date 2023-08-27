@@ -40,7 +40,7 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
      */
     $disabled = apply_filters( 'dt_block_development_emails', false );
     if ( $disabled ) {
-        $print_email = [];
+        $print_email = array();
         $print_email['email'] = $email;
         $print_email['subject'] = $subject;
         $print_email['message'] = $message_plain_text;
@@ -189,5 +189,3 @@ class DT_Send_Email_Job extends Job{
         wp_mail( $this->email_address, $this->email_subject, $this->email_message );
     }
 }
-
-
