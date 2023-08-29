@@ -29,24 +29,24 @@ function write_results_box() {
       jQuery.each( window.dtMapbox.post.location_grid_meta, function(i,v) {
         if ( v.grid_meta_id ){
           lgm_results.append(`<div class="input-group">
-            <input type="text" class="active-location input-group-field" id="location-${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}" dir="auto" value="${window.SHAREDFUNCTIONS.escapeHTML( v.label )}" readonly />
+            <input type="text" class="active-location input-group-field" id="location-${window.lodash.escape( v.grid_meta_id )}" dir="auto" value="${window.lodash.escape( v.label )}" readonly />
             <div class="input-group-button">
-              <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}"><i class="fi-map"></i></button>
-              <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}">&times;</button>
+              <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${ window.lodash.escape( window.dtMapbox.translations.open_mapping ) /*Open Modal*/}" data-id="${window.lodash.escape( v.grid_meta_id )}"><i class="fi-map"></i></button>
+              <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${ window.lodash.escape( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.grid_meta_id )}">&times;</button>
             </div>
           </div>`)
         } else {
           lgm_results.append(`<div class="input-group">
-            <input type="text" class="dt-communication-channel input-group-field" id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}" value="${window.SHAREDFUNCTIONS.escapeHTML( v.label )}" dir="auto" data-field="contact_address" />
+            <input type="text" class="dt-communication-channel input-group-field" id="${window.lodash.escape( v.key )}" value="${window.lodash.escape( v.label )}" dir="auto" data-field="contact_address" />
             <div class="input-group-button">
               <button type="button" class="button success delete-button-style open-mapping-address-modal"
-                  title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.open_mapping ) /*Open Modal*/}"
-                  data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}"
+                  title="${ window.lodash.escape( window.dtMapbox.translations.open_mapping ) /*Open Modal*/}"
+                  data-id="${window.lodash.escape( v.key )}"
                   data-field="contact_address"
-                  data-key="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}">
+                  data-key="${window.lodash.escape( v.key )}">
                   <i class="fi-pencil"></i>
               </button>
-              <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}" data-field="contact_address" data-key="${window.SHAREDFUNCTIONS.escapeHTML( v.key )}">&times;</button>
+              <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${ window.lodash.escape( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.key )}" data-field="contact_address" data-key="${window.lodash.escape( v.key )}">&times;</button>
             </div>
           </div>`)
         }
@@ -133,7 +133,7 @@ function load_modal( lng, lat, level, label, grid_id ){
   let content = jQuery('#mapping-modal-contents')
   content.empty().append(`
            <div class="grid-x">
-            <div class="cell"><strong>${window.SHAREDFUNCTIONS.escapeHTML( label )}</strong></div>
+            <div class="cell"><strong>${window.lodash.escape( label )}</strong></div>
             <div class="cell">
                 <div id="map-wrapper">
                     <div id='map'>${spinner}</div>
@@ -187,7 +187,7 @@ window.write_input_widget = function write_input_widget() {
             <button id="mapbox-spinner-button" class="button hollow" style="display:none;border-color:lightgrey;">
                 <span class="" style="border-radius: 50%;width: 24px;height: 24px;border: 0.25rem solid lightgrey;border-top-color: black;animation: spin 1s infinite linear;display: inline-block;"></span>
             </button>
-            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.lodash.escape( window.dtMapbox.translations.clear ) /*Delete Location*/}" style="display:none;">&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>`)
@@ -399,13 +399,13 @@ function mapbox_autocomplete(address){
 
     jQuery.each( data.features, function( index, value ) {
       if ( 4 > index ){
-        list.append(`<div data-value="${window.SHAREDFUNCTIONS.escapeHTML( index )}">${window.SHAREDFUNCTIONS.escapeHTML( value.place_name )}</div>`)
+        list.append(`<div data-value="${window.lodash.escape( index )}">${window.lodash.escape( value.place_name )}</div>`)
       }
     })
 
     let add_address = jQuery('#mapbox-autocomplete').data('add-address')
     if ( typeof add_address === 'undefined' || add_address === true ) {
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.use )}: <span dir="auto">"${window.SHAREDFUNCTIONS.escapeHTML( address )}"</span></div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
     }
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -434,13 +434,13 @@ function google_autocomplete(address){
     if ( status === 'OK' ) {
       jQuery.each( predictions, function( index, value ) {
         if ( 4 > index ) {
-          list.append(`<div data-value="${index}">${window.SHAREDFUNCTIONS.escapeHTML(value.description)}</div>`)
+          list.append(`<div data-value="${index}">${window.lodash.escape(value.description)}</div>`)
         }
       })
 
       let add_address = jQuery('#mapbox-autocomplete').data('add-address')
       if ( typeof add_address === 'undefined' || add_address === true ) {
-        list.append(`<div data-value="address" style="font-weight:bold;">${window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.use )}: <span dir="auto">"${window.SHAREDFUNCTIONS.escapeHTML( address )}"</span></div>`)
+        list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
       }
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -452,7 +452,7 @@ function google_autocomplete(address){
     }
     else if ( status === 'ZERO_RESULTS' ) {
       list.append(`<div>No Results Found</div>`)
-      list.append(`<div data-value="address" style="font-weight:bold;">${window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.use )}: <span dir="auto">"${window.SHAREDFUNCTIONS.escapeHTML( address )}"</span></div>`)
+      list.append(`<div data-value="address" style="font-weight:bold;">${window.lodash.escape( window.dtMapbox.translations.use )}: <span dir="auto">"${window.lodash.escape( address )}"</span></div>`)
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
         close_all_lists(e.target.attributes['data-value'].value);

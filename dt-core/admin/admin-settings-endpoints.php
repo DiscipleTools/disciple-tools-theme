@@ -1001,18 +1001,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $tile_options[$post_type] = [];
         }
 
-        $ordered_tile_and_fields_count = count( $dt_custom_tiles_and_fields_ordered );
-        for ( $i =0; $i <$ordered_tile_and_fields_count; $i++ ) {
-            foreach ( $dt_custom_tiles_and_fields_ordered as $index => $tile_key ) {
-                $tile_options[$post_type][$index]['label'] = '';
-                if ( !isset( $tile_options[$post_type][$index] ) ) {
-                    $tile_options[$post_type][$index] = [];
-                }
-                $tile_options[$post_type][$index]['tile_priority'] = ( $i + 1 ) * 10;
+        foreach ( $dt_custom_tiles_and_fields_ordered as $tile_key => $tile_values ) {
+            if ( !isset( $tile_options[$post_type][$tile_key] ) ) {
+                $tile_options[$post_type][$tile_key] = [];
             }
+            $tile_options[$post_type][$tile_key]['tile_priority'] = $tile_values['tile_priority'];
+            $tile_options[$post_type][$tile_key]['order'] = $tile_values['order'];
         }
 
-        $tile_options[$post_type] = $dt_custom_tiles_and_fields_ordered;
         update_option( 'dt_custom_tiles', $tile_options );
         return $tile_options;
     }

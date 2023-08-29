@@ -18,9 +18,9 @@ function write_results_box() {
     let lgm_results = jQuery('#location-grid-meta-results')
     jQuery.each( window.dtMapbox.user_location.location_grid_meta, function(i,v) {
       lgm_results.append(`<div class="input-group">
-                              <input type="text" class="active-location input-group-field " id="location-${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}" value="${window.SHAREDFUNCTIONS.escapeHTML( v.label )}" readonly />
+                              <input type="text" class="active-location input-group-field " id="location-${window.lodash.escape( v.grid_meta_id )}" value="${window.lodash.escape( v.label )}" readonly />
                               <div class="input-group-button">
-                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( v.grid_meta_id )}">&times;</button>
+                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="${ window.lodash.escape( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.grid_meta_id )}">&times;</button>
                               </div>
                             </div>`)
     })
@@ -69,7 +69,7 @@ function write_input_widget() {
         <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" />
         <div class="input-group-button">
             <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
-            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.SHAREDFUNCTIONS.escapeHTML( window.dtMapbox.translations.clear ) /*Delete Location*/}" >&times;</button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.lodash.escape( window.dtMapbox.translations.clear ) /*Delete Location*/}" >&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>
@@ -196,7 +196,7 @@ function mapbox_autocomplete(address){
     list.empty()
 
     jQuery.each( data.features, function( index, value ) {
-      list.append(`<div data-value="${window.SHAREDFUNCTIONS.escapeHTML(index)}">${window.SHAREDFUNCTIONS.escapeHTML(value.place_name)}</div>`)
+      list.append(`<div data-value="${window.lodash.escape(index)}">${window.lodash.escape(value.place_name)}</div>`)
     })
 
     jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
@@ -223,7 +223,7 @@ function google_autocomplete(address){
     if (status === 'OK') {
 
       jQuery.each( predictions, function( index, value ) {
-        list.append(`<div data-value="${window.SHAREDFUNCTIONS.escapeHTML(index)}">${window.SHAREDFUNCTIONS.escapeHTML(value.description)}</div>`)
+        list.append(`<div data-value="${window.lodash.escape(index)}">${window.lodash.escape(value.description)}</div>`)
       })
 
       jQuery('#mapbox-autocomplete-list div').on("click", function (e) {

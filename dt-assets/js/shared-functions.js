@@ -279,10 +279,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
     let html = ``;
     order.forEach( field_key=>{
       let field = window.post_type_fields[field_key]
-      if (
-        field && field.tile === section && !field.hidden &&
-        (field.description || window.lodash.isObject(field.default))
-      ) {
+      if ( field && field.tile === section && !field.hidden ) {
         let field_name = `<h2>${window.SHAREDFUNCTIONS.escapeHTML(field.name)}</h2>`;
         if ( window.wpApiShare.can_manage_dt ){
           let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`

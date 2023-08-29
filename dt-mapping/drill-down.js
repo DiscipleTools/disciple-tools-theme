@@ -23,9 +23,9 @@ let rebuild_drill_down = ( response, bindFunction, grid_id, cached = true )=>{
             let disabled = !response[i+2]
 
             // create button
-            html += `<li><button id="${window.SHAREDFUNCTIONS.escapeHTML( section.parent )}" type="button" ${disabled ? "disabled" : ""}
-                onclick="window.DRILLDOWN.get_drill_down( '${window.SHAREDFUNCTIONS.escapeHTML( bindFunction )}', '${window.SHAREDFUNCTIONS.escapeHTML( section.selected )}', ${cached} )"
-                class="button ${hollowClass} geocode-link">${window.SHAREDFUNCTIONS.escapeHTML( section.selected_name )}</button></li>`
+            html += `<li><button id="${window.lodash.escape( section.parent )}" type="button" ${disabled ? "disabled" : ""}
+                onclick="window.DRILLDOWN.get_drill_down( '${window.lodash.escape( bindFunction )}', '${window.lodash.escape( section.selected )}', ${cached} )"
+                class="button ${hollowClass} geocode-link">${window.lodash.escape( section.selected_name )}</button></li>`
 
             current_selection = section
 
@@ -38,20 +38,20 @@ let rebuild_drill_down = ( response, bindFunction, grid_id, cached = true )=>{
                     console.log('no additional dropdown triggered')
                 } else {
                     // make select
-                    html += `<li><select id="${window.SHAREDFUNCTIONS.escapeHTML( section.parent )}" style="vertical-align: top"
-                    onchange="DRILLDOWN.get_drill_down( '${window.SHAREDFUNCTIONS.escapeHTML( bindFunction )}', this.value )"
+                    html += `<li><select id="${window.lodash.escape( section.parent )}" style="vertical-align: top"
+                    onchange="DRILLDOWN.get_drill_down( '${window.lodash.escape( bindFunction )}', this.value )"
                     class="geocode-select">`
 
                     // make initial option
-                    html += `<option value="${window.SHAREDFUNCTIONS.escapeHTML( section.parent )}"></option>`
+                    html += `<option value="${window.lodash.escape( section.parent )}"></option>`
 
                     // make option list
                     jQuery.each(section.list, function (ii, item) {
-                        html += `<option value="${window.SHAREDFUNCTIONS.escapeHTML( item.grid_id )}" `
+                        html += `<option value="${window.lodash.escape( item.grid_id )}" `
                         if (item.grid_id === section.selected) {
                             html += ` selected`
                         }
-                        html += `>${window.SHAREDFUNCTIONS.escapeHTML( item.name )}</option>`
+                        html += `>${window.lodash.escape( item.name )}</option>`
                     })
 
                     html += `</select></li>`
