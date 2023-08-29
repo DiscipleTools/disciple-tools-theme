@@ -483,8 +483,14 @@ function displayPostListModal(date, date_key, metric_key) {
           <br>
           `;
 
+        // Determine overall total value.
+        let total = sorted_posts.length;
+        if (response.total) {
+          total = parseInt(response.total);
+        }
+
         // Render post html list.
-        let title = window.dtMetricsProject.translations.modal_title + ((sorted_posts.length > 0) ? ` [ ${sorted_posts.length} ]` : '' );
+        let title = window.dtMetricsProject.translations.modal_title + ((total > 0) ? ` [ ${total} ]` : '' );
         let content = jQuery('#template_metrics_modal_content');
         jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
         jQuery(content).css('max-height', '300px');
