@@ -47,7 +47,7 @@ dt_please_log_in();
                         if ( isset( $_COOKIE['fields_to_search'] ) ) {
                             $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                             if ( $fields_to_search ){
-                                $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                                $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
                             }
                         }
                         //order fields alphabetically by Name
@@ -137,7 +137,7 @@ dt_please_log_in();
                     if ( isset( $_COOKIE['fields_to_search'] ) ) {
                         $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
                         if ( $fields_to_search ){
-                            $fields_to_search = dt_sanitize_array_html( $fields_to_search );
+                            $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
                         }
                     }
                     //order fields alphabetically by Name
@@ -361,11 +361,13 @@ dt_please_log_in();
                         </div>
 
                         <?php
-                            $status_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['status_key'] : null;
-                            $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
-
-                            $archived_text = $status_key && $archived_key ? $post_settings['fields'][$status_key]['default'][$archived_key]['label'] : __( 'Archived', 'disciple_tools' );
-                            $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
+                        $status_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['status_key'] : null;
+                        $archived_key = isset( $post_settings['status_field'] ) ? $post_settings['status_field']['archived_key'] : null;
+                        $archived_text = __( 'Archived', 'disciple_tools' );
+                        if ( $status_key && $archived_key && isset( $post_settings['fields'][$status_key]['default'][$archived_key]['label'] ) ){
+                            $archived_text = $post_settings['fields'][$status_key]['default'][$archived_key]['label'];
+                        }
+                        $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
                         ?>
 
                         <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">
@@ -394,7 +396,7 @@ dt_please_log_in();
                         if ( isset( $_COOKIE['fields_to_show_in_table'] ) ) {
                             $fields_to_show_in_table = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_show_in_table'] ) ) ) );
                             if ( $fields_to_show_in_table ){
-                                $fields_to_show_in_table = dt_sanitize_array_html( $fields_to_show_in_table );
+                                $fields_to_show_in_table = dt_recursive_sanitize_array( $fields_to_show_in_table );
                             }
                         }
 
@@ -528,7 +530,7 @@ dt_please_log_in();
                                 <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
                                     <span id="<?php echo esc_html( 'share' ); ?>-result-container" class="result-container"></span>
                                     <div id="<?php echo esc_html( 'share' ); ?>_t" name="form-<?php echo esc_html( 'share' ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container">
+                                        <div class="typeahead__container" style="margin-bottom: 0">
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input id = "bulk_share" class="input-height" data-field="<?php echo esc_html( 'share' ); ?>"
@@ -541,6 +543,10 @@ dt_please_log_in();
                                             </div>
                                         </div>
                                     </div>
+                                    <label style="display: inline-block">
+                                        <input type="checkbox" id="bulk_share_unshare">
+                                        <?php esc_html_e( 'Unshare with selected user', 'disciple_tools' ); ?>
+                                    </label>
                                 </div>
                             </div>
                             <?php if ( isset( $field_options['requires_update'] ) ) : ?>
@@ -611,7 +617,7 @@ dt_please_log_in();
                                 };
                                 uasort( $field_options, 'multiselect_at_end' );
                                 $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
-                                $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
+                                $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
                                 foreach ( $field_options as $field_option => $value ) :
                                     if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
                                         && $value['type'] != 'communication_channel' && empty( $value['hidden'] ) ) : ?>
@@ -629,8 +635,22 @@ dt_please_log_in();
                             <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>" style="text-transform:capitalize;">
                                 <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
                             </span>
-                        <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
+                            <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
                         </button>
+                        <span class="list-action-event-buttons">
+                            <?php if ( current_user_can( 'delete_any_' . $post_type ) ){ ?>
+                                <button class="button" id="bulk_edit_delete_submit">
+                                    <span class="bulk_edit_delete_submit_text"
+                                          data-pretext="<?php echo esc_html__( 'Delete', 'disciple_tools' ); ?>"
+                                          data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>"
+                                          style="text-transform:capitalize;">
+                                        <?php echo esc_html( __( 'Delete Selections Below', 'disciple_tools' ) ); ?>
+                                    </span>
+                                    <span id="bulk_edit_delete_submit-spinner" style="display: inline-block;"
+                                          class="loading-spinner"></span>
+                                </button>
+                            <?php } ?>
+                        </span>
                     </div>
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
@@ -697,7 +717,7 @@ dt_please_log_in();
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'location', 'location_meta', 'connection', 'tags' ];
+                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags' ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
@@ -809,7 +829,7 @@ dt_please_log_in();
                                                        value="1"> <?php esc_html_e( 'Yes', 'disciple_tools' ) ?>
                                             </label>
                                         </div>
-                                    <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]['type'] == 'date' ) : ?>
+                                    <?php elseif ( isset( $field_options[$field] ) && in_array( $field_options[$field]['type'], [ 'date', 'datetime' ] ) ) : ?>
                                         <strong><?php echo esc_html_x( 'Range Start', 'The start date of a date range', 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">

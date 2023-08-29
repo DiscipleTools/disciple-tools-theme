@@ -389,13 +389,8 @@ class DT_Duplicate_Checker_And_Merging {
                 }
                 if ( $field_type === 'connection' ) {
                     $update[ $key ]['values']               = [];
-                    $update_for_duplicate[ $key ]['values'] = [];
                     foreach ( $fields as $field_value ) {
                         $update[ $key ]['values'][]               = [ 'value' => $field_value['ID'] ];
-                        $update_for_duplicate[ $key ]['values'][] = [
-                            'value'  => $field_value['ID'],
-                            'delete' => true
-                        ];
                     }
                 }
                 if ( $field_type === 'communication_channel' ) {
@@ -418,6 +413,21 @@ class DT_Duplicate_Checker_And_Merging {
             // Remove private fields; which are handled directly, along with tasks
             if ( isset( $update[ $key ], $field_settings[ $key ]['private'] ) && $field_settings[ $key ]['private'] ) {
                 unset( $update[ $key ] );
+            }
+        }
+        //remove merged connection fields from archived
+        foreach ( $update as $key => $value ){
+            $field_type = $field_settings[ $key ]['type'] ?? null;
+            if ( $field_type === 'connection' ){
+                $update_for_duplicate[ $key ]['values'] = [];
+                foreach ( $value['values'] as $update_value ) {
+                    if ( empty( $update_value['deleted'] ) ){
+                        $update_for_duplicate[ $key ]['values'][] = [
+                            'value'  => $update_value['value'],
+                            'delete' => true
+                        ];
+                    }
+                }
             }
         }
 

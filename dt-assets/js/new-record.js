@@ -53,15 +53,15 @@ jQuery(function($) {
       $(`#cancel-link-button-${field}`).on('click', () => addLinkForm.hide())
     } else {
       $list.append(`<li style="display: flex">
-                <input type="text" class="dt-communication-channel" data-field="${window.lodash.escape( listClass )}" data-${field}-index="${window.lodash.escape( elementIndex )}"/>
-                <button class="button clear delete-button new-${window.lodash.escape( listClass )}" type="button" data-${field}-index="${elementIndex}">
-                    <img src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
+                <input type="text" class="dt-communication-channel" data-field="${window.SHAREDFUNCTIONS.escapeHTML( listClass )}" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}"/>
+                <button class="button clear delete-button new-${window.SHAREDFUNCTIONS.escapeHTML( listClass )}" type="button" data-${field}-index="${elementIndex}">
+                    <img src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/invalid.svg">
                 </button>
-                <span class="loading-spinner" data-${field}-index="${window.lodash.escape( elementIndex )}" style="margin: 0.5rem;"></span>
+                <span class="loading-spinner" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}" style="margin: 0.5rem;"></span>
               </li>
-              <div class="communication-channel-error" data-${field}-index="${window.lodash.escape( elementIndex )}" style="display: none;">
+              <div class="communication-channel-error" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}" style="display: none;">
                 ${window.new_record_localized.translations.value_already_exists.replace('%s', fieldName)}:
-                <span class="duplicate-ids" data-${field}-index="${window.lodash.escape( elementIndex )}" style="color: #3f729b;"></span>
+                <span class="duplicate-ids" data-${field}-index="${window.SHAREDFUNCTIONS.escapeHTML( elementIndex )}" style="color: #3f729b;"></span>
               </div>`)
     }
   })
@@ -71,7 +71,7 @@ jQuery(function($) {
   $('.add-link-dropdown[data-only-one-option]').on('click', window.SHAREDFUNCTIONS.addLink)
 
   $('.add-link__option').on('click', (event) => {
-    SHAREDFUNCTIONS.addLink(event)
+    window.SHAREDFUNCTIONS.addLink(event)
     $(event.target).parent().hide()
     setTimeout(() => {
       event.target.parentElement.removeAttribute('style')
@@ -107,8 +107,8 @@ jQuery(function($) {
       }
     })
     $('.link-input').each((index, entry) => {
-      fieldKey = $(entry).data('field-key')
-      type = $(entry).data('type')
+      let fieldKey = $(entry).data('field-key')
+      let type = $(entry).data('type')
       if ( $(entry).val() ){
         if ( !Object.prototype.hasOwnProperty.call( new_post, fieldKey ) ) {
           new_post[fieldKey] = { values: [] }
@@ -151,7 +151,7 @@ jQuery(function($) {
     }
 
 
-    API.create_post( window.new_record_localized.post_type, new_post).promise().then(function(data) {
+    window.API.create_post( window.new_record_localized.post_type, new_post).promise().then(function(data) {
       window.location = data.permalink;
     }).catch(function(error) {
       const message = error.responseJSON?.message || error.responseText
@@ -180,12 +180,12 @@ jQuery(function($) {
         let id = $(this).attr('id')
         new_post[id] = date
         if (this.value) {
-          this.value = window.SHAREDFUNCTIONS.formatDate(moment.utc(date).unix());
+          this.value = window.SHAREDFUNCTIONS.formatDate(window.moment.utc(date).unix());
         }
 
         // If bulk related, capture epoch
         if (is_bulk) {
-          $(this).data('selected-date-epoch', moment.utc(date).unix());
+          $(this).data('selected-date-epoch', window.moment.utc(date).unix());
         }
       },
       changeMonth: true,
@@ -220,7 +220,7 @@ jQuery(function($) {
       let field_key = $(el).data('field')
       let post_type = $(el).data('post_type')
       let field_type = $(el).data('field_type')
-      typeaheadTotals = {}
+      window.typeaheadTotals = {}
 
       // Determine field class name to be used.
       let field_class = (!is_bulk) ? `.js-typeahead-${field_key}` : `.js-typeahead-${field_key}-${bulk_id}`;
@@ -236,7 +236,7 @@ jQuery(function($) {
             searchOnFocus: true,
             maxItem: 20,
             template: window.TYPEAHEADS.contactListRowTemplate,
-            source: TYPEAHEADS.typeaheadPostsSource(post_type, field_key),
+            source: window.TYPEAHEADS.typeaheadPostsSource(post_type, field_key),
             display: ["name", "label"],
             templateValue: function() {
               if (this.items[this.items.length - 1].label) {
@@ -259,7 +259,7 @@ jQuery(function($) {
             },
             callback: {
               onResult: function (node, query, result, resultCount) {
-                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
                 $(`#${field_key}-result-container`).html(text);
               },
               onHideLayout: function () {
@@ -290,8 +290,8 @@ jQuery(function($) {
             dropdownFilter: [{
               key: 'group',
               value: 'focus',
-              template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-              all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+              template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus),
+              all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations),
             }],
             source: {
               focus: {
@@ -309,8 +309,8 @@ jQuery(function($) {
                   },
                   callback: {
                     done: function (data) {
-                      if (typeof typeaheadTotals !== "undefined") {
-                        typeaheadTotals.field = data.total
+                      if (typeof window.typeaheadTotals !== "undefined") {
+                        window.typeaheadTotals.field = data.total
                       }
                       return data.location_grid
                     }
@@ -347,15 +347,15 @@ jQuery(function($) {
                 this.resetInput();
               },
               onReady(){
-                this.filters.dropdown = {key: "group", value: "focus", template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)}
+                this.filters.dropdown = {key: "group", value: "focus", template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus)}
                 this.container
                   .removeClass("filter")
                   .find("." + this.options.selector.filterButton)
-                  .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+                  .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus));
               },
               onResult: function (node, query, result, resultCount) {
-                resultCount = typeaheadTotals.location_grid
-                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                resultCount = window.typeaheadTotals.location_grid
+                let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
                 $('#location_grid-result-container').html(text);
               },
               onHideLayout: function () {
@@ -370,24 +370,24 @@ jQuery(function($) {
             maxItem: 0,
             accent: true,
             searchOnFocus: true,
-            source: TYPEAHEADS.typeaheadUserSource(),
+            source: window.TYPEAHEADS.typeaheadUserSource(),
             templateValue: "{{name}}",
             template: function (query, item) {
               return `<div class="assigned-to-row" dir="auto">
               <span>
                   <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                  ${window.lodash.escape( item.name )}
+                  ${window.SHAREDFUNCTIONS.escapeHTML( item.name )}
               </span>
-              ${ item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>` : '' }
+              ${ item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : '' }
               ${ item.update_needed && item.update_needed > 0 ? `<span>
-                <img style="height: 12px;" src="${window.lodash.escape( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
-                <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+                <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.template_dir )}/dt-assets/images/broken.svg"/>
+                <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
               </span>` : '' }
             </div>`
             },
             dynamic: true,
             hint: true,
-            emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+            emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
             callback: {
               onClick: function(node, a, item){
                 if (!is_bulk) {
@@ -395,7 +395,7 @@ jQuery(function($) {
                 }
               },
               onResult: function (node, query, result, resultCount) {
-                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
                 $(`#${field_key}-result-container`).html(text);
               },
               onHideLayout: function () {
@@ -419,6 +419,7 @@ jQuery(function($) {
     for (let input of $(".multi_select .typeahead__query input")) {
       let field = $(input).data('field')
       let typeahead_name = (!is_bulk) ? `.js-typeahead-${field}` : `.js-typeahead-${field}-${bulk_id}`;
+      const post_type = window.new_record_localized.post_type
 
       if (window.Typeahead[typeahead_name]) {
         return
@@ -467,7 +468,7 @@ jQuery(function($) {
         maxItem: 20,
         searchOnFocus: true,
         template: function (query, item) {
-          return `<span>${window.lodash.escape(item.value)}</span>`
+          return `<span>${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`
         },
         source: source_data,
         display: "value",
@@ -499,7 +500,7 @@ jQuery(function($) {
 
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             //adding the result text moves the input. timeout keeps the dropdown from closing as the user clicks and cursor moves away from the input.
             setTimeout(() => {
               $(`#${field}-result-container`).html(text);
@@ -604,7 +605,7 @@ jQuery(function($) {
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $(`#${field}-result-container`).html(text);
           },
           onHideLayout: function () {
@@ -627,7 +628,7 @@ jQuery(function($) {
       new_post[field] = { values: [] }
     }
     new_post[field].values.push({value: tag})
-    Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({value: tag})
+    window.Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({value: tag})
   })
 
   /**
@@ -813,7 +814,7 @@ jQuery(function($) {
       $(mapbox_clear_autocomplete).prop('id', 'mapbox-clear-autocomplete-altered');
       $(mapbox_search).prop('id', 'mapbox-search-altered');
       $(mapbox_search).prop('type', 'button');
-      $(mapbox_search).prop('value', window.lodash.escape(window.new_record_localized.bulk_mapbox_placeholder_txt));
+      $(mapbox_search).prop('value', window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_mapbox_placeholder_txt));
       $(mapbox_search).addClass('button');
       $(mapbox_search).addClass('mapbox-altered-input');
       $(mapbox_search).data('field', 'location_grid_meta');
@@ -841,7 +842,7 @@ jQuery(function($) {
 
   $(document).on('open.zf.reveal', '[data-reveal]', function (evt) {
     // Switch over to standard mapbox activation workflow, with autosubmit disabled!
-    write_input_widget();
+    window.write_input_widget();
   });
 
   $(document).on('closed.zf.reveal', '[data-reveal]', function (evt) {
@@ -865,7 +866,7 @@ jQuery(function($) {
           let mapbox_search = $(record).find('#mapbox-search-altered');
 
           // Update button text to selected location.
-          mapbox_search.val(window.lodash.truncate(window.lodash.escape(selected_location['location_grid_meta']['values'][0]['label'])));
+          mapbox_search.val(window.lodash.truncate(window.SHAREDFUNCTIONS.escapeHTML(selected_location['location_grid_meta']['values'][0]['label'])));
 
           // Capture selected location within data attribute.
           mapbox_search.data('selected_location', JSON.stringify(selected_location));
@@ -991,7 +992,7 @@ jQuery(function($) {
       });
 
       // Save new record post!
-      API.create_post(window.new_record_localized.post_type, new_post).promise().then(function (data) {
+      window.API.create_post(window.new_record_localized.post_type, new_post).promise().then(function (data) {
 
         // Only redirect once all records have been processed!
         if (++records_counter >= records_total) {
@@ -1281,7 +1282,7 @@ jQuery(function($) {
 
   function apply_field_value_copy_controls_button(record_id, field_div, field_class, field_id) {
     if ($(field_div).find('.field-value-copy-controls').length === 0) {
-      let button_html = '<button style="margin-left: 10px;" data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.lodash.escape(window.new_record_localized.bulk_copy_control_but_img_uri) + '"></button>';
+      let button_html = '<button style="margin-left: 10px;" data-field-class="' + field_class + '" data-field-id="' + field_id + '" data-record-id="' + record_id + '" class="field-value-copy-controls-button" type="button"><img src="' + window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_copy_control_but_img_uri) + '"></button>';
       $(field_div).find('.section-subheader').append('<span class="field-value-copy-controls" style="float: right; padding: 0; margin: 0;">' + button_html + '</span>');
     }
   }
@@ -1361,7 +1362,7 @@ jQuery(function($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.lodash.escape(window.new_record_localized.bulk_record_removal_but_img_uri)}"></button>`;
+    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_record_removal_but_img_uri)}"></button>`;
     return button_html;
   }
 

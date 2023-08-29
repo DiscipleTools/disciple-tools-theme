@@ -199,6 +199,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+
+    /*
+     * deprecated
+     */
     if ( ! function_exists( 'dt_sanitize_array_html' ) ) {
         function dt_sanitize_array_html( $array ) {
             array_walk_recursive($array, function ( &$v ) {
@@ -316,7 +320,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( !function_exists( 'dt_render_field_icon' ) ){
         function dt_render_field_icon( $field, $class = 'dt-icon', $default_to_name = false ){
             $icon_rendered = false;
-            if ( isset( $field['icon'] ) && !empty( $field['icon'] ) ){
+            if ( !empty( $field['icon'] ) && strpos( $field['icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 if ( isset( $field['name'] ) ) {
                     $alt_tag = $field['name'];
@@ -327,14 +331,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 }
                 ?>
 
-                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>">
+                <img class="<?php echo esc_html( $class ); ?>" src="<?php echo esc_url( $field['icon'] ) ?>" alt="<?php echo esc_html( $alt_tag ) ?>" width="15" height="15">
 
                 <?php
-            } else if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ){
+            } else if ( !empty( $field['font-icon'] ) && strpos( $field['font-icon'], 'undefined' ) === false ){
                 $icon_rendered = true;
                 ?>
 
-                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"></i>
+                <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>" style="font-size: 15px;"></i>
 
                 <?php
             } else if ( $default_to_name && !empty( $field['name'] ) ){
@@ -531,7 +535,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         if ( isset( $fields[$field_key]['type'] ) && !$custom_display && empty( $fields[$field_key]['hidden'] ) ) {
             /* breadrcrumb: new-field-type Add allowed field types */
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'boolean', 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -627,7 +631,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             <?php endif; ?>
 
             <?php
-            if ( $field_type === 'key_select' ) :?>
+            if ( $field_type === 'boolean' ) {
+                $selected = !empty( $post[$field_key] ) ? 'selected' : '';
+                ?>
+                <select class="select-field" id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $disabled ); ?>>
+                    <option value="0"><?php esc_html_e( 'No', 'disciple_tools' ); ?></option>
+                    <option value="1" <?php echo esc_html( $selected ); ?>><?php esc_html_e( 'Yes', 'disciple_tools' ); ?></option>
+                </select>
+                <?php
+            } else if ( $field_type === 'key_select' ) :?>
                 <?php
                 $options_array = $fields[$field_key]['default'];
                 $options_array = array_map( function( $key, $value ) {
@@ -772,11 +784,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                 </div>
 
-                <?php elseif ( $field_type === 'date' ) :?>
+            <?php elseif ( $field_type === 'date' ) :?>
                 <dt-date
                     <?php echo wp_kses_post( $shared_attributes ) ?> timestamp="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>">
                     <?php dt_render_icon_slot( $fields[$field_key] ) ?>
                 </dt-date>
+            <?php elseif ( $field_type === 'datetime' ) :?>
+                <?php $timestamp = $post[$field_key]['timestamp'] ?? '' ?>
+                <div class="<?php echo esc_html( $display_field_id ); ?> input-group dt_date_time_group" data-timestamp="<?php echo esc_html( $timestamp ) ?>">
+                    <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
+                           value="<?php echo esc_html( $timestamp ) ?>" <?php echo esc_html( $disabled ); ?> >
+
+                    <input type="time" class="input-group-field dt_time_picker" id="<?php echo esc_html( $display_field_id ) . '_time_picker'; ?>"
+                            data-field-id="<?php echo esc_attr( $display_field_id ) ?>">
+
+                    <div class="input-group-button">
+                        <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
+                    </div>
+                </div>
             <?php elseif ( $field_type === 'connection' ) :?>
                 <?php $value = array_map(function ( $value ) {
                     return [
@@ -806,7 +831,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                     <script>
                         jQuery(document).ready(function(){
-                            write_input_widget()
+                            window.write_input_widget()
                         })
                     </script>
                 <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>

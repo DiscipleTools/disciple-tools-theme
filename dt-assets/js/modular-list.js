@@ -8,7 +8,7 @@
   let filterToEdit = "";
   let filter_accordions = $('#list-filter-tabs')
   let currentFilters = $("#current-filters")
-  let cookie = window.SHAREDFUNCTIONS.getCookie("last_view");
+  let cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage("last_view", {}, list_settings.post_type);
   let cached_filter
   let get_records_promise = null
   let loading_spinner = $("#list-loading-spinner")
@@ -16,7 +16,7 @@
   let table_header_row = $('.js-list thead .sortable th')
   let fields_to_show_in_table = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_show_in_table', [] );
   let fields_to_search = window.SHAREDFUNCTIONS.get_json_cookie( 'fields_to_search', [] );
-  let current_user_id = wpApiNotifications.current_user_id;
+  let current_user_id = window.wpApiNotifications.current_user_id;
   let mobile_breakpoint = 1024
   let clearSearchButton = $('.search-input__clear-button')
   let getFilterCountsPromise = null
@@ -24,10 +24,10 @@
   const { status_key, archived_key } = status_field ? status_field : {}
   const filterOutArchivedItemsKey = `-${archived_key}`
   const archivedSwitch = $('#archivedToggle')
-  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_cookie( 'list_archived_switch_status', [] ) || false
+  let archivedSwitchStatus = window.SHAREDFUNCTIONS.get_json_from_local_storage( 'list_archived_switch_status', false, list_settings.post_type );
   window.post_type_fields = list_settings.post_type_settings.fields
   window.records_list = { posts:[], total:0 }
-  const esc = window.lodash.escape
+  const esc = window.SHAREDFUNCTIONS.escapeHTML
 
   const ALL_ID = '*'
   const ALL_WITHOUT_ID = '-*'
@@ -71,7 +71,6 @@
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
 
-    console.log('getting current filter')
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
@@ -99,8 +98,8 @@
       //check select filter
       if (currentFilter.ID) {
         //open the filter tabs
-        $(`#list-filter-tabs [data-id='${window.lodash.escape(currentFilter.tab)}'] a`).click();
-        let filter_element = $(`input[name=view][data-id="${window.lodash.escape(currentFilter.ID)}"].js-list-view`);
+        $(`#list-filter-tabs [data-id='${window.SHAREDFUNCTIONS.escapeHTML(currentFilter.tab)}'] a`).click();
+        let filter_element = $(`input[name=view][data-id="${window.SHAREDFUNCTIONS.escapeHTML(currentFilter.ID)}"].js-list-view`);
         if (filter_element.length) {
           filter_element.prop('checked', true);
         } else {
@@ -209,7 +208,7 @@
 
   // Collapse filter tile for mobile view
   function collapse_filters() {
-    if (Foundation.MediaQuery.only("small")) {
+    if (window.Foundation.MediaQuery.only("small")) {
       $('#list-filters .bordered-box').addClass('collapsed')
     } else {
       $('#list-filters .bordered-box').removeClass('collapsed')
@@ -468,11 +467,11 @@
     let html = ``;
     list_settings.filters.tabs.forEach( tab =>{
       html += `
-      <li class="accordion-item" data-accordion-item data-id="${window.lodash.escape(tab.key)}">
-        <a href="#" class="accordion-title" data-id="${window.lodash.escape(tab.key)}">
-          ${window.lodash.escape(tab.label)}
-          <span class="tab-count-span" data-tab="${window.lodash.escape(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${window.lodash.escape(tab.count)})`: ``}
+      <li class="accordion-item" data-accordion-item data-id="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
+        <a href="#" class="accordion-title" data-id="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
+          ${window.SHAREDFUNCTIONS.escapeHTML(tab.label)}
+          <span class="tab-count-span" data-tab="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
+              ${tab.count || tab.count >= 0 ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -482,9 +481,9 @@
                 let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
                 return `
                         <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
-                          <input type="radio" name="view" value="${window.lodash.escape(filter.ID)}" data-id="${window.lodash.escape(filter.ID)}" class="js-list-view" autocomplete="off">
-                          <span id="total_filter_label">${window.lodash.escape(filter.name)}</span>
-                          <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.count )}</span>
+                          <input type="radio" name="view" value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" class="js-list-view" autocomplete="off">
+                          <span id="total_filter_label">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
+                          <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.count )}</span>
                         </label>
                         `
               }
@@ -499,13 +498,13 @@
     let saved_filters_list = $(`#list-filter-tabs [data-id='custom'] .list-views`)
     saved_filters_list.empty()
     if ( list_settings.filters.filters.filter(t=>t.tab === 'custom').length === 0 ) {
-      saved_filters_list.html(`<span>${window.lodash.escape(list_settings.translations.empty_custom_filters)}</span>`)
+      saved_filters_list.html(`<span>${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_custom_filters)}</span>`)
     }
     list_settings.filters.filters.filter(t=>t.tab === 'custom').forEach(filter=>{
       if ( filter && filter.visible === '') {
         return
       }
-      let delete_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
+      let delete_filter = $(`<span style="float:right" data-filter="${window.SHAREDFUNCTIONS.escapeHTML( filter.ID )}">
         <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
       </span>`)
       delete_filter.on("click", function () {
@@ -513,15 +512,15 @@
         $('#delete-filter-modal').foundation('open');
         filter_to_delete = filter.ID;
       })
-      let edit_filter = $(`<span style="float:right" data-filter="${window.lodash.escape( filter.ID )}">
+      let edit_filter = $(`<span style="float:right" data-filter="${window.SHAREDFUNCTIONS.escapeHTML( filter.ID )}">
           <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/edit.svg">
       </span>`)
       edit_filter.on("click", function () {
         edit_saved_filter( filter )
         filterToEdit = filter.ID;
       })
-      let filterName = `<span class="filter-list-name" data-filter="${window.lodash.escape(filter.ID)}">${window.lodash.escape(filter.name)}</span>`
-      const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${window.lodash.escape(filter.ID)}" >`)
+      let filterName = `<span class="filter-list-name" data-filter="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>`
+      const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" >`)
       .attr("type", "radio")
       .val("saved-filters")
       .on("change", function() {
@@ -539,15 +538,15 @@
         )
       )
     })
-    new Foundation.Accordion(filter_accordions, {
+    new window.Foundation.Accordion(filter_accordions, {
       slideSpeed: 100,
       allowAllClosed: true
     });
     if ( selected_tab ){
-      $(`#list-filter-tabs [data-id='${window.lodash.escape( selected_tab )}'] a`).click()
+      $(`#list-filter-tabs [data-id='${window.SHAREDFUNCTIONS.escapeHTML( selected_tab )}'] a`).click()
     }
     if ( selected_filter ){
-      $(`[data-id="${window.lodash.escape( selected_filter )}"].js-list-view`).prop('checked', true);
+      $(`[data-id="${window.SHAREDFUNCTIONS.escapeHTML( selected_filter )}"].js-list-view`).prop('checked', true);
     }
   }
 
@@ -583,7 +582,7 @@
         let excluded_class = is_search_query_filter_label_excluded(filter, label) ? 'current-filter-list-excluded' : '';
 
         // Proceed with displaying of filter label
-        html += `<span class="current-filter-list ${excluded_class} ${window.lodash.escape(label.field)}">${window.lodash.escape(label.name)}`;
+        html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
 
         if (label.id && label.field && label.name) {
           html += `<span class="current-filter-list-close">x</span>`;
@@ -601,10 +600,10 @@
 
           query[query_key].forEach(q => {
 
-            html += `<span class="current-filter-list ${window.lodash.escape( query_key )}">${window.lodash.escape( q )}&nbsp;</span>`
+            html += `<span class="current-filter-list ${window.SHAREDFUNCTIONS.escapeHTML( query_key )}">${window.SHAREDFUNCTIONS.escapeHTML( q )}&nbsp;</span>`
           })
         } else {
-          html += `<span class="current-filter-list search">${window.lodash.escape( query[query_key] )}&nbsp;</span>`
+          html += `<span class="current-filter-list search">${window.SHAREDFUNCTIONS.escapeHTML( query[query_key] )}&nbsp;</span>`
         }
       })
     }
@@ -623,7 +622,7 @@
         sortLabel = window.lodash.get( list_settings, `post_type_settings.fields[${querySortKey}].name`, sortLabel)
       }
       html += `<span class="current-filter-list" data-id="sort">
-          ${window.lodash.escape( list_settings.translations.sorting_by )}: ${window.lodash.escape( sortLabel )}
+          ${window.SHAREDFUNCTIONS.escapeHTML( list_settings.translations.sorting_by )}: ${window.SHAREDFUNCTIONS.escapeHTML( sortLabel )}
       &nbsp;</span>`
     }
     currentFilters.html(html)
@@ -634,7 +633,7 @@
     //reset sorting in table header
     table_header_row.removeClass("sorting_asc");
     table_header_row.removeClass("sorting_desc");
-    let header_cell = $(`.js-list thead .sortable th[data-id="${window.lodash.escape(sort_field.replace("-", ""))}"]`);
+    let header_cell = $(`.js-list thead .sortable th[data-id="${window.SHAREDFUNCTIONS.escapeHTML(sort_field.replace("-", ""))}"]`);
     header_cell.addClass(`sorting_${sort_field.startsWith('-') ? 'desc' : 'asc'}`);
     table_header_row.data("sort", '');
     header_cell.data("sort", 'asc');
@@ -695,7 +694,7 @@
     const showArchived = this.checked
 
     archivedSwitchStatus = showArchived
-    window.SHAREDFUNCTIONS.save_json_cookie('list_archived_switch_status', showArchived, list_settings.post_type)
+    window.SHAREDFUNCTIONS.save_json_to_local_storage('list_archived_switch_status', showArchived, list_settings.post_type)
 
     get_records()
   })
@@ -705,6 +704,7 @@
   }
 
   function apply_archived_toggle_to_current_filter() {
+    if ( !list_settings?.post_type_settings?.status_field ) return
     const showArchived = archivedSwitchStatus
     let status = get_filtered_status();
 
@@ -795,7 +795,7 @@
           if (mobile) {
             return
           }
-          values_html = `<a href="${window.lodash.escape(record.permalink)}" title="${window.lodash.escape(record.post_title)}">${window.lodash.escape(record.post_title)}</a>`
+          values_html = `<a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}" title="${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a>`
         } else if (list_settings.post_type_settings.fields[field_key]) {
           let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = window.lodash.get( record, field_key, false )
@@ -804,32 +804,34 @@
           /* breadcrumb: new-field-type Display field in table */
           if ( field_value ) {
             if (['text', 'textarea', 'number'].includes(field_settings.type)) {
-              values = [window.lodash.escape(field_value)]
+              values = [window.SHAREDFUNCTIONS.escapeHTML(field_value)]
             } else if (field_settings.type === 'date') {
-              values = [window.lodash.escape(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
+              values = [window.SHAREDFUNCTIONS.escapeHTML(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp))]
+            } else if (field_settings.type === 'datetime') {
+              values = [window.SHAREDFUNCTIONS.escapeHTML(window.SHAREDFUNCTIONS.formatDate(field_value.timestamp, true))]
             } else if (field_settings.type === 'user_select') {
-              values = [window.lodash.escape(field_value.display)]
+              values = [window.SHAREDFUNCTIONS.escapeHTML(field_value.display)]
             } else if (field_settings.type === 'key_select') {
-              values = [window.lodash.escape(field_value.label)]
+              values = [window.SHAREDFUNCTIONS.escapeHTML(field_value.label)]
             } else if (field_settings.type === 'multi_select') {
               values = field_value.map(v => {
-                return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
+                return `${window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
             } else if (field_settings.type === 'link') {
               values = field_value.map((link) => {
-                return window.lodash.escape(link.value)
+                return window.SHAREDFUNCTIONS.escapeHTML(link.value)
               })
             } else if (field_settings.type === 'tags') {
               values = field_value.map(v => {
-                return `${window.lodash.escape(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
+                return `${window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(field_settings, `default[${v}].label`, v))}`;
               })
             } else if ( field_settings.type === "location" || field_settings.type === "location_meta" ){
               values = field_value.map(v => {
-                return `${window.lodash.escape( v.label )}`;
+                return `${window.SHAREDFUNCTIONS.escapeHTML( v.label )}`;
               })
             } else if ( field_settings.type === "communication_channel" ){
               values = field_value.map(v => {
-                return `${window.lodash.escape( v.value )}`;
+                return `${window.SHAREDFUNCTIONS.escapeHTML( v.value )}`;
               })
             } else if ( field_settings.type === "connection" ){
               values = field_value.map(v => {
@@ -841,7 +843,7 @@
                     }
                   })
                 }
-                return `${window.lodash.escape( v.post_title )}${meta.length ? ` (${meta.join(',')})` : ''}`;
+                return `${window.SHAREDFUNCTIONS.escapeHTML( v.post_title )}${meta.length ? ` (${meta.join(',')})` : ''}`;
               })
             } else if ( field_settings.type === "boolean" ){
               if (field_key === "favorite") {
@@ -849,6 +851,14 @@
               } else if ( field_value === true ) {
                 values = ['&check;']
               }
+            } else if ( field_settings.type === 'task' ) {
+              values = field_value
+              .filter(v => {
+                return (v.value && v.value.note && v.value.note !== '');
+              })
+              .map(v => {
+                return `${window.SHAREDFUNCTIONS.escapeHTML(v.value.note)}`;
+              });
             }
           } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
@@ -864,7 +874,7 @@
             <td>
               <div class="mobile-list-field-name">
                 <ul>
-                ${window.lodash.escape(window.lodash.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
+                ${window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
                 </ul>
               </div>
               <div class="mobile-list-field-value">
@@ -900,7 +910,7 @@
       })
 
       if ( mobile ){
-        table_rows += `<tr data-link="${window.lodash.escape(record.permalink)}">
+        table_rows += `<tr data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox">
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
           </td>
@@ -909,13 +919,13 @@
                 ${index+1}.
               </div>
               <div class="mobile-list-field-value">
-                  <a href="${ window.lodash.escape( record.permalink ) }">${ window.lodash.escape( record.post_title ) }</a>
+                  <a href="${ window.SHAREDFUNCTIONS.escapeHTML( record.permalink ) }">${ window.SHAREDFUNCTIONS.escapeHTML( record.post_title ) }</a>
               </div>
           </td>
           ${ row_fields_html }
         `
       } else {
-        table_rows += `<tr class="dnd-moved" data-link="${window.lodash.escape(record.permalink)}">
+        table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
           <td style="white-space: nowrap" >${index+1}.</td>
           ${ row_fields_html }
@@ -923,7 +933,7 @@
       }
     })
     if ( records.length === 0 ) {
-      table_rows = `<tr><td colspan="10">${window.lodash.escape(list_settings.translations.empty_list)}</td></tr>`
+      table_rows = `<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`
     }
 
     let table_html = `
@@ -949,12 +959,12 @@
     update_url_query(current_filter)
     apply_archived_toggle_to_current_filter()
 
-    window.SHAREDFUNCTIONS.save_json_cookie(`last_view`, current_filter, list_settings.post_type )
+    window.SHAREDFUNCTIONS.save_json_to_local_storage(`last_view`, current_filter, list_settings.post_type )
     if ( get_records_promise && window.lodash.get(get_records_promise, "readyState") !== 4){
       get_records_promise.abort()
     }
     query.fields_to_return = fields_to_show_in_table
-    get_records_promise = window.makeRequestOnPosts( 'GET', `${list_settings.post_type}`, JSON.parse(JSON.stringify(query)))
+    get_records_promise = window.makeRequestOnPosts( 'POST', `${list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
     return get_records_promise.then(response=>{
       if (offset){
         items = window.lodash.unionBy(items, response.posts || [], "ID")
@@ -1013,22 +1023,22 @@
     current_filter = {
       ID,
       type,
-      name: window.lodash.escape(name),
+      name: window.SHAREDFUNCTIONS.escapeHTML(name),
       query: JSON.parse(JSON.stringify(query)),
       labels: labels
     }
     custom_filters.push(JSON.parse(JSON.stringify(current_filter)))
 
-    let save_filter = $(`<a style="float:right" data-filter="${window.lodash.escape( ID.toString() )}">
-        ${window.lodash.escape( list_settings.translations.save )}
+    let save_filter = $(`<a style="float:right" data-filter="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}">
+        ${window.SHAREDFUNCTIONS.escapeHTML( list_settings.translations.save )}
     </a>`).on("click", function () {
       $("#filter-name").val(name)
       $('#save-filter-modal').foundation('open');
       filter_to_save = ID;
     })
-    let filterRow = $(`<label class='list-view ${window.lodash.escape( ID.toString() )}'>`).append(`
-      <input type="radio" name="view" value="custom_filter" data-id="${window.lodash.escape( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${window.lodash.escape( name )}
+    let filterRow = $(`<label class='list-view ${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}'>`).append(`
+      <input type="radio" name="view" value="custom_filter" data-id="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}" class="js-list-view" checked autocomplete="off">
+        ${window.SHAREDFUNCTIONS.escapeHTML( name )}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
@@ -1049,18 +1059,18 @@
           } else if (withoutConnections.prop('checked') === true) {
             search_query.push( { [field] : [ALL_WITHOUT_ID] } )
           } else {
-            search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
+            search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
           }
         }
       if ( type === "user_select" ){
-        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "ID"))});
       } else if ( type === "multi_select" ){
-        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
       } else if ( type === "tags" ){
-        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
+        search_query.push({[field]: adjust_search_query_filter_states(field, type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), "key"))});
       } else if ( type === "location" || type === "location_meta" ){
-        search_query.push({'location_grid': adjust_search_query_filter_states('location_grid', type, window.lodash.map(window.lodash.get(Typeahead[`.js-typeahead-${field}`], "items"), 'ID'))});
-      } else if ( type === "date" ) {
+        search_query.push({'location_grid': adjust_search_query_filter_states('location_grid', type, window.lodash.map(window.lodash.get(window.Typeahead[`.js-typeahead-${field}`], "items"), 'ID'))});
+      } else if ( type === "date" || type === "datetime" ){
         let date = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
         if ( start ){
@@ -1100,7 +1110,8 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = window.lodash.escape( $('#new-filter-name').val() )
+    let filterName = window.SHAREDFUNCTIONS.escapeHTML( $('#new-filter-name').val() )
+    reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
 
@@ -1120,7 +1131,7 @@
 
         // Only add exclusion button, if required
         if (($(filter_label).find('.current-filter-label-button').length == 0) && is_custom_filter_field_type_supported_for_exclusion(filter_label)) {
-          $(filter_label).append(`<span title="${window.lodash.escape(list_settings.translations.exclude_item)}" class="current-filter-label-button mdi mdi-minus-circle-multiple-outline"></span>`);
+          $(filter_label).append(`<span title="${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.exclude_item)}" class="current-filter-label-button mdi mdi-minus-circle-multiple-outline"></span>`);
         }
       });
     }
@@ -1158,7 +1169,7 @@
 
     // Adjust accordingly, by field type
     if (window.lodash.includes(['connection', 'user_select', 'multi_select', 'tags', 'location', 'location_meta', 'key_select'], field_type) ||
-      !window.lodash.includes(['date', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
+      !window.lodash.includes(['date', 'datetime', 'boolean', 'communication_channel', 'text', 'textarea', 'array', 'number', 'task'], field_type)) {
 
       // Start adjustment of sarch query filters
       let adjusted_filters = window.lodash.map(filters, function (value) {
@@ -1342,7 +1353,7 @@
         maxItem: 20,
         searchOnFocus: true,
         template: function (query, item) {
-          return `<span>${window.lodash.escape(item.value)}</span>`
+          return `<span>${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`
         },
         source: source_data,
         display: "value",
@@ -1361,11 +1372,11 @@
         callback: {
           onClick: function(node, a, item) {
             const { newLabel, name } = create_name_value_label(field, item.key, item.value, list_settings)
-            selected_filters.append(`<span class="current-filter ${window.lodash.escape( field )}" data-id="${window.lodash.escape( item.key )}">${window.lodash.escape( name )}:${window.lodash.escape( item.value )}</span>`)
+            selected_filters.append(`<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML( field )}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( item.key )}">${window.SHAREDFUNCTIONS.escapeHTML( name )}:${window.SHAREDFUNCTIONS.escapeHTML( item.value )}</span>`)
             new_filter_labels.push(newLabel)
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $(`#${field}-result-container`).html(text);
           },
           onHideLayout: function () {
@@ -1388,9 +1399,9 @@
           searchOnFocus: true,
           maxItem: 20,
           template: function (query, item) {
-            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
+            return `<span dir="auto">${window.SHAREDFUNCTIONS.escapeHTML(item.name)} (#${window.SHAREDFUNCTIONS.escapeHTML( item.ID )})</span>`
           },
-          source: TYPEAHEADS.typeaheadPostsSource(post_type),
+          source: window.TYPEAHEADS.typeaheadPostsSource(post_type),
           display: "name",
           templateValue: "{{name}}",
           dynamic: true,
@@ -1405,7 +1416,7 @@
           },
           callback: {
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $(`#${field_key}-result-container`).html(text);
             },
             onHideLayout: function () {
@@ -1414,7 +1425,7 @@
             onClick: function (node, a, item) {
               const { newLabel } = create_value_label(field_key, item.ID, item.name)
               new_filter_labels.push(newLabel)
-              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( item.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( item.name )}</span>`)
             }
           }
         });
@@ -1447,9 +1458,9 @@
           searchOnFocus: true,
           maxItem: 20,
           template: function (query, item) {
-            return `<span dir="auto">${window.lodash.escape(item.name)} (#${window.lodash.escape( item.ID )})</span>`
+            return `<span dir="auto">${window.SHAREDFUNCTIONS.escapeHTML(item.name)} (#${window.SHAREDFUNCTIONS.escapeHTML( item.ID )})</span>`
           },
-          source: TYPEAHEADS.typeaheadUserSource(),
+          source: window.TYPEAHEADS.typeaheadUserSource(),
           display: "name",
           templateValue: "{{name}}",
           dynamic: true,
@@ -1465,7 +1476,7 @@
           },
           callback: {
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $(`#${field_key}-result-container`).html(text);
             },
             onHideLayout: function () {
@@ -1474,7 +1485,7 @@
             onClick: function (node, a, item) {
               const { newLabel } = create_value_label(field_key, item.ID, item.name)
               new_filter_labels.push(newLabel)
-              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.lodash.escape( item.ID )}">${window.lodash.escape( item.name )}</span>`)
+              selected_filters.append(`<span class="current-filter ${field_key}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( item.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( item.name )}</span>`)
             }
           }
         });
@@ -1497,9 +1508,9 @@
     if ( !window.Typeahead[`.js-typeahead-${key}`]) {
 
       // Ensure element is present before proceeding!
-      if ($('.js-typeahead-' + window.lodash.escape(key)).length > 0) {
+      if ($('.js-typeahead-' + window.SHAREDFUNCTIONS.escapeHTML(key)).length > 0) {
         $.typeahead({
-          input: `.js-typeahead-${window.lodash.escape(key)}`,
+          input: `.js-typeahead-${window.SHAREDFUNCTIONS.escapeHTML(key)}`,
           minLength: 0,
           accent: true,
           searchOnFocus: true,
@@ -1507,8 +1518,8 @@
           dropdownFilter: [{
             key: 'group',
             value: 'used',
-            template: window.lodash.escape(window.wpApiShare.translations.used_locations),
-            all: window.lodash.escape(window.wpApiShare.translations.all_locations)
+            template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.used_locations),
+            all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations)
           }],
           source: {
             used: {
@@ -1526,8 +1537,8 @@
                 },
                 callback: {
                   done: function (data) {
-                    if (typeof typeaheadTotals!=="undefined") {
-                      typeaheadTotals.field = data.total
+                    if (typeof window.typeaheadTotals!=="undefined") {
+                      window.typeaheadTotals.field = data.total
                     }
                     return data.location_grid
                   }
@@ -1550,19 +1561,19 @@
           },
           callback: {
             onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
               $('#location_grid-result-container').html(text);
             },
             onReady() {
               this.filters.dropdown = {
                 key: "group",
                 value: "used",
-                template: window.lodash.escape(window.wpApiShare.translations.used_locations)
+                template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.used_locations)
               }
               this.container
               .removeClass("filter")
               .find("." + this.options.selector.filterButton)
-              .html(window.lodash.escape(window.wpApiShare.translations.used_locations));
+              .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.used_locations));
             },
             onHideLayout: function () {
               $('#location_grid-result-container').html("");
@@ -1570,7 +1581,7 @@
             onClick: function (node, a, item) {
               const {name, newLabel} = create_location_label(key, item.ID, item.name, list_settings)
               new_filter_labels.push(newLabel)
-              selected_filters.append(`<span class="current-filter location_grid" data-id="${window.lodash.escape(item.ID)}">${window.lodash.escape(name)}:${window.lodash.escape(item.name)}</span>`)
+              selected_filters.append(`<span class="current-filter location_grid" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(name)}:${window.SHAREDFUNCTIONS.escapeHTML(item.name)}</span>`)
             }
           }
         });
@@ -1605,7 +1616,7 @@
     })
     selected_filters.empty();
     $(".typeahead__query input").each(function () {
-      let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
+      let typeahead = window.Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
       if ( typeahead && typeahead.items ){
         for (let i = 0; i < typeahead.items.length; i ){
           typeahead.cancelMultiselectItem(0)
@@ -1655,11 +1666,11 @@
         let excluded_class = is_search_query_filter_label_excluded(filter, label) ? 'current-filter-excluded' : '';
 
         // Proceed with displaying of filter modal
-        selected_filters.append(`<span class="current-filter ${excluded_class} ${window.lodash.escape( label.field )}" data-id="${window.lodash.escape( label.id )}">${window.lodash.escape( label.name )}</span>`)
+        selected_filters.append(`<span class="current-filter ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML( label.field )}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( label.id )}">${window.SHAREDFUNCTIONS.escapeHTML( label.name )}</span>`)
         let type = window.lodash.get(list_settings, `post_type_settings.fields.${label.field}.type`)
         if ( type === "key_select" || type === "boolean" ){
           $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
-        } else if ( type === "date" ){
+        } else if ( type === "date" || type === "datetime" ){
           $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
         } else if ( connectionTypeKeys.includes( label.field ) ){
           if (label.id === '*') {
@@ -1668,14 +1679,14 @@
             $(fieldAllConnectionsElement).prop('checked', true)
             boundAllConnectionsClickHandler()
           } else {
-            Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
+            window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
           }
         } else if ( type === "multi_select" ){
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+          window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
         } else if ( type === "tags" ){
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
+          window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.id})
         } else if ( type === "user_select" ){
-          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
+          window.Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({name:label.name, ID:label.id})
         }
       })
       // moved this below the forEach as the global new_filter_labels was messing with the loop.
@@ -1697,7 +1708,7 @@
     $(`.filter-list-name[data-filter="${filter_id}"]`).text(filter.name)
     filter.query = search_query
     filter.labels = new_filter_labels
-    API.save_filters( list_settings.post_type, filter )
+    window.API.save_filters( list_settings.post_type, filter )
     get_records_for_current_filter()
   })
 
@@ -1705,8 +1716,8 @@
     let field = $(b).data("field")
     $(`.tabs-panel`).removeClass('is-active')
     $(`#${field}.tabs-panel`).addClass('is-active')
-    if (field && Typeahead[`.js-typeahead-${field}`]) {
-      Typeahead[`.js-typeahead-${field}`].adjustInputSize()
+    if (field && window.Typeahead[`.js-typeahead-${field}`]) {
+      window.Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
   })
 
@@ -1719,7 +1730,7 @@
       let option_name = field_options[option_id] ? field_options[option_id]["label"] : '';
       const { name, newLabel } = create_name_value_label(field_key, $(this).val(), option_name, list_settings)
       new_filter_labels.push(newLabel)
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( option_name )}</span>`)
+      selected_filters.append(`<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML( field_key )}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( option_id )}">${window.SHAREDFUNCTIONS.escapeHTML( name )}:${window.SHAREDFUNCTIONS.escapeHTML( option_name )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
@@ -1733,7 +1744,7 @@
     if ($(this).is(":checked")){
       const { name, newLabel } = create_name_value_label(field_key, $(this).val(), label, list_settings)
       new_filter_labels.push(newLabel)
-      selected_filters.append(`<span class="current-filter ${window.lodash.escape( field_key )}" data-id="${window.lodash.escape( option_id )}">${window.lodash.escape( name )}:${window.lodash.escape( label )}</span>`)
+      selected_filters.append(`<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML( field_key )}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( option_id )}">${window.SHAREDFUNCTIONS.escapeHTML( name )}:${window.SHAREDFUNCTIONS.escapeHTML( label )}</span>`)
     } else {
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       window.lodash.pullAllBy(new_filter_labels, [{id:option_id}], "id")
@@ -1775,11 +1786,11 @@
   $(`#confirm-filter-save`).on('click', function () {
     let filterName = $('#filter-name').val()
     let filter = window.lodash.find(custom_filters, {ID:filter_to_save})
-    filter.name = window.lodash.escape( filterName )
+    filter.name = window.SHAREDFUNCTIONS.escapeHTML( filterName )
     filter.tab = 'custom'
     if (filter.query){
       list_settings.filters.filters.push(filter)
-      API.save_filters(list_settings.post_type, filter).then(()=>{
+      window.API.save_filters(list_settings.post_type, filter).then(()=>{
         $(`.custom-filters [class*="list-view ${filter_to_save}`).remove()
         setup_filters()
         let active_tab = $('.accordion-item.is-active ').data('id');
@@ -1801,7 +1812,7 @@
     let filter = window.lodash.find(list_settings.filters.filters, {ID:filter_to_delete})
     if ( filter && ( filter.visible === true || filter.visible === '1' ) ){
       filter.visible = false;
-      API.save_filters(list_settings.post_type,filter).then(()=>{
+      window.API.save_filters(list_settings.post_type,filter).then(()=>{
         window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         $(`#list-filter-tabs [data-id='custom'] a`).click()
@@ -1809,7 +1820,7 @@
         console.error(err)
       })
     } else {
-      API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
+      window.API.delete_filter(list_settings.post_type, filter_to_delete).then(()=>{
         window.lodash.pullAllBy(list_settings.filters.filters, [{ID:filter_to_delete}], "ID")
         setup_filters()
         check_first_filter()
@@ -1905,7 +1916,7 @@
   })
 
   $("#search-mobile").on("click", function () {
-    let searchText = window.lodash.escape( $("#search-query-mobile").val() )
+    let searchText = window.SHAREDFUNCTIONS.escapeHTML( $("#search-query-mobile").val() )
     let fieldsToSearch = [];
     $('#advanced_search_picker_mobile ul li input:checked').each(function( index ) {
       fieldsToSearch.push($( this ).val());
@@ -1969,7 +1980,7 @@
       } else {
         favoritedValue = true;
       }
-      API.update_post(list_settings.post_type, post_id, {'favorite': favoritedValue}).then((new_post) => {
+      window.API.update_post(list_settings.post_type, post_id, {'favorite': favoritedValue}).then((new_post) => {
         $(this).toggleClass('selected');
       })
     })
@@ -2004,6 +2015,43 @@
           bulk_edit_count();
     })
   })
+
+  /***
+   * Bulk Delete
+   */
+
+  let bulk_edit_delete_submit_button = $('#bulk_edit_delete_submit');
+  bulk_edit_delete_submit_button.on('click', function (e) {
+    let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
+
+    if (bulk_edit_total_checked > 0) {
+      let bulk_edit_delete_submit_button_span = $('.bulk_edit_delete_submit_text');
+      let confirm_text = `${$(bulk_edit_delete_submit_button_span).data('pretext')} ${bulk_edit_total_checked} ${$(bulk_edit_delete_submit_button_span).data('posttext')}`
+      let confirm_text_capitalise = window.lodash.startCase(window.lodash.toLower(confirm_text));
+
+      if (list_settings.permissions.delete_any && confirm(confirm_text_capitalise)) {
+        bulk_delete_submit();
+      } else {
+        window.location.reload();
+      }
+    } else {
+      window.location.reload();
+    }
+  });
+
+  function bulk_delete_submit() {
+
+    // Build queue of post ids.
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id!=='bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push(postId);
+      }
+    });
+    process(queue, 10, do_each, do_done, {}, null, {}, 'delete');
+  }
+
   /**
    * Bulk_Assigned_to
    */
@@ -2064,6 +2112,11 @@
       sharePayload = $(this).data('bulk_key_share');
     })
 
+    let shares = {
+      'users': sharePayload,
+      'unshare': $('#bulk_share_unshare').prop('checked')
+    };
+
     let queue =  [];
     let count = 0;
     $('.bulk_edit_checkbox input').each(function () {
@@ -2072,21 +2125,34 @@
         queue.push( postId );
       }
     });
-    process(queue, 10, do_each, do_done, updatePayload, sharePayload, commentPayload);
+    process(queue, 10, do_each, do_done, updatePayload, shares, commentPayload);
   }
 
   function bulk_edit_count() {
     let bulk_edit_total_checked = $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length;
     let bulk_edit_submit_button_text = $('.bulk_edit_submit_text')
+    let bulk_edit_delete_submit_button_text = $('.bulk_edit_delete_submit_text')
 
     if (bulk_edit_total_checked == 0) {
       bulk_edit_submit_button_text.text(`${list_settings.translations.make_selections_below}`)
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.text(`${list_settings.translations.delete_selections_below}`);
+      }
     } else {
       bulk_edit_submit_button_text.each(function( index ) {
         let pretext = $( this ).data('pretext')
         let posttext = $( this ).data('posttext')
         $( this ).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`)
       })
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.each(function (index) {
+          let pretext = $(this).data('pretext');
+          let posttext = $(this).data('posttext');
+          $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
+        });
+      }
     }
   }
 
@@ -2118,7 +2184,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share, comment ) {
+  function process( q, num, fn, done, update, share, comment, event_type = 'update' ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -2138,36 +2204,52 @@
         fn(items[i], function() {
           // when done, decrement counter and
           // if counter is 0, process next batch
-          --count || process(q, num, fn, done, update, share, comment);
-        }, update, share, comment);
+          --count || process(q, num, fn, done, update, share, comment, event_type);
+        }, update, share, comment, event_type);
 
     }
   }
 
   // a per-item action
-  function do_each( item, done, update, share, comment ) {
+  function do_each( item, done, update, share, comment, event_type ) {
     let promises = [];
 
-    if (Object.keys(update).length) {
-      promises.push(API.update_post(list_settings.post_type, item, update).catch(err => {
-        console.error(err);
-      }));
-    }
+    switch (event_type) {
+      case 'update': {
+        if (Object.keys(update).length) {
+          promises.push(window.API.update_post(list_settings.post_type, item, update).catch(err => {
+            console.error(err);
+          }));
+        }
 
-    if (share) {
-      share.forEach(function (value) {
-        promises.push(API.add_shared(list_settings.post_type, item, value).catch(err => {
-          console.error(err)
-        }));
-      })
-    }
+        if (share && share['users']) {
+          share['users'].forEach(function (value) {
+            let promise = share['unshare'] ? window.API.remove_shared(list_settings.post_type, item, value).catch(err => {
+              console.error(err)
+            }) : window.API.add_shared(list_settings.post_type, item, value).catch(err => {
+              console.error(err)
+            });
+            promises.push(promise);
+          });
+        }
 
-    if (comment.commentText) {
-      promises.push(API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
-        console.error(err);
-      }));
-    }
+        if (comment.commentText) {
+          promises.push(window.API.post_comment(list_settings.post_type, item, comment.commentText, comment.commentType).catch(err => {
+            console.error(err);
+          }));
+        }
 
+        break;
+      }
+      case 'delete': {
+        if (list_settings.permissions.delete_any) {
+          promises.push(window.API.delete_post(list_settings.post_type, item).catch(err => {
+            console.error(err);
+          }));
+        }
+        break;
+      }
+    }
     Promise.all(promises).then( function() {
         done();
     });
@@ -2175,6 +2257,7 @@
 
   function do_done() {
     $('#bulk_edit_submit-spinner').removeClass('active');
+    $('#bulk_edit_delete_submit-spinner').removeClass('active');
     window.location.reload();
   }
 
@@ -2186,30 +2269,30 @@
       maxItem: 0,
       accent: true,
       searchOnFocus: true,
-      source: TYPEAHEADS.typeaheadUserSource(),
+      source: window.TYPEAHEADS.typeaheadUserSource(),
       templateValue: "{{name}}",
       template: function (query, item) {
         return `<div class="assigned-to-row" dir="auto">
         <span>
             <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-            ${window.lodash.escape(item.name)}
+            ${window.SHAREDFUNCTIONS.escapeHTML(item.name)}
         </span>
-        ${item.status_color ? `<span class="status-square" style="background-color: ${window.lodash.escape(item.status_color)};">&nbsp;</span>`:''}
+        ${item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>`:''}
         ${item.update_needed && item.update_needed > 0 ? `<span>
-          <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-          <span style="font-size: 14px">${window.lodash.escape(item.update_needed)}</span>
+          <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
         </span>`:''}
       </div>`
       },
       dynamic: true,
       hint: true,
-      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
       callback: {
         onClick: function (node, a, item) {
           node.data('bulk_key_assigned_to', `user-${item.ID}`);
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $('#bulk_assigned_to-result-container').html(text);
         },
         onHideLayout: function () {
@@ -2230,7 +2313,7 @@
     maxItem: 0,
     accent: true,
     searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadUserSource(),
+    source: window.TYPEAHEADS.typeaheadUserSource(),
     templateValue: "{{name}}",
     dynamic: true,
     multiselect: {
@@ -2315,7 +2398,7 @@
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $(`#${element_id}-result-container`).html(text);
           },
           onHideLayout: function (event, query) {
@@ -2342,8 +2425,8 @@
       dropdownFilter: [{
         key: 'group',
         value: 'focus',
-        template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus),
-        all: window.lodash.escape(window.wpApiShare.translations.all_locations),
+        template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus),
+        all: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.all_locations),
       }],
       source: {
         focus: {
@@ -2361,8 +2444,8 @@
             },
             callback: {
               done: function (data) {
-                if (typeof typeaheadTotals!=="undefined") {
-                  typeaheadTotals.field = data.total
+                if (typeof window.typeaheadTotals!=="undefined") {
+                  window.typeaheadTotals.field = data.total
                 }
                 return data.location_grid
               }
@@ -2391,16 +2474,16 @@
           this.filters.dropdown = {
             key: "group",
             value: "focus",
-            template: window.lodash.escape(window.wpApiShare.translations.regions_of_focus)
+            template: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus)
           }
           this.container
           .removeClass("filter")
           .find("." + this.options.selector.filterButton)
-          .html(window.lodash.escape(window.wpApiShare.translations.regions_of_focus));
+          .html(window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.regions_of_focus));
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals.location_grid
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $('#location_grid-result-container').html(text);
         },
         onHideLayout: function () {
@@ -2469,7 +2552,7 @@
           this.resetInput();
         },
         onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+          let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -2514,7 +2597,7 @@
         date = " ";//null;
       }
 
-      let formattedDate = moment.utc(date).unix();
+      let formattedDate = window.moment.utc(date).unix();
 
       let field_key = this.id.replace('bulk_', '')
       $(this).data(`bulk_key_${field_key}`, formattedDate);
@@ -2523,7 +2606,7 @@
     changeYear: true,
     yearRange: "1900:2050",
   }).each(function() {
-    if (this.value && moment.unix(this.value).isValid()) {
+    if (this.value && window.moment.unix(this.value).isValid()) {
       this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
     }
   })
@@ -2632,7 +2715,7 @@
 
     $('#bulk_send_app_submit-spinner').addClass('active')
 
-    makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
+    window.makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
       .done( data => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
         $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
@@ -2681,9 +2764,9 @@
 
                 html += `
                     <label class="list-view">
-                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.lodash.escape(option_id)}" data-field_id="${window.lodash.escape(field_id)}" data-field_option_id="${window.lodash.escape(option_id)}" data-field_option_label="${window.lodash.escape(option_id_label)}" autocomplete="off">
-                      <span>${window.lodash.escape(option_id_label)}</span>
-                      <span class="list-view__count js-list-view-count" data-value="${window.lodash.escape(option_id)}">${window.lodash.escape(result['count'])}</span>
+                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
+                      <span>${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
+                      <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}">${window.SHAREDFUNCTIONS.escapeHTML(result['count'])}</span>
                     </label>
                     `;
               }
@@ -2724,7 +2807,7 @@
       filter['labels'].push({
         'id': option_id,
         'field': field_id,
-        'name': `${window.lodash.escape(field_id_label)}: ${window.lodash.escape(option_id_label)}`
+        'name': `${window.SHAREDFUNCTIONS.escapeHTML(field_id_label)}: ${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}`
       });
 
       // Ensure a fields array is available.
@@ -2733,7 +2816,7 @@
       }
 
       let query_field_obj = {};
-      query_field_obj[field_id] = [option_id];
+      query_field_obj[field_id] = (option_id !== 'NULL') ? [option_id] : [];
       if (filter['query']['fields'].push !== undefined) {
         filter['query']['fields'].push(query_field_obj);
       }

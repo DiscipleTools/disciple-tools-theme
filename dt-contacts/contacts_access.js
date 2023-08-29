@@ -4,7 +4,7 @@ let post = window.detailsSettings.post_fields
 
 
 function setStatus(contact, openModal) {
-  let statusSelect = $('#overall_status')
+  let statusSelect = jQuery('#overall_status')
   let status = window.lodash.get(contact, "overall_status.key")
   let reasonLabel = window.lodash.get(contact, `reason_${status}.label`)
   let statusColor = window.lodash.get(window.detailsSettings,
@@ -14,11 +14,11 @@ function setStatus(contact, openModal) {
 
   if (openModal){
     if (status === "paused"){
-      $('#paused-contact-modal').foundation('open');
+      jQuery('#paused-contact-modal').foundation('open');
     } else if (status === "closed"){
-      $('#closed-contact-modal').foundation('open');
+      jQuery('#closed-contact-modal').foundation('open');
     } else if (status === 'unassignable'){
-      $('#unassignable-contact-modal').foundation('open');
+      jQuery('#unassignable-contact-modal').foundation('open');
     }
   }
 
@@ -29,19 +29,19 @@ function setStatus(contact, openModal) {
   }
 
   if (["paused", "closed", "unassignable"].includes(status)){
-    $('#reason').text(`(${reasonLabel})`)
-    $(`#edit-reason`).show()
+    jQuery('#reason').text(`(${reasonLabel})`)
+    jQuery(`#edit-reason`).show()
   } else {
-    $('#reason').text(``)
-    $(`#edit-reason`).hide()
+    jQuery('#reason').text(``)
+    jQuery(`#edit-reason`).hide()
   }
 }
 
 function updateCriticalPath(key) {
-  $('#seeker_path').val(key)
+  jQuery('#seeker_path').val(key)
   let seekerPathKeys = window.lodash.keys(post.seeker_path.default)
   let percentage = (window.lodash.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
-  $('#seeker-progress').css("width", `${percentage}%`)
+  jQuery('#seeker-progress').css("width", `${percentage}%`)
 }
 
 
@@ -63,9 +63,9 @@ jQuery(document).ready(function($) {
   })
   $('#content')[0].addEventListener('comment_posted', function (e) {
     if ( $('.update-needed').prop("checked") === true ){
-      API.get_post("contacts",  post_id ).then(resp=>{
+      window.API.get_post("contacts",  post_id ).then(resp=>{
         post = resp
-        record_updated(window.lodash.get(resp, "requires_update") === true )
+        window.record_updated(window.lodash.get(resp, "requires_update") === true )
       }).catch(err => { console.error(err) })
     }
   }, false);
@@ -88,7 +88,7 @@ jQuery(document).ready(function($) {
     $(this).toggleClass('loading')
     let data = {overall_status:field}
     data[`reason_${field}`] = select.val()
-    API.update_post('contacts', post_id, data).then(contactData=>{
+    window.API.update_post('contacts', post_id, data).then(contactData=>{
       $(this).toggleClass('loading')
       $(`#${field}-contact-modal`).foundation('close')
       setStatus(contactData)
@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
   $('.accept-decline').on('click', function () {
     let action = $(this).data("action")
     let data = {accept:action === "accept"}
-    makeRequestOnPosts( "POST", `contacts/${post_id}/accept`, data)
+    window.makeRequestOnPosts( "POST", `contacts/${post_id}/accept`, data)
     .then(function (resp) {
       setStatus(resp)
       jQuery('#accept-contact').hide()
@@ -153,7 +153,7 @@ jQuery(document).ready(function($) {
       ? window.detailsSettings.post_fields.gender
       : { key: null, label: "" }
 
-    let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.lodash.escape(window.dt_contacts_access.translations.all)}</a> | `
+    let filters = `<a data-id="all" style="color: black; font-weight: bold">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.all)}</a> | `
 
     defined_list_section.show()
     let users_with_role = dispatch_users.filter(u => u.roles.includes(tab))
@@ -176,11 +176,11 @@ jQuery(document).ready(function($) {
       location: users_with_role.concat().filter(m=>m.location!==null).sort((a,b)=>a.location-b.location)
     }
     populate_users_list( users_with_role )
-    filters += `<a data-id="ready">${window.lodash.escape(window.dt_contacts_access.translations.ready)}</a> | `
-    filters += `<a data-id="recent">${window.lodash.escape(window.dt_contacts_access.translations.recent)}</a> | `
-    filters += `<a data-id="language">${window.lodash.escape(window.dt_contacts_access.translations.language)}</a> | `
-    filters += `<a data-id="gender">${window.lodash.escape(window.dt_contacts_access.translations.gender)}</a> | `
-    filters += `<a data-id="location">${window.lodash.escape(window.dt_contacts_access.translations.location)}</a>`
+    filters += `<a data-id="ready">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.ready)}</a> | `
+    filters += `<a data-id="recent">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.recent)}</a> | `
+    filters += `<a data-id="language">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.language)}</a> | `
+    filters += `<a data-id="gender">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.gender)}</a> | `
+    filters += `<a data-id="location">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.location)}</a>`
     list_filters.html(filters)
 
 
@@ -197,28 +197,28 @@ jQuery(document).ready(function($) {
     users.forEach( m => {
       user_rows += `<div class="assigned-to-row" dir="auto">
         <span>
-          <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( m.avatar )}"/></span>
-          ${window.lodash.escape(m.name)}
+          <span class="avatar"><img style="vertical-align: text-bottom" src="${window.SHAREDFUNCTIONS.escapeHTML( m.avatar )}"/></span>
+          ${window.SHAREDFUNCTIONS.escapeHTML(m.name)}
         </span>
-        ${ m.status_color ? `<span class="status-square" style="background-color: ${ window.lodash.escape(m.status_color) }">&nbsp;</span>` : '' }
+        ${ m.status_color ? `<span class="status-square" style="background-color: ${ window.SHAREDFUNCTIONS.escapeHTML(m.status_color) }">&nbsp;</span>` : '' }
         ${ m.update_needed ? `
           <span>
-            <img style="height: 12px;" src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-            <span style="font-size: 14px">${ window.lodash.escape(m.update_needed) }</span>
+            <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+            <span style="font-size: 14px">${ window.SHAREDFUNCTIONS.escapeHTML(m.update_needed) }</span>
           </span>` : ''
       }
-        ${ m.best_location_match ? `<span>(${ window.lodash.escape(m.best_location_match) })</span>` : ''
+        ${ m.best_location_match ? `<span>(${ window.SHAREDFUNCTIONS.escapeHTML(m.best_location_match) })</span>` : ''
 
       }
         <div style="flex-grow: 1"></div>
-        <button class="button hollow tiny trigger-assignment" data-id="${ window.lodash.escape(m.ID) }" style="margin-bottom: 3px">
-           ${window.lodash.escape(window.dt_contacts_access.translations.assign)}
+        <button class="button hollow tiny trigger-assignment" data-id="${ window.SHAREDFUNCTIONS.escapeHTML(m.ID) }" style="margin-bottom: 3px">
+           ${window.SHAREDFUNCTIONS.escapeHTML(window.dt_contacts_access.translations.assign)}
         </button>
       </div>
       `
     })
     if ( user_rows.length === 0 ){
-      user_rows = `<p style="padding:1rem">${window.lodash.escape(window.wpApiShare.translations.no_records_found.replace("{{query}}", window.dt_contacts_access.translations[tab]))}</p>`
+      user_rows = `<p style="padding:1rem">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found.replace("{{query}}", window.dt_contacts_access.translations[tab]))}</p>`
     }
     populated_list.html(user_rows)
 
@@ -228,7 +228,7 @@ jQuery(document).ready(function($) {
     let user_id = $(this).data('id')
     $('#dispatch-tile-loader').addClass('active')
     let status = selected_role === "dispatcher" ? "unassigned" : "assigned"
-    API.update_post(
+    window.API.update_post(
       'contacts',
       window.detailsSettings.post_fields.ID,
       {
@@ -238,7 +238,7 @@ jQuery(document).ready(function($) {
     ).then(function (response) {
       $('#dispatch-tile-loader').removeClass('active')
       setStatus(response)
-      $(`.js-typeahead-assigned_to`).val(window.lodash.escape(response.assigned_to.display)).blur()
+      $(`.js-typeahead-assigned_to`).val(window.SHAREDFUNCTIONS.escapeHTML(response.assigned_to.display)).blur()
       $('#assigned_to_user_modal').foundation('close');
     })
   })

@@ -17,7 +17,7 @@ let mapbox_library_api = {
     if (!window.dt_mapbox_metrics.settings.map_key) {
       chart.empty();
       let mapping_settings_url = window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_mapping_module&tab=geocoding';
-      chart.empty().html(`<a href="${window.lodash.escape(mapping_settings_url)}">${window.lodash.escape(window.dt_mapbox_metrics.settings.no_map_key_msg)}</a>`);
+      chart.empty().html(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(mapping_settings_url)}">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.settings.no_map_key_msg)}</a>`);
 
       return;
     }
@@ -45,33 +45,33 @@ let mapbox_library_api = {
         <div id='legend' class='legend'>
           <div id="legend-bar" class="grid-x grid-margin-x grid-padding-x">
             <div class="cell small-2 center info-bar-font">
-                ${window.lodash.escape( this.title )}
+                ${window.SHAREDFUNCTIONS.escapeHTML( this.title )}
             </div>
             <div id="map-type" class="border-left">
-              <button class="button small ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
                 id="cluster">
-                <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dots.svg">
+                <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/dots.svg">
               </button>
-              <button class="button small ${mapbox_library_api.current_map_type === 'points' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'points' ? 'selected-select-button': ' empty-select-button' }"
                 id="points">
-                <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
+                <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
               </button>
-              <button class="button small ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
+              <button class="button small select-button ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
                 id="area">
-                <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/location_shape.svg">
+                <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/location_shape.svg">
               </button>
             </div>
           </div>
         </div>
         <div id="spinner">${spinner_html}</div>
         <div id="geocode-details" class="geocode-details">
-          ${window.lodash.escape( this.title )}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+          ${window.SHAREDFUNCTIONS.escapeHTML( this.title )}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
           <hr style="margin:10px 5px;">
           <div id="geocode-details-content"></div>
         </div>
       </div>
     `)
-    this.spinner = $("#spinner")
+    this.spinner = jQuery("#spinner")
 
     //set_info_boxes
     let map_wrapper = jQuery('#map-wrapper')
@@ -83,10 +83,10 @@ let mapbox_library_api = {
     mapbox_library_api.setup_map_type()
 
 
-    $('#map-type button').on('click', function (e){
-      $('#map-type button').removeClass("selected-select-button").addClass("empty-select-button")
-      $(this).addClass("selected-select-button")
-      mapbox_library_api.current_map_type = $(this).attr('id');
+    jQuery('#map-type button').on('click', function (e){
+      jQuery('#map-type button').removeClass("selected-select-button").addClass("empty-select-button")
+      jQuery(this).addClass("selected-select-button")
+      mapbox_library_api.current_map_type = jQuery(this).attr('id');
       mapbox_library_api.setup_map_type()
     })
 
@@ -95,25 +95,25 @@ let mapbox_library_api = {
       window.lodash.forOwn( mapbox_library_api.obj.settings.split_by, (field_values, field_key)=>{
         let options_html = ``
         window.lodash.forOwn(field_values.default, (option, option_key)=>{
-          options_html += `<button class="button small selected-select-button" data-key="${window.lodash.escape(option_key)}" id=${window.lodash.escape(field_key)}_${window.lodash.escape(option_key)}>
-            ${window.lodash.escape(option.label)}
+          options_html += `<button class="button small select-button selected-select-button" data-key="${window.SHAREDFUNCTIONS.escapeHTML(option_key)}" id=${window.SHAREDFUNCTIONS.escapeHTML(field_key)}_${window.SHAREDFUNCTIONS.escapeHTML(option_key)}>
+            ${window.SHAREDFUNCTIONS.escapeHTML(option.label)}
           </button>`
         })
         let split_by_html = `
           <div id="${field_key}" class="border-left map-option-buttons">
-            ${window.lodash.escape(field_values.name)}:
+            ${window.SHAREDFUNCTIONS.escapeHTML(field_values.name)}:
             ${options_html}
           </div>
         `
-        $('#legend-bar').append(split_by_html)
-        $(`#${field_key} button`).on('click', function (e){
-          $(this).toggleClass("selected-select-button")
-          $(this).toggleClass("empty-select-button")
+        jQuery('#legend-bar').append(split_by_html)
+        jQuery(`#${field_key} button`).on('click', function (e){
+          jQuery(this).toggleClass("selected-select-button")
+          jQuery(this).toggleClass("empty-select-button")
 
           let ar = [];
-          $(`#${field_key} button`).each((index, button)=>{
-            if ( !$(button).hasClass("empty-select-button")){
-              ar.push($(button).data('key'))
+          jQuery(`#${field_key} button`).each((index, button)=>{
+            if ( !jQuery(button).hasClass("empty-select-button")){
+              ar.push(jQuery(button).data('key'))
             }
           })
           let query = { [field_key]: ar}
@@ -139,15 +139,15 @@ let mapbox_library_api = {
     });
     // SET BOUNDS
     let map_bounds_token = this.obj.settings.post_type + this.obj.settings.menu_slug
-    let map_start = get_map_start( map_bounds_token )
+    let map_start = window.get_map_start( map_bounds_token )
     if ( map_start ) {
       mapbox_library_api.map.fitBounds( map_start, {duration: 0});
     }
     mapbox_library_api.map.on('zoomend', function() {
-      set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
+      window.set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
     })
     mapbox_library_api.map.on('dragend', function() {
-      set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
+      window.set_map_start( map_bounds_token, mapbox_library_api.map.getBounds() )
     })
     // end set bounds
     // disable map rotation using right click + drag
@@ -196,7 +196,7 @@ let mapbox_library_api = {
 
   points_map: {
     setup: async function () {
-      let points = await makeRequest('POST', mapbox_library_api.obj.settings.points_rest_url, {
+      let points = await window.makeRequest('POST', mapbox_library_api.obj.settings.points_rest_url, {
         post_type: mapbox_library_api.post_type,
         query: mapbox_library_api.query_args || {}
       }, mapbox_library_api.obj.settings.rest_base_url)
@@ -252,13 +252,13 @@ let mapbox_library_api = {
         if ( i > 20 ){ return }
         let post_id = e.features[i].properties.post_id;
         let post_type = e.features[i].properties.post_type
-        content.append(`<div class="grid-x" id="list-${window.lodash.escape( i )}"></div>`)
-        makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
+        content.append(`<div class="grid-x" id="list-${window.SHAREDFUNCTIONS.escapeHTML( i )}"></div>`)
+        window.makeRequest('GET', window.SHAREDFUNCTIONS.escapeHTML( post_type ) +'/'+window.SHAREDFUNCTIONS.escapeHTML( post_id )+'/', null, 'dt-posts/v2/' )
         .done(details=>{
           list[i] = jQuery('#list-'+i)
 
           list[i].append(`
-            <div class="cell"><a  target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape( post_type )}/${window.lodash.escape( details.ID )}">${window.lodash.escape( details.title )/*View Record*/}</a></div>
+            <div class="cell"><a  target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
           `)
 
           jQuery('.loading-spinner').hide()
@@ -287,7 +287,7 @@ jQuery('.close-details').on('click', function() {
 
 let cluster_map = {
   default_setup: async function (){
-    let geojson = await makeRequest( "POST", mapbox_library_api.obj.settings.rest_url, { post_type: mapbox_library_api.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
+    let geojson = await window.makeRequest( "POST", mapbox_library_api.obj.settings.rest_url, { post_type: mapbox_library_api.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
     cluster_map.load_layer(geojson)
   },
   load_layer: function ( geojson ) {
@@ -392,12 +392,12 @@ let cluster_map = {
       if ( i > 10 ){ return; }
       let post_id = e.features[i].properties.post_id;
       let post_type = e.features[i].properties.post_type
-      content.append(`<div class="grid-x" id="list-${window.lodash.escape( i )}"></div>`)
-      makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
+      content.append(`<div class="grid-x" id="list-${window.SHAREDFUNCTIONS.escapeHTML( i )}"></div>`)
+      window.makeRequest('GET', window.SHAREDFUNCTIONS.escapeHTML( post_type ) +'/'+window.SHAREDFUNCTIONS.escapeHTML( post_id )+'/', null, 'dt-posts/v2/' )
       .done(details=>{
         list[i] = jQuery('#list-'+i)
         list[i].append(`
-            <div class="cell"><a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape( post_type )}/${window.lodash.escape( details.ID )}">${window.lodash.escape( details.title )/*View Record*/}</a></div>
+            <div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
           `)
         jQuery('.loading-spinner').hide()
       })
@@ -411,7 +411,7 @@ let area_map = {
   behind_layer: null,
   setup: async function ( behind_layer = null ){
     area_map.behind_layer = behind_layer
-    area_map.grid_data = await makeRequest( "POST", mapbox_library_api.obj.settings.totals_rest_url, { post_type: mapbox_library_api.obj.settings.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
+    area_map.grid_data = await window.makeRequest( "POST", mapbox_library_api.obj.settings.totals_rest_url, { post_type: mapbox_library_api.obj.settings.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
     await area_map.load_layer()
     // load new layer on event
     mapbox_library_api.map.on('zoomend', function() {
@@ -441,7 +441,7 @@ let area_map = {
 
     let data = [{ grid_id:'1', parent_id:'1'}]
     if ( level !== "world" ){
-      data = await makeRequest('GET', `${mapbox_library_api.obj.settings.geocoder_url}dt-mapping/location-grid-list-api.php`,
+      data = await window.makeRequest('GET', `${mapbox_library_api.obj.settings.geocoder_url}dt-mapping/location-grid-list-api.php`,
         {
           type: 'match_within_bbox',
           north_latitude: bbox._ne.lat,
@@ -540,7 +540,7 @@ let area_map = {
     jQuery('#geocode-details').show()
 
     // geocode
-    makeRequest('GET', mapbox_library_api.obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php',
+    window.makeRequest('GET', mapbox_library_api.obj.settings.geocoder_url + 'dt-mapping/location-grid-list-api.php',
       {
         type:'geocode',
         longitude:lng,
@@ -556,7 +556,7 @@ let area_map = {
       if ( details.admin0_grid_id ) {
         list.append( `
           <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
-           <a href="#" class="accordion-title">${window.lodash.escape( details.admin0_name )} :  <span id="admin0_count">0</span></a>
+           <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML( details.admin0_name )} :  <span id="admin0_count">0</span></a>
             <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
           </li>
         `)
@@ -568,7 +568,7 @@ let area_map = {
       if ( details.admin1_grid_id ) {
         list.append( `
           <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
-            <a href="#" class="accordion-title">${window.lodash.escape( details.admin1_name )} : <span id="admin1_count">0</span></a>
+            <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML( details.admin1_name )} : <span id="admin1_count">0</span></a>
             <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
           </li>
         `)
@@ -581,7 +581,7 @@ let area_map = {
       if ( details.admin2_grid_id ) {
         list.append( `
           <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
-            <a href="#" class="accordion-title">${window.lodash.escape( details.admin2_name )} : <span id="admin2_count">0</span></a>
+            <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML( details.admin2_name )} : <span id="admin2_count">0</span></a>
             <div class="accordion-content" data-tab-content><div id="admin2_list" class="grid-x"></div></div>
           </li>
         `)
@@ -597,7 +597,7 @@ let area_map = {
 
       if ( details.admin2_grid_id !== null ) {
         jQuery('#admin2_list').html( spinner_html )
-        makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin2_grid_id, post_type: mapbox_library_api.post_type,
+        window.makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin2_grid_id, post_type: mapbox_library_api.post_type,
           query: mapbox_library_api.query_args || {} } , mapbox_library_api.obj.settings.rest_base_url )
         .done(list_by_grid=>{
           if ( list_by_grid.length > 0 ) {
@@ -608,7 +608,7 @@ let area_map = {
         })
       } else if ( details.admin1_grid_id !== null ) {
         jQuery('#admin1_list').html( spinner_html )
-        makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin1_grid_id, post_type: mapbox_library_api.post_type,
+        window.makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin1_grid_id, post_type: mapbox_library_api.post_type,
           query: mapbox_library_api.query_args || {} } , mapbox_library_api.obj.settings.rest_base_url )
         .done(list_by_grid=>{
           if ( list_by_grid.length > 0 ) {
@@ -619,7 +619,7 @@ let area_map = {
         })
       } else if ( details.admin0_grid_id !== null ) {
         jQuery('#admin0_list').html( spinner_html )
-        makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin0_grid_id, post_type: mapbox_library_api.post_type,
+        window.makeRequest( "POST", mapbox_library_api.obj.settings.list_by_grid_rest_url, { grid_id: details.admin0_grid_id, post_type: mapbox_library_api.post_type,
           query: mapbox_library_api.query_args || {} } , mapbox_library_api.obj.settings.rest_base_url )
         .done(list_by_grid=>{
           if ( list_by_grid.length > 0 ) {
@@ -635,7 +635,7 @@ let area_map = {
         level_list.empty()
         jQuery.each(list_by_grid, function(i,v) {
           if ( i > 20 ){ return }
-          level_list.append(`<div class="cell"><a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape( mapbox_library_api.post_type )}/${window.lodash.escape( v.post_id )}">${window.lodash.escape( v.post_title ) }</a></div>`)
+          level_list.append(`<div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( mapbox_library_api.post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( v.post_id )}">${window.SHAREDFUNCTIONS.escapeHTML( v.post_title ) }</a></div>`)
         })
         if ( list_by_grid.length > 20 ){
           level_list.append(`<div class="cell">...</div>`)

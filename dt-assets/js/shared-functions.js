@@ -1,5 +1,4 @@
 /* global wpApiShare:false */
-_ = _ || window.lodash; // make sure lodash is defined so plugins like gutenberg don't break it.
 
 jQuery(document).ready(function ($) {
   // Adds an active state to the top bar navigation
@@ -233,7 +232,7 @@ jQuery(document)
       // Event that a contact record has been updated, check to make sure the post type that is being updated is the same as the current page post type.
       if ( xhr.responseJSON.ID && xhr.responseJSON.post_type &&  xhr.responseJSON.post_type === window.detailsSettings?.post_type ) {
         let request = settings.data ? JSON.parse(settings.data) : {};
-        $(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
+        jQuery(document).trigger("dt_record_updated", [xhr.responseJSON, request]);
       }
     }
 
@@ -258,13 +257,18 @@ jQuery(document).on("click", ".help-button-tile", function () {
   let tile = window.wpApiShare.tiles[section];
   if (tile && window.post_type_fields) {
     if (tile.label) {
-      $("#help-modal-field-title").html(window.lodash.escape(tile.label));
+      let tile_label = window.SHAREDFUNCTIONS.escapeHTML(tile.label);
+      if ( window.wpApiShare.can_manage_dt ){
+        let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${section}`
+        tile_label += ` <span style="font-size: 10px"><a href="${window.SHAREDFUNCTIONS.escapeHTML(edit_link)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.edit)}</a></span>`;
+      }
+      jQuery("#help-modal-field-title").html(tile_label);
     }
     if (tile.description) {
-      $("#help-modal-field-description").html(window.lodash.escape(tile.description));
+      jQuery("#help-modal-field-description").html(window.SHAREDFUNCTIONS.escapeHTML(tile.description));
       window.SHAREDFUNCTIONS.make_links_clickable('#help-modal-field-description' )
     } else {
-      $("#help-modal-field-description").empty()
+      jQuery("#help-modal-field-description").empty()
     }
     let order = window.wpApiShare.tiles[section]["order"] || [];
     window.lodash.forOwn(window.post_type_fields, (field, field_key) => {
@@ -279,13 +283,13 @@ jQuery(document).on("click", ".help-button-tile", function () {
         field && field.tile === section && !field.hidden &&
         (field.description || window.lodash.isObject(field.default))
       ) {
-        let field_name = `<h2>${window.lodash.escape(field.name)}</h2>`;
+        let field_name = `<h2>${window.SHAREDFUNCTIONS.escapeHTML(field.name)}</h2>`;
         if ( window.wpApiShare.can_manage_dt ){
           let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
-          field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
+          field_name = `<h2>${window.SHAREDFUNCTIONS.escapeHTML(field.name)} <span style="font-size: 10px"><a href="${window.SHAREDFUNCTIONS.escapeHTML(edit_link)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.edit)}</a></span></h2>`;
         }
         html += field_name
-        html += `<p>${window.lodash.escape(field.description)}</p>`;
+        html += `<p>${window.SHAREDFUNCTIONS.escapeHTML(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
           let list_html = ``;
@@ -296,7 +300,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
                 list_html += `<ul class="help-modal-icon">`;
                 first_field_option = false;
               }
-              list_html += `<li><img src="${window.lodash.escape(field_options.icon)}">`;
+              list_html += `<li><img src="${window.SHAREDFUNCTIONS.escapeHTML(field_options.icon)}">`;
             } else {
               if ( first_field_option ) {
                 list_html += `<ul>`;
@@ -304,9 +308,9 @@ jQuery(document).on("click", ".help-button-tile", function () {
               }
               list_html += `<li>`;
             }
-            list_html += `<strong>${window.lodash.escape(
+            list_html += `<strong>${window.SHAREDFUNCTIONS.escapeHTML(
               field_options.label
-            )}</strong> ${window.lodash.escape(
+            )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
               !field_options.description ? "" : "- " + field_options.description
             )}</li>`;
           });
@@ -315,7 +319,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
         }
       }
     });
-    $("#help-modal-field-body").html(html);
+    jQuery("#help-modal-field-body").html(html);
   }
   /* #apps for example was the tile id, so this is the new more unique id to show relevant help text */
   jQuery(`#tile-help-section-${section}`).show();
@@ -328,24 +332,24 @@ jQuery(document).on("click", ".help-button-field", function () {
 
   if (window.post_type_fields && window.post_type_fields[section]) {
     let field = window.post_type_fields[section];
-    $("#help-modal-field-title").html(window.lodash.escape(field.name));
+    jQuery("#help-modal-field-title").html(window.SHAREDFUNCTIONS.escapeHTML(field.name));
     if (field.description) {
-      $("#help-modal-field-description").html(window.lodash.escape(field.description));
+      jQuery("#help-modal-field-description").html(window.SHAREDFUNCTIONS.escapeHTML(field.description));
       window.SHAREDFUNCTIONS.make_links_clickable('#help-modal-field-description' )
     } else {
-      $("#help-modal-field-description").empty()
+      jQuery("#help-modal-field-description").empty()
     }
     if (window.lodash.isObject(field.default)) {
       let html = `<ul>`;
       window.lodash.forOwn(field.default, (field_options, field_key) => {
-        html += `<li><strong>${window.lodash.escape(
+        html += `<li><strong>${window.SHAREDFUNCTIONS.escapeHTML(
           field_options.label
-        )}</strong> ${window.lodash.escape(
+        )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
           !field_options.description ? "" : "- " + field_options.description
         )}</li>`;
       });
       html += `</ul>`;
-      $("#help-modal-field-body").html(html);
+      jQuery("#help-modal-field-body").html(html);
     }
   }
   jQuery(`#${section}`).show();
@@ -367,8 +371,8 @@ window.TYPEAHEADS = {
           },
           callback: {
             done: function (data) {
-              if (typeof typeaheadTotals !== "undefined") {
-                typeaheadTotals.field = data.total;
+              if (typeof window.typeaheadTotals !== "undefined") {
+                window.typeaheadTotals.field = data.total;
               }
               return data.posts;
             },
@@ -444,39 +448,39 @@ window.TYPEAHEADS = {
       text = wpApiShare.translations.showing_x_items_matching
         .replace(
           "%1$s",
-          `<strong>${window.lodash.escape(result.length)}</strong>`
+          `<strong>${window.SHAREDFUNCTIONS.escapeHTML(result.length)}</strong>`
         )
-        .replace("%2$s", `<strong>${window.lodash.escape(query)}</strong>`);
+        .replace("%2$s", `<strong>${window.SHAREDFUNCTIONS.escapeHTML(query)}</strong>`);
     } else if (result.length > 0) {
       text = wpApiShare.translations.showing_x_items.replace(
         "%s",
-        `<strong>${window.lodash.escape(result.length)}</strong>`
+        `<strong>${window.SHAREDFUNCTIONS.escapeHTML(result.length)}</strong>`
       );
     } else {
       text = wpApiShare.translations.no_records_found.replace(
         '"{{query}}"',
-        `<strong>${window.lodash.escape(query)}</strong>`
+        `<strong>${window.SHAREDFUNCTIONS.escapeHTML(query)}</strong>`
       );
     }
     return text;
   },
   contactListRowTemplate: function (query, item) {
-    let status_color = `<span class="vertical-line" ${ item.status ? `style="border-left: 3px solid ${window.lodash.escape(item.status.color)}"` : '' }></span>`
-    let status_label = item.status ? `[ <span><i>${ window.lodash.escape(item.status.label).toLowerCase() } </i></span> ]` : '';
+    let status_color = `<span class="vertical-line" ${ item.status ? `style="border-left: 3px solid ${window.SHAREDFUNCTIONS.escapeHTML(item.status.color)}"` : '' }></span>`
+    let status_label = item.status ? `[ <span><i>${ window.SHAREDFUNCTIONS.escapeHTML(item.status.label).toLowerCase() } </i></span> ]` : '';
     let img = item.user
       ? `<img style="margin: 0 5px;" class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
       return `<span style="display: inline-block; vertical-align: middle;" dir="auto" ${statusStyle}>
         ${status_color}
-        ${window.lodash.escape((item.label ? item.label : item.name))}
-        <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
+        ${window.SHAREDFUNCTIONS.escapeHTML((item.label ? item.label : item.name))}
+        <span dir="auto">(#${window.SHAREDFUNCTIONS.escapeHTML(item.ID)})</span>
         ${status_label}
         <span class="typeahead-user-row" style="width:20px">${img}</span>
     </span>`;
   },
   share(post_type, id) {
-    return $.typeahead({
+    return jQuery.typeahead({
       input: ".js-typeahead-share",
       minLength: 0,
       maxItem: 0,
@@ -485,20 +489,20 @@ window.TYPEAHEADS = {
       template: function (query, item) {
         return `<div class="" dir="auto">
           <div>
-              <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( item.avatar )}"/></span>
-              {{name}} (#${window.lodash.escape( item.ID )})
+              <span class="avatar"><img style="vertical-align: text-bottom" src="${window.SHAREDFUNCTIONS.escapeHTML( item.avatar )}"/></span>
+              {{name}} (#${window.SHAREDFUNCTIONS.escapeHTML( item.ID )})
           </div>
         </div>`
       },
       source: this.typeaheadUserSource(),
-      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          var deferred = $.Deferred();
+          var deferred = jQuery.Deferred();
           return window.API.get_shared(post_type, id).then((sharedResult) => {
             return deferred.resolve(
               sharedResult.map((g) => {
@@ -509,14 +513,14 @@ window.TYPEAHEADS = {
         },
         callback: {
           onCancel: function (node, item) {
-            $("#share-result-container").html("");
+            jQuery("#share-result-container").html("");
             window.API.remove_shared(post_type, id, item.ID).catch((err) => {
-              Typeahead[".js-typeahead-share"].addMultiselectItemLayout({
+              window.Typeahead[".js-typeahead-share"].addMultiselectItemLayout({
                 ID: item.ID,
                 name: item.name,
                 avatar: item.avatar
               });
-              $("#share-result-container").html(
+              jQuery("#share-result-container").html(
                 window.lodash.get(err, "responseJSON.message")
               );
             });
@@ -534,11 +538,11 @@ window.TYPEAHEADS = {
               query,
               result
             );
-            $("#share-result-container").html(text);
+            jQuery("#share-result-container").html(text);
           }
         },
         onHideLayout: function () {
-          $("#share-result-container").html("");
+          jQuery("#share-result-container").html("");
         },
       },
     });
@@ -588,6 +592,26 @@ window.SHAREDFUNCTIONS = {
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
+  get_json_from_local_storage(key, default_val = {}, path) {
+    if ( path ){
+      key = path + '_' + key;
+    }
+    if ( localStorage ){
+      let json = localStorage.getItem(key);
+      try {
+        default_val = JSON.parse(json);
+      } catch (e) {}
+    }
+    return default_val;
+  },
+  save_json_to_local_storage(key, json, path) {
+    if ( path ){
+      key = path + '_' + key;
+    }
+    if ( localStorage ){
+      window.localStorage.setItem(key, JSON.stringify(json))
+    }
+  },
   createCustomFilter(field, value) {
     return ({
       fields: [
@@ -635,7 +659,7 @@ window.SHAREDFUNCTIONS = {
     const int_format = new Intl.DateTimeFormat(langcode, {month:format}).format;
     return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month, 1))));
   },
-  formatDate(date, with_time = false, short_month = false) {
+  formatDate(date, with_time = false, short_month = false, local_timezone = false) {
     let langcode = window.SHAREDFUNCTIONS.get_langcode();
     if (langcode === "fa-IR") {
       //This is a check so that we use the gergorian (Western) calendar if the users locale is Farsi. This is the calendar used primarily by Farsi speakers outside of Iran, and is easily understood by those inside.
@@ -645,7 +669,8 @@ window.SHAREDFUNCTIONS = {
     if (with_time) {
       options.hour = "numeric";
       options.minute = "numeric";
-    } else {
+    }
+    if (!(with_time || local_timezone)) {
       options.timeZone = "UTC";
     }
     if (short_month) {
@@ -722,12 +747,17 @@ window.SHAREDFUNCTIONS = {
    */
   escapeObject(obj) {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
-        return [ key, window.lodash.escape(value)]
+        return [ key, window.SHAREDFUNCTIONS.escapeHTML(value)]
     }))
+  },
+  escapeHTML(str) {
+    if (typeof str === "undefined") return '';
+    if (typeof str !== "string") return str;
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
   },
   make_links_clickable( selector ){
     //make text links clickable in a section
-    let elem_text = $(selector).html()
+    let elem_text = jQuery(selector).html()
     if ( !elem_text ) return
     let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,8}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
     elem_text = elem_text.replace(urlRegex, (match)=>{
@@ -746,7 +776,7 @@ window.SHAREDFUNCTIONS = {
       }
       return match
     })
-    $(selector).html(elem_text)
+    jQuery(selector).html(elem_text)
   },
   addLink(e) {
     let fieldKey = e.target.dataset['fieldKey']
@@ -757,46 +787,46 @@ window.SHAREDFUNCTIONS = {
 
     const template = document.querySelector(`#link-template-${fieldKey}-${linkType}`).querySelector('.input-group')
 
-    const newInputGroup = $(template).clone(true);
+    const newInputGroup = jQuery(template).clone(true);
     const newInput = newInputGroup[0].querySelector('input')
-    $(linkList).append(newInputGroup)
+    jQuery(linkList).append(newInputGroup)
     newInput.focus()
 
     if ( onlyOneOption !== '' ) {
       linkList.querySelector('.section-subheader').style.display = 'block'
     }
 
-    $(".grid").masonry("layout"); //resize or reorder tile
+    jQuery(".grid").masonry("layout"); //resize or reorder tile
   }
 };
 
 let date_ranges = {
-  "All time": [moment(0), moment().endOf("year")],
-  [moment().format("MMMM YYYY")]: [
-    moment().startOf("month"),
-    moment().endOf("month"),
+  "All time": [window.moment(0), window.moment().endOf("year")],
+  [window.moment().format("MMMM YYYY")]: [
+    window.moment().startOf("month"),
+    window.moment().endOf("month"),
   ],
-  [moment().subtract(1, "month").format("MMMM YYYY")]: [
-    moment().subtract(1, "month").startOf("month"),
-    moment().subtract(1, "month").endOf("month"),
+  [window.moment().subtract(1, "month").format("MMMM YYYY")]: [
+    window.moment().subtract(1, "month").startOf("month"),
+    window.moment().subtract(1, "month").endOf("month"),
   ],
-  [moment().format("YYYY")]: [
-    moment().startOf("year"),
-    moment().endOf("year"),
+  [window.moment().format("YYYY")]: [
+    window.moment().startOf("year"),
+    window.moment().endOf("year"),
   ],
-  [moment().subtract(1, "year").format("YYYY")]: [
-    moment().subtract(1, "year").startOf("year"),
-    moment().subtract(1, "year").endOf("year"),
+  [window.moment().subtract(1, "year").format("YYYY")]: [
+    window.moment().subtract(1, "year").startOf("year"),
+    window.moment().subtract(1, "year").endOf("year"),
   ],
-  [moment().subtract(2, "year").format("YYYY")]: [
-    moment().subtract(2, "year").startOf("year"),
-    moment().subtract(2, "year").endOf("year"),
+  [window.moment().subtract(2, "year").format("YYYY")]: [
+    window.moment().subtract(2, "year").startOf("year"),
+    window.moment().subtract(2, "year").endOf("year"),
   ],
 };
 
 window.METRICS = {
   setupDatePicker: function (endpoint_url, callback, startDate, endDate) {
-    $(".date_range_picker").daterangepicker(
+    jQuery(".date_range_picker").daterangepicker(
       {
         showDropdowns: true,
         ranges: date_ranges,
@@ -804,11 +834,11 @@ window.METRICS = {
         locale: {
           format: "YYYY-MM-DD",
         },
-        startDate: startDate || moment(0),
-        endDate: endDate || moment().endOf("year").format("YYYY-MM-DD"),
+        startDate: startDate || window.moment(0),
+        endDate: endDate || window.moment().endOf("year").format("YYYY-MM-DD"),
       },
       function (start, end, label) {
-        $(".loading-spinner").addClass("active");
+        jQuery(".loading-spinner").addClass("active");
         jQuery
           .ajax({
             type: "GET",
@@ -822,7 +852,7 @@ window.METRICS = {
             },
           })
           .done(function (data) {
-            $(".loading-spinner").removeClass("active");
+            jQuery(".loading-spinner").removeClass("active");
             if (label === "Custom Range") {
               label =
                 start.format("MMMM D, YYYY") +
@@ -841,7 +871,7 @@ window.METRICS = {
     );
   },
   setupDatePickerWithoutEndpoint: function (callback, startDate, endDate) {
-    $(".date_range_picker").daterangepicker(
+    jQuery(".date_range_picker").daterangepicker(
       {
         showDropdowns: true,
         ranges: date_ranges,
@@ -849,8 +879,8 @@ window.METRICS = {
         locale: {
           format: "YYYY-MM-DD",
         },
-        startDate: startDate || moment(0),
-        endDate: endDate || moment().endOf("year").format("YYYY-MM-DD"),
+        startDate: startDate || window.moment(0),
+        endDate: endDate || window.moment().endOf("year").format("YYYY-MM-DD"),
       },
       function (start, end, label) {
         callback(start, end, label);
@@ -906,8 +936,10 @@ window.sha256 = (ascii) => {
   //* caching results is optional - remove/add slash from front of this line to toggle
   // Initial hash value: first 32 bits of the fractional parts of the square roots of the first 8 primes
   // (we actually calculate the first 64, but extra values are just ignored)
+  // eslint-disable-next-line no-undef
   var hash = sha256.h = sha256.h || [];
   // Round constants: first 32 bits of the fractional parts of the cube roots of the first 64 primes
+  // eslint-disable-next-line no-undef
   var k = sha256.k = sha256.k || [];
   var primeCounter = k[lengthProperty];
   /*/
@@ -1104,9 +1136,9 @@ var Base64 = {
 
   // private method for UTF-8 decoding
   _utf8_decode : function (utftext) {
-      var string = "";
-      var i = 0;
-      var c = c1 = c2 = 0;
+      let string = "";
+      let i = 0;
+      let c = 0, c2 = 0, c3 = 0;
 
       while ( i < utftext.length ) {
 

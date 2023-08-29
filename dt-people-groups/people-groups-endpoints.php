@@ -101,16 +101,23 @@ class Disciple_Tools_People_Groups_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/people-groups/link_or_update', [
+            $this->namespace, '/people-groups/add_bulk_people_groups', [
                 'methods'  => 'POST',
-                'callback' => [ $this, 'link_or_update' ],
+                'callback' => [ $this, 'add_bulk_people_groups' ],
                 'permission_callback' => '__return_true',
             ]
         );
         register_rest_route(
-            $this->namespace, '/people-groups/update_setting_options', [
+            $this->namespace, '/people-groups/get_bulk_people_groups_import_batches', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_bulk_people_groups_import_batches' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/people-groups/link_or_update', [
                 'methods'  => 'POST',
-                'callback' => [ $this, 'update_setting_options' ],
+                'callback' => [ $this, 'link_or_update' ],
                 'permission_callback' => '__return_true',
             ]
         );
@@ -218,21 +225,6 @@ class Disciple_Tools_People_Groups_Endpoints
             return $result;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
-        }
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function update_setting_options( WP_REST_Request $request ) {
-
-        $params = $request->get_params();
-        if ( isset( $params['settings'] ) ) {
-            return Disciple_Tools_People_Groups::update_setting_options( $params['settings'] );
-        } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter `settings`' );
         }
     }
 }

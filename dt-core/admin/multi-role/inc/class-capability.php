@@ -40,6 +40,8 @@ class Disciple_Tools_Capability {
      */
     public $description = '';
 
+    public $post_type = '';
+
     /**
      * Return the capability string in attempts to use the object as a string.
      * @access public
@@ -56,12 +58,14 @@ class Disciple_Tools_Capability {
      * @param string $source
      * @param string $name
      * @param string $description
+     * @param string $post_type
      */
-    public function __construct( $capability, $source, $name = '', $description = '' ) {
+    public function __construct( $capability, $source, $name = '', $description = '', $post_type = '' ) {
         $this->slug = $capability;
         $this->name = $name;
         $this->source = $source;
         $this->description = $description;
+        $this->post_type = $post_type;
     }
 
     /**

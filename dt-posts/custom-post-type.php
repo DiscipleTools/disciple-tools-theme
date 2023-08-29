@@ -10,12 +10,15 @@ class Disciple_Tools_Post_Type_Template {
     public $singular;
     public $plural;
     public $search_items;
+    public $hidden;
 
     public function __construct( string $post_type, string $singular, string $plural ) {
+        $post_type_updates = get_option( 'dt_custom_post_types', [] );
         $this->post_type = $post_type;
-        $this->singular = $singular;
-        $this->plural = $plural;
+        $this->singular = $post_type_updates[$this->post_type]['label_singular'] ?? $singular;
+        $this->plural = $post_type_updates[$this->post_type]['label_plural'] ?? $plural;
         $this->search_items = sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $this->plural );
+        $this->hidden = $post_type_updates[$this->post_type]['hidden'] ?? false;
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
@@ -23,10 +26,12 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 4 );
+        add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings_after' ], 1000, 4 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
         add_filter( 'dt_details_additional_section_ids', [ $this, 'dt_details_additional_section_ids' ], 10, 2 );
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
-        add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 100, 1 );
+        add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 50, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 11, 1 );
     }
 
     public function register_post_type(){
@@ -86,7 +91,21 @@ class Disciple_Tools_Post_Type_Template {
         add_rewrite_rule( $this->post_type . '/([0-9]+)?$', 'index.php?post_type=' . $this->post_type . '&p=$matches[1]', 'top' );
     }
 
+    public function dt_set_roles_and_permissions( $expected_roles ){
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+        if ( empty( $custom_post_types[$this->post_type]['roles'] ) && isset( $custom_post_types[$this->post_type]['is_custom'] ) && $custom_post_types[$this->post_type]['is_custom'] ){
+            if ( isset( $expected_roles['administrator'] ) ){
+                $expected_roles['administrator']['permissions']['access_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['view_any_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['update_any_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['dt_all_admin_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['delete_any_' . $this->post_type] = true;
+                $expected_roles['administrator']['permissions']['create_' . $this->post_type] = true;
+            }
+        }
 
+        return $expected_roles;
+    }
 
     /**
      * Run on activation.
@@ -117,7 +136,7 @@ class Disciple_Tools_Post_Type_Template {
                 'link' => site_url( "/$this->post_type/" ),
                 'label' => $this->plural,
                 'icon' => '',
-                'hidden' => false,
+                'hidden' => $this->hidden,
                 'submenu' => []
             ];
         }
@@ -130,7 +149,7 @@ class Disciple_Tools_Post_Type_Template {
                 'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
                 'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg',
-                'hidden' => false,
+                'hidden' => $this->hidden,
             ];
         }
         return $links;
@@ -235,11 +254,26 @@ class Disciple_Tools_Post_Type_Template {
                 } ) ),
                 'label_singular' => $this->singular,
                 'label_plural' => $this->plural,
-                'post_type' => $this->post_type
+                'post_type' => $this->post_type,
+                'hidden' => $this->hidden
             ];
             $settings = dt_array_merge_recursive_distinct( $settings, $s );
 
             wp_cache_set( $post_type . '_type_settings', $settings );
+        }
+        return $settings;
+    }
+
+    public function dt_get_post_type_settings_after( $settings, $post_type ){
+        if ( $post_type === $this->post_type ){
+            $post_type_updates = get_option( 'dt_custom_post_types', [] );
+            if ( !empty( $post_type_updates[$post_type]['label_singular'] ) ){
+                $settings['label_singular'] = $post_type_updates[$post_type]['label_singular'];
+            }
+            if ( !empty( $post_type_updates[$post_type]['label_plural'] ) ){
+                $settings['label_plural'] = $post_type_updates[$post_type]['label_plural'];
+            }
+            $settings['is_custom'] = $post_type_updates[$post_type]['is_custom'] ?? false;
         }
         return $settings;
     }
@@ -297,7 +331,9 @@ class Disciple_Tools_Post_Type_Template {
     public function dt_capabilities( $capabilities ){
         $capabilities['access_' . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can access the UI for ' . $this->plural,
+            'label' => 'View and Manage',
+            'description' => sprintf( 'The user can access the UI for %s and manage their %s', $this->plural, $this->plural ),
+            'post_type' => $this->post_type
         ];
 //        $capabilities['update_'  . $this->post_type] = [
 //            'source' => $this->plural,
@@ -305,23 +341,55 @@ class Disciple_Tools_Post_Type_Template {
 //        ];
         $capabilities['create_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can create ' . $this->plural
+            'label' => 'Create Records',
+            'description' => sprintf( 'The user can create %s', $this->plural ),
+            'post_type' => $this->post_type
         ];
         $capabilities['view_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can view any ' . $this->singular
+            'label' => 'View All',
+            'description' => sprintf( 'The user can view any %s', $this->singular ),
+            'post_type' => $this->post_type
         ];
         $capabilities['update_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can update any ' . $this->singular
+            'label' => 'Update Any',
+            'description' => sprintf( 'The user can update any %s', $this->singular ),
+            'post_type' => $this->post_type
         ];
         $capabilities['delete_any_'  . $this->post_type] = [
             'source' => $this->plural,
-            'description' => 'The user can delete any ' . $this->singular
+            'label' => 'Delete Any',
+            'description' => sprintf( 'The user can delete any %s', $this->singular ),
+            'post_type' => $this->post_type
         ];
+//        $capabilities['dt_all_admin_' . $this->post_type] = [
+//            'source' => $this->plural,
+//            'label' => 'Update in WP Admin',
+//            'description' => sprintf( 'Access and update %s on the WP Admin site.', $this->plural ),
+//            'post_type' => $this->post_type
+//        ];
+        $capabilities['list_all_' .$this->post_type ] = [
+            'source' => $this->plural,
+            'label' => 'Preview All',
+            'description' => sprintf( 'The user can list all %s records, but not view record details. Useful in typeahead searches.', $this->singular ),
+            'post_type' => $this->post_type
+        ];
+
         return $capabilities;
     }
 }
+
+add_action( 'after_setup_theme', function (){
+    $custom_post_types = get_option( 'dt_custom_post_types', [] );
+    $already_registered = apply_filters( 'dt_registered_post_types', [] );
+
+    foreach ( $custom_post_types as $post_type_key => $post_type ){
+        if ( ( $post_type['is_custom'] ?? false ) && !in_array( $post_type_key, $already_registered, true ) ){
+            new Disciple_Tools_Post_Type_Template( $post_type_key, $post_type['label_singular'] ?? $post_type_key, $post_type['label_plural'] ?? $post_type_key );
+        }
+    }
+}, 200 );
 
 /**
  * Set default list view permissions

@@ -67,7 +67,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
     }
 
     public function post_type_select( $type ){
-        $this->box( 'top', 'Select Post type' );
+        $this->box( 'top', 'Select Record type' );
         global $wp_post_types;
         $post_types = DT_Posts::get_post_types();
         ?>
@@ -95,7 +95,7 @@ class Disciple_Tools_Utilities_Fields_Tab extends Disciple_Tools_Abstract_Menu_B
         $fields = $post_settings['fields'];
 
         /* breadcrumb: new-field-type Add field type to field explorer */
-        $types = [ 'text', 'textarea', 'date', 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'number', 'link', 'communication_channel', 'tags', 'user_select', 'task', 'location', 'location_meta' ];
+        $types = [ 'text', 'textarea', 'date', 'datetime', 'boolean', 'key_select', 'multi_select', 'array', 'connection', 'number', 'link', 'communication_channel', 'tags', 'user_select', 'task', 'location', 'location_meta' ];
         foreach ( $types as $type ){
             ?>
             <h3>Field type: <?php echo esc_html( $type ) ?></h3>

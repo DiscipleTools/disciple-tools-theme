@@ -90,13 +90,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
             /* Update Required */
 
-            /* People Groups Settings */
-            $this->box( 'top', 'People Group Settings' );
-            $this->process_people_group_settings();
-            $this->people_group_settings();
-            $this->box( 'bottom' );
-            /* End People Groups Settings */
-
             /* Update Required */
             $this->box( 'top', 'Group Tile Preferences' );
             $this->process_group_preferences();
@@ -153,7 +146,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
         $site_options = dt_get_option( 'dt_site_options' );
         $notifications = $site_options['notifications']['types'];
-
         ?>
         <form method="post" name="notifications-form">
             <button type="submit" class="button-like-link" name="reset_notifications" value="1"><?php esc_html_e( 'reset', 'disciple_tools' ) ?></button>
@@ -176,7 +168,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                 </tr>
             <?php endforeach; ?>
-
             </table>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
@@ -253,26 +244,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
         }
-    }
-
-    public function people_group_settings() {
-        ?>
-        <form method="POST">
-            <input type="hidden" name="people_group_settings_nonce" id="people_group_settings_nonce"
-                   value="<?php echo esc_attr( wp_create_nonce( 'people_group_settings' ) ) ?>"/>
-
-            <?php
-            Disciple_Tools_People_Groups::admin_display_settings_tab_table( false );
-            ?>
-
-            <br>
-            <span style="float:right;">
-                <button type="submit"
-                        class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button>
-            </span>
-
-        </form>
-        <?php
     }
 
     public function email_settings(){
@@ -371,16 +342,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
         }
     }
-
-    /**
-     * Process changes to the people group settings
-     */
-    public function process_people_group_settings() {
-        if ( isset( $_POST['people_group_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['people_group_settings_nonce'] ) ), 'people_group_settings' ) ) {
-            update_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab, isset( $_POST['display_people_group_tab'] ) );
-        }
-    }
-
 
     public function process_update_required(){
         if ( isset( $_POST['update_required_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['update_required_nonce'] ) ), 'update_required' ) ) {
@@ -632,14 +593,18 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $_POST['user_default_language'] ) && !empty( $_POST['user_default_language'] ) ){
                 update_option( 'dt_user_default_language', sanitize_text_field( wp_unslash( $_POST['user_default_language'] ) ) );
             }
-        }
 
+            update_option( 'dt_disable_wp_new_user_email_notifications', ( isset( $_POST['disable_wp_new_user_email_notifications'] ) && boolval( wp_unslash( $_POST['disable_wp_new_user_email_notifications'] ) ) ) );
+            update_option( 'dt_disable_dt_new_user_email_notifications', ( isset( $_POST['disable_dt_new_user_email_notifications'] ) && boolval( wp_unslash( $_POST['disable_dt_new_user_email_notifications'] ) ) ) );
+        }
     }
 
     public function update_user_preferences(){
         $dt_roles = dt_multi_role_get_editable_role_names();
         $user_invite_allowed = get_option( 'dt_user_invite_setting', false );
         $user_default_language = get_option( 'dt_user_default_language', 'en_US' );
+        $disable_wp_new_user_email_notifications = get_option( 'dt_disable_wp_new_user_email_notifications', false );
+        $disable_dt_new_user_email_notifications = get_option( 'dt_disable_dt_new_user_email_notifications', false );
         ?>
         <p><?php esc_html_e( 'User Roles that can view all other Disciple.Tools users names' ) ?></p>
         <form method="post" >
@@ -663,13 +628,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
             <br>
             <p>
-                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role.' ) ?>
+                <label><?php esc_html_e( 'Allow multipliers to invite other users. New users will have the multiplier role:' ) ?>
                     <input type="checkbox" name="user_invite_check" id="user_invite_check" value="user_invite" <?php echo $user_invite_allowed ? 'checked' : '' ?> />
                 </label>
             </p>
 
             <p>
-                <label><?php esc_html_e( 'Default user language' ) ?>
+                <label><?php esc_html_e( 'Default user language:' ) ?>
                     <select id="user_default_language" name="user_default_language">
                         <?php
                         $languages = dt_get_available_languages();
@@ -685,12 +650,25 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </select>
                 </label>
             </p>
+
+            <br>
+            <p>
+                <label><?php esc_html_e( 'Disable initial new user Wordpress email notifications:' ) ?>
+                    <input type="checkbox" name="disable_wp_new_user_email_notifications" id="disable_wp_new_user_email_notifications" <?php echo $disable_wp_new_user_email_notifications ? 'checked' : '' ?> />
+                </label>
+            </p>
+            <p>
+                <label><?php esc_html_e( 'Disable initial new user D.T. email notifications:' ) ?>
+                    <input type="checkbox" name="disable_dt_new_user_email_notifications" id="disable_dt_new_user_email_notifications" <?php echo $disable_dt_new_user_email_notifications ? 'checked' : '' ?> />
+                </label>
+            </p>
+
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
         </form>
         <?php
     }
 
-    /** Group Preferences */
+    /** Contact Preferences */
     public function process_dt_contact_preferences(){
 
         if ( isset( $_POST['dt_contact_preferences_nonce'] ) &&

@@ -74,7 +74,7 @@ class DT_Magic_URL_Setup {
 
         $record = DT_Posts::get_post( $post_type, get_the_ID() );
         $meta_key = $app['meta_key'];
-        if ( isset( $record[$meta_key] ) ) {
+        if ( !is_wp_error( $record ) && isset( $record[$meta_key] ) ){
             $key = $record[$meta_key];
         } else {
             $key = dt_create_unique_key();
@@ -134,7 +134,7 @@ class DT_Magic_URL_Setup {
                         $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').addClass('active')
                         let email = $('.email.<?php echo esc_attr( $meta_key ); ?>').val();
                         let note = $('.note.<?php echo esc_attr( $meta_key ); ?>').val();
-                        makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', email: email, note: note, post_ids: [ window.detailsSettings.post_id ] } )
+                        window.makeRequest('POST', window.detailsSettings.post_type + '/email_magic', { root: '<?php echo esc_attr( $app['root'] ); ?>', type: '<?php echo esc_attr( $app['type'] ); ?>', email: email, note: note, post_ids: [ window.detailsSettings.post_id ] } )
                         .done( data => {
                             $('.<?php echo esc_attr( $meta_key ); ?>.loading-spinner').removeClass('active')
                             $('#modal-small').foundation('close')
@@ -143,7 +143,7 @@ class DT_Magic_URL_Setup {
                 })
 
                 function is_email_format_valid(email) {
-                    return new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$').test(window.lodash.escape(email));
+                    return new RegExp('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$').test(window.SHAREDFUNCTIONS.escapeHTML(email));
                 }
 
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .qr').on('click', function(e){

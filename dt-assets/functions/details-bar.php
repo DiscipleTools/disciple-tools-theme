@@ -15,7 +15,7 @@ function dt_print_details_bar(
     $share_button = true;
     $comment_button = true;
     $task = true;
-    $show_update_needed = isset( $post_settings['fields']['requires_update'] );
+    $show_update_needed = isset( $post_settings['fields']['requires_update'] ) && current_user_can( 'assign_any_contacts' );
     $update_needed = isset( $dt_post['requires_update'] ) && $dt_post['requires_update'] === true;
     $following = in_array( $current_user_id, $following );
     $is_assigned = isset( $dt_post['assigned_to']['id'] ) && $dt_post['assigned_to']['id'] == $current_user_id;
@@ -94,8 +94,7 @@ function dt_print_details_bar(
                         <div class="cell medium-2 large-1 center-items align-left">
                             <a class="section-chevron navigation-previous" style="max-width: 1rem; display: none;" href="javascript:void(0)">
                                 <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
-                                $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                                if ( $dir == 'rtl' ) {
+                                if ( is_rtl() ) {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                                 } else {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
@@ -118,7 +117,7 @@ function dt_print_details_bar(
                                 <?php if ( $type_icon ) : ?>
                                     <img class="dt-record-type-icon" src="<?php echo esc_html( $type_icon ) ?>"/>
                                 <?php endif; ?>
-                                <?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                                <?php echo esc_html( $dt_post['type']['label'] ?? '' )?></a>
                             <?php endif; ?>
                                 <span class="details-bar-created-on"></span>
                                 <?php if ( $dt_post['post_author_display_name'] ):
@@ -129,8 +128,7 @@ function dt_print_details_bar(
                         <div class="cell medium-2 large-1 center-items align-right">
                             <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
                                 <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
-                                $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                                if ( $dir == 'rtl' ) {
+                                if ( is_rtl() ) {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                                 } else {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
@@ -252,8 +250,7 @@ function dt_print_details_bar(
                     <div class="cell small-1 center-items">
                         <a class="section-chevron navigation-previous" style="display: none;" href="javascript:void(0)">
                             <img style="height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
-                            $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                            if ( $dir == 'rtl' ) {
+                            if ( is_rtl() ) {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                             } else {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
@@ -273,7 +270,7 @@ function dt_print_details_bar(
                             <?php do_action( 'dt_post_record_name_tagline' ); ?>
                             <span class="record-name-tagline">
                             <?php if ( isset( $dt_post['type']['label'] ) ) : ?>
-                                <a data-open="contact-type-modal"><?php echo esc_html( $dt_post['type']['label'] ?? '' )?> <?php esc_html_e( 'Record', 'disciple_tools' ); ?></a>
+                                <a data-open="contact-type-modal"><?php echo esc_html( $dt_post['type']['label'] ?? '' )?></a>
                             <?php endif; ?>
                             <span class="details-bar-created-on"></span>
                                 <?php if ( $dt_post['post_author_display_name'] ):
@@ -285,8 +282,7 @@ function dt_print_details_bar(
                     <div class="cell small-1 center-items">
                         <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
                             <img style="height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
-                            $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                            if ( $dir == 'rtl' ) {
+                            if ( is_rtl() ) {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                             } else {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );

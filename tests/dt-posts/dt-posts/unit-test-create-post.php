@@ -75,6 +75,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertSame( (int) $result['location_test'][0]['id'], (int) $create_values['location_test']['values'][0]['value'] ); //@todo returned value should be an int
         $this->assertSame( $result['date_test']['timestamp'], strtotime( $create_values['date_test'] ) );
         $this->assertSame( $result['date_test_private']['timestamp'], strtotime( $create_values['date_test_private'] ) );
+        $this->assertSame( $result['datetime_test']['timestamp'], strtotime( $create_values['datetime_test'] ) );
+        $this->assertSame( $result['datetime_test_private']['timestamp'], strtotime( $create_values['datetime_test_private'] ) );
         $this->assertSame( $result['boolean_test'], $create_values['boolean_test'] );
         $this->assertSame( $result['boolean_test_private'], $create_values['boolean_test_private'] );
         $this->assertSame( $result['multi_select_test'][0], $create_values['multi_select_test']['values'][0]['value'] );

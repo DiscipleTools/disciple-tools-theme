@@ -395,7 +395,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <span id="workload-spinner" style="display: inline-block" class="loading-spinner"></span>
                             </div>
 
-                            <?php $options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
+                            <?php $options = Disciple_Tools_Users::get_users_fields()['workload_status']['options'] ?? [];
                             foreach ( $options as $option_key => $option_val ) :
                                 $icon = $option_key === 'active' ? 'play' : ( $option_key === 'existing' ? 'pause' : 'stop' ); ?>
                                 <button style="display: block" class="button hollow status-button" name="<?php echo esc_html( $option_key ) ?>">

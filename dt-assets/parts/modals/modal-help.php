@@ -26,7 +26,7 @@
             <?php if ( current_user_can( 'dt_all_access_contacts' ) ) : ?>
                 <p><strong><?php echo esc_html_x( 'User workload status icons legend:', 'Optional Documentation', 'disciple_tools' ) ?></strong></p>
                 <ul style="list-style-type:none">
-                    <?php $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
+                    <?php $workload_status_options = Disciple_Tools_Users::get_users_fields()['workload_status']['options'] ?? [];
                     foreach ( $workload_status_options as $option_key => $option_val ): ?>
                         <li><span style="background-color: <?php echo esc_html( $option_val['color'] ) ?>; height:10px; padding: 0 5px; border-radius: 2px">&nbsp;</span> <?php echo esc_html( $option_val['label'] ) ?></li>
                     <?php endforeach ?>
@@ -44,42 +44,6 @@
         <p><?php echo esc_html_x( 'This section also includes the history of activity, such as when the contact or group status became active etc.', 'Optional Documentation', 'disciple_tools' ) ?></p>
         <p><?php echo esc_html_x( "You can filter this section either by 'All', 'Comments', or 'Activity'.", 'Optional Documentation', 'disciple_tools' ) ?></p>
     </div>
-
-    <?php
-    /**
-     * Contact and Groups Lists
-     */
-    if ( is_archive() ):?>
-        <!--  Filters Tile - left side -->
-        <div class="help-section" id="filters-help-text" style="display: none">
-            <h3><?php echo esc_html_x( 'Default and Custom Filters Tile', 'Optional Documentation', 'disciple_tools' ) ?></h3>
-            <p><?php echo esc_html_x( 'Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter.', 'Optional Documentation', 'disciple_tools' ) ?></p>
-        </div>
-
-        <!--  Contacts List Tile -->
-        <div class="help-section" id="contacts-list-help-text" style="display: none">
-            <h3><?php echo esc_html_x( 'Contacts List Tile', 'Optional Documentation', 'disciple_tools' ) ?></h3>
-            <p><?php echo esc_html_x( "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more.", 'Optional Documentation', 'disciple_tools' ) ?></p>
-        </div>
-
-        <!--  Groups List Tile -->
-        <div class="help-section" id="groups-list-help-text" style="display: none">
-            <h3><?php echo esc_html_x( 'Groups List Tile', 'Optional Documentation', 'disciple_tools' ) ?></h3>
-            <p><?php echo esc_html_x( "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more.", 'Optional Documentation', 'disciple_tools' ) ?></p>
-        </div>
-
-        <!--  Contacts list switch -->
-        <div class="help-section" id="contacts-switch-help-text" style="display: none">
-            <h3><?php echo esc_html_x( 'Closed Contacts Switch', 'Optional Documentation', 'disciple_tools' ) ?></h3>
-            <p><?php echo esc_html_x( 'Use this toggle switch to either show or not show closed contacts in the list.', 'Optional Documentation', 'disciple_tools' ) ?></p>
-        </div>
-
-        <!--  Groups list switch -->
-        <div class="help-section" id="groups-switch-help-text" style="display: none">
-            <h3><?php echo esc_html_x( 'Inactive Groups Switch', 'Optional Documentation', 'disciple_tools' ) ?></h3>
-            <p><?php echo esc_html_x( 'Use this toggle switch to either show or not show inactive groups in the list.', 'Optional Documentation', 'disciple_tools' ) ?></p>
-        </div>
-    <?php endif; ?>
 
 
     <?php

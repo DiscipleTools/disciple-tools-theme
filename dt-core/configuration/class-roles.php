@@ -57,31 +57,122 @@ class Disciple_Tools_Roles
      * @since  0.1.0
      */
     public function __construct() {
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_custom_roles_and_permissions' ], 11, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_custom_roles_and_permissions' ], 5, 1 );
+        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_setup_permissions' ], 100, 1 );
     } // End __construct()
 
-    public static function dt_setup_custom_roles_and_permissions( $roles ) {
+    public static function get_dt_roles_and_permissions( $use_cache = true ){
+        $cache = wp_cache_get( 'dt_roles_and_permissions' );
+        if ( $cache && $use_cache ){
+            return $cache;
+        }
+        $cache = apply_filters( 'dt_set_roles_and_permissions', [] );
+        wp_cache_set( 'dt_roles_and_permissions', $cache );
+        return $cache;
+    }
+
+    /**
+     * Add custom roles to the roles array.
+     * @param $expected_roles
+     * @return mixed
+     */
+    public static function dt_setup_custom_roles_and_permissions( $expected_roles ) {
+        $expected_roles['registered'] = [
+            'label' => __( 'Registered', 'disciple_tools' ),
+            'description' => 'Has no permissions',
+            'permissions' => [],
+            'order' => 4
+        ];
+
+        $all_user_caps = self::default_user_caps();
+        $user_management_caps = self::default_user_management_caps();
+        $manage_dt_caps = self::default_manage_dt_caps();
+        $metrics_caps = self::default_all_metrics_caps();
+        $manage_role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function( $caps, $slug ) {
+            $caps[$slug] = true;
+            return $caps;
+        }, []);
+
+        $expected_roles['multiplier'] = [
+            'label' => __( 'Multiplier', 'disciple_tools' ),
+            'description' => 'Interacts with Contacts and Groups',
+            'permissions' => array_merge( $all_user_caps ),
+            'type' => [ 'base' ],
+            'order' => 5
+        ];
+        $expected_roles['strategist'] = [
+            'label' => __( 'Strategist', 'disciple_tools' ),
+            'description' => 'View project metrics',
+            'permissions' => array_merge( [ 'access_disciple_tools' => true ], $metrics_caps ),
+            'type' => [ 'support' ],
+            'order' => 40
+        ];
+        $expected_roles['user_manager'] = [
+            'label' => __( 'User Manager', 'disciple_tools' ),
+            'description' => 'List, invite, promote and demote users',
+            'permissions' => array_merge( $all_user_caps, $user_management_caps ),
+            'type' => [ 'base' ],
+            'order' => 95
+        ];
+        $expected_roles['dt_admin'] = [
+            'label' => __( 'Disciple.Tools Admin', 'disciple_tools' ),
+            'description' => 'All D.T permissions',
+            'permissions' => array_merge( $all_user_caps, $user_management_caps, $manage_dt_caps, $metrics_caps ),
+            'type' => [ 'base' ],
+            'order' => 98,
+        ];
+        $expected_roles['administrator'] = [
+            'label' => __( 'Administrator', 'disciple_tools' ),
+            'description' => 'All D.T permissions plus the ability to manage plugins.',
+            'permissions' => array_merge( $all_user_caps, $user_management_caps, $manage_dt_caps, $metrics_caps, $manage_role_caps ),
+            'type' => [ 'base' ],
+            'order' => 100,
+            'is_editable' => false
+        ];
+
+
+        /**
+         * Add custom roles to the roles array.
+         */
         $custom_roles = get_option( 'dt_custom_roles', [] );
         foreach ( $custom_roles as $role ) {
-            $permission_keys = $role['capabilities'];
-            if ( is_array( $permission_keys ) ) {
-                $permissions = array_reduce($permission_keys, function( $permissions, $key ) {
-                    $permissions[$key] = true;
-                    return $permissions;
-                }, []);
-            } else {
-                $permissions = [];
+            $permissions = is_array( $role['capabilities'] ) ? $role['capabilities'] : [];
+            if ( !isset( $expected_roles[$role['slug']] ) ){
+                $expected_roles[$role['slug']] = [
+                    'label' => $role['label'],
+                    'permissions' => $permissions,
+                    'description' => $role['description'],
+                    'is_editable' => $role['is_editable'] ?? true,
+                    'custom' => $role['custom'] ?? true,
+                    'type' => [ 'custom' ]
+                ];
             }
-            $roles[$role['slug']] = [
-                'label' => $role['label'],
-                'permissions' => $permissions,
-                'description' => $role['description'],
-                'is_editable' => true,
-                'custom' => true
-            ];
+        }
+
+        return $expected_roles;
+    }
+
+    /**
+     * Add custom permissions to the roles array.
+     * @param $roles
+     * @return array
+     */
+    public function dt_setup_permissions( $roles ) {
+        $custom_roles = get_option( 'dt_custom_roles', [] );
+        foreach ( $custom_roles as $custom_role ) {
+            $custom_permissions = is_array( $custom_role['capabilities'] ) ? $custom_role['capabilities'] : [];
+            $roles[$custom_role['slug']]['permissions'] = array_merge( $roles[$custom_role['slug']]['permissions'], $custom_permissions );
         }
 
         return $roles;
+    }
+
+    public static function default_user_caps(){
+        return [
+            'read' => true,  //allow access to wp-admin to set 2nd factor auth settings per user.
+            'access_disciple_tools' => true,
+            'read_location' => true,
+        ];
     }
 
     public static function default_multiplier_caps(){
@@ -92,7 +183,6 @@ class Disciple_Tools_Roles
             'create_contacts' => true,
             'read_location' => true,
             'access_peoplegroups' => true,
-            'list_peoplegroups' => true,
             'access_groups' => true,
             'create_groups' => true,
         ];
@@ -107,6 +197,18 @@ class Disciple_Tools_Roles
             'remove_users' => true,
             'list_users' => true,
             'dt_list_users' => true
+        ];
+    }
+
+    public static function default_manage_dt_caps(){
+        return [
+            'manage_dt' => true,
+        ];
+    }
+
+    public static function default_all_metrics_caps(){
+        return [
+            'view_project_metrics' => true
         ];
     }
 
