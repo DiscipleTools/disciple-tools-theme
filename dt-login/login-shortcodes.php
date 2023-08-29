@@ -113,6 +113,7 @@ function dt_firebase_login_ui( $atts ) {
             ui = new firebaseui.auth.AuthUI(firebase.auth());
             showLoader()
         }
+        let rest_url = '<?php echo esc_url( rest_url( 'dt/v1' ) ) ?>';
 
         function showLoader( show = true ) {
             const loaderElement = document.getElementById('loader')
@@ -135,7 +136,7 @@ function dt_firebase_login_ui( $atts ) {
                 user.sendEmailVerification()
             }
 
-            fetch( `${window.location.origin}/wp-json/dt/v1/session/login`, {
+            fetch( `${rest_url}/session/login`, {
                 method: 'POST',
                 body: JSON.stringify(authResult)
             })
