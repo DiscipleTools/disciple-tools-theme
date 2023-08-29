@@ -192,7 +192,7 @@ function location_grid_list( div, grid_id ) {
 
     // Self Data
     let self_population = map_data.self.population_formatted
-    jQuery('#current_level').empty().html(`${window.lodash.escape(translations.population)} ${window.lodash.escape( self_population )}`)
+    jQuery('#current_level').empty().html(`${window.SHAREDFUNCTIONS.escapeHTML(translations.population)} ${window.SHAREDFUNCTIONS.escapeHTML( self_population )}`)
 
     // Build List
     let locations = jQuery('#location_list')
@@ -201,12 +201,12 @@ function location_grid_list( div, grid_id ) {
     let html = `<table id="country-list-table" class="display">`
 
     // Header Section
-    html += `<thead><tr><th>${window.lodash.escape(translations.name)}</th><th>${window.lodash.escape(translations.population)}</th>`
+    html += `<thead><tr><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.name)}</th><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}</th>`
 
     /* Additional Columns */
     if ( LISTDATA.data.custom_column_labels ) {
       jQuery.each( LISTDATA.data.custom_column_labels, function(i,v) {
-        html += `<th>${window.lodash.escape( v.label )}</th>`
+        html += `<th>${window.SHAREDFUNCTIONS.escapeHTML( v.label )}</th>`
       })
     }
     /* End Additional Columns */
@@ -223,13 +223,13 @@ function location_grid_list( div, grid_id ) {
       let population = v.population_formatted
 
       html += `<tr>
-                    <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${window.lodash.escape( v.grid_id )} )">${window.lodash.escape( v.name )}</a></strong></td>
-                    <td>${window.lodash.escape( population )}</td>`
+                    <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${window.SHAREDFUNCTIONS.escapeHTML( v.grid_id )} )">${window.SHAREDFUNCTIONS.escapeHTML( v.name )}</a></strong></td>
+                    <td>${window.SHAREDFUNCTIONS.escapeHTML( population )}</td>`
 
       /* Additional Columns */
       if ( LISTDATA.data.custom_column_data[v.grid_id] ) {
         jQuery.each( LISTDATA.data.custom_column_data[v.grid_id], function(ii,vv) {
-          html += `<td><strong>${window.lodash.escape( vv )}</strong></td>`
+          html += `<td><strong>${window.SHAREDFUNCTIONS.escapeHTML( vv )}</strong></td>`
         })
       } else {
         jQuery.each( LISTDATA.data.custom_column_labels, function(ii,vv) {

@@ -86,7 +86,7 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
                     'rest_base_url' => $this->namespace,
                     'geocoder_url' => trailingslashit( get_stylesheet_directory_uri() ),
                     'geocoder_nonce' => wp_create_nonce( 'wp_rest' ),
-                    'user_status_options' => DT_User_Management::user_management_options()['user_status_options']
+                    'user_status_options' => Disciple_Tools_Users::get_users_fields()['user_status']['options'] ?? [],
                 ]
             ]
         );

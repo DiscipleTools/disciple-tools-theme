@@ -117,16 +117,17 @@ class Disciple_Tools_Roles
         $expected_roles['dt_admin'] = [
             'label' => __( 'Disciple.Tools Admin', 'disciple_tools' ),
             'description' => 'All D.T permissions',
-            'permissions' => array_merge( $all_user_caps, $user_management_caps, $manage_dt_caps, $metrics_caps, $manage_role_caps ),
+            'permissions' => array_merge( $all_user_caps, $user_management_caps, $manage_dt_caps, $metrics_caps ),
             'type' => [ 'base' ],
-            'order' => 98
+            'order' => 98,
         ];
         $expected_roles['administrator'] = [
             'label' => __( 'Administrator', 'disciple_tools' ),
             'description' => 'All D.T permissions plus the ability to manage plugins.',
             'permissions' => array_merge( $all_user_caps, $user_management_caps, $manage_dt_caps, $metrics_caps, $manage_role_caps ),
             'type' => [ 'base' ],
-            'order' => 100
+            'order' => 100,
+            'is_editable' => false
         ];
 
 

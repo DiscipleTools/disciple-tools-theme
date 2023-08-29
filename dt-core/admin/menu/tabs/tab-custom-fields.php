@@ -1355,6 +1355,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="number"><?php esc_html_e( 'Number', 'disciple_tools' ) ?></option>
                             <option value="link"><?php esc_html_e( 'Link', 'disciple_tools' ) ?></option>
                             <option value="date"><?php esc_html_e( 'Date', 'disciple_tools' ) ?></option>
+                            <option value="datetime"><?php esc_html_e( 'DateTime', 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( 'Connection', 'disciple_tools' ) ?></option>
                         </select>
                     </td>
@@ -1550,6 +1551,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'date',
+                    'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'datetime' ){
+                $new_field = [
+                    'name'        => $post_submission['new_field_name'],
+                    'type'        => 'datetime',
                     'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',

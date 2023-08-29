@@ -83,6 +83,21 @@ add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
         'tile' => 'a_beautiful_tile',
         'private'   => true
     ];
+    $fields['datetime_test'] = [
+        'name'        => __( ' Date Time Field', 'disciple_tools' ),
+        'description' => '',
+        'type'        => 'datetime',
+        'default'     => '',
+        'tile' => 'a_beautiful_tile'
+    ];
+    $fields['datetime_test_private'] = [
+        'name'        => __( ' Date Time Field', 'disciple_tools' ),
+        'description' => '',
+        'type'        => 'datetime',
+        'default'     => '',
+        'tile' => 'a_beautiful_tile',
+        'private'   => true
+    ];
     $fields['boolean_test'] = [
         'name'        => __( 'Boolean', 'disciple_tools' ),
         'type'        => 'boolean',
@@ -175,6 +190,8 @@ function dt_test_get_sample_record_fields( $assigned_to = null ){
         'location_test' => [ 'values' => [ [ 'value' => '100089589' ] ] ],
         'date_test' => '2018-12-31',
         'date_test_private' => '2019-12-31',
+        'datetime_test' => '2018-12-31 12:15 GMT+02:00',
+        'datetime_test_private' => '2019-12-31 00:30 GMt+01:00',
         'boolean_test' => true,
         'boolean_test_private' => true,
         'multi_select_test' => [ 'values' => [ [ 'value' => 'one' ], [ 'value' => 'two' ] ] ],

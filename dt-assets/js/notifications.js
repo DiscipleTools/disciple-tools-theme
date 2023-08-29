@@ -13,14 +13,14 @@ function get_new_notification_count() {
 setTimeout(get_new_notification_count, 2000)
 
 const notificationRead = notification_id => `
-  <a class="read-button-${window.lodash.escape( notification_id )} read-button button hollow small" style="border-radius:100px; margin: 0;"
-      onclick="mark_unread( ${window.lodash.escape( notification_id )} )">
+  <a class="read-button-${window.SHAREDFUNCTIONS.escapeHTML( notification_id )} read-button button hollow small" style="border-radius:100px; margin: 0;"
+      onclick="mark_unread( ${window.SHAREDFUNCTIONS.escapeHTML( notification_id )} )">
       <!--<i class="fi-minus hollow"></i>-->
    </a>
 `
 const notificationNew = notification_id => `
-  <a class="new-button-${window.lodash.escape( notification_id )} new-button button small" style="border-radius:100px; margin: 0;"
-     onclick="mark_viewed( ${window.lodash.escape( notification_id )} )">
+  <a class="new-button-${window.SHAREDFUNCTIONS.escapeHTML( notification_id )} new-button button small" style="border-radius:100px; margin: 0;"
+     onclick="mark_viewed( ${window.SHAREDFUNCTIONS.escapeHTML( notification_id )} )">
      <!--<i class="fi-check"></i>-->
   </a>
 `
@@ -55,7 +55,7 @@ function mark_all_viewed () {
 
 const notification_group_header = (record_title) => `
 <div class="cell notification-group-header">
-    ${window.lodash.escape( record_title )}
+    ${window.SHAREDFUNCTIONS.escapeHTML( record_title )}
 </div>
 `
 
@@ -77,9 +77,9 @@ function notification_template (id, note, is_new, pretty_time) {
 
         <div class="auto cell">
            ${note}<br>
-           <span><small><strong>${window.lodash.escape(pretty_time[0])}</strong> | ${window.lodash.escape(pretty_time[1])}</small></span>
+           <span><small><strong>${window.SHAREDFUNCTIONS.escapeHTML(pretty_time[0])}</strong> | ${window.SHAREDFUNCTIONS.escapeHTML(pretty_time[1])}</small></span>
         </div>
-        <div class="small-2 medium-1 cell padding-5 grid-x align-center align-middle ${window.lodash.escape( label )} toggle-area-${window.lodash.escape( id )}">
+        <div class="small-2 medium-1 cell padding-5 grid-x align-center align-middle ${window.SHAREDFUNCTIONS.escapeHTML( label )} toggle-area-${window.SHAREDFUNCTIONS.escapeHTML( id )}">
             ${button}
         </div>
       </div>
@@ -170,12 +170,12 @@ function get_notifications (all, reset, dropdown = false, limit = 20) {
       (all === true && (all_offset === 0 || !all_offset )) ||
       all === false && (new_offset === 0 || !new_offset))
     { // determines if this is the first query (offset 0) and there is nothing returned.
-      jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( window.wpApiNotifications.translations["no-notifications"] )}</div>`)
+      jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiNotifications.translations["no-notifications"] )}</div>`)
       jQueryElements.nextAll && jQueryElements.nextAll.hide()
       jQueryElements.nextNew && jQueryElements.nextNew.hide()
     } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
       if (reset) {
-        jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.lodash.escape( window.wpApiNotifications.translations["no-unread"] )}</div>`)
+        jQueryElements.notificationList.html(`<div class="cell center empty-notification-message">${window.SHAREDFUNCTIONS.escapeHTML( window.wpApiNotifications.translations["no-unread"] )}</div>`)
       }
 
       jQueryElements.nextAll && jQueryElements.nextAll.hide()

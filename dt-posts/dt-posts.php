@@ -11,7 +11,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     /**
      * Specifies which HTML tags are permissible in comments.
      */
-    private static $allowable_comment_tags = array(
+    public static $allowable_comment_tags = array(
         'a' => array(
           'href' => array(),
           'title' => array()
@@ -221,7 +221,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post_user_meta[$field_key] = $field_value;
                 unset( $fields[ $field_key ] );
             }
-            if ( $field_type === 'date' && !is_numeric( $field_value ) ){
+            if ( ( $field_type === 'date' || $field_type === 'datetime' ) && !is_numeric( $field_value ) ){
                 if ( $is_private ) {
                     $post_user_meta[$field_key] = strtotime( $field_value );
                     unset( $fields[ $field_key ] );
@@ -508,7 +508,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $fields as $field_key => $field_value ){
             if ( !self::is_post_key_contact_method_or_connection( $post_settings, $field_key ) ) {
                 $field_type = $post_settings['fields'][ $field_key ]['type'] ?? '';
-                if ( $field_type === 'date' && !is_numeric( $field_value ) ) {
+                if ( ( $field_type === 'date' || $field_type === 'datetime' ) && !is_numeric( $field_value ) ) {
                     if ( empty( $field_value ) ) { // remove date
                         delete_post_meta( $post_id, $field_key );
                         continue;
@@ -1656,6 +1656,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         'hist_time' => $a->hist_time,
                         'meta_id' => $a->meta_id,
                         'histid' => $a->histid,
+                        'field_type' => $a->field_type,
                     ];
 
                     $activity_simple[] = apply_filters( 'dt_format_post_activity', $activity_obj, $a );
@@ -1697,6 +1698,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'location_meta',
             'key_select',
             'date',
+            'datetime',
             'boolean',
             'communication_channel',
             'text',
@@ -1865,6 +1867,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         break;
                     case 'tags':
                     case 'date':
+                    case 'datetime':
                     case 'link':
                     case 'location':
                     case 'multi_select':
@@ -2137,6 +2140,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                     break;
                 case 'date':
+                case 'datetime':
                     $revert_obj = array_values( $reverted['values'] )[0] ?? null;
                     $post_updates[$field_key] = ( !empty( $revert_obj ) && $revert_obj['keep'] ) ? $revert_obj['value'] : '';
                     break;
@@ -2736,6 +2740,11 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $tile_options[$post_type] = apply_filters( 'dt_custom_tiles_after_combine', $tile_options[$post_type], $post_type );
 
+        //there should not be a "No Tile" tile.
+        if ( isset( $tile_options[$post_type]['no_tile'] ) ){
+            unset( $tile_options[$post_type]['no_tile'] );
+        }
+
         wp_cache_set( $post_type . '_tile_options', $tile_options[$post_type] );
         return $tile_options[$post_type];
     }
@@ -2994,6 +3003,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'boolean':
                 case 'key_select':
                 case 'date':
+                case 'datetime':
                 case 'user_select':
                 case 'number':
                     return $post[ $field_id ] == $value;
@@ -3051,6 +3061,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             'date' => [
                 'label' => 'Date',
                 'description' => 'A date, like 2020-01-01',
+                'user_creatable' => true,
+            ],
+            'datetime' => [
+                'label' => 'Date with a time',
+                'description' => 'A date, like August 9, 2023 at 4:10 PM',
                 'user_creatable' => true,
             ],
             'key_select' => [

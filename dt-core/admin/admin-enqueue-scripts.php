@@ -26,11 +26,7 @@ add_action( 'admin_enqueue_scripts', 'dt_new_user_scripts' );
  * Loads scripts and styles for the contacts page.
  */
 function dt_admin_pages_scripts() {
-    global $pagenow, $post;
-
-    if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) ) {
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
-    }
+    wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [ 'jquery' ], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
     wp_enqueue_style( 'dt_admin_css' );
 }
@@ -49,7 +45,6 @@ function dt_people_groups_post_type_scripts() {
             'jquery-ui-core',
         ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
         wp_localize_script( 'dt_peoplegroups_scripts', 'dtPeopleGroupsAPI', build_people_groups_api_object() );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     }
 }
 
