@@ -11,7 +11,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     /**
      * Specifies which HTML tags are permissible in comments.
      */
-    private static $allowable_comment_tags = array(
+    public static $allowable_comment_tags = array(
         'a' => array(
           'href' => array(),
           'title' => array()
