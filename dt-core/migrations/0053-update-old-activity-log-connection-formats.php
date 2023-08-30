@@ -24,6 +24,7 @@ class Disciple_Tools_Migration_0053 extends Disciple_Tools_Migration {
         );
 
         // Iterate over identified connections.....
+        $sql_queries = [];
         foreach ( $old_connection_logs ?? [] as $log ){
             if ( isset( $log['id'], $log['post_type'], $log['p2p_key'], $log['direction'] ) ){
                 $log_id = $log['id'];
@@ -44,19 +45,49 @@ class Disciple_Tools_Migration_0053 extends Disciple_Tools_Migration {
                 $post_field_settings = DT_Posts::get_post_field_settings( $post_type, false );
                 $connection_field = DT_Posts::get_post_field_settings_by_p2p( $post_field_settings, $p2p_key, $directions );
                 if ( !empty( $connection_field ) && isset( $connection_field['key'] ) ){
-                    $field_key = $connection_field['key'];
+                    //...$field_key = $connection_field['key'];
 
-                    // Migrate log record to new format.
-                    $wpdb->query(
-                        // phpcs:disable
-                        $wpdb->prepare( "
-                            UPDATE $wpdb->dt_activity_log
-                            SET object_subtype = %s, object_note = %s, field_type = %s
-                            WHERE histid = %d
-                        ", $field_key, $log_direction, 'connection', $log_id )
-                        // phpcs:enable
-                    );
+                    $sql_queries[] = [
+                        'log_id' => $log_id,
+                        'field_key' => $connection_field['key'],
+                        'log_direction' => $log_direction
+                    ];
                 }
+            }
+        }
+
+        // Batch and dispatch update queries.
+        $batch_limit = 1000;
+        $batch_size = ( count( $sql_queries ) < $batch_limit ) ? count( $sql_queries ) : $batch_limit;
+        $batch_counter = 0;
+        $obj_subtype_sql = [];
+        $obj_note_sql = [];
+        $hist_ids = [];
+        foreach ( $sql_queries as $log ) {
+            $hist_ids[] = $log['log_id'];
+            $obj_subtype_sql[] = 'WHEN ' . $log['log_id'] . " THEN '" . $log['field_key'] . "'";
+            $obj_note_sql[] = 'WHEN ' . $log['log_id'] . " THEN '" . $log['log_direction'] . "'";
+
+            if ( ++$batch_counter >= $batch_size ) {
+                // phpcs:disable
+                $sql = "
+                    UPDATE $wpdb->dt_activity_log
+                    SET
+                        object_subtype = ( CASE histid ". implode(' ', $obj_subtype_sql ) ." END ),
+                        object_note = ( CASE histid ". implode(' ', $obj_note_sql ) ." END ),
+                        field_type = 'connection'
+                    WHERE histid IN ( ". implode( ',', $hist_ids ) ." );
+                ";
+
+                // Dispatch batch....
+                $wpdb->query( $sql );
+
+                // Reset counters and containers.
+                $batch_counter = 0;
+                $obj_subtype_sql = [];
+                $obj_note_sql = [];
+                $hist_ids = [];
+                // phpcs:enable
             }
         }
     }
