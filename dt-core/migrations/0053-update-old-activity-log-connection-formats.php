@@ -45,8 +45,6 @@ class Disciple_Tools_Migration_0053 extends Disciple_Tools_Migration {
                 $post_field_settings = DT_Posts::get_post_field_settings( $post_type, false );
                 $connection_field = DT_Posts::get_post_field_settings_by_p2p( $post_field_settings, $p2p_key, $directions );
                 if ( !empty( $connection_field ) && isset( $connection_field['key'] ) ){
-                    //...$field_key = $connection_field['key'];
-
                     $sql_queries[] = [
                         'log_id' => $log_id,
                         'field_key' => $connection_field['key'],
