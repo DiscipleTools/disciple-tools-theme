@@ -1297,7 +1297,7 @@ class Disciple_Tools_Mapping_Queries {
         return $new_data;
     }
 
-    public static function cluster_geojson( $post_type, $query = [] ){
+    public static function cluster_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
         if ( empty( $sql['where_sql'] ) ){
@@ -1312,7 +1312,9 @@ class Disciple_Tools_Mapping_Queries {
             WHERE lgm.post_type = %s
             AND
             " . $sql["where_sql"] . "
-            ", $post_type ), ARRAY_A
+            ORDER BY lgm.post_id
+            LIMIT %d, %d;
+            ", $post_type, $offset, $limit ), ARRAY_A
         );
         //phpcs:enable
 

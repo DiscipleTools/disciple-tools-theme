@@ -46,6 +46,7 @@ let mapbox_library_api = {
           <div id="legend-bar" class="grid-x grid-margin-x grid-padding-x">
             <div class="cell small-2 center info-bar-font">
                 ${window.SHAREDFUNCTIONS.escapeHTML( this.title )}
+                <div id="loading-legend"></div>
             </div>
             <div id="map-type" class="border-left">
               <button class="button small select-button ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
@@ -284,11 +285,31 @@ jQuery('.close-details').on('click', function() {
 })
 
 
+let recursive_load = async function (data = [], offset = 0) {
+  let geojson = await makeRequest("POST", mapbox_library_api.obj.settings.rest_url, {
+    post_type: mapbox_library_api.post_type,
+    query: mapbox_library_api.query_args || {},
+    offset
+  }, mapbox_library_api.obj.settings.rest_base_url)
+
+
+  data = data.concat(geojson.features)
+  $('#loading-legend').html(spinner_html + `<span>Loaded ${data.length} records</span>`)
+
+  // return data;
+  if (geojson.features.length > 0 && geojson.features.length === 50000 ) {
+    return recursive_load(data, offset + 50000)
+  }
+  $('#loading-legend').html('');
+  return data
+
+}
+
 
 let cluster_map = {
   default_setup: async function (){
-    let geojson = await window.makeRequest( "POST", mapbox_library_api.obj.settings.rest_url, { post_type: mapbox_library_api.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
-    cluster_map.load_layer(geojson)
+    let data = await recursive_load()
+    cluster_map.load_layer({features:data, type:'FeatureCollection'})
   },
   load_layer: function ( geojson ) {
 

@@ -122,8 +122,9 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
+        $offset = !empty( $params['offset'] ) ? $params['offset'] : 0;
 
-        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query );
+        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query, $offset );
     }
 
 
