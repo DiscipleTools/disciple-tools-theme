@@ -88,9 +88,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $name = $fields['name'] ?? $fields['title'];
 
                 $fields['notes'] = isset( $fields['notes'] ) ? $fields['notes'] : [];
-                if ( is_array( $fields['notes'] ) ){
-                    $fields['notes']['name'] = 'Name: ' . $name;
-                }
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'] );
 
@@ -338,7 +335,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $error = new WP_Error();
             foreach ( $notes as $note ) {
-                $potential_error = self::add_post_comment( $post_type, $post_id, $note, 'comment', [], false, true );
+                //add a second to the comments so when we display logs activity shows first and then comments.
+                $comment_date = dt_format_date( time() +1, 'Y-m-d H:i:s' );
+                $potential_error = self::add_post_comment( $post_type, $post_id, $note, 'comment', [ 'comment_date' => $comment_date ], false, true );
                 if ( is_wp_error( $potential_error ) ) {
                     $error->add( 'comment_fail', $potential_error->get_error_message() );
                 }
