@@ -104,7 +104,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     }
                 }
                 //add a second to the comments so when we display logs activity shows first and then comments.
-                $comment_date = dt_format_date( time() +1, 'Y-m-d H:i:s' );
+                $comment_date = dt_format_date( time() -1, 'Y-m-d H:i:s' );
                 self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [ 'comment_date' => $comment_date ], false, $silent );
 
                 if ( $check_permissions && !self::can_view( $post_type, $updated_post['ID'] ) ){
@@ -337,9 +337,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $error = new WP_Error();
             foreach ( $notes as $note ) {
-                //add time to the comments so when we display logs activity shows first and then comments.
-                $comment_date = dt_format_date( time() +2, 'Y-m-d H:i:s' );
-                $potential_error = self::add_post_comment( $post_type, $post_id, $note, 'comment', [ 'comment_date' => $comment_date ], false, true );
+                $potential_error = self::add_post_comment( $post_type, $post_id, $note, 'comment', [], false, true );
                 if ( is_wp_error( $potential_error ) ) {
                     $error->add( 'comment_fail', $potential_error->get_error_message() );
                 }
@@ -552,9 +550,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
             $error = new WP_Error();
             foreach ( $notes as $note ) {
-                //add time to the comments so when we display logs activity shows first and then comments.
-                $comment_date = dt_format_date( time() +2, 'Y-m-d H:i:s' );
-                $potential_error = self::add_post_comment( $post_type, $post_id, $note, 'comment', [ 'comment_date' => $comment_date ], false, true );
+                $potential_error = self::add_post_comment( $post_type, $post_id, $note, 'comment', [], false, true );
                 if ( is_wp_error( $potential_error ) ) {
                     $error->add( 'comment_fail', $potential_error->get_error_message() );
                 }
