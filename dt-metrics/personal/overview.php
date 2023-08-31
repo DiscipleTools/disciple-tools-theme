@@ -85,7 +85,9 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
     }
 
     public function overview() {
-        $data = [
+        $performance_mode = true; //@todo set as option
+
+        $data = $performance_mode ? [] : [
             'preferences'       => $this->preferences(),
             'hero_stats'        => $this->chart_my_hero_stats(),
             'group_types'       => $this->chart_group_types(),
@@ -93,7 +95,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             'group_generations' => $this->chart_group_generations(),
         ];
         $modules = dt_get_option( 'dt_post_type_modules' );
-        if ( !empty( $modules['access_module']['enabled'] ) ){
+        if ( !empty( $modules['access_module']['enabled'] ) && !$performance_mode ){
             $data['contacts_progress'] = $this->chart_contacts_progress();
         }
 
@@ -122,9 +124,10 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             $user_id = get_current_user_id();
         }
 
-        $results = self::query_my_hero_stats( $user_id );
+        $performance_mode = true; //@todo set as option
+        $results = $performance_mode ? [] : self::query_my_hero_stats( $user_id );
 
-        $group_health = self::query_my_group_health();
+        $group_health = $performance_mode ? [] : self::query_my_group_health();
         $needs_training = 0;
 
         if ( ! empty( $group_health ) ) {
@@ -144,7 +147,6 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             'groups' => $results['groups'],
             'needs_training' => $needs_training,
             'fully_practicing' => (int) $results['groups'] - (int) $needs_training,
-            'teams' => (int) $results['teams'],
         ];
 
         return $chart;
@@ -309,31 +311,12 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
                       AND d.meta_value = 'active'
                 WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups')
-                as `groups`,
-
-                (SELECT count(a.ID)
-                FROM $wpdb->posts as a
-                  JOIN $wpdb->postmeta as c
-                    ON a.ID=c.post_id
-                      AND c.meta_key = 'assigned_to'
-                      AND c.meta_value = CONCAT( 'user-', %s )
-                  JOIN $wpdb->postmeta as d
-                    ON a.ID=d.post_id
-                      AND d.meta_key = 'group_status'
-                      AND d.meta_value = 'active'
-                  JOIN $wpdb->postmeta as e
-                    ON a.ID=e.post_id
-                      AND e.meta_key = 'group_type'
-                      AND e.meta_value = 'team'
-                WHERE a.post_status = 'publish'
-                  AND a.post_type = 'groups')
-                as `teams`
+                as `groups`
             ",
             $user_id,
             $user_id,
             $user_id,
             $user_id,
-            $user_id
         ), ARRAY_A );
 
         if ( empty( $personal_counts ) ) {

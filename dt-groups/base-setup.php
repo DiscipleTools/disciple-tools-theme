@@ -955,7 +955,8 @@ class DT_Groups_Base extends DT_Module_Base {
     //build list page filters
     public static function dt_user_list_filters( $filters, $post_type ){
         if ( $post_type === 'groups' ){
-            $counts = self::get_my_groups_status_type();
+            $performance_mode = true; //@todo set as option
+            $counts = $performance_mode ? [] :self::get_my_groups_status_type();
             $fields = DT_Posts::get_post_field_settings( $post_type );
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             /**
@@ -1040,7 +1041,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
 
-            $counts = self::get_all_groups_status_type();
+
+            $counts = $performance_mode ? [] : self::get_all_groups_status_type();
             $active_counts = [];
             $update_needed = 0;
             $status_counts = [];

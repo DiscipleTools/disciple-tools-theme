@@ -1271,7 +1271,8 @@ class Disciple_Tools_Posts
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
             }
         }
-        if ( empty( $sort_sql ) ){
+        $performance_mode = true; //@todo set as option
+        if ( empty( $sort_sql ) || $performance_mode ){
             $sort_sql = 'p.ID desc';
         }
 

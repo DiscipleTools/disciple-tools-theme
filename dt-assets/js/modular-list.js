@@ -428,7 +428,7 @@
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
     sort = sort || current_filter.query.sort;
-    current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
+    current_filter.query.sort = (typeof sort === "string") ? sort : ''
 
     // Conduct a deep copy (clone) of filter, to support future returns to default
     current_filter = $.extend(true, {}, current_filter);
@@ -629,7 +629,7 @@
   }
 
   function reset_sorting_in_table_header(currentFilter) {
-    let sort_field = window.lodash.get(currentFilter, "query.sort", "name");
+    let sort_field = window.lodash.get(currentFilter, "query.sort", "post_date");
     //reset sorting in table header
     table_header_row.removeClass("sorting_asc");
     table_header_row.removeClass("sorting_desc");
