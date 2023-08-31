@@ -1312,7 +1312,7 @@ class Disciple_Tools_Mapping_Queries {
             WHERE lgm.post_type = %s
             AND
             " . $sql["where_sql"] . "
-            ORDER BY lgm.post_id
+            ORDER BY lgm.grid_meta_id
             LIMIT %d, %d;
             ", $post_type, $offset, $limit ), ARRAY_A
         );
