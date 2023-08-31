@@ -1272,7 +1272,7 @@ class Disciple_Tools_Posts
             }
         }
         if ( empty( $sort_sql ) ){
-            $sort_sql = 'p.post_title asc';
+            $sort_sql = 'p.ID desc';
         }
 
         $group_by_sql = '';

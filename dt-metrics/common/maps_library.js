@@ -286,7 +286,7 @@ jQuery('.close-details').on('click', function() {
 
 
 let recursive_load = async function (data = [], offset = 0) {
-  let geojson = await makeRequest("POST", mapbox_library_api.obj.settings.rest_url, {
+  let geojson = await window.makeRequest("POST", mapbox_library_api.obj.settings.rest_url, {
     post_type: mapbox_library_api.post_type,
     query: mapbox_library_api.query_args || {},
     offset
