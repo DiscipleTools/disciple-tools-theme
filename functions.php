@@ -421,8 +421,8 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              * Contains all those features that only run if in the Admin panel
              * or those things directly supporting Admin panel features.
              */
-            if ( is_admin() || wp_doing_cron() ){
-
+            $disable = isset( $_POST['wppusher'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+            if ( ( is_admin() || wp_doing_cron() ) && !$disable ){
                 require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
                 $theme_folder_name = basename( dirname( __FILE__ ) );
                 PucFactory::buildUpdateChecker(
