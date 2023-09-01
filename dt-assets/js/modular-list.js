@@ -714,7 +714,11 @@
 
       // Remove status property from query if empty.
       if ( status.length === 0 ) {
-        window.lodash.unset(current_filter['query'], status_key);
+        if ( is_custom_filter() ){
+          current_filter.query.fields = current_filter.query.fields.filter((item) => !Object.prototype.hasOwnProperty.call(item, status_key))
+        } else {
+          delete current_filter.query[status_key]
+        }
       }
     }
 
