@@ -379,22 +379,69 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = mktime( 0, 0, 0, 1, 1, $year );
         $end = mktime( 24, 60, 60, 12, 31, $year );
 
-        $results = $wpdb->get_results(
+        // Determine total number of connections within time frame.
+        $connected = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( DISTINCT log.object_id ) AS count,
+                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
                     MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
                 FROM $wpdb->dt_activity_log AS log
+                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
                 WHERE log.object_type = %s
                     AND log.object_subtype = %s
                     AND log.meta_key = %s
                     AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
                 GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $field, $connection_type, $start, $end )
+            ", $post_type, $field, $connection_type, $start, $end, 'connected to' )
         );
 
-        $cumulative_offset = self::get_connection_field_cumulative_offset( $connection_type, $start );
+        // Determine total number of disconnections within time frame.
+        $disconnected = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
+                FROM $wpdb->dt_activity_log AS log
+                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
+                GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+            ", $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
+        );
+
+        // Now, calculate the deltas between the two action types.
+        $deltas = [];
+        foreach ( $connected ?? [] as $connection ) {
+            $deltas[$connection->month] = $connection->count;
+        }
+
+        foreach ( $disconnected ?? [] as $disconnection ) {
+            if ( isset( $deltas[$disconnection->month] ) ) {
+                $deltas[$disconnection->month] -= $disconnection->count;
+
+            } else {
+                $deltas[$disconnection->month] = 0 - $disconnection->count;
+            }
+        }
+
+        // Now, package deltas into results package.
+        $results = [];
+        foreach ( $deltas as $month => $count ) {
+            $results[] = [
+                'count' => strval( $count ),
+                'month' => strval( $month )
+            ];
+        }
+
+        $cumulative_offset = self::get_connection_field_cumulative_offset( $post_type, $field, $connection_type, 0, $start );
 
         return [
             'data' => $results,
@@ -409,20 +456,67 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
-        $results = $wpdb->get_results(
+        // Determine total number of connections within time frame.
+        $connected = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( DISTINCT log.object_id ) AS count,
+                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
                     YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                 FROM $wpdb->dt_activity_log AS log
+                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
                 WHERE log.object_type = %s
                     AND log.object_subtype = %s
                     AND log.meta_key = %s
                     AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
                 GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
                 ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $field, $connection_type, $start, $end )
+            ", $post_type, $field, $connection_type, $start, $end, 'connected to' )
         );
+
+        // Determine total number of disconnections within time frame.
+        $disconnected = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
+                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
+                FROM $wpdb->dt_activity_log AS log
+                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
+                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+            ", $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
+        );
+
+        // Now, calculate the deltas between the two action types.
+        $deltas = [];
+        foreach ( $connected ?? [] as $connection ) {
+            $deltas[$connection->year] = $connection->count;
+        }
+
+        foreach ( $disconnected ?? [] as $disconnection ) {
+            if ( isset( $deltas[$disconnection->year] ) ) {
+                $deltas[$disconnection->year] -= $disconnection->count;
+
+            } else {
+                $deltas[$disconnection->year] = 0 - $disconnection->count;
+            }
+        }
+
+        // Now, package deltas into results package.
+        $results = [];
+        foreach ( $deltas as $year => $count ) {
+            $results[] = [
+                'count' => strval( $count ),
+                'year' => strval( $year )
+            ];
+        }
 
         return [
             'data' => $results
@@ -589,23 +683,41 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         return $results;
     }
 
-    private static function get_connection_field_cumulative_offset( $connection_type, $timestamp ) {
+    private static function get_connection_field_cumulative_offset( $post_type, $field, $connection_type, $start, $end ) {
         global $wpdb;
 
-        $total = $wpdb->get_var(
-            $wpdb->prepare( "
+        $connected_total = $wpdb->get_var(
+            $wpdb->prepare( '
                 SELECT
-                    COUNT( meta.meta_value ) AS count
-                FROM $wpdb->p2p AS p2p
-                JOIN $wpdb->p2pmeta AS meta
-                    ON p2p.p2p_id = meta.p2p_id
-                WHERE p2p.p2p_type = %s
-                    AND meta.meta_key = 'date'
-                    AND meta.meta_value <= %s
-            ", $connection_type, gmdate( 'Y-m-d H:i:s', $timestamp ) )
+                    COUNT( DISTINCT p.ID, p.post_title ) AS count
+                FROM wp_dt_activity_log AS log
+                LEFT JOIN wp_posts AS p ON p.ID = log.object_id
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
+            ', $post_type, $field, $connection_type, $start, $end, 'connected to' )
         );
 
-        return $total ? intval( $total ) : 0;
+        $disconnected_total = $wpdb->get_var(
+            $wpdb->prepare( '
+                SELECT
+                    COUNT( DISTINCT p.ID, p.post_title ) AS count
+                FROM wp_dt_activity_log AS log
+                LEFT JOIN wp_posts AS p ON p.ID = log.object_id
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
+            ', $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
+        );
+
+        $total = ( $connected_total && $disconnected_total ) ? ( intval( $connected_total ) - intval( $disconnected_total ) ) : 0;
+        return $total;
     }
 
     public static function get_posts_by_field_in_date_range( $post_type, $field, $args = [] ){
@@ -816,35 +928,60 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     if ( !empty( $p2p_type ) ){
 
                         // phpcs:disable
-                        $results = $wpdb->get_results(
+                        // Determine total number of connections within time frame.
+                        $connected_results = $wpdb->get_results(
                             $wpdb->prepare( "
-                            SELECT DISTINCT
-                                p.ID AS id, p.post_title AS name
-                            FROM $wpdb->p2p AS p2p
-                            JOIN $wpdb->p2pmeta AS meta ON p2p.p2p_id = meta.p2p_id
-                            LEFT JOIN $wpdb->posts AS p ON p.ID = meta.p2p_id
-                            WHERE p2p.p2p_type = %s
-                                AND meta.meta_key = 'date'
-                                AND meta.meta_value >= %s
-                                AND meta.meta_value <= %s
-                                AND p.ID IS NOT NULL
-                            LIMIT %d
-                        ", $p2p_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ), $limit )
+                                SELECT DISTINCT
+                                    p.ID AS id, p.post_title AS name
+                                FROM $wpdb->dt_activity_log AS log
+                                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
+                                    AND log.hist_time BETWEEN %s AND %s
+                                    AND log.action = %s
+                                    AND p.ID IS NOT NULL
+                        ", $post_type, $field, $p2p_type, $start, $end, 'connected to' )
                         );
-                        $total = $wpdb->get_results(
+
+                        // Determine total number of disconnections within time frame.
+                        $disconnected_results = $wpdb->get_results(
                             $wpdb->prepare( "
-                            SELECT COUNT(DISTINCT
-                                p.ID, p.post_title) AS total
-                            FROM $wpdb->p2p AS p2p
-                            JOIN $wpdb->p2pmeta AS meta ON p2p.p2p_id = meta.p2p_id
-                            LEFT JOIN $wpdb->posts AS p ON p.ID = meta.p2p_id
-                            WHERE p2p.p2p_type = %s
-                                AND meta.meta_key = 'date'
-                                AND meta.meta_value >= %s
-                                AND meta.meta_value <= %s
-                                AND p.ID IS NOT NULL
-                        ", $p2p_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ), $limit ), ARRAY_N
+                                SELECT DISTINCT
+                                    p.ID AS id, p.post_title AS name
+                                FROM $wpdb->dt_activity_log AS log
+                                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
+                                    AND log.hist_time BETWEEN %s AND %s
+                                    AND log.action = %s
+                                    AND p.ID IS NOT NULL
+                        ", $post_type, $field, $p2p_type, $start, $end, 'disconnected from' )
                         );
+
+                        // Package existing connection results.
+                        $packaged_connections = [];
+                        foreach ( $connected_results ?? [] as $connected ) {
+                            $is_disconnected = false;
+                            foreach ( $disconnected_results ?? [] as $disconnected ) {
+                                if ( $connected->id === $disconnected->id ) {
+                                    $is_disconnected = true;
+                                }
+                            }
+
+                            if ( !$is_disconnected ) {
+                                $packaged_connections[] = $connected;
+                            }
+                        }
+
+                        $total = [
+                          [
+                              count ( $packaged_connections )
+                          ]
+                        ];
+
+                        $results = array_slice( $packaged_connections, 0, $limit );
                         // phpcs:enable
                     }
                     break;

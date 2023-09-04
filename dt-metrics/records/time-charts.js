@@ -334,7 +334,19 @@ function initialiseChart(id) {
     const valueAxis = chart.yAxes.push( new window.am4charts.ValueAxis() )
     valueAxis.maxPrecision = 0
 
-    chart.data = data
+    // Ensure line data counts do not fall below zero.
+    if (id === 'additions-chart') {
+        chart.data = data.map(x => {
+          if (x.count && (parseInt(x.count) < 0)) {
+          x.count = 0;
+        }
+
+        return x;
+      });
+
+    } else {
+      chart.data = data
+    }
 
     return [ chart, valueAxis ]
 }
@@ -674,6 +686,9 @@ function formatSimpleMonthData(monthlyData) {
         const monthData = monthlyData.find((mData) => mData.month === String(monthNumber) )
         const count = monthData ? parseInt(monthData.count) : 0
         cumulativeTotal = cumulativeTotal + count
+        if (cumulativeTotal < 0) {
+          cumulativeTotal = 0;
+        }
 
         return {
             'month': monthLabel,
