@@ -123,3 +123,142 @@ function buildFieldSelectOptions() {
         <option value="${value}"> ${label} </option>
     `)
 }
+
+jQuery(document).on('mouseover', '#generation_map strong', function (e) {
+  let controls_span = jQuery(e.currentTarget).find('.gen-node-controls');
+  jQuery(controls_span).show();
+});
+
+jQuery(document).on('mouseleave', '#generation_map strong', function (e) {
+  let controls_span = jQuery(e.currentTarget).find('.gen-node-controls');
+  jQuery(controls_span).hide();
+});
+
+jQuery(document).on('click', '#generation_map .gen-node-control-add-child', function (e) {
+  let control = jQuery(e.currentTarget);
+  display_add_child_modal(jQuery(control).data('post_type'), jQuery(control).data('post_id'), jQuery(control).data('post_name'));
+});
+
+jQuery(document).on('click', '#generation_map .gen-node-control-focus', function (e) {
+  let control = jQuery(e.currentTarget);
+  display_focus_modal(jQuery(control).data('post_type'), jQuery(control).data('post_id'), jQuery(control).data('post_name'));
+});
+
+jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
+  handle_add_child();
+});
+
+jQuery(document).on('click', '#gen_tree_focus_but', function (e) {
+  handle_focus();
+});
+
+function display_add_child_modal(post_type, post_id, post_name) {
+  let list_html = `
+    <input id="gen_tree_add_child_post_type" type="hidden" value="${post_type}" />
+    <input id="gen_tree_add_child_post_id" type="hidden" value="${post_id}" />
+    <label>
+      ${window.lodash.escape(window.dtMetricsProject.translations.modal.add_child_name_title)}
+      <input id="gen_tree_add_child_name" type="text" />
+    </label>`;
+
+  let buttons_html = `<button id="gen_tree_add_child_but" class="button" type="button">${window.lodash.escape(window.dtMetricsProject.translations.modal.add_child_but)}</button>`;
+
+  let modal = jQuery('#template_metrics_modal');
+  let modal_buttons = jQuery('#template_metrics_modal_buttons');
+  let title = window.dtMetricsProject.translations.modal.add_child_title + ` [ ${post_name} ]`;
+  let content = jQuery('#template_metrics_modal_content');
+
+  jQuery(modal_buttons).empty().html(buttons_html);
+
+  jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
+  jQuery(content).css('max-height', '300px');
+  jQuery(content).css('overflow', 'auto');
+  jQuery(content).empty().html(list_html);
+  jQuery(modal).foundation('open');
+}
+
+function handle_add_child() {
+  let post_type = jQuery('#gen_tree_add_child_post_type').val();
+  let parent_id = jQuery('#gen_tree_add_child_post_id').val();
+  let child_title = jQuery('#gen_tree_add_child_name').val();
+  let field_id = jQuery('#post-field-select').val();
+
+  if (post_type && parent_id && child_title && field_id) {
+    window.API.create_post(post_type, {
+      'title': child_title,
+        'additional_meta': {
+          'created_from': parent_id,
+          'add_connection': field_id
+        }
+    }).then(new_post => {
+
+      // Close modal and refresh generation tree.
+      jQuery('#template_metrics_modal').foundation('close');
+      jQuery('#post-field-submit-button').trigger('click');
+
+    }).catch(function (error) {
+      console.error(error);
+    });
+
+  }
+}
+
+function display_focus_modal(post_type, post_id, post_name) {
+  let list_html = `
+    <input id="gen_tree_focus_post_type" type="hidden" value="${post_type}" />
+    <input id="gen_tree_focus_post_id" type="hidden" value="${post_id}" />
+    ${window.lodash.escape(window.dtMetricsProject.translations.modal.focus_are_you_sure_question)}`;
+
+  let buttons_html = `<button id="gen_tree_focus_but" class="button" type="button">${window.lodash.escape(window.dtMetricsProject.translations.modal.focus_yes)}</button>`;
+
+  let modal = jQuery('#template_metrics_modal');
+  let modal_buttons = jQuery('#template_metrics_modal_buttons');
+  let title = window.dtMetricsProject.translations.modal.focus_title + ` [ ${post_name} ]`;
+  let content = jQuery('#template_metrics_modal_content');
+
+  jQuery(modal_buttons).empty().html(buttons_html);
+
+  jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
+  jQuery(content).css('max-height', '300px');
+  jQuery(content).css('overflow', 'auto');
+  jQuery(content).empty().html(list_html);
+  jQuery(modal).foundation('open');
+}
+
+function handle_focus() {
+  let post_type = jQuery('#gen_tree_focus_post_type').val();
+  let post_id = jQuery('#gen_tree_focus_post_id').val();
+  let field_id = jQuery('#post-field-select').val();
+
+  if (post_type && post_id && field_id) {
+    getGenerationTree({
+      'post_type': post_type,
+      'field': field_id,
+      'focus_id': post_id
+    })
+    .promise()
+    .then((response) => {
+      let generation_map = jQuery('#generation_map');
+
+      // Refresh generation tree results.
+      generation_map.fadeOut('fast', function () {
+        generation_map.html(response);
+
+        // Ensure end nodes are capped.
+        let last_node = generation_map.find('li:last-child.li-gen-0');
+        if (last_node) {
+          last_node.addClass('last');
+          last_node.find('li').addClass('last');
+        }
+
+        // Close modal and refresh generation tree.
+        jQuery('#template_metrics_modal').foundation('close');
+        generation_map.fadeIn('fast');
+      });
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+}
