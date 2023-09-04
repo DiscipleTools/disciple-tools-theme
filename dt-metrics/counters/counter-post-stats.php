@@ -716,7 +716,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ', $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
         );
 
-        $total = ( $connected_total && $disconnected_total ) ? ( intval( $connected_total ) - intval( $disconnected_total ) ) : 0;
+        $total = ( intval( $connected_total ) - intval( $disconnected_total ) );
         return $total;
     }
 

@@ -334,19 +334,7 @@ function initialiseChart(id) {
     const valueAxis = chart.yAxes.push( new window.am4charts.ValueAxis() )
     valueAxis.maxPrecision = 0
 
-    // Ensure line data counts do not fall below zero.
-    if (id === 'additions-chart') {
-        chart.data = data.map(x => {
-          if (x.count && (parseInt(x.count) < 0)) {
-          x.count = 0;
-        }
-
-        return x;
-      });
-
-    } else {
-      chart.data = data
-    }
+    chart.data = data
 
     return [ chart, valueAxis ]
 }
