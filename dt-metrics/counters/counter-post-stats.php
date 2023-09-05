@@ -383,7 +383,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $connected = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
+                    COUNT( DISTINCT p.ID ) AS count,
                     MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
                 FROM $wpdb->dt_activity_log AS log
                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
@@ -402,7 +402,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $disconnected = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
+                    COUNT( DISTINCT p.ID ) AS count,
                     MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
                 FROM $wpdb->dt_activity_log AS log
                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
@@ -460,7 +460,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $connected = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
+                    COUNT( DISTINCT p.ID ) AS count,
                     YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                 FROM $wpdb->dt_activity_log AS log
                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
@@ -479,7 +479,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $disconnected = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( DISTINCT p.ID, p.post_title ) AS count,
+                    COUNT( DISTINCT p.ID ) AS count,
                     YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                 FROM $wpdb->dt_activity_log AS log
                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
@@ -689,7 +689,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $connected_total = $wpdb->get_var(
             $wpdb->prepare( '
                 SELECT
-                    COUNT( DISTINCT p.ID, p.post_title ) AS count
+                    COUNT( DISTINCT p.ID ) AS count
                 FROM wp_dt_activity_log AS log
                 LEFT JOIN wp_posts AS p ON p.ID = log.object_id
                 WHERE log.object_type = %s
@@ -704,7 +704,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $disconnected_total = $wpdb->get_var(
             $wpdb->prepare( '
                 SELECT
-                    COUNT( DISTINCT p.ID, p.post_title ) AS count
+                    COUNT( DISTINCT p.ID ) AS count
                 FROM wp_dt_activity_log AS log
                 LEFT JOIN wp_posts AS p ON p.ID = log.object_id
                 WHERE log.object_type = %s
