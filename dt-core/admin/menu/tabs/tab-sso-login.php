@@ -28,6 +28,10 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
+        if ( !current_user_can( 'manage_dt' ) ){
+            return;
+        }
+
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
@@ -57,8 +61,8 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
             return;
         }
 
-        if ( !current_user_can( 'manage_options' ) ) {
-            var_dump( user_can( get_current_user_id(), 'manage_options' ) );
+        if ( !current_user_can( 'manage_dt' ) ) {
+            var_dump( user_can( get_current_user_id(), 'manage_dt' ) );
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }
 
@@ -78,6 +82,18 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <div class="wrap">
             <h2><?php echo esc_html( $this->tab_title ) ?></h2>
+            <?php if ( is_multisite() ) : ?>
+            <p>
+                Please configure the SSO Login settings from the
+                <?php if ( class_exists( 'DT_Multisite' ) ) : ?>
+                    <a href="<?php echo esc_url( network_admin_url( 'admin.php?page=disciple-tools-multisite&tab=sso-login' ) ) ?>">
+                        Disciple.Tools Network Admin Dashboard </a>
+                <?php else : ?>
+                    Disciple.Tools Network Admin Dashboard
+                <?php endif; ?>
+                using the <a href="https://disciple.tools/plugins/multisite/" target="_blank">D.T Multisite plugin.</a>
+            </p>
+            <?php endif; ?>
             <h2 class="nav-tab-wrapper">
                 <?php
                 foreach ( $tabs as $key => $value ) {
@@ -125,12 +141,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function tab( $args ) {
-        $must_have_super_admin_rights = isset( $args['multisite_level'] )
-            && $args['multisite_level'] === true
-            && (
-                !$this->is_site_admin
-                || get_current_blog_id() !== get_main_network_id()
-            );
+        $must_have_super_admin_rights = is_multisite() && !empty( $args['multisite_level'] );
         switch ( $args['type'] ) {
             case 'text':
                 ?>
@@ -195,10 +206,12 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
 
     public function process_postback(){
         // process POST
-        if ( isset( $_POST[$this->token.'_nonce'] )
+        $has_permission = current_user_can( 'manage_dt' );
+        if ( $has_permission && isset( $_POST[$this->token.'_nonce'] )
             && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[$this->token.'_nonce'] ) ), $this->token . get_current_user_id() ) ) {
 
-            $params = $_POST;
+
+            $params = dt_recursive_sanitize_array( $_POST );
 
             if ( isset( $params['delete'] ) ) {
                 DT_Login_Fields::delete();

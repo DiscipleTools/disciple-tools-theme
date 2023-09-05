@@ -107,109 +107,6 @@ function dt_firebase_login_ui( $atts ) {
     </style>
     <?php //phpcs:enable ?>
 
-    <script>
-        let ui
-        if (hasASignInProvider) {
-            ui = new firebaseui.auth.AuthUI(firebase.auth());
-            showLoader()
-        }
-
-        function showLoader( show = true ) {
-            const loaderElement = document.getElementById('loader')
-
-            if (!loaderElement) {
-                return
-            }
-            loaderElement.style.display = show ? 'block' : 'none'
-        }
-        function signInSuccessWithAuthResult(authResult, redirectUrl) {
-            // User successfully signed in.
-            // Return type determines whether we continue the redirect automatically
-            // or whether we leave that to developer to handle.
-
-            showLoader()
-
-            const user = authResult.user
-
-            if (authResult.additionalUserInfo.isNewUser && authResult.user.emailVerified === false) {
-                user.sendEmailVerification()
-            }
-
-            fetch( `${window.location.origin}/wp-json/dt/v1/session/login`, {
-                method: 'POST',
-                body: JSON.stringify(authResult)
-            })
-            .then((result) => result.text())
-            .then((json) => {
-                const response = JSON.parse(json)
-
-                if ( response.status === 200 ) {
-                    const { login_method, jwt } = response.body
-
-                    if ( login_method === 'mobile' ) {
-                        if ( !Object.prototype.hasOwnProperty.call( jwt, 'token' ) ) {
-                            throw new Error('token missing from response', jwt.error)
-                        }
-
-                        const { token } = jwt
-
-                        localStorage.setItem( 'login_token', token )
-                        localStorage.setItem( 'login_method', 'mobile' )
-                    }
-
-
-                    window.location = config.redirect_url
-                } else {
-                    showLoader(false)
-                    showErrorMessage(response.message)
-                    startUI()
-                }
-            })
-            .catch(console.error)
-
-            return false;
-        }
-        const uiConfig = {
-            callbacks: {
-                signInSuccessWithAuthResult,
-                uiShown: function() {
-                    // The widget is rendered.
-                    // Hide the loader.
-                    showLoader(false)
-                }
-            },
-            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-            signInFlow: 'popup',
-            signInOptions: signInOptions,
-            tosUrl: '/content_app/tos',
-            privacyPolicyUrl: '/content_app/privacy'
-        }
-
-        if ( !config.api_key || !config.project_id || !config.app_id  ) {
-            document.getElementById('loader').style.display = 'none'
-            console.error('Missing firebase settings in the admin section')
-        } else if (!hasASignInProvider) {
-            console.log( 'No sign in provider selected' )
-        } else {
-            startUI()
-        }
-
-        function startUI() {
-            ui.start('#firebaseui-auth-container', uiConfig);
-        }
-
-        function showErrorMessage(message) {
-            const container = document.getElementById('error-message-container')
-            container.style.display = 'block'
-            container.querySelector('.message').innerHTML = message
-            setTimeout(() => {
-                jQuery(container).fadeOut()
-            }, 4000)
-        }
-
-    </script>
-
-
     <div id="firebaseui-auth-container"></div>
 
     <div id="error-message-container" style="display: none; background-color: #F006; padding: 5px 10px">
@@ -219,6 +116,111 @@ function dt_firebase_login_ui( $atts ) {
     <div id="loader" style="display: none">
         <span class="loading-spinner active"></span>
     </div>
+
+
+    <script>
+      let ui
+      if (hasASignInProvider) {
+        ui = new firebaseui.auth.AuthUI(firebase.auth());
+        showLoader()
+      }
+      let rest_url = '<?php echo esc_url( rest_url( 'dt/v1' ) ) ?>';
+
+      function showLoader( show = true ) {
+        const loaderElement = document.getElementById('loader')
+
+        if (!loaderElement) {
+          return
+        }
+        loaderElement.style.display = show ? 'block' : 'none'
+      }
+      function signInSuccessWithAuthResult(authResult, redirectUrl) {
+        // User successfully signed in.
+        // Return type determines whether we continue the redirect automatically
+        // or whether we leave that to developer to handle.
+
+        showLoader()
+
+        const user = authResult.user
+
+        if (authResult.additionalUserInfo.isNewUser && authResult.user.emailVerified === false) {
+          user.sendEmailVerification()
+        }
+
+        fetch( `${rest_url}/session/login`, {
+          method: 'POST',
+          body: JSON.stringify(authResult)
+        })
+        .then((result) => result.text())
+        .then((json) => {
+          const response = JSON.parse(json)
+
+          if ( response.status === 200 ) {
+            const { login_method, jwt } = response.body
+
+            if ( login_method === 'mobile' ) {
+              if ( !Object.prototype.hasOwnProperty.call( jwt, 'token' ) ) {
+                throw new Error('token missing from response', jwt.error)
+              }
+
+              const { token } = jwt
+
+              localStorage.setItem( 'login_token', token )
+              localStorage.setItem( 'login_method', 'mobile' )
+            }
+
+
+            window.location = config.redirect_url
+          } else {
+            showLoader(false)
+            showErrorMessage(response.message)
+            startUI()
+          }
+        })
+        .catch(console.error)
+
+        return false;
+      }
+      const uiConfig = {
+        callbacks: {
+          signInSuccessWithAuthResult,
+          uiShown: function() {
+            // The widget is rendered.
+            // Hide the loader.
+            showLoader(false)
+          }
+        },
+        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+        signInFlow: 'popup',
+        signInOptions: signInOptions,
+        tosUrl: '/content_app/tos',
+        privacyPolicyUrl: '/content_app/privacy'
+      }
+
+      if ( !config.api_key || !config.project_id || !config.app_id  ) {
+        document.getElementById('loader').style.display = 'none'
+        console.error('Missing firebase settings in the admin section')
+        showErrorMessage('Missing firebase settings in the admin section')
+      } else if (!hasASignInProvider) {
+        console.log( 'No sign in provider selected' )
+      } else {
+        startUI()
+      }
+
+      function startUI() {
+        ui.start('#firebaseui-auth-container', uiConfig);
+      }
+
+      function showErrorMessage(message) {
+        const container = document.getElementById('error-message-container')
+        container.style.display = 'block'
+        container.querySelector('.message').innerHTML = message
+        setTimeout(() => {
+          jQuery(container).fadeOut()
+        }, 4000)
+      }
+
+    </script>
 
     <?php
 }
