@@ -46,6 +46,8 @@ class DT_Contacts_Access extends DT_Module_Base {
 
         add_filter( 'dt_filter_users_receiving_comment_notification', [ $this, 'dt_filter_users_receiving_comment_notification' ], 10, 4 );
 
+        //users table fields
+        add_filter( 'dt_users_fields', [ $this, 'dt_users_fields' ], 10, 1 );
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
@@ -1524,7 +1526,8 @@ class DT_Contacts_Access extends DT_Module_Base {
         $gender_data = $this->get_gender_data();
 
         $list = [];
-        $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
+        $user_fields = Disciple_Tools_Users::get_users_fields();
+        $workload_status_options = $user_fields['workload_status']['options'];
         foreach ( $user_data as $user ) {
             $roles = maybe_unserialize( $user['roles'] );
             if ( isset( $roles['multiplier'] ) || isset( $roles['dt_admin'] ) || isset( $roles['dispatcher'] ) || isset( $roles['marketer'] ) ) {
@@ -1657,5 +1660,45 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
 
         return $gender_data;
+    }
+
+
+    /**
+     * Fields to add by the ACCESS module
+     * @param $fields
+     * @return mixed
+     */
+    public function dt_users_fields( $fields ){
+        $fields['number_new_assigned'] = [
+            'label' => 'Accept Needed',
+            'type' => 'number',
+            'table' => 'postmeta',
+            'meta_key' => 'overall_status',
+            'meta_value' => 'assigned',
+        ];
+        $fields['number_active'] = [
+            'label' => 'Active',
+            'type' => 'number',
+            'table' => 'postmeta',
+            'meta_key' => 'overall_status',
+            'meta_value' => 'active',
+        ];
+        $fields['number_assigned_to'] = [
+            'label' => 'Assigned',
+            'type' => 'number',
+            'table' => 'postmeta',
+            'meta_key' => 'assigned_to',
+            'hidden' => true,
+        ];
+        $fields['number_update'] = [
+            'label' => 'Update Needed',
+            'type' => 'number',
+            'table' => 'postmeta',
+            'meta_key' => 'requires_update',
+            'meta_value' => '1',
+        ];
+
+
+        return $fields;
     }
 }

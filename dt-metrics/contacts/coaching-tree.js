@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
     let translations = window.dtMetricsProject.data.translations
 
     chart.empty().html(`
-        <span class="section-header">${ window.lodash.escape( translations.title_coaching_tree ) }</span><hr>
+        <span class="section-header">${ window.SHAREDFUNCTIONS.escapeHTML( translations.title_coaching_tree ) }</span><hr>
         <div class="grid-x grid-padding-x">
             <div class="cell">
                 <div class="scrolling-wrapper" id="generation_map">${spinner}</div>

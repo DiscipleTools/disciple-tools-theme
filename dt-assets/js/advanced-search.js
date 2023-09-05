@@ -49,7 +49,7 @@ jQuery(document).ready(function ($) {
     let collapsible_content = $('.advanced-search-modal-results-post-types-view-at-top-collapsible-content');
 
     collapsible_content.slideToggle('fast', function () {
-      let img = window.lodash.escape(template_dir_uri) + '/dt-assets/images/';
+      let img = window.SHAREDFUNCTIONS.escapeHTML(template_dir_uri) + '/dt-assets/images/';
       img += collapsible_content.is(':visible') ? 'chevron_up.svg' : 'chevron_down.svg';
 
       collapsible_button.find('img').attr('src', img);
@@ -101,10 +101,10 @@ jQuery(document).ready(function ($) {
         // Update global hits count
         let results_total = $('.advanced-search-modal-results-total');
         let new_global_hits_count = parseInt(results_total.html()) + total_hits;
-        results_total.html(window.lodash.escape(new_global_hits_count));
+        results_total.html(window.SHAREDFUNCTIONS.escapeHTML(new_global_hits_count));
 
         // Update section offset value
-        evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").setAttribute("value", window.lodash.escape(results[0]['offset']));
+        evt.currentTarget.parentNode.parentNode.querySelector("#advanced-search-modal-results-table-row-section-head-hidden-offset").setAttribute("value", window.SHAREDFUNCTIONS.escapeHTML(results[0]['offset']));
 
         // Insert latest finds...!
         results[0]['posts'].forEach(function (post) {
@@ -129,7 +129,7 @@ jQuery(document).ready(function ($) {
 
     // Mobile view
     $('.advanced-search-modal-results-post-types-view-at-top-collapsible-content').slideUp('fast');
-    $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').find('img').attr('src', window.lodash.escape(template_dir_uri) + '/dt-assets/images/chevron_down.svg');
+    $('.advanced-search-modal-results-post-types-view-at-top-collapsible-button').find('img').attr('src', window.SHAREDFUNCTIONS.escapeHTML(template_dir_uri) + '/dt-assets/images/chevron_down.svg');
     $('input[name=advanced-search-modal-post-types-at-top][value=all]').prop('checked', true);
   }
 
@@ -163,18 +163,18 @@ jQuery(document).ready(function ($) {
     let results_html = "";
 
     // Update global hits count
-    $('.advanced-search-modal-results-total').html(window.lodash.escape(total_hits));
+    $('.advanced-search-modal-results-total').html(window.SHAREDFUNCTIONS.escapeHTML(total_hits));
 
     // Iterate through results, displaying accordingly
     results_html += '<table class="advanced-search-modal-results-table" style="border-spacing: 0px 5px !important; border-collapse: separate;"><tbody>';
     results.forEach(function (result) {
 
       results_html += '<tr>';
-      results_html += '<td class="advanced-search-modal-results-table-section-head-options"><a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' + window.lodash.escape(fetch_more_text) + '</a></td>';
+      results_html += '<td class="advanced-search-modal-results-table-section-head-options"><a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' + window.SHAREDFUNCTIONS.escapeHTML(fetch_more_text) + '</a></td>';
       results_html += '<td class="advanced-search-modal-results-table-section-head-post-type">';
-      results_html += '<b>' + window.lodash.escape(result['post_type']) + '</b></td>';
-      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + window.lodash.escape(result['offset']) + '">';
-      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-post-type" value="' + window.lodash.escape(result['post_type']) + '">';
+      results_html += '<b>' + window.SHAREDFUNCTIONS.escapeHTML(result['post_type']) + '</b></td>';
+      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' + window.SHAREDFUNCTIONS.escapeHTML(result['offset']) + '">';
+      results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-post-type" value="' + window.SHAREDFUNCTIONS.escapeHTML(result['post_type']) + '">';
       results_html += '</td>';
       results_html += '</tr>';
 
@@ -212,28 +212,28 @@ jQuery(document).ready(function ($) {
     let results_html = '<tr class="advanced-search-modal-results-table-row-clickable">';
 
     // Convert post title to link, so as to provide support for browser link options, such as open in new tab!
-    let status_label = (_is_status_hit && post['status'] && post['status']['label']) ? ' [<i>' + window.lodash.escape(post['status']['label']).toLowerCase() + '</i>]' : '';
+    let status_label = (_is_status_hit && post['status'] && post['status']['label']) ? ' [<i>' + window.SHAREDFUNCTIONS.escapeHTML(post['status']['label']).toLowerCase() + '</i>]' : '';
     let status_color_css = (_is_status_hit && post['status'] && post['status']['color']) ? 'style="border-left-color: ' + post['status']['color'] + ' !important; border-left: 5px solid;"' : '';
-    let post_link = window.wpApiShare.site_url + '/' + window.lodash.escape(hidden_post_type) + "/" + window.lodash.escape(hidden_post_id);
-    results_html += '<td class="advanced-search-modal-results-table-col-hits" ' + status_color_css + '><a href="' + post_link + '"><b>' + window.lodash.escape(post['post_title']) + '</b> (#' + window.lodash.escape(hidden_post_id) + ')' + status_label + '</a><br><span>';
+    let post_link = window.wpApiShare.site_url + '/' + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_type) + "/" + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_id);
+    results_html += '<td class="advanced-search-modal-results-table-col-hits" ' + status_color_css + '><a href="' + post_link + '"><b>' + window.SHAREDFUNCTIONS.escapeHTML(post['post_title']) + '</b> (#' + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_id) + ')' + status_label + '</a><br><span>';
 
     if (_is_comment_hit) {
-      results_html += window.lodash.escape((String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content']);
+      results_html += window.SHAREDFUNCTIONS.escapeHTML((String(post['comment_hit_content']).length > 100) ? String(post['comment_hit_content']).substring(0, 100) + "..." : post['comment_hit_content']);
     } else if (_is_meta_hit) {
-      results_html += window.lodash.escape(post['meta_hit_value']);
+      results_html += window.SHAREDFUNCTIONS.escapeHTML(post['meta_hit_value']);
     }
     results_html += '</span>';
 
-    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-id" value="' + window.lodash.escape(hidden_post_id) + '">';
-    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-type" value="' + window.lodash.escape(hidden_post_type) + '">';
+    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-id" value="' + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_id) + '">';
+    results_html += '<input type="hidden" id="advanced-search-modal-results-table-row-hidden-post-type" value="' + window.SHAREDFUNCTIONS.escapeHTML(hidden_post_type) + '">';
 
     results_html += '</td>';
 
     // Determine hit type icon to be displayed
     results_html += '<td class="advanced-search-modal-results-table-col-hits-type">';
-    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
-    results_html += (_is_comment_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
-    results_html += (_is_meta_hit) ? '<img class="dt-icon" src="' + window.lodash.escape(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
+    results_html += (_is_post_hit || _is_default_hit) ? '<img class="dt-icon" src="' + window.SHAREDFUNCTIONS.escapeHTML(template_dir_uri) + '/dt-assets/images/contact-generation.svg" alt="Record Hit"/>&nbsp;' : '';
+    results_html += (_is_comment_hit) ? '<img class="dt-icon" src="' + window.SHAREDFUNCTIONS.escapeHTML(template_dir_uri) + '/dt-assets/images/comment.svg" alt="Comment Hit"/>&nbsp;' : '';
+    results_html += (_is_meta_hit) ? '<img class="dt-icon" src="' + window.SHAREDFUNCTIONS.escapeHTML(template_dir_uri) + '/dt-assets/images/socialmedia.svg" alt="Meta Hit"/>&nbsp;' : '';
     results_html += '</td>';
 
     results_html += '</tr>';

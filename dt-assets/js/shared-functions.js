@@ -257,15 +257,15 @@ jQuery(document).on("click", ".help-button-tile", function () {
   let tile = window.wpApiShare.tiles[section];
   if (tile && window.post_type_fields) {
     if (tile.label) {
-      let tile_label = window.lodash.escape(tile.label);
+      let tile_label = window.SHAREDFUNCTIONS.escapeHTML(tile.label);
       if ( window.wpApiShare.can_manage_dt ){
         let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${section}`
-        tile_label += ` <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.lodash.escape(window.wpApiShare.translations.edit)}</a></span>`;
+        tile_label += ` <span style="font-size: 10px"><a href="${window.SHAREDFUNCTIONS.escapeHTML(edit_link)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.edit)}</a></span>`;
       }
       jQuery("#help-modal-field-title").html(tile_label);
     }
     if (tile.description) {
-      jQuery("#help-modal-field-description").html(window.lodash.escape(tile.description));
+      jQuery("#help-modal-field-description").html(window.SHAREDFUNCTIONS.escapeHTML(tile.description));
       window.SHAREDFUNCTIONS.make_links_clickable('#help-modal-field-description' )
     } else {
       jQuery("#help-modal-field-description").empty()
@@ -279,17 +279,14 @@ jQuery(document).on("click", ".help-button-tile", function () {
     let html = ``;
     order.forEach( field_key=>{
       let field = window.post_type_fields[field_key]
-      if (
-        field && field.tile === section && !field.hidden &&
-        (field.description || window.lodash.isObject(field.default))
-      ) {
-        let field_name = `<h2>${window.lodash.escape(field.name)}</h2>`;
+      if ( field && field.tile === section && !field.hidden ) {
+        let field_name = `<h2>${window.SHAREDFUNCTIONS.escapeHTML(field.name)}</h2>`;
         if ( window.wpApiShare.can_manage_dt ){
           let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_customizations&post_type=${window.wpApiShare.post_type}&tile=${field.tile}#${field_key}`
-          field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.lodash.escape(window.wpApiShare.translations.edit)}</a></span></h2>`;
+          field_name = `<h2>${window.SHAREDFUNCTIONS.escapeHTML(field.name)} <span style="font-size: 10px"><a href="${window.SHAREDFUNCTIONS.escapeHTML(edit_link)}" target="_blank">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.edit)}</a></span></h2>`;
         }
         html += field_name
-        html += `<p>${window.lodash.escape(field.description)}</p>`;
+        html += `<p>${window.SHAREDFUNCTIONS.escapeHTML(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
           let list_html = ``;
@@ -300,7 +297,7 @@ jQuery(document).on("click", ".help-button-tile", function () {
                 list_html += `<ul class="help-modal-icon">`;
                 first_field_option = false;
               }
-              list_html += `<li><img src="${window.lodash.escape(field_options.icon)}">`;
+              list_html += `<li><img src="${window.SHAREDFUNCTIONS.escapeHTML(field_options.icon)}">`;
             } else {
               if ( first_field_option ) {
                 list_html += `<ul>`;
@@ -308,9 +305,9 @@ jQuery(document).on("click", ".help-button-tile", function () {
               }
               list_html += `<li>`;
             }
-            list_html += `<strong>${window.lodash.escape(
+            list_html += `<strong>${window.SHAREDFUNCTIONS.escapeHTML(
               field_options.label
-            )}</strong> ${window.lodash.escape(
+            )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
               !field_options.description ? "" : "- " + field_options.description
             )}</li>`;
           });
@@ -332,9 +329,9 @@ jQuery(document).on("click", ".help-button-field", function () {
 
   if (window.post_type_fields && window.post_type_fields[section]) {
     let field = window.post_type_fields[section];
-    jQuery("#help-modal-field-title").html(window.lodash.escape(field.name));
+    jQuery("#help-modal-field-title").html(window.SHAREDFUNCTIONS.escapeHTML(field.name));
     if (field.description) {
-      jQuery("#help-modal-field-description").html(window.lodash.escape(field.description));
+      jQuery("#help-modal-field-description").html(window.SHAREDFUNCTIONS.escapeHTML(field.description));
       window.SHAREDFUNCTIONS.make_links_clickable('#help-modal-field-description' )
     } else {
       jQuery("#help-modal-field-description").empty()
@@ -342,9 +339,9 @@ jQuery(document).on("click", ".help-button-field", function () {
     if (window.lodash.isObject(field.default)) {
       let html = `<ul>`;
       window.lodash.forOwn(field.default, (field_options, field_key) => {
-        html += `<li><strong>${window.lodash.escape(
+        html += `<li><strong>${window.SHAREDFUNCTIONS.escapeHTML(
           field_options.label
-        )}</strong> ${window.lodash.escape(
+        )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
           !field_options.description ? "" : "- " + field_options.description
         )}</li>`;
       });
@@ -448,33 +445,33 @@ window.TYPEAHEADS = {
       text = wpApiShare.translations.showing_x_items_matching
         .replace(
           "%1$s",
-          `<strong>${window.lodash.escape(result.length)}</strong>`
+          `<strong>${window.SHAREDFUNCTIONS.escapeHTML(result.length)}</strong>`
         )
-        .replace("%2$s", `<strong>${window.lodash.escape(query)}</strong>`);
+        .replace("%2$s", `<strong>${window.SHAREDFUNCTIONS.escapeHTML(query)}</strong>`);
     } else if (result.length > 0) {
       text = wpApiShare.translations.showing_x_items.replace(
         "%s",
-        `<strong>${window.lodash.escape(result.length)}</strong>`
+        `<strong>${window.SHAREDFUNCTIONS.escapeHTML(result.length)}</strong>`
       );
     } else {
       text = wpApiShare.translations.no_records_found.replace(
         '"{{query}}"',
-        `<strong>${window.lodash.escape(query)}</strong>`
+        `<strong>${window.SHAREDFUNCTIONS.escapeHTML(query)}</strong>`
       );
     }
     return text;
   },
   contactListRowTemplate: function (query, item) {
-    let status_color = `<span class="vertical-line" ${ item.status ? `style="border-left: 3px solid ${window.lodash.escape(item.status.color)}"` : '' }></span>`
-    let status_label = item.status ? `[ <span><i>${ window.lodash.escape(item.status.label).toLowerCase() } </i></span> ]` : '';
+    let status_color = `<span class="vertical-line" ${ item.status ? `style="border-left: 3px solid ${window.SHAREDFUNCTIONS.escapeHTML(item.status.color)}"` : '' }></span>`
+    let status_label = item.status ? `[ <span><i>${ window.SHAREDFUNCTIONS.escapeHTML(item.status.label).toLowerCase() } </i></span> ]` : '';
     let img = item.user
       ? `<img style="margin: 0 5px;" class="dt-blue-icon" src="${wpApiShare.template_dir}/dt-assets/images/profile.svg?v=2">`
       : "";
     let statusStyle = item.status === "closed" ? 'style="color:gray"' : "";
       return `<span style="display: inline-block; vertical-align: middle;" dir="auto" ${statusStyle}>
         ${status_color}
-        ${window.lodash.escape((item.label ? item.label : item.name))}
-        <span dir="auto">(#${window.lodash.escape(item.ID)})</span>
+        ${window.SHAREDFUNCTIONS.escapeHTML((item.label ? item.label : item.name))}
+        <span dir="auto">(#${window.SHAREDFUNCTIONS.escapeHTML(item.ID)})</span>
         ${status_label}
         <span class="typeahead-user-row" style="width:20px">${img}</span>
     </span>`;
@@ -489,13 +486,13 @@ window.TYPEAHEADS = {
       template: function (query, item) {
         return `<div class="" dir="auto">
           <div>
-              <span class="avatar"><img style="vertical-align: text-bottom" src="${window.lodash.escape( item.avatar )}"/></span>
-              {{name}} (#${window.lodash.escape( item.ID )})
+              <span class="avatar"><img style="vertical-align: text-bottom" src="${window.SHAREDFUNCTIONS.escapeHTML( item.avatar )}"/></span>
+              {{name}} (#${window.SHAREDFUNCTIONS.escapeHTML( item.ID )})
           </div>
         </div>`
       },
       source: this.typeaheadUserSource(),
-      emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
+      emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.translations.no_records_found),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,
@@ -659,7 +656,7 @@ window.SHAREDFUNCTIONS = {
     const int_format = new Intl.DateTimeFormat(langcode, {month:format}).format;
     return [...Array(12).keys()].map((month) => int_format(new Date( Date.UTC(2021, month, 1))));
   },
-  formatDate(date, with_time = false, short_month = false) {
+  formatDate(date, with_time = false, short_month = false, local_timezone = false) {
     let langcode = window.SHAREDFUNCTIONS.get_langcode();
     if (langcode === "fa-IR") {
       //This is a check so that we use the gergorian (Western) calendar if the users locale is Farsi. This is the calendar used primarily by Farsi speakers outside of Iran, and is easily understood by those inside.
@@ -669,7 +666,8 @@ window.SHAREDFUNCTIONS = {
     if (with_time) {
       options.hour = "numeric";
       options.minute = "numeric";
-    } else {
+    }
+    if (!(with_time || local_timezone)) {
       options.timeZone = "UTC";
     }
     if (short_month) {
@@ -746,8 +744,13 @@ window.SHAREDFUNCTIONS = {
    */
   escapeObject(obj) {
     return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
-        return [ key, window.lodash.escape(value)]
+        return [ key, window.SHAREDFUNCTIONS.escapeHTML(value)]
     }))
+  },
+  escapeHTML(str) {
+    if (typeof str === "undefined") return '';
+    if (typeof str !== "string") return str;
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
   },
   make_links_clickable( selector ){
     //make text links clickable in a section

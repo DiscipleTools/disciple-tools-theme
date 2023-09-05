@@ -68,10 +68,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
 
-
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset,
+            'cumulative_offset' => $cumulative_offset
         ];
     }
 
@@ -117,10 +116,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
 
-
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset,
+            'cumulative_offset' => $cumulative_offset
         ];
     }
 
@@ -156,12 +154,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
             return [
                 'data' => $results,
-                'cumulative_offset' => $cumulative_offset,
+                'cumulative_offset' => $cumulative_offset
             ];
         } else {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
-                    SELECT 
+                    SELECT
                         MONTH( FROM_UNIXTIME( pm.meta_value ) ) AS month,
                         COUNT( pm.meta_value ) AS count
                     FROM $wpdb->posts AS p
@@ -183,7 +181,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset,
+            'cumulative_offset' => $cumulative_offset
         ];
     }
 
@@ -199,7 +197,6 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
         $results = [];
-
         if ( self::isPostField( $field ) ) {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
@@ -217,7 +214,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         } else {
             $results = $wpdb->get_results(
                 $wpdb->prepare( "
-                    SELECT 
+                    SELECT
                         YEAR( FROM_UNIXTIME( pm.meta_value ) ) AS year,
                         COUNT( pm.meta_value ) AS count
                     FROM $wpdb->posts AS p
@@ -235,7 +232,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         return [
-            'data' => $results,
+            'data' => $results
         ];
     }
 
@@ -305,7 +302,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset,
+            'cumulative_offset' => $cumulative_offset
         ];
     }
 
@@ -372,11 +369,11 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         );
 
         return [
-            'data' => $results,
+            'data' => $results
         ];
     }
 
-    public static function get_connection_field_by_month( $connection_type, $year ) {
+    public static function get_connection_field_by_month( $post_type, $field, $connection_type, $year ) {
         global $wpdb;
 
         $start = mktime( 0, 0, 0, 1, 1, $year );
@@ -385,29 +382,27 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $results = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( meta.meta_value ) AS count,
-                    MONTH( meta.meta_value ) AS month
-                FROM $wpdb->p2p AS p2p
-                JOIN $wpdb->p2pmeta AS meta
-                    ON p2p.p2p_id = meta.p2p_id
-                WHERE p2p.p2p_type = %s
-                    AND meta.meta_key = 'date'
-                    AND meta.meta_value >= %s
-                    AND meta.meta_value <= %s
-                GROUP BY MONTH( meta.meta_value )
-                ORDER BY MONTH( meta.meta_value )
-            ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+                    COUNT( DISTINCT log.object_id ) AS count,
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
+                FROM $wpdb->dt_activity_log AS log
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+            ", $post_type, $field, $connection_type, $start, $end )
         );
 
         $cumulative_offset = self::get_connection_field_cumulative_offset( $connection_type, $start );
 
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset,
+            'cumulative_offset' => $cumulative_offset
         ];
     }
 
-    public static function get_connection_field_by_year( $connection_type ) {
+    public static function get_connection_field_by_year( $post_type, $field, $connection_type ) {
         global $wpdb;
 
         $current_year = gmdate( 'Y' );
@@ -417,22 +412,20 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $results = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
-                    COUNT( meta.meta_value ) AS count,
-                    YEAR( meta.meta_value ) AS year
-                FROM $wpdb->p2p AS p2p
-                JOIN $wpdb->p2pmeta AS meta
-                    ON p2p.p2p_id = meta.p2p_id
-                WHERE p2p.p2p_type = %s
-                    AND meta.meta_key = 'date'
-                    AND meta.meta_value >= %s
-                    AND meta.meta_value <= %s
-                GROUP BY YEAR( meta.meta_value )
-                ORDER BY YEAR( meta.meta_value )
-            ", $connection_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ) )
+                    COUNT( DISTINCT log.object_id ) AS count,
+                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
+                FROM $wpdb->dt_activity_log AS log
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+                ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+            ", $post_type, $field, $connection_type, $start, $end )
         );
 
         return [
-            'data' => $results,
+            'data' => $results
         ];
     }
 
@@ -613,5 +606,257 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         );
 
         return $total ? intval( $total ) : 0;
+    }
+
+    public static function get_posts_by_field_in_date_range( $post_type, $field, $args = [] ){
+        global $wpdb;
+
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        if ( isset( $field_settings[$field]['type'] ) ){
+
+            $limit = $args['limit'] ?? 100;
+
+            // Prepare SQL statements to be executed.
+            $total = null;
+            $results = [];
+            $field_type = $field_settings[$field]['type'];
+            switch ( $field_type ){
+                case 'tags':
+                case 'multi_select':
+                case 'key_select':
+                    $start = $args['start'] ?? 0;
+                    $end = $args['end'] ?? time();
+                    $key_query = !empty( $args['key'] ) ? "AND pm.meta_value = '". $args['key'] ."'" : '';
+
+                    // phpcs:disable
+                    $results = $wpdb->get_results(
+                        $wpdb->prepare( "
+                            SELECT DISTINCT
+                                p.ID AS id, p.post_title AS name, pm.meta_value AS value
+                            FROM $wpdb->posts AS p
+                            JOIN $wpdb->postmeta AS pm
+                                ON p.ID = pm.post_id
+                            JOIN $wpdb->dt_activity_log AS log
+                                ON log.object_id = p.ID
+                                AND log.meta_key = %s
+                            WHERE p.post_type = %s
+                                AND pm.meta_key = %s
+                                AND log.meta_value = pm.meta_value
+                                AND log.hist_time = (
+                                    SELECT MAX( log2.hist_time )
+                                    FROM $wpdb->dt_activity_log AS log2
+                                    WHERE log.meta_value = log2.meta_value
+                                    AND log.object_id = log2.object_id
+                                    AND log2.hist_time >= %s
+                                    AND log2.hist_time <= %s
+                                    AND log2.meta_key = %s
+                                )
+                                AND log.object_type = %s
+                                AND log.hist_time >= %s
+                                AND log.hist_time <= %s
+                                $key_query
+                            LIMIT %d
+                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end, $limit ) );
+                    $total = $wpdb->get_results(
+                        $wpdb->prepare( "
+                            SELECT COUNT(DISTINCT
+                                p.ID, p.post_title, pm.meta_value) AS total
+                            FROM $wpdb->posts AS p
+                            JOIN $wpdb->postmeta AS pm
+                                ON p.ID = pm.post_id
+                            JOIN $wpdb->dt_activity_log AS log
+                                ON log.object_id = p.ID
+                                AND log.meta_key = %s
+                            WHERE p.post_type = %s
+                                AND pm.meta_key = %s
+                                AND log.meta_value = pm.meta_value
+                                AND log.hist_time = (
+                                    SELECT MAX( log2.hist_time )
+                                    FROM $wpdb->dt_activity_log AS log2
+                                    WHERE log.meta_value = log2.meta_value
+                                    AND log.object_id = log2.object_id
+                                    AND log2.hist_time >= %s
+                                    AND log2.hist_time <= %s
+                                    AND log2.meta_key = %s
+                                )
+                                AND log.object_type = %s
+                                AND log.hist_time >= %s
+                                AND log.hist_time <= %s
+                                $key_query
+                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end, $limit ), ARRAY_N );
+                    // phpcs:enable
+                    break;
+                case 'date':
+                    $start = $args['start'] ?? 0;
+                    $end = $args['end'] ?? time();
+
+                    if ( self::isPostField( $field ) ) {
+                        // phpcs:disable
+                        $results = $wpdb->get_results(
+                            $wpdb->prepare( "
+                            SELECT DISTINCT
+                                p.ID AS id, p.post_title AS name
+                            FROM $wpdb->posts AS p
+                            WHERE post_type = %s
+                                AND %1s >= %s
+                                AND %1s <= %s
+                            LIMIT %d
+                        ", $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ), $limit )
+                        );
+                        $total = $wpdb->get_results(
+                            $wpdb->prepare( "
+                            SELECT COUNT(DISTINCT
+                                p.ID, p.post_title) AS total
+                            FROM $wpdb->posts AS p
+                            WHERE post_type = %s
+                                AND %1s >= %s
+                                AND %1s <= %s
+                        ", $post_type, $field, gmdate( 'Y-m-d H:i:s', $start ), $field, gmdate( 'Y-m-d H:i:s', $end ) ), ARRAY_N
+                        );
+                        // phpcs:enable
+                    } else {
+                        // phpcs:disable
+                        $results = $wpdb->get_results(
+                            $wpdb->prepare( "
+                            SELECT DISTINCT
+                                p.ID AS id, p.post_title AS name
+                            FROM $wpdb->posts AS p
+                            INNER JOIN $wpdb->postmeta AS pm
+                                ON p.ID = pm.post_id
+                            WHERE p.post_type = %s
+                                AND pm.meta_key = %s
+                                AND pm.meta_value >= %s
+                                AND pm.meta_value <= %s
+                            LIMIT %d
+                            ", $post_type, $field, $start, $end, $limit )
+                        );
+                        $total = $wpdb->get_results(
+                            $wpdb->prepare( "
+                            SELECT COUNT(DISTINCT
+                                p.ID, p.post_title) AS total
+                            FROM $wpdb->posts AS p
+                            INNER JOIN $wpdb->postmeta AS pm
+                                ON p.ID = pm.post_id
+                            WHERE p.post_type = %s
+                                AND pm.meta_key = %s
+                                AND pm.meta_value >= %s
+                                AND pm.meta_value <= %s
+                            ", $post_type, $field, $start, $end, $limit ), ARRAY_N
+                        );
+                        // phpcs:enable
+                    }
+                    break;
+                case 'number':
+                    $start = $args['start'] ?? 0;
+                    $end = $args['end'] ?? time();
+
+                    // phpcs:disable
+                    $results = $wpdb->get_results(
+                        $wpdb->prepare( "
+                            SELECT DISTINCT
+                                p.ID AS id, p.post_title AS name, pm.meta_value AS value
+                            FROM $wpdb->posts AS p
+                            JOIN $wpdb->postmeta AS pm
+                                ON p.ID = pm.post_id
+                            JOIN $wpdb->dt_activity_log AS log
+                                ON log.object_id = p.ID
+                                AND log.meta_key = %s
+                            WHERE p.post_type = %s
+                                AND pm.meta_key = %s
+                                AND log.meta_value = pm.meta_value
+                                AND log.hist_time = (
+                                    SELECT MAX( log2.hist_time )
+                                    FROM $wpdb->dt_activity_log AS log2
+                                    WHERE log.meta_value = log2.meta_value
+                                    AND log.object_id = log2.object_id
+                                    AND log2.hist_time >= %s
+                                    AND log2.hist_time <= %s
+                                    AND log2.meta_key = %s
+                                )
+                                AND log.object_type = %s
+                                AND log.hist_time >= %s
+                                AND log.hist_time <= %s
+                            LIMIT %d
+                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end, $limit )
+                    );
+                    $total = $wpdb->get_results(
+                        $wpdb->prepare( "
+                            SELECT COUNT(DISTINCT
+                                p.ID, p.post_title, pm.meta_value) AS total
+                            FROM $wpdb->posts AS p
+                            JOIN $wpdb->postmeta AS pm
+                                ON p.ID = pm.post_id
+                            JOIN $wpdb->dt_activity_log AS log
+                                ON log.object_id = p.ID
+                                AND log.meta_key = %s
+                            WHERE p.post_type = %s
+                                AND pm.meta_key = %s
+                                AND log.meta_value = pm.meta_value
+                                AND log.hist_time = (
+                                    SELECT MAX( log2.hist_time )
+                                    FROM $wpdb->dt_activity_log AS log2
+                                    WHERE log.meta_value = log2.meta_value
+                                    AND log.object_id = log2.object_id
+                                    AND log2.hist_time >= %s
+                                    AND log2.hist_time <= %s
+                                    AND log2.meta_key = %s
+                                )
+                                AND log.object_type = %s
+                                AND log.hist_time >= %s
+                                AND log.hist_time <= %s
+                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end, $limit ), ARRAY_N
+                    );
+                    // phpcs:enable
+                    break;
+                case 'connection':
+                    $start = $args['start'] ?? 0;
+                    $end = $args['end'] ?? time();
+                    $p2p_type = $field_settings[$field]['p2p_key'] ?? null;
+
+                    if ( !empty( $p2p_type ) ){
+
+                        // phpcs:disable
+                        $results = $wpdb->get_results(
+                            $wpdb->prepare( "
+                            SELECT DISTINCT
+                                p.ID AS id, p.post_title AS name
+                            FROM $wpdb->p2p AS p2p
+                            JOIN $wpdb->p2pmeta AS meta ON p2p.p2p_id = meta.p2p_id
+                            LEFT JOIN $wpdb->posts AS p ON p.ID = meta.p2p_id
+                            WHERE p2p.p2p_type = %s
+                                AND meta.meta_key = 'date'
+                                AND meta.meta_value >= %s
+                                AND meta.meta_value <= %s
+                                AND p.ID IS NOT NULL
+                            LIMIT %d
+                        ", $p2p_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ), $limit )
+                        );
+                        $total = $wpdb->get_results(
+                            $wpdb->prepare( "
+                            SELECT COUNT(DISTINCT
+                                p.ID, p.post_title) AS total
+                            FROM $wpdb->p2p AS p2p
+                            JOIN $wpdb->p2pmeta AS meta ON p2p.p2p_id = meta.p2p_id
+                            LEFT JOIN $wpdb->posts AS p ON p.ID = meta.p2p_id
+                            WHERE p2p.p2p_type = %s
+                                AND meta.meta_key = 'date'
+                                AND meta.meta_value >= %s
+                                AND meta.meta_value <= %s
+                                AND p.ID IS NOT NULL
+                        ", $p2p_type, gmdate( 'Y-m-d H:i:s', $start ), gmdate( 'Y-m-d H:i:s', $end ), $limit ), ARRAY_N
+                        );
+                        // phpcs:enable
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return [
+                'total' => $total[0][0] ?? null,
+                'data' => $results
+            ];
+        }
+        return [];
     }
 }

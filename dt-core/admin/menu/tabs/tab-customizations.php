@@ -73,7 +73,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         wp_enqueue_style( 'jquery-ui' );
 
         dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
         dt_theme_enqueue_script( 'dt-settings', 'dt-core/admin/js/dt-settings.js', [ 'jquery', 'jquery-ui-js', 'dt_shared_scripts' ], true );
         dt_theme_enqueue_script( 'dt-options', 'dt-core/admin/js/dt-options.js', [
             'jquery',
@@ -459,6 +458,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     private function display_post_type_settings( $post_type, $settings, $is_custom_post_type ){
+        $custom_settings = get_option( 'dt_custom_post_types', [] );
+        $post_type_custom_settings = $custom_settings[$post_type] ?? [];
         if ( !empty( $settings ) ){
             ?>
             <table class="widefat striped" style="margin-top: 12px;">
@@ -471,12 +472,12 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <td id="post_type_settings_key"><?php echo esc_html( $post_type ); ?></td>
                     </tr>
                     <tr>
-                        <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Singular' ); ?></b></label></td>
-                        <td><input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $settings['label_singular'] ?? $post_type ); ?>" /></td>
+                        <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Custom Singular Label' ); ?></b></label></td>
+                        <td><input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_singular'] ?? '' ); ?>" /></td>
                     </tr>
                     <tr>
-                        <td><label for="post_type_settings_plural"><b><?php echo esc_html( 'Plural' ); ?></b></label></td>
-                        <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $settings['label_plural'] ?? $post_type ); ?>" /></td>
+                        <td><label for="post_type_settings_plural"><b><?php echo esc_html( 'Custom Plural Label' ); ?></b></label></td>
+                        <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_plural'] ?? '' ); ?>" /></td>
                     </tr>
                     <tr>
                         <td><label
@@ -558,17 +559,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function display_field_rundown() {
         $post_type = self::get_parameter( 'post_type' );
-        $post_tiles = DT_Posts::get_post_settings( $post_type, false );
+        $post_settings = DT_Posts::get_post_settings( $post_type, false );
         // get field settings with deleted/hidden options
         $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
-        $post_tiles['tiles']['no_tile'] = [
+        $post_settings['tiles']['no_tile'] = [
             'label' => 'No Tile / Hidden',
             'tile_priority' => 9999,
         ];
         ?>
         <!-- START TABLE -->
         <div class="field-settings-table">
-            <?php foreach ( $post_tiles['tiles'] as $tile_key => $tile_value ) : ?>
+            <?php foreach ( $post_settings['tiles'] as $tile_key => $tile_value ) : ?>
                 <!-- START TILE -->
                 <div class="<?php echo esc_attr( self::get_sortable_class( $tile_key ) ); ?>" id="<?php echo esc_attr( $tile_key ); ?>">
                     <div class="field-settings-table-tile-name expandable" data-modal="edit-tile" data-key="<?php echo esc_attr( $tile_key ); ?>">
@@ -586,10 +587,17 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                         <?php
                         // If there is a custom field order, show fields in order
                         if ( isset( $tile_value['order'] ) ) {
-                            $post_tiles['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_tiles['fields'] );
+                            $post_settings['fields'] = array_merge( array_flip( $tile_value['order'] ), $post_settings['fields'] );
                         }
-                        foreach ( $post_fields ?? [] as $field_key => $field_settings ) : ?>
-                            <?php if ( self::field_option_in_tile( $field_key, $tile_key ) && self::field_is_customizable( $post_type, $field_key ) ) : ?>
+                        $tile_field_order = $tile_value['order'] ?? [];
+                        foreach ( $post_settings['fields'] as $field_key => $field_value ){
+                            if ( self::field_option_in_tile( $field_key, $tile_key ) && !in_array( $field_key, $tile_field_order ) ) {
+                                $tile_field_order[] = $field_key;
+                            }
+                        }
+                        foreach ( $tile_field_order as $field_key ) :
+                            $field_settings = $post_settings['fields'][$field_key];
+                            if ( self::field_option_in_tile( $field_key, $tile_key ) && self::field_is_customizable( $post_type, $field_key ) ) : ?>
                                 <div class="sortable-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                 <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
                                     <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
@@ -668,28 +676,28 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     public static function field_option_in_tile( $field_option_name, $tile_key ) {
         $post_type = self::get_parameter( 'post_type' );
-        $post_tiles = DT_Posts::get_post_settings( $post_type, true );
+        $post_settings = DT_Posts::get_post_settings( $post_type, true );
 
-        if ( isset( $post_tiles['fields'][$field_option_name]['tile'] ) ) {
-            if ( $post_tiles['fields'][$field_option_name]['tile'] === $tile_key ) {
+        if ( isset( $post_settings['fields'][$field_option_name]['tile'] ) ) {
+            if ( $post_settings['fields'][$field_option_name]['tile'] === $tile_key ) {
                 return true;
             }
         }
-        if ( $tile_key === 'no_tile' && !isset( $post_tiles['fields'][$field_option_name]['tile'] ) ) {
+        if ( $tile_key === 'no_tile' && !isset( $post_settings['fields'][$field_option_name]['tile'] ) ) {
             return true;
         }
         return false;
     }
 
     public static function field_is_customizable( $post_type, $field_key ) {
-        $post_tiles = DT_Posts::get_post_settings( $post_type, true );
-        if ( !isset( $post_tiles['fields'][$field_key]['type'] ) ) {
+        $post_settings = DT_Posts::get_post_settings( $post_type, true );
+        if ( !isset( $post_settings['fields'][$field_key]['type'] ) ) {
             return false;
         }
-        if ( isset( $post_tiles['fields'][$field_key]['customizable'] ) && $post_tiles['fields'][$field_key]['customizable'] === false ) {
+        if ( isset( $post_settings['fields'][$field_key]['customizable'] ) && $post_settings['fields'][$field_key]['customizable'] === false ) {
             return false;
         }
-        $field_type = $post_tiles['fields'][$field_key]['type'];
+        $field_type = $post_settings['fields'][$field_key]['type'];
         if ( in_array( $field_type, [ 'hash', 'array' ] ) ){
             return false;
         }

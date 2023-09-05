@@ -7,11 +7,11 @@ jQuery(document).ready(function($) {
     let chartDiv = jQuery('#chart')
 
     chartDiv.empty().html(`
-      <span class="section-header">${window.lodash.escape(window.wp_js_object.translations.sources)}</span>
-      <div class="section-subheader">${window.lodash.escape(window.wp_js_object.translations.filter_contacts_to_date_range)}</div>
+      <span class="section-header">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources)}</span>
+      <div class="section-subheader">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.filter_contacts_to_date_range)}</div>
       <div class="date_range_picker">
           <i class="fi-calendar"></i>&nbsp;
-          <span>${window.lodash.escape(window.wp_js_object.translations.all_time)}</span>
+          <span>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.all_time)}</span>
           <i class="dt_caret down"></i>
       </div>
       <div style="display: inline-block" class="loading-spinner"></div>
@@ -42,36 +42,36 @@ jQuery(document).ready(function($) {
 
       chartDiv.find(".js-loading").remove()
 
-      let filteringOutText = `${window.lodash.escape(window.wp_js_object.translations.milestones)} ${label}.`;
+      let filteringOutText = `${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.milestones)} ${label}.`;
 
       chartsDiv.append($("<div>").html(`
 
-        <h3>${window.lodash.escape(window.wp_js_object.translations.sources_all_contacts_by_source_and_status)}</h3>
+        <h3>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_all_contacts_by_source_and_status)}</h3>
 
-        <p>${filteringOutText} ${window.lodash.escape(window.wp_js_object.translations.sources_contacts_warning)}</p>
+        <p>${filteringOutText} ${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_contacts_warning)}</p>
 
         <div id="chartdiv1" style="min-height: ${height}"></div>
 
         <hr>
 
-        <h3>${window.lodash.escape(window.wp_js_object.translations.sources_active_by_seeker_path)}</h3>
+        <h3>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_active_by_seeker_path)}</h3>
 
-        <p>${window.lodash.escape(window.wp_js_object.translations.sources_only_active)}
+        <p>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_only_active)}
         ${filteringOutText}
-        ${window.lodash.escape(window.wp_js_object.translations.sources_contacts_warning)}
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_contacts_warning)}
         </p>
 
         <div id="chartdiv2" style="min-height: ${height}"></div>
 
         <hr>
 
-        <h3>${window.lodash.escape(window.wp_js_object.translations.sources_active_milestone)}</h3>
+        <h3>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_active_milestone)}</h3>
 
-        <p>${window.lodash.escape(window.wp_js_object.translations.sources_active_status_warning)}
+        <p>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_active_status_warning)}
         ${filteringOutText}
-        ${window.lodash.escape(window.wp_js_object.translations.sources_contacts_warning_milestones)}</p>
+        ${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_contacts_warning_milestones)}</p>
 
-        <p><b>${window.lodash.escape(window.wp_js_object.translations.faith_milestone)}:</b> <select class="js-milestone"></select></p>
+        <p><b>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.faith_milestone)}:</b> <select class="js-milestone"></select></p>
 
         <div id="chartdiv3" style="min-height: ${height}"></div>
       `))

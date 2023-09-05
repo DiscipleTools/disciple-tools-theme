@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-08-03T14:29:04+00:00\n"
+"POT-Creation-Date: 2023-08-10T10:36:01+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Kannada <https://translate.disciple.tools/projects/disciple-"
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "ವಿನಂತಿಯನ್ನು ಸಲ್ಲಿಸಿ"
 
-#: 403.php:55 archive-template.php:865 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:867 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -83,8 +83,8 @@ msgstr "ವಿನಂತಿಯನ್ನು ಸಲ್ಲಿಸಿ"
 msgid "Cancel"
 msgstr "ರದ್ದುಮಾಡಿ"
 
-#: 403.php:59 archive-template.php:388 archive-template.php:430
-#: archive-template.php:889 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:390 archive-template.php:432
+#: archive-template.php:891 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -139,7 +139,7 @@ msgstr "ಹೊಸ%s ಅನ್ನು ರಚಿಸಿ"
 msgid "Filters"
 msgstr "ಫಿಲ್ಟರ್‌ಗಳು"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:538
+#: archive-template.php:36 archive-template.php:126 archive-template.php:540
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
 #: dt-core/global-functions.php:674 dt-core/global-functions.php:792
 #: dt-core/global-functions.php:836 dt-posts/custom-post-type.php:20
@@ -182,12 +182,12 @@ msgstr "ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳನ್ನು ಹುಡುಕ�
 msgid "Communication Channels"
 msgstr "ಸಂವಹನ ಚಾನಲ್ಗಳು"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:425
+#: archive-template.php:106 archive-template.php:193 archive-template.php:427
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "ಅನ್ವಯಿಸು"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:426
+#: archive-template.php:107 archive-template.php:194 archive-template.php:428
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "ಡೀಫಾಲ್ಟ್ಗೆ ಮರುಹೊಂದಿಸಿ"
@@ -250,94 +250,94 @@ msgstr "ಬೃಹತ್ ಸಂಪಾದನೆ"
 msgid "More"
 msgstr "ಇನ್ನಷ್ಟು"
 
-#: archive-template.php:367 dt-contacts/base-setup.php:309
+#: archive-template.php:366 dt-contacts/base-setup.php:309
 #: dt-users/users.php:439
 msgid "Archived"
 msgstr "ಸಂಗ್ರಹಿಸಲಾಗಿದೆ"
 
-#: archive-template.php:368
+#: archive-template.php:370
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "ಸುದ್ದಿ"
 
-#: archive-template.php:391
+#: archive-template.php:393
 msgid "Choose which fields to display as columns in the list"
 msgstr "ಪಟ್ಟಿಯಲ್ಲಿ ಯಾವ ಕ್ಷೇತ್ರಗಳನ್ನು ಕಾಲಮ್‌ಗಳಾಗಿ ಪ್ರದರ್ಶಿಸಬೇಕು ಎಂಬುದನ್ನು ಆರಿಸಿ"
 
-#: archive-template.php:434
+#: archive-template.php:436
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "ನೀವು ಪಟ್ಟಿಯಿಂದ ನವೀಕರಿಸಲು ಬಯಸುವ ಎಲ್ಲಾ% 1 $ ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು ಅವುಗಳನ್ನು ಕೆಳಗೆ "
 "ನವೀಕರಿಸಿ"
 
-#: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:454 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:596 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:874
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ಬಳಕೆದಾರರನ್ನು ಹುಡುಕಿ"
 
-#: archive-template.php:476 dt-metrics/groups/tree.php:87
+#: archive-template.php:478 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2710
 #: dt-users/template-user-management.php:88
 #: dt-users/template-user-management.php:514 single-template.php:128
 msgid "Status"
 msgstr "ಸ್ಥಿತಿ"
 
-#: archive-template.php:526
+#: archive-template.php:528
 msgid "Share with:"
 msgstr "ಜೊತೆ ಹಂಚಿಕೊ:"
 
-#: archive-template.php:546
+#: archive-template.php:548
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "%s ನೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿಲ್ಲ"
 
-#: archive-template.php:558 dt-assets/functions/details-bar.php:168
+#: archive-template.php:560 dt-assets/functions/details-bar.php:168
 #: dt-posts/custom-post-type.php:209
 msgid "Follow"
 msgstr "ಅನುಸರಿಸಿ"
 
-#: archive-template.php:563 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:565 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "ಪ್ರತಿಕ್ರಿಯೆಗಳು ಮತ್ತು ಚಟುವಟಿಕೆ"
 
-#: archive-template.php:568 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:570 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "ನಿಮ್ಮ ಕಾಮೆಂಟ್ ಅಥವಾ ಟಿಪ್ಪಣಿಯನ್ನು ಇಲ್ಲಿ ಬರೆಯಿರಿ"
 
-#: archive-template.php:576 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:578 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "ಮಾದರಿ:"
 
-#: archive-template.php:596 dt-users/template-new-user.php:129
+#: archive-template.php:598 dt-users/template-new-user.php:129
 #: dt-users/template-new-user.php:236
 msgid "See More Options"
 msgstr "ಇನ್ನಷ್ಟು ಆಯ್ಕೆಗಳನ್ನು ನೋಡಿ"
 
-#: archive-template.php:597 dt-users/template-new-user.php:132
+#: archive-template.php:599 dt-users/template-new-user.php:132
 #: dt-users/template-new-user.php:239
 msgid "See Fewer Options"
 msgstr "ಕಡಿಮೆ ಆಯ್ಕೆಗಳನ್ನು ನೋಡಿ"
 
-#: archive-template.php:633 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:635 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "ನವೀಕರಿಸಿ"
 
-#: archive-template.php:634 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:636 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "ಕೆಳಗೆ ಆಯ್ಕೆಗಳನ್ನು ಮಾಡಿ"
 
-#: archive-template.php:642 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:644 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -345,98 +345,98 @@ msgstr "ಕೆಳಗೆ ಆಯ್ಕೆಗಳನ್ನು ಮಾಡಿ"
 msgid "Delete"
 msgstr "ಅಳಿಸಿ"
 
-#: archive-template.php:645 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:647 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "ಕೆಳಗೆ ಆಯ್ಕೆಗಳನ್ನು ಮಾಡಿ"
 
-#: archive-template.php:679 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:681 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:169 template-settings.php:136
 msgid "Name"
 msgstr "ಹೆಸರು"
 
-#: archive-template.php:690
+#: archive-template.php:692
 msgid "Loading..."
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ ..."
 
-#: archive-template.php:695 dt-assets/functions/enqueue-scripts.php:374
+#: archive-template.php:697 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "ಇನ್ನಷ್ಟು ಲೋಡ್ ಮಾಡಿ"
 
-#: archive-template.php:707
+#: archive-template.php:709
 msgid "Field Name"
 msgstr "ಕ್ಷೇತ್ರದ ಹೆಸರು"
 
-#: archive-template.php:763
+#: archive-template.php:765
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ"
 
-#: archive-template.php:772
+#: archive-template.php:774
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s ನೊಂದಿಗೆ ಎಲ್ಲಾ %1$s"
 
-#: archive-template.php:775
+#: archive-template.php:777
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s ಇಲ್ಲದೆ ಎಲ್ಲಾ %1$s"
 
-#: archive-template.php:782
+#: archive-template.php:784
 msgid "Filter for subassigned OR Assigned To"
 msgstr "ಸಬ್‌ಸೈನ್ಡ್ ಅಥವಾ ನಿಯೋಜಿಸಲಾದ ಫಿಲ್ಟರ್"
 
-#: archive-template.php:791 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "ಸೃಷ್ಟಿ ದಿನಾಂಕ"
 
-#: archive-template.php:798 archive-template.php:805
+#: archive-template.php:800 archive-template.php:807
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "ಯಾವುದೂ ಹೊಂದಿಸಿಲ್ಲ"
 
-#: archive-template.php:819 archive-template.php:820
+#: archive-template.php:821 archive-template.php:822
 #: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
 #: dt-metrics/records/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "ಇಲ್ಲ"
 
-#: archive-template.php:826 archive-template.php:827
+#: archive-template.php:828 archive-template.php:829
 #: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
 #: dt-metrics/records/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "ಹೌದು"
 
-#: archive-template.php:831
+#: archive-template.php:833
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "ಶ್ರೇಣಿ ಪ್ರಾರಂಭ"
 
-#: archive-template.php:834 archive-template.php:845
+#: archive-template.php:836 archive-template.php:847
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ಸ್ಪಷ್ಟ"
 
-#: archive-template.php:841
+#: archive-template.php:843
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "ಶ್ರೇಣಿ ಅಂತ್ಯ"
 
-#: archive-template.php:873
+#: archive-template.php:875
 msgid "Filter Name"
 msgstr "ಫಿಲ್ಟರ್ ಹೆಸರು"
 
-#: archive-template.php:878
+#: archive-template.php:880
 msgid "Filter Records"
 msgstr "ದಾಖಲೆಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ"
 
-#: archive-template.php:882 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:884 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -2722,54 +2722,54 @@ msgstr ""
 msgid "Theme News"
 msgstr ""
 
-#: dt-core/release-notifications.php:68 dt-core/release-notifications.php:77
+#: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
 msgid "Other News"
 msgstr ""
 
-#: dt-core/release-notifications.php:69
+#: dt-core/release-notifications.php:68
 msgid "Get Involved"
 msgstr ""
 
-#: dt-core/release-notifications.php:81
+#: dt-core/release-notifications.php:80
 msgid "Other news not available."
 msgstr ""
 
-#: dt-core/release-notifications.php:96
+#: dt-core/release-notifications.php:95
 msgid "Freely given, but not cheap"
 msgstr ""
 
-#: dt-core/release-notifications.php:98
+#: dt-core/release-notifications.php:97
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
 
-#: dt-core/release-notifications.php:100
+#: dt-core/release-notifications.php:99
 msgid "Give"
 msgstr ""
 
-#: dt-core/release-notifications.php:104 dt-core/release-notifications.php:108
+#: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
 msgid "Translate"
 msgstr ""
 
-#: dt-core/release-notifications.php:106 dt-users/user-initial-setup.php:68
+#: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:674
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
 
-#: dt-core/release-notifications.php:113
+#: dt-core/release-notifications.php:112
 msgid "Build or Document"
 msgstr ""
 
-#: dt-core/release-notifications.php:115
+#: dt-core/release-notifications.php:114
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
 
-#: dt-core/release-notifications.php:117
+#: dt-core/release-notifications.php:116
 msgid "Find out more"
 msgstr ""
 
@@ -5143,12 +5143,12 @@ msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "ಇವುಗಳು %1$s ಗಾಗಿ ಆರ್ಕೈವ್ ಮಾಡಲಾದ ಕಾಮೆಂಟ್‌ಗಳಾಗಿವೆ"
 
-#: dt-users/users.php:611
+#: dt-users/users.php:629
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳು"
 
-#: dt-users/users.php:1196 template-settings.php:159 template-settings.php:592
+#: dt-users/users.php:1214 template-settings.php:159 template-settings.php:592
 msgid "System Email"
 msgstr "ಸಿಸ್ಟಮ್ ಇಮೇಲ್"
 

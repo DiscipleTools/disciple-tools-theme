@@ -13,6 +13,12 @@ window.makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`)
 const getTimeMetricsByMonth = (postType, field, year) =>
 window.makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
 
+const getMetricsCumulativePosts = (data) =>
+  window.makeRequest('POST', `metrics/cumulative-posts`, data)
+
+const getMetricsChangedPosts = (data) =>
+  window.makeRequest('POST', `metrics/changed-posts`, data)
+
 const getFieldSettings = (postType) =>
 window.makeRequest('GET', `metrics/field_settings/${postType}`)
 
@@ -74,6 +80,18 @@ function projectTimeCharts() {
             </section>
         </section>
     `
+
+    /*jQuery('#metrics-content-modal').empty().html(`
+        <div class="large reveal" id="post_details_modal" data-reveal data-reset-on-close>
+            <button class="button loader" data-close aria-label="Close reveal" type="button">
+                Close
+            </button>
+
+            <button class="close-button" data-close aria-label="Close" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `);*/
 
     const chartSection = document.querySelector('#chart-area')
     const loadingSpinner = document.querySelector('#chart-loading-spinner')
@@ -221,7 +239,7 @@ function createChart(id, keys, options) {
 
         let label = ''
         if (defaultSettings[newKey]) {
-            label = window.lodash.escape( defaultSettings[newKey].label )
+            label = window.SHAREDFUNCTIONS.escapeHTML( defaultSettings[newKey].label )
         } else if ( fieldType === 'boolean' ) {
             if (newKey === '1') {
                 label = true_label
@@ -337,6 +355,16 @@ function createColumnSeries(chart, field, name, hidden = false) {
         series.hide()
     }
 
+    // Capture event clicks.
+    series.columns.template.events.on("hit", function (e) {
+      let target = e.target;
+      let date_key = target.dataItem.component.dataFields.categoryX;
+      let metric_key = target.dataItem.component.dataFields.valueY;
+      let data = target.dataItem.dataContext;
+
+      displayPostListModal(data[date_key], date_key, metric_key);
+    });
+
     return series
 }
 
@@ -361,12 +389,120 @@ function createLineSeries(chart, field, name, hidden = false) {
     let bullet = lineSeries.bullets.push(new window.am4charts.Bullet());
 //    bullet.fill = window.am4core.color("#fdd400"); // tooltips grab fill from parent by default
     bullet.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
+
+    // Capture event clicks.
+    bullet.events.on("hit", function (e) {
+      let target = e.target;
+      let date_key = target.dataItem.component.dataFields.categoryX;
+      let metric_key = target.dataItem.component.dataFields.valueY;
+      let data = target.dataItem.dataContext;
+
+      displayPostListModal(data[date_key], date_key, metric_key);
+    });
+
     let circle = bullet.createChild(window.am4core.Circle);
     circle.radius = 4;
     circle.fill = window.am4core.color("#fff");
     circle.strokeWidth = 3;
 
     return lineSeries
+}
+
+function displayPostListModal(date, date_key, metric_key) {
+  if (date && date_key && metric_key) {
+
+    // Determine click display parameters.
+    let { post_type, field, fieldType, year, earliest_year } = window.dtMetricsProject.state;
+    let is_cumulative = metric_key.startsWith('cumulative_');
+    let is_all_time = year === 'all-time';
+    let clicked_year = is_all_time ? date : year;
+    let limit = 100;
+
+    // Build request payload.
+    let payload = {
+      'post_type': post_type,
+      'field': field,
+      'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key,
+      'limit': limit
+    };
+
+    // Determine request query date range.
+    if (is_all_time) {
+      payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+      payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
+    } else {
+      payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+      payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
+    }
+
+    // Dispatch request and process response accordingly.
+    getMetricsCumulativePosts(payload)
+    .promise()
+    .then(response => {
+      if (response && response.data) {
+        let selected_posts = [];
+        let posts = response.data;
+
+        // Limit to first X elements.
+        selected_posts = posts.slice(0, limit);
+
+        // Proceed with displaying post list.
+        let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
+        let list_html = `
+          <br>
+          ${(function (posts_to_filter) {
+          let post_list_html = `
+          <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_no)}</th>
+                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_title)}</th>
+                </tr>
+            </thead>
+            <tbody>
+          `;
+          let counter = 0;
+          jQuery.each(posts_to_filter, function (idx, post) {
+            let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
+
+            post_list_html += `
+                <tr>
+                    <td>${++counter}</td>
+                    <td><a href="${url}" target="_blank">${post['name'] ? post['name'] : post['id']}</a></td>
+                </tr>
+                `;
+          });
+
+          post_list_html += `
+            </tbody>
+          </table>
+          `;
+
+          return (posts_to_filter.length > 0) ? post_list_html : window.dtMetricsProject.translations.modal_no_records;
+        })(sorted_posts)}
+          <br>
+          `;
+
+        // Determine overall total value.
+        let total = sorted_posts.length;
+        if (response.total) {
+          total = parseInt(response.total);
+        }
+
+        // Render post html list.
+        let title = window.dtMetricsProject.translations.modal_title + ((total > 0) ? ` [ ${total} ]` : '' );
+        let content = jQuery('#template_metrics_modal_content');
+        jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
+        jQuery(content).css('max-height', '300px');
+        jQuery(content).css('overflow', 'auto');
+        jQuery(content).empty().html(list_html);
+        jQuery('#template_metrics_modal').foundation('open');
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
 }
 
 function getMinMaxValuesOfDataForKey(key) {
@@ -417,15 +553,15 @@ function getData() {
     loadingSpinner.classList.add('active')
     data.promise()
         .then(({ data, cumulative_offset }) => {
-            if ( !data ) {
-                throw new Error('no data object returned')
-            }
-            window.dtMetricsProject.cumulative_offset = cumulative_offset
-            window.dtMetricsProject.data = isAllTime
-                ? formatYearData(data)
-                : formatMonthData(data)
-            chartElement.dispatchEvent( new Event('datachange') )
-            loadingSpinner.classList.remove('active')
+          if ( !data ) {
+              throw new Error('no data object returned')
+          }
+          window.dtMetricsProject.cumulative_offset = cumulative_offset
+          window.dtMetricsProject.data = isAllTime
+              ? formatYearData(data)
+              : formatMonthData(data)
+          chartElement.dispatchEvent( new Event('datachange') )
+          loadingSpinner.classList.remove('active')
         })
         .catch((error) => {
             console.log(error)
@@ -593,8 +729,8 @@ function makeCumulativeKeys(keys) {
 function calculateCumulativeTotals(keys, data, cumulativeTotals, cumulativeKeys) {
     // add onto previous data to get cumulative totals
     // each key always has a value >= 0
-    keys.forEach((key) => {
-        const count = data[key] ? parseInt(data[key]) : 0
+  keys.forEach((key) => {
+        const count = ((typeof data !== 'undefined') && data[key]) ? parseInt(data[key]) : 0
         const cumulativeKey = cumulativeKeys[key]
         if (!cumulativeTotals[cumulativeKey] && count > 0) {
             cumulativeTotals[cumulativeKey] = count

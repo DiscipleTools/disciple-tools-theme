@@ -210,12 +210,12 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * Process a role save
      */
     public function save() {
-        global $wpdb;
-
         if ( !isset( $_POST['role_edit_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['role_edit_nonce'] ), 'role_edit' ) ) {
             $error = new WP_Error( 401, __( 'Unauthorized', 'disciple_tools' ) );
             $this->show_error( $error );
         }
+
+        $roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );
 
         $label = isset( $_POST['label'] ) ? sanitize_text_field( wp_unslash( $_POST['label'] ) ) : null;
         $slug = isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : null;
@@ -235,6 +235,13 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         if ( !$description ) {
             return $this->show_error( new WP_Error( 400, 'The description field is required.' ) );
+        }
+
+        if ( !isset( $roles[ $slug ] ) ) {
+            return $this->show_error( new WP_Error( 400, 'The role does not exist.' ) );
+        }
+        if ( isset( $roles[ $slug ]['is_editable'] ) && empty( $roles[ $slug ]['is_editable'] ) ) {
+            return $this->show_error( new WP_Error( 400, 'The role is not editable' ) );
         }
 
         $option = get_option( self::OPTION_NAME, [] );
@@ -402,7 +409,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                         continue;
                     }
                     $is_active = $key === $view_role;
-                    $editable = !empty( $role['custom'] ) && current_user_can( 'edit_roles' );
+                    $editable = ( !isset( $role['is_editable'] ) || !empty( $role['is_editable'] ) ) && current_user_can( 'edit_roles' );
                     ?>
                     <tr class="<?php echo $is_active ? 'active' : '' ?>"
                         id="role-<?php echo esc_attr( $key ) ?>">
@@ -433,7 +440,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
                                                            class="button">Duplicate</a>
                                                     </li>
                                                 <?php endif; ?>
-                                                <?php if ( current_user_can( 'delete_roles' ) && $editable ): ?>
+                                                <?php if ( current_user_can( 'delete_roles' ) && $editable && !empty( $role['custom'] ) ): ?>
                                                     <li>
                                                         <a href="<?php echo esc_url( $this->url_base . '&' . http_build_query( [ 'action' => 'delete', 'role' => $key ] ) ) ?>"
                                                            class="button button-primary">Delete</a>
@@ -559,7 +566,12 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
      * @param $key
      */
     private function view_edit_role( $key ) {
-        $role = get_option( self::OPTION_NAME, [] )[ $key ];
+        $role = get_option( self::OPTION_NAME, [] )[ $key ] ?? null;
+        if ( empty( $role ) ) {
+            $all_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+            $role = $all_roles[$key];
+            $role['capabilities'] = array_keys( $role['permissions'] );
+        }
         $label = $role['label'];
         $description = $role['description'];
 
