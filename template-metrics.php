@@ -12,6 +12,8 @@ if ( !current_user_can( 'access_disciple_tools' ) && !current_user_can( 'view_pr
 
 <?php get_header(); ?>
 
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'template-metrics' ); ?>
+
     <div style="padding:15px" class="template-metrics">
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">

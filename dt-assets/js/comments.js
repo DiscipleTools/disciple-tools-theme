@@ -119,7 +119,7 @@ jQuery(document).ready(function($) {
       <% window.lodash.forEach(activity, function(a){
         if (a.comment){ %>
           <% is_Comment = true; %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>">
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" data-comment-id="<%- a.comment_ID %>">
               <div class="comment-text" title="<%- a.date_formatted %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
@@ -352,7 +352,9 @@ jQuery(document).ready(function($) {
         displayed.push(comment)
       }
     })
-    displayed = window.lodash.orderBy(displayed, "date", "desc")
+    displayed = displayed.sort((a,b)=>{
+      return (a.sort_date || a.date) < (b.sort_date || b.date) ? 1 : -1
+    })
     let array = []
 
     displayed.forEach(d=>{
@@ -529,6 +531,7 @@ jQuery(document).ready(function($) {
     let typesCount = {};
     commentData.forEach(comment => {
       comment.date = window.moment(comment.comment_date_gmt + "Z")
+      comment.sort_date = window.moment(comment.comment_date_gmt + "Z").add(5, 'seconds')
 
       /* comment_content should be HTML. However, we want to make sure that
        * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
