@@ -109,6 +109,8 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
                     'added_label' => __( 'Added', 'disciple_tools' ),
+                    'connected_label' => __( 'Connected', 'disciple_tools' ),
+                    'disconnected_label' => __( 'Disconnected', 'disciple_tools' ),
                     'tooltip_label' => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
                     'date_select_label' => __( 'Date', 'disciple_tools' ),
                     'all_time' => __( 'All Time', 'disciple_tools' ),
