@@ -33,7 +33,7 @@ function dt_firebase_login_ui( $atts ) {
     $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
     $config['redirect_url'] = DT_Login_Fields::get( 'redirect_url' );
     $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
-    $config['disable_sign_up_status'] = !DT_Login_Fields::can_users_register();
+    $config['disable_sign_up_status'] = !dt_can_users_register();
 
     $sign_in_options = [];
     $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
