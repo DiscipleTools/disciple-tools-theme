@@ -156,20 +156,11 @@ class DT_Login_Fields {
      * @return bool
      */
     public static function can_users_register() {
-
         if ( is_multisite() ) {
-            $users_can_register = apply_filters( 'option_users_can_register', 0 );
-        } else {
-            $users_can_register = get_option( 'users_can_register' );
-
-            if ( !$users_can_register ) {
-                $users_can_register = 0;
-            }
+            return dt_multisite_is_registration_enabled_on_subsite() === 1;
         }
 
-        $users_can_register = $users_can_register !== 0;
-
-        return $users_can_register;
+        return dt_is_registration_enabled_on_site();
     }
 
     private static function filter_fields( $defaults, $fields ) {

@@ -968,6 +968,17 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_is_registration_enabled_on_site' ) ) {
+        function dt_is_registration_enabled_on_site() {
+
+            if ( get_option( 'users_can_register' ) ) {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     /**
      * Returns a completely unique 64 bit hashed key
      * @since 1.1

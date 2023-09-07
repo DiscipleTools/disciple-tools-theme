@@ -189,6 +189,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/configuration/restrict-site-access.php' ); // protect against DDOS attacks.
             require_once( 'dt-core/configuration/dt-configuration.php' ); //settings and configuration to alter default WP
             require_once( 'dt-core/dt-route.php' ); // utility class wrapping registering rest routes
+            require_once( 'dt-core/multisite.php' );
             require_once( 'dt-reports/magic-url-class.php' );
             require_once( 'dt-reports/magic-url-base.php' );
             require_once( 'dt-reports/magic-url-endpoints.php' );
@@ -404,9 +405,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              */
             require_once( 'dt-workflows/workflows.php' );
             Disciple_Tools_Workflows::instance();
-
-
-            require_once( 'dt-core/multisite.php' );
 
             /**
              * core
