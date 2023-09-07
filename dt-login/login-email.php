@@ -45,6 +45,11 @@ class DT_Login_Email {
             return 0;
         }
 
+        if ( !dt_can_users_register() ) {
+            $error->add( __METHOD__, esc_html( _x( 'You are not registered. Contact the site admin to get a user account.', 'disciple_tools' ) ), 999 );
+            return $error;
+        }
+
         /* if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
             $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple_tools' ) );
             return $error;

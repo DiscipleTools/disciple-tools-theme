@@ -41,7 +41,7 @@ class DT_Login_User_Manager {
         if ( !$this->user_exists() ) {
 
             if ( !dt_can_users_register() ) {
-                throw new Exception( esc_textarea( _x( 'You are not registered. Contact the site admin to get a user account.', 'disciple_tools' ) ), 999 );
+                throw new Exception( esc_html( _x( 'You are not registered. Contact the site admin to get a user account.', 'disciple_tools' ) ), 999 );
             }
             $this->create_user();
         } else {
