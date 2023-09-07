@@ -65,8 +65,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
         );
+        dt_write_log( $wpdb->last_query );
 
-        $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
+        $cumulative_offset = self::get_number_field_cumulative_offsets( $post_type, $field, $start );
 
         return [
             'data' => $results,
@@ -114,7 +115,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
         );
 
-        $cumulative_offset = self::get_date_field_cumulative_offset( $post_type, $field, $start, $meta = true );
+        $cumulative_offset = self::get_number_field_cumulative_offsets( $post_type, $field, $start );
 
         return [
             'data' => $results,
@@ -441,7 +442,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ];
         }
 
-        $cumulative_offset = self::get_connection_field_cumulative_offset( $post_type, $field, $connection_type, 0, $start );
+        $cumulative_offset = self::get_connection_field_cumulative_offset( $post_type, $field, $connection_type, 0, $start, 'delta' );
 
         return [
             'data' => $results,
@@ -654,7 +655,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         return $results;
     }
 
-    private static function get_number_field_cumulative_offsets( $post_type, $field, $timestamp, $multi_values ) {
+    private static function get_number_field_cumulative_offsets( $post_type, $field, $timestamp ) {
         global $wpdb;
 
         $results = $wpdb->get_row(
@@ -684,10 +685,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             // phpcs:enable
         );
 
-        return $results;
+        return $results->count;
     }
 
-    private static function get_connection_field_cumulative_offset( $post_type, $field, $connection_type, $start, $end ) {
+    private static function get_connection_field_cumulative_offset( $post_type, $field, $connection_type, $start, $end, $total_type ) {
         global $wpdb;
 
         $connected_total = $wpdb->get_var(
@@ -720,8 +721,14 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ', $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
         );
 
-        $total = ( intval( $connected_total ) - intval( $disconnected_total ) );
-        return $total;
+        switch ( $total_type ) {
+            case 'connected':
+                return intval( $connected_total );
+            case 'disconnected':
+                return intval( $disconnected_total );
+            default:
+                return ( intval( $connected_total ) - intval( $disconnected_total ) );
+        }
     }
 
     public static function get_posts_by_field_in_date_range( $post_type, $field, $args = [] ){
@@ -892,9 +899,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 AND log.object_type = %s
                                 AND log.hist_time >= %s
                                 AND log.hist_time <= %s
-                            LIMIT %d
-                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end, $limit )
+                            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
                     );
+
                     $total = $wpdb->get_results(
                         $wpdb->prepare( "
                             SELECT COUNT(DISTINCT
@@ -928,10 +935,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     $start = $args['start'] ?? 0;
                     $end = $args['end'] ?? time();
                     $p2p_type = $field_settings[$field]['p2p_key'] ?? null;
-                    $key = $args['key'] ?? 'connected';
+                    $key = $args['key'] ?? 'cumulative';
 
                     if ( !empty( $p2p_type ) ){
-                        $action = ( $key === 'connected' ) ? 'connected to' : 'disconnected from';
 
                         // phpcs:disable
                         $connection_posts = $wpdb->get_results(
@@ -946,46 +952,32 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     AND log.hist_time BETWEEN %s AND %s
                                     AND log.action = %s
                                     AND p.ID IS NOT NULL
-                        ", $post_type, $field, $p2p_type, $start, $end, $action )
-                        );
-
-                        // Determine total number of connections within time frame.
-                        /*$connected_results = $wpdb->get_results(
-                            $wpdb->prepare( "
-                                SELECT DISTINCT
-                                    p.ID AS id, p.post_title AS name
-                                FROM $wpdb->dt_activity_log AS log
-                                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = %s
-                                    AND log.object_subtype = %s
-                                    AND log.meta_key = %s
-                                    AND log.hist_time BETWEEN %s AND %s
-                                    AND log.action = %s
-                                    AND p.ID IS NOT NULL
                         ", $post_type, $field, $p2p_type, $start, $end, 'connected to' )
                         );
 
-                        // Determine total number of disconnections within time frame.
-                        $disconnected_results = $wpdb->get_results(
+                        $disconnected_posts = $wpdb->get_results(
                             $wpdb->prepare( "
-                                SELECT DISTINCT
-                                    p.ID AS id, p.post_title AS name
-                                FROM $wpdb->dt_activity_log AS log
-                                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = %s
-                                    AND log.object_subtype = %s
-                                    AND log.meta_key = %s
-                                    AND log.hist_time BETWEEN %s AND %s
-                                    AND log.action = %s
-                                    AND p.ID IS NOT NULL
-                        ", $post_type, $field, $p2p_type, $start, $end, 'disconnected from' )
-                        );*/
+                                 SELECT DISTINCT
+                                     p.ID AS id, p.post_title AS name
+                                 FROM $wpdb->dt_activity_log AS log
+                                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                 WHERE log.object_type = %s
+                                     AND log.object_subtype = %s
+                                     AND log.meta_key = %s
+                                     AND log.hist_time BETWEEN %s AND %s
+                                     AND log.action = %s
+                                     AND p.ID IS NOT NULL
+                         ", $post_type, $field, $p2p_type, $start, $end, 'disconnected from' )
+                        );
+                        // phpcs:enable
 
                         // Package existing connection results.
-                        /*$packaged_connections = [];
-                        foreach ( $connected_results ?? [] as $connected ) {
+                        $packaged_connections = [];
+                        dt_write_log( $connection_posts );
+                        dt_write_log( $disconnected_posts );
+                        foreach ( $connection_posts ?? [] as $connected ) {
                             $is_disconnected = false;
-                            foreach ( $disconnected_results ?? [] as $disconnected ) {
+                            foreach ( $disconnected_posts ?? [] as $disconnected ) {
                                 if ( $connected->id === $disconnected->id ) {
                                     $is_disconnected = true;
                                 }
@@ -994,16 +986,26 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                             if ( !$is_disconnected ) {
                                 $packaged_connections[] = $connected;
                             }
-                        }*/
+                        }
+                        dt_write_log( $packaged_connections );
 
-                        $total = [
-                            [
-                                count( $connection_posts )
-                            ]
-                        ];
+                        // Determine post results payload to be returned.
+                        $posts = [];
+                        switch ( $key ) {
+                            case 'cumulative':
+                                $posts = $packaged_connections;
+                                break;
+                            case 'connected':
+                                $posts = $connection_posts;
+                                break;
+                            case 'disconnected':
+                                $posts = $disconnected_posts;
+                                break;
+                        }
 
-                        $results = array_slice( $connection_posts, 0, $limit );
-                        // phpcs:enable
+                        // Determine results size and return capped results by specified limit.
+                        $total = [ [ count( $posts ) ] ];
+                        $results = array_slice( $posts, 0, $limit );
                     }
                     break;
                 default:
