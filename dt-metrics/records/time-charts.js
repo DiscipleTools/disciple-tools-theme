@@ -417,6 +417,8 @@ function initialiseChart(id) {
 
                   merged_data[connected[data_key]]['cumulative_count'] = cumulative_count;
                 }
+              } else {
+                merged_data[connected[data_key]]['cumulative_count'] = ( cumulative_count += connected['count'] );
               }
             }
           });
@@ -459,7 +461,6 @@ function initialiseChart(id) {
           });
         }
 
-        console.log(connection_data);
         chart.data = connection_data;
         break;
 
@@ -582,19 +583,15 @@ function displayPostListModal(date, date_key, metric_key) {
     }
 
     // Final adjustments for specific field types.
-    console.log(metric_key);
     if (fieldType === 'connection' && metric_key.includes('cumulative_')) {
       payload['key'] = 'cumulative'; //metric_key.startsWith('connected_') ? 'connected' : 'disconnected';
       payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix() : window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
     }
 
-    console.log(payload);
-
     // Dispatch request and process response accordingly.
     getMetricsCumulativePosts(payload)
     .promise()
     .then(response => {
-      console.log(response);
       if (response && response.data) {
         let selected_posts = [];
         let posts = response.data;
@@ -712,17 +709,17 @@ function getData() {
           if ( !response && !response.data ) {
             throw new Error('no data object returned')
           }
-          console.log(response);
+
           let data = response.data;
 
-          window.dtMetricsProject.cumulative_offset = response.cumulative_offset;
-          window.dtMetricsProject.data = isAllTime ? formatYearData(data) : formatMonthData(data, 'addition')
+          window.dtMetricsProject.cumulative_offset = (response.cumulative_offset !== undefined) ? response.cumulative_offset : 0;
+          window.dtMetricsProject.data = isAllTime ? formatYearData(data, 'addition') : formatMonthData(data, 'addition')
 
           // Capture additional metadata.
           switch (field_type) {
             case 'connection': {
-              window.dtMetricsProject.data_connected = isAllTime ? formatYearData(response.connected) : formatMonthData(response.connected, 'addition');
-              window.dtMetricsProject.data_disconnected = isAllTime ? formatYearData(response.disconnected) : formatMonthData(response.disconnected, 'subtraction');
+              window.dtMetricsProject.data_connected = isAllTime ? formatYearData(response.connected, 'addition') : formatMonthData(response.connected, 'addition');
+              window.dtMetricsProject.data_disconnected = isAllTime ? formatYearData(response.disconnected, 'subtraction') : formatMonthData(response.disconnected, 'subtraction');
               break;
             }
           }
@@ -744,17 +741,17 @@ function getData() {
  *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
-function formatYearData(yearlyData) {
+function formatYearData(yearlyData, cumulative_calculation_type) {
     const { fieldType } = window.dtMetricsProject.state
 
     if ( window.dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundYearData(yearlyData)
     } else {
-        return formatSimpleYearData(yearlyData)
+        return formatSimpleYearData(yearlyData, cumulative_calculation_type)
     }
 }
 
-function formatSimpleYearData(yearlyData) {
+function formatSimpleYearData(yearlyData, cumulative_calculation_type) {
     if (yearlyData.length === 0) return yearlyData
 
     let cumulativeTotal = 0
@@ -766,7 +763,22 @@ function formatSimpleYearData(yearlyData) {
     for (let year = minYear; year < maxYear + 1; year++, i++) {
         const yearData = yearlyData.find((data) => data.year === String(year) )
         const count = yearData ? parseInt(yearData.count) : 0
-        cumulativeTotal += count
+
+        switch (cumulative_calculation_type) {
+          case 'addition': {
+            cumulativeTotal += count;
+            break;
+          }
+          case 'subtraction': {
+            cumulativeTotal -= count;
+            break;
+          }
+        }
+
+        if (cumulativeTotal < 0) {
+          cumulativeTotal = 0;
+        }
+
         formattedYearlyData[i] = {
             year: String(year),
             count: count,

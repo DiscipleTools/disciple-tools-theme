@@ -381,7 +381,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $end = mktime( 24, 60, 60, 12, 31, $year );
 
         // Determine total number of connections within time frame.
-        $connected = $wpdb->get_results(
+        $connected_distinct = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
                     COUNT( DISTINCT p.ID ) AS count,
@@ -399,8 +399,24 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ", $post_type, $field, $connection_type, $start, $end, 'connected to' )
         );
 
+        $connection_posts = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    p.ID AS id,
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
+                FROM $wpdb->dt_activity_log AS log
+                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
+                        ", $post_type, $field, $connection_type, $start, $end, 'connected to' )
+        );
+
         // Determine total number of disconnections within time frame.
-        $disconnected = $wpdb->get_results(
+        $disconnected_distinct = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
                     COUNT( DISTINCT p.ID ) AS count,
@@ -418,37 +434,76 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             ", $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
         );
 
-        // Now, calculate the deltas between the two action types.
-        $deltas = [];
-        foreach ( $connected ?? [] as $connection ) {
-            $deltas[$connection->month] = $connection->count;
+        $disconnected_posts = $wpdb->get_results(
+            $wpdb->prepare( "
+                 SELECT
+                    p.ID AS id,
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
+                 FROM $wpdb->dt_activity_log AS log
+                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                 WHERE log.object_type = %s
+                     AND log.object_subtype = %s
+                     AND log.meta_key = %s
+                     AND log.hist_time BETWEEN %s AND %s
+                     AND log.action = %s
+                     AND p.ID IS NOT NULL
+                         ", $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
+        );
+
+        // Determine post id disconnected counts.
+        $posts = [];
+        $disconnected_post_id_counts = [];
+        foreach ( $disconnected_posts ?? [] as $disconnected ){
+            if ( !isset( $disconnected_post_id_counts[$disconnected->id] ) ){
+                $disconnected_post_id_counts[$disconnected->id] = 0;
+            }
+            $disconnected_post_id_counts[$disconnected->id]++;
         }
 
-        foreach ( $disconnected ?? [] as $disconnection ) {
-            if ( isset( $deltas[$disconnection->month] ) ) {
-                $deltas[$disconnection->month] -= $disconnection->count;
-
+        // Filter out post ids accordingly, by disconnected counts.
+        foreach ( $connection_posts ?? [] as $connected ){
+            if ( isset( $disconnected_post_id_counts[$connected->id] ) && $disconnected_post_id_counts[$connected->id] > 0 ){
+                $disconnected_post_id_counts[$connected->id]--;
             } else {
-                $deltas[$disconnection->month] = 0 - $disconnection->count;
+                $posts[] = $connected;
             }
         }
 
-        // Now, package deltas into results package.
-        $results = [];
-        foreach ( $deltas as $month => $count ) {
-            $results[] = [
-                'count' => strval( $count ),
-                'month' => strval( $month )
+        // Package into unique posts.
+        $unique_posts = [];
+        $unique_post_ids = [];
+        foreach ( $posts ?? [] as $post ){
+            if ( !in_array( $post->id, $unique_post_ids ) ){
+                $unique_post_ids[] = $post->id;
+                $unique_posts[] = $post;
+            }
+        }
+
+        // Group unique posts by months.
+        $unique_post_groups = [];
+        foreach ( $unique_posts as $unique_post ){
+            if ( !isset( $unique_post_groups[$unique_post->month] ) ){
+                $unique_post_groups[$unique_post->month] = 0;
+            }
+            $unique_post_groups[$unique_post->month]++;
+        }
+
+        // Package groups into required results shape.
+        $unique_post_group_results = [];
+        foreach ( $unique_post_groups as $unique_post_group_month => $unique_post_group_count ){
+            $unique_post_group_results[] = [
+                'count' => strval( $unique_post_group_count ),
+                'month' => strval( $unique_post_group_month )
             ];
         }
 
-        $cumulative_offset = self::get_connection_field_cumulative_offset( $post_type, $field, $connection_type, 0, $start, 'delta' );
+        $cumulative_offset = self::get_connection_field_cumulative_offset( $post_type, $field, $connection_type, 0, $start );
 
         return [
-            'data' => $results,
+            'data' => $unique_post_group_results,
             'cumulative_offset' => $cumulative_offset,
-            'connected' => $connected,
-            'disconnected' => $disconnected
+            'connected' => $connected_distinct,
+            'disconnected' => $disconnected_distinct
         ];
     }
 
@@ -688,10 +743,10 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         return $results->count;
     }
 
-    private static function get_connection_field_cumulative_offset( $post_type, $field, $connection_type, $start, $end, $total_type ) {
+    private static function get_connection_field_cumulative_offset( $post_type, $field, $connection_type, $start, $end ) {
         global $wpdb;
 
-        $connected_total = $wpdb->get_var(
+        /*$connected_total = $wpdb->get_var(
             $wpdb->prepare( '
                 SELECT
                     COUNT( DISTINCT p.ID ) AS count
@@ -704,9 +759,24 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     AND log.action = %s
                     AND p.ID IS NOT NULL
             ', $post_type, $field, $connection_type, $start, $end, 'connected to' )
+        );*/
+
+        $connection_posts = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT
+                    p.ID AS id
+                FROM $wpdb->dt_activity_log AS log
+                LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                WHERE log.object_type = %s
+                    AND log.object_subtype = %s
+                    AND log.meta_key = %s
+                    AND log.hist_time BETWEEN %s AND %s
+                    AND log.action = %s
+                    AND p.ID IS NOT NULL
+                        ", $post_type, $field, $connection_type, $start, $end, 'connected to' )
         );
 
-        $disconnected_total = $wpdb->get_var(
+        /*$disconnected_total = $wpdb->get_var(
             $wpdb->prepare( '
                 SELECT
                     COUNT( DISTINCT p.ID ) AS count
@@ -719,16 +789,63 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     AND log.action = %s
                     AND p.ID IS NOT NULL
             ', $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
+        );*/
+
+        $disconnected_posts = $wpdb->get_results(
+            $wpdb->prepare( "
+                 SELECT
+                     p.ID AS id
+                 FROM $wpdb->dt_activity_log AS log
+                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                 WHERE log.object_type = %s
+                     AND log.object_subtype = %s
+                     AND log.meta_key = %s
+                     AND log.hist_time BETWEEN %s AND %s
+                     AND log.action = %s
+                     AND p.ID IS NOT NULL
+                         ", $post_type, $field, $connection_type, $start, $end, 'disconnected from' )
         );
 
-        switch ( $total_type ) {
-            case 'connected':
-                return intval( $connected_total );
-            case 'disconnected':
-                return intval( $disconnected_total );
-            default:
-                return ( intval( $connected_total ) - intval( $disconnected_total ) );
+        // Determine post id disconnected counts.
+        $posts = [];
+        $disconnected_post_id_counts = [];
+        foreach ( $disconnected_posts ?? [] as $disconnected ){
+            if ( !isset( $disconnected_post_id_counts[$disconnected->id] ) ){
+                $disconnected_post_id_counts[$disconnected->id] = 0;
+            }
+            $disconnected_post_id_counts[$disconnected->id]++;
         }
+
+        // Filter out post ids accordingly, by disconnected counts.
+        foreach ( $connection_posts ?? [] as $connected ){
+            if ( isset( $disconnected_post_id_counts[$connected->id] ) && $disconnected_post_id_counts[$connected->id] > 0 ){
+                $disconnected_post_id_counts[$connected->id]--;
+            } else {
+                $posts[] = $connected;
+            }
+        }
+
+        // Package into unique posts.
+        $unique_posts = [];
+        $unique_post_ids = [];
+        foreach ( $posts ?? [] as $post ){
+            if ( !in_array( $post->id, $unique_post_ids ) ){
+                $unique_post_ids[] = $post->id;
+                $unique_posts[] = $post;
+            }
+        }
+
+        // Return cumulative total.
+        return intval( count( $unique_posts ) );
+
+        /*switch ( $total_type ) {
+            case 'connected':
+                return intval( count( $connection_posts ) );
+            case 'disconnected':
+                return intval( count( $disconnected_posts ) );
+            default:
+                return ( intval( count( $connection_posts ) ) - intval( count( $disconnected_posts ) ) );
+        }*/
     }
 
     public static function get_posts_by_field_in_date_range( $post_type, $field, $args = [] ){
@@ -942,7 +1059,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                         // phpcs:disable
                         $connection_posts = $wpdb->get_results(
                             $wpdb->prepare( "
-                                SELECT DISTINCT
+                                SELECT
                                     p.ID AS id, p.post_title AS name
                                 FROM $wpdb->dt_activity_log AS log
                                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
@@ -957,7 +1074,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                         $disconnected_posts = $wpdb->get_results(
                             $wpdb->prepare( "
-                                 SELECT DISTINCT
+                                 SELECT
                                      p.ID AS id, p.post_title AS name
                                  FROM $wpdb->dt_activity_log AS log
                                  LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
@@ -973,21 +1090,24 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                         // Package existing connection results.
                         $packaged_connections = [];
-                        dt_write_log( $connection_posts );
-                        dt_write_log( $disconnected_posts );
-                        foreach ( $connection_posts ?? [] as $connected ) {
-                            $is_disconnected = false;
-                            foreach ( $disconnected_posts ?? [] as $disconnected ) {
-                                if ( $connected->id === $disconnected->id ) {
-                                    $is_disconnected = true;
-                                }
-                            }
 
-                            if ( !$is_disconnected ) {
+                        // Determine post id disconnected counts.
+                        $disconnected_post_id_counts = [];
+                        foreach ( $disconnected_posts ?? [] as $disconnected ){
+                            if ( !isset( $disconnected_post_id_counts[$disconnected->id] ) ){
+                                $disconnected_post_id_counts[$disconnected->id] = 0;
+                            }
+                            $disconnected_post_id_counts[$disconnected->id]++;
+                        }
+
+                        // Filter out post ids accordingly, by disconnected counts.
+                        foreach ( $connection_posts ?? [] as $connected ){
+                            if ( isset( $disconnected_post_id_counts[$connected->id] ) && $disconnected_post_id_counts[$connected->id] > 0 ){
+                                $disconnected_post_id_counts[$connected->id]--;
+                            } else {
                                 $packaged_connections[] = $connected;
                             }
                         }
-                        dt_write_log( $packaged_connections );
 
                         // Determine post results payload to be returned.
                         $posts = [];
@@ -1003,9 +1123,19 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 break;
                         }
 
+                        // Remove post duplicates.
+                        $unique_posts = [];
+                        $unique_post_ids = [];
+                        foreach ( $posts ?? [] as $post ){
+                            if ( !in_array( $post->id, $unique_post_ids ) ){
+                                $unique_post_ids[] = $post->id;
+                                $unique_posts[] = $post;
+                            }
+                        }
+
                         // Determine results size and return capped results by specified limit.
-                        $total = [ [ count( $posts ) ] ];
-                        $results = array_slice( $posts, 0, $limit );
+                        $total = [ [ count( $unique_posts ) ] ];
+                        $results = array_slice( $unique_posts, 0, $limit );
                     }
                     break;
                 default:
