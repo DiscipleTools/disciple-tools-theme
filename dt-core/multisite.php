@@ -48,10 +48,10 @@ if ( is_multisite() ) {
     function dt_multisite_is_registration_enabled_on_subsite() {
         $registration = get_site_option( 'registration' );
         if ( 'all' === $registration || 'user' === $registration ){
-            if ( get_option( 'dt_disable_registration' ) ) {
-                return 0;
-            } else {
+            if ( get_option( 'dt_enable_registration' ) ) {
                 return 1;
+            } else {
+                return 0;
             }
         } else {
             return 0;
