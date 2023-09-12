@@ -1063,6 +1063,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     p.ID AS id, p.post_title AS name
                                 FROM $wpdb->dt_activity_log AS log
                                 LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                INNER JOIN $wpdb->posts as p2 ON p2.ID = log.meta_value
                                 WHERE log.object_type = %s
                                     AND log.object_subtype = %s
                                     AND log.meta_key = %s
@@ -1078,6 +1079,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                      p.ID AS id, p.post_title AS name
                                  FROM $wpdb->dt_activity_log AS log
                                  LEFT JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                 INNER JOIN $wpdb->posts as p2 ON p2.ID = log.meta_value
                                  WHERE log.object_type = %s
                                      AND log.object_subtype = %s
                                      AND log.meta_key = %s
