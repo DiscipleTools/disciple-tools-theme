@@ -276,7 +276,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 }
 
                 // Wider callout to ensure link is still valid.
-                if ( apply_filters( 'dt_magic_link_continue', $elements ) === false ) {
+                if ( apply_filters( 'dt_magic_link_continue', true, $elements ) === false ) {
                     self::redirect_to_expired_landing_page();
                 }
 
