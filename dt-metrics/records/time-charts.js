@@ -584,7 +584,7 @@ function displayPostListModal(date, date_key, metric_key) {
 
     // Final adjustments for specific field types.
     if (fieldType === 'connection' && metric_key.includes('cumulative_')) {
-      payload['key'] = 'cumulative'; //metric_key.startsWith('connected_') ? 'connected' : 'disconnected';
+      payload['key'] = 'cumulative';
       payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix() : window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
     }
 
