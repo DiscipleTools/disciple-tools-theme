@@ -375,7 +375,7 @@ function initialiseChart(id) {
 
     const chart = window.am4core.create(timechartDiv, window.am4charts.XYChart)
     const data = window.dtMetricsProject.data
-
+console.log(window.dtMetricsProject);
     const categoryAxis = chart.xAxes.push( new window.am4charts.CategoryAxis() )
     categoryAxis.dataFields.category = view
     categoryAxis.title.text = year === 'all-time' ? all_time : String(year)
@@ -386,7 +386,7 @@ function initialiseChart(id) {
     // Adjust data shape accordingly based on field type.
     switch (field_type) {
       case 'connection': {
-        let data_connected = window.dtMetricsProject.data_connected;
+        /*let data_connected = window.dtMetricsProject.data_connected;
         let data_disconnected = window.dtMetricsProject.data_disconnected;
 
         let connection_data = [];
@@ -461,7 +461,8 @@ function initialiseChart(id) {
           });
         }
 
-        chart.data = connection_data;
+        chart.data = connection_data;*/
+        chart.data = window.dtMetricsProject.data_connection;
         break;
 
       } default: {
@@ -586,6 +587,7 @@ function displayPostListModal(date, date_key, metric_key) {
     if (fieldType === 'connection' && metric_key.includes('cumulative_')) {
       payload['key'] = 'cumulative';
       payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix() : window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+      payload['ts_start_clicked'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
     }
 
     // Dispatch request and process response accordingly.
@@ -709,7 +711,7 @@ function getData() {
           if ( !response && !response.data ) {
             throw new Error('no data object returned')
           }
-
+console.log(response);
           let data = response.data;
 
           window.dtMetricsProject.cumulative_offset = (response.cumulative_offset !== undefined) ? response.cumulative_offset : 0;
@@ -718,8 +720,11 @@ function getData() {
           // Capture additional metadata.
           switch (field_type) {
             case 'connection': {
+              processConnectionData( response.connection_data );
+              /*
               window.dtMetricsProject.data_connected = isAllTime ? formatYearData(response.connected, 'addition') : formatMonthData(response.connected, 'addition');
               window.dtMetricsProject.data_disconnected = isAllTime ? formatYearData(response.disconnected, 'subtraction') : formatMonthData(response.disconnected, 'subtraction');
+              */
               break;
             }
           }
@@ -733,6 +738,51 @@ function getData() {
             chartElement.dispatchEvent( new Event('datachange') )
             loadingSpinner.classList.remove('active')
         })
+}
+
+function processConnectionData(data) {
+  if (data && data.records) {
+    const {post_type, fieldType: field_type, field, year} = window.dtMetricsProject.state;
+    const is_all_time = (year === 'all-time');
+
+    if (is_all_time) {
+
+    } else {
+      let cumulative_offset = (data.cumulative_totals.cumulative_count !== undefined) ? data.cumulative_totals.cumulative_count : 0;
+
+      const month_labels = window.SHAREDFUNCTIONS.get_months_labels();
+      window.dtMetricsProject.data_connection = month_labels.map((month_label, i) => {
+        const month_number = i + 1;
+        if (isInFuture(month_number)) {
+          return {
+            'month': month_label,
+          }
+        }
+
+        const month_data = window.lodash.find(data.records, function (record, month) {
+          return (month === String(month_number));
+        });
+
+        if (month_data) {
+          cumulative_offset = month_data.cumulative_count;
+
+          return {
+            'month': month_label,
+            'connected': month_data.connected,
+            'disconnected': month_data.disconnected,
+            'cumulative_count': month_data.cumulative_count
+          }
+        } else {
+          return {
+            'month': month_label,
+            'connected': 0,
+            'disconnected': 0,
+            'cumulative_count' : cumulative_offset
+          }
+        }
+      });
+    }
+  }
 }
 
 /**

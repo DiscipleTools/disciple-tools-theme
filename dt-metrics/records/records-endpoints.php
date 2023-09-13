@@ -97,6 +97,7 @@ class Disciple_Tools_Metrics_Records_Endpoints
             return DT_Counter_Post_Stats::get_posts_by_field_in_date_range( $params['post_type'], $params['field'], [
                 'key' => $params['key'] ?? null,
                 'start' => $params['ts_start'] ?? 0,
+                'start_clicked' => $params['ts_start_clicked'] ?? 0,
                 'end' => $params['ts_end'] ?? time(),
                 'limit' => $params['limit'] ?? 100,
             ] );
