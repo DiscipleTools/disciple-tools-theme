@@ -174,6 +174,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             /**
              * Load first files
              */
+            require_once( 'dt-core/multisite.php' );
             require_once( 'dt-core/global-functions.php' );
             require_once( 'dt-core/utilities/loader.php' );
             $is_rest = dt_is_rest();
@@ -404,9 +405,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              */
             require_once( 'dt-workflows/workflows.php' );
             Disciple_Tools_Workflows::instance();
-
-
-            require_once( 'dt-core/multisite.php' );
 
             /**
              * core
