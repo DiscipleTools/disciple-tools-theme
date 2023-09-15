@@ -377,7 +377,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_connection_field_by_state_month( $post_type, $field, $connection_type, $start, $end ) {
         global $wpdb;
 
-        $bob = $wpdb->get_results(
+        return $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
                     p.ID AS id,
@@ -406,14 +406,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
             ", $post_type, $field, $connection_type, $start, $end, $post_type, $field, $connection_type, $start, $end ), ARRAY_A
         );
-
-        return $bob;
     }
 
     public static function get_connection_field_by_state_year( $post_type, $field, $connection_type, $start, $end ) {
         global $wpdb;
 
-        $bob = $wpdb->get_results(
+        return $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
                     p.ID AS id,
@@ -442,8 +440,6 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
             ", $post_type, $field, $connection_type, $start, $end, $post_type, $field, $connection_type, $start, $end ), ARRAY_A
         );
-
-        return $bob;
     }
 
     public static function get_connection_field_cumulative_id_offsets( $post_type, $field, $connection_type, $start, $end ) {
