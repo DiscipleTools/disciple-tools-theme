@@ -98,8 +98,10 @@ class Disciple_Tools_Metrics_Records_Endpoints
                 'key' => $params['key'] ?? null,
                 'start' => $params['ts_start'] ?? 0,
                 'start_clicked' => $params['ts_start_clicked'] ?? 0,
+                'cumulative_count' => $params['cumulative_count'] ?? 0,
                 'end' => $params['ts_end'] ?? time(),
                 'limit' => $params['limit'] ?? 100,
+                'is_all_time' => $params['is_all_time'] ?? false
             ] );
         }
 
