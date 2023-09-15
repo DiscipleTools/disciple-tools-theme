@@ -91,6 +91,7 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
                     'post_type_select_label' => __( 'Record Type', 'disciple_tools' ),
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'submit_button_label' => __( 'Generate', 'disciple_tools' ),
+                    'show_all_button_label' => __( 'Show All', 'disciple_tools' ),
                     'modal' => [
                         'add_child_title' => __( 'Add Child To', 'disciple_tools' ),
                         'add_child_name_title' => __( 'Name', 'disciple_tools' ),
@@ -230,6 +231,7 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
             $html = '<ul class="ul-gen-'.esc_html( $gen ).'">';
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
+                $html .= '<input type="hidden" class="li-gen-' . esc_html( $gen ) . '-id" value="' . esc_html( $item_id ) . '" />';
                 $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_attr( $first_section ) . '">';
                 $html .= '(' . esc_html( $gen ) . ') ';
                 $html .= '<strong><a href="' . esc_url( site_url( '/' . $post_type . '/' ) ) . esc_html( $item_id ) . '" target="_blank">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a>';
