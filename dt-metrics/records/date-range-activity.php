@@ -281,6 +281,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 'disconnected from'
             ] );
 
+            // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT al.*, p.post_title as post_title, p.post_type as post_type
             FROM $wpdb->dt_activity_log al
@@ -294,6 +295,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $obj_subtype_sql
             ORDER BY hist_time DESC;
             ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
+            // phpcs:enable
 
             // Package result findings and return.
             $posts = [];
