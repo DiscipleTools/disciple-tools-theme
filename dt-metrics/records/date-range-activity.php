@@ -207,7 +207,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             // Accommodate special cases.
             if ( ( $field_type == 'date' ) && ( $params['field'] == 'post_date' ) ) {
 
-                // phpcs:disable
                 $results = $wpdb->get_results( $wpdb->prepare( "
                 SELECT DISTINCT p.ID as id, p.post_title AS post_title, p.post_type AS post_type, UNIX_TIMESTAMP(p.post_date) AS post_timestamp
                 FROM $wpdb->posts p
@@ -215,7 +214,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 AND p.post_date BETWEEN FROM_UNIXTIME(%d) AND FROM_UNIXTIME(%d)
                 ORDER BY post_timestamp DESC;
                 ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
-                // phpcs:enable
 
                 $posts = [];
                 foreach ( $results ?? [] as $post ){
@@ -283,7 +281,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 'disconnected from'
             ] );
 
-            // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT al.*, p.post_title as post_title, p.post_type as post_type
             FROM $wpdb->dt_activity_log al
@@ -297,7 +294,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $obj_subtype_sql
             ORDER BY hist_time DESC;
             ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
-            // phpcs:enable
 
             // Package result findings and return.
             $posts = [];
