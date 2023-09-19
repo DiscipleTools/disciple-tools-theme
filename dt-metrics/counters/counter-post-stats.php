@@ -377,69 +377,58 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
     public static function get_connection_field_by_state_month( $post_type, $field, $connection_type, $start, $end ) {
         global $wpdb;
 
-        return $wpdb->get_results(
+        $results = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
                     p.ID AS id,
                     p.post_title AS name,
-                    COUNT( DISTINCT( log.histid ) ) AS connected,
-                    COUNT( DISTINCT( disconnect.histid ) ) AS disconnected,
-                    ( COUNT( DISTINCT( log.histid ) ) - COUNT( DISTINCT( disconnect.histid ) ) ) AS state,
+                    SUM( if ( log.action = 'connected to', 1, 0 ) ) AS connected,
+                    SUM( if ( log.action = 'disconnected from', 1, 0 ) ) AS disconnected,
                     MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
                 FROM $wpdb->dt_activity_log AS log
                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
                 INNER JOIN $wpdb->posts as p2 ON p2.ID = log.meta_value
-                LEFT JOIN $wpdb->dt_activity_log AS disconnect ON (
-                    disconnect.object_type = %s
-                    AND disconnect.object_subtype = %s
-                    AND disconnect.meta_key = %s
-                    AND disconnect.hist_time BETWEEN %s AND %s
-                    AND disconnect.action = 'disconnected from'
-                    AND disconnect.object_id = log.object_id
-                )
                 WHERE log.object_type = %s
                     AND log.object_subtype = %s
                     AND log.meta_key = %s
                     AND log.hist_time BETWEEN %s AND %s
-                    AND log.action = 'connected to'
                 GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) ), p.ID
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $field, $connection_type, $start, $end, $post_type, $field, $connection_type, $start, $end ), ARRAY_A
+            ", $post_type, $field, $connection_type, $start, $end ), ARRAY_A
         );
+        foreach ( $results as $index => $result ){
+            $results[$index]['state'] = $result['connected'] - $result['disconnected'];
+        }
+        return $results;
     }
 
     public static function get_connection_field_by_state_year( $post_type, $field, $connection_type, $start, $end ) {
         global $wpdb;
 
-        return $wpdb->get_results(
+        $results = $wpdb->get_results(
             $wpdb->prepare( "
                 SELECT
                     p.ID AS id,
                     p.post_title AS name,
-                    COUNT( DISTINCT( log.histid ) ) AS connected,
-                    COUNT( DISTINCT( disconnect.histid ) ) AS disconnected,
-                    ( COUNT( DISTINCT( log.histid ) ) - COUNT( DISTINCT( disconnect.histid ) ) ) AS state,
+                    SUM( if ( log.action = 'connected to', 1, 0 ) ) AS connected,
+                    SUM( if ( log.action = 'disconnected from', 1, 0 ) ) AS disconnected,
+
                     YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                 FROM $wpdb->dt_activity_log AS log
                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
                 INNER JOIN $wpdb->posts as p2 ON p2.ID = log.meta_value
-                LEFT JOIN $wpdb->dt_activity_log AS disconnect ON (
-                    disconnect.object_type = %s
-                    AND disconnect.object_subtype = %s
-                    AND disconnect.meta_key = %s
-                    AND disconnect.hist_time BETWEEN %s AND %s
-                    AND disconnect.action = 'disconnected from'
-                    AND disconnect.object_id = log.object_id
-                )
                 WHERE log.object_type = %s
                     AND log.object_subtype = %s
                     AND log.meta_key = %s
                     AND log.hist_time BETWEEN %s AND %s
-                    AND log.action = 'connected to'
                 GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) ), p.ID
                 ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
-            ", $post_type, $field, $connection_type, $start, $end, $post_type, $field, $connection_type, $start, $end ), ARRAY_A
+            ", $post_type, $field, $connection_type, $start, $end ), ARRAY_A
         );
+        foreach ( $results as $index => $result ){
+            $results[$index]['state'] = $result['connected'] - $result['disconnected'];
+        }
+        return $results;
     }
 
     public static function get_connection_field_cumulative_id_offsets( $post_type, $field, $connection_type, $start, $end ) {
@@ -472,7 +461,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
             // Apply offsets accordingly.
             if ( array_key_exists( $record['id'], $offsets ) && !in_array( $record['id'], $processed_offsets ) ) {
-                $updated_offsets[$record[$date_type]][$record['id']]['state'] = ( ( $offsets[$record['id']]['offset'] ) + ( $record['state'] ) );
+//                $updated_offsets[$record[$date_type]][$record['id']]['state'] = ( ( $offsets[$record['id']]['offset'] ) + ( $record['state'] ) );
                 $processed_offsets[] = $record['id'];
             }
         }
@@ -515,11 +504,11 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     $date_group_record_counts[$date_unit]['disconnected']++;
                 }
                 //update the record state
-                $record_cumulative_states[$record['id']] = $record['state'];
+                $record_cumulative_states[$record['id']] = ( $record_cumulative_states[$record['id']] ?? 0 ) + $record['state'];
             }
             //count the records in connected state
             foreach ( $record_cumulative_states as $state ){
-                if ( !empty( $state ) ){
+                if ( $state > 0 ){
                     $date_group_record_counts[$date_unit]['cumulative_count']++;
                 }
             }
