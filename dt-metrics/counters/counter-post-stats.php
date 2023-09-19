@@ -482,73 +482,47 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
     public static function get_connection_field_counts( $offsets, $date_group_records ) {
 
-        // Determine cumulative totals by id for both connected and disconnected states.
+        // Determine cumulative totals.
         $cumulative_totals = [
-            'connected' => 0,
-            'disconnected' => 0
+            'cumulative_count' => 0,
         ];
-        foreach ( $offsets ?? [] as $offset ){
-            if ( $offset['offset'] > 0 ) {
-                $cumulative_totals['connected']++;
-            } else {
-                $cumulative_totals['disconnected']++;
+        //state for each record starting out.
+        $record_cumulative_states = [];
+        foreach ( $offsets as $record_id => $values ){
+            $record_cumulative_states[$record_id] = $values['offset'];
+            //count the records with a connected state
+            if ( $values['offset'] > 0 ){
+                $cumulative_totals['cumulative_count']++;
             }
         }
 
-        $cumulative_count = $cumulative_totals['cumulative_count'] = ( $cumulative_totals['connected'] - $cumulative_totals['disconnected'] );
-
         // Determine date group record counts.
         $date_group_record_counts = [];
-        $record_cumulative_states = [];
-        $processed_records = [];
         foreach ( $date_group_records ?? [] as $date_unit => $date_unit_array ) {
             $date_group_record_counts[$date_unit] = [
-                'connected' => 0,
-                'disconnected' => 0
+                'connected' => 0, //number of records that gained a new 'connected' state
+                'disconnected' => 0, //number of records lost the 'connected' state
+                'cumulative_count' => 0,
             ];
+            //update the current state for each record
             foreach ( $date_unit_array ?? [] as $record ) {
-
-                if ( !array_key_exists( $record['id'], $record_cumulative_states ) ) {
-                    $record_cumulative_states[$record['id']] = $record['state'];
-                } else {
-                    $record_cumulative_states[$record['id']] += $record['state'];
+                //if the record is now connected and previously was disconnected
+                if ( empty( $record_cumulative_states[$record['id']] ) && !empty( $record['connected'] ) && !empty( $record['state'] ) ){
+                    $date_group_record_counts[$date_unit]['connected']++;
                 }
-
-                if ( !array_key_exists( $record['id'], $processed_records ) ) {
-                    $processed_records[$record['id']] = [];
-                    if ( $record_cumulative_states[$record['id']] > 0 ) {
-                        $event = 'connected';
-                        $date_group_record_counts[$date_unit]['connected']++;
-                        $cumulative_count++;
-                    } else {
-                        $event = 'disconnected';
-                        $date_group_record_counts[$date_unit]['disconnected']++;
-                        $cumulative_count--;
-                    }
-                    $processed_records[$record['id']]['last_event'] = $event;
-                } else {
-                    if ( $record_cumulative_states[$record['id']] > 0 ) {
-                        switch ( $processed_records[$record['id']]['last_event'] ) {
-                            case 'disconnected':
-                                $date_group_record_counts[$date_unit]['disconnected']--;
-                                $date_group_record_counts[$date_unit]['connected']++;
-                                $processed_records[$record['id']]['last_event'] = 'connected';
-                                $cumulative_count++;
-                                break;
-                        }
-                    } else {
-                        switch ( $processed_records[$record['id']]['last_event'] ) {
-                            case 'connected':
-                                $date_group_record_counts[$date_unit]['connected']--;
-                                $date_group_record_counts[$date_unit]['disconnected']++;
-                                $processed_records[$record['id']]['last_event'] = 'disconnected';
-                                $cumulative_count--;
-                                break;
-                        }
-                    }
+                //if the record was connected and is now disconnected
+                if ( !empty( $record_cumulative_states[$record['id']] ) && !empty( $record['disconnected'] ) ){
+                    $date_group_record_counts[$date_unit]['disconnected']++;
+                }
+                //update the record state
+                $record_cumulative_states[$record['id']] = $record['state'];
+            }
+            //count the records in connected state
+            foreach ( $record_cumulative_states as $state ){
+                if ( !empty( $state ) ){
+                    $date_group_record_counts[$date_unit]['cumulative_count']++;
                 }
             }
-            $date_group_record_counts[$date_unit]['cumulative_count'] = $cumulative_count;
         }
 
         return [
