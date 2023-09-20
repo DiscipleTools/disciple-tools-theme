@@ -412,7 +412,6 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     p.post_title AS name,
                     SUM( if ( log.action = 'connected to', 1, 0 ) ) AS connected,
                     SUM( if ( log.action = 'disconnected from', 1, 0 ) ) AS disconnected,
-
                     YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
                 FROM $wpdb->dt_activity_log AS log
                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
@@ -489,18 +488,26 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $date_group_record_counts = [];
         foreach ( $date_group_records ?? [] as $date_unit => $date_unit_array ) {
             $date_group_record_counts[$date_unit] = [
-                'connected' => 0, //number of records that gained a new 'connected' state
-                'disconnected' => 0, //number of records lost the 'connected' state
+                'new_connected' => 0, //number of records that gained a new 'connected' state
+                'connected' => 0,
+                'new_disconnected' => 0, //number of records lost the 'connected' state
+                'disconnected' => 0,
                 'cumulative_count' => 0,
             ];
             //update the current state for each record
             foreach ( $date_unit_array ?? [] as $record ) {
                 //if the record is now connected and previously was disconnected
                 if ( empty( $record_cumulative_states[$record['id']] ) && !empty( $record['connected'] ) && !empty( $record['state'] ) ){
+                    $date_group_record_counts[$date_unit]['new_connected']++;
+                }
+                if ( !empty( $record['connected'] ) ){
                     $date_group_record_counts[$date_unit]['connected']++;
                 }
                 //if the record was connected and is now disconnected
-                if ( !empty( $record_cumulative_states[$record['id']] ) && !empty( $record['disconnected'] ) ){
+                if ( !empty( $record_cumulative_states[$record['id']] ) && !empty( $record['disconnected'] ) && empty( $record['state'] ) ){
+                    $date_group_record_counts[$date_unit]['new_disconnected']++;
+                }
+                if ( !empty( $record['disconnected'] ) ){
                     $date_group_record_counts[$date_unit]['disconnected']++;
                 }
                 //update the record state
