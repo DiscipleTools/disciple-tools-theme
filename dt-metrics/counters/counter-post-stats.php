@@ -1036,7 +1036,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                         WHERE log.object_type = %s
                                             AND log.object_subtype = %s
                                             AND log.meta_key = %s
-                                            AND log.hist_time AFTER %s
+                                            AND log.hist_time < %s
                                         GROUP BY p.ID
                                     ) posts
                                     WHERE
