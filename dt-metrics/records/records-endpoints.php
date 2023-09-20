@@ -101,7 +101,6 @@ class Disciple_Tools_Metrics_Records_Endpoints
                 'cumulative_count' => $params['cumulative_count'] ?? 0,
                 'end' => $params['ts_end'] ?? time(),
                 'limit' => $params['limit'] ?? 100,
-                'is_all_time' => $params['is_all_time'] ?? false
             ] );
         }
 

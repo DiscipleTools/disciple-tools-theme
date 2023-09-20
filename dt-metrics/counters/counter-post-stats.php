@@ -527,31 +527,6 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         ];
     }
 
-    public static function merge_connection_field_cumulative_id_offsets( $offsets, $states, $cumulative_count_limit ) {
-        $merged_offset_states = [];
-
-        foreach ( $states ?? [] as $date_type => $state ) {
-            if ( is_array( $state ) ) {
-                foreach ( $state ?? [] as $record ) {
-                    if ( $record['state'] > 0 ) {
-                        $merged_offset_states[$record['id']] = $record;
-                    }
-                }
-            }
-        }
-
-        $crop_count = 0;
-        foreach ( $offsets ?? [] as $record_id => $offset ) {
-            $merged_offset_states[$record_id] = [
-                'id' => $record_id,
-                'name' => $offset['record']['name'],
-                'state' => $offset['offset']
-            ];
-        }
-
-        return array_slice( $merged_offset_states, 0, $cumulative_count_limit );
-    }
-
     public static function get_connection_field_by_month( $post_type, $field, $connection_type, $year ) {
         $start = mktime( 0, 0, 0, 1, 1, $year );
         $end = mktime( 24, 60, 60, 12, 31, $year );
@@ -1040,54 +1015,54 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     $end = $args['end'] ?? time();
                     $p2p_type = $field_settings[$field]['p2p_key'] ?? null;
                     $key = $args['key'] ?? 'cumulative';
-                    $is_all_time = $args['is_all_time'] ?? false;
-                    $date_type = $is_all_time ? 'year' : 'month';
 
                     if ( !empty( $p2p_type ) ){
 
                         if ( $key === 'cumulative' ){
-                            $start_clicked = $args['start_clicked'];
-                            $cumulative_count = $args['cumulative_count'];
-
-                            // Determine id offsets from start of time to start of clicked date range.
-                            $offsets = self::get_connection_field_cumulative_id_offsets( $post_type, $field, $p2p_type, 0, $start_clicked );
-
-                            // Fetch id states for given clicked date range.
-                            $states = ( $date_type === 'month' ) ? self::get_connection_field_by_state_month( $post_type, $field, $p2p_type, $start_clicked, $end ) : self::get_connection_field_by_state_year( $post_type, $field, $p2p_type, $start_clicked, $end );
-
-                            // Update id offsets based on given clicked date range activity.
-                            $updated_offset_states = self::update_connection_field_cumulative_id_offsets( $offsets, $states, $date_type );
-
-                            // Merge updated offset states with previous offsets.
-                            $merged_offset_states = self::merge_connection_field_cumulative_id_offsets( $offsets, $updated_offset_states, $cumulative_count );
-
-                            // Determine results size and return capped results by specified limit.
-                            $total = [ [ count( $merged_offset_states ) ] ];
-                            $results = array_slice( $merged_offset_states, 0, $limit );
+                            $results = $wpdb->get_results(
+                                $wpdb->prepare( "
+                                    SELECT 
+                                        posts.id as id,
+                                        posts.name as name
+                                    FROM (
+                                        SELECT
+                                            p.ID AS id,
+                                            p.post_title AS name,
+                                            SUM( if ( log.action = 'connected to', 1, 0 ) ) AS connected,
+                                            SUM( if ( log.action = 'disconnected from', 1, 0 ) ) AS disconnected
+                                        FROM $wpdb->dt_activity_log AS log
+                                        INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                        INNER JOIN $wpdb->posts as p2 ON p2.ID = log.meta_value
+                                        WHERE log.object_type = %s
+                                            AND log.object_subtype = %s
+                                            AND log.meta_key = %s
+                                            AND log.hist_time AFTER %s
+                                        GROUP BY p.ID
+                                    ) posts
+                                    WHERE
+                                        posts.connected > posts.disconnected
+                                    LIMIT %d
+                                ", $post_type, $field, $p2p_type, $end, $limit ), ARRAY_A
+                            );
                         } else {
                             // Determine id offsets from start of time to start of clicked date range.
-                            $offsets = self::get_connection_field_cumulative_id_offsets( $post_type, $field, $p2p_type, 0, $start );
-
-                            // Fetch id states for given clicked date range.
-                            $states = ( $date_type === 'month' ) ? self::get_connection_field_by_state_month( $post_type, $field, $p2p_type, $start, $end ) : self::get_connection_field_by_state_year( $post_type, $field, $p2p_type, $start, $end );
-
-                            // Update id offsets based on given clicked date range activity.
-                            $updated_offset_states = self::update_connection_field_cumulative_id_offsets( $offsets, $states, $date_type );
-
-                            // Determine records to be returned by specified connected/disconnected key.
-                            $state_results = [];
-                            foreach ( $updated_offset_states ?? [] as $date_type => $state_array ){
-                                foreach ( $state_array ?? [] as $state ){
-                                    if ( ( $key === 'connected' ) && ( $state['state'] > 0 ) ){
-                                        $state_results[] = $state;
-                                    } elseif ( ( $key === 'disconnected' ) && ( $state['state'] <= 0 ) ){
-                                        $state_results[] = $state;
-                                    }
-                                }
-                            }
-
-                            $total = [ [ count( $state_results ) ] ];
-                            $results = array_slice( $state_results, 0, $limit );
+                            $results = $wpdb->get_results(
+                                $wpdb->prepare( "
+                                    SELECT
+                                        p.ID AS id,
+                                        p.post_title AS name
+                                    FROM $wpdb->dt_activity_log AS log
+                                    INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                    INNER JOIN $wpdb->posts as p2 ON p2.ID = log.meta_value
+                                    WHERE log.object_type = %s
+                                        AND log.object_subtype = %s
+                                        AND log.meta_key = %s
+                                        AND log.hist_time BETWEEN %s AND %s
+                                        AND log.action = %s
+                                    GROUP BY p.ID
+                                    LIMIT %d
+                            ", $post_type, $field, $p2p_type, $start, $end, $key === 'connected' ? 'connected to' : 'disconnected from', $limit ), ARRAY_A
+                            );
                         }
                     }
                     break;
