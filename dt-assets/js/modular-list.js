@@ -65,14 +65,14 @@
 
     const { filterID, filterTab, query } = get_url_query_params()
 
-    if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
-      return urlCustomFilter;
-    } else if (cachedFilter && !window.lodash.isEmpty(cachedFilter)) {
-      return cachedFilter;
-    } else if (filterID && is_in_filter_list(filterID) ) {
+    if (filterID && is_in_filter_list(filterID) ) {
       const currentFilter = { ID: filterID, query: query ?? {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
+    } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
+      return urlCustomFilter;
+    } else if (cachedFilter && !window.lodash.isEmpty(cachedFilter)) {
+      return cachedFilter;
     }
     return { query: {} };
   }
