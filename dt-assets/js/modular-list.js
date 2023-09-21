@@ -38,7 +38,7 @@
   on_load()
 
   function on_load() {
-    let cached_filter = get_cached_filter(cookie)
+    let cached_filter = cookie;
 
     const query_param_custom_filter = create_custom_filter_from_query_params()
 
@@ -59,14 +59,6 @@
     get_filter_counts(old_filters)
 
     reset_sorting_in_table_header(current_filter)
-  }
-
-  function get_cached_filter(inCookie) {
-    try {
-      return JSON.parse(inCookie);
-    } catch (e) {
-      return {};
-    }
   }
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
