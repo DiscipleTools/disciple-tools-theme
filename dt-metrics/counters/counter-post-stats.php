@@ -65,7 +65,6 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
         );
-        dt_write_log( $wpdb->last_query );
 
         $cumulative_offset = self::get_number_field_cumulative_offsets( $post_type, $field, $start );
 

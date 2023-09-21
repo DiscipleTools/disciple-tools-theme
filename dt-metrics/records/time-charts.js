@@ -480,7 +480,7 @@ function createLineSeries(chart, field, name, hidden = false) {
     return lineSeries
 }
 
-function displayPostListModal(date, date_key, metric_key, cumulative_count = 0) {
+function displayPostListModal(date, date_key, metric_key) {
   if (date && date_key && metric_key) {
 
     // Determine click display parameters.
@@ -496,7 +496,6 @@ function displayPostListModal(date, date_key, metric_key, cumulative_count = 0) 
       'field': field,
       'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key,
       'limit': limit,
-      'is_all_time': is_all_time
     };
 
     // Determine request query date range.
@@ -511,11 +510,8 @@ function displayPostListModal(date, date_key, metric_key, cumulative_count = 0) 
     // Final adjustments for specific field types.
     if (fieldType === 'connection' && metric_key.includes('cumulative_')) {
       payload['key'] = 'cumulative';
-      payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix() : window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
-      payload['ts_start_clicked'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
-      payload['cumulative_count'] = cumulative_count;
+      payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix():window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
     }
-
     // Dispatch request and process response accordingly.
     getMetricsCumulativePosts(payload)
     .promise()
