@@ -33,9 +33,10 @@ class DT_User_Hooks_And_Configuration {
         add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
         add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
 
-        add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_from_blog' ], 10, 2 );
+        add_action( 'remove_user_from_blog', [ $this,'dt_delete_user_from_blog' ], 10, 3 );
         add_action( 'wpmu_delete_user', [ $this, 'dt_multisite_delete_user_contact_meta' ], 10, 1 );
-        add_action( 'delete_user', [ $this,'dt_delete_user' ], 10, 1 );
+        add_action( 'delete_user', [ $this,'dt_delete_user' ], 10, 3 );
+        add_filter( 'users_have_additional_content', [ $this, 'dt_users_have_additional_content' ], 10, 2 );
 
         // translate emails
         add_filter( 'wp_new_user_notification_email', [ $this, 'wp_new_user_notification_email' ], 10, 3 );
@@ -434,9 +435,27 @@ class DT_User_Hooks_And_Configuration {
         return $val;
     }
 
+    public static function dt_users_have_additional_content( $response, $user_ids ) {
+        global $wpdb;
 
+        foreach ( $user_ids ?? [] as $user_id ) {
+            $assigned_count = $wpdb->get_var(
+                $wpdb->prepare( "
+                    SELECT COUNT(*) FROM $wpdb->postmeta
+                    WHERE meta_key = 'assigned_to'
+                    AND meta_value = %s
+            ", 'user-' . $user_id )
+            );
 
-    public static function dt_delete_user( $user_id ){
+            if ( intval( $assigned_count ) > 0 ) {
+                $response = true;
+            }
+        }
+
+        return $response;
+    }
+
+    public static function dt_delete_user( $user_id, $reassign_id, $user ){
         global $wpdb;
         $wpdb->get_results(
             $wpdb->prepare( "
@@ -445,9 +464,13 @@ class DT_User_Hooks_And_Configuration {
                 AND meta_value = %d
             ", $user_id )
         );
+
+        if ( $reassign_id !== null ) {
+            self::dt_reassign_delete_user_records( $user_id, $reassign_id );
+        }
     }
 
-    public static function dt_delete_user_from_blog( $user_id, $blog_id ){
+    public static function dt_delete_user_from_blog( $user_id, $blog_id, $reassign_id = null ){
         switch_to_blog( $blog_id );
         global $wpdb;
         $wpdb->get_results(
@@ -458,7 +481,31 @@ class DT_User_Hooks_And_Configuration {
             ", $user_id )
         );
 
+        if ( $reassign_id !== null ) {
+            self::dt_reassign_delete_user_records( $user_id, $reassign_id );
+        }
+
         restore_current_blog();
+    }
+
+    public static function dt_reassign_delete_user_records( $user_id, $reassign_id ) {
+        global $wpdb;
+        $wpdb->get_results(
+            $wpdb->prepare( "
+                UPDATE $wpdb->postmeta
+                SET meta_value = %s
+                WHERE meta_key = 'assigned_to'
+                AND meta_value = %s
+            ", 'user-' . $reassign_id, 'user-' . $user_id )
+        );
+
+        $wpdb->get_results(
+            $wpdb->prepare( "
+                UPDATE $wpdb->dt_share
+                SET user_id = %d
+                WHERE user_id = %d
+            ", $reassign_id, $user_id )
+        );
     }
 
     /** Multisite Only
