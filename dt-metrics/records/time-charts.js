@@ -644,7 +644,7 @@ function getData() {
             }
             default: {
               window.dtMetricsProject.cumulative_offset = (response.cumulative_offset !== undefined) ? response.cumulative_offset : 0;
-              window.dtMetricsProject.data = isAllTime ? formatYearData(data, 'addition') : formatMonthData(data, 'addition');
+              window.dtMetricsProject.data = isAllTime ? formatYearData(data) : formatMonthData(data);
               break;
             }
           }
@@ -721,17 +721,17 @@ function processConnectionData(data) {
  *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
-function formatYearData(yearlyData, cumulative_calculation_type) {
+function formatYearData(yearlyData) {
     const { fieldType } = window.dtMetricsProject.state
 
     if ( window.dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundYearData(yearlyData)
     } else {
-        return formatSimpleYearData(yearlyData, cumulative_calculation_type)
+        return formatSimpleYearData(yearlyData)
     }
 }
 
-function formatSimpleYearData(yearlyData, cumulative_calculation_type) {
+function formatSimpleYearData(yearlyData) {
     if (yearlyData.length === 0) return yearlyData
 
     let cumulativeTotal = 0
@@ -743,21 +743,7 @@ function formatSimpleYearData(yearlyData, cumulative_calculation_type) {
     for (let year = minYear; year < maxYear + 1; year++, i++) {
         const yearData = yearlyData.find((data) => data.year === String(year) )
         const count = yearData ? parseInt(yearData.count) : 0
-
-        switch (cumulative_calculation_type) {
-          case 'addition': {
-            cumulativeTotal += count;
-            break;
-          }
-          case 'subtraction': {
-            cumulativeTotal -= count;
-            break;
-          }
-        }
-
-        if (cumulativeTotal < 0) {
-          cumulativeTotal = 0;
-        }
+        cumulativeTotal += count
 
         formattedYearlyData[i] = {
             year: String(year),
@@ -803,13 +789,13 @@ function formatCompoundYearData(yearlyData) {
  *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
-function formatMonthData(monthlyData, cumulative_calculation_type) {
+function formatMonthData(monthlyData) {
     const { fieldType } = window.dtMetricsProject.state
 
     if ( window.dtMetricsProject.multi_fields.includes(fieldType)) {
         return formatCompoundMonthData(monthlyData)
     } else {
-        return formatSimpleMonthData(monthlyData, cumulative_calculation_type)
+        return formatSimpleMonthData(monthlyData)
     }
 }
 
@@ -819,7 +805,7 @@ function isInFuture(monthNumber) {
     return now.getUTCFullYear() === parseInt(year) && monthNumber > now.getMonth() + 1
 }
 
-function formatSimpleMonthData(monthlyData, cumulative_calculation_type) {
+function formatSimpleMonthData(monthlyData) {
     const monthLabels = window.SHAREDFUNCTIONS.get_months_labels()
 
     let cumulativeTotal = window.dtMetricsProject.cumulative_offset
@@ -833,21 +819,7 @@ function formatSimpleMonthData(monthlyData, cumulative_calculation_type) {
 
         const monthData = monthlyData.find((mData) => mData.month === String(monthNumber) )
         const count = monthData ? parseInt(monthData.count) : 0
-
-        switch (cumulative_calculation_type) {
-          case 'addition': {
-            cumulativeTotal += count;
-            break;
-          }
-          case 'subtraction': {
-            cumulativeTotal -= count;
-            break;
-          }
-        }
-
-        if (cumulativeTotal < 0) {
-          cumulativeTotal = 0;
-        }
+        cumulativeTotal = cumulativeTotal + count
 
         return {
             'month': monthLabel,
