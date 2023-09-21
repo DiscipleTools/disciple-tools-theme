@@ -45,6 +45,11 @@ class DT_Login_Email {
             return 0;
         }
 
+        if ( !dt_can_users_register() ) {
+            $error->add( __METHOD__, esc_html( _x( 'You are not registered. Contact the site admin to get a user account.', 'disciple_tools' ) ), 999 );
+            return $error;
+        }
+
         /* if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
             $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple_tools' ) );
             return $error;
@@ -64,12 +69,16 @@ class DT_Login_Email {
         }
          */
         // validate elements
-        if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) ) {
+        if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) || empty( $_POST['password2'] ) ) {
             $error->add( __METHOD__, __( 'Missing email or password.', 'disciple_tools' ) );
             return $error;
         }
 
-        // @todo check if passwords are identical
+        // check if passwords are identical
+        if ( $_POST['password'] !== $_POST['password2'] ) {
+            $error->add( __METHOD__, __( 'Passwords do not match. Please, try again.', 'disciple_tools' ) );
+            return $error;
+        }
 
         // sanitize user form input
         $password   = sanitize_text_field( wp_unslash( $_POST['password'] ) );
@@ -139,29 +148,29 @@ class DT_Login_Email {
         $errors = new WP_Error();
 
         if ( ! ( isset( $_POST['retrieve_password_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['retrieve_password_nonce'] ) ), 'retrieve_password' ) ) ) {
-            $errors->add( __METHOD__, __( 'Missing form verification. Refresh and try again.', 'disciple_tools' ) );
+            $errors->add( 'retrieve-password-missing-nonce', __( 'Missing form verification. Refresh and try again.', 'disciple_tools' ) );
             return $errors;
         }
 
         if ( isset( $_POST['user_login'] ) ) {
             $user_login = trim( sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) );
         } else {
-            $errors->add( __METHOD__, __( 'Missing username or email address.', 'disciple_tools' ) );
+            $errors->add( 'retrieve-password-missing-username-email', __( 'Missing username or email address.', 'disciple_tools' ) );
             return $errors;
         }
 
 
         if ( empty( $user_login ) ) {
-            $errors->add( __METHOD__, __( 'ERROR: Enter a username or email address.', 'disciple_tools' ) );
+            $errors->add( 'retrieve-password-no-username-email', __( 'ERROR: Enter a username or email address.', 'disciple_tools' ) );
         } elseif ( strpos( $user_login, '@' ) ) {
             $user_data = get_user_by( 'email', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that email address.', 'disciple_tools' ) );
+                $errors->add( 'retrieve-password-bad-email-address', __( 'ERROR: There is no user registered with that email address.', 'disciple_tools' ) );
             }
         } else {
             $user_data = get_user_by( 'login', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( __METHOD__, __( 'ERROR: There is no user registered with that username.', 'disciple_tools' ) );
+                $errors->add( 'retrieve-password-bad-username', __( 'ERROR: There is no user registered with that username.', 'disciple_tools' ) );
             }
         }
 
@@ -235,7 +244,17 @@ class DT_Login_Email {
          */
         $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
 
-        if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
+        /**
+         * Filter the headers of the password reset mail
+         *
+         * @param string  $headers    Default headers.
+         * @param string  $key        The activation key.
+         * @param string  $user_login The username for the user.
+         * @param WP_User $user_data  WP_User object.
+         */
+        $headers = apply_filters( 'retrieve_password_headers', '', $key, $user_login, $user_data );
+
+        if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message, $headers ) ) {
             wp_die( esc_html__( 'The email could not be sent.' ) . "<br />\n" . esc_html__( 'Possible reason: your host may have disabled the mail() function.', 'disciple_tools' ) );
         }
 

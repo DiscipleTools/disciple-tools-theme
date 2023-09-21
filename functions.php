@@ -154,7 +154,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.47.4';
+            $this->version = '1.48.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -174,6 +174,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             /**
              * Load first files
              */
+            require_once( 'dt-core/multisite.php' );
             require_once( 'dt-core/global-functions.php' );
             require_once( 'dt-core/utilities/loader.php' );
             $is_rest = dt_is_rest();
@@ -404,9 +405,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              */
             require_once( 'dt-workflows/workflows.php' );
             Disciple_Tools_Workflows::instance();
-
-
-            require_once( 'dt-core/multisite.php' );
 
             /**
              * core

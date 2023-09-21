@@ -274,6 +274,12 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 if ( ! empty( $instance_id ) ) {
                     $elements['instance_id'] = $instance_id;
                 }
+
+                // Wider callout to ensure link is still valid.
+                if ( apply_filters( 'dt_magic_link_continue', true, $elements ) === false ) {
+                    self::redirect_to_expired_landing_page();
+                }
+
                 return $elements;
             }
             return false;

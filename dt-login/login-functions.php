@@ -9,11 +9,19 @@ function dt_login_redirect_login_page() {
 
     $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
-    if ( !$login_page_enabled ) {
-        return;
-    }
     if ( isset( $_SERVER['REQUEST_URI'] ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
         $page_viewed = substr( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ), 0, 12 );
+        $parsed_request_uri = ( new DT_URL( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) )->parsed_url;
+        $page_viewed = ltrim( $parsed_request_uri['path'], '/' );
+
+        if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'register' && !dt_can_users_register() ) {
+            wp_redirect( wp_login_url() );
+            exit;
+        }
+
+        if ( !$login_page_enabled ) {
+            return;
+        }
 
         if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'rp' ) {
             return;
@@ -29,6 +37,31 @@ function dt_login_redirect_login_page() {
             exit;
         }
 
+        $login_url = DT_Login_Fields::get( 'login_url' );
+        $login_url = apply_filters( 'dt_login_url', $login_url );
+        if ( $page_viewed == $login_url && isset( $_GET['action'] ) && $_GET['action'] === 'register' && !dt_can_users_register() ) {
+            wp_redirect( dt_login_url( 'login' ) );
+            exit;
+        }
+
+        //phpcs:disable
+        if ( $page_viewed == 'wp-login.php' && !isset( $_GET['action'] ) && $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+            if ( isset( $_POST['log'] ) && isset( $_POST['pwd'] ) && ( empty( $_POST['log'] ) || empty( $_POST['pwd'] ) ) ) {
+                if ( isset( $_POST['redirect_to'] ) ) {
+                    wp_redirect( dt_login_url( 'login', $_POST['redirect_to'] ) . '&login=failed' );
+                } else {
+                    $parsed_url = wp_parse_url( dt_login_url( 'login' ) );
+                    if ( isset( $parsed_url['query'] ) && !empty( $parsed_url['query'] ) ) {
+                        wp_redirect( dt_login_url( 'login' ) . '&login=failed' );
+                    } else {
+                        wp_redirect( dt_login_url( 'login' ) . '?login=failed' );
+                    }
+                }
+                exit;
+            }
+        }
+        //phpcs:enable
+
         if ( $page_viewed == 'wp-login.php' && isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'GET' ) {
             wp_redirect( dt_login_url( 'login' ) );
             exit;
@@ -37,11 +70,11 @@ function dt_login_redirect_login_page() {
 }
 // END LOGIN PAGE REDIRECT
 
-function dt_login_url( string $name, string $url = '' ) : string {
+function dt_login_url( string $name, string $url = '' ): string {
     $dt_login = DT_Login_Fields::all_values();
 
-    $url = new DT_URL( $url );
-    $query_redirect_url = $url->query_params->get( 'redirect_to' );
+    $dt_url = new DT_URL( $url );
+    $query_redirect_url = $dt_url->query_params->get( 'redirect_to' );
 
     $login_url = $dt_login['login_url'] ?? '';
     $redirect_url = empty( $query_redirect_url ) ? site_url( $dt_login['redirect_url'] ) ?? '' : $query_redirect_url;
@@ -80,6 +113,9 @@ function dt_login_url( string $name, string $url = '' ) : string {
         case 'logout':
             return dt_create_site_url( $login_url, [ 'action' => 'logout' ] );
         case 'register':
+            if ( !dt_can_users_register() ) {
+                return dt_login_url( 'login', $url );
+            }
             return dt_create_site_url( $login_url, [ 'action' => 'register' ] );
         case 'lostpassword':
             return dt_create_site_url( $login_url, [ 'action' => 'lostpassword' ] );
@@ -105,7 +141,7 @@ function dt_create_site_url( $path = '', $params = [] ) {
 }
 
 
-function dt_login_spinner() : string {
+function dt_login_spinner(): string {
     return plugin_dir_url( __DIR__ ) . 'spinner.svg';
 }
 /**
@@ -137,7 +173,15 @@ add_action( 'wp_login_failed', 'dt_login_login_failed' );
 function dt_login_login_failed() {
     if ( !dt_is_rest() && DT_Login_Fields::get( 'login_enabled' ) === 'on' ){
         $login_page  = dt_login_url( 'login' );
-        wp_redirect( $login_page . '?login=failed' );
+        $parsed_url = wp_parse_url( $login_page );
+
+        if ( isset( $parsed_url['query'] ) && !empty( $parsed_url['query'] ) ) {
+            $login_page .= '&login=failed';
+        } else {
+            $login_page .= '?login=failed';
+        }
+
+        wp_redirect( $login_page );
         exit;
     }
 }

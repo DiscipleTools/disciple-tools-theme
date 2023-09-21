@@ -69,6 +69,7 @@ class Disciple_Tools_Usage {
                 'wp_version' => $wp_version,
                 'wp_db_version' => $wp_db_version,
                 'site_url' => $site_url,
+                'server_url' => is_multisite() ? network_site_url() : $site_url,
                 'theme_version' => disciple_tools()->version,
                 'in_debug' => defined( 'WP_DEBUG' ) && WP_DEBUG,
 

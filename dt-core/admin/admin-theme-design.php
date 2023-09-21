@@ -19,21 +19,12 @@ if ( is_admin() ) {
     add_filter( 'admin_footer_text', 'dt_empty_footer_string', 11 );
     add_filter( 'update_footer', 'dt_empty_footer_string', 11 );
     add_action( 'wp_before_admin_bar_render', 'dt_remove_admin_bar_new' );
-    add_action( 'admin_menu', 'dt_post_type_menu' );
 }
 
 /*********************************************************************************************
  * Functions
  */
 
-
-/**
- * Make a top level menu item for all the post types
- */
-function dt_post_type_menu() {
-    $image_url = 'dashicons-admin-page';
-    add_menu_page( __( 'Post Types (D.T)', 'disciple_tools' ), __( 'Post Types (D.T)', 'disciple_tools' ), 'manage_dt', 'dt_post_types', '', $image_url, 5 );
-}
 
 /**
  * Modify the admin bar

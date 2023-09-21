@@ -1524,6 +1524,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $wpdb->query("
                 RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `{$wpdb->prefix}dt_location_grid`;
             ");
+            $wpdb->query( "UPDATE $wpdb->dt_location_grid SET level = '0' WHERE level is NULL AND level_name = 'admin0'" );
             return true;
         }
         public function process_step_17() {
