@@ -109,7 +109,15 @@ function projectTimeCharts() {
             .then((data) => {
                 window.dtMetricsProject.field_settings = data
                 fieldSelectElement.innerHTML = buildFieldSelectOptions()
-                fieldSelectElement.dispatchEvent( new Event('change') )
+
+              // Update selection based on detected defaults.
+              if ( e.detail && e.detail.field ) {
+                jQuery('#post-field-select').val(e.detail.field);
+                fieldSelectElement.dispatchEvent(new CustomEvent('change', {'detail': e.detail}));
+
+              } else {
+                fieldSelectElement.dispatchEvent( new Event('change') );
+              }
             })
             .catch((error) => {
                 console.log(error)
@@ -133,8 +141,39 @@ function projectTimeCharts() {
         getData()
     })
 
+    // Handle any available request defaults.
+    handleRequestDefaults();
+}
+
+function handleRequestDefaults() {
+  const request_params = window.dtMetricsProject.request.params;
+
+  // Ensure required parts are present, in order to proceed.
+  if ( request_params && request_params.post_type && request_params.field ) {
+    const post_type = request_params.post_type;
+    const field_id = request_params.field;
+
+    jQuery('#post-type-select').val(post_type);
+    window.dtMetricsProject.state.post_type = post_type;
+
+    jQuery('#post-field-select').val(field_id);
+    window.dtMetricsProject.state.field = field_id;
+
+    if ( request_params.date ) {
+      const year = request_params.date
+      window.dtMetricsProject.state.year = year
+      window.dtMetricsProject.state.chart_view = year === 'all-time' ? 'year' : 'month'
+      jQuery('#date-select').val(year);
+
+    }
+    document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
+
+  } else {
+
     // trigger the first get of data on page load
-    fieldSelectElement.dispatchEvent( new Event('change') )
+    document.querySelector('#post-field-select').dispatchEvent( new Event('change') );
+
+  }
 }
 
 function buildFieldSelectOptions() {
@@ -542,7 +581,6 @@ function addHideOtherSeriesEventHandlers(series) {
 
 function getData() {
     const { post_type: postType, field, year } = window.dtMetricsProject.state
-
     const isAllTime = year === 'all-time'
     const data = isAllTime
         ? getTimeMetricsByYear(postType, field)

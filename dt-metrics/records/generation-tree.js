@@ -55,6 +55,18 @@ function project_generation_tree() {
   document.querySelector('#post-type-select').addEventListener('change', (e) => {
     window.dtMetricsProject.state.post_type = e.target.value;
     fieldSelectElement.innerHTML = buildFieldSelectOptions();
+
+    // Update selection based on detected defaults.
+    if ( e.detail && e.detail.field ) {
+      jQuery('#post-field-select').val(e.detail.field);
+
+      if ( e.detail.focus_id ) {
+        handle_focus(e.detail.post_type, e.detail.focus_id, e.detail.field);
+
+      } else {
+        handle_build_generation_tree_request();
+      }
+    }
   });
 
   // Add submit button event listener.
@@ -66,6 +78,24 @@ function project_generation_tree() {
   document.querySelector('#post-field-show-all-button').addEventListener('click', (e) => {
     handle_build_generation_tree_request();
   });
+
+  // Handle any available request defaults.
+  handleRequestDefaults();
+}
+
+function handleRequestDefaults() {
+  const request_params = window.dtMetricsProject.request.params;
+
+  // Ensure required parts are present, in order to proceed.
+  if (request_params && request_params.post_type && request_params.field) {
+    const post_type = request_params.post_type;
+    const field_id = request_params.field;
+
+    jQuery('#post-type-select').val(post_type);
+    jQuery('#post-field-select').val(field_id);
+
+    document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
+  }
 }
 
 function buildFieldSelectOptions() {

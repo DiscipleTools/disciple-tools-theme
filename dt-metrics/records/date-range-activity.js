@@ -23,6 +23,7 @@ function project_activity_during_date_range() {
     post_type_select_label,
     post_field_select_label,
     date_select_label,
+    date_select_custom_label,
     submit_button_label,
     total_label,
     results_table_head_title_label,
@@ -99,10 +100,18 @@ function project_activity_during_date_range() {
     getFieldSettings(postType)
     .promise()
     .then((data) => {
-      console.log(data);
       window.dtMetricsProject.field_settings = data;
       fieldSelectElement.innerHTML = buildFieldSelectOptions();
-      fieldSelectElement.dispatchEvent(new Event('change'));
+
+      // Update selection based on detected defaults.
+      if ( e.detail && e.detail.field ) {
+        jQuery('#post-field-select').val(e.detail.field);
+        fieldSelectElement.dispatchEvent(new CustomEvent('change', {'detail': e.detail}));
+
+      } else {
+        fieldSelectElement.dispatchEvent(new Event('change'));
+      }
+
     })
     .catch((error) => {
       console.log(error)
@@ -111,7 +120,21 @@ function project_activity_during_date_range() {
 
   // Add field event listener.
   fieldSelectElement.addEventListener('change', (e) => {
-    refreshFieldValueEntryElement();
+    refreshFieldValueEntryElement( e.detail, function () {
+
+      // Default to any specified date ranges.
+      if (e.detail ) {
+        if (e.detail.ts_start && e.detail.ts_end) {
+          let date_range_picker = jQuery('.date_range_picker').data('daterangepicker');
+          date_range_picker.setStartDate(window.moment.unix(parseInt(e.detail.ts_start)));
+          date_range_picker.setEndDate(window.moment.unix(parseInt(e.detail.ts_end)).format("YYYY-MM-DD"));
+
+          // Default to custom range label.
+          jQuery('.date_range_picker span').html(window.lodash.escape(date_select_custom_label));
+        }
+        jQuery('#post-field-submit-button').click();
+      }
+    } );
   });
 
   // Add submit button event listener.
@@ -208,6 +231,21 @@ function project_activity_during_date_range() {
     });
 
   });
+
+  // Handle any available request defaults.
+  handleRequestDefaults();
+}
+
+function handleRequestDefaults() {
+  const request_params = window.dtMetricsProject.request.params;
+
+  // Ensure required parts are present, in order to proceed.
+  if ( request_params && request_params.post_type && request_params.field ) {
+
+    // Update selected post type and forward request params to change event.
+    jQuery('#post-type-select').val(request_params.post_type);
+    document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
+  }
 }
 
 function buildFieldSelectOptions() {
@@ -227,7 +265,7 @@ function buildFieldSelectOptions() {
     `)
 }
 
-function refreshFieldValueEntryElement() {
+function refreshFieldValueEntryElement( details = null, callback = null ) {
 
   // Empty any previous entries.
   let entry_div = jQuery('#post-field-value-entry-div');
@@ -246,6 +284,15 @@ function refreshFieldValueEntryElement() {
       });
       entry_div.html(`<select class="select-field" id="post-field-value">${options_html}</select>`);
 
+      // Select any requested default field values.
+      if ( details && details.value !== null ) {
+        jQuery('#post-field-value').val(details.value);
+      }
+
+      if ( callback ) {
+        callback();
+      }
+
     } else if (window.lodash.includes(['connection', 'user_select', 'location'], field_settings[field_id]['type'])) {
 
       // Fetch html rendering for selected field.
@@ -257,6 +304,15 @@ function refreshFieldValueEntryElement() {
         if (response['html']) {
           entry_div.html(response['html']);
           activateSpecialFieldValueControls(field_id, field_settings[field_id]);
+
+          // Select any requested default field values.
+          if ( details && details.value !== null ) {
+            // TODO: Value variable may have to be an object; based on a combination of URL params.
+          }
+        }
+
+        if ( callback ) {
+          callback();
         }
 
       }).catch((error) => {
@@ -265,6 +321,10 @@ function refreshFieldValueEntryElement() {
 
     } else {
       entry_div.html('<input type="hidden" id="post-field-value" value="" />');
+
+      if ( callback ) {
+        callback();
+      }
     }
   }
 }
