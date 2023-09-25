@@ -481,7 +481,7 @@ class DT_User_Hooks_And_Configuration {
             ", $user_id )
         );
 
-        if ( $reassign_id !== null ) {
+        if ( ( $reassign_id !== null ) && ( $reassign_id !== 0 ) ) {
             self::dt_reassign_delete_user_records( $user_id, $reassign_id );
         }
 
