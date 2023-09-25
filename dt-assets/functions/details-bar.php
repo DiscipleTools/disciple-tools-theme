@@ -94,8 +94,7 @@ function dt_print_details_bar(
                         <div class="cell medium-2 large-1 center-items align-left">
                             <a class="section-chevron navigation-previous" style="max-width: 1rem; display: none;" href="javascript:void(0)">
                                 <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
-                                $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                                if ( $dir == 'rtl' ) {
+                                if ( is_rtl() ) {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                                 } else {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
@@ -129,8 +128,7 @@ function dt_print_details_bar(
                         <div class="cell medium-2 large-1 center-items align-right">
                             <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
                                 <img style="max-width: 1rem; height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
-                                $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                                if ( $dir == 'rtl' ) {
+                                if ( is_rtl() ) {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                                 } else {
                                     echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
@@ -252,8 +250,7 @@ function dt_print_details_bar(
                     <div class="cell small-1 center-items">
                         <a class="section-chevron navigation-previous" style="display: none;" href="javascript:void(0)">
                             <img style="height: 20px" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php
-                            $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                            if ( $dir == 'rtl' ) {
+                            if ( is_rtl() ) {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );
                             } else {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
@@ -285,8 +282,7 @@ function dt_print_details_bar(
                     <div class="cell small-1 center-items">
                         <a href="javascript:void(0)" style="display: none;" class="navigation-next section-chevron">
                             <img style="height: 20px" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php
-                            $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
-                            if ( $dir == 'rtl' ) {
+                            if ( is_rtl() ) {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_left.svg' );
                             } else {
                                 echo esc_url( get_template_directory_uri() . '/dt-assets/images/chevron_right.svg' );

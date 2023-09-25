@@ -390,8 +390,10 @@ function heatmap_focus_change( focus_id, current_map ) {
   let geodata = openChart.geodata
   geodata.features = setUpData( geodata.features, MAPPINGDATA.data[MAPPINGDATA.settings.current_map])
 
+  openChart.reverseGeodata = false
   openChart.geodata = []
   openChart.geodata = geodata
+  openChart.reverseGeodata = true
 
   data_type_list( 'data_type_list' )
 }

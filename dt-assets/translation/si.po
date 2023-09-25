@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-08-03T14:29:04+00:00\n"
+"POT-Creation-Date: 2023-08-21T09:15:11+00:00\n"
 "Language: si\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,7 +45,7 @@ msgstr "ඔබේ පරිපාලකගෙන් අවසර ඉල්ලන
 msgid "Request Record Access Permission"
 msgstr "වාර්තා ප්‍රවේශ අවසරය ඉල්ලන්න"
 
-#: 403.php:39 dt-users/template-new-user.php:267
+#: 403.php:39 dt-users/template-new-user.php:265
 msgid "Back"
 msgstr "ආපසු"
 
@@ -62,13 +62,13 @@ msgstr "ප්‍රවේශ ඉල්ලීම පිළිබඳව වාර
 msgid "Submit Request"
 msgstr "ඉල්ලීම ඉදිරිපත් කරන්න"
 
-#: 403.php:55 archive-template.php:865 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:867 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:508 dt-contacts/access-module.php:539
-#: dt-contacts/access-module.php:567 dt-contacts/base-setup.php:380
+#: dt-contacts/access-module.php:510 dt-contacts/access-module.php:541
+#: dt-contacts/access-module.php:569 dt-contacts/base-setup.php:380
 #: dt-contacts/base-setup.php:415 dt-contacts/user-module.php:159
 #: single-template.php:415 single-template.php:432
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
@@ -77,8 +77,8 @@ msgstr "ඉල්ලීම ඉදිරිපත් කරන්න"
 msgid "Cancel"
 msgstr "අවලංගු කරන්න"
 
-#: 403.php:59 archive-template.php:388 archive-template.php:430
-#: archive-template.php:889 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:390 archive-template.php:432
+#: archive-template.php:891 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -87,10 +87,10 @@ msgstr "අවලංගු කරන්න"
 #: dt-assets/parts/modals/modal-advanced-search.php:65
 #: dt-assets/parts/modals/modal-filters.php:14
 #: dt-assets/parts/modals/modal-filters.php:33
-#: dt-assets/parts/modals/modal-help.php:154
-#: dt-assets/parts/modals/modal-help.php:164
-#: dt-assets/parts/modals/modal-help.php:204
-#: dt-assets/parts/modals/modal-help.php:214
+#: dt-assets/parts/modals/modal-help.php:118
+#: dt-assets/parts/modals/modal-help.php:128
+#: dt-assets/parts/modals/modal-help.php:168
+#: dt-assets/parts/modals/modal-help.php:178
 #: dt-assets/parts/modals/modal-new-contact.php:33
 #: dt-assets/parts/modals/modal-revert.php:15
 #: dt-assets/parts/modals/modal-revert.php:20
@@ -101,14 +101,14 @@ msgstr "අවලංගු කරන්න"
 #: dt-assets/parts/modals/modal-support.php:18
 #: dt-assets/parts/modals/modal-tasks.php:46
 #: dt-assets/parts/modals/modal-tasks.php:48
-#: dt-assets/parts/modals/modal-tasks.php:54 dt-contacts/access-module.php:513
-#: dt-contacts/access-module.php:544 dt-contacts/access-module.php:572
-#: dt-contacts/access-module.php:663 dt-contacts/base-setup.php:385
+#: dt-assets/parts/modals/modal-tasks.php:54 dt-contacts/access-module.php:515
+#: dt-contacts/access-module.php:546 dt-contacts/access-module.php:574
+#: dt-contacts/access-module.php:665 dt-contacts/base-setup.php:385
 #: dt-contacts/base-setup.php:420 dt-contacts/dmm-module.php:523
 #: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
 #: dt-groups/base-setup.php:623 dt-groups/base-setup.php:628
-#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:272
-#: dt-users/template-new-user.php:293 dt-users/template-new-user.php:297
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:270
+#: dt-users/template-new-user.php:291 dt-users/template-new-user.php:295
 #: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
 #: single-template.php:420 single-template.php:437
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
@@ -133,10 +133,10 @@ msgstr "නව %s සාදන්න"
 msgid "Filters"
 msgstr "පෙරහන්"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:538
+#: archive-template.php:36 archive-template.php:126 archive-template.php:540
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
-#: dt-core/global-functions.php:674 dt-core/global-functions.php:792
-#: dt-core/global-functions.php:836 dt-posts/custom-post-type.php:20
+#: dt-core/global-functions.php:674 dt-core/global-functions.php:806
+#: dt-core/global-functions.php:850 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -161,6 +161,7 @@ msgid "Comments"
 msgstr "අදහස්"
 
 #: archive-template.php:63 archive-template.php:150
+#: dt-users/user-management.php:227
 msgid "Search"
 msgstr "සොයන්න"
 
@@ -176,12 +177,12 @@ msgstr "සියලුම ක්ෂේත්‍ර සොයන්න"
 msgid "Communication Channels"
 msgstr "සන්නිවේදන නාලිකා"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:425
+#: archive-template.php:106 archive-template.php:193 archive-template.php:427
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "අයදුම් කරන්න"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:426
+#: archive-template.php:107 archive-template.php:194 archive-template.php:428
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "පෙරනිමියට යළි පිහිටුවන්න"
@@ -240,97 +241,97 @@ msgid "Bulk Edit"
 msgstr "තොග සංස්කරණය"
 
 #: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
-#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:195
+#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
 msgstr "තව"
 
-#: archive-template.php:367 dt-contacts/base-setup.php:309
-#: dt-users/users.php:439
+#: archive-template.php:366 dt-contacts/base-setup.php:309
+#: dt-users/users.php:530
 msgid "Archived"
 msgstr "සංරක්ෂණය කර ඇත"
 
-#: archive-template.php:368
+#: archive-template.php:370
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "පුවත්"
 
-#: archive-template.php:391
+#: archive-template.php:393
 msgid "Choose which fields to display as columns in the list"
 msgstr "ලැයිස්තුවේ තීරු ලෙස පෙන්විය යුතු ක්ෂේත්‍ර තෝරන්න"
 
-#: archive-template.php:434
+#: archive-template.php:436
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "ඔබට ලැයිස්තුවෙන් යාවත්කාලීන කිරීමට අවශ්‍ය සියලුම %1$s තෝරන්න, ඒවා පහතින් යාවත්කාලීන කරන්න"
 
-#: archive-template.php:452 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:596 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:874
+#: archive-template.php:454 dt-assets/parts/modals/modal-share.php:27
+#: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
+#: dt-core/global-functions.php:888
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "පරිශීලකයන් සොයන්න"
 
-#: archive-template.php:476 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2710
-#: dt-users/template-user-management.php:88
-#: dt-users/template-user-management.php:514 single-template.php:128
+#: archive-template.php:478 dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2714
+#: dt-users/template-user-management.php:370 dt-users/users.php:175
+#: single-template.php:128
 msgid "Status"
 msgstr "තත්ත්වය"
 
-#: archive-template.php:526
+#: archive-template.php:528
 msgid "Share with:"
 msgstr "සමඟ බෙදාගන්න:"
 
-#: archive-template.php:546
+#: archive-template.php:548
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "%s සමග බෙදා නොගන්නා ලදී"
 
-#: archive-template.php:558 dt-assets/functions/details-bar.php:168
+#: archive-template.php:560 dt-assets/functions/details-bar.php:166
 #: dt-posts/custom-post-type.php:209
 msgid "Follow"
 msgstr "අනුගමනය කරන්න"
 
-#: archive-template.php:563 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:565 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "අදහස් සහ ක්‍රියාකාරකම්"
 
-#: archive-template.php:568 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:570 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "ඔබේ අදහස හෝ සටහන මෙහි ලියන්න"
 
-#: archive-template.php:576 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:578 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "වර්ගය:"
 
-#: archive-template.php:596 dt-users/template-new-user.php:129
-#: dt-users/template-new-user.php:236
+#: archive-template.php:598 dt-users/template-new-user.php:127
+#: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "තවත් විකල්ප බලන්න"
 
-#: archive-template.php:597 dt-users/template-new-user.php:132
-#: dt-users/template-new-user.php:239
+#: archive-template.php:599 dt-users/template-new-user.php:130
+#: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "අඩු විකල්ප බලන්න"
 
-#: archive-template.php:633 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:635 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "යාවත්කාලීන කරන්න"
 
-#: archive-template.php:634 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:636 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "පහත තේරීම් කරන්න"
 
-#: archive-template.php:642 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:644 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -338,108 +339,107 @@ msgstr "පහත තේරීම් කරන්න"
 msgid "Delete"
 msgstr "මකන්න"
 
-#: archive-template.php:645 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:647 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "පහත තේරීම් කරන්න"
 
-#: archive-template.php:679 dt-assets/parts/modals/modal-new-contact.php:7
+#: archive-template.php:681 dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:169 template-settings.php:136
 msgid "Name"
 msgstr "නම"
 
-#: archive-template.php:690
+#: archive-template.php:692
 msgid "Loading..."
 msgstr "පූරණය වෙමින්..."
 
-#: archive-template.php:695 dt-assets/functions/enqueue-scripts.php:374
+#: archive-template.php:697 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "තවත් පූරණය කරන්න"
 
-#: archive-template.php:707
+#: archive-template.php:709
 msgid "Field Name"
 msgstr "ක්ෂේත්ර නාමය"
 
-#: archive-template.php:763
+#: archive-template.php:765
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "සෙවීමට ටයිප් කරන්න"
 
-#: archive-template.php:772
+#: archive-template.php:774
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s සමග සියලුම %1$s"
 
-#: archive-template.php:775
+#: archive-template.php:777
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s නොමැතිව සියලුම %1$s"
 
-#: archive-template.php:782
+#: archive-template.php:784
 msgid "Filter for subassigned OR Assigned To"
 msgstr "උප පැවරූ හෝ පැවරූ අය සඳහා පෙරහන"
 
-#: archive-template.php:791 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "නිර්මාණය කරන දිනය"
 
-#: archive-template.php:798 archive-template.php:805
+#: archive-template.php:800 archive-template.php:807
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "කිසිවක් සකසා නැත"
 
-#: archive-template.php:819 archive-template.php:820
+#: archive-template.php:821 archive-template.php:822
 #: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
 #: dt-metrics/records/time-charts.php:119 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "නැත"
 
-#: archive-template.php:826 archive-template.php:827
+#: archive-template.php:828 archive-template.php:829
 #: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
 #: dt-metrics/records/time-charts.php:118 dt-posts/posts.php:460
 #: template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "ඔව්"
 
-#: archive-template.php:831
+#: archive-template.php:833
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "පරාසය ආරම්භය"
 
-#: archive-template.php:834 archive-template.php:845
+#: archive-template.php:836 archive-template.php:847
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "පැහැදිලිව"
 
-#: archive-template.php:841
+#: archive-template.php:843
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "පරාසය අවසානය"
 
-#: archive-template.php:873
+#: archive-template.php:875
 msgid "Filter Name"
 msgstr "පෙරහන නම"
 
-#: archive-template.php:878
+#: archive-template.php:880
 msgid "Filter Records"
 msgstr "පෙරහන් වාර්තා"
 
-#: archive-template.php:882 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:884 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
 msgstr "සුරකින්න"
 
 #: dt-assets/functions/details-bar.php:51
-#: dt-assets/functions/details-bar.php:244
+#: dt-assets/functions/details-bar.php:242
 #: dt-core/configuration/config-site-defaults.php:364
-#: dt-users/template-user-management.php:93 dt-workflows/update-required.php:70
-#: dt-workflows/update-required.php:109
+#: dt-workflows/update-required.php:70 dt-workflows/update-required.php:109
 msgid "Update Needed"
 msgstr "යාවත්කාලීන කිරීම අවශ්‍යයි"
 
@@ -463,42 +463,32 @@ msgid "Merge with another %s"
 msgstr "තවත් %s සමඟ ඒකාබද්ධ කරන්න"
 
 #: dt-assets/functions/details-bar.php:96
-#: dt-assets/functions/details-bar.php:254
+#: dt-assets/functions/details-bar.php:252
 msgid "Previous record"
 msgstr "පෙර වාර්තාව"
 
-#. translators: If your language is written right to left make this translation as 'rtl', if it is written ltr make the translated text 'ltr' or leave it blank
-#: dt-assets/functions/details-bar.php:97
-#: dt-assets/functions/details-bar.php:132
-#: dt-assets/functions/details-bar.php:255
-#: dt-assets/functions/details-bar.php:288
-#: dt-core/configuration/dt-configuration.php:75
-msgctxt "either rtl or ltr"
-msgid "ltr"
-msgstr "ltr"
-
-#: dt-assets/functions/details-bar.php:125
-#: dt-assets/functions/details-bar.php:280
+#: dt-assets/functions/details-bar.php:124
+#: dt-assets/functions/details-bar.php:277
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "%s විසින්"
 
-#: dt-assets/functions/details-bar.php:131
-#: dt-assets/functions/details-bar.php:287
+#: dt-assets/functions/details-bar.php:130
+#: dt-assets/functions/details-bar.php:284
 msgid "Next record"
 msgstr "ඊළඟ වාර්තාව"
 
-#: dt-assets/functions/details-bar.php:152
+#: dt-assets/functions/details-bar.php:150
 #: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:221
 msgid "Tasks"
 msgstr "කාර්යයන්"
 
-#: dt-assets/functions/details-bar.php:159
-#: dt-assets/functions/details-bar.php:164
+#: dt-assets/functions/details-bar.php:157
+#: dt-assets/functions/details-bar.php:162
 msgid "Following"
 msgstr "අනුගමනය"
 
-#: dt-assets/functions/details-bar.php:178
+#: dt-assets/functions/details-bar.php:176
 msgid "Share"
 msgstr "බෙදාගන්න"
 
@@ -589,7 +579,7 @@ msgstr "අනුපිටපත් අනාවරණය විය"
 
 #: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:295 template-merge-post-details.php:121
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:121
 #: template-merge-post-details.php:178
 msgid "Merge"
 msgstr "ඒකාබද්ධ කරන්න"
@@ -686,7 +676,7 @@ msgid "No records found matching your filter."
 msgstr "ඔබගේ පෙරහනට ගැළපෙන වාර්තා කිසිවක් හමු නොවීය."
 
 #: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1071 dt-posts/custom-post-type.php:427
+#: dt-groups/base-setup.php:1071 dt-posts/custom-post-type.php:439
 msgctxt "All records"
 msgid "All %s"
 msgstr "සියලුම %s"
@@ -701,7 +691,7 @@ msgstr "අවසානය"
 
 #: dt-assets/functions/enqueue-scripts.php:323
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1300 dt-groups/base-setup.php:990
+#: dt-contacts/access-module.php:1302 dt-groups/base-setup.php:990
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
@@ -760,7 +750,7 @@ msgstr "දැනුම්දීම්"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:130 dt-assets/parts/nav-topbar.php:283
+#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:283
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "සැකසුම්"
@@ -771,8 +761,8 @@ msgstr "පරිපාලක"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
-#: dt-users/template-user-management.php:76 dt-users/user-management.php:119
+#: dt-metrics/combined/locations-list.php:260 dt-users/user-management.php:135
+#: dt-users/user-management.php:228
 msgid "Users"
 msgstr "පරිශීලකයන්"
 
@@ -789,7 +779,7 @@ msgid "Showing:"
 msgstr "පෙන්වමින්:"
 
 #: dt-assets/parts/loop-activity-comment.php:101
-#: dt-users/template-user-management.php:235
+#: dt-users/template-user-management.php:91
 msgid "Activity"
 msgstr "ක්රියාකාරිත්වය"
 
@@ -970,97 +960,16 @@ msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "ඔබට මෙම කොටස 'සියල්ල', 'අදහස්' හෝ 'ක්‍රියාකාරකම්' මගින් පෙරීමට හැකිය."
 
-#: dt-assets/parts/modals/modal-help.php:55
-msgctxt "Optional Documentation"
-msgid "Default and Custom Filters Tile"
-msgstr "පෙරනිමි සහ අභිරුචි පෙරහන් ටයිල්"
-
-#: dt-assets/parts/modals/modal-help.php:56
-msgctxt "Optional Documentation"
-msgid ""
-"Use these filters to focus in on the contacts or groups you are responsible "
-"for. If the default filters do not fit your needs you can create your own "
-"custom filter."
-msgstr ""
-"ඔබ වගකිව යුතු සම්බන්ධතා හෝ කණ්ඩායම් වෙත අවධානය යොමු කිරීමට මෙම පෙරහන් භාවිතා කරන්න. පෙරනිමි "
-"පෙරහන් ඔබේ අවශ්‍යතාවලට නොගැලපේ නම් ඔබට ඔබේම අභිරුචි පෙරහන සෑදිය හැක."
-
-#: dt-assets/parts/modals/modal-help.php:61
-msgctxt "Optional Documentation"
-msgid "Contacts List Tile"
-msgstr "සම්බන්ධතා ලැයිස්තු ටයිල්"
-
-#: dt-assets/parts/modals/modal-help.php:62
-msgctxt "Optional Documentation"
-msgid ""
-"Your list of contacts will show up here. Whenever you filter contacts, the "
-"list will also be changed in this section too. You can sort your contacts by "
-"newest, oldest, most recently modified, and least recently modified. If you "
-"have a long list of contacts they will not all load at once, so clicking the "
-"'Load more contacts' button at the bottom of the list will allow you to load "
-"more."
-msgstr ""
-"ඔබගේ සම්බන්ධතා ලැයිස්තුව මෙහි පෙන්වනු ඇත. ඔබ සම්බන්ධතා පෙරහන් කරන සෑම විටම, මෙම කොටසෙහිද "
-"ලැයිස්තුව වෙනස් වේ. ඔබට ඔබගේ සම්බන්ධතා නවතම, පැරණිතම, වඩාත්ම මෑතදී වෙනස් කරන ලද සහ අවම "
-"වශයෙන් මෑතකදී වෙනස් කළ ඒවා අනුව වර්ග කළ හැක. ඔබට දිගු සම්බන්ධතා ලැයිස්තුවක් තිබේ නම් ඒවා "
-"සියල්ලම එකවර පූරණය නොවනු ඇත, එබැවින් ලැයිස්තුවේ පහළින් ඇති 'තවත් සම්බන්ධතා පූරණය කරන්න' බොත්තම "
-"ක්ලික් කිරීමෙන් ඔබට තවත් පූරණය වීමට ඉඩ සලසයි."
-
-#: dt-assets/parts/modals/modal-help.php:67
-msgctxt "Optional Documentation"
-msgid "Groups List Tile"
-msgstr "කණ්ඩායම් ලැයිස්තු ටයිල්"
-
-#: dt-assets/parts/modals/modal-help.php:68
-msgctxt "Optional Documentation"
-msgid ""
-"Your list of groups will show up here. Whenever you filter groups, the list "
-"will also be changed in this section too. You can sort your groups by "
-"newest, oldest, most recently modified, and least recently modified. If you "
-"have a long list of groups they will not all load at once, so clicking the "
-"'Load more groups' button at the bottom of the list will allow you to load "
-"more."
-msgstr ""
-"ඔබේ කණ්ඩායම් ලැයිස්තුව මෙහි පෙන්වනු ඇත. ඔබ කණ්ඩායම් පෙරන සෑම විටම, මෙම කොටසෙහිද ලැයිස්තුව "
-"වෙනස් වේ. ඔබට ඔබගේ කණ්ඩායම් නවතම, පැරණිතම, වඩාත්ම මෑතදී වෙනස් කරන ලද සහ අවම වශයෙන් "
-"මෑතකදී වෙනස් කළ ඒවා අනුව වර්ග කළ හැක. ඔබ සතුව දිගු කණ්ඩායම් ලැයිස්තුවක් තිබේ නම්, ඒවා සියල්ලම "
-"එකවර පූරණය නොවනු ඇත, එබැවින් ලැයිස්තුවේ පහළින් ඇති 'තවත් කණ්ඩායම් පූරණය කරන්න' බොත්තම ක්ලික් "
-"කිරීමෙන් ඔබට තවත් පූරණය වීමට ඉඩ සලසයි."
-
-#: dt-assets/parts/modals/modal-help.php:73
-msgctxt "Optional Documentation"
-msgid "Closed Contacts Switch"
-msgstr "සංවෘත සම්බන්ධතා ස්විචය"
-
-#: dt-assets/parts/modals/modal-help.php:74
-msgctxt "Optional Documentation"
-msgid ""
-"Use this toggle switch to either show or not show closed contacts in the "
-"list."
-msgstr "ලැයිස්තුවේ සංවෘත සම්බන්ධතා පෙන්වීමට හෝ නොපෙන්වීමට මෙම ටොගල් ස්විචය භාවිතා කරන්න."
-
-#: dt-assets/parts/modals/modal-help.php:79
-msgctxt "Optional Documentation"
-msgid "Inactive Groups Switch"
-msgstr "අක්‍රිය කණ්ඩායම් මාරුව"
-
-#: dt-assets/parts/modals/modal-help.php:80
-msgctxt "Optional Documentation"
-msgid ""
-"Use this toggle switch to either show or not show inactive groups in the "
-"list."
-msgstr "ලැයිස්තුවේ අක්‍රිය කණ්ඩායම් පෙන්වීමට හෝ නොපෙන්වීමට මෙම ටොගල් ස්විචය භාවිත කරන්න."
-
-#: dt-assets/parts/modals/modal-help.php:94 template-settings.php:117
+#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
 msgid "Your Profile"
 msgstr "ඔබගේ පැතිකඩ"
 
-#: dt-assets/parts/modals/modal-help.php:95
+#: dt-assets/parts/modals/modal-help.php:59
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
 msgstr "මෙම ප්රදේශය තුළ ඔබට ඔබගේ පරිශීලක පැතිකඩ දැකිය හැක."
 
-#: dt-assets/parts/modals/modal-help.php:96
+#: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
 "You are not required to fill out any of these profile fields. They are "
@@ -1069,7 +978,7 @@ msgstr ""
 "ඔබට මෙම පැතිකඩ ක්ෂේත්‍ර කිසිවක් පිරවීමට අවශ්‍ය නොවේ. ඒවා ඔබේ කණ්ඩායමේ අවශ්‍යතා සපුරාලීම සඳහා "
 "විකල්ප වේ."
 
-#: dt-assets/parts/modals/modal-help.php:97
+#: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
@@ -1077,13 +986,13 @@ msgid ""
 msgstr ""
 "'සංස්කරණය කරන්න' ක්ලික් කිරීමෙන්, ඔබට මෙම පද්ධතිය ක්‍රියාත්මක වන භාෂාව වැනි දේවල් සකස් කළ හැක."
 
-#: dt-assets/parts/modals/modal-help.php:102 dt-contacts/base-setup.php:192
-#: dt-groups/base-setup.php:359 dt-people-groups/people-groups-base.php:193
-#: dt-people-groups/people-groups-base.php:202
+#: dt-assets/parts/modals/modal-help.php:66 dt-contacts/base-setup.php:192
+#: dt-groups/base-setup.php:359 dt-people-groups/people-groups-base.php:194
+#: dt-people-groups/people-groups-base.php:203 dt-users/users.php:169
 msgid "Locations"
 msgstr "ස්ථාන"
 
-#: dt-assets/parts/modals/modal-help.php:103
+#: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
@@ -1092,12 +1001,12 @@ msgstr ""
 "මේවා ඔබ වගකිව යුතු ක්ෂේත්‍ර වේ. 'එකතු කරන්න' බොත්තම ක්ලික් කිරීමෙන් තෝරා ගැනීමට ස්ථාන ලැයිස්තුවක් "
 "ගෙන එනු ඇත."
 
-#: dt-assets/parts/modals/modal-help.php:108
+#: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
 msgid "Your Notifications"
 msgstr "ඔබගේ දැනුම්දීම්"
 
-#: dt-assets/parts/modals/modal-help.php:109
+#: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
 "You will receive web notifications and email notifications based on your "
@@ -1107,24 +1016,24 @@ msgstr ""
 "ඔබගේ දැනුම්දීම් මනාප මත පදනම්ව ඔබට වෙබ් දැනුම්දීම් සහ ඊමේල් දැනුම්දීම් ලැබෙනු ඇත. ඔබේ මනාපය "
 "වෙනස් කිරීමට, ටොගල් බොත්තම් ක්ලික් කරන්න."
 
-#: dt-assets/parts/modals/modal-help.php:111
+#: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
 msgstr "දැනුම්දීම් සක්‍රිය කර ඇත: ටොගල නිල් පැහැයෙන් දිස් වනු ඇත."
 
-#: dt-assets/parts/modals/modal-help.php:112
+#: dt-assets/parts/modals/modal-help.php:76
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr "දැනුම්දීම් ක්‍රියාවිරහිතයි: ටොගලය අළු පැහැයෙන් දිස්වනු ඇත."
 
-#: dt-assets/parts/modals/modal-help.php:114
+#: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
 "required by the system."
 msgstr "සමහර දැනුම්දීම් පද්ධතියට අවශ්‍ය බැවින් ඒවා සකස් කළ නොහැක."
 
-#: dt-assets/parts/modals/modal-help.php:115
+#: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
 "Adjust whether you want to see notifications about new comments, contact "
@@ -1136,12 +1045,12 @@ msgstr ""
 "දැනුම්දීම් බැලීමට අවශ්‍යද යන්න සහ පද්ධතියේ සිදුවන ඕනෑම යාවත්කාලීනයක් සඳහා ඔබට දැනුම්දීමක් "
 "ලැබෙන්නේද යන්න සීරුමාරු කරන්න."
 
-#: dt-assets/parts/modals/modal-help.php:123
+#: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
 msgid "Notifications Page"
 msgstr "දැනුම්දීම් පිටුව"
 
-#: dt-assets/parts/modals/modal-help.php:124
+#: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
 "This Notifications Page is where you can read updates to users and groups. "
@@ -1150,30 +1059,30 @@ msgstr ""
 "මෙම දැනුම්දීම් පිටුව යනු ඔබට පරිශීලකයින් සහ කණ්ඩායම් වෙත යාවත්කාලීන කියවිය හැකි ස්ථානයයි. එය "
 "ඔබගේ වාර්තාවල ක්‍රියාකාරකම් පිළිබඳ දැනුම්දීම් පෙන්වයි."
 
-#: dt-assets/parts/modals/modal-help.php:125
+#: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
 msgid "All / Unread"
 msgstr "සියල්ල / නොකියවූ"
 
-#: dt-assets/parts/modals/modal-help.php:126
+#: dt-assets/parts/modals/modal-help.php:90
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr "ඔබගේ සියලු දැනුම්දීම්වල සම්පූර්ණ ලැයිස්තුව පෙන්වීමට 'සියල්ල' බොත්තම ක්ලික් කරන්න."
 
-#: dt-assets/parts/modals/modal-help.php:127
+#: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr "ඔබගේ නොකියවූ දැනුම්දීම් ලැයිස්තුව පෙන්වීමට 'නොකියවූ' බොත්තම ක්ලික් කරන්න."
 
-#: dt-assets/parts/modals/modal-help.php:128 dt-assets/parts/nav-topbar.php:281
+#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:281
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "සියල්ල කියවූ ලෙස ලකුණු කරන්න"
 
-#: dt-assets/parts/modals/modal-help.php:129
+#: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
 "If you don't want to click each filled in circle on the right side of each "
@@ -1185,7 +1094,7 @@ msgstr ""
 "නැතිනම්, ඔවුන් සතුව ඇති සියලුම පණිවිඩ ඉක්මනින් සීරුමාරු කිරීමට ඉහළින් ඇති 'සියල්ල කියවීම ලෙස සලකුණු "
 "කරන්න' සබැඳිය ක්ලික් කරන්න. කියවා ඇත."
 
-#: dt-assets/parts/modals/modal-help.php:131
+#: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Settings' link to go to the notifications settings area to adjust "
@@ -1198,12 +1107,12 @@ msgstr ""
 "දැනුම්දීම් බැලීමට අවශ්‍යද යන්න සහ ඔබට සිදුවන ඕනෑම යාවත්කාලීනයක් සඳහා ඔබට දැනුම්දීමක් ලැබෙන්නේද "
 "යන්න සැකසීමට දැනුම්දීම් සැකසීම් ප්‍රදේශයට යාමට 'සැකසීම්' සබැඳිය ක්ලික් කරන්න. පද්ධතිය."
 
-#: dt-assets/parts/modals/modal-help.php:136
+#: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
 msgid "Duplicate Contact page"
 msgstr "අනුපිටපත් සම්බන්ධතා පිටුව"
 
-#: dt-assets/parts/modals/modal-help.php:137
+#: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
 "This Duplicate Contact Page is where you can review, decline or merge "
@@ -1215,37 +1124,37 @@ msgstr ""
 "දුරකථනය පරීක්ෂා කිරීම) දැනටමත් පවතින වෙනත් සම්බන්ධතාවක අනුපිටපත් විය හැකි බැවින් ඒවා සමාලෝචනය "
 "කිරීමට, ප්‍රතික්ෂේප කිරීමට හෝ ඒකාබද්ධ කිරීමට හැකිය."
 
-#: dt-assets/parts/modals/modal-help.php:160
-#: dt-assets/parts/modals/modal-help.php:210
+#: dt-assets/parts/modals/modal-help.php:124
+#: dt-assets/parts/modals/modal-help.php:174
 msgctxt "Optional Documentation"
 msgid "Need more help?"
 msgstr "තවත් උදව් අවශ්‍යද?"
 
-#: dt-assets/parts/modals/modal-help.php:161
-#: dt-assets/parts/modals/modal-help.php:211
+#: dt-assets/parts/modals/modal-help.php:125
+#: dt-assets/parts/modals/modal-help.php:175
 msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "ලේඛන කියවන්න"
 
-#: dt-assets/parts/modals/modal-help.php:179
+#: dt-assets/parts/modals/modal-help.php:143
 #, fuzzy
 #| msgid "Open With"
 msgid "Open the link"
 msgstr "සමඟ විවෘත කරන්න"
 
-#: dt-assets/parts/modals/modal-help.php:183
+#: dt-assets/parts/modals/modal-help.php:147
 msgid "Copy the link to the clipboard"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:187 dt-reports/magic-url-setup.php:113
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:113
 msgid "Send the link via email."
 msgstr "ඊමේල් හරහා සබැඳිය යවන්න."
 
-#: dt-assets/parts/modals/modal-help.php:191 dt-reports/magic-url-setup.php:150
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:150
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "ජංගම උපාංගයක මැජික් සබැඳිය විවෘත කිරීමට QR කේතය පරිලෝකනය කරන්න."
 
-#: dt-assets/parts/modals/modal-help.php:195 dt-reports/magic-url-setup.php:155
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:155
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1381,58 +1290,58 @@ msgstr "ඔක්කොම බලන්න"
 msgid "Mark All"
 msgstr "සියල්ල සලකුණු කරන්න"
 
-#: dt-contacts/access-module.php:56
+#: dt-contacts/access-module.php:58
 msgid "Dispatcher"
 msgstr "ඩිස්පෑචර්"
 
-#: dt-contacts/access-module.php:63
+#: dt-contacts/access-module.php:65
 msgid "Partner"
 msgstr "හවුල්කරු"
 
-#: dt-contacts/access-module.php:70
+#: dt-contacts/access-module.php:72
 msgid "Digital Responder"
 msgstr "ඩිජිටල් ප්රතිචාරකයා"
 
-#: dt-contacts/access-module.php:101
+#: dt-contacts/access-module.php:103
 msgid "Standard Contact"
 msgstr "සම්මත සම්බන්ධතා"
 
-#: dt-contacts/access-module.php:103
+#: dt-contacts/access-module.php:105
 msgid "A contact to collaborate on"
 msgstr "සහයෝගයෙන් කටයුතු කිරීමට සම්බන්ධතාවක්"
 
-#: dt-contacts/access-module.php:104
+#: dt-contacts/access-module.php:106
 msgid "Me and project leadership"
 msgstr "මම සහ ව්‍යාපෘති නායකත්වය"
 
-#: dt-contacts/access-module.php:110
+#: dt-contacts/access-module.php:112
 msgid "Connection"
 msgstr "සම්බන්ධතාවය"
 
-#: dt-contacts/access-module.php:112 dt-contacts/dmm-module.php:51
+#: dt-contacts/access-module.php:114 dt-contacts/dmm-module.php:51
 msgid "Connected to a contact, or generational fruit"
 msgstr "සම්බන්ධතාවකට හෝ පරම්පරා ඵලයකට සම්බන්ධ කර ඇත"
 
-#: dt-contacts/access-module.php:115
+#: dt-contacts/access-module.php:117
 msgid "Collaborators"
 msgstr "සහයෝගිතාකරුවන්"
 
-#: dt-contacts/access-module.php:120 dt-groups/base-setup.php:137
+#: dt-contacts/access-module.php:122 dt-groups/base-setup.php:137
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
 msgid "Assigned To"
 msgstr "වෙත පවරා ඇත"
 
-#: dt-contacts/access-module.php:121
+#: dt-contacts/access-module.php:123
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "මෙම සම්බන්ධතාව පිළිබඳව වාර්තා කිරීමට වගකිව යුතු ප්‍රධාන පුද්ගලයා තෝරන්න."
 
-#: dt-contacts/access-module.php:131 dt-metrics/contacts/seeker-path.php:25
+#: dt-contacts/access-module.php:133 dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
 msgstr "සෙවුම් මාර්ගය"
 
-#: dt-contacts/access-module.php:132
+#: dt-contacts/access-module.php:134
 msgctxt "Seeker Path field description"
 msgid ""
 "Set the status of your progression with the contact. These are the steps "
@@ -1441,125 +1350,125 @@ msgstr ""
 "සම්බන්ධතාවය සමඟ ඔබේ ප්‍රගතියේ තත්ත්වය සකසන්න. සම්බන්ධතාවක් ඉදිරියට යාමට උපකාර කිරීම සඳහා "
 "නිශ්චිත අනුපිළිවෙලකට සිදුවන පියවර මේවාය."
 
-#: dt-contacts/access-module.php:136
+#: dt-contacts/access-module.php:138
 msgid "Contact Attempt Needed"
 msgstr "සම්බන්ධතා උත්සාහය අවශ්‍යයි"
 
-#: dt-contacts/access-module.php:140
+#: dt-contacts/access-module.php:142
 msgid "Contact Attempted"
 msgstr "සම්බන්ධ වීමට උත්සාහ කරන ලදී"
 
-#: dt-contacts/access-module.php:144 dt-contacts/dmm-module.php:232
+#: dt-contacts/access-module.php:146 dt-contacts/dmm-module.php:232
 msgid "Contact Established"
 msgstr "සම්බන්ධතාවය ස්ථාපිත කර ඇත"
 
-#: dt-contacts/access-module.php:148
+#: dt-contacts/access-module.php:150
 msgid "First Meeting Scheduled"
 msgstr "පළමු රැස්වීම සැලසුම් කර ඇත"
 
-#: dt-contacts/access-module.php:152
+#: dt-contacts/access-module.php:154
 msgid "First Meeting Complete"
 msgstr "පළමු රැස්වීම සම්පූර්ණයි"
 
-#: dt-contacts/access-module.php:156 dt-metrics/counter.php:140
+#: dt-contacts/access-module.php:158 dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
 msgstr "අඛණ්ඩ රැස්වීම්"
 
-#: dt-contacts/access-module.php:160
+#: dt-contacts/access-module.php:162
 msgid "Being Coached"
 msgstr "පුහුණු කිරීම"
 
-#: dt-contacts/access-module.php:172 dt-contacts/base-setup.php:299
+#: dt-contacts/access-module.php:174 dt-contacts/base-setup.php:299
 msgid "Contact Status"
 msgstr "සම්බන්ධතා තත්ත්වය"
 
-#: dt-contacts/access-module.php:177
+#: dt-contacts/access-module.php:179
 msgid "New Contact"
 msgstr "නව සම්බන්ධතා"
 
-#: dt-contacts/access-module.php:178
+#: dt-contacts/access-module.php:180
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "සම්බන්ධතාවය පද්ධතිය තුළ අලුත් ය."
 
-#: dt-contacts/access-module.php:182
+#: dt-contacts/access-module.php:184
 msgid "Not Ready"
 msgstr "සුදානම් නැ"
 
-#: dt-contacts/access-module.php:183
+#: dt-contacts/access-module.php:185
 msgctxt "Contact Status field description"
 msgid ""
 "There is not enough information to move forward with the contact at this "
 "time."
 msgstr "මෙම අවස්ථාවේදී සම්බන්ධතාව සමඟ ඉදිරියට යාමට ප්‍රමාණවත් තොරතුරු නොමැත."
 
-#: dt-contacts/access-module.php:187
+#: dt-contacts/access-module.php:189
 msgid "Dispatch Needed"
 msgstr "යැවීම අවශ්යයි"
 
-#: dt-contacts/access-module.php:188
+#: dt-contacts/access-module.php:190
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "මෙම සම්බන්ධතාව ගුණකය වෙත පැවරිය යුතුය."
 
-#: dt-contacts/access-module.php:192
+#: dt-contacts/access-module.php:194
 msgid "Waiting to be accepted"
 msgstr "පිළිගැනීමට බලා සිටීම"
 
-#: dt-contacts/access-module.php:193
+#: dt-contacts/access-module.php:195
 msgctxt "Contact Status field description"
 msgid ""
 "The contact has been assigned to someone, but has not yet been accepted by "
 "that person."
 msgstr "සම්බන්ධතාවය යමෙකුට පවරා ඇත, නමුත් එම පුද්ගලයා විසින් තවමත් පිළිගෙන නොමැත."
 
-#: dt-contacts/access-module.php:198
+#: dt-contacts/access-module.php:200
 msgid "Paused"
 msgstr "විරාම කළා"
 
-#: dt-contacts/access-module.php:199
+#: dt-contacts/access-module.php:201
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "මෙම සම්බන්ධතාව දැනට රඳවා ඇත (එනම් නිවාඩුව මත හෝ ප්‍රතිචාර නොදක්වයි)."
 
-#: dt-contacts/access-module.php:214
+#: dt-contacts/access-module.php:216
 msgid "Reason Not Ready"
 msgstr "හේතුව සූදානම් නැත"
 
-#: dt-contacts/access-module.php:215
+#: dt-contacts/access-module.php:217
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "සම්බන්ධතාවය පරිශීලකයෙකුට පැවරීමට සූදානම් නැති ප්‍රධාන හේතුව."
 
-#: dt-contacts/access-module.php:222
+#: dt-contacts/access-module.php:224
 msgid "Insufficient Contact Information"
 msgstr "ප්‍රමාණවත් නොවන සම්බන්ධතා තොරතුරු"
 
-#: dt-contacts/access-module.php:225
+#: dt-contacts/access-module.php:227
 msgid "Unknown Location"
 msgstr "නොදන්නා ස්ථානය"
 
-#: dt-contacts/access-module.php:228
+#: dt-contacts/access-module.php:230
 msgid "Only wants media"
 msgstr "මාධ්‍ය විතරයි ඕන"
 
-#: dt-contacts/access-module.php:231
+#: dt-contacts/access-module.php:233
 msgid "Outside Area"
 msgstr "පිටත ප්රදේශය"
 
-#: dt-contacts/access-module.php:234
+#: dt-contacts/access-module.php:236
 msgid "Needs Review"
 msgstr "Review අවශ්‍යයි"
 
-#: dt-contacts/access-module.php:237
+#: dt-contacts/access-module.php:239
 msgid "Waiting for Confirmation"
 msgstr "තහවුරු කිරීම සඳහා රැඳී සිටීම"
 
-#: dt-contacts/access-module.php:245
+#: dt-contacts/access-module.php:247
 msgid "Reason Paused"
 msgstr "හේතුව විරාම කරන ලදී"
 
-#: dt-contacts/access-module.php:246
+#: dt-contacts/access-module.php:248
 msgctxt "Optional Documentation"
 msgid ""
 "A paused contact is one you are not currently interacting with but expect to "
@@ -1567,130 +1476,130 @@ msgid ""
 msgstr ""
 "විරාම කළ සම්බන්ධතාවයක් යනු ඔබ දැනට අන්තර් ක්‍රියා නොකරන නමුත් අනාගතයේදී බලාපොරොත්තු වන එකකි."
 
-#: dt-contacts/access-module.php:250
+#: dt-contacts/access-module.php:252
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "නිවාඩුවට සම්බන්ධ වන්න"
 
-#: dt-contacts/access-module.php:251
+#: dt-contacts/access-module.php:253
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "සම්බන්ධතාව ප්‍රතිචාර නොදක්වයි"
 
-#: dt-contacts/access-module.php:252
+#: dt-contacts/access-module.php:254
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "සම්බන්ධතා නොමැත"
 
-#: dt-contacts/access-module.php:253
+#: dt-contacts/access-module.php:255
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "සම්බන්ධතාවට කුඩා උනන්දුවක්/කුසගින්නක් නැත"
 
-#: dt-contacts/access-module.php:254
+#: dt-contacts/access-module.php:256
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "සම්බන්ධතා කිසිදු මුලපිරීමක් නොපෙන්වයි"
 
-#: dt-contacts/access-module.php:255
+#: dt-contacts/access-module.php:257
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "සම්බන්ධතාවයට සැක සහිත චේතනා ඇත"
 
-#: dt-contacts/access-module.php:256
+#: dt-contacts/access-module.php:258
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "පන්දුව සම්බන්ධතා පිටිය තුළ ඇත"
 
-#: dt-contacts/access-module.php:257
+#: dt-contacts/access-module.php:259
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "ස්වයංක්‍රීය කෙටි පණිවිඩවලට සම්බන්ධතාවය ප්‍රතිචාර දක්වන්නේ නම්/කෙසේදැයි බැලීමට අපට අවශ්‍යය"
 
-#: dt-contacts/access-module.php:264
+#: dt-contacts/access-module.php:266
 msgid "Reason Archived"
 msgstr "හේතුව සංරක්ෂණය කර ඇත"
 
-#: dt-contacts/access-module.php:265
+#: dt-contacts/access-module.php:267
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr "සංවෘත සම්බන්ධතාවක් යනු ඔබට අන්තර් ක්‍රියා කිරීමට නොහැකි හෝ අකමැති එකකි."
 
-#: dt-contacts/access-module.php:269
+#: dt-contacts/access-module.php:271
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "අනුපිටපත් කරන්න"
 
-#: dt-contacts/access-module.php:270
+#: dt-contacts/access-module.php:272
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "ප්‍රමාණවත් නොවන සම්බන්ධතා තොරතුරු"
 
-#: dt-contacts/access-module.php:271
+#: dt-contacts/access-module.php:273
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "සම්බන්ධතා ඉල්ලීම ඉදිරිපත් කිරීම ප්‍රතික්ෂේප කරයි"
 
-#: dt-contacts/access-module.php:272
+#: dt-contacts/access-module.php:274
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "සතුරු, ක්‍රීඩා කිරීම හෝ ස්වයං ලාභය"
 
-#: dt-contacts/access-module.php:273
+#: dt-contacts/access-module.php:275
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "වාද කිරීමට හෝ විවාද කිරීමට පමණක් අවශ්‍යයි"
 
-#: dt-contacts/access-module.php:274
+#: dt-contacts/access-module.php:276
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "මාධ්‍ය හෝ පොත අවශ්‍ය විය"
 
-#: dt-contacts/access-module.php:275
+#: dt-contacts/access-module.php:277
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "තවදුරටත් උනන්දුවක් නැත"
 
-#: dt-contacts/access-module.php:276
+#: dt-contacts/access-module.php:278
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "තවදුරටත් ප්‍රතිචාර නොදක්වයි"
 
-#: dt-contacts/access-module.php:277
+#: dt-contacts/access-module.php:279
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "දැනටමත් පල්ලියේ හෝ වෙනත් අය සමඟ සම්බන්ධ වී ඇත"
 
-#: dt-contacts/access-module.php:278
+#: dt-contacts/access-module.php:280
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "සම්බන්ධතාව හවුල්කරු වෙත මාරු කරන ලදී"
 
-#: dt-contacts/access-module.php:279
+#: dt-contacts/access-module.php:281
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "දිවි පිදූ"
 
-#: dt-contacts/access-module.php:280
+#: dt-contacts/access-module.php:282
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "මාරු කර හෝ නැවත ස්ථානගත කර ඇත"
 
-#: dt-contacts/access-module.php:281
+#: dt-contacts/access-module.php:283
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "GDPR ඉල්ලීම"
 
-#: dt-contacts/access-module.php:282
+#: dt-contacts/access-module.php:284
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "නොදන්නා"
 
-#: dt-contacts/access-module.php:289
+#: dt-contacts/access-module.php:291
 msgid "Accepted"
 msgstr "පිළිගත්තා"
 
-#: dt-contacts/access-module.php:297 dt-contacts/base-setup.php:528
+#: dt-contacts/access-module.php:299 dt-contacts/base-setup.php:528
 #: dt-metrics/metrics.php:90 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -1699,150 +1608,150 @@ msgstr "පිළිගත්තා"
 msgid "Personal"
 msgstr "පුද්ගලික"
 
-#: dt-contacts/access-module.php:301
+#: dt-contacts/access-module.php:303
 #: dt-core/configuration/config-site-defaults.php:344
 msgid "Web"
 msgstr "වෙබ්"
 
-#: dt-contacts/access-module.php:305 dt-contacts/base-setup.php:230
+#: dt-contacts/access-module.php:307 dt-contacts/base-setup.php:230
 msgid "Facebook"
 msgstr "ෆේස්බුක්"
 
-#: dt-contacts/access-module.php:309 dt-contacts/base-setup.php:238
+#: dt-contacts/access-module.php:311 dt-contacts/base-setup.php:238
 msgid "Twitter"
 msgstr "ට්විටර්"
 
-#: dt-contacts/access-module.php:313
+#: dt-contacts/access-module.php:315
 msgid "Transfer"
 msgstr "මාරු"
 
-#: dt-contacts/access-module.php:315
+#: dt-contacts/access-module.php:317
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "වෙනත් Disciple.Tools අඩවියක් සමඟ හවුල්කාරිත්වයකින් සම්බන්ධතා මාරු කර ඇත."
 
-#: dt-contacts/access-module.php:328 dt-metrics/contacts/sources.php:90
+#: dt-contacts/access-module.php:330 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:569
 msgid "Sources"
 msgstr "මූලාශ්ර"
 
-#: dt-contacts/access-module.php:329
+#: dt-contacts/access-module.php:331
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "මෙම සම්බන්ධතාවය පැමිණි වෙබ් අඩවිය, සිදුවීම හෝ ස්ථානය."
 
-#: dt-contacts/access-module.php:341
+#: dt-contacts/access-module.php:343
 msgid "Campaigns"
 msgstr "උද්ඝෝෂණ"
 
-#: dt-contacts/access-module.php:342
+#: dt-contacts/access-module.php:344
 msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr "මෙම සම්බන්ධතාවය අන්තර්ක්‍රියා කළ අලෙවිකරණ ව්‍යාපාර හෝ ප්‍රවේශ ක්‍රියාකාරකම්."
 
-#: dt-contacts/access-module.php:409 dt-metrics/combined/critical-path.php:77
+#: dt-contacts/access-module.php:411 dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "පසු විපරම"
 
-#: dt-contacts/access-module.php:489 dt-contacts/access-module.php:520
-#: dt-contacts/access-module.php:551 dt-contacts/base-setup.php:394
+#: dt-contacts/access-module.php:491 dt-contacts/access-module.php:522
+#: dt-contacts/access-module.php:553 dt-contacts/base-setup.php:394
 msgid "Choose an option:"
 msgstr "විකල්පයක් තෝරන්න:"
 
-#: dt-contacts/access-module.php:511 dt-contacts/access-module.php:542
-#: dt-contacts/access-module.php:570 dt-contacts/base-setup.php:418
+#: dt-contacts/access-module.php:513 dt-contacts/access-module.php:544
+#: dt-contacts/access-module.php:572 dt-contacts/base-setup.php:418
 msgid "Confirm"
 msgstr "තහවුරු කරන්න"
 
-#: dt-contacts/access-module.php:614 dt-users/template-user-management.php:78
+#: dt-contacts/access-module.php:616
 msgid "Multipliers"
 msgstr "ගුණක"
 
-#: dt-contacts/access-module.php:617
+#: dt-contacts/access-module.php:619
 msgid "Dispatchers"
 msgstr "ඩිස්පචර්ස්"
 
-#: dt-contacts/access-module.php:620
+#: dt-contacts/access-module.php:622
 msgid "Digital Responders"
 msgstr "ඩිජිටල් ප්‍රතිචාර දක්වන්නන්"
 
-#: dt-contacts/access-module.php:627
+#: dt-contacts/access-module.php:629
 msgid "Assign To"
 msgstr "වෙත පැවරීම"
 
-#: dt-contacts/access-module.php:679
+#: dt-contacts/access-module.php:681
 msgid "This contact has been assigned to you."
 msgstr "මෙම සම්බන්ධතාව ඔබට පවරා ඇත."
 
-#: dt-contacts/access-module.php:680
+#: dt-contacts/access-module.php:682
 msgid "Accept"
 msgstr "පිළිගන්න"
 
-#: dt-contacts/access-module.php:681
+#: dt-contacts/access-module.php:683
 msgid "Decline"
 msgstr "ප්රතික්ෂේප කරන්න"
 
-#: dt-contacts/access-module.php:916 dt-contacts/access-module.php:926
+#: dt-contacts/access-module.php:918 dt-contacts/access-module.php:928
 msgid "My Follow-Up"
 msgstr "මගේ පසු විපරම"
 
-#: dt-contacts/access-module.php:927 dt-contacts/access-module.php:948
-#: dt-contacts/access-module.php:971 dt-contacts/access-module.php:996
+#: dt-contacts/access-module.php:929 dt-contacts/access-module.php:950
+#: dt-contacts/access-module.php:973 dt-contacts/access-module.php:998
 #: dt-groups/base-setup.php:982
 msgid "Assigned to me"
 msgstr "මට පවරා ඇත"
 
-#: dt-contacts/access-module.php:928 dt-contacts/access-module.php:949
-#: dt-contacts/access-module.php:972 dt-contacts/access-module.php:997
+#: dt-contacts/access-module.php:930 dt-contacts/access-module.php:951
+#: dt-contacts/access-module.php:974 dt-contacts/access-module.php:999
 msgid "Sub-assigned to me"
 msgstr "මට උප-පැවරුවා"
 
-#: dt-contacts/access-module.php:1034
+#: dt-contacts/access-module.php:1036
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "පසු විපරම් %s"
 
-#: dt-contacts/access-module.php:1042
+#: dt-contacts/access-module.php:1044
 msgid "All Follow-Up"
 msgstr "සියලු පසු විපරම්"
 
-#: dt-contacts/access-module.php:1144 dt-contacts/access-module.php:1145
+#: dt-contacts/access-module.php:1146 dt-contacts/access-module.php:1147
 msgid "Subassigned only"
 msgstr "උප පැවරූ පමණි"
 
-#: dt-contacts/access-module.php:1301
+#: dt-contacts/access-module.php:1303
 msgid "Ready"
 msgstr "සූදානම්"
 
-#: dt-contacts/access-module.php:1302
+#: dt-contacts/access-module.php:1304
 msgid "Recent"
 msgstr "මෑත"
 
-#: dt-contacts/access-module.php:1303 dt-users/template-user-management.php:95
+#: dt-contacts/access-module.php:1305
 msgid "Location"
 msgstr "ස්ථානය"
 
-#: dt-contacts/access-module.php:1304
+#: dt-contacts/access-module.php:1306
 msgid "Assign"
 msgstr "පවරන්න"
 
-#: dt-contacts/access-module.php:1305 dt-users/template-new-user.php:136
-#: dt-users/template-user-management.php:91 template-settings.php:216
+#: dt-contacts/access-module.php:1307 dt-users/template-new-user.php:134
+#: template-settings.php:216
 msgid "Language"
 msgstr "භාෂාව"
 
-#: dt-contacts/access-module.php:1306 dt-contacts/base-setup.php:267
-#: dt-users/template-new-user.php:187 dt-users/template-user-management.php:367
+#: dt-contacts/access-module.php:1308 dt-contacts/base-setup.php:267
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:223
 #: template-settings.php:653
 msgid "Gender"
 msgstr "ස්ත්රී පුරුෂ භාවය"
 
-#: dt-contacts/access-module.php:1479
+#: dt-contacts/access-module.php:1481
 msgid "This record might be a duplicate of: "
 msgstr "මෙම වාර්තාව අනුපිටපතක් විය හැකිය: "
 
-#: dt-contacts/access-module.php:1485 dt-contacts/duplicates-merging.php:483
+#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:483
 #: dt-contacts/duplicates-merging.php:565
 msgid "Duplicate Checker"
 msgstr "අනුපිටපත් පරීක්ෂක"
@@ -1861,8 +1770,8 @@ msgstr "අනුපිටපත් පරීක්ෂක"
 #: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:99
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
-#: dt-people-groups/people-groups-base.php:155
-#: dt-users/template-user-management.php:596
+#: dt-people-groups/people-groups-base.php:156
+#: dt-users/template-user-management.php:452
 msgid "Contacts"
 msgstr "සම්බන්ධතා"
 
@@ -1894,7 +1803,7 @@ msgstr "මිතුරෙකු, පවුලේ සාමාජිකයෙක
 msgid "Only me"
 msgstr "මට විතරයි"
 
-#: dt-contacts/base-setup.php:149
+#: dt-contacts/base-setup.php:149 dt-users/users.php:162
 msgid "Languages"
 msgstr "භාෂා"
 
@@ -1918,15 +1827,15 @@ msgstr "Whatsapp"
 
 #: dt-contacts/base-setup.php:183
 #: dt-core/configuration/config-site-defaults.php:341
-#: dt-login/login-template.php:384 dt-users/template-new-user.php:118
-#: dt-users/template-new-user.php:119 dt-users/template-user-management.php:359
-#: template-settings.php:156
+#: dt-login/login-template.php:384 dt-users/template-new-user.php:116
+#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:215
+#: dt-users/users.php:129 template-settings.php:156
 msgid "Email"
 msgstr "විද්යුත් තැපෑල"
 
 #: dt-contacts/base-setup.php:193 dt-groups/base-setup.php:360
-#: dt-people-groups/people-groups-base.php:194
-#: dt-people-groups/people-groups-base.php:204
+#: dt-people-groups/people-groups-base.php:195
+#: dt-people-groups/people-groups-base.php:205
 msgctxt "Optional Documentation"
 msgid "The general location where this contact is located."
 msgstr "මෙම සම්බන්ධතාවය පිහිටා ඇති පොදු ස්ථානය."
@@ -1936,7 +1845,7 @@ msgid "Locations or Address"
 msgstr "ස්ථාන හෝ ලිපිනය"
 
 #: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:378
-#: dt-people-groups/people-groups-base.php:212 template-settings.php:180
+#: dt-people-groups/people-groups-base.php:213 template-settings.php:180
 msgid "Address"
 msgstr "ලිපිනය"
 
@@ -1954,11 +1863,11 @@ msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "මෙම සම්බන්ධතාවය පද්ධතියේ වෙනත් සම්බන්ධතාවයක් සමඟ ඇති සම්බන්ධතාවය."
 
-#: dt-contacts/base-setup.php:270 dt-users/template-user-management.php:371
+#: dt-contacts/base-setup.php:270 dt-users/template-user-management.php:227
 msgid "Male"
 msgstr "පිරිමි"
 
-#: dt-contacts/base-setup.php:271 dt-users/template-user-management.php:372
+#: dt-contacts/base-setup.php:271 dt-users/template-user-management.php:228
 msgid "Female"
 msgstr "ගැහැණු"
 
@@ -1983,7 +1892,7 @@ msgid "Over 40 years old"
 msgstr "වයස අවුරුදු 40 ට වැඩි"
 
 #: dt-contacts/base-setup.php:293 dt-groups/base-setup.php:104
-#: dt-people-groups/people-groups-base.php:149
+#: dt-people-groups/people-groups-base.php:150
 msgid "Requires Update"
 msgstr "යාවත්කාලීන කිරීම අවශ්‍ය වේ"
 
@@ -1994,7 +1903,7 @@ msgid ""
 msgstr "සම්බන්ධතා තත්ත්වය සම්බන්ධතාව සමඟ සන්නිවේදනය කිරීමේ ප්‍රගතිය විස්තර කරයි."
 
 #: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:120
-#: dt-users/template-user-management.php:94 dt-users/user-management.php:129
+#: dt-users/users.php:177
 msgid "Active"
 msgstr "ක්රියාකාරී"
 
@@ -2042,7 +1951,7 @@ msgid "Other"
 msgstr "වෙනත්"
 
 #: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1063
-#: dt-posts/custom-post-type.php:406
+#: dt-posts/custom-post-type.php:418
 msgid "Default Filters"
 msgstr "පෙරනිමි පෙරහන්"
 
@@ -2052,23 +1961,23 @@ msgid "All %s I can view"
 msgstr "මට බැලිය හැකි සියලුම %s"
 
 #: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1080
-#: dt-posts/custom-post-type.php:439
+#: dt-posts/custom-post-type.php:451
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "ප්‍රියතම %s"
 
 #: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1086
-#: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:445
+#: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
 msgid "Favorite"
 msgstr "ප්රියතම"
 
 #: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1092
-#: dt-posts/custom-post-type.php:454
+#: dt-posts/custom-post-type.php:466
 msgid "My Recently Viewed"
 msgstr "මගේ මෑතකදී බැලූ"
 
 #: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1097
-#: dt-posts/custom-post-type.php:459
+#: dt-posts/custom-post-type.php:471
 msgid "Last 30 viewed"
 msgstr "අවසන් 30 නරඹන ලදී"
 
@@ -2320,8 +2229,8 @@ msgid "Who this contact has baptized"
 msgstr "මෙම සම්බන්ධතාවය බව්තීස්ම කර ඇත්තේ කවුද?"
 
 #: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:399
-#: dt-people-groups/people-groups-base.php:95
-#: dt-people-groups/people-groups-base.php:105
+#: dt-people-groups/people-groups-base.php:96
+#: dt-people-groups/people-groups-base.php:106
 msgid "People Groups"
 msgstr "පුද්ගල කණ්ඩායම්"
 
@@ -2451,7 +2360,7 @@ msgid ""
 msgstr "සබැඳි කිරීම අවසන් කිරීමට, පවතින පරිශීලක විස්තර සමඟ මෙම සම්බන්ධතාව ඒකාබද්ධ කරන්න."
 
 #: dt-core/configuration/class-roles.php:81
-#: dt-core/configuration/class-roles.php:244
+#: dt-core/configuration/class-roles.php:245
 msgid "Registered"
 msgstr "ලියාපදිංචි"
 
@@ -2475,7 +2384,7 @@ msgstr "Disciple.Tools Admin"
 msgid "Administrator"
 msgstr "පරිපාලක"
 
-#: dt-core/configuration/class-roles.php:285
+#: dt-core/configuration/class-roles.php:286
 msgid "Subscriber"
 msgstr "ග්රාහකයා"
 
@@ -2693,54 +2602,54 @@ msgstr ""
 msgid "Theme News"
 msgstr ""
 
-#: dt-core/release-notifications.php:68 dt-core/release-notifications.php:77
+#: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
 msgid "Other News"
 msgstr ""
 
-#: dt-core/release-notifications.php:69
+#: dt-core/release-notifications.php:68
 msgid "Get Involved"
 msgstr ""
 
-#: dt-core/release-notifications.php:81
+#: dt-core/release-notifications.php:80
 msgid "Other news not available."
 msgstr ""
 
-#: dt-core/release-notifications.php:96
+#: dt-core/release-notifications.php:95
 msgid "Freely given, but not cheap"
 msgstr ""
 
-#: dt-core/release-notifications.php:98
+#: dt-core/release-notifications.php:97
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
 
-#: dt-core/release-notifications.php:100
+#: dt-core/release-notifications.php:99
 msgid "Give"
 msgstr ""
 
-#: dt-core/release-notifications.php:104 dt-core/release-notifications.php:108
+#: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
 msgid "Translate"
 msgstr ""
 
-#: dt-core/release-notifications.php:106 dt-users/user-initial-setup.php:68
+#: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:674
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
 
-#: dt-core/release-notifications.php:113
+#: dt-core/release-notifications.php:112
 msgid "Build or Document"
 msgstr ""
 
-#: dt-core/release-notifications.php:115
+#: dt-core/release-notifications.php:114
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
 
-#: dt-core/release-notifications.php:117
+#: dt-core/release-notifications.php:116
 msgid "Find out more"
 msgstr ""
 
@@ -2761,7 +2670,7 @@ msgstr "සමූහය"
 #: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:103
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
-#: dt-people-groups/people-groups-base.php:174
+#: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "කණ්ඩායම්"
 
@@ -2779,7 +2688,7 @@ msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "කණ්ඩායම සක්‍රීයව රැස්වේ."
 
-#: dt-groups/base-setup.php:125 dt-users/user-management.php:132
+#: dt-groups/base-setup.php:125 dt-users/users.php:180
 msgid "Inactive"
 msgstr "අක්රියයි"
 
@@ -2942,7 +2851,7 @@ msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "කණ්ඩායම පල්ලිය වීමට කැපවී ඇත."
 
-#: dt-groups/base-setup.php:253 dt-users/template-user-management.php:324
+#: dt-groups/base-setup.php:253 dt-users/template-user-management.php:180
 #: template-settings.php:426 template-settings.php:445
 msgid "Start Date"
 msgstr "ආරම්භක දිනය"
@@ -2961,7 +2870,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "මෙම කණ්ඩායම මුලින්ම පල්ලියක් ලෙස හඳුනාගත් දිනය."
 
-#: dt-groups/base-setup.php:270 dt-users/template-user-management.php:325
+#: dt-groups/base-setup.php:270 dt-users/template-user-management.php:181
 #: template-settings.php:432 template-settings.php:446
 msgid "End Date"
 msgstr "අවසාන දිනය"
@@ -3193,7 +3102,7 @@ msgstr "මුරපදය නැවත සකසන්න"
 msgid "Register"
 msgstr "ලියාපදිංචි"
 
-#: dt-login/login-template.php:375 dt-users/template-new-user.php:90
+#: dt-login/login-template.php:375 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr "ඔබගේ පෝරමයේ යම් දෝෂ ඇත."
 
@@ -3216,8 +3125,8 @@ msgstr ""
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:539 dt-users/template-new-user.php:123
-#: dt-users/template-new-user.php:124 template-settings.php:600
+#: dt-login/login-template.php:539 dt-users/template-new-user.php:121
+#: dt-users/template-new-user.php:122 template-settings.php:600
 msgid "Password"
 msgstr "මුරපදය"
 
@@ -3239,7 +3148,7 @@ msgstr "පල්ලි"
 
 #: dt-mapping/geocode-api/mapbox-api.php:288
 #: dt-mapping/geocode-api/mapbox-api.php:323
-#: dt-users/template-user-management.php:268 template-settings.php:322
+#: dt-users/template-user-management.php:124 template-settings.php:322
 msgid "add"
 msgstr "එකතු කරන්න"
 
@@ -3279,7 +3188,7 @@ msgstr "ලැයිස්තුව"
 msgid "Refresh Cached Data"
 msgstr "හැඹිලිගත දත්ත නැවුම් කරන්න"
 
-#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:282
+#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:283
 msgid "Population"
 msgstr "ජනගහන"
 
@@ -3339,7 +3248,7 @@ msgstr "මුහුණට මුහුණ සංචාරයක් සඳහා
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:518
+#: dt-users/template-user-management.php:374
 msgid "Active Contacts"
 msgstr "ක්රියාකාරී සම්බන්ධතා"
 
@@ -3435,12 +3344,12 @@ msgid "This Week"
 msgstr "මෙම සතිය"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:548
+#: dt-users/template-user-management.php:404
 msgid "This Month"
 msgstr "මේ මාසයේ"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:552
+#: dt-users/template-user-management.php:408
 msgid "Last Month"
 msgstr "පසුගිය මාසයේ"
 
@@ -3585,7 +3494,7 @@ msgstr "දින පරාසයට සම්බන්ධතා පෙරහන
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
 #: dt-metrics/records/time-charts.php:114
-#: dt-users/template-user-management.php:562
+#: dt-users/template-user-management.php:418
 msgid "All Time"
 msgstr "හැම වෙලාවෙම"
 
@@ -3803,7 +3712,7 @@ msgstr "%1$d %2$s සාදන ලදී"
 msgid "Activity Log"
 msgstr "ක්‍රියාකාරකම් ලොගය"
 
-#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:196
+#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:194
 msgid "Less"
 msgstr "අඩු"
 
@@ -3910,11 +3819,11 @@ msgstr "කිසිදු ක්‍රියාකාරකමක් අනා�
 msgid "New Value"
 msgstr "පැරණි අගය"
 
-#: dt-metrics/records/date-range-activity.php:309
+#: dt-metrics/records/date-range-activity.php:310
 msgid "True"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:309
+#: dt-metrics/records/date-range-activity.php:310
 msgid "False"
 msgstr ""
 
@@ -4078,45 +3987,45 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s පැවරුම ප්‍රතික්ෂේප කළේ: %2$s."
 
-#: dt-people-groups/people-groups-base.php:94
-#: dt-people-groups/people-groups-base.php:104
+#: dt-people-groups/people-groups-base.php:95
+#: dt-people-groups/people-groups-base.php:105
 msgid "People Group"
 msgstr "පුද්ගල කණ්ඩායම"
 
-#: dt-people-groups/people-groups-base.php:167
+#: dt-people-groups/people-groups-base.php:168
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:186
+#: dt-people-groups/people-groups-base.php:187
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:220
+#: dt-people-groups/people-groups-base.php:221
 #: dt-posts/custom-post-type.php:178
 msgid "Last Modified"
 msgstr "අවසන් වරට වෙනස් කරන ලදී"
 
-#: dt-people-groups/people-groups-base.php:289
+#: dt-people-groups/people-groups-base.php:290
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:296
+#: dt-people-groups/people-groups-base.php:297
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:303
+#: dt-people-groups/people-groups-base.php:304
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:310
+#: dt-people-groups/people-groups-base.php:311
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:324
+#: dt-people-groups/people-groups-base.php:325
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:326
+#: dt-people-groups/people-groups-base.php:327
 msgid "Joshua Project"
 msgstr ""
 
@@ -4158,7 +4067,7 @@ msgstr ""
 msgid "Magic Link Submission"
 msgstr "මැජික් ලින්ක් ඉදිරිපත් කිරීම"
 
-#: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2191
+#: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2195
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
@@ -4168,15 +4077,15 @@ msgstr "ක්‍රියාකාරකම් ප්‍රතිවර්ත�
 msgid "D.T System"
 msgstr "D.T පද්ධතිය"
 
-#: dt-posts/dt-posts.php:2431
+#: dt-posts/dt-posts.php:2435
 msgid "Post already shared with user."
 msgstr "පළ කිරීම දැනටමත් පරිශීලකයා සමඟ බෙදාගෙන ඇත."
 
-#: dt-posts/dt-posts.php:2711 single-template.php:174
+#: dt-posts/dt-posts.php:2715 single-template.php:174
 msgid "Details"
 msgstr "විස්තර"
 
-#: dt-posts/dt-posts.php:2775
+#: dt-posts/dt-posts.php:2779
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4188,7 +4097,7 @@ msgstr ""
 "@[%1$s](%2$s) - පරිශීලක %3$s %4$s [%5$s](%6$s) වෙත ප්‍රවේශය ඉල්ලා ඇත. අවශ්‍ය නම්, ප්‍"
 "රවේශය ලබා දීමට මෙම වාර්තාව පරිශීලකයා සමඟ බෙදා ගන්න."
 
-#: dt-posts/dt-posts.php:2781
+#: dt-posts/dt-posts.php:2785
 msgid "Access Request"
 msgstr "ප්රවේශ ඉල්ලීම"
 
@@ -4644,7 +4553,7 @@ msgid "Locations with Inactive Assigned"
 msgstr "අක්‍රිය පැවරුම් සහිත ස්ථාන"
 
 #: dt-users/mapbox-coverage-map.php:73
-#: dt-users/template-user-management.php:248
+#: dt-users/template-user-management.php:104
 msgid "User Status"
 msgstr "පරිශීලක තත්ත්වය"
 
@@ -4662,73 +4571,73 @@ msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr "පරිපාලකයා බහුඅඩවි සැකසීම් තුළ \"නව පරිශීලකයින් එක් කරන්න\" විකල්පය සබල කළ යුතුය:"
 
-#: dt-users/template-new-user.php:82
+#: dt-users/template-new-user.php:80
 msgid "Add New User"
 msgstr "නව පරිශීලක එකතු කරන්න"
 
-#: dt-users/template-new-user.php:96
+#: dt-users/template-new-user.php:94
 msgid "Contact to make a user (optional)"
 msgstr "පරිශීලකයෙකු කිරීමට සම්බන්ධ වන්න (විකල්ප)"
 
-#: dt-users/template-new-user.php:105
+#: dt-users/template-new-user.php:103
 msgid "Search multipliers and contacts"
 msgstr "ගුණකයන් සහ සම්බන්ධතා සොයන්න"
 
-#: dt-users/template-new-user.php:116 dt-users/template-user-management.php:87
-#: dt-users/template-user-management.php:362
+#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:218
+#: dt-users/users.php:141
 msgid "Display Name"
 msgstr "ප්රදර්ශන නාමය"
 
-#: dt-users/template-new-user.php:117 template-settings.php:143
+#: dt-users/template-new-user.php:115 template-settings.php:143
 #: template-settings.php:621
 msgid "Nickname (Display Name)"
 msgstr "අන්වර්ථ නාමය (සංදර්ශක නම)"
 
-#: dt-users/template-new-user.php:121 dt-users/template-new-user.php:122
-#: template-settings.php:130 template-settings.php:586
+#: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
+#: dt-users/users.php:135 template-settings.php:130 template-settings.php:586
 msgid "Username"
 msgstr "පරිශීලක නාමය"
 
-#: dt-users/template-new-user.php:139 dt-users/template-user-management.php:90
+#: dt-users/template-new-user.php:137
 msgid "Role"
 msgstr "කාර්යභාරය"
 
-#: dt-users/template-new-user.php:171 dt-users/template-user-management.php:423
+#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:279
 msgid "Click here to see roles documentation"
 msgstr "භූමිකාවන් ලේඛන බැලීමට මෙතන ක්ලික් කරන්න"
 
-#: dt-users/template-new-user.php:175
+#: dt-users/template-new-user.php:173
 msgid "Create User"
 msgstr "පරිශීලක නිර්මාණය කරන්න"
 
-#: dt-users/template-new-user.php:180 dt-users/template-new-user.php:182
+#: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
 #: template-settings.php:610
 msgid "First Name"
 msgstr "මුල් නම"
 
-#: dt-users/template-new-user.php:180 dt-users/template-new-user.php:184
-#: dt-users/template-new-user.php:187 dt-users/template-new-user.php:206
-#: dt-users/template-new-user.php:220
+#: dt-users/template-new-user.php:178 dt-users/template-new-user.php:182
+#: dt-users/template-new-user.php:185 dt-users/template-new-user.php:204
+#: dt-users/template-new-user.php:218
 msgid "optional"
 msgstr "විකල්ප"
 
-#: dt-users/template-new-user.php:184 dt-users/template-new-user.php:185
+#: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
 #: template-settings.php:616
 msgid "Last Name"
 msgstr "අවසන් නම"
 
-#: dt-users/template-new-user.php:220 dt-users/template-new-user.php:224
-#: dt-users/template-user-management.php:399
-#: dt-users/template-user-management.php:406 template-settings.php:226
+#: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
+#: dt-users/template-user-management.php:255
+#: dt-users/template-user-management.php:262 template-settings.php:226
 #: template-settings.php:645
 msgid "Biography"
 msgstr "චරිතාපදානය"
 
-#: dt-users/template-new-user.php:259
+#: dt-users/template-new-user.php:257
 msgid "Upgrading a contact"
 msgstr "සම්බන්ධතාවක් උත්ශ්‍රේණි කිරීම"
 
-#: dt-users/template-new-user.php:262
+#: dt-users/template-new-user.php:260
 msgid ""
 "The new user will have access to all the fields and comments on this contact "
 "record. We suggest archiving the comments if they contain sensitive data."
@@ -4736,27 +4645,27 @@ msgstr ""
 "නව පරිශීලකයාට මෙම සම්බන්ධතා වාර්තාවේ සියලුම ක්ෂේත්‍ර සහ අදහස් වෙත ප්‍රවේශය ඇත. අදහස්වල "
 "සංවේදී දත්ත තිබේ නම් ඒවා සංරක්ෂණය කිරීමට අපි යෝජනා කරමු."
 
-#: dt-users/template-new-user.php:269
+#: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
 msgstr "දිගටම අදහස් සංරක්ෂණය කරන්න"
 
-#: dt-users/template-new-user.php:270
+#: dt-users/template-new-user.php:268
 msgid "Continue, keeping comments"
 msgstr "දිගටම, අදහස් තබා ගන්න"
 
-#: dt-users/template-new-user.php:279
+#: dt-users/template-new-user.php:277
 msgid "Merge Contact Details"
 msgstr "සම්බන්ධතා විස්තර ඒකාබද්ධ කරන්න"
 
-#: dt-users/template-new-user.php:281
+#: dt-users/template-new-user.php:279
 msgid "A new contact record has been created."
 msgstr "නව සම්බන්ධතා වාර්තාවක් නිර්මාණය කර ඇත."
 
-#: dt-users/template-new-user.php:284
+#: dt-users/template-new-user.php:282
 msgid "The old one is now closed."
 msgstr "පරණ එක දැන් වහලා."
 
-#: dt-users/template-new-user.php:287
+#: dt-users/template-new-user.php:285
 msgid "Do you wish to merge fields from the old record to the new one?"
 msgstr "ඔබ පැරණි වාර්තාවේ සිට අලුත් එකට ක්ෂේත්‍ර ඒකාබද්ධ කිරීමට කැමතිද?"
 
@@ -4766,160 +4675,148 @@ msgid ""
 "permissions."
 msgstr "ඔබ ලියාපදිංචි වී ඇති නමුත් පරිපාලකයෙකුට ඔබට ප්‍රවේශ අවසර ලබා දීමට අවශ්‍ය වේ."
 
-#: dt-users/template-user-management.php:89
-#: dt-users/template-user-management.php:257
-msgid "Workload Status"
-msgstr "වැඩ බර තත්ත්වය"
-
-#: dt-users/template-user-management.php:92
-msgid "Accept Needed"
-msgstr "අවශ්ය පිළිගන්න"
-
-#: dt-users/template-user-management.php:96
-msgid "Last Activity"
-msgstr "අවසාන ක්‍රියාකාරකම"
-
-#: dt-users/template-user-management.php:183
-msgid "No activity"
-msgstr "ක්‍රියාකාරකමක් නැත"
-
-#: dt-users/template-user-management.php:207
+#: dt-users/template-user-management.php:63
 msgid "Multiplier Name"
 msgstr "ගුණක නම"
 
-#: dt-users/template-user-management.php:229
+#: dt-users/template-user-management.php:85
 msgid "Daily Activity"
 msgstr "දෛනික ක්‍රියාකාරකම්"
 
-#: dt-users/template-user-management.php:268
-#: dt-users/template-user-management.php:271
+#: dt-users/template-user-management.php:113 dt-users/users.php:187
+msgid "Workload Status"
+msgstr "වැඩ බර තත්ත්වය"
+
+#: dt-users/template-user-management.php:124
+#: dt-users/template-user-management.php:127
 msgid "Location Responsibility"
 msgstr "ස්ථාන වගකීම"
 
-#: dt-users/template-user-management.php:280 template-settings.php:337
+#: dt-users/template-user-management.php:136 template-settings.php:337
 msgid "Search Locations"
 msgstr "ස්ථාන සොයන්න"
 
-#: dt-users/template-user-management.php:291 template-settings.php:350
+#: dt-users/template-user-management.php:147 template-settings.php:350
 msgid "Languages you are comfortable speaking"
 msgstr "ඔබට කතා කිරීමට පහසු භාෂා"
 
-#: dt-users/template-user-management.php:307 template-settings.php:59
+#: dt-users/template-user-management.php:163 template-settings.php:59
 #: template-settings.php:413
 msgid "Availability"
 msgstr "පවතින බව"
 
-#: dt-users/template-user-management.php:308
+#: dt-users/template-user-management.php:164
 msgid ""
 "Set the dates you will be unavailable so the Dispatcher will know your "
 "availability to receive new contacts"
 msgstr "ඔබ නොමැති දින සකසන්න එවිට නව සම්බන්ධතා ලබා ගැනීමට ඔබගේ ඇති බව ඩිස්පැචර් දැන ගනු ඇත"
 
-#: dt-users/template-user-management.php:310
+#: dt-users/template-user-management.php:166
 msgid "Schedule Unavailability"
 msgstr "උපලේඛන නොලැබීම"
 
-#: dt-users/template-user-management.php:319
+#: dt-users/template-user-management.php:175
 msgid "Travel or Away Dates"
 msgstr "සංචාරක හෝ බැහැර දින"
 
-#: dt-users/template-user-management.php:342
+#: dt-users/template-user-management.php:198
 msgid "User Profile"
 msgstr "පරිශීලක පැතිකඩ"
 
-#: dt-users/template-user-management.php:345
+#: dt-users/template-user-management.php:201
 #: dt-users/user-hooks-and-config.php:407
 msgid "View contact record"
 msgstr "සම්බන්ධතා වාර්තාව බලන්න"
 
-#: dt-users/template-user-management.php:350
+#: dt-users/template-user-management.php:206
 msgid "Edit User"
 msgstr "පරිශීලක සංස්කරණය කරන්න"
 
-#: dt-users/template-user-management.php:355
+#: dt-users/template-user-management.php:211
 #, fuzzy
 #| msgid "Password"
 msgid "Email Password Reset"
 msgstr "මුරපදය"
 
-#: dt-users/template-user-management.php:418 template-settings.php:149
+#: dt-users/template-user-management.php:274 dt-users/users.php:147
+#: template-settings.php:149
 msgid "Roles"
 msgstr "භූමිකාවන්"
 
-#: dt-users/template-user-management.php:450
+#: dt-users/template-user-management.php:306
 msgid "Save Roles"
 msgstr "භූමිකාවන් සුරකින්න"
 
-#: dt-users/template-user-management.php:458
+#: dt-users/template-user-management.php:314
 msgid "Access by Source"
 msgstr "මූලාශ්රය අනුව ප්රවේශය"
 
-#: dt-users/template-user-management.php:464
+#: dt-users/template-user-management.php:320
 #: dt-users/user-hooks-and-config.php:576
 msgid "All Sources - gives access to all contacts"
 msgstr "සියලුම මූලාශ්‍ර - සියලු සම්බන්ධතා වෙත ප්‍රවේශය ලබා දෙයි"
 
-#: dt-users/template-user-management.php:470
+#: dt-users/template-user-management.php:326
 #: dt-users/user-hooks-and-config.php:583
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
 msgstr "අභිරුචි - පහත තෝරාගත් මූලාශ්‍රවල තමන්ගේම සම්බන්ධතා සහ සියලු සම්බන්ධතා වෙත ප්‍රවේශ වන්න"
 
-#: dt-users/template-user-management.php:476
+#: dt-users/template-user-management.php:332
 #: dt-users/user-hooks-and-config.php:590
 msgid "No Sources - only own contacts"
 msgstr "මූලාශ්‍ර නැත - තමන්ගේම සම්බන්ධතා පමණි"
 
-#: dt-users/template-user-management.php:482
+#: dt-users/template-user-management.php:338
 msgid "Sources List"
 msgstr "මූලාශ්ර ලැයිස්තුව"
 
-#: dt-users/template-user-management.php:494
+#: dt-users/template-user-management.php:350
 msgid "Save Allowed Sources"
 msgstr "අවසර ලත් මූලාශ්‍ර සුරකින්න"
 
-#: dt-users/template-user-management.php:524
+#: dt-users/template-user-management.php:380
 msgid "Updates Needed"
 msgstr "යාවත්කාලීන අවශ්‍යයි"
 
-#: dt-users/template-user-management.php:530
+#: dt-users/template-user-management.php:386
 msgid "Pending"
 msgstr "පොරොත්තුවෙන්"
 
-#: dt-users/template-user-management.php:537
+#: dt-users/template-user-management.php:393
 msgid "Unread Notifications"
 msgstr "නොකියවූ දැනුම්දීම්"
 
-#: dt-users/template-user-management.php:544
+#: dt-users/template-user-management.php:400
 msgid "Assignments"
 msgstr "පැවරුම්"
 
-#: dt-users/template-user-management.php:558
+#: dt-users/template-user-management.php:414
 msgid "This Year"
 msgstr "මේ වසරේ"
 
-#: dt-users/template-user-management.php:576
+#: dt-users/template-user-management.php:432
 msgid "Pace"
 msgstr "වේගය"
 
-#: dt-users/template-user-management.php:577
+#: dt-users/template-user-management.php:433
 msgid "Assigned and not accepted"
 msgstr "පවරන ලද සහ නොපිළිගන්නා"
 
-#: dt-users/template-user-management.php:579
+#: dt-users/template-user-management.php:435
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "අවසාන සම්බන්ධතා 10 සඳහා පිළිගැනෙන සම්බන්ධතාවයට පවරන ලද වේලාව"
 
-#: dt-users/template-user-management.php:581
+#: dt-users/template-user-management.php:437
 msgid "Accepted with no contact attempt"
 msgstr "සම්බන්ධතා උත්සාහයකින් තොරව පිළිගනු ලැබේ"
 
-#: dt-users/template-user-management.php:583
+#: dt-users/template-user-management.php:439
 msgid "Oldest 10 update needed"
 msgstr "පැරණිතම යාවත්කාලීන 10 අවශ්‍යයි"
 
-#: dt-users/template-user-management.php:585
+#: dt-users/template-user-management.php:441
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "අවසාන සම්බන්ධතා 10 සඳහා සම්බන්ධතා උත්සාහයට පවරා ඇති කාලය"
 
@@ -4963,7 +4860,7 @@ msgstr "අමතර ගෝලයා.මෙවලම් තොරතුරු"
 msgid "Corresponds to Contact"
 msgstr "සම්බන්ධතාවට අනුරූප වේ"
 
-#: dt-users/user-hooks-and-config.php:545 dt-users/user-management.php:194
+#: dt-users/user-hooks-and-config.php:545 dt-users/user-management.php:192
 msgid "View Contact"
 msgstr "සම්බන්ධතා බලන්න"
 
@@ -4991,66 +4888,69 @@ msgstr "පරිශීලකයාට ආරාධනා කරන්න"
 msgid "Default Language"
 msgstr "පරිශීලක භාෂාව"
 
-#: dt-users/user-management.php:121
+#: dt-users/user-management.php:137
 msgid "Add User"
 msgstr "පරිශීලක එකතු කරන්න"
 
-#: dt-users/user-management.php:130
-msgid "Away"
-msgstr "ඉවතට"
-
-#: dt-users/user-management.php:131
-msgid "Inconsistent"
-msgstr "නොගැලපෙන"
-
-#: dt-users/user-management.php:183
+#: dt-users/user-management.php:181
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s දින %3$sකට පසුව %2$s මත පිළිගැනිණි"
 
-#: dt-users/user-management.php:184
+#: dt-users/user-management.php:182
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s දින %2$s සඳහා සම්බන්ධතා උත්සාහය සඳහා රැඳී සිටියි"
 
-#: dt-users/user-management.php:185
+#: dt-users/user-management.php:183
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "%1$s සමඟ සම්බන්ධතාව දින %3$sකට පසුව %2$s මත උත්සාහ කරන ලදී"
 
-#: dt-users/user-management.php:186
+#: dt-users/user-management.php:184
 msgid "Unable to update"
 msgstr "යාවත්කාලීන කළ නොහැක"
 
-#: dt-users/user-management.php:187
+#: dt-users/user-management.php:185
 msgid "View New User"
 msgstr "නව පරිශීලක බලන්න"
 
-#: dt-users/user-management.php:188
+#: dt-users/user-management.php:186
 msgid "View New Contact"
 msgstr "නව සම්බන්ධතා බලන්න"
 
-#: dt-users/user-management.php:189
+#: dt-users/user-management.php:187
 msgid "Email address is already in the system as a user!"
 msgstr "පරිශීලකයෙකු ලෙස ඊමේල් ලිපිනය දැනටමත් පද්ධතිය තුළ ඇත!"
 
-#: dt-users/user-management.php:190
+#: dt-users/user-management.php:188
 msgid "Username is already in the system as a user!"
 msgstr "පරිශීලක නාමය දැනටමත් පරිශීලකයෙකු ලෙස පද්ධතියේ ඇත!"
 
-#: dt-users/user-management.php:191
+#: dt-users/user-management.php:189
 msgid "Remove"
 msgstr "ඉවත් කරන්න"
 
-#: dt-users/user-management.php:192
+#: dt-users/user-management.php:190
 msgid "This contact is already a user."
 msgstr "මෙම සම්බන්ධතාව දැනටමත් පරිශීලකයෙකි."
 
-#: dt-users/user-management.php:193
+#: dt-users/user-management.php:191
 msgid "View User"
 msgstr "පරිශීලක බලන්න"
 
-#: dt-users/user-management.php:301
+#: dt-users/user-management.php:226
+msgid "Go"
+msgstr ""
+
+#: dt-users/user-management.php:229
+#, fuzzy
+#| msgctxt "Showing 30 items matching bob"
+#| msgid "Showing %1$s items matching %2$s"
+msgid "Showing %1$s of %2$s"
+msgstr "%2$s ට ගැලපෙන අයිතම %1$s පෙන්වමින්"
+
+#: dt-users/user-management.php:334
 msgid "%s days since last update"
 msgstr "අවසන් යාවත්කාලීනයේ සිට දින %s"
 
@@ -5079,33 +4979,49 @@ msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "%s මත පැවරුම ප්‍රතික්ෂේප කරන ලදී"
 
-#: dt-users/users.php:122
+#: dt-users/users.php:124
+msgid "ID"
+msgstr ""
+
+#: dt-users/users.php:154
+msgid "Locale"
+msgstr ""
+
+#: dt-users/users.php:178
+msgid "Away"
+msgstr "ඉවතට"
+
+#: dt-users/users.php:179
+msgid "Inconsistent"
+msgstr "නොගැලපෙන"
+
+#: dt-users/users.php:213
 msgid "No permissions to assign"
 msgstr "පැවරීමට අවසර නැත"
 
-#: dt-users/users.php:283
+#: dt-users/users.php:374
 msgid "Insufficient permissions"
 msgstr "ප්‍රමාණවත් නොවන අවසර"
 
-#: dt-users/users.php:392
+#: dt-users/users.php:483
 msgid "Email already exists and is a user on this site"
 msgstr "විද්‍යුත් තැපෑල දැනටමත් පවතින අතර මෙම අඩවියේ පරිශීලකයෙකි"
 
-#: dt-users/users.php:398
+#: dt-users/users.php:489
 msgid "Failed to add user to site."
 msgstr "අඩවියට පරිශීලක එක් කිරීමට අසමත් විය."
 
-#: dt-users/users.php:449
+#: dt-users/users.php:540
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "මේවා %1$s සඳහා සංරක්ෂිත අදහස් වේ"
 
-#: dt-users/users.php:611
+#: dt-users/users.php:720
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "අභිරුචි පෙරහන්"
 
-#: dt-users/users.php:1196 template-settings.php:159 template-settings.php:592
+#: dt-users/users.php:1305 template-settings.php:159 template-settings.php:592
 msgid "System Email"
 msgstr "පද්ධති ඊමේල්"
 
@@ -5433,6 +5349,90 @@ msgstr "ස්කෑන් කරන ලද සම්බන්ධතා වෙ�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "අනුපිටපත් හමු විය:"
+
+#~ msgctxt "either rtl or ltr"
+#~ msgid "ltr"
+#~ msgstr "ltr"
+
+#~ msgctxt "Optional Documentation"
+#~ msgid "Default and Custom Filters Tile"
+#~ msgstr "පෙරනිමි සහ අභිරුචි පෙරහන් ටයිල්"
+
+#~ msgctxt "Optional Documentation"
+#~ msgid ""
+#~ "Use these filters to focus in on the contacts or groups you are "
+#~ "responsible for. If the default filters do not fit your needs you can "
+#~ "create your own custom filter."
+#~ msgstr ""
+#~ "ඔබ වගකිව යුතු සම්බන්ධතා හෝ කණ්ඩායම් වෙත අවධානය යොමු කිරීමට මෙම පෙරහන් භාවිතා කරන්න. "
+#~ "පෙරනිමි පෙරහන් ඔබේ අවශ්‍යතාවලට නොගැලපේ නම් ඔබට ඔබේම අභිරුචි පෙරහන සෑදිය හැක."
+
+#~ msgctxt "Optional Documentation"
+#~ msgid "Contacts List Tile"
+#~ msgstr "සම්බන්ධතා ලැයිස්තු ටයිල්"
+
+#~ msgctxt "Optional Documentation"
+#~ msgid ""
+#~ "Your list of contacts will show up here. Whenever you filter contacts, "
+#~ "the list will also be changed in this section too. You can sort your "
+#~ "contacts by newest, oldest, most recently modified, and least recently "
+#~ "modified. If you have a long list of contacts they will not all load at "
+#~ "once, so clicking the 'Load more contacts' button at the bottom of the "
+#~ "list will allow you to load more."
+#~ msgstr ""
+#~ "ඔබගේ සම්බන්ධතා ලැයිස්තුව මෙහි පෙන්වනු ඇත. ඔබ සම්බන්ධතා පෙරහන් කරන සෑම විටම, මෙම "
+#~ "කොටසෙහිද ලැයිස්තුව වෙනස් වේ. ඔබට ඔබගේ සම්බන්ධතා නවතම, පැරණිතම, වඩාත්ම මෑතදී වෙනස් "
+#~ "කරන ලද සහ අවම වශයෙන් මෑතකදී වෙනස් කළ ඒවා අනුව වර්ග කළ හැක. ඔබට දිගු සම්බන්ධතා "
+#~ "ලැයිස්තුවක් තිබේ නම් ඒවා සියල්ලම එකවර පූරණය නොවනු ඇත, එබැවින් ලැයිස්තුවේ පහළින් ඇති 'තවත් "
+#~ "සම්බන්ධතා පූරණය කරන්න' බොත්තම ක්ලික් කිරීමෙන් ඔබට තවත් පූරණය වීමට ඉඩ සලසයි."
+
+#~ msgctxt "Optional Documentation"
+#~ msgid "Groups List Tile"
+#~ msgstr "කණ්ඩායම් ලැයිස්තු ටයිල්"
+
+#~ msgctxt "Optional Documentation"
+#~ msgid ""
+#~ "Your list of groups will show up here. Whenever you filter groups, the "
+#~ "list will also be changed in this section too. You can sort your groups "
+#~ "by newest, oldest, most recently modified, and least recently modified. "
+#~ "If you have a long list of groups they will not all load at once, so "
+#~ "clicking the 'Load more groups' button at the bottom of the list will "
+#~ "allow you to load more."
+#~ msgstr ""
+#~ "ඔබේ කණ්ඩායම් ලැයිස්තුව මෙහි පෙන්වනු ඇත. ඔබ කණ්ඩායම් පෙරන සෑම විටම, මෙම කොටසෙහිද "
+#~ "ලැයිස්තුව වෙනස් වේ. ඔබට ඔබගේ කණ්ඩායම් නවතම, පැරණිතම, වඩාත්ම මෑතදී වෙනස් කරන ලද සහ "
+#~ "අවම වශයෙන් මෑතකදී වෙනස් කළ ඒවා අනුව වර්ග කළ හැක. ඔබ සතුව දිගු කණ්ඩායම් ලැයිස්තුවක් තිබේ "
+#~ "නම්, ඒවා සියල්ලම එකවර පූරණය නොවනු ඇත, එබැවින් ලැයිස්තුවේ පහළින් ඇති 'තවත් කණ්ඩායම් පූරණය "
+#~ "කරන්න' බොත්තම ක්ලික් කිරීමෙන් ඔබට තවත් පූරණය වීමට ඉඩ සලසයි."
+
+#~ msgctxt "Optional Documentation"
+#~ msgid "Closed Contacts Switch"
+#~ msgstr "සංවෘත සම්බන්ධතා ස්විචය"
+
+#~ msgctxt "Optional Documentation"
+#~ msgid ""
+#~ "Use this toggle switch to either show or not show closed contacts in the "
+#~ "list."
+#~ msgstr "ලැයිස්තුවේ සංවෘත සම්බන්ධතා පෙන්වීමට හෝ නොපෙන්වීමට මෙම ටොගල් ස්විචය භාවිතා කරන්න."
+
+#~ msgctxt "Optional Documentation"
+#~ msgid "Inactive Groups Switch"
+#~ msgstr "අක්‍රිය කණ්ඩායම් මාරුව"
+
+#~ msgctxt "Optional Documentation"
+#~ msgid ""
+#~ "Use this toggle switch to either show or not show inactive groups in the "
+#~ "list."
+#~ msgstr "ලැයිස්තුවේ අක්‍රිය කණ්ඩායම් පෙන්වීමට හෝ නොපෙන්වීමට මෙම ටොගල් ස්විචය භාවිත කරන්න."
+
+#~ msgid "Accept Needed"
+#~ msgstr "අවශ්ය පිළිගන්න"
+
+#~ msgid "Last Activity"
+#~ msgstr "අවසාන ක්‍රියාකාරකම"
+
+#~ msgid "No activity"
+#~ msgstr "ක්‍රියාකාරකමක් නැත"
 
 #~ msgid "Post Type"
 #~ msgstr "පෝස්ට් වර්ගය"

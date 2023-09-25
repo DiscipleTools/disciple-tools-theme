@@ -769,10 +769,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                 </div>
 
-                <?php elseif ( $field_type === 'date' ) :?>
-                <div class="<?php echo esc_html( $display_field_id ); ?> input-group">
+            <?php elseif ( $field_type === 'date' ) :?>
+                <div class="<?php echo esc_html( $display_field_id ); ?> input-group dt_date_group">
                     <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
                            value="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
+
+                    <div class="input-group-button">
+                        <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
+                    </div>
+                </div>
+            <?php elseif ( $field_type === 'datetime' ) :?>
+                <?php $timestamp = $post[$field_key]['timestamp'] ?? '' ?>
+                <div class="<?php echo esc_html( $display_field_id ); ?> input-group dt_date_time_group" data-timestamp="<?php echo esc_html( $timestamp ) ?>">
+                    <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
+                           value="<?php echo esc_html( $timestamp ) ?>" <?php echo esc_html( $disabled ); ?> >
+
+                    <input type="time" class="input-group-field dt_time_picker" id="<?php echo esc_html( $display_field_id ) . '_time_picker'; ?>"
+                            data-field-id="<?php echo esc_attr( $display_field_id ) ?>">
+
                     <div class="input-group-button">
                         <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
                     </div>
@@ -953,6 +967,34 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             return $module_enabled;
         }
     }
+
+    if ( ! function_exists( 'dt_is_registration_enabled_on_site' ) ) {
+        function dt_is_registration_enabled_on_site() {
+
+            if ( get_option( 'users_can_register' ) ) {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+
+    if ( ! function_exists( 'dt_can_users_register' ) ) {
+        /**
+         * Can users register on this site/subsite
+         *
+         * @return bool
+         */
+        function dt_can_users_register() {
+            if ( is_multisite() ) {
+                return dt_multisite_is_registration_enabled_on_subsite() === 1;
+            }
+
+            return dt_is_registration_enabled_on_site();
+        }
+    }
+
 
     /**
      * Returns a completely unique 64 bit hashed key

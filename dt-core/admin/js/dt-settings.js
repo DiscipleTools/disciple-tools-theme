@@ -1,6 +1,7 @@
 "use strict";
 
 let all_settings = window.field_settings
+let dt_shared = window.dt_admin_shared
 
 function makeRequest(type, url, data, base = "dt/v1/") {
   //make sure base has a trailing slash if url does not start with one
@@ -34,8 +35,8 @@ jQuery(document).ready(function($) {
     plural: new_name_plural
   }, `dt-admin-settings/`);
 
-  window.API.update_post_type = (key, name_singular, name_plural, displayed) => makeRequest("POST", `update-post-type`, {
-    key: key,
+  window.API.update_post_type = (post_type, name_singular, name_plural, displayed) => makeRequest("POST", `update-post-type`, {
+    post_type: post_type,
     single: name_singular,
     plural: name_plural,
     displayed: displayed
@@ -251,11 +252,10 @@ jQuery(document).ready(function($) {
     let tile_priority = 10;
 
     $.each(tiles, function(tile_index, tile_key) {
-      if (tile_key === '' ) {
+      if ( tile_key === '' || tile_key === 'no_tile' ) {
         return;
       }
       dt_custom_tiles_and_fields_ordered[tile_key] = {};
-      let tile_label = $(`#tile-key-${tile_key}`).prop('innerText');
       let fields = $(document).find(`.field-settings-table-field-name[data-parent-tile-key="${tile_key}"]`);
       let field_order = [];
       $.each(fields, function(field_index, field_element) {
@@ -264,7 +264,6 @@ jQuery(document).ready(function($) {
 
       dt_custom_tiles_and_fields_ordered[tile_key]['order'] = field_order;
       dt_custom_tiles_and_fields_ordered[tile_key]['tile_priority'] = tile_priority;
-      dt_custom_tiles_and_fields_ordered[tile_key]['label'] = tile_label;
       tile_priority += 10;
     });
     return dt_custom_tiles_and_fields_ordered;
@@ -353,7 +352,7 @@ jQuery(document).ready(function($) {
     let tile_html = `
         <div class="dt-tile-preview">
             <div class="section-header">
-                <h3 class="section-header">${all_settings['post_type_tiles'][tile_key]['label']}</h3>
+                <h3 class="section-header">${dt_shared.escape(all_settings['post_type_tiles'][tile_key]['label'])}</h3>
                 <img src="${window.field_settings.template_dir}/dt-assets/images/chevron_up.svg" class="chevron">
             </div>
             <div class="section-body">`;
@@ -381,13 +380,13 @@ jQuery(document).ready(function($) {
       let icon_html = '';
       let icon = (field['icon'] && field['icon'] !== '') ? field['icon'] : field['font-icon'];
       if (icon && (typeof icon !== 'undefined') && (icon !== 'undefined')) {
-        icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
+        icon_html = '<span class="field-icon-wrapper">' + (icon.trim().toLowerCase().startsWith('mdi') ? `<i class="${dt_shared.escape(icon)} dt-icon lightgray" style="font-size: 20px;"></i>`:`<img src="${icon}" class="dt-icon lightgray">`) + '</span>';
       }
 
       tile_html += `
           <div class="section-subheader">
               ${icon_html}
-              ${field['name']}
+              ${dt_shared.escape(field['name'])}
           </div>
       `;
 
@@ -963,6 +962,7 @@ jQuery(document).ready(function($) {
                     <option value="number">Number</option>
                     <option value="link">Link</option>
                     <option value="date">Date</option>
+                    <option value="datetime">Date Time</option>
                     <option value="connection">Connection</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
@@ -1524,7 +1524,7 @@ jQuery(document).ready(function($) {
       if(data && data['deleted']) {
         window.location.href = window.dt_admin_scripts.site_url + '/wp-admin/admin.php?page=dt_customizations&post_type=contacts&tab=tiles';
       } else {
-        $(delete_post_type_msg).html(window.lodash.escape(data['msg']));
+        $(delete_post_type_msg).html(dt_shared.escape(data['msg']));
       }
     });
   });
@@ -1532,6 +1532,8 @@ jQuery(document).ready(function($) {
   // Update Post Type
   $(document).on('click', '#post_type_settings_update_but', function (e) {
     e.preventDefault();
+
+    let is_custom = all_settings?.post_type_settings?.is_custom;
 
     let post_type_settings_singular = $('#post_type_settings_singular');
     let post_type_settings_plural = $('#post_type_settings_plural');
@@ -1553,14 +1555,14 @@ jQuery(document).ready(function($) {
     button_icon.addClass('loading-spinner');
 
     // Ensure we have valid entries.
-    if (singular.trim() === '') {
-      alert('Please ensure to enter a valid Singular value.');
+    if (is_custom && singular.trim() === '') {
+      alert('Singular field cannot be empty.');
       $(post_type_settings_singular).css('border', '2px solid #e14d43');
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
 
-    } else if (plural.trim() === '') {
-      alert('Please ensure to enter a valid Plural value.');
+    } else if ( is_custom && plural.trim() === '') {
+      alert('Plural field cannot be empty');
       $(post_type_settings_plural).css('border', '2px solid #e14d43');
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
@@ -1578,6 +1580,8 @@ jQuery(document).ready(function($) {
         } else {
           button_icon.addClass('mdi mdi-comment-remove-outline');
         }
+      }).catch(e=>{
+        alert(e?.responseJSON?.message || 'An error occurred while updating the post type settings.')
       });
     }
   });
@@ -1650,7 +1654,7 @@ jQuery(document).ready(function($) {
           // Refresh page with new post type selected
           window.location.href = pill_link;
         } else {
-          $(new_post_type_msg).html(window.lodash.escape(data['msg']));
+          $(new_post_type_msg).html(dt_shared.escape(data['msg']));
         }
       });
     }
@@ -2216,7 +2220,7 @@ jQuery(document).ready(function($) {
 
   dt_admin_modal_box.on('change', '#connection-field-target', function() {
     let selected_field_target = $(this).find(':selected').val();
-    let same_post_type = selected_field_target === window.post_type;
+    let same_post_type = selected_field_target === all_settings.post_type;
     $('.same_post_type_row').toggle( same_post_type );
     $('.connection_field_reverse_name_row').toggle( !same_post_type );
     $('#connection_field_reverse_hide_row').toggle( !same_post_type )

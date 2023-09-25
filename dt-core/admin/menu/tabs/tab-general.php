@@ -90,13 +90,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
             /* Update Required */
 
-            /* People Groups Settings */
-            $this->box( 'top', 'People Group Settings' );
-            $this->process_people_group_settings();
-            $this->people_group_settings();
-            $this->box( 'bottom' );
-            /* End People Groups Settings */
-
             /* Update Required */
             $this->box( 'top', 'Group Tile Preferences' );
             $this->process_group_preferences();
@@ -124,20 +117,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->process_custom_logo();
             $this->custom_logo();
             $this->box( 'bottom' );
-
-
-            if ( is_multisite() ) {
-                $registration = get_site_option( 'registration' );
-                if ( 'all' === $registration || 'user' === $registration ) {
-                    /* Disable Registration  */
-                    $this->box( 'top', 'Disable Registration' );
-                    $this->process_multisite_disable_registration();
-                    $this->show_multisite_disable_registration();
-                    $this->box( 'bottom' );
-                    /* Disable Registration */
-                }
-            }
-
 
             $this->template( 'right_column' );
 
@@ -253,26 +232,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function people_group_settings() {
-        ?>
-        <form method="POST">
-            <input type="hidden" name="people_group_settings_nonce" id="people_group_settings_nonce"
-                   value="<?php echo esc_attr( wp_create_nonce( 'people_group_settings' ) ) ?>"/>
-
-            <?php
-            Disciple_Tools_People_Groups::admin_display_settings_tab_table( false );
-            ?>
-
-            <br>
-            <span style="float:right;">
-                <button type="submit"
-                        class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button>
-            </span>
-
-        </form>
-        <?php
-    }
-
     public function email_settings(){
         ?>
         <form method="POST">
@@ -369,16 +328,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
         }
     }
-
-    /**
-     * Process changes to the people group settings
-     */
-    public function process_people_group_settings() {
-        if ( isset( $_POST['people_group_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['people_group_settings_nonce'] ) ), 'people_group_settings' ) ) {
-            update_option( Disciple_Tools_People_Groups::$option_key_settings_display_tab, isset( $_POST['display_people_group_tab'] ) );
-        }
-    }
-
 
     public function process_update_required(){
         if ( isset( $_POST['update_required_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['update_required_nonce'] ) ), 'update_required' ) ) {
@@ -633,6 +582,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_disable_wp_new_user_email_notifications', ( isset( $_POST['disable_wp_new_user_email_notifications'] ) && boolval( wp_unslash( $_POST['disable_wp_new_user_email_notifications'] ) ) ) );
             update_option( 'dt_disable_dt_new_user_email_notifications', ( isset( $_POST['disable_dt_new_user_email_notifications'] ) && boolval( wp_unslash( $_POST['disable_dt_new_user_email_notifications'] ) ) ) );
+
+            if ( isset( $_POST['dt_enable_registration'] ) ) {
+                update_option( 'dt_enable_registration', 1, true );
+            } else {
+                delete_option( 'dt_enable_registration' );
+            }
         }
     }
 
@@ -642,6 +597,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $user_default_language = get_option( 'dt_user_default_language', 'en_US' );
         $disable_wp_new_user_email_notifications = get_option( 'dt_disable_wp_new_user_email_notifications', false );
         $disable_dt_new_user_email_notifications = get_option( 'dt_disable_dt_new_user_email_notifications', false );
+        $enable_this_site_registration = get_option( 'dt_enable_registration' );
         ?>
         <p><?php esc_html_e( 'User Roles that can view all other Disciple.Tools users names' ) ?></p>
         <form method="post" >
@@ -699,6 +655,32 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     <input type="checkbox" name="disable_dt_new_user_email_notifications" id="disable_dt_new_user_email_notifications" <?php echo $disable_dt_new_user_email_notifications ? 'checked' : '' ?> />
                 </label>
             </p>
+
+            <?php
+
+            if ( is_multisite() ) :
+                $registration = get_site_option( 'registration' );
+                if ( 'all' === $registration || 'user' === $registration ) :
+
+                    ?>
+
+                    <table class="widefat">
+                        <tr>
+                            <td>
+                                <label><?php esc_html_e( 'Enable User Registrations:' ) ?>
+                                    <input type="checkbox" name="dt_enable_registration" <?php echo checked( $enable_this_site_registration ) ?> /> <br>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+
+                    <?php
+
+                endif;
+            endif;
+
+            ?>
 
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
         </form>
@@ -769,7 +751,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                    <?php checked( $module_values['enabled'] ) ?> />
                         </td>
                         <td>
-                            <?php echo esc_html( join( ', ', array_map( function ( $req_key ) use ( $modules ){
+                            <?php echo esc_html( join( ', ', array_map( function ( $req_key ) use ( $modules ) {
                                 return $modules[$req_key]['name'];
                             }, ( $module_values['prerequisites'] ?? [] ) ) ) );
                             ?>
@@ -809,37 +791,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_post_type_modules', $module_option );
 
         }
-    }
-
-    public function process_multisite_disable_registration(){
-        if ( isset( $_POST['multisite_disable_registration_nonce'] ) &&
-            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['multisite_disable_registration_nonce'] ) ), 'multisite_disable_registration' . get_current_user_id() ) ) {
-            if ( isset( $_POST['dt_disable_registration'] ) ) {
-                update_option( 'dt_disable_registration', 1, true );
-            } else {
-                delete_option( 'dt_disable_registration' );
-            }
-        }
-    }
-
-    public function show_multisite_disable_registration(){
-        $this_site_setting = get_option( 'dt_disable_registration' );
-        ?>
-        <form method="post" >
-            <table class="widefat">
-                <tr>
-                    <td>
-                        <label>
-                            <input type="checkbox" name="dt_disable_registration" <?php echo checked( $this_site_setting ) ?> /> Disable Registrations<br>
-                        </label>
-                    </td>
-                </tr>
-                <?php wp_nonce_field( 'multisite_disable_registration' . get_current_user_id(), 'multisite_disable_registration_nonce' )?>
-            </table>
-            <br>
-            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
-        </form>
-        <?php
     }
 
     public function custom_logo() {

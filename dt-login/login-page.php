@@ -18,7 +18,9 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
         $url = dt_get_url_path();
         $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
-        if ( $login_page_enabled && ( 'login' === substr( $url, 0, 5 ) ) ) {
+        $login_url = DT_Login_Fields::get( 'login_url' );
+
+        if ( $login_page_enabled && ( $login_url === substr( $url, 0, strlen( $login_url ) ) ) ) {
             add_action( 'template_redirect', [ $this, 'theme_redirect' ] );
             add_filter( 'dt_blank_access', function(){ return true;
             }, 100, 1 );

@@ -24,16 +24,16 @@ jQuery(function() {
 
     Object.entries(daysActivities).forEach(([postTitle, postActivities]) => {
       const firstPostActivity = postActivities[0]
-      const icon = window.lodash.escape(firstPostActivity.icon)
+      const icon = window.SHAREDFUNCTIONS.escapeHTML(firstPostActivity.icon)
       if (!firstPostActivity.post_type_label) return
       const requiresTitle = ['field_update', 'created', 'comment'].includes(firstPostActivity.action)
-      const iconHtml = firstPostActivity.icon ? `<i class="${icon} medium post-activities__icon"></i> ` : window.lodash.escape(firstPostActivity.post_type_label) + ':'
+      const iconHtml = firstPostActivity.icon ? `<i class="${icon} medium post-activities__icon"></i> ` : window.SHAREDFUNCTIONS.escapeHTML(firstPostActivity.post_type_label) + ':'
       const forID = `activity_${firstPostActivity.hist_time}_${firstPostActivity.object_name}`
       const activitiesTitle = requiresTitle
         ? `
         <input type="checkbox" class="activity__more-state" id="${forID}" />
         <h5 class="post-activities__title">
-          <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${window.lodash.escape(postTitle)}</a>
+          <a href="/${firstPostActivity.post_type}/${firstPostActivity.object_id}">${iconHtml} ${window.SHAREDFUNCTIONS.escapeHTML(postTitle)}</a>
           <label for="${forID}" class="activity__less-link">
             <img src="${template_dir}/dt-assets/images/chevron_up.svg"/>
           </label>
@@ -56,8 +56,8 @@ jQuery(function() {
   }
 
   function makeGroupedActivitiesHtml(postActivities, translations, requiresTitle) {
-    const moreLabel = window.lodash.escape(translations.more)
-    const lessLabel = window.lodash.escape(translations.less)
+    const moreLabel = window.SHAREDFUNCTIONS.escapeHTML(translations.more)
+    const lessLabel = window.SHAREDFUNCTIONS.escapeHTML(translations.less)
 
     let groupedActivitiesHtml = ''
 
@@ -69,7 +69,7 @@ jQuery(function() {
       let note = ''
 
       if (action === 'field_update') {
-        const escapedFields = fields.map((field) => window.lodash.escape(field))
+        const escapedFields = fields.map((field) => window.SHAREDFUNCTIONS.escapeHTML(field))
         if (fields.length === 0) return
         const hasMoreFields = fields.slice(2).length > 0
 
@@ -77,22 +77,22 @@ jQuery(function() {
           const forID = `fields_${hist_time}${activities.object_id}`
           note = `
               <input type="checkbox" class="fields__more-state" id="${forID}" />
-              ${window.lodash.escape(object_note_short)}: ${escapedFields.slice(0, 2).join(', ')}<span class="fields__more-details">, ${escapedFields.slice(2).join(', ')}</span>
+              ${window.SHAREDFUNCTIONS.escapeHTML(object_note_short)}: ${escapedFields.slice(0, 2).join(', ')}<span class="fields__more-details">, ${escapedFields.slice(2).join(', ')}</span>
               <label for="${forID}" class="fields__more-link">+&nbsp;${fields.slice(2).length}&nbsp;${moreLabel}</label>
               <label for="${forID}" class="fields__less-link">-&nbsp;${lessLabel}</label>
             `
         } else {
-          note = `${window.lodash.escape(object_note_short)}: ${escapedFields.join(', ')}`
+          note = `${window.SHAREDFUNCTIONS.escapeHTML(object_note_short)}: ${escapedFields.join(', ')}`
         }
       } else {
         note = object_note_short
-          ? window.lodash.escape(object_note_short.replace('%n', count))
-          : window.lodash.escape(object_note)
+          ? window.SHAREDFUNCTIONS.escapeHTML(object_note_short.replace('%n', count))
+          : window.SHAREDFUNCTIONS.escapeHTML(object_note)
       }
       let activityDetails = ''
       let dateRegex = /\{(\d+)\}+/;
       object_notes.forEach((objectNote) => {
-        let newObjectNote = `${window.lodash.escape(objectNote)}`
+        let newObjectNote = `${window.SHAREDFUNCTIONS.escapeHTML(objectNote)}`
         if (dateRegex.test(objectNote)) {
           newObjectNote = objectNote.replace(dateRegex, timestamptoDate);
         }

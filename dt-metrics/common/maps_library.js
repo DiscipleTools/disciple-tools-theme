@@ -17,7 +17,7 @@ let mapbox_library_api = {
     if (!window.dt_mapbox_metrics.settings.map_key) {
       chart.empty();
       let mapping_settings_url = window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_mapping_module&tab=geocoding';
-      chart.empty().html(`<a href="${window.lodash.escape(mapping_settings_url)}">${window.lodash.escape(window.dt_mapbox_metrics.settings.no_map_key_msg)}</a>`);
+      chart.empty().html(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(mapping_settings_url)}">${window.SHAREDFUNCTIONS.escapeHTML(window.dt_mapbox_metrics.settings.no_map_key_msg)}</a>`);
 
       return;
     }
@@ -45,27 +45,27 @@ let mapbox_library_api = {
         <div id='legend' class='legend'>
           <div id="legend-bar" class="grid-x grid-margin-x grid-padding-x">
             <div class="cell small-2 center info-bar-font">
-                ${window.lodash.escape( this.title )}
+                ${window.SHAREDFUNCTIONS.escapeHTML( this.title )}
             </div>
             <div id="map-type" class="border-left">
               <button class="button small select-button ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
                 id="cluster">
-                <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dots.svg">
+                <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/dots.svg">
               </button>
               <button class="button small select-button ${mapbox_library_api.current_map_type === 'points' ? 'selected-select-button': ' empty-select-button' }"
                 id="points">
-                <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
+                <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/dot.svg">
               </button>
               <button class="button small select-button ${mapbox_library_api.current_map_type === 'area' ? 'selected-select-button': ' empty-select-button' }"
                 id="area">
-                <img src="${window.lodash.escape(window.wpApiShare.template_dir)}/dt-assets/images/location_shape.svg">
+                <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/location_shape.svg">
               </button>
             </div>
           </div>
         </div>
         <div id="spinner">${spinner_html}</div>
         <div id="geocode-details" class="geocode-details">
-          ${window.lodash.escape( this.title )}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
+          ${window.SHAREDFUNCTIONS.escapeHTML( this.title )}<span class="close-details" style="float:right;"><i class="fi-x"></i></span>
           <hr style="margin:10px 5px;">
           <div id="geocode-details-content"></div>
         </div>
@@ -95,13 +95,13 @@ let mapbox_library_api = {
       window.lodash.forOwn( mapbox_library_api.obj.settings.split_by, (field_values, field_key)=>{
         let options_html = ``
         window.lodash.forOwn(field_values.default, (option, option_key)=>{
-          options_html += `<button class="button small select-button selected-select-button" data-key="${window.lodash.escape(option_key)}" id=${window.lodash.escape(field_key)}_${window.lodash.escape(option_key)}>
-            ${window.lodash.escape(option.label)}
+          options_html += `<button class="button small select-button selected-select-button" data-key="${window.SHAREDFUNCTIONS.escapeHTML(option_key)}" id=${window.SHAREDFUNCTIONS.escapeHTML(field_key)}_${window.SHAREDFUNCTIONS.escapeHTML(option_key)}>
+            ${window.SHAREDFUNCTIONS.escapeHTML(option.label)}
           </button>`
         })
         let split_by_html = `
           <div id="${field_key}" class="border-left map-option-buttons">
-            ${window.lodash.escape(field_values.name)}:
+            ${window.SHAREDFUNCTIONS.escapeHTML(field_values.name)}:
             ${options_html}
           </div>
         `
@@ -252,13 +252,13 @@ let mapbox_library_api = {
         if ( i > 20 ){ return }
         let post_id = e.features[i].properties.post_id;
         let post_type = e.features[i].properties.post_type
-        content.append(`<div class="grid-x" id="list-${window.lodash.escape( i )}"></div>`)
-        window.makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
+        content.append(`<div class="grid-x" id="list-${window.SHAREDFUNCTIONS.escapeHTML( i )}"></div>`)
+        window.makeRequest('GET', window.SHAREDFUNCTIONS.escapeHTML( post_type ) +'/'+window.SHAREDFUNCTIONS.escapeHTML( post_id )+'/', null, 'dt-posts/v2/' )
         .done(details=>{
           list[i] = jQuery('#list-'+i)
 
           list[i].append(`
-            <div class="cell"><a  target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape( post_type )}/${window.lodash.escape( details.ID )}">${window.lodash.escape( details.title )/*View Record*/}</a></div>
+            <div class="cell"><a  target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
           `)
 
           jQuery('.loading-spinner').hide()
@@ -392,12 +392,12 @@ let cluster_map = {
       if ( i > 10 ){ return; }
       let post_id = e.features[i].properties.post_id;
       let post_type = e.features[i].properties.post_type
-      content.append(`<div class="grid-x" id="list-${window.lodash.escape( i )}"></div>`)
-      window.makeRequest('GET', window.lodash.escape( post_type ) +'/'+window.lodash.escape( post_id )+'/', null, 'dt-posts/v2/' )
+      content.append(`<div class="grid-x" id="list-${window.SHAREDFUNCTIONS.escapeHTML( i )}"></div>`)
+      window.makeRequest('GET', window.SHAREDFUNCTIONS.escapeHTML( post_type ) +'/'+window.SHAREDFUNCTIONS.escapeHTML( post_id )+'/', null, 'dt-posts/v2/' )
       .done(details=>{
         list[i] = jQuery('#list-'+i)
         list[i].append(`
-            <div class="cell"><a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape( post_type )}/${window.lodash.escape( details.ID )}">${window.lodash.escape( details.title )/*View Record*/}</a></div>
+            <div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( details.ID )}">${window.SHAREDFUNCTIONS.escapeHTML( details.title )/*View Record*/}</a></div>
           `)
         jQuery('.loading-spinner').hide()
       })
@@ -556,7 +556,7 @@ let area_map = {
       if ( details.admin0_grid_id ) {
         list.append( `
           <li id="admin0_wrapper" class="accordion-item" data-accordion-item>
-           <a href="#" class="accordion-title">${window.lodash.escape( details.admin0_name )} :  <span id="admin0_count">0</span></a>
+           <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML( details.admin0_name )} :  <span id="admin0_count">0</span></a>
             <div class="accordion-content grid-x" data-tab-content><div id="admin0_list" class="grid-x"></div></div>
           </li>
         `)
@@ -568,7 +568,7 @@ let area_map = {
       if ( details.admin1_grid_id ) {
         list.append( `
           <li id="admin1_wrapper" class="accordion-item" data-accordion-item >
-            <a href="#" class="accordion-title">${window.lodash.escape( details.admin1_name )} : <span id="admin1_count">0</span></a>
+            <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML( details.admin1_name )} : <span id="admin1_count">0</span></a>
             <div class="accordion-content" data-tab-content><div id="admin1_list" class="grid-x"></div></div>
           </li>
         `)
@@ -581,7 +581,7 @@ let area_map = {
       if ( details.admin2_grid_id ) {
         list.append( `
           <li id="admin2_wrapper" class="accordion-item" data-accordion-item>
-            <a href="#" class="accordion-title">${window.lodash.escape( details.admin2_name )} : <span id="admin2_count">0</span></a>
+            <a href="#" class="accordion-title">${window.SHAREDFUNCTIONS.escapeHTML( details.admin2_name )} : <span id="admin2_count">0</span></a>
             <div class="accordion-content" data-tab-content><div id="admin2_list" class="grid-x"></div></div>
           </li>
         `)
@@ -635,7 +635,7 @@ let area_map = {
         level_list.empty()
         jQuery.each(list_by_grid, function(i,v) {
           if ( i > 20 ){ return }
-          level_list.append(`<div class="cell"><a target="_blank" href="${window.lodash.escape(window.wpApiShare.site_url)}/${window.lodash.escape( mapbox_library_api.post_type )}/${window.lodash.escape( v.post_id )}">${window.lodash.escape( v.post_title ) }</a></div>`)
+          level_list.append(`<div class="cell"><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML( mapbox_library_api.post_type )}/${window.SHAREDFUNCTIONS.escapeHTML( v.post_id )}">${window.SHAREDFUNCTIONS.escapeHTML( v.post_title ) }</a></div>`)
         })
         if ( list_by_grid.length > 20 ){
           level_list.append(`<div class="cell">...</div>`)

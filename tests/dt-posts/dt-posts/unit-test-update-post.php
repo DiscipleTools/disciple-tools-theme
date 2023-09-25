@@ -55,6 +55,8 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( (int) $result['location_test'][0]['id'], (int) $update_values['location_test']['values'][0]['value'] ); //@todo returned value should be an int
         $this->assertSame( (int) $result['date_test']['timestamp'], strtotime( $update_values['date_test'] ) ); //@todo returned value should be an int
         $this->assertSame( (int) $result['date_test_private']['timestamp'], strtotime( $update_values['date_test_private'] ) ); //@todo returned value should be an int
+        $this->assertSame( (int) $result['datetime_test']['timestamp'], strtotime( $update_values['datetime_test'] ) ); //@todo returned value should be an int
+        $this->assertSame( (int) $result['datetime_test_private']['timestamp'], strtotime( $update_values['datetime_test_private'] ) ); //@todo returned value should be an int
         $this->assertSame( $result['boolean_test'], $update_values['boolean_test'] );
         $this->assertSame( $result['boolean_test_private'], $update_values['boolean_test_private'] );
         $this->assertSame( $result['multi_select_test'][0], $update_values['multi_select_test']['values'][0]['value'] );

@@ -70,8 +70,6 @@ class DT_Login_Fields {
         }
 
         if ( is_multisite() ) {
-            $multisite_vars = [];
-            $site_vars = [];
 
             [ $site_vars, $multisite_vars ] = self::split_site_and_multisite_vars( $vars );
 
@@ -158,20 +156,11 @@ class DT_Login_Fields {
      * @return bool
      */
     public static function can_users_register() {
-
         if ( is_multisite() ) {
-            $users_can_register = apply_filters( 'option_users_can_register', 0 );
-        } else {
-            $users_can_register = get_option( 'users_can_register' );
-
-            if ( !$users_can_register ) {
-                $users_can_register = 0;
-            }
+            return dt_multisite_is_registration_enabled_on_subsite() === 1;
         }
 
-        $users_can_register = $users_can_register !== 0;
-
-        return $users_can_register;
+        return dt_is_registration_enabled_on_site();
     }
 
     private static function filter_fields( $defaults, $fields ) {
@@ -215,9 +204,8 @@ class DT_Login_Fields {
         $multisite_vars = [];
 
         foreach ( $vars as $key => $param ) {
-            if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
-                $multisite_vars[$key] = $param;
-            } else {
+            $multisite_vars[$key] = $param;
+            if ( !isset( $param['multisite_level'] ) || $param['multisite_level'] === false ) {
                 $site_vars[$key] = $param;
             }
         }
@@ -228,24 +216,29 @@ class DT_Login_Fields {
         ];
     }
 
+    /**
+     * Keep all multisite configurations and add any site specific configurations
+     * @param $site_fields
+     * @param $multisite_fields
+     * @return array
+     */
     private static function merge_site_and_multisite_vars( $site_fields, $multisite_fields ) {
 
-        $defaults = self::get_defaults();
+        $default_fields = self::get_defaults();
 
         $merged_fields = [];
 
-        foreach ( $defaults as $key => $param ) {
-            if ( isset( $param['multisite_level'] ) && $param['multisite_level'] === true ) {
-                if ( isset( $multisite_fields[$key] ) ) {
-                    $merged_fields[$key] = $multisite_fields[$key];
+        foreach ( $default_fields as $key => $default_field ) {
+            if ( isset( $multisite_fields[$key] ) ){
+                $merged_fields[$key] = $multisite_fields[$key];
+            }
+            if ( isset( $site_fields[$key] ) ){
+                if ( isset( $merged_fields[$key] ) ) {
+                    if ( !empty( $site_fields[$key]['value'] ) ){
+                        $merged_fields[$key] = $site_fields[$key];
+                    }
                 } else {
-                    $merged_fields[$key] = $param;
-                }
-            } else {
-                if ( isset( $site_fields[$key] ) ) {
                     $merged_fields[$key] = $site_fields[$key];
-                } else {
-                    $merged_fields[$key] = $param;
                 }
             }
         }
@@ -254,7 +247,7 @@ class DT_Login_Fields {
     }
 
     private static function get_defaults() {
-        $roles = dt_list_roles();
+        $roles = function_exists( 'dt_list_roles' ) ? dt_list_roles() : [ 'multiplier' => [ 'label' => 'Multiplier', 'disabled' => false ] ];
 
         $role_list = [];
         foreach ( $roles as $role_key => $role ) {
@@ -323,7 +316,7 @@ class DT_Login_Fields {
                 ],
                 'value' => 'off',
                 'type' => 'select',
-                'multisite_level' => true,
+                'multisite_level' => false,
             ],
 
             'navigation' => [
@@ -341,7 +334,7 @@ class DT_Login_Fields {
                 'description' => 'e.g. groups  (when someone successfully logs in, where do they get redirected)',
                 'value' => '',
                 'type' => 'text',
-                'multisite_level' => true,
+                'multisite_level' => false,
             ],
             'login_url' => [
                 'tab' => 'general',
@@ -350,7 +343,7 @@ class DT_Login_Fields {
                 'description' => 'e.g. login',
                 'value' => 'login',
                 'type' => 'text',
-                'multisite_level' => true,
+                'multisite_level' => false,
             ],
             'ui_label' => [
                 'tab' => 'general',
@@ -371,7 +364,7 @@ class DT_Login_Fields {
                     'on' => 'on',
                     'off' => 'off',
                 ],
-                'multisite_level' => true,
+                'multisite_level' => false,
             ],
             'default_role' => [
                 'tab' => 'general',
@@ -381,10 +374,10 @@ class DT_Login_Fields {
                 'value' => 'multiplier',
                 'type' => 'select',
                 'default' => $role_list,
-                'multisite_level' => true,
+                'multisite_level' => false,
             ],
 
-
+            // shortcodes
             'shortcode_firebase_logon_buttons' => [
                 'tab' => 'shortcodes',
                 'key' => 'shortcode_firebase_logon_buttons',
@@ -405,7 +398,7 @@ class DT_Login_Fields {
                 'type' => 'label',
             ],
 
-
+            // identity_providers
             'identity_providers' => [
                 'tab' => 'identity_providers',
                 'key' => 'identity_providers_label',
@@ -479,6 +472,37 @@ class DT_Login_Fields {
                 ],
                 'multisite_level' => true,
             ],
+
+            // captcha
+            'google_captcha' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_label',
+                'label' => 'Google Captcha Keys',
+                'description' => 'Put your google captcha keys here to enable google captcha in the login forms',
+                'value' => '',
+                'type' => 'label',
+            ],
+            'google_captcha_client_key' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_client_key',
+                'label' => 'Google Captcha Client Key',
+                'description' => 'This is the key that doesn\'t matter if the public find out about it',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+            'google_captcha_server_secret_key' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_server_secret_key',
+                'label' => 'Google Captcha Server Secret Key',
+                'description' => 'This is the one to keep secret from the public.',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+
+
+
 
         ];
 

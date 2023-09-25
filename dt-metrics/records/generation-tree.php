@@ -90,7 +90,16 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
                     'title_date_range_activity' => $this->title,
                     'post_type_select_label' => __( 'Record Type', 'disciple_tools' ),
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
-                    'submit_button_label' => __( 'Generate', 'disciple_tools' )
+                    'submit_button_label' => __( 'Generate', 'disciple_tools' ),
+                    'show_all_button_label' => __( 'Show All', 'disciple_tools' ),
+                    'modal' => [
+                        'add_child_title' => __( 'Add Child To', 'disciple_tools' ),
+                        'add_child_name_title' => __( 'Name', 'disciple_tools' ),
+                        'add_child_but' => __( 'Add Child', 'disciple_tools' ),
+                        'focus_title' => __( 'Focus On Node', 'disciple_tools' ),
+                        'focus_are_you_sure_question' => __( 'Are you sure you wish to focus on node?', 'disciple_tools' ),
+                        'focus_yes' => __( 'Yes', 'disciple_tools' )
+                    ]
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
@@ -146,7 +155,18 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
 
                 // Build generation tree html.
                 $menu_data = $this->prepare_menu_array( $query );
-                return $this->build_menu( $post_type, 0, $menu_data, -1 );
+
+                // Reshape if focus on id has been requested.
+                $parent_id = 0;
+                if ( !empty( $params['focus_id'] ) ) {
+                    $focus_id = $params['focus_id'];
+                    $parent_id = $menu_data['items'][$focus_id]['parent_id'] ?? 0;
+                    $menu_data['parents'][$parent_id] = [ $focus_id ];
+
+                    return $this->build_menu( $post_type, $parent_id, $menu_data, -1 );
+                } else {
+                    return $this->build_menu( $post_type, $parent_id, $menu_data, -1 );
+                }
             }
         }
 
@@ -211,9 +231,15 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
             $html = '<ul class="ul-gen-'.esc_html( $gen ).'">';
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
+                $html .= '<input type="hidden" class="li-gen-' . esc_html( $gen ) . '-id" value="' . esc_html( $item_id ) . '" />';
                 $html .= '<li class="gen-node li-gen-' . esc_html( $gen ) . ' ' . esc_attr( $first_section ) . '">';
                 $html .= '(' . esc_html( $gen ) . ') ';
-                $html .= '<strong><a href="' . esc_url( site_url( '/' . $post_type . '/' ) ) . esc_html( $item_id ) . '" target="_blank">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a></strong><br>';
+                $html .= '<strong><a href="' . esc_url( site_url( '/' . $post_type . '/' ) ) . esc_html( $item_id ) . '" target="_blank">' . esc_html( $menu_data['items'][ $item_id ]['name'] ) . '</a>';
+                $html .= '<span class="gen-node-controls" style="display: none; margin-left: 10px;">';
+                $html .= '<i class="mdi mdi-account-multiple-plus-outline gen-node-control-add-child" style="font-size: 15px; cursor: pointer;" data-post_type="'. esc_html( $post_type ) .'" data-post_id="'. esc_html( $item_id ) .'" data-post_name="'. esc_html( $menu_data['items'][ $item_id ]['name'] ) .'"></i>';
+                $html .= '<i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 15px; cursor: pointer; margin-left: 5px;" data-post_type="'. esc_html( $post_type ) .'" data-post_id="'. esc_html( $item_id ) .'" data-post_name="'. esc_html( $menu_data['items'][ $item_id ]['name'] ) .'"></i>';
+                $html .= '</span>';
+                $html .= '</strong><br>';
 
                 // find child items recursively
                 if ( !in_array( $item_id, $unique_check ) ){

@@ -48,7 +48,7 @@ function ml_utility_submit_field_validation_function(field_settings, fields, key
 
             if ((value < min) || (value > max)) {
               validated['success'] = false;
-              validated['message'] = field_setting['name'] + ': ' + window.lodash.escape(labels[field[keys['type']]]['out_of_range']);
+              validated['message'] = field_setting['name'] + ': ' + window.SHAREDFUNCTIONS.escapeHTML(labels[field[keys['type']]]['out_of_range']);
             }
           }
         }

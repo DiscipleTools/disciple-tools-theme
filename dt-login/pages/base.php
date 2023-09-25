@@ -68,13 +68,6 @@ class DT_Login_Page_Base
         $allowed_js = [
             'jquery',
             'jquery-ui',
-            'site-js',
-            'lodash',
-            'moment',
-            'mapbox-gl',
-            'mapbox-cookie',
-            'mapbox-search-widget',
-            'google-search-widget',
         ];
 
         $allowed_js = apply_filters( 'dt_login_allowed_js', $allowed_js );
@@ -93,10 +86,7 @@ class DT_Login_Page_Base
     public function _print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
         $allowed_css = [
-            'foundation-css',
-            'jquery-ui-site-css',
             'site-css',
-            'mapbox-gl-css',
         ];
 
         $allowed_css = apply_filters( 'dt_login_allowed_css', $allowed_css );
