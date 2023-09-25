@@ -246,15 +246,19 @@ add_action( 'login_init', 'dt_redirect_logged_in' );
 //redirect already logged in users from the login page.
 function dt_redirect_logged_in() {
     global $action;
-    if ( 'logout' === $action || !is_user_logged_in() ) {
+    $user_logged_in = is_user_logged_in();
+    if ( 'logout' === $action || !is_user_logged_in() ){
         return;
     }
-    if ( !empty( $_GET['redirect_to'] ) ) {
-        wp_safe_redirect( esc_url_raw( wp_unslash( $_GET['redirect_to'] ) ) );
-    } else {
-        dt_route_front_page();
+
+    if ( $user_logged_in ) {
+        if ( $action === 'confirm_admin_email' ){
+            return;
+        }
+        if ( !empty( $_GET['redirect_to'] ) ) {
+            wp_safe_redirect( esc_url_raw( wp_unslash( $_GET['redirect_to'] ) ) );
+        }
     }
-    exit;
 }
 
 /**
