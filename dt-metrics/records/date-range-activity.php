@@ -133,7 +133,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         $namespace = 'dt/v' . $version;
 
         register_rest_route(
-            $namespace, '/metrics/field_settings/(?P<post_type>\w+)', [
+            $namespace, '/metrics/date_range_field_settings/(?P<post_type>\w+)', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'field_settings' ],

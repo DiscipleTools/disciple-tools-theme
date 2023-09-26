@@ -5,7 +5,7 @@ jQuery(function () {
 });
 
 const getFieldSettings = (postType) =>
-  window.makeRequest('GET', `metrics/field_settings/${postType}`)
+  window.makeRequest('GET', `metrics/date_range_field_settings/${postType}`)
 
 const renderFieldHtml = (data) =>
   window.makeRequest('GET', `metrics/render_field_html`, data)
@@ -88,9 +88,6 @@ function project_activity_during_date_range() {
     },
     window.moment().startOf('year')
   );
-
-  // Display field value entry accordingly based on selected field.
-  refreshFieldValueEntryElement();
 
   // Add post type event listener.
   const fieldSelectElement = document.querySelector('#post-field-select')
@@ -245,6 +242,11 @@ function handleRequestDefaults() {
     // Update selected post type and forward request params to change event.
     jQuery('#post-type-select').val(request_params.post_type);
     document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
+
+  } else {
+
+    // Display field value entry accordingly based on selected field.
+    refreshFieldValueEntryElement();
   }
 }
 
@@ -301,17 +303,126 @@ function refreshFieldValueEntryElement( details = null, callback = null ) {
         'field_id': field_id
       }).promise()
       .then((response) => {
+        let execute_callback = true;
         if (response['html']) {
           entry_div.html(response['html']);
           activateSpecialFieldValueControls(field_id, field_settings[field_id]);
 
           // Select any requested default field values.
           if ( details && details.value !== null ) {
-            // TODO: Value variable may have to be an object; based on a combination of URL params.
+            switch (field_settings[field_id]['type']) {
+              case 'connection': {
+
+                // Short-circuit main parent callback flow.
+                execute_callback = false;
+
+                // First attempt to obtain a handle onto recently instantiated typeahead object.
+                let connection_typeahead_field_input = '.js-typeahead-' + field_id;
+                let connection_typeahead = window.Typeahead[connection_typeahead_field_input];
+                if ( connection_typeahead && field_settings[field_id]['post_type'] ) {
+
+                  // Next, proceed with attempting to locate corresponding post record from the backend.
+                  window.API.get_post(field_settings[field_id]['post_type'], details.value)
+                  .then(post => {
+
+                    // On a successful hit, add as item to multi select typeahead field.
+                    if ( post && post['ID'] && post['title'] ) {
+                      connection_typeahead.addMultiselectItemLayout({
+                        'ID': post['ID'],
+                        'label': post['title'],
+                        'name': post['title']
+                      });
+                      connection_typeahead.hideLayout();
+                      connection_typeahead.resetInput();
+
+                      if ( callback ) {
+                        callback();
+                      }
+                    }
+                  });
+                }
+                break;
+              }
+              case 'location': {
+
+                // Short-circuit main parent callback flow.
+                execute_callback = false;
+
+                // First attempt to obtain a handle onto recently instantiated typeahead object.
+                let location_typeahead_field_input = '.js-typeahead-' + field_id;
+                let location_typeahead = window.Typeahead[location_typeahead_field_input];
+                if ( location_typeahead ) {
+
+                  // Next, proceed with attempting to locate corresponding location grid record from the backend.
+                  window.makeRequest('POST', window.dtMetricsProject['root'] + 'dt/v1/mapping_module/get_map_by_grid_id', {
+                    'grid_id': details.value
+                  }).then(location => {
+
+                    // On a successful hit, add as item to multi select typeahead field.
+                    if ( location && location['self'] && location['self']['id'] && location['self']['name'] ) {
+                      location_typeahead.addMultiselectItemLayout({
+                        'ID': location['self']['id'],
+                        'matchedKey': 'name',
+                        'name': location['self']['name']
+                      });
+                      location_typeahead.hideLayout();
+                      location_typeahead.resetInput();
+
+                      if ( callback ) {
+                        callback();
+                      }
+                    }
+                  });
+                }
+                break;
+              }
+              case 'user_select': {
+
+                // Short-circuit main parent callback flow.
+                execute_callback = false;
+
+                // First attempt to obtain a handle onto recently instantiated typeahead object.
+                let user_typeahead_field_input = '.js-typeahead-' + field_id;
+                let user_typeahead = window.Typeahead[user_typeahead_field_input];
+                if ( user_typeahead ) {
+
+                  // Next, proceed with attempting to locate corresponding location grid record from the backend.
+                  window.makeRequest('GET', window.dtMetricsProject['root'] + 'dt/v1/users/contact-id', {
+                    'user_id': details.value
+                  }).then(contact_id => {
+
+                    // Next, attempt to fetch corresponding contact post record.
+                    if (contact_id) {
+                      window.API.get_post('contacts', contact_id)
+                      .then(post => {
+                        if (post && post['ID'] && post['title']) {
+
+                          // On a successful hit, add as item to multi select typeahead field.
+                          user_typeahead.item = {
+                            'ID': details.value,
+                            'contact_id': post['ID'],
+                            'matchedKey': 'name',
+                            'name': post['title']
+                          };
+                          user_typeahead.hideLayout();
+                          user_typeahead.resetInput();
+                          jQuery(`input.js-typeahead-${field_id}`).val(post['title']);
+
+                          if ( callback ) {
+                            callback();
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+                break;
+              }
+            }
           }
         }
 
-        if ( callback ) {
+        if ( execute_callback && callback ) {
           callback();
         }
 
