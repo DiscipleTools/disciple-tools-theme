@@ -61,7 +61,7 @@ class DT_Query_Params {
      *
      * @return array
      */
-    public function toArray() {
+    public function to_array() {
         return $this->query_params ? $this->query_params : [];
     }
 }

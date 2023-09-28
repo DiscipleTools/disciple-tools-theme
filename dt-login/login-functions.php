@@ -107,7 +107,7 @@ function dt_login_url( string $name, string $url = '' ): string {
         $query_params->append( 'redirect_to', rawurlencode( $redirect_url ) );
     }
 
-    $params = $query_params->toArray();
+    $params = $query_params->to_array();
 
     $login_page_enabled = $dt_login['login_enabled'] === 'on';
 
