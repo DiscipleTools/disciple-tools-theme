@@ -136,7 +136,7 @@ function dt_list_roles(){
         $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
     }
 
-    $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+    $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );
 
     uasort( $expected_roles, function ( $item1, $item2 ){
         return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
