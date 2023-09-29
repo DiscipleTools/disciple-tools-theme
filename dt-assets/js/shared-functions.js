@@ -575,11 +575,17 @@ window.SHAREDFUNCTIONS = {
     }
     return "";
   },
-  setCookie(cname, cvalue, exdays = 30 ) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  setCookie(cname, cvalue, path, exdays ) {
+    let cookie = `${cname}=${cvalue};`
+    if ( Number.isInteger( exdays ) && exdays > 0 ) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      cookie += "expires="+d.toUTCString()+";";
+    }
+    if (path) {
+      cookie += "path=" + path + ";"
+    }
+    document.cookie = cookie
   },
   get_json_cookie(cname, default_val = []) {
     let cookie = this.getCookie(cname);
@@ -588,12 +594,12 @@ window.SHAREDFUNCTIONS = {
     } catch (e) {}
     return default_val;
   },
-  save_json_cookie(cname, json, path = "") {
+  save_json_cookie(cname, json, path = "", exdays) {
     if (path) {
       path = window.location.pathname.split(path)[0] + path;
       path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
     }
-    document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
+    this.setCookie(cname, JSON.stringify(json), path, exdays)
   },
   get_json_from_local_storage(key, default_val = {}, path) {
     if ( path ){
