@@ -25,6 +25,181 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         parent::__construct();
     } // End __construct()
 
+    public static function get_changed_post_counts( $post_type, $field, $start, $end, $by_month ) {
+        global $wpdb;
+
+        $added_post_changes = [];
+        $deleted_post_changes = [];
+
+        $field_type = DT_Posts::get_post_field_settings( $post_type )[$field]['type'] ?? '';
+
+        $time_unit_sql = $by_month ? 'MONTH( FROM_UNIXTIME( log.hist_time ) )' : 'YEAR( FROM_UNIXTIME( log.hist_time ) )';
+
+        switch ( $field_type ) {
+            case 'date':
+
+                $post_changes = [];
+                $post_changes_sql = [
+                    'posts.added > posts.deleted', // Added
+                    'posts.added <= posts.deleted' // Deleted
+                ];
+
+                foreach ( $post_changes_sql as $changes_sql ) {
+                    // phpcs:disable
+                    $post_changes[] = $wpdb->get_results(
+                    "
+                            SELECT
+                                COUNT( posts.id ) AS count,
+                                posts.time_unit AS time_unit
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name,
+                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
+                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted,
+                                    $time_unit_sql AS time_unit
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID, time_unit
+                            ) posts
+                            WHERE
+                                $changes_sql
+                            GROUP BY posts.time_unit
+                            ORDER BY posts.time_unit ASC
+                        "
+                    );
+                    // phpcs:enable
+                }
+
+                if ( count( $post_changes ) === 2 ) {
+                    $added_post_changes = $post_changes[0];
+                    $deleted_post_changes = $post_changes[1];
+                }
+                break;
+            case 'tags':
+            case 'multi_select':
+
+                $post_changes = [];
+                $post_changes_sql = [
+                    'posts.added > posts.deleted', // Added
+                    'posts.added <= posts.deleted' // Deleted
+                ];
+
+                foreach ( $post_changes_sql as $changes_sql ) {
+                    // phpcs:disable
+                    $post_changes[] = $wpdb->get_results(
+                        "
+                            SELECT
+                                COUNT( posts.id ) AS count,
+                                posts.selection AS selection,
+                                posts.time_unit AS time_unit
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name,
+                                    log.meta_value AS selection,
+                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
+                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted,
+                                    $time_unit_sql AS time_unit
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID, selection, time_unit
+                            ) posts
+                            WHERE
+                                $changes_sql
+                            GROUP BY posts.selection, posts.time_unit
+                            ORDER BY posts.time_unit ASC
+                        "
+                    );
+                    // phpcs:enable
+                }
+
+                if ( count( $post_changes ) === 2 ) {
+                    $added_post_changes = $post_changes[0];
+                    $deleted_post_changes = $post_changes[1];
+                }
+                break;
+
+            case 'key_select':
+
+                // phpcs:disable
+                $added_post_changes = $wpdb->get_results(
+                    "
+                            SELECT
+                                COUNT( posts.id ) AS count,
+                                posts.selection AS selection,
+                                posts.time_unit AS time_unit
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name,
+                                    log.meta_value AS selection,
+                                    $time_unit_sql AS time_unit
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID, selection, time_unit
+                            ) posts
+                            GROUP BY posts.selection, posts.time_unit
+                            ORDER BY posts.time_unit ASC
+                        "
+                );
+                // phpcs:enable
+
+                break;
+
+            case 'number':
+
+                // phpcs:disable
+                $added_post_changes = $wpdb->get_results(
+                    "
+                            SELECT
+                                COUNT( posts.id ) AS count,
+                                posts.time_unit AS time_unit
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name,
+                                    $time_unit_sql AS time_unit
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.meta_value != ''
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID, time_unit
+                            ) posts
+                            GROUP BY posts.time_unit
+                            ORDER BY posts.time_unit ASC
+                        "
+                );
+                // phpcs:enable
+
+                break;
+        }
+
+        return [
+            'added' => $added_post_changes,
+            'deleted' => $deleted_post_changes
+        ];
+    }
+
     /**
      * Return count of posts by date field with stats counted by
      * month
@@ -70,7 +245,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset
+            'cumulative_offset' => $cumulative_offset,
+            'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, true )
         ];
     }
 
@@ -118,7 +294,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset
+            'cumulative_offset' => $cumulative_offset,
+            'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, false )
         ];
     }
 
@@ -154,7 +331,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
             return [
                 'data' => $results,
-                'cumulative_offset' => $cumulative_offset
+                'cumulative_offset' => $cumulative_offset,
+                'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, true )
             ];
         } else {
             $results = $wpdb->get_results(
@@ -181,7 +359,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset
+            'cumulative_offset' => $cumulative_offset,
+            'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, true )
         ];
     }
 
@@ -232,7 +411,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         }
 
         return [
-            'data' => $results
+            'data' => $results,
+            'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, false )
         ];
     }
 
@@ -302,7 +482,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         return [
             'data' => $results,
-            'cumulative_offset' => $cumulative_offset
+            'cumulative_offset' => $cumulative_offset,
+            'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, true )
         ];
     }
 
@@ -369,7 +550,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         );
 
         return [
-            'data' => $results
+            'data' => $results,
+            'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, false )
         ];
     }
 
@@ -940,7 +1122,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                         if ( $key === 'cumulative' ){
                             $results = $wpdb->get_results(
                                 $wpdb->prepare( "
-                                    SELECT 
+                                    SELECT
                                         posts.id as id,
                                         posts.name as name
                                     FROM (
@@ -992,6 +1174,153 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             return [
                 'total' => $total[0][0] ?? null,
                 'data' => $results
+            ];
+        }
+        return [];
+    }
+
+    public static function get_posts_by_field_in_date_range_changes( $post_type, $field, $args = [] ){
+        global $wpdb;
+
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        if ( isset( $field_settings[$field]['type'] ) ){
+
+            $start = $args['start'] ?? 0;
+            $end = $args['end'] ?? time();
+            $key = $args['key'] ?? 'added';
+            $limit = $args['limit'] ?? 100;
+
+            // Prepare SQL statements to be executed.
+            $results = [];
+            $field_type = $field_settings[$field]['type'];
+            switch ( $field_type ) {
+                case 'date':
+
+                    $changes_sql = ( $key === 'added' ) ? 'posts.added > posts.deleted' : 'posts.added <= posts.deleted';
+
+                    // phpcs:disable
+                    $results = $wpdb->get_results(
+                        "
+                            SELECT
+                                posts.id AS id,
+                                posts.name AS name
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name,
+                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
+                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID
+                            ) posts
+                            WHERE
+                                $changes_sql
+                        "
+                    );
+                    // phpcs:enable
+                    break;
+
+                case 'tags':
+                case 'multi_select':
+
+                    $changes_sql = 'posts.added > posts.deleted';
+
+                    // phpcs:disable
+                    $results = $wpdb->get_results(
+                        "
+                            SELECT
+                                posts.id AS id,
+                                posts.name AS name
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name,
+                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
+                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.meta_value = '$key'
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID
+                            ) posts
+                            WHERE
+                                $changes_sql
+                        "
+                    );
+                    // phpcs:enable
+                    break;
+
+                case 'key_select':
+
+                    // phpcs:disable
+                    $results = $wpdb->get_results(
+                        "
+                            SELECT
+                                posts.id AS id,
+                                posts.name AS name
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.meta_value = '$key'
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID
+                            ) posts
+                        "
+                    );
+                    // phpcs:enable
+                    break;
+
+                case 'number':
+
+                    // phpcs:disable
+                    $results = $wpdb->get_results(
+                        "
+                            SELECT
+                                posts.id AS id,
+                                posts.name AS name
+                            FROM (
+                                SELECT
+                                    p.ID AS id,
+                                    p.post_title AS name
+                                FROM $wpdb->dt_activity_log AS log
+                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                WHERE log.object_type = '$post_type'
+                                    AND log.object_subtype = '$field'
+                                    AND log.meta_key = '$field'
+                                    AND log.meta_value != ''
+                                    AND log.field_type = '$field_type'
+                                    AND log.hist_time BETWEEN $start AND $end
+                                GROUP BY p.ID
+                            ) posts
+                        "
+                    );
+                    // phpcs:enable
+                    break;
+
+                default:
+                    break;
+            }
+
+            return [
+                'total' => count( $results ),
+                'data' => array_splice( $results, 0, $limit )
             ];
         }
         return [];
