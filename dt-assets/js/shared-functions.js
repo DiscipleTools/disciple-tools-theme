@@ -583,7 +583,9 @@ window.SHAREDFUNCTIONS = {
       cookie += "expires="+d.toUTCString()+";";
     }
     if (path) {
-      cookie += "path=" + path + ";"
+      let newPath = window.location.pathname.split(path)[0] + path;
+      newPath = newPath.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
+      cookie += "path=" + newPath + ";"
     }
     document.cookie = cookie
   },
@@ -595,10 +597,6 @@ window.SHAREDFUNCTIONS = {
     return default_val;
   },
   save_json_cookie(cname, json, path = "", exdays) {
-    if (path) {
-      path = window.location.pathname.split(path)[0] + path;
-      path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
-    }
     this.setCookie(cname, JSON.stringify(json), path, exdays)
   },
   get_json_from_local_storage(key, default_val = {}, path) {
