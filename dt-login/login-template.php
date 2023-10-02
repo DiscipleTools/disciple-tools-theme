@@ -576,33 +576,62 @@ function dt_login_form_links() {
             <p>
             <?php if ( ! isset( $_GET['checkemail'] ) || ! in_array( wp_unslash( $_GET['checkemail'] ), array( 'confirm', 'newpass' ) ) ) : ?>
 
-                 <a href="<?php echo esc_url( dt_login_url( 'home' ) ) ?>"><?php esc_html_e( 'Home', 'disciple_tools' ) ?></a>
+
+                <?php
+                    $dt_url = dt_get_url_path();
+                    $query_params = ( new DT_URL( $dt_url ) )->query_params;
+                    $action = $query_params->get( 'action' );
+                ?>
+
+                <?php $show_break = false; ?>
+                <?php if ( !$query_params->has( 'hide-nav' ) ) : ?>
+
+                    <?php $show_break = true; ?>
+
+                    <a href="<?php echo esc_url( dt_login_url( 'home' ) ) ?>"><?php esc_html_e( 'Home', 'disciple_tools' ) ?></a>
+
+                <?php endif; ?>
+
+                <?php
+                // login link
+                if ( in_array( $action, [ 'register', 'lostpassword' ] ) ) {
+                    ?>
+
+                    <?php if ( $show_break ): ?>
+
+                        &nbsp;|&nbsp;
+
+                    <?php endif; ?>
+
+                    <a href="<?php echo esc_url( dt_login_url( 'login' ) ) ?>"><?php esc_html_e( 'Login', 'disciple_tools' ) ?></a>
 
                     <?php
-                    // login link
-                    $dt_url = dt_get_url_path();
-                    if ( $dt_login['login_url'] !== $dt_url ) {
-                        ?>
-                       &nbsp;|&nbsp;
-                       <a href="<?php echo esc_url( dt_login_url( 'login' ) ) ?>"><?php esc_html_e( 'Login', 'disciple_tools' ) ?></a>
-                        <?php
-                    }
+                }
 
-                    // registration link
-                    if ( dt_can_users_register() && strpos( $dt_url, '?action=register' ) === false ) {
-                        ?>
-                       &nbsp;|&nbsp;
-                       <a href="<?php echo esc_url( dt_login_url( 'register' ) ) ?>"><?php esc_html_e( 'Register', 'disciple_tools' ) ?></a>
-                        <?php
-                    }
-
-                    if ( strpos( $dt_url, '?action=lostpassword' ) === false ) {
-                        ?>
-                      |&nbsp;
-                    <a href="<?php echo esc_url( dt_login_url( 'lostpassword' ) ); ?>"><?php esc_html_e( 'Lost your password?', 'disciple_tools' ); ?></a>
-                        <?php
-                    }
+                // registration link
+                if ( dt_can_users_register() && empty( $action ) ) {
                     ?>
+
+                    <?php if ( $show_break ): ?>
+
+                        &nbsp;|&nbsp;
+
+                    <?php endif; ?>
+
+                    <a href="<?php echo esc_url( dt_login_url( 'register' ) ) ?>"><?php esc_html_e( 'Register', 'disciple_tools' ) ?></a>
+
+                    <?php
+                }
+
+                if ( $action !== 'lostpassword' ) {
+                    ?>
+
+                  |&nbsp;
+
+                    <a href="<?php echo esc_url( dt_login_url( 'lostpassword' ) ); ?>"><?php esc_html_e( 'Lost your password?', 'disciple_tools' ); ?></a>
+                    <?php
+                }
+                ?>
             <?php endif; ?>
             </p>
         </div>
