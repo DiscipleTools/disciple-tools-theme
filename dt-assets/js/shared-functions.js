@@ -575,7 +575,7 @@ window.SHAREDFUNCTIONS = {
     }
     return "";
   },
-  setCookie(cname, cvalue, path, exdays ) {
+  setCookie(cname, cvalue, path = '', exdays = 0 ) {
     let cookie = `${cname}=${cvalue};`
     if ( Number.isInteger( exdays ) && exdays > 0 ) {
       var d = new Date();
@@ -596,7 +596,7 @@ window.SHAREDFUNCTIONS = {
     } catch (e) {}
     return default_val;
   },
-  save_json_cookie(cname, json, path = "", exdays) {
+  save_json_cookie(cname, json, path = '', exdays = 0) {
     this.setCookie(cname, JSON.stringify(json), path, exdays)
   },
   get_json_from_local_storage(key, default_val = {}, path) {
