@@ -299,7 +299,7 @@ function createChart(id, keys, options) {
 
       let legend_elements = [
         {
-          field: 'added_cumulative_count',
+          field: 'added_count',
           label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.added_label)
         }
       ];
@@ -307,7 +307,7 @@ function createChart(id, keys, options) {
       if ( window.lodash.includes( [ 'date' ], fieldType ) ) {
         legend_elements.push(
           {
-            field: 'deleted_cumulative_count',
+            field: 'deleted_count',
             label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.deleted_label)
           }
         );
@@ -485,7 +485,7 @@ function createLineSeries(chart, field, name, hidden = false) {
     lineSeries.dataFields.valueY = field;
     lineSeries.dataFields.categoryX = chart_view
 
-    if ( ( field_type === 'connection' && field === 'disconnected' ) || window.lodash.includes( [ 'deleted_cumulative_count' ], field ) ) {
+    if ( ( field_type === 'connection' && field === 'disconnected' ) || window.lodash.includes( [ 'deleted_count' ], field ) ) {
       lineSeries.stroke = window.am4core.color("#d70101");
     }
     lineSeries.strokeWidth = 3;
@@ -519,12 +519,6 @@ function createLineSeries(chart, field, name, hidden = false) {
 
 function displayPostListModal(chart_type, date, date_key, metric_key) {
   if (date && date_key && metric_key) {
-
-    const { fieldType: field_type } = window.dtMetricsProject.state;
-    if ( ( chart_type === 'line' ) && ( field_type === 'connection' ) ) {
-      chart_type = 'default';
-    }
-
     switch (chart_type) {
       case 'line': {
         displayPostListModalForChangedPosts(date, date_key, metric_key);
@@ -561,10 +555,10 @@ function displayPostListModalForChangedPosts(date, date_key, metric_key) {
 
   // Determine request query date range.
   if (is_all_time) {
-    payload['ts_start'] = window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_start'] = window.moment().year(clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
     payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
   } else {
-    payload['ts_start'] = window.moment().year(clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_start'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
     payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
   }
 
@@ -782,49 +776,30 @@ function formatTimeUnits(data) {
           const min_year = parseInt( data[key][0].time_unit );
           const max_year = parseInt( data[key][data[key].length - 1].time_unit );
 
-          let cumulative_totals = {
-            'cumulative_count': 0
-          };
-
-          let most_recent_cumulative_totals = {
-            'cumulative_count': 0
-          };
-
           for (let year = min_year; year < ( max_year + 1 ); year++) {
             const year_data = data[key].filter((metric) => String(metric.time_unit) === String(year));
 
             // Ensure null year data hits continue previous counts.
             if ( year_data.length === 0 ) {
-
-              // Continue cumulative count for given month, across all total keys.
-              jQuery.each(cumulative_totals, function (total_key, total) {
-
-                let payload = {
-                  'year': String(year),
-                  'count': 0
-                };
-                payload[total_key] = most_recent_cumulative_totals[total_key];
-
-                formatted_time_units[key].push(payload);
-              });
+              let payload = {
+                'year': String(year),
+                'count': 0
+              };
+              formatted_time_units[key].push(payload);
 
             } else {
 
               jQuery.each(year_data, function (idx, metric){
                 const count = metric.count ? parseInt(metric.count) : 0
-                let cumulative_total_key = ( metric.selection ) ? metric.selection : 'cumulative_count';
-
-                if ( !cumulative_totals[cumulative_total_key] ) {
-                  most_recent_cumulative_totals[cumulative_total_key] = cumulative_totals[cumulative_total_key] = 0;
-                }
-
-                most_recent_cumulative_totals[cumulative_total_key] = cumulative_totals[cumulative_total_key] += count;
 
                 let payload = {
                   'year': String(year),
                   'count': count
                 };
-                payload[cumulative_total_key] = cumulative_totals[cumulative_total_key];
+
+                if ( metric.selection ) {
+                  payload[metric.selection] = count;
+                }
 
                 formatted_time_units[key].push(payload);
               });
@@ -840,53 +815,32 @@ function formatTimeUnits(data) {
 
           const month_labels = window.SHAREDFUNCTIONS.get_months_labels();
 
-          let cumulative_totals = {
-            'cumulative_count': 0
-          };
-
-          let most_recent_cumulative_totals = {
-            'cumulative_count': 0
-          };
-
           for (let x = 0; x < month_labels.length; x++) {
             const month_number = x + 1;
             const month_data = data[key].filter((metric) => String(metric.time_unit) === String(month_number));
 
             // Ensure null month data hits continue previous counts.
             if ( month_data.length === 0 ) {
+              let payload = {
+                'month': month_labels[x],
+                'count': 0
+              };
 
-              // Continue cumulative count for given month, across all total keys.
-              jQuery.each(cumulative_totals, function (total_key, total) {
-                let payload = {
-                  'month': month_labels[x],
-                  'count': 0
-                };
-
-                // Avoid making future predictions! ;)
-                if (!isInFuture(month_number)) {
-                  payload[total_key] = most_recent_cumulative_totals[total_key];
-                }
-
-                formatted_time_units[key].push(payload);
-              });
+              formatted_time_units[key].push(payload);
 
             } else {
 
               jQuery.each(month_data, function (idx, metric){
                 const count = metric.count ? parseInt(metric.count) : 0;
-                let cumulative_total_key = ( metric.selection ) ? metric.selection : 'cumulative_count';
-
-                if ( !cumulative_totals[cumulative_total_key] ) {
-                  most_recent_cumulative_totals[cumulative_total_key] = cumulative_totals[cumulative_total_key] = 0;
-                }
-
-                most_recent_cumulative_totals[cumulative_total_key] = cumulative_totals[cumulative_total_key] += count;
 
                 let payload = {
                   'month': month_labels[x],
                   'count': count
                 };
-                payload[cumulative_total_key] = cumulative_totals[cumulative_total_key];
+
+                if ( metric.selection ) {
+                  payload[metric.selection] = count;
+                }
 
                 formatted_time_units[key].push(payload);
               });
@@ -904,7 +858,7 @@ function formatTimeUnits(data) {
 
   jQuery.each(count_keys, function (idx, key) {
     let count_key = key + '_count';
-    let cumulative_count_key = key + '_cumulative_count';
+    //...let cumulative_count_key = key + '_cumulative_count';
 
     jQuery.each(formatted_time_units[key], function (idx, metric) {
       const time_unit = metric[time_unit_key];
@@ -913,7 +867,7 @@ function formatTimeUnits(data) {
       }
 
       combined_time_units[time_unit][count_key] =  metric.count;
-      combined_time_units[time_unit][cumulative_count_key] = metric.cumulative_count;
+      //...combined_time_units[time_unit][cumulative_count_key] = metric.cumulative_count;
     });
   });
 

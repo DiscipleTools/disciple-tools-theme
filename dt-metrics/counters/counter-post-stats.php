@@ -1314,6 +1314,28 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     // phpcs:enable
                     break;
 
+                case 'connection':
+                    $p2p_type = $field_settings[$field]['p2p_key'] ?? null;
+                    if ( !empty( $p2p_type ) ){
+                        $results = $wpdb->get_results(
+                            $wpdb->prepare( "
+                                    SELECT
+                                        p.ID AS id,
+                                        p.post_title AS name
+                                    FROM $wpdb->dt_activity_log AS log
+                                    INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                    INNER JOIN $wpdb->posts as p2 ON p2.ID = log.meta_value
+                                    WHERE log.object_type = %s
+                                        AND log.object_subtype = %s
+                                        AND log.meta_key = %s
+                                        AND log.hist_time BETWEEN %s AND %s
+                                        AND log.action = %s
+                                    GROUP BY p.ID
+                            ", $post_type, $field, $p2p_type, $start, $end, $key === 'connected' ? 'connected to' : 'disconnected from' ), ARRAY_A
+                        );
+                    }
+                    break;
+
                 default:
                     break;
             }
