@@ -858,7 +858,6 @@ function formatTimeUnits(data) {
 
   jQuery.each(count_keys, function (idx, key) {
     let count_key = key + '_count';
-    //...let cumulative_count_key = key + '_cumulative_count';
 
     jQuery.each(formatted_time_units[key], function (idx, metric) {
       const time_unit = metric[time_unit_key];
@@ -867,7 +866,6 @@ function formatTimeUnits(data) {
       }
 
       combined_time_units[time_unit][count_key] =  metric.count;
-      //...combined_time_units[time_unit][cumulative_count_key] = metric.cumulative_count;
     });
   });
 
