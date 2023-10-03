@@ -75,11 +75,6 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
 
         $all_settings = Disciple_Tools_Core_Endpoints::get_settings();
 
-        $request_params = [];
-        if ( isset( $_SERVER['QUERY_STRING'] ) ) {
-            parse_str( sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ), $request_params );
-        }
-
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
@@ -111,10 +106,7 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
                     'post_field_select_options' => $this->post_field_select_options,
                 ],
                 'field_settings' => $this->field_settings,
-                'all_post_types' => $all_settings['post_types'],
-                'request' => [
-                    'params' => $request_params
-                ]
+                'all_post_types' => $all_settings['post_types']
             ]
         );
     }

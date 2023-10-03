@@ -85,21 +85,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
-        $request_params = [];
-        if ( isset( $_SERVER['QUERY_STRING'] ) ) {
-            // phpcs:disable
-            $query = str_replace( '%3C', '<', $_SERVER['QUERY_STRING'] );
-            $query = str_replace( '%3E', '>', $query );
-            $query = str_replace( '%2C', ',', $query );
-            foreach ( explode( '&', $query ) ?? [] as $param ) {
-                $parts = explode( '=', $param );
-                if ( isset( $parts[0], $parts[1] ) ) {
-                    $request_params[ $parts[0] ] = $parts[1];
-                }
-            }
-            // phpcs:enable
-        }
-
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
@@ -130,10 +115,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'post_type_select_options' => $this->post_type_select_options,
                     'post_field_select_options' => $this->post_field_select_options,
                 ],
-                'field_settings' => $this->field_settings,
-                'request' => [
-                    'params' => $request_params
-                ]
+                'field_settings' => $this->field_settings
             ]
         );
     }

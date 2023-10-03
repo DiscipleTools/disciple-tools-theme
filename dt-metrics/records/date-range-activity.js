@@ -256,21 +256,34 @@ function project_activity_during_date_range() {
   handleRequestDefaults();
 }
 
+function fetchURLSearchParams() {
+    const url_search_params = new URLSearchParams(window.location.search);
+
+    let request_params = {};
+    for ( const param of url_search_params ) {
+        if ( Array.isArray( param ) && param.length === 2 ) {
+            request_params[ param[0] ] = param[1];
+        }
+    }
+
+    return request_params;
+}
+
 function handleRequestDefaults() {
-  const request_params = window.dtMetricsProject.request.params;
+    const request_params = fetchURLSearchParams();
 
-  // Ensure required parts are present, in order to proceed.
-  if ( request_params && request_params.record_type && request_params.field ) {
+    // Ensure required parts are present, in order to proceed.
+    if ( request_params && request_params.record_type && request_params.field ) {
 
-    // Update selected post type and forward request params to change event.
-    jQuery('#post-type-select').val(request_params.record_type);
-    document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
+        // Update selected post type and forward request params to change event.
+        jQuery('#post-type-select').val(request_params.record_type);
+        document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
 
-  } else {
+    } else {
 
-    // Display field value entry accordingly based on selected field.
-    refreshFieldValueEntryElement();
-  }
+        // Display field value entry accordingly based on selected field.
+        refreshFieldValueEntryElement();
+    }
 }
 
 function buildFieldSelectOptions() {

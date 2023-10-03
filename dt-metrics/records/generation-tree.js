@@ -83,8 +83,21 @@ function project_generation_tree() {
   handleRequestDefaults();
 }
 
+function fetchURLSearchParams() {
+    const url_search_params = new URLSearchParams(window.location.search);
+
+    let request_params = {};
+    for ( const param of url_search_params ) {
+        if ( Array.isArray( param ) && param.length === 2 ) {
+            request_params[ param[0] ] = param[1];
+        }
+    }
+
+    return request_params;
+}
+
 function handleRequestDefaults() {
-  const request_params = window.dtMetricsProject.request.params;
+  const request_params = fetchURLSearchParams();
 
   // Ensure required parts are present, in order to proceed.
   if (request_params && request_params.record_type && request_params.field) {
