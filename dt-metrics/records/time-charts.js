@@ -149,8 +149,8 @@ function handleRequestDefaults() {
   const request_params = window.dtMetricsProject.request.params;
 
   // Ensure required parts are present, in order to proceed.
-  if ( request_params && request_params.post_type && request_params.field ) {
-    const post_type = request_params.post_type;
+  if ( request_params && request_params.record_type && request_params.field ) {
+    const post_type = request_params.record_type;
     const field_id = request_params.field;
 
     jQuery('#post-type-select').val(post_type);
@@ -666,6 +666,14 @@ function getData() {
     const loadingSpinner = document.querySelector('.loading-spinner')
     const chartElement = document.querySelector('#chart-area')
     loadingSpinner.classList.add('active')
+
+    // Dynamically update URL parameters.
+    const url = new URL(window.location);
+    url.searchParams.set('record_type', postType);
+    url.searchParams.set('field', field);
+    url.searchParams.set('date', year );
+    window.history.pushState(null, document.title, url.search);
+
     data.promise()
         .then(( response ) => {
           if ( !response && !response.data ) {

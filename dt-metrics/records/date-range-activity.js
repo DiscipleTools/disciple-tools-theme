@@ -165,14 +165,37 @@ function project_activity_during_date_range() {
       }
     }
 
-    // Fetch records matching activity within specified date range.
-    getDateRangeActivity({
+    // Build payload
+    let payload = {
       'post_type': post_type,
       'field': field_id,
       'value': value,
       'ts_start': (date_range_picker.startDate.unix() > 0) ? date_range_picker.startDate.unix() : 0,
       'ts_end': date_range_picker.endDate.unix()
-    })
+    };
+
+    // Determine search param value shape to be adopted.
+    let search_param_value = value;
+    if ( Array.isArray( value ) && window.lodash.includes(['connection', 'location'], field_type) ) {
+      search_param_value = value.filter((x) => x.ID !== null)
+      .map((x) => x.ID)
+      .join(',');
+
+    } else if ( (value && value.ID) && window.lodash.includes(['user_select'], field_type) ) {
+      search_param_value = value.ID;
+    }
+
+    // Dynamically update URL parameters.
+    const url = new URL(window.location);
+    url.searchParams.set('record_type', post_type);
+    url.searchParams.set('field', field_id);
+    url.searchParams.set('value', search_param_value );
+    url.searchParams.set('ts_start', payload.ts_start);
+    url.searchParams.set('ts_end', payload.ts_end);
+    window.history.pushState(null, document.title, url.search);
+
+    // Fetch records matching activity within specified date range.
+    getDateRangeActivity(payload)
     .promise()
     .then((response) => {
 
@@ -237,10 +260,10 @@ function handleRequestDefaults() {
   const request_params = window.dtMetricsProject.request.params;
 
   // Ensure required parts are present, in order to proceed.
-  if ( request_params && request_params.post_type && request_params.field ) {
+  if ( request_params && request_params.record_type && request_params.field ) {
 
     // Update selected post type and forward request params to change event.
-    jQuery('#post-type-select').val(request_params.post_type);
+    jQuery('#post-type-select').val(request_params.record_type);
     document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
 
   } else {
@@ -321,23 +344,34 @@ function refreshFieldValueEntryElement( details = null, callback = null ) {
                 let connection_typeahead = window.Typeahead[connection_typeahead_field_input];
                 if ( connection_typeahead && field_settings[field_id]['post_type'] ) {
 
-                  // Next, proceed with attempting to locate corresponding post record from the backend.
-                  window.API.get_post(field_settings[field_id]['post_type'], details.value)
-                  .then(post => {
+                  // Support multiple post ids; by first concatenating corresponding promises.
+                  let promises = [];
+                  jQuery.each(String(details.value).split(','), function (idx, id) {
+                    promises.push(
+                      window.API.get_post(field_settings[field_id]['post_type'], id)
+                      .then(post => {
 
-                    // On a successful hit, add as item to multi select typeahead field.
-                    if ( post && post['ID'] && post['title'] ) {
-                      connection_typeahead.addMultiselectItemLayout({
-                        'ID': post['ID'],
-                        'label': post['title'],
-                        'name': post['title']
-                      });
-                      connection_typeahead.hideLayout();
-                      connection_typeahead.resetInput();
+                        // On a successful hit, add as item to multi select typeahead field.
+                        if (post && post['ID'] && post['title']) {
+                          connection_typeahead.addMultiselectItemLayout({
+                            'ID': post['ID'],
+                            'label': post['title'],
+                            'name': post['title']
+                          });
+                          connection_typeahead.hideLayout();
+                          connection_typeahead.resetInput();
+                        }
+                      })
+                    );
+                  });
 
-                      if ( callback ) {
-                        callback();
-                      }
+                  // Execute all promises within a chained fashion.
+                  jQuery.when.apply(null, promises)
+                  .done(result => {
+
+                    // Executing callback if available; once all promises have finished.
+                    if (callback) {
+                      callback();
                     }
                   });
                 }
@@ -353,24 +387,35 @@ function refreshFieldValueEntryElement( details = null, callback = null ) {
                 let location_typeahead = window.Typeahead[location_typeahead_field_input];
                 if ( location_typeahead ) {
 
-                  // Next, proceed with attempting to locate corresponding location grid record from the backend.
-                  window.makeRequest('POST', window.dtMetricsProject['root'] + 'dt/v1/mapping_module/get_map_by_grid_id', {
-                    'grid_id': details.value
-                  }).then(location => {
+                  // Support multiple post ids; by first concatenating corresponding promises.
+                  let promises = [];
+                  jQuery.each(String(details.value).split(','), function (idx, id) {
+                      promises.push(
+                          window.makeRequest('POST', window.dtMetricsProject['root'] + 'dt/v1/mapping_module/get_map_by_grid_id', {
+                              'grid_id': id
+                          }).then(location => {
 
-                    // On a successful hit, add as item to multi select typeahead field.
-                    if ( location && location['self'] && location['self']['id'] && location['self']['name'] ) {
-                      location_typeahead.addMultiselectItemLayout({
-                        'ID': location['self']['id'],
-                        'matchedKey': 'name',
-                        'name': location['self']['name']
-                      });
-                      location_typeahead.hideLayout();
-                      location_typeahead.resetInput();
+                              // On a successful hit, add as item to multi select typeahead field.
+                              if ( location && location['self'] && location['self']['id'] && location['self']['name'] ) {
+                                  location_typeahead.addMultiselectItemLayout({
+                                      'ID': location['self']['id'],
+                                      'matchedKey': 'name',
+                                      'name': location['self']['name']
+                                  });
+                                  location_typeahead.hideLayout();
+                                  location_typeahead.resetInput();
+                              }
+                          })
+                      );
+                  });
 
-                      if ( callback ) {
-                        callback();
-                      }
+                  // Execute all promises within a chained fashion.
+                  jQuery.when.apply(null, promises)
+                  .done(result => {
+
+                    // Executing callback if available; once all promises have finished.
+                    if (callback) {
+                      callback();
                     }
                   });
                 }

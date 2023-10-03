@@ -87,7 +87,17 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
 
         $request_params = [];
         if ( isset( $_SERVER['QUERY_STRING'] ) ) {
-            parse_str( sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ), $request_params );
+            // phpcs:disable
+            $query = str_replace( '%3C', '<', $_SERVER['QUERY_STRING'] );
+            $query = str_replace( '%3E', '>', $query );
+            $query = str_replace( '%2C', ',', $query );
+            foreach ( explode( '&', $query ) ?? [] as $param ) {
+                $parts = explode( '=', $param );
+                if ( isset( $parts[0], $parts[1] ) ) {
+                    $request_params[ $parts[0] ] = $parts[1];
+                }
+            }
+            // phpcs:enable
         }
 
         $post_type = $this->post_types[0];
