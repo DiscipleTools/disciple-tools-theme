@@ -46,33 +46,35 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                 foreach ( $post_changes_sql as $changes_sql ) {
                     // phpcs:disable
-                    $post_changes[] = $wpdb->get_results(
-                    "
-                            SELECT
-                                COUNT( posts.id ) AS count,
-                                posts.time_unit AS time_unit
-                            FROM (
-                                SELECT
-                                    p.ID AS id,
-                                    p.post_title AS name,
-                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
-                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted,
-                                    $time_unit_sql AS time_unit
-                                FROM $wpdb->dt_activity_log AS log
-                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
-                                GROUP BY p.ID, time_unit
-                            ) posts
-                            WHERE
-                                $changes_sql
-                            GROUP BY posts.time_unit
-                            ORDER BY posts.time_unit ASC
+                    $prepared_sql = $wpdb->remove_placeholder_escape( $wpdb->prepare(
                         "
-                    );
+                                SELECT
+                                    COUNT( posts.id ) AS count,
+                                    posts.time_unit AS time_unit
+                                FROM (
+                                    SELECT
+                                        p.ID AS id,
+                                        p.post_title AS name,
+                                        SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS added,
+                                        SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS deleted,
+                                        $time_unit_sql AS time_unit
+                                    FROM $wpdb->dt_activity_log AS log
+                                    INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                    WHERE log.object_type = %s
+                                        AND log.object_subtype = %s
+                                        AND log.meta_key = %s
+                                        AND log.field_type = %s
+                                        AND log.hist_time BETWEEN %d AND %d
+                                    GROUP BY p.ID, time_unit
+                                ) posts
+                                WHERE
+                                    $changes_sql
+                                GROUP BY posts.time_unit
+                                ORDER BY posts.time_unit ASC
+                            ", '%Added%', '%deleted%', $post_type, $field, $field, $field_type, $start, $end
+                    ) );
+
+                    $post_changes[] = $wpdb->get_results( $prepared_sql );
                     // phpcs:enable
                 }
 
@@ -92,7 +94,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                 foreach ( $post_changes_sql as $changes_sql ) {
                     // phpcs:disable
-                    $post_changes[] = $wpdb->get_results(
+                    $prepared_sql = $wpdb->remove_placeholder_escape( $wpdb->prepare(
                         "
                             SELECT
                                 COUNT( posts.id ) AS count,
@@ -103,24 +105,26 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     p.ID AS id,
                                     p.post_title AS name,
                                     log.meta_value AS selection,
-                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
-                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted,
+                                    SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS added,
+                                    SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS deleted,
                                     $time_unit_sql AS time_unit
                                 FROM $wpdb->dt_activity_log AS log
                                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
+                                    AND log.field_type = %s
+                                    AND log.hist_time BETWEEN %d AND %d
                                 GROUP BY p.ID, selection, time_unit
                             ) posts
                             WHERE
                                 $changes_sql
                             GROUP BY posts.selection, posts.time_unit
                             ORDER BY posts.time_unit ASC
-                        "
-                    );
+                        ", '%Added%', '%deleted%', $post_type, $field, $field, $field_type, $start, $end
+                    ) );
+
+                    $post_changes[] = $wpdb->get_results( $prepared_sql );
                     // phpcs:enable
                 }
 
@@ -133,7 +137,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             case 'key_select':
 
                 // phpcs:disable
-                $added_post_changes = $wpdb->get_results(
+                $prepared_sql = $wpdb->remove_placeholder_escape( $wpdb->prepare(
                     "
                             SELECT
                                 COUNT( posts.id ) AS count,
@@ -147,17 +151,19 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     $time_unit_sql AS time_unit
                                 FROM $wpdb->dt_activity_log AS log
                                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
+                                    AND log.field_type = %s
+                                    AND log.hist_time BETWEEN %d AND %d
                                 GROUP BY p.ID, selection, time_unit
                             ) posts
                             GROUP BY posts.selection, posts.time_unit
                             ORDER BY posts.time_unit ASC
-                        "
-                );
+                        ", $post_type, $field, $field, $field_type, $start, $end
+                ) );
+
+                $added_post_changes = $wpdb->get_results( $prepared_sql );
                 // phpcs:enable
 
                 break;
@@ -165,7 +171,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             case 'number':
 
                 // phpcs:disable
-                $added_post_changes = $wpdb->get_results(
+                $prepared_sql = $wpdb->remove_placeholder_escape( $wpdb->prepare(
                     "
                             SELECT
                                 COUNT( posts.id ) AS count,
@@ -177,18 +183,20 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     $time_unit_sql AS time_unit
                                 FROM $wpdb->dt_activity_log AS log
                                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
                                     AND log.meta_value != ''
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
+                                    AND log.field_type = %s
+                                    AND log.hist_time BETWEEN %d AND %d
                                 GROUP BY p.ID, time_unit
                             ) posts
                             GROUP BY posts.time_unit
                             ORDER BY posts.time_unit ASC
-                        "
-                );
+                        ", $post_type, $field, $field, $field_type, $start, $end
+                ) );
+
+                $added_post_changes = $wpdb->get_results( $prepared_sql );
                 // phpcs:enable
 
                 break;
@@ -1200,7 +1208,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                     // phpcs:disable
                     $results = $wpdb->get_results(
-                        "
+                        $wpdb->remove_placeholder_escape( $wpdb->prepare( "
                             SELECT
                                 posts.id AS id,
                                 posts.name AS name
@@ -1208,20 +1216,21 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 SELECT
                                     p.ID AS id,
                                     p.post_title AS name,
-                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
-                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted
+                                    SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS added,
+                                    SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS deleted
                                 FROM $wpdb->dt_activity_log AS log
                                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
+                                    AND log.field_type = %s
+                                    AND log.hist_time BETWEEN %d AND %d
                                 GROUP BY p.ID
                             ) posts
                             WHERE
                                 $changes_sql
-                        "
+                        ", '%Added%', '%deleted%', $post_type, $field, $field, $field_type, $start, $end
+                        ) )
                     );
                     // phpcs:enable
                     break;
@@ -1233,7 +1242,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                     // phpcs:disable
                     $results = $wpdb->get_results(
-                        "
+                        $wpdb->remove_placeholder_escape( $wpdb->prepare( "
                             SELECT
                                 posts.id AS id,
                                 posts.name AS name
@@ -1241,21 +1250,22 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 SELECT
                                     p.ID AS id,
                                     p.post_title AS name,
-                                    SUM( if ( log.object_note LIKE '%Added%', 1, 0 ) ) AS added,
-                                    SUM( if ( log.object_note LIKE '%deleted%', 1, 0 ) ) AS deleted
+                                    SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS added,
+                                    SUM( if ( log.object_note LIKE %s, 1, 0 ) ) AS deleted
                                 FROM $wpdb->dt_activity_log AS log
                                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
-                                    AND log.meta_value = '$key'
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
+                                    AND log.meta_value = %s
+                                    AND log.field_type = %s
+                                    AND log.hist_time BETWEEN %d AND %d
                                 GROUP BY p.ID
                             ) posts
                             WHERE
                                 $changes_sql
-                        "
+                        ", '%Added%', '%deleted%', $post_type, $field, $field, $key, $field_type, $start, $end
+                        ) )
                     );
                     // phpcs:enable
                     break;
@@ -1264,7 +1274,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                     // phpcs:disable
                     $results = $wpdb->get_results(
-                        "
+                        $wpdb->remove_placeholder_escape( $wpdb->prepare( "
                             SELECT
                                 posts.id AS id,
                                 posts.name AS name
@@ -1274,15 +1284,16 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     p.post_title AS name
                                 FROM $wpdb->dt_activity_log AS log
                                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
-                                    AND log.meta_value = '$key'
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
+                                    AND log.meta_value = %s
+                                    AND log.field_type = %s
+                                    AND log.hist_time BETWEEN %d AND %d
                                 GROUP BY p.ID
                             ) posts
-                        "
+                        ", $post_type, $field, $field, $key, $field_type, $start, $end
+                        ) )
                     );
                     // phpcs:enable
                     break;
@@ -1291,7 +1302,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
                     // phpcs:disable
                     $results = $wpdb->get_results(
-                        "
+                        $wpdb->remove_placeholder_escape( $wpdb->prepare( "
                             SELECT
                                 posts.id AS id,
                                 posts.name AS name
@@ -1301,15 +1312,16 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     p.post_title AS name
                                 FROM $wpdb->dt_activity_log AS log
                                 INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = '$post_type'
-                                    AND log.object_subtype = '$field'
-                                    AND log.meta_key = '$field'
+                                WHERE log.object_type = %s
+                                    AND log.object_subtype = %s
+                                    AND log.meta_key = %s
                                     AND log.meta_value != ''
-                                    AND log.field_type = '$field_type'
-                                    AND log.hist_time BETWEEN $start AND $end
+                                    AND log.field_type = %s
+                                    AND log.hist_time BETWEEN %d AND %d
                                 GROUP BY p.ID
                             ) posts
-                        "
+                        ", $post_type, $field, $field, $field_type, $start, $end
+                        ) )
                     );
                     // phpcs:enable
                     break;
