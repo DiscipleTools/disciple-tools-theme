@@ -575,6 +575,20 @@ window.SHAREDFUNCTIONS = {
     }
     return "";
   },
+  setCookie(cname, cvalue, path = '', exdays = 0 ) {
+    let cookie = `${cname}=${cvalue};`
+    if ( Number.isInteger( exdays ) && exdays > 0 ) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      cookie += "expires="+d.toUTCString()+";";
+    }
+    if (path) {
+      let newPath = window.location.pathname.split(path)[0] + path;
+      newPath = newPath.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
+      cookie += "path=" + newPath + ";"
+    }
+    document.cookie = cookie
+  },
   get_json_cookie(cname, default_val = []) {
     let cookie = this.getCookie(cname);
     try {
@@ -582,12 +596,8 @@ window.SHAREDFUNCTIONS = {
     } catch (e) {}
     return default_val;
   },
-  save_json_cookie(cname, json, path = "") {
-    if (path) {
-      path = window.location.pathname.split(path)[0] + path;
-      path = path.replace(/^\/?([^\/]+(?:\/[^\/]+)*)\/?$/, "/$1"); // add leading and remove trailing slashes
-    }
-    document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
+  save_json_cookie(cname, json, path = '', exdays = 0) {
+    this.setCookie(cname, JSON.stringify(json), path, exdays)
   },
   get_json_from_local_storage(key, default_val = {}, path) {
     if ( path ){
