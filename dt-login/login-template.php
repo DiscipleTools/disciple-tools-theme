@@ -574,65 +574,48 @@ function dt_login_form_links() {
         <div class="cell medium-3 large-4"></div>
         <div class="cell medium-6 large-4">
             <p>
-            <?php if ( ! isset( $_GET['checkemail'] ) || ! in_array( wp_unslash( $_GET['checkemail'] ), array( 'confirm', 'newpass' ) ) ) : ?>
+            <?php if ( ! isset( $_GET['checkemail'] ) || ! in_array( wp_unslash( $_GET['checkemail'] ), array( 'confirm', 'newpass' ) ) ) :
 
+                $dt_url = dt_get_url_path();
+                $query_params = ( new DT_URL( $dt_url ) )->query_params;
+                $action = $query_params->get( 'action' );
+                $to_display = [];
+                if ( !$query_params->has( 'hide-nav' ) ) {
+                    $to_display[] = [
+                        'url' => dt_login_url( 'home' ),
+                        'text' => __( 'Home', 'disciple_tools' ),
+                    ];
+                }
 
-                <?php
-                    $dt_url = dt_get_url_path();
-                    $query_params = ( new DT_URL( $dt_url ) )->query_params;
-                    $action = $query_params->get( 'action' );
-                ?>
-
-                <?php $show_break = false; ?>
-                <?php if ( !$query_params->has( 'hide-nav' ) ) : ?>
-
-                    <?php $show_break = true; ?>
-
-                    <a href="<?php echo esc_url( dt_login_url( 'home' ) ) ?>"><?php esc_html_e( 'Home', 'disciple_tools' ) ?></a>
-
-                <?php endif; ?>
-
-                <?php
                 // login link
                 if ( in_array( $action, [ 'register', 'lostpassword' ] ) ) {
-                    ?>
-
-                    <?php if ( $show_break ): ?>
-
-                        &nbsp;|&nbsp;
-
-                    <?php endif; ?>
-
-                    <a href="<?php echo esc_url( dt_login_url( 'login' ) ) ?>"><?php esc_html_e( 'Login', 'disciple_tools' ) ?></a>
-
-                    <?php
+                    $to_display[] = [
+                        'url' => dt_login_url( 'login' ),
+                        'text' => __( 'Login', 'disciple_tools' ),
+                    ];
                 }
 
                 // registration link
                 if ( dt_can_users_register() && empty( $action ) ) {
-                    ?>
-
-                    <?php if ( $show_break ): ?>
-
-                        &nbsp;|&nbsp;
-
-                    <?php endif; ?>
-
-                    <a href="<?php echo esc_url( dt_login_url( 'register' ) ) ?>"><?php esc_html_e( 'Register', 'disciple_tools' ) ?></a>
-
-                    <?php
+                    $to_display[] = [
+                        'url' => dt_login_url( 'register' ),
+                        'text' => __( 'Register', 'disciple_tools' ),
+                    ];
                 }
 
-                if ( $action !== 'lostpassword' ) {
-                    ?>
-
-                  |&nbsp;
-
-                    <a href="<?php echo esc_url( dt_login_url( 'lostpassword' ) ); ?>"><?php esc_html_e( 'Lost your password?', 'disciple_tools' ); ?></a>
-                    <?php
+                if ( $action !== 'lostpassword' ){
+                    $to_display[] = [
+                        'url' => dt_login_url( 'lostpassword' ),
+                        'text' => __( 'Lost Password', 'disciple_tools' ),
+                    ];
                 }
-                ?>
-            <?php endif; ?>
+                foreach ( $to_display as $link ) {
+                    echo '<a href="' . esc_url( $link['url'] ) . '">' . esc_html( $link['text'] ) . '</a>';
+                    if ( $link !== end( $to_display ) ) {
+                        echo ' | ';
+                    }
+                }
+            endif; ?>
             </p>
         </div>
         <div class="cell medium-3 large-4"></div>
