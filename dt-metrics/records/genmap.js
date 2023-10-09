@@ -125,7 +125,7 @@ jQuery(document).ready(function($) {
     });
 
     jQuery('#select_post_types').on('change', function(e) {
-      refresh_post_type_field_select_list();
+        refresh_post_type_field_select_list(window.load_genmap);
     });
 
     jQuery('#select_post_type_fields').on('change', function(e) {
@@ -138,19 +138,16 @@ jQuery(document).ready(function($) {
     });
 
     jQuery(document).on('click', '.genmap-details-add-focus', function(e) {
-      let control = jQuery(e.currentTarget);
-      display_focus_modal(jQuery(control).data('post_type'), jQuery(control).data('post_id'), jQuery(control).data('post_name'));
+        let control = jQuery(e.currentTarget);
+        let post_type = jQuery(control).data('post_type');
+        let post_id = jQuery(control).data('post_id');
+        let p2p_key = jQuery('#select_post_type_fields').find('option:selected').data('p2p_key');
+
+        handle_focus(post_type, post_id, p2p_key);
     });
 
     jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
       handle_add_child();
-    });
-
-    jQuery(document).on('click', '#gen_tree_focus_but', function (e) {
-      let post_type = jQuery('#gen_tree_focus_post_type').val();
-      let post_id = jQuery('#gen_tree_focus_post_id').val();
-      let p2p_key = jQuery('#select_post_type_fields').find('option:selected').data('p2p_key');
-      handle_focus(post_type, post_id, p2p_key);
     });
   }
 
@@ -220,35 +217,8 @@ jQuery(document).ready(function($) {
     }
   }
 
-  function display_focus_modal(post_type, post_id, post_name) {
-    let list_html = `
-    <input id="gen_tree_focus_post_type" type="hidden" value="${post_type}" />
-    <input id="gen_tree_focus_post_id" type="hidden" value="${post_id}" />
-    ${window.lodash.escape(window.dtMetricsProject.translations.modal.focus_are_you_sure_question)}`;
-
-    let buttons_html = `<button id="gen_tree_focus_but" class="button" type="button">${window.lodash.escape(window.dtMetricsProject.translations.modal.focus_yes)}</button>`;
-
-    let modal = jQuery('#template_metrics_modal');
-    let modal_buttons = jQuery('#template_metrics_modal_buttons');
-    let title = window.dtMetricsProject.translations.modal.focus_title + ` [ ${post_name} ]`;
-    let content = jQuery('#template_metrics_modal_content');
-
-    jQuery(modal_buttons).empty().html(buttons_html);
-
-    jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
-    jQuery(content).css('max-height', '300px');
-    jQuery(content).css('overflow', 'auto');
-    jQuery(content).empty().html(list_html);
-    jQuery(modal).foundation('open');
-  }
-
   function handle_focus(post_type, post_id, p2p_key) {
-    console.log(post_type, post_id, p2p_key);
     if ( post_id ) {
-
-      // Close modal and refresh generation tree, accordingly, based on focussed state.
-      jQuery('#template_metrics_modal').foundation('close');
-
       window.load_genmap( post_id );
     }
   }
@@ -305,9 +275,14 @@ jQuery(document).ready(function($) {
         }
       });
 
-      let sorted_post_type_fields = window.lodash.sortBy(filtered_post_type_fields, [function (o) {
+      let duplicate_free_post_type_fields = window.lodash.uniqBy(filtered_post_type_fields, function (o) {
+        return o.p2p_key;
+      });
+
+      let sorted_post_type_fields = window.lodash.sortBy(duplicate_free_post_type_fields, [function (o) {
         return o.text;
       }]);
+
       jQuery.each( sorted_post_type_fields, function ( idx, option ) {
         jQuery('<option>').val(option.value).text(option.text).attr('data-p2p_key', option.p2p_key).appendTo(post_type_fields_select);
       });
