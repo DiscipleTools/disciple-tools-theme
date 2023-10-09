@@ -126,8 +126,8 @@ function project_activity_during_date_range() {
           date_range_picker.setStartDate(window.moment.unix(parseInt(e.detail.ts_start)));
           date_range_picker.setEndDate(window.moment.unix(parseInt(e.detail.ts_end)).format("YYYY-MM-DD"));
 
-          // Default to custom range label.
-          jQuery('.date_range_picker span').html(window.lodash.escape(date_select_custom_label));
+          // Default to custom range label if no search parameter detected.
+          jQuery('.date_range_picker span').html(window.lodash.escape(e.detail.label ? e.detail.label : date_select_custom_label));
         }
         jQuery('#post-field-submit-button').click();
       }
@@ -192,6 +192,7 @@ function project_activity_during_date_range() {
     url.searchParams.set('value', search_param_value );
     url.searchParams.set('ts_start', payload.ts_start);
     url.searchParams.set('ts_end', payload.ts_end);
+    url.searchParams.set('label', jQuery('.date_range_picker span').html());
     window.history.pushState(null, document.title, url.search);
 
     // Fetch records matching activity within specified date range.

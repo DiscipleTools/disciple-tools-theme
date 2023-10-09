@@ -62,6 +62,10 @@ jQuery(document).ready(function ($) {
 
   // Determine selected menu item
   let selected_menu_item = (window.wpApiShare.url_path === 'metrics') ? 'metrics/personal/overview' : window.wpApiShare.url_path;
+
+  // Ignore url search parameters
+  selected_menu_item = window.lodash.split(selected_menu_item, '?', 1)[0];
+
   let item = $('#metrics-side-section a[href*="' + selected_menu_item + '"]').last();
 
   // Apply class highlight for initial
