@@ -917,7 +917,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 case 'key_select':
                     $start = $args['start'] ?? 0;
                     $end = $args['end'] ?? time();
-                    $key_query = !empty( $args['key'] ) ? "AND pm.meta_value = '". $args['key'] ."'" : '';
+                    $key_query = !empty( $args['key'] ) ? "AND pm.meta_value = '". esc_sql( $args['key'] ) ."'" : '';
 
                     // phpcs:disable
                     $results = $wpdb->get_results(
