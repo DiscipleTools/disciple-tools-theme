@@ -145,14 +145,20 @@ function project_activity_during_date_range() {
       }
     }
 
-    // Fetch records matching activity within specified date range.
-    getDateRangeActivity({
+    // Create payload.
+    let payload = {
       'post_type': post_type,
       'field': field_id,
       'value': value,
       'ts_start': (date_range_picker.startDate.unix() > 0) ? date_range_picker.startDate.unix() : 0,
       'ts_end': date_range_picker.endDate.unix()
-    })
+    };
+
+    payload['date_start'] = window.moment.unix(payload['ts_start']).format('YYYY-MM-DD');
+    payload['date_end'] = window.moment.unix(payload['ts_end']).format('YYYY-MM-DD');
+
+    // Fetch records matching activity within specified date range.
+    getDateRangeActivity(payload)
     .promise()
     .then((response) => {
 
