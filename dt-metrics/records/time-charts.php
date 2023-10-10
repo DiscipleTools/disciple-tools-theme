@@ -84,7 +84,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
-
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
@@ -130,7 +129,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 ],
                 'multi_fields' => $this->multi_fields,
                 'fields_type_filter' => $this->post_field_types_filter,
-                'field_settings' => $this->field_settings,
+                'field_settings' => $this->field_settings
             ]
         );
     }
