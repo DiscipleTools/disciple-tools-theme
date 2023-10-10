@@ -320,26 +320,26 @@ function createChart(id, keys, options) {
     // Adjust field labels shape accordingly based on field type.
     let series = [];
     if (fieldType === 'connection') {
-      if (graphType === 'stacked') {
+      if (graphType==='stacked') {
         series = [
           {
             field: 'cumulative_count',
-            label: window.SHAREDFUNCTIONS.escapeHTML( window.dtMetricsProject.translations.total_label )
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.total_label)
           }
         ].map(({field, label}) => {
           let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
           firstSerie = generated_serie.first_serie;
           return generated_serie.series;
         });
-      } else if (graphType === 'line') {
+      } else if (graphType==='line') {
         series = [
           {
             field: 'connected',
-            label: window.SHAREDFUNCTIONS.escapeHTML( window.dtMetricsProject.translations.connected_label )
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.connected_label)
           },
           {
             field: 'disconnected',
-            label: window.SHAREDFUNCTIONS.escapeHTML( window.dtMetricsProject.translations.disconnected_label )
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.disconnected_label)
           }
         ].map(({field, label}) => {
           let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
@@ -347,6 +347,30 @@ function createChart(id, keys, options) {
           return generated_serie.series;
         });
       }
+    } else if ( ( id === 'additions-chart' ) && window.lodash.includes( [ 'date', 'number' ], fieldType ) && window.dtMetricsProject.data_changes && window.dtMetricsProject.data_changes.combined ) {
+
+      let legend_elements = [
+        {
+          field: 'added_count',
+          label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.added_label)
+        }
+      ];
+
+      if ( window.lodash.includes( [ 'date' ], fieldType ) ) {
+        legend_elements.push(
+          {
+            field: 'deleted_count',
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.deleted_label)
+          }
+        );
+      }
+
+      series = legend_elements.map(({field, label}) => {
+        let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
+        firstSerie = generated_serie.first_serie;
+        return generated_serie.series;
+      });
+
     } else {
       series = fieldLabels.map(({field, label}) => {
         let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
@@ -442,7 +466,20 @@ function initialiseChart(id) {
         break;
 
       } default: {
-        chart.data = data;
+
+        // Select appropriate dataset.
+        if ( ( id === 'additions-chart' ) && window.dtMetricsProject.data_changes && window.dtMetricsProject.data_changes.combined ) {
+          if ( window.lodash.includes( ['tags', 'multi_select', 'key_select'], field_type ) && window.dtMetricsProject.data_changes.added ) {
+            chart.data = window.dtMetricsProject.data_changes.added;
+
+          } else {
+            chart.data = window.dtMetricsProject.data_changes.combined;
+          }
+
+        } else {
+          chart.data = data;
+        }
+
         break;
       }
     }
@@ -484,7 +521,7 @@ function createColumnSeries(chart, field, name, hidden = false) {
       let metric_key = target.dataItem.component.dataFields.valueY;
       let data = target.dataItem.dataContext;
 
-      displayPostListModal(data[date_key], date_key, metric_key, data['cumulative_count']);
+      displayPostListModal('column', data[date_key], date_key, metric_key, data['cumulative_count']);
     });
 
     return series
@@ -500,7 +537,7 @@ function createLineSeries(chart, field, name, hidden = false) {
     lineSeries.dataFields.valueY = field;
     lineSeries.dataFields.categoryX = chart_view
 
-    if (field_type === 'connection' && field === 'disconnected') {
+    if ( ( field_type === 'connection' && field === 'disconnected' ) || window.lodash.includes( [ 'deleted_count' ], field ) ) {
       lineSeries.stroke = window.am4core.color("#d70101");
     }
     lineSeries.strokeWidth = 3;
@@ -521,7 +558,7 @@ function createLineSeries(chart, field, name, hidden = false) {
       let metric_key = target.dataItem.component.dataFields.valueY;
       let data = target.dataItem.dataContext;
 
-      displayPostListModal(data[date_key], date_key, metric_key);
+      displayPostListModal('line', data[date_key], date_key, metric_key);
     });
 
     let circle = bullet.createChild(window.am4core.Circle);
@@ -532,55 +569,119 @@ function createLineSeries(chart, field, name, hidden = false) {
     return lineSeries
 }
 
-function displayPostListModal(date, date_key, metric_key) {
+function displayPostListModal(chart_type, date, date_key, metric_key) {
   if (date && date_key && metric_key) {
-
-    // Determine click display parameters.
-    let { post_type, field, fieldType, year, earliest_year } = window.dtMetricsProject.state;
-    let is_cumulative = metric_key.startsWith('cumulative_');
-    let is_all_time = year === 'all-time';
-    let clicked_year = is_all_time ? date : year;
-    let limit = 100;
-
-    // Build request payload.
-    let payload = {
-      'post_type': post_type,
-      'field': field,
-      'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key,
-      'limit': limit,
-    };
-
-    // Determine request query date range.
-    if (is_all_time) {
-      payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
-      payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
-    } else {
-      payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
-      payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
+    switch (chart_type) {
+      case 'line': {
+        displayPostListModalForChangedPosts(date, date_key, metric_key);
+        break;
+      }
+      default: {
+        displayPostListModalForCumulativePosts(date, date_key, metric_key);
+        break;
+      }
     }
+  }
+}
 
-    // Final adjustments for specific field types.
-    if (fieldType === 'connection' && metric_key.includes('cumulative_')) {
-      payload['key'] = 'cumulative';
-      payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix():window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
-    }
-    // Dispatch request and process response accordingly.
-    getMetricsCumulativePosts(payload)
-    .promise()
-    .then(response => {
-      if (response && response.data) {
-        let selected_posts = [];
-        let posts = response.data;
+function displayPostListModalForChangedPosts(date, date_key, metric_key) {
 
-        // Limit to first X elements.
-        selected_posts = posts.slice(0, limit);
+  // Determine click display parameters.
+  let { post_type, field, fieldType, year, earliest_year } = window.dtMetricsProject.state;
+  let is_all_time = year === 'all-time';
+  let clicked_year = is_all_time ? date : year;
+  let limit = 100;
+  let payload_key = metric_key;
 
-        // Proceed with displaying post list.
-        let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
-        let list_html = `
+  if ( metric_key.startsWith('added_') || metric_key.startsWith('deleted_') ) {
+    payload_key = metric_key.startsWith('added_') ? 'added' : 'deleted';
+  }
+
+  // Build request payload.
+  let payload = {
+    'post_type': post_type,
+    'field': field,
+    'key': payload_key,
+    'limit': limit
+  };
+
+  // Determine request query date range.
+  if (is_all_time) {
+    payload['ts_start'] = window.moment().year(clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
+  } else {
+    payload['ts_start'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
+  }
+
+  // Dispatch request and process response accordingly.
+  getMetricsChangedPosts(payload)
+  .promise()
+  .then(response => {
+    displayPostListModalRecordsHandler(response, limit);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+function displayPostListModalForCumulativePosts(date, date_key, metric_key) {
+
+  // Determine click display parameters.
+  let { post_type, field, fieldType, year, earliest_year } = window.dtMetricsProject.state;
+  let is_cumulative = metric_key.startsWith('cumulative_');
+  let is_all_time = year === 'all-time';
+  let clicked_year = is_all_time ? date : year;
+  let limit = 100;
+
+  // Build request payload.
+  let payload = {
+    'post_type': post_type,
+    'field': field,
+    'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key,
+    'limit': limit
+  };
+
+  // Determine request query date range.
+  if (is_all_time) {
+    payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
+  } else {
+    payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
+  }
+
+  // Final adjustments for specific field types.
+  if (fieldType === 'connection' && metric_key.includes('cumulative_')) {
+    payload['key'] = 'cumulative';
+    payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix():window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+  }
+
+  // Dispatch request and process response accordingly.
+  getMetricsCumulativePosts(payload)
+  .promise()
+  .then(response => {
+    displayPostListModalRecordsHandler(response, limit);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+function displayPostListModalRecordsHandler(records, limit) {
+  if (records && records.data) {
+    let selected_posts = [];
+    let posts = records.data;
+
+    // Limit to first X elements.
+    selected_posts = posts.slice(0, limit);
+
+    // Proceed with displaying post list.
+    let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
+    let list_html = `
           <br>
           ${(function (posts_to_filter) {
-          let post_list_html = `
+      let post_list_html = `
           <table>
             <thead>
                 <tr>
@@ -590,47 +691,42 @@ function displayPostListModal(date, date_key, metric_key) {
             </thead>
             <tbody>
           `;
-          let counter = 0;
-          jQuery.each(posts_to_filter, function (idx, post) {
-            let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
+      let counter = 0;
+      jQuery.each(posts_to_filter, function (idx, post) {
+        let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
 
-            post_list_html += `
+        post_list_html += `
                 <tr>
                     <td>${++counter}</td>
                     <td><a href="${url}" target="_blank">${post['name'] ? post['name'] : post['id']}</a></td>
                 </tr>
                 `;
-          });
+      });
 
-          post_list_html += `
+      post_list_html += `
             </tbody>
           </table>
           `;
 
-          return (posts_to_filter.length > 0) ? post_list_html : window.dtMetricsProject.translations.modal_no_records;
-        })(sorted_posts)}
+      return (posts_to_filter.length > 0) ? post_list_html : window.dtMetricsProject.translations.modal_no_records;
+    })(sorted_posts)}
           <br>
           `;
 
-        // Determine overall total value.
-        let total = sorted_posts.length;
-        if (response.total) {
-          total = parseInt(response.total);
-        }
+    // Determine overall total value.
+    let total = sorted_posts.length;
+    if (records.total) {
+      total = parseInt(records.total);
+    }
 
-        // Render post html list.
-        let title = window.dtMetricsProject.translations.modal_title + ((total > 0) ? ` [ ${total} ]` : '' );
-        let content = jQuery('#template_metrics_modal_content');
-        jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
-        jQuery(content).css('max-height', '300px');
-        jQuery(content).css('overflow', 'auto');
-        jQuery(content).empty().html(list_html);
-        jQuery('#template_metrics_modal').foundation('open');
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    // Render post html list.
+    let title = window.dtMetricsProject.translations.modal_title + ((total > 0) ? ` [ ${total} ]` : '' );
+    let content = jQuery('#template_metrics_modal_content');
+    jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
+    jQuery(content).css('max-height', '300px');
+    jQuery(content).css('overflow', 'auto');
+    jQuery(content).empty().html(list_html);
+    jQuery('#template_metrics_modal').foundation('open');
   }
 }
 
@@ -704,6 +800,7 @@ function getData() {
             default: {
               window.dtMetricsProject.cumulative_offset = (response.cumulative_offset !== undefined) ? response.cumulative_offset : 0;
               window.dtMetricsProject.data = isAllTime ? formatYearData(data) : formatMonthData(data);
+              window.dtMetricsProject.data_changes = formatTimeUnits( response.changes );
               break;
             }
           }
@@ -717,6 +814,126 @@ function getData() {
             chartElement.dispatchEvent( new Event('datachange') )
             loadingSpinner.classList.remove('active')
         })
+}
+
+function formatTimeUnits(data) {
+  const {year} = window.dtMetricsProject.state;
+  const is_all_time = year === 'all-time';
+  const count_keys = ['added','deleted'];
+
+  let formatted_time_units = {
+    'added': [],
+    'deleted': [],
+    'combined': []
+  };
+
+  if (data) {
+    if (is_all_time) {
+      jQuery.each(count_keys, function (idx, key){
+        if ( data[key] && data[key].length > 0 ) {
+
+          const min_year = parseInt( data[key][0].time_unit );
+          const max_year = parseInt( data[key][data[key].length - 1].time_unit );
+
+          for (let year = min_year; year < ( max_year + 1 ); year++) {
+            const year_data = data[key].filter((metric) => String(metric.time_unit) === String(year));
+
+            // Ensure null year data hits continue previous counts.
+            if ( year_data.length === 0 ) {
+              let payload = {
+                'year': String(year),
+                'count': 0
+              };
+              formatted_time_units[key].push(payload);
+
+            } else {
+
+              jQuery.each(year_data, function (idx, metric){
+                const count = metric.count ? parseInt(metric.count) : 0
+
+                let payload = {
+                  'year': String(year),
+                  'count': count
+                };
+
+                if ( metric.selection ) {
+                  payload[metric.selection] = count;
+                }
+
+                formatted_time_units[key].push(payload);
+              });
+
+            }
+          }
+        }
+      });
+
+    } else {
+      jQuery.each(count_keys, function (idx, key){
+        if ( data[key] && data[key].length > 0 ) {
+
+          const month_labels = window.SHAREDFUNCTIONS.get_months_labels();
+
+          for (let x = 0; x < month_labels.length; x++) {
+            const month_number = x + 1;
+            const month_data = data[key].filter((metric) => String(metric.time_unit) === String(month_number));
+
+            // Ensure null month data hits continue previous counts.
+            if ( month_data.length === 0 ) {
+              let payload = {
+                'month': month_labels[x],
+                'count': 0
+              };
+
+              formatted_time_units[key].push(payload);
+
+            } else {
+
+              jQuery.each(month_data, function (idx, metric){
+                const count = metric.count ? parseInt(metric.count) : 0;
+
+                let payload = {
+                  'month': month_labels[x],
+                  'count': count
+                };
+
+                if ( metric.selection ) {
+                  payload[metric.selection] = count;
+                }
+
+                formatted_time_units[key].push(payload);
+              });
+
+            }
+          }
+        }
+      });
+    }
+  }
+
+  // Combine both addition and deletion metrics.
+  let combined_time_units = {};
+  const time_unit_key = is_all_time ? 'year':'month';
+
+  jQuery.each(count_keys, function (idx, key) {
+    let count_key = key + '_count';
+
+    jQuery.each(formatted_time_units[key], function (idx, metric) {
+      const time_unit = metric[time_unit_key];
+      if ( !combined_time_units[time_unit] ) {
+        combined_time_units[time_unit] = {};
+      }
+
+      combined_time_units[time_unit][count_key] =  metric.count;
+    });
+  });
+
+  jQuery.each(combined_time_units, function (time_unit, metric) {
+    metric[time_unit_key] = time_unit;
+    formatted_time_units['combined'].push(metric);
+  });
+
+  return formatted_time_units;
 }
 
 function processConnectionData(data) {

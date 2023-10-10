@@ -24,7 +24,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         'multi_select',
         'key_select',
         'connection',
-        'boolean',
         'number'
     ]; // connection and number would be interesting for additions to groups, and quick button usage
     public $multi_fields = [
@@ -108,6 +107,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
                     'added_label' => __( 'Added', 'disciple_tools' ),
+                    'deleted_label' => __( 'Deleted', 'disciple_tools' ),
                     'connected_label' => __( 'Connected', 'disciple_tools' ),
                     'disconnected_label' => __( 'Disconnected', 'disciple_tools' ),
                     'tooltip_label' => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
