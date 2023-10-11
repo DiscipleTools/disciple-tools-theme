@@ -275,11 +275,7 @@ jQuery(document).ready(function($) {
         }
       });
 
-      let duplicate_free_post_type_fields = window.lodash.uniqBy(filtered_post_type_fields, function (o) {
-        return o.p2p_key;
-      });
-
-      let sorted_post_type_fields = window.lodash.sortBy(duplicate_free_post_type_fields, [function (o) {
+      let sorted_post_type_fields = window.lodash.sortBy(filtered_post_type_fields, [function (o) {
         return o.text;
       }]);
 

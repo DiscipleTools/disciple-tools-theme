@@ -21,7 +21,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             return;
         }
         $this->base_title = __( 'Genmap', 'disciple_tools' );
-        $this->title = __( 'Genmap', 'disciple_tools' );
+        $this->title = __( 'Generation Map', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
