@@ -121,10 +121,10 @@ function project_activity_during_date_range() {
 
       // Default to any specified date ranges.
       if (e.detail ) {
-        if (e.detail.ts_start && e.detail.ts_end) {
+        if (e.detail.date_start && e.detail.date_end) {
           let date_range_picker = jQuery('.date_range_picker').data('daterangepicker');
-          date_range_picker.setStartDate(window.moment.unix(parseInt(e.detail.ts_start)));
-          date_range_picker.setEndDate(window.moment.unix(parseInt(e.detail.ts_end)).format("YYYY-MM-DD"));
+          date_range_picker.setStartDate(window.moment(e.detail.date_start));
+          date_range_picker.setEndDate(window.moment(e.detail.date_end));
 
           // Default to custom range label if no search parameter detected.
           jQuery('.date_range_picker span').html(window.lodash.escape(e.detail.label ? e.detail.label : date_select_custom_label));
@@ -165,7 +165,6 @@ function project_activity_during_date_range() {
       }
     }
 
-
     // Create payload.
     let ts_start = (date_range_picker.startDate.unix() > 0) ? date_range_picker.startDate.unix() : 0;
     let ts_end = date_range_picker.endDate.unix();
@@ -194,8 +193,8 @@ function project_activity_during_date_range() {
     url.searchParams.set('record_type', post_type);
     url.searchParams.set('field', field_id);
     url.searchParams.set('value', search_param_value );
-    url.searchParams.set('ts_start', ts_start);
-    url.searchParams.set('ts_end', ts_end);
+    url.searchParams.set('date_start', payload.date_start);
+    url.searchParams.set('date_end', payload.date_end);
     url.searchParams.set('label', jQuery('.date_range_picker span').html());
     window.history.pushState(null, document.title, url.search);
 
