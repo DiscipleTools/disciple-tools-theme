@@ -5,7 +5,7 @@ jQuery(function () {
 });
 
 const getFieldSettings = (postType) =>
-  window.makeRequest('GET', `metrics/field_settings/${postType}`)
+  window.makeRequest('GET', `metrics/date_range_field_settings/${postType}`)
 
 const renderFieldHtml = (data) =>
   window.makeRequest('GET', `metrics/render_field_html`, data)
@@ -23,6 +23,7 @@ function project_activity_during_date_range() {
     post_type_select_label,
     post_field_select_label,
     date_select_label,
+    date_select_custom_label,
     submit_button_label,
     total_label,
     results_table_head_title_label,
@@ -88,9 +89,6 @@ function project_activity_during_date_range() {
     window.moment().startOf('year')
   );
 
-  // Display field value entry accordingly based on selected field.
-  refreshFieldValueEntryElement();
-
   // Add post type event listener.
   const fieldSelectElement = document.querySelector('#post-field-select')
   document.querySelector('#post-type-select').addEventListener('change', (e) => {
@@ -99,10 +97,18 @@ function project_activity_during_date_range() {
     getFieldSettings(postType)
     .promise()
     .then((data) => {
-      console.log(data);
       window.dtMetricsProject.field_settings = data;
       fieldSelectElement.innerHTML = buildFieldSelectOptions();
-      fieldSelectElement.dispatchEvent(new Event('change'));
+
+      // Update selection based on detected defaults.
+      if ( e.detail && e.detail.field ) {
+        jQuery('#post-field-select').val(e.detail.field);
+        fieldSelectElement.dispatchEvent(new CustomEvent('change', {'detail': e.detail}));
+
+      } else {
+        fieldSelectElement.dispatchEvent(new Event('change'));
+      }
+
     })
     .catch((error) => {
       console.log(error)
@@ -111,7 +117,21 @@ function project_activity_during_date_range() {
 
   // Add field event listener.
   fieldSelectElement.addEventListener('change', (e) => {
-    refreshFieldValueEntryElement();
+    refreshFieldValueEntryElement( e.detail, function () {
+
+      // Default to any specified date ranges.
+      if (e.detail ) {
+        if (e.detail.ts_start && e.detail.ts_end) {
+          let date_range_picker = jQuery('.date_range_picker').data('daterangepicker');
+          date_range_picker.setStartDate(window.moment.unix(parseInt(e.detail.ts_start)));
+          date_range_picker.setEndDate(window.moment.unix(parseInt(e.detail.ts_end)).format("YYYY-MM-DD"));
+
+          // Default to custom range label if no search parameter detected.
+          jQuery('.date_range_picker span').html(window.lodash.escape(e.detail.label ? e.detail.label : date_select_custom_label));
+        }
+        jQuery('#post-field-submit-button').click();
+      }
+    } );
   });
 
   // Add submit button event listener.
@@ -145,6 +165,7 @@ function project_activity_during_date_range() {
       }
     }
 
+
     // Create payload.
     let ts_start = (date_range_picker.startDate.unix() > 0) ? date_range_picker.startDate.unix() : 0;
     let ts_end = date_range_picker.endDate.unix();
@@ -156,6 +177,27 @@ function project_activity_during_date_range() {
       'date_start': window.moment.unix(ts_start).format('YYYY-MM-DD'),
       'date_end': window.moment.unix(ts_end).format('YYYY-MM-DD')
     };
+
+    // Determine search param value shape to be adopted.
+    let search_param_value = value;
+    if ( Array.isArray( value ) && window.lodash.includes(['connection', 'location'], field_type) ) {
+      search_param_value = value.filter((x) => x.ID !== null)
+      .map((x) => x.ID)
+      .join(',');
+
+    } else if ( (value && value.ID) && window.lodash.includes(['user_select'], field_type) ) {
+      search_param_value = value.ID;
+    }
+
+    // Dynamically update URL parameters.
+    const url = new URL(window.location);
+    url.searchParams.set('record_type', post_type);
+    url.searchParams.set('field', field_id);
+    url.searchParams.set('value', search_param_value );
+    url.searchParams.set('ts_start', ts_start);
+    url.searchParams.set('ts_end', ts_end);
+    url.searchParams.set('label', jQuery('.date_range_picker span').html());
+    window.history.pushState(null, document.title, url.search);
 
     // Fetch records matching activity within specified date range.
     getDateRangeActivity(payload)
@@ -214,6 +256,39 @@ function project_activity_during_date_range() {
     });
 
   });
+
+  // Handle any available request defaults.
+  handleRequestDefaults();
+}
+
+function fetchURLSearchParams() {
+    const url_search_params = new URLSearchParams(window.location.search);
+
+    let request_params = {};
+    for ( const param of url_search_params ) {
+        if ( Array.isArray( param ) && param.length === 2 ) {
+            request_params[ param[0] ] = param[1];
+        }
+    }
+
+    return request_params;
+}
+
+function handleRequestDefaults() {
+    const request_params = fetchURLSearchParams();
+
+    // Ensure required parts are present, in order to proceed.
+    if ( request_params && request_params.record_type && request_params.field ) {
+
+        // Update selected post type and forward request params to change event.
+        jQuery('#post-type-select').val(request_params.record_type);
+        document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
+
+    } else {
+
+        // Display field value entry accordingly based on selected field.
+        refreshFieldValueEntryElement();
+    }
 }
 
 function buildFieldSelectOptions() {
@@ -233,7 +308,7 @@ function buildFieldSelectOptions() {
     `)
 }
 
-function refreshFieldValueEntryElement() {
+function refreshFieldValueEntryElement( details = null, callback = null ) {
 
   // Empty any previous entries.
   let entry_div = jQuery('#post-field-value-entry-div');
@@ -252,6 +327,15 @@ function refreshFieldValueEntryElement() {
       });
       entry_div.html(`<select class="select-field" id="post-field-value">${options_html}</select>`);
 
+      // Select any requested default field values.
+      if ( details && details.value !== null ) {
+        jQuery('#post-field-value').val(details.value);
+      }
+
+      if ( callback ) {
+        callback();
+      }
+
     } else if (window.lodash.includes(['connection', 'user_select', 'location'], field_settings[field_id]['type'])) {
 
       // Fetch html rendering for selected field.
@@ -260,9 +344,149 @@ function refreshFieldValueEntryElement() {
         'field_id': field_id
       }).promise()
       .then((response) => {
+        let execute_callback = true;
         if (response['html']) {
           entry_div.html(response['html']);
           activateSpecialFieldValueControls(field_id, field_settings[field_id]);
+
+          // Select any requested default field values.
+          if ( details && details.value !== null ) {
+            switch (field_settings[field_id]['type']) {
+              case 'connection': {
+
+                // Short-circuit main parent callback flow.
+                execute_callback = false;
+
+                // First attempt to obtain a handle onto recently instantiated typeahead object.
+                let connection_typeahead_field_input = '.js-typeahead-' + field_id;
+                let connection_typeahead = window.Typeahead[connection_typeahead_field_input];
+                if ( connection_typeahead && field_settings[field_id]['post_type'] ) {
+
+                  // Support multiple post ids; by first concatenating corresponding promises.
+                  let promises = [];
+                  jQuery.each(String(details.value).split(','), function (idx, id) {
+                    promises.push(
+                      window.API.get_post(field_settings[field_id]['post_type'], id)
+                      .then(post => {
+
+                        // On a successful hit, add as item to multi select typeahead field.
+                        if (post && post['ID'] && post['title']) {
+                          connection_typeahead.addMultiselectItemLayout({
+                            'ID': post['ID'],
+                            'label': post['title'],
+                            'name': post['title']
+                          });
+                          connection_typeahead.hideLayout();
+                          connection_typeahead.resetInput();
+                        }
+                      })
+                    );
+                  });
+
+                  // Execute all promises within a chained fashion.
+                  jQuery.when.apply(null, promises)
+                  .done(result => {
+
+                    // Executing callback if available; once all promises have finished.
+                    if (callback) {
+                      callback();
+                    }
+                  });
+                }
+                break;
+              }
+              case 'location': {
+
+                // Short-circuit main parent callback flow.
+                execute_callback = false;
+
+                // First attempt to obtain a handle onto recently instantiated typeahead object.
+                let location_typeahead_field_input = '.js-typeahead-' + field_id;
+                let location_typeahead = window.Typeahead[location_typeahead_field_input];
+                if ( location_typeahead ) {
+
+                  // Support multiple post ids; by first concatenating corresponding promises.
+                  let promises = [];
+                  jQuery.each(String(details.value).split(','), function (idx, id) {
+                      promises.push(
+                          window.makeRequest('POST', window.dtMetricsProject['root'] + 'dt/v1/mapping_module/get_map_by_grid_id', {
+                              'grid_id': id
+                          }).then(location => {
+
+                              // On a successful hit, add as item to multi select typeahead field.
+                              if ( location && location['self'] && location['self']['id'] && location['self']['name'] ) {
+                                  location_typeahead.addMultiselectItemLayout({
+                                      'ID': location['self']['id'],
+                                      'matchedKey': 'name',
+                                      'name': location['self']['name']
+                                  });
+                                  location_typeahead.hideLayout();
+                                  location_typeahead.resetInput();
+                              }
+                          })
+                      );
+                  });
+
+                  // Execute all promises within a chained fashion.
+                  jQuery.when.apply(null, promises)
+                  .done(result => {
+
+                    // Executing callback if available; once all promises have finished.
+                    if (callback) {
+                      callback();
+                    }
+                  });
+                }
+                break;
+              }
+              case 'user_select': {
+
+                // Short-circuit main parent callback flow.
+                execute_callback = false;
+
+                // First attempt to obtain a handle onto recently instantiated typeahead object.
+                let user_typeahead_field_input = '.js-typeahead-' + field_id;
+                let user_typeahead = window.Typeahead[user_typeahead_field_input];
+                if ( user_typeahead ) {
+
+                  // Next, proceed with attempting to locate corresponding location grid record from the backend.
+                  window.makeRequest('GET', window.dtMetricsProject['root'] + 'dt/v1/users/contact-id', {
+                    'user_id': details.value
+                  }).then(contact_id => {
+
+                    // Next, attempt to fetch corresponding contact post record.
+                    if (contact_id) {
+                      window.API.get_post('contacts', contact_id)
+                      .then(post => {
+                        if (post && post['ID'] && post['title']) {
+
+                          // On a successful hit, add as item to multi select typeahead field.
+                          user_typeahead.item = {
+                            'ID': details.value,
+                            'contact_id': post['ID'],
+                            'matchedKey': 'name',
+                            'name': post['title']
+                          };
+                          user_typeahead.hideLayout();
+                          user_typeahead.resetInput();
+                          jQuery(`input.js-typeahead-${field_id}`).val(post['title']);
+
+                          if ( callback ) {
+                            callback();
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+                break;
+              }
+            }
+          }
+        }
+
+        if ( execute_callback && callback ) {
+          callback();
         }
 
       }).catch((error) => {
@@ -271,6 +495,10 @@ function refreshFieldValueEntryElement() {
 
     } else {
       entry_div.html('<input type="hidden" id="post-field-value" value="" />');
+
+      if ( callback ) {
+        callback();
+      }
     }
   }
 }

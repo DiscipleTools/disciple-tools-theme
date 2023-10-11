@@ -106,7 +106,7 @@ class DT_Metrics_Generation_Tree extends DT_Metrics_Chart_Base
                     'post_field_select_options' => $this->post_field_select_options,
                 ],
                 'field_settings' => $this->field_settings,
-                'all_post_types' => $all_settings['post_types'],
+                'all_post_types' => $all_settings['post_types']
             ]
         );
     }

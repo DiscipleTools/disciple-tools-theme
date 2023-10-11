@@ -85,7 +85,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
-
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
@@ -104,6 +103,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'post_field_select_any_activity_label' => __( 'Any Activity', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
                     'date_select_label' => __( 'Date Range', 'disciple_tools' ),
+                    'date_select_custom_label' => __( 'Custom Range', 'disciple_tools' ),
                     'submit_button_label' => __( 'Reload', 'disciple_tools' ),
                     'results_table_head_title_label' => __( 'Title', 'disciple_tools' ),
                     'results_table_head_date_label' => __( 'Time Activity Recorded', 'disciple_tools' ),
@@ -125,7 +125,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         $namespace = 'dt/v' . $version;
 
         register_rest_route(
-            $namespace, '/metrics/field_settings/(?P<post_type>\w+)', [
+            $namespace, '/metrics/date_range_field_settings/(?P<post_type>\w+)', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'field_settings' ],
