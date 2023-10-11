@@ -193,10 +193,10 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         global $wpdb;
 
         $params = $request->get_params();
-        if ( isset( $params['post_type'], $params['field'], $params['ts_start'], $params['ts_end'] ) ){
+        if ( isset( $params['post_type'], $params['field'], $params['date_start'], $params['date_end'] ) ){
 
-            $ts_start = isset( $params['date_start'] ) ? strtotime( $params['date_start'] ) : $params['ts_start'];
-            $ts_end = isset( $params['date_end'] ) ? strtotime( $params['date_end'] ) : $params['ts_end'];
+            $ts_start = strtotime( $params['date_start'] );
+            $ts_end = strtotime( $params['date_end'] );
 
             // Fetch associated field settings.
             $settings = $this->get_field_settings( $params['post_type'] )[$params['field']];
