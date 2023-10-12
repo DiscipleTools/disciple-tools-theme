@@ -11,11 +11,6 @@ add_action( 'activity_log_delete_old_viewed_actions', 'activity_log_delete_old_v
 
 function activity_log_delete_old_viewed_actions_handler(){
 
-    // Stop if enforce delete old viewed actions is disabled.
-    if ( boolval( get_option( 'dt_activity_log_enforce_delete_old_viewed_actions' ) ) ){
-        return;
-    }
-
     // Proceed with the deletion of activity log viewed events older than a month.
     global $wpdb;
     $wpdb->query(
