@@ -44,6 +44,7 @@ class Disciple_Tools_Workflows {
         new Disciple_Tools_Update_Needed();
         new Disciple_Tools_Update_Needed_Async();
         include( 'tasks.php' );
+        include( 'activity-log-delete-old-email-logs.php' );
         include( 'error-log-dispatch-email.php' );
         include( 'error-log-retention-enforcer.php' );
         include( 'workflows-execution-handler.php' );
