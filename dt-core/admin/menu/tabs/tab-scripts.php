@@ -127,6 +127,22 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
                     <?php
                 }
             }
+            $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+            $delete_label = sprintf( 'Remove %s Deleted Fields Activity', $post_type_settings['label_plural'] );
+            ?>
+            <tr>
+                <td><?php echo esc_html( $post_type_settings['label_plural'] ); ?> <?php echo esc_html( __( 'Data Clean Up', 'disciple_tools' ) ); ?></td>
+                <td>
+                    <button type="button" class="data-clean-up-button" data-post_type="<?php echo esc_html( $post_type ); ?>" data-delete_label="<?php echo esc_html( $delete_label ); ?>">
+                        <?php echo esc_html( $delete_label ); ?>
+                    </button>
+                </td>
+                <td class="progress">
+                    <span class="current"></span><span class="total"></span>
+                    <span class="loading-spinner"></span>
+                </td>
+            </tr>
+            <?php
         }
         ?>
             </tbody>

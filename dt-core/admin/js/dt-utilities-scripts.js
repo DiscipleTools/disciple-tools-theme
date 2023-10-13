@@ -56,6 +56,33 @@ jQuery(document).ready(function ($) {
   })
 
   /**
+   * DATA CLEAN-UP
+   */
+
+  $('.data-clean-up-button').on('click', function () {
+
+    // Confirm data clean up is to proceed.
+    if (confirm(window.lodash.escape($(this).data('delete_label')) + '?')) {
+      let post_type = $(this).data('post_type');
+      let tr = $(this).parent().parent();
+      let spinner = $(tr).find('.progress .loading-spinner');
+
+      // Indicate processing and submit data clean up request.
+      $(spinner).addClass('active');
+      make_admin_request( 'POST', 'data_clean_up', { post_type })
+      .then(response => {
+        $(spinner).removeClass('active');
+        $(tr).find('.progress .current').text('done');
+        $(tr).find('.progress .total').text('');
+      });
+    }
+  });
+
+  /**
+   * DATA CLEAN-UP
+   */
+
+  /**
    * FILE UPLOADS
    */
   $('.file-upload-display-uploader').on('click', function (e) {

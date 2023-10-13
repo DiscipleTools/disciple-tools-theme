@@ -34,6 +34,15 @@ class DT_Admin_Endpoints {
                 },
             ]
         );
+        register_rest_route(
+            $this->namespace, '/scripts/data_clean_up', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'data_clean_up' ],
+                'permission_callback' => function(){
+                    return current_user_can( 'manage_dt' );
+                },
+            ]
+        );
     }
 
     public function reset_count_field( WP_REST_Request $request ){
@@ -147,6 +156,57 @@ class DT_Admin_Endpoints {
         }
     }
 
+    public function data_clean_up( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['post_type'] ) ) {
+            $post_type = $params['post_type'];
+
+            // Build list of existing field ids.
+            $field_settings = DT_Posts::get_post_field_settings( $post_type, false );
+            $field_ids = array_keys( $field_settings );
+
+            // Identify deleted field activity logs.
+            global $wpdb;
+
+            $id_sql = [];
+            foreach ( $field_ids as $id ) {
+                $id_sql[] = "(log.object_subtype NOT LIKE '" . $id . "%')";
+            }
+
+            // phpcs:disable
+            $deleted_fields = $wpdb->get_results( stripslashes(
+                $wpdb->remove_placeholder_escape(
+                    $wpdb->prepare("
+                SELECT DISTINCT log.object_subtype AS deleted_field
+                FROM $wpdb->dt_activity_log log
+                WHERE log.action IN ('field_update', 'connected to', 'disconnected from')
+                    AND log.object_type = %s
+                    AND (%1s)
+            ", $post_type, implode( ' AND ', $id_sql ) ) ) ), ARRAY_A );
+            // phpcs:enable
+
+            // Delete activity logs for any identified fields.
+            $deleted_field_count = count( $deleted_fields );
+            if ( $deleted_field_count > 0 ) {
+                $delete_field_ids = [];
+                foreach ( $deleted_fields as $deleted ) {
+                    $delete_field_ids[] = $deleted['deleted_field'];
+                }
+
+                $wpdb->query( $wpdb->prepare( "
+                    DELETE FROM $wpdb->dt_activity_log log
+                    WHERE log.object_type = %s
+                        AND log.object_subtype IN (%s)
+                ", $post_type, implode( "', '", $delete_field_ids ) ) );
+            }
+
+            return [
+                'deleted_field_count' => $deleted_field_count
+            ];
+        } else {
+            return new WP_Error( __FILE__, 'Missing Params post_type' );
+        }
+    }
 }
 
 use WP_Queue\Job;
