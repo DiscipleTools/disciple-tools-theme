@@ -97,16 +97,14 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
         <table class="widefat striped">
             <thead>
                 <tr>
-                    <th>Field</th>
+                    <th>Generation Counts</th>
                     <th>Field</th>
                     <th>Progress</th>
                 </tr>
             </thead>
             <tbody>
         <?php
-
-        $post_types = DT_Posts::get_post_types();
-        foreach ( $post_types as $post_type ){
+        foreach ( DT_Posts::get_post_types() as $post_type ) {
             $field_settings = DT_Posts::get_post_field_settings( $post_type );
             foreach ( $field_settings as $field_key => $field_value ){
                 if ( isset( $field_value['connection_count_field']['post_type'] ) && $field_value['connection_count_field']['post_type'] === $post_type ){
@@ -127,24 +125,41 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
                     <?php
                 }
             }
-            $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
-            $delete_label = sprintf( 'Remove %s Deleted Fields Activity', $post_type_settings['label_plural'] );
-            ?>
-            <tr>
-                <td><?php echo esc_html( $post_type_settings['label_plural'] ); ?> <?php echo esc_html( __( 'Data Clean Up', 'disciple_tools' ) ); ?></td>
-                <td>
-                    <button type="button" class="data-clean-up-button" data-post_type="<?php echo esc_html( $post_type ); ?>" data-delete_label="<?php echo esc_html( $delete_label ); ?>">
-                        <?php echo esc_html( $delete_label ); ?>
-                    </button>
-                </td>
-                <td class="progress">
-                    <span class="current"></span><span class="total"></span>
-                    <span class="loading-spinner"></span>
-                </td>
-            </tr>
-            <?php
         }
         ?>
+            </tbody>
+        </table>
+        <br><br>
+
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th>Activity Data</th>
+                <th>Field</th>
+                <th>Progress</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ( DT_Posts::get_post_types() as $post_type ) {
+                $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+                $delete_label = sprintf( 'Remove %s Deleted Fields Activity', $post_type_settings['label_plural'] );
+                ?>
+                <tr>
+                    <td><?php echo esc_html( $post_type_settings['label_plural'] ); ?> <?php echo esc_html( __( 'Data Clean Up', 'disciple_tools' ) ); ?></td>
+                    <td>
+                        <button type="button" class="data-clean-up-button" data-post_type="<?php echo esc_html( $post_type ); ?>" data-delete_label="<?php echo esc_html( $delete_label ); ?>">
+                            <?php echo esc_html( $delete_label ); ?>
+                        </button>
+                    </td>
+                    <td class="progress">
+                        <span class="current"></span><span class="total"></span>
+                        <span class="loading-spinner"></span>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
             </tbody>
         </table>
         <?php
