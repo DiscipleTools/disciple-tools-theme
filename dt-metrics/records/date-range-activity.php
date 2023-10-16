@@ -193,7 +193,10 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         global $wpdb;
 
         $params = $request->get_params();
-        if ( isset( $params['post_type'], $params['field'], $params['ts_start'], $params['ts_end'] ) ){
+        if ( isset( $params['post_type'], $params['field'], $params['date_start'], $params['date_end'] ) ){
+
+            $ts_start = strtotime( $params['date_start'] );
+            $ts_end = strtotime( $params['date_end'] );
 
             // Fetch associated field settings.
             $settings = $this->get_field_settings( $params['post_type'] )[$params['field']];
@@ -213,7 +216,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 WHERE p.post_type = %s
                 AND p.post_date BETWEEN FROM_UNIXTIME(%d) AND FROM_UNIXTIME(%d)
                 ORDER BY post_timestamp DESC;
-                ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
+                ", $params['post_type'], $ts_start, $ts_end ), ARRAY_A );
 
                 $posts = [];
                 foreach ( $results ?? [] as $post ){
@@ -294,7 +297,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $meta_value_sql
             $obj_subtype_sql
             ORDER BY hist_time DESC;
-            ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
+            ", $params['post_type'], $ts_start, $ts_end ), ARRAY_A );
             // phpcs:enable
 
             // Package result findings and return.
