@@ -458,6 +458,9 @@ jQuery(function ($) {
           $(td).find('input.link-input').prop('disabled', read_only);
           $(td).find('button.link-delete-button').prop('disabled', read_only);
 
+          // Ensure add link functionality is suppressed.
+          $(td).find('div.add-link-dropdown').remove();
+
           if (!read_only) {
             $(td).find('input.link-input').each(function (idx, input) {
               if (window.lodash.isEmpty($(input).val())) {
