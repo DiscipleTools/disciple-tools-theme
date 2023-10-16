@@ -24,7 +24,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         'multi_select',
         'key_select',
         'connection',
-        'boolean',
         'number'
     ]; // connection and number would be interesting for additions to groups, and quick button usage
     public $multi_fields = [
@@ -84,7 +83,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
-
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
@@ -109,6 +107,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
                     'added_label' => __( 'Added', 'disciple_tools' ),
+                    'deleted_label' => __( 'Deleted', 'disciple_tools' ),
                     'connected_label' => __( 'Connected', 'disciple_tools' ),
                     'disconnected_label' => __( 'Disconnected', 'disciple_tools' ),
                     'tooltip_label' => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
@@ -130,7 +129,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 ],
                 'multi_fields' => $this->multi_fields,
                 'fields_type_filter' => $this->post_field_types_filter,
-                'field_settings' => $this->field_settings,
+                'field_settings' => $this->field_settings
             ]
         );
     }

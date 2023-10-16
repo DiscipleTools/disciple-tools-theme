@@ -69,7 +69,7 @@ class Disciple_Tools_Metrics_Records_Endpoints
         register_rest_route(
             $this->namespace, '/metrics/changed-posts', [
                 'methods'  => 'POST',
-                'callback' => [ $this, 'get_posts_by_field_in_date_range' ],
+                'callback' => [ $this, 'get_posts_by_field_in_date_range_changes' ],
                 'permission_callback' => [ $this, 'has_permission' ],
             ]
         );
@@ -95,6 +95,25 @@ class Disciple_Tools_Metrics_Records_Endpoints
         $params = $request->get_params();
         if ( isset( $params['post_type'], $params['field'] ) ){
             return DT_Counter_Post_Stats::get_posts_by_field_in_date_range( $params['post_type'], $params['field'], [
+                'key' => $params['key'] ?? null,
+                'start' => $params['ts_start'] ?? 0,
+                'end' => $params['ts_end'] ?? time(),
+                'limit' => $params['limit'] ?? 100,
+            ] );
+        }
+
+        return [];
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|WP_Error
+     */
+    public function get_posts_by_field_in_date_range_changes( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( isset( $params['post_type'], $params['field'] ) ){
+            return DT_Counter_Post_Stats::get_posts_by_field_in_date_range_changes( $params['post_type'], $params['field'], [
                 'key' => $params['key'] ?? null,
                 'start' => $params['ts_start'] ?? 0,
                 'end' => $params['ts_end'] ?? time(),
