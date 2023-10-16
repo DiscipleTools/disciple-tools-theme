@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.48.0\n"
+"Project-Id-Version: Disciple Tools 1.49.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-22T10:23:11+00:00\n"
+"POT-Creation-Date: 2023-10-16T07:52:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: disciple_tools\n"
@@ -461,7 +461,7 @@ msgstr ""
 #: archive-template.php:822
 #: dt-assets/functions/enqueue-scripts.php:224
 #: dt-core/global-functions.php:606
-#: dt-metrics/records/time-charts.php:121
+#: dt-metrics/records/time-charts.php:120
 #: dt-posts/posts.php:462
 #: template-settings.php:295
 #: template-settings.php:538
@@ -473,7 +473,7 @@ msgstr ""
 #: dt-assets/functions/enqueue-scripts.php:223
 #: dt-core/global-functions.php:607
 #: dt-metrics/records/generation-tree.php:101
-#: dt-metrics/records/time-charts.php:120
+#: dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460
 #: template-settings.php:294
 #: template-settings.php:537
@@ -1221,9 +1221,9 @@ msgid "Revert Activity"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/records/date-range-activity.php:103
+#: dt-metrics/records/date-range-activity.php:102
 #: dt-metrics/records/generation-tree.php:92
-#: dt-metrics/records/time-charts.php:109
+#: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr ""
 
@@ -2557,7 +2557,7 @@ msgid "prayer"
 msgstr ""
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:579
+#: dt-login/login-template.php:586
 msgid "Home"
 msgstr ""
 
@@ -3117,7 +3117,7 @@ msgstr ""
 
 #: dt-login/login-template.php:340
 #: dt-login/login-template.php:409
-#: dt-login/login-template.php:595
+#: dt-login/login-template.php:602
 msgid "Register"
 msgstr ""
 
@@ -3136,7 +3136,7 @@ msgstr ""
 
 #: dt-login/login-template.php:514
 #: dt-login/login-template.php:541
-#: dt-login/login-template.php:587
+#: dt-login/login-template.php:594
 msgid "Login"
 msgstr ""
 
@@ -3155,8 +3155,8 @@ msgstr ""
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:602
-msgid "Lost your password?"
+#: dt-login/login-template.php:609
+msgid "Lost Password"
 msgstr ""
 
 #: dt-mapping/columns/add-churches-column.php:57
@@ -3242,7 +3242,7 @@ msgstr ""
 #: dt-metrics/metrics.php:97
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/generation-tree.php:32
-#: dt-metrics/records/time-charts.php:43
+#: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr ""
 
@@ -3532,7 +3532,7 @@ msgstr ""
 #: dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/time-charts.php:116
+#: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:418
 msgid "All Time"
 msgstr ""
@@ -3750,7 +3750,7 @@ msgid "Comments I Posted"
 msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:67
-#: dt-metrics/records/time-charts.php:115
+#: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr ""
 
@@ -3824,23 +3824,27 @@ msgstr ""
 msgid "Field Activity"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/generation-tree.php:91
-#: dt-metrics/records/time-charts.php:108
+#: dt-metrics/records/time-charts.php:106
 msgid "Record Type"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:104
+#: dt-metrics/records/date-range-activity.php:103
 msgid "Any Activity"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:105
-#: dt-metrics/records/time-charts.php:110
+#: dt-metrics/records/date-range-activity.php:104
+#: dt-metrics/records/time-charts.php:108
 msgid "Total"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:106
+#: dt-metrics/records/date-range-activity.php:105
 msgid "Date Range"
+msgstr ""
+
+#: dt-metrics/records/date-range-activity.php:106
+msgid "Custom Range"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:107
@@ -3848,7 +3852,7 @@ msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:124
+#: dt-metrics/records/time-charts.php:123
 msgid "Title"
 msgstr ""
 
@@ -3860,11 +3864,11 @@ msgstr ""
 msgid "New Value"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:339
+#: dt-metrics/records/date-range-activity.php:342
 msgid "True"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:339
+#: dt-metrics/records/date-range-activity.php:342
 msgid "False"
 msgstr ""
 
@@ -3896,48 +3900,52 @@ msgstr ""
 msgid "Are you sure you wish to focus on node?"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:42
+#: dt-metrics/records/time-charts.php:41
 msgid "Field Charts"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:111
+#: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:112
+#: dt-metrics/records/time-charts.php:110
+msgid "Deleted"
+msgstr ""
+
+#: dt-metrics/records/time-charts.php:111
 msgid "Connected"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:113
+#: dt-metrics/records/time-charts.php:112
 msgid "Disconnected"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:114
+#: dt-metrics/records/time-charts.php:113
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:117
+#: dt-metrics/records/time-charts.php:116
 msgid "All cumulative totals"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:118
+#: dt-metrics/records/time-charts.php:117
 msgid "Single cumulative totals"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:119
+#: dt-metrics/records/time-charts.php:118
 msgid "Records changes"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:122
+#: dt-metrics/records/time-charts.php:121
 msgid "Records"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/time-charts.php:122
 msgid "No."
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:125
+#: dt-metrics/records/time-charts.php:124
 msgid "No Records Available"
 msgstr ""
 
