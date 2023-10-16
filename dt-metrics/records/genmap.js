@@ -49,6 +49,7 @@ jQuery(document).ready(function($) {
       let selected_post_type = jQuery('#select_post_types').val();
       let payload = {
         'p2p_type': jQuery(select_post_type_fields).find('option:selected').data('p2p_key'),
+        'p2p_direction': jQuery(select_post_type_fields).find('option:selected').data('p2p_direction'),
         'post_type': selected_post_type,
         'gen_depth_limit': 10
       };
@@ -270,17 +271,22 @@ jQuery(document).ready(function($) {
           filtered_post_type_fields.push({
             value: field_id,
             text: post_types[selected_post_type]['fields'][field_id]['name'],
-            p2p_key: post_types[selected_post_type]['fields'][field_id]['p2p_key']
+            p2p_key: post_types[selected_post_type]['fields'][field_id]['p2p_key'],
+            p2p_direction: post_types[selected_post_type]['fields'][field_id]['p2p_direction'],
           });
         }
       });
 
-      let sorted_post_type_fields = window.lodash.sortBy(filtered_post_type_fields, [function (o) {
+      let uniq_post_type_fields = window.lodash.uniqWith(filtered_post_type_fields, function (a, b) {
+        return (a.p2p_key === b.p2p_key) && (a.p2p_direction === b.p2p_direction);
+      });
+
+      let sorted_post_type_fields = window.lodash.sortBy(uniq_post_type_fields, [function (o) {
         return o.text;
       }]);
 
       jQuery.each( sorted_post_type_fields, function ( idx, option ) {
-        jQuery('<option>').val(option.value).text(option.text).attr('data-p2p_key', option.p2p_key).appendTo(post_type_fields_select);
+        jQuery('<option>').val(option.value).text(option.text).attr('data-p2p_key', option.p2p_key).attr('data-p2p_direction', option.p2p_direction).appendTo(post_type_fields_select);
       });
     }
 

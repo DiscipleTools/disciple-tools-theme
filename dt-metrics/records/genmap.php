@@ -53,11 +53,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
         $params = dt_recursive_sanitize_array( $request->get_params() );
-        if ( ! isset( $params['p2p_type'], $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing type', [ 'status' => 400 ] );
+        if ( ! isset( $params['p2p_type'], $params['p2p_direction'], $params['post_type'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type ]', [ 'status' => 400 ] );
         }
 
-        $query = $this->get_query( $params['post_type'], $params['p2p_type'] );
+        $query = $this->get_query( $params['post_type'], $params['p2p_type'], $params['p2p_direction'] );
 
         return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 10, $params['focus_id'] ?? 0 );
     }
@@ -115,8 +115,22 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         wp_enqueue_style( 'orgchart_css', $css_uri, [], filemtime( $css_dir ) );
     }
 
-    public function get_query( $post_type, $p2p_type ) {
+    public function get_query( $post_type, $p2p_type, $p2p_direction ) {
         global $wpdb;
+
+        // p2p direction will govern overall query sql shape.
+        if ( in_array( $p2p_direction, [ 'any', 'to' ] ) ) {
+            $not_from = 'NOT';
+            $not_to = '';
+            $select_id = 'p2p_from';
+            $select_parent_id = 'p2p_to';
+        } else {
+            $not_from = '';
+            $not_to = 'NOT';
+            $select_id = 'p2p_to';
+            $select_parent_id = 'p2p_from';
+        }
+
         $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       a.ID         as id,
@@ -124,13 +138,13 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                       a.post_title as name
                     FROM $wpdb->posts as a
                     WHERE a.post_type = %s
-                    AND a.ID NOT IN (
+                    AND a.ID %1s IN (
                       SELECT DISTINCT (p2p_from)
                       FROM $wpdb->p2p
                       WHERE p2p_type = %s
                       GROUP BY p2p_from
                     )
-                      AND a.ID IN (
+                      AND a.ID %1s IN (
                       SELECT DISTINCT (p2p_to)
                       FROM $wpdb->p2p
                       WHERE p2p_type = %s
@@ -138,12 +152,13 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                     )
                     UNION
                     SELECT
-                      p.p2p_from  as id,
-                      p.p2p_to    as parent_id,
-                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                      p.%1s  as id,
+                      p.%1s    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = %s;
-                ", $post_type, $p2p_type, $p2p_type, $p2p_type ), ARRAY_A );
+                ", $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $p2p_type ), ARRAY_A );
+
         return $query;
     }
 
