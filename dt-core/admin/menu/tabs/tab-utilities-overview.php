@@ -69,6 +69,17 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         }
     }
 
+    private function background_job_queue_counts() {
+        global $wpdb;
+
+        wp_queue_wpdb_init();
+
+        return [
+            'jobs' => $wpdb->get_var( "SELECT COUNT(id) FROM $wpdb->queue_jobs" ),
+            'failures' => $wpdb->get_var( "SELECT COUNT(id) FROM $wpdb->queue_failures" )
+        ];
+    }
+
     public function box_message() {
         ?>
         <form method="post">
@@ -94,6 +105,14 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         </tr>
         <tr>
             <td>Is multisite: <?php echo esc_html( is_multisite() ? 'True' : 'False' ); ?></td>
+        </tr>
+        <tr>
+            <td>
+                <?php
+                $background_job_counts = $this->background_job_queue_counts();
+                echo esc_html( sprintf( 'Background Jobs Queue: Jobs: %1$s, Failures: %2$s', $background_job_counts['jobs'], $background_job_counts['failures'] ) );
+                ?>
+            </td>
         </tr>
         <tr>
             <td><strong>Migrations</strong></td><td></td>
