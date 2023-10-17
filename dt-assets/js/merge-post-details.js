@@ -1075,12 +1075,12 @@ jQuery(function ($) {
 
         // Delete/Add updated post record, based on identified source field inputs.
         let main_updated_fields_div = $('#main_updated_fields_div');
-        let link_list_section_div = $(main_updated_fields_div).find(`.link-list-${update_field_id} .link-section`);
         let link_field_meta_input = $(main_updated_fields_div).find(`.link-list-${update_field_id}`).parent().parent().find('#field_meta');
         let deleted_items = $(link_field_meta_input).val() ? JSON.parse($(link_field_meta_input).val()) : [];
 
         // Locate by link field values.
         $.each(source_field_link_inputs, function (idx, input) {
+          let link_list_section_div = $(main_updated_fields_div).find(`.link-list-${update_field_id} .link-section--${ $(input).data('type') }`);
           let matched_input = $(link_list_section_div).find(`.input-group input[value="${ $(input).val() }"].link-input`);
 
           // Handle accordingly, based on incoming selected state.
@@ -1117,7 +1117,6 @@ jQuery(function ($) {
             }
           }
         });
-
 
         break;
       }
@@ -1506,6 +1505,35 @@ jQuery(function ($) {
     return is_already_in_primary;
   }
 
+  function is_link_field_value_already_in_primary(field_id, link_type, link_meta_id, link_value, check_by_value) {
+    let is_already_in_primary = false;
+
+    // First, obtain handle onto current primary post
+    let primary_post = fetch_post_by_merge_type(true)['record'];
+
+    // Ensure primary post contains field in question
+    if (primary_post && primary_post[field_id]) {
+
+      // Parse value accordingly, based on link type, meta_id & value.
+      $.each(primary_post[field_id], function (idx, value) {
+        if (value['type'] && value['meta_id'] && value['value']) {
+          if (value['type'] === link_type) {
+
+            // Accommodate both checks by meta_id (in the event of value changes) and existing unchanged values.
+            if (!check_by_value && (String(value['meta_id']) === String(link_meta_id))) {
+              is_already_in_primary = true;
+
+            } else if (check_by_value && (String(value['value']) === String(link_value))) {
+              is_already_in_primary = true;
+            }
+          }
+        }
+      });
+    }
+
+    return is_already_in_primary;
+  }
+
   function handle_merge() {
 
     // Disable submit button
@@ -1631,13 +1659,18 @@ jQuery(function ($) {
 
           // Package values and any deletions
           $(td).find('.input-group input.link-input').each(function (idx, input) {
+            let link_type = $(input).data('type');
+            let link_meta_id = $(input).data('meta-id');
             let link_val = $(input).val();
 
-            if (link_val && !is_field_value_already_in_primary(post_field_id, field_type, link_val)) {
+            let has_value = is_link_field_value_already_in_primary(post_field_id, link_type, link_meta_id, link_val, true);
+            let matched_meta_id = is_link_field_value_already_in_primary(post_field_id, link_type, link_meta_id, link_val, false);
+
+            if (link_val && !has_value) {
               link_entries.push({
                 'value': link_val,
-                'type': $(input).data('type'),
-                'meta_id': ''
+                'type': link_type,
+                'meta_id': matched_meta_id ? link_meta_id : ''
               });
             }
           });
