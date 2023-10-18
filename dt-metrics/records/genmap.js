@@ -267,13 +267,25 @@ jQuery(document).ready(function($) {
       // Only capture connection type fields.
       let filtered_post_type_fields = [];
       jQuery.each( post_types[selected_post_type].connection_types, function ( idx, field_id ) {
-        if ( post_types[selected_post_type]['fields'][field_id] ) {
-          filtered_post_type_fields.push({
-            value: field_id,
-            text: post_types[selected_post_type]['fields'][field_id]['name'],
-            p2p_key: post_types[selected_post_type]['fields'][field_id]['p2p_key'],
-            p2p_direction: post_types[selected_post_type]['fields'][field_id]['p2p_direction'],
-          });
+        if ( post_types[selected_post_type]['fields'][field_id] && post_types[selected_post_type]['fields'][field_id]['post_type'] && post_types[selected_post_type]['fields'][field_id]['post_type'] === selected_post_type ) {
+
+          // Hard filter some specific fields.
+          let to_be_filtered = true;
+          if ( ( selected_post_type === 'contacts' ) && window.lodash.includes( [ 'baptized_by', 'coached_by', 'subassigned' ], field_id ) ) {
+            to_be_filtered = false;
+          }
+          if ( ( selected_post_type === 'groups' ) && window.lodash.includes( [ 'parent_groups' ], field_id ) ) {
+            to_be_filtered = false;
+          }
+
+          if ( to_be_filtered ) {
+            filtered_post_type_fields.push({
+              value: field_id,
+              text: post_types[selected_post_type]['fields'][field_id]['name'],
+              p2p_key: post_types[selected_post_type]['fields'][field_id]['p2p_key'],
+              p2p_direction: post_types[selected_post_type]['fields'][field_id]['p2p_direction'],
+            });
+          }
         }
       });
 
