@@ -17,10 +17,10 @@ class Disciple_Tools_Migration_0054 extends Disciple_Tools_Migration {
 
         // Delete stale array field type activity logs.
         $wpdb->query(
-            $wpdb->prepare( "
+            "
                 DELETE FROM $wpdb->dt_activity_log AS log
                 WHERE log.action = 'field_update' AND log.field_type = 'array'
-            " ), ARRAY_A
+            "
         );
 
     }
