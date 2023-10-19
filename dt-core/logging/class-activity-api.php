@@ -64,11 +64,6 @@ class Disciple_Tools_Activity_Log_API {
             ]
         );
 
-        // Bypass activity log recording by field types.
-        if ( isset( $args['field_type'] ) && in_array( $args['field_type'], [ 'array' ] ) ) {
-            return;
-        }
-
         // only get the current user if the global user object is set.
         // this avoids an infinite loop where the `determine_current_user` filter
         // keeps on trying to insert activity when an error is thrown.
