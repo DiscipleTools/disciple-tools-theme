@@ -78,8 +78,8 @@ jQuery(document).ready(function($) {
 
         var nodeTemplate = function(data) {
           return `
-            <div class="title" data-item-id="${data.id}">${data.name}</div>
-            <div class="content">${data.content}</div>
+            <div class="title" data-item-id="${window.lodash.escape(data.id)}">${window.lodash.escape(data.name)}</div>
+            <div class="content">${window.lodash.escape(data.content)}</div>
           `;
         };
 
@@ -167,8 +167,8 @@ jQuery(document).ready(function($) {
 
   function display_add_child_modal(post_type, post_id, post_name) {
     let list_html = `
-    <input id="gen_tree_add_child_post_type" type="hidden" value="${post_type}" />
-    <input id="gen_tree_add_child_post_id" type="hidden" value="${post_id}" />
+    <input id="gen_tree_add_child_post_type" type="hidden" value="${window.lodash.escape(post_type)}" />
+    <input id="gen_tree_add_child_post_id" type="hidden" value="${window.lodash.escape(post_id)}" />
     <label>
       ${window.lodash.escape(window.dtMetricsProject.translations.modal.add_child_name_title)}
       <input id="gen_tree_add_child_name" type="text" />
@@ -178,7 +178,7 @@ jQuery(document).ready(function($) {
 
     let modal = jQuery('#template_metrics_modal');
     let modal_buttons = jQuery('#template_metrics_modal_buttons');
-    let title = window.dtMetricsProject.translations.modal.add_child_title + ` [ ${post_name} ]`;
+    let title = window.dtMetricsProject.translations.modal.add_child_title + ` [ ${window.lodash.escape(post_name)} ]`;
     let content = jQuery('#template_metrics_modal_content');
 
     jQuery(modal_buttons).empty().html(buttons_html);
@@ -329,6 +329,8 @@ jQuery(document).ready(function($) {
   }
 
   window.detail_template = ( post_type, data ) => {
+    let translations = dtMetricsProject.translations;
+
     if ( post_type === 'contacts' ) {
 
       let assign_to = ''
@@ -339,7 +341,7 @@ jQuery(document).ready(function($) {
       if ( typeof data.coached_by !== 'undefined' ) {
         coach_list = '<ul>'
         jQuery.each( data.coached_by, function( index, value ) {
-          coach_list += '<li>' + value['post_title'] + '</li>'
+          coach_list += '<li>' + window.lodash.escape(value['post_title']) + '</li>'
         })
         coach_list += '</ul>'
       }
@@ -347,7 +349,7 @@ jQuery(document).ready(function($) {
       if ( typeof data.groups !== 'undefined' ) {
         group_list = '<ul>'
         jQuery.each( data.groups, function( index, value ) {
-          group_list += '<li>' + value['post_title'] + '</li>'
+          group_list += '<li>' + window.lodash.escape(value['post_title']) + '</li>'
         })
         group_list += '</ul>'
       }
@@ -358,25 +360,25 @@ jQuery(document).ready(function($) {
       return `
         <div class="grid-x grid-padding-x">
           <div class="cell">
-            <h2>${data.title}</h2><hr>
+            <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
           <div class="cell">
-            Status: ${status}
+            ${window.lodash.escape(translations.details.status)}: ${window.lodash.escape(status)}
           </div>
           <div class="cell">
-            Groups:
+            ${window.lodash.escape(translations.details.groups)}:
             ${group_list}
           </div>
           <div class="cell">
-            Assigned To:
-            ${assign_to}
+            ${window.lodash.escape(translations.details.assigned_to)}:
+            ${window.lodash.escape(assign_to)}
           </div>
           <div class="cell">
-            Coaches: <br>
+            ${window.lodash.escape(translations.details.coaches)}: <br>
             ${coach_list}
           </div>
           <div class="cell"><hr>
-            <a href="${dtMetricsProject.site_url}/${post_type}/${data.ID}" target="_blank" class="button">
+            <a href="${dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
                 <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
             </a>
             <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
@@ -403,7 +405,7 @@ jQuery(document).ready(function($) {
       if ( typeof data.members !== 'undefined' ) {
         member_list = '<ul>'
         jQuery.each( data.members, function( index, value ) {
-          member_list += '<li>' + value['post_title'] + '</li>'
+          member_list += '<li>' + window.lodash.escape(value['post_title']) + '</li>'
         })
         member_list += '</ul>'
       }
@@ -411,7 +413,7 @@ jQuery(document).ready(function($) {
       if ( typeof data.coached_by !== 'undefined' ) {
         coach_list = '<ul>'
         jQuery.each( data.coached_by, function( index, value ) {
-          coach_list += '<li>' + value['post_title'] + '</li>'
+          coach_list += '<li>' + window.lodash.escape(value['post_title']) + '</li>'
         })
         coach_list += '</ul>'
       }
@@ -426,31 +428,31 @@ jQuery(document).ready(function($) {
       return `
         <div class="grid-x grid-padding-x">
           <div class="cell">
-            <h2>${data.title}</h2><hr>
+            <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
           <div class="cell">
-            Type: ${status}
+            ${window.lodash.escape(translations.details.status)}: ${window.lodash.escape(status)}
           </div>
           <div class="cell">
-            Type: ${type}
+            ${window.lodash.escape(translations.details.type)}: ${window.lodash.escape(type)}
           </div>
           <div class="cell">
-            Member Count: ${members_count}
+            ${window.lodash.escape(translations.details.member_count)}: ${window.lodash.escape(members_count)}
           </div>
           <div class="cell">
-            Members: <br>
+            ${window.lodash.escape(translations.details.members)}: <br>
             ${member_list}
           </div>
           <div class="cell">
-            Assigned To:
-            ${assign_to}
+            ${window.lodash.escape(translations.details.assigned_to)}:
+            ${window.lodash.escape(assign_to)}
           </div>
           <div class="cell">
-            Coaches: <br>
+            ${window.lodash.escape(translations.details.coaches)}: <br>
             ${coach_list}
           </div>
           <div class="cell"><hr>
-            <a href="${dtMetricsProject.site_url}/${post_type}/${data.ID}" target="_blank" class="button">
+            <a href="${dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
                 <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
             </a>
             <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
@@ -466,10 +468,10 @@ jQuery(document).ready(function($) {
       return `
         <div class="grid-x grid-padding-x">
           <div class="cell">
-            <h2>${data.title}</h2>
+            <h2>${window.lodash.escape(data.title)}</h2>
           </div>
           <div class="cell"><hr>
-            <a href="${dtMetricsProject.site_url}/${post_type}/${data.ID}" target="_blank" class="button">
+            <a href="${dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
                 <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
             </a>
             <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">

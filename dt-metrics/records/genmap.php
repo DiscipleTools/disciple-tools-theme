@@ -92,6 +92,15 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                     'status' => __( 'Status', 'disciple_tools' ),
                     'total_members' => __( 'Total Members', 'disciple_tools' ),
                     'view_group' => __( 'View Group', 'disciple_tools' ),
+                    'details' => [
+                        'status' => __( 'Status', 'disciple_tools' ),
+                        'groups' => __( 'Groups', 'disciple_tools' ),
+                        'assigned_to' => __( 'Assigned To', 'disciple_tools' ),
+                        'coaches' => __( 'Coaches', 'disciple_tools' ),
+                        'type' => __( 'Type', 'disciple_tools' ),
+                        'member_count' => __( 'Member Count', 'disciple_tools' ),
+                        'members' => __( 'Members', 'disciple_tools' )
+                    ],
                     'modal' => [
                         'add_child_title' => __( 'Add Child To', 'disciple_tools' ),
                         'add_child_name_title' => __( 'Name', 'disciple_tools' ),
