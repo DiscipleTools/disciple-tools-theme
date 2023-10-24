@@ -11,7 +11,7 @@ jQuery(document).ready(function($) {
     chart.empty().html(spinner)
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
 
-    let translations = dtMetricsProject.translations
+    let translations = window.dtMetricsProject.translations
 
     chart.empty().html(`
           <div class="grid-x grid-padding-x">
@@ -69,7 +69,7 @@ jQuery(document).ready(function($) {
       window.history.pushState(null, document.title, url.search);
 
       // Fetch generational map chart.
-      makeRequest('POST', 'metrics/records/genmap', payload )
+      window.makeRequest('POST', 'metrics/records/genmap', payload )
       .promise()
       .then(response => {
         console.log(response)
@@ -225,7 +225,7 @@ jQuery(document).ready(function($) {
   }
 
   function refresh_post_type_select_list(callback = null) {
-    let post_types = dtMetricsProject.post_types;
+    let post_types = window.dtMetricsProject.post_types;
     if ( post_types ) {
       let post_type_select = jQuery('#select_post_types');
       jQuery(post_type_select).empty();
@@ -258,7 +258,7 @@ jQuery(document).ready(function($) {
   }
 
   function refresh_post_type_field_select_list(callback = null) {
-    let post_types = dtMetricsProject.post_types;
+    let post_types = window.dtMetricsProject.post_types;
     let selected_post_type = jQuery('#select_post_types').val();
     if (post_types && selected_post_type && post_types[selected_post_type]) {
       let post_type_fields_select = jQuery('#select_post_type_fields');
@@ -312,7 +312,7 @@ jQuery(document).ready(function($) {
       let spinner = ' <span class="loading-spinner active"></span> '
       jQuery('#genmap-details').html(spinner)
 
-      makeRequest('GET', post_type + '/' + id, null, 'dt-posts/v2/')
+      window.makeRequest('GET', post_type + '/' + id, null, 'dt-posts/v2/')
       .promise()
       .then(data => {
         console.log(data)
@@ -329,7 +329,7 @@ jQuery(document).ready(function($) {
   }
 
   window.detail_template = ( post_type, data ) => {
-    let translations = dtMetricsProject.translations;
+    let translations = window.dtMetricsProject.translations;
 
     if ( post_type === 'contacts' ) {
 
@@ -378,7 +378,7 @@ jQuery(document).ready(function($) {
             ${coach_list}
           </div>
           <div class="cell"><hr>
-            <a href="${dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
+            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
                 <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
             </a>
             <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
@@ -452,7 +452,7 @@ jQuery(document).ready(function($) {
             ${coach_list}
           </div>
           <div class="cell"><hr>
-            <a href="${dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
+            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
                 <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
             </a>
             <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
@@ -471,7 +471,7 @@ jQuery(document).ready(function($) {
             <h2>${window.lodash.escape(data.title)}</h2>
           </div>
           <div class="cell"><hr>
-            <a href="${dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
+            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
                 <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
             </a>
             <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
