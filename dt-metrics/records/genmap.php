@@ -49,6 +49,8 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     }
 
     public function tree( WP_REST_Request $request ) {
+        //return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
+
         if ( !$this->has_permission() ){
             return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }

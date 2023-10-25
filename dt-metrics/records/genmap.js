@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
         'p2p_type': jQuery(select_post_type_fields).find('option:selected').data('p2p_key'),
         'p2p_direction': jQuery(select_post_type_fields).find('option:selected').data('p2p_direction'),
         'post_type': selected_post_type,
-        'gen_depth_limit': 10
+        'gen_depth_limit': 10000
       };
 
       // Dynamically update URL parameters.
@@ -99,8 +99,11 @@ jQuery(document).ready(function($) {
           let node_id = node.attr('id')
           open_modal_details(node_id, selected_post_type)
         })
-
       })
+      .catch(error => {
+        let msg = (error.responseJSON['message']) ? error.responseJSON['message'] : error.statusText;
+        alert(window.lodash.escape(msg));
+      });
     }
 
     // Set initial states and default to any specified url parameters.
@@ -189,6 +192,10 @@ jQuery(document).ready(function($) {
     jQuery(content).empty().html(list_html);
     jQuery(modal).foundation('open');
   }
+
+  $(document).on('open.zf.reveal', '#template_metrics_modal[data-reveal]', function () {
+    jQuery('#gen_tree_add_child_name').focus();
+  });
 
   function handle_add_child() {
     let post_type = jQuery('#gen_tree_add_child_post_type').val();
