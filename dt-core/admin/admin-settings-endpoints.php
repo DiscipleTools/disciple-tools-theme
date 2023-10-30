@@ -789,7 +789,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         $direction = 'from';
                     }
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $connection_field_options['new_field_name'],
+                        'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
@@ -800,7 +800,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
                     // If not multidirectional, create the reverse direction field
                     if ( $connection_field_options['multidirectional'] != 1 ){
-                        $reverse_name = $connection_field_options['reverse_connection_name'] ?? $connection_field_options['new_field_name'];
+                        $reverse_name = $connection_field_options['reverse_connection_name'] ?: $post_submission['new_field_name'];
                         $custom_field_options[$post_type][$field_key . '_reverse']  = [
                             'name'        => $reverse_name,
                             'type'        => 'connection',
@@ -815,7 +815,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 } else {
                     $direction = 'from';
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $connection_field_options['new_field_name'],
+                        'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
@@ -824,8 +824,13 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'customizable' => 'all',
                     ];
                     // Create the reverse fields on the connection post type
-                    $reverse_name = $connection_field_options['other_field_name'] ?? $connection_field_options['new_field_name'];
-                    $custom_field_options[$connection_field_options['connection_target']][$field_key]  = [
+                    $reverse_name = $connection_field_options['other_field_name'] ?: $post_submission['new_field_name'];
+                    $reverse_post_type = $connection_field_options['connection_target'];
+                    $reverse_key = $field_key;
+                    if ( isset( $custom_field_options[$reverse_post_type][$reverse_key] ) ){
+                        $reverse_key = dt_create_field_key( $reverse_key, true );
+                    }
+                    $custom_field_options[$connection_field_options['connection_target']][$reverse_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',
                         'post_type' => $post_type,
