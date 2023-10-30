@@ -2093,8 +2093,8 @@ jQuery(document).ready(function($) {
     translations_html += `
         </table>
         <div class="translations-save-row">
-            <button class="button cancel-translations-button">Cancel</button>
-            <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
+            <button type="button" class="button cancel-translations-button">Cancel</button>
+            <button type="button" class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
         </div>`;
 
     enableModalBackDiv('modal-back-translations');
