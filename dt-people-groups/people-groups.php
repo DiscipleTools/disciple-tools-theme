@@ -57,7 +57,7 @@ class Disciple_Tools_People_Groups
         $result = [];
         foreach ( $data as $row ) {
             if ( $row[1] === $search ) {
-                $row[] = ( self::duplicate_db_checker_by_rop3( $row[3] ) > 0 );
+                $row[] = ( self::duplicate_db_checker_by_rop3( $row[1], $row[3] ) > 0 );
                 $result[] = $row;
             }
         }
@@ -78,15 +78,15 @@ class Disciple_Tools_People_Groups
         return $result;
     }
 
-    public static function duplicate_db_checker_by_rop3( $rop3 ){
+    public static function duplicate_db_checker_by_rop3( $country, $rop3 ){
         global $wpdb;
         return $wpdb->get_var( $wpdb->prepare( "
-            SELECT count(meta_id)
-            FROM $wpdb->postmeta
-            WHERE meta_key = 'jp_ROP3' AND
-            post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
-            meta_value = %s",
-        $rop3 ) );
+            SELECT COUNT(rop3.meta_id)
+            FROM $wpdb->postmeta AS rop3
+            INNER JOIN $wpdb->postmeta AS country_meta ON ( country_meta.post_id = rop3.post_id AND country_meta.meta_key = 'jp_Ctry' AND country_meta.meta_value = %s )
+            WHERE rop3.meta_key = 'jp_ROP3' AND
+            rop3.post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
+            rop3.meta_value = %s", $country, $rop3 ) );
     }
 
     public static function add_location_grid_meta( $post_type, $post_id, $grid_id ){
@@ -170,7 +170,7 @@ class Disciple_Tools_People_Groups
 
         // get current people groups
         // check for duplicate and return fail install because of duplicate.
-        if ( self::duplicate_db_checker_by_rop3( $rop3 ) > 0 ) {
+        if ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) > 0 ) {
             return [
                 'status' => 'Duplicate',
                 'message' => 'Duplicate found. Already installed.'
@@ -282,7 +282,7 @@ class Disciple_Tools_People_Groups
                     $group_results[$rop3]['message'] = 'ROP3 number not found in JP data.';
 
                     // Ensure group has no duplicates already installed.
-                } elseif ( self::duplicate_db_checker_by_rop3( $rop3 ) > 0 ){
+                } elseif ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) > 0 ){
                     $group_results[$rop3]['status'] = 'duplicate';
                     $group_results[$rop3]['message'] = 'Duplicate found. Already installed.';
 
@@ -434,7 +434,7 @@ class Disciple_Tools_People_Groups
         foreach ( $jp_data as $row ){
             $country = $row[1];
             $rop3 = $row[3];
-            if ( isset( $country, $rop3 ) && ( self::duplicate_db_checker_by_rop3( $rop3 ) == 0 ) ){
+            if ( isset( $country, $rop3 ) && ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) == 0 ) ){
                 $total_records++;
 
                 // Instantiate if need be.
