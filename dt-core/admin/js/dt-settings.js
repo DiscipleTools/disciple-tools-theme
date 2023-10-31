@@ -1197,9 +1197,9 @@ jQuery(document).ready(function($) {
                     ${Object.keys(window.field_settings.post_type_tiles).map(k=>{
                       let tile = window.field_settings.post_type_tiles[k]
                       let selected = field_settings.tile === k ? 'selected' : ''
-                      return `<option value="${k}" ${selected}>${tile['label']}</option>`  
+                      return `<option value="${k}" ${selected}>${tile['label']}</option>`
                     })}
-                    
+
                 </select>
             </td>
         </tr>
@@ -1218,7 +1218,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <b>Hide Field</b>    
+                <b>Hide Field</b>
             </td>
             <td>
                 <input type="checkbox" name="hide-field" id="hide-field" ${field_settings.hidden ? 'checked' : ''}>
@@ -1416,7 +1416,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <b>Hide Option</b>    
+                <b>Hide Option</b>
             </td>
             <td>
                 <input type="checkbox" name="hide-field" id="hide-field-option" ${field_option.deleted ? 'checked' : ''}>
@@ -2093,8 +2093,8 @@ jQuery(document).ready(function($) {
     translations_html += `
         </table>
         <div class="translations-save-row">
-            <button class="button cancel-translations-button">Cancel</button>
-            <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
+            <button type="button" class="button cancel-translations-button">Cancel</button>
+            <button type="button" class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
         </div>`;
 
     enableModalBackDiv('modal-back-translations');
@@ -2103,15 +2103,18 @@ jQuery(document).ready(function($) {
 
   });
 
-  $('.dt-admin-modal-translations-box-close-button').on('click', function() {
+  $('.dt-admin-modal-translations-box-close-button').on('click', function(evt) {
+    evt.preventDefault();
     unflip_card();
   });
 
-  $('#modal-translations-overlay-form').on('click', '.cancel-translations-button', function() {
+  $('#modal-translations-overlay-form').on('click', '.cancel-translations-button', function(evt) {
+    evt.preventDefault();
     unflip_card();
   });
 
-  $('#modal-translations-overlay-form').on('click', '.save-translations-button', function() {
+  $('#modal-translations-overlay-form').on('click', '.save-translations-button', function(evt) {
+    evt.preventDefault();
     let translation_type = $(this).data('translation-type');
     let post_type = $(this).data('post-type');
     let tile_key = $(this).data('tile-key');
