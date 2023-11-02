@@ -550,8 +550,6 @@ class Disciple_Tools_People_Groups
             }
         }
 
-        $batches = array_slice( $batches, 0, 1 );
-
         return [
             'total_batches' => count( $batches ),
             'total_records' => $total_records,
