@@ -142,7 +142,7 @@ function add_bulk_people_groups(country, people_groups) {
       deferred.resolve(data);
 
       // Update table with batch import results.
-      let html = `<tr><td>${country}: Processed ${data['total_groups_insert_success']} of ${data['total_groups_count']}</td></tr>`;
+      let html = `<tr><td>${country}: Processed ${(data['total_groups_insert_success'] + data['total_groups_insert_updates'])} of ${data['total_groups_count']}</td></tr>`;
       jQuery('#import_people_group_table').find('tbody > tr').eq(0).after(html);
 
     },
