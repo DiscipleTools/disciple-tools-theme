@@ -29,8 +29,30 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 125, 1 );
         add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 125, 1 );
 
+        add_filter( 'dt_import_new_post_types', [ $this, 'import_new_post_types' ], 10, 2 );
+
         parent::__construct();
     } // End __construct()
+
+    public function import_new_post_types( $post_types, $imported_config ) {
+
+        $import_config_json_id = 'dt_settings';
+        $dt_post_type_config_json_id = 'dt_post_type_settings';
+
+        // Fetch list of existing instance post types.
+        $existing_post_types = DT_Posts::get_post_types() ?? [];
+
+        // Identify any new incoming post types.
+        if ( isset( $imported_config[$import_config_json_id][$dt_post_type_config_json_id] ) ) {
+            foreach ( $imported_config[$import_config_json_id][$dt_post_type_config_json_id]['values'] ?? [] as $post_type => $post_type_settings ) {
+                if ( !in_array( $post_type, $existing_post_types ) ) {
+                    $post_types[$post_type] = $post_type_settings;
+                }
+            }
+        }
+
+        return $post_types;
+    }
 
     public function add_submenu(){
         add_submenu_page( 'edit.php?post_type=imports', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
@@ -78,6 +100,31 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
                 // If no services have been selected, then revert back to default upload prompt.
                 if ( !empty( $selected_services ) ){
+
+                    // Ensure selected post types not already on the system, are installed ahead of import-payload request.
+                    $new_post_types = $this->import_new_post_types( [], $uploaded_config );
+                    if ( !empty( $new_post_types ) ) {
+
+                        // Iterate over new post types, ensuring they do not already exist, before creating.
+                        $existing_post_types = DT_Posts::get_post_types() ?? [];
+                        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+
+                        foreach ( $new_post_types as $post_type => $post_type_settings ) {
+                            if ( !in_array( $post_type, $existing_post_types ) && !isset( $custom_post_types[$post_type] ) ) {
+
+                                // If all sanity checks have passed, proceed with custom post type creation.
+                                $custom_post_types[$post_type] = [
+                                    'label_singular' => $post_type_settings['label_singular'] ?? $post_type,
+                                    'label_plural' => $post_type_settings['label_plural'] ?? $post_type,
+                                    'hidden' => $post_type_settings['hidden'] ?? false,
+                                    'is_custom' => $post_type_settings['is_custom'] ?? true
+                                ];
+                            }
+                        }
+
+                        // Update custom post types with any newly identified.
+                        update_option( 'dt_custom_post_types', $custom_post_types );
+                    }
 
                     // Dispatch import request to respective listeners.
                     do_action( 'dt_import_payload', $selected_services, $uploaded_config );

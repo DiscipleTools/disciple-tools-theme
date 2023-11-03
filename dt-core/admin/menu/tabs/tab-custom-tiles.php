@@ -127,15 +127,24 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
             // Fetch list of existing instance post types.
             $existing_post_types = DT_Posts::get_post_types() ?? [];
 
+            // Identify any new incoming post types.
+            $new_post_types = apply_filters( 'dt_import_new_post_types', [], $imported_config );
+
             // Ensure displayed post types are driven by incoming config.
             $existing_tiles = [];
             foreach ( $imported_config[self::$import_config_json_id][self::$export_import_id]['values'] ?? [] as $post_type => $tile_config ) {
 
-                // Target instance, must contain corresponding post type, in order for incoming tiles to be set.
-                if ( in_array( $post_type, $existing_post_types ) ){
-
-                    // Fetch existing instance post type settings.
+                // Fetch post type settings.
+                $post_type_settings = [];
+                if ( in_array( $post_type, $existing_post_types ) ) {
                     $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
+
+                } elseif ( array_key_exists( $post_type, $new_post_types ) ) {
+                    $post_type_settings = $new_post_types[ $post_type ];
+                }
+
+                // Target instance, must contain corresponding post type, in order for incoming tiles to be set.
+                if ( !empty( $post_type_settings ) ) {
 
                     // Display post type heading.
                     ?>
