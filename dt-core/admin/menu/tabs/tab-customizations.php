@@ -271,6 +271,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=tiles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'tiles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Tiles', 'disciple_tools' ); ?></a>
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=settings" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'settings' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Settings', 'disciple_tools' ); ?></a>
             <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=roles" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'roles' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Roles', 'disciple_tools' ); ?></a>
+            <a href="<?php echo esc_url( admin_url() . "admin.php?page=dt_customizations&post_type=$post_type&tab=displayed_fields" ); ?>" class="nav-tab <?php echo ( isset( $_GET['tab'] ) && $_GET['tab'] === 'displayed_fields' ) ? 'nav-tab-active' : null; ?>"><?php echo esc_html( 'Displayed Fields', 'disciple_tools' ); ?></a>
         </h2>
         <?php
     }
@@ -291,6 +292,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 break;
             case 'roles':
                 self::roles_settings_box();
+                break;
+            case 'displayed_fields':
+                self::displayed_fields_settings_box();
                 break;
             default:
                 self::tile_settings_box();
@@ -351,6 +355,161 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function get_post_fields( $post_type ){
         return DT_Posts::get_post_field_settings( $post_type, false, true );
+    }
+
+    private function displayed_fields_settings_box() {
+        $post_type = self::get_parameter( 'post_type' );
+        if ( isset( $post_type ) ) {
+
+            // Obtain list of all user filters.
+            $filters = [];
+            $filter_tabs = [];
+            $current_user_id = get_current_user_id();
+            $users = DT_User_Management::get_users( true );
+            foreach ( $users as $user ) {
+                if ( isset( $user['ID'] ) ) {
+                    $user_id = $user['ID'];
+                    $wp_user = wp_set_current_user( $user_id );
+                    $user_filters = Disciple_Tools_Users::get_user_filters( $post_type );
+
+                    // Capture filter tab details for further downstream processing.
+                    foreach ( $user_filters['tabs'] ?? [] as $filter_tab ) {
+                        if ( isset( $filter_tab['key'], $filter_tab['label'] ) && !isset( $filter_tabs[ $filter_tab['key'] ] ) ) {
+                            $filter_tabs[ $filter_tab['key'] ] = $filter_tab;
+                        }
+                    }
+
+                    // Iterate over tabs and corresponding filters.
+                    foreach ( $user_filters['filters'] ?? [] as $filter ) {
+                        if ( isset( $filter['ID'], $filter['tab'], $filter['name'] ) ) {
+                            $filter_id = $filter['ID'];
+                            $filter_tab = $filter['tab'];
+                            if ( !isset( $filters[ $filter_tab ] ) ) {
+                                $filters[ $filter_tab ] = [];
+
+                            }
+                            $filters[ $filter_tab ][ $filter_id ] = $filter;
+                        }
+                    }
+                }
+            }
+
+            // Revert back to original user.
+            wp_set_current_user( $current_user_id );
+
+            // Sort captured filters by filter name.
+            $sorted_filters = [];
+            ksort( $filters );
+            foreach ( $filters as $tab_id => $tab_filters ) {
+                usort( $tab_filters, function( $a, $b ) {
+
+                    if ( $a['name'] === $b['name'] ) {
+                        return 0;
+                    } else {
+                        return ( $a['name'] > $b['name'] ) ? 1 : -1;
+                    }
+                } );
+                $sorted_filters[ $tab_id ] = $tab_filters;
+            }
+
+            // Display filters dropdown options.
+            if ( isset( $filter_tabs, $sorted_filters ) ) {
+                ?>
+                <input type="hidden" id="displayed_fields_post_type" value="<?php echo esc_html( $post_type ); ?>">
+                <p>Select filter and set corresponding default display fields.</p>
+                <select id="displayed_fields_filters">
+                    <?php
+                    foreach ( $sorted_filters as $tab => $tab_filters ) {
+                        if ( isset( $filter_tabs[$tab] ) ) {
+                            $tab_details = $filter_tabs[$tab];
+                            ?>
+                            <optgroup label="<?php echo esc_html( $tab_details['label'] ) ?>">
+                                <?php
+                                foreach ( $tab_filters as $filter ) {
+                                    ?>
+                                    <option value="<?php echo esc_html( $filter['ID'] ) ?>"
+                                            data-filter_tab="<?php echo esc_html( $tab_details['key'] ) ?>"><?php echo esc_html( $filter['name'] ) ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </optgroup>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+                <p id="displayed_fields_msg" style="display: none;">Choose which fields to display as columns in the list.</p>
+                <div id="displayed_fields_div" style="display: none;">
+                    <?php
+                    // Display post type fields template.
+                    $post_settings = DT_Posts::get_post_settings( $post_type );
+
+                    // Order fields alphabetically by name.
+                    uasort( $post_settings['fields'], function ( $a, $b ) {
+                        if ( $a['name'] === $b['name'] ) {
+                            return 0;
+                        } else {
+                            return ( $a['name'] > $b['name'] ) ? 1 : -1;
+                        }
+                    } );
+                    ?>
+                    <table>
+                        <tbody>
+                        <?php
+                        $counter = 0;
+                        $counter_max = 4;
+                        foreach ( $post_settings['fields'] as $field_key => $field_values ){
+                            if ( !empty( $field_values['hidden'] ) ){
+                                continue;
+                            }
+
+                            if ( $counter === 0 ) {
+                                ?>
+                                <tr>
+                                <?php
+                            }
+                            if ( $counter++ < $counter_max ) {
+                                ?>
+                                <td>
+                                    <label style="margin-right:15px; cursor:pointer">
+                                        <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
+                                               style="margin:0">
+                                        <?php dt_render_field_icon( $field_values );
+                                        echo esc_html( $field_values['name'] ); ?>
+                                    </label>
+                                </td>
+                                <?php
+                            } else {
+                                $counter = 0;
+                                ?>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="<?php echo esc_html( $counter_max ); ?>">
+                                <br>
+                                <span style="float: right;">
+                                    <button type="submit"
+                                            class="button button-primary"
+                                            name="displayed_fields_settings_update_but"
+                                            id="displayed_fields_settings_update_but"
+                                            value="<?php echo esc_html( $post_type ); ?>"
+                                            data-post_type="<?php echo esc_attr( $post_type ) ?>"><?php echo esc_html( 'Update' ); ?>
+                                        <span id="displayed_fields_settings_update_but_icon"></span>
+                                    </button>
+                                </span>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <?php
+            }
+        }
     }
 
     private function roles_settings_box(){

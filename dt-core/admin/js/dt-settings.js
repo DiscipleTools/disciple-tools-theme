@@ -158,6 +158,19 @@ jQuery(document).ready(function($) {
     field_option_key: field_option_key,
   }, `dt-admin-settings/`);
 
+  window.API.get_displayed_fields = (post_type, filter_tab, filter_id) => makeRequest("POST", `get-displayed-fields`, {
+    post_type: post_type,
+    filter_tab: filter_tab,
+    filter_id: filter_id
+  }, `dt-admin-settings/`);
+
+  window.API.update_displayed_fields = (post_type, filter_tab, filter_id, fields) => makeRequest("POST", `update-displayed-fields`, {
+    post_type: post_type,
+    filter_tab: filter_tab,
+    filter_id: filter_id,
+    fields: fields
+  }, `dt-admin-settings/`);
+
   function autonavigate_to_menu() {
     let tile_key = get_tile_from_uri();
     let field_key = get_field_from_uri();
@@ -2288,4 +2301,86 @@ jQuery(document).ready(function($) {
       }
     }
   });
+
+  /*
+   * DISPLAYED FIELDS
+   */
+
+  handle_displayed_fields_filters();
+  $('#displayed_fields_filters').on('change', function (evt) {
+    handle_displayed_fields_filters();
+  });
+
+  $('#displayed_fields_settings_update_but').on('click', function (evt) {
+    handle_update_displayed_filter_fields();
+  });
+
+  function handle_displayed_fields_filters() {
+    const displayed_fields_filters = $('#displayed_fields_filters');
+    const displayed_fields_msg = $('#displayed_fields_msg');
+    const displayed_fields_div = $('#displayed_fields_div');
+
+    $(displayed_fields_msg).fadeIn('fast');
+    $(displayed_fields_div).fadeIn('fast');
+
+    // Uncheck all check fields, ahead of appropriate re-checking.
+    $(displayed_fields_div).find('input[type="checkbox"]').prop( 'checked', false );
+
+    // Next, fetch default display fields for selected filter.
+    window.API.get_displayed_fields($('#displayed_fields_post_type').val(), $(displayed_fields_filters).find(':selected').data('filter_tab'), $(displayed_fields_filters).val())
+    .promise()
+    .then(response => {
+
+      // Iterate over response and check identified fields.
+      if (response) {
+        response.forEach(function (field) {
+          let checkbox = $(displayed_fields_div).find('input[type="checkbox"][value="'+ field +'"]');
+          if ( checkbox ) {
+            $(checkbox).prop("checked",true);
+          }
+        });
+      }
+    });
+  }
+
+  function handle_update_displayed_filter_fields() {
+    const displayed_fields_filters = $('#displayed_fields_filters');
+    const displayed_fields_div = $('#displayed_fields_div');
+
+    let post_type = $('#displayed_fields_post_type').val();
+    let filter_tab = $(displayed_fields_filters).find(':selected').data('filter_tab');
+    let filter_id = $(displayed_fields_filters).val();
+
+    let fields = [];
+    $(displayed_fields_div).find('input[type="checkbox"]:checked').each(function () {
+      fields.push($(this).val());
+    });
+
+    // Activate spinner.
+    let button_icon = $('#displayed_fields_settings_update_but_icon');
+    button_icon.removeClass('mdi mdi-comment-check-outline');
+    button_icon.removeClass('mdi mdi-comment-remove-outline');
+    button_icon.addClass('active');
+    button_icon.addClass('loading-spinner');
+
+    // Dispatch update request.
+    window.API.update_displayed_fields(post_type, filter_tab, filter_id, fields)
+    .promise()
+    .then(response => {
+      button_icon.removeClass('active');
+      button_icon.removeClass('loading-spinner');
+      button_icon.css('color', '#ffffff');
+
+      if (response && response['updated'] && response['updated'] === true) {
+        button_icon.addClass('mdi mdi-comment-check-outline');
+
+      } else {
+        button_icon.addClass('mdi mdi-comment-remove-outline');
+      }
+    });
+  }
+
+  /*
+   * DISPLAYED FIELDS
+   */
 });

@@ -108,9 +108,38 @@
     $($('.js-list-view')[0]).prop('checked', true)
   }
 
+  function update_list_table_header(fields) {
+      console.log(fields);
+
+      // Obtain handle to current header and remove all defaults.
+      let list_table_header = $('.js-list thead .sortable');
+      $(list_table_header).find('th[class="all"]').remove();
+
+      // Append latest fields.
+      fields.forEach(function (field_key) {
+          let th_html = `<th class="all" data-id="${window.lodash.escape(field_key)}">
+            ${window.lodash.escape(list_settings.post_type_settings['fields'][field_key]['name'])}
+            </th>`;
+          $(list_table_header).append(th_html);
+      });
+  }
+
   function determine_list_columns(fieldsToShowInTable) {
     if ( window.lodash.isEmpty(fieldsToShowInTable)){
-      fields_to_show_in_table = list_settings.fields_to_show_in_table
+
+      // First, determine if a custom display field setting is available for current filter.
+      let displayed_filter_fields = list_settings.displayed_filter_fields;
+      if ( current_filter && displayed_filter_fields[ current_filter['tab'] ] && displayed_filter_fields[ current_filter['tab'] ][ current_filter['ID'] ] && displayed_filter_fields[ current_filter['tab'] ][ current_filter['ID'] ].length > 0 ) {
+
+        // TODO: Need to adhere to show in table ordering!
+        fields_to_show_in_table = displayed_filter_fields[ current_filter['tab'] ][ current_filter['ID'] ];
+
+        // Adjust list table header to correspond with display filter fields.
+        update_list_table_header(fields_to_show_in_table);
+
+      } else {
+        fields_to_show_in_table = list_settings.fields_to_show_in_table;
+      }
     }
   }
 
@@ -787,6 +816,7 @@
       fields_to_show_in_table.forEach(field_key=>{
         let values_html = '';
         let values = [];
+        // TODO: Adjust record display for custom filter display fields
         if (field_key === "name"){
           if (mobile) {
             return

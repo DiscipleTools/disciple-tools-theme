@@ -215,6 +215,75 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/update-displayed-fields', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_displayed_fields' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/get-displayed-fields', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'get_displayed_fields' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+    }
+
+    public static function update_displayed_fields( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        $updated = false;
+        if ( isset( $params['post_type'], $params['filter_tab'], $params['filter_id'], $params['fields'] ) ) {
+            $post_type = $params['post_type'];
+            $filter_tab = $params['filter_tab'];
+            $filter_id = $params['filter_id'];
+            $fields = $params['fields'];
+
+            // Fetch existing default displayed fields settings.
+            $options_displayed_fields = get_option( 'dt_options_displayed_filter_fields', [] );
+
+            // Ensure required shape is present.
+            if ( !isset( $options_displayed_fields[$post_type] ) ) {
+                $options_displayed_fields[$post_type] = [];
+            }
+            if ( !isset( $options_displayed_fields[$post_type][$filter_tab] ) ) {
+                $options_displayed_fields[$post_type][$filter_tab] = [];
+            }
+
+            // Finally, update settings and save.
+            $options_displayed_fields[$post_type][$filter_tab][$filter_id] = $fields;
+            update_option( 'dt_options_displayed_filter_fields', $options_displayed_fields );
+
+            $updated = true;
+        }
+
+        return [
+            'updated' => $updated
+        ];
+    }
+
+    public static function get_displayed_fields( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['post_type'], $params['filter_tab'], $params['filter_id'] ) ) {
+            $post_type = $params['post_type'];
+            $filter_tab = $params['filter_tab'];
+            $filter_id = $params['filter_id'];
+
+            // Fetch existing default displayed fields settings.
+            $options_displayed_fields = get_option( 'dt_options_displayed_filter_fields', [] );
+            if ( isset( $options_displayed_fields[$post_type] ) ) {
+                if ( isset( $options_displayed_fields[$post_type][$filter_tab] ) ) {
+                    if ( isset( $options_displayed_fields[$post_type][$filter_tab][$filter_id] ) ) {
+                        return $options_displayed_fields[$post_type][$filter_tab][$filter_id];
+                    }
+                }
+            }
+        }
+
+        return [];
     }
 
     public static function get_post_fields() {
