@@ -17,8 +17,8 @@ class Disciple_Tools_Migration_0055 extends Disciple_Tools_Migration {
 
         // Delete stale comment activity logs.
         $wpdb->query("
-            DELETE FROM $wpdb->dt_activity_log AS log
-            WHERE log.action = 'comment'
+            DELETE FROM $wpdb->dt_activity_log
+            WHERE action = 'comment'
         " );
 
     }
