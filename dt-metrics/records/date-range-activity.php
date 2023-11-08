@@ -195,14 +195,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         $params = $request->get_params();
         if ( isset( $params['post_type'], $params['field'], $params['date_start'], $params['date_end'] ) ){
 
-            // Provide a suitable daily spread, if start and end dates equal!
-            if ( $params['date_start'] === $params['date_end'] ) {
-                $ts_start = strtotime( $params['date_start'] . ' 00:00:00' );
-                $ts_end = strtotime( $params['date_end'] . ' 23:59:59' );
-            } else {
-                $ts_start = strtotime( $params['date_start'] );
-                $ts_end = strtotime( $params['date_end'] );
-            }
+            // Provide a suitable daily spread, from the start of a day to the end.
+            $ts_start = strtotime( $params['date_start'] . ' 00:00:00' );
+            $ts_end = strtotime( $params['date_end'] . ' 23:59:59' );
 
             // Fetch associated field settings.
             $settings = $this->get_field_settings( $params['post_type'] )[$params['field']];
