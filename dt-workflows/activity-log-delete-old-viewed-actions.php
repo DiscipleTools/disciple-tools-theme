@@ -15,8 +15,8 @@ function activity_log_delete_old_viewed_actions_handler(){
     global $wpdb;
     $wpdb->query(
         $wpdb->prepare( "
-            DELETE FROM $wpdb->dt_activity_log log
-            WHERE log.action = 'viewed' AND log.hist_time < %d
+            DELETE FROM $wpdb->dt_activity_log
+            WHERE action = 'viewed' AND hist_time < %d
             ", strtotime( '-3 months' )
         )
     );

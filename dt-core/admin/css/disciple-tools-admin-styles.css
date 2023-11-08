@@ -250,7 +250,7 @@ body .alert p {
     overflow-y: scroll;
     text-align: center;
     padding-left: 0px;
-
+    max-height: 60vh;
 }
 
 #dialog_icon_selector_icons_table {
