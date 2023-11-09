@@ -83,10 +83,10 @@ class Disciple_Tools_People_Groups
         return $wpdb->get_var( $wpdb->prepare( "
             SELECT COUNT(rop3.meta_id)
             FROM $wpdb->postmeta AS rop3
-            INNER JOIN $wpdb->postmeta AS country_meta ON ( country_meta.post_id = rop3.post_id AND country_meta.meta_key = 'jp_Ctry' AND country_meta.meta_value LIKE %s )
+            INNER JOIN $wpdb->postmeta AS country_meta ON ( country_meta.post_id = rop3.post_id AND country_meta.meta_key = 'jp_Ctry' AND ( ( country_meta.meta_value LIKE %s ) OR ( country_meta.meta_value LIKE %s ) ) )
             WHERE rop3.meta_key = 'jp_ROP3' AND
             rop3.post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
-            rop3.meta_value = %s", '%'. esc_sql( $country ) .'%', $rop3 ) );
+            rop3.meta_value = %s", '%'. esc_sql( $country ) .'%', '%'. esc_sql( str_replace( "'", '-', $country ) ) .'%', $rop3 ) );
     }
 
     public static function find_post_ids_by_rop3( $rop3 ){
@@ -370,8 +370,14 @@ class Disciple_Tools_People_Groups
                         self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
                         self::update_post_id_meta_value( $post_id, 'jp_Population', $updated_jp_population );
 
-                        // Add new location grid meta value.
-                        self::add_location_grid_meta( 'peoplegroups', $post_id, $jp_data_rop3_row[33] );
+                        // Capture new location grid meta value.
+                        if ( !empty( $jp_data_rop3_row[33] ) ) {
+                            $location_grid_meta_tb_values[] = [
+                                'post_type' => 'peoplegroups',
+                                'post_id' => $post_id,
+                                'grid_id' => $jp_data_rop3_row[33]
+                            ];
+                        }
 
                         // Ensure post title adopts correct shape.
                         $post = [
@@ -500,13 +506,11 @@ class Disciple_Tools_People_Groups
                 $postmeta_tb_insert_count = $wpdb->query( $wpdb->prepare( $postmeta_tb_insert_sql ) );
                 // phpcs:enable
             }
+        }
 
-            // Finally, insert location grid meta records; which simultaneously works across 3 tables!
-            if ( $posts_tb_insert_count > 0 ){
-                foreach ( $location_grid_meta_tb_values as $grid ){
-                    self::add_location_grid_meta( $grid['post_type'], $grid['post_id'], $grid['grid_id'] );
-                }
-            }
+        // Finally, insert location grid meta records; which simultaneously works across 3 tables!
+        foreach ( $location_grid_meta_tb_values as $grid ) {
+            self::add_location_grid_meta( $grid['post_type'], $grid['post_id'], $grid['grid_id'] );
         }
 
         return [

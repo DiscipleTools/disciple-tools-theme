@@ -31,7 +31,7 @@ function group_search() {
 
           jQuery.each(data, function (i, v) {
             div.append(`
-                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `','` + v[33] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
+                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + String(v[1]).replace(/'/g, "\\'") + `','` + v[33] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
                 `)
 
             // Check last element for duplicate flag to determine if group has already been installed.
