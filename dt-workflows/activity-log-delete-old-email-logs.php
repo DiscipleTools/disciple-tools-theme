@@ -18,8 +18,8 @@ function activity_log_delete_old_email_logs_handler() {
         global $wpdb;
         $wpdb->query(
             $wpdb->prepare( "
-             DELETE FROM $wpdb->dt_activity_log log
-             WHERE log.action = 'mail_sent' AND log.hist_time < %d
+             DELETE FROM $wpdb->dt_activity_log
+             WHERE action = 'mail_sent' AND hist_time < %d
              ", strtotime( '-1 months' )
             )
         );
