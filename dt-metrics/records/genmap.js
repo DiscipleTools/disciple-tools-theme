@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
     project_records_genmap();
   }
 
+  let orgchart_container = null;
   function project_records_genmap() {
     "use strict";
     let chart = jQuery('#chart')
@@ -83,7 +84,7 @@ jQuery(document).ready(function($) {
           `;
         };
 
-        container.orgchart({
+        orgchart_container = container.orgchart({
           'data': response,
           'nodeContent': 'content',
           'direction': 'l2r',
@@ -148,6 +149,10 @@ jQuery(document).ready(function($) {
         let p2p_key = jQuery('#select_post_type_fields').find('option:selected').data('p2p_key');
 
         handle_focus(post_type, post_id, p2p_key);
+    });
+
+    jQuery(document).on('click', '.genmap-details-toggle-child-display', function(e) {
+      toggle_child_display(jQuery(e.currentTarget).data('post_id'));
     });
 
     jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
@@ -229,6 +234,22 @@ jQuery(document).ready(function($) {
     if ( post_id ) {
       window.load_genmap( post_id );
     }
+  }
+
+  function toggle_child_display(post_id) {
+      if (post_id && orgchart_container) {
+          let node = jQuery('#genmap').find(`#${post_id}.node`);
+          if (node) {
+              let children = orgchart_container.getNodeState(node, 'children');
+              if (children.exist === true) {
+                if ( children.visible === true ) {
+                    orgchart_container.hideChildren(node);
+                } else {
+                    orgchart_container.showChildren(node);
+                }
+              }
+          }
+      }
   }
 
   function refresh_post_type_select_list(callback = null) {
@@ -338,6 +359,18 @@ jQuery(document).ready(function($) {
   window.detail_template = ( post_type, data ) => {
     let translations = window.dtMetricsProject.translations;
 
+    // Determine orgchart node state.
+    let orgchart_node_state = {};
+    if (data.ID && orgchart_container) {
+      let orgchart_node = jQuery('#genmap').find(`#${data.ID}.node`);
+      let orgchart_node_children = orgchart_container.getNodeState(orgchart_node, 'children');
+
+      // Capture associated children state.
+      orgchart_node_state['children_exist'] = (orgchart_node_children.exist) ? orgchart_node_children.exist : false;
+      orgchart_node_state['children_visible'] = (orgchart_node_children.visible) ? orgchart_node_children.visible : false;
+    }
+    let toggle_child_displayed_but_state = ((orgchart_node_state['children_exist'] !== undefined) && orgchart_node_state['children_exist'] === false) ? 'disabled' : '';
+
     if ( post_type === 'contacts' ) {
 
       let assign_to = ''
@@ -393,6 +426,9 @@ jQuery(document).ready(function($) {
             </a>
             <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
                 <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
+            </a>
+            <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
+                <i class="mdi mdi-account-child-outline" style="font-size: 20px;"></i>
             </a>
           </div>
         </div>
@@ -468,6 +504,9 @@ jQuery(document).ready(function($) {
             <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
                 <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
             </a>
+            <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
+                <i class="mdi mdi-account-child-outline" style="font-size: 20px;"></i>
+            </a>
           </div>
         </div>
       `
@@ -486,6 +525,9 @@ jQuery(document).ready(function($) {
             </a>
             <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
                 <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
+            </a>
+            <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
+                <i class="mdi mdi-account-child-outline" style="font-size: 20px;"></i>
             </a>
           </div>
         </div>
