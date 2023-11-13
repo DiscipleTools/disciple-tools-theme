@@ -208,7 +208,7 @@ class Disciple_Tools_Users
      * @param bool $get_all
      * @return array|WP_Error
      */
-    public static function get_assignable_users_compact( string $search_string = null, bool $get_all = false ) {
+    public static function get_assignable_users_compact( string $search_string = null, bool $get_all = false, string $post_type = null ) {
         if ( !current_user_can( 'access_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( 'No permissions to assign', 'disciple_tools' ), [ 'status' => 403 ] );
         }
@@ -330,7 +330,8 @@ class Disciple_Tools_Users
         $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
 
         foreach ( $users as $user ) {
-            if ( user_can( $user, 'access_contacts' ) ) {
+            $user_access_capability = 'access_' . ( !empty( $post_type ) ? $post_type : 'contacts' );
+            if ( user_can( $user, $user_access_capability ) ) {
                 $u = [
                     'name' => wp_specialchars_decode( $user->display_name ),
                     'ID'   => $user->ID,

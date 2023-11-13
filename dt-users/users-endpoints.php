@@ -143,7 +143,7 @@ class Disciple_Tools_Users_Endpoints
         if ( isset( $params['get_all'] ) ){
             $get_all = $params['get_all'] === '1';
         }
-        return Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all );
+        return Disciple_Tools_Users::get_assignable_users_compact( $search, $get_all, $params['post_type'] ?? null );
     }
 
     /**
