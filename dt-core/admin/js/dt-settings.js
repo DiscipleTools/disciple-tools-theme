@@ -2187,12 +2187,6 @@ jQuery(document).ready(function($) {
     closeModal();
   });
 
-  dt_admin_modal_overlay.on('click', function(e) {
-    if (e.target === this) {
-      closeModal();
-    }
-  });
-
   $('.field-name').on('click', function() {
     $(this).find('.field-name-icon-arrow:not(.disabled)').toggleClass('arrow-expanded');
     $(this).find('.field-elements-list').slideToggle(333, 'swing');
