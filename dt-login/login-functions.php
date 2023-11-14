@@ -139,9 +139,9 @@ function dt_login_url( string $name, string $url = '' ): string {
             if ( !dt_can_users_register() ) {
                 return dt_login_url( 'login', $url );
             }
-            return dt_create_site_url( $login_url, [ 'action' => 'register', ...$params ] );
+            return dt_create_site_url( $login_url, array_merge( $params, [ 'action' => 'register' ] ) );
         case 'lostpassword':
-            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword', ...$params ] );
+            return dt_create_site_url( $login_url, array_merge( $params, [ 'action' => 'lostpassword' ] ) );
         case 'resetpass':
             return dt_create_site_url( $login_url, [ 'action' => 'resetpass' ] );
         case 'expiredkey':

@@ -294,7 +294,8 @@ function list_merge_capable_field_types(): array {
         'location_meta',
         'location',
         'tags',
-        'connection'
+        'connection',
+        'link'
     ];
 }
 
