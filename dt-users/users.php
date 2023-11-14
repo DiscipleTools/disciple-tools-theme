@@ -330,8 +330,7 @@ class Disciple_Tools_Users
         $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
 
         foreach ( $users as $user ) {
-            $user_access_capability = 'access_' . ( !empty( $post_type ) ? $post_type : 'contacts' );
-            if ( user_can( $user, $user_access_capability ) ) {
+            if ( empty( $post_type ) || user_can( $user, 'access_' . $post_type ) ) {
                 $u = [
                     'name' => wp_specialchars_decode( $user->display_name ),
                     'ID'   => $user->ID,
