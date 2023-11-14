@@ -227,7 +227,7 @@ class Disciple_Tools_People_Groups
             $updated_jp_population = !empty( $jp_population ) ? ( intval( $jp_population ) + intval( $rop3_row[6] ) ) : intval( $jp_population );
 
             // Update corresponding parent record.
-            self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
+            self::update_post_id_meta_value( $post_id, 'jp_Ctry', str_replace( "'", '-', str_replace( '\\', '', $updated_jp_ctry ) ) );
             self::update_post_id_meta_value( $post_id, 'jp_Population', $updated_jp_population );
 
             // Add new location grid meta value.
@@ -367,7 +367,7 @@ class Disciple_Tools_People_Groups
                         $updated_jp_population = !empty( $jp_population ) ? ( intval( $jp_population ) + intval( $jp_data_rop3_row[6] ) ) : intval( $jp_population );
 
                         // Update corresponding parent record.
-                        self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
+                        self::update_post_id_meta_value( $post_id, 'jp_Ctry', str_replace( "'", '-', str_replace( '\\', '', $updated_jp_ctry ) ) );
                         self::update_post_id_meta_value( $post_id, 'jp_Population', $updated_jp_population );
 
                         // Capture new location grid meta value.
