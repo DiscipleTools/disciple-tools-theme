@@ -515,7 +515,7 @@ class DT_User_Hooks_And_Configuration {
         $blogs = get_sites();
         if ( ! empty( $blogs ) ) {
             foreach ( $blogs as $blog ) {
-                self::dt_delete_user_from_blog( $user_id, $blog->userblog_id );
+                self::dt_delete_user_from_blog( $user_id, $blog->blog_id );
             }
         }
     }
