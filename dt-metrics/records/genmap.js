@@ -56,6 +56,7 @@ jQuery(document).ready(function($) {
        `)
 
     window.load_genmap = ( focus_id = null ) => {
+      jQuery('#infinite_loops_grid_div').fadeOut('fast');
       jQuery('#genmap-details').empty();
       let select_post_type_fields = jQuery('#select_post_type_fields');
 
@@ -114,7 +115,9 @@ jQuery(document).ready(function($) {
         container.on('click', '.node', function () {
           let node = jQuery(this)
           let node_id = node.attr('id')
-          open_modal_details(node_id, selected_post_type)
+          let node_parent_id = node.data('parent')
+
+          open_modal_details(node_id, node_parent_id, selected_post_type)
         })
       })
       .catch(error => {
@@ -168,7 +171,7 @@ jQuery(document).ready(function($) {
     });
 
     jQuery(document).on('click', '.genmap-details-toggle-child-display', function(e) {
-      toggle_child_display(jQuery(e.currentTarget).data('post_id'));
+      toggle_child_display(jQuery(e.currentTarget).data('post_id'), jQuery(e.currentTarget).data('parent_id'));
     });
 
     jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
@@ -344,21 +347,36 @@ jQuery(document).ready(function($) {
     }
   }
 
-  function toggle_child_display(post_id) {
+  function toggle_child_display(post_id, parent_id) {
       if (post_id && orgchart_container) {
-          let node = jQuery('#genmap').find(`#${post_id}.node`);
+          let query = (parent_id === 0 ? `#${post_id}.node` : `#${post_id}.node[data-parent='${parent_id}']`);
+          let node = jQuery('#genmap').find(query);
           if (node) {
               let children = orgchart_container.getNodeState(node, 'children');
               if (children.exist === true) {
                 if ( children.visible === true ) {
                     orgchart_container.hideChildren(node);
                 } else {
-                    orgchart_container.showChildren(node);
+                    toggle_child_display_show_children(node);
                 }
               }
           }
       }
   }
+
+    function toggle_child_display_show_children(node) {
+        if (node && orgchart_container) {
+            orgchart_container.showChildren(node);
+
+            // Recursively display nested children.
+            let children = orgchart_container.getChildren(node);
+            if ( ( children !== undefined ) && children.length > 0 ) {
+                children.each(function (idx, child) {
+                    toggle_child_display_show_children(jQuery(child));
+                });
+            }
+        }
+    }
 
   function refresh_post_type_select_list(callback = null) {
     let post_types = window.dtMetricsProject.post_types;
@@ -444,7 +462,7 @@ jQuery(document).ready(function($) {
     }
   }
 
-  function open_modal_details( id, post_type ) {
+  function open_modal_details( id, parent_id, post_type ) {
     if ( id ) {
       let spinner = ' <span class="loading-spinner active"></span> '
       jQuery('#genmap-details').html(spinner)
@@ -455,7 +473,7 @@ jQuery(document).ready(function($) {
         let container = jQuery('#genmap-details')
         container.empty()
         if (data) {
-          container.html(window.detail_template(post_type, data))
+          container.html(window.detail_template(parent_id, post_type, data))
         }
       })
       .catch(error => {
@@ -464,7 +482,7 @@ jQuery(document).ready(function($) {
     }
   }
 
-  window.detail_template = ( post_type, data ) => {
+  window.detail_template = ( parent_id, post_type, data ) => {
     let escaped_translations = window.SHAREDFUNCTIONS.escapeObject( window.dtMetricsProject.translations );
 
     // Determine orgchart node state.
@@ -618,7 +636,7 @@ jQuery(document).ready(function($) {
               <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
               <span style="display: flex">${escaped_translations.details.focus}</span>
           </a>
-          <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
+          <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" data-parent_id="${window.lodash.escape( ((parent_id !== undefined) ? parent_id : 0) )}" ${ toggle_child_displayed_but_state }>
               <i class="mdi mdi-file-tree" style="font-size: 20px;"></i>
               <span style="display: flex">${escaped_translations.details.hide}</span>
           </a>
