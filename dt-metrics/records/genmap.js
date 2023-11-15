@@ -357,7 +357,7 @@ jQuery(document).ready(function($) {
   }
 
   window.detail_template = ( post_type, data ) => {
-    let translations = window.dtMetricsProject.translations;
+    let escaped_translations = window.SHAREDFUNCTIONS.escapeObject( window.dtMetricsProject.translations );
 
     // Determine orgchart node state.
     let orgchart_node_state = {};
@@ -370,6 +370,8 @@ jQuery(document).ready(function($) {
       orgchart_node_state['children_visible'] = (orgchart_node_children.visible) ? orgchart_node_children.visible : false;
     }
     let toggle_child_displayed_but_state = ((orgchart_node_state['children_exist'] !== undefined) && orgchart_node_state['children_exist'] === false) ? 'disabled' : '';
+
+    let template = ''
 
     if ( post_type === 'contacts' ) {
 
@@ -397,39 +399,25 @@ jQuery(document).ready(function($) {
       if ( typeof data.overall_status !== 'undefined' ) {
         status = data.overall_status['label']
       }
-      return `
+      template = `
         <div class="grid-x grid-padding-x">
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.status)}: ${window.lodash.escape(status)}
+            ${escaped_translations.details.status}: ${window.lodash.escape(status)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.groups)}:
+            ${escaped_translations.details.groups}:
             ${group_list}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.assigned_to)}:
+            ${escaped_translations.details.assigned_to}:
             ${window.lodash.escape(assign_to)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.coaches)}: <br>
+            ${escaped_translations.details.coaches}: <br>
             ${coach_list}
-          </div>
-          <div class="cell"><hr>
-            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
-                <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
-                <i class="mdi mdi-account-child-outline" style="font-size: 20px;"></i>
-            </a>
           </div>
         </div>
       `;
@@ -468,71 +456,68 @@ jQuery(document).ready(function($) {
       if ( typeof data.group_type !== 'undefined' ) {
         type = data.group_type['label']
       }
-      return `
+      template = `
         <div class="grid-x grid-padding-x">
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.status)}: ${window.lodash.escape(status)}
+            ${escaped_translations.details.status}: ${window.lodash.escape(status)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.type)}: ${window.lodash.escape(type)}
+            ${escaped_translations.details.type}: ${window.lodash.escape(type)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.member_count)}: ${window.lodash.escape(members_count)}
+            ${escaped_translations.details.member_count}: ${window.lodash.escape(members_count)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.members)}: <br>
+            ${escaped_translations.details.members}: <br>
             ${member_list}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.assigned_to)}:
+            ${escaped_translations.details.assigned_to}:
             ${window.lodash.escape(assign_to)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.coaches)}: <br>
+            ${escaped_translations.details.coaches}: <br>
             ${coach_list}
-          </div>
-          <div class="cell"><hr>
-            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
-                <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
-                <i class="mdi mdi-account-child-outline" style="font-size: 20px;"></i>
-            </a>
           </div>
         </div>
       `
     } else {
-      return `
+      template = `
         <div class="grid-x grid-padding-x">
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2>
           </div>
-          <div class="cell"><hr>
-            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
-                <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
-                <i class="mdi mdi-account-child-outline" style="font-size: 20px;"></i>
-            </a>
-          </div>
         </div>
       `;
     }
+    template += `
+      <div class="cell">
+        <hr>
+        <div>
+            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
+              <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.open}</span>
+          </a>
+          <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
+              <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.add}</span>
+
+          </a>
+          <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
+              <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.focus}</span>
+          </a>
+          <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" ${ toggle_child_displayed_but_state }>
+              <i class="mdi mdi-file-tree" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.hide}</span>
+          </a>
+        </div>
+      </div>
+      `;
+    return template;
   }
 
 })
