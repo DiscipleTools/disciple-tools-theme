@@ -64,7 +64,7 @@ jQuery(document).ready(function($) {
         'p2p_type': jQuery(select_post_type_fields).find('option:selected').data('p2p_key'),
         'p2p_direction': jQuery(select_post_type_fields).find('option:selected').data('p2p_direction'),
         'post_type': selected_post_type,
-        'gen_depth_limit': 10000
+        'gen_depth_limit': 10
       };
 
       // Dynamically update URL parameters.
@@ -118,7 +118,7 @@ jQuery(document).ready(function($) {
         })
       })
       .catch(error => {
-        let msg = (error.responseJSON['message']) ? error.responseJSON['message'] : error.statusText;
+        let msg = ( (error.responseJSON !== undefined) && error.responseJSON['message'] ) ? error.responseJSON['message'] : error.statusText;
         alert(window.lodash.escape(msg));
       });
     }
