@@ -205,10 +205,23 @@ jQuery(document).ready(function($) {
     let loops_div = jQuery('#infinite_loops_div');
     let selected_post_type = jQuery('#select_post_types').val();
 
-      jQuery(loops_grid_div).fadeOut('fast', function () {
+    jQuery(loops_grid_div).fadeOut('fast', function () {
       jQuery(loops_div).empty();
 
-      loops.forEach(function ( item ) {
+      // Ensure duplicate loops are removed.
+      let processed_loop_ids = [];
+      let filtered_loops = loops.filter( loop => {
+        if ( !processed_loop_ids.includes( loop['id'] ) ) {
+          processed_loop_ids.push( loop['id'] );
+          return true;
+
+        } else {
+          return false;
+        }
+      });
+
+      // Proceed with filtered loops display
+      filtered_loops.forEach(function ( item ) {
         let html = `
         <table>
             <thead>
