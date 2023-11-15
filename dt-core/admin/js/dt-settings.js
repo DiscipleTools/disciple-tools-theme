@@ -1225,6 +1225,14 @@ jQuery(document).ready(function($) {
                 <input type="checkbox" name="hide-field" id="hide-field" ${field_settings.hidden ? 'checked' : ''}>
             </td>
         </tr>
+        <tr>
+            <td>
+                <b>Default In List Table</b>
+            </td>
+            <td>
+                <input type="checkbox" name="show-in-table" id="show-in-table" ${field_settings.show_in_table ? 'checked' : ''}>
+            </td>
+        </tr>
         ${type_visibility_html}
         <tr class="last-row">
             <td>
@@ -1822,7 +1830,8 @@ jQuery(document).ready(function($) {
       hidden: $('#hide-field').is(':checked'),
       type_visibility: $('#type-visibility input:checked').map((index, obj)=>{
         return $(obj).val()
-      }).get()
+      }).get(),
+      show_in_table: $('#show-in-table').is(':checked')
     }
 
     if (custom_name === '') {
