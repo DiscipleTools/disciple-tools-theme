@@ -342,7 +342,6 @@ jQuery(document).ready(function($) {
       window.makeRequest('GET', post_type + '/' + id, null, 'dt-posts/v2/')
       .promise()
       .then(data => {
-        console.log(data)
         let container = jQuery('#genmap-details')
         container.empty()
         if (data) {
