@@ -86,7 +86,7 @@ class Disciple_Tools_People_Groups
             INNER JOIN $wpdb->postmeta AS country_meta ON ( country_meta.post_id = rop3.post_id AND country_meta.meta_key = 'jp_Ctry' AND ( ( country_meta.meta_value LIKE %s ) OR ( country_meta.meta_value LIKE %s ) ) )
             WHERE rop3.meta_key = 'jp_ROP3' AND
             rop3.post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
-            rop3.meta_value = %s", '%'. esc_sql( $country ) .'%', '%'. esc_sql( str_replace( "'", '-', $country ) ) .'%', $rop3 ) );
+            rop3.meta_value = %s", '%'. $country .'%', '%'. $country .'%', $rop3 ) );
     }
 
     public static function find_post_ids_by_rop3( $rop3 ){
@@ -113,7 +113,7 @@ class Disciple_Tools_People_Groups
         return $wpdb->query( $wpdb->prepare( "
             UPDATE $wpdb->postmeta
             SET meta_value = %s
-            WHERE meta_key = %s AND post_id = %d", esc_sql( $meta_value ), esc_sql( $meta_key ), $post_id ) );
+            WHERE meta_key = %s AND post_id = %d", $meta_value, $meta_key, $post_id ) );
     }
 
     public static function add_location_grid_meta( $post_type, $post_id, $grid_id ){
@@ -227,7 +227,8 @@ class Disciple_Tools_People_Groups
             $updated_jp_population = !empty( $jp_population ) ? ( intval( $jp_population ) + intval( $rop3_row[6] ) ) : intval( $jp_population );
 
             // Update corresponding parent record.
-            self::update_post_id_meta_value( $post_id, 'jp_Ctry', str_replace( "'", '-', str_replace( '\\', '', $updated_jp_ctry ) ) );
+            self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
+            self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
             self::update_post_id_meta_value( $post_id, 'jp_Population', $updated_jp_population );
 
             // Add new location grid meta value.
@@ -367,7 +368,7 @@ class Disciple_Tools_People_Groups
                         $updated_jp_population = !empty( $jp_population ) ? ( intval( $jp_population ) + intval( $jp_data_rop3_row[6] ) ) : intval( $jp_population );
 
                         // Update corresponding parent record.
-                        self::update_post_id_meta_value( $post_id, 'jp_Ctry', str_replace( "'", '-', str_replace( '\\', '', $updated_jp_ctry ) ) );
+                        self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
                         self::update_post_id_meta_value( $post_id, 'jp_Population', $updated_jp_population );
 
                         // Capture new location grid meta value.
@@ -399,13 +400,13 @@ class Disciple_Tools_People_Groups
                         $posts_tb_post_date = gmdate( 'Y-m-d H:i:s' );
                         $posts_tb_post_date_gmt = gmdate( 'Y-m-d H:i:s' );
                         $posts_tb_post_content = '';
-                        $posts_tb_post_title = str_replace( "'", '-', $jp_data_rop3_row[4] . ' (' . $jp_data_rop3_row[1] . ' | ' . $jp_data_rop3_row[3] . ')' );
+                        $posts_tb_post_title = esc_sql( $jp_data_rop3_row[4] . ' (' . $jp_data_rop3_row[1] . ' | ' . $jp_data_rop3_row[3] . ')' );
                         $posts_tb_post_excerpt = '';
                         $posts_tb_post_status = 'publish';
                         $posts_tb_comment_status = 'closed';
                         $posts_tb_ping_status = 'closed';
                         $posts_tb_post_password = '';
-                        $posts_tb_post_name = str_replace( "'", '-', strtolower( $jp_data_rop3_row[1] . '-' . $jp_data_rop3_row[3] ) );
+                        $posts_tb_post_name = esc_sql( strtolower( $jp_data_rop3_row[1] . '-' . $jp_data_rop3_row[3] ) );
                         $posts_tb_to_ping = '';
                         $posts_tb_pinged = '';
                         $posts_tb_post_modified = gmdate( 'Y-m-d H:i:s' );
@@ -421,20 +422,18 @@ class Disciple_Tools_People_Groups
 
                         // Create post_meta table values for direct sql inserts.
                         foreach ( $jp_data_rop3_row as $key => $value ){
-                            $postmeta_tb_meta_id = ++$last_postmeta_tb_id;
                             $postmeta_tb_post_id = $posts_tb_id;
-                            $postmeta_tb_meta_key = str_replace( "'", '-', 'jp_' . $jp_columns[$key] );
-                            $postmeta_tb_meta_value = str_replace( "'", '-', $value );
-                            $postmeta_tb_values[] = "( {$postmeta_tb_meta_id},{$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
+                            $postmeta_tb_meta_key = esc_sql( 'jp_' . $jp_columns[$key] );
+                            $postmeta_tb_meta_value = esc_sql( $value );
+                            $postmeta_tb_values[] = "( {$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
                         }
 
                         if ( !empty( $imb_data_rop3_row ) ){
                             foreach ( $imb_data_rop3_row as $imb_key => $imb_value ){
-                                $postmeta_tb_meta_id = ++$last_postmeta_tb_id;
                                 $postmeta_tb_post_id = $posts_tb_id;
-                                $postmeta_tb_meta_key = str_replace( "'", '-', 'imb_' . $imb_columns[$imb_key] );
-                                $postmeta_tb_meta_value = str_replace( "'", '-', $imb_value );
-                                $postmeta_tb_values[] = "( {$postmeta_tb_meta_id},{$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
+                                $postmeta_tb_meta_key = esc_sql( 'imb_' . $imb_columns[$imb_key] );
+                                $postmeta_tb_meta_value = esc_sql( $imb_value );
+                                $postmeta_tb_values[] = "( {$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
                             }
                         }
 
@@ -495,7 +494,6 @@ class Disciple_Tools_People_Groups
             // Next, insert associated post meta records; assuming post creation went well
             if ( !empty( $postmeta_tb_values ) && ( $posts_tb_insert_count > 0 ) ){
                 $postmeta_tb_insert_sql = "INSERT INTO `{$wpdb->postmeta}` (
-                    meta_id,
                     post_id,
                     meta_key,
                     meta_value
