@@ -59,7 +59,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         $query = $this->get_query( $params['post_type'], $params['p2p_type'], $params['p2p_direction'] );
 
-        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 10, $params['focus_id'] ?? 0 );
+        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0 );
     }
 
     public function scripts() {
