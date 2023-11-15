@@ -76,7 +76,7 @@ final class Disciple_Tools_Admin_User_Edit {
 
         $user_roles = (array) $user->roles;
 
-        $roles = dt_list_roles();
+        $roles = dt_list_roles( false );
 
         wp_nonce_field( 'new_user_roles', 'dt_multi_role_new_user_roles_nonce' ); ?>
 

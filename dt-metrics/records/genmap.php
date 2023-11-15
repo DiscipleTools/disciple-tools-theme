@@ -99,7 +99,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                         'coaches' => __( 'Coaches', 'disciple_tools' ),
                         'type' => __( 'Type', 'disciple_tools' ),
                         'member_count' => __( 'Member Count', 'disciple_tools' ),
-                        'members' => __( 'Members', 'disciple_tools' )
+                        'members' => __( 'Members', 'disciple_tools' ),
+                        'open' => __( 'Open', 'disciple_tools' ),
+                        'add' => __( 'Add', 'disciple_tools' ),
+                        'focus' => __( 'Focus', 'disciple_tools' ),
+                        'hide' => __( 'Hide', 'disciple_tools' ),
                     ],
                     'modal' => [
                         'add_child_title' => __( 'Add Child To', 'disciple_tools' ),

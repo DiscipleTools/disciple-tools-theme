@@ -57,7 +57,7 @@ class Disciple_Tools_People_Groups
         $result = [];
         foreach ( $data as $row ) {
             if ( $row[1] === $search ) {
-                $row[] = ( self::duplicate_db_checker_by_rop3( $row[3] ) > 0 );
+                $row[] = ( self::duplicate_db_checker_by_rop3( $row[1], $row[3] ) > 0 );
                 $result[] = $row;
             }
         }
@@ -78,15 +78,42 @@ class Disciple_Tools_People_Groups
         return $result;
     }
 
-    public static function duplicate_db_checker_by_rop3( $rop3 ){
+    public static function duplicate_db_checker_by_rop3( $country, $rop3 ){
         global $wpdb;
         return $wpdb->get_var( $wpdb->prepare( "
-            SELECT count(meta_id)
+            SELECT COUNT(rop3.meta_id)
+            FROM $wpdb->postmeta AS rop3
+            INNER JOIN $wpdb->postmeta AS country_meta ON ( country_meta.post_id = rop3.post_id AND country_meta.meta_key = 'jp_Ctry' AND ( ( country_meta.meta_value LIKE %s ) OR ( country_meta.meta_value LIKE %s ) ) )
+            WHERE rop3.meta_key = 'jp_ROP3' AND
+            rop3.post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
+            rop3.meta_value = %s", '%'. $country .'%', '%'. $country .'%', $rop3 ) );
+    }
+
+    public static function find_post_ids_by_rop3( $rop3 ){
+        global $wpdb;
+        return $wpdb->get_results( $wpdb->prepare( "
+            SELECT rop3.post_id
+            FROM $wpdb->postmeta AS rop3
+            WHERE rop3.meta_key = 'jp_ROP3' AND
+            rop3.post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
+            rop3.meta_value = %s
+            ORDER BY rop3.post_id ASC", $rop3 ), ARRAY_A );
+    }
+
+    public static function get_post_id_meta_value( $post_id, $meta_key ){
+        global $wpdb;
+        return $wpdb->get_var( $wpdb->prepare( "
+            SELECT meta_value
             FROM $wpdb->postmeta
-            WHERE meta_key = 'jp_ROP3' AND
-            post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
-            meta_value = %s",
-        $rop3 ) );
+            WHERE meta_key = %s AND post_id = %d", esc_sql( $meta_key ), $post_id ) );
+    }
+
+    public static function update_post_id_meta_value( $post_id, $meta_key, $meta_value ){
+        global $wpdb;
+        return $wpdb->query( $wpdb->prepare( "
+            UPDATE $wpdb->postmeta
+            SET meta_value = %s
+            WHERE meta_key = %s AND post_id = %d", $meta_value, $meta_key, $post_id ) );
     }
 
     public static function add_location_grid_meta( $post_type, $post_id, $grid_id ){
@@ -170,7 +197,7 @@ class Disciple_Tools_People_Groups
 
         // get current people groups
         // check for duplicate and return fail install because of duplicate.
-        if ( self::duplicate_db_checker_by_rop3( $rop3 ) > 0 ) {
+        if ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) > 0 ) {
             return [
                 'status' => 'Duplicate',
                 'message' => 'Duplicate found. Already installed.'
@@ -184,40 +211,75 @@ class Disciple_Tools_People_Groups
             ];
         }
 
+        // If no duplicates, then attempt to locate any corresponding post ids.
+        $post_ids = self::find_post_ids_by_rop3( $rop3 );
+        if ( !empty( $post_ids ) && count( $post_ids ) > 0 ) {
 
-        // if no duplicate, then install full people group
-        $post = [
-              'post_title' => $rop3_row[4] . ' (' . $rop3_row[1] . ' | ' . $rop3_row[3] . ')',
-              'post_type' => 'peoplegroups',
-              'post_status' => 'publish',
-              'comment_status' => 'closed',
-              'ping_status' => 'closed',
-        ];
-        foreach ( $rop3_row as $key => $value ) {
-            $post['meta_input']['jp_'.$columns[$key]] = $value;
-        }
-        if ( ! empty( $imb_rop3_row ) ) { // adds only if match is found
-            foreach ( $imb_rop3_row as $imb_key => $imb_value ) {
-                $post['meta_input']['imb_'.$imb_columns[$imb_key]] = $imb_value;
-            }
-        }
-        $post_id = wp_insert_post( $post );
+            // Merge into first record from results set.
+            $post_id = $post_ids[0]['post_id'];
 
-        // return success
-        if ( ! is_wp_error( $post_id ) ) {
+            // Fetch existing country and population values.
+            $jp_ctry = self::get_post_id_meta_value( $post_id, 'jp_Ctry' );
+            $jp_population = self::get_post_id_meta_value( $post_id, 'jp_Population' );
 
-            // Capture corresponding location_grid_meta to above location_grid for newly created post id.
+            // Update existing values.
+            $updated_jp_ctry = !empty( $jp_ctry ) ? $jp_ctry . ', ' . $country : $country;
+            $updated_jp_population = !empty( $jp_population ) ? ( intval( $jp_population ) + intval( $rop3_row[6] ) ) : intval( $jp_population );
+
+            // Update corresponding parent record.
+            self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
+            self::update_post_id_meta_value( $post_id, 'jp_Population', $updated_jp_population );
+
+            // Add new location grid meta value.
             self::add_location_grid_meta( 'peoplegroups', $post_id, $location_grid );
+
+            // Ensure post title adopts correct shape.
+            $post = [
+                'ID' => $post_id,
+                'post_title' => sprintf( '%s (%s)', $rop3_row[4], $rop3_row[3] )
+            ];
+            wp_update_post( $post );
 
             return [
                 'status' => 'Success',
-                'message' => 'New people group has been added! ( <a href="'.admin_url() . 'post.php?post=' . $post_id . '&action=edit">View new record</a> )',
+                'message' => 'New people group has been added! ( <a href="' . admin_url() . 'post.php?post=' . $post_id . '&action=edit">View updated record</a> )'
             ];
         } else {
-            return [
-                'status' => 'Fail',
-                'message' => 'Unable to insert ' . $rop3_row[4],
+
+            // If no duplicate or parent record; then install full people group as new record.
+            $post = [
+                'post_title' => $rop3_row[4] . ' (' . $rop3_row[1] . ' | ' . $rop3_row[3] . ')',
+                'post_type' => 'peoplegroups',
+                'post_status' => 'publish',
+                'comment_status' => 'closed',
+                'ping_status' => 'closed',
             ];
+            foreach ( $rop3_row as $key => $value ) {
+                $post['meta_input']['jp_'.$columns[$key]] = $value;
+            }
+            if ( ! empty( $imb_rop3_row ) ) { // adds only if match is found
+                foreach ( $imb_rop3_row as $imb_key => $imb_value ) {
+                    $post['meta_input']['imb_'.$imb_columns[$imb_key]] = $imb_value;
+                }
+            }
+            $post_id = wp_insert_post( $post );
+
+            // Return success
+            if ( ! is_wp_error( $post_id ) ) {
+
+                // Capture corresponding location_grid_meta to above location_grid for newly created post id.
+                self::add_location_grid_meta( 'peoplegroups', $post_id, $location_grid );
+
+                return [
+                    'status' => 'Success',
+                    'message' => 'New people group has been added! ( <a href="'.admin_url() . 'post.php?post=' . $post_id . '&action=edit">View new record</a> )',
+                ];
+            } else {
+                return [
+                    'status' => 'Fail',
+                    'message' => 'Unable to insert ' . $rop3_row[4],
+                ];
+            }
         }
     }
 
@@ -239,6 +301,7 @@ class Disciple_Tools_People_Groups
         $posts_tb_values = [];
         $postmeta_tb_values = [];
         $location_grid_meta_tb_values = [];
+        $posts_tb_updates_count = 0;
 
         // Determine sql id starting points + sql assets.
         $last_posts_tb_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(ID) FROM `{$wpdb->posts}`" ) );
@@ -256,7 +319,7 @@ class Disciple_Tools_People_Groups
             if ( !empty( $group['rop3'] ) && !empty( $group['country'] ) ){
                 $rop3 = $group['rop3'];
                 $country = $group['country'];
-                $group_results[$rop3] = $group;
+                $group_results[$rop3][$country] = $group;
 
                 // Attempt to locate corresponding jp csv row.
                 $jp_data_rop3_row = '';
@@ -277,74 +340,115 @@ class Disciple_Tools_People_Groups
                 }
 
                 // Ensure a corresponding jp csv row is located.
-                if ( empty( $jp_data_rop3_row ) || ! is_array( $jp_data_rop3_row ) ){
-                    $group_results[$rop3]['status'] = 'fail';
-                    $group_results[$rop3]['message'] = 'ROP3 number not found in JP data.';
+                if ( empty( $jp_data_rop3_row ) || !is_array( $jp_data_rop3_row ) ) {
+                    $group_results[$rop3][$country]['status'] = 'fail';
+                    $group_results[$rop3][$country]['message'] = 'ROP3 number not found in JP data.';
 
-                    // Ensure group has no duplicates already installed.
-                } elseif ( self::duplicate_db_checker_by_rop3( $rop3 ) > 0 ){
-                    $group_results[$rop3]['status'] = 'duplicate';
-                    $group_results[$rop3]['message'] = 'Duplicate found. Already installed.';
+                // Ensure group has no duplicates already installed.
+                } elseif ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) > 0 ) {
+                    $group_results[$rop3][$country]['status'] = 'duplicate';
+                    $group_results[$rop3][$country]['message'] = 'Duplicate found. Already installed.';
 
                 } else {
 
-                    // Create posts table values for direct sql inserts.
-                    $posts_tb_id = ++$last_posts_tb_id;
-                    $posts_tb_post_author = get_current_user_id();
-                    $posts_tb_post_date = gmdate( 'Y-m-d H:i:s' );
-                    $posts_tb_post_date_gmt = gmdate( 'Y-m-d H:i:s' );
-                    $posts_tb_post_content = '';
-                    $posts_tb_post_title = str_replace( "'", '-', $jp_data_rop3_row[4] . ' (' . $jp_data_rop3_row[1] . ' | ' . $jp_data_rop3_row[3] . ')' );
-                    $posts_tb_post_excerpt = '';
-                    $posts_tb_post_status = 'publish';
-                    $posts_tb_comment_status = 'closed';
-                    $posts_tb_ping_status = 'closed';
-                    $posts_tb_post_password = '';
-                    $posts_tb_post_name = str_replace( "'", '-', strtolower( $jp_data_rop3_row[1] . '-' . $jp_data_rop3_row[3] ) );
-                    $posts_tb_to_ping = '';
-                    $posts_tb_pinged = '';
-                    $posts_tb_post_modified = gmdate( 'Y-m-d H:i:s' );
-                    $posts_tb_post_modified_gmt = gmdate( 'Y-m-d H:i:s' );
-                    $posts_tb_post_content_filtered = '';
-                    $posts_tb_post_parent = 0;
-                    $posts_tb_guid = site_url( '/peoplegroups/' . $posts_tb_id . '/' );
-                    $posts_tb_menu_order = 0;
-                    $posts_tb_post_type = 'peoplegroups';
-                    $posts_tb_post_mime_type = '';
-                    $posts_tb_comment_count = 0;
-                    $posts_tb_values[] = "( {$posts_tb_id},{$posts_tb_post_author},'{$posts_tb_post_date}','{$posts_tb_post_date_gmt}','{$posts_tb_post_content}','{$posts_tb_post_title}','{$posts_tb_post_excerpt}','{$posts_tb_post_status}','{$posts_tb_comment_status}','{$posts_tb_ping_status}','{$posts_tb_post_password}','{$posts_tb_post_name}','{$posts_tb_to_ping}','{$posts_tb_pinged}','{$posts_tb_post_modified}','{$posts_tb_post_modified_gmt}','{$posts_tb_post_content_filtered}',{$posts_tb_post_parent},'{$posts_tb_guid}',{$posts_tb_menu_order},'{$posts_tb_post_type}','{$posts_tb_post_mime_type}',{$posts_tb_comment_count} )";
+                    // If no duplicates, then attempt to locate any corresponding post ids.
+                    $post_ids = self::find_post_ids_by_rop3( $rop3 );
+                    if ( !empty( $post_ids ) && count( $post_ids ) > 0 ) {
 
-                    // Create post_meta table values for direct sql inserts.
-                    foreach ( $jp_data_rop3_row as $key => $value ){
-                        $postmeta_tb_meta_id = ++$last_postmeta_tb_id;
-                        $postmeta_tb_post_id = $posts_tb_id;
-                        $postmeta_tb_meta_key = str_replace( "'", '-', 'jp_' . $jp_columns[$key] );
-                        $postmeta_tb_meta_value = str_replace( "'", '-', $value );
-                        $postmeta_tb_values[] = "( {$postmeta_tb_meta_id},{$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
-                    }
+                        // Merge into first record from results set.
+                        $post_id = $post_ids[0]['post_id'];
 
-                    if ( !empty( $imb_data_rop3_row ) ){
-                        foreach ( $imb_data_rop3_row as $imb_key => $imb_value ){
-                            $postmeta_tb_meta_id = ++$last_postmeta_tb_id;
-                            $postmeta_tb_post_id = $posts_tb_id;
-                            $postmeta_tb_meta_key = str_replace( "'", '-', 'imb_' . $imb_columns[$imb_key] );
-                            $postmeta_tb_meta_value = str_replace( "'", '-', $imb_value );
-                            $postmeta_tb_values[] = "( {$postmeta_tb_meta_id},{$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
+                        // Fetch existing country and population values.
+                        $jp_ctry = self::get_post_id_meta_value( $post_id, 'jp_Ctry' );
+                        $jp_population = self::get_post_id_meta_value( $post_id, 'jp_Population' );
+
+                        // Update existing values.
+                        $updated_jp_ctry = !empty( $jp_ctry ) ? $jp_ctry . ', ' . $country : $country;
+                        $updated_jp_population = !empty( $jp_population ) ? ( intval( $jp_population ) + intval( $jp_data_rop3_row[6] ) ) : intval( $jp_population );
+
+                        // Update corresponding parent record.
+                        self::update_post_id_meta_value( $post_id, 'jp_Ctry', $updated_jp_ctry );
+                        self::update_post_id_meta_value( $post_id, 'jp_Population', $updated_jp_population );
+
+                        // Capture new location grid meta value.
+                        if ( !empty( $jp_data_rop3_row[33] ) ) {
+                            $location_grid_meta_tb_values[] = [
+                                'post_type' => 'peoplegroups',
+                                'post_id' => $post_id,
+                                'grid_id' => $jp_data_rop3_row[33]
+                            ];
                         }
-                    }
 
-                    // Capture location grid meta references.
-                    if ( !empty( $jp_data_rop3_row[33] ) ){
-                        $location_grid_meta_tb_values[] = [
-                            'post_type' => 'peoplegroups',
-                            'post_id' => $posts_tb_id,
-                            'grid_id' => $jp_data_rop3_row[33]
+                        // Ensure post title adopts correct shape.
+                        $post = [
+                            'ID' => $post_id,
+                            'post_title' => sprintf( '%s (%s)', $jp_data_rop3_row[4], $jp_data_rop3_row[3] )
                         ];
-                    }
+                        wp_update_post( $post );
 
-                    // Work on the assumption all will be/has been well, if this point is reached..!
-                    $group_results[$rop3]['status'] = 'success';
-                    $group_results[$rop3]['message'] = 'New people group has been added! ( <a href="' . admin_url() . 'post.php?post=' . $posts_tb_id . '&action=edit">View new record</a> )';
+                        $group_results[$rop3][$country]['status'] = 'update';
+                        $group_results[$rop3][$country]['message'] = 'New people group has been added! ( <a href="' . admin_url() . 'post.php?post=' . $post_id . '&action=edit">View updated record</a> )';
+
+                        $posts_tb_updates_count++;
+
+                    } else {
+
+                        // Create posts table values for direct sql inserts.
+                        $posts_tb_id = ++$last_posts_tb_id;
+                        $posts_tb_post_author = get_current_user_id();
+                        $posts_tb_post_date = gmdate( 'Y-m-d H:i:s' );
+                        $posts_tb_post_date_gmt = gmdate( 'Y-m-d H:i:s' );
+                        $posts_tb_post_content = '';
+                        $posts_tb_post_title = esc_sql( $jp_data_rop3_row[4] . ' (' . $jp_data_rop3_row[1] . ' | ' . $jp_data_rop3_row[3] . ')' );
+                        $posts_tb_post_excerpt = '';
+                        $posts_tb_post_status = 'publish';
+                        $posts_tb_comment_status = 'closed';
+                        $posts_tb_ping_status = 'closed';
+                        $posts_tb_post_password = '';
+                        $posts_tb_post_name = esc_sql( strtolower( $jp_data_rop3_row[1] . '-' . $jp_data_rop3_row[3] ) );
+                        $posts_tb_to_ping = '';
+                        $posts_tb_pinged = '';
+                        $posts_tb_post_modified = gmdate( 'Y-m-d H:i:s' );
+                        $posts_tb_post_modified_gmt = gmdate( 'Y-m-d H:i:s' );
+                        $posts_tb_post_content_filtered = '';
+                        $posts_tb_post_parent = 0;
+                        $posts_tb_guid = site_url( '/peoplegroups/' . $posts_tb_id . '/' );
+                        $posts_tb_menu_order = 0;
+                        $posts_tb_post_type = 'peoplegroups';
+                        $posts_tb_post_mime_type = '';
+                        $posts_tb_comment_count = 0;
+                        $posts_tb_values[] = "( {$posts_tb_id},{$posts_tb_post_author},'{$posts_tb_post_date}','{$posts_tb_post_date_gmt}','{$posts_tb_post_content}','{$posts_tb_post_title}','{$posts_tb_post_excerpt}','{$posts_tb_post_status}','{$posts_tb_comment_status}','{$posts_tb_ping_status}','{$posts_tb_post_password}','{$posts_tb_post_name}','{$posts_tb_to_ping}','{$posts_tb_pinged}','{$posts_tb_post_modified}','{$posts_tb_post_modified_gmt}','{$posts_tb_post_content_filtered}',{$posts_tb_post_parent},'{$posts_tb_guid}',{$posts_tb_menu_order},'{$posts_tb_post_type}','{$posts_tb_post_mime_type}',{$posts_tb_comment_count} )";
+
+                        // Create post_meta table values for direct sql inserts.
+                        foreach ( $jp_data_rop3_row as $key => $value ){
+                            $postmeta_tb_post_id = $posts_tb_id;
+                            $postmeta_tb_meta_key = esc_sql( 'jp_' . $jp_columns[$key] );
+                            $postmeta_tb_meta_value = esc_sql( $value );
+                            $postmeta_tb_values[] = "( {$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
+                        }
+
+                        if ( !empty( $imb_data_rop3_row ) ){
+                            foreach ( $imb_data_rop3_row as $imb_key => $imb_value ){
+                                $postmeta_tb_post_id = $posts_tb_id;
+                                $postmeta_tb_meta_key = esc_sql( 'imb_' . $imb_columns[$imb_key] );
+                                $postmeta_tb_meta_value = esc_sql( $imb_value );
+                                $postmeta_tb_values[] = "( {$postmeta_tb_post_id},'{$postmeta_tb_meta_key}','{$postmeta_tb_meta_value}' )";
+                            }
+                        }
+
+                        // Capture location grid meta references.
+                        if ( !empty( $jp_data_rop3_row[33] ) ){
+                            $location_grid_meta_tb_values[] = [
+                                'post_type' => 'peoplegroups',
+                                'post_id' => $posts_tb_id,
+                                'grid_id' => $jp_data_rop3_row[33]
+                            ];
+                        }
+
+                        // Work on the assumption all will be/has been well, if this point is reached..!
+                        $group_results[$rop3][$country]['status'] = 'success';
+                        $group_results[$rop3][$country]['message'] = 'New people group has been added! ( <a href="' . admin_url() . 'post.php?post=' . $posts_tb_id . '&action=edit">View new record</a> )';
+                    }
                 }
             }
         }
@@ -389,7 +493,6 @@ class Disciple_Tools_People_Groups
             // Next, insert associated post meta records; assuming post creation went well
             if ( !empty( $postmeta_tb_values ) && ( $posts_tb_insert_count > 0 ) ){
                 $postmeta_tb_insert_sql = "INSERT INTO `{$wpdb->postmeta}` (
-                    meta_id,
                     post_id,
                     meta_key,
                     meta_value
@@ -400,19 +503,18 @@ class Disciple_Tools_People_Groups
                 $postmeta_tb_insert_count = $wpdb->query( $wpdb->prepare( $postmeta_tb_insert_sql ) );
                 // phpcs:enable
             }
+        }
 
-            // Finally, insert location grid meta records; which simultaneously works across 3 tables!
-            if ( $posts_tb_insert_count > 0 ){
-                foreach ( $location_grid_meta_tb_values as $grid ){
-                    self::add_location_grid_meta( $grid['post_type'], $grid['post_id'], $grid['grid_id'] );
-                }
-            }
+        // Finally, insert location grid meta records; which simultaneously works across 3 tables!
+        foreach ( $location_grid_meta_tb_values as $grid ) {
+            self::add_location_grid_meta( $grid['post_type'], $grid['post_id'], $grid['grid_id'] );
         }
 
         return [
             'total_groups_count' => $total_groups_count,
             'total_groups_insert_success' => $posts_tb_insert_count,
-            'total_groups_insert_fail' => ( $total_groups_count - $posts_tb_insert_count ),
+            'total_groups_insert_updates' => $posts_tb_updates_count,
+            'total_groups_insert_fail' => ( $total_groups_count - ( $posts_tb_insert_count + $posts_tb_updates_count ) ),
             'groups' => $group_results
         ];
     }
@@ -434,7 +536,7 @@ class Disciple_Tools_People_Groups
         foreach ( $jp_data as $row ){
             $country = $row[1];
             $rop3 = $row[3];
-            if ( isset( $country, $rop3 ) && ( self::duplicate_db_checker_by_rop3( $rop3 ) == 0 ) ){
+            if ( isset( $country, $rop3 ) && ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) == 0 ) ){
                 $total_records++;
 
                 // Instantiate if need be.

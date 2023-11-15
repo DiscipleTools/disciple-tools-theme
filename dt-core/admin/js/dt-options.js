@@ -203,7 +203,7 @@ jQuery(document).ready(function ($) {
         autoOpen: false,
         hide: 'fade',
         show: 'fade',
-        height: 1000,
+        height: 'auto',
         width: 'auto',
         resizable: true,
         title: 'Translation Dialog',
