@@ -59,7 +59,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         $query = $this->get_query( $params['post_type'], $params['p2p_type'], $params['p2p_direction'] );
 
-        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 10, $params['focus_id'] ?? 0 );
+        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0 );
     }
 
     public function scripts() {
@@ -112,6 +112,9 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                         'focus_title' => __( 'Focus On Node', 'disciple_tools' ),
                         'focus_are_you_sure_question' => __( 'Are you sure you wish to focus on node?', 'disciple_tools' ),
                         'focus_yes' => __( 'Yes', 'disciple_tools' )
+                    ],
+                    'infinite_loops' => [
+                        'title' => __( 'Infinite Loops', 'disciple_tools' )
                     ]
                 ],
                 'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? []
@@ -216,12 +219,28 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
         $array = [
             'id' => $parent_id,
-            'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM' ,
-            'content' => 'Gen ' . $gen ,
+            'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM',
+            'content' => 'Gen ' . $gen,
             'children' => $children,
+            'has_infinite_loop' => $this->has_infinite_loop( $parent_id, $children )
         ];
 
         return $array;
+    }
+
+    public function has_infinite_loop( $parent_id, $children ): bool {
+        foreach ( $children ?? [] as $child ) {
+            if ( $parent_id === $child['id'] ) {
+                return true;
+            }
+            if ( !empty( $child['children'] ) ) {
+                if ( $this->has_infinite_loop( $parent_id, $child['children'] ) ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
 new DT_Metrics_Groups_Genmap();

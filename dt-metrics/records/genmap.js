@@ -31,16 +31,28 @@ jQuery(document).ready(function($) {
                 <h2 style="float:right;">${window.lodash.escape(translations.title)}</h2>
               </div>
           </div>
-          <hr>
-          <div class="grid-x grid-padding-x">
-              <div class="cell medium-9">
-                <div id="genmap" style="width: 100%; border: 1px solid lightgrey; overflow:scroll;"></div>
-              </div>
-              <div class="cell medium-3">
-                <div id="genmap-details"></div>
-              </div>
 
-           <div id="modal" class="reveal" data-reveal></div>
+          <hr>
+
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-9">
+              <div id="genmap" style="width: 100%; border: 1px solid lightgrey; overflow:scroll;"></div>
+            </div>
+            <div class="cell medium-3">
+              <div id="genmap-details"></div>
+            </div>
+          </div>
+
+          <div class="grid-x grid-padding-x" id="infinite_loops_grid_div" style="display: none;">
+            <div class="cell medium-12">
+              <br>
+              <h2 style="float:right;">${window.escape(translations.infinite_loops.title).replace('%20', ' ')}</h2>
+              <hr>
+              <div id="infinite_loops_div"></div>
+            </div>
+          </div>
+
+          <div id="modal" class="reveal" data-reveal></div>
        `)
 
     window.load_genmap = ( focus_id = null ) => {
@@ -52,7 +64,7 @@ jQuery(document).ready(function($) {
         'p2p_type': jQuery(select_post_type_fields).find('option:selected').data('p2p_key'),
         'p2p_direction': jQuery(select_post_type_fields).find('option:selected').data('p2p_direction'),
         'post_type': selected_post_type,
-        'gen_depth_limit': 10000
+        'gen_depth_limit': 100,
       };
 
       // Dynamically update URL parameters.
@@ -75,6 +87,11 @@ jQuery(document).ready(function($) {
       .then(response => {
         let container = jQuery('#genmap')
         container.empty()
+
+        let loops = identify_infinite_loops( response, [] );
+        if ( loops.length > 0 ) {
+          display_infinite_loops( loops );
+        }
 
         var nodeTemplate = function(data) {
           return `
@@ -101,7 +118,7 @@ jQuery(document).ready(function($) {
         })
       })
       .catch(error => {
-        let msg = (error.responseJSON['message']) ? error.responseJSON['message'] : error.statusText;
+        let msg = ( (error.responseJSON !== undefined) && error.responseJSON['message'] ) ? error.responseJSON['message'] : error.statusText;
         alert(window.lodash.escape(msg));
       });
     }
@@ -156,6 +173,98 @@ jQuery(document).ready(function($) {
 
     jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
       handle_add_child();
+    });
+  }
+
+  function identify_infinite_loops( data, loops ) {
+    data['children'].forEach(function ( item ) {
+      if ( item['has_infinite_loop'] ) {
+        loops.push({
+          'id': item['id'],
+          'name': item['name'],
+          'loop': extract_infinite_loop( item['id'], item['children'], [], false )
+        });
+
+      } else if ( item['children'].length > 0 ) {
+        loops = identify_infinite_loops( item, loops );
+      }
+    });
+
+    return loops;
+  }
+
+  function extract_infinite_loop( parent_id, children, loop, loop_closed ) {
+    children.forEach(function ( item ) {
+      if ( parent_id === item['id'] ) {
+        loop_closed = true;
+
+      } else if ( !loop_closed ) {
+        loop.push(item);
+        loop = extract_infinite_loop( parent_id, item['children'], loop, loop_closed );
+      }
+    });
+
+    return loop;
+  }
+
+  function display_infinite_loops( loops ) {
+    let loops_grid_div = jQuery('#infinite_loops_grid_div');
+    let loops_div = jQuery('#infinite_loops_div');
+    let selected_post_type = jQuery('#select_post_types').val();
+
+    jQuery(loops_grid_div).fadeOut('fast', function () {
+      jQuery(loops_div).empty();
+
+      // Ensure duplicate loops are removed.
+      let processed_loop_ids = [];
+      let filtered_loops = loops.filter( loop => {
+        if ( !processed_loop_ids.includes( loop['id'] ) ) {
+          processed_loop_ids.push( loop['id'] );
+          return true;
+
+        } else {
+          return false;
+        }
+      });
+
+      // Proceed with filtered loops display
+      filtered_loops.forEach(function ( item ) {
+        let html = `
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        <a style="margin-right: 10px;" href="${window.dtMetricsProject.site_url}/${window.escape(selected_post_type).replaceAll('%20', ' ')}/${window.escape(item['id']).replaceAll('%20', ' ')}" target="_blank" class="button">
+                            <i class="mdi mdi-id-card" style="font-size: 15px;"></i>
+                        </a>
+                        ${window.escape(item['name']).replaceAll('%20', ' ')}
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+              ${(function func(loop, post_type) {
+                let tbody_html = ``;
+                loop.forEach(function ( child ) {
+                  tbody_html += `
+                  <tr>
+                    <td>
+                        <a href="${window.dtMetricsProject.site_url}/${window.escape(post_type).replaceAll('%20', ' ')}/${window.escape(child['id']).replaceAll('%20', ' ')}" target="_blank">
+                          ${window.escape(child['name']).replaceAll('%20', ' ')}
+                        </a>
+                    </td>
+                  </tr>
+                  `;
+                });
+                return tbody_html;
+              })(item['loop'], selected_post_type)}
+            </tbody>
+        </table>`;
+
+        // Append to infinite loops display area.
+        jQuery(loops_div).append(html);
+      });
+
+      jQuery(loops_grid_div).fadeIn('fast');
     });
   }
 
@@ -285,6 +394,7 @@ jQuery(document).ready(function($) {
   }
 
   function refresh_post_type_field_select_list(callback = null) {
+    jQuery('#infinite_loops_grid_div').fadeOut('fast');
     let post_types = window.dtMetricsProject.post_types;
     let selected_post_type = jQuery('#select_post_types').val();
     if (post_types && selected_post_type && post_types[selected_post_type]) {
