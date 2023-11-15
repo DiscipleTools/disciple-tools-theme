@@ -73,7 +73,6 @@ jQuery(document).ready(function($) {
       window.makeRequest('POST', 'metrics/records/genmap', payload )
       .promise()
       .then(response => {
-        console.log(response)
         let container = jQuery('#genmap')
         container.empty()
 
