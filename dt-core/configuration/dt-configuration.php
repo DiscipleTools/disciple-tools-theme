@@ -136,7 +136,7 @@ function dt_log_sent_emails( $mail_data ){
         dt_activity_insert( [
             'action' => 'mail_sent',
             'object_name' => $mail_data['subject'] ?? '',
-            'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : [],
+            'meta_value' => !empty( $mail_data['to'] ) ? json_encode( $mail_data['to'] ) : '',
             'object_note' => ( strlen( $mail_data['message'] ) > 100 ) ? substr( $mail_data['message'], 0, 100 ) . '...' : $mail_data['message']
         ] );
     }

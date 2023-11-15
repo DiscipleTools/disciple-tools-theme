@@ -48,6 +48,8 @@ class Disciple_Tools_Metrics{
 
                 require_once( get_template_directory() . '/dt-metrics/combined/mapbox-maps.php' );
 
+                require_once( get_template_directory() . '/dt-metrics/records/records-endpoints.php' );
+
                 if ( dt_has_permissions( [ 'dt_all_access_contacts', 'view_project_metrics' ] ) ){ // tests if project level permissions
                     /* Contacts */
                     if ( !empty( $modules['dmm_module']['enabled'] ) ){
@@ -74,7 +76,7 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
 
                     /* Record Types */
-                    require_once( get_template_directory() . '/dt-metrics/records/generation-tree.php' );
+                    require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
                 }
                 if ( !empty( $modules['access_module']['enabled'] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );

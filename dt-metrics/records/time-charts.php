@@ -24,14 +24,12 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
         'multi_select',
         'key_select',
         'connection',
-        'boolean',
         'number'
     ]; // connection and number would be interesting for additions to groups, and quick button usage
     public $multi_fields = [
         'tags',
         'multi_select',
-        'key_select',
-        'boolean',
+        'key_select'
     ];
 
     public function __construct() {
@@ -85,11 +83,11 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
-
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
+                'site' => esc_url_raw( site_url( '/' ) ),
                 'root'               => esc_url_raw( rest_url() ),
                 'theme_uri'          => get_template_directory_uri(),
                 'nonce'              => wp_create_nonce( 'wp_rest' ),
@@ -109,14 +107,21 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
                     'added_label' => __( 'Added', 'disciple_tools' ),
+                    'deleted_label' => __( 'Deleted', 'disciple_tools' ),
+                    'connected_label' => __( 'Connected', 'disciple_tools' ),
+                    'disconnected_label' => __( 'Disconnected', 'disciple_tools' ),
                     'tooltip_label' => _x( '%1$s in %2$s', 'Total in January', 'disciple_tools' ),
                     'date_select_label' => __( 'Date', 'disciple_tools' ),
                     'all_time' => __( 'All Time', 'disciple_tools' ),
                     'stacked_chart_title' => __( 'All cumulative totals', 'disciple_tools' ),
                     'cumulative_chart_title' => __( 'Single cumulative totals', 'disciple_tools' ),
-                    'additions_chart_title' => __( 'Number added', 'disciple_tools' ),
+                    'additions_chart_title' => __( 'Records changes', 'disciple_tools' ),
                     'true_label' => __( 'Yes', 'disciple_tools' ),
                     'false_label' => __( 'No', 'disciple_tools' ),
+                    'modal_title' => __( 'Records', 'disciple_tools' ),
+                    'modal_table_head_no' => __( 'No.', 'disciple_tools' ),
+                    'modal_table_head_title' => __( 'Title', 'disciple_tools' ),
+                    'modal_no_records' => __( 'No Records Available', 'disciple_tools' )
                 ],
                 'select_options' => [
                     'post_type_select_options' => $this->post_type_select_options,
@@ -124,7 +129,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 ],
                 'multi_fields' => $this->multi_fields,
                 'fields_type_filter' => $this->post_field_types_filter,
-                'field_settings' => $this->field_settings,
+                'field_settings' => $this->field_settings
             ]
         );
     }
@@ -138,7 +143,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'time_metrics_by_month' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => [ $this, 'has_permission' ],
                 ],
             ]
         );
@@ -148,7 +153,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'time_metrics_by_year' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => [ $this, 'has_permission' ],
                 ],
             ]
         );
@@ -158,18 +163,13 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'field_settings' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => [ $this, 'has_permission' ],
                 ],
             ]
         );
     }
 
     public function time_metrics_by_month( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( 'time_metrics_by_month', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
-
-
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
         $field = $url_params['field'];
@@ -184,9 +184,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     }
 
     public function time_metrics_by_year( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( 'time_metrics_by_year', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
         $field = $url_params['field'];
@@ -200,9 +197,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
     }
 
     public function field_settings( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ) {
-            wp_send_json_error( new WP_Error( 'get_field_settings', 'Missing Permissions', [ 'status' => 400 ] ) );
-        }
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
     }
@@ -215,7 +209,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
         } elseif ( $field_settings[$field]['type'] === 'connection' ) {
             $connection_type = $field_settings[$field]['p2p_key'];
-            return DT_Counter_Post_Stats::get_connection_field_by_month( $connection_type, $year );
+            return DT_Counter_Post_Stats::get_connection_field_by_month( $post_type, $field, $connection_type, $year );
         } elseif ( $field_settings[$field]['type'] === 'number' ) {
             return DT_Counter_Post_Stats::get_number_field_by_month( $post_type, $field, $year );
         } else {
@@ -231,7 +225,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field );
         } elseif ( $field_settings[$field]['type'] === 'connection' ) {
             $connection_type = $field_settings[$field]['p2p_key'];
-            return DT_Counter_Post_Stats::get_connection_field_by_year( $connection_type );
+            return DT_Counter_Post_Stats::get_connection_field_by_year( $post_type, $field, $connection_type );
         }  elseif ( $field_settings[$field]['type'] === 'number' ) {
             return DT_Counter_Post_Stats::get_number_field_by_year( $post_type, $field );
         } else {

@@ -85,7 +85,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
-
         $post_type = $this->post_types[0];
         $field = array_keys( $this->post_field_select_options )[0];
         wp_localize_script(
@@ -104,6 +103,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     'post_field_select_any_activity_label' => __( 'Any Activity', 'disciple_tools' ),
                     'total_label' => __( 'Total', 'disciple_tools' ),
                     'date_select_label' => __( 'Date Range', 'disciple_tools' ),
+                    'date_select_custom_label' => __( 'Custom Range', 'disciple_tools' ),
                     'submit_button_label' => __( 'Reload', 'disciple_tools' ),
                     'results_table_head_title_label' => __( 'Title', 'disciple_tools' ),
                     'results_table_head_date_label' => __( 'Time Activity Recorded', 'disciple_tools' ),
@@ -125,7 +125,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         $namespace = 'dt/v' . $version;
 
         register_rest_route(
-            $namespace, '/metrics/field_settings/(?P<post_type>\w+)', [
+            $namespace, '/metrics/date_range_field_settings/(?P<post_type>\w+)', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'field_settings' ],
@@ -190,9 +190,14 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
     }
 
     public function date_range_activity( WP_REST_Request $request ){
+        global $wpdb;
 
         $params = $request->get_params();
-        if ( isset( $params['post_type'], $params['field'], $params['ts_start'], $params['ts_end'] ) ){
+        if ( isset( $params['post_type'], $params['field'], $params['date_start'], $params['date_end'] ) ){
+
+            // Provide a suitable daily spread, from the start of a day to the end.
+            $ts_start = strtotime( $params['date_start'] . ' 00:00:00' );
+            $ts_end = strtotime( $params['date_end'] . ' 23:59:59' );
 
             // Fetch associated field settings.
             $settings = $this->get_field_settings( $params['post_type'] )[$params['field']];
@@ -204,6 +209,35 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $obj_subtype_sql = '';
 
             // Accommodate special cases.
+            if ( ( $field_type == 'date' ) && ( $params['field'] == 'post_date' ) ) {
+
+                $results = $wpdb->get_results( $wpdb->prepare( "
+                SELECT DISTINCT p.ID as id, p.post_title AS post_title, p.post_type AS post_type, UNIX_TIMESTAMP(p.post_date) AS post_timestamp
+                FROM $wpdb->posts p
+                WHERE p.post_type = %s
+                AND p.post_date BETWEEN FROM_UNIXTIME(%d) AND FROM_UNIXTIME(%d)
+                ORDER BY post_timestamp DESC;
+                ", $params['post_type'], $ts_start, $ts_end ), ARRAY_A );
+
+                $posts = [];
+                foreach ( $results ?? [] as $post ){
+                    $posts[] = [
+                        'id' => $post['id'],
+                        'post_type' => $post['post_type'],
+                        'name' => $post['post_title'],
+                        'timestamp' => $post['post_timestamp'],
+                        'new_value' => '',
+                        'deleted' => '',
+                        'field_type' => $field_type
+                    ];
+                }
+
+                return [
+                    'total' => count( $posts ),
+                    'posts' => $posts
+                ];
+            }
+
             if ( $field_type == 'communication_channel' ){
                 $field_type_sql = "AND (field_type = '' OR field_type = '" . esc_sql( $field_type ) . "')";
                 $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "%'";
@@ -251,7 +285,6 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 'disconnected from'
             ] );
 
-            global $wpdb;
             // phpcs:disable
             $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT al.*, p.post_title as post_title, p.post_type as post_type
@@ -265,7 +298,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $meta_value_sql
             $obj_subtype_sql
             ORDER BY hist_time DESC;
-            ", $params['post_type'], $params['ts_start'], $params['ts_end'] ), ARRAY_A );
+            ", $params['post_type'], $ts_start, $ts_end ), ARRAY_A );
             // phpcs:enable
 
             // Package result findings and return.

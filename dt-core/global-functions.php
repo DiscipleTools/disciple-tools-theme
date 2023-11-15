@@ -969,6 +969,34 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_is_registration_enabled_on_site' ) ) {
+        function dt_is_registration_enabled_on_site() {
+
+            if ( get_option( 'users_can_register' ) ) {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+
+    if ( ! function_exists( 'dt_can_users_register' ) ) {
+        /**
+         * Can users register on this site/subsite
+         *
+         * @return bool
+         */
+        function dt_can_users_register() {
+            if ( is_multisite() ) {
+                return dt_multisite_is_registration_enabled_on_subsite() === 1;
+            }
+
+            return dt_is_registration_enabled_on_site();
+        }
+    }
+
+
     /**
      * Returns a completely unique 64 bit hashed key
      * @since 1.1

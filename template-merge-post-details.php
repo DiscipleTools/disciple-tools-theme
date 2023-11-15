@@ -40,6 +40,15 @@ if ( is_wp_error( $dt_current_post ) || is_wp_error( $dt_duplicate_post ) ) {
     die();
 }
 
+// Ensure oldest of the two records, defaults to primary role.
+if ( isset( $dt_current_post['post_date']['timestamp'], $dt_duplicate_post['post_date']['timestamp'] ) ) {
+    if ( $dt_duplicate_post['post_date']['timestamp'] < $dt_current_post['post_date']['timestamp'] ) {
+        $dt_temp_post = $dt_current_post;
+        $dt_current_post = $dt_duplicate_post;
+        $dt_duplicate_post = $dt_temp_post;
+    }
+}
+
 $post_settings        = DT_Posts::get_post_settings( $post_type );
 $post_settings_fields = DT_Posts::get_post_field_settings( $post_type, false );
 
@@ -285,7 +294,8 @@ function list_merge_capable_field_types(): array {
         'location_meta',
         'location',
         'tags',
-        'connection'
+        'connection',
+        'link'
     ];
 }
 

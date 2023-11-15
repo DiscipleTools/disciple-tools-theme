@@ -18,7 +18,9 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
         $url = dt_get_url_path();
         $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
-        if ( $login_page_enabled && ( 'login' === substr( $url, 0, 5 ) ) ) {
+        $login_url = DT_Login_Fields::get( 'login_url' );
+
+        if ( $login_page_enabled && ( $login_url === substr( $url, 0, strlen( $login_url ) ) ) ) {
             add_action( 'template_redirect', [ $this, 'theme_redirect' ] );
             add_filter( 'dt_blank_access', function(){ return true;
             }, 100, 1 );
@@ -43,7 +45,13 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
 
     public function body(){
 
-        do_action( 'dt_login_login_page_header' );
+        $url = new DT_URL( dt_get_url_path() );
+        $hide_nav = $url->query_params->has( 'hide-nav' );
+        $show_nav = !$hide_nav;
+
+        if ( $show_nav === true ) {
+            do_action( 'dt_login_login_page_header' );
+        }
 
         require_once( get_template_directory() . '/dt-login/login-template.php' );
     }

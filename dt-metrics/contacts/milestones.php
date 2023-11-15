@@ -92,7 +92,7 @@ class DT_Metrics_Milestones_Chart extends DT_Metrics_Chart_Base
         $params = $request->get_params();
         if ( isset( $params['start'], $params['end'] ) ){
             $start = strtotime( $params['start'] );
-            $end = strtotime( $params['end'] );
+            $end = strtotime( $params['end'] ) + DAY_IN_SECONDS;
             $result = $this->milestones( $start, $end );
             if ( is_wp_error( $result ) ) {
                 return $result;

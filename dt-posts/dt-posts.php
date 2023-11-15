@@ -88,9 +88,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $name = $fields['name'] ?? $fields['title'];
 
                 $fields['notes'] = isset( $fields['notes'] ) ? $fields['notes'] : [];
-                if ( is_array( $fields['notes'] ) ){
-                    $fields['notes']['name'] = 'Name: ' . $name;
-                }
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'] );
 
@@ -106,7 +103,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                         $update_comment = '@[' . $updated_post['assigned_to']['display'] . '](' . $updated_post['assigned_to']['id'] . ') ' . $update_comment;
                     }
                 }
-                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [], false, $silent );
+                //add a second to the comments so when we display logs activity shows first and then comments.
+                $comment_date = dt_format_date( time() -1, 'Y-m-d H:i:s' );
+                self::add_post_comment( $updated_post['post_type'], $updated_post['ID'], $update_comment, 'comment', [ 'comment_date' => $comment_date ], false, $silent );
 
                 if ( $check_permissions && !self::can_view( $post_type, $updated_post['ID'] ) ){
                     return [ 'ID' => $updated_post['ID'] ];
@@ -350,7 +349,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
 
         //hook for signaling that a post has been created and the initial fields
-        do_action( 'dt_post_created', $post_type, $post_id, $initial_fields );
+        do_action( 'dt_post_created', $post_type, $post_id, $initial_fields, $args );
         if ( !$silent ){
             Disciple_Tools_Notifications::insert_notification_for_new_post( $post_type, $filtered_initial_fields, $post_id );
         }
@@ -1643,7 +1642,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         $a->name = get_the_title( $site_link );
                     }
                 } else if ( isset( $a->user_caps ) && $a->user_caps === 'magic_link' ){
-                    $a->name = __( 'Magic Link Submission', 'disciple_tools' );
+                    $a->name = sprintf( __( '%s Submission', 'disciple_tools' ), apply_filters( 'dt_magic_link_global_name', __( 'Magic Link', 'disciple_tools' ) ) );
                 } else if ( isset( $a->user_caps ) && $a->user_caps === 'activity_revert' ){
                     $a->name = __( 'Revert Bot', 'disciple_tools' );
                 }

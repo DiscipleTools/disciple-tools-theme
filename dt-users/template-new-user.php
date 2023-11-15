@@ -138,7 +138,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                 <dd>
                                                     <?php
                                                     $user_roles = [ 'multiplier' ];
-                                                    $roles = dt_list_roles();
+                                                    $roles = dt_list_roles( false );
                                                     ?>
                                                     <ul id="user_roles_list" class="no-bullet">
                                                         <?php foreach ( $roles as $role_key => $role_value ) : ?>

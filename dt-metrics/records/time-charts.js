@@ -13,6 +13,12 @@ window.makeRequest('GET', `metrics/time_metrics_by_year/${postType}/${field}`)
 const getTimeMetricsByMonth = (postType, field, year) =>
 window.makeRequest('GET', `metrics/time_metrics_by_month/${postType}/${field}/${year}`)
 
+const getMetricsCumulativePosts = (data) =>
+  window.makeRequest('POST', `metrics/cumulative-posts`, data)
+
+const getMetricsChangedPosts = (data) =>
+  window.makeRequest('POST', `metrics/changed-posts`, data)
+
 const getFieldSettings = (postType) =>
 window.makeRequest('GET', `metrics/field_settings/${postType}`)
 
@@ -75,6 +81,18 @@ function projectTimeCharts() {
         </section>
     `
 
+    /*jQuery('#metrics-content-modal').empty().html(`
+        <div class="large reveal" id="post_details_modal" data-reveal data-reset-on-close>
+            <button class="button loader" data-close aria-label="Close reveal" type="button">
+                Close
+            </button>
+
+            <button class="close-button" data-close aria-label="Close" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `);*/
+
     const chartSection = document.querySelector('#chart-area')
     const loadingSpinner = document.querySelector('#chart-loading-spinner')
     chartSection.addEventListener('datachange', () => {
@@ -91,7 +109,15 @@ function projectTimeCharts() {
             .then((data) => {
                 window.dtMetricsProject.field_settings = data
                 fieldSelectElement.innerHTML = buildFieldSelectOptions()
-                fieldSelectElement.dispatchEvent( new Event('change') )
+
+              // Update selection based on detected defaults.
+              if ( e.detail && e.detail.field ) {
+                jQuery('#post-field-select').val(e.detail.field);
+                fieldSelectElement.dispatchEvent(new CustomEvent('change', {'detail': e.detail}));
+
+              } else {
+                fieldSelectElement.dispatchEvent( new Event('change') );
+              }
             })
             .catch((error) => {
                 console.log(error)
@@ -115,8 +141,52 @@ function projectTimeCharts() {
         getData()
     })
 
+    // Handle any available request defaults.
+    handleRequestDefaults();
+}
+
+function fetchURLSearchParams() {
+    const url_search_params = new URLSearchParams(window.location.search);
+
+    let request_params = {};
+    for ( const param of url_search_params ) {
+        if ( Array.isArray( param ) && param.length === 2 ) {
+            request_params[ param[0] ] = param[1];
+        }
+    }
+
+    return request_params;
+}
+
+function handleRequestDefaults() {
+  const request_params = fetchURLSearchParams();
+
+  // Ensure required parts are present, in order to proceed.
+  if ( request_params && request_params.record_type && request_params.field ) {
+    const post_type = request_params.record_type;
+    const field_id = request_params.field;
+
+    jQuery('#post-type-select').val(post_type);
+    window.dtMetricsProject.state.post_type = post_type;
+
+    jQuery('#post-field-select').val(field_id);
+    window.dtMetricsProject.state.field = field_id;
+
+    if ( request_params.date ) {
+      const year = request_params.date
+      window.dtMetricsProject.state.year = year
+      window.dtMetricsProject.state.chart_view = year === 'all-time' ? 'year' : 'month'
+      jQuery('#date-select').val(year);
+
+    }
+    document.querySelector('#post-type-select').dispatchEvent(new CustomEvent('change', {'detail': request_params}));
+
+  } else {
+
     // trigger the first get of data on page load
-    fieldSelectElement.dispatchEvent( new Event('change') )
+    document.querySelector('#post-field-select').dispatchEvent( new Event('change') );
+
+  }
 }
 
 function buildFieldSelectOptions() {
@@ -213,7 +283,7 @@ function createChart(id, keys, options) {
 
     // create the series for each key name in the data arrays
     // then get the labels from field_settings, if they exist
-    const fieldLabels = keys.map((key) => {
+    let fieldLabels = keys.map((key) => {
         const fieldSettings = window.dtMetricsProject.field_settings[field]
         const defaultSettings = fieldSettings && fieldSettings.default ? fieldSettings.default : []
 
@@ -246,21 +316,68 @@ function createChart(id, keys, options) {
     }
     // then loop over the keys and labels and create the stacked series
     let firstSerie = true
-    const series = fieldLabels.map(({ field, label }) => {
-        if (graphType === 'stacked') {
-            if (single && !firstSerie) {
-                return createColumnSeries(chart, field, label, true)
-            }
-            firstSerie = false
-            return createColumnSeries(chart, field, label)
-        } else if (graphType === 'line') {
-            if (single && !firstSerie) {
-                return createLineSeries(chart, field, label, true)
-            }
-            firstSerie = false
-            return createLineSeries(chart, field, label)
+
+    // Adjust field labels shape accordingly based on field type.
+    let series = [];
+    if (fieldType === 'connection') {
+      if (graphType==='stacked') {
+        series = [
+          {
+            field: 'cumulative_count',
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.total_label)
+          }
+        ].map(({field, label}) => {
+          let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
+          firstSerie = generated_serie.first_serie;
+          return generated_serie.series;
+        });
+      } else if (graphType==='line') {
+        series = [
+          {
+            field: 'connected',
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.connected_label)
+          },
+          {
+            field: 'disconnected',
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.disconnected_label)
+          }
+        ].map(({field, label}) => {
+          let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
+          firstSerie = generated_serie.first_serie;
+          return generated_serie.series;
+        });
+      }
+    } else if ( ( id === 'additions-chart' ) && window.lodash.includes( [ 'date', 'number' ], fieldType ) && window.dtMetricsProject.data_changes && window.dtMetricsProject.data_changes.combined ) {
+
+      let legend_elements = [
+        {
+          field: 'added_count',
+          label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.added_label)
         }
-    })
+      ];
+
+      if ( window.lodash.includes( [ 'date' ], fieldType ) ) {
+        legend_elements.push(
+          {
+            field: 'deleted_count',
+            label: window.SHAREDFUNCTIONS.escapeHTML(window.dtMetricsProject.translations.deleted_label)
+          }
+        );
+      }
+
+      series = legend_elements.map(({field, label}) => {
+        let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
+        firstSerie = generated_serie.first_serie;
+        return generated_serie.series;
+      });
+
+    } else {
+      series = fieldLabels.map(({field, label}) => {
+        let generated_serie = createChartSeries(graphType, single, firstSerie, chart, field, label);
+        firstSerie = generated_serie.first_serie;
+        return generated_serie.series;
+      });
+    }
 
     if (single) {
         addHideOtherSeriesEventHandlers(series)
@@ -295,8 +412,34 @@ function createChart(id, keys, options) {
     return series
 }
 
+function createChartSeries(graphType, single, firstSerie, chart, field, label){
+  if (graphType === 'stacked') {
+    if (single && !firstSerie) {
+      return {
+        'first_serie': firstSerie,
+        'series': createColumnSeries(chart, field, label, true)
+      };
+    }
+    return {
+      'first_serie': false,
+      'series': createColumnSeries(chart, field, label)
+    };
+  } else if (graphType === 'line') {
+    if (single && !firstSerie) {
+      return {
+        'first_serie': firstSerie,
+        'series': createLineSeries(chart, field, label, true)
+      };
+    }
+    return {
+      'first_serie': false,
+      'series': createLineSeries(chart, field, label)
+    };
+  }
+}
+
 function initialiseChart(id) {
-    const { year, chart_view: view } = window.dtMetricsProject.state
+    const { year, chart_view: view, fieldType: field_type } = window.dtMetricsProject.state
     const {
         all_time,
     } = escapeObject(window.dtMetricsProject.translations)
@@ -316,13 +459,36 @@ function initialiseChart(id) {
     const valueAxis = chart.yAxes.push( new window.am4charts.ValueAxis() )
     valueAxis.maxPrecision = 0
 
-    chart.data = data
+    // Adjust data shape accordingly based on field type.
+    switch (field_type) {
+      case 'connection': {
+        chart.data = window.dtMetricsProject.data_connection;
+        break;
+
+      } default: {
+
+        // Select appropriate dataset.
+        if ( ( id === 'additions-chart' ) && window.dtMetricsProject.data_changes && window.dtMetricsProject.data_changes.combined ) {
+          if ( window.lodash.includes( ['tags', 'multi_select', 'key_select'], field_type ) && window.dtMetricsProject.data_changes.added ) {
+            chart.data = window.dtMetricsProject.data_changes.added;
+
+          } else {
+            chart.data = window.dtMetricsProject.data_changes.combined;
+          }
+
+        } else {
+          chart.data = data;
+        }
+
+        break;
+      }
+    }
 
     return [ chart, valueAxis ]
 }
 
 function createColumnSeries(chart, field, name, hidden = false) {
-    const { chart_view } = window.dtMetricsProject.state
+    const { chart_view, fieldType: field_type } = window.dtMetricsProject.state
     const { tooltip_label } = escapeObject(window.dtMetricsProject.translations)
 
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
@@ -332,16 +498,37 @@ function createColumnSeries(chart, field, name, hidden = false) {
     series.dataFields.categoryX = chart_view
     series.name = name
     series.columns.template.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
-    series.stacked = true
     if (hidden) {
         series.hide()
     }
+
+    // Adopt the correct chart series.
+    switch (field_type) {
+      case 'connection': {
+        series.stacked = false;
+        break;
+      }
+      default: {
+        series.stacked = true;
+        break;
+      }
+    }
+
+    // Capture event clicks.
+    series.columns.template.events.on("hit", function (e) {
+      let target = e.target;
+      let date_key = target.dataItem.component.dataFields.categoryX;
+      let metric_key = target.dataItem.component.dataFields.valueY;
+      let data = target.dataItem.dataContext;
+
+      displayPostListModal('column', data[date_key], date_key, metric_key, data['cumulative_count']);
+    });
 
     return series
 }
 
 function createLineSeries(chart, field, name, hidden = false) {
-    const { chart_view } = window.dtMetricsProject.state
+    const { chart_view, fieldType: field_type } = window.dtMetricsProject.state
     const { tooltip_label } = escapeObject(window.dtMetricsProject.translations)
     const tooltipLabel = tooltip_label.replace('%1$s', '{name}').replace('%2$s', '{categoryX}')
 
@@ -350,7 +537,9 @@ function createLineSeries(chart, field, name, hidden = false) {
     lineSeries.dataFields.valueY = field;
     lineSeries.dataFields.categoryX = chart_view
 
-//    lineSeries.stroke = window.am4core.color("#fdd400");
+    if ( ( field_type === 'connection' && field === 'disconnected' ) || window.lodash.includes( [ 'deleted_count' ], field ) ) {
+      lineSeries.stroke = window.am4core.color("#d70101");
+    }
     lineSeries.strokeWidth = 3;
     lineSeries.propertyFields.strokeDasharray = "lineDash";
     lineSeries.tooltip.label.textAlign = "middle";
@@ -361,12 +550,184 @@ function createLineSeries(chart, field, name, hidden = false) {
     let bullet = lineSeries.bullets.push(new window.am4charts.Bullet());
 //    bullet.fill = window.am4core.color("#fdd400"); // tooltips grab fill from parent by default
     bullet.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`
+
+    // Capture event clicks.
+    bullet.events.on("hit", function (e) {
+      let target = e.target;
+      let date_key = target.dataItem.component.dataFields.categoryX;
+      let metric_key = target.dataItem.component.dataFields.valueY;
+      let data = target.dataItem.dataContext;
+
+      displayPostListModal('line', data[date_key], date_key, metric_key);
+    });
+
     let circle = bullet.createChild(window.am4core.Circle);
     circle.radius = 4;
     circle.fill = window.am4core.color("#fff");
     circle.strokeWidth = 3;
 
     return lineSeries
+}
+
+function displayPostListModal(chart_type, date, date_key, metric_key) {
+  if (date && date_key && metric_key) {
+    switch (chart_type) {
+      case 'line': {
+        displayPostListModalForChangedPosts(date, date_key, metric_key);
+        break;
+      }
+      default: {
+        displayPostListModalForCumulativePosts(date, date_key, metric_key);
+        break;
+      }
+    }
+  }
+}
+
+function displayPostListModalForChangedPosts(date, date_key, metric_key) {
+
+  // Determine click display parameters.
+  let { post_type, field, fieldType, year, earliest_year } = window.dtMetricsProject.state;
+  let is_all_time = year === 'all-time';
+  let clicked_year = is_all_time ? date : year;
+  let limit = 100;
+  let payload_key = metric_key;
+
+  if ( metric_key.startsWith('added_') || metric_key.startsWith('deleted_') ) {
+    payload_key = metric_key.startsWith('added_') ? 'added' : 'deleted';
+  }
+
+  // Build request payload.
+  let payload = {
+    'post_type': post_type,
+    'field': field,
+    'key': payload_key,
+    'limit': limit
+  };
+
+  // Determine request query date range.
+  if (is_all_time) {
+    payload['ts_start'] = window.moment().year(clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
+  } else {
+    payload['ts_start'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
+  }
+
+  // Dispatch request and process response accordingly.
+  getMetricsChangedPosts(payload)
+  .promise()
+  .then(response => {
+    displayPostListModalRecordsHandler(response, limit);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+function displayPostListModalForCumulativePosts(date, date_key, metric_key) {
+
+  // Determine click display parameters.
+  let { post_type, field, fieldType, year, earliest_year } = window.dtMetricsProject.state;
+  let is_cumulative = metric_key.startsWith('cumulative_');
+  let is_all_time = year === 'all-time';
+  let clicked_year = is_all_time ? date : year;
+  let limit = 100;
+
+  // Build request payload.
+  let payload = {
+    'post_type': post_type,
+    'field': field,
+    'key': is_cumulative ? metric_key.substring('cumulative_'.length) : metric_key,
+    'limit': limit
+  };
+
+  // Determine request query date range.
+  if (is_all_time) {
+    payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(0).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(11).date(31).hour(23).minute(59).second(59).unix();
+  } else {
+    payload['ts_start'] = window.moment().year(is_cumulative ? earliest_year : clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+    payload['ts_end'] = window.moment().year(clicked_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(window.moment().month(date).endOf('month').format('D')).hour(23).minute(59).second(59).unix();
+  }
+
+  // Final adjustments for specific field types.
+  if (fieldType === 'connection' && metric_key.includes('cumulative_')) {
+    payload['key'] = 'cumulative';
+    payload['ts_start'] = is_all_time ? window.moment().year(earliest_year).month(0).date(1).hour(0).minute(0).second(0).unix():window.moment().year(earliest_year).month(parseInt(window.moment().month(date).format('M')) - 1).date(1).hour(0).minute(0).second(0).unix();
+  }
+
+  // Dispatch request and process response accordingly.
+  getMetricsCumulativePosts(payload)
+  .promise()
+  .then(response => {
+    displayPostListModalRecordsHandler(response, limit);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+function displayPostListModalRecordsHandler(records, limit) {
+  if (records && records.data) {
+    let selected_posts = [];
+    let posts = records.data;
+
+    // Limit to first X elements.
+    selected_posts = posts.slice(0, limit);
+
+    // Proceed with displaying post list.
+    let sorted_posts = window.lodash.orderBy(selected_posts, ['name'], ['asc']);
+    let list_html = `
+          <br>
+          ${(function (posts_to_filter) {
+      let post_list_html = `
+          <table>
+            <thead>
+                <tr>
+                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_no)}</th>
+                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_title)}</th>
+                </tr>
+            </thead>
+            <tbody>
+          `;
+      let counter = 0;
+      jQuery.each(posts_to_filter, function (idx, post) {
+        let url = window.dtMetricsProject.site + window.dtMetricsProject.state.post_type + '/' + post['id'];
+
+        post_list_html += `
+                <tr>
+                    <td>${++counter}</td>
+                    <td><a href="${url}" target="_blank">${post['name'] ? post['name'] : post['id']}</a></td>
+                </tr>
+                `;
+      });
+
+      post_list_html += `
+            </tbody>
+          </table>
+          `;
+
+      return (posts_to_filter.length > 0) ? post_list_html : window.dtMetricsProject.translations.modal_no_records;
+    })(sorted_posts)}
+          <br>
+          `;
+
+    // Determine overall total value.
+    let total = sorted_posts.length;
+    if (records.total) {
+      total = parseInt(records.total);
+    }
+
+    // Render post html list.
+    let title = window.dtMetricsProject.translations.modal_title + ((total > 0) ? ` [ ${total} ]` : '' );
+    let content = jQuery('#template_metrics_modal_content');
+    jQuery('#template_metrics_modal_title').empty().html(window.lodash.escape(title));
+    jQuery(content).css('max-height', '300px');
+    jQuery(content).css('overflow', 'auto');
+    jQuery(content).empty().html(list_html);
+    jQuery('#template_metrics_modal').foundation('open');
+  }
 }
 
 function getMinMaxValuesOfDataForKey(key) {
@@ -405,8 +766,7 @@ function addHideOtherSeriesEventHandlers(series) {
 }
 
 function getData() {
-    const { post_type: postType, field, year } = window.dtMetricsProject.state
-
+    const { post_type: postType, fieldType: field_type, field, year } = window.dtMetricsProject.state
     const isAllTime = year === 'all-time'
     const data = isAllTime
         ? getTimeMetricsByYear(postType, field)
@@ -415,23 +775,220 @@ function getData() {
     const loadingSpinner = document.querySelector('.loading-spinner')
     const chartElement = document.querySelector('#chart-area')
     loadingSpinner.classList.add('active')
+
+    // Dynamically update URL parameters.
+    const url = new URL(window.location);
+    url.searchParams.set('record_type', postType);
+    url.searchParams.set('field', field);
+    url.searchParams.set('date', year );
+    window.history.pushState(null, document.title, url.search);
+
     data.promise()
-        .then(({ data, cumulative_offset }) => {
-            if ( !data ) {
-                throw new Error('no data object returned')
+        .then(( response ) => {
+          if ( !response && !response.data ) {
+            throw new Error('no data object returned')
+          }
+
+          let data = response.data;
+
+          // Capture additional metadata.
+          switch (field_type) {
+            case 'connection': {
+              processConnectionData(data);
+              break;
             }
-            window.dtMetricsProject.cumulative_offset = cumulative_offset
-            window.dtMetricsProject.data = isAllTime
-                ? formatYearData(data)
-                : formatMonthData(data)
-            chartElement.dispatchEvent( new Event('datachange') )
-            loadingSpinner.classList.remove('active')
+            default: {
+              window.dtMetricsProject.cumulative_offset = (response.cumulative_offset !== undefined) ? response.cumulative_offset : 0;
+              window.dtMetricsProject.data = isAllTime ? formatYearData(data) : formatMonthData(data);
+              window.dtMetricsProject.data_changes = formatTimeUnits( response.changes );
+              break;
+            }
+          }
+
+          // Refresh chart display.
+          chartElement.dispatchEvent( new Event('datachange') )
+          loadingSpinner.classList.remove('active')
         })
         .catch((error) => {
             console.log(error)
             chartElement.dispatchEvent( new Event('datachange') )
             loadingSpinner.classList.remove('active')
         })
+}
+
+function formatTimeUnits(data) {
+  const {year} = window.dtMetricsProject.state;
+  const is_all_time = year === 'all-time';
+  const count_keys = ['added','deleted'];
+
+  let formatted_time_units = {
+    'added': [],
+    'deleted': [],
+    'combined': []
+  };
+
+  if (data) {
+    if (is_all_time) {
+      jQuery.each(count_keys, function (idx, key){
+        if ( data[key] && data[key].length > 0 ) {
+
+          const min_year = parseInt( data[key][0].time_unit );
+          const max_year = parseInt( data[key][data[key].length - 1].time_unit );
+
+          for (let year = min_year; year < ( max_year + 1 ); year++) {
+            const year_data = data[key].filter((metric) => String(metric.time_unit) === String(year));
+
+            // Ensure null year data hits continue previous counts.
+            if ( year_data.length === 0 ) {
+              let payload = {
+                'year': String(year),
+                'count': 0
+              };
+              formatted_time_units[key].push(payload);
+
+            } else {
+
+              jQuery.each(year_data, function (idx, metric){
+                const count = metric.count ? parseInt(metric.count) : 0
+
+                let payload = {
+                  'year': String(year),
+                  'count': count
+                };
+
+                if ( metric.selection ) {
+                  payload[metric.selection] = count;
+                }
+
+                formatted_time_units[key].push(payload);
+              });
+
+            }
+          }
+        }
+      });
+
+    } else {
+      jQuery.each(count_keys, function (idx, key){
+        if ( data[key] && data[key].length > 0 ) {
+
+          const month_labels = window.SHAREDFUNCTIONS.get_months_labels();
+
+          for (let x = 0; x < month_labels.length; x++) {
+            const month_number = x + 1;
+            const month_data = data[key].filter((metric) => String(metric.time_unit) === String(month_number));
+
+            // Ensure null month data hits continue previous counts.
+            if ( month_data.length === 0 ) {
+              let payload = {
+                'month': month_labels[x],
+                'count': 0
+              };
+
+              formatted_time_units[key].push(payload);
+
+            } else {
+
+              jQuery.each(month_data, function (idx, metric){
+                const count = metric.count ? parseInt(metric.count) : 0;
+
+                let payload = {
+                  'month': month_labels[x],
+                  'count': count
+                };
+
+                if ( metric.selection ) {
+                  payload[metric.selection] = count;
+                }
+
+                formatted_time_units[key].push(payload);
+              });
+
+            }
+          }
+        }
+      });
+    }
+  }
+
+  // Combine both addition and deletion metrics.
+  let combined_time_units = {};
+  const time_unit_key = is_all_time ? 'year':'month';
+
+  jQuery.each(count_keys, function (idx, key) {
+    let count_key = key + '_count';
+
+    jQuery.each(formatted_time_units[key], function (idx, metric) {
+      const time_unit = metric[time_unit_key];
+      if ( !combined_time_units[time_unit] ) {
+        combined_time_units[time_unit] = {};
+      }
+
+      combined_time_units[time_unit][count_key] =  metric.count;
+    });
+  });
+
+  jQuery.each(combined_time_units, function (time_unit, metric) {
+    metric[time_unit_key] = time_unit;
+    formatted_time_units['combined'].push(metric);
+  });
+
+  return formatted_time_units;
+}
+
+function processConnectionData(data) {
+  if (data && data.records) {
+    const {post_type, fieldType: field_type, field, year} = window.dtMetricsProject.state;
+    const is_all_time = (year === 'all-time');
+
+    if (is_all_time) {
+      window.dtMetricsProject.data_connection = [];
+      jQuery.each(data.records, function (year, metrics) {
+        window.dtMetricsProject.data_connection.push(
+          {
+            'year': String(year),
+            'connected': metrics.connected,
+            'disconnected': metrics.disconnected,
+            'cumulative_count': metrics.cumulative_count
+          }
+        );
+      });
+    } else {
+      let cumulative_offset = (data.cumulative_totals.cumulative_count !== undefined) ? data.cumulative_totals.cumulative_count : 0;
+
+      const month_labels = window.SHAREDFUNCTIONS.get_months_labels();
+      window.dtMetricsProject.data_connection = month_labels.map((month_label, i) => {
+        const month_number = i + 1;
+        if (isInFuture(month_number)) {
+          return {
+            'month': month_label,
+          }
+        }
+
+        const month_data = window.lodash.find(data.records, function (record, month) {
+          return (month === String(month_number));
+        });
+
+        if (month_data) {
+          cumulative_offset = month_data.cumulative_count;
+
+          return {
+            'month': month_label,
+            'connected': month_data.connected,
+            'disconnected': month_data.disconnected,
+            'cumulative_count': month_data.cumulative_count
+          }
+        } else {
+          return {
+            'month': month_label,
+            'connected': 0,
+            'disconnected': 0,
+            'cumulative_count' : cumulative_offset
+          }
+        }
+      });
+    }
+  }
 }
 
 /**
@@ -463,6 +1020,7 @@ function formatSimpleYearData(yearlyData) {
         const yearData = yearlyData.find((data) => data.year === String(year) )
         const count = yearData ? parseInt(yearData.count) : 0
         cumulativeTotal += count
+
         formattedYearlyData[i] = {
             year: String(year),
             count: count,
@@ -593,8 +1151,8 @@ function makeCumulativeKeys(keys) {
 function calculateCumulativeTotals(keys, data, cumulativeTotals, cumulativeKeys) {
     // add onto previous data to get cumulative totals
     // each key always has a value >= 0
-    keys.forEach((key) => {
-        const count = data[key] ? parseInt(data[key]) : 0
+  keys.forEach((key) => {
+        const count = ((typeof data !== 'undefined') && data[key]) ? parseInt(data[key]) : 0
         const cumulativeKey = cumulativeKeys[key]
         if (!cumulativeTotals[cumulativeKey] && count > 0) {
             cumulativeTotals[cumulativeKey] = count
