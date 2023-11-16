@@ -618,7 +618,7 @@ jQuery(document).ready(function($) {
                 <label for="new_post_type_key"><b>Key</b></label>
             </td>
             <td>
-                <input name="new_post_type_key" id="new_post_type_key" type="text" required>
+                <input name="new_post_type_key" id="new_post_type_key" maxlength="20" type="text" required>
             </td>
         </tr>
         <tr>
