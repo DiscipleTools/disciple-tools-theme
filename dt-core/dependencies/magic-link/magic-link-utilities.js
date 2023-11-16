@@ -3,6 +3,7 @@ function ml_utility_submit_success_function(message, success_callback_func) {
     text: message,
     close: true,
     gravity: "bottom",
+    duration: 1500,
     callback: function () {
       success_callback_func();
     }
@@ -17,7 +18,7 @@ function ml_utility_submit_error_function(error, error_callback_func) {
     close: true,
     gravity: "bottom",
     position: "center",
-    duration: 6000,
+    duration: 1500,
     style: {
       background: "#d25e5e"
     },
