@@ -31,7 +31,7 @@ function group_search() {
 
           jQuery.each(data, function (i, v) {
             div.append(`
-                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `','` + v[33] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
+                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + String(v[1]).replace(/'/g, "\\'") + `','` + v[33] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
                 `)
 
             // Check last element for duplicate flag to determine if group has already been installed.
@@ -142,7 +142,7 @@ function add_bulk_people_groups(country, people_groups) {
       deferred.resolve(data);
 
       // Update table with batch import results.
-      let html = `<tr><td>${country}: Processed ${data['total_groups_insert_success']} of ${data['total_groups_count']}</td></tr>`;
+      let html = `<tr><td>${country}: Processed ${(data['total_groups_insert_success'] + data['total_groups_insert_updates'])} of ${data['total_groups_count']}</td></tr>`;
       jQuery('#import_people_group_table').find('tbody > tr').eq(0).after(html);
 
     },

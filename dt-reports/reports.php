@@ -33,7 +33,7 @@ class Disciple_Tools_Reports
      * @param bool $duplicate_check
      * @return false|int
      */
-    public static function insert( array $args, bool $save_hash = true, bool $duplicate_check = true ) {
+    public static function insert( array $args, bool $save_hash = true, bool $duplicate_check = true, $create_activity_log = false ) {
         global $wpdb;
         if ( ! isset( $args['type'] ) ){
             return false;
@@ -147,18 +147,20 @@ class Disciple_Tools_Reports
             }
         }
 
-        dt_activity_insert(
-            [
-                'action'            => 'create_report',
-                'object_type'       => $args['type'],
-                'object_subtype'    => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
-                'object_id'         => $args['post_id'],
-                'object_name'       => 'report',
-                'meta_id'           => $report_id ,
-                'meta_key'          => ' ',
-                'object_note'       => __( 'Added new report', 'disciple_tools' ),
-            ]
-        );
+        if ( $create_activity_log ){
+            dt_activity_insert(
+                [
+                    'action' => 'create_report',
+                    'object_type' => $args['type'],
+                    'object_subtype' => empty( $args['subtype'] ) ? ' ' : $args['subtype'],
+                    'object_id' => $args['post_id'],
+                    'object_name' => 'report',
+                    'meta_id' => $report_id,
+                    'meta_key' => ' ',
+                    'object_note' => __( 'Added new report', 'disciple_tools' ),
+                ]
+            );
+        }
 
         // Final action on insert.
         do_action( 'dt_insert_report', $args );

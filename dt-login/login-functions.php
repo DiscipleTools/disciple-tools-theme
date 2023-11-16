@@ -70,16 +70,30 @@ function dt_login_redirect_login_page() {
 }
 // END LOGIN PAGE REDIRECT
 
+/**
+ * This function is used to create urls for the different wp login actions
+ * In order for the current query params for the current page to propogate to any login action links in the page
+ * the query params are extracted from the current url
+ */
 function dt_login_url( string $name, string $url = '' ): string {
     $dt_login = DT_Login_Fields::all_values();
+
     if ( empty( $url ) ){
         $url = dt_get_url_path();
     }
 
     $dt_url = new DT_URL( $url );
-    $query_redirect_url = $dt_url->query_params->get( 'redirect_to' );
+    $query_params = $dt_url->query_params;
 
-    $login_url = $dt_login['login_url'] ?? '';
+    if ( $query_params->has( 'action' ) ) {
+        $query_params->delete( 'action' );
+    }
+
+    if ( $query_params->has( 'redirect_to' ) ) {
+        $query_redirect_url = $query_params->get( 'redirect_to' );
+        $query_params->delete( 'redirect_to' );
+    }
+
     $redirect_url = empty( $query_redirect_url ) ? site_url( $dt_login['redirect_url'] ) ?? '' : $query_redirect_url;
 
     /**
@@ -89,7 +103,15 @@ function dt_login_url( string $name, string $url = '' ): string {
      */
     $redirect_url = apply_filters( 'dt_login_redirect_url', $redirect_url );
 
+    if ( !empty( $redirect_url ) ) {
+        $query_params->append( 'redirect_to', rawurlencode( $redirect_url ) );
+    }
+
+    $params = $query_params->to_array();
+
     $login_page_enabled = $dt_login['login_enabled'] === 'on';
+
+    $login_url = $dt_login['login_url'] ?? '';
 
     if ( !$login_page_enabled ) {
         $login_url = 'wp-login.php';
@@ -102,14 +124,12 @@ function dt_login_url( string $name, string $url = '' ): string {
      */
     $login_url = apply_filters( 'dt_login_url', $login_url );
 
-    $redirect_params = empty( $redirect_url ) ? [] : [ 'redirect_to' => rawurlencode( $redirect_url ) ];
-
     switch ( $name ) {
         case 'home':
             $home_url = apply_filters( 'dt_login_url', '' );
             return dt_create_site_url( $home_url );
         case 'login':
-            return dt_create_site_url( $login_url, $redirect_params );
+            return dt_create_site_url( $login_url, $params );
         case 'redirect':
         case 'success':
             return $redirect_url;
@@ -119,9 +139,9 @@ function dt_login_url( string $name, string $url = '' ): string {
             if ( !dt_can_users_register() ) {
                 return dt_login_url( 'login', $url );
             }
-            return dt_create_site_url( $login_url, [ 'action' => 'register' ] );
+            return dt_create_site_url( $login_url, array_merge( $params, [ 'action' => 'register' ] ) );
         case 'lostpassword':
-            return dt_create_site_url( $login_url, [ 'action' => 'lostpassword' ] );
+            return dt_create_site_url( $login_url, array_merge( $params, [ 'action' => 'lostpassword' ] ) );
         case 'resetpass':
             return dt_create_site_url( $login_url, [ 'action' => 'resetpass' ] );
         case 'expiredkey':
