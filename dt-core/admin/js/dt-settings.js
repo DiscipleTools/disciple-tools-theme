@@ -1618,7 +1618,7 @@ jQuery(document).ready(function($) {
       button_icon.removeClass('loading-spinner');
       return false;
 
-    } else if (key === '') {
+    } else if ( ( key === '' ) || ( key.length > 20 ) ) {
       $(new_post_type_key).css('border', '2px solid #e14d43');
       button_icon.css('margin', '');
       button_icon.removeClass('active');
