@@ -5,10 +5,9 @@ function ml_utility_submit_success_function(message, success_callback_func) {
     gravity: "bottom",
     duration: 1500,
     callback: function () {
-      success_callback_func();
     }
-
   }).showToast();
+  success_callback_func();
 }
 
 
@@ -23,10 +22,9 @@ function ml_utility_submit_error_function(error, error_callback_func) {
       background: "#d25e5e"
     },
     callback: function () {
-      error_callback_func();
     }
-
   }).showToast();
+  error_callback_func();
 }
 
 function ml_utility_submit_field_validation_function(field_settings, fields, keys, labels) {
