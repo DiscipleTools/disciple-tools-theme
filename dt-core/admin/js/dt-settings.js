@@ -392,7 +392,7 @@ jQuery(document).ready(function($) {
 
 
       /*** TEXT - START ***/
-      if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
+      if ( [ 'text', 'communication_channel', 'location', 'location_meta', 'link' ].indexOf(field['type']) > -1 ) {
         tile_html += `
             <input type="text" class="text-input">
         `;
@@ -1795,7 +1795,7 @@ jQuery(document).ready(function($) {
             </div>
             `;
       let new_field_html = new_field_nonexpandable_html;
-      if(['key_select', 'multi_select'].indexOf(new_field_type) > -1) {
+      if(['key_select', 'multi_select', 'link'].indexOf(new_field_type) > -1) {
         new_field_html = new_field_expandable_html;
       }
       if (tile_key){
