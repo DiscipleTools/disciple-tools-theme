@@ -1143,7 +1143,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 }
             }
             // Show in list table.
-            if ( isset( $post_submission['visibility']['show_in_table'] ) ) {
+            if ( isset( $post_submission['visibility']['show_in_table'] ) && ( !isset( $custom_field['show_in_table'] ) || !is_numeric( $custom_field['show_in_table'] ) ) ) {
+                $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
+            } else if ( isset( $post_submission['visibility']['show_in_table'] ) && $post_submission['visibility']['show_in_table'] === false ) {
                 $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
             }
 
