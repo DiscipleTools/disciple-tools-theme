@@ -618,7 +618,7 @@ jQuery(document).ready(function($) {
                 <label for="new_post_type_key"><b>Key</b></label>
             </td>
             <td>
-                <input name="new_post_type_key" id="new_post_type_key" type="text" required>
+                <input name="new_post_type_key" id="new_post_type_key" maxlength="20" type="text" required>
             </td>
         </tr>
         <tr>
@@ -1489,7 +1489,7 @@ jQuery(document).ready(function($) {
     // Generate corresponding key.
     let single_name = $('#new_post_type_name_single').val().trim();
     let key = single_name.toLowerCase().replaceAll(/[!-\/:-@[-`{-~\s*]/ig, '_');
-    $('#new_post_type_key').val(key);
+    $('#new_post_type_key').val(key.substring(0, 20));
 
     // Generate corresponding plural name.
     $('#new_post_type_name_plural').val(single_name + 's');
@@ -1618,7 +1618,7 @@ jQuery(document).ready(function($) {
       button_icon.removeClass('loading-spinner');
       return false;
 
-    } else if (key === '') {
+    } else if ( ( key === '' ) || ( key.length > 20 ) ) {
       $(new_post_type_key).css('border', '2px solid #e14d43');
       button_icon.css('margin', '');
       button_icon.removeClass('active');

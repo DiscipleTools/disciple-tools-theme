@@ -278,6 +278,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $single = $params['single'];
             $plural = $params['plural'];
 
+            // Validate specified posy type key.
+            if ( strlen( $key ) > 20 ) {
+                return [
+                    'success' => false,
+                    'msg' => 'Unable to create '. $key .' record type. Specified key character count greater than 20.'
+                ];
+            }
+
             // Create new post type.
             $custom_post_types = get_option( 'dt_custom_post_types', [] );
             if ( !isset( $custom_post_types[$key] ) && !in_array( $key, DT_Posts::get_post_types() ) ){
