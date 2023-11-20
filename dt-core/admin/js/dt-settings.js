@@ -1489,7 +1489,7 @@ jQuery(document).ready(function($) {
     // Generate corresponding key.
     let single_name = $('#new_post_type_name_single').val().trim();
     let key = single_name.toLowerCase().replaceAll(/[!-\/:-@[-`{-~\s*]/ig, '_');
-    $('#new_post_type_key').val(key);
+    $('#new_post_type_key').val(key.substring(0, 20));
 
     // Generate corresponding plural name.
     $('#new_post_type_name_plural').val(single_name + 's');
