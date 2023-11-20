@@ -580,7 +580,7 @@ function dt_login_form_links() {
                 $query_params = ( new DT_URL( $dt_url ) )->query_params;
                 $action = $query_params->get( 'action' );
                 $to_display = [];
-                if ( !$query_params->has( 'hide-nav' ) ) {
+                if ( !$query_params->has( 'hide-nav' ) && !empty( $action ) ) {
                     $to_display[] = [
                         'url' => dt_login_url( 'home' ),
                         'text' => __( 'Home', 'disciple_tools' ),
