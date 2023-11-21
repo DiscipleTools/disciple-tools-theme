@@ -51,6 +51,7 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
             #login > .grid-x > .callout h1 { display: none; }
             .login-remember { float: left; }
             .login-submit { float: right; }
+            #firebaseui-auth-container { clear: both; }
         </style>
         <?php
     }
