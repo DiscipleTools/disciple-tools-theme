@@ -1456,6 +1456,15 @@ class Disciple_Tools_Posts
         }
 
         global $wpdb;
+
+        $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
+        dt_activity_insert( [
+            'action' => 'record_deleted',
+            'object_type' => $post_type,
+            'object_id' => $post_id,
+            'object_name' => $post_title
+        ] );
+
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p left join $wpdb->p2pmeta pm on pm.p2p_id = p.p2p_id WHERE (p.p2p_to = %s OR p.p2p_from = %s) ", $post_id, $post_id ) );
