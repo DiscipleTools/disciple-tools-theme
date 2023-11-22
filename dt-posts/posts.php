@@ -505,7 +505,7 @@ class Disciple_Tools_Posts
                     if ( isset( $link_info['field_key'] ) && isset( $link_info['type'] ) ) {
                         $field_key = $link_info['field_key'];
                         $link_type = $link_info['type'];
-                        $label = $fields[$field_key]['default'][$link_type]['label'];
+                        $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
                         if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
                             if ( $activity->meta_value === 'value_deleted' ) {
                                 $value = $activity->old_value;
