@@ -375,6 +375,9 @@ jQuery(document).ready(function($) {
     if ( id ) {
       update["key"] = id;
     }
+    if ( !value && !id ){
+      return;
+    }
     $(`#${field_key}-spinner`).addClass('active')
     window.API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
       $(`#${field_key}-spinner`).removeClass('active')
