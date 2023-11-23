@@ -193,8 +193,8 @@ function dt_firebase_login_ui( $atts ) {
         // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
         signInFlow: 'popup',
         signInOptions: signInOptions,
-        tosUrl: '/content_app/tos',
-        privacyPolicyUrl: '/content_app/privacy'
+        tosUrl: '/terms-of-service',
+        privacyPolicyUrl: '/privacy-policy'
       }
 
       if ( !config.api_key || !config.project_id || !config.app_id  ) {
