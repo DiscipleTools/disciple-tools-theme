@@ -30,11 +30,11 @@ class DT_Login_Page_Base
     }
     public function header_style(){
         ?>
+
         <style>
-            body {
-                background: white;
-            }
+            <?php require __DIR__ . '/../../dt-assets/build/css/style.min.css' ?>
         </style>
+
         <?php
     }
     public function _browser_tab_title( $title ){
@@ -85,9 +85,7 @@ class DT_Login_Page_Base
     }
     public function _print_styles(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
-        $allowed_css = [
-            'site-css',
-        ];
+        $allowed_css = [];
 
         $allowed_css = apply_filters( 'dt_login_allowed_css', $allowed_css );
 

@@ -44,8 +44,9 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
     }
 
     public function header_style(){
-        // parent::header_style();
+        parent::header_style();
         ?>
+
         <style>
             body { background: #f0f0f1; }
             .login-remember { float: left; }
