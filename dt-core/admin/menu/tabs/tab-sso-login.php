@@ -28,6 +28,10 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
+        if ( dt_is_rest() ) {
+            return;
+        }
+
         if ( !current_user_can( 'manage_dt' ) ){
             return;
         }
