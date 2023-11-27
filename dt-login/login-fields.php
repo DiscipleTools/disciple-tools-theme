@@ -251,15 +251,6 @@ class DT_Login_Fields {
     }
 
     private static function get_defaults() {
-        $roles = function_exists( 'dt_list_roles' ) ? dt_list_roles() : [ 'multiplier' => [ 'label' => 'Multiplier', 'disabled' => false ] ];
-
-        $role_list = [];
-        foreach ( $roles as $role_key => $role ) {
-            if ( $role['disabled'] === false ) {
-                $role_list[$role_key] = $role['label'];
-            }
-        }
-
         $defaults = [
             // firebase
             'firebase_config_label' => [
@@ -394,8 +385,7 @@ class DT_Login_Fields {
                 'label' => 'Default Role',
                 'description' => 'The default role to give a newly registered user',
                 'value' => 'multiplier',
-                'type' => 'select',
-                'default' => $role_list,
+                'type' => 'role',
                 'multisite_level' => false,
             ],
 
