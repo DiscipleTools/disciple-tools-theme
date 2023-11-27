@@ -80,53 +80,42 @@ switch ( $request_action ) {
 
         <div id="content">
             <div id="login">
-                <br>
-                <div  class="grid-x grid-margin-x grid-padding-x">
-                    <div class="cell medium-3 large-4"></div>
-                    <div class="cell callout medium-6 large-4">
-                        <div class="grid-x grid-padding-x grid-padding-y">
-                            <div class="cell center">
-                                <h1 ><?php esc_html_e( 'Get New Password', 'disciple_tools' ) ?></h1>
-                            </div>
-                            <?php if ( ! empty( $form_errors->errors ) ) : ?>
-                                <div class="cell alert callout">
-                                    <?php
-                                    echo esc_html( $form_errors->get_error_message() );
-                                    ?>
-                                </div>
-                            <?php endif; ?>
-                            <div class="cell">
-                                <div class="wp_lostpassword_form">
-                                    <?php if ( ! $sent ) : ?>
-                                        <form name="lostpasswordform" id="lostpasswordform" action="<?php echo esc_url( dt_login_url( 'lostpassword' ) ); ?>" method="post">
-                                            <?php wp_nonce_field( 'retrieve_password', 'retrieve_password_nonce', false, true ) ?>
-                                            <p>
-                                                <label for="user_login" ><?php echo esc_html__( 'Email Address', 'disciple_tools' ); ?><br />
-                                                    <input type="text" name="user_login" id="user_login" class="input" value="<?php echo esc_attr( $user_login_response ); ?>" size="20" /></label>
-                                            </p>
-                                            <?php
-                                            /**
-                                             * Fires inside the lostpassword form tags, before the hidden fields.
-                                             *
-                                             * @since 2.1.0
-                                             */
-                                            do_action( 'lostpassword_form' ); ?>
-                                            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>" />
-                                            <p><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php echo esc_html__( 'Get New Password', 'disciple_tools' ); ?>" /></p>
-                                        </form>
-                                    <?php elseif ( $sent ): ?>
-                                        <?php echo esc_html__( 'Your password reset email has been sent. Check your email or junk mail for the link to reset your password.', 'disciple_tools' ) ?>
-                                    <?php endif; ?>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cell medium-3 large-4"></div>
+                <div class="center">
+                    <h1 ><?php esc_html_e( 'Get New Password', 'disciple_tools' ) ?></h1>
                 </div>
-                <?php dt_login_form_links() ?>
+                <?php if ( ! empty( $form_errors->errors ) ) : ?>
+                    <div class="alert callout">
+                        <?php
+                        echo esc_html( $form_errors->get_error_message() );
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <div class="wp_lostpassword_form">
+                    <?php if ( ! $sent ) : ?>
+                        <form name="lostpasswordform" id="lostpasswordform" action="<?php echo esc_url( dt_login_url( 'lostpassword' ) ); ?>" method="post">
+                            <?php wp_nonce_field( 'retrieve_password', 'retrieve_password_nonce', false, true ) ?>
+                            <p>
+                                <label for="user_login" ><?php echo esc_html__( 'Email Address', 'disciple_tools' ); ?><br />
+                                    <input type="text" name="user_login" id="user_login" class="input" value="<?php echo esc_attr( $user_login_response ); ?>" size="20" /></label>
+                            </p>
+                            <?php
+                            /**
+                             * Fires inside the lostpassword form tags, before the hidden fields.
+                             *
+                             * @since 2.1.0
+                             */
+                            do_action( 'lostpassword_form' ); ?>
+                            <input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>" />
+                            <p><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php echo esc_html__( 'Get New Password', 'disciple_tools' ); ?>" /></p>
+                        </form>
+                    <?php elseif ( $sent ): ?>
+                        <?php echo esc_html__( 'Your password reset email has been sent. Check your email or junk mail for the link to reset your password.', 'disciple_tools' ) ?>
+                    <?php endif; ?>
+
+                </div>
 
             </div>
+            <?php dt_login_form_links() ?>
         </div>
 
         <?php
@@ -188,15 +177,10 @@ switch ( $request_action ) {
             ?>
         <div id="content">
         <div id="login">
-            <br>
-            <div id="inner-content" class="grid-x grid-margin-x grid-padding-x">
-                <div class="cell medium-3 large-4"></div>
-                <div class="cell callout medium-6 large-4">
-                    <div class="grid-x grid-padding-x grid-padding-y">
-                        <div class="cell"><?php echo sprintf( 'Your password is reset. %s You can login here %', '<a href="' . esc_url( dt_login_url( 'login' ) ) . '">', '</a>' ) ?></div>
-                    </div>
+            <div id="inner-content">
+                <div class="callout">
+                    <div><?php echo sprintf( 'Your password is reset. %s You can login here %', '<a href="' . esc_url( dt_login_url( 'login' ) ) . '">', '</a>' ) ?></div>
                 </div>
-                <div class="cell medium-3 large-4"></div>
             </div>
         </div>
             <?php
@@ -224,70 +208,63 @@ switch ( $request_action ) {
         </style>
         <div id="content">
             <div id="login">
-                <br>
-                <div id="inner-content" class="grid-x grid-margin-x grid-padding-x">
-                    <div class="cell medium-3 large-4"></div>
-                    <div class="cell callout medium-6 large-4">
-                        <div class="grid-x grid-padding-x grid-padding-y">
-                            <div class="cell center">
-                                <h1 style="color:gray;font-size: 14px;margin:0;padding:5px;font-weight: normal;"><?php esc_html_e( 'Reset Password', 'disciple_tools' ) ?></h1>
+                <div id="inner-content">
+                    <div class="callout">
+                        <div class="center">
+                            <h1 style="color:gray;font-size: 14px;margin:0;padding:5px;font-weight: normal;"><?php esc_html_e( 'Reset Password', 'disciple_tools' ) ?></h1>
+                        </div>
+                        <?php if ( ! empty( $form_errors->errors ) ) :?>
+                            <div class="alert callout">
+                                <?php
+                                echo esc_html( $form_errors->get_error_message() );
+                                ?>
                             </div>
-                            <?php if ( ! empty( $form_errors->errors ) ) :?>
-                                <div class="cell alert callout">
-                                    <?php
-                                    echo esc_html( $form_errors->get_error_message() );
-                                    ?>
+                        <?php endif; ?>
+                        <div class="wp_resetpassword_form">
+                            <form name="resetpassform" id="resetpassform" action="<?php echo esc_url( dt_login_url( 'resetpass' ) ); ?>" method="post" autocomplete="off" data-abide novalidate>
+                                <input type="hidden" id="user_login" value="<?php echo esc_attr( $rp_login ); ?>" autocomplete="off" />
+
+                                <div>
+                                    <label><?php esc_html_e( 'Password Required', 'disciple_tools' ) ?> <strong>*</strong>
+                                        <input type="password" id="pass1" name="pass1" placeholder="yeti4preZ" aria-errormessage="password-error-1" required >
+                                        <span class="form-error" id="password-error-1">
+                                            <?php esc_html_e( 'Password Required', 'disciple_tools' ) ?>
+                                        </span>
+                                    </label>
+                                    <meter max="4" id="password-strength-meter" value="0"></meter>
+                                <p id="password-strength-text"></p>
                                 </div>
-                            <?php endif; ?>
-                            <div class="cell">
-                                <div class="wp_resetpassword_form">
-                                    <form name="resetpassform" id="resetpassform" action="<?php echo esc_url( dt_login_url( 'resetpass' ) ); ?>" method="post" autocomplete="off" data-abide novalidate>
-                                        <input type="hidden" id="user_login" value="<?php echo esc_attr( $rp_login ); ?>" autocomplete="off" />
-
-                                        <div>
-                                            <label><?php esc_html_e( 'Password Required', 'disciple_tools' ) ?> <strong>*</strong>
-                                                <input type="password" id="pass1" name="pass1" placeholder="yeti4preZ" aria-errormessage="password-error-1" required >
-                                                <span class="form-error" id="password-error-1">
-                                                    <?php esc_html_e( 'Password Required', 'disciple_tools' ) ?>
-                                                </span>
-                                            </label>
-                                            <meter max="4" id="password-strength-meter" value="0"></meter>
-                                        <p id="password-strength-text"></p>
-                                        </div>
-                                        <p>
-                                            <label><?php esc_html_e( 'Re-enter Password', 'disciple_tools' ) ?> <strong>*</strong>
-                                                <input type="password" name="pass2" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="pass1">
-                                                <span class="form-error" id="password-error-2">
-                                                    <?php esc_html_e( 'Passwords do not match. Please, try again.', 'disciple_tools' ) ?>
-                                                </span>
-                                            </label>
-                                        </p>
+                                <p>
+                                    <label><?php esc_html_e( 'Re-enter Password', 'disciple_tools' ) ?> <strong>*</strong>
+                                        <input type="password" name="pass2" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="pass1">
+                                        <span class="form-error" id="password-error-2">
+                                            <?php esc_html_e( 'Passwords do not match. Please, try again.', 'disciple_tools' ) ?>
+                                        </span>
+                                    </label>
+                                </p>
 
 
-                                        <p class="description indicator-hint"><?php echo esc_html( wp_get_password_hint() ); ?></p>
-                                        <br class="clear" />
+                                <p class="description indicator-hint"><?php echo esc_html( wp_get_password_hint() ); ?></p>
+                                <br class="clear" />
 
-                                        <?php
-                                        /**
-                                         * Fires following the 'Strength indicator' meter in the user password reset form.
-                                         *
-                                         * @since 3.9.0
-                                         *
-                                         * @param WP_User $user User object of the user whose password is being reset.
-                                         */
-                                        do_action( 'resetpass_form', $user );
-                                        ?>
-                                        <input type="hidden" name="rp_key" value="<?php echo esc_attr( $rp_key ); ?>" />
+                                <?php
+                                /**
+                                 * Fires following the 'Strength indicator' meter in the user password reset form.
+                                 *
+                                 * @since 3.9.0
+                                 *
+                                 * @param WP_User $user User object of the user whose password is being reset.
+                                 */
+                                do_action( 'resetpass_form', $user );
+                                ?>
+                                <input type="hidden" name="rp_key" value="<?php echo esc_attr( $rp_key ); ?>" />
 
-                                        <p><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_html_e( 'Reset Password', 'disciple_tools' ); ?>" /></p>
+                                <p><input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php esc_html_e( 'Reset Password', 'disciple_tools' ); ?>" /></p>
 
-                                    </form>
+                            </form>
 
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="cell medium-3 large-4"></div>
                 </div>
             </div>
         </div>
@@ -331,132 +308,115 @@ switch ( $request_action ) {
 
         <div id="content">
             <div id="login">
-                <br>
-                <div class="grid-x grid-margin-x grid-padding-x">
-                    <div class="cell medium-3 large-4"></div>
-                    <div class="cell callout medium-6 large-4">
-                        <div class="grid-x grid-padding-x grid-padding-y">
-                            <div class="cell center" >
-                                <h1 ><?php esc_html_e( 'Register', 'disciple_tools' ) ?></h1>
-                            </div>
-                            <div class="cell">
+                <h1 class="center"><?php esc_html_e( 'Register', 'disciple_tools' ) ?></h1>
+                <hr />
+                <div id="email_signup_form" >
+                    <?php if ( is_wp_error( $reg_status ) ) :?>
+                        <div class="alert callout">
+                            <?php echo esc_html( $reg_status->get_error_message() ) ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="wp_register_form">
+                        <style>
+                            meter{
+                                width:100%;
+                            }
+                            /* Webkit based browsers */
+                            meter[value="1"]::-webkit-meter-optimum-value { background: red; }
+                            meter[value="2"]::-webkit-meter-optimum-value { background: yellow; }
+                            meter[value="3"]::-webkit-meter-optimum-value { background: orange; }
+                            meter[value="4"]::-webkit-meter-optimum-value { background: green; }
 
-                                <hr />
+                            /* Gecko based browsers */
+                            meter[value="1"]::-moz-meter-bar { background: red; }
+                            meter[value="2"]::-moz-meter-bar { background: yellow; }
+                            meter[value="3"]::-moz-meter-bar { background: orange; }
+                            meter[value="4"]::-moz-meter-bar { background: green; }
 
-                                <div id="email_signup_form" >
-                                    <?php if ( is_wp_error( $reg_status ) ) :?>
-                                        <div class="cell alert callout">
-                                            <?php echo esc_html( $reg_status->get_error_message() ) ?>
+                        </style>
+                        <div id="loginform">
+                            <form action="" method="post" data-abide novalidate>
+                                <?php wp_nonce_field( 'login_form', 'login_form_nonce' ) ?>
+                                <div data-abide-error class="alert callout" style="display: none;">
+                                    <p><i class="fi-alert"></i><?php esc_html_e( 'There are some errors in your form.', 'disciple_tools' ) ?></p>
+                                </div>
+                                <div class="grid-container">
+                                    <div>
+                                        <div>
+                                            <label for="display_name"><?php esc_html_e( 'Display Name (optional)', 'disciple_tools' ) ?> </label>
+                                            <input type="text" name="display_name" id="display_name" value="">
                                         </div>
-                                    <?php endif; ?>
-                                    <div class="cell">
-                                        <div class="wp_register_form">
-                                            <style>
-                                                meter{
-                                                    width:100%;
-                                                }
-                                                /* Webkit based browsers */
-                                                meter[value="1"]::-webkit-meter-optimum-value { background: red; }
-                                                meter[value="2"]::-webkit-meter-optimum-value { background: yellow; }
-                                                meter[value="3"]::-webkit-meter-optimum-value { background: orange; }
-                                                meter[value="4"]::-webkit-meter-optimum-value { background: green; }
-
-                                                /* Gecko based browsers */
-                                                meter[value="1"]::-moz-meter-bar { background: red; }
-                                                meter[value="2"]::-moz-meter-bar { background: yellow; }
-                                                meter[value="3"]::-moz-meter-bar { background: orange; }
-                                                meter[value="4"]::-moz-meter-bar { background: green; }
-
-                                            </style>
-                                            <div id="loginform">
-                                                <form action="" method="post" data-abide novalidate>
-                                                    <?php wp_nonce_field( 'login_form', 'login_form_nonce' ) ?>
-                                                    <div data-abide-error class="alert callout" style="display: none;">
-                                                        <p><i class="fi-alert"></i><?php esc_html_e( 'There are some errors in your form.', 'disciple_tools' ) ?></p>
-                                                    </div>
-                                                    <div class="grid-container">
-                                                        <div class="grid-x grid-margin-x">
-                                                            <div class="cell small-12">
-                                                                <label for="display_name"><?php esc_html_e( 'Display Name (optional)', 'disciple_tools' ) ?> </label>
-                                                                <input type="text" name="display_name" id="display_name" value="">
-                                                            </div>
-                                                            <div class="cell small-12">
-                                                                <label for="email"><?php esc_html_e( 'Email', 'disciple_tools' ) ?> <strong>*</strong></label>
-                                                                <input type="text" name="email" id="email" value="" required pattern="email">
-                                                            </div>
-                                                            <div class="cell small-12">
-                                                                <label><?php esc_html_e( 'Password Required', 'disciple_tools' ) ?> <strong>*</strong>
-                                                                    <input type="password" id="password" name="password" placeholder="yeti4preZ" aria-errormessage="password-error-1" required >
-                                                                    <span class="form-error" id="password-error-1">
-                                                                        <?php esc_html_e( 'Password Required', 'disciple_tools' ) ?>
-                                                                      </span>
-                                                                </label>
-                                                                <meter max="4" id="password-strength-meter" value="0"></meter>
-                                                            </div>
-                                                            <div class="cell small-12">
-                                                                <label><?php esc_html_e( 'Re-enter Password', 'disciple_tools' ) ?> <strong>*</strong>
-                                                                    <input type="password" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="password">
-                                                                    <span class="form-error" id="password-error-2">
-                                                                    <?php esc_html_e( 'Passwords do not match. Please, try again.', 'disciple_tools' ) ?>
-                                                                  </span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="cell small-12">
-                                                            <div class="g-recaptcha" id="g-recaptcha"></div><br>
-                                                        </div>
-                                                        <div class="cell small-12">
-                                                            <input type="submit" class="button button-primary" id="submit"  value="<?php esc_html_e( 'Register', 'disciple_tools' ) ?>"/>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                            <?php // @codingStandardsIgnoreStart
-                                            if ( ! empty( $dt_login['google_captcha_client_key'] ) ) :
-                                                ?>
-                                                <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-                                            <?php // @codingStandardsIgnoreEnd
-                                            endif;
-                                            ?>
-                                            <script>
-                                                var strength = {
-                                                    0: "Worst",
-                                                    1: "Bad",
-                                                    2: "Weak",
-                                                    3: "Good",
-                                                    4: "Strong"
-                                                }
-                                                var password = document.getElementById('password');
-                                                var meter = document.getElementById('password-strength-meter');
-
-                                                password.addEventListener('input', function() {
-                                                    var val = password.value;
-                                                    var result = zxcvbn(val);
-
-                                                    // Update the password strength meter
-                                                    meter.value = result.score;
-
-                                                });
-                                            </script>
-                                            <?php // @codingStandardsIgnoreStart ?>
-                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
-                                            <?php // @codingStandardsIgnoreEnd ?>
+                                        <div>
+                                            <label for="email"><?php esc_html_e( 'Email', 'disciple_tools' ) ?> <strong>*</strong></label>
+                                            <input type="text" name="email" id="email" value="" required pattern="email">
+                                        </div>
+                                        <div>
+                                            <label><?php esc_html_e( 'Password Required', 'disciple_tools' ) ?> <strong>*</strong>
+                                                <input type="password" id="password" name="password" placeholder="yeti4preZ" aria-errormessage="password-error-1" required >
+                                                <span class="form-error" id="password-error-1">
+                                                    <?php esc_html_e( 'Password Required', 'disciple_tools' ) ?>
+                                                  </span>
+                                            </label>
+                                            <meter max="4" id="password-strength-meter" value="0"></meter>
+                                        </div>
+                                        <div>
+                                            <label><?php esc_html_e( 'Re-enter Password', 'disciple_tools' ) ?> <strong>*</strong>
+                                                <input type="password" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="password">
+                                                <span class="form-error" id="password-error-2">
+                                                <?php esc_html_e( 'Passwords do not match. Please, try again.', 'disciple_tools' ) ?>
+                                              </span>
+                                            </label>
                                         </div>
                                     </div>
+                                    <div>
+                                        <div class="g-recaptcha" id="g-recaptcha"></div><br>
+                                    </div>
+                                    <div>
+                                        <input type="submit" class="button button-primary" id="submit"  value="<?php esc_html_e( 'Register', 'disciple_tools' ) ?>"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="cell">
-
-                                <?php do_shortcode( '[dt_firebase_login_ui]' ) ?>
-
-                            </div>
+                            </form>
                         </div>
+
+                        <?php // @codingStandardsIgnoreStart
+                        if ( ! empty( $dt_login['google_captcha_client_key'] ) ) :
+                            ?>
+                            <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+                        <?php // @codingStandardsIgnoreEnd
+                        endif;
+                        ?>
+                        <script>
+                            var strength = {
+                                0: "Worst",
+                                1: "Bad",
+                                2: "Weak",
+                                3: "Good",
+                                4: "Strong"
+                            }
+                            var password = document.getElementById('password');
+                            var meter = document.getElementById('password-strength-meter');
+
+                            password.addEventListener('input', function() {
+                                var val = password.value;
+                                var result = zxcvbn(val);
+
+                                // Update the password strength meter
+                                meter.value = result.score;
+
+                            });
+                        </script>
+                        <?php // @codingStandardsIgnoreStart ?>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
+                        <?php // @codingStandardsIgnoreEnd ?>
                     </div>
-                    <div class="cell medium-3 large-4"></div>
                 </div>
-                <?php dt_login_form_links() ?>
+                <div>
+
+                    <?php do_shortcode( '[dt_firebase_login_ui]' ) ?>
+
+                </div>
             </div>
+            <?php dt_login_form_links() ?>
         </div>
 
         <?php
@@ -505,61 +465,50 @@ switch ( $request_action ) {
 
         <div id="content">
             <div id="login">
-                <br>
-                <div  class="grid-x grid-margin-x grid-padding-x">
-                    <div class="cell medium-3 large-4"></div>
-                    <div class="cell callout medium-6 large-4">
-                        <div class="grid-x grid-padding-x grid-padding-y">
-                            <div class="cell center">
-                                <h1 ><?php esc_html_e( 'Login', 'disciple_tools' ) ?></h1>
+                <div class="callout">
+                    <h1 class="center"><?php esc_html_e( 'Login', 'disciple_tools' ) ?></h1>
+                    <div>
+                        <?php
+                        if ( isset( $_GET['login'] ) && $_GET['login'] === 'failed' ) {
+                            ?>
+                            <div class="callout warning center">
+                                <?php echo esc_html__( 'Username or password does not match. Try again.', 'disciple_tools' ); ?>
                             </div>
-                            <div class="cell">
+                            <?php
+                        }
+                        ?>
+
+                        <?php if ( $dt_login['identity_providers_email'] !== 'on' ): ?>
+
+                            <div class="wp_login_form">
                                 <?php
-                                if ( isset( $_GET['login'] ) && $_GET['login'] === 'failed' ) {
-                                    ?>
-                                    <div class="callout warning cell center">
-                                        <?php echo esc_html__( 'Username or password does not match. Try again.', 'disciple_tools' ); ?>
-                                    </div>
-                                    <?php
-                                }
+                                $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+                                $args = array(
+                                    'redirect' => dt_login_url( 'redirect', site_url( $request_uri ) ),
+                                    'id_username' => 'user',
+                                    'id_password' => 'pass',
+                                    'value_remember' => true,
+                                    'label_username' => __( 'Email Address', 'disciple_tools' ),
+                                    'label_password' => __( 'Password', 'disciple_tools' ),
+                                    'label_remember' => __( 'Remember Me', 'disciple_tools' ),
+                                    'label_log_in' => __( 'Login', 'disciple_tools' ),
+                                    );
+                                    wp_login_form( $args );
                                 ?>
-
-                                <?php if ( $dt_login['identity_providers_email'] !== 'on' ): ?>
-
-                                    <div class="cell" >
-                                        <div class="wp_login_form">
-                                            <?php
-                                            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-                                            $args = array(
-                                                'redirect' => dt_login_url( 'redirect', site_url( $request_uri ) ),
-                                                'id_username' => 'user',
-                                                'id_password' => 'pass',
-                                                'value_remember' => true,
-                                                'label_username' => __( 'Email Address', 'disciple_tools' ),
-                                                'label_password' => __( 'Password', 'disciple_tools' ),
-                                                'label_remember' => __( 'Remember Me', 'disciple_tools' ),
-                                                'label_log_in' => __( 'Login', 'disciple_tools' ),
-                                                );
-                                                wp_login_form( $args );
-                                            ?>
-                                        </div>
-                                    </div>
-
-                                <?php endif; ?>
-
-                                <div class="cell">
-
-                                    <?php do_shortcode( '[dt_firebase_login_ui]' ) ?>
-
-                                </div>
                             </div>
+
+                        <?php endif; ?>
+
+                        <div>
+
+                            <?php do_shortcode( '[dt_firebase_login_ui]' ) ?>
 
                         </div>
                     </div>
-                    <div class="cell medium-3 large-4"></div>
+
                 </div>
-                <?php dt_login_form_links() ?>
             </div>
+            <?php dt_login_form_links() ?>
         </div>
 
         <?php
@@ -570,55 +519,51 @@ switch ( $request_action ) {
 function dt_login_form_links() {
     $dt_login = DT_Login_Fields::all_values();
     ?>
-    <div class="grid-x grid-padding-x">
-        <div class="cell medium-3 large-4"></div>
-        <div class="cell medium-6 large-4">
-            <p>
-            <?php if ( ! isset( $_GET['checkemail'] ) || ! in_array( wp_unslash( $_GET['checkemail'] ), array( 'confirm', 'newpass' ) ) ) :
+    <div>
+        <p>
+        <?php if ( ! isset( $_GET['checkemail'] ) || ! in_array( wp_unslash( $_GET['checkemail'] ), array( 'confirm', 'newpass' ) ) ) :
 
-                $dt_url = dt_get_url_path();
-                $query_params = ( new DT_URL( $dt_url ) )->query_params;
-                $action = $query_params->get( 'action' );
-                $to_display = [];
-                if ( !$query_params->has( 'hide-nav' ) ) {
-                    $to_display[] = [
-                        'url' => dt_login_url( 'home' ),
-                        'text' => __( 'Home', 'disciple_tools' ),
-                    ];
-                }
+            $dt_url = dt_get_url_path();
+            $query_params = ( new DT_URL( $dt_url ) )->query_params;
+            $action = $query_params->get( 'action' );
+            $to_display = [];
+            if ( !$query_params->has( 'hide-nav' ) ) {
+                $to_display[] = [
+                    'url' => dt_login_url( 'home' ),
+                    'text' => __( 'Home', 'disciple_tools' ),
+                ];
+            }
 
-                // login link
-                if ( in_array( $action, [ 'register', 'lostpassword' ] ) ) {
-                    $to_display[] = [
-                        'url' => dt_login_url( 'login' ),
-                        'text' => __( 'Login', 'disciple_tools' ),
-                    ];
-                }
+            // login link
+            if ( in_array( $action, [ 'register', 'lostpassword' ] ) ) {
+                $to_display[] = [
+                    'url' => dt_login_url( 'login' ),
+                    'text' => __( 'Login', 'disciple_tools' ),
+                ];
+            }
 
-                // registration link
-                if ( dt_can_users_register() && empty( $action ) ) {
-                    $to_display[] = [
-                        'url' => dt_login_url( 'register' ),
-                        'text' => __( 'Register', 'disciple_tools' ),
-                    ];
-                }
+            // registration link
+            if ( dt_can_users_register() && empty( $action ) ) {
+                $to_display[] = [
+                    'url' => dt_login_url( 'register' ),
+                    'text' => __( 'Register', 'disciple_tools' ),
+                ];
+            }
 
-                if ( $action !== 'lostpassword' ){
-                    $to_display[] = [
-                        'url' => dt_login_url( 'lostpassword' ),
-                        'text' => __( 'Lost Password', 'disciple_tools' ),
-                    ];
+            if ( $action !== 'lostpassword' ){
+                $to_display[] = [
+                    'url' => dt_login_url( 'lostpassword' ),
+                    'text' => __( 'Lost Password', 'disciple_tools' ),
+                ];
+            }
+            foreach ( $to_display as $link ) {
+                echo '<a href="' . esc_url( $link['url'] ) . '">' . esc_html( $link['text'] ) . '</a>';
+                if ( $link !== end( $to_display ) ) {
+                    echo ' | ';
                 }
-                foreach ( $to_display as $link ) {
-                    echo '<a href="' . esc_url( $link['url'] ) . '">' . esc_html( $link['text'] ) . '</a>';
-                    if ( $link !== end( $to_display ) ) {
-                        echo ' | ';
-                    }
-                }
-            endif; ?>
-            </p>
-        </div>
-        <div class="cell medium-3 large-4"></div>
+            }
+        endif; ?>
+        </p>
     </div>
     <?php
 
