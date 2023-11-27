@@ -1156,6 +1156,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     $custom_field['only_for_types'] = array_values( $selected );
                 }
             }
+            // Show in list table.
+            if ( isset( $post_submission['visibility']['show_in_table'] ) && ( !isset( $post_fields[$field_key]['show_in_table'] ) || !is_numeric( $post_fields[$field_key]['show_in_table'] ) ) ) {
+                $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
+            } else if ( isset( $post_submission['visibility']['show_in_table'] ) && $post_submission['visibility']['show_in_table'] === false ) {
+                $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
+            }
 
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
