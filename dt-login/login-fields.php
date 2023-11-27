@@ -123,6 +123,10 @@ class DT_Login_Fields {
 
         $fields = wp_parse_args( $saved_fields, $defaults );
 
+        if ( $saved_count > 0 && $saved_count === $defaults_count ) {
+            return $fields;
+        }
+
         $values = self::dehydrate_fields( $fields );
         if ( $is_multisite_vars === true ) {
             update_network_option( get_main_network_id(), $option_name, $values );
