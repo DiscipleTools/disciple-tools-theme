@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
           return (option['type'] === type) && (option['value'] === value);
         });
 
-        // Assuming no duplicate values; process first and only filtered hit.
+        // This ensures any immediate updates, are assigned to correct link input and not to a new/duplicated input field.
         if (updated_values && updated_values[0] && updated_values[0]['meta_id']) {
           $(link_input).data('meta-id', updated_values[0]['meta_id']);
         }
