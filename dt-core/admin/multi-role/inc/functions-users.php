@@ -127,7 +127,7 @@ function dt_get_user_role_names( $user_id ) {
 }
 
 
-function dt_list_roles(){
+function dt_list_roles( $use_cache = true ){
     $can_not_promote_to_roles = [];
     if ( !dt_is_administrator() ){
         $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, [ 'administrator' ] );
@@ -136,7 +136,7 @@ function dt_list_roles(){
         $can_not_promote_to_roles = array_merge( $can_not_promote_to_roles, dt_multi_role_get_cap_roles( 'manage_dt' ) );
     }
 
-    $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+    $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( $use_cache );
 
     uasort( $expected_roles, function ( $item1, $item2 ){
         return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );

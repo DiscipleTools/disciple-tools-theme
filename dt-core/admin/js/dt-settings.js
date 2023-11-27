@@ -392,7 +392,7 @@ jQuery(document).ready(function($) {
 
 
       /*** TEXT - START ***/
-      if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
+      if ( [ 'text', 'communication_channel', 'location', 'location_meta', 'link' ].indexOf(field['type']) > -1 ) {
         tile_html += `
             <input type="text" class="text-input">
         `;
@@ -618,7 +618,7 @@ jQuery(document).ready(function($) {
                 <label for="new_post_type_key"><b>Key</b></label>
             </td>
             <td>
-                <input name="new_post_type_key" id="new_post_type_key" type="text" required>
+                <input name="new_post_type_key" id="new_post_type_key" maxlength="20" type="text" required>
             </td>
         </tr>
         <tr>
@@ -964,6 +964,7 @@ jQuery(document).ready(function($) {
                     <option value="date">Date</option>
                     <option value="datetime">Date Time</option>
                     <option value="connection">Connection</option>
+                    <option value="user_select">User Select</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}
@@ -1488,7 +1489,7 @@ jQuery(document).ready(function($) {
     // Generate corresponding key.
     let single_name = $('#new_post_type_name_single').val().trim();
     let key = single_name.toLowerCase().replaceAll(/[!-\/:-@[-`{-~\s*]/ig, '_');
-    $('#new_post_type_key').val(key);
+    $('#new_post_type_key').val(key.substring(0, 20));
 
     // Generate corresponding plural name.
     $('#new_post_type_name_plural').val(single_name + 's');
@@ -1617,7 +1618,7 @@ jQuery(document).ready(function($) {
       button_icon.removeClass('loading-spinner');
       return false;
 
-    } else if (key === '') {
+    } else if ( ( key === '' ) || ( key.length > 20 ) ) {
       $(new_post_type_key).css('border', '2px solid #e14d43');
       button_icon.css('margin', '');
       button_icon.removeClass('active');
@@ -1794,7 +1795,7 @@ jQuery(document).ready(function($) {
             </div>
             `;
       let new_field_html = new_field_nonexpandable_html;
-      if(['key_select', 'multi_select'].indexOf(new_field_type) > -1) {
+      if(['key_select', 'multi_select', 'link'].indexOf(new_field_type) > -1) {
         new_field_html = new_field_expandable_html;
       }
       if (tile_key){
@@ -2184,12 +2185,6 @@ jQuery(document).ready(function($) {
   });
   $(document).on( 'click', '.dt-admin-modal-box-close', function() {
     closeModal();
-  });
-
-  dt_admin_modal_overlay.on('click', function(e) {
-    if (e.target === this) {
-      closeModal();
-    }
   });
 
   $('.field-name').on('click', function() {

@@ -379,14 +379,18 @@ window.TYPEAHEADS = {
     };
   },
   typeaheadUserSource : function (field, url) {
+    let payload = {
+      s: "{{query}}"
+    };
+    if ( window.detailsSettings && window.detailsSettings.post_type ) {
+      payload['post_type'] = window.detailsSettings.post_type;
+    }
     return {
       users: {
         display: ["name", "user"],
         ajax: {
           url: wpApiShare.root + "dt/v1/users/get_users",
-          data: {
-            s: "{{query}}",
-          },
+          data: payload,
           beforeSend: function (xhr) {
             xhr.setRequestHeader("X-WP-Nonce", wpApiShare.nonce);
           },

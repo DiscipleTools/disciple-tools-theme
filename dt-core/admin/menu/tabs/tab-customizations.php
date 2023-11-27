@@ -662,7 +662,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                             $field_settings = $post_settings['fields'][$field_key];
                             if ( self::field_option_in_tile( $field_key, $tile_key ) && self::field_is_customizable( $post_type, $field_key ) ) : ?>
                                 <div class="sortable-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
-                                <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' ): ?>
+                                <?php if ( $field_settings['type'] !== 'key_select' && $field_settings['type'] !== 'multi_select' && $field_settings['type'] !== 'link' ): ?>
                                     <div class="field-settings-table-field-name" data-modal="edit-field" data-key="<?php echo esc_attr( $field_key ); ?>" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>">
                                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                                         <span class="field-name-content" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-key="<?php echo esc_attr( $field_key ); ?>">

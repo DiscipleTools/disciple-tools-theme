@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
     project_records_genmap();
   }
 
+  let orgchart_container = null;
   function project_records_genmap() {
     "use strict";
     let chart = jQuery('#chart')
@@ -30,19 +31,32 @@ jQuery(document).ready(function($) {
                 <h2 style="float:right;">${window.lodash.escape(translations.title)}</h2>
               </div>
           </div>
-          <hr>
-          <div class="grid-x grid-padding-x">
-              <div class="cell medium-9">
-                <div id="genmap" style="width: 100%; border: 1px solid lightgrey; overflow:scroll;"></div>
-              </div>
-              <div class="cell medium-3">
-                <div id="genmap-details"></div>
-              </div>
 
-           <div id="modal" class="reveal" data-reveal></div>
+          <hr>
+
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-9">
+              <div id="genmap" style="width: 100%; border: 1px solid lightgrey; overflow:scroll;"></div>
+            </div>
+            <div class="cell medium-3">
+              <div id="genmap-details"></div>
+            </div>
+          </div>
+
+          <div class="grid-x grid-padding-x" id="infinite_loops_grid_div" style="display: none;">
+            <div class="cell medium-12">
+              <br>
+              <h2 style="float:right;">${window.escape(translations.infinite_loops.title).replace('%20', ' ')}</h2>
+              <hr>
+              <div id="infinite_loops_div"></div>
+            </div>
+          </div>
+
+          <div id="modal" class="reveal" data-reveal></div>
        `)
 
     window.load_genmap = ( focus_id = null ) => {
+      jQuery('#infinite_loops_grid_div').fadeOut('fast');
       jQuery('#genmap-details').empty();
       let select_post_type_fields = jQuery('#select_post_type_fields');
 
@@ -51,7 +65,7 @@ jQuery(document).ready(function($) {
         'p2p_type': jQuery(select_post_type_fields).find('option:selected').data('p2p_key'),
         'p2p_direction': jQuery(select_post_type_fields).find('option:selected').data('p2p_direction'),
         'post_type': selected_post_type,
-        'gen_depth_limit': 10
+        'gen_depth_limit': 100,
       };
 
       // Dynamically update URL parameters.
@@ -72,9 +86,13 @@ jQuery(document).ready(function($) {
       window.makeRequest('POST', 'metrics/records/genmap', payload )
       .promise()
       .then(response => {
-        console.log(response)
         let container = jQuery('#genmap')
         container.empty()
+
+        let loops = identify_infinite_loops( response, [] );
+        if ( loops.length > 0 ) {
+          display_infinite_loops( loops );
+        }
 
         var nodeTemplate = function(data) {
           return `
@@ -83,7 +101,7 @@ jQuery(document).ready(function($) {
           `;
         };
 
-        container.orgchart({
+        orgchart_container = container.orgchart({
           'data': response,
           'nodeContent': 'content',
           'direction': 'l2r',
@@ -97,10 +115,15 @@ jQuery(document).ready(function($) {
         container.on('click', '.node', function () {
           let node = jQuery(this)
           let node_id = node.attr('id')
-          open_modal_details(node_id, selected_post_type)
-        })
+          let node_parent_id = node.data('parent')
 
+          open_modal_details(node_id, node_parent_id, selected_post_type)
+        })
       })
+      .catch(error => {
+        let msg = ( (error.responseJSON !== undefined) && error.responseJSON['message'] ) ? error.responseJSON['message'] : error.statusText;
+        alert(window.lodash.escape(msg));
+      });
     }
 
     // Set initial states and default to any specified url parameters.
@@ -147,8 +170,104 @@ jQuery(document).ready(function($) {
         handle_focus(post_type, post_id, p2p_key);
     });
 
+    jQuery(document).on('click', '.genmap-details-toggle-child-display', function(e) {
+      toggle_child_display(jQuery(e.currentTarget).data('post_id'), jQuery(e.currentTarget).data('parent_id'));
+    });
+
     jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
       handle_add_child();
+    });
+  }
+
+  function identify_infinite_loops( data, loops ) {
+    data['children'].forEach(function ( item ) {
+      if ( item['has_infinite_loop'] ) {
+        loops.push({
+          'id': item['id'],
+          'name': item['name'],
+          'loop': extract_infinite_loop( item['id'], item['children'], [], false )
+        });
+
+      } else if ( item['children'].length > 0 ) {
+        loops = identify_infinite_loops( item, loops );
+      }
+    });
+
+    return loops;
+  }
+
+  function extract_infinite_loop( parent_id, children, loop, loop_closed ) {
+    children.forEach(function ( item ) {
+      if ( parent_id === item['id'] ) {
+        loop_closed = true;
+
+      } else if ( !loop_closed ) {
+        loop.push(item);
+        loop = extract_infinite_loop( parent_id, item['children'], loop, loop_closed );
+      }
+    });
+
+    return loop;
+  }
+
+  function display_infinite_loops( loops ) {
+    let loops_grid_div = jQuery('#infinite_loops_grid_div');
+    let loops_div = jQuery('#infinite_loops_div');
+    let selected_post_type = jQuery('#select_post_types').val();
+
+    jQuery(loops_grid_div).fadeOut('fast', function () {
+      jQuery(loops_div).empty();
+
+      // Ensure duplicate loops are removed.
+      let processed_loop_ids = [];
+      let filtered_loops = loops.filter( loop => {
+        if ( !processed_loop_ids.includes( loop['id'] ) ) {
+          processed_loop_ids.push( loop['id'] );
+          return true;
+
+        } else {
+          return false;
+        }
+      });
+
+      // Proceed with filtered loops display
+      filtered_loops.forEach(function ( item ) {
+        let html = `
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        <a style="margin-right: 10px;" href="${window.dtMetricsProject.site_url}/${window.escape(selected_post_type).replaceAll('%20', ' ')}/${window.escape(item['id']).replaceAll('%20', ' ')}" target="_blank" class="button">
+                            <i class="mdi mdi-id-card" style="font-size: 15px;"></i>
+                        </a>
+                        ${window.escape(item['name']).replaceAll('%20', ' ')}
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+              ${(function func(loop, post_type) {
+                let tbody_html = ``;
+                loop.forEach(function ( child ) {
+                  tbody_html += `
+                  <tr>
+                    <td>
+                        <a href="${window.dtMetricsProject.site_url}/${window.escape(post_type).replaceAll('%20', ' ')}/${window.escape(child['id']).replaceAll('%20', ' ')}" target="_blank">
+                          ${window.escape(child['name']).replaceAll('%20', ' ')}
+                        </a>
+                    </td>
+                  </tr>
+                  `;
+                });
+                return tbody_html;
+              })(item['loop'], selected_post_type)}
+            </tbody>
+        </table>`;
+
+        // Append to infinite loops display area.
+        jQuery(loops_div).append(html);
+      });
+
+      jQuery(loops_grid_div).fadeIn('fast');
     });
   }
 
@@ -190,6 +309,10 @@ jQuery(document).ready(function($) {
     jQuery(modal).foundation('open');
   }
 
+  $(document).on('open.zf.reveal', '#template_metrics_modal[data-reveal]', function () {
+    jQuery('#gen_tree_add_child_name').focus();
+  });
+
   function handle_add_child() {
     let post_type = jQuery('#gen_tree_add_child_post_type').val();
     let parent_id = jQuery('#gen_tree_add_child_post_id').val();
@@ -223,6 +346,37 @@ jQuery(document).ready(function($) {
       window.load_genmap( post_id );
     }
   }
+
+  function toggle_child_display(post_id, parent_id) {
+      if (post_id && orgchart_container) {
+          let query = (parent_id === 0 ? `#${post_id}.node` : `#${post_id}.node[data-parent='${parent_id}']`);
+          let node = jQuery('#genmap').find(query);
+          if (node) {
+              let children = orgchart_container.getNodeState(node, 'children');
+              if (children.exist === true) {
+                if ( children.visible === true ) {
+                    orgchart_container.hideChildren(node);
+                } else {
+                    toggle_child_display_show_children(node);
+                }
+              }
+          }
+      }
+  }
+
+    function toggle_child_display_show_children(node) {
+        if (node && orgchart_container) {
+            orgchart_container.showChildren(node);
+
+            // Recursively display nested children.
+            let children = orgchart_container.getChildren(node);
+            if ( ( children !== undefined ) && children.length > 0 ) {
+                children.each(function (idx, child) {
+                    toggle_child_display_show_children(jQuery(child));
+                });
+            }
+        }
+    }
 
   function refresh_post_type_select_list(callback = null) {
     let post_types = window.dtMetricsProject.post_types;
@@ -258,6 +412,7 @@ jQuery(document).ready(function($) {
   }
 
   function refresh_post_type_field_select_list(callback = null) {
+    jQuery('#infinite_loops_grid_div').fadeOut('fast');
     let post_types = window.dtMetricsProject.post_types;
     let selected_post_type = jQuery('#select_post_types').val();
     if (post_types && selected_post_type && post_types[selected_post_type]) {
@@ -307,7 +462,7 @@ jQuery(document).ready(function($) {
     }
   }
 
-  function open_modal_details( id, post_type ) {
+  function open_modal_details( id, parent_id, post_type ) {
     if ( id ) {
       let spinner = ' <span class="loading-spinner active"></span> '
       jQuery('#genmap-details').html(spinner)
@@ -315,11 +470,10 @@ jQuery(document).ready(function($) {
       window.makeRequest('GET', post_type + '/' + id, null, 'dt-posts/v2/')
       .promise()
       .then(data => {
-        console.log(data)
         let container = jQuery('#genmap-details')
         container.empty()
         if (data) {
-          container.html(window.detail_template(post_type, data))
+          container.html(window.detail_template(parent_id, post_type, data))
         }
       })
       .catch(error => {
@@ -328,8 +482,22 @@ jQuery(document).ready(function($) {
     }
   }
 
-  window.detail_template = ( post_type, data ) => {
-    let translations = window.dtMetricsProject.translations;
+  window.detail_template = ( parent_id, post_type, data ) => {
+    let escaped_translations = window.SHAREDFUNCTIONS.escapeObject( window.dtMetricsProject.translations );
+
+    // Determine orgchart node state.
+    let orgchart_node_state = {};
+    if (data.ID && orgchart_container) {
+      let orgchart_node = jQuery('#genmap').find(`#${data.ID}.node`);
+      let orgchart_node_children = orgchart_container.getNodeState(orgchart_node, 'children');
+
+      // Capture associated children state.
+      orgchart_node_state['children_exist'] = (orgchart_node_children.exist) ? orgchart_node_children.exist : false;
+      orgchart_node_state['children_visible'] = (orgchart_node_children.visible) ? orgchart_node_children.visible : false;
+    }
+    let toggle_child_displayed_but_state = ((orgchart_node_state['children_exist'] !== undefined) && orgchart_node_state['children_exist'] === false) ? 'disabled' : '';
+
+    let template = ''
 
     if ( post_type === 'contacts' ) {
 
@@ -357,36 +525,25 @@ jQuery(document).ready(function($) {
       if ( typeof data.overall_status !== 'undefined' ) {
         status = data.overall_status['label']
       }
-      return `
+      template = `
         <div class="grid-x grid-padding-x">
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.status)}: ${window.lodash.escape(status)}
+            ${escaped_translations.details.status}: ${window.lodash.escape(status)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.groups)}:
+            ${escaped_translations.details.groups}:
             ${group_list}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.assigned_to)}:
+            ${escaped_translations.details.assigned_to}:
             ${window.lodash.escape(assign_to)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.coaches)}: <br>
+            ${escaped_translations.details.coaches}: <br>
             ${coach_list}
-          </div>
-          <div class="cell"><hr>
-            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
-                <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
-            </a>
           </div>
         </div>
       `;
@@ -425,65 +582,68 @@ jQuery(document).ready(function($) {
       if ( typeof data.group_type !== 'undefined' ) {
         type = data.group_type['label']
       }
-      return `
+      template = `
         <div class="grid-x grid-padding-x">
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.status)}: ${window.lodash.escape(status)}
+            ${escaped_translations.details.status}: ${window.lodash.escape(status)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.type)}: ${window.lodash.escape(type)}
+            ${escaped_translations.details.type}: ${window.lodash.escape(type)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.member_count)}: ${window.lodash.escape(members_count)}
+            ${escaped_translations.details.member_count}: ${window.lodash.escape(members_count)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.members)}: <br>
+            ${escaped_translations.details.members}: <br>
             ${member_list}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.assigned_to)}:
+            ${escaped_translations.details.assigned_to}:
             ${window.lodash.escape(assign_to)}
           </div>
           <div class="cell">
-            ${window.lodash.escape(translations.details.coaches)}: <br>
+            ${escaped_translations.details.coaches}: <br>
             ${coach_list}
-          </div>
-          <div class="cell"><hr>
-            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
-                <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
-            </a>
           </div>
         </div>
       `
     } else {
-      return `
+      template = `
         <div class="grid-x grid-padding-x">
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2>
           </div>
-          <div class="cell"><hr>
-            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
-                <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
-            </a>
-            <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
-                <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
-            </a>
-          </div>
         </div>
       `;
     }
+    template += `
+      <div class="cell">
+        <hr>
+        <div>
+            <a href="${window.dtMetricsProject.site_url}/${window.lodash.escape(post_type)}/${window.lodash.escape(data.ID)}" target="_blank" class="button">
+              <i class="mdi mdi-id-card" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.open}</span>
+          </a>
+          <a href="#" class="button genmap-details-add-child" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
+              <i class="mdi mdi-account-multiple-plus-outline" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.add}</span>
+
+          </a>
+          <a href="#" class="button genmap-details-add-focus" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}">
+              <i class="mdi mdi-bullseye-arrow gen-node-control-focus" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.focus}</span>
+          </a>
+          <a href="#" class="button genmap-details-toggle-child-display" data-post_type="${window.lodash.escape(data.post_type)}" data-post_id="${window.lodash.escape(data.ID)}" data-post_name="${window.lodash.escape(data.title)}" data-parent_id="${window.lodash.escape( ((parent_id !== undefined) ? parent_id : 0) )}" ${ toggle_child_displayed_but_state }>
+              <i class="mdi mdi-file-tree" style="font-size: 20px;"></i>
+              <span style="display: flex">${escaped_translations.details.hide}</span>
+          </a>
+        </div>
+      </div>
+      `;
+    return template;
   }
 
 })

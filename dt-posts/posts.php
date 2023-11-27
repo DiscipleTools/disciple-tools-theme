@@ -409,11 +409,11 @@ class Disciple_Tools_Posts
         $message = '';
         if ( $activity->action == 'field_update' ){
             if ( isset( $fields[$activity->meta_key] ) ){
-                if ( $activity->meta_key === 'assigned_to' ){
+                if ( $fields[$activity->meta_key]['type'] === 'user_select' ){
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
                         $user = get_user_by( 'ID', $meta_array[1] );
-                        $message = sprintf( _x( 'Assigned to: %s', 'Assigned to: User1', 'disciple_tools' ), ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
+                        $message = sprintf( _x( '%1$1s: %2$2s', 'User Select: User1', 'disciple_tools' ), $fields[$activity->meta_key]['name'], ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'text' ){
@@ -505,7 +505,7 @@ class Disciple_Tools_Posts
                     if ( isset( $link_info['field_key'] ) && isset( $link_info['type'] ) ) {
                         $field_key = $link_info['field_key'];
                         $link_type = $link_info['type'];
-                        $label = $fields[$field_key]['default'][$link_type]['label'];
+                        $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
                         if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
                             if ( $activity->meta_value === 'value_deleted' ) {
                                 $value = $activity->old_value;

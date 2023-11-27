@@ -99,15 +99,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 if ( isset( $_SERVER['REQUEST_URI'] ) ) {
                     $url .= esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
+                //remove query parameters
+                if ( $ignore_query_parameters ){
+                    $url = strtok( $url, '?' ); //allow get parameters
+                }
                 //remove the domain part. Ex: https://example.com/
                 if ( $include_host === false ) {
                     $url = trim( str_replace( get_site_url(), '', $url ), '/' );
                 }
 
-                //remove query parameters
-                if ( $ignore_query_parameters ){
-                    $url = strtok( $url, '?' ); //allow get parameters
-                }
                 //remove trailing '?'
                 if ( substr( $url, -1 ) === '?' ){
                     $url = substr( $url, 0, -1 );
