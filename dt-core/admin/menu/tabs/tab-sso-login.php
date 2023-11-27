@@ -157,7 +157,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                         <input
                             type="<?php echo esc_attr( $must_have_super_admin_rights ? 'password' : 'text' ) ?>"
                             name="<?php echo esc_attr( $args['key'] ) ?>"
-                            value="<?php echo esc_attr( $args['value'] ) ?>"
+                            value="<?php echo esc_attr( $must_have_super_admin_rights ? 'hidden secret value' : $args['value'] ) ?>"
                             <?php echo $must_have_super_admin_rights ? 'disabled' : '' ?>
                         />
                         <?php echo esc_attr( $args['description'] ) ?>
