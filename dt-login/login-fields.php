@@ -263,7 +263,7 @@ class DT_Login_Fields {
                 'key' => 'firebase_config_label',
                 'label' => 'Where to find the config details',
                 'description' => 'Go to your firebase console and in the project settings get the config details from your webapp https://console.firebase.google.com/',
-                'description_2' => is_multisite() && !is_network_admin() ? 'If you are a super admin, please install the dt multisite plugin at the network level in order to control the firebase keys. https://github.com/DiscipleTools/disciple-tools-multisite' : '',
+                'description_2' => '',
                 'value' => '',
                 'type' => 'label',
                 'multisite_level' => true,
