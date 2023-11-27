@@ -96,7 +96,7 @@ jQuery(document).ready(function($) {
       $(`#${fieldKey}-spinner`).removeClass('active')
       post = newPost
 
-      // Safeguard against immediate update failures.
+      // Make sure a key exists for the new link field.
       if ( post && post[fieldKey] && post[fieldKey].length > 0 ) {
         let updated_values = post[fieldKey].filter((option) => {
           return (option['type'] === type) && (option['value'] === value);
