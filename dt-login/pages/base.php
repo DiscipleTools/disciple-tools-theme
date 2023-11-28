@@ -71,6 +71,9 @@ class DT_Login_Page_Base
             .center {
                 text-align: center;
             }
+            .flow > * + * {
+                margin-top: var(--flow-space, 1rem);
+            }
             label {
                 color: #0a0a0a;
                 display: block;
@@ -122,6 +125,28 @@ class DT_Login_Page_Base
             }
             .login-username, .login-password {
                 width: 100%;
+            }
+            .form-error {
+                display: none;
+                font-size: .8rem;
+                font-weight: 700;
+                margin-bottom: 1.0666666667rem;
+                margin-top: -0.5333333333rem;
+            }
+
+            .form-error, .is-invalid-label {
+                color: #cc4b37;
+            }
+            .callout {
+                background-color: white;
+                border: ;
+            }
+            .calout.warning,
+            .callout.alert {
+                background-color: #f7e4e1;
+                color: #0a0a0a;
+                padding: 0.5rem 1rem;
+                border: 1px solid hsla(0,0%,4%,.25);
             }
         </style>
 

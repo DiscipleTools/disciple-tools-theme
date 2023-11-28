@@ -170,19 +170,22 @@ switch ( $request_action ) {
          */
         do_action( 'validate_password_reset', $form_errors, $user );
 
-    if ( ( ! $form_errors->get_error_code() ) && isset( $_POST['pass1'] ) && !empty( $_POST['pass1'] ) ) {
-			reset_password( $user, $_POST['pass1'] );
-			setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
-			// @codingStandardsIgnoreEnd
+        if ( ( ! $form_errors->get_error_code() ) && isset( $_POST['pass1'] ) && !empty( $_POST['pass1'] ) ) {
+                reset_password( $user, $_POST['pass1'] );
+                setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
+                // @codingStandardsIgnoreEnd
             ?>
-        <div id="content">
-        <div id="login">
-            <div id="inner-content">
-                <div class="callout">
-                    <div><?php echo sprintf( 'Your password is reset. %s You can login here %', '<a href="' . esc_url( dt_login_url( 'login' ) ) . '">', '</a>' ) ?></div>
+
+            <div id="content">
+                <div id="login">
+                    <div id="inner-content">
+                        <div class="callout">
+                            <div><?php echo sprintf( 'Your password is reset. %s You can login here %s', '<a href="' . esc_url( dt_login_url( 'login' ) ) . '">', '</a>' ) ?></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
             <?php
 
             exit;
@@ -211,7 +214,7 @@ switch ( $request_action ) {
                 <div id="inner-content">
                     <div class="callout">
                         <div class="center">
-                            <h1 style="color:gray;font-size: 14px;margin:0;padding:5px;font-weight: normal;"><?php esc_html_e( 'Reset Password', 'disciple_tools' ) ?></h1>
+                            <h1><?php esc_html_e( 'Reset Password', 'disciple_tools' ) ?></h1>
                         </div>
                         <?php if ( ! empty( $form_errors->errors ) ) :?>
                             <div class="alert callout">
@@ -221,7 +224,7 @@ switch ( $request_action ) {
                             </div>
                         <?php endif; ?>
                         <div class="wp_resetpassword_form">
-                            <form name="resetpassform" id="resetpassform" action="<?php echo esc_url( dt_login_url( 'resetpass' ) ); ?>" method="post" autocomplete="off" data-abide novalidate>
+                            <form class="flow" name="resetpassform" id="resetpassform" action="<?php echo esc_url( dt_login_url( 'resetpass' ) ); ?>" method="post" autocomplete="off" data-abide novalidate>
                                 <input type="hidden" id="user_login" value="<?php echo esc_attr( $rp_login ); ?>" autocomplete="off" />
 
                                 <div>
@@ -232,7 +235,7 @@ switch ( $request_action ) {
                                         </span>
                                     </label>
                                     <meter max="4" id="password-strength-meter" value="0"></meter>
-                                <p id="password-strength-text"></p>
+                                    <p id="password-strength-text"></p>
                                 </div>
                                 <p>
                                     <label><?php esc_html_e( 'Re-enter Password', 'disciple_tools' ) ?> <strong>*</strong>
@@ -245,8 +248,6 @@ switch ( $request_action ) {
 
 
                                 <p class="description indicator-hint"><?php echo esc_html( wp_get_password_hint() ); ?></p>
-                                <br class="clear" />
-
                                 <?php
                                 /**
                                  * Fires following the 'Strength indicator' meter in the user password reset form.
