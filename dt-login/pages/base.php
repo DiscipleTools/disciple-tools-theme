@@ -139,9 +139,9 @@ class DT_Login_Page_Base
             }
             .callout {
                 background-color: white;
-                border: ;
+                border: 1px solid hsla(0,0%,4%,.25);
             }
-            .calout.warning,
+            .callout.warning,
             .callout.alert {
                 background-color: #f7e4e1;
                 color: #0a0a0a;
