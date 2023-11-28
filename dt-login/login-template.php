@@ -156,6 +156,10 @@ switch ( $request_action ) {
 
         $form_errors = new WP_Error();
 
+        if ( !isset( $_POST['pass1'] ) || $_POST['pass1'] == '' ) {
+            $form_errors->add( 'password_reset_missing_password', __( 'Missing email or password.', 'disciple_tools' ) );
+        }
+
         if ( isset( $_POST['pass1'] ) && $_POST['pass1'] != $_POST['pass2'] ) {
             $form_errors->add( 'password_reset_mismatch', __( 'Passwords do not match. Please, try again.', 'disciple_tools' ) );
         }

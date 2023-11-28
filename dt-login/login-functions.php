@@ -23,14 +23,14 @@ function dt_login_redirect_login_page() {
             return;
         }
 
-        if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'rp' ) {
-            return;
-        }
+        //if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'rp' ) {
+        //    return;
+        //}
 
-//        if ( $page_viewed == "wp-login.php" && isset( $_GET['action'] ) && $_GET['action'] === 'resetpass' ) {
-//            wp_redirect( dt_login_url( 'resetpass' ) );
-//            exit;
-//        }
+        if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && ( $_GET['action'] === 'resetpass' || $_GET['action'] === 'rp' ) ) {
+            wp_redirect( dt_login_url( 'resetpass' ) );
+            exit;
+        }
 
         if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'logout' ) {
             wp_redirect( dt_login_url( 'logout' ) );
