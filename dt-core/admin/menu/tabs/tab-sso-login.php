@@ -114,17 +114,21 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                                 <table class="widefat striped">
                                     <tbody>
                                     <?php
+                                    $any_multisite_level_args = false;
                                     if ( ! empty( $vars ) ) {
                                         foreach ( $vars as $key => $value ) {
                                             if ( $tab === $value['tab'] ) {
+                                                $any_multisite_level_args = is_multisite() && !empty( $value['multisite_level'] );
                                                 $this->tab( $value );
                                             }
                                         }
                                     }
+
+
                                     ?>
                                     <tr>
                                         <td colspan="2">
-                                            <button class="button" type="submit">Save</button> <button class="button" type="submit" style="float:right;" name="delete" value="1">Reset</button>
+                                            <button class="button" type="submit">Save</button> <button class="button" <?php echo esc_attr( $any_multisite_level_args ? 'disabled' : '' ) ?> type="submit" style="float:right;" name="delete" value="1">Reset</button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -151,9 +155,9 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <input
-                            type="text"
+                            type="<?php echo esc_attr( $must_have_super_admin_rights ? 'password' : 'text' ) ?>"
                             name="<?php echo esc_attr( $args['key'] ) ?>"
-                            value="<?php echo esc_attr( $args['value'] ) ?>"
+                            value="<?php echo esc_attr( $must_have_super_admin_rights ? 'hidden secret value' : $args['value'] ) ?>"
                             <?php echo $must_have_super_admin_rights ? 'disabled' : '' ?>
                         />
                         <?php echo esc_attr( $args['description'] ) ?>
