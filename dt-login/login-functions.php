@@ -6,6 +6,9 @@
 // LOGIN PAGE REDIRECT
 add_action( 'init', 'dt_login_redirect_login_page' );
 function dt_login_redirect_login_page() {
+    if ( dt_is_rest() ) {
+        return;
+    }
 
     $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
