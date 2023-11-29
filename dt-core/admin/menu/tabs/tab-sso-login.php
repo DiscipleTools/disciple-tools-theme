@@ -28,6 +28,10 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
+        if ( dt_is_rest() ) {
+            return;
+        }
+
         if ( !current_user_can( 'manage_dt' ) ){
             return;
         }
@@ -165,7 +169,21 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
                 <?php
                 break;
+            case 'role':
             case 'select':
+
+                $options = [];
+                if ( $args['type'] === 'role' ) {
+                    $roles = function_exists( 'dt_list_roles' ) ? dt_list_roles() : [ 'multiplier' => [ 'label' => 'Multiplier', 'disabled' => false ] ];
+
+                    foreach ( $roles as $role_key => $role ) {
+                        if ( $role['disabled'] === false ) {
+                            $options[$role_key] = $role['label'];
+                        }
+                    }
+                } else {
+                    $options = $args['default'];
+                }
                 ?>
                 <tr>
                     <td style="width:10%; white-space:nowrap;">
@@ -178,7 +196,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                         >
                             <option></option>
                             <?php
-                            foreach ( $args['default'] as $item_key => $item_value ) {
+                            foreach ( $options as $item_key => $item_value ) {
                                 ?>
                                 <option value="<?php echo esc_attr( $item_key ) ?>" <?php echo ( $item_key === $args['value'] ) ? 'selected' : '' ?>><?php echo esc_html( $item_value ) ?></option>
                                 <?php
