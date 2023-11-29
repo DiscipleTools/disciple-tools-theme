@@ -10,10 +10,8 @@ function dt_login_redirect_login_page() {
         return;
     }
 
-    $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
     if ( isset( $_SERVER['REQUEST_URI'] ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
-        $page_viewed = substr( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ), 0, 12 );
         $parsed_request_uri = ( new DT_URL( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) )->parsed_url;
         $page_viewed = ltrim( $parsed_request_uri['path'], '/' );
 
@@ -22,6 +20,16 @@ function dt_login_redirect_login_page() {
             exit;
         }
 
+        if ( is_user_logged_in() ){
+            if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'logout' ) {
+                wp_redirect( dt_login_url( 'logout' ) );
+                exit;
+            } else {
+                return;
+            }
+        }
+
+        $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
         if ( !$login_page_enabled ) {
             return;
         }
@@ -32,11 +40,6 @@ function dt_login_redirect_login_page() {
 
         if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && ( $_GET['action'] === 'resetpass' || $_GET['action'] === 'rp' ) ) {
             wp_redirect( dt_login_url( 'resetpass' ) );
-            exit;
-        }
-
-        if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'logout' ) {
-            wp_redirect( dt_login_url( 'logout' ) );
             exit;
         }
 
