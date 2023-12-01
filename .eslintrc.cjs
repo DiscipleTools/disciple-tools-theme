@@ -14,7 +14,7 @@ module.exports = {
   },
   "rules": {
     "no-console": "off",
-    "no-undef": 1,
+    "no-undef": "error",
     "no-unused-vars": "off",
     "no-empty": "off",
     "no-useless-escape": "off",

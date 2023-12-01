@@ -278,6 +278,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $single = $params['single'];
             $plural = $params['plural'];
 
+            // Validate specified posy type key.
+            if ( strlen( $key ) > 20 ) {
+                return [
+                    'success' => false,
+                    'msg' => 'Unable to create '. $key .' record type. Specified key character count greater than 20.'
+                ];
+            }
+
             // Create new post type.
             $custom_post_types = get_option( 'dt_custom_post_types', [] );
             if ( !isset( $custom_post_types[$key] ) && !in_array( $key, DT_Posts::get_post_types() ) ){
@@ -768,6 +776,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             ];
             if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link' ] ) ){
                 $new_field['default'] = [];
+
+                if ( $field_type === 'link' ) {
+                    $new_field['default']['default'] = [
+                        'label' => 'Default'
+                    ];
+                }
             }
             if ( $field_type === 'connection' ){
                 $new_field = [];
@@ -1141,6 +1155,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 } else {
                     $custom_field['only_for_types'] = array_values( $selected );
                 }
+            }
+            // Show in list table.
+            if ( isset( $post_submission['visibility']['show_in_table'] ) && ( !isset( $post_fields[$field_key]['show_in_table'] ) || !is_numeric( $post_fields[$field_key]['show_in_table'] ) ) ) {
+                $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
+            } else if ( isset( $post_submission['visibility']['show_in_table'] ) && $post_submission['visibility']['show_in_table'] === false ) {
+                $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
             }
 
             $field_customizations[$post_type][$field_key] = $custom_field;

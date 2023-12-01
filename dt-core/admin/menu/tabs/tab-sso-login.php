@@ -28,6 +28,10 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
+        if ( dt_is_rest() ) {
+            return;
+        }
+
         if ( !current_user_can( 'manage_dt' ) ){
             return;
         }
@@ -114,17 +118,21 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                                 <table class="widefat striped">
                                     <tbody>
                                     <?php
+                                    $any_multisite_level_args = false;
                                     if ( ! empty( $vars ) ) {
                                         foreach ( $vars as $key => $value ) {
                                             if ( $tab === $value['tab'] ) {
+                                                $any_multisite_level_args = is_multisite() && !empty( $value['multisite_level'] );
                                                 $this->tab( $value );
                                             }
                                         }
                                     }
+
+
                                     ?>
                                     <tr>
                                         <td colspan="2">
-                                            <button class="button" type="submit">Save</button> <button class="button" type="submit" style="float:right;" name="delete" value="1">Reset</button>
+                                            <button class="button" type="submit">Save</button> <button class="button" <?php echo esc_attr( $any_multisite_level_args ? 'disabled' : '' ) ?> type="submit" style="float:right;" name="delete" value="1">Reset</button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -151,9 +159,9 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <input
-                            type="text"
+                            type="<?php echo esc_attr( $must_have_super_admin_rights ? 'password' : 'text' ) ?>"
                             name="<?php echo esc_attr( $args['key'] ) ?>"
-                            value="<?php echo esc_attr( $args['value'] ) ?>"
+                            value="<?php echo esc_attr( $must_have_super_admin_rights ? 'hidden secret value' : $args['value'] ) ?>"
                             <?php echo $must_have_super_admin_rights ? 'disabled' : '' ?>
                         />
                         <?php echo esc_attr( $args['description'] ) ?>
@@ -161,7 +169,21 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
                 <?php
                 break;
+            case 'role':
             case 'select':
+
+                $options = [];
+                if ( $args['type'] === 'role' ) {
+                    $roles = function_exists( 'dt_list_roles' ) ? dt_list_roles() : [ 'multiplier' => [ 'label' => 'Multiplier', 'disabled' => false ] ];
+
+                    foreach ( $roles as $role_key => $role ) {
+                        if ( $role['disabled'] === false ) {
+                            $options[$role_key] = $role['label'];
+                        }
+                    }
+                } else {
+                    $options = $args['default'];
+                }
                 ?>
                 <tr>
                     <td style="width:10%; white-space:nowrap;">
@@ -174,7 +196,7 @@ class Disciple_Tools_SSO_Login extends Disciple_Tools_Abstract_Menu_Base
                         >
                             <option></option>
                             <?php
-                            foreach ( $args['default'] as $item_key => $item_value ) {
+                            foreach ( $options as $item_key => $item_value ) {
                                 ?>
                                 <option value="<?php echo esc_attr( $item_key ) ?>" <?php echo ( $item_key === $args['value'] ) ? 'selected' : '' ?>><?php echo esc_html( $item_value ) ?></option>
                                 <?php
