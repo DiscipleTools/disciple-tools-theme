@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.50.1\n"
+"Project-Id-Version: Disciple Tools 1.52.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-15T11:56:31+00:00\n"
+"POT-Creation-Date: 2023-12-01T09:27:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: disciple_tools\n"
@@ -65,7 +65,7 @@ msgid "Submit Request"
 msgstr ""
 
 #: 403.php:55
-#: archive-template.php:867
+#: archive-template.php:864
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
@@ -90,7 +90,7 @@ msgstr ""
 #: 403.php:59
 #: archive-template.php:390
 #: archive-template.php:432
-#: archive-template.php:891
+#: archive-template.php:888
 #: dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
@@ -402,56 +402,46 @@ msgstr ""
 msgid "Delete Selections Below"
 msgstr ""
 
-#: archive-template.php:681
-#: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9
-#: dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:110
-#: dt-posts/custom-post-type.php:169
-#: template-settings.php:136
-msgid "Name"
-msgstr ""
-
-#: archive-template.php:692
+#: archive-template.php:689
 msgid "Loading..."
 msgstr ""
 
-#: archive-template.php:697
+#: archive-template.php:694
 #: dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr ""
 
-#: archive-template.php:709
+#: archive-template.php:706
 msgid "Field Name"
 msgstr ""
 
-#: archive-template.php:765
+#: archive-template.php:762
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr ""
 
-#: archive-template.php:774
+#: archive-template.php:771
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr ""
 
-#: archive-template.php:777
+#: archive-template.php:774
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr ""
 
-#: archive-template.php:784
+#: archive-template.php:781
 msgid "Filter for subassigned OR Assigned To"
 msgstr ""
 
-#: archive-template.php:793
+#: archive-template.php:790
 #: dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr ""
 
-#: archive-template.php:800
-#: archive-template.php:807
+#: archive-template.php:797
+#: archive-template.php:804
 #: dt-contacts/contacts-transfer.php:157
 #: dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76
@@ -459,8 +449,8 @@ msgstr ""
 msgid "None Set"
 msgstr ""
 
-#: archive-template.php:821
-#: archive-template.php:822
+#: archive-template.php:818
+#: archive-template.php:819
 #: dt-assets/functions/enqueue-scripts.php:224
 #: dt-core/global-functions.php:606
 #: dt-metrics/records/time-charts.php:120
@@ -470,8 +460,8 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: archive-template.php:828
-#: archive-template.php:829
+#: archive-template.php:825
+#: archive-template.php:826
 #: dt-assets/functions/enqueue-scripts.php:223
 #: dt-core/global-functions.php:607
 #: dt-metrics/records/genmap.php:114
@@ -482,31 +472,31 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: archive-template.php:833
+#: archive-template.php:830
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr ""
 
-#: archive-template.php:836
-#: archive-template.php:847
+#: archive-template.php:833
+#: archive-template.php:844
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr ""
 
-#: archive-template.php:843
+#: archive-template.php:840
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr ""
 
-#: archive-template.php:875
+#: archive-template.php:872
 msgid "Filter Name"
 msgstr ""
 
-#: archive-template.php:880
+#: archive-template.php:877
 msgid "Filter Records"
 msgstr ""
 
-#: archive-template.php:884
+#: archive-template.php:881
 #: dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79
@@ -785,6 +775,7 @@ msgstr ""
 #: dt-contacts/access-module.php:1302
 #: dt-groups/base-setup.php:990
 #: dt-metrics/personal/activity-highlights.php:56
+#: dt-metrics/records/dynamic-records-map.php:96
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr ""
@@ -864,6 +855,7 @@ msgstr ""
 #: dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:265
 #: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:135
 #: dt-users/user-management.php:228
 msgid "Users"
@@ -1191,6 +1183,15 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Record"
+msgstr ""
+
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9
+#: dt-mapping/mapping.php:305
+#: dt-metrics/records/genmap.php:110
+#: dt-posts/custom-post-type.php:169
+#: template-settings.php:136
+msgid "Name"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
@@ -1620,7 +1621,7 @@ msgstr ""
 
 #: dt-contacts/access-module.php:299
 #: dt-contacts/base-setup.php:528
-#: dt-metrics/metrics.php:92
+#: dt-metrics/metrics.php:93
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -1810,9 +1811,10 @@ msgstr ""
 #: dt-metrics/contacts/seeker-path.php:26
 #: dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:64
-#: dt-metrics/metrics.php:101
+#: dt-metrics/metrics.php:102
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
+#: dt-metrics/records/dynamic-records-map.php:31
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:452
 msgid "Contacts"
@@ -1871,7 +1873,7 @@ msgstr ""
 
 #: dt-contacts/base-setup.php:183
 #: dt-core/configuration/config-site-defaults.php:341
-#: dt-login/login-template.php:384
+#: dt-login/login-template.php:349
 #: dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117
 #: dt-users/template-user-management.php:215
@@ -2561,7 +2563,7 @@ msgid "prayer"
 msgstr ""
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:586
+#: dt-login/login-template.php:529
 msgid "Home"
 msgstr ""
 
@@ -2717,7 +2719,7 @@ msgstr ""
 #: dt-metrics/groups/overview.php:65
 #: dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24
-#: dt-metrics/metrics.php:105
+#: dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
 #: dt-metrics/records/genmap.php:97
@@ -3084,84 +3086,88 @@ msgstr ""
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
 
-#: dt-login/login-template.php:89
-#: dt-login/login-template.php:115
+#: dt-login/login-template.php:84
+#: dt-login/login-template.php:109
 msgid "Get New Password"
 msgstr ""
 
-#: dt-login/login-template.php:104
-#: dt-login/login-template.php:538
+#: dt-login/login-template.php:98
+#: dt-login/login-template.php:488
 msgid "Email Address"
 msgstr ""
 
-#: dt-login/login-template.php:118
+#: dt-login/login-template.php:112
 msgid "Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
 msgstr ""
 
-#: dt-login/login-template.php:171
-#: dt-login/login-template.php:261
-#: dt-login/login-template.php:400
+#: dt-login/login-template.php:160
+msgid "Missing email or password."
+msgstr ""
+
+#: dt-login/login-template.php:164
+#: dt-login/login-template.php:244
+#: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
 msgstr ""
 
-#: dt-login/login-template.php:233
-#: dt-login/login-template.php:282
+#: dt-login/login-template.php:217
+#: dt-login/login-template.php:263
 msgid "Reset Password"
 msgstr ""
 
-#: dt-login/login-template.php:248
-#: dt-login/login-template.php:251
-#: dt-login/login-template.php:388
-#: dt-login/login-template.php:391
+#: dt-login/login-template.php:231
+#: dt-login/login-template.php:234
+#: dt-login/login-template.php:353
+#: dt-login/login-template.php:356
 msgid "Password Required"
 msgstr ""
 
-#: dt-login/login-template.php:258
-#: dt-login/login-template.php:397
+#: dt-login/login-template.php:241
+#: dt-login/login-template.php:362
 msgid "Re-enter Password"
 msgstr ""
 
-#: dt-login/login-template.php:340
-#: dt-login/login-template.php:409
-#: dt-login/login-template.php:602
+#: dt-login/login-template.php:312
+#: dt-login/login-template.php:374
+#: dt-login/login-template.php:545
 msgid "Register"
 msgstr ""
 
-#: dt-login/login-template.php:375
+#: dt-login/login-template.php:340
 #: dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr ""
 
-#: dt-login/login-template.php:380
+#: dt-login/login-template.php:345
 msgid "Display Name (optional)"
 msgstr ""
 
-#: dt-login/login-template.php:498
+#: dt-login/login-template.php:456
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:514
-#: dt-login/login-template.php:541
-#: dt-login/login-template.php:594
+#: dt-login/login-template.php:466
+#: dt-login/login-template.php:491
+#: dt-login/login-template.php:537
 msgid "Login"
 msgstr ""
 
-#: dt-login/login-template.php:521
+#: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:539
+#: dt-login/login-template.php:489
 #: dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122
 #: template-settings.php:600
 msgid "Password"
 msgstr ""
 
-#: dt-login/login-template.php:540
+#: dt-login/login-template.php:490
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:609
+#: dt-login/login-template.php:552
 msgid "Lost Password"
 msgstr ""
 
@@ -3245,7 +3251,7 @@ msgstr ""
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26
 #: dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:97
+#: dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3406,7 +3412,7 @@ msgstr ""
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86
-#: dt-metrics/metrics.php:125
+#: dt-metrics/metrics.php:126
 msgid "Metrics"
 msgstr ""
 
@@ -3444,6 +3450,7 @@ msgstr ""
 #: dt-metrics/groups/mapbox-maps.php:55
 #: dt-metrics/personal/mapbox-contacts-maps.php:60
 #: dt-metrics/personal/mapbox-groups-maps.php:54
+#: dt-metrics/records/dynamic-records-map.php:102
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
@@ -3720,7 +3727,7 @@ msgstr ""
 msgid "View Group"
 msgstr ""
 
-#: dt-metrics/metrics.php:108
+#: dt-metrics/metrics.php:109
 msgid "Dynamic Metrics"
 msgstr ""
 
@@ -3881,6 +3888,41 @@ msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:30
+msgid "Records Map"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:91
+#: template-new-bulk-post.php:264
+msgid "Add Records"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:92
+msgid "Post Types"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:93
+msgid "Layer"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:94
+msgid "Are you sure you wish to delete layer?"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:95
+msgid "Record Types"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:97
+#: dt-notifications/notifications.php:922
+#: dt-notifications/notifications.php:929
+#: dt-notifications/notifications.php:936
+#: dt-notifications/notifications.php:940
+#: dt-notifications/notifications.php:950
+#: dt-notifications/notifications.php:957
+msgid "System"
 msgstr ""
 
 #: dt-metrics/records/genmap.php:23
@@ -4053,15 +4095,6 @@ msgstr ""
 #: dt-notifications/notifications.php:919
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
-msgstr ""
-
-#: dt-notifications/notifications.php:922
-#: dt-notifications/notifications.php:929
-#: dt-notifications/notifications.php:936
-#: dt-notifications/notifications.php:940
-#: dt-notifications/notifications.php:950
-#: dt-notifications/notifications.php:957
-msgid "System"
 msgstr ""
 
 #: dt-notifications/notifications.php:923
@@ -5251,10 +5284,6 @@ msgstr ""
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
-msgstr ""
-
-#: template-new-bulk-post.php:264
-msgid "Add Records"
 msgstr ""
 
 #: template-new-post.php:45
