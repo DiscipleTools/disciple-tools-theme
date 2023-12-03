@@ -297,22 +297,26 @@ dt_please_log_in();
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( 'Sort', 'disciple_tools' ); ?></a>
-                                    <ul class="menu is-dropdown-submenu">
+                                    <ul class="menu is-dropdown-submenu" style="min-width:220px">
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-calendar-descending.svg' ) ?>" class="list-dropdown-submenu-icon">
                                                 <?php esc_html_e( 'Newest', 'disciple_tools' ); ?></a>
                                         </li>
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="post_date">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-calendar-ascending.svg' ) ?>" class="list-dropdown-submenu-icon">
                                                 <?php esc_html_e( 'Oldest', 'disciple_tools' ); ?></a>
                                         </li>
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="last_modified">
-                                                <?php esc_html_e( 'Most recently modified', 'disciple_tools' ); ?></a>
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-clock-descending-outline.svg' ) ?>" class="list-dropdown-submenu-icon">
+                                                 <?php esc_html_e( 'Most recently modified', 'disciple_tools' ); ?></a>
                                         </li>
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="last_modified">
-                                                <?php esc_html_e( 'Least recently modified', 'disciple_tools' ); ?></a>
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-clock-ascending-outline.svg' ) ?>" class="list-dropdown-submenu-icon">
+                                               <?php esc_html_e( 'Least recently modified', 'disciple_tools' ); ?></a>
                                         </li>
                                     </ul>
                                 </li>
