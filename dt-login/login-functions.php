@@ -15,9 +15,19 @@ function dt_login_redirect_login_page() {
         $parsed_request_uri = ( new DT_URL( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) )->parsed_url;
         $page_viewed = ltrim( $parsed_request_uri['path'], '/' );
 
+        //this section only applies to the login pages (ones that have the action query param)
+        if ( $page_viewed !== 'wp-login.php' && !isset( $_GET['action'] ) ){
+            return;
+        }
+
         if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'register' && !dt_can_users_register() ) {
             wp_redirect( wp_login_url() );
             exit;
+        }
+
+        $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
+        if ( !$login_page_enabled ) {
+            return;
         }
 
         if ( is_user_logged_in() ){
@@ -27,11 +37,6 @@ function dt_login_redirect_login_page() {
             } else {
                 return;
             }
-        }
-
-        $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
-        if ( !$login_page_enabled ) {
-            return;
         }
 
         //if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && $_GET['action'] === 'rp' ) {
