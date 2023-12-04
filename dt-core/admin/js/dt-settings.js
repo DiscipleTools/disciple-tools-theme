@@ -486,6 +486,17 @@ jQuery(document).ready(function($) {
       /*** MULTISELECT - START ***/
 
 
+      /*** BOOLEAN - START ***/
+      if ( field['type'] === 'boolean' ) {
+        tile_html += `
+        <select class="select-field">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+      </select>
+        `;
+      }
+      /*** BOOLEAN - START ***/
+
 
       /*** KEY_SELECT - START ***/
       if ( field['type'] === 'key_select' ) {
@@ -956,6 +967,7 @@ jQuery(document).ready(function($) {
                 <select id="new-field-type" name="new-field-type" required>
                     <option value="key_select">Dropdown</option>
                     <option value="multi_select">Multi Select</option>
+                    <option value="boolean">Yes/No (Boolean)</option>
                     <option value="tags">Tags</option>
                     <option value="text">Text</option>
                     <option value="textarea">Text Area</option>
