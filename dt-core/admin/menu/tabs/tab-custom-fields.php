@@ -1463,7 +1463,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         <ul style="list-style: disc; padding-left:40px">
             <li><?php esc_html_e( 'Dropdown: Select an option for a dropdown list', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Multi Select: A field like the milestones to track items like course progress', 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( 'Yes/No (Boolean): This is a normal checkbox field', 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( 'Yes/No (Boolean): This is a yes or no field', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Tags: A field allowing entry of any custom tags or values', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Text: This is just a normal text field', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Text Area: This is just a multi-line text area', 'disciple_tools' ) ?></li>
@@ -1543,7 +1543,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             } elseif ( $field_type === 'boolean' ){
                 $new_field = [
                     'name' => $post_submission['new_field_name'],
-                    'default' => [],
+                    'default' => false,
                     'type' => 'boolean',
                     'tile' => $field_tile,
                     'customizable' => 'all',
