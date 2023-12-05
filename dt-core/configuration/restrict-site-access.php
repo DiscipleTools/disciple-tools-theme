@@ -220,6 +220,16 @@ function dt_security_headers_insert() {
 //    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
 }
 
+add_filter( 'wp_admin_notice_args', 'adjust_login_notice_args' );
+function adjust_login_notice_args( $args ){
+
+    // Ensure login error messages are uniform with standard info notices.
+    if ( isset( $args['id'] ) && $args['id'] === 'login_error' ) {
+        $args['type'] = 'info';
+    }
+
+    return $args;
+}
 
 add_filter( 'login_errors', 'login_error_messages' );
 /**
