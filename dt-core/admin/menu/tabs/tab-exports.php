@@ -89,94 +89,192 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
         endif;
     }
 
-    private function process_export(){
-        if ( isset( $_POST['dt_export_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_export_nonce'] ) ), 'dt_export_nonce' ) ){
-            if ( isset( $_POST['dt_export_selected_services'] ) ){
+    private function process_export() {
+        if ( isset( $_POST['dt_export_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_export_nonce'] ) ), 'dt_export_nonce' ) ) {
+            if ( isset( $_POST['dt_export_selected_services'] ) ) {
 
                 // Extract selected services to be exported.
                 $services = json_decode( sanitize_text_field( wp_unslash( $_POST['dt_export_selected_services'] ) ), true );
 
+                dt_write_log( $services );
+
                 // Assuming services have been selected, proceed with export payload generation.
-                if ( !empty( $services ) ){
-                    $export_payload = apply_filters( 'dt_export_payload', [
-                        'services' => $services,
-                        'payload' => []
-                    ] );
+                if ( !empty( $services ) ) {
 
-                    // Assuming valid export payloads have been returned, force a download.
-                    if ( !empty( $export_payload['payload'] ) ){
+                    // Prepare downloadable object.
+                    $downloadable = [
+                        'site_meta' => [
+                            'timestamp' => time(),
+                            'wp_version' => get_bloginfo( 'version' ),
+                            'php_version' => phpversion(),
+                            'server' => isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '',
+                            'dt_version' => wp_get_theme()->version,
+                            'site_url' => get_site_url(),
+                            'multisite' => is_multisite()
+                        ],
+                        'dt_settings' => [],
+                        'wp_settings' => [],
+                        'multisite_settings' => []
+                    ];
 
-                        // Take a quick snapshot of existing plugins.
-                        $plugins = get_plugins();
-                        $active_plugins = get_option( 'active_plugins', [] );
-                        foreach ( get_site_option( 'active_sitewide_plugins', [] ) as $plugin => $time ){
-                            $active_plugins[] = $plugin;
+                    // Extract service specific elements.
+                    foreach ( $services as $service_id => $service ) {
+
+                        // Package export payload accordingly, based on incoming service id.
+                        switch ( $service_id ) {
+                            case 'export_all':
+                                $downloadable['dt_settings']['dt_tiles_settings']['values'] = $this->process_export_all_tiles();
+                                $downloadable['dt_settings']['dt_fields_settings']['values'] = $this->process_export_all_fields();
+                                $downloadable['dt_settings']['dt_post_types_settings']['values'] = $this->process_export_all_post_types();
+                                break;
+                            case 'export_custom':
+                                $downloadable['dt_settings']['dt_tiles_custom_settings']['values'] = $this->process_export_custom_tiles();
+                                $downloadable['dt_settings']['dt_fields_custom_settings']['values'] = $this->process_export_custom_fields();
+                                $downloadable['dt_settings']['dt_post_types_custom_settings']['values'] = $this->process_export_custom_post_types();
+                                break;
+                            case 'export_plugins':
+                                $downloadable['site_meta']['plugins'] = $this->process_export_plugins();
+                                break;
                         }
-
-                        $filtered_plugins = [];
-                        foreach ( $plugins as $i => $v ){
-                            if ( isset( $v['Name'], $v['Version'] ) ){
-                                $filtered_plugins[] = [
-                                    'id' => $i,
-                                    'name' => $v['Name'],
-                                    'version' => $v['Version'],
-                                    'active' => in_array( $i, $active_plugins )
-                                ];
-                            }
-                        }
-
-                        // Package into a downloadable object.
-                        $downloadable = [
-                            'site_meta' => [
-                                'timestamp' => time(),
-                                'wp_version' => get_bloginfo( 'version' ),
-                                'php_version' => phpversion(),
-                                'server' => isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '',
-                                'dt_version' => wp_get_theme()->version,
-                                'site_url' => get_site_url(),
-                                'multisite' => is_multisite(),
-                                'plugins' => $filtered_plugins
-                            ],
-                            'dt_settings' => $export_payload['payload'],
-                            'wp_settings' => [],
-                            'multisite_settings' => []
-                        ];
-
-                        $dt_export_downloadable_filename = 'dt-' . time() . '.json';
-                        ?>
-                        <span>Downloaded: <?php echo esc_attr( $dt_export_downloadable_filename ) ?></span>
-                        <form id="dt_export_downloadable_form" method="POST">
-
-                            <input type="hidden" name="dt_export_downloadable_nonce"
-                                   value="<?php echo esc_attr( wp_create_nonce( 'dt_export_downloadable_nonce' ) ) ?>"/>
-
-                            <input type="hidden" name="dt_export_downloadable_object"
-                                   value="<?php echo esc_attr( base64_encode( wp_json_encode( $downloadable, JSON_PRETTY_PRINT ) ) ) ?>">
-
-                            <input type="hidden" name="dt_export_downloadable_filename"
-                                   value="<?php echo esc_attr( $dt_export_downloadable_filename ) ?>">
-
-                        </form>
-                        <script type="text/javascript">
-                            document.getElementById('dt_export_downloadable_form').submit();
-                        </script>
-                        <?php
-                    } else {
-                        echo esc_attr( __( 'Unable to detect any suitable service settings to export, or no user customizations have been made.', 'disciple_tools' ) );
-                        exit();
                     }
+
+                    $dt_export_downloadable_filename = 'dt-' . time() . '.json';
+                    ?>
+                    <span>Downloaded: <?php echo esc_attr( $dt_export_downloadable_filename ) ?></span>
+                    <form id="dt_export_downloadable_form" method="POST">
+
+                        <input type="hidden" name="dt_export_downloadable_nonce"
+                               value="<?php echo esc_attr( wp_create_nonce( 'dt_export_downloadable_nonce' ) ) ?>"/>
+
+                        <input type="hidden" name="dt_export_downloadable_object"
+                               value="<?php echo esc_attr( base64_encode( wp_json_encode( $downloadable, JSON_PRETTY_PRINT ) ) ) ?>">
+
+                        <input type="hidden" name="dt_export_downloadable_filename"
+                               value="<?php echo esc_attr( $dt_export_downloadable_filename ) ?>">
+
+                    </form>
+                    <script type="text/javascript">
+                        document.getElementById('dt_export_downloadable_form').submit();
+                    </script>
+                    <?php
+                } else {
+                    echo esc_attr( __( 'Unable to detect any suitable service settings to export, or no user customizations have been made.', 'disciple_tools' ) );
+                    exit();
                 }
             }
         }
     }
 
-    private function display_services(){
+    private function process_export_all_tiles(): array {
+        $tiles = [];
+        foreach ( DT_Posts::get_post_types() as $post_type ) {
+            if ( !isset( $tiles[$post_type] ) ){
+                $tiles[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
+            }
+        }
 
+        return $tiles;
+    }
+
+    private function process_export_all_fields(): array {
+        $fields = [];
+        foreach ( DT_Posts::get_post_types() as $post_type ) {
+            if ( !isset( $fields[$post_type] ) ){
+                $fields[$post_type] = DT_Posts::get_post_field_settings( $post_type, false, true );
+            }
+        }
+
+        return $fields;
+    }
+
+    private function process_export_all_post_types(): array {
+        $post_types = [];
+        foreach ( DT_Posts::get_post_types() as $post_type ) {
+            if ( !isset( $post_types[$post_type] ) ) {
+
+                // Trim post types accordingly; removing entries (tiles & fields) typically exported in other functions.
+                $post_type_settings = DT_Posts::get_post_settings( $post_type, false, );
+                unset( $post_type_settings['tiles'] );
+                unset( $post_type_settings['fields'] );
+                $post_types[$post_type] = $post_type_settings;
+            }
+        }
+
+        return $post_types;
+    }
+
+    private function process_export_custom_tiles(): array {
+        $custom_tiles = [];
+        $existing_custom_options = dt_get_option( 'dt_custom_tiles' );
+        foreach ( DT_Posts::get_post_types() as $post_type ){
+            if ( !isset( $custom_tiles[$post_type] ) && !empty( $existing_custom_options[$post_type] ) ){
+                $custom_tiles[$post_type] = $existing_custom_options[$post_type];
+            }
+        }
+
+        return $custom_tiles;
+    }
+
+    private function process_export_custom_fields(): array {
+        $custom_fields = [];
+        $existing_custom_options = dt_get_option( 'dt_field_customizations' );
+        foreach ( DT_Posts::get_post_types() as $post_type ){
+            if ( !isset( $custom_fields[$post_type] ) && !empty( $existing_custom_options[$post_type] ) ){
+                $custom_fields[$post_type] = $existing_custom_options[$post_type];
+            }
+        }
+
+        return $custom_fields;
+    }
+
+    private function process_export_custom_post_types(): array {
+        $custom_post_types = [];
+        foreach ( DT_Posts::get_post_types() as $post_type ) {
+            if ( !isset( $custom_post_types[$post_type] ) ) {
+
+                // Trim custom post types accordingly; removing entries (tiles & fields) typically exported in other functions.
+                $post_type_settings = DT_Posts::get_post_settings( $post_type, false, );
+                if ( isset( $post_type_settings['is_custom'] ) && $post_type_settings['is_custom'] === true ) {
+                    unset( $post_type_settings['tiles'] );
+                    unset( $post_type_settings['fields'] );
+                    $custom_post_types[$post_type] = $post_type_settings;
+                }
+            }
+        }
+
+        return $custom_post_types;
+    }
+
+    private function process_export_plugins(): array {
+
+        // Take a quick snapshot of existing plugins.
+        $plugins = get_plugins();
+        $active_plugins = get_option( 'active_plugins', [] );
+        foreach ( get_site_option( 'active_sitewide_plugins', [] ) as $plugin => $time ){
+            $active_plugins[] = $plugin;
+        }
+
+        $filtered_plugins = [];
+        foreach ( $plugins as $i => $v ){
+            if ( isset( $v['Name'], $v['Version'] ) ){
+                $filtered_plugins[] = [
+                    'id' => $i,
+                    'name' => $v['Name'],
+                    'version' => $v['Version'],
+                    'active' => in_array( $i, $active_plugins )
+                ];
+            }
+        }
+
+        return $filtered_plugins;
+    }
+
+    private function display_services() {
         $this->box( 'top', 'Available Export Services', [ 'col_span' => 4 ] );
 
         ?>
         <p>
-            Select services below, to be exported into a json configuration file. A Full export is a deep extraction of a service's entire settings; whilst a Partial extraction will only contain user customizations.
+            Select services below, to be exported into a json configuration file.
         </p>
         <form id="dt_export_form" method="POST">
             <input type="hidden" name="dt_export_nonce" id="dt_export_nonce"
@@ -189,81 +287,60 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                     <tr>
                         <th style="text-align: right; padding-right: 14px;"></th>
                         <th></th>
-                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
-                            <label for="dt_export_service_select_full">Full</label><br>
-                            <input type="radio" id="dt_export_service_select_full"
-                                   name="dt_export_service_select_th_option"
-                                   class="dt-export-service-select-th-option"
-                                   data-select_type="full"/>
-                        </th>
-                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
-                            <label for="dt_export_service_select_partial">Partial</label><br>
-                            <input type="radio" id="dt_export_service_select_partial"
-                                   name="dt_export_service_select_th_option"
-                                   class="dt-export-service-select-th-option"
-                                   data-select_type="partial"
-                                   checked/>
-                        </th>
-                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
-                            <label for="dt_export_service_select_none">None</label><br>
-                            <input type="radio" id="dt_export_service_select_none"
-                                   name="dt_export_service_select_th_option"
-                                   class="dt-export-service-select-th-option"
-                                   data-select_type="none"/>
-                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php
-                $export_services = apply_filters( 'dt_export_services', [] );
-                foreach ( $export_services as $id => $service ){
-                    if ( isset( $service['id'], $service['enabled'], $service['label'] ) && $service['enabled'] ){
-                        ?>
-                        <tr>
-                            <td style="text-align: right;"></td>
-                            <td>
-                                <?php echo esc_attr( $service['label'] ) ?><br>
-                                <span style="font-size: 10px; color: #9a9797;">
-                                    <?php echo esc_attr( $service['description'] ?? '' ) ?>
-                                </span>
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="radio" class="dt-export-service-select-td-option"
-                                       name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="full"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="radio" class="dt-export-service-select-td-option"
-                                       name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="partial"
-                                       checked/>
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="radio" class="dt-export-service-select-td-option"
-                                       name="dt_export_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="none"/>
-                            </td>
-                        </tr>
-                        <?php
-                    }
+                $export_services = [
+                    'export_all' => [
+                        'label' => __( 'Export All Settings', 'disciple_tools' ),
+                        'description' => __( 'Export all D.T settings, including tiles, fields, custom record types, etc.', 'disciple_tools' )
+                    ],
+                    'export_custom' => [
+                        'label' => __( 'Export Custom Settings', 'disciple_tools' ),
+                        'description' => __( 'Export all D.T custom settings.', 'disciple_tools' )
+                    ],
+                    'export_plugins' => [
+                        'label' => __( 'Export Plugins List', 'disciple_tools' ),
+                        'description' => __( 'Export list of all D.T plugins.', 'disciple_tools' )
+                    ]
+                ];
+
+                foreach ( $export_services as $id => $service ) {
+                    ?>
+                    <tr>
+                        <td style="text-align: right;"></td>
+                        <td>
+                            <?php echo esc_attr( $service['label'] ) ?><br>
+                            <span style="font-size: 10px; color: #9a9797;">
+                                <?php echo esc_attr( $service['description'] ?? '' ) ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span style="float:right;">
+                                <button type="submit"
+                                        class="button float-right dt-export-submit-but"
+                                        data-service_id="<?php echo esc_attr( $id ) ?>"><?php esc_html_e( 'Export', 'disciple_tools' ) ?></button>
+                            </span>
+                        </td>
+                    </tr>
+                    <?php
                 }
                 ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
             </table>
-            <br>
-            <span style="float:right;">
-                <button id="dt_export_submit_but" type="submit"
-                        class="button float-right"><?php esc_html_e( 'Export', 'disciple_tools' ) ?></button>
-            </span>
         </form>
         <?php
-
         $this->box( 'bottom' );
     }
-
 }
 
 Disciple_Tools_Tab_Exports::instance();

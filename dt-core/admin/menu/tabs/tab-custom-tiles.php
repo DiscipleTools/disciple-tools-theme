@@ -39,8 +39,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
-        add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
-        add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
         add_filter( 'dt_import_services', [ $this, 'export_import_services' ], 10, 1 );
         add_filter( 'dt_import_services_details', [ $this, 'import_services_details' ], 10, 2 );
         add_action( 'dt_import_payload', [ $this, 'import_payload' ], 10, 2 );
@@ -48,50 +46,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         parent::__construct();
     } // End __construct()
 
-    private static $export_import_id = 'dt_custom_tile_settings';
     private static $import_config_json_id = 'dt_settings';
-    public function export_import_services( $services ){
-        $services[self::$export_import_id] = [
-            'id' => self::$export_import_id,
-            'config_json_id' => self::$import_config_json_id,
-            'enabled' => true,
-            'label' => __( 'D.T Custom Tile Settings', 'disciple_tools' ),
-            'description' => __( 'Export/Import custom D.T tile settings.', 'disciple_tools' )
-        ];
-
-        return $services;
-    }
-
-    public function export_payload( $export_payload ){
-        if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ){
-
-            $payload = [];
-            $existing_custom_options = dt_get_option( 'dt_custom_tiles' );
-            $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
-
-            foreach ( DT_Posts::get_post_types() as $post_type ){
-
-                // Extract accordingly, based on export type.
-                switch ( $export_type ){
-                    case 'full':
-                        $payload[$post_type] = DT_Posts::get_post_tiles( $post_type, false );
-                        break;
-                    case 'partial':
-                        if ( !empty( $existing_custom_options[$post_type] ) ){
-                            $payload[$post_type] = $existing_custom_options[$post_type];
-                        }
-                        break;
-                }
-            }
-
-            if ( !empty( $payload ) ){
-                $export_payload['payload'][self::$export_import_id]['values'] = $payload;
-            }
-        }
-
-        return $export_payload;
-    }
-
     public function import_services_details( $details, $imported_config ){
 
         // Ensure imported config makes reference to corresponding id.

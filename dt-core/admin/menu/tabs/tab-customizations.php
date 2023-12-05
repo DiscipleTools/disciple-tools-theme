@@ -27,69 +27,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
         }
 
-        add_filter( 'dt_export_services', [ $this, 'export_import_services' ], 10, 1 );
-        add_filter( 'dt_export_payload', [ $this, 'export_payload' ], 10, 1 );
-
         parent::__construct();
-    }
-
-    private static $export_import_id = 'dt_post_type_settings';
-    private static $import_config_json_id = 'dt_settings';
-
-    public function export_import_services( $services ) {
-        $services[self::$export_import_id] = [
-            'id' => self::$export_import_id,
-            'config_json_id' => self::$import_config_json_id,
-            'enabled' => true,
-            'label' => __( 'D.T Record Type Settings', 'disciple_tools' ),
-            'description' => __( 'Export/Import D.T record type settings, to be used in target system; if not already installed.', 'disciple_tools' )
-        ];
-
-        return $services;
-    }
-
-    public function export_payload( $export_payload ) {
-        if ( isset( $export_payload['services'], $export_payload['payload'], $export_payload['services'][self::$export_import_id] ) ) {
-
-            $payload = [];
-            $export_type = $export_payload['services'][self::$export_import_id]['export_type'] ?? 'partial';
-
-            foreach ( DT_Posts::get_post_types() as $post_type ) {
-                $post_type_settings = DT_Posts::get_post_settings( $post_type, false );
-
-                // Extract accordingly, based on export type.
-                switch ( $export_type ) {
-                    case 'full':
-                        $payload[$post_type] = [
-                            'post_type' => $post_type,
-                            'label_singular' => $post_type_settings['label_singular'] ?? $post_type,
-                            'label_plural' => $post_type_settings['label_plural'] ?? $post_type,
-                            'hidden' => $post_type_settings['hidden'] ?? false,
-                            'status_field' => $post_type_settings['status_field'] ?? [],
-                            'is_custom' => $post_type_settings['is_custom'] ?? true,
-                            'channels' => $post_type_settings['channels'] ?? [],
-                            'connection_types' => $post_type_settings['connection_types'] ?? []
-                        ];
-                        break;
-                    case 'partial':
-                        $payload[$post_type] = [
-                            'post_type' => $post_type,
-                            'label_singular' => $post_type_settings['label_singular'] ?? $post_type,
-                            'label_plural' => $post_type_settings['label_plural'] ?? $post_type,
-                            'hidden' => $post_type_settings['hidden'] ?? false,
-                            'status_field' => $post_type_settings['status_field'] ?? [],
-                            'is_custom' => $post_type_settings['is_custom'] ?? true
-                        ];
-                        break;
-                }
-            }
-
-            if ( !empty( $payload ) ){
-                $export_payload['payload'][self::$export_import_id]['values'] = $payload;
-            }
-        }
-
-        return $export_payload;
     }
 
     public function add_submenu() {

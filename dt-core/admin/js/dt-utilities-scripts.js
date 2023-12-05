@@ -167,39 +167,15 @@ jQuery(document).ready(function ($) {
    * DT EXPORTS
    */
 
-  // Listen out for specific events.
-  $('.dt-export-service-select-th-option').on('click', function (e) {
-    let select_type = $(e.currentTarget).data('select_type');
-
-    // Un-select everything.
-    $('.dt-export-service-select-td-option').prop('checked', false);
-
-    // Select all corresponding service type options.
-    $('.dt-export-service-select-td-option[data-select_type="' + select_type + '"]').prop('checked', true);
-  });
-
-  $('#dt_export_submit_but').on('click', function (e) {
+  $('.dt-export-submit-but').on('click', function (e) {
     e.preventDefault();
 
+    // Package service findings.
     let services = {};
-
-    // Iterate over all selected services.
-    $('#dt_export_table').find('.dt-export-service-select-td-option:checked').each(function (idx, selected_service) {
-      let select_type = $(selected_service).data('select_type');
-      switch (select_type) {
-        case 'full':
-        case 'partial': {
-          let service_id = $(selected_service).data('service_id');
-
-          // Package service findings.
-          services[service_id] = {
-            'id': service_id,
-            'export_type': select_type
-          };
-          break;
-        }
-      }
-    });
+    let service_id = $(e.currentTarget).data('service_id');
+    services[service_id] = {
+      'id': service_id
+    };
 
     // Update export form variables and submit.
     $('#dt_export_selected_services').val(JSON.stringify(services));
@@ -214,6 +190,40 @@ jQuery(document).ready(function ($) {
   /**
    * DT IMPORTS
    */
+
+  $('.dt-import-post-type-checkbox').on('click', function (e) {
+    let post_type_checkbox = $(e.currentTarget);
+    let post_type = $(post_type_checkbox).data('post_type');
+    let post_type_but = $(`.dt-import-post-type-but[data-post_type="${post_type}"]`);
+    if (post_type_but) {
+      $(post_type_but).prop('disabled', !$(post_type_checkbox).prop('checked'));
+    }
+  });
+
+  $('.dt-import-post-type-but').on('click', function (e) {
+    let post_type = $(e.currentTarget).data('post_type');
+    let dt_import_post_type_meta_div = $('#dt_import_post_type_meta_div');
+    let dt_import_tiles_div = $('#dt_import_tiles_div');
+    let dt_import_fields_div = $('#dt_import_fields_div');
+    let dt_import_uploaded_config = JSON.parse( atob( $('#dt_import_uploaded_config_raw').text(), true ) );
+
+    console.log(dt_import_uploaded_config);
+
+    $(dt_import_post_type_meta_div).fadeOut('fast', function () {
+      $(dt_import_post_type_meta_div).fadeIn('fast');
+    });
+
+    $(dt_import_tiles_div).fadeOut('fast', function () {
+      $(dt_import_tiles_div).fadeIn('fast');
+    });
+
+    $(dt_import_fields_div).fadeOut('fast', function () {
+      $(dt_import_fields_div).fadeIn('fast');
+    });
+  });
+
+  // ------- TODO........
+
 
   // Adjust panel views accordingly.
   if (($('#dt_import_form').length > 0) && ($('.dt-import-service-details').length > 0)) {
