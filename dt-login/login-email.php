@@ -159,18 +159,18 @@ class DT_Login_Email {
             return $errors;
         }
 
-        $error_message = __( 'Check your email for the confirmation link, then visit the login page.', 'disciple_tools' );
+        // Ensure no distinction is made between valid and invalid login attempts.
         if ( empty( $user_login ) ) {
             $errors->add( 'retrieve-password-no-username-email', __( 'ERROR: Enter a username or email address.', 'disciple_tools' ) );
         } elseif ( strpos( $user_login, '@' ) ) {
             $user_data = get_user_by( 'email', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( 'retrieve-password-bad-email-address', $error_message );
+                return true;
             }
         } else {
             $user_data = get_user_by( 'login', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( 'retrieve-password-bad-username', $error_message );
+                return true;
             }
         }
 

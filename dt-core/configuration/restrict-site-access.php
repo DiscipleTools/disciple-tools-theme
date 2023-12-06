@@ -223,9 +223,10 @@ function dt_security_headers_insert() {
 add_filter( 'wp_admin_notice_args', 'adjust_login_notice_args' );
 function adjust_login_notice_args( $args ){
 
-    // Ensure login error messages are uniform with standard info notices.
+    // Ensure no distinction is made between valid and invalid login attempts.
     if ( isset( $args['id'] ) && $args['id'] === 'login_error' ) {
-        $args['type'] = 'info';
+        wp_safe_redirect( 'wp-login.php?checkemail=confirm' );
+        exit;
     }
 
     return $args;
