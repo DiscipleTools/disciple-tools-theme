@@ -604,8 +604,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 if ( isset( $post[$field_key] ) ) {
                     $selected = !empty( $post[$field_key] ) ? 'selected' : '';
                 } else {
-                    // Set a default value here, for example:
-                    $selected = $fields[$field_key]['default'] === true ? 'selected' :''; // Assuming 'Yes' is the default value
+                    $selected = $fields[$field_key]['default'] === true ? 'selected' :'';
                 }
                 ?>
                 <select class="select-field" id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $disabled ); ?>>

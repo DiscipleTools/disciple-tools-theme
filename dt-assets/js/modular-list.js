@@ -797,7 +797,6 @@
           let field_value = window.lodash.get( record, field_key, false )
           if ( field_key !== "favorite" && field_settings.type === "boolean" ) {
             field_value = window.lodash.get( record, field_key )
-            console.log(field_key + ' ' + field_value)
           }
 
           /* breadcrumb: new-field-type Display field in table */
