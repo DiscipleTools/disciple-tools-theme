@@ -600,7 +600,13 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             </div>
             <?php
             if ( $field_type === 'boolean' ) {
-                $selected = !empty( $post[$field_key] ) || $fields[$field_key]['default'] === true ? 'selected' : '';
+                $selected = '';
+                if ( isset( $post[$field_key] ) ) {
+                    $selected = !empty( $post[$field_key] ) ? 'selected' : '';
+                } else {
+                    // Set a default value here, for example:
+                    $selected = $fields[$field_key]['default'] === true ? 'selected' :''; // Assuming 'Yes' is the default value
+                }
                 ?>
                 <select class="select-field" id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $disabled ); ?>>
                     <option value="0"><?php esc_html_e( 'No', 'disciple_tools' ); ?></option>
