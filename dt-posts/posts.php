@@ -977,14 +977,18 @@ class Disciple_Tools_Posts
                                     $equality = 'NOT LIKE';
                                     $value = ltrim( $value, '-' );
                                     $connector = ' AND ';
+                                    $value = '%' . $value . '%';
                                 } else if ( strpos( $value, '^' ) === 0 ){
                                     $equality = '=';
                                     $value = ltrim( $value, '^' );
-
+                                } else if ( strpos( $value, '*' ) === 0 ){
+                                    $equality = '<>';
+                                    $value = '';
+                                } else {
+                                    $value = '%' . $value . '%';
                                 }
                                 $query_for_null_values = ( $query_for_null_values === null && $equality === 'NOT LIKE' ) ? true : false;
-                                $val = $equality === '=' ? $value : '%' . $value . '%';
-                                $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $val ) . "'";
+                                $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
                             }
                             if ( $query_for_null_values ){
                                 $where_sql .= " OR $table_key.meta_value IS NULL ";
