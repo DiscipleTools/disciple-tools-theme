@@ -96,8 +96,6 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                 // Extract selected services to be exported.
                 $services = json_decode( sanitize_text_field( wp_unslash( $_POST['dt_export_selected_services'] ) ), true );
 
-                dt_write_log( $services );
-
                 // Assuming services have been selected, proceed with export payload generation.
                 if ( !empty( $services ) ) {
 
@@ -128,8 +126,8 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                                 $downloadable['dt_settings']['dt_post_types_settings']['values'] = $this->process_export_all_post_types();
                                 break;
                             case 'export_custom':
-                                $downloadable['dt_settings']['dt_tiles_custom_settings']['values'] = $this->process_export_custom_tiles();
-                                $downloadable['dt_settings']['dt_fields_custom_settings']['values'] = $this->process_export_custom_fields();
+                                $downloadable['dt_settings']['dt_tiles_custom_settings']['values'] = $this->process_export_all_tiles();
+                                $downloadable['dt_settings']['dt_fields_custom_settings']['values'] = $this->process_export_all_fields();
                                 $downloadable['dt_settings']['dt_post_types_custom_settings']['values'] = $this->process_export_custom_post_types();
                                 break;
                             case 'export_plugins':
@@ -201,30 +199,6 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
         }
 
         return $post_types;
-    }
-
-    private function process_export_custom_tiles(): array {
-        $custom_tiles = [];
-        $existing_custom_options = dt_get_option( 'dt_custom_tiles' );
-        foreach ( DT_Posts::get_post_types() as $post_type ){
-            if ( !isset( $custom_tiles[$post_type] ) && !empty( $existing_custom_options[$post_type] ) ){
-                $custom_tiles[$post_type] = $existing_custom_options[$post_type];
-            }
-        }
-
-        return $custom_tiles;
-    }
-
-    private function process_export_custom_fields(): array {
-        $custom_fields = [];
-        $existing_custom_options = dt_get_option( 'dt_field_customizations' );
-        foreach ( DT_Posts::get_post_types() as $post_type ){
-            if ( !isset( $custom_fields[$post_type] ) && !empty( $existing_custom_options[$post_type] ) ){
-                $custom_fields[$post_type] = $existing_custom_options[$post_type];
-            }
-        }
-
-        return $custom_fields;
     }
 
     private function process_export_custom_post_types(): array {
