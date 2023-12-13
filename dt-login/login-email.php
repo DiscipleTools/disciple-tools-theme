@@ -159,18 +159,18 @@ class DT_Login_Email {
             return $errors;
         }
 
-
+        // Ensure no distinction is made between valid and invalid login attempts.
         if ( empty( $user_login ) ) {
             $errors->add( 'retrieve-password-no-username-email', __( 'ERROR: Enter a username or email address.', 'disciple_tools' ) );
         } elseif ( strpos( $user_login, '@' ) ) {
             $user_data = get_user_by( 'email', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( 'retrieve-password-bad-email-address', __( 'ERROR: There is no user registered with that email address.', 'disciple_tools' ) );
+                return true;
             }
         } else {
             $user_data = get_user_by( 'login', $user_login );
             if ( empty( $user_data ) ) {
-                $errors->add( 'retrieve-password-bad-username', __( 'ERROR: There is no user registered with that username.', 'disciple_tools' ) );
+                return true;
             }
         }
 

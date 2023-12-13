@@ -33,6 +33,8 @@ function dt_firebase_login_ui( $atts ) {
     $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
     $config['redirect_url'] = DT_Login_Fields::get( 'redirect_url' );
     $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
+    $config['tos_url'] = DT_Login_Fields::get( 'tos_url' ) ? DT_Login_Fields::get( 'tos_url' ) : '';
+    $config['privacy_url'] = DT_Login_Fields::get( 'privacy_url' ) ? DT_Login_Fields::get( 'privacy_url' ) : '';
     $config['disable_sign_up_status'] = !dt_can_users_register();
 
     $sign_in_options = [];
@@ -193,8 +195,8 @@ function dt_firebase_login_ui( $atts ) {
         // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
         signInFlow: 'popup',
         signInOptions: signInOptions,
-        tosUrl: '/content_app/tos',
-        privacyPolicyUrl: '/content_app/privacy'
+        tosUrl: config.tos_url,
+        privacyPolicyUrl: config.privacy_url
       }
 
       if ( !config.api_key || !config.project_id || !config.app_id  ) {

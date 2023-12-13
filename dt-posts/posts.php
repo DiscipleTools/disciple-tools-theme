@@ -505,7 +505,7 @@ class Disciple_Tools_Posts
                     if ( isset( $link_info['field_key'] ) && isset( $link_info['type'] ) ) {
                         $field_key = $link_info['field_key'];
                         $link_type = $link_info['type'];
-                        $label = $fields[$field_key]['default'][$link_type]['label'];
+                        $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
                         if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
                             if ( $activity->meta_value === 'value_deleted' ) {
                                 $value = $activity->old_value;
@@ -977,14 +977,18 @@ class Disciple_Tools_Posts
                                     $equality = 'NOT LIKE';
                                     $value = ltrim( $value, '-' );
                                     $connector = ' AND ';
+                                    $value = '%' . $value . '%';
                                 } else if ( strpos( $value, '^' ) === 0 ){
                                     $equality = '=';
                                     $value = ltrim( $value, '^' );
-
+                                } else if ( strpos( $value, '*' ) === 0 ){
+                                    $equality = '<>';
+                                    $value = '';
+                                } else {
+                                    $value = '%' . $value . '%';
                                 }
                                 $query_for_null_values = ( $query_for_null_values === null && $equality === 'NOT LIKE' ) ? true : false;
-                                $val = $equality === '=' ? $value : '%' . $value . '%';
-                                $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $val ) . "'";
+                                $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
                             }
                             if ( $query_for_null_values ){
                                 $where_sql .= " OR $table_key.meta_value IS NULL ";
@@ -1456,6 +1460,9 @@ class Disciple_Tools_Posts
         }
 
         global $wpdb;
+
+        $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
+
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p left join $wpdb->p2pmeta pm on pm.p2p_id = p.p2p_id WHERE (p.p2p_to = %s OR p.p2p_from = %s) ", $post_id, $post_id ) );
@@ -1463,6 +1470,13 @@ class Disciple_Tools_Posts
         $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c left join $wpdb->commentmeta cm on cm.comment_id = c.comment_ID WHERE c.comment_post_ID = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id = %s", $post_id ) );
+
+        dt_activity_insert( [
+            'action' => 'record_deleted',
+            'object_type' => $post_type,
+            'object_id' => $post_id,
+            'object_name' => $post_title
+        ] );
 
         return true;
     }

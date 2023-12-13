@@ -282,7 +282,7 @@ class Disciple_Tools_Users
                 }
             }
         } else {
-            $correct_roles = dt_multi_role_get_cap_roles( 'access_contacts' );
+            $correct_roles = dt_multi_role_get_cap_roles( 'access_' . $post_type );
             $search_string = esc_attr( $search_string );
             $user_query = new WP_User_Query( [
                 'search'         => '*' . $search_string . '*',
