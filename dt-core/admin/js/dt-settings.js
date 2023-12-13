@@ -486,6 +486,17 @@ jQuery(document).ready(function($) {
       /*** MULTISELECT - START ***/
 
 
+      /*** BOOLEAN - START ***/
+      if ( field['type'] === 'boolean' ) {
+        tile_html += `
+        <select class="select-field">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+      </select>
+        `;
+      }
+      /*** BOOLEAN - START ***/
+
 
       /*** KEY_SELECT - START ***/
       if ( field['type'] === 'key_select' ) {
@@ -956,6 +967,7 @@ jQuery(document).ready(function($) {
                 <select id="new-field-type" name="new-field-type" required>
                     <option value="key_select">Dropdown</option>
                     <option value="multi_select">Multi Select</option>
+                    <option value="boolean">Yes/No (Boolean)</option>
                     <option value="tags">Tags</option>
                     <option value="text">Text</option>
                     <option value="textarea">Text Area</option>
@@ -1223,6 +1235,14 @@ jQuery(document).ready(function($) {
             </td>
             <td>
                 <input type="checkbox" name="hide-field" id="hide-field" ${field_settings.hidden ? 'checked' : ''}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Default In List Table</b>
+            </td>
+            <td>
+                <input type="checkbox" name="show-in-table" id="show-in-table" ${field_settings.show_in_table ? 'checked' : ''}>
             </td>
         </tr>
         ${type_visibility_html}
@@ -1822,7 +1842,8 @@ jQuery(document).ready(function($) {
       hidden: $('#hide-field').is(':checked'),
       type_visibility: $('#type-visibility input:checked').map((index, obj)=>{
         return $(obj).val()
-      }).get()
+      }).get(),
+      show_in_table: $('#show-in-table').is(':checked')
     }
 
     if (custom_name === '') {

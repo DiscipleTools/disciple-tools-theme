@@ -13,9 +13,17 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
     } // End instance()
 
     public function __construct() {
+        if ( dt_is_rest() ) {
+            return;
+        }
+
         parent::__construct();
 
         $url = dt_get_url_path();
+        if ( is_user_logged_in() && strpos( $url, 'action' ) === false ) {
+            return;
+        }
+
         $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
         $login_url = DT_Login_Fields::get( 'login_url' );
@@ -44,15 +52,7 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
     }
 
     public function header_style(){
-        // parent::header_style();
-        ?>
-        <style>
-            body { background: #f0f0f1; }
-            .login-remember { float: left; }
-            .login-submit { float: right; }
-            #firebaseui-auth-container { clear: both; }
-        </style>
-        <?php
+        parent::header_style();
     }
 
     public function body(){

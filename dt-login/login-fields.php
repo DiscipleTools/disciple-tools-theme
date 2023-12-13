@@ -123,6 +123,10 @@ class DT_Login_Fields {
 
         $fields = wp_parse_args( $saved_fields, $defaults );
 
+        if ( $saved_count > 0 && $saved_count === $defaults_count ) {
+            return $fields;
+        }
+
         $values = self::dehydrate_fields( $fields );
         if ( $is_multisite_vars === true ) {
             update_network_option( get_main_network_id(), $option_name, $values );
@@ -247,15 +251,6 @@ class DT_Login_Fields {
     }
 
     private static function get_defaults() {
-        $roles = function_exists( 'dt_list_roles' ) ? dt_list_roles() : [ 'multiplier' => [ 'label' => 'Multiplier', 'disabled' => false ] ];
-
-        $role_list = [];
-        foreach ( $roles as $role_key => $role ) {
-            if ( $role['disabled'] === false ) {
-                $role_list[$role_key] = $role['label'];
-            }
-        }
-
         $defaults = [
             // firebase
             'firebase_config_label' => [
@@ -366,14 +361,31 @@ class DT_Login_Fields {
                 ],
                 'multisite_level' => false,
             ],
+            'tos_url' => [
+                'tab' => 'general',
+                'key' => 'tos_url',
+                'label' => 'Terms of Service Path',
+                'description' => 'e.g. terms-of-service',
+                'value' => 'terms-of-service',
+                'type' => 'text',
+                'multisite_level' => false,
+            ],
+            'privacy_url' => [
+                'tab' => 'general',
+                'key' => 'privacy_url',
+                'label' => 'Privacy Page Path',
+                'description' => 'e.g. privacy-policy',
+                'value' => 'privacy-policy',
+                'type' => 'text',
+                'multisite_level' => false,
+            ],
             'default_role' => [
                 'tab' => 'general',
                 'key' => 'default_role',
                 'label' => 'Default Role',
                 'description' => 'The default role to give a newly registered user',
                 'value' => 'multiplier',
-                'type' => 'select',
-                'default' => $role_list,
+                'type' => 'role',
                 'multisite_level' => false,
             ],
 

@@ -795,7 +795,9 @@
         } else if (list_settings.post_type_settings.fields[field_key]) {
           let field_settings = list_settings.post_type_settings.fields[field_key]
           let field_value = window.lodash.get( record, field_key, false )
-
+          if ( field_key !== "favorite" && field_settings.type === "boolean" ) {
+            field_value = window.lodash.get( record, field_key )
+          }
 
           /* breadcrumb: new-field-type Display field in table */
           if ( field_value ) {
@@ -858,7 +860,9 @@
             }
           } else if ( !field_value && field_settings.type === "boolean" && field_key === "favorite") {
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
-          }
+          } else if ( field_value === undefined && field_settings.type === "boolean" && field_settings.default === true) {
+            values = ['&check;']
+          } 
         } else {
           return;
         }
