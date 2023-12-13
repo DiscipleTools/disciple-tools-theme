@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-12-01T09:27:36+00:00\n"
+"POT-Creation-Date: 2023-12-13T11:49:40+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Bulgarian <https://translate.disciple.tools/projects/disciple-"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Изпратете заявка"
 
-#: 403.php:55 archive-template.php:864 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:868 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -85,8 +85,8 @@ msgstr "Изпратете заявка"
 msgid "Cancel"
 msgstr "Отказ"
 
-#: 403.php:59 archive-template.php:390 archive-template.php:432
-#: archive-template.php:888 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:394 archive-template.php:436
+#: archive-template.php:892 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -144,10 +144,10 @@ msgstr "Създайте нов %s"
 msgid "Filters"
 msgstr "Филтри"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:540
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
-#: dt-core/global-functions.php:674 dt-core/global-functions.php:806
-#: dt-core/global-functions.php:850 dt-posts/custom-post-type.php:20
+#: archive-template.php:36 archive-template.php:126 archive-template.php:544
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
+#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
+#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -188,12 +188,12 @@ msgstr "Търсене във всички полета"
 msgid "Communication Channels"
 msgstr "Комуникационни канали"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:427
+#: archive-template.php:106 archive-template.php:193 archive-template.php:431
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Приложи"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:428
+#: archive-template.php:107 archive-template.php:194 archive-template.php:432
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "обновявам до първоначалното"
@@ -227,66 +227,66 @@ msgstr "%s Списък"
 msgid "Sort"
 msgstr "Сортиране"
 
-#: archive-template.php:303
+#: archive-template.php:304
 msgid "Newest"
 msgstr "Най-новите"
 
-#: archive-template.php:307
+#: archive-template.php:309
 msgid "Oldest"
 msgstr "Най-старите"
 
-#: archive-template.php:311
+#: archive-template.php:314
 msgid "Most recently modified"
 msgstr "Последно изменени"
 
-#: archive-template.php:315
+#: archive-template.php:319
 msgid "Least recently modified"
 msgstr "Първо изменен"
 
-#: archive-template.php:325 template-new-bulk-post.php:89
+#: archive-template.php:329 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Полета"
 
-#: archive-template.php:332
+#: archive-template.php:336
 msgid "Bulk Edit"
 msgstr "Групово редактиране"
 
-#: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:349 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
 msgstr "| Повече ▼"
 
-#: archive-template.php:366 dt-contacts/base-setup.php:309
+#: archive-template.php:370 dt-contacts/base-setup.php:309
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "Архивиран"
 
-#: archive-template.php:370
+#: archive-template.php:374
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Нов %s"
 
-#: archive-template.php:393
+#: archive-template.php:397
 msgid "Choose which fields to display as columns in the list"
 msgstr "Изберете кои полета да се показват като колони в списъка"
 
-#: archive-template.php:436
+#: archive-template.php:440
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "Изберете от списъка всички %1$s, които искате да актуализирате, и ги "
 "актуализирайте по-долу"
 
-#: archive-template.php:454 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:458 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:888
+#: dt-core/global-functions.php:893
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Търсене на потребители"
 
-#: archive-template.php:478 dt-metrics/groups/tree.php:87
+#: archive-template.php:482 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
 #: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2713
 #: dt-users/template-user-management.php:370 dt-users/users.php:175
@@ -294,57 +294,57 @@ msgstr "Търсене на потребители"
 msgid "Status"
 msgstr "Статус"
 
-#: archive-template.php:528
+#: archive-template.php:532
 msgid "Share with:"
 msgstr "Сподели с:"
 
-#: archive-template.php:548
+#: archive-template.php:552
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "Несподелено с %s"
 
-#: archive-template.php:560 dt-assets/functions/details-bar.php:166
+#: archive-template.php:564 dt-assets/functions/details-bar.php:166
 #: dt-posts/custom-post-type.php:209
 msgid "Follow"
 msgstr "Последване"
 
-#: archive-template.php:565 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:569 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Коментари и дейност"
 
-#: archive-template.php:570 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:574 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Напишете Вашия коментар или бележка тук"
 
-#: archive-template.php:578 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:582 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "Тип:"
 
-#: archive-template.php:598 dt-users/template-new-user.php:127
+#: archive-template.php:602 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Вижте още опции"
 
-#: archive-template.php:599 dt-users/template-new-user.php:130
+#: archive-template.php:603 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Вижте По-малко опции"
 
-#: archive-template.php:635 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:639 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Актуализиране"
 
-#: archive-template.php:636 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:640 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "Направете избор по-долу"
 
-#: archive-template.php:644 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:648 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -352,92 +352,92 @@ msgstr "Направете избор по-долу"
 msgid "Delete"
 msgstr "Изтриване"
 
-#: archive-template.php:647 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:651 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "Направете избор по-долу"
 
-#: archive-template.php:689
+#: archive-template.php:693
 msgid "Loading..."
 msgstr "Зареждане..."
 
-#: archive-template.php:694 dt-assets/functions/enqueue-scripts.php:374
+#: archive-template.php:698 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "Зареди още"
 
-#: archive-template.php:706
+#: archive-template.php:710
 msgid "Field Name"
 msgstr "Име на полето"
 
-#: archive-template.php:762
+#: archive-template.php:766
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Въведете за търсене"
 
-#: archive-template.php:771
+#: archive-template.php:775
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Всички %1$s с %2$s"
 
-#: archive-template.php:774
+#: archive-template.php:778
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Всички %1$s без %2$s"
 
-#: archive-template.php:781
+#: archive-template.php:785
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Филтърът е подприсовен ИЛИ присвоен на"
 
-#: archive-template.php:790 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:794 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "Дата на създаване"
 
-#: archive-template.php:797 archive-template.php:804
+#: archive-template.php:801 archive-template.php:808
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
 msgid "None Set"
 msgstr "Няма зададени"
 
-#: archive-template.php:818 archive-template.php:819
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
+#: archive-template.php:822 archive-template.php:823
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "Не"
 
-#: archive-template.php:825 archive-template.php:826
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
+#: archive-template.php:829 archive-template.php:830
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "Да"
 
-#: archive-template.php:830
+#: archive-template.php:834
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Начало на диапазона"
 
-#: archive-template.php:833 archive-template.php:844
+#: archive-template.php:837 archive-template.php:848
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Изчистване"
 
-#: archive-template.php:840
+#: archive-template.php:844
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Край на диапазона"
 
-#: archive-template.php:872
+#: archive-template.php:876
 msgid "Filter Name"
 msgstr "Име на филтъра"
 
-#: archive-template.php:877
+#: archive-template.php:881
 msgid "Filter Records"
 msgstr "Филтриране на записи"
 
-#: archive-template.php:881 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:885 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -2611,39 +2611,39 @@ msgstr "Инвестирам само в съществуващи контакт
 msgid "I have too many contacts"
 msgstr "Имам твърде много контакти"
 
-#: dt-core/configuration/restrict-site-access.php:234
-msgid "ERROR: Invalid username/password combination."
-msgstr "ГРЕШКА: Невалидна комбинация от потребителско име и парола."
+#: dt-core/configuration/restrict-site-access.php:245
+msgid "Check your email for the confirmation link, then visit the"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:238
-msgid "Reset password"
-msgstr "Нулиране на паролата"
+#: dt-core/configuration/restrict-site-access.php:249
+msgid "Login Page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:239
-msgid "Lost your password"
-msgstr "Забравена парола"
+#: dt-core/configuration/restrict-site-access.php:250
+msgid "login page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:294
+#: dt-core/configuration/restrict-site-access.php:305
 msgid "Someone has requested a password reset for the following account:"
 msgstr "Някой е поискал възстановяване на паролата за следния акаунт:"
 
 #. translators: %s: Site name.
-#: dt-core/configuration/restrict-site-access.php:296
+#: dt-core/configuration/restrict-site-access.php:307
 msgid "DT Site Name: %s"
 msgstr "DT Име на сайта: %s"
 
 #. translators: %s: User login.
-#: dt-core/configuration/restrict-site-access.php:298
+#: dt-core/configuration/restrict-site-access.php:309
 #: dt-users/user-hooks-and-config.php:390
 msgid "Username: %s"
 msgstr "Потребителско име: %s"
 
-#: dt-core/configuration/restrict-site-access.php:299
+#: dt-core/configuration/restrict-site-access.php:310
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 "Ако това е грешка, просто игнорирайте този имейл и нищо няма да се случи."
 
-#: dt-core/configuration/restrict-site-access.php:300
+#: dt-core/configuration/restrict-site-access.php:311
 msgid "To reset your password, visit the following address:"
 msgstr "За да нулирате паролата си, посетете следния адрес:"
 
@@ -2653,11 +2653,11 @@ msgstr "За да нулирате паролата си, посетете сл�
 msgid "This is required"
 msgstr "Това е задължително"
 
-#: dt-core/global-functions.php:648
+#: dt-core/global-functions.php:653
 msgid "Add new tag \"%s\""
 msgstr "Добавяне на нов маркер „%s“"
 
-#: dt-core/global-functions.php:649
+#: dt-core/global-functions.php:654
 msgid "Tag \"%s\" is already being used"
 msgstr "Етикетът „%s“ вече се използва"
 
@@ -5599,6 +5599,15 @@ msgstr "Достъп до сканирани контакти:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Намерени дубликати:"
+
+#~ msgid "ERROR: Invalid username/password combination."
+#~ msgstr "ГРЕШКА: Невалидна комбинация от потребителско име и парола."
+
+#~ msgid "Reset password"
+#~ msgstr "Нулиране на паролата"
+
+#~ msgid "Lost your password"
+#~ msgstr "Забравена парола"
 
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-12-01T09:27:36+00:00\n"
+"POT-Creation-Date: 2023-12-13T11:49:40+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Arabic (Morocco) <https://translate.disciple.tools/projects/"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "تسليم الطلب"
 
-#: 403.php:55 archive-template.php:864 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:868 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -85,8 +85,8 @@ msgstr "تسليم الطلب"
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: 403.php:59 archive-template.php:390 archive-template.php:432
-#: archive-template.php:888 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:394 archive-template.php:436
+#: archive-template.php:892 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -145,10 +145,10 @@ msgstr "إنشاء %s جديد"
 msgid "Filters"
 msgstr "تصفيات"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:540
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
-#: dt-core/global-functions.php:674 dt-core/global-functions.php:806
-#: dt-core/global-functions.php:850 dt-posts/custom-post-type.php:20
+#: archive-template.php:36 archive-template.php:126 archive-template.php:544
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
+#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
+#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -189,12 +189,12 @@ msgstr "ابحث في كل الحقول"
 msgid "Communication Channels"
 msgstr ""
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:427
+#: archive-template.php:106 archive-template.php:193 archive-template.php:431
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "تطبيق"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:428
+#: archive-template.php:107 archive-template.php:194 archive-template.php:432
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "إعادة تعيين إلى الافتراضي"
@@ -228,68 +228,68 @@ msgstr "قائمة جهات الاتصال"
 msgid "Sort"
 msgstr "فرز"
 
-#: archive-template.php:303
+#: archive-template.php:304
 msgid "Newest"
 msgstr "أجديد"
 
-#: archive-template.php:307
+#: archive-template.php:309
 msgid "Oldest"
 msgstr "أقدم"
 
-#: archive-template.php:311
+#: archive-template.php:314
 #, fuzzy
 msgid "Most recently modified"
 msgstr "الأحدث الحديث"
 
-#: archive-template.php:315
+#: archive-template.php:319
 #, fuzzy
 msgid "Least recently modified"
 msgstr ""
 "آخر تعديل\n"
 "‬"
 
-#: archive-template.php:325 template-new-bulk-post.php:89
+#: archive-template.php:329 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "مجالات"
 
-#: archive-template.php:332
+#: archive-template.php:336
 msgid "Bulk Edit"
 msgstr "التحرير بالجملة"
 
-#: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:349 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
 msgstr ""
 
-#: archive-template.php:366 dt-contacts/base-setup.php:309
+#: archive-template.php:370 dt-contacts/base-setup.php:309
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "محفوظ في الأرشيف"
 
-#: archive-template.php:370
+#: archive-template.php:374
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "%s جديد"
 
-#: archive-template.php:393
+#: archive-template.php:397
 msgid "Choose which fields to display as columns in the list"
 msgstr "اختر المجالات المراد عرضها كأعمدة في القائمة"
 
-#: archive-template.php:436
+#: archive-template.php:440
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "حَدِّد جميع٪ 1 $ s التي تريد تحديثها من القائمة ، وقم بتحديثها أدناه"
 
-#: archive-template.php:454 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:458 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:888
+#: dt-core/global-functions.php:893
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "بحث المسخدمين"
 
-#: archive-template.php:478 dt-metrics/groups/tree.php:87
+#: archive-template.php:482 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
 #: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2713
 #: dt-users/template-user-management.php:370 dt-users/users.php:175
@@ -297,59 +297,59 @@ msgstr "بحث المسخدمين"
 msgid "Status"
 msgstr "الحالة"
 
-#: archive-template.php:528
+#: archive-template.php:532
 msgid "Share with:"
 msgstr "شارك مع:"
 
-#: archive-template.php:548
+#: archive-template.php:552
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "لم يتم مشاركته مع %s"
 
-#: archive-template.php:560 dt-assets/functions/details-bar.php:166
+#: archive-template.php:564 dt-assets/functions/details-bar.php:166
 #: dt-posts/custom-post-type.php:209
 #, fuzzy
 msgid "Follow"
 msgstr "تبع"
 
-#: archive-template.php:565 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:569 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 #, fuzzy
 msgid "Comments and Activity"
 msgstr "الأنشطة و تعليقات"
 
-#: archive-template.php:570 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:574 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "اكتب تعليقك أو ملاحظتك هنا"
 
-#: archive-template.php:578 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:582 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "نوع:"
 
-#: archive-template.php:598 dt-users/template-new-user.php:127
+#: archive-template.php:602 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "انظر المزيد من الخيارات"
 
-#: archive-template.php:599 dt-users/template-new-user.php:130
+#: archive-template.php:603 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "انظر خيارات أَقَل"
 
-#: archive-template.php:635 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:639 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "تحديث"
 
-#: archive-template.php:636 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:640 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr ""
 
-#: archive-template.php:644 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:648 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -357,94 +357,94 @@ msgstr ""
 msgid "Delete"
 msgstr "حذف"
 
-#: archive-template.php:647 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:651 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Delete Location"
 msgid "Delete Selections Below"
 msgstr "حذف الموقع"
 
-#: archive-template.php:689
+#: archive-template.php:693
 msgid "Loading..."
 msgstr "في طور التحميل…"
 
-#: archive-template.php:694 dt-assets/functions/enqueue-scripts.php:374
+#: archive-template.php:698 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "تحميل المزيد"
 
-#: archive-template.php:706
+#: archive-template.php:710
 #, fuzzy
 #| msgid "Filter Name"
 msgid "Field Name"
 msgstr "اسم التصفية"
 
-#: archive-template.php:762
+#: archive-template.php:766
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "أكتب للبحث عن المستخدمين"
 
-#: archive-template.php:771
+#: archive-template.php:775
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr ""
 
-#: archive-template.php:774
+#: archive-template.php:778
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr ""
 
-#: archive-template.php:781
+#: archive-template.php:785
 msgid "Filter for subassigned OR Assigned To"
 msgstr "تصفية للتخصيص الفرعي أو المعينة إلى"
 
-#: archive-template.php:790 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:794 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "تاريخ الإنشاء"
 
-#: archive-template.php:797 archive-template.php:804
+#: archive-template.php:801 archive-template.php:808
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
 msgid "None Set"
 msgstr ""
 
-#: archive-template.php:818 archive-template.php:819
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
+#: archive-template.php:822 archive-template.php:823
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "لا"
 
-#: archive-template.php:825 archive-template.php:826
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
+#: archive-template.php:829 archive-template.php:830
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "نعم"
 
-#: archive-template.php:830
+#: archive-template.php:834
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "شارك الإعدادات"
 
-#: archive-template.php:833 archive-template.php:844
+#: archive-template.php:837 archive-template.php:848
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "واضح"
 
-#: archive-template.php:840
+#: archive-template.php:844
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "نهاية المدى"
 
-#: archive-template.php:872
+#: archive-template.php:876
 msgid "Filter Name"
 msgstr "اسم التصفية"
 
-#: archive-template.php:877
+#: archive-template.php:881
 msgid "Filter Records"
 msgstr "تصفية السجلات"
 
-#: archive-template.php:881 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:885 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -2594,40 +2594,40 @@ msgstr "أنا أستثمر فقط في جهات الاتصال الموجودة
 msgid "I have too many contacts"
 msgstr "إسم المستخدم"
 
-#: dt-core/configuration/restrict-site-access.php:234
-msgid "ERROR: Invalid username/password combination."
-msgstr "<strong> خطأ </ strong>: مجموعة غير صالحة لاسم المستخدم / كلمة المرور."
+#: dt-core/configuration/restrict-site-access.php:245
+msgid "Check your email for the confirmation link, then visit the"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:238
-msgid "Reset password"
-msgstr "إعادة تعيين كلمة المرور"
+#: dt-core/configuration/restrict-site-access.php:249
+msgid "Login Page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:239
-msgid "Lost your password"
-msgstr "فقدت كلمة المرور الخاصة بك"
+#: dt-core/configuration/restrict-site-access.php:250
+msgid "login page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:294
+#: dt-core/configuration/restrict-site-access.php:305
 msgid "Someone has requested a password reset for the following account:"
 msgstr "طلب شخص ما إعادة تعيين كلمة المرور للحساب التالي:"
 
 #. translators: %s: Site name.
-#: dt-core/configuration/restrict-site-access.php:296
+#: dt-core/configuration/restrict-site-access.php:307
 msgid "DT Site Name: %s"
 msgstr "المترجمون:٪ s: اسم الموقع."
 
 #. translators: %s: User login.
-#: dt-core/configuration/restrict-site-access.php:298
+#: dt-core/configuration/restrict-site-access.php:309
 #: dt-users/user-hooks-and-config.php:390
 #, fuzzy
 msgid "Username: %s"
 msgstr "إسم المستخدم"
 
-#: dt-core/configuration/restrict-site-access.php:299
+#: dt-core/configuration/restrict-site-access.php:310
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 "إذا كان هذا خطأ ، فما عليك سوى تجاهل هذا البريد الإلكتروني ولن يحدث شيء."
 
-#: dt-core/configuration/restrict-site-access.php:300
+#: dt-core/configuration/restrict-site-access.php:311
 msgid "To reset your password, visit the following address:"
 msgstr "لإعادة تعيين كلمة مرورك ، تفضل بزيارة العنوان التالي:"
 
@@ -2637,11 +2637,11 @@ msgstr "لإعادة تعيين كلمة مرورك ، تفضل بزيارة ا�
 msgid "This is required"
 msgstr "هذا مطلوب"
 
-#: dt-core/global-functions.php:648
+#: dt-core/global-functions.php:653
 msgid "Add new tag \"%s\""
 msgstr "أضف بطاقة شعار جديدة \"%s\""
 
-#: dt-core/global-functions.php:649
+#: dt-core/global-functions.php:654
 msgid "Tag \"%s\" is already being used"
 msgstr "بطاقة شعار  \"%s\" مستخدمة مسبقًا"
 
@@ -5627,6 +5627,16 @@ msgstr "جهات اتصال الوصول المفحوصة:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "التكرارات التي تم إيجادها:"
+
+#~ msgid "ERROR: Invalid username/password combination."
+#~ msgstr ""
+#~ "<strong> خطأ </ strong>: مجموعة غير صالحة لاسم المستخدم / كلمة المرور."
+
+#~ msgid "Reset password"
+#~ msgstr "إعادة تعيين كلمة المرور"
+
+#~ msgid "Lost your password"
+#~ msgstr "فقدت كلمة المرور الخاصة بك"
 
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
