@@ -20,6 +20,10 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
         parent::__construct();
 
         $url = dt_get_url_path();
+        if ( is_user_logged_in() && strpos( $url, 'action' ) === false ) {
+            return;
+        }
+
         $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
         $login_url = DT_Login_Fields::get( 'login_url' );
