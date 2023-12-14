@@ -2147,9 +2147,7 @@ class Disciple_Tools_Posts
 
     public static function update_post_contact_method( int $post_id, string $key, array $values ) {
 //        @todo permissions
-        if ( ( strpos( $key, 'contact_' ) === 0 || strpos( $key, 'address_' ) === 0 ) &&
-             strpos( $key, '_details' ) === false
-        ) {
+        if ( strpos( $key, 'contact_' ) === 0 && strpos( $key, '_details' ) === false ) {
             $old_value = get_post_meta( $post_id, $key, true );
             //check if it is different to avoid setting saving activity
             if ( isset( $values['value'] ) && $old_value != $values['value'] ){
@@ -2446,20 +2444,6 @@ class Disciple_Tools_Posts
                         if ( empty( $fields_to_return ) || in_array( 'contact_' . $type, $fields_to_return ) ) {
                             $fields['contact_' . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0]['value'] );
                         }
-                    }
-                } elseif ( strpos( $key, 'address' ) === 0 ) {
-                    if ( strpos( $key, '_details' ) === false ) {
-
-                        $details = [];
-                        if ( isset( $meta_fields[$key . '_details'][0] ) ) {
-                            $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
-                        }
-                        $details['value'] = $value[0]['value'];
-                        $details['key'] = $key;
-                        if ( isset( $details['type'], $field_settings['contact_'.$details['type']]['name'] ) ) {
-                            $details['type_label'] = $field_settings['contact_' . $details['type']]['name'];
-                        }
-                        $fields['address'][] = $details;
                     }
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] == 'key_select' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     if ( empty( $value[0]['value'] ) ) {
