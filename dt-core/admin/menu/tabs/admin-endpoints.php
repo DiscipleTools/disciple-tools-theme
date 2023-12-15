@@ -34,6 +34,16 @@ class DT_Admin_Endpoints {
                 },
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/scripts/process_jobs', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'process_jobs' ],
+                'permission_callback' => function(){
+                    return current_user_can( 'manage_dt' );
+                },
+            ]
+        );
     }
 
     public function reset_count_field( WP_REST_Request $request ){
@@ -145,6 +155,14 @@ class DT_Admin_Endpoints {
         } else {
             return new WP_Error( __FILE__, 'Missing required parameters.' );
         }
+    }
+
+    public function process_jobs( WP_REST_Request $request ){
+        //no apparent way for wp_queue to report an issue
+        wp_queue()->cron()->cron_worker();
+        return [
+            'success' => (bool) true
+        ];
     }
 
 }

@@ -55,6 +55,15 @@ jQuery(document).ready(function ($) {
     })
   })
 
+  $('.process-jobs-button').on('click', function() {
+    make_admin_request("GET", 'process_jobs').then(status => {
+        $(`#process-jobs-loading-spinner .loading-spinner`).addClass( "active" )
+        if (status.success === true) {
+            $('.process-jobs-result-text').html('Done!')
+            $(`#process-jobs-loading-spinner .loading-spinner`).removeClass( "active" )
+        }
+    })
+})
   /**
    * FILE UPLOADS
    */
