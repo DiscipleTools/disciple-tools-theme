@@ -106,6 +106,7 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
         <span style="display: inline-block" class="process-jobs-result-text"></span>
         <?php
 
+        $this->display_job_queue_cron_schedule();
         $this->box( 'bottom' );
     }
 
@@ -116,14 +117,22 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
         wp_queue_wpdb_init();
 
         return [
-            'jobs' => $wpdb->get_var( "SELECT COUNT(id) FROM $wpdb->queue_jobs" ),
-            'failures' => $wpdb->get_var( "SELECT COUNT(id) FROM $wpdb->queue_failures" )
+            'jobs' => $wpdb->get_var( "SELECT COUNT(id) FROM $wpdb->queue_jobs" )
         ];
+    }
+
+    private function display_job_queue_cron_schedule() {
+        $wp_queue_cron_schedule = wp_get_schedules();
+        if ( array_key_exists( 'wp_queue_connections_databaseconnection', $wp_queue_cron_schedule ) ) {
+            echo esc_html( $wp_queue_cron_schedule['wp_queue_connections_databaseconnection']['display'] . ' the queue is processed' );
+        } else {
+            echo esc_html( 'wp_queue has not setup a CRON.' );
+        }
     }
 
     private function display_job_total() {
         $background_job_counts = $this->background_job_queue_counts();
-        echo esc_html( sprintf( 'Background Jobs Queue: Jobs: %1$s, Failures: %2$s', $background_job_counts['jobs'], $background_job_counts['failures'] ) );
+        echo esc_html( sprintf( 'Background Jobs Queued: %1$s', $background_job_counts['jobs'] ) );
     }
 
     private function display_jobs() {
