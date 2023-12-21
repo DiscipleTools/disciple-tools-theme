@@ -862,7 +862,7 @@
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
           } else if ( field_value === undefined && field_settings.type === "boolean" && field_settings.default === true) {
             values = ['&check;']
-          } 
+          }
         } else {
           return;
         }
@@ -2847,6 +2847,251 @@
 
   /**
    * Split By Feature
+   */
+
+  /**
+   * List Exports
+   */
+
+  function export_list_display(title, display_function) {
+
+    // Execute display function.
+    display_function();
+
+    // Set export title and display modal.
+    $('#export_title').html(title);
+    $('#export_reveal').foundation('open');
+  }
+
+  $("#export_csv_list").on("click", function (e) {
+    export_list_display($(e.currentTarget).text(), function () {
+
+      // Identify fields to be exported; ignoring hidden and private fields.
+      let exporting_fields = [];
+      $.each(window.list_settings['post_type_settings']['fields'], function (field_id, field_setting) {
+        if ( ( (field_setting['private'] === undefined) || !field_setting['private'] ) && ( (field_setting['hidden'] === undefined) || !field_setting['hidden'] ) ) {
+          let setting = field_setting;
+          setting['field_id'] = field_id;
+          exporting_fields.push(setting);
+        }
+      });
+
+      // Sort identified fields by name into ascending order.
+      exporting_fields.sort(function (a, b) {
+        if (a.name.trim() < b.name.trim()) {
+          return -1;
+        }
+        if (a.name.trim() > b.name.trim()) {
+          return 1;
+        }
+        return 0;
+      });
+
+      // Take a two-step approach; first, display fields to be exported and on-demand, obtain records upon export request.
+      let html = `
+      <div class="grid-x">
+        <div class="cell">`
+
+        exporting_fields.forEach(function (field) {
+          html += `<code>` + field['name'] + `</code> `;
+        });
+
+        let record_total = window.records_list['total'];
+        html +=`<span style="font-size: 20px;">[ ${ window.SHAREDFUNCTIONS.escapeHTML(exporting_fields.length)} ]</span></div>
+        <div class="cell"><hr></div>
+        <div class="cell">
+            <button class="button" id="export_csv_list_download" ${ (record_total <= 0) ? 'disabled' : '' }>
+            <i class="mdi mdi-cloud-download-outline" style="font-size: 22px; margin-right: 10px;"></i>
+            <span style="font-size: 20px;">[ ${ window.SHAREDFUNCTIONS.escapeHTML(record_total)} ]</span>
+            </button>
+        </div>
+      </div>`;
+
+      $('#export_content').html(html);
+
+      // Terminate any spinners and prepare download button event listener.
+      $('.loading-spinner').removeClass('active');
+      $('#export_csv_list_download').on('click', function(){
+        $('.loading-spinner').addClass('active');
+        $('#export_csv_list_download').prop('disabled', true);
+
+        export_csv_list_download(exporting_fields, function () {
+          $('.loading-spinner').removeClass('active');
+          $('#export_reveal').foundation('close');
+        });
+      });
+    });
+  });
+
+  function export_csv_list_download(exporting_fields, callback = null) {
+
+    // Build query based on current filter, to be executed.
+    let fields_to_return = exporting_fields.map((field) => field['field_id']);
+    let query = current_filter.query;
+    query["offset"] = 0;
+    query['limit'] = 1000;
+    query['fields_to_return'] = fields_to_return;
+
+    window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+    .promise()
+    .then(response => {
+      if (response && response['posts']) {
+        let csv_export = [];
+
+        // Structure csv shape to be downloaded.
+        $.each(response['posts'], function(post_idx, post) {
+          let csv_row = [];
+          let token_array_delimiter = ';';
+          $.each(fields_to_return, function (field_idx, field_id) {
+
+            // Attempt to fetch the corresponding field settings.
+            let field_settings = exporting_fields.find((field) => field['field_id'] === field_id);
+            if (field_settings) {
+
+              // Next, extract post field value accordingly, based on field type.
+              switch (field_settings['type']) {
+                case 'text':
+                case 'number':
+                case 'boolean':
+                case 'textarea': {
+                  let token = (post[field_id]) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'user_select': {
+                  let token = (post[field_id] && post[field_id]['display']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['display']) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'key_select': {
+                  let token = (post[field_id] && post[field_id]['label']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['label']) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'date':
+                case 'datetime': {
+                  let token = (post[field_id] && post[field_id]['formatted']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['formatted']) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'multi_select': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( field_settings['default'][cell_value]['label'] ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'connection': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['post_title'] ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'communication_channel': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['value'] ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'location':
+                case 'location_meta': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['label'] ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'tags': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'link': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function (cell_index, cell_value) {
+                      if (field_settings['default'][cell_value['type']]) {
+                        let category_label = field_settings['default'][cell_value['type']]['label'];
+                        let token = category_label +'##'+ cell_value['value'];
+                        token_array.push(window.SHAREDFUNCTIONS.escapeHTML(token));
+                      }
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'task':
+                case 'array':
+                default: {
+                  csv_row.push('');
+                  break;
+                }
+              }
+            }
+          });
+
+          // Assuming counts match, assign to parent csv download array.
+          if (csv_row.length === exporting_fields.length) {
+            csv_export.push(csv_row);
+          }
+        });
+
+        // Generate export csv headers and prefix to parent csv download array.
+        let csv_headers = exporting_fields.map((field) => field['name']);
+        csv_export.unshift(csv_headers);
+
+        // Convert csv arrays into raw downloadable data.
+        let csv = csv_export.map((csv) => '"' + csv.join('","') + '"').join("\r\n");
+
+        // Finally, automatically execute a download of generated csv data.
+        let csv_download_link = document.createElement('a');
+        let date = new Date();
+        let year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
+        let month = new Intl.DateTimeFormat('en', { month: 'numeric' }).format(date);
+        let day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
+        let hour = new Intl.DateTimeFormat('en', { hour: 'numeric', hour12: false, }).format(date);
+        let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
+        let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
+        csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
+        csv_download_link.href = "data:text/csv;charset=utf-8," + escape(csv);
+        csv_download_link.click();
+        csv_download_link.remove();
+      }
+
+      // Callback to original caller...! ;)
+      if (callback) {
+        callback();
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      if (callback) {
+        callback();
+      }
+    });
+  }
+
+  /**
+   * List Exports
    */
 
 })(window.jQuery, window.list_settings, window.Foundation);
