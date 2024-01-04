@@ -222,9 +222,10 @@ function dt_security_headers_insert() {
 
 add_filter( 'wp_admin_notice_args', 'adjust_login_notice_args' );
 function adjust_login_notice_args( $args ){
+    $is_reset = isset( $_GET['action'] ) && sanitize_text_field( wp_unslash( $_GET['action'] ) ) === 'lostpassword';
 
     // Ensure no distinction is made between valid and invalid login attempts.
-    if ( isset( $args['id'] ) && $args['id'] === 'login_error' ) {
+    if ( $is_reset && isset( $args['id'] ) && $args['id'] === 'login_error' ) {
         wp_safe_redirect( 'wp-login.php?checkemail=confirm' );
         exit;
     }
@@ -241,7 +242,9 @@ add_filter( 'login_errors', 'login_error_messages' );
  */
 function login_error_messages( $message ){
     global $errors;
-    if ( isset( $errors->errors['invalidcombo'] ) || isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) || isset( $errors->errors['invalid_email'] ) ) {
+
+    $is_reset = isset( $_GET['action'] ) && sanitize_text_field( wp_unslash( $_GET['action'] ) ) === 'lostpassword';
+    if ( $is_reset && isset( $errors->errors['invalidcombo'], $errors->errors['invalid_username'], $errors->errors['incorrect_password'], $errors->errors['invalid_email'] ) ) {
         $message = __( 'Check your email for the confirmation link, then visit the', 'disciple_tools' ) . ' ' .
             sprintf(
                 ( '<a href="%1$s" title="%2$s">%3$s</a>.' ),
