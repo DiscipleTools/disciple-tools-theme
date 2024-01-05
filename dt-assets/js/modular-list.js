@@ -2890,15 +2890,12 @@
       // Take a two-step approach; first, display fields to be exported and on-demand, obtain records upon export request.
       let html = `
       <div class="grid-x">
-        <div class="cell">`
+        <div class="cell">`;
 
-        exporting_fields.forEach(function (field) {
-          html += `<code>` + field['name'] + `</code> `;
-        });
+        html += `<span style="font-size: 20px;">${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg'].replaceAll( '{0}', exporting_fields.length ) ) }</span></div>`;
 
         let record_total = window.records_list['total'];
-        html +=`<span style="font-size: 20px;">[ ${ window.SHAREDFUNCTIONS.escapeHTML(exporting_fields.length)} ]</span></div>
-        <div class="cell"><hr></div>
+        html +=`<div class="cell"><hr></div>
         <div class="cell">
             <button class="button" id="export_csv_list_download" ${ (record_total <= 0) ? 'disabled' : '' }>
             <i class="mdi mdi-cloud-download-outline" style="font-size: 22px; margin-right: 10px;"></i>
@@ -2925,31 +2922,27 @@
 
   function export_csv_list_download(exporting_fields, callback = null) {
 
-    // Build query based on current filter, to be executed.
-    let fields_to_return = exporting_fields.map((field) => field['field_id']);
-    let query = current_filter.query;
-    query["offset"] = 0;
-    query['limit'] = 1000;
-    query['fields_to_return'] = fields_to_return;
-
-    window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
-    .promise()
-    .then(response => {
-      if (response && response['posts']) {
+    // First retrieve all records associated with currently selected filter.
+    recursively_fetch_posts(0, 100, window.records_list['total'], [], function ( posts ) {
+      if ( posts && posts.length > 0 ) {
         let csv_export = [];
 
         // Structure csv shape to be downloaded.
-        $.each(response['posts'], function(post_idx, post) {
+        $.each(posts, function(post_idx, post) {
           let csv_row = [];
           let token_array_delimiter = ';';
-          $.each(fields_to_return, function (field_idx, field_id) {
 
-            // Attempt to fetch the corresponding field settings.
-            let field_settings = exporting_fields.find((field) => field['field_id'] === field_id);
-            if (field_settings) {
+          // Capture ID & Name.
+          csv_row.push(post['ID']);
+          csv_row.push(post['name']);
+
+          // Proceed with extraction of remaining fields.
+          $.each(exporting_fields, function (field_idx, field) {
+            let field_id = field['field_id'];
+            if ( !['name'].includes( field_id ) ) {
 
               // Next, extract post field value accordingly, based on field type.
-              switch (field_settings['type']) {
+              switch (field['type']) {
                 case 'text':
                 case 'number':
                 case 'boolean':
@@ -2978,7 +2971,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( field_settings['default'][cell_value]['label'] ) );
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( field['default'][cell_value]['label'] ) );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3029,8 +3022,8 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function (cell_index, cell_value) {
-                      if (field_settings['default'][cell_value['type']]) {
-                        let category_label = field_settings['default'][cell_value['type']]['label'];
+                      if (field['default'][cell_value['type']]) {
+                        let category_label = field['default'][cell_value['type']]['label'];
                         let token = category_label +'##'+ cell_value['value'];
                         token_array.push(window.SHAREDFUNCTIONS.escapeHTML(token));
                       }
@@ -3050,13 +3043,13 @@
           });
 
           // Assuming counts match, assign to parent csv download array.
-          if (csv_row.length === exporting_fields.length) {
+          if (csv_row.length === (exporting_fields.length + 1)) {
             csv_export.push(csv_row);
           }
         });
 
         // Generate export csv headers and prefix to parent csv download array.
-        let csv_headers = exporting_fields.map((field) => field['name']);
+        let csv_headers = ['ID', 'Name'].concat( exporting_fields.filter((field) => !['name'].includes( field['field_id'] )).map((field) => field['name']) );
         csv_export.unshift(csv_headers);
 
         // Convert csv arrays into raw downloadable data.
@@ -3078,16 +3071,38 @@
       }
 
       // Callback to original caller...! ;)
-      if (callback) {
+      if ( callback ) {
         callback();
+      }
+    });
+  }
+
+  function recursively_fetch_posts(offset, limit, total, posts, callback = null) {
+
+    // Build query based on current filter, to be executed.
+    let query = current_filter.query;
+    query["offset"] = offset;
+    query['limit'] = limit;
+
+    window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+    .promise()
+    .then(response => {
+
+      // Recurse if more records are available, otherwise proceed with export callback.
+      if ( offset < total ) {
+        recursively_fetch_posts((offset + limit), limit, total, posts.concat( ( ( response && response['posts'] ) ? response['posts'] : [] ) ), callback );
+
+      } else if ( callback ) {
+        callback( posts );
       }
     })
     .catch(error => {
       console.log(error);
-      if (callback) {
-        callback();
+      if ( callback ) {
+        callback( posts );
       }
     });
+
   }
 
   /**
