@@ -244,13 +244,22 @@ function login_error_messages( $message ){
     global $errors;
 
     $is_reset = isset( $_GET['action'] ) && sanitize_text_field( wp_unslash( $_GET['action'] ) ) === 'lostpassword';
-    if ( $is_reset && isset( $errors->errors['invalidcombo'], $errors->errors['invalid_username'], $errors->errors['incorrect_password'], $errors->errors['invalid_email'] ) ) {
+
+    if ( $is_reset && ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['invalid_email'] ) ) ) {
         $message = __( 'Check your email for the confirmation link, then visit the', 'disciple_tools' ) . ' ' .
             sprintf(
                 ( '<a href="%1$s" title="%2$s">%3$s</a>.' ),
                 site_url( 'wp-login.php', 'login' ),
                 __( 'Login Page', 'disciple_tools' ),
                 __( 'login page', 'disciple_tools' )
+            );
+    } else if ( isset( $errors->errors['invalidcombo'] ) || isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) || isset( $errors->errors['invalid_email'] ) ) {
+        $message = __( 'ERROR: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
+            sprintf(
+                ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
+                site_url( 'wp-login.php?action=lostpassword', 'login' ),
+                __( 'Reset password', 'disciple_tools' ),
+                __( 'Lost your password', 'disciple_tools' )
             );
     }
     return $message;
