@@ -53,30 +53,15 @@
             </li>
         <?php endif; // end notifications ?>
 
-
         <?php
-        /* settings */
-        if ( isset( $dt_nav_tabs['admin']['settings']['hidden'] ) && empty( $dt_nav_tabs['admin']['settings']['hidden'] ) ) : ?>
-            <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['label'] ?? '' ); ?></a></li>
-        <?php endif; ?>
-
-
-        <?php
-        /* user management */
-        if ( ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) )
-            && ( isset( $dt_nav_tabs['admin']['settings']['submenu']['user_management']['link'] ) && ! empty( $dt_nav_tabs['admin']['settings']['submenu']['user_management']['link'] ) ) ) : ?>
-            <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['submenu']['user_management']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['submenu']['user_management']['label'] ?? '' ); ?></a></li>
-        <?php endif; ?>
-
-
-        <?php
-        /* Admin */
-        if ( ( current_user_can( 'manage_dt' ) )
-            && ( isset( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) && ! empty( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ) ) ) : ?>
-            <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['submenu']['admin']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['submenu']['admin']['label'] ?? '' ); ?></a></li>
-        <?php endif; ?>
-
-        <li><a href="<?php echo esc_url( $dt_nav_tabs['admin']['settings']['submenu']['help']['link'] ?? '' ); ?>"><?php echo esc_html( $dt_nav_tabs['admin']['settings']['submenu']['help']['label'] ?? '' ); ?></a></li>
+        if ( isset( $dt_nav_tabs['admin']['settings']['submenu'] ) ){
+            foreach ( $dt_nav_tabs['admin']['settings']['submenu'] as $dt_nav_submenu ) :
+                if ( !$dt_nav_submenu['hidden'] ?? false ) : ?>
+                    <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
+                <?php endif;
+            endforeach;
+        }
+        ?>
 
         <li><a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Out', 'disciple_tools' )?></a></li>
 
