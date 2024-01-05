@@ -2499,7 +2499,9 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
-                    $fields[$key] = maybe_unserialize( empty( $value[0]['value'] ) ? 0 : $value[0]['value'] ) + 0;
+                    if ( is_numeric( $value[0]['value'] ) ) {
+                        $fields[$key] = $value[0]['value'] + 0;
+                    }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0]['value'] ) && !empty( $value[0]['value'] ) ){
                         $fields[$key] = [
