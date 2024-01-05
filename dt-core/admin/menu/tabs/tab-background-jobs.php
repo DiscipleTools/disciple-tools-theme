@@ -124,7 +124,7 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
     private function display_job_queue_cron_schedule() {
         $wp_queue_cron_schedule = wp_get_schedules();
         if ( array_key_exists( 'wp_queue_connections_databaseconnection', $wp_queue_cron_schedule ) ) {
-            echo esc_html( $wp_queue_cron_schedule['wp_queue_connections_databaseconnection']['display'] . ' the queue is processed' );
+            echo esc_html( 'The queue is scheduled to be processed: ' . $wp_queue_cron_schedule['wp_queue_connections_databaseconnection']['display'] );
         } else {
             echo esc_html( 'wp_queue has not setup a CRON.' );
         }
