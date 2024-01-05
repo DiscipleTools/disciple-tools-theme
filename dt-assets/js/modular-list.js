@@ -800,7 +800,7 @@
           }
 
           /* breadcrumb: new-field-type Display field in table */
-          if ( field_value ) {
+          if ( field_value !== false ) {
             if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.SHAREDFUNCTIONS.escapeHTML(field_value)]
             } else if (field_settings.type === 'date') {
@@ -862,7 +862,7 @@
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
           } else if ( field_value === undefined && field_settings.type === "boolean" && field_settings.default === true) {
             values = ['&check;']
-          } 
+          }
         } else {
           return;
         }
