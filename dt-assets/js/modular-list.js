@@ -3024,7 +3024,7 @@
                     $.each(post[field_id], function (cell_index, cell_value) {
                       if (field['default'][cell_value['type']]) {
                         let category_label = field['default'][cell_value['type']]['label'];
-                        let token = category_label +'##'+ cell_value['value'];
+                        let token = category_label +': '+ cell_value['value'];
                         token_array.push(window.SHAREDFUNCTIONS.escapeHTML(token));
                       }
                     });
