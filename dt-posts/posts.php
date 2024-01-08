@@ -1269,7 +1269,7 @@ class Disciple_Tools_Posts
                 $sort_sql = "sort.meta_value $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'number' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as UNSIGNED ) $sort_dir";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as DECIMAL(18,4) ) $sort_dir";
             } else {
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
@@ -2499,7 +2499,9 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
-                    $fields[$key] = maybe_unserialize( empty( $value[0]['value'] ) ? 0 : $value[0]['value'] ) + 0;
+                    if ( is_numeric( $value[0]['value'] ) ) {
+                        $fields[$key] = $value[0]['value'] + 0;
+                    }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0]['value'] ) && !empty( $value[0]['value'] ) ){
                         $fields[$key] = [

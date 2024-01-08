@@ -800,7 +800,7 @@
           }
 
           /* breadcrumb: new-field-type Display field in table */
-          if ( field_value ) {
+          if ( field_value !== false ) {
             if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.SHAREDFUNCTIONS.escapeHTML(field_value)]
             } else if (field_settings.type === 'date') {

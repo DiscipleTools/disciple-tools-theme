@@ -102,6 +102,12 @@ function dt_default_menu_array() : array {
                         'hidden' => false,
                         'icon' => get_template_directory_uri() . '/dt-assets/images/help.svg?v=2',
                     ],
+                    'forum' => [
+                        'label' => __( 'D.T Forum', 'disciple_tools' ),
+                        'link' => 'https://community.disciple.tools/',
+                        'hidden' => false,
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/chat.svg',
+                    ],
                 ]
             ],
         ],
