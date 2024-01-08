@@ -183,7 +183,6 @@ export class UsersTable extends LitElement {
         table {
           font-family: arial, sans-serif;
           border-collapse: collapse;
-          width: 100%;
           table-layout: fixed;
         }
 
@@ -191,7 +190,7 @@ export class UsersTable extends LitElement {
           border: 1px solid #dddddd;
           text-align: left;
           padding: 8px;
-          width: 75px;
+          //min-width: 75px;
         }
         th[data-type="number"],td[data-type="number"] {
           width: 75px;
@@ -218,6 +217,7 @@ export class UsersTable extends LitElement {
         #title-row {
           display: flex;
           justify-content: space-between;
+          column-gap: 1em;
         }
         .search-section {
           margin: auto 0;
