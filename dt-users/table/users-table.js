@@ -107,68 +107,74 @@ export class UsersTable extends LitElement {
 
         </div>
         <br>
-        <table class="sortable">
-            <tr class="filter-row">
-                ${Object.keys(window.dt_users_table.fields).map(k=>{
-                  if ( window.dt_users_table.fields[k].hidden === true  ) return;
-                  if ( window.dt_users_table.fields[k].options  ) {
-                    let options = window.dt_users_table.fields[k].options;
-                    return html`<td data-field="${k}" data-type="${window.dt_users_table.fields[k].type}">
-                        <select class="filter-select" @change="${e=>this.filter_column(k,e.target.value, e)}">
-                            <option value=""></option>
-                            ${Object.keys(options).map(o=> html`<option value="${o}">${options[o].label}</option>`)}
-                        </select>
-                    </td>`
-                  } else {
-                    return html`<td data-field="${k}" data-type="${window.dt_users_table.fields[k].type}"></td>`
-                  }
-                })}
-            </tr>
-            <tr>
-                ${Object.keys(window.dt_users_table.fields).map(k=>{
-                  if ( window.dt_users_table.fields[k].hidden === true  ) return;
-                  return html`<th id="${k}" data-field="${k}" @click="${this.sort_column}" data-type="${window.dt_users_table.fields[k].type}">
-                      ${window.dt_users_table.fields[k].label}
-                  </th>`
-                })}
-            </tr>
-            
-            ${this.users.length ? this.users.map(user => html`
-                <tr class="user_row" data-user="${user.ID}" @click="${e=>this.open_edit_modal(user.ID)}">
-                    ${Object.keys(window.dt_users_table.fields).map(k=>{
-                      if ( window.dt_users_table.fields[k].hidden === true  ) return;
-                      let field = window.dt_users_table.fields[k];
-                      
-                      if ( field.type === 'text' || field.type === 'number' ){
-                        return html`<td>${user[k]}</td>`
-                      } else
-                      //date fields
-                      if ( field.type === 'date' ){
-                        return html`<td>${user[k] ? window.SHAREDFUNCTIONS.formatDate(user[k]):''}</td>`
-                      } else
-                      //array fields   
-                      if ( ['array', 'array_keys'].includes(field.type) ){
-                        let labels = (user[k] || []).map(v=>{
-                          return field.options[v]?.label || null
-                        }).filter(a=>a).join(', ')
-                        return html`<td>${labels}</td>`
-                      } else
-                      //key select fields  
-                      if ( ['key_select'].includes(field.type)){
-                        return html`<td>${field.options[user[k]]?.label || user[k]}</td>`
-                      } else
-                      //location grid fields  
-                      if ( ['location_grid'].includes(field.type) ){
-                        let labels = (user[k] || []).map(v=>{
-                          return v.label || v
-                        }).join(', ')
-                        return html`<td>${labels}</td>`
-                      }
-                    })}
-                </tr>
-            `
-            ) : html`` }
-        </table>
+        <div class="user-table-div" style="overflow: auto;">
+          <table class="sortable">
+              <tr class="filter-row">
+                  ${Object.keys(window.dt_users_table.fields).map(k=>{
+                    if ( window.dt_users_table.fields[k].hidden === true  ) return;
+                    if ( window.dt_users_table.fields[k].options  ) {
+                      let options = window.dt_users_table.fields[k].options;
+                      return html`<td data-field="${k}" data-type="${window.dt_users_table.fields[k].type}">
+                          <select class="filter-select" @change="${e=>this.filter_column(k,e.target.value, e)}">
+                              <option value=""></option>
+                              ${Object.keys(options).map(o=> html`<option value="${o}">${options[o].label}</option>`)}
+                          </select>
+                      </td>`
+                    } else {
+                      return html`<td data-field="${k}" data-type="${window.dt_users_table.fields[k].type}"></td>`
+                    }
+                  })}
+              </tr>
+              <tr>
+                  ${Object.keys(window.dt_users_table.fields).map(k=>{
+                    if ( window.dt_users_table.fields[k].hidden === true  ) return;
+                    return html`<th id="${k}" data-field="${k}" @click="${this.sort_column}" data-type="${window.dt_users_table.fields[k].type}">
+                        ${window.dt_users_table.fields[k].label}
+                    </th>`
+                  })}
+              </tr>
+
+              ${this.users.length ? this.users.map(user => html`
+                  <tr class="user_row" data-user="${user.ID}" @click="${e=>this.open_edit_modal(user.ID)}">
+                      ${Object.keys(window.dt_users_table.fields).map(k=>{
+                        if ( window.dt_users_table.fields[k].hidden === true  ) return;
+                        let field = window.dt_users_table.fields[k];
+
+                        if ( field.type === 'text' || field.type === 'number' ){
+                          return html`<td>${user[k]}</td>`
+                        } else
+                        //date fields
+                        if ( field.type === 'date' ){
+                          return html`<td>${user[k] ? window.SHAREDFUNCTIONS.formatDate(user[k]):''}</td>`
+                        } else
+                        //array fields
+                        if ( ['array', 'array_keys'].includes(field.type) ){
+                          let labels = '';
+                          if ( (user[k] || []).map !== undefined ) {
+                              labels = (user[k] || []).map(v=>{
+
+                              return field.options[v]?.label || null
+                            }).filter(a=>a).join(', ');
+                          }
+                          return html`<td>${labels}</td>`
+                        } else
+                        //key select fields
+                        if ( ['key_select'].includes(field.type)){
+                          return html`<td>${field.options[user[k]]?.label || user[k]}</td>`
+                        } else
+                        //location grid fields
+                        if ( ['location_grid'].includes(field.type) ){
+                          let labels = (user[k] || []).map(v=>{
+                            return v.label || v
+                          }).join(', ')
+                          return html`<td>${labels}</td>`
+                        }
+                      })}
+                  </tr>
+              `
+              ) : html`` }
+          </table>
+        </div>
     `;
   }
   static get styles() {
@@ -180,12 +186,12 @@ export class UsersTable extends LitElement {
           width: 100%;
           table-layout: fixed;
         }
-        
+
         td, th {
           border: 1px solid #dddddd;
           text-align: left;
           padding: 8px;
-          //width: 150px;
+          width: 75px;
         }
         th[data-type="number"],td[data-type="number"] {
           width: 75px;
@@ -193,7 +199,7 @@ export class UsersTable extends LitElement {
         th[data-field="ID"],td[data-field="ID"] {
           width: 50px;
         }
-        
+
         tr:not(.filter-row):nth-child(even) {
           background-color: #eee;
         }
@@ -235,7 +241,7 @@ export class UsersTable extends LitElement {
         td {
           overflow: hidden;
         }
-        
+
         select {
           width: 100%;
           font-size: 14px;
