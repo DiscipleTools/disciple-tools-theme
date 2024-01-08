@@ -2869,10 +2869,18 @@
       // Identify fields to be exported; ignoring hidden and private fields.
       let exporting_fields = [];
       $.each(window.list_settings['post_type_settings']['fields'], function (field_id, field_setting) {
-        if ( ( (field_setting['private'] === undefined) || !field_setting['private'] ) && ( (field_setting['hidden'] === undefined) || !field_setting['hidden'] ) ) {
+        if ( ( (field_setting['private'] === undefined) || !field_setting['private'] ) && ( (field_setting['hidden'] === undefined) || !field_setting['hidden'] ) && !['task', 'array'].includes( field_setting['type'] ) ) {
           let setting = field_setting;
           setting['field_id'] = field_id;
           exporting_fields.push(setting);
+
+          // Insert additional locations id column, if needed.
+          if ( ['location', 'location_meta'].includes( setting['type'] ) ) {
+            let location_settings = JSON.parse( JSON.stringify( setting ) );
+            location_settings['name'] = `${location_settings['name']} [ID]`;
+            location_settings['dynamic_csv_col'] = true;
+            exporting_fields.push(location_settings);
+          }
         }
       });
 
@@ -2939,7 +2947,9 @@
           // Proceed with extraction of remaining fields.
           $.each(exporting_fields, function (field_idx, field) {
             let field_id = field['field_id'];
-            if ( !['name'].includes( field_id ) ) {
+
+            // As well as names, also ignore dynamic csv columns; which are typically populated via other means.
+            if ( !['name'].includes( field_id ) && ( ( field['dynamic_csv_col'] === undefined ) || !field['dynamic_csv_col'] ) ) {
 
               // Next, extract post field value accordingly, based on field type.
               switch (field['type']) {
@@ -3000,12 +3010,24 @@
                 case 'location':
                 case 'location_meta': {
                   let token_array = [];
+                  let id_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
                       token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['label'] ) );
+
+                      // Extract id accordingly based on value shape; to be appended within dynamic csv column.
+                      let grid_id = '';
+                      if ( cell_value['id'] ) {
+                        grid_id = cell_value['id'];
+
+                      } else if ( cell_value['grid_id'] ) {
+                        grid_id = cell_value['grid_id'];
+                      }
+                      id_array.push( window.SHAREDFUNCTIONS.escapeHTML( grid_id ) );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
+                  csv_row.push(id_array.join(token_array_delimiter));
                   break;
                 }
                 case 'tags': {
@@ -3089,9 +3111,12 @@
     .promise()
     .then(response => {
 
+      // Concat any returned posts to main parent posts array.
+      posts = posts.concat( ( ( response && response['posts'] ) ? response['posts'] : [] ) );
+
       // Recurse if more records are available, otherwise proceed with export callback.
-      if ( offset < total ) {
-        recursively_fetch_posts((offset + limit), limit, total, posts.concat( ( ( response && response['posts'] ) ? response['posts'] : [] ) ), callback );
+      if ( (offset + limit) < total ) {
+        recursively_fetch_posts((offset + limit), limit, total, posts, callback );
 
       } else if ( callback ) {
         callback( posts );
