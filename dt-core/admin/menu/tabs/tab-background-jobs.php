@@ -58,8 +58,6 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
 
             $this->template( 'begin' );
 
-            $this->process_settings();
-            $this->display_job_total();
             $this->display_settings();
             $this->display_jobs();
 
@@ -70,43 +68,32 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
         endif;
     }
 
-    private function process_settings() {
-        if ( isset( $_POST['background_jobs_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['background_jobs_nonce'] ) ), 'background_jobs_nonce' ) ) {
-            update_option( 'dt_background_jobs_enabled', isset( $_POST['background_jobs_enabled'] ) ? 1 : 0 );
-            update_option( 'dt_background_jobs_display_count', isset( $_POST['background_jobs_display_count'] ) ? intval( $_POST['background_jobs_display_count'] ) : 20 );
-        }
-    }
-
-    private function fetch_display_count(): int
-    {
-        $display_count_option = get_option( 'dt_background_jobs_display_count' );
-        return ( $display_count_option > 0 ) ? intval( $display_count_option ) : 20;
-    }
-
     private function display_settings() {
 
-        $this->box( 'top', 'Logging Settings', [ 'col_span' => 4 ] );
+        $this->box( 'top', 'Job Queue Settings', [ 'col_span' => 4 ] );
 
         ?>
         <form method="POST">
-            <input type="hidden" name="background_jobs_nonce" id="background_jobs_nonce" value="<?php echo esc_attr( wp_create_nonce( 'background_jobs_nonce' ) ) ?>" />
             <table class="widefat striped">
                 <tr>
-                    <td align="right">
-                        <input type="number" id="background_jobs_display_count" name="background_jobs_display_count" value="<?php echo esc_html( $this->fetch_display_count() ) ?>" />
+                    <td>
+                        <?php $this->display_job_total(); ?>
+                        <p>
+                            <?php $this->display_job_queue_cron_schedule(); ?>
+                        </p>
                     </td>
-                    <td>Number Of Background Jobs To Be Displayed</td>
+                    <td>
+                        <button type="button" class="process-jobs-button" id="process-jobs-button">Process Jobs</button>
+                        <span id="process-jobs-loading-spinner" style="display: inline-block" class="loading-spinner"></span>
+                        <span class="process-jobs-result-text"></span>
+                    </td>
                 </tr>
             </table>
             <br>
-            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
         </form>
-        <button type="button" class="process-jobs-button" id="process-jobs-button">Process Jobs</button>
-        <span id="process-jobs-loading-spinner" style="display: inline-block" class="loading-spinner"></span>
-        <span style="display: inline-block" class="process-jobs-result-text"></span>
+
         <?php
 
-        $this->display_job_queue_cron_schedule();
         $this->box( 'bottom' );
     }
 
@@ -140,10 +127,10 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
 
         // Obtain list of recent error logs
         $jobs = $wpdb->get_results($wpdb->prepare("
-SELECT que.job AS job_details, que.category, que.attempts, que.priority, que.available_at, que.created_at
-FROM $wpdb->queue_jobs que
-ORDER BY que.created_at
-DESC LIMIT %d", $this->fetch_display_count()));
+        SELECT que.job AS job_details, que.category, que.attempts, que.priority, que.available_at, que.created_at
+        FROM $wpdb->queue_jobs que
+        ORDER BY que.created_at
+        DESC LIMIT 200" ) );
 
         $this->box( 'top', 'Background Jobs', [ 'col_span' => 4 ] );
 
