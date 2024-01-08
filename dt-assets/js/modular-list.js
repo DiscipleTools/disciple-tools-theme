@@ -2923,7 +2923,7 @@
   function export_csv_list_download(exporting_fields, callback = null) {
 
     // First retrieve all records associated with currently selected filter.
-    recursively_fetch_posts(0, 100, window.records_list['total'], [], function ( posts ) {
+    recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
       if ( posts && posts.length > 0 ) {
         let csv_export = [];
 
