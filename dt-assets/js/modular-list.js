@@ -3083,6 +3083,7 @@
     let query = current_filter.query;
     query["offset"] = offset;
     query['limit'] = limit;
+    query['fields_to_return'] = [];
 
     window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
     .promise()
