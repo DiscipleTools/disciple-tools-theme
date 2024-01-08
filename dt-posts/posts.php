@@ -1003,7 +1003,7 @@ class Disciple_Tools_Posts
                                 $equality = esc_sql( $query_value['operator'] );
                             }
                             if ( isset( $query_value['number'] ) ){
-                                $value = esc_sql( $query_value['number'] );
+                                $value = $query_value['number'];
                             }
                             if ( empty( $value ) && $value !== 0 ){
                                 $where_sql .= " $table_key.meta_value IS NULL";
