@@ -31,7 +31,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return bool|\WP_Error
  */
-function dt_send_email( $email, $subject, $message_plain_text ) {
+function dt_send_email( $email, $subject, $message_plain_text, $message_html = null ) {
 
     /**
      * Filter for development use.
@@ -77,7 +77,18 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON && !( defined( 'WP_DEBUG' ) && WP_DEBUG ) ){
         wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
     } else {
-        $is_sent = wp_mail( $email, $subject, $message_plain_text );
+
+        // Load email template and replace content placeholder.
+        $headers = [];
+        $message = $message_plain_text;
+        $email_template = file_get_contents( __DIR__ . '/email-template.html' );
+        if ( $email_template && !empty( $message_html ) ) {
+            $headers[] = 'Content-Type: text/html; charset=UTF-8';
+            $message = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $subject, $email_template );
+            $message = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message_html, $message );
+        }
+
+        $is_sent = wp_mail( $email, $subject, $message, $headers );
     }
 
     return $is_sent;
