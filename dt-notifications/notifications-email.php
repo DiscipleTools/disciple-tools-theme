@@ -31,7 +31,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return bool|\WP_Error
  */
-function dt_send_email( $email, $subject, $message_plain_text, $message_html = null ) {
+function dt_send_email( $email, $subject, $message_plain_text ) {
 
     /**
      * Filter for development use.
@@ -77,18 +77,7 @@ function dt_send_email( $email, $subject, $message_plain_text, $message_html = n
     if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON && !( defined( 'WP_DEBUG' ) && WP_DEBUG ) ){
         wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
     } else {
-
-        // Load email template and replace content placeholder.
-        $headers = [];
-        $message = $message_plain_text;
-        $email_template = file_get_contents( __DIR__ . '/email-template.html' );
-        if ( $email_template && !empty( $message_html ) ) {
-            $headers[] = 'Content-Type: text/html; charset=UTF-8';
-            $message = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $subject, $email_template );
-            $message = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message_html, $message );
-        }
-
-        $is_sent = wp_mail( $email, $subject, $message, $headers );
+        $is_sent = wp_mail( $email, $subject, $message_plain_text );
     }
 
     return $is_sent;
@@ -165,6 +154,32 @@ add_filter( 'wp_mail_from_name', function ( $name ) {
     return $name;
 } );
 
+/**
+ * Intercept all outgoing messages and wrap within email template.
+ */
+
+add_action( 'phpmailer_init', function ( $phpmailer ) {
+
+    // Load email template and replace content placeholder.
+    $email_template = file_get_contents( __DIR__ . '/email-template.html' );
+    if ( $email_template ) {
+
+        // phpcs:disable
+        $phpmailer->ContentType = 'text/html';
+        $email_template = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $phpmailer->Subject, $email_template );
+        $phpmailer->Body = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', nl2br( make_clickable_links( $phpmailer->Body ) ), $email_template );
+        // phpcs:enable
+    }
+} );
+
+function make_clickable_links( $message ){
+    $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+
+    return preg_replace_callback( $url, function ( $matches ) {
+        $truncated_url = strlen( $matches[0] ) > 50 ? substr( $matches[0], 0, 50 ) . '...' : $matches[0];
+        return '<a href="http' . $matches[2] . '://' . $matches[4] . '" target="_blank" title="' . $truncated_url . '">' . $truncated_url . '</a>';
+    }, $message );
+}
 
 /**
  * Send emails that have been put in the email queue
