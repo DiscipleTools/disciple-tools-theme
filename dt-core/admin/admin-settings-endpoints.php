@@ -278,6 +278,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $single = $params['single'];
             $plural = $params['plural'];
 
+            // Validate specified posy type key.
+            if ( strlen( $key ) > 20 ) {
+                return [
+                    'success' => false,
+                    'msg' => 'Unable to create '. $key .' record type. Specified key character count greater than 20.'
+                ];
+            }
+
             // Create new post type.
             $custom_post_types = get_option( 'dt_custom_post_types', [] );
             if ( !isset( $custom_post_types[$key] ) && !in_array( $key, DT_Posts::get_post_types() ) ){
@@ -768,6 +776,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             ];
             if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link' ] ) ){
                 $new_field['default'] = [];
+
+                if ( $field_type === 'link' ) {
+                    $new_field['default']['default'] = [
+                        'label' => 'Default'
+                    ];
+                }
             }
             if ( $field_type === 'connection' ){
                 $new_field = [];
@@ -789,7 +803,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         $direction = 'from';
                     }
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $connection_field_options['new_field_name'],
+                        'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
@@ -800,7 +814,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
                     // If not multidirectional, create the reverse direction field
                     if ( $connection_field_options['multidirectional'] != 1 ){
-                        $reverse_name = $connection_field_options['reverse_connection_name'] ?? $connection_field_options['new_field_name'];
+                        $reverse_name = $connection_field_options['reverse_connection_name'] ?: $post_submission['new_field_name'];
                         $custom_field_options[$post_type][$field_key . '_reverse']  = [
                             'name'        => $reverse_name,
                             'type'        => 'connection',
@@ -815,7 +829,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 } else {
                     $direction = 'from';
                     $custom_field_options[$post_type][$field_key] = [
-                        'name'        => $connection_field_options['new_field_name'],
+                        'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $connection_field_options['connection_target'],
                         'p2p_direction' => $direction,
@@ -824,8 +838,13 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'customizable' => 'all',
                     ];
                     // Create the reverse fields on the connection post type
-                    $reverse_name = $connection_field_options['other_field_name'] ?? $connection_field_options['new_field_name'];
-                    $custom_field_options[$connection_field_options['connection_target']][$field_key]  = [
+                    $reverse_name = $connection_field_options['other_field_name'] ?: $post_submission['new_field_name'];
+                    $reverse_post_type = $connection_field_options['connection_target'];
+                    $reverse_key = $field_key;
+                    if ( isset( $custom_field_options[$reverse_post_type][$reverse_key] ) ){
+                        $reverse_key = dt_create_field_key( $reverse_key, true );
+                    }
+                    $custom_field_options[$connection_field_options['connection_target']][$reverse_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',
                         'post_type' => $post_type,
@@ -1136,6 +1155,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 } else {
                     $custom_field['only_for_types'] = array_values( $selected );
                 }
+            }
+            // Show in list table.
+            if ( isset( $post_submission['visibility']['show_in_table'] ) && ( !isset( $post_fields[$field_key]['show_in_table'] ) || !is_numeric( $post_fields[$field_key]['show_in_table'] ) ) ) {
+                $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
+            } else if ( isset( $post_submission['visibility']['show_in_table'] ) && $post_submission['visibility']['show_in_table'] === false ) {
+                $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
             }
 
             $field_customizations[$post_type][$field_key] = $custom_field;

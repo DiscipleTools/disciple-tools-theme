@@ -63,6 +63,7 @@ class Disciple_Tools_Activity_Log_API {
                 'field_type'     => ''
             ]
         );
+
         // only get the current user if the global user object is set.
         // this avoids an infinite loop where the `determine_current_user` filter
         // keeps on trying to insert activity when an error is thrown.

@@ -282,6 +282,58 @@ dt_please_log_in();
                         <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
                     </div>
                 </div>
+                <br>
+                <div class="bordered-box">
+                    <div class="section-header">
+                        <?php echo esc_html( _x( 'List Exports', 'List Exports', 'disciple_tools' ) ) ?>
+                        <button class="float-right" data-open="export_help_text">
+                            <img class="help-icon"  style="padding-left: 5px;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
+                        </button>
+                        <button class="section-chevron chevron_down">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                        </button>
+                        <button class="section-chevron chevron_up">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                        </button>
+                    </div>
+                    <div class="section-body" style="padding-top:1em;">
+                        <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a><br>
+                        <?php do_action( 'dt_post_list_exports_filters_sidebar', $post_type ) ?>
+                    </div>
+                </div>
+                <div id="export_help_text" class="large reveal" data-reveal data-v-offset="10px">
+                    <span class="section-header"><?php esc_html_e( 'List Exports Help', 'disciple_tools' ) ?></span>
+                    <hr>
+                    <div class="grid-x">
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'CSV List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, this is a simple way to export basic information and use it in other applications.', 'disciple_tools' ); ?></p>
+                        </div>
+                        <?php
+                        $list_exports_help = apply_filters( 'dt_post_list_exports_filters_sidebar_help_text', [] );
+                        foreach ( $list_exports_help as $help ) {
+                            ?>
+                            <div class="cell">
+                                <p><strong><?php echo esc_attr( $help['title'] ); ?></strong></p>
+                                <p><?php echo esc_attr( $help['text'] ); ?></p>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="export_reveal" class="large reveal" data-reveal data-v-offset="10px">
+                    <span class="section-header" id="export_title"></span> <span id="reveal_loading_spinner" style="display: inline-block" class="loading-spinner active"></span>
+                    <hr>
+                    <div id="export_content"></div>
+                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
@@ -297,22 +349,26 @@ dt_please_log_in();
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
                                     <a href="#"><?php esc_html_e( 'Sort', 'disciple_tools' ); ?></a>
-                                    <ul class="menu is-dropdown-submenu">
+                                    <ul class="menu is-dropdown-submenu" style="min-width:220px">
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
-                                                <?php esc_html_e( 'Newest', 'disciple_tools' ); ?></a>
+                                            <i class="mdi mdi-sort-calendar-descending"></i>
+                                            <?php esc_html_e( 'Newest', 'disciple_tools' ); ?></a>
                                         </li>
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="post_date">
-                                                <?php esc_html_e( 'Oldest', 'disciple_tools' ); ?></a>
+                                            <i class="mdi mdi-sort-calendar-ascending"></i>
+                                            <?php esc_html_e( 'Oldest', 'disciple_tools' ); ?></a>
                                         </li>
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="last_modified">
-                                                <?php esc_html_e( 'Most recently modified', 'disciple_tools' ); ?></a>
+                                            <i class="mdi mdi-sort-clock-descending-outline"></i>
+                                            <?php esc_html_e( 'Most recently modified', 'disciple_tools' ); ?></a>
                                         </li>
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="last_modified">
-                                                <?php esc_html_e( 'Least recently modified', 'disciple_tools' ); ?></a>
+                                            <i class="mdi mdi-sort-clock-ascending-outline"></i>
+                                            <?php esc_html_e( 'Least recently modified', 'disciple_tools' ); ?></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -676,10 +732,7 @@ dt_please_log_in();
                                     }
                                     foreach ( $columns as $field_key ):
                                         if ( ! in_array( $field_key, [ 'favorite' ] ) ):
-                                            if ( $field_key === 'name' ): ?>
-                                                <th class="all"
-                                                    data-id="name"><?php esc_html_e( 'Name', 'disciple_tools' ); ?></th>
-                                            <?php elseif ( isset( $post_settings['fields'][ $field_key ]['name'] ) ) : ?>
+                                            if ( isset( $post_settings['fields'][$field_key]['name'] ) ) : ?>
                                                 <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
                                                     <?php echo esc_html( $post_settings['fields'][ $field_key ]['name'] ) ?>
                                                 </th>

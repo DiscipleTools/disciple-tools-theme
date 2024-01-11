@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-08-21T09:15:11+00:00\n"
+"POT-Creation-Date: 2023-12-13T11:49:40+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Japanese <https://translate.disciple.tools/projects/disciple-"
@@ -66,7 +66,7 @@ msgstr "記録の所有者にアクセス申請が通知されます。続行し
 msgid "Submit Request"
 msgstr "申請を提出"
 
-#: 403.php:55 archive-template.php:867 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:868 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -81,8 +81,8 @@ msgstr "申請を提出"
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: 403.php:59 archive-template.php:390 archive-template.php:432
-#: archive-template.php:891 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:394 archive-template.php:436
+#: archive-template.php:892 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -105,18 +105,21 @@ msgstr "キャンセル"
 #: dt-assets/parts/modals/modal-support.php:18
 #: dt-assets/parts/modals/modal-tasks.php:46
 #: dt-assets/parts/modals/modal-tasks.php:48
-#: dt-assets/parts/modals/modal-tasks.php:54 dt-contacts/access-module.php:515
-#: dt-contacts/access-module.php:546 dt-contacts/access-module.php:574
-#: dt-contacts/access-module.php:665 dt-contacts/base-setup.php:385
-#: dt-contacts/base-setup.php:420 dt-contacts/dmm-module.php:523
-#: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
-#: dt-groups/base-setup.php:623 dt-groups/base-setup.php:628
-#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:270
-#: dt-users/template-new-user.php:291 dt-users/template-new-user.php:295
-#: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
-#: single-template.php:420 single-template.php:437
-#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-new-post.php:185 template-settings.php:563
+#: dt-assets/parts/modals/modal-tasks.php:54
+#: dt-assets/parts/modals/modal-template-metrics.php:8
+#: dt-assets/parts/modals/modal-template-metrics.php:13
+#: dt-contacts/access-module.php:515 dt-contacts/access-module.php:546
+#: dt-contacts/access-module.php:574 dt-contacts/access-module.php:665
+#: dt-contacts/base-setup.php:385 dt-contacts/base-setup.php:420
+#: dt-contacts/dmm-module.php:523 dt-contacts/dmm-module.php:525
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:623
+#: dt-groups/base-setup.php:628 dt-reports/magic-url-bulk-send.php:34
+#: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
+#: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
+#: dt-users/user-initial-setup.php:82 single-template.php:420
+#: single-template.php:437 template-new-bulk-post.php:223
+#: template-new-bulk-post.php:295 template-new-post.php:185
+#: template-settings.php:563
 msgid "Close"
 msgstr "閉じる"
 
@@ -137,10 +140,10 @@ msgstr "新しい%sを作成する"
 msgid "Filters"
 msgstr "フィルター"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:540
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
-#: dt-core/global-functions.php:674 dt-core/global-functions.php:806
-#: dt-core/global-functions.php:850 dt-posts/custom-post-type.php:20
+#: archive-template.php:36 archive-template.php:126 archive-template.php:544
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
+#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
+#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 #, fuzzy
 msgctxt "Search 'something'"
@@ -182,12 +185,12 @@ msgstr "すべてのフィールドを検索"
 msgid "Communication Channels"
 msgstr "コミュニケーションチャンネル"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:427
+#: archive-template.php:106 archive-template.php:193 archive-template.php:431
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "適用する"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:428
+#: archive-template.php:107 archive-template.php:194 archive-template.php:432
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "デフォルトにリセット"
@@ -221,121 +224,122 @@ msgstr "％sリスト"
 msgid "Sort"
 msgstr "ソート"
 
-#: archive-template.php:303
+#: archive-template.php:304
 msgid "Newest"
 msgstr "最新"
 
-#: archive-template.php:307
+#: archive-template.php:309
 msgid "Oldest"
 msgstr "最古"
 
-#: archive-template.php:311
+#: archive-template.php:314
 msgid "Most recently modified"
 msgstr "最近変更された"
 
-#: archive-template.php:315
+#: archive-template.php:319
 msgid "Least recently modified"
 msgstr "最近変更されていない"
 
-#: archive-template.php:325 template-new-bulk-post.php:89
+#: archive-template.php:329 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "田畑"
 
-#: archive-template.php:332
+#: archive-template.php:336
 msgid "Bulk Edit"
 msgstr "一括編集"
 
-#: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:349 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
 msgstr "より多い"
 
-#: archive-template.php:366 dt-contacts/base-setup.php:309
+#: archive-template.php:370 dt-contacts/base-setup.php:309
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "アーカイブ"
 
-#: archive-template.php:370
+#: archive-template.php:374
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "新しい％s"
 
-#: archive-template.php:393
+#: archive-template.php:397
 msgid "Choose which fields to display as columns in the list"
 msgstr "リストの列として表示するフィールドを選択します"
 
-#: archive-template.php:436
+#: archive-template.php:440
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "更新するすべての％1 $をリストから選択し、以下で更新します"
 
-#: archive-template.php:454 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:458 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:888
+#: dt-core/global-functions.php:893
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ユーザーの検索"
 
-#: archive-template.php:478 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2714
+#: archive-template.php:482 dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
+#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2713
 #: dt-users/template-user-management.php:370 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
 msgstr "状態"
 
-#: archive-template.php:528
+#: archive-template.php:532
 msgid "Share with:"
 msgstr "と共有する："
 
-#: archive-template.php:548
+#: archive-template.php:552
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "％sと共有されていません"
 
-#: archive-template.php:560 dt-assets/functions/details-bar.php:166
+#: archive-template.php:564 dt-assets/functions/details-bar.php:166
 #: dt-posts/custom-post-type.php:209
 msgid "Follow"
 msgstr "フォローする"
 
-#: archive-template.php:565 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:569 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "コメントとアクティビティ"
 
-#: archive-template.php:570 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:574 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "ここにコメントやメモを書いてください"
 
-#: archive-template.php:578 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:582 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "タイプ："
 
-#: archive-template.php:598 dt-users/template-new-user.php:127
+#: archive-template.php:602 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "その他のオプションを見る"
 
-#: archive-template.php:599 dt-users/template-new-user.php:130
+#: archive-template.php:603 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "より少ないオプションを参照してください"
 
-#: archive-template.php:635 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:639 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "更新"
 
-#: archive-template.php:636 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:640 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr "以下から選択する"
 
-#: archive-template.php:644 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:648 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -343,98 +347,92 @@ msgstr "以下から選択する"
 msgid "Delete"
 msgstr "削除"
 
-#: archive-template.php:647 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:651 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "以下から選択する"
 
-#: archive-template.php:681 dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:169 template-settings.php:136
-msgid "Name"
-msgstr "名前"
-
-#: archive-template.php:692
+#: archive-template.php:693
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
-#: archive-template.php:697 dt-assets/functions/enqueue-scripts.php:374
+#: archive-template.php:698 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "もっと読み込む"
 
-#: archive-template.php:709
+#: archive-template.php:710
 msgid "Field Name"
 msgstr "フィールド名"
 
-#: archive-template.php:765
+#: archive-template.php:766
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "検索するタイプ"
 
-#: archive-template.php:774
+#: archive-template.php:775
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s中の全ての%1$s"
 
-#: archive-template.php:777
+#: archive-template.php:778
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$sを含まない全ての%1$s"
 
-#: archive-template.php:784
+#: archive-template.php:785
 msgid "Filter for subassigned OR Assigned To"
 msgstr "サブアサインまたはアサイン先のフィルター"
 
-#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:794 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "作成日"
 
-#: archive-template.php:800 archive-template.php:807
+#: archive-template.php:801 archive-template.php:808
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
 msgid "None Set"
 msgstr "設定なし"
 
-#: archive-template.php:821 archive-template.php:822
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
-#: dt-metrics/records/time-charts.php:119 dt-posts/posts.php:462
+#: archive-template.php:822 archive-template.php:823
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
+#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "番号"
 
-#: archive-template.php:828 archive-template.php:829
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
-#: dt-metrics/records/time-charts.php:118 dt-posts/posts.php:460
-#: template-settings.php:294 template-settings.php:537
+#: archive-template.php:829 archive-template.php:830
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
+#: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
+#: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "はい"
 
-#: archive-template.php:833
+#: archive-template.php:834
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "レンジスタート"
 
-#: archive-template.php:836 archive-template.php:847
+#: archive-template.php:837 archive-template.php:848
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "晴れ"
 
-#: archive-template.php:843
+#: archive-template.php:844
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "レンジエンド"
 
-#: archive-template.php:875
+#: archive-template.php:876
 msgid "Filter Name"
 msgstr "フィルタ名"
 
-#: archive-template.php:880
+#: archive-template.php:881
 msgid "Filter Records"
 msgstr "フィルターレコード"
 
-#: archive-template.php:884 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:885 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -499,13 +497,13 @@ msgstr "共有"
 
 #: dt-assets/functions/enqueue-scripts.php:112
 #: dt-metrics/records/date-range-activity.php:111
-#: template-merge-post-details.php:93
+#: template-merge-post-details.php:102
 msgid "Regions of Focus"
 msgstr "重点分野"
 
 #: dt-assets/functions/enqueue-scripts.php:113
 #: dt-metrics/records/date-range-activity.php:112
-#: template-merge-post-details.php:94
+#: template-merge-post-details.php:103
 msgid "All Locations"
 msgstr "すべての場所"
 
@@ -542,6 +540,10 @@ msgstr "未読の通知はありません"
 #: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "通知はありません"
+
+#: dt-assets/functions/enqueue-scripts.php:171 dt-posts/dt-posts.php:1653
+msgid "D.T System"
+msgstr "D.Tシステム"
 
 #: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
@@ -584,8 +586,8 @@ msgstr "重複が検出されました"
 
 #: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:293 template-merge-post-details.php:121
-#: template-merge-post-details.php:178
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:130
+#: template-merge-post-details.php:187
 msgid "Merge"
 msgstr "マージ"
 
@@ -638,6 +640,7 @@ msgid "Locations you are responsible for"
 msgstr "あなたが担当する場所"
 
 #: dt-assets/functions/enqueue-scripts.php:275
+#: dt-metrics/records/genmap.php:104
 msgid "Add"
 msgstr "追加"
 
@@ -698,6 +701,7 @@ msgstr "終わり"
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1302 dt-groups/base-setup.php:990
 #: dt-metrics/personal/activity-highlights.php:56
+#: dt-metrics/records/dynamic-records-map.php:96
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "すべて"
@@ -730,7 +734,7 @@ msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
 
-#: dt-assets/functions/menu.php:39 template-metrics.php:25
+#: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
 msgstr "メニュー"
 
@@ -766,8 +770,9 @@ msgstr "管理者"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260 dt-users/user-management.php:135
-#: dt-users/user-management.php:228
+#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/records/dynamic-records-map.php:65
+#: dt-users/user-management.php:135 dt-users/user-management.php:228
 msgid "Users"
 msgstr "ユーザー"
 
@@ -804,7 +809,7 @@ msgstr "コメントの削除："
 
 #: dt-assets/parts/loop-activity-comment.php:164
 #: dt-assets/parts/loop-activity-comment.php:212
-#: template-merge-post-details.php:95
+#: template-merge-post-details.php:104
 msgid "Sorry, something went wrong"
 msgstr "すみません、問題が発生しました"
 
@@ -1176,6 +1181,13 @@ msgstr ""
 msgid "Create Record"
 msgstr "レコードを作成する"
 
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
+#: dt-metrics/records/genmap.php:110 dt-posts/custom-post-type.php:169
+#: template-settings.php:136
+msgid "Name"
+msgstr "名前"
+
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Record Created"
 msgstr "作成されたレコード"
@@ -1213,9 +1225,8 @@ msgid "Revert Activity"
 msgstr "アクティビティを元に戻す"
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/records/date-range-activity.php:103
-#: dt-metrics/records/generation-tree.php:92
-#: dt-metrics/records/time-charts.php:109
+#: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "フィールド"
 
@@ -1337,6 +1348,7 @@ msgstr "共同編集者"
 
 #: dt-contacts/access-module.php:122 dt-groups/base-setup.php:137
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
+#: dt-metrics/records/genmap.php:91 dt-metrics/records/genmap.php:98
 msgid "Assigned To"
 msgstr "に割り当てられた"
 
@@ -1615,7 +1627,7 @@ msgid "Accepted"
 msgstr "承認済み"
 
 #: dt-contacts/access-module.php:299 dt-contacts/base-setup.php:528
-#: dt-metrics/metrics.php:90 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1646,7 +1658,7 @@ msgid ""
 msgstr "別のDisciple.Toolsサイトとのパートナーシップから転送された連絡先。"
 
 #: dt-contacts/access-module.php:330 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:569
+#: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "ソース"
 
@@ -1782,9 +1794,10 @@ msgstr "重複チェッカー"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:99
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:102
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
+#: dt-metrics/records/dynamic-records-map.php:31
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:452
 msgid "Contacts"
@@ -1842,7 +1855,7 @@ msgstr "Whatsapp"
 
 #: dt-contacts/base-setup.php:183
 #: dt-core/configuration/config-site-defaults.php:341
-#: dt-login/login-template.php:384 dt-users/template-new-user.php:116
+#: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:215
 #: dt-users/users.php:129 template-settings.php:156
 msgid "Email"
@@ -2535,7 +2548,7 @@ msgid "prayer"
 msgstr "祈り"
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:579
+#: dt-login/login-template.php:529
 msgid "Home"
 msgstr "ホーム"
 
@@ -2555,39 +2568,39 @@ msgstr "私は既存の連絡先にのみ投資しています"
 msgid "I have too many contacts"
 msgstr "連絡先が多すぎます"
 
-#: dt-core/configuration/restrict-site-access.php:234
-msgid "ERROR: Invalid username/password combination."
-msgstr "エラー：ユーザー名とパスワードの組み合わせが無効です。"
+#: dt-core/configuration/restrict-site-access.php:245
+msgid "Check your email for the confirmation link, then visit the"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:238
-msgid "Reset password"
-msgstr "パスワードを再設定する"
+#: dt-core/configuration/restrict-site-access.php:249
+msgid "Login Page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:239
-msgid "Lost your password"
-msgstr "パスワードを忘れましたか"
+#: dt-core/configuration/restrict-site-access.php:250
+msgid "login page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:290
+#: dt-core/configuration/restrict-site-access.php:305
 msgid "Someone has requested a password reset for the following account:"
 msgstr "誰かが次のアカウントのパスワードのリセットを要求しました："
 
 #. translators: %s: Site name.
-#: dt-core/configuration/restrict-site-access.php:292
+#: dt-core/configuration/restrict-site-access.php:307
 msgid "DT Site Name: %s"
 msgstr "DTサイト名：％s"
 
 #. translators: %s: User login.
-#: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:389
+#: dt-core/configuration/restrict-site-access.php:309
+#: dt-users/user-hooks-and-config.php:390
 msgid "Username: %s"
 msgstr "ユーザー名：％s"
 
-#: dt-core/configuration/restrict-site-access.php:295
+#: dt-core/configuration/restrict-site-access.php:310
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
 "これが間違いだった場合は、このメールを無視してください。何も起こりません。"
 
-#: dt-core/configuration/restrict-site-access.php:296
+#: dt-core/configuration/restrict-site-access.php:311
 msgid "To reset your password, visit the following address:"
 msgstr "パスワードをリセットするには、次のアドレスにアクセスしてください。"
 
@@ -2597,11 +2610,11 @@ msgstr "パスワードをリセットするには、次のアドレスにアク
 msgid "This is required"
 msgstr "これは必須です"
 
-#: dt-core/global-functions.php:648
+#: dt-core/global-functions.php:653
 msgid "Add new tag \"%s\""
 msgstr "新しいタグ「%s」を追加"
 
-#: dt-core/global-functions.php:649
+#: dt-core/global-functions.php:654
 msgid "Tag \"%s\" is already being used"
 msgstr "「%s」のタグは既に使用されています"
 
@@ -2686,9 +2699,9 @@ msgstr "グループ"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:103
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:97
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "グループ"
@@ -2901,7 +2914,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "このグループが会議を停止した日付（該当する場合）。"
 
-#: dt-groups/base-setup.php:281
+#: dt-groups/base-setup.php:281 dt-metrics/records/genmap.php:101
 msgid "Member Count"
 msgstr "会員数"
 
@@ -3075,92 +3088,96 @@ msgstr ""
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
 
-#: dt-login/login-template.php:89 dt-login/login-template.php:115
+#: dt-login/login-template.php:84 dt-login/login-template.php:109
 #, fuzzy
 #| msgid "Password"
 msgid "Get New Password"
 msgstr "パスワード"
 
-#: dt-login/login-template.php:104 dt-login/login-template.php:538
+#: dt-login/login-template.php:98 dt-login/login-template.php:488
 #, fuzzy
 #| msgid "Add email address"
 msgid "Email Address"
 msgstr "メールアドレスを追加"
 
-#: dt-login/login-template.php:118
+#: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
 
-#: dt-login/login-template.php:171 dt-login/login-template.php:261
-#: dt-login/login-template.php:400
+#: dt-login/login-template.php:160
+msgid "Missing email or password."
+msgstr ""
+
+#: dt-login/login-template.php:164 dt-login/login-template.php:244
+#: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
 msgstr ""
 
-#: dt-login/login-template.php:233 dt-login/login-template.php:282
+#: dt-login/login-template.php:217 dt-login/login-template.php:263
 #, fuzzy
 #| msgid "Reset password"
 msgid "Reset Password"
 msgstr "パスワードを再設定する"
 
-#: dt-login/login-template.php:248 dt-login/login-template.php:251
-#: dt-login/login-template.php:388 dt-login/login-template.php:391
+#: dt-login/login-template.php:231 dt-login/login-template.php:234
+#: dt-login/login-template.php:353 dt-login/login-template.php:356
 #, fuzzy
 #| msgid "Password"
 msgid "Password Required"
 msgstr "パスワード"
 
-#: dt-login/login-template.php:258 dt-login/login-template.php:397
+#: dt-login/login-template.php:241 dt-login/login-template.php:362
 #, fuzzy
 #| msgid "Reset password"
 msgid "Re-enter Password"
 msgstr "パスワードを再設定する"
 
-#: dt-login/login-template.php:340 dt-login/login-template.php:409
-#: dt-login/login-template.php:595
+#: dt-login/login-template.php:312 dt-login/login-template.php:374
+#: dt-login/login-template.php:545
 #, fuzzy
 #| msgid "Registered"
 msgid "Register"
 msgstr "登録済み"
 
-#: dt-login/login-template.php:375 dt-users/template-new-user.php:88
+#: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr "フォームにいくつかのエラーがあります。"
 
-#: dt-login/login-template.php:380
+#: dt-login/login-template.php:345
 #, fuzzy
 #| msgid "Display Name"
 msgid "Display Name (optional)"
 msgstr "表示名"
 
-#: dt-login/login-template.php:498
+#: dt-login/login-template.php:456
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:514 dt-login/login-template.php:541
-#: dt-login/login-template.php:587
+#: dt-login/login-template.php:466 dt-login/login-template.php:491
+#: dt-login/login-template.php:537
 msgid "Login"
 msgstr ""
 
-#: dt-login/login-template.php:521
+#: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:539 dt-users/template-new-user.php:121
+#: dt-login/login-template.php:489 dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122 template-settings.php:600
 msgid "Password"
 msgstr "パスワード"
 
-#: dt-login/login-template.php:540
+#: dt-login/login-template.php:490
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:602
+#: dt-login/login-template.php:552
 #, fuzzy
-#| msgid "Lost your password"
-msgid "Lost your password?"
-msgstr "パスワードを忘れましたか"
+#| msgid "Reset password"
+msgid "Lost Password"
+msgstr "パスワードを再設定する"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
@@ -3174,17 +3191,17 @@ msgstr "教会"
 msgid "add"
 msgstr "追加"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:88
+#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:97
 msgid "Use"
 msgstr "使用する"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:86
+#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:95
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "検索場所"
 
-#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:87
+#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:96
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "場所を削除"
@@ -3233,9 +3250,8 @@ msgstr "クリティカルパス"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:95 dt-metrics/records/date-range-activity.php:44
-#: dt-metrics/records/generation-tree.php:32
-#: dt-metrics/records/time-charts.php:44
+#: dt-metrics/metrics.php:98 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "事業"
 
@@ -3392,7 +3408,7 @@ msgstr ""
 "す。"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:123
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:126
 msgid "Metrics"
 msgstr "指標"
 
@@ -3427,6 +3443,7 @@ msgstr "結合されたマップ"
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
 #: dt-metrics/personal/mapbox-contacts-maps.php:60
 #: dt-metrics/personal/mapbox-groups-maps.php:54
+#: dt-metrics/records/dynamic-records-map.php:102
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
@@ -3515,7 +3532,7 @@ msgstr "連絡先を日付範囲にフィルターします。"
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/time-charts.php:114
+#: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:418
 msgid "All Time"
 msgstr "いつも"
@@ -3654,30 +3671,36 @@ msgid "Group Generation Tree"
 msgstr "グループ生成ツリー"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
+#: dt-metrics/records/genmap.php:87
 msgid "Highlight Active"
 msgstr "アクティブを強調表示"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
+#: dt-metrics/records/genmap.php:88
 msgid "Highlight Churches"
 msgstr "ハイライト教会"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
+#: dt-metrics/records/genmap.php:89 dt-metrics/records/genmap.php:102
 msgid "Members"
 msgstr "メンバー"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
+#: dt-metrics/records/genmap.php:90
 msgid "View Record"
 msgstr "レコードを見る"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
+#: dt-metrics/records/genmap.php:93
 msgid "Total Members"
 msgstr "総会員数"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
+#: dt-metrics/records/genmap.php:94
 msgid "View Group"
 msgstr "グループを表示"
 
-#: dt-metrics/metrics.php:106
+#: dt-metrics/metrics.php:109
 #, fuzzy
 #| msgid "Metrics"
 msgid "Dynamic Metrics"
@@ -3721,7 +3744,7 @@ msgid "Comments I Posted"
 msgstr "私が投稿したコメント"
 
 #: dt-metrics/personal/activity-highlights.php:67
-#: dt-metrics/records/time-charts.php:113
+#: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "日付"
 
@@ -3796,36 +3819,42 @@ msgstr "現在の統計"
 msgid "Field Activity"
 msgstr "日々の活動"
 
-#: dt-metrics/records/date-range-activity.php:102
-#: dt-metrics/records/generation-tree.php:91
-#: dt-metrics/records/time-charts.php:108
+#: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/time-charts.php:106
 #, fuzzy
 #| msgid "Record"
 msgid "Record Type"
 msgstr "記録"
 
-#: dt-metrics/records/date-range-activity.php:104
+#: dt-metrics/records/date-range-activity.php:103
 #, fuzzy
 #| msgid "Activity"
 msgid "Any Activity"
 msgstr "アクティビティ"
 
-#: dt-metrics/records/date-range-activity.php:105
-#: dt-metrics/records/time-charts.php:110
+#: dt-metrics/records/date-range-activity.php:104
+#: dt-metrics/records/time-charts.php:108
 msgid "Total"
 msgstr "合計"
 
-#: dt-metrics/records/date-range-activity.php:106
+#: dt-metrics/records/date-range-activity.php:105
 #, fuzzy
 #| msgid "Date Ranges"
 msgid "Date Range"
 msgstr "日付範囲"
+
+#: dt-metrics/records/date-range-activity.php:106
+#, fuzzy
+#| msgid "Custom"
+msgid "Custom Range"
+msgstr "カスタム"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
+#: dt-metrics/records/time-charts.php:123
 msgid "Title"
 msgstr ""
 
@@ -3841,52 +3870,184 @@ msgstr "アクティビティが検出されませんでした!"
 msgid "New Value"
 msgstr "古い値"
 
-#: dt-metrics/records/date-range-activity.php:310
+#: dt-metrics/records/date-range-activity.php:343
 msgid "True"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:310
+#: dt-metrics/records/date-range-activity.php:343
 msgid "False"
 msgstr ""
 
-#: dt-metrics/records/generation-tree.php:31
+#: dt-metrics/records/dynamic-records-map.php:30
 #, fuzzy
-#| msgid "Group Generation Tree"
-msgid "Generation Tree"
-msgstr "グループ生成ツリー"
+#| msgid "Add Records"
+msgid "Records Map"
+msgstr "記録を追加"
 
-#: dt-metrics/records/generation-tree.php:93
+#: dt-metrics/records/dynamic-records-map.php:91 template-new-bulk-post.php:264
+msgid "Add Records"
+msgstr "記録を追加"
+
+#: dt-metrics/records/dynamic-records-map.php:92
+#, fuzzy
+#| msgid "Post Type"
+msgid "Post Types"
+msgstr "投稿タイプ"
+
+#: dt-metrics/records/dynamic-records-map.php:93
+#, fuzzy
+#| msgid "prayer"
+msgid "Layer"
+msgstr "祈り"
+
+#: dt-metrics/records/dynamic-records-map.php:94
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you wish to delete layer?"
+msgstr "％sを削除してもよろしいですか？"
+
+#: dt-metrics/records/dynamic-records-map.php:95
+#, fuzzy
+#| msgid "Record"
+msgid "Record Types"
+msgstr "記録"
+
+#: dt-metrics/records/dynamic-records-map.php:97
+#: dt-notifications/notifications.php:922
+#: dt-notifications/notifications.php:929
+#: dt-notifications/notifications.php:936
+#: dt-notifications/notifications.php:940
+#: dt-notifications/notifications.php:950
+#: dt-notifications/notifications.php:957
+msgid "System"
+msgstr "システム"
+
+#: dt-metrics/records/genmap.php:23
+msgid "Genmap"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:24 dt-metrics/records/genmap.php:86
 #, fuzzy
 #| msgid "Generation"
-msgid "Generate"
+msgid "Generation Map"
 msgstr "世代"
 
-#: dt-metrics/records/time-charts.php:43
+#: dt-metrics/records/genmap.php:99
+msgid "Coaches"
+msgstr "コーチ"
+
+#: dt-metrics/records/genmap.php:100
+#, fuzzy
+#| msgid "Type:"
+msgid "Type"
+msgstr "タイプ："
+
+#: dt-metrics/records/genmap.php:103
+#, fuzzy
+#| msgid "Open With"
+msgid "Open"
+msgstr "で開く"
+
+#: dt-metrics/records/genmap.php:105
+msgid "Focus"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:106
+msgid "Hide"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:109
+#, fuzzy
+#| msgid "Child Group"
+msgid "Add Child To"
+msgstr "子グループ"
+
+#: dt-metrics/records/genmap.php:111
+msgid "Add Child"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:112
+msgid "Focus On Node"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:113
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you wish to focus on node?"
+msgstr "％sを削除してもよろしいですか？"
+
+#: dt-metrics/records/genmap.php:117
+msgid "Infinite Loops"
+msgstr ""
+
+#: dt-metrics/records/time-charts.php:41
 #, fuzzy
 #| msgid "Fields over Time Charts"
 msgid "Field Charts"
 msgstr "タイムチャート上のフィールド"
 
-#: dt-metrics/records/time-charts.php:111
+#: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "追加済み"
 
+#: dt-metrics/records/time-charts.php:110
+#, fuzzy
+#| msgid "Delete"
+msgid "Deleted"
+msgstr "削除"
+
+#: dt-metrics/records/time-charts.php:111
+#, fuzzy
+#| msgctxt "Personal records"
+#| msgid "Connected %s"
+msgid "Connected"
+msgstr "接続された％s"
+
 #: dt-metrics/records/time-charts.php:112
+#, fuzzy
+#| msgctxt "Personal records"
+#| msgid "Connected %s"
+msgid "Disconnected"
+msgstr "接続された％s"
+
+#: dt-metrics/records/time-charts.php:113
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "%2$s中%1$s"
 
-#: dt-metrics/records/time-charts.php:115
+#: dt-metrics/records/time-charts.php:116
 msgid "All cumulative totals"
 msgstr "全ての累計"
 
-#: dt-metrics/records/time-charts.php:116
+#: dt-metrics/records/time-charts.php:117
 msgid "Single cumulative totals"
 msgstr "単一の累計"
 
-#: dt-metrics/records/time-charts.php:117
-msgid "Number added"
-msgstr "追加された数"
+#: dt-metrics/records/time-charts.php:118
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records changes"
+msgstr "記録を追加"
+
+#: dt-metrics/records/time-charts.php:121
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records"
+msgstr "記録を追加"
+
+#: dt-metrics/records/time-charts.php:122
+#, fuzzy
+#| msgid "No"
+msgid "No."
+msgstr "番号"
+
+#: dt-metrics/records/time-charts.php:124
+#, fuzzy
+#| msgid "No Data Available"
+msgid "No Records Available"
+msgstr "データがありません"
 
 #: dt-notifications/notifications-email.php:125
 msgid "Click here to view or reply"
@@ -3953,15 +4114,6 @@ msgstr "割り当てられています： %1$s 。"
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s は%2$sを%3$sに割り当てました。"
-
-#: dt-notifications/notifications.php:922
-#: dt-notifications/notifications.php:929
-#: dt-notifications/notifications.php:936
-#: dt-notifications/notifications.php:940
-#: dt-notifications/notifications.php:950
-#: dt-notifications/notifications.php:957
-msgid "System"
-msgstr "システム"
 
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
@@ -4074,34 +4226,38 @@ msgstr "関連アイテムをグループ化する便利な方法。"
 msgid "Un-Follow"
 msgstr "フォローを解除する"
 
-#: dt-posts/dt-posts.php:103
+#: dt-posts/dt-posts.php:100
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1646
-msgid "Magic Link Submission"
+#: dt-posts/dt-posts.php:1645
+#, fuzzy
+#| msgid "Magic Link Submission"
+msgid "%s Submission"
 msgstr "マジックリンク送信"
 
-#: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2195
+#: dt-posts/dt-posts.php:1645
+#, fuzzy
+#| msgid "Magic Link Submission"
+msgid "Magic Link"
+msgstr "マジックリンク送信"
+
+#: dt-posts/dt-posts.php:1647 dt-posts/dt-posts.php:2194
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "アクティビティを元に戻す"
 
-#: dt-posts/dt-posts.php:1654
-msgid "D.T System"
-msgstr "D.Tシステム"
-
-#: dt-posts/dt-posts.php:2435
+#: dt-posts/dt-posts.php:2434
 msgid "Post already shared with user."
 msgstr "投稿はすでにユーザーと共有されています。"
 
-#: dt-posts/dt-posts.php:2715 single-template.php:174
+#: dt-posts/dt-posts.php:2714 single-template.php:174
 msgid "Details"
 msgstr "詳細"
 
-#: dt-posts/dt-posts.php:2779
+#: dt-posts/dt-posts.php:2783
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4113,7 +4269,7 @@ msgstr ""
 "@[%1$s](%2$s) - ユーザーの%3$sが%4$s [%5$s](%6$s)へのアクセスを申請しました。"
 "必要に応じてアクセスを認め、この記録を当該ユーザーと共有してください。"
 
-#: dt-posts/dt-posts.php:2785
+#: dt-posts/dt-posts.php:2789
 msgid "Access Request"
 msgstr "アクセス申請"
 
@@ -4317,9 +4473,12 @@ msgid "%1$s removed from %2$s"
 msgstr "%1$s が%2$sから削除されました"
 
 #: dt-posts/posts.php:416
-msgctxt "Assigned to: User1"
-msgid "Assigned to: %s"
-msgstr "割り当て先：％s"
+#, fuzzy
+#| msgctxt "Total in January"
+#| msgid "%1$s in %2$s"
+msgctxt "User Select: User1"
+msgid "%1$1s: %2$2s"
+msgstr "%2$s中%1$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -4545,11 +4704,11 @@ msgstr "リンク付きのメールを送信"
 msgid "Delete and replace the app link"
 msgstr "アプリのリンクを削除して置き換える"
 
-#: dt-reports/reports.php:159
+#: dt-reports/reports.php:160
 msgid "Added new report"
 msgstr "新しいレポートを追加しました"
 
-#: dt-reports/reports.php:252
+#: dt-reports/reports.php:254
 msgid "Updated report"
 msgstr "更新されたレポート"
 
@@ -4747,7 +4906,7 @@ msgid "User Profile"
 msgstr "ユーザープロファイル"
 
 #: dt-users/template-user-management.php:201
-#: dt-users/user-hooks-and-config.php:407
+#: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "連絡先レコードを表示する"
 
@@ -4775,12 +4934,12 @@ msgid "Access by Source"
 msgstr "ソースによるアクセス"
 
 #: dt-users/template-user-management.php:320
-#: dt-users/user-hooks-and-config.php:576
+#: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "すべてのソース-すべての連絡先へのアクセスを提供します"
 
 #: dt-users/template-user-management.php:326
-#: dt-users/user-hooks-and-config.php:583
+#: dt-users/user-hooks-and-config.php:630
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
@@ -4788,7 +4947,7 @@ msgstr ""
 "カスタム-自分の連絡先と、以下で選択したソースのすべての連絡先にアクセスします"
 
 #: dt-users/template-user-management.php:332
-#: dt-users/user-hooks-and-config.php:590
+#: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "ソースなし-自分の連絡先のみ"
 
@@ -4844,7 +5003,7 @@ msgstr "必要な最も古い10の更新"
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "割り当てられてから最後の10件の連絡先の連絡試行までの時間"
 
-#: dt-users/user-hooks-and-config.php:195
+#: dt-users/user-hooks-and-config.php:196
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
@@ -4852,51 +5011,51 @@ msgstr ""
 "%1$sさん、ようこそ。これはあなたの個人的な連絡先記録です。 フィールドを自由に"
 "更新して、私または他のユーザーに@メンションしてください"
 
-#: dt-users/user-hooks-and-config.php:311
-#: dt-users/user-hooks-and-config.php:349
+#: dt-users/user-hooks-and-config.php:312
+#: dt-users/user-hooks-and-config.php:350
 msgid "[%s] Login Details"
 msgstr "[%s] ログイン詳細"
 
-#: dt-users/user-hooks-and-config.php:322
+#: dt-users/user-hooks-and-config.php:323
 msgid "To set your password, visit the following address:"
 msgstr "パスワードを設定するには、次のアドレスにアクセスしてください。"
 
-#: dt-users/user-hooks-and-config.php:345
+#: dt-users/user-hooks-and-config.php:346
 msgid "To log in click here: %s"
 msgstr "ログインするには、ここをクリックしてください: %s"
 
-#: dt-users/user-hooks-and-config.php:387
+#: dt-users/user-hooks-and-config.php:388
 msgid "Hi %s,"
 msgstr "こんにちは、%sさん、"
 
-#: dt-users/user-hooks-and-config.php:388
+#: dt-users/user-hooks-and-config.php:389
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "%2$sで %1$s に招待されました。"
 
-#: dt-users/user-hooks-and-config.php:534
+#: dt-users/user-hooks-and-config.php:581
 msgid "Extra Disciple.Tools Information"
 msgstr "追加の弟子。ツール情報"
 
-#: dt-users/user-hooks-and-config.php:537
+#: dt-users/user-hooks-and-config.php:584
 msgid "Corresponds to Contact"
 msgstr "連絡先に対応"
 
-#: dt-users/user-hooks-and-config.php:545 dt-users/user-management.php:192
+#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:192
 msgid "View Contact"
 msgstr "連絡先を表示"
 
-#: dt-users/user-hooks-and-config.php:547
+#: dt-users/user-hooks-and-config.php:594
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "このユーザーが対応する連絡先レコードの名前を追加します。"
 
-#: dt-users/user-hooks-and-config.php:548
+#: dt-users/user-hooks-and-config.php:595
 msgid "Learn more."
 msgstr "もっと詳しく知る。"
 
-#: dt-users/user-hooks-and-config.php:555
+#: dt-users/user-hooks-and-config.php:602
 msgid "User Language"
 msgstr "ユーザー言語"
 
@@ -5127,15 +5286,15 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "％sを削除してもよろしいですか？"
 
-#: template-merge-post-details.php:89
+#: template-merge-post-details.php:98
 msgid "Open Modal"
 msgstr "モーダルを開く"
 
-#: template-merge-post-details.php:111
+#: template-merge-post-details.php:120
 msgid "Merge Duplicate %s"
 msgstr "重複%sを統合する"
 
-#: template-merge-post-details.php:113
+#: template-merge-post-details.php:122
 msgid ""
 "When you merge, the primary record is updated with the values you choose, "
 "and relationships to other items are shifted to the primary record; which "
@@ -5144,23 +5303,23 @@ msgstr ""
 "統合すると、選択した値でプライマリレコードが更新され、他のアイテムとの関係が"
 "プライマリレコードに移動します。 以下で切り替えることができます。"
 
-#: template-merge-post-details.php:116
+#: template-merge-post-details.php:125
 msgid "Copy comments to updated primary record"
 msgstr "更新されたプライマリレコードにコメントをコピーする"
 
-#: template-merge-post-details.php:132
+#: template-merge-post-details.php:141
 msgid "Archiving"
 msgstr "アーカイブ中"
 
-#: template-merge-post-details.php:140
+#: template-merge-post-details.php:149
 msgid "Use as Primary"
 msgstr "プライマリとして使用"
 
-#: template-merge-post-details.php:153
+#: template-merge-post-details.php:162
 msgid "Primary"
 msgstr "プライマリ"
 
-#: template-merge-post-details.php:167
+#: template-merge-post-details.php:176
 msgid "Updated"
 msgstr "更新済"
 
@@ -5179,10 +5338,6 @@ msgstr "％sタイプを選択します。"
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
 msgstr "新しい行を追加"
-
-#: template-new-bulk-post.php:264
-msgid "Add Records"
-msgstr "記録を追加"
 
 #: template-new-post.php:45
 msgid "Add Bulk Records?"
@@ -5324,10 +5479,10 @@ msgid ""
 "suggest not using a personal photo, but instead choose a cartoon, abstract, "
 "or alias photo to represent you."
 msgstr ""
-"Disciple ToolsSystemは画像を保存しません。プロフィール画像には、"
-"Gravatar（Globally Recognized Avatar）を使用します。セキュリティ上の懸念があ"
-"る場合は、個人の写真を使用せず、代わりに漫画、抽象、またはエイリアスの写真を"
-"選択して表現することをお勧めします。"
+"Disciple ToolsSystemは画像を保存しません。プロフィール画像には、Gravatar"
+"（Globally Recognized Avatar）を使用します。セキュリティ上の懸念がある場合"
+"は、個人の写真を使用せず、代わりに漫画、抽象、またはエイリアスの写真を選択し"
+"て表現することをお勧めします。"
 
 #: template-settings.php:581
 msgid "edit image on gravatar.com"
@@ -5374,6 +5529,42 @@ msgstr "スキャンされた連絡先にアクセスします。"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "重複が見つかりました："
+
+#~ msgid "ERROR: Invalid username/password combination."
+#~ msgstr "エラー：ユーザー名とパスワードの組み合わせが無効です。"
+
+#~ msgid "Reset password"
+#~ msgstr "パスワードを再設定する"
+
+#~ msgid "Lost your password"
+#~ msgstr "パスワードを忘れましたか"
+
+#~ msgctxt "Assigned to: User1"
+#~ msgid "Assigned to: %s"
+#~ msgstr "割り当て先：％s"
+
+#, fuzzy
+#~| msgid "Group Generation Tree"
+#~ msgid "Generation Tree"
+#~ msgstr "グループ生成ツリー"
+
+#, fuzzy
+#~| msgid "Generation"
+#~ msgid "Generate"
+#~ msgstr "世代"
+
+#, fuzzy
+#~| msgid "show all"
+#~ msgid "Show All"
+#~ msgstr "すべて表示する"
+
+#, fuzzy
+#~| msgid "Lost your password"
+#~ msgid "Lost your password?"
+#~ msgstr "パスワードを忘れましたか"
+
+#~ msgid "Number added"
+#~ msgstr "追加された数"
 
 #~ msgctxt "either rtl or ltr"
 #~ msgid "ltr"
@@ -5466,9 +5657,6 @@ msgstr "重複が見つかりました："
 #~ msgid "No activity"
 #~ msgstr "活動なし"
 
-#~ msgid "Post Type"
-#~ msgstr "投稿タイプ"
-
 #~ msgid "Comment"
 #~ msgstr "コメント"
 
@@ -5481,9 +5669,6 @@ msgstr "重複が見つかりました："
 
 #~ msgid "Sub-assigned"
 #~ msgstr "サブアサイン"
-
-#~ msgid "Coaches"
-#~ msgstr "コーチ"
 
 #~ msgid "User Role"
 #~ msgstr "ユーザーの役割"

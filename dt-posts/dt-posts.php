@@ -1275,7 +1275,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             foreach ( $user_post_ids as $res ){
                 foreach ( $compact as $index => &$p ){
-                    if ( $p['ID'] === $res['post_id'] ){
+                    if ( $p['ID'] === (int) $res['post_id'] ){
                         $compact[$index]['user'] = true;
                     }
                 }
@@ -1642,7 +1642,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                         $a->name = get_the_title( $site_link );
                     }
                 } else if ( isset( $a->user_caps ) && $a->user_caps === 'magic_link' ){
-                    $a->name = __( 'Magic Link Submission', 'disciple_tools' );
+                    $a->name = sprintf( __( '%s Submission', 'disciple_tools' ), apply_filters( 'dt_magic_link_global_name', __( 'Magic Link', 'disciple_tools' ) ) );
                 } else if ( isset( $a->user_caps ) && $a->user_caps === 'activity_revert' ){
                     $a->name = __( 'Revert Bot', 'disciple_tools' );
                 }

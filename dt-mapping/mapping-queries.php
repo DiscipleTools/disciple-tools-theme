@@ -1297,6 +1297,42 @@ class Disciple_Tools_Mapping_Queries {
         return $new_data;
     }
 
+    public static function post_type_geojson( $post_type, $args = [] ){
+        global $wpdb;
+
+        //phpcs:disable
+        if ( isset( $args['field_key'], $args['field_type'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
+            $prepared_query = $wpdb->prepare( "
+                SELECT DISTINCT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                  FROM $wpdb->dt_location_grid_meta AS lgm
+                  JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+                  LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
+                  WHERE lgm.post_type = %s
+                  AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ),
+                $post_type, $args['field_key'] );
+
+        } elseif ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ){
+            $prepared_query = $wpdb->prepare("
+                SELECT DISTINCT lgm.label AS address, u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
+                  FROM $wpdb->dt_location_grid_meta AS lgm
+                  JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
+                  LEFT JOIN wp_usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = 'wp_corresponds_to_contact' )
+                  WHERE lgm.post_type = %s", 'users');
+
+        } else {
+            $prepared_query = $wpdb->prepare( "
+                SELECT DISTINCT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                    FROM $wpdb->dt_location_grid_meta AS lgm
+                    JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+                    WHERE lgm.post_type = %s", $post_type );
+        }
+
+        $results = $wpdb->get_results( $prepared_query, ARRAY_A );
+        //phpcs:enable
+
+        return self::format_results( $results, $post_type );
+    }
+
     public static function cluster_geojson( $post_type, $query = [] ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2023-08-21T09:15:11+00:00\n"
+"POT-Creation-Date: 2023-12-13T11:49:40+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsac <corsacca+muggle@gmail.com>\n"
 "Language-Team: Somali <https://translate.disciple.tools/projects/disciple-"
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Gudbi Codsi"
 
-#: 403.php:55 archive-template.php:867 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:868 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -83,8 +83,8 @@ msgstr "Gudbi Codsi"
 msgid "Cancel"
 msgstr "Jooji"
 
-#: 403.php:59 archive-template.php:390 archive-template.php:432
-#: archive-template.php:891 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:394 archive-template.php:436
+#: archive-template.php:892 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -107,18 +107,21 @@ msgstr "Jooji"
 #: dt-assets/parts/modals/modal-support.php:18
 #: dt-assets/parts/modals/modal-tasks.php:46
 #: dt-assets/parts/modals/modal-tasks.php:48
-#: dt-assets/parts/modals/modal-tasks.php:54 dt-contacts/access-module.php:515
-#: dt-contacts/access-module.php:546 dt-contacts/access-module.php:574
-#: dt-contacts/access-module.php:665 dt-contacts/base-setup.php:385
-#: dt-contacts/base-setup.php:420 dt-contacts/dmm-module.php:523
-#: dt-contacts/dmm-module.php:525 dt-contacts/user-module.php:168
-#: dt-groups/base-setup.php:623 dt-groups/base-setup.php:628
-#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:270
-#: dt-users/template-new-user.php:291 dt-users/template-new-user.php:295
-#: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
-#: single-template.php:420 single-template.php:437
-#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-new-post.php:185 template-settings.php:563
+#: dt-assets/parts/modals/modal-tasks.php:54
+#: dt-assets/parts/modals/modal-template-metrics.php:8
+#: dt-assets/parts/modals/modal-template-metrics.php:13
+#: dt-contacts/access-module.php:515 dt-contacts/access-module.php:546
+#: dt-contacts/access-module.php:574 dt-contacts/access-module.php:665
+#: dt-contacts/base-setup.php:385 dt-contacts/base-setup.php:420
+#: dt-contacts/dmm-module.php:523 dt-contacts/dmm-module.php:525
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:623
+#: dt-groups/base-setup.php:628 dt-reports/magic-url-bulk-send.php:34
+#: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
+#: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
+#: dt-users/user-initial-setup.php:82 single-template.php:420
+#: single-template.php:437 template-new-bulk-post.php:223
+#: template-new-bulk-post.php:295 template-new-post.php:185
+#: template-settings.php:563
 msgid "Close"
 msgstr "Xidh"
 
@@ -139,10 +142,10 @@ msgstr "Abuur New %s"
 msgid "Filters"
 msgstr "Shaandheeyeyaasha"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:540
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:646
-#: dt-core/global-functions.php:674 dt-core/global-functions.php:806
-#: dt-core/global-functions.php:850 dt-posts/custom-post-type.php:20
+#: archive-template.php:36 archive-template.php:126 archive-template.php:544
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
+#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
+#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -183,12 +186,12 @@ msgstr "Raadi Dhamaan Goobaha"
 msgid "Communication Channels"
 msgstr ""
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:427
+#: archive-template.php:106 archive-template.php:193 archive-template.php:431
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Codso"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:428
+#: archive-template.php:107 archive-template.php:194 archive-template.php:432
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "dib ugu celi sidii hore"
@@ -222,121 +225,122 @@ msgstr "Liiska %s"
 msgid "Sort"
 msgstr "Kala sooc"
 
-#: archive-template.php:303
+#: archive-template.php:304
 msgid "Newest"
 msgstr "Ugu cusub"
 
-#: archive-template.php:307
+#: archive-template.php:309
 msgid "Oldest"
 msgstr "Ugu da'da weyn"
 
-#: archive-template.php:311
+#: archive-template.php:314
 msgid "Most recently modified"
 msgstr "Dhawaan ayaa wax laga beddelay"
 
-#: archive-template.php:315
+#: archive-template.php:319
 msgid "Least recently modified"
 msgstr "Uguyaraan dhawaan wax laga badalay"
 
-#: archive-template.php:325 template-new-bulk-post.php:89
+#: archive-template.php:329 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Goobaha"
 
-#: archive-template.php:332
+#: archive-template.php:336
 msgid "Bulk Edit"
 msgstr "Wax ka bedel Jumlada"
 
-#: archive-template.php:345 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:349 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
 msgstr ""
 
-#: archive-template.php:366 dt-contacts/base-setup.php:309
+#: archive-template.php:370 dt-contacts/base-setup.php:309
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "Kaydiyay"
 
-#: archive-template.php:370
+#: archive-template.php:374
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Cusub %s"
 
-#: archive-template.php:393
+#: archive-template.php:397
 msgid "Choose which fields to display as columns in the list"
 msgstr "Xulo meelaha ay tahay inaad ku muujiso tiirarka liiska"
 
-#: archive-template.php:436
+#: archive-template.php:440
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "Xulo dhammaan %1$s ee aad rabto inaad ka cusbooneysiiso liiska, oo ku "
 "cusbooneysii hoosta"
 
-#: archive-template.php:454 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:458 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:888
+#: dt-core/global-functions.php:893
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Raadi Isticmaalayaasha"
 
-#: archive-template.php:478 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-posts/dt-posts.php:2714
+#: archive-template.php:482 dt-metrics/groups/tree.php:87
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
+#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2713
 #: dt-users/template-user-management.php:370 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
 msgstr "Xaaladda"
 
-#: archive-template.php:528
+#: archive-template.php:532
 msgid "Share with:"
 msgstr "La wadaag:"
 
-#: archive-template.php:548
+#: archive-template.php:552
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "Lama wadaagin %s"
 
-#: archive-template.php:560 dt-assets/functions/details-bar.php:166
+#: archive-template.php:564 dt-assets/functions/details-bar.php:166
 #: dt-posts/custom-post-type.php:209
 msgid "Follow"
 msgstr "Raac"
 
-#: archive-template.php:565 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:569 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Faallooyinka iyo Waxqabadka"
 
-#: archive-template.php:570 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:574 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Halkan ku qor aragtidaada ama qoraalkaaga"
 
-#: archive-template.php:578 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:582 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "Nooca:"
 
-#: archive-template.php:598 dt-users/template-new-user.php:127
+#: archive-template.php:602 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Arag Fursado Dheeraad ah"
 
-#: archive-template.php:599 dt-users/template-new-user.php:130
+#: archive-template.php:603 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Arag Fursadaha Yar"
 
-#: archive-template.php:635 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:639 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Cusboonaysiinta"
 
-#: archive-template.php:636 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:640 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:68
 msgid "Make Selections Below"
 msgstr ""
 
-#: archive-template.php:644 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:648 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -344,98 +348,92 @@ msgstr ""
 msgid "Delete"
 msgstr "Tirtir"
 
-#: archive-template.php:647 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:651 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Delete Location"
 msgid "Delete Selections Below"
 msgstr "Tirtir Goobta"
 
-#: archive-template.php:681 dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-posts/custom-post-type.php:169 template-settings.php:136
-msgid "Name"
-msgstr "Magaca"
-
-#: archive-template.php:692
+#: archive-template.php:693
 msgid "Loading..."
 msgstr "Raadinaya ..."
 
-#: archive-template.php:697 dt-assets/functions/enqueue-scripts.php:374
+#: archive-template.php:698 dt-assets/functions/enqueue-scripts.php:374
 msgid "Load More"
 msgstr "Xamuul Dheeraad ah"
 
-#: archive-template.php:709
+#: archive-template.php:710
 msgid "Field Name"
 msgstr ""
 
-#: archive-template.php:765
+#: archive-template.php:766
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Ku qor si aad u raadiso"
 
-#: archive-template.php:774
+#: archive-template.php:775
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Dhamaan %1$s oo leh %2$s"
 
-#: archive-template.php:777
+#: archive-template.php:778
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr ""
 
-#: archive-template.php:784
+#: archive-template.php:785
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Sifee hoosaad ahaan AMA KU AADAN"
 
-#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:794 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "Taariikhda Abuurka"
 
-#: archive-template.php:800 archive-template.php:807
+#: archive-template.php:801 archive-template.php:808
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
 msgid "None Set"
 msgstr "Midna Dejin"
 
-#: archive-template.php:821 archive-template.php:822
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:606
-#: dt-metrics/records/time-charts.php:119 dt-posts/posts.php:462
+#: archive-template.php:822 archive-template.php:823
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
+#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "Maya"
 
-#: archive-template.php:828 archive-template.php:829
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:607
-#: dt-metrics/records/time-charts.php:118 dt-posts/posts.php:460
-#: template-settings.php:294 template-settings.php:537
+#: archive-template.php:829 archive-template.php:830
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
+#: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
+#: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "Haa"
 
-#: archive-template.php:833
+#: archive-template.php:834
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Bilowga Range"
 
-#: archive-template.php:836 archive-template.php:847
+#: archive-template.php:837 archive-template.php:848
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Cad"
 
-#: archive-template.php:843
+#: archive-template.php:844
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Dhammaadka Range"
 
-#: archive-template.php:875
+#: archive-template.php:876
 msgid "Filter Name"
 msgstr "Magaca Filter"
 
-#: archive-template.php:880
+#: archive-template.php:881
 msgid "Filter Records"
 msgstr "Diiwaanada Filter"
 
-#: archive-template.php:884 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:885 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -500,13 +498,13 @@ msgstr "La wadaag"
 
 #: dt-assets/functions/enqueue-scripts.php:112
 #: dt-metrics/records/date-range-activity.php:111
-#: template-merge-post-details.php:93
+#: template-merge-post-details.php:102
 msgid "Regions of Focus"
 msgstr "Gobollada Diirada"
 
 #: dt-assets/functions/enqueue-scripts.php:113
 #: dt-metrics/records/date-range-activity.php:112
-#: template-merge-post-details.php:94
+#: template-merge-post-details.php:103
 msgid "All Locations"
 msgstr "Dhamaan Goobaha"
 
@@ -543,6 +541,10 @@ msgstr "Ma lihid ogeysiisyo aan la aqrin"
 #: dt-assets/functions/enqueue-scripts.php:137
 msgid "You don't have any notifications"
 msgstr "Ma lihid wax ogeysiis ah"
+
+#: dt-assets/functions/enqueue-scripts.php:171 dt-posts/dt-posts.php:1653
+msgid "D.T System"
+msgstr "Nidaamka D.T"
 
 #: dt-assets/functions/enqueue-scripts.php:175
 msgid "Translate with Google Translate"
@@ -585,8 +587,8 @@ msgstr "Nuqullada la ogaaday"
 
 #: dt-assets/functions/enqueue-scripts.php:214
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:293 template-merge-post-details.php:121
-#: template-merge-post-details.php:178
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:130
+#: template-merge-post-details.php:187
 msgid "Merge"
 msgstr "Midow"
 
@@ -636,6 +638,7 @@ msgid "Locations you are responsible for"
 msgstr "Goobaha aad masuulka ka tahay"
 
 #: dt-assets/functions/enqueue-scripts.php:275
+#: dt-metrics/records/genmap.php:104
 msgid "Add"
 msgstr "Ku dar"
 
@@ -696,6 +699,7 @@ msgstr "dhamaadka"
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1302 dt-groups/base-setup.php:990
 #: dt-metrics/personal/activity-highlights.php:56
+#: dt-metrics/records/dynamic-records-map.php:96
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Dhammaan"
@@ -728,7 +732,7 @@ msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
 
-#: dt-assets/functions/menu.php:39 template-metrics.php:25
+#: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
 msgstr "Liiska"
 
@@ -764,8 +768,9 @@ msgstr "Maamulka"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260 dt-users/user-management.php:135
-#: dt-users/user-management.php:228
+#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/records/dynamic-records-map.php:65
+#: dt-users/user-management.php:135 dt-users/user-management.php:228
 msgid "Users"
 msgstr "Isticmaalayaasha"
 
@@ -802,7 +807,7 @@ msgstr "Tirtir Faallada:"
 
 #: dt-assets/parts/loop-activity-comment.php:164
 #: dt-assets/parts/loop-activity-comment.php:212
-#: template-merge-post-details.php:95
+#: template-merge-post-details.php:104
 msgid "Sorry, something went wrong"
 msgstr "Waan ka xumahay, waxbaa qaldamay"
 
@@ -1188,6 +1193,13 @@ msgstr ""
 msgid "Create Record"
 msgstr "Abuur Diiwaan"
 
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
+#: dt-metrics/records/genmap.php:110 dt-posts/custom-post-type.php:169
+#: template-settings.php:136
+msgid "Name"
+msgstr "Magaca"
+
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Record Created"
 msgstr "Diiwaan Abuur"
@@ -1223,9 +1235,8 @@ msgid "Revert Activity"
 msgstr "Dib u noqo Firfircoonida"
 
 #: dt-assets/parts/modals/modal-revert.php:5
-#: dt-metrics/records/date-range-activity.php:103
-#: dt-metrics/records/generation-tree.php:92
-#: dt-metrics/records/time-charts.php:109
+#: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "Goob"
 
@@ -1349,6 +1360,7 @@ msgstr "Wada-hawlgalayaasha"
 
 #: dt-contacts/access-module.php:122 dt-groups/base-setup.php:137
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
+#: dt-metrics/records/genmap.php:91 dt-metrics/records/genmap.php:98
 msgid "Assigned To"
 msgstr "Loogu talagalay"
 
@@ -1629,7 +1641,7 @@ msgid "Accepted"
 msgstr "La aqbalay"
 
 #: dt-contacts/access-module.php:299 dt-contacts/base-setup.php:528
-#: dt-metrics/metrics.php:90 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1662,7 +1674,7 @@ msgstr ""
 "ah."
 
 #: dt-contacts/access-module.php:330 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:569
+#: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "Sources"
 
@@ -1800,9 +1812,10 @@ msgstr "Checker nuqul"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:99
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:102
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
+#: dt-metrics/records/dynamic-records-map.php:31
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:452
 msgid "Contacts"
@@ -1860,7 +1873,7 @@ msgstr "Shaqee WhatsApp"
 
 #: dt-contacts/base-setup.php:183
 #: dt-core/configuration/config-site-defaults.php:341
-#: dt-login/login-template.php:384 dt-users/template-new-user.php:116
+#: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:215
 #: dt-users/users.php:129 template-settings.php:156
 msgid "Email"
@@ -2564,7 +2577,7 @@ msgid "prayer"
 msgstr ""
 
 #: dt-core/configuration/config-site-defaults.php:541
-#: dt-login/login-template.php:579
+#: dt-login/login-template.php:529
 msgid "Home"
 msgstr "Guri"
 
@@ -2584,38 +2597,38 @@ msgstr "Waxaan kaliya maalgashanayaa xiriirada jira"
 msgid "I have too many contacts"
 msgstr "Waxaan leeyahay xiriiro badan"
 
-#: dt-core/configuration/restrict-site-access.php:234
-msgid "ERROR: Invalid username/password combination."
-msgstr "KHALAD: Isku-darka magaca-isticmaalaha / isku-darka sirta ah."
+#: dt-core/configuration/restrict-site-access.php:245
+msgid "Check your email for the confirmation link, then visit the"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:238
-msgid "Reset password"
-msgstr "Dib u cusbooneysii ereyga sirta ah"
+#: dt-core/configuration/restrict-site-access.php:249
+msgid "Login Page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:239
-msgid "Lost your password"
-msgstr "Lumiyay lambarkaaga sirta ah"
+#: dt-core/configuration/restrict-site-access.php:250
+msgid "login page"
+msgstr ""
 
-#: dt-core/configuration/restrict-site-access.php:290
+#: dt-core/configuration/restrict-site-access.php:305
 msgid "Someone has requested a password reset for the following account:"
 msgstr "Qof ayaa codsaday dib-u-dejinta ereyga koontada soo socota:"
 
 #. translators: %s: Site name.
-#: dt-core/configuration/restrict-site-access.php:292
+#: dt-core/configuration/restrict-site-access.php:307
 msgid "DT Site Name: %s"
 msgstr "Magaca Goobta DT: %s"
 
 #. translators: %s: User login.
-#: dt-core/configuration/restrict-site-access.php:294
-#: dt-users/user-hooks-and-config.php:389
+#: dt-core/configuration/restrict-site-access.php:309
+#: dt-users/user-hooks-and-config.php:390
 msgid "Username: %s"
 msgstr "Magaca isticmaalaha: %s"
 
-#: dt-core/configuration/restrict-site-access.php:295
+#: dt-core/configuration/restrict-site-access.php:310
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr "Haddii tani khalad ahayd, iska dhaaf emailkan waxna ma dhici doonaan."
 
-#: dt-core/configuration/restrict-site-access.php:296
+#: dt-core/configuration/restrict-site-access.php:311
 msgid "To reset your password, visit the following address:"
 msgstr "Si aad dib ugu dhigto lambarkaaga sirta ah, booqo cinwaanka soo socda:"
 
@@ -2625,11 +2638,11 @@ msgstr "Si aad dib ugu dhigto lambarkaaga sirta ah, booqo cinwaanka soo socda:"
 msgid "This is required"
 msgstr "Tan ayaa loo baahan yahay"
 
-#: dt-core/global-functions.php:648
+#: dt-core/global-functions.php:653
 msgid "Add new tag \"%s\""
 msgstr "Kudar sumad cusub \"%s\""
 
-#: dt-core/global-functions.php:649
+#: dt-core/global-functions.php:654
 msgid "Tag \"%s\" is already being used"
 msgstr "Calaamadda \"%s\" horay ayaa loo isticmaalay"
 
@@ -2714,9 +2727,9 @@ msgstr "Koox"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:103
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:97
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "Kooxaha"
@@ -2934,7 +2947,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Taariikhda kooxdani joojisay kulanka (haddii ay khuseyso)."
 
-#: dt-groups/base-setup.php:281
+#: dt-groups/base-setup.php:281 dt-metrics/records/genmap.php:101
 msgid "Member Count"
 msgstr "Tirinta Xubnaha"
 
@@ -3110,92 +3123,96 @@ msgstr ""
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
 
-#: dt-login/login-template.php:89 dt-login/login-template.php:115
+#: dt-login/login-template.php:84 dt-login/login-template.php:109
 #, fuzzy
 #| msgid "Password"
 msgid "Get New Password"
 msgstr "Furaha"
 
-#: dt-login/login-template.php:104 dt-login/login-template.php:538
+#: dt-login/login-template.php:98 dt-login/login-template.php:488
 #, fuzzy
 #| msgid "Address"
 msgid "Email Address"
 msgstr "Cinwaanka"
 
-#: dt-login/login-template.php:118
+#: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
 
-#: dt-login/login-template.php:171 dt-login/login-template.php:261
-#: dt-login/login-template.php:400
+#: dt-login/login-template.php:160
+msgid "Missing email or password."
+msgstr ""
+
+#: dt-login/login-template.php:164 dt-login/login-template.php:244
+#: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
 msgstr ""
 
-#: dt-login/login-template.php:233 dt-login/login-template.php:282
+#: dt-login/login-template.php:217 dt-login/login-template.php:263
 #, fuzzy
 #| msgid "Reset password"
 msgid "Reset Password"
 msgstr "Dib u cusbooneysii ereyga sirta ah"
 
-#: dt-login/login-template.php:248 dt-login/login-template.php:251
-#: dt-login/login-template.php:388 dt-login/login-template.php:391
+#: dt-login/login-template.php:231 dt-login/login-template.php:234
+#: dt-login/login-template.php:353 dt-login/login-template.php:356
 #, fuzzy
 #| msgid "Password"
 msgid "Password Required"
 msgstr "Furaha"
 
-#: dt-login/login-template.php:258 dt-login/login-template.php:397
+#: dt-login/login-template.php:241 dt-login/login-template.php:362
 #, fuzzy
 #| msgid "Reset password"
 msgid "Re-enter Password"
 msgstr "Dib u cusbooneysii ereyga sirta ah"
 
-#: dt-login/login-template.php:340 dt-login/login-template.php:409
-#: dt-login/login-template.php:595
+#: dt-login/login-template.php:312 dt-login/login-template.php:374
+#: dt-login/login-template.php:545
 #, fuzzy
 #| msgid "Registered"
 msgid "Register"
 msgstr "Diiwaangashan"
 
-#: dt-login/login-template.php:375 dt-users/template-new-user.php:88
+#: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr "Waxaa jira khaladaad kujira foomkaaga."
 
-#: dt-login/login-template.php:380
+#: dt-login/login-template.php:345
 #, fuzzy
 #| msgid "Display Name"
 msgid "Display Name (optional)"
 msgstr "Magaca Display"
 
-#: dt-login/login-template.php:498
+#: dt-login/login-template.php:456
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:514 dt-login/login-template.php:541
-#: dt-login/login-template.php:587
+#: dt-login/login-template.php:466 dt-login/login-template.php:491
+#: dt-login/login-template.php:537
 msgid "Login"
 msgstr ""
 
-#: dt-login/login-template.php:521
+#: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:539 dt-users/template-new-user.php:121
+#: dt-login/login-template.php:489 dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122 template-settings.php:600
 msgid "Password"
 msgstr "Furaha"
 
-#: dt-login/login-template.php:540
+#: dt-login/login-template.php:490
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:602
+#: dt-login/login-template.php:552
 #, fuzzy
-#| msgid "Lost your password"
-msgid "Lost your password?"
-msgstr "Lumiyay lambarkaaga sirta ah"
+#| msgid "Reset password"
+msgid "Lost Password"
+msgstr "Dib u cusbooneysii ereyga sirta ah"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
@@ -3209,17 +3226,17 @@ msgstr "Kaniisadaha"
 msgid "add"
 msgstr "ku dar"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:88
+#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:97
 msgid "Use"
 msgstr "Isticmaal"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:86
+#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:95
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "Goob Raadi"
 
-#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:87
+#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:96
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Tirtir Goobta"
@@ -3268,9 +3285,8 @@ msgstr "Dariiqa Halis ah"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:95 dt-metrics/records/date-range-activity.php:44
-#: dt-metrics/records/generation-tree.php:32
-#: dt-metrics/records/time-charts.php:44
+#: dt-metrics/metrics.php:98 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "Mashruuc"
 
@@ -3430,7 +3446,7 @@ msgid ""
 msgstr ""
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:123
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:126
 msgid "Metrics"
 msgstr "Qiyaaso"
 
@@ -3465,6 +3481,7 @@ msgstr "Khariidado isku dhafan"
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
 #: dt-metrics/personal/mapbox-contacts-maps.php:60
 #: dt-metrics/personal/mapbox-groups-maps.php:54
+#: dt-metrics/records/dynamic-records-map.php:102
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
@@ -3553,7 +3570,7 @@ msgstr "Sifee xiriirada ilaa taariikhda:"
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/time-charts.php:114
+#: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:418
 msgid "All Time"
 msgstr "Waqti Walba"
@@ -3693,30 +3710,36 @@ msgid "Group Generation Tree"
 msgstr "Geedka Abuurka Kooxda"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
+#: dt-metrics/records/genmap.php:87
 msgid "Highlight Active"
 msgstr "Muuji Firfircoon"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
+#: dt-metrics/records/genmap.php:88
 msgid "Highlight Churches"
 msgstr "Muuji Kaniisadaha"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
+#: dt-metrics/records/genmap.php:89 dt-metrics/records/genmap.php:102
 msgid "Members"
 msgstr "Xubnaha"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
+#: dt-metrics/records/genmap.php:90
 msgid "View Record"
 msgstr "Eeg Diiwaanka"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
+#: dt-metrics/records/genmap.php:93
 msgid "Total Members"
 msgstr "Wadarta Xubnaha"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
+#: dt-metrics/records/genmap.php:94
 msgid "View Group"
 msgstr "Kooxda Eeg"
 
-#: dt-metrics/metrics.php:106
+#: dt-metrics/metrics.php:109
 #, fuzzy
 #| msgid "Metrics"
 msgid "Dynamic Metrics"
@@ -3760,7 +3783,7 @@ msgid "Comments I Posted"
 msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:67
-#: dt-metrics/records/time-charts.php:113
+#: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "Taariikhda"
 
@@ -3835,36 +3858,42 @@ msgstr "tirakoob sidii"
 msgid "Field Activity"
 msgstr "Waxqabadka Maalinlaha ah"
 
-#: dt-metrics/records/date-range-activity.php:102
-#: dt-metrics/records/generation-tree.php:91
-#: dt-metrics/records/time-charts.php:108
+#: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/time-charts.php:106
 #, fuzzy
 #| msgid "Record"
 msgid "Record Type"
 msgstr "Diiwaan"
 
-#: dt-metrics/records/date-range-activity.php:104
+#: dt-metrics/records/date-range-activity.php:103
 #, fuzzy
 #| msgid "Activity"
 msgid "Any Activity"
 msgstr "Waxqabadka"
 
-#: dt-metrics/records/date-range-activity.php:105
-#: dt-metrics/records/time-charts.php:110
+#: dt-metrics/records/date-range-activity.php:104
+#: dt-metrics/records/time-charts.php:108
 msgid "Total"
 msgstr "Wadarta"
 
-#: dt-metrics/records/date-range-activity.php:106
+#: dt-metrics/records/date-range-activity.php:105
 #, fuzzy
 #| msgid "Create Tag"
 msgid "Date Range"
 msgstr "Abuur Tag"
+
+#: dt-metrics/records/date-range-activity.php:106
+#, fuzzy
+#| msgid "Custom"
+msgid "Custom Range"
+msgstr "Caado"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
+#: dt-metrics/records/time-charts.php:123
 msgid "Title"
 msgstr ""
 
@@ -3878,52 +3907,180 @@ msgstr ""
 msgid "New Value"
 msgstr "Qiimaha Hore"
 
-#: dt-metrics/records/date-range-activity.php:310
+#: dt-metrics/records/date-range-activity.php:343
 msgid "True"
 msgstr ""
 
-#: dt-metrics/records/date-range-activity.php:310
+#: dt-metrics/records/date-range-activity.php:343
 msgid "False"
 msgstr ""
 
-#: dt-metrics/records/generation-tree.php:31
+#: dt-metrics/records/dynamic-records-map.php:30
 #, fuzzy
-#| msgid "Group Generation Tree"
-msgid "Generation Tree"
-msgstr "Geedka Abuurka Kooxda"
+#| msgid "Record Hits:"
+msgid "Records Map"
+msgstr "Diiwaanada Diiwaangelinta:"
 
-#: dt-metrics/records/generation-tree.php:93
+#: dt-metrics/records/dynamic-records-map.php:91 template-new-bulk-post.php:264
+msgid "Add Records"
+msgstr ""
+
+#: dt-metrics/records/dynamic-records-map.php:92
+#, fuzzy
+#| msgid "Post Type"
+msgid "Post Types"
+msgstr "Nooca Boosta"
+
+#: dt-metrics/records/dynamic-records-map.php:93
+#, fuzzy
+#| msgid "Prayer"
+msgid "Layer"
+msgstr "Salaada"
+
+#: dt-metrics/records/dynamic-records-map.php:94
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you wish to delete layer?"
+msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
+
+#: dt-metrics/records/dynamic-records-map.php:95
+#, fuzzy
+#| msgid "Record"
+msgid "Record Types"
+msgstr "Diiwaan"
+
+#: dt-metrics/records/dynamic-records-map.php:97
+#: dt-notifications/notifications.php:922
+#: dt-notifications/notifications.php:929
+#: dt-notifications/notifications.php:936
+#: dt-notifications/notifications.php:940
+#: dt-notifications/notifications.php:950
+#: dt-notifications/notifications.php:957
+msgid "System"
+msgstr "Nidaamka"
+
+#: dt-metrics/records/genmap.php:23
+msgid "Genmap"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:24 dt-metrics/records/genmap.php:86
 #, fuzzy
 #| msgid "Generation"
-msgid "Generate"
+msgid "Generation Map"
 msgstr "Jiilka"
 
-#: dt-metrics/records/time-charts.php:43
+#: dt-metrics/records/genmap.php:99
+msgid "Coaches"
+msgstr "Tababarayaasha"
+
+#: dt-metrics/records/genmap.php:100
+#, fuzzy
+#| msgid "Type:"
+msgid "Type"
+msgstr "Nooca:"
+
+#: dt-metrics/records/genmap.php:103
+msgid "Open"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:105
+msgid "Focus"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:106
+msgid "Hide"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:109
+#, fuzzy
+#| msgid "Child Group"
+msgid "Add Child To"
+msgstr "Kooxda Carruurta"
+
+#: dt-metrics/records/genmap.php:111
+msgid "Add Child"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:112
+msgid "Focus On Node"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:113
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you wish to focus on node?"
+msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
+
+#: dt-metrics/records/genmap.php:117
+msgid "Infinite Loops"
+msgstr ""
+
+#: dt-metrics/records/time-charts.php:41
 #, fuzzy
 #| msgid "Fields over Time Charts"
 msgid "Field Charts"
 msgstr "Meelaha ku yaal Jaantusyada Waqtiga"
 
-#: dt-metrics/records/time-charts.php:111
+#: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "Lagu daray"
 
+#: dt-metrics/records/time-charts.php:110
+#, fuzzy
+#| msgid "Delete"
+msgid "Deleted"
+msgstr "Tirtir"
+
+#: dt-metrics/records/time-charts.php:111
+#, fuzzy
+#| msgctxt "Personal records"
+#| msgid "Connected %s"
+msgid "Connected"
+msgstr "Kuxiran %s"
+
 #: dt-metrics/records/time-charts.php:112
+#, fuzzy
+#| msgctxt "Personal records"
+#| msgid "Connected %s"
+msgid "Disconnected"
+msgstr "Kuxiran %s"
+
+#: dt-metrics/records/time-charts.php:113
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "%1$s %2$s"
 
-#: dt-metrics/records/time-charts.php:115
+#: dt-metrics/records/time-charts.php:116
 msgid "All cumulative totals"
 msgstr "Dhamaan wadarta wadarta"
 
-#: dt-metrics/records/time-charts.php:116
+#: dt-metrics/records/time-charts.php:117
 msgid "Single cumulative totals"
 msgstr "Isugeyn isugeyn ah"
 
-#: dt-metrics/records/time-charts.php:117
-msgid "Number added"
-msgstr "Lambarka ayaa lagu daray"
+#: dt-metrics/records/time-charts.php:118
+#, fuzzy
+#| msgid "Record Hits:"
+msgid "Records changes"
+msgstr "Diiwaanada Diiwaangelinta:"
+
+#: dt-metrics/records/time-charts.php:121
+#, fuzzy
+#| msgid "Record Hits:"
+msgid "Records"
+msgstr "Diiwaanada Diiwaangelinta:"
+
+#: dt-metrics/records/time-charts.php:122
+#, fuzzy
+#| msgid "No"
+msgid "No."
+msgstr "Maya"
+
+#: dt-metrics/records/time-charts.php:124
+msgid "No Records Available"
+msgstr ""
 
 #: dt-notifications/notifications-email.php:125
 msgid "Click here to view or reply"
@@ -3996,15 +4153,6 @@ msgstr "Waa laguu qoray: %1$s."
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s loo qoondeeyay %2$s ilaa %3$s."
-
-#: dt-notifications/notifications.php:922
-#: dt-notifications/notifications.php:929
-#: dt-notifications/notifications.php:936
-#: dt-notifications/notifications.php:940
-#: dt-notifications/notifications.php:950
-#: dt-notifications/notifications.php:957
-msgid "System"
-msgstr "Nidaamka"
 
 #: dt-notifications/notifications.php:923
 msgctxt "User1 shared contact1 with you."
@@ -4117,34 +4265,34 @@ msgstr ""
 msgid "Un-Follow"
 msgstr "Un-Raac"
 
-#: dt-posts/dt-posts.php:103
+#: dt-posts/dt-posts.php:100
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1646
-msgid "Magic Link Submission"
+#: dt-posts/dt-posts.php:1645
+msgid "%s Submission"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1648 dt-posts/dt-posts.php:2195
+#: dt-posts/dt-posts.php:1645
+msgid "Magic Link"
+msgstr ""
+
+#: dt-posts/dt-posts.php:1647 dt-posts/dt-posts.php:2194
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "Dib u noqo Firfircoonida"
 
-#: dt-posts/dt-posts.php:1654
-msgid "D.T System"
-msgstr "Nidaamka D.T"
-
-#: dt-posts/dt-posts.php:2435
+#: dt-posts/dt-posts.php:2434
 msgid "Post already shared with user."
 msgstr "Boostada horey loogula wadaagay isticmaale."
 
-#: dt-posts/dt-posts.php:2715 single-template.php:174
+#: dt-posts/dt-posts.php:2714 single-template.php:174
 msgid "Details"
 msgstr "Faahfaahin"
 
-#: dt-posts/dt-posts.php:2779
+#: dt-posts/dt-posts.php:2783
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4157,7 +4305,7 @@ msgstr ""
 "(%6$s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha si aad u siiso "
 "marin."
 
-#: dt-posts/dt-posts.php:2785
+#: dt-posts/dt-posts.php:2789
 msgid "Access Request"
 msgstr "Codsi Helitaan"
 
@@ -4355,9 +4503,12 @@ msgid "%1$s removed from %2$s"
 msgstr "%1$s laga saaray %2$s"
 
 #: dt-posts/posts.php:416
-msgctxt "Assigned to: User1"
-msgid "Assigned to: %s"
-msgstr "Loogu talagalay: %s"
+#, fuzzy
+#| msgctxt "Total in January"
+#| msgid "%1$s in %2$s"
+msgctxt "User Select: User1"
+msgid "%1$1s: %2$2s"
+msgstr "%1$s %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -4571,11 +4722,11 @@ msgstr ""
 msgid "Delete and replace the app link"
 msgstr ""
 
-#: dt-reports/reports.php:159
+#: dt-reports/reports.php:160
 msgid "Added new report"
 msgstr "Lagu daray warbixin cusub"
 
-#: dt-reports/reports.php:252
+#: dt-reports/reports.php:254
 msgid "Updated report"
 msgstr "Warbixin la cusbooneysiiyay"
 
@@ -4767,7 +4918,7 @@ msgid "User Profile"
 msgstr ""
 
 #: dt-users/template-user-management.php:201
-#: dt-users/user-hooks-and-config.php:407
+#: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "Eeg diiwaanka xiriirka"
 
@@ -4795,12 +4946,12 @@ msgid "Access by Source"
 msgstr "Helitaanka Isha"
 
 #: dt-users/template-user-management.php:320
-#: dt-users/user-hooks-and-config.php:576
+#: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "Dhammaan ilaha - waxay siinayaan helitaanka dhammaan xiriirada"
 
 #: dt-users/template-user-management.php:326
-#: dt-users/user-hooks-and-config.php:583
+#: dt-users/user-hooks-and-config.php:630
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
@@ -4809,7 +4960,7 @@ msgstr ""
 "ee hoose"
 
 #: dt-users/template-user-management.php:332
-#: dt-users/user-hooks-and-config.php:590
+#: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "Maya Ilo - kaliya xiriiryo ay leeyihiin"
 
@@ -4868,57 +5019,57 @@ msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr ""
 "Waqtiga loo qoondeeyay isku dayga xiriir ee 10kii xiriir ee ugu dambeeyay"
 
-#: dt-users/user-hooks-and-config.php:195
+#: dt-users/user-hooks-and-config.php:196
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:311
-#: dt-users/user-hooks-and-config.php:349
+#: dt-users/user-hooks-and-config.php:312
+#: dt-users/user-hooks-and-config.php:350
 msgid "[%s] Login Details"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:322
+#: dt-users/user-hooks-and-config.php:323
 msgid "To set your password, visit the following address:"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:345
+#: dt-users/user-hooks-and-config.php:346
 msgid "To log in click here: %s"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:387
+#: dt-users/user-hooks-and-config.php:388
 msgid "Hi %s,"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:388
+#: dt-users/user-hooks-and-config.php:389
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr ""
 
-#: dt-users/user-hooks-and-config.php:534
+#: dt-users/user-hooks-and-config.php:581
 msgid "Extra Disciple.Tools Information"
 msgstr "Macluumaad Dheeraad ah"
 
-#: dt-users/user-hooks-and-config.php:537
+#: dt-users/user-hooks-and-config.php:584
 msgid "Corresponds to Contact"
 msgstr "Waxay u dhigantaa Xiriirka"
 
-#: dt-users/user-hooks-and-config.php:545 dt-users/user-management.php:192
+#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:192
 msgid "View Contact"
 msgstr "Eeg Xiriirka"
 
-#: dt-users/user-hooks-and-config.php:547
+#: dt-users/user-hooks-and-config.php:594
 msgid "Add the name of the contact record this user corresponds to."
 msgstr "Ku dar magaca diiwaanka xiriirka isticmaalahan u dhigma."
 
-#: dt-users/user-hooks-and-config.php:548
+#: dt-users/user-hooks-and-config.php:595
 msgid "Learn more."
 msgstr "Wax dheeri ah baro."
 
-#: dt-users/user-hooks-and-config.php:555
+#: dt-users/user-hooks-and-config.php:602
 msgid "User Language"
 msgstr ""
 
@@ -5148,38 +5299,38 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
 
-#: template-merge-post-details.php:89
+#: template-merge-post-details.php:98
 msgid "Open Modal"
 msgstr ""
 
-#: template-merge-post-details.php:111
+#: template-merge-post-details.php:120
 msgid "Merge Duplicate %s"
 msgstr ""
 
-#: template-merge-post-details.php:113
+#: template-merge-post-details.php:122
 msgid ""
 "When you merge, the primary record is updated with the values you choose, "
 "and relationships to other items are shifted to the primary record; which "
 "can be switched below."
 msgstr ""
 
-#: template-merge-post-details.php:116
+#: template-merge-post-details.php:125
 msgid "Copy comments to updated primary record"
 msgstr ""
 
-#: template-merge-post-details.php:132
+#: template-merge-post-details.php:141
 msgid "Archiving"
 msgstr ""
 
-#: template-merge-post-details.php:140
+#: template-merge-post-details.php:149
 msgid "Use as Primary"
 msgstr ""
 
-#: template-merge-post-details.php:153
+#: template-merge-post-details.php:162
 msgid "Primary"
 msgstr ""
 
-#: template-merge-post-details.php:167
+#: template-merge-post-details.php:176
 msgid "Updated"
 msgstr ""
 
@@ -5197,10 +5348,6 @@ msgstr "Xulo nooca %s:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
-msgstr ""
-
-#: template-new-bulk-post.php:264
-msgid "Add Records"
 msgstr ""
 
 #: template-new-post.php:45
@@ -5398,6 +5545,42 @@ msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Nuqullada la helay:"
 
+#~ msgid "ERROR: Invalid username/password combination."
+#~ msgstr "KHALAD: Isku-darka magaca-isticmaalaha / isku-darka sirta ah."
+
+#~ msgid "Reset password"
+#~ msgstr "Dib u cusbooneysii ereyga sirta ah"
+
+#~ msgid "Lost your password"
+#~ msgstr "Lumiyay lambarkaaga sirta ah"
+
+#~ msgctxt "Assigned to: User1"
+#~ msgid "Assigned to: %s"
+#~ msgstr "Loogu talagalay: %s"
+
+#, fuzzy
+#~| msgid "Group Generation Tree"
+#~ msgid "Generation Tree"
+#~ msgstr "Geedka Abuurka Kooxda"
+
+#, fuzzy
+#~| msgid "Generation"
+#~ msgid "Generate"
+#~ msgstr "Jiilka"
+
+#, fuzzy
+#~| msgid "show all"
+#~ msgid "Show All"
+#~ msgstr "muuji dhamaan"
+
+#, fuzzy
+#~| msgid "Lost your password"
+#~ msgid "Lost your password?"
+#~ msgstr "Lumiyay lambarkaaga sirta ah"
+
+#~ msgid "Number added"
+#~ msgstr "Lambarka ayaa lagu daray"
+
 #~ msgctxt "either rtl or ltr"
 #~ msgid "ltr"
 #~ msgstr "ltr"
@@ -5492,9 +5675,6 @@ msgstr "Nuqullada la helay:"
 #~ msgid "No activity"
 #~ msgstr "Wax dhaqdhaqaaq ah ma leh"
 
-#~ msgid "Post Type"
-#~ msgstr "Nooca Boosta"
-
 #~ msgid "Comment"
 #~ msgstr "Faallo"
 
@@ -5507,9 +5687,6 @@ msgstr "Nuqullada la helay:"
 
 #~ msgid "Sub-assigned"
 #~ msgstr "Qeyb-hoosaad"
-
-#~ msgid "Coaches"
-#~ msgstr "Tababarayaasha"
 
 #~ msgid "User Role"
 #~ msgstr "Kaalinta isticmaale"

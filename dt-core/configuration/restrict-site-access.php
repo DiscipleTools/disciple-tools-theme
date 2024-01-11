@@ -220,6 +220,18 @@ function dt_security_headers_insert() {
 //    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
 }
 
+add_filter( 'wp_admin_notice_args', 'adjust_login_notice_args' );
+function adjust_login_notice_args( $args ){
+    $is_reset = isset( $_GET['action'] ) && sanitize_text_field( wp_unslash( $_GET['action'] ) ) === 'lostpassword';
+
+    // Ensure no distinction is made between valid and invalid login attempts.
+    if ( $is_reset && isset( $args['id'] ) && $args['id'] === 'login_error' ) {
+        wp_safe_redirect( 'wp-login.php?checkemail=confirm' );
+        exit;
+    }
+
+    return $args;
+}
 
 add_filter( 'login_errors', 'login_error_messages' );
 /**
@@ -230,7 +242,18 @@ add_filter( 'login_errors', 'login_error_messages' );
  */
 function login_error_messages( $message ){
     global $errors;
-    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) || isset( $errors->errors['invalid_email'] ) ) {
+
+    $is_reset = isset( $_GET['action'] ) && sanitize_text_field( wp_unslash( $_GET['action'] ) ) === 'lostpassword';
+
+    if ( $is_reset && ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['invalid_email'] ) ) ) {
+        $message = __( 'Check your email for the confirmation link, then visit the', 'disciple_tools' ) . ' ' .
+            sprintf(
+                ( '<a href="%1$s" title="%2$s">%3$s</a>.' ),
+                site_url( 'wp-login.php', 'login' ),
+                __( 'Login Page', 'disciple_tools' ),
+                __( 'login page', 'disciple_tools' )
+            );
+    } else if ( isset( $errors->errors['invalidcombo'] ) || isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) || isset( $errors->errors['invalid_email'] ) ) {
         $message = __( 'ERROR: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
             sprintf(
                 ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),

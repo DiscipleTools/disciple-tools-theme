@@ -392,7 +392,7 @@ jQuery(document).ready(function($) {
 
 
       /*** TEXT - START ***/
-      if ( [ 'text', 'communication_channel', 'location', 'location_meta' ].indexOf(field['type']) > -1 ) {
+      if ( [ 'text', 'communication_channel', 'location', 'location_meta', 'link' ].indexOf(field['type']) > -1 ) {
         tile_html += `
             <input type="text" class="text-input">
         `;
@@ -485,6 +485,17 @@ jQuery(document).ready(function($) {
       }
       /*** MULTISELECT - START ***/
 
+
+      /*** BOOLEAN - START ***/
+      if ( field['type'] === 'boolean' ) {
+        tile_html += `
+        <select class="select-field">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+      </select>
+        `;
+      }
+      /*** BOOLEAN - START ***/
 
 
       /*** KEY_SELECT - START ***/
@@ -618,7 +629,7 @@ jQuery(document).ready(function($) {
                 <label for="new_post_type_key"><b>Key</b></label>
             </td>
             <td>
-                <input name="new_post_type_key" id="new_post_type_key" type="text" required>
+                <input name="new_post_type_key" id="new_post_type_key" maxlength="20" type="text" required>
             </td>
         </tr>
         <tr>
@@ -956,6 +967,7 @@ jQuery(document).ready(function($) {
                 <select id="new-field-type" name="new-field-type" required>
                     <option value="key_select">Dropdown</option>
                     <option value="multi_select">Multi Select</option>
+                    <option value="boolean">Yes/No (Boolean)</option>
                     <option value="tags">Tags</option>
                     <option value="text">Text</option>
                     <option value="textarea">Text Area</option>
@@ -964,6 +976,7 @@ jQuery(document).ready(function($) {
                     <option value="date">Date</option>
                     <option value="datetime">Date Time</option>
                     <option value="connection">Connection</option>
+                    <option value="user_select">User Select</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}
@@ -1197,9 +1210,9 @@ jQuery(document).ready(function($) {
                     ${Object.keys(window.field_settings.post_type_tiles).map(k=>{
                       let tile = window.field_settings.post_type_tiles[k]
                       let selected = field_settings.tile === k ? 'selected' : ''
-                      return `<option value="${k}" ${selected}>${tile['label']}</option>`  
+                      return `<option value="${k}" ${selected}>${tile['label']}</option>`
                     })}
-                    
+
                 </select>
             </td>
         </tr>
@@ -1218,10 +1231,18 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <b>Hide Field</b>    
+                <b>Hide Field</b>
             </td>
             <td>
                 <input type="checkbox" name="hide-field" id="hide-field" ${field_settings.hidden ? 'checked' : ''}>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Default In List Table</b>
+            </td>
+            <td>
+                <input type="checkbox" name="show-in-table" id="show-in-table" ${field_settings.show_in_table ? 'checked' : ''}>
             </td>
         </tr>
         ${type_visibility_html}
@@ -1416,7 +1437,7 @@ jQuery(document).ready(function($) {
         </tr>
         <tr>
             <td>
-                <b>Hide Option</b>    
+                <b>Hide Option</b>
             </td>
             <td>
                 <input type="checkbox" name="hide-field" id="hide-field-option" ${field_option.deleted ? 'checked' : ''}>
@@ -1488,7 +1509,7 @@ jQuery(document).ready(function($) {
     // Generate corresponding key.
     let single_name = $('#new_post_type_name_single').val().trim();
     let key = single_name.toLowerCase().replaceAll(/[!-\/:-@[-`{-~\s*]/ig, '_');
-    $('#new_post_type_key').val(key);
+    $('#new_post_type_key').val(key.substring(0, 20));
 
     // Generate corresponding plural name.
     $('#new_post_type_name_plural').val(single_name + 's');
@@ -1617,7 +1638,7 @@ jQuery(document).ready(function($) {
       button_icon.removeClass('loading-spinner');
       return false;
 
-    } else if (key === '') {
+    } else if ( ( key === '' ) || ( key.length > 20 ) ) {
       $(new_post_type_key).css('border', '2px solid #e14d43');
       button_icon.css('margin', '');
       button_icon.removeClass('active');
@@ -1794,7 +1815,7 @@ jQuery(document).ready(function($) {
             </div>
             `;
       let new_field_html = new_field_nonexpandable_html;
-      if(['key_select', 'multi_select'].indexOf(new_field_type) > -1) {
+      if(['key_select', 'multi_select', 'link'].indexOf(new_field_type) > -1) {
         new_field_html = new_field_expandable_html;
       }
       if (tile_key){
@@ -1821,7 +1842,8 @@ jQuery(document).ready(function($) {
       hidden: $('#hide-field').is(':checked'),
       type_visibility: $('#type-visibility input:checked').map((index, obj)=>{
         return $(obj).val()
-      }).get()
+      }).get(),
+      show_in_table: $('#show-in-table').is(':checked')
     }
 
     if (custom_name === '') {
@@ -2093,8 +2115,8 @@ jQuery(document).ready(function($) {
     translations_html += `
         </table>
         <div class="translations-save-row">
-            <button class="button cancel-translations-button">Cancel</button>
-            <button class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
+            <button type="button" class="button cancel-translations-button">Cancel</button>
+            <button type="button" class="button button-primary save-translations-button" data-translation-type="${translation_type}" data-post-type="${post_type}" data-tile-key="${tile_key}" data-field-key="${field_key}" data-field-option-key="${field_option_key}">Save</button>
         </div>`;
 
     enableModalBackDiv('modal-back-translations');
@@ -2103,15 +2125,18 @@ jQuery(document).ready(function($) {
 
   });
 
-  $('.dt-admin-modal-translations-box-close-button').on('click', function() {
+  $('.dt-admin-modal-translations-box-close-button').on('click', function(evt) {
+    evt.preventDefault();
     unflip_card();
   });
 
-  $('#modal-translations-overlay-form').on('click', '.cancel-translations-button', function() {
+  $('#modal-translations-overlay-form').on('click', '.cancel-translations-button', function(evt) {
+    evt.preventDefault();
     unflip_card();
   });
 
-  $('#modal-translations-overlay-form').on('click', '.save-translations-button', function() {
+  $('#modal-translations-overlay-form').on('click', '.save-translations-button', function(evt) {
+    evt.preventDefault();
     let translation_type = $(this).data('translation-type');
     let post_type = $(this).data('post-type');
     let tile_key = $(this).data('tile-key');
@@ -2181,12 +2206,6 @@ jQuery(document).ready(function($) {
   });
   $(document).on( 'click', '.dt-admin-modal-box-close', function() {
     closeModal();
-  });
-
-  dt_admin_modal_overlay.on('click', function(e) {
-    if (e.target === this) {
-      closeModal();
-    }
   });
 
   $('.field-name').on('click', function() {

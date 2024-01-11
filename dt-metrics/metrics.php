@@ -76,7 +76,8 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
 
                     /* Record Types */
-                    require_once( get_template_directory() . '/dt-metrics/records/generation-tree.php' );
+                    require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+                    require_once( get_template_directory() . '/dt-metrics/records/dynamic-records-map.php' );
                 }
                 if ( !empty( $modules['access_module']['enabled'] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );

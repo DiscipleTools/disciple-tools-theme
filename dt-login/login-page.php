@@ -13,9 +13,17 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
     } // End instance()
 
     public function __construct() {
+        if ( dt_is_rest() ) {
+            return;
+        }
+
         parent::__construct();
 
         $url = dt_get_url_path();
+        if ( is_user_logged_in() && strpos( $url, 'action' ) === false ) {
+            return;
+        }
+
         $login_page_enabled = DT_Login_Fields::get( 'login_enabled' ) === 'on';
 
         $login_url = DT_Login_Fields::get( 'login_url' );
@@ -41,6 +49,10 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
 
+    }
+
+    public function header_style(){
+        parent::header_style();
     }
 
     public function body(){

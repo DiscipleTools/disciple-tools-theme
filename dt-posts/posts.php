@@ -409,11 +409,11 @@ class Disciple_Tools_Posts
         $message = '';
         if ( $activity->action == 'field_update' ){
             if ( isset( $fields[$activity->meta_key] ) ){
-                if ( $activity->meta_key === 'assigned_to' ){
+                if ( $fields[$activity->meta_key]['type'] === 'user_select' ){
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
                         $user = get_user_by( 'ID', $meta_array[1] );
-                        $message = sprintf( _x( 'Assigned to: %s', 'Assigned to: User1', 'disciple_tools' ), ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
+                        $message = sprintf( _x( '%1$1s: %2$2s', 'User Select: User1', 'disciple_tools' ), $fields[$activity->meta_key]['name'], ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'text' ){
@@ -505,7 +505,7 @@ class Disciple_Tools_Posts
                     if ( isset( $link_info['field_key'] ) && isset( $link_info['type'] ) ) {
                         $field_key = $link_info['field_key'];
                         $link_type = $link_info['type'];
-                        $label = $fields[$field_key]['default'][$link_type]['label'];
+                        $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
                         if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
                             if ( $activity->meta_value === 'value_deleted' ) {
                                 $value = $activity->old_value;
@@ -977,14 +977,18 @@ class Disciple_Tools_Posts
                                     $equality = 'NOT LIKE';
                                     $value = ltrim( $value, '-' );
                                     $connector = ' AND ';
+                                    $value = '%' . $value . '%';
                                 } else if ( strpos( $value, '^' ) === 0 ){
                                     $equality = '=';
                                     $value = ltrim( $value, '^' );
-
+                                } else if ( strpos( $value, '*' ) === 0 ){
+                                    $equality = '<>';
+                                    $value = '';
+                                } else {
+                                    $value = '%' . $value . '%';
                                 }
                                 $query_for_null_values = ( $query_for_null_values === null && $equality === 'NOT LIKE' ) ? true : false;
-                                $val = $equality === '=' ? $value : '%' . $value . '%';
-                                $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $val ) . "'";
+                                $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";
                             }
                             if ( $query_for_null_values ){
                                 $where_sql .= " OR $table_key.meta_value IS NULL ";
@@ -999,7 +1003,7 @@ class Disciple_Tools_Posts
                                 $equality = esc_sql( $query_value['operator'] );
                             }
                             if ( isset( $query_value['number'] ) ){
-                                $value = esc_sql( $query_value['number'] );
+                                $value = $query_value['number'];
                             }
                             if ( empty( $value ) && $value !== 0 ){
                                 $where_sql .= " $table_key.meta_value IS NULL";
@@ -1265,7 +1269,7 @@ class Disciple_Tools_Posts
                 $sort_sql = "sort.meta_value $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'number' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as UNSIGNED ) $sort_dir";
+                $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as DECIMAL(18,4) ) $sort_dir";
             } else {
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
@@ -1456,6 +1460,9 @@ class Disciple_Tools_Posts
         }
 
         global $wpdb;
+
+        $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
+
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p left join $wpdb->p2pmeta pm on pm.p2p_id = p.p2p_id WHERE (p.p2p_to = %s OR p.p2p_from = %s) ", $post_id, $post_id ) );
@@ -1463,6 +1470,13 @@ class Disciple_Tools_Posts
         $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c left join $wpdb->commentmeta cm on cm.comment_id = c.comment_ID WHERE c.comment_post_ID = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id = %s", $post_id ) );
+
+        dt_activity_insert( [
+            'action' => 'record_deleted',
+            'object_type' => $post_type,
+            'object_id' => $post_id,
+            'object_name' => $post_title
+        ] );
 
         return true;
     }
@@ -2133,9 +2147,7 @@ class Disciple_Tools_Posts
 
     public static function update_post_contact_method( int $post_id, string $key, array $values ) {
 //        @todo permissions
-        if ( ( strpos( $key, 'contact_' ) === 0 || strpos( $key, 'address_' ) === 0 ) &&
-             strpos( $key, '_details' ) === false
-        ) {
+        if ( strpos( $key, 'contact_' ) === 0 && strpos( $key, '_details' ) === false ) {
             $old_value = get_post_meta( $post_id, $key, true );
             //check if it is different to avoid setting saving activity
             if ( isset( $values['value'] ) && $old_value != $values['value'] ){
@@ -2433,20 +2445,6 @@ class Disciple_Tools_Posts
                             $fields['contact_' . $type][] = self::format_post_contact_details( $field_settings, $meta_fields, $type, $key, $value[0]['value'] );
                         }
                     }
-                } elseif ( strpos( $key, 'address' ) === 0 ) {
-                    if ( strpos( $key, '_details' ) === false ) {
-
-                        $details = [];
-                        if ( isset( $meta_fields[$key . '_details'][0] ) ) {
-                            $details = maybe_unserialize( $meta_fields[$key . '_details'][0] );
-                        }
-                        $details['value'] = $value[0]['value'];
-                        $details['key'] = $key;
-                        if ( isset( $details['type'], $field_settings['contact_'.$details['type']]['name'] ) ) {
-                            $details['type_label'] = $field_settings['contact_' . $details['type']]['name'];
-                        }
-                        $fields['address'][] = $details;
-                    }
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] == 'key_select' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
                     if ( empty( $value[0]['value'] ) ) {
                         unset( $fields[$key] );
@@ -2501,7 +2499,9 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {
                     $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'number' ) {
-                    $fields[$key] = maybe_unserialize( empty( $value[0]['value'] ) ? 0 : $value[0]['value'] ) + 0;
+                    if ( is_numeric( $value[0]['value'] ) ) {
+                        $fields[$key] = $value[0]['value'] + 0;
+                    }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0]['value'] ) && !empty( $value[0]['value'] ) ){
                         $fields[$key] = [

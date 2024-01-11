@@ -179,6 +179,9 @@ jQuery(function ($) {
         return typeahead && !window.lodash.isEmpty(typeahead.items);
       }
 
+      case 'link':
+        return !window.lodash.isEmpty($(td_field_input).find('input.link-input').not('[value=""]'));
+
       case 'communication_channel':
       case 'location_meta':
         return !window.lodash.isEmpty($(td_field_input).find('input.input-group-field').not('[value=""]'));
@@ -444,6 +447,45 @@ jQuery(function ($) {
                 });
               });
             }
+          }
+
+          break;
+        }
+
+        case 'link': {
+
+          // Disable/Display field accordingly, based on read-only flag
+          $(td).find('input.link-input').prop('disabled', read_only);
+          $(td).find('button.link-delete-button').prop('disabled', read_only);
+
+          // Ensure add link functionality is suppressed.
+          $(td).find('div.add-link-dropdown').remove();
+
+          if (!read_only) {
+            $(td).find('input.link-input').each(function (idx, input) {
+              if (window.lodash.isEmpty($(input).val())) {
+                $(input).parent().hide();
+              }
+            });
+
+            /**
+             * Remove
+             */
+
+            $(document).on('click', '.link-delete-button', evt => {
+              const delete_but = $(evt.currentTarget);
+
+              // Keep a record of deleted meta_ids.
+              let meta_id = $(delete_but).data('meta-id');
+              let deleted_items = $(field_meta).val() ? JSON.parse($(field_meta).val()) : [];
+              if ( !window.lodash.includes( deleted_items, meta_id ) ) {
+                deleted_items.push( meta_id );
+                $(field_meta).val(JSON.stringify(deleted_items));
+              }
+
+              // Finally, remove from parent.
+              $(delete_but).parent().parent().remove();
+            });
           }
 
           break;
@@ -1020,6 +1062,65 @@ jQuery(function ($) {
         break;
       }
 
+      case 'link': {
+
+        // Determine selector source field link inputs to be processed.
+        let source_field_link_inputs = [];
+        let tr = $(selector).parent().parent();
+        $(tr).find('.td-field-input input.link-input').each(function (idx, input) {
+          if( $(input).val() ) {
+            source_field_link_inputs.push(input);
+          }
+        });
+
+        // Delete/Add updated post record, based on identified source field inputs.
+        let main_updated_fields_div = $('#main_updated_fields_div');
+        let link_field_meta_input = $(main_updated_fields_div).find(`.link-list-${update_field_id}`).parent().parent().find('#field_meta');
+        let deleted_items = $(link_field_meta_input).val() ? JSON.parse($(link_field_meta_input).val()) : [];
+
+        // Locate by link field values.
+        $.each(source_field_link_inputs, function (idx, input) {
+          let link_list_section_div = $(main_updated_fields_div).find(`.link-list-${update_field_id} .link-section--${ $(input).data('type') }`);
+          let matched_input = $(link_list_section_div).find(`.input-group input[value="${ $(input).val() }"].link-input`);
+
+          // Handle accordingly, based on incoming selected state.
+          if ( is_selected ) {
+
+            // Add new updated link fields.
+            if ( matched_input.length === 0 ) {
+              $(link_list_section_div).append(`
+                <div class="input-group">
+                    <input type="text" class="link-input input-group-field" value="${window.SHAREDFUNCTIONS.escapeHTML($(input).val())}" data-meta-id="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('meta-id'))}" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}" data-type="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('type'))}">
+                    <div class="input-group-button">
+                        <button class="button alert delete-button-style input-height link-delete-button delete-button" data-meta-id="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('meta-id'))}" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}">&times;</button>
+                    </div>
+                </div>`);
+
+              // Remove any previously deleted entries.
+              window.lodash.remove(deleted_items, function (meta_id) {
+                return meta_id === $(input).data('meta-id');
+              });
+              $(link_field_meta_input).val(JSON.stringify(deleted_items));
+            }
+
+          } else {
+
+            // Remove new updated link fields.
+            if ( matched_input.length > 0 ) {
+              $(matched_input).parent().remove();
+
+              // Keep a record of deleted meta_ids.
+              if ( !window.lodash.includes( deleted_items, $(matched_input).data('meta-id') ) ) {
+                deleted_items.push( $(matched_input).data('meta-id') );
+                $(link_field_meta_input).val(JSON.stringify(deleted_items));
+              }
+            }
+          }
+        });
+
+        break;
+      }
+
       case 'communication_channel': {
 
         // Determine values to be updated
@@ -1386,6 +1487,7 @@ jQuery(function ($) {
 
       // Parse value accordingly, based on field type
       switch (field_type) {
+        case 'link':
         case 'communication_channel': {
 
           $.each(primary_post[field_id], function (idx, value) {
@@ -1398,6 +1500,35 @@ jQuery(function ($) {
         }
       }
 
+    }
+
+    return is_already_in_primary;
+  }
+
+  function is_link_field_value_already_in_primary(field_id, link_type, link_meta_id, link_value, check_by_value) {
+    let is_already_in_primary = false;
+
+    // First, obtain handle onto current primary post
+    let primary_post = fetch_post_by_merge_type(true)['record'];
+
+    // Ensure primary post contains field in question
+    if (primary_post && primary_post[field_id]) {
+
+      // Parse value accordingly, based on link type, meta_id & value.
+      $.each(primary_post[field_id], function (idx, value) {
+        if (value['type'] && value['meta_id'] && value['value']) {
+          if (value['type'] === link_type) {
+
+            // Accommodate both checks by meta_id (in the event of value changes) and existing unchanged values.
+            if (!check_by_value && (String(value['meta_id']) === String(link_meta_id))) {
+              is_already_in_primary = true;
+
+            } else if (check_by_value && (String(value['value']) === String(link_value))) {
+              is_already_in_primary = true;
+            }
+          }
+        }
+      });
     }
 
     return is_already_in_primary;
@@ -1515,6 +1646,46 @@ jQuery(function ($) {
           if (location_meta_entries) {
             values[post_field_id] = {
               'values': location_meta_entries
+            };
+          }
+          break;
+        }
+
+        case 'link': {
+
+          // Determine values to be processed
+          let link_entries = [];
+          let link_deletions = field_meta.val() ? JSON.parse(field_meta.val()) : [];
+
+          // Package values and any deletions
+          $(td).find('.input-group input.link-input').each(function (idx, input) {
+            let link_type = $(input).data('type');
+            let link_meta_id = $(input).data('meta-id');
+            let link_val = $(input).val();
+
+            let has_value = is_link_field_value_already_in_primary(post_field_id, link_type, link_meta_id, link_val, true);
+            let matched_meta_id = is_link_field_value_already_in_primary(post_field_id, link_type, link_meta_id, link_val, false);
+
+            if (link_val && !has_value) {
+              link_entries.push({
+                'value': link_val,
+                'type': link_type,
+                'meta_id': matched_meta_id ? link_meta_id : ''
+              });
+            }
+          });
+
+          $.each(link_deletions, function (idx, deleted_meta_id) {
+            link_entries.push({
+              'meta_id': deleted_meta_id,
+              'delete': true
+            });
+          });
+
+          // If present, capture entries
+          if (link_entries) {
+            values[post_field_id] = {
+              'values': link_entries
             };
           }
           break;

@@ -208,7 +208,7 @@ class Disciple_Tools_Users
      * @param bool $get_all
      * @return array|WP_Error
      */
-    public static function get_assignable_users_compact( string $search_string = null, bool $get_all = false ) {
+    public static function get_assignable_users_compact( string $search_string = null, bool $get_all = false, string $post_type = null ) {
         if ( !current_user_can( 'access_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( 'No permissions to assign', 'disciple_tools' ), [ 'status' => 403 ] );
         }
@@ -282,7 +282,7 @@ class Disciple_Tools_Users
                 }
             }
         } else {
-            $correct_roles = dt_multi_role_get_cap_roles( 'access_contacts' );
+            $correct_roles = dt_multi_role_get_cap_roles( 'access_' . $post_type );
             $search_string = esc_attr( $search_string );
             $user_query = new WP_User_Query( [
                 'search'         => '*' . $search_string . '*',
@@ -330,7 +330,7 @@ class Disciple_Tools_Users
         $workload_status_options = dt_get_site_custom_lists()['user_workload_status'] ?? [];
 
         foreach ( $users as $user ) {
-            if ( user_can( $user, 'access_contacts' ) ) {
+            if ( empty( $post_type ) || user_can( $user, 'access_' . $post_type ) ) {
                 $u = [
                     'name' => wp_specialchars_decode( $user->display_name ),
                     'ID'   => $user->ID,

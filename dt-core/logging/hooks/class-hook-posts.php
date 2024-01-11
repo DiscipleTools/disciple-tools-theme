@@ -133,6 +133,14 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
+        $ignore_field_types = [ 'array' ];
+
+        $fields      = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
+        $field_type = $fields[$meta_key]['type'] ?? null;
+        if ( in_array( $field_type, $ignore_field_types, true ) ) {
+            return;
+        }
+
 
         // get the previous value
         $prev       = '';
@@ -166,7 +174,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
         $field_type  = '';
         $object_note = '';
-        $fields      = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
 
         //build message for verifying and invalidating contact information fields.
         if ( strpos( $meta_key, '_details' ) !== false && is_array( $meta_value ) ) {

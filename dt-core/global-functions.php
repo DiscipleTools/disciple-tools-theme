@@ -99,15 +99,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 if ( isset( $_SERVER['REQUEST_URI'] ) ) {
                     $url .= esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
+                //remove query parameters
+                if ( $ignore_query_parameters ){
+                    $url = strtok( $url, '?' ); //allow get parameters
+                }
                 //remove the domain part. Ex: https://example.com/
                 if ( $include_host === false ) {
                     $url = trim( str_replace( get_site_url(), '', $url ), '/' );
                 }
 
-                //remove query parameters
-                if ( $ignore_query_parameters ){
-                    $url = strtok( $url, '?' ); //allow get parameters
-                }
                 //remove trailing '?'
                 if ( substr( $url, -1 ) === '?' ){
                     $url = substr( $url, 0, -1 );
@@ -600,7 +600,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             </div>
             <?php
             if ( $field_type === 'boolean' ) {
-                $selected = !empty( $post[$field_key] ) ? 'selected' : '';
+                $selected = '';
+                if ( isset( $post[$field_key] ) ) {
+                    $selected = !empty( $post[$field_key] ) ? 'selected' : '';
+                } else {
+                    $selected = $fields[$field_key]['default'] === true ? 'selected' :'';
+                }
                 ?>
                 <select class="select-field" id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $disabled ); ?>>
                     <option value="0"><?php esc_html_e( 'No', 'disciple_tools' ); ?></option>

@@ -72,12 +72,13 @@ jQuery(document).ready(function($) {
 
   /* breadcrumb: new-field-type Update record */
   $('input.link-input').change(function(){
-    const fieldKey = $(this).data('field-key')
-    const type = $(this).data('type')
-    const meta_id = $(this).data('meta-id')
-    const value = $(this).val()
+    const link_input = $(this);
+    const fieldKey = $(link_input).data('field-key')
+    const type = $(link_input).data('type')
+    const meta_id = $(link_input).data('meta-id')
+    const value = $(link_input).val()
 
-    if ( $(this).prop('required') && value === ''){
+    if ( $(link_input).prop('required') && value === ''){
       return;
     }
 
@@ -94,6 +95,19 @@ jQuery(document).ready(function($) {
     rest_api.update_post(post_type, post_id, { [fieldKey]: fieldValues }).then((newPost)=>{
       $(`#${fieldKey}-spinner`).removeClass('active')
       post = newPost
+
+      // Make sure a key exists for the new link field.
+      if ( post && post[fieldKey] && post[fieldKey].length > 0 ) {
+        let updated_values = post[fieldKey].filter((option) => {
+          return (option['type'] === type) && (option['value'] === value);
+        });
+
+        // This ensures any immediate updates, are assigned to correct link input and not to a new/duplicated input field.
+        if (updated_values && updated_values[0] && updated_values[0]['meta_id']) {
+          $(link_input).data('meta-id', updated_values[0]['meta_id']);
+        }
+      }
+
     }).catch(window.handleAjaxError)
   })
 
@@ -374,6 +388,9 @@ jQuery(document).ready(function($) {
     let update = { value }
     if ( id ) {
       update["key"] = id;
+    }
+    if ( !value && !id ){
+      return;
     }
     $(`#${field_key}-spinner`).addClass('active')
     window.API.update_post(post_type, post_id, { [field_key]: [update]}).then((updatedContact)=>{
