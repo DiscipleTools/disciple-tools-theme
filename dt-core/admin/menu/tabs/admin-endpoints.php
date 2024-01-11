@@ -179,19 +179,19 @@ class DT_Admin_Endpoints {
 
             $id_sql = [];
             foreach ( $field_ids as $id ) {
-                $id_sql[] = "(log.object_subtype NOT LIKE '" . $id . "%')";
+                $id_sql[] = "(log.object_subtype NOT LIKE '" . esc_sql( $id ) . "%')";
             }
+            $all_id_sql = implode( ' AND ', $id_sql );
 
             // phpcs:disable
-            $deleted_fields = $wpdb->get_results( stripslashes(
-                $wpdb->remove_placeholder_escape(
+            $deleted_fields = $wpdb->get_results(
                     $wpdb->prepare("
                 SELECT DISTINCT log.object_subtype AS deleted_field
                 FROM $wpdb->dt_activity_log log
                 WHERE log.action IN ('field_update', 'connected to', 'disconnected from')
                     AND log.object_type = %s
-                    AND (%1s)
-            ", $post_type, implode( ' AND ', $id_sql ) ) ) ), ARRAY_A );
+                    AND $all_id_sql
+            ", $post_type ), ARRAY_A );
             // phpcs:enable
 
             // Delete activity logs for any identified fields.
@@ -201,12 +201,15 @@ class DT_Admin_Endpoints {
                 foreach ( $deleted_fields as $deleted ) {
                     $delete_field_ids[] = $deleted['deleted_field'];
                 }
+                $array_sql = dt_array_to_sql( $delete_field_ids );
 
+                // phpcs:disable
                 $wpdb->query( $wpdb->prepare( "
                     DELETE FROM $wpdb->dt_activity_log log
                     WHERE log.object_type = %s
-                        AND log.object_subtype IN (%s)
-                ", $post_type, implode( "', '", $delete_field_ids ) ) );
+                        AND log.object_subtype IN ( $array_sql )
+                ", $post_type ) );
+                // phpcs:enable
             }
 
             return [
