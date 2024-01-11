@@ -169,10 +169,21 @@ class Disciple_Tools_Magic_Endpoints
                 $note = $params['note'];
             }
 
-            $subject = $name;
-            $message_plain_text = $note . '
-
-'           . $name . ': ' . $link;
+            // set final message shape.
+            $subject = $params['subject'] ?? $name;
+            $message_plain_text = str_replace(
+                [
+                    '{{name}}',
+                    '{{app}}',
+                    '{{link}}'
+                ],
+                [
+                    $post_record['name'] ?? '',
+                    $name,
+                    $link
+                ],
+                $note
+            );
 
             // send email
             foreach ( $emails as $email ) {

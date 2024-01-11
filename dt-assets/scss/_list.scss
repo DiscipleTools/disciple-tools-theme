@@ -434,13 +434,13 @@ table.js-list{
     }
 }
 
-.dt-radio.button-group input{
-    display: none;
+.dt-radio.button-group label {
+    background-color: transparent;
+    color: #000000;
+    display: inline;
+    padding: 0px 20px 0px 5px;
 }
-.dt-radio.button-group input:checked + label,
-.dt-radio.button-group input:checked + label:active {
-    background-color: #4CAF50;
-}
+
 .small-text {
     font-size: .8rem;
 }

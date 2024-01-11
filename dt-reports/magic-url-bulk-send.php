@@ -38,8 +38,21 @@ function dt_post_bulk_list_section_apps( $post_type ){
                 echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
             <div class="grid-x grid-margin-x">
                 <div class="cell">
-                    <label for="bulk_send_app_note"><?php echo esc_html__( 'Add optional greeting', 'disciple_tools' ); ?></label>
-                    <input type="text" id="bulk_send_app_note" placeholder="<?php echo esc_html__( 'Add short greeting to be added above the app link.', 'disciple_tools' ); ?>" />
+                    <?php
+                    $default_subject = '';
+                    $default_message = '';
+                    if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ) {
+                        $default_subject = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_default_email_subject();
+
+                        $ml_default_message = str_replace( '{{link}}', '{{app}}: {{link}}', Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_default_send_msg() );
+                        $default_message = str_replace( 'As a reminder, the above link will expire {{time_relative}} on {{time}}', '', $ml_default_message );
+                    }
+                    ?>
+                    <label for="bulk_send_app_subject"><?php echo esc_html__( 'Add optional subject', 'disciple_tools' ); ?></label>
+                    <input type="text" id="bulk_send_app_subject" value="<?php echo esc_attr( $default_subject ); ?>" />
+
+                    <label for="bulk_send_app_msg"><?php echo esc_html__( 'Add optional message', 'disciple_tools' ); ?></label>
+                    <textarea type="text" id="bulk_send_app_msg" rows="10"><?php echo esc_textarea( $default_message ); ?></textarea>
                 </div>
                 <div class="cell">
                     <label for="bulk_send_app_required_selection"><?php echo esc_html__( 'Select app to email', 'disciple_tools' ); ?></label>

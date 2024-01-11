@@ -2685,7 +2685,8 @@
 
   function bulk_send_app() {
 
-    let note = $('#bulk_send_app_note').val()
+    let subject = $('#bulk_send_app_subject').val();
+    let note = $('#bulk_send_app_msg').val();
 
     let selected_input = jQuery('.bulk_send_app.dt-radio.button-group input:checked')
     if ( selected_input.length < 1 ) {
@@ -2715,7 +2716,7 @@
 
     $('#bulk_send_app_submit-spinner').addClass('active')
 
-    window.makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
+    window.makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, subject: subject, note: note, post_ids: queue } )
       .done( data => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
         $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
