@@ -199,24 +199,6 @@ add_action( 'phpmailer_init', function ( $phpmailer ) {
     }
 } );
 
-add_filter( 'wp_mail_convert_line_breaks', function ( $message ) {
-    $base_email = dt_get_option( 'dt_email_base_address' );
-    if ( !empty( $base_email ) ){
-        $email = $base_email;
-    }
-    return $email;
-} );
-
-
-function make_clickable_links( $message ){
-    $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
-
-    return preg_replace_callback( $url, function ( $matches ) {
-        $truncated_url = strlen( $matches[0] ) > 50 ? substr( $matches[0], 0, 50 ) . '...' : $matches[0];
-        return '<a href="http' . $matches[2] . '://' . $matches[4] . '" target="_blank" title="' . $truncated_url . '">' . $truncated_url . '</a>';
-    }, $message );
-}
-
 /**
  * Send emails that have been put in the email queue
  */
