@@ -160,17 +160,53 @@ add_filter( 'wp_mail_from_name', function ( $name ) {
 
 add_action( 'phpmailer_init', function ( $phpmailer ) {
 
+    // Terminate, if already of content type html.
+    // phpcs:disable
+    if ( $phpmailer->ContentType === 'text/html' ) {
+        return;
+    }
+    // phpcs:enable
+
     // Load email template and replace content placeholder.
     $email_template = file_get_contents( __DIR__ . '/email-template.html' );
     if ( $email_template ) {
 
         // phpcs:disable
+        $message = $phpmailer->Body;
+
+        // Update content type to required html format.
         $phpmailer->ContentType = 'text/html';
-        $email_template = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $phpmailer->Subject, $email_template );
-        $phpmailer->Body = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', nl2br( make_clickable_links( $phpmailer->Body ) ), $email_template );
+
+        // Clean < and > around text links in WP 3.1.
+        $message = preg_replace( '#<(https?://[^*]+)>#', '$1', $message );
+
+        // Convert line breaks.
+        if ( apply_filters( 'wpbe_convert_line_breaks', true ) ) {
+            $message = nl2br( $message );
+        }
+
+        // Convert URLs to links.
+        if( apply_filters( 'wpbe_convert_urls', true ) ) {
+            $message = make_clickable( $message );
+        }
+
+        // Add template to message.
+        $message = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message, $email_template );
+
+        // Replace remaining template variables.
+        $phpmailer->Body = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $phpmailer->Subject, $message );
         // phpcs:enable
     }
 } );
+
+add_filter( 'wp_mail_convert_line_breaks', function ( $message ) {
+    $base_email = dt_get_option( 'dt_email_base_address' );
+    if ( !empty( $base_email ) ){
+        $email = $base_email;
+    }
+    return $email;
+} );
+
 
 function make_clickable_links( $message ){
     $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
