@@ -191,11 +191,15 @@ add_action( 'phpmailer_init', function ( $phpmailer ) {
         }
 
         // Add template to message.
-        $message = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message, $email_template );
+        $email_body = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message, $email_template );
+
+        // Add footer to message
+        $email_body = str_replace( '{{EMAIL_TEMPLATE_FOOTER}}', get_bloginfo( 'name' ), $email_body );
+
 
         // Replace remaining template variables.
         // phpcs:ignore
-        $phpmailer->Body = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $phpmailer->Subject, $message );
+        $phpmailer->Body = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $phpmailer->Subject, $email_body );
     }
 } );
 
