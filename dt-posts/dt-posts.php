@@ -1275,7 +1275,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             foreach ( $user_post_ids as $res ){
                 foreach ( $compact as $index => &$p ){
-                    if ( $p['ID'] === $res['post_id'] ){
+                    if ( $p['ID'] === (int) $res['post_id'] ){
                         $compact[$index]['user'] = true;
                     }
                 }

@@ -800,7 +800,7 @@
           }
 
           /* breadcrumb: new-field-type Display field in table */
-          if ( field_value ) {
+          if ( field_value !== false ) {
             if (['text', 'textarea', 'number'].includes(field_settings.type)) {
               values = [window.SHAREDFUNCTIONS.escapeHTML(field_value)]
             } else if (field_settings.type === 'date') {
@@ -862,7 +862,7 @@
             values = [`<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`]
           } else if ( field_value === undefined && field_settings.type === "boolean" && field_settings.default === true) {
             values = ['&check;']
-          } 
+          }
         } else {
           return;
         }
@@ -2847,6 +2847,292 @@
 
   /**
    * Split By Feature
+   */
+
+  /**
+   * List Exports
+   */
+
+  function export_list_display(title, display_function) {
+
+    // Execute display function.
+    display_function();
+
+    // Set export title and display modal.
+    $('#export_title').html(title);
+    $('#export_reveal').foundation('open');
+  }
+
+  $("#export_csv_list").on("click", function (e) {
+    export_list_display($(e.currentTarget).text(), function () {
+
+      // Identify fields to be exported; ignoring hidden and private fields.
+      let exporting_fields = [];
+      $.each(window.list_settings['post_type_settings']['fields'], function (field_id, field_setting) {
+        if ( ( (field_setting['private'] === undefined) || !field_setting['private'] ) && ( (field_setting['hidden'] === undefined) || !field_setting['hidden'] ) && !['task', 'array'].includes( field_setting['type'] ) ) {
+          let setting = field_setting;
+          setting['field_id'] = field_id;
+          exporting_fields.push(setting);
+
+          // Insert additional locations id column, if needed.
+          if ( ['location', 'location_meta'].includes( setting['type'] ) ) {
+            let location_settings = JSON.parse( JSON.stringify( setting ) );
+            location_settings['name'] = `${location_settings['name']} [ID]`;
+            location_settings['dynamic_csv_col'] = true;
+            exporting_fields.push(location_settings);
+          }
+        }
+      });
+
+      // Sort identified fields by name into ascending order.
+      exporting_fields.sort(function (a, b) {
+        if (a.name.trim() < b.name.trim()) {
+          return -1;
+        }
+        if (a.name.trim() > b.name.trim()) {
+          return 1;
+        }
+        return 0;
+      });
+
+      // Take a two-step approach; first, display fields to be exported and on-demand, obtain records upon export request.
+      let html = `
+      <div class="grid-x">
+        <div class="cell">`;
+
+        html += `<span style="font-size: 20px;">${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg'].replaceAll( '{0}', exporting_fields.length ) ) }</span></div>`;
+
+        let record_total = window.records_list['total'];
+        html +=`<div class="cell"><hr></div>
+        <div class="cell">
+            <button class="button" id="export_csv_list_download" ${ (record_total <= 0) ? 'disabled' : '' }>
+            <i class="mdi mdi-cloud-download-outline" style="font-size: 22px; margin-right: 10px;"></i>
+            <span style="font-size: 20px;">[ ${ window.SHAREDFUNCTIONS.escapeHTML(record_total)} ]</span>
+            </button>
+        </div>
+      </div>`;
+
+      $('#export_content').html(html);
+
+      // Terminate any spinners and prepare download button event listener.
+      $('.loading-spinner').removeClass('active');
+      $('#export_csv_list_download').on('click', function(){
+        $('.loading-spinner').addClass('active');
+        $('#export_csv_list_download').prop('disabled', true);
+
+        export_csv_list_download(exporting_fields, function () {
+          $('.loading-spinner').removeClass('active');
+          $('#export_reveal').foundation('close');
+        });
+      });
+    });
+  });
+
+  function export_csv_list_download(exporting_fields, callback = null) {
+
+    // First retrieve all records associated with currently selected filter.
+    recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
+      if ( posts && posts.length > 0 ) {
+        let csv_export = [];
+
+        // Structure csv shape to be downloaded.
+        $.each(posts, function(post_idx, post) {
+          let csv_row = [];
+          let token_array_delimiter = ';';
+
+          // Capture ID & Name.
+          csv_row.push(post['ID']);
+          csv_row.push(post['name']);
+
+          // Proceed with extraction of remaining fields.
+          $.each(exporting_fields, function (field_idx, field) {
+            let field_id = field['field_id'];
+
+            // As well as names, also ignore dynamic csv columns; which are typically populated via other means.
+            if ( !['name'].includes( field_id ) && ( ( field['dynamic_csv_col'] === undefined ) || !field['dynamic_csv_col'] ) ) {
+
+              // Next, extract post field value accordingly, based on field type.
+              switch (field['type']) {
+                case 'text':
+                case 'number':
+                case 'boolean':
+                case 'textarea': {
+                  let token = (post[field_id]) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'user_select': {
+                  let token = (post[field_id] && post[field_id]['display']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['display']) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'key_select': {
+                  let token = (post[field_id] && post[field_id]['label']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['label']) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'date':
+                case 'datetime': {
+                  let token = (post[field_id] && post[field_id]['formatted']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['formatted']) : '';
+                  csv_row.push(token);
+                  break;
+                }
+                case 'multi_select': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( field['default'][cell_value]['label'] ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'connection': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['post_title'] ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'communication_channel': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['value'] ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'location':
+                case 'location_meta': {
+                  let token_array = [];
+                  let id_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['label'] ) );
+
+                      // Extract id accordingly based on value shape; to be appended within dynamic csv column.
+                      let grid_id = '';
+                      if ( cell_value['id'] ) {
+                        grid_id = cell_value['id'];
+
+                      } else if ( cell_value['grid_id'] ) {
+                        grid_id = cell_value['grid_id'];
+                      }
+                      id_array.push( window.SHAREDFUNCTIONS.escapeHTML( grid_id ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  csv_row.push(id_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'tags': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function(cell_index, cell_value) {
+                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value ) );
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'link': {
+                  let token_array = [];
+                  if (post[field_id]) {
+                    $.each(post[field_id], function (cell_index, cell_value) {
+                      if (field['default'][cell_value['type']]) {
+                        let category_label = field['default'][cell_value['type']]['label'];
+                        let token = category_label +': '+ cell_value['value'];
+                        token_array.push(window.SHAREDFUNCTIONS.escapeHTML(token));
+                      }
+                    });
+                  }
+                  csv_row.push(token_array.join(token_array_delimiter));
+                  break;
+                }
+                case 'task':
+                case 'array':
+                default: {
+                  csv_row.push('');
+                  break;
+                }
+              }
+            }
+          });
+
+          // Assuming counts match, assign to parent csv download array.
+          if (csv_row.length === (exporting_fields.length + 1)) {
+            csv_export.push(csv_row);
+          }
+        });
+
+        // Generate export csv headers and prefix to parent csv download array.
+        let csv_headers = ['ID', 'Name'].concat( exporting_fields.filter((field) => !['name'].includes( field['field_id'] )).map((field) => field['name']) );
+        csv_export.unshift(csv_headers);
+
+        // Convert csv arrays into raw downloadable data.
+        let csv = csv_export.map((csv) => '"' + csv.join('","') + '"').join("\r\n");
+
+        // Finally, automatically execute a download of generated csv data.
+        let csv_download_link = document.createElement('a');
+        let date = new Date();
+        let year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
+        let month = new Intl.DateTimeFormat('en', { month: 'numeric' }).format(date);
+        let day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
+        let hour = new Intl.DateTimeFormat('en', { hour: 'numeric', hour12: false, }).format(date);
+        let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
+        let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
+        csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
+        csv_download_link.href = "data:text/csv;charset=utf-8," + escape(csv);
+        csv_download_link.click();
+        csv_download_link.remove();
+      }
+
+      // Callback to original caller...! ;)
+      if ( callback ) {
+        callback();
+      }
+    });
+  }
+
+  function recursively_fetch_posts(offset, limit, total, posts, callback = null) {
+
+    // Build query based on current filter, to be executed.
+    let query = current_filter.query;
+    query["offset"] = offset;
+    query['limit'] = limit;
+    query['fields_to_return'] = [];
+
+    window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+    .promise()
+    .then(response => {
+
+      // Concat any returned posts to main parent posts array.
+      posts = posts.concat( ( ( response && response['posts'] ) ? response['posts'] : [] ) );
+
+      // Recurse if more records are available, otherwise proceed with export callback.
+      if ( (offset + limit) < total ) {
+        recursively_fetch_posts((offset + limit), limit, total, posts, callback );
+
+      } else if ( callback ) {
+        callback( posts );
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      if ( callback ) {
+        callback( posts );
+      }
+    });
+
+  }
+
+  /**
+   * List Exports
    */
 
 })(window.jQuery, window.list_settings, window.Foundation);
