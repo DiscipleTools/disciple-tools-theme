@@ -343,7 +343,12 @@ function dt_site_scripts() {
             'delete_selections_below' => __( 'Delete Selections Below', 'disciple_tools' ),
             'sent' => _x( 'sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
             'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
-            'exclude_item' => __( 'Exclude Item', 'disciple_tools' )
+            'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
+            'exports' => [
+                'csv' => [
+                    'fields_msg' => sprintf( _x( 'The exported csv data to contain all {0} %s fields.', 'The exported csv data to contain all fields', 'disciple_tools' ), $post_settings['label_singular'] )
+                ]
+            ]
         ];
         $permissions = [
             'delete_any' => current_user_can( 'delete_any_' . $post_type )
