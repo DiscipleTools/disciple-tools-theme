@@ -154,6 +154,54 @@ add_filter( 'wp_mail_from_name', function ( $name ) {
     return $name;
 } );
 
+/**
+ * Intercept all outgoing messages and wrap within email template.
+ */
+
+add_action( 'phpmailer_init', function ( $phpmailer ) {
+
+    // Terminate, if already of content type html.
+    // phpcs:ignore
+    if ( $phpmailer->ContentType === 'text/html' ) {
+        return;
+    }
+
+    // Load email template and replace content placeholder.
+    $email_template = file_get_contents( __DIR__ . '/email-template.html' );
+    if ( $email_template ) {
+
+        // phpcs:ignore
+        $message = $phpmailer->Body;
+
+        // Update content type to required html format.
+        // phpcs:ignore
+        $phpmailer->ContentType = 'text/html';
+
+        // Clean < and > around text links in WP 3.1.
+        $message = preg_replace( '#<(https?://[^*]+)>#', '$1', $message );
+
+        // Convert line breaks.
+        if ( apply_filters( 'dt_email_template_convert_line_breaks', true ) ) {
+            $message = nl2br( $message );
+        }
+
+        // Convert URLs to links.
+        if ( apply_filters( 'dt_email_template_convert_urls', true ) ) {
+            $message = make_clickable( $message );
+        }
+
+        // Add template to message.
+        $email_body = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message, $email_template );
+
+        // Add footer to message
+        $email_body = str_replace( '{{EMAIL_TEMPLATE_FOOTER}}', get_bloginfo( 'name' ), $email_body );
+
+
+        // Replace remaining template variables.
+        // phpcs:ignore
+        $phpmailer->Body = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $phpmailer->Subject, $email_body );
+    }
+} );
 
 /**
  * Send emails that have been put in the email queue

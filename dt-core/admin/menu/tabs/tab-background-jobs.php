@@ -126,11 +126,11 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
         global $wpdb;
 
         // Obtain list of recent error logs
-        $jobs = $wpdb->get_results($wpdb->prepare("
+        $jobs = $wpdb->get_results("
         SELECT que.job AS job_details, que.category, que.attempts, que.priority, que.available_at, que.created_at
         FROM $wpdb->queue_jobs que
         ORDER BY que.created_at
-        DESC LIMIT 200" ) );
+        DESC LIMIT 200");
 
         $this->box( 'top', 'Background Jobs', [ 'col_span' => 4 ] );
 
