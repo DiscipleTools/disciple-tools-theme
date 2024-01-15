@@ -169,8 +169,15 @@ class Disciple_Tools_Magic_Endpoints
                 $note = $params['note'];
             }
 
-            // set final message shape.
+            // set subject, avoiding DT prefix duplicates.
             $subject = $params['subject'] ?? $name;
+            $email_base_subject = dt_get_option( 'dt_email_base_subject' );
+            if ( substr( $subject, 0, strlen( $email_base_subject ) ) === $email_base_subject ) {
+                $subject = str_replace( [ $email_base_subject, ':' ], [ '', '' ], $subject );
+            }
+            $subject = str_replace( '{{app}}', $name, $subject );
+
+            // set final message shape.
             $message_plain_text = str_replace(
                 [
                     '{{name}}',
