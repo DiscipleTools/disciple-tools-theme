@@ -972,6 +972,12 @@ class Disciple_Tools_Posts
                             foreach ( $query_value as $value_key => $value ){
                                 $index ++;
                                 $equality = 'LIKE';
+
+                                // Transpose comms_channel array value shapes.
+                                if ( is_array( $value ) && ( $field_type === 'communication_channel' ) ) {
+                                    $value = $value['value'];
+                                }
+
                                 //allow negative searches
                                 if ( strpos( $value, '-' ) === 0 ){
                                     $equality = 'NOT LIKE';

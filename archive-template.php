@@ -770,7 +770,7 @@ dt_please_log_in();
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags' ];
+                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'communication_channel' ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
@@ -903,7 +903,25 @@ dt_please_log_in();
                                                data-date-format='yy-mm-dd'
                                                class="dt_date_picker" data-delimit="end"
                                                data-field="<?php echo esc_html( $field ) ?>">
+                                    <?php elseif ( isset( $field_options[$field] ) && in_array( $field_options[$field]['type'], [ 'text', 'communication_channel' ] ) ) : ?>
+                                        <input id="<?php echo esc_html( $field ) ?>_text_comms_filter"
+                                               type="text"
+                                               placeholder="<?php echo esc_html_x( 'Filter By Value', 'The value to be searched for', 'disciple_tools' ) ?>" />
 
+                                        <p>
+                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s With %2$s Set', 'All Contacts with set field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-with-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            </label>
+                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s Without %2$s Set', 'All Contacts without set field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            </label>
+                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s With %2$s Filtered Value', 'All Contacts with filtered value', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-with-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            </label>
+                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s Without %2$s Filtered Value', 'All Contacts without filtered value', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            </label>
+                                        </p>
                                     <?php endif; ?>
                                 </div>
                             </div>

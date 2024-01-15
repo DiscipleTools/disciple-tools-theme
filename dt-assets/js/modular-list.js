@@ -1081,6 +1081,43 @@
           date.end = end
         }
         search_query.push({[field]: date})
+      } else if ( type === "text" || type === "communication_channel" ){
+        let value = '-*';
+        let filter = $('#' + field + '_text_comms_filter').val();
+
+        switch ( $('.filter-by-text-comms-option:checked').val() ) {
+          case 'all-without-set-value': {
+            value = '^';
+            break;
+          }
+          case 'all-with-filtered-value': {
+            value = filter;
+            break;
+          }
+          case 'all-without-filtered-value': {
+            value = '-' + filter;
+            break;
+          }
+          default: {
+            value = '-*';
+            break;
+          }
+        }
+
+        // Package accordingly based on field type.
+        switch ( type ) {
+          case 'text': {
+            search_query.push({[field]: value});
+            break;
+          }
+          case 'communication_channel': {
+            search_query.push({[field]: [{
+              'value': value
+              }]});
+            break;
+          }
+        }
+
       } else {
         let options = []
         $(`#${field}-options input:checked`).each(function(){
@@ -1300,6 +1337,31 @@
 
   $('.all-without-connections').on("click", without_connections_handler)
 
+  $('.filter-by-text-comms-option').on("click", function (e) {
+    handle_filter_by_text_comms( {
+      id: $(this).val(),
+      field: $(this).data('field')
+    } );
+  });
+
+  function handle_filter_by_text_comms(options) {
+    const {id, field,} = options || {id: null, field: null};
+
+    if (id && field) {
+
+      // Adjust filter text field state accordingly, based on option selection.
+      let filter_text_field = $('#' + field + '_text_comms_filter');
+      $(filter_text_field).prop('disabled', ['all-with-set-value', 'all-without-set-value'].includes(id));
+
+      // Reset all previous related filter labels.
+      remove_all_filter_labels(field);
+
+      // Create new generic filter label.
+      const {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
+      selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`);
+      new_filter_labels.push(newLabel);
+    }
+  }
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
     for (let input of $("#filter-modal .multi_select .typeahead__query input")) {
