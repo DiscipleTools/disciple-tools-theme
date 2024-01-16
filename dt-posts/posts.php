@@ -963,6 +963,12 @@ class Disciple_Tools_Posts
                             $index = -1;
                             $connector = ' OR ';
                             $query_for_null_values = null;
+
+                            // Ensure to wrap text field types within array.
+                            if ( !is_array( $query_value ) && ( $field_type === 'text' ) ){
+                                $query_value = [ $query_value ];
+                            }
+
                             if ( !is_array( $query_value ) ){
                                 return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
