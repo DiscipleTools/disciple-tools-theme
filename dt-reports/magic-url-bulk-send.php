@@ -49,7 +49,7 @@ Please follow the link below to access your app.
 Thanks!', 'disciple_tools' );
                     ?>
                     <label for="bulk_send_app_subject"><?php echo esc_html__( 'Configure email subject', 'disciple_tools' ); ?></label>
-                    <input type="text" id="bulk_send_app_subject" value="<?php echo esc_attr( $default_subject ); ?>" />
+                    <input type="text" id="bulk_send_app_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
 
                     <span><?php echo esc_html__( '{{app}} will be replaced with the selected app name.', 'disciple_tools' ); ?></span><br><br>
 
@@ -58,13 +58,13 @@ Thanks!', 'disciple_tools' );
                     <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
                     <ul>
                         <li><span
-                                style="font-weight: bold;">{{app}}</span>: <?php echo esc_html__( 'Selected app name, set just before the above message is sent.', 'disciple_tools' ); ?>
+                                style="font-weight: bold;">{{app}}</span>: <?php echo esc_html__( 'Selected app name', 'disciple_tools' ); ?>
                         </li>
                         <li><span
-                                style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Record name being processed.', 'disciple_tools' ); ?>
+                                style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Name of the Record', 'disciple_tools' ); ?>
                         </li>
                         <li><span
-                                style="font-weight: bold;">{{link}}</span>: <?php echo esc_html__( 'Unique link to access app form.', 'disciple_tools' ); ?>
+                                style="font-weight: bold;">{{link}}</span>: <?php echo esc_html__( 'Unique link to access the app.', 'disciple_tools' ); ?>
                         </li>
                     </ul>
                 </div>
