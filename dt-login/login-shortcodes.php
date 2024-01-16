@@ -12,11 +12,14 @@ add_shortcode( 'dt_firebase_login_ui', 'dt_firebase_login_ui' );
 function dt_firebase_login_ui( $atts ) {
 
     $default_lang = 'en';
+    $default_redirect_to = DT_Login_Fields::get( 'redirect_url' );
     $atts = shortcode_atts( [
         'lang_code' => $default_lang,
+        'redirect_to' => $default_redirect_to,
     ], $atts );
 
     $lang_code = $atts['lang_code'];
+    $redirect_to = $lang_code;
 
     if ( !in_array( $lang_code, dt_login_firebase_supported_languages() ) ) {
         $lang_code = $default_lang;
@@ -31,7 +34,7 @@ function dt_firebase_login_ui( $atts ) {
     $config['api_key'] = DT_Login_Fields::get( 'firebase_api_key' );
     $config['project_id'] = DT_Login_Fields::get( 'firebase_project_id' );
     $config['app_id'] = DT_Login_Fields::get( 'firebase_app_id' );
-    $config['redirect_url'] = DT_Login_Fields::get( 'redirect_url' );
+    $config['redirect_url'] = $redirect_to;
     $config['ui_smallprint'] = DT_Login_Fields::get( 'ui_smallprint' );
     $config['tos_url'] = DT_Login_Fields::get( 'tos_url' ) ? DT_Login_Fields::get( 'tos_url' ) : '';
     $config['privacy_url'] = DT_Login_Fields::get( 'privacy_url' ) ? DT_Login_Fields::get( 'privacy_url' ) : '';
