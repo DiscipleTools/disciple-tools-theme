@@ -1107,7 +1107,7 @@
         // Package accordingly based on field type.
         switch ( type ) {
           case 'text': {
-            search_query.push({[field]: value});
+            search_query.push({[field]: [value]});
             break;
           }
           case 'communication_channel': {
