@@ -2716,10 +2716,12 @@
 
     $('#bulk_send_app_submit-spinner').addClass('active')
 
+    let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">See queue</a>`;
+
     window.makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, subject: subject, note: note, post_ids: queue } )
       .done( data => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
-        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
+        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : '' }<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
         $('#bulk_edit_master_checkbox').prop("checked", false);
         $('.bulk_edit_checkbox input').prop("checked", false);
         bulk_edit_count()
