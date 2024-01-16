@@ -321,27 +321,13 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         $this->box( 'bottom' );
     }
 
-    private function determine_uploaded_config_setting_keys( $uploaded_config ) {
+    private function determine_uploaded_config_setting_keys( $uploaded_config ): array{
         $uploaded_config_setting_keys = [];
         if ( isset( $uploaded_config['dt_settings'] ) ) {
-            foreach ( array_keys( $uploaded_config['dt_settings'] ) as $key ) {
-                if ( isset( $uploaded_config['dt_settings'][$key]['values'] ) ) {
-                    switch ( $key ) {
-                        case 'dt_tiles_settings':
-                        case 'dt_tiles_custom_settings':
-                            $uploaded_config_setting_keys['tiles_settings_key'] = $key;
-                            break;
-                        case 'dt_fields_settings':
-                        case 'dt_fields_custom_settings':
-                            $uploaded_config_setting_keys['fields_settings_key'] = $key;
-                            break;
-                        case 'dt_post_types_settings':
-                        case 'dt_post_types_custom_settings':
-                            $uploaded_config_setting_keys['post_types_settings_key'] = $key;
-                            break;
-                    }
-                }
-            }
+            $uploaded_config_setting_keys['type'] = $uploaded_config['dt_settings']['type'] ?? 'custom';
+            $uploaded_config_setting_keys['tiles_settings_key'] = 'dt_tiles_settings';
+            $uploaded_config_setting_keys['fields_settings_key'] = 'dt_fields_settings';
+            $uploaded_config_setting_keys['post_types_settings_key'] = 'dt_post_types_settings';
         }
 
         return $uploaded_config_setting_keys;
@@ -480,10 +466,10 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                 </tr>
                 <tr>
                     <td style="width: 30%;">
-                        <span style="font-weight: bold;">Import Tiles & Fields</span>
+                        <span style="font-weight: bold;">Import Record Type Settings</span>
                     </td>
                     <td style="text-align: left;">
-                        <input  id="dt_import_details_tiles_fields_checkbox"
+                        <input  id="dt_import_details_record_type_settings_checkbox"
                                 type="checkbox"
                                 data-post_type=""/>
                     </td>

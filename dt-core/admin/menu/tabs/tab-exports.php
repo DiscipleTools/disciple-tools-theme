@@ -121,14 +121,11 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                         // Package export payload accordingly, based on incoming service id.
                         switch ( $service_id ) {
                             case 'export_all':
+                            case 'export_custom':
+                                $downloadable['dt_settings']['type'] = ( $service_id === 'export_all' ) ? 'all' : 'custom';
                                 $downloadable['dt_settings']['dt_tiles_settings']['values'] = $this->process_export_all_tiles();
                                 $downloadable['dt_settings']['dt_fields_settings']['values'] = $this->process_export_all_fields();
                                 $downloadable['dt_settings']['dt_post_types_settings']['values'] = $this->process_export_all_post_types();
-                                break;
-                            case 'export_custom':
-                                $downloadable['dt_settings']['dt_tiles_custom_settings']['values'] = $this->process_export_all_tiles();
-                                $downloadable['dt_settings']['dt_fields_custom_settings']['values'] = $this->process_export_all_fields();
-                                $downloadable['dt_settings']['dt_post_types_custom_settings']['values'] = $this->process_export_custom_post_types();
                                 break;
                             case 'export_plugins':
                                 $downloadable['site_meta']['plugins'] = $this->process_export_plugins();
@@ -199,24 +196,6 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
         }
 
         return $post_types;
-    }
-
-    private function process_export_custom_post_types(): array {
-        $custom_post_types = [];
-        foreach ( DT_Posts::get_post_types() as $post_type ) {
-            if ( !isset( $custom_post_types[$post_type] ) ) {
-
-                // Trim custom post types accordingly; removing entries (tiles & fields) typically exported in other functions.
-                $post_type_settings = DT_Posts::get_post_settings( $post_type, false, );
-                if ( isset( $post_type_settings['is_custom'] ) && $post_type_settings['is_custom'] === true ) {
-                    unset( $post_type_settings['tiles'] );
-                    unset( $post_type_settings['fields'] );
-                    $custom_post_types[$post_type] = $post_type_settings;
-                }
-            }
-        }
-
-        return $custom_post_types;
     }
 
     private function process_export_plugins(): array {
