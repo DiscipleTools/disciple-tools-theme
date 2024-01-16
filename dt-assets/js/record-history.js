@@ -226,6 +226,8 @@ jQuery(document).ready(function ($) {
     let timestamp_formatted = window.moment.unix(parseInt(timestamp)).format(date_format_long);
     let confirm_text = window.SHAREDFUNCTIONS.escapeHTML(window.record_history_settings.translations.revert_confirm_text).replace('%s', timestamp_formatted);
     if (confirm(confirm_text)) {
+      const progress_spinner = $('#record_history_progress_spinner');
+      $(progress_spinner).addClass('active');
 
       // On confirmation, start revert process
       if (post && post['post_type'] && post['ID']) {
@@ -236,12 +238,14 @@ jQuery(document).ready(function ($) {
           extra_meta: false
 
         }).then(result => {
+          $(progress_spinner).removeClass('active');
 
           // Refresh record view
           window.location = window.record_history_settings.site_url + post['post_type'] + '/' + post['ID'];
 
         }).fail(failure => {
           console.log(failure);
+          $(progress_spinner).removeClass('active');
 
           // Display detected exception text before returning back to post type record.
           if (failure['responseText']) {
