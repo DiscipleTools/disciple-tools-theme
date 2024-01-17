@@ -171,10 +171,6 @@ class Disciple_Tools_Magic_Endpoints
 
             // set subject, avoiding DT prefix duplicates.
             $subject = $params['subject'] ?? $name;
-            $email_base_subject = dt_get_option( 'dt_email_base_subject' );
-            if ( substr( $subject, 0, strlen( $email_base_subject ) ) === $email_base_subject ) {
-                $subject = str_replace( [ $email_base_subject, ':' ], [ '', '' ], $subject );
-            }
             $subject = str_replace( '{{app}}', $name, $subject );
 
             // set final message shape.
@@ -194,7 +190,7 @@ class Disciple_Tools_Magic_Endpoints
 
             // send email
             foreach ( $emails as $email ) {
-                $sent = dt_send_email( $email, $subject, $message_plain_text );
+                $sent = dt_send_email( $email, $subject, $message_plain_text, false );
                 if ( is_wp_error( $sent ) || ! $sent ) {
                     $errors[$post_id] = $sent;
                 }
