@@ -909,17 +909,21 @@ dt_please_log_in();
                                                placeholder="<?php echo esc_html_x( 'Filter By Value', 'The value to be searched for', 'disciple_tools' ) ?>" />
 
                                         <p>
-                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s With %2$s Set', 'All Contacts with set field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
-                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-with-set-value" data-field="<?php echo esc_html( $field ) ?>" />
-                                            </label>
-                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s Without %2$s Set', 'All Contacts without set field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
-                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-set-value" data-field="<?php echo esc_html( $field ) ?>" />
-                                            </label>
-                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s With %2$s Filtered Value', 'All Contacts with filtered value', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            <label>
                                                 <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-with-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s with %2$s filtered value', 'All Contacts with filtered value', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
                                             </label>
-                                            <label><?php echo esc_html( sprintf( _x( 'All %1$s Without %2$s Filtered Value', 'All Contacts without filtered value', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            <label>
                                                 <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s without %2$s filtered value', 'All Contacts without filtered value', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                            <label>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-with-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s with any value in %2$s', 'All Contacts with any value in field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                            <label>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s with no value in %2$s', 'All Contacts with no value in field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
                                             </label>
                                         </p>
                                     <?php endif; ?>

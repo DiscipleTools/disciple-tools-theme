@@ -1086,6 +1086,10 @@
         let filter = $('#' + field + '_text_comms_filter').val();
 
         switch ( $('.filter-by-text-comms-option:checked').val() ) {
+          case 'all-with-set-value': {
+            value = '-*';
+            break;
+          }
           case 'all-without-set-value': {
             value = '^';
             break;
@@ -1099,7 +1103,7 @@
             break;
           }
           default: {
-            value = '-*';
+            value = filter;
             break;
           }
         }
@@ -1353,13 +1357,33 @@
       let filter_text_field = $('#' + field + '_text_comms_filter');
       $(filter_text_field).prop('disabled', ['all-with-set-value', 'all-without-set-value'].includes(id));
 
-      // Reset all previous related filter labels.
-      remove_all_filter_labels(field);
+      // Ensure duplicates are avoided.
+      const existing_label = new_filter_labels.find((label) => ( label['id'] === id ) && ( label['field'] === field ) );
+      if ( existing_label === undefined ) {
 
-      // Create new generic filter label.
-      const {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
-      selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`);
-      new_filter_labels.push(newLabel);
+        // Identify stale labels to be deleted.
+        let removed_old_filter_labels = [];
+        $.each(new_filter_labels, function(idx, label){
+          if ( label['field'] === field ) {
+            if ( !( label['id'] === id ) ) {
+              removed_old_filter_labels.push( label );
+            }
+          }
+        });
+
+        // Removed stale labels.
+        window.lodash.pullAll(new_filter_labels, removed_old_filter_labels);
+
+        // Remove associated ui labels.
+        $.each(removed_old_filter_labels, function(idx, label) {
+          $(selected_filters).find(`.current-filter[data-id="${label['id']}"].${label['field']}`).remove();
+        });
+
+        // Create new generic filter label.
+        const {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
+        selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`);
+        new_filter_labels.push(newLabel);
+      }
     }
   }
 
@@ -1776,11 +1800,35 @@
 
   $('#filter-tabs').on('change.zf.tabs', function (a, b) {
     let field = $(b).data("field")
+    const panel = $(`#${field}.tabs-panel`);
     $(`.tabs-panel`).removeClass('is-active')
-    $(`#${field}.tabs-panel`).addClass('is-active')
+    $(panel).addClass('is-active')
     if (field && window.Typeahead[`.js-typeahead-${field}`]) {
       window.Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
+
+    /*console.log(new_filter_labels);
+    // Ensure to assign default settings accordingly.
+    let field_settings = window.lodash.get( list_settings, `post_type_settings.fields.${field}` );
+    if ( field_settings && field_settings['type'] ) {
+      switch ( field_settings['type'] ) {
+        case 'text':
+        case 'communication_channel': {
+          const checked_options = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const existing_label = new_filter_labels.find((label) => ( label['field'] === field ) );
+
+          // Only apply default settings if unable to detect and previous selections.
+          if ( ( checked_options.length === 0 ) && ( existing_label === undefined ) ) {
+            const default_option = $(panel).find(`.filter-by-text-comms-option[value="all-with-filtered-value"]`);
+            if ( default_option ) {
+              $(default_option).prop('checked', true);
+              $(default_option).trigger('click');
+            }
+          }
+          break;
+        }
+      }
+    }*/
   })
 
   //watch all other checkboxes
