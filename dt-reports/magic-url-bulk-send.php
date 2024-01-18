@@ -38,8 +38,35 @@ function dt_post_bulk_list_section_apps( $post_type ){
                 echo sprintf( esc_html__( 'Select all the %1$s to whom you want to send app links.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
             <div class="grid-x grid-margin-x">
                 <div class="cell">
-                    <label for="bulk_send_app_note"><?php echo esc_html__( 'Add optional greeting', 'disciple_tools' ); ?></label>
-                    <input type="text" id="bulk_send_app_note" placeholder="<?php echo esc_html__( 'Add short greeting to be added above the app link.', 'disciple_tools' ); ?>" />
+                    <?php
+                    $default_subject = dt_get_option( 'dt_email_base_subject' ) . ': {{app}}';
+                    $default_message = __( 'Hello {{name}},
+
+Please follow the link below to access your app.
+
+{{app}}: {{link}}
+
+Thanks!', 'disciple_tools' );
+                    ?>
+                    <label for="bulk_send_app_subject"><?php echo esc_html__( 'Configure email subject', 'disciple_tools' ); ?></label>
+                    <input type="text" id="bulk_send_app_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
+
+                    <span><?php echo esc_html__( '{{app}} will be replaced with the selected app name.', 'disciple_tools' ); ?></span><br><br>
+
+                    <label for="bulk_send_app_msg"><?php echo esc_html__( 'Configure email message', 'disciple_tools' ); ?></label>
+                    <textarea type="text" id="bulk_send_app_msg" rows="10"><?php echo esc_textarea( $default_message ); ?></textarea>
+                    <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
+                    <ul>
+                        <li><span
+                                style="font-weight: bold;">{{app}}</span>: <?php echo esc_html__( 'Selected app name', 'disciple_tools' ); ?>
+                        </li>
+                        <li><span
+                                style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Name of the Record', 'disciple_tools' ); ?>
+                        </li>
+                        <li><span
+                                style="font-weight: bold;">{{link}}</span>: <?php echo esc_html__( 'Unique link to access the app.', 'disciple_tools' ); ?>
+                        </li>
+                    </ul>
                 </div>
                 <div class="cell">
                     <label for="bulk_send_app_required_selection"><?php echo esc_html__( 'Select app to email', 'disciple_tools' ); ?></label>

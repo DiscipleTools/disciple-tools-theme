@@ -169,14 +169,28 @@ class Disciple_Tools_Magic_Endpoints
                 $note = $params['note'];
             }
 
-            $subject = $name;
-            $message_plain_text = $note . '
+            // set subject, avoiding DT prefix duplicates.
+            $subject = $params['subject'] ?? $name;
+            $subject = str_replace( '{{app}}', $name, $subject );
 
-'           . $name . ': ' . $link;
+            // set final message shape.
+            $message_plain_text = str_replace(
+                [
+                    '{{name}}',
+                    '{{app}}',
+                    '{{link}}'
+                ],
+                [
+                    $post_record['name'] ?? '',
+                    $name,
+                    $link
+                ],
+                $note
+            );
 
             // send email
             foreach ( $emails as $email ) {
-                $sent = dt_send_email( $email, $subject, $message_plain_text );
+                $sent = dt_send_email( $email, $subject, $message_plain_text, false );
                 if ( is_wp_error( $sent ) || ! $sent ) {
                     $errors[$post_id] = $sent;
                 }
