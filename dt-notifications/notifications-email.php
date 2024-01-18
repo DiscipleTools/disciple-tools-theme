@@ -31,7 +31,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return bool|\WP_Error
  */
-function dt_send_email( $email, $subject, $message_plain_text ) {
+function dt_send_email( $email, $subject, $message_plain_text, $subject_prefix = true ) {
 
     /**
      * Filter for development use.
@@ -56,7 +56,9 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     $subject = sanitize_text_field( $subject );
     $message_plain_text = sanitize_textarea_field( $message_plain_text );
 
-    $subject = dt_get_option( 'dt_email_base_subject' ) . ': ' . $subject;
+    if ( $subject_prefix ) {
+        $subject = dt_get_option( 'dt_email_base_subject' ) . ': ' . $subject;
+    }
 
     $user = get_user_by( 'email', $email );
     $continue = true;
