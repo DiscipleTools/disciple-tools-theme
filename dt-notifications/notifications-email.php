@@ -22,16 +22,20 @@ if ( !defined( 'ABSPATH' ) ) {
  * dt_send_email(
  *     'recipients@email.com',
  *     'subject line',
- *     'content of the message'
+ *     'content of the message',
+ *      true,
+ *      true
  * );
  *
  * @param $email
  * @param $subject
- * @param $message_plain_text
+ * @param $message
+ * @param bool $subject_prefix
+ * @param string $content_type
  *
  * @return bool|\WP_Error
  */
-function dt_send_email( $email, $subject, $message_plain_text, $subject_prefix = true ) {
+function dt_send_email( $email, $subject, $message, bool $subject_prefix = true, string $content_type = 'text' ): WP_Error|bool {
 
     /**
      * Filter for development use.
@@ -43,7 +47,7 @@ function dt_send_email( $email, $subject, $message_plain_text, $subject_prefix =
         $print_email = [];
         $print_email['email'] = $email;
         $print_email['subject'] = $subject;
-        $print_email['message'] = $message_plain_text;
+        $print_email['message'] = $message;
 
         dt_write_log( __METHOD__ );
         dt_write_log( $print_email );
@@ -54,7 +58,10 @@ function dt_send_email( $email, $subject, $message_plain_text, $subject_prefix =
     // Sanitize
     $email = sanitize_email( $email );
     $subject = sanitize_text_field( $subject );
-    $message_plain_text = sanitize_textarea_field( $message_plain_text );
+
+    if ( $content_type === 'text' ) {
+        $message = sanitize_textarea_field( $message );
+    }
 
     if ( $subject_prefix ) {
         $subject = dt_get_option( 'dt_email_base_subject' ) . ': ' . $subject;
@@ -66,20 +73,27 @@ function dt_send_email( $email, $subject, $message_plain_text, $subject_prefix =
     if ( $user && in_array( 'registered', $user->roles ) && sizeof( $user->roles ) === 1 ){
         $continue = false;
     }
-    $continue = apply_filters( 'dt_sent_email_check', $continue, $email, $subject, $message_plain_text );
+    $continue = apply_filters( 'dt_sent_email_check', $continue, $email, $subject, $message );
     if ( !$continue ){
         return false;
     }
     $is_sent = true;
+
+    // Define any required headers.
+    $headers = [];
+
+    if ( $content_type === 'html' ) {
+        $headers[] = 'Content-Type: text/html; charset=UTF-8';
+    }
 
     /**
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
      */
     if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON && !( defined( 'WP_DEBUG' ) && WP_DEBUG ) ){
-        wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
+        wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message, $headers ) );
     } else {
-        $is_sent = wp_mail( $email, $subject, $message_plain_text );
+        $is_sent = wp_mail( $email, $subject, $message, $headers );
     }
 
     return $is_sent;
@@ -219,24 +233,26 @@ class DT_Send_Email_Job extends Job{
     public $email_address;
     public $email_message;
     public $email_subject;
+    public $email_headers;
 
     /**
      * Subscribe_User_Job constructor.
      *
      * @param int $user_id
      */
-    public function __construct( $user_id, $email_address, $email_subject, $email_message ){
+    public function __construct( $user_id, $email_address, $email_subject, $email_message, $email_headers ){
         $this->user_id = $user_id;
         $this->email_address = $email_address;
         $this->email_message = $email_message;
         $this->email_subject = $email_subject;
+        $this->email_headers = $email_headers;
     }
 
     /**
      * Handle job logic.
      */
     public function handle(){
-        wp_mail( $this->email_address, $this->email_subject, $this->email_message );
+        wp_mail( $this->email_address, $this->email_subject, $this->email_message, $this->email_headers );
     }
 }
 
