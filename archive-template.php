@@ -906,6 +906,8 @@ dt_please_log_in();
                                     <?php elseif ( isset( $field_options[$field] ) && in_array( $field_options[$field]['type'], [ 'text', 'communication_channel' ] ) ) : ?>
                                         <input id="<?php echo esc_html( $field ) ?>_text_comms_filter"
                                                type="text"
+                                               class="text-comms-filter-input"
+                                               data-field="<?php echo esc_html( $field ) ?>"
                                                placeholder="<?php echo esc_html_x( 'Filter By Value', 'The value to be searched for', 'disciple_tools' ) ?>" />
 
                                         <p>

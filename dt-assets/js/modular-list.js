@@ -1341,6 +1341,33 @@
 
   $('.all-without-connections').on("click", without_connections_handler)
 
+  $('.text-comms-filter-input').on("keyup", function (e) {
+
+    // Ensure to assign default settings accordingly.
+    const field = $(e.target).data('field');
+    const panel = $(`#${field}.tabs-panel`);
+    const field_settings = window.lodash.get( list_settings, `post_type_settings.fields.${field}` );
+    if ( panel && field_settings && field_settings['type'] ) {
+      switch ( field_settings['type'] ) {
+        case 'text':
+        case 'communication_channel': {
+          const checked_options = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const existing_label = new_filter_labels.find((label) => ( label['field'] === field ) );
+
+          // Only apply default settings if unable to detect and previous selections.
+          if ( ( checked_options.length === 0 ) && ( existing_label === undefined ) ) {
+            const default_option = $(panel).find(`.filter-by-text-comms-option[value="all-with-filtered-value"]`);
+            if ( default_option ) {
+              $(default_option).prop('checked', true);
+              $(default_option).trigger('click');
+            }
+          }
+          break;
+        }
+      }
+    }
+  });
+
   $('.filter-by-text-comms-option').on("click", function (e) {
     handle_filter_by_text_comms( {
       id: $(this).val(),
@@ -1806,29 +1833,6 @@
     if (field && window.Typeahead[`.js-typeahead-${field}`]) {
       window.Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
-
-    /*console.log(new_filter_labels);
-    // Ensure to assign default settings accordingly.
-    let field_settings = window.lodash.get( list_settings, `post_type_settings.fields.${field}` );
-    if ( field_settings && field_settings['type'] ) {
-      switch ( field_settings['type'] ) {
-        case 'text':
-        case 'communication_channel': {
-          const checked_options = $(panel).find(`.filter-by-text-comms-option:checked`);
-          const existing_label = new_filter_labels.find((label) => ( label['field'] === field ) );
-
-          // Only apply default settings if unable to detect and previous selections.
-          if ( ( checked_options.length === 0 ) && ( existing_label === undefined ) ) {
-            const default_option = $(panel).find(`.filter-by-text-comms-option[value="all-with-filtered-value"]`);
-            if ( default_option ) {
-              $(default_option).prop('checked', true);
-              $(default_option).trigger('click');
-            }
-          }
-          break;
-        }
-      }
-    }*/
   })
 
   //watch all other checkboxes
