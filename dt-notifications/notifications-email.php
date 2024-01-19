@@ -35,7 +35,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return bool|\WP_Error
  */
-function dt_send_email( $email, $subject, $message, bool $subject_prefix = true, string $content_type = 'text' ): WP_Error|bool {
+function dt_send_email( $email, $subject, $message, bool $subject_prefix = true, string $content_type = 'text' ) {
 
     /**
      * Filter for development use.
