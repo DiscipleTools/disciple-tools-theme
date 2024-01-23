@@ -83,6 +83,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             /* Update Required */
             if ( isset( $modules['access_module']['enabled'] ) && $modules['access_module']['enabled'] ){
+
+                /* Translation Dialog */
+                dt_display_translation_dialog();
+
                 $this->box( 'top', 'Update Needed Triggers' );
                 $this->process_update_required();
                 $this->update_required_options();
@@ -345,6 +349,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST[$option_index . '_comment'] ) ){
                     $site_options['update_required']['options'][$option_index]['comment'] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . '_comment'] ) ) );
                 }
+                if ( isset( $_POST[$option_index . '_comment_translations'] ) ){
+                    $translations = [];
+                    $uploaded_translations = dt_recursive_sanitize_array( $_POST[$option_index . '_comment_translations'] );
+                    foreach ( $uploaded_translations ?? [] as $lang_key => $translation ) {
+                        if ( !empty( $translation ) ) {
+                            $translations[$lang_key] = sanitize_text_field( wp_unslash( $translation ) );
+                        }
+                    }
+                    $site_options['update_required']['options'][$option_index]['comment_translations'] = $translations;
+                }
             }
             update_option( 'dt_site_options', $site_options, true );
         }
@@ -365,6 +379,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST[$option_index . '_comment'] ) ){
                     $site_options['group_update_required']['options'][$option_index]['comment'] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . '_comment'] ) ) );
                 }
+                if ( isset( $_POST[$option_index . '_comment_translations'] ) ){
+                    $translations = [];
+                    $uploaded_translations = dt_recursive_sanitize_array( $_POST[$option_index . '_comment_translations'] );
+                    foreach ( $uploaded_translations ?? [] as $lang_key => $translation ) {
+                        if ( !empty( $translation ) ) {
+                            $translations[$lang_key] = sanitize_text_field( wp_unslash( $translation ) );
+                        }
+                    }
+                    $site_options['group_update_required']['options'][$option_index]['comment_translations'] = $translations;
+                }
             }
             update_option( 'dt_site_options', $site_options, true );
         }
@@ -374,6 +398,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $site_options            = dt_seeker_path_triggers_capture_pre_existing_options( dt_get_option( 'dt_site_options' ) );
         $update_required_options = $site_options['update_required']['options'];
         $field_options           = DT_Posts::get_post_field_settings( 'contacts' );
+        $available_languages = dt_get_available_languages();
         ?>
         <h3><?php esc_html_e( 'Contacts', 'disciple_tools' ) ?></h3>
         <form method="post" name="update_required-form">
@@ -408,6 +433,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <th><?php esc_html_e( 'Seeker Path', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Days to wait', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Comment', 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( 'Comment Translations', 'disciple_tools' ) ?></th>
                     </tr>
                 </thead>
 
@@ -428,6 +454,31 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                     <td>
                                         <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
                                                   style="width:100%"><?php echo esc_html( $option['comment'] ) ?></textarea>
+                                    </td>
+                                    <td>
+                                        <button class="button small expand_translations"
+                                                style="min-width: 100%;"
+                                                data-form_name="update_required-form"
+                                                data-source="update_needed_triggers">
+                                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                                            (<span><?php echo esc_html( count( $option['comment_translations'] ) ); ?></span>)
+                                        </button>
+                                        <div class="translation_container hide">
+                                            <table>
+                                                <?php foreach ( $available_languages as $lang => $val ) : ?>
+                                                    <tr>
+                                                        <td><label
+                                                                for="<?php echo esc_html( $option_key ) ?>_comment_translations[<?php echo esc_html( $val['language'] ) ?>]"><?php echo esc_html( $val['native_name'] ) ?></label>
+                                                        </td>
+                                                        <td><input
+                                                                name="<?php echo esc_html( $option_key ) ?>_comment_translations[<?php echo esc_html( $val['language'] ) ?>]"
+                                                                type="text"
+                                                                value="<?php echo esc_html( $option['comment_translations'][$val['language']] ?? '' ); ?>"/>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </table>
+                                        </div>
                                     </td>
                                 </tr>
                                 <?php
@@ -462,6 +513,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <th><?php esc_html_e( 'Group Status', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Days to wait', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Comment', 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( 'Comment Translations', 'disciple_tools' ) ?></th>
                     </tr>
                 </thead>
                 <?php foreach ( $update_required_options as $option_key => $option ) : ?>
@@ -474,6 +526,31 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <td>
                             <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
                                       style="width:100%"><?php echo esc_html( $option['comment'] ) ?></textarea>
+                        </td>
+                        <td>
+                            <button class="button small expand_translations"
+                                    style="min-width: 100%;"
+                                    data-form_name="group_update_required-form"
+                                    data-source="update_needed_triggers">
+                                <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                                (<span><?php echo esc_html( count( $option['comment_translations'] ) ); ?></span>)
+                            </button>
+                            <div class="translation_container hide">
+                                <table>
+                                    <?php foreach ( $available_languages as $lang => $val ) : ?>
+                                        <tr>
+                                            <td><label
+                                                    for="<?php echo esc_html( $option_key ) ?>_comment_translations[<?php echo esc_html( $val['language'] ) ?>]"><?php echo esc_html( $val['native_name'] ) ?></label>
+                                            </td>
+                                            <td><input
+                                                    name="<?php echo esc_html( $option_key ) ?>_comment_translations[<?php echo esc_html( $val['language'] ) ?>]"
+                                                    type="text"
+                                                    value="<?php echo esc_html( $option['comment_translations'][$val['language']] ?? '' ); ?>"/>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
