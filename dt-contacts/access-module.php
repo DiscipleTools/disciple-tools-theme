@@ -699,7 +699,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                 if ( !isset( $existing_post['assigned_to'] ) || $fields['assigned_to'] !== $existing_post['assigned_to']['assigned-to'] ){
                     $user_id = dt_get_user_id_from_assigned_to( $fields['assigned_to'] );
                     if ( !isset( $fields['overall_status'] ) ){
-                        if ( $user_id != get_current_user_id() ){
+                        if ( isset( $existing_post['overall_status']['key'] ) && $existing_post['overall_status']['key'] === 'closed' ) {
+                            $fields['overall_status'] = 'closed';
+                        } elseif ( $user_id != get_current_user_id() ){
                             if ( current_user_can( 'assign_any_contacts' ) ) {
                                 $fields['overall_status'] = 'assigned';
                             }
