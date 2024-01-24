@@ -1362,6 +1362,19 @@
               $(default_option).trigger('click');
             }
           }
+
+          // Update label with latest filtered value.
+          const filtered_value = $(e.target).val();
+          const latest_checked_option = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const latest_existing_label = new_filter_labels.find( (label) => ( label['field'] === field ) );
+          if ( ( latest_checked_option.length === 1 ) && ( latest_existing_label !== undefined ) && ['all-with-filtered-value', 'all-without-filtered-value'].includes( $(latest_checked_option).val() ) ) {
+            const updated_label_text = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+            $(selected_filters).find(`.current-filter[data-id="${$(latest_checked_option).val()}"].${field}`).text( updated_label_text );
+
+            // Update global filter labels array.
+            const label_idx = new_filter_labels.findIndex( (label) => ( label['field'] === field ) );
+            new_filter_labels[label_idx]['name'] = updated_label_text;
+          }
           break;
         }
       }
@@ -1407,7 +1420,14 @@
         });
 
         // Create new generic filter label.
-        const {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
+        let {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
+
+        // Adjust label to reflect filtered text.
+        if ( ['all-with-filtered-value', 'all-without-filtered-value'].includes(id) ) {
+          let filtered_value = $(`#${field}_text_comms_filter`).val();
+          newLabel['name'] = filterName = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+        }
+
         selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`);
         new_filter_labels.push(newLabel);
       }
