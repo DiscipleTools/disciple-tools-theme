@@ -3090,7 +3090,7 @@
         let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
         let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
         csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
-        csv_download_link.href = "data:text/csv;charset=utf-8," + escape(csv);
+        csv_download_link.href = "data:text/csv;charset=utf-8," + csv;
         csv_download_link.click();
         csv_download_link.remove();
       }
