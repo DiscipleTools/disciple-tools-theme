@@ -198,6 +198,41 @@ class Disciple_Tools_Scripts extends Disciple_Tools_Abstract_Menu_Base {
             </tbody>
         </table>
         <?php
+        global $wpdb;
+        $orphaned_locations_count = $wpdb->get_var( "
+            SELECT postmeta_id_location_grid
+            FROM $wpdb->dt_location_grid_meta
+            LEFT JOIN $wpdb->postmeta pm ON ( pm.meta_id = postmeta_id_location_grid )
+            WHERE pm.meta_id IS NULL
+        ");
+        ?>
+
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th>Location Data</th>
+                <th>Field</th>
+                <th>Progress</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Orphaned Location Records</td>
+                    <td>
+                        <button type="button" class="data-clean-up-button" >
+                            Delete <?php echo esc_html( $orphaned_locations_count ); ?> Records
+                        </button>
+                    </td>
+                    <td class="progress">
+                        <span class="current"></span><span class="total"></span>
+                        <span class="loading-spinner"></span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <?php
 
         $this->box( 'bottom' );
     }

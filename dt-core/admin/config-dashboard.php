@@ -380,16 +380,6 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'link' => admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ),
         'complete' => (bool) $mapbox_key,
     ];
-    if ( $mapbox_key ) {
-        $mapbox_upgraded = DT_Mapbox_API::are_records_and_users_upgraded_with_mapbox();
-        $items['upgraded_mapbox_records'] = [
-            'label' => 'Upgrade Users and Record Mapping',
-            'description' => ' Please upgrade Users, Contacts and Groups for the Locations to show up on maps and charts.',
-            'link' => admin_url( 'admin.php?page=dt_mapping_module&tab=geocoding' ),
-            'complete' => $mapbox_upgraded,
-            'hide_mark_done' => true
-        ];
-    }
 
     $items['explore_user_invite'] = [
         'label' => 'Explore User Invite Area',
