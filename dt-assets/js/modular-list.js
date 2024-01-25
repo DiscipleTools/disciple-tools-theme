@@ -3078,7 +3078,7 @@
         csv_export.unshift(csv_headers);
 
         // Convert csv arrays into raw downloadable data.
-        const csv = csv_export.map(row => row.map(escapeCSV).join(',')).join('\r\n');
+        const csv = csv_export.map(row => row.map(item => window.SHAREDFUNCTIONS.escapeHTML(item)).join(',')).join('\r\n');
 
         // Finally, automatically execute a download of generated csv data.
         let csv_download_link = document.createElement('a');
@@ -3101,15 +3101,6 @@
       }
     });
   }
-
-  function escapeCSV(unsafe) {
-    return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
- }
 
   function recursively_fetch_posts(offset, limit, total, posts, callback = null) {
 
