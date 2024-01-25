@@ -193,21 +193,20 @@ class Disciple_Tools_Magic_Endpoints
 
             // send email
             foreach ( $emails as $email ) {
-                $sent = dt_send_email( $email, $subject, $message, false, 'html' );
-                if ( is_wp_error( $sent ) || ! $sent ) {
-                    $errors[$post_id] = $sent;
-                }
-                else {
-                    $success[$post_id] = $sent;
-                    dt_activity_insert( [
-                        'action'            => 'sent_app_link',
-                        'object_type'       => $params['post_type'],
-                        'object_subtype'    => 'email',
-                        'object_id'         => $post_id,
-                        'object_name'       => $post_record['title'],
-                        'object_note'       => $name . ' (app) sent to ' . $email,
-                    ] );
-                }
+                $headers = [
+                    'Content-Type: text/html; charset=UTF-8',
+                ];
+                $is_sent = dt_schedule_mail( $email, $subject, $message, $headers );
+
+                $success[$post_id] = $is_sent;
+                dt_activity_insert( [
+                    'action'            => 'sent_app_link',
+                    'object_type'       => $params['post_type'],
+                    'object_subtype'    => 'email',
+                    'object_id'         => $post_id,
+                    'object_name'       => $post_record['title'],
+                    'object_note'       => $name . ' (app) sent to ' . $email,
+                ] );
             }
         }
 
