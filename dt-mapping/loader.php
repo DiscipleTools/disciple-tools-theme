@@ -64,7 +64,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
             require_once( 'geocode-api/ipstack-api.php' );
             require_once( 'geocode-api/location-grid-geocoder.php' );
             require_once( 'geocode-api/mapbox-api.php' );
-            require_once( 'geocode-api/scheduled_tasks.php' );
+            require_once( 'geocode-api/scheduled-tasks.php' );
 
             /** Admin */
             require_once( 'mapping-admin.php' ); // can't filter for is_admin because of REST dependencies
