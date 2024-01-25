@@ -11,9 +11,6 @@ if ( ! wp_next_scheduled( 'dt_location_meta_create' ) ) {
 }
 
 function dt_location_meta_create(){
-    if ( dt_is_rest() ){
-        return;
-    }
     //check mapbox api key
     $mapbox_key = DT_Mapbox_API::get_key();
     if ( empty( $mapbox_key ) ){
@@ -75,8 +72,6 @@ function dt_location_meta_create(){
         $site_health['last_checked_location_grid'] = $new_last_checked_location_grid;
         update_option( 'dt_site_health', $site_health, false );
     }
-
-    $bob = 'bob';
 
     //users
     $geocoder = new Location_Grid_Geocoder();
