@@ -42,9 +42,9 @@ function dt_post_bulk_list_section_apps( $post_type ){
                     $default_subject = dt_get_option( 'dt_email_base_subject' ) . ': {{app}}';
                     $default_message = __( 'Hello {{name}},
 
-Please follow the link below to access your app.
+Please click on the button below to access your app.
 
-{{app}}: {{link}}
+{{link}}
 
 Thanks!', 'disciple_tools' );
                     ?>
