@@ -1087,7 +1087,7 @@
 
         switch ( $('.filter-by-text-comms-option:checked').val() ) {
           case 'all-with-set-value': {
-            value = '-*';
+            value = '*';
             break;
           }
           case 'all-without-set-value': {
