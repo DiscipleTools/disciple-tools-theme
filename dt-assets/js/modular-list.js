@@ -66,7 +66,7 @@
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
-      const currentFilter = { ID: filterID, query: query ?? {} }
+      const currentFilter = { ID: filterID, query: query || {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
@@ -418,6 +418,9 @@
       current_filter = window.lodash.find(list_settings.filters.filters, {ID: filter_id}) || window.lodash.find(list_settings.filters.filters, {ID: filter_id.toString()}) || current_filter
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
+    }
+    if ( current_filter.query === undefined ) {
+      current_filter.query = {}
     }
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
@@ -948,8 +951,8 @@
     loading_spinner.addClass("active");
     let query = current_filter.query
     if ( offset ){
-      query["offset"] = offset
-      query['limit'] = 500
+      query.offset = offset
+      query.limit = 500
     }
     if ( sort ){
       query.sort = sort

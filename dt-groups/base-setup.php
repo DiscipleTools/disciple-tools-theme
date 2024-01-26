@@ -990,7 +990,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'name' => __( 'All', 'disciple_tools' ),
                 'query' => [
                     'assigned_to' => [ 'me' ],
-                    'sort' => 'group_status'
                 ],
                 'count' => $total_my,
             ];
@@ -1003,7 +1002,6 @@ class DT_Groups_Base extends DT_Module_Base {
                         'query' => [
                             'assigned_to' => [ 'me' ],
                             'group_status' => [ $status_key ],
-                            'sort' => 'group_type'
                         ],
                         'count' => $status_counts[$status_key]
                     ];
@@ -1032,7 +1030,6 @@ class DT_Groups_Base extends DT_Module_Base {
                                         'assigned_to' => [ 'me' ],
                                         'group_status' => [ 'active' ],
                                         'group_type' => [ $group_type_key ],
-                                        'sort' => 'name'
                                     ],
                                     'count' => $active_counts[$group_type_key],
                                     'subfilter' => true
@@ -1069,9 +1066,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'ID' => 'all',
                 'tab' => 'all',
                 'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
-                'query' => [
-                    'sort' => 'group_type'
-                ],
                 'count' => $total_all
             ];
             $filters['filters'][] = [
@@ -1080,7 +1074,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'name' => sprintf( _x( 'Favorite %s', 'Favorite Contacts', 'disciple_tools' ), $post_label_plural ),
                 'query' => [
                     'fields' => [ 'favorite' => [ '1' ] ],
-                    'sort' => 'name'
                 ],
                 'labels' => [
                     [ 'id' => '1', 'name' => __( 'Favorite', 'disciple_tools' ) ]
@@ -1106,7 +1099,6 @@ class DT_Groups_Base extends DT_Module_Base {
                         'name' => $status_value['label'],
                         'query' => [
                             'group_status' => [ $status_key ],
-                            'sort' => 'group_type'
                         ],
                         'count' => $status_counts[$status_key]
                     ];
@@ -1133,7 +1125,6 @@ class DT_Groups_Base extends DT_Module_Base {
                                     'query' => [
                                         'group_status' => [ 'active' ],
                                         'group_type' => [ $group_type_key ],
-                                        'sort' => 'name'
                                     ],
                                     'count' => $active_counts[$group_type_key],
                                     'subfilter' => true
