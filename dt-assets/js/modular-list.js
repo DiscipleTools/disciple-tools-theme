@@ -66,7 +66,7 @@
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
-      const currentFilter = { ID: filterID, query: query ?? {} }
+      const currentFilter = { ID: filterID, query: query || {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
@@ -419,6 +419,9 @@
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
+    if ( current_filter.query === undefined ) {
+      current_filter.query = {}
+    }
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
 
@@ -621,7 +624,7 @@
   }
 
   function reset_sorting_in_table_header(currentFilter) {
-    let sort_field = window.lodash.get(currentFilter, "query.sort", "name");
+    let sort_field = window.lodash.get(currentFilter, "query.sort", "-post_date");
     //reset sorting in table header
     table_header_row.removeClass("sorting_asc");
     table_header_row.removeClass("sorting_desc");
@@ -948,8 +951,8 @@
     loading_spinner.addClass("active");
     let query = current_filter.query
     if ( offset ){
-      query["offset"] = offset
-      query['limit'] = 500
+      query.offset = offset
+      query.limit = 500
     }
     if ( sort ){
       query.sort = sort
