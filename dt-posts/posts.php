@@ -969,6 +969,10 @@ class Disciple_Tools_Posts
                             }
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
+
+                                if ( $field_type === 'text' ) {
+                                    $where_sql .= " OR $table_key.meta_value = '' ";
+                                }
                             }
                             foreach ( $query_value as $value_key => $value ){
                                 $index ++;

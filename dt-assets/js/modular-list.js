@@ -1091,7 +1091,7 @@
             break;
           }
           case 'all-without-set-value': {
-            value = '^';
+            value = null;
             break;
           }
           case 'all-with-filtered-value': {
@@ -1111,7 +1111,7 @@
         // Package accordingly based on field type.
         switch ( type ) {
           case 'text': {
-            search_query.push({[field]: [value]});
+            search_query.push({[field]: (value !== null) ? [value] : []});
             break;
           }
           case 'communication_channel': {
