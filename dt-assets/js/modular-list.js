@@ -3078,7 +3078,14 @@
         csv_export.unshift(csv_headers);
 
         // Convert csv arrays into raw downloadable data.
-        const csv = csv_export.map(row => row.map(item => window.SHAREDFUNCTIONS.escapeHTML(item)).join(',')).join('\r\n');
+        const csv = csv_export.map(row => row.map((item) => {
+          let escapeditem = item;
+          //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
+          if (item.includes('"')) {
+            escapeditem = item.replace('"', '""')
+          }
+          return `"${escapeditem}"`;
+        })).join('\r\n');
 
         // Finally, automatically execute a download of generated csv data.
         let csv_download_link = document.createElement('a');
