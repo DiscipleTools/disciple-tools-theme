@@ -3081,7 +3081,7 @@
         const csv = csv_export.map(row => row.map((item) => {
           let escapeditem = item;
           //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
-          if (item.includes('"')) {
+          if (String(item).includes('"')) {
             escapeditem = item.replace('"', '""')
           }
           return `"${escapeditem}"`;
