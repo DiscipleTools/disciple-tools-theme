@@ -1110,14 +1110,9 @@
 
         // Package accordingly based on field type.
         switch ( type ) {
-          case 'text': {
-            search_query.push({[field]: (value !== null) ? [value] : []});
-            break;
-          }
+          case 'text':
           case 'communication_channel': {
-            search_query.push({[field]: [{
-              'value': (value !== null) ? value : []
-              }]});
+            search_query.push({[field]: (value !== null) ? [value] : []});
             break;
           }
         }
