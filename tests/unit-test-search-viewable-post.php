@@ -202,22 +202,22 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
          */
         $phone_contact = DT_Posts::create_post( 'contacts', [ 'name' => 'x', 'contact_phone' => [ 'values' => [ [ 'value' => '798456781' ] ] ] ], true, false );
         $this->assertNotWPError( $phone_contact );
-        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ '798456780' ] ], false );
+        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ] ], false );
         $this->assertContains( $sample_contact['ID'], $this->map_ids( $phone['posts'] ) );
-        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ '79845678' ] ], false );
+        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ 'values' => [ [ 'value' => '79845678' ] ] ] ], false );
         $this->assertContains( $phone_contact['ID'], $this->map_ids( $phone['posts'] ) );
-        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ '-798456780' ] ], false );
+        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ 'values' => [ [ 'value' => '-798456780' ] ] ] ], false );
         $this->assertNotContains( $sample_contact['ID'], $this->map_ids( $phone['posts'] ) );
-        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ '^798456780' ] ], false );
+        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ 'values' => [ [ 'value' => '^798456780' ] ] ] ], false );
         $this->assertContains( $sample_contact['ID'], $this->map_ids( $phone['posts'] ) );
-        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ '^79845678' ] ], false );
+        $phone = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ 'values' => [ [ 'value' => '^79845678' ] ] ] ], false );
         $this->assertNotContains( $sample_contact['ID'], $this->map_ids( $phone['posts'] ) );
         //search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [] ], false );
         $this->assertContains( $empty_contact['ID'], $this->map_ids( $res['posts'] ) );
         $this->assertNotContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
         //bad request
-        $res = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => '79845678' ], false );
+        $res = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ 'values' => [ 'value' => '79845678' ] ] ], false );
         $this->assertWPError( $res );
 
 
