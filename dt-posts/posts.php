@@ -967,11 +967,13 @@ class Disciple_Tools_Posts
                             if ( !is_array( $query_value ) ){
                                 return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
-                            if ( empty( $query_value ) ){
+                            if ( empty( $query_value ) || ( ( $field_type === 'communication_channel' ) && empty( $query_value[0]['value'] ) ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
+                                $where_sql .= " OR $table_key.meta_value = '' ";
 
-                                if ( $field_type === 'text' ) {
-                                    $where_sql .= " OR $table_key.meta_value = '' ";
+                                // Convert to empty array to avoid below loops.
+                                if ( $field_type === 'communication_channel' ) {
+                                    $query_value = [];
                                 }
                             }
                             foreach ( $query_value as $value_key => $value ){

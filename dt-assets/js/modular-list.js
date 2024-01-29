@@ -1116,7 +1116,7 @@
           }
           case 'communication_channel': {
             search_query.push({[field]: [{
-              'value': value
+              'value': (value !== null) ? value : []
               }]});
             break;
           }
