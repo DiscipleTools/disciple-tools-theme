@@ -1041,7 +1041,7 @@
     })
     let filterRow = $(`<label class='list-view ${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}'>`).append(`
       <input type="radio" name="view" value="custom_filter" data-id="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${window.SHAREDFUNCTIONS.escapeHTML( name )}
+        ${window.SHAREDFUNCTIONS.decodeHTML( name )}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
