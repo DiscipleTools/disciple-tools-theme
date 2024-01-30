@@ -1470,6 +1470,7 @@ class Disciple_Tools_Posts
         $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c left join $wpdb->commentmeta cm on cm.comment_id = c.comment_ID WHERE c.comment_post_ID = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_location_grid_meta WHERE post_id = %s AND post_type = %s", $post_id, $post_type ) );
 
         dt_activity_insert( [
             'action' => 'record_deleted',
