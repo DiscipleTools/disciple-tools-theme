@@ -1041,7 +1041,7 @@
     })
     let filterRow = $(`<label class='list-view ${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}'>`).append(`
       <input type="radio" name="view" value="custom_filter" data-id="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${name}
+        ${window.SHAREDFUNCTIONS.escapeHTML(name)}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
@@ -1113,7 +1113,7 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = window.SHAREDFUNCTIONS.escapeHTML( $('#new-filter-name').val() )
+    let filterName = $('#new-filter-name').val()
     reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
