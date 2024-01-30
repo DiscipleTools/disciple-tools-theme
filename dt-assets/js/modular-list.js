@@ -1341,7 +1341,7 @@
     // Ensure to assign default settings accordingly.
     const field = $(e.target).data('field');
     const panel = $(`#${field}.tabs-panel`);
-    const field_settings = window.lodash.get( list_settings, `post_type_settings.fields.${field}` );
+    const field_settings = list_settings?.post_type_settings?.fields[field];
     if ( panel && field_settings && field_settings['type'] ) {
       switch ( field_settings['type'] ) {
         case 'text':
@@ -1398,7 +1398,7 @@
 
         // Identify stale labels to be deleted.
         let removed_old_filter_labels = [];
-        $.each(new_filter_labels, function(idx, label){
+        new_filter_labels.forEach((label) => {
           if ( label['field'] === field ) {
             if ( !( label['id'] === id ) ) {
               removed_old_filter_labels.push( label );
@@ -1407,10 +1407,19 @@
         });
 
         // Removed stale labels.
-        window.lodash.pullAll(new_filter_labels, removed_old_filter_labels);
+        new_filter_labels = new_filter_labels.filter((existing_label) => {
+          let filtered = false;
+          removed_old_filter_labels.forEach((stale_label) => {
+            if ( (existing_label['id'] !== stale_label['id']) && (existing_label['name'] !== stale_label['name']) && (existing_label['field'] !== stale_label['field']) ) {
+              filtered = true;
+            }
+          });
+
+          return filtered;
+        });
 
         // Remove associated ui labels.
-        $.each(removed_old_filter_labels, function(idx, label) {
+        removed_old_filter_labels.forEach((label) => {
           $(selected_filters).find(`.current-filter[data-id="${label['id']}"].${label['field']}`).remove();
         });
 
