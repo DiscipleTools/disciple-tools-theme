@@ -829,7 +829,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         </label>
                     </td>
                     <td>
-                        This is useful for large databases. Performance Mode will disable some features to improve performance:
+                        This is useful for large databases. These features will be disabled to improve performance:
                         <ul style="list-style: disc; padding: revert">
                             <li>Counts on Contact and Group list filters</li>
                         </ul>
