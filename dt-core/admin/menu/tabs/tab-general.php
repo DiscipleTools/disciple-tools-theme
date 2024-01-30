@@ -122,6 +122,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->custom_logo();
             $this->box( 'bottom' );
 
+            $this->box( 'top', 'Performance Mode' );
+            $this->process_dt_performance_mode();
+            $this->dt_performance_mode();
+            $this->box( 'bottom' );
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -793,6 +798,44 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                 </tr>
                 <?php wp_nonce_field( 'dt_contact_preferences' . get_current_user_id(), 'dt_contact_preferences_nonce' )?>
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
+    }
+
+    public function process_dt_performance_mode(){
+
+        if ( isset( $_POST['dt_performance_mode_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_performance_mode_nonce'] ) ), 'dt_performance_mode' ) ) {
+
+            $dt_performance_mode = ! empty( $_POST['dt_performance_mode'] );
+
+            update_option( 'dt_performance_mode', $dt_performance_mode, true );
+        }
+
+    }
+
+    public function dt_performance_mode(){
+        $dt_performance_mode = get_option( 'dt_performance_mode', false );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="dt_performance_mode" <?php echo $dt_performance_mode ? 'checked' : '' ?> /> Performance Mode
+                        </label>
+                    </td>
+                    <td>
+                        This is useful for large databases. Performance Mode will disable some features to improve performance:
+                        <ul style="list-style: disc; padding: revert">
+                            <li>Counts on Contact and Group list filters</li>
+                        </ul>
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'dt_performance_mode', 'dt_performance_mode_nonce' )?>
             </table>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>

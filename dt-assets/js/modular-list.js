@@ -66,7 +66,7 @@
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
-      const currentFilter = { ID: filterID, query: query ?? {} }
+      const currentFilter = { ID: filterID, query: query || {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
@@ -419,6 +419,9 @@
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
+    if ( current_filter.query === undefined ) {
+      current_filter.query = {}
+    }
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
 
@@ -463,7 +466,7 @@
         <a href="#" class="accordion-title" data-id="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
           ${window.SHAREDFUNCTIONS.escapeHTML(tab.label)}
           <span class="tab-count-span" data-tab="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
+              ${Number.isInteger(tab.count) ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -621,7 +624,7 @@
   }
 
   function reset_sorting_in_table_header(currentFilter) {
-    let sort_field = window.lodash.get(currentFilter, "query.sort", "name");
+    let sort_field = window.lodash.get(currentFilter, "query.sort", "-post_date");
     //reset sorting in table header
     table_header_row.removeClass("sorting_asc");
     table_header_row.removeClass("sorting_desc");
@@ -948,8 +951,8 @@
     loading_spinner.addClass("active");
     let query = current_filter.query
     if ( offset ){
-      query["offset"] = offset
-      query['limit'] = 500
+      query.offset = offset
+      query.limit = 500
     }
     if ( sort ){
       query.sort = sort
@@ -1038,7 +1041,7 @@
     })
     let filterRow = $(`<label class='list-view ${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}'>`).append(`
       <input type="radio" name="view" value="custom_filter" data-id="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${window.SHAREDFUNCTIONS.escapeHTML( name )}
+        ${window.SHAREDFUNCTIONS.escapeHTML(name)}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
@@ -1110,7 +1113,7 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = window.SHAREDFUNCTIONS.escapeHTML( $('#new-filter-name').val() )
+    let filterName = $('#new-filter-name').val()
     reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
