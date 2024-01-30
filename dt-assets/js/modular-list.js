@@ -3082,7 +3082,7 @@
           let escapeditem = item;
           //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
           if (String(item).includes('"')) {
-            escapeditem = item.replace('"', '""')
+            escapeditem = item.replaceAll('"', '""');
           }
           return `"${escapeditem}"`;
         })).join('\r\n');
