@@ -10,6 +10,36 @@ jQuery(document).ready(function($) {
     spinner: null,
     map_query_layer_payloads: {},
     dt_maps_layers_cookie_id: 'dt-maps-layers-cookie',
+    recursive_load: async function (body, data = {}, offset = 0, limit = 50000) {
+      jQuery('#loading-spinner').show();
+      if ( data.response === undefined ){
+        data = {
+          request: {},
+          response: {
+            type: "FeatureCollection",
+            features: []
+          }
+        }
+      }
+
+      body.offset = offset
+      body.limit = limit
+      let query = await window.makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, body, mapbox_library_api.obj.settings.rest_base_url)
+
+      data.request = query.request
+      data.response.features = data.response.features.concat(query.response.features)
+      jQuery('#loading-legend').html(`<span>(${data.response.features.length.toLocaleString()})</span>`)
+
+
+      let max = mapbox_library_api.current_map_type === 'points' && data.response.features.length > 500000;
+      if ( !max && query.response.features.length > 0 && query.response.features.length === limit ) {
+        return mapbox_library_api.recursive_load(body, data, offset + limit, limit)
+      }
+      jQuery('#loading-legend').html('');
+      jQuery('#loading-spinner').hide();
+      return data
+
+    },
     setup_container: function () {
       if ( this.container_set_up ){ return; }
       if ( typeof window.dt_mapbox_metrics.settings === 'undefined' ) { return; }
@@ -49,6 +79,8 @@ jQuery(document).ready(function($) {
             <div id="legend-bar" class="grid-x grid-margin-x grid-padding-x">
               <div class="cell small-2 center info-bar-font">
                   ${window.lodash.escape( this.title )}
+                  <span id="loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                  <div id="loading-legend"></div>
               </div>
               <div id="map-type" class="border-left">
                 <button class="button small select-button ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
@@ -238,8 +270,7 @@ jQuery(document).ready(function($) {
         switch (id) {
           case 'add_records_request': {
             let payload = mapbox_library_api.add_records_capture_state_snapshot_payload();
-            window.makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, payload, mapbox_library_api.obj.settings.rest_base_url)
-            .done(response => {
+            mapbox_library_api.recursive_load(payload).then(response => {
               if (response && response.request && response.response && mapbox_library_api.map) {
 
                 // Remove existing map query layer sources.
@@ -340,8 +371,7 @@ jQuery(document).ready(function($) {
                 layer_settings['displayed'] = true;
 
                 // Fetch and display latest data points.
-                window.makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, layer_settings, mapbox_library_api.obj.settings.rest_base_url)
-                .done(response => {
+                mapbox_library_api.recursive_load(layer_settings).then(response => {
                   if (response && response.request && response.response && mapbox_library_api.map) {
 
                     // Remove existing map query layer sources.
@@ -486,8 +516,7 @@ jQuery(document).ready(function($) {
 
         // If requested, fetch latest query results based on loaded cookie settings.
         if (reload_data && (cookie.displayed && cookie.displayed === true)) {
-          window.makeRequest("POST", mapbox_library_api.obj.settings.post_type_rest_url, cookie, mapbox_library_api.obj.settings.rest_base_url)
-          .done(response => {
+          mapbox_library_api.recursive_load(cookie).then(response => {
             if (response && response.request && response.response && mapbox_library_api.map) {
 
               // Remove existing map query layer sources.
