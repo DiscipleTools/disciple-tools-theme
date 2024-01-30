@@ -3081,7 +3081,14 @@
         csv_export.unshift(csv_headers);
 
         // Convert csv arrays into raw downloadable data.
-        let csv = csv_export.map((csv) => '"' + csv.join('","') + '"').join("\r\n");
+        const csv = csv_export.map(row => row.map((item) => {
+          let escapeditem = item;
+          //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
+          if (String(item).includes('"')) {
+            escapeditem = item.replaceAll('"', '""');
+          }
+          return `"${escapeditem}"`;
+        })).join('\r\n');
 
         // Finally, automatically execute a download of generated csv data.
         let csv_download_link = document.createElement('a');
@@ -3093,7 +3100,7 @@
         let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
         let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
         csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
-        csv_download_link.href = "data:text/csv;charset=utf-8," + escape(csv);
+        csv_download_link.href = "data:text/csv;charset=utf-8," + csv;
         csv_download_link.click();
         csv_download_link.remove();
       }
