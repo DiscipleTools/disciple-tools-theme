@@ -466,7 +466,7 @@
         <a href="#" class="accordion-title" data-id="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
           ${window.SHAREDFUNCTIONS.escapeHTML(tab.label)}
           <span class="tab-count-span" data-tab="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
+              ${Number.isInteger(tab.count) ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
