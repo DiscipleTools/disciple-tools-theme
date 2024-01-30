@@ -955,24 +955,28 @@ class DT_Groups_Base extends DT_Module_Base {
     //build list page filters
     public static function dt_user_list_filters( $filters, $post_type ){
         if ( $post_type === 'groups' ){
-            $counts = self::get_my_groups_status_type();
+            $performance_mode = get_option( 'dt_performance_mode', false );
             $fields = DT_Posts::get_post_field_settings( $post_type );
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             /**
              * Setup my group filters
              */
-            $active_counts = [];
-            $update_needed = 0;
-            $status_counts = [];
-            $total_my = 0;
-            foreach ( $counts as $count ){
-                $total_my += $count['count'];
-                dt_increment( $status_counts[$count['group_status']], $count['count'] );
-                if ( $count['group_status'] === 'active' ){
-                    if ( isset( $count['update_needed'] ) ) {
-                        $update_needed += (int) $count['update_needed'];
+            $counts = [];
+            if ( !$performance_mode ) {
+                $counts = self::get_my_groups_status_type();
+                $active_counts = [];
+                $update_needed = 0;
+                $status_counts = [];
+                $total_my = 0;
+                foreach ( $counts as $count ){
+                    $total_my += $count['count'];
+                    dt_increment( $status_counts[$count['group_status']], $count['count'] );
+                    if ( $count['group_status'] === 'active' ){
+                        if ( isset( $count['update_needed'] ) ) {
+                            $update_needed += (int) $count['update_needed'];
+                        }
+                        dt_increment( $active_counts[$count['group_type']], $count['count'] );
                     }
-                    dt_increment( $active_counts[$count['group_type']], $count['count'] );
                 }
             }
 
@@ -980,7 +984,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $filters['tabs'][] = [
                 'key' => 'assigned_to_me',
                 'label' => __( 'Assigned to me', 'disciple_tools' ),
-                'count' => $total_my,
+                'count' => $total_my ?? '',
                 'order' => 20
             ];
             // add assigned to me filters
@@ -991,10 +995,10 @@ class DT_Groups_Base extends DT_Module_Base {
                 'query' => [
                     'assigned_to' => [ 'me' ],
                 ],
-                'count' => $total_my,
+                'count' => $total_my ?? '',
             ];
             foreach ( $fields['group_status']['default'] as $status_key => $status_value ) {
-                if ( isset( $status_counts[$status_key] ) ){
+                if ( isset( $status_counts[$status_key] ) || $performance_mode ){
                     $filters['filters'][] = [
                         'ID' => 'my_' . $status_key,
                         'tab' => 'assigned_to_me',
@@ -1003,10 +1007,10 @@ class DT_Groups_Base extends DT_Module_Base {
                             'assigned_to' => [ 'me' ],
                             'group_status' => [ $status_key ],
                         ],
-                        'count' => $status_counts[$status_key]
+                        'count' => $status_counts[$status_key] ?? ''
                     ];
                     if ( $status_key === 'active' ){
-                        if ( $update_needed > 0 ){
+                        if ( $performance_mode || ( $update_needed ?? 0 ) > 0 ){
                             $filters['filters'][] = [
                                 'ID' => 'my_update_needed',
                                 'tab' => 'assigned_to_me',
@@ -1016,12 +1020,12 @@ class DT_Groups_Base extends DT_Module_Base {
                                     'group_status' => [ 'active' ],
                                     'requires_update' => [ true ],
                                 ],
-                                'count' => $update_needed,
+                                'count' => $update_needed ?? '',
                                 'subfilter' => true
                             ];
                         }
                         foreach ( $fields['group_type']['default'] as $group_type_key => $group_type_value ) {
-                            if ( isset( $active_counts[$group_type_key] ) ) {
+                            if ( isset( $active_counts[$group_type_key] ) || $performance_mode ) {
                                 $filters['filters'][] = [
                                     'ID' => 'my_' . $group_type_key,
                                     'tab' => 'assigned_to_me',
@@ -1031,7 +1035,7 @@ class DT_Groups_Base extends DT_Module_Base {
                                         'group_status' => [ 'active' ],
                                         'group_type' => [ $group_type_key ],
                                     ],
-                                    'count' => $active_counts[$group_type_key],
+                                    'count' => $active_counts[$group_type_key] ?? '',
                                     'subfilter' => true
                                 ];
                             }
@@ -1040,25 +1044,29 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
 
-            $counts = self::get_all_groups_status_type();
-            $active_counts = [];
-            $update_needed = 0;
-            $status_counts = [];
-            $total_all = 0;
-            foreach ( $counts as $count ){
-                $total_all += $count['count'];
-                dt_increment( $status_counts[$count['group_status']], $count['count'] );
-                if ( $count['group_status'] === 'active' ){
-                    if ( isset( $count['update_needed'] ) ) {
-                        $update_needed += (int) $count['update_needed'];
+
+            $counts = [];
+            if ( !$performance_mode ){
+                $counts = self::get_all_groups_status_type();
+                $active_counts = [];
+                $update_needed = 0;
+                $status_counts = [];
+                $total_all = 0;
+                foreach ( $counts as $count ){
+                    $total_all += $count['count'];
+                    dt_increment( $status_counts[$count['group_status']], $count['count'] );
+                    if ( $count['group_status'] === 'active' ){
+                        if ( isset( $count['update_needed'] ) ) {
+                            $update_needed += (int) $count['update_needed'];
+                        }
+                        dt_increment( $active_counts[$count['group_type']], $count['count'] );
                     }
-                    dt_increment( $active_counts[$count['group_type']], $count['count'] );
                 }
             }
             $filters['tabs'][] = [
                 'key' => 'all',
                 'label' => __( 'Default Filters', 'disciple_tools' ),
-                'count' => $total_all,
+                'count' => $total_all ?? '',
                 'order' => 10
             ];
             // add assigned to me filters
@@ -1066,7 +1074,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'ID' => 'all',
                 'tab' => 'all',
                 'name' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_label_plural ),
-                'count' => $total_all
+                'count' => $total_all ?? ''
             ];
             $filters['filters'][] = [
                 'ID' => 'favorite',
@@ -1092,7 +1100,7 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
 
             foreach ( $fields['group_status']['default'] as $status_key => $status_value ) {
-                if ( isset( $status_counts[$status_key] ) ){
+                if ( isset( $status_counts[$status_key] ) || $performance_mode ){
                     $filters['filters'][] = [
                         'ID' => 'all_' . $status_key,
                         'tab' => 'all',
@@ -1100,10 +1108,10 @@ class DT_Groups_Base extends DT_Module_Base {
                         'query' => [
                             'group_status' => [ $status_key ],
                         ],
-                        'count' => $status_counts[$status_key]
+                        'count' => $status_counts[$status_key] ?? ''
                     ];
                     if ( $status_key === 'active' ){
-                        if ( $update_needed > 0 ){
+                        if ( ( $update_needed ?? 0 ) > 0 || $performance_mode ){
                             $filters['filters'][] = [
                                 'ID' => 'all_update_needed',
                                 'tab' => 'all',
@@ -1112,12 +1120,12 @@ class DT_Groups_Base extends DT_Module_Base {
                                     'group_status' => [ 'active' ],
                                     'requires_update' => [ true ],
                                 ],
-                                'count' => $update_needed,
+                                'count' => $update_needed ?? '',
                                 'subfilter' => true
                             ];
                         }
                         foreach ( $fields['group_type']['default'] as $group_type_key => $group_type_value ) {
-                            if ( isset( $active_counts[$group_type_key] ) ) {
+                            if ( isset( $active_counts[$group_type_key] ) || $performance_mode ) {
                                 $filters['filters'][] = [
                                     'ID' => 'all_' . $group_type_key,
                                     'tab' => 'all',
@@ -1126,7 +1134,7 @@ class DT_Groups_Base extends DT_Module_Base {
                                         'group_status' => [ 'active' ],
                                         'group_type' => [ $group_type_key ],
                                     ],
-                                    'count' => $active_counts[$group_type_key],
+                                    'count' => $active_counts[$group_type_key] ?? '',
                                     'subfilter' => true
                                 ];
                             }

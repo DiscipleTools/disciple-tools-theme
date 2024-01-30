@@ -349,11 +349,12 @@ class DT_Contacts_DMM  extends DT_Module_Base {
         if ( $post_type === 'contacts' ) {
 
             global $wpdb;
+            $performance_mode = get_option( 'dt_performance_mode', false );
             $user_post_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() ) ?? 0;
-            $coached_by_me = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(p2p_to) FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_type = 'contacts_to_contacts'", esc_sql( $user_post_id ) ) );
+            $coached_by_me = $performance_mode ? 0 : $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(p2p_to) FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_type = 'contacts_to_contacts'", esc_sql( $user_post_id ) ) );
 
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
-            $shared_by_type_counts = DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
+            $shared_by_type_counts = $performance_mode ? [] : DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
             $filters['filters'][] = [
                 'ID' => 'placeholder',
                 'tab' => 'default',
@@ -363,7 +364,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                     'overall_status' => [ '-closed' ],
                     'sort' => 'name'
                 ],
-                'count' => $shared_by_type_counts['keys']['placeholder'] ?? 0,
+                'count' => $shared_by_type_counts['keys']['placeholder'] ?? '',
             ];
             $filters['filters'][] = [
                 'ID' => 'my_coached',
@@ -371,7 +372,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'type' => 'default',
                 'tab' => 'default',
                 'name' => __( 'Coached by me', 'disciple_tools' ),
-                'count' => $coached_by_me,
+                'count' => $coached_by_me > 0 ? $coached_by_me : '',
                 'query' => [
                     'coached_by' => [ 'me' ],
                     'overall_status' => [ '-closed' ],

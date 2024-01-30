@@ -466,7 +466,7 @@
         <a href="#" class="accordion-title" data-id="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
           ${window.SHAREDFUNCTIONS.escapeHTML(tab.label)}
           <span class="tab-count-span" data-tab="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
+              ${Number.isInteger(tab.count) ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -1041,7 +1041,7 @@
     })
     let filterRow = $(`<label class='list-view ${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}'>`).append(`
       <input type="radio" name="view" value="custom_filter" data-id="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${window.SHAREDFUNCTIONS.escapeHTML( name )}
+        ${window.SHAREDFUNCTIONS.escapeHTML(name)}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
@@ -1113,7 +1113,7 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = window.SHAREDFUNCTIONS.escapeHTML( $('#new-filter-name').val() )
+    let filterName = $('#new-filter-name').val()
     reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
