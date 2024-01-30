@@ -766,11 +766,6 @@ window.SHAREDFUNCTIONS = {
     if (typeof str !== "string") return str;
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
   },
-  decodeHTML(str) {
-    if (typeof str === "undefined") return '';
-    if (typeof str !== "string") return str;
-    return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
-  },
   make_links_clickable( selector ){
     //make text links clickable in a section
     let elem_text = jQuery(selector).html()
