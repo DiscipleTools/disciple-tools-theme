@@ -48,6 +48,8 @@ class Disciple_Tools_Migration_0056 extends Disciple_Tools_Migration {
                 $case_conditions .= " WHEN LOCATE('link_field_', object_subtype) > 0 AND LOCATE('_$link_category', object_subtype) > 0 THEN TRIM(TRAILING '_$link_category' FROM SUBSTRING(object_subtype, CHAR_LENGTH('link_field_') + 1)) ";
             }
 
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
             $wpdb->query( "UPDATE $wpdb->dt_activity_log
                 SET object_subtype = CASE
                   $case_conditions
@@ -55,6 +57,7 @@ class Disciple_Tools_Migration_0056 extends Disciple_Tools_Migration {
                 END
                 WHERE action = 'field_update'
                   AND field_type = 'link'" );
+            // phpcs:enable
         }
     }
 
