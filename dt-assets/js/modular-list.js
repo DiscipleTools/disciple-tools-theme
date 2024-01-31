@@ -66,7 +66,7 @@
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
-      const currentFilter = { ID: filterID, query: query ?? {} }
+      const currentFilter = { ID: filterID, query: query || {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
@@ -419,6 +419,9 @@
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
     }
+    if ( current_filter.query === undefined ) {
+      current_filter.query = {}
+    }
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
 
@@ -463,7 +466,7 @@
         <a href="#" class="accordion-title" data-id="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
           ${window.SHAREDFUNCTIONS.escapeHTML(tab.label)}
           <span class="tab-count-span" data-tab="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
+              ${Number.isInteger(tab.count) ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -621,7 +624,7 @@
   }
 
   function reset_sorting_in_table_header(currentFilter) {
-    let sort_field = window.lodash.get(currentFilter, "query.sort", "name");
+    let sort_field = window.lodash.get(currentFilter, "query.sort", "-post_date");
     //reset sorting in table header
     table_header_row.removeClass("sorting_asc");
     table_header_row.removeClass("sorting_desc");
@@ -948,8 +951,8 @@
     loading_spinner.addClass("active");
     let query = current_filter.query
     if ( offset ){
-      query["offset"] = offset
-      query['limit'] = 500
+      query.offset = offset
+      query.limit = 500
     }
     if ( sort ){
       query.sort = sort
@@ -1038,7 +1041,7 @@
     })
     let filterRow = $(`<label class='list-view ${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}'>`).append(`
       <input type="radio" name="view" value="custom_filter" data-id="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${window.SHAREDFUNCTIONS.escapeHTML( name )}
+        ${window.SHAREDFUNCTIONS.escapeHTML(name)}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
@@ -1081,6 +1084,38 @@
           date.end = end
         }
         search_query.push({[field]: date})
+      } else if ( type === "text" || type === "communication_channel" ){
+        let filter = $('#' + field + '_text_comms_filter').val();
+        let value = filter;
+
+        switch ( $('.filter-by-text-comms-option:checked').val() ) {
+          case 'all-with-set-value': {
+            value = '*';
+            break;
+          }
+          case 'all-without-set-value': {
+            value = null;
+            break;
+          }
+          case 'all-with-filtered-value': {
+            value = filter;
+            break;
+          }
+          case 'all-without-filtered-value': {
+            value = '-' + filter;
+            break;
+          }
+        }
+
+        // Package accordingly based on field type.
+        switch ( type ) {
+          case 'text':
+          case 'communication_channel': {
+            search_query.push({[field]: (value !== null) ? [value] : []});
+            break;
+          }
+        }
+
       } else {
         let options = []
         $(`#${field}-options input:checked`).each(function(){
@@ -1110,7 +1145,7 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = window.SHAREDFUNCTIONS.escapeHTML( $('#new-filter-name').val() )
+    let filterName = $('#new-filter-name').val()
     reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
@@ -1300,6 +1335,107 @@
 
   $('.all-without-connections').on("click", without_connections_handler)
 
+  $('.text-comms-filter-input').on("keyup", function (e) {
+
+    // Ensure to assign default settings accordingly.
+    const field = $(e.target).data('field');
+    const panel = $(`#${field}.tabs-panel`);
+    const field_settings = list_settings?.post_type_settings?.fields[field];
+    if ( panel && field_settings && field_settings['type'] ) {
+      switch ( field_settings['type'] ) {
+        case 'text':
+        case 'communication_channel': {
+          const checked_options = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const existing_label = new_filter_labels.find((label) => ( label['field'] === field ) );
+
+          // Only apply default settings if unable to detect and previous selections.
+          if ( ( checked_options.length === 0 ) && ( existing_label === undefined ) ) {
+            const default_option = $(panel).find(`.filter-by-text-comms-option[value="all-with-filtered-value"]`);
+            if ( default_option ) {
+              $(default_option).prop('checked', true);
+              $(default_option).trigger('click');
+            }
+          }
+
+          // Update label with latest filtered value.
+          const filtered_value = $(e.target).val();
+          const latest_checked_option = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const latest_existing_label = new_filter_labels.find( (label) => ( label['field'] === field ) );
+          if ( ( latest_checked_option.length === 1 ) && ( latest_existing_label !== undefined ) && ['all-with-filtered-value', 'all-without-filtered-value'].includes( $(latest_checked_option).val() ) ) {
+            const updated_label_text = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+            $(selected_filters).find(`.current-filter[data-id="${$(latest_checked_option).val()}"].${field}`).text( updated_label_text );
+
+            // Update global filter labels array.
+            const label_idx = new_filter_labels.findIndex( (label) => ( label['field'] === field ) );
+            new_filter_labels[label_idx]['name'] = updated_label_text;
+          }
+          break;
+        }
+      }
+    }
+  });
+
+  $('.filter-by-text-comms-option').on("click", function (e) {
+    handle_filter_by_text_comms( {
+      id: $(this).val(),
+      field: $(this).data('field')
+    } );
+  });
+
+  function handle_filter_by_text_comms(options) {
+    const {id, field,} = options || {id: null, field: null};
+
+    if (id && field) {
+
+      // Adjust filter text field state accordingly, based on option selection.
+      let filter_text_field = $('#' + field + '_text_comms_filter');
+      $(filter_text_field).prop('disabled', ['all-with-set-value', 'all-without-set-value'].includes(id));
+
+      // Ensure duplicates are avoided.
+      const existing_label = new_filter_labels.find((label) => ( label['id'] === id ) && ( label['field'] === field ) );
+      if ( existing_label === undefined ) {
+
+        // Identify stale labels to be deleted.
+        let removed_old_filter_labels = [];
+        new_filter_labels.forEach((label) => {
+          if ( label['field'] === field ) {
+            if ( !( label['id'] === id ) ) {
+              removed_old_filter_labels.push( label );
+            }
+          }
+        });
+
+        // Removed stale labels.
+        new_filter_labels = new_filter_labels.filter((existing_label) => {
+          let filtered = false;
+          removed_old_filter_labels.forEach((stale_label) => {
+            if ( (existing_label['id'] !== stale_label['id']) && (existing_label['name'] !== stale_label['name']) && (existing_label['field'] !== stale_label['field']) ) {
+              filtered = true;
+            }
+          });
+
+          return filtered;
+        });
+
+        // Remove associated ui labels.
+        removed_old_filter_labels.forEach((label) => {
+          $(selected_filters).find(`.current-filter[data-id="${label['id']}"].${label['field']}`).remove();
+        });
+
+        // Create new generic filter label.
+        let {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
+
+        // Adjust label to reflect filtered text.
+        if ( ['all-with-filtered-value', 'all-without-filtered-value'].includes(id) ) {
+          let filtered_value = $(`#${field}_text_comms_filter`).val();
+          newLabel['name'] = filterName = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+        }
+
+        selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`);
+        new_filter_labels.push(newLabel);
+      }
+    }
+  }
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
     for (let input of $("#filter-modal .multi_select .typeahead__query input")) {
@@ -1714,8 +1850,9 @@
 
   $('#filter-tabs').on('change.zf.tabs', function (a, b) {
     let field = $(b).data("field")
+    const panel = $(`#${field}.tabs-panel`);
     $(`.tabs-panel`).removeClass('is-active')
-    $(`#${field}.tabs-panel`).addClass('is-active')
+    $(panel).addClass('is-active')
     if (field && window.Typeahead[`.js-typeahead-${field}`]) {
       window.Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
@@ -3078,7 +3215,14 @@
         csv_export.unshift(csv_headers);
 
         // Convert csv arrays into raw downloadable data.
-        let csv = csv_export.map((csv) => '"' + csv.join('","') + '"').join("\r\n");
+        const csv = csv_export.map(row => row.map((item) => {
+          let escapeditem = item;
+          //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
+          if (String(item).includes('"')) {
+            escapeditem = item.replaceAll('"', '""');
+          }
+          return `"${escapeditem}"`;
+        })).join('\r\n');
 
         // Finally, automatically execute a download of generated csv data.
         let csv_download_link = document.createElement('a');
@@ -3090,7 +3234,7 @@
         let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
         let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
         csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
-        csv_download_link.href = "data:text/csv;charset=utf-8," + escape(csv);
+        csv_download_link.href = "data:text/csv;charset=utf-8," + csv;
         csv_download_link.click();
         csv_download_link.remove();
       }

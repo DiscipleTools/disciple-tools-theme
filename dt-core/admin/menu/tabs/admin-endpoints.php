@@ -52,6 +52,15 @@ class DT_Admin_Endpoints {
                 },
             ]
         );
+        register_rest_route(
+            $this->namespace, '/scripts/locations_clean_up', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'locations_clean_up' ],
+                'permission_callback' => function(){
+                    return current_user_can( 'manage_dt' );
+                },
+            ]
+        );
     }
 
     public function reset_count_field( WP_REST_Request $request ){
@@ -218,6 +227,19 @@ class DT_Admin_Endpoints {
         } else {
             return new WP_Error( __FILE__, 'Missing Params post_type' );
         }
+    }
+
+    public function locations_clean_up( WP_REST_Request $request ) {
+        global $wpdb;
+        $delete_query = $wpdb->query("
+            DELETE lm
+            FROM $wpdb->dt_location_grid_meta lm
+            LEFT JOIN $wpdb->postmeta pm ON ( pm.meta_id = lm.postmeta_id_location_grid )
+            WHERE pm.meta_id IS NULL
+        ");
+        return [
+            'deleted_location_count' => $delete_query
+        ];
     }
 
     public function process_jobs( WP_REST_Request $request ){

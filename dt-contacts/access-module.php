@@ -698,7 +698,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( isset( $fields['assigned_to'] ) ) {
                 if ( !isset( $existing_post['assigned_to'] ) || $fields['assigned_to'] !== $existing_post['assigned_to']['assigned-to'] ){
                     $user_id = dt_get_user_id_from_assigned_to( $fields['assigned_to'] );
-                    if ( !isset( $fields['overall_status'] ) ){
+                    if ( !isset( $fields['overall_status'] ) && ( !isset( $existing_post['overall_status']['key'] ) || $existing_post['overall_status']['key'] !== 'closed' ) ){
                         if ( $user_id != get_current_user_id() ){
                             if ( current_user_can( 'assign_any_contacts' ) ) {
                                 $fields['overall_status'] = 'assigned';
@@ -887,28 +887,31 @@ class DT_Contacts_Access extends DT_Module_Base {
     //list page filters function
     public static function dt_user_list_filters( $filters, $post_type ){
         if ( $post_type === 'contacts' ){
-            $counts = self::get_my_contacts_status_seeker_path();
+            $performance_mode = get_option( 'dt_performance_mode', false );
             $fields = DT_Posts::get_post_field_settings( $post_type );
 
             /**
              * Setup my contacts filters
              */
-            $active_counts = [];
-            $update_needed = 0;
-            $status_counts = [];
-            $total_my = 0;
-            foreach ( $counts as $count ){
-                $total_my += $count['count'];
-                dt_increment( $status_counts[$count['overall_status']], $count['count'] );
-                if ( $count['overall_status'] === 'active' ){
-                    if ( isset( $count['update_needed'] ) ) {
-                        $update_needed += (int) $count['update_needed'];
+            if ( !$performance_mode ){
+                $counts = self::get_my_contacts_status_seeker_path();
+                $active_counts = [];
+                $update_needed = 0;
+                $status_counts = [];
+                $total_my = 0;
+                foreach ( $counts as $count ){
+                    $total_my += $count['count'];
+                    dt_increment( $status_counts[$count['overall_status']], $count['count'] );
+                    if ( $count['overall_status'] === 'active' ){
+                        if ( isset( $count['update_needed'] ) ) {
+                            $update_needed += (int) $count['update_needed'];
+                        }
+                        dt_increment( $active_counts[$count['seeker_path']], $count['count'] );
                     }
-                    dt_increment( $active_counts[$count['seeker_path']], $count['count'] );
                 }
-            }
-            if ( !isset( $status_counts['closed'] ) ) {
-                $status_counts['closed'] = '';
+                if ( !isset( $status_counts['closed'] ) ) {
+                    $status_counts['closed'] = '';
+                }
             }
 
             // add assigned to me filters
@@ -929,10 +932,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                     [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
                     [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
                 ],
-                'count' => $total_my,
+                'count' => $total_my ?? '',
             ];
             foreach ( $fields['overall_status']['default'] as $status_key => $status_value ) {
-                if ( isset( $status_counts[$status_key] ) ) {
+                if ( isset( $status_counts[$status_key] ) || $performance_mode ) {
                     $filters['filters'][] = [
                         'ID' => 'my_' . $status_key,
                         'tab' => 'default',
@@ -950,11 +953,11 @@ class DT_Contacts_Access extends DT_Module_Base {
                             [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
                             [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
                         ],
-                        'count' => $status_counts[$status_key],
+                        'count' => $status_counts[$status_key] ?? '',
                         'subfilter' => 1
                     ];
                     if ( $status_key === 'active' ){
-                        if ( $update_needed > 0 ){
+                        if ( ( $update_needed ?? 0 ) > 0 ){
                             $filters['filters'][] = [
                                 'ID' => 'my_update_needed',
                                 'tab' => 'default',
@@ -973,13 +976,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                                     [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
                                     [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
                                 ],
-                                'count' => $update_needed,
+                                'count' => $update_needed ?? '',
                                 'subfilter' => 2
                             ];
                         }
                         if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ){
                             foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ){
-                                if ( isset( $active_counts[$seeker_path_key] ) ){
+                                if ( isset( $active_counts[$seeker_path_key] ) || $performance_mode ){
                                     $filters['filters'][] = [
                                         'ID' => 'my_' . $seeker_path_key,
                                         'tab' => 'default',
@@ -998,7 +1001,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                                             [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
                                             [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
                                         ],
-                                        'count' => $active_counts[$seeker_path_key],
+                                        'count' => $active_counts[$seeker_path_key] ?? '',
                                         'subfilter' => 2
                                     ];
                                 }
@@ -1012,29 +1015,31 @@ class DT_Contacts_Access extends DT_Module_Base {
              * Setup dispatcher filters
              */
             if ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'access_specific_sources' ) ) {
-                $counts = self::get_all_contacts_status_seeker_path();
-                $all_active_counts = [];
-                $all_update_needed = 0;
-                $all_status_counts = [];
-                $total_all = 0;
-                foreach ( $counts as $count ){
-                    $total_all += $count['count'];
-                    dt_increment( $all_status_counts[$count['overall_status']], $count['count'] );
-                    if ( $count['overall_status'] === 'active' ){
-                        if ( isset( $count['update_needed'] ) ) {
-                            $all_update_needed += (int) $count['update_needed'];
+                if ( !$performance_mode ){
+                    $counts = self::get_all_contacts_status_seeker_path();
+                    $all_active_counts = [];
+                    $all_update_needed = 0;
+                    $all_status_counts = [];
+                    $total_all = 0;
+                    foreach ( $counts as $count ){
+                        $total_all += $count['count'];
+                        dt_increment( $all_status_counts[$count['overall_status']], $count['count'] );
+                        if ( $count['overall_status'] === 'active' ){
+                            if ( isset( $count['update_needed'] ) ) {
+                                $all_update_needed += (int) $count['update_needed'];
+                            }
+                            dt_increment( $all_active_counts[$count['seeker_path']], $count['count'] );
                         }
-                        dt_increment( $all_active_counts[$count['seeker_path']], $count['count'] );
                     }
-                }
-                if ( !isset( $all_status_counts['closed'] ) ) {
-                    $all_status_counts['closed'] = '';
+                    if ( !isset( $all_status_counts['closed'] ) ) {
+                        $all_status_counts['closed'] = '';
+                    }
                 }
                 $filters['tabs'][] = [
                     'key' => 'all_dispatch',
 //                    "label" => __( "Follow-Up", 'disciple_tools' ),
                     'label' => sprintf( _x( 'Follow-Up %s', 'All records', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ),
-                    'count' => $total_all,
+                    'count' => $total_all ?? '',
                     'order' => 10
                 ];
                 // add assigned to me filters
@@ -1047,11 +1052,11 @@ class DT_Contacts_Access extends DT_Module_Base {
                         'type' => [ 'access' ],
                         'sort' => 'overall_status'
                     ],
-                    'count' => $total_all,
+                    'count' => $total_all ?? '',
                 ];
 
                 foreach ( $fields['overall_status']['default'] as $status_key => $status_value ) {
-                    if ( isset( $all_status_counts[$status_key] ) ) {
+                    if ( isset( $all_status_counts[$status_key] ) || $performance_mode ) {
                         $filters['filters'][] = [
                             'ID' => 'all_' . $status_key,
                             'tab' => 'all_dispatch',
@@ -1061,10 +1066,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 'type' => [ 'access' ],
                                 'sort' => 'seeker_path'
                             ],
-                            'count' => $all_status_counts[$status_key]
+                            'count' => $all_status_counts[$status_key] ?? ''
                         ];
                         if ( $status_key === 'active' ){
-                            if ( $all_update_needed > 0 ){
+                            if ( ( $all_update_needed ?? 0 ) > 0 || $performance_mode ){
                                 $filters['filters'][] = [
                                     'ID' => 'all_update_needed',
                                     'tab' => 'all_dispatch',
@@ -1075,13 +1080,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                                         'type' => [ 'access' ],
                                         'sort' => 'seeker_path'
                                     ],
-                                    'count' => $all_update_needed,
+                                    'count' => $all_update_needed ?? '',
                                     'subfilter' => true
                                 ];
                             }
                             if ( isset( $fields['seeker_path']['default'] ) && is_array( $fields['seeker_path']['default'] ) ) {
                                 foreach ( $fields['seeker_path']['default'] as $seeker_path_key => $seeker_path_value ) {
-                                    if ( isset( $all_active_counts[$seeker_path_key] ) ) {
+                                    if ( isset( $all_active_counts[$seeker_path_key] ) || $performance_mode ) {
                                         $filters['filters'][] = [
                                             'ID' => 'all_' . $seeker_path_key,
                                             'tab' => 'all_dispatch',
@@ -1092,7 +1097,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                                                 'type' => [ 'access' ],
                                                 'sort' => 'name'
                                             ],
-                                            'count' => $all_active_counts[$seeker_path_key],
+                                            'count' => $all_active_counts[$seeker_path_key] ?? '',
                                             'subfilter' => true
                                         ];
                                     }
