@@ -2993,18 +2993,38 @@
    * List Exports
    */
 
-  function export_list_display(title, display_function) {
+  function export_list_display(type, title, display_function) {
 
     // Execute display function.
     display_function();
 
+    const export_modal = $('#export_reveal');
+    $(export_modal).removeClass('large');
+    $(export_modal).removeClass('full');
+
+    // Adjust export reveal model accordingly, based on incoming type.
+    switch ( type ) {
+      case 'csv':
+      case 'email':
+      case 'phone': {
+        $(export_modal).addClass('large');
+        $(export_modal).data('v-offset', '10px');
+        break;
+      }
+      case 'map': {
+        $(export_modal).addClass('full');
+        $(export_modal).data('v-offset', '0px');
+        break;
+      }
+    }
+
     // Set export title and display modal.
     $('#export_title').html(title);
-    $('#export_reveal').foundation('open');
+    $(export_modal).foundation('open');
   }
 
   $("#export_csv_list").on("click", function (e) {
-    export_list_display($(e.currentTarget).text(), function () {
+    export_list_display('csv', $(e.currentTarget).text(), function () {
 
       // Identify fields to be exported; ignoring hidden and private fields.
       let exporting_fields = [];
@@ -3279,7 +3299,7 @@
   }
 
   $("#export_bcc_email_list").on("click", function (e) {
-    export_list_display($(e.currentTarget).text(), function () {
+    export_list_display('email', $(e.currentTarget).text(), function () {
 
       // Show spinners.
       $('.loading-spinner').addClass('active');
@@ -3328,7 +3348,7 @@
             }
             let non_empty_values = v.contact_email.filter(val=>val.value)
             non_empty_values.forEach(vv => {
-              let email = window.lodash.escape(vv.value);
+              let email = window.SHAREDFUNCTIONS.escapeHTML(vv.value);
               if (validate_email_address(email)) {
                 email_totals[group].push(email)
                 count++
@@ -3343,12 +3363,12 @@
               count = 0
             }
             if ( non_empty_values.length > 1 ){
-              contacts_with.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(v.ID)}">${window.lodash.escape(v.post_title)}</a><br>`)
+              contacts_with.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
               list_count['with']++
             }
           }
           if ( !has_email ){
-            contacts_without.append(`<a href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(v.ID)}">${window.lodash.escape(v.post_title)}</a><br>`)
+            contacts_without.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
             list_count['without']++
           }
         });
@@ -3356,7 +3376,7 @@
         // Update count findings.
         let list_print = jQuery('#email-list-print')
         $.each(email_totals, function (index, values) {
-          list_print.append(window.lodash.escape(values.join(', ')))
+          list_print.append(window.SHAREDFUNCTIONS.escapeHTML(values.join(', ')))
         })
 
         jQuery('#list-count-with').html(list_count['with'])
@@ -3373,7 +3393,7 @@
               email_links[group] = []
             }
             $.each(v.contact_email, function (ii, vv) {
-              let email = window.lodash.escape(vv.value);
+              let email = window.SHAREDFUNCTIONS.escapeHTML(vv.value);
               if ( validate_email_address(email) ){
                 email_links[group].push( email )
               }
@@ -3390,7 +3410,7 @@
         $.each(email_links, function (index, values) {
           index++
           email_strings = []
-          email_strings = window.lodash.escape(values.join(', '))
+          email_strings = window.SHAREDFUNCTIONS.escapeHTML(values.join(', '))
           email_strings.replace(/,/g, ', ')
 
           grouping_table.append(`
@@ -3424,7 +3444,7 @@
   }
 
   $("#export_phone_list").on("click", function (e) {
-    export_list_display($(e.currentTarget).text(), function () {
+    export_list_display('phone', $(e.currentTarget).text(), function () {
 
       // Show spinners.
       $('.loading-spinner').addClass('active');
@@ -3474,7 +3494,7 @@
               has_phone = true
             })
             if ( non_empty_values.length > 1 ){
-              contacts_with.append(`<a  href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(v.ID)}">${window.lodash.escape(v.post_title)}</a><br>`)
+              contacts_with.append(`<a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
               list_count['with']++
             }
             if (phone_list.length > 50) {
@@ -3482,7 +3502,7 @@
             }
           }
           if ( !has_phone ) {
-            contacts_without.append(`<a  href="${window.lodash.escape(window.wpApiShare.site_url)}/contacts/${window.lodash.escape(v.ID)}">${window.lodash.escape(v.post_title)}</a><br>`)
+            contacts_without.append(`<a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
             list_count['without']++
           }
         });
@@ -3493,7 +3513,7 @@
         $.each(phone_list, function (index, values) {
           all_numbers = all_numbers.concat(values)
         })
-        list_print.append(window.lodash.escape(all_numbers.join(', ')))
+        list_print.append(window.SHAREDFUNCTIONS.escapeHTML(all_numbers.join(', ')))
 
         // console.log(list_count)
         jQuery('#list-count-with').html(list_count['with'])
@@ -3508,7 +3528,7 @@
 
   $("#export_map_list").on("click", function (e) {
     if ( window.list_settings['translations']['exports']['map']['mapbox_key'] ) {
-      export_list_display($(e.currentTarget).text(), function () {
+      export_list_display('map', $(e.currentTarget).text(), function () {
 
         // Show spinners.
         $('.loading-spinner').addClass('active');
@@ -3643,7 +3663,9 @@
 
             var bounds = new window.mapboxgl.LngLatBounds();
             geojson.features.forEach(function(feature) {
-              bounds.extend(feature.geometry.coordinates);
+              if ( feature.geometry.coordinates && !feature.geometry.coordinates.includes(undefined) ) {
+                bounds.extend(feature.geometry.coordinates);
+              }
             });
             map.fitBounds(bounds);
 
