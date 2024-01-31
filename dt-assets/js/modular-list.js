@@ -1084,6 +1084,38 @@
           date.end = end
         }
         search_query.push({[field]: date})
+      } else if ( type === "text" || type === "communication_channel" ){
+        let filter = $('#' + field + '_text_comms_filter').val();
+        let value = filter;
+
+        switch ( $('.filter-by-text-comms-option:checked').val() ) {
+          case 'all-with-set-value': {
+            value = '*';
+            break;
+          }
+          case 'all-without-set-value': {
+            value = null;
+            break;
+          }
+          case 'all-with-filtered-value': {
+            value = filter;
+            break;
+          }
+          case 'all-without-filtered-value': {
+            value = '-' + filter;
+            break;
+          }
+        }
+
+        // Package accordingly based on field type.
+        switch ( type ) {
+          case 'text':
+          case 'communication_channel': {
+            search_query.push({[field]: (value !== null) ? [value] : []});
+            break;
+          }
+        }
+
       } else {
         let options = []
         $(`#${field}-options input:checked`).each(function(){
@@ -1303,6 +1335,107 @@
 
   $('.all-without-connections').on("click", without_connections_handler)
 
+  $('.text-comms-filter-input').on("keyup", function (e) {
+
+    // Ensure to assign default settings accordingly.
+    const field = $(e.target).data('field');
+    const panel = $(`#${field}.tabs-panel`);
+    const field_settings = list_settings?.post_type_settings?.fields[field];
+    if ( panel && field_settings && field_settings['type'] ) {
+      switch ( field_settings['type'] ) {
+        case 'text':
+        case 'communication_channel': {
+          const checked_options = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const existing_label = new_filter_labels.find((label) => ( label['field'] === field ) );
+
+          // Only apply default settings if unable to detect and previous selections.
+          if ( ( checked_options.length === 0 ) && ( existing_label === undefined ) ) {
+            const default_option = $(panel).find(`.filter-by-text-comms-option[value="all-with-filtered-value"]`);
+            if ( default_option ) {
+              $(default_option).prop('checked', true);
+              $(default_option).trigger('click');
+            }
+          }
+
+          // Update label with latest filtered value.
+          const filtered_value = $(e.target).val();
+          const latest_checked_option = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const latest_existing_label = new_filter_labels.find( (label) => ( label['field'] === field ) );
+          if ( ( latest_checked_option.length === 1 ) && ( latest_existing_label !== undefined ) && ['all-with-filtered-value', 'all-without-filtered-value'].includes( $(latest_checked_option).val() ) ) {
+            const updated_label_text = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+            $(selected_filters).find(`.current-filter[data-id="${$(latest_checked_option).val()}"].${field}`).text( updated_label_text );
+
+            // Update global filter labels array.
+            const label_idx = new_filter_labels.findIndex( (label) => ( label['field'] === field ) );
+            new_filter_labels[label_idx]['name'] = updated_label_text;
+          }
+          break;
+        }
+      }
+    }
+  });
+
+  $('.filter-by-text-comms-option').on("click", function (e) {
+    handle_filter_by_text_comms( {
+      id: $(this).val(),
+      field: $(this).data('field')
+    } );
+  });
+
+  function handle_filter_by_text_comms(options) {
+    const {id, field,} = options || {id: null, field: null};
+
+    if (id && field) {
+
+      // Adjust filter text field state accordingly, based on option selection.
+      let filter_text_field = $('#' + field + '_text_comms_filter');
+      $(filter_text_field).prop('disabled', ['all-with-set-value', 'all-without-set-value'].includes(id));
+
+      // Ensure duplicates are avoided.
+      const existing_label = new_filter_labels.find((label) => ( label['id'] === id ) && ( label['field'] === field ) );
+      if ( existing_label === undefined ) {
+
+        // Identify stale labels to be deleted.
+        let removed_old_filter_labels = [];
+        new_filter_labels.forEach((label) => {
+          if ( label['field'] === field ) {
+            if ( !( label['id'] === id ) ) {
+              removed_old_filter_labels.push( label );
+            }
+          }
+        });
+
+        // Removed stale labels.
+        new_filter_labels = new_filter_labels.filter((existing_label) => {
+          let filtered = false;
+          removed_old_filter_labels.forEach((stale_label) => {
+            if ( (existing_label['id'] !== stale_label['id']) && (existing_label['name'] !== stale_label['name']) && (existing_label['field'] !== stale_label['field']) ) {
+              filtered = true;
+            }
+          });
+
+          return filtered;
+        });
+
+        // Remove associated ui labels.
+        removed_old_filter_labels.forEach((label) => {
+          $(selected_filters).find(`.current-filter[data-id="${label['id']}"].${label['field']}`).remove();
+        });
+
+        // Create new generic filter label.
+        let {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
+
+        // Adjust label to reflect filtered text.
+        if ( ['all-with-filtered-value', 'all-without-filtered-value'].includes(id) ) {
+          let filtered_value = $(`#${field}_text_comms_filter`).val();
+          newLabel['name'] = filterName = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+        }
+
+        selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`);
+        new_filter_labels.push(newLabel);
+      }
+    }
+  }
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
     for (let input of $("#filter-modal .multi_select .typeahead__query input")) {
@@ -1717,8 +1850,9 @@
 
   $('#filter-tabs').on('change.zf.tabs', function (a, b) {
     let field = $(b).data("field")
+    const panel = $(`#${field}.tabs-panel`);
     $(`.tabs-panel`).removeClass('is-active')
-    $(`#${field}.tabs-panel`).addClass('is-active')
+    $(panel).addClass('is-active')
     if (field && window.Typeahead[`.js-typeahead-${field}`]) {
       window.Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }

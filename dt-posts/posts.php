@@ -963,15 +963,18 @@ class Disciple_Tools_Posts
                             $index = -1;
                             $connector = ' OR ';
                             $query_for_null_values = null;
+
                             if ( !is_array( $query_value ) ){
                                 return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
+                                $where_sql .= " OR $table_key.meta_value = '' ";
                             }
                             foreach ( $query_value as $value_key => $value ){
                                 $index ++;
                                 $equality = 'LIKE';
+
                                 //allow negative searches
                                 if ( strpos( $value, '-' ) === 0 ){
                                     $equality = 'NOT LIKE';
