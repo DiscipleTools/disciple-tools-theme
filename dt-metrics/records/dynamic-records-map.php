@@ -170,6 +170,8 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public function post_type_geojson( WP_REST_Request $request ){
         $response = [];
         $params = $request->get_json_params() ?? $request->get_body_params();
+        $offset = !empty( $params['offset'] ) ? $params['offset'] : 0;
+        $limit = !empty( $params['limit'] ) ? $params['limit'] : 500000;
         if ( !empty( $params['post_type'] ) ){
 
             // Ensure params shape is altered accordingly, for system based post types.
@@ -182,7 +184,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
             }
 
             // Execute request query.
-            $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params );
+            $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params, $offset, $limit );
         }
 
         return [
