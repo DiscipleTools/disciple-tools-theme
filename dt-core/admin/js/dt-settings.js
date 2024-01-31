@@ -1107,8 +1107,21 @@ jQuery(document).ready(function($) {
     }
 
     let type_visibility_html = ''
+    if ( field_settings['type'] && field_settings['type'] === 'boolean' ) {
+      type_visibility_html += `
+        <tr>
+            <td>
+                <strong>Checked By Default</strong>
+            </td>
+            <td>
+                <input type="checkbox" name="checked_by_default" id="checked_by_default" ${ ( field_settings['default'] && field_settings['default'] === true ) ? 'checked' : ''}>
+            </td>
+        </tr>
+      `;
+    }
+
     if ( window.field_settings?.post_type_settings?.fields['type']?.default ) {
-      type_visibility_html = `
+      type_visibility_html += `
           <tr>
               <td>
                   <strong>Show For</strong>
@@ -1844,6 +1857,11 @@ jQuery(document).ready(function($) {
         return $(obj).val()
       }).get(),
       show_in_table: $('#show-in-table').is(':checked')
+    }
+
+    let field_settings = all_settings.post_type_settings.fields[field_key];
+    if ( field_settings['type'] && field_settings['type'] === 'boolean' ) {
+      visibility['checked_by_default'] = $('#checked_by_default').is(':checked');
     }
 
     if (custom_name === '') {

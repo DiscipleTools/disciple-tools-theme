@@ -43,6 +43,7 @@ global $post;
 
             </div>
             <div class="cell small-8">
+                <span id="record_history_progress_spinner" class="loading-spinner" style="display: table; margin: 0 auto 10px;"></span>
                 <div id="record_history_activities" style="display: none;"></div>
             </div>
         </div>

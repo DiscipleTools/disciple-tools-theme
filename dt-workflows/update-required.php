@@ -33,6 +33,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
 
     protected function run_action() {
         global $wpdb;
+        $user_locale = get_user_locale();
         $site_options           = dt_get_option( 'dt_site_options' );
         $update_needed_settings = $site_options['update_required'];
         if ( $update_needed_settings['enabled'] === true ) {
@@ -64,7 +65,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     ), OBJECT );
                     foreach ( $contacts_need_update as $contact ) {
                         $user_name    = ( '@' . dt_get_assigned_name( $contact->ID, true ) . ' ' ) ?? '';
-                        $comment_html = esc_html( $user_name . $setting['comment'] );
+                        $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] ?? $setting['comment'] );
                         DT_Posts::add_post_comment( 'contacts', $contact->ID, $comment_html, 'comment', [
                             'user_id'        => 0,
                             'comment_author' => __( 'Update Needed', 'disciple_tools' )
@@ -103,7 +104,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                 ), OBJECT );
                 foreach ( $groups_need_update as $group ) {
                     $user_name    = ( '@' . dt_get_assigned_name( $group->ID, true ) . ' ' ) ?? '';
-                    $comment_html = esc_html( $user_name . $setting['comment'] );
+                    $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] ?? $setting['comment'] );
                     DT_Posts::add_post_comment( 'groups', $group->ID, $comment_html, 'updated_needed', [
                         'user_id' => 0,
                         'comment_author' => __( 'Update Needed', 'disciple_tools' )

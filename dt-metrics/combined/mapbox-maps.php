@@ -215,8 +215,10 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         if ( $post_type === 'groups' ){
             $query = [ 'group_status' => [ '-inactive' ] ];
         }
+        $offset = !empty( $params['offset'] ) ? $params['offset'] : 0;
+        $limit = !empty( $params['limit'] ) ? $params['limit'] : 50000;
 
-        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
+        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query, $offset, $limit );
     }
 
     public function grid_totals( WP_REST_Request $request ) {
