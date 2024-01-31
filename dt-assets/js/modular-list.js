@@ -1082,8 +1082,8 @@
         }
         search_query.push({[field]: date})
       } else if ( type === "text" || type === "communication_channel" ){
-        let value = '-*';
         let filter = $('#' + field + '_text_comms_filter').val();
+        let value = filter;
 
         switch ( $('.filter-by-text-comms-option:checked').val() ) {
           case 'all-with-set-value': {
@@ -1100,10 +1100,6 @@
           }
           case 'all-without-filtered-value': {
             value = '-' + filter;
-            break;
-          }
-          default: {
-            value = filter;
             break;
           }
         }
