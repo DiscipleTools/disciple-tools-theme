@@ -250,14 +250,14 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                         'label' => __( 'Export All Settings', 'disciple_tools' ),
                         'description' => __( 'Export all D.T settings, including tiles, fields, custom record types, etc.', 'disciple_tools' )
                     ],
-                    'export_custom' => [
-                        'label' => __( 'Export Custom Settings', 'disciple_tools' ),
-                        'description' => __( 'Export all D.T custom settings.', 'disciple_tools' )
-                    ],
-                    'export_plugins' => [
-                        'label' => __( 'Export Plugins List', 'disciple_tools' ),
-                        'description' => __( 'Export list of all D.T plugins.', 'disciple_tools' )
-                    ]
+//                    'export_custom' => [
+//                        'label' => __( 'Export Custom Settings', 'disciple_tools' ),
+//                        'description' => __( 'Export all D.T settings.', 'disciple_tools' )
+//                    ],
+//                    'export_plugins' => [
+//                        'label' => __( 'Export Plugins List', 'disciple_tools' ),
+//                        'description' => __( 'Export list of all D.T plugins.', 'disciple_tools' )
+//                    ]
                 ];
 
                 foreach ( $export_services as $id => $service ) {
