@@ -3241,6 +3241,9 @@
           if (String(item).includes('"')) {
             escapeditem = item.replaceAll('"', '""');
           }
+          if (String(item).includes('#')) {
+            escapeditem = item.replaceAll('#', encodeURIComponent('#'));
+          }
           return `"${escapeditem}"`;
         })).join('\r\n');
 
