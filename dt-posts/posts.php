@@ -688,7 +688,7 @@ class Disciple_Tools_Posts
         foreach ( $query_array as $query_key => $query_value ) {
             if ( is_string( $query_key ) ){
                 $where_sql = '';
-                $table_key = esc_sql( 'field_' . $query_key );
+                $table_key = esc_sql( 'field_' . str_replace( '-', '_', $query_key ) );
                 if ( isset( $field_settings[$query_key]['type'] ) ){
                     $field_type = $field_settings[$query_key]['type'];
 
