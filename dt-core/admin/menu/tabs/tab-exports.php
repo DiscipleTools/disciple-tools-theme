@@ -124,8 +124,11 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                             case 'export_custom':
                                 $downloadable['dt_settings']['type'] = ( $service_id === 'export_all' ) ? 'all' : 'custom';
                                 $downloadable['dt_settings']['dt_tiles_settings']['values'] = $this->process_export_all_tiles();
+                                $downloadable['dt_settings']['dt_tiles_custom_settings']['values'] = dt_get_option( 'dt_custom_tiles' );
                                 $downloadable['dt_settings']['dt_fields_settings']['values'] = $this->process_export_all_fields();
+                                $downloadable['dt_settings']['dt_fields_custom_settings']['values'] = dt_get_option( 'dt_field_customizations' );
                                 $downloadable['dt_settings']['dt_post_types_settings']['values'] = $this->process_export_all_post_types();
+                                $downloadable['dt_settings']['dt_post_types_custom_settings']['values'] = get_option( 'dt_custom_post_types', [] );
                                 break;
                             case 'export_plugins':
                                 $downloadable['site_meta']['plugins'] = $this->process_export_plugins();
@@ -246,14 +249,14 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
                 <tbody>
                 <?php
                 $export_services = [
-                    'export_all' => [
-                        'label' => __( 'Export All Settings', 'disciple_tools' ),
-                        'description' => __( 'Export all D.T settings, including tiles, fields, custom record types, etc.', 'disciple_tools' )
-                    ],
-//                    'export_custom' => [
-//                        'label' => __( 'Export Custom Settings', 'disciple_tools' ),
-//                        'description' => __( 'Export all D.T settings.', 'disciple_tools' )
+//                    'export_all' => [
+//                        'label' => __( 'Export All Settings', 'disciple_tools' ),
+//                        'description' => __( 'Export all D.T settings, including tiles, fields, custom record types, etc.', 'disciple_tools' )
 //                    ],
+                    'export_custom' => [
+                        'label' => __( 'Export Custom Settings', 'disciple_tools' ),
+                        'description' => __( 'Export all D.T settings.', 'disciple_tools' )
+                    ]
 //                    'export_plugins' => [
 //                        'label' => __( 'Export Plugins List', 'disciple_tools' ),
 //                        'description' => __( 'Export list of all D.T plugins.', 'disciple_tools' )

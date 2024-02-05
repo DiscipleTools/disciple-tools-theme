@@ -247,19 +247,23 @@ jQuery(document).ready(function ($) {
    * DT IMPORTS
    */
 
+  $(document).ready(function () {
+    auto_select_new_post_types();
+  });
+
   $('.dt-import-post-type-but').on('click', function (e) {
     refresh_post_type_meta_details( $(e.currentTarget).data('post_type') );
   });
 
   $('#dt_import_details_record_type_settings_checkbox').on('change', function (e) {
-    const checkbox = $(e.currentTarget);
-    let checked = $(checkbox).prop('checked');
-
-    // Accordingly set tile checkbox states and trigger click events, to refresh associated displays.
-    $(document).find('.dt-tile-checkbox').prop('checked', checked).trigger('change');
+    update_config_selections( $(e.currentTarget).data('post_type'), 'update', update_config_selections_display );
   });
 
-  $(document).on('change', '.dt-tile-checkbox', function (e) {
+  $(document).on('change', '.dt-tile-select-settings-checkbox', function (e) {
+    update_config_selections( $(e.currentTarget).data('post_type'), 'update', update_config_selections_display );
+  });
+
+  $(document).on('change', '.dt-tile-select-fields-checkbox', function (e) {
     let tile_checkbox = $(e.currentTarget);
     let post_type = $(tile_checkbox).data('post_type');
     let tile_id = $(tile_checkbox).data('tile_id');
@@ -294,6 +298,107 @@ jQuery(document).ready(function ($) {
     }
   });
 
+  function auto_select_new_post_types() {
+
+    // Ensure a valid config file has been selected and uploaded.
+    const dt_import_uploaded_config_raw = $('#dt_import_uploaded_config_raw');
+    if ( $(dt_import_uploaded_config_raw).text() ) {
+      let dt_import_uploaded_config = JSON.parse( atob( $(dt_import_uploaded_config_raw).text(), true ) );
+
+      let dt_import_uploaded_config_selections = $('#dt_import_uploaded_config_selections');
+      let config_selections = JSON.parse( $(dt_import_uploaded_config_selections).text() );
+
+      let dt_import_existing_post_types = JSON.parse( $('#dt_import_existing_post_types').text() );
+      let dt_import_config_setting_keys = JSON.parse( $('#dt_import_config_setting_keys').text() );
+
+      if (dt_import_uploaded_config['dt_settings'] && dt_import_uploaded_config['dt_settings'][dt_import_config_setting_keys['post_types_settings_key']] && dt_import_uploaded_config['dt_settings'][dt_import_config_setting_keys['post_types_settings_key']]['values']) {
+        let auto_display_post_type = null;
+        for (const [post_type, post_type_config] of Object.entries(dt_import_uploaded_config['dt_settings'][dt_import_config_setting_keys['post_types_settings_key']]['values'])) {
+
+          // Identify new post types; which will default to an auto selection.
+          if ( !dt_import_existing_post_types.includes(post_type) ) {
+
+            // Group fields to tiles and auto select tile meta settings.
+            const tile_buckets = group_tiles_fields_buckets( post_type );
+            let updated_tile_buckets = {};
+            for (const [tile, fields] of Object.entries(tile_buckets)) {
+              updated_tile_buckets[tile] = {
+                'import_meta': true,
+                'fields': fields
+              };
+            }
+
+            // Should not be the case, but if so, override pre-existing selections.
+            config_selections[post_type] = {
+              'import_meta': true,
+              'tiles': updated_tile_buckets
+            };
+
+            // Capture post type to be auto displayed.
+            if ( !auto_display_post_type ) {
+              auto_display_post_type = post_type;
+            }
+          }
+        }
+
+        // Update config selections and auto display various import views.
+        if ( auto_display_post_type ) {
+          $(dt_import_uploaded_config_selections).text( JSON.stringify( config_selections ) );
+          refresh_post_type_meta_details( auto_display_post_type );
+        }
+      }
+    }
+  }
+
+  function group_tiles_fields_buckets( post_type ) {
+    let dt_import_uploaded_config = JSON.parse( atob( $('#dt_import_uploaded_config_raw').text(), true ) );
+    let dt_import_config_setting_keys = JSON.parse( $('#dt_import_config_setting_keys').text() );
+    let dt_settings = dt_import_uploaded_config['dt_settings'];
+    let tile_settings = dt_settings[dt_import_config_setting_keys['tiles_settings_key']]['values'][post_type];
+    let custom_tile_settings = dt_settings[dt_import_config_setting_keys['custom_tiles_settings_key']]['values'][post_type];
+    let field_settings = dt_settings[dt_import_config_setting_keys['fields_settings_key']]['values'][post_type];
+
+    let is_custom_import = dt_import_config_setting_keys['type'] === 'custom';
+
+    // If custom; filter out non-custom fields.
+    if ( is_custom_import ) {
+      let filtered_field_settings = {};
+      for (const [field_key, field] of Object.entries(field_settings)) {
+        if ( field['customizable'] && field['customizable'] !== false ) {
+          filtered_field_settings[field_key] = field;
+        }
+      }
+
+      field_settings = filtered_field_settings;
+    }
+
+    // Place importing post type fields into their respective tile buckets.
+    let tile_buckets = {};
+    let no_tile = [];
+    for (const [field_key, field] of Object.entries(field_settings)) {
+      if (field['tile'] && tile_settings[field['tile']]) {
+        if (tile_buckets[field['tile']] === undefined) {
+          tile_buckets[field['tile']] = [];
+        }
+        tile_buckets[field['tile']].push(field_key);
+      } else {
+        no_tile.push(field_key);
+      }
+    }
+    tile_buckets['no_tile'] = no_tile;
+
+    // Ensure no custom tiles have been missed!
+    if ( custom_tile_settings ) {
+      for (const [tile_key, tile] of Object.entries(custom_tile_settings)) {
+        if (tile_buckets[tile_key] === undefined) {
+          tile_buckets[tile_key] = [];
+        }
+      }
+    }
+
+    return tile_buckets;
+  }
+
   function refresh_post_type_meta_details( post_type ) {
     let dt_import_post_type_meta_div = $('#dt_import_post_type_meta_div');
     let dt_import_tiles_fields_div = $('#dt_import_tiles_fields_div');
@@ -308,12 +413,15 @@ jQuery(document).ready(function ($) {
     $(dt_import_post_type_meta_div).fadeOut('fast', function () {
       let dt_settings = dt_import_uploaded_config['dt_settings'];
       let post_type_settings = dt_settings[dt_import_config_setting_keys['post_types_settings_key']]['values'][post_type];
+      let custom_post_type_settings = dt_settings[dt_import_config_setting_keys['custom_post_types_settings_key']]['values'][post_type];
       let key = post_type_settings['post_type'];
       let already_exists = dt_import_existing_post_types.includes(post_type);
-      let label_singular = post_type_settings['label_singular'];
-      let label_plural = post_type_settings['label_plural'];
-      let is_custom = post_type_settings['is_custom'];
-      let has_selections = ( dt_import_uploaded_config_selections[post_type] !== undefined );
+
+      // Default to custom settings, if present.
+      let label_singular = (custom_post_type_settings['label_singular']) ? custom_post_type_settings['label_singular'] : post_type_settings['label_singular'];
+      let label_plural = (custom_post_type_settings['label_plural']) ? custom_post_type_settings['label_plural'] : post_type_settings['label_plural'];
+      let is_custom = (custom_post_type_settings['is_custom']) ? custom_post_type_settings['is_custom'] : post_type_settings['is_custom'];
+      let import_meta = ( dt_import_uploaded_config_selections[post_type]?.['import_meta'] !== undefined );
 
       $('#dt_import_details_key_td').text(key);
       $('#dt_import_details_already_installed_td').text(already_exists ? 'Yes' : 'No');
@@ -324,7 +432,7 @@ jQuery(document).ready(function ($) {
       // Any detected selections to result in the displaying of tiles & fields section.
       let import_record_type_settings_checkbox = $('#dt_import_details_record_type_settings_checkbox');
       $(import_record_type_settings_checkbox).data('post_type', post_type);
-      $(import_record_type_settings_checkbox).prop('checked', has_selections);
+      $(import_record_type_settings_checkbox).prop('checked', import_meta);
 
       // Automatically display tiles & fields.
       refresh_tiles_fields( post_type );
@@ -345,82 +453,75 @@ jQuery(document).ready(function ($) {
     let tile_settings = dt_settings[dt_import_config_setting_keys['tiles_settings_key']]['values'][post_type];
     let field_settings = dt_settings[dt_import_config_setting_keys['fields_settings_key']]['values'][post_type];
 
-    let is_custom_import = dt_import_config_setting_keys['type'] === 'custom';
-
     $(dt_import_tiles_fields_div).fadeOut('fast', function () {
-
-      // If custom; filter out non-custom fields.
-      if ( is_custom_import ) {
-        let filtered_field_settings = {};
-        $.each(field_settings, function (field_key, field) {
-          if ( field['customizable'] && field['customizable'] !== false ) {
-            filtered_field_settings[field_key] = field;
-          }
-        });
-
-        field_settings = filtered_field_settings;
-      }
-
-      // Place importing post type fields into their respective tile buckets.
-      let tile_buckets = {};
-      let no_tile = [];
-      $.each(field_settings, function (field_key, field) {
-        if ( field['tile'] && tile_settings[field['tile']] ) {
-          if ( tile_buckets[field['tile']] === undefined ) {
-            tile_buckets[field['tile']] = [];
-          }
-          tile_buckets[field['tile']].push(field_key);
-        } else {
-          no_tile.push(field_key);
-        }
-      });
-      tile_buckets['no_tile'] = no_tile;
 
       // Next, iterate over tile buckets and display.
       let html = ``;
-      $.each(tile_buckets, function (tile, bucket) {
+      for (const [tile, bucket] of Object.entries(group_tiles_fields_buckets( post_type ))) {
+        let tile_label = (tile === 'no_tile') ? 'No Tile' : tile_settings[tile]['label'];
+        if ( (tile !== 'no_tile') || ((tile === 'no_tile') && (bucket.length > 0)) ) {
+          let import_meta = dt_import_uploaded_config_selections[post_type] && dt_import_uploaded_config_selections[post_type]['tiles'][tile] && dt_import_uploaded_config_selections[post_type]['tiles'][tile]['import_meta'] === true;
 
-        if ( bucket.length > 0 ) {
-          let tile_label = ( tile === 'no_tile' ) ? 'No Tile' : tile_settings[tile]['label'];
           html += `
           <table class="widefat striped" style="margin-bottom: 10px;" data-tile_id="${window.dt_admin_shared.escape(tile)}">
             <thead>
               <tr>
                 <th>${window.dt_admin_shared.escape(tile_label)}</th>
                 <th style="text-align: right;">
-                  <input  type="checkbox"
-                          class="dt-tile-checkbox"
+                    <label>
+                        <span style="font-size: 10px;">Import Settings</span>
+                        <input  type="checkbox"
+                          class="dt-tile-select-settings-checkbox"
                           style="margin-right: 4px;"
                           data-post_type="${window.dt_admin_shared.escape(post_type)}"
-                          data-tile_id="${window.dt_admin_shared.escape(tile)}"/>
+                          data-tile_id="${window.dt_admin_shared.escape(tile)}"
+                          ${(import_meta) ? 'checked' : ''}/>
+                    </label>
                 </th>
-              </tr>
-            </thead>
+              </tr>`;
+
+            if (bucket.length > 0) {
+              html += `<tr>
+                  <th></th>
+                  <th style="text-align: right;">
+                      <label>
+                          <span style="font-size: 10px;">Un/Check Fields</span>
+                          <input  type="checkbox"
+                            class="dt-tile-select-fields-checkbox"
+                            style="margin-right: 4px;"
+                            data-post_type="${window.dt_admin_shared.escape(post_type)}"
+                            data-tile_id="${window.dt_admin_shared.escape(tile)}"/>
+                      </label>
+                  </th>
+                </tr>`;
+            }
+
+            html += `</thead>
             <tbody>`;
 
-          $.each(bucket, function(idx, field_id){
-            let checked = ( dt_import_uploaded_config_selections[post_type] && dt_import_uploaded_config_selections[post_type][tile] && dt_import_uploaded_config_selections[post_type][tile].includes(field_id) );
-            let field_name = field_settings[field_id]['name'];
-            html += `
-            <tr>
-              <td>
-                ${window.dt_admin_shared.escape(field_name)}
-              </td>
-              <td style="text-align: right;">
-                <input    type="checkbox"
-                          class="dt-field-checkbox"
-                          data-post_type="${window.dt_admin_shared.escape(post_type)}"
-                          data-tile_id="${window.dt_admin_shared.escape(tile)}"
-                          data-field_id="${window.dt_admin_shared.escape(field_id)}"
-                          ${(checked ? 'checked' : '')}/>
-              </td>
-            </tr>`;
-          });
+            bucket.forEach((field_id) => {
+              let checked = (dt_import_uploaded_config_selections[post_type] && dt_import_uploaded_config_selections[post_type]['tiles'][tile] && dt_import_uploaded_config_selections[post_type]['tiles'][tile]['fields'].includes(field_id));
+              let field_name = field_settings[field_id]['name'];
+              html += `
+              <tr>
+                <td>
+                  ${window.dt_admin_shared.escape(field_name)}
+                </td>
+                <td style="text-align: right;">
+                  <input    type="checkbox"
+                            class="dt-field-checkbox"
+                            data-post_type="${window.dt_admin_shared.escape(post_type)}"
+                            data-tile_id="${window.dt_admin_shared.escape(tile)}"
+                            data-field_id="${window.dt_admin_shared.escape(field_id)}"
+                            ${(checked ? 'checked':'')}/>
+                </td>
+              </tr>`;
+            });
 
-          html += `</tbody>
+            html += `</tbody>
           </table>`;
         }
-      });
+      }
       $(dt_import_tiles_fields_content_div).html(html);
 
       // Update json selections & then refresh display.
@@ -441,34 +542,54 @@ jQuery(document).ready(function ($) {
 
     switch( update_type ) {
       case 'update': {
-        let has_Selections = false;
+
+        // Ensure the has_selection default state, is governed by post type's import_meta flag.
+        let post_type_import_meta = $('#dt_import_details_record_type_settings_checkbox').prop('checked');
+        let has_selections = post_type_import_meta;
+        let updated_tiles = {};
         $(dt_import_tiles_fields_content_div).find('table').each(function (idx, table) {
 
-          // Identify table tile id.
-          let tile_id = $(table).find('input.dt-tile-checkbox').data('tile_id');
-
-          if ( tile_id ) {
+          // Identify table tile id and meta settings status.
+          const tile_select_settings_checkbox = $(table).find('input.dt-tile-select-settings-checkbox');
+          if ( tile_select_settings_checkbox ) {
+            let tile_import_meta = $(tile_select_settings_checkbox).prop('checked');
+            let tile_id = $(tile_select_settings_checkbox).data('tile_id');
             let selected_fields = [];
+
+            // We have a selection if a tile import meta check is detected.
+            if ( tile_import_meta ) {
+              has_selections = true;
+            }
+
+            // Proceed with identifying selected fields.
             $(table).find('input.dt-field-checkbox').each(function (field_idx, input) {
 
               // Only concern ourselves with selected fields.
               if ( $(input).prop('checked') ) {
                 let field_id = $(input).data('field_id');
                 selected_fields.push(field_id);
-                has_Selections = true;
+                has_selections = true;
               }
             });
 
-            // Update global config selections.
-            if (!config_selections[post_type]) {
-              config_selections[post_type] = {};
+            // Only select tiles which have either import meta checked or has selected fields.
+            if ( ( tile_import_meta && tile_import_meta === true ) || selected_fields.length > 0 ) {
+              updated_tiles[tile_id] = {
+                'import_meta': tile_import_meta,
+                'fields': selected_fields
+              };
             }
-            config_selections[post_type][tile_id] = selected_fields;
           }
         });
 
+        // Update global selections shape.
+        config_selections[post_type] = {
+          'import_meta': post_type_import_meta,
+          'tiles': updated_tiles
+        };
+
         // If no tile selections have been identified for given post type; delete global config entry.
-        if ( !has_Selections ) {
+        if ( !has_selections ) {
           delete config_selections[post_type];
         }
         $(dt_import_uploaded_config_selections).text( JSON.stringify( config_selections ) );
@@ -489,7 +610,6 @@ jQuery(document).ready(function ($) {
   }
 
   function update_config_selections_display() {
-    let dt_import_selections_div = $('#dt_import_selections_div');
     let dt_import_selections_content_div = $('#dt_import_selections_content_div');
     let dt_import_uploaded_config = JSON.parse( atob( $('#dt_import_uploaded_config_raw').text(), true ) );
     let dt_import_uploaded_config_selections = JSON.parse( $('#dt_import_uploaded_config_selections').text() );
@@ -499,49 +619,67 @@ jQuery(document).ready(function ($) {
     let html = ``;
 
     // Iterate over selected post types and their corresponding tiles & fields.
-    $.each(dt_import_uploaded_config_selections, function (post_type, tiles) {
+    for (const [post_type, config_selection] of Object.entries(dt_import_uploaded_config_selections)) {
       let post_type_settings = dt_settings[dt_import_config_setting_keys['post_types_settings_key']]['values'][post_type];
+      let custom_post_type_settings = dt_settings[dt_import_config_setting_keys['custom_post_types_settings_key']]['values'][post_type];
       let tile_settings = dt_settings[dt_import_config_setting_keys['tiles_settings_key']]['values'][post_type];
+      let custom_tile_settings = dt_settings[dt_import_config_setting_keys['custom_tiles_settings_key']]['values'][post_type];
       let field_settings = dt_settings[dt_import_config_setting_keys['fields_settings_key']]['values'][post_type];
+      let custom_field_settings = dt_settings[dt_import_config_setting_keys['custom_fields_settings_key']]['values'][post_type];
 
       if ( post_type_settings && tile_settings && field_settings ) {
+        let post_type_name = post_type_settings['label_plural'] ? post_type_settings['label_plural'] : post_type;
+        if ( custom_post_type_settings['label_plural'] ) {
+          post_type_name = custom_post_type_settings['label_plural'];
+        }
+
         html += `
-        <span style="font-weight: bold;">${window.dt_admin_shared.escape((post_type_settings['label_plural'] ? post_type_settings['label_plural'] : post_type))}</span>
+        <span style="font-weight: bold;">${window.dt_admin_shared.escape(post_type_name)}</span>
+        <span style="float: right;">${ config_selection['import_meta'] ? '<i class="mdi mdi-card-bulleted-outline" style="font-size: 15px;"></i>' : '' }</span>
         <hr>
         `;
 
         // Proceed with the building of selected tiles & fields.
-        $.each(tiles, function (tile, fields) {
+        for (const [tile, tile_config_selection] of Object.entries(config_selection['tiles'])) {
+          let tile_import_meta = tile_config_selection['import_meta'] === true;
+          const fields = tile_config_selection['fields'];
           let tile_label = ( tile === 'no_tile' ) ? 'No Tile' : tile_settings[tile]['label'];
+          if ( custom_tile_settings?.[tile]?.['label'] ) {
+            tile_label = custom_tile_settings[tile]['label'];
+          }
 
-          if ( fields.length > 0 ) {
+          if ( fields.length > 0 || tile_import_meta ) {
             html += `
-            <table class="widefat striped" style="margin-bottom: 10px;">
+            <table class="widefat striped" style="margin-bottom: 20px;">
               <thead>
                   <tr>
-                      <th>${window.dt_admin_shared.escape(tile_label)}</th>
+                      <th>${window.dt_admin_shared.escape(tile_label)} <span style="float: right;">${ tile_import_meta ? '<i class="mdi mdi-card-bulleted-outline" style="font-size: 15px;"></i>' : '' }</span></th>
                   </tr>
               </thead>
               <tbody>`;
 
-              $.each(fields, function (idx, field_id) {
-                let field_name = field_settings[field_id]['name'] ? field_settings[field_id]['name']:field_id;
-                html += `
+            fields.forEach((field_id) => {
+              let field_name = field_settings[field_id]['name'] ? field_settings[field_id]['name'] : field_id;
+              if ( custom_field_settings[field_id]['name'] ) {
+                field_name = custom_field_settings[field_id]['name'];
+              }
+
+              html += `
                 <tr>
                   <td>
                     ${window.dt_admin_shared.escape(field_name)}
                   </td>
                 </tr>`;
-              });
+            });
 
-              html += `
+            html += `
               </tbody>
             </table>
             `;
           }
-        });
+        }
       }
-    });
+    }
 
     $(dt_import_selections_content_div).html(html);
   }

@@ -29,8 +29,6 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 125, 1 );
         add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 125, 1 );
 
-        add_filter( 'dt_import_new_post_types', [ $this, 'import_new_post_types' ], 10, 2 );
-
         parent::__construct();
     } // End __construct()
 
@@ -104,6 +102,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
                     // Ensure selected post types not already on the system, are installed ahead of import-payload request.
                     $new_post_types = $this->import_new_post_types( [], $uploaded_config );
+                    $created_post_types = [];
                     if ( !empty( $new_post_types ) ) {
 
                         // Iterate over new post types, ensuring they do not already exist, before creating.
@@ -120,12 +119,38 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                                     'hidden' => $post_type_settings['hidden'] ?? false,
                                     'is_custom' => $post_type_settings['is_custom'] ?? true
                                 ];
+
+                                $created_post_types[] = $post_type;
                             }
                         }
 
                         // Update custom post types with any newly identified.
                         update_option( 'dt_custom_post_types', $custom_post_types );
                     }
+
+                    // Next, identify any post types with meta details to be updated.
+                    $uploaded_config_setting_keys = $this->determine_uploaded_config_setting_keys( $uploaded_config );
+
+                    //Always attempt to extract from custom settings first, before defaulting to general settings.
+                    $post_types_settings = $uploaded_config['dt_settings'][ $uploaded_config_setting_keys['custom_post_types_settings_key'] ?? $uploaded_config_setting_keys['post_types_settings_key'] ];
+                    $existing_custom_post_types = get_option( 'dt_custom_post_types', [] );
+                    foreach ( $import_selections as $post_type => $selections ) {
+
+                        // Identify any existing post types flagged for updating using custom meta details. Ensure to ignore recently created post types.
+                        if ( !in_array( $post_type, $created_post_types ) && isset( $post_types_settings['values'], $post_types_settings['values'][$post_type], $selections['import_meta'] ) && $selections['import_meta'] === true ) {
+
+                            // Create space if not already present.
+                            if ( !isset( $existing_custom_post_types[$post_type] ) ) {
+                                $existing_custom_post_types[$post_type] = [];
+                            }
+
+                            $existing_custom_post_types[$post_type]['label_singular'] = $post_types_settings['values'][$post_type]['label_singular'] ?? $post_type;
+                            $existing_custom_post_types[$post_type]['label_plural'] = $post_types_settings['values'][$post_type]['label_plural'] ?? $post_type;
+                        }
+                    }
+
+                    // Persist updated custom post type changes.
+                    update_option( 'dt_custom_post_types', $existing_custom_post_types );
 
                     // Process import request and display results summary.
                     $results = $this->process_imports( $uploaded_config, $import_selections );
@@ -224,15 +249,15 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
             $existing_field_options = dt_get_option( 'dt_field_customizations' );
 
             // Start iterating and processing selected post types.
-            foreach ( $import_selections as $post_type => $tiles ) {
+            foreach ( $import_selections as $post_type => $selections ) {
                 $response[$post_type] = [
                     'tiles' => [],
                     'fields' => []
                 ];
 
-                // Post types should have already been created, so process tiles and build list of fields to be imported.
+                // Post types should have already been created/updated, so process tiles and build list of fields to be imported.
                 $selected_fields = [];
-                foreach ( $tiles as $tile => $fields ) {
+                foreach ( $selections['tiles'] ?? [] as $tile => $tile_config ) {
 
                     // Ignore the no_tile special keyword.
                     if ( ( $tile !== 'no_tile' ) && isset( $import_config['dt_settings'][$uploaded_config_setting_keys['tiles_settings_key']]['values'][$post_type][$tile] ) ) {
@@ -241,27 +266,39 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                         if ( !isset( $existing_tile_options[$post_type] ) ){
                             $existing_tile_options[$post_type] = [];
                         }
-                        $existing_tile_options[$post_type][$tile] = $import_config['dt_settings'][$uploaded_config_setting_keys['tiles_settings_key']]['values'][$post_type][$tile];
+
+                        // Capture tile settings accordingly based on import meta flag.
+                        $tiles_settings_key = 'tiles_settings_key';
+                        if ( ( isset( $tile_config['import_meta'] ) && $tile_config['import_meta'] === true ) && isset( $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type][$tile] ) ) {
+                            $tiles_settings_key = 'custom_tiles_settings_key';
+                        }
+                        $existing_tile_options[$post_type][$tile] = $import_config['dt_settings'][$uploaded_config_setting_keys[$tiles_settings_key]]['values'][$post_type][$tile];
 
                         // Capture tile id, to signal a successful import.
                         $response[$post_type]['tiles'][] = $tile;
                     }
 
                     // Capture tile fields for future processing.
-                    $selected_fields = array_merge( $selected_fields, $fields );
+                    $selected_fields = array_merge( $selected_fields, $tile_config['fields'] ?? [] );
                 }
 
                 // Next, import captured fields, for current post type.
                 foreach ( $selected_fields as $field ) {
+                    $fields_settings_key = 'fields_settings_key';
 
                     // Ensure a valid field import config can be referenced.
-                    if ( isset( $import_config['dt_settings'][$uploaded_config_setting_keys['fields_settings_key']]['values'][$post_type][$field] ) ) {
+                    if ( isset( $import_config['dt_settings'][$uploaded_config_setting_keys[$fields_settings_key]]['values'][$post_type][$field] ) ) {
+
+                        // Default to custom settings if available; otherwise just go with the generic flow.
+                        if ( isset( $import_config['dt_settings'][$uploaded_config_setting_keys['custom_fields_settings_key']]['values'][$post_type][$field] ) ) {
+                            $fields_settings_key = 'custom_fields_settings_key';
+                        }
 
                         // Make tile options provision if needed, before committing.
                         if ( !isset( $existing_field_options[$post_type] ) ){
                             $existing_field_options[$post_type] = [];
                         }
-                        $existing_field_options[$post_type][$field] = $import_config['dt_settings'][$uploaded_config_setting_keys['fields_settings_key']]['values'][$post_type][$field];
+                        $existing_field_options[$post_type][$field] = $import_config['dt_settings'][$uploaded_config_setting_keys[$fields_settings_key]]['values'][$post_type][$field];
 
                         // Capture field id, to signal a successful import.
                         $response[$post_type]['fields'][] = $field;
@@ -326,8 +363,11 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         if ( isset( $uploaded_config['dt_settings'] ) ) {
             $uploaded_config_setting_keys['type'] = $uploaded_config['dt_settings']['type'] ?? 'custom';
             $uploaded_config_setting_keys['tiles_settings_key'] = 'dt_tiles_settings';
+            $uploaded_config_setting_keys['custom_tiles_settings_key'] = 'dt_tiles_custom_settings';
             $uploaded_config_setting_keys['fields_settings_key'] = 'dt_fields_settings';
+            $uploaded_config_setting_keys['custom_fields_settings_key'] = 'dt_fields_custom_settings';
             $uploaded_config_setting_keys['post_types_settings_key'] = 'dt_post_types_settings';
+            $uploaded_config_setting_keys['custom_post_types_settings_key'] = 'dt_post_types_custom_settings';
         }
 
         return $uploaded_config_setting_keys;
@@ -392,13 +432,13 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                     ?>
                     </tr>
                 </tbody>
-                <tfoot>
+                <!--<tfoot>
                     <tr>
                         <td colspan="<?php echo esc_attr( $post_type_count ); ?>">
                             <button id="dt_import_submit_but" class="button" style="min-width: 100%; margin-top: 20px;">Import</button>
                         </td>
                     </tr>
-                </tfoot>
+                </tfoot>-->
             </table>
             <?php
         } else {
@@ -503,7 +543,20 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
             <?php
             $this->box( 'top', 'Import Selections', [ 'col_span' => 12 ] );
             ?>
-            <div id="dt_import_selections_content_div"></div>
+            <table style="min-width: 100%;">
+                <tbody>
+                <tr>
+                    <td>
+                        <button id="dt_import_submit_but" class="button" style="min-width: 100%;">Import</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="dt_import_selections_content_div"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
             <?php
             $this->box( 'bottom' );
             ?>
