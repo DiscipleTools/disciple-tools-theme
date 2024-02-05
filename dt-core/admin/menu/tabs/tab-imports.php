@@ -432,13 +432,6 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                     ?>
                     </tr>
                 </tbody>
-                <!--<tfoot>
-                    <tr>
-                        <td colspan="<?php echo esc_attr( $post_type_count ); ?>">
-                            <button id="dt_import_submit_but" class="button" style="min-width: 100%; margin-top: 20px;">Import</button>
-                        </td>
-                    </tr>
-                </tfoot>-->
             </table>
             <?php
         } else {
