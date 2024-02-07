@@ -3540,8 +3540,18 @@
         let html = `
         <span class="section-header"> | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['mapped_locations'] )}: <span id="mapped" class="loading-spinner active"></span> | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['without_locations'] )}: <span id="unmapped" class="loading-spinner active"></span> </span><br><br>
         <div id="dynamic-styles"></div>
-        <div id="map-wrapper">
-            <div id='map'></div>
+        <div class="grid-x">
+          <div class="cell medium-9" id="export_map_container">
+            <div id="map-wrapper">
+                <div id='map'></div>
+            </div>
+          </div>
+          <div class="cell medium-3" id="export_map_sidebar_menu">
+            <!-- details panel -->
+            <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px;">
+              <table id="export_map_sidebar_menu_details_panel_table"></table>
+            </div>
+          </div>
         </div>`;
 
         $('#export_content').html(html);
@@ -3590,6 +3600,8 @@
                     'coordinates': [v.location_grid_meta[0].lng, v.location_grid_meta[0].lat]
                   },
                   'properties': {
+                    'id': v.ID,
+                    'post_type': v.post_type,
                     'title': v.post_title,
                     'label': v.location_grid_meta[0].label
                   }
@@ -3662,6 +3674,32 @@
 
             map.on('mouseleave', 'points', function() {
               map.getCanvas().style.cursor = '';
+            });
+
+            map.on('mousemove', function(e) {
+
+              // Specify bounding box and fetch available points.
+              const bbox = [
+                [e.point.x - 50, e.point.y - 50],
+                [e.point.x + 50, e.point.y + 50]
+              ];
+
+              const features = map.queryRenderedFeatures( bbox, {
+                layers: ['points']
+              });
+
+              // Obtain a handle to details panel table and refresh accordingly.
+              const details_table = $('#export_map_sidebar_menu_details_panel_table');
+              if ( features && features.length > 0 ) {
+                let html = `<tbody>`;
+                features.forEach(function(feature) {
+                  if ( feature?.properties?.id && feature?.properties?.post_type && feature?.properties?.title && feature?.properties?.label ) {
+                    html += `<tr><td><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.post_type)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.id)}">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.title)}</a> <span style="color: #808080;">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.label)}</span></td></tr>`;
+                  }
+                });
+                html += `</tbody>`;
+                $(details_table).html(html);
+              }
             });
 
             var bounds = new window.mapboxgl.LngLatBounds();
