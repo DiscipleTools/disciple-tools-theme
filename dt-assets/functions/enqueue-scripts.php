@@ -329,7 +329,8 @@ function dt_site_scripts() {
             'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
             'exports' => [
                 'csv' => [
-                    'fields_msg' => sprintf( _x( 'The exported csv data to contain all {0} %s fields.', 'The exported csv data to contain all fields', 'disciple_tools' ), $post_settings['label_singular'] )
+                    'fields_msg_all' => sprintf( _x( 'The exported csv data to contain all {0} %s fields.', 'The exported csv data to contain all fields', 'disciple_tools' ), $post_settings['label_singular'] ),
+                    'fields_msg_visible' => sprintf( _x( 'The exported csv data to contain the {0} visible %s field(s) shown below.', 'The exported csv data to contain visible fields', 'disciple_tools' ), $post_settings['label_singular'] )
                 ]
             ]
         ];
