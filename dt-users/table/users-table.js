@@ -101,7 +101,7 @@ export class UsersTable extends LitElement {
                 <h2>${this.translations.users} ${this.loading ? html`<img style="height:1em;" src="${window.wpApiShare.template_dir}/spinner.svg" alt="spinner" />` : html`<span style="font-size: 14px;font-weight: normal">${this.translations.showing_x_of_y.replace('%1$s', this.users.length).replace('%2$s', this.total_users)}`}</span></h2>
             </div>
             <div class="search-section">
-                <input id="search-users" type="search" placeholder="${this.translations.search}" @search="${this.clear_search}">
+                <input id="search-users" type="search" placeholder="${this.translations.search}" @search="${this.search_text}">
                 <button class="button" @click="${this.search_text}">${this.translations.go}</button>
             </div>
 
