@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-01-12T11:26:56+00:00\n"
+"POT-Creation-Date: 2024-01-29T10:35:39+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.disciple.tools/"
@@ -141,9 +141,9 @@ msgid "Filters"
 msgstr "篩選器"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:596
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
-#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
-#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:653
+#: dt-core/global-functions.php:681 dt-core/global-functions.php:813
+#: dt-core/global-functions.php:857 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -296,7 +296,7 @@ msgstr "從列表中選擇想要更新的所有 %1$s，並在下方進行更新"
 
 #: archive-template.php:510 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:893
+#: dt-core/global-functions.php:895
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "搜索用戶"
@@ -355,7 +355,7 @@ msgid "Update"
 msgstr "更新資料"
 
 #: archive-template.php:692 dt-assets/functions/enqueue-scripts.php:325
-#: dt-reports/magic-url-bulk-send.php:68
+#: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "在下面進行選擇"
 
@@ -416,14 +416,14 @@ msgid "None Set"
 msgstr "沒有設置"
 
 #: archive-template.php:874 archive-template.php:875
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:613
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "沒有"
 
 #: archive-template.php:881 archive-template.php:882
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:614
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -461,7 +461,7 @@ msgstr "保存"
 #: dt-assets/functions/details-bar.php:51
 #: dt-assets/functions/details-bar.php:242
 #: dt-core/configuration/config-site-defaults.php:364
-#: dt-workflows/update-required.php:70 dt-workflows/update-required.php:109
+#: dt-workflows/update-required.php:71 dt-workflows/update-required.php:110
 msgid "Update Needed"
 msgstr "需要更新"
 
@@ -703,7 +703,7 @@ msgid "No records found matching your filter."
 msgstr "找不到與您的過濾器匹配的記錄。"
 
 #: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1071 dt-posts/custom-post-type.php:439
+#: dt-groups/base-setup.php:1068 dt-posts/custom-post-type.php:439
 msgctxt "All records"
 msgid "All %s"
 msgstr "所有％s"
@@ -731,8 +731,8 @@ msgstr "沒有"
 
 #: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Number of emails sent. i.e. 20 sent!"
-msgid "sent"
-msgstr "發送"
+msgid "scheduled to be sent"
+msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -1783,8 +1783,8 @@ msgstr "性別"
 msgid "This record might be a duplicate of: "
 msgstr "此紀錄可能是重複項目："
 
-#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:483
-#: dt-contacts/duplicates-merging.php:565
+#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "重複檢查工具"
 
@@ -1981,7 +1981,7 @@ msgstr "封存"
 msgid "Other"
 msgstr "其他"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1063
+#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1060
 #: dt-posts/custom-post-type.php:418
 msgid "Default Filters"
 msgstr "預設篩選工具"
@@ -1991,23 +1991,23 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "所有我能查看的 %s"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1080
+#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1074
 #: dt-posts/custom-post-type.php:451
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "最喜歡的％s"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1086
+#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1079
 #: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
 msgid "Favorite"
 msgstr "最喜歡的"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1092
+#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1085
 #: dt-posts/custom-post-type.php:466
 msgid "My Recently Viewed"
 msgstr "我最近查看過的"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1097
+#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1090
 #: dt-posts/custom-post-type.php:471
 msgid "Last 30 viewed"
 msgstr "最近 30 個查看過的"
@@ -2314,23 +2314,23 @@ msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "搜索乘數和聯繫方式"
 
-#: dt-contacts/duplicates-merging.php:440
+#: dt-contacts/duplicates-merging.php:442
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "（來自重複項）：％s"
 
-#: dt-contacts/duplicates-merging.php:561
+#: dt-contacts/duplicates-merging.php:563
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "此記錄已重複，且合併為 %2$s"
 
-#: dt-contacts/duplicates-merging.php:574
+#: dt-contacts/duplicates-merging.php:576
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s 已將 %2$s 合併到這筆記錄中"
 
 #. Template Name of the theme
-#: dt-contacts/duplicates-merging.php:586
+#: dt-contacts/duplicates-merging.php:588
 msgid "View Duplicates"
 msgstr "查看重複項"
 
@@ -2611,17 +2611,17 @@ msgstr "如果這是一個錯誤，請忽略此電子郵件，將不會發生任
 msgid "To reset your password, visit the following address:"
 msgstr "要重置密碼，請訪問以下地址："
 
-#: dt-core/global-functions.php:490 single-template.php:410
+#: dt-core/global-functions.php:492 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
 msgstr "這是必需的"
 
-#: dt-core/global-functions.php:653
+#: dt-core/global-functions.php:655
 msgid "Add new tag \"%s\""
 msgstr "新增標籤「%s」"
 
-#: dt-core/global-functions.php:654
+#: dt-core/global-functions.php:656
 msgid "Tag \"%s\" is already being used"
 msgstr "「%s」標籤已被使用"
 
@@ -4042,16 +4042,16 @@ msgstr "沒有"
 msgid "No Records Available"
 msgstr "沒有可用數據"
 
-#: dt-notifications/notifications-email.php:125
+#: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
 msgstr "點擊這裡查看或回复"
 
-#: dt-notifications/notifications-email.php:131
+#: dt-notifications/notifications-email.php:138
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "更新 %1$s ＃%2$s"
 
-#: dt-notifications/notifications-email.php:135
+#: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
 msgstr "不要直接回复此電子郵件。"
 
@@ -4592,6 +4592,12 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "未與％s共享"
 
+#: dt-posts/posts.php:2477
+#, fuzzy
+#| msgid "Remove"
+msgid "Removed User"
+msgstr "移除"
+
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
 msgstr "批量發送應用"
@@ -4600,35 +4606,70 @@ msgstr "批量發送應用"
 msgid "Select all the %1$s to whom you want to send app links."
 msgstr "選擇您要向其發送應用鏈接的所有 %1$s。"
 
-#: dt-reports/magic-url-bulk-send.php:41
-msgid "Add optional greeting"
-msgstr "添加可選問候語"
+#: dt-reports/magic-url-bulk-send.php:43
+msgid ""
+"Hello {{name}},\n"
+"\n"
+"Please click on the button below to access your app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Thanks!"
+msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:42
-msgid "Add short greeting to be added above the app link."
-msgstr "在應用鏈接上方添加要添加的簡短問候語。"
+#: dt-reports/magic-url-bulk-send.php:51
+msgid "Configure email subject"
+msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:45
+#: dt-reports/magic-url-bulk-send.php:54
+msgid "{{app}} will be replaced with the selected app name."
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:56
+msgid "Configure email message"
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:58
+msgid "Message placeholders"
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:61
+#, fuzzy
+#| msgid "Select app to email"
+msgid "Selected app name"
+msgstr "選擇要發送電子郵件的應用"
+
+#: dt-reports/magic-url-bulk-send.php:64
+#, fuzzy
+#| msgid "Create Record"
+msgid "Name of the Record"
+msgstr "建立紀錄"
+
+#: dt-reports/magic-url-bulk-send.php:67
+msgid "Unique link to access the app."
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
 msgstr "選擇要發送電子郵件的應用"
 
-#: dt-reports/magic-url-bulk-send.php:46
+#: dt-reports/magic-url-bulk-send.php:73
 msgid "You must select an app"
 msgstr "您必須選擇一個應用程序"
 
-#: dt-reports/magic-url-bulk-send.php:63
+#: dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "發送到選定的記錄"
 
-#: dt-reports/magic-url-bulk-send.php:64
+#: dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "您必須至少選擇一條記錄"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:91
+#: dt-reports/magic-url-bulk-send.php:94 dt-reports/magic-url-setup.php:91
 msgid "Send"
 msgstr "發送"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "鏈接"
 
@@ -5509,6 +5550,16 @@ msgstr "已掃描存取聯絡人："
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "找到的重複項目："
+
+#~ msgctxt "Number of emails sent. i.e. 20 sent!"
+#~ msgid "sent"
+#~ msgstr "發送"
+
+#~ msgid "Add optional greeting"
+#~ msgstr "添加可選問候語"
+
+#~ msgid "Add short greeting to be added above the app link."
+#~ msgstr "在應用鏈接上方添加要添加的簡短問候語。"
 
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
