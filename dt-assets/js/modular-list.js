@@ -897,7 +897,7 @@
             values[0] = '&#9733;'
           }
           let tmp_html = `
-            <td dir="auto" title="${values.join(', ')}">
+            <td dir="auto" data-id="${field_key}" title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>

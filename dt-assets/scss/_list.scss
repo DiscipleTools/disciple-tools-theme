@@ -121,7 +121,21 @@ table.table-remove-top-border thead {
 table.js-list{
     table-layout: fixed;
     word-wrap: break-word;
-    width: 100%
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+table.js-list th[data-id="name"] {
+    position: sticky;
+    left: 0;
+    background-color: #ffffff;
+}
+table.js-list td[data-id="name"] {
+    position: sticky;
+    left: 0;
+    background-color: #ffffff;
 }
 
 .current-filter-list {
