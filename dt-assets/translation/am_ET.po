@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-01-12T11:26:56+00:00\n"
+"POT-Creation-Date: 2024-01-29T10:35:39+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Amharic <https://translate.disciple.tools/projects/disciple-"
@@ -141,9 +141,9 @@ msgid "Filters"
 msgstr "ማጣሪያዎች"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:596
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
-#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
-#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:653
+#: dt-core/global-functions.php:681 dt-core/global-functions.php:813
+#: dt-core/global-functions.php:857 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -296,7 +296,7 @@ msgstr "ከዝርዝሩ ሊያዘምኗቸው የሚፈልጓቸውን ሁሉን
 
 #: archive-template.php:510 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:893
+#: dt-core/global-functions.php:895
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "የፍለጋ ተጠቃሚዎች"
@@ -355,7 +355,7 @@ msgid "Update"
 msgstr "አዘምን"
 
 #: archive-template.php:692 dt-assets/functions/enqueue-scripts.php:325
-#: dt-reports/magic-url-bulk-send.php:68
+#: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "ከዚህ በታች ምርጫዎችን ያድርጉ"
 
@@ -416,14 +416,14 @@ msgid "None Set"
 msgstr "አንድም አልተዘጋጀም"
 
 #: archive-template.php:874 archive-template.php:875
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:613
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "አይ"
 
 #: archive-template.php:881 archive-template.php:882
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:614
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -461,7 +461,7 @@ msgstr "አስቀምጥ"
 #: dt-assets/functions/details-bar.php:51
 #: dt-assets/functions/details-bar.php:242
 #: dt-core/configuration/config-site-defaults.php:364
-#: dt-workflows/update-required.php:70 dt-workflows/update-required.php:109
+#: dt-workflows/update-required.php:71 dt-workflows/update-required.php:110
 msgid "Update Needed"
 msgstr "ማዘመን ያስፈልጋል"
 
@@ -704,7 +704,7 @@ msgid "No records found matching your filter."
 msgstr "ከማጣሪያዎ ጋር የሚዛመዱ ምንም መዝገቦች አልተገኙም።"
 
 #: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1071 dt-posts/custom-post-type.php:439
+#: dt-groups/base-setup.php:1068 dt-posts/custom-post-type.php:439
 msgctxt "All records"
 msgid "All %s"
 msgstr "ሁሉም$s"
@@ -732,8 +732,8 @@ msgstr "ያለ"
 
 #: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Number of emails sent. i.e. 20 sent!"
-msgid "sent"
-msgstr "ተልኳል።"
+msgid "scheduled to be sent"
+msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -1792,8 +1792,8 @@ msgstr "ፆታ"
 msgid "This record might be a duplicate of: "
 msgstr "ይህ መዝገብ አንድ የተባዛ ሊሆን ይችላል- "
 
-#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:483
-#: dt-contacts/duplicates-merging.php:565
+#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "የተባዛ ፈታሽ"
 
@@ -1991,7 +1991,7 @@ msgstr "መዝገብ ቤት"
 msgid "Other"
 msgstr "ሌላ"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1063
+#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1060
 #: dt-posts/custom-post-type.php:418
 msgid "Default Filters"
 msgstr "ነባሪ ማጣሪያዎች"
@@ -2001,23 +2001,23 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "ሁሉንም$s ማየት እችላለሁ"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1080
+#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1074
 #: dt-posts/custom-post-type.php:451
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "ተወዳጅ%s"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1086
+#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1079
 #: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
 msgid "Favorite"
 msgstr "የሚወደድ"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1092
+#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1085
 #: dt-posts/custom-post-type.php:466
 msgid "My Recently Viewed"
 msgstr "በቅርብ የታየኝ"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1097
+#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1090
 #: dt-posts/custom-post-type.php:471
 msgid "Last 30 viewed"
 msgstr "ያለፉት 30 ታይተዋል"
@@ -2324,23 +2324,23 @@ msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "ብዙዎችን እና እውቂያዎችን ይፈልጉ"
 
-#: dt-contacts/duplicates-merging.php:440
+#: dt-contacts/duplicates-merging.php:442
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(ከተባዛ)$s"
 
-#: dt-contacts/duplicates-merging.php:561
+#: dt-contacts/duplicates-merging.php:563
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "ይህ መዝገብ አንድ ቅጅ ነው እና ወደ %2$s ተቀላቅሏል"
 
-#: dt-contacts/duplicates-merging.php:574
+#: dt-contacts/duplicates-merging.php:576
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s %2$s ን ወደዚህ መዝገብ ተቀላቅሏል"
 
 #. Template Name of the theme
-#: dt-contacts/duplicates-merging.php:586
+#: dt-contacts/duplicates-merging.php:588
 msgid "View Duplicates"
 msgstr "ብዜቶችን ይመልከቱ"
 
@@ -2621,17 +2621,17 @@ msgstr "ይህ ስህተት ቢሆን ኖሮ ይህንን ኢሜል ችላ ይ�
 msgid "To reset your password, visit the following address:"
 msgstr "የይለፍ ቃልዎን እንደገና ለማስጀመር የሚከተለውን አድራሻ ይጎብኙ"
 
-#: dt-core/global-functions.php:490 single-template.php:410
+#: dt-core/global-functions.php:492 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
 msgstr "ይህ ያስፈልጋል"
 
-#: dt-core/global-functions.php:653
+#: dt-core/global-functions.php:655
 msgid "Add new tag \"%s\""
 msgstr "አዲስ መለያ \"%s\" ያክሉ"
 
-#: dt-core/global-functions.php:654
+#: dt-core/global-functions.php:656
 msgid "Tag \"%s\" is already being used"
 msgstr "መለያ \"%s\" አስቀድሞ ጥቅም ላይ ውሏል"
 
@@ -4059,16 +4059,16 @@ msgstr "አይ"
 msgid "No Records Available"
 msgstr "ምንም ውሂብ የለም"
 
-#: dt-notifications/notifications-email.php:125
+#: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
 msgstr "ለማየት ወይም መልስ ለመስጠት እዚህ ጠቅ ያድርጉ"
 
-#: dt-notifications/notifications-email.php:131
+#: dt-notifications/notifications-email.php:138
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "በ %1$s # %2$s ላይ ያዘምኑ"
 
-#: dt-notifications/notifications-email.php:135
+#: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
 msgstr "ለዚህ ኢሜል በቀጥታ መልስ አይመልሱ ፡፡"
 
@@ -4616,6 +4616,12 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "ከ$s ጋር አልተጋራም"
 
+#: dt-posts/posts.php:2477
+#, fuzzy
+#| msgid "Remove"
+msgid "Removed User"
+msgstr "አስወግድ"
+
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
 msgstr "የጅምላ ላክ መተግበሪያ"
@@ -4624,35 +4630,70 @@ msgstr "የጅምላ ላክ መተግበሪያ"
 msgid "Select all the %1$s to whom you want to send app links."
 msgstr "የመተግበሪያ አገናኞችን ለመላክ የሚፈልጉትን ሁሉንም %1$s ይምረጡ።"
 
-#: dt-reports/magic-url-bulk-send.php:41
-msgid "Add optional greeting"
-msgstr "አማራጭ ሰላምታ ያክሉ"
+#: dt-reports/magic-url-bulk-send.php:43
+msgid ""
+"Hello {{name}},\n"
+"\n"
+"Please click on the button below to access your app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Thanks!"
+msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:42
-msgid "Add short greeting to be added above the app link."
-msgstr "ከመተግበሪያው አገናኝ በላይ ለመጨመር አጭር ሰላምታ ያክሉ።"
+#: dt-reports/magic-url-bulk-send.php:51
+msgid "Configure email subject"
+msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:45
+#: dt-reports/magic-url-bulk-send.php:54
+msgid "{{app}} will be replaced with the selected app name."
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:56
+msgid "Configure email message"
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:58
+msgid "Message placeholders"
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:61
+#, fuzzy
+#| msgid "Select app to email"
+msgid "Selected app name"
+msgstr "ኢሜይል ለመላክ መተግበሪያን ይምረጡ"
+
+#: dt-reports/magic-url-bulk-send.php:64
+#, fuzzy
+#| msgid "Create Record"
+msgid "Name of the Record"
+msgstr "መዝገብ ይፍጠሩ"
+
+#: dt-reports/magic-url-bulk-send.php:67
+msgid "Unique link to access the app."
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
 msgstr "ኢሜይል ለመላክ መተግበሪያን ይምረጡ"
 
-#: dt-reports/magic-url-bulk-send.php:46
+#: dt-reports/magic-url-bulk-send.php:73
 msgid "You must select an app"
 msgstr "መተግበሪያ መምረጥ አለብህ"
 
-#: dt-reports/magic-url-bulk-send.php:63
+#: dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "ወደተመረጡት መዝገቦች ላክ"
 
-#: dt-reports/magic-url-bulk-send.php:64
+#: dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "ቢያንስ አንድ መዝገብ መምረጥ አለብህ"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:91
+#: dt-reports/magic-url-bulk-send.php:94 dt-reports/magic-url-setup.php:91
 msgid "Send"
 msgstr "ላክ"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "አገናኞች"
 
@@ -5536,6 +5577,16 @@ msgstr "የመዳረሻ እውቂያዎችን ተቃኝተዋል"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "የተባዙ ተገኝተዋል"
+
+#~ msgctxt "Number of emails sent. i.e. 20 sent!"
+#~ msgid "sent"
+#~ msgstr "ተልኳል።"
+
+#~ msgid "Add optional greeting"
+#~ msgstr "አማራጭ ሰላምታ ያክሉ"
+
+#~ msgid "Add short greeting to be added above the app link."
+#~ msgstr "ከመተግበሪያው አገናኝ በላይ ለመጨመር አጭር ሰላምታ ያክሉ።"
 
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
