@@ -3073,6 +3073,7 @@
       </div>`;
 
       $('#export_content').html(html);
+      $('#export_modal_section_header').show();
 
       // Terminate any spinners and prepare download button event listener.
       $('.loading-spinner').removeClass('active');
@@ -3328,6 +3329,7 @@
         </div>`;
 
       $('#export_content').html(html);
+      $('#export_modal_section_header').show();
 
       // Recursively fetch all filtered list posts, to be processed.
       recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
@@ -3470,6 +3472,7 @@
         </div>`;
 
       $('#export_content').html(html);
+      $('#export_modal_section_header').show();
 
       // Recursively fetch all filtered list posts, to be processed.
       recursively_fetch_posts(0, 500, window.records_list['total'], [], function (posts) {
@@ -3531,14 +3534,15 @@
 
   $("#export_map_list").on("click", function (e) {
     if ( window.list_settings['translations']['exports']['map']['mapbox_key'] ) {
-      export_list_display('map', $(e.currentTarget).text(), function () {
+      const title = $(e.currentTarget).text();
+      export_list_display('map', title, function () {
 
         // Show spinners.
         $('.loading-spinner').addClass('active');
 
         // Generate modal html.
         let html = `
-        <span class="section-header"> | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['mapped_locations'] )}: <span id="mapped" class="loading-spinner active"></span> | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['without_locations'] )}: <span id="unmapped" class="loading-spinner active"></span> </span><br><br>
+        <span class="section-header"> ${window.SHAREDFUNCTIONS.escapeHTML(title)} | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['mapped_locations'] )}: <span id="mapped" class="loading-spinner active"></span> | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['without_locations'] )}: <span id="unmapped" class="loading-spinner active"></span> </span><br><br>
         <div id="dynamic-styles"></div>
         <div class="grid-x">
           <div class="cell medium-9" id="export_map_container">
@@ -3555,6 +3559,7 @@
         </div>`;
 
         $('#export_content').html(html);
+        $('#export_modal_section_header').hide();
 
         // Insert dynamic styles.
         let map_content = jQuery('#dynamic-styles')
