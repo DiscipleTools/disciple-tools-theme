@@ -413,7 +413,7 @@ class Disciple_Tools_Posts
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
                         $user = get_user_by( 'ID', $meta_array[1] );
-                        $message = sprintf( _x( '%1$1s: %2$2s', 'User Select: User1', 'disciple_tools' ), $fields[$activity->meta_key]['name'], ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
+                        $message = sprintf( _x( '%1$s: %2$s', 'User Select: User1', 'disciple_tools' ), $fields[$activity->meta_key]['name'], ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'text' ){
@@ -688,7 +688,7 @@ class Disciple_Tools_Posts
         foreach ( $query_array as $query_key => $query_value ) {
             if ( is_string( $query_key ) ){
                 $where_sql = '';
-                $table_key = esc_sql( 'field_' . $query_key );
+                $table_key = esc_sql( 'field_' . str_replace( '-', '_', $query_key ) );
                 if ( isset( $field_settings[$query_key]['type'] ) ){
                     $field_type = $field_settings[$query_key]['type'];
 
