@@ -247,12 +247,12 @@ jQuery(document).ready(function ($) {
    * DT IMPORTS
    */
 
-  $(document).ready(function () {
-    auto_select_new_post_types();
-  });
-
   $('.dt-import-post-type-but').on('click', function (e) {
-    refresh_post_type_meta_details( $(e.currentTarget).data('post_type') );
+    const post_type_but = $(e.currentTarget);
+    $('.dt-import-post-type-but').css('background-color', '');
+    $(post_type_but).css('background-color', '#efe0e3');
+
+    refresh_post_type_meta_details( $(post_type_but).data('post_type') );
   });
 
   $('#dt_import_details_record_type_settings_checkbox').on('change', function (e) {
@@ -418,9 +418,9 @@ jQuery(document).ready(function ($) {
       let already_exists = dt_import_existing_post_types.includes(post_type);
 
       // Default to custom settings, if present.
-      let label_singular = (custom_post_type_settings['label_singular']) ? custom_post_type_settings['label_singular'] : post_type_settings['label_singular'];
-      let label_plural = (custom_post_type_settings['label_plural']) ? custom_post_type_settings['label_plural'] : post_type_settings['label_plural'];
-      let is_custom = (custom_post_type_settings['is_custom']) ? custom_post_type_settings['is_custom'] : post_type_settings['is_custom'];
+      let label_singular = (custom_post_type_settings?.['label_singular']) ? custom_post_type_settings['label_singular'] : post_type_settings['label_singular'];
+      let label_plural = (custom_post_type_settings?.['label_plural']) ? custom_post_type_settings['label_plural'] : post_type_settings['label_plural'];
+      let is_custom = (custom_post_type_settings?.['is_custom']) ? custom_post_type_settings['is_custom'] : post_type_settings['is_custom'];
       let import_meta = ( dt_import_uploaded_config_selections[post_type]?.['import_meta'] !== undefined );
 
       $('#dt_import_details_key_td').text(key);
@@ -469,7 +469,7 @@ jQuery(document).ready(function ($) {
                 <th>${window.dt_admin_shared.escape(tile_label)}</th>
                 <th style="text-align: right;">
                     <label>
-                        <span style="font-size: 10px;">Import Settings</span>
+                        <span style="font-size: 10px;">Import Tile Settings</span>
                         <input  type="checkbox"
                           class="dt-tile-select-settings-checkbox"
                           style="margin-right: 4px;"
