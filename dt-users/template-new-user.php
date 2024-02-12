@@ -111,34 +111,15 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                             </dl>
                                             <div id="contact-result"></div>
                                             <dl>
-                                                <?php
-                                                // Generate dynamic field names; as a workaround to pwd manager autocompletes.
-                                                $new_contact_name = 'name_' . uniqid();
-                                                $new_contact_email = 'email_' . uniqid();
-                                                $new_contact_username = 'username_' . uniqid();
-                                                $new_contact_password = 'password_' . uniqid();
-                                                ?>
-                                                <dt><label for="<?php echo esc_attr( $new_contact_name ); ?>"><?php esc_html_e( 'Display Name', 'disciple_tools' ); ?></label></dt>
-                                                <dd>
-                                                    <input type="hidden" id="name_field" value="<?php echo esc_attr( $new_contact_name ); ?>">
-                                                    <input type="text" class="input" id="<?php echo esc_attr( $new_contact_name ); ?>" placeholder="<?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?>" required autocomplete="off" />
-                                                </dd>
-                                                <dt><label for="<?php echo esc_attr( $new_contact_email ); ?>"><?php esc_html_e( 'Email', 'disciple_tools' ); ?></label></dt>
-                                                <dd>
-                                                    <input type="hidden" id="email_field" value="<?php echo esc_attr( $new_contact_email ); ?>">
-                                                    <input type="email" class="input" id="<?php echo esc_attr( $new_contact_email ); ?>" placeholder="<?php esc_html_e( 'Email', 'disciple_tools' ); ?>" required autocomplete="off" />
-                                                </dd>
+                                                <dt><label for="eman"><?php esc_html_e( 'Display Name', 'disciple_tools' ); ?></label></dt>
+                                                <dd><input type="text" class="input" id="eman" placeholder="<?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?>" required autocomplete="off" /> </dd>
+                                                <dt><label for="liame"><?php esc_html_e( 'Email', 'disciple_tools' ); ?></label></dt>
+                                                <dd><input type="email" class="input" id="liame" placeholder="<?php esc_html_e( 'Email', 'disciple_tools' ); ?>" required autocomplete="off" /> </dd>
                                                 <div class="hidden-fields" style="display:none">
-                                                    <dt><label for="<?php echo esc_attr( $new_contact_username ); ?>"><?php esc_html_e( 'Username', 'disciple_tools' ); ?></label></dt>
-                                                    <dd>
-                                                        <input type="hidden" id="username_field" value="<?php echo esc_attr( $new_contact_username ); ?>">
-                                                        <input type="text" class="input" id="<?php echo esc_attr( $new_contact_username ); ?>" placeholder="<?php esc_html_e( 'Username', 'disciple_tools' ); ?>" autocomplete="off" />
-                                                    </dd>
-                                                    <dt><label for="<?php echo esc_attr( $new_contact_password ); ?>"><?php esc_html_e( 'Password', 'disciple_tools' ); ?></label></dt>
-                                                    <dd>
-                                                        <input type="hidden" id="password_field" value="<?php echo esc_attr( $new_contact_password ); ?>">
-                                                        <input type="password" class="input" id="<?php echo esc_attr( $new_contact_password ); ?>" placeholder="<?php esc_html_e( 'Password', 'disciple_tools' ); ?>" autocomplete="off" />
-                                                    </dd>
+                                                    <dt><label for="emanresu"><?php esc_html_e( 'Username', 'disciple_tools' ); ?></label></dt>
+                                                    <dd><input type="text" class="input" id="emanresu" placeholder="<?php esc_html_e( 'Username', 'disciple_tools' ); ?>" autocomplete="off" /> </dd>
+                                                    <dt><label for="drowssap"><?php esc_html_e( 'Password', 'disciple_tools' ); ?></label></dt>
+                                                    <dd><input type="password" class="input" id="drowssap" placeholder="<?php esc_html_e( 'Password', 'disciple_tools' ); ?>" autocomplete="off" /> </dd>
                                                 </div>
                                                 <?php if ( $current_user_can_manage_users ) : ?>
                                                 <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
