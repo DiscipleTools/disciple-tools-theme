@@ -10,20 +10,42 @@ class Disciple_Tools_Migration_0056 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
 
-        // First, update all communication_channel field types.
-        $wpdb->query( "UPDATE $wpdb->dt_activity_log
-            SET object_subtype = CASE
-              WHEN LOCATE('_', object_subtype, (CHAR_LENGTH(object_subtype) - 4)) > 0 THEN LEFT(object_subtype, (CHAR_LENGTH(object_subtype) - 4))
-              ELSE object_subtype
-            END
-            WHERE action = 'field_update'
-              AND field_type = 'communication_channel'
-              AND object_subtype LIKE 'contact%_%'
-              AND object_subtype NOT LIKE '%details'" );
+        // Identify all referenced activity log post types.
+        $activity_log_post_types = $wpdb->get_results( "SELECT DISTINCT object_type AS post_type FROM $wpdb->dt_activity_log WHERE action = 'field_update' ORDER BY object_type ASC", ARRAY_A );
+
+        // Obtain list of all communication_channel fields, across identified post_types.
+        $communication_channel_fields = [];
+        foreach ( $activity_log_post_types ?? [] as $activity_log_post_type ) {
+            $post_type = $activity_log_post_type['post_type'];
+            $communication_channel_settings = DT_Posts::get_field_settings_by_type( $post_type, 'communication_channel' ) ?? [];
+
+            foreach ( $communication_channel_settings as $communication_channel_field ){
+                if ( !in_array( $communication_channel_field, $communication_channel_fields ) ) {
+                    $communication_channel_fields[] = $communication_channel_field;
+                }
+            }
+        }
+
+        // Next, update all communication_channel field types; assuming associated fields have been identified.
+        if ( !empty( $communication_channel_fields ) ) {
+            $in_array_sql = implode( "','", $communication_channel_fields );
+
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $wpdb->query( "UPDATE $wpdb->dt_activity_log
+                SET object_subtype = CASE
+                  WHEN LOCATE('_', object_subtype, (CHAR_LENGTH(object_subtype) - 4)) > 0 AND LEFT(object_subtype, (CHAR_LENGTH(object_subtype) - 4)) IN ('$in_array_sql') THEN LEFT(object_subtype, (CHAR_LENGTH(object_subtype) - 4))
+                  ELSE object_subtype
+                END
+                WHERE action = 'field_update'
+                  AND field_type = 'communication_channel'
+                  AND object_subtype LIKE 'contact%_%'
+                  AND object_subtype NOT LIKE '%details'" );
+            // phpcs:enable
+        }
 
         // Next, process all link field types -> identify all unique post types with a field_update action.
         $link_categories = [];
-        $activity_log_post_types = $wpdb->get_results( "SELECT DISTINCT object_type AS post_type FROM $wpdb->dt_activity_log WHERE action = 'field_update' ORDER BY object_type ASC", ARRAY_A );
         foreach ( $activity_log_post_types ?? [] as $activity_log_post_type ) {
             $post_type = $activity_log_post_type['post_type'];
             $post_type_field_settings = DT_Posts::get_post_field_settings( $post_type, false, true );
