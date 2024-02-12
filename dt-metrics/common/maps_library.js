@@ -1,4 +1,5 @@
 let spinner_html = '<span class="loading-spinner users-spinner active"></span>'
+let saved_data = []
 let mapbox_library_api = {
   container_set_up: false,
   current_map_type: 'cluster',
@@ -45,7 +46,9 @@ let mapbox_library_api = {
         <div id='legend' class='legend'>
           <div id="legend-bar" class="grid-x grid-margin-x grid-padding-x">
             <div class="cell small-2 center info-bar-font">
-                ${window.SHAREDFUNCTIONS.escapeHTML( this.title )}
+                ${window.SHAREDFUNCTIONS.escapeHTML( this.title )} 
+                <span id="loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                <div id="loading-legend"></div>
             </div>
             <div id="map-type" class="border-left">
               <button class="button small select-button ${mapbox_library_api.current_map_type === 'cluster' ? 'selected-select-button': ' empty-select-button' }"
@@ -107,6 +110,7 @@ let mapbox_library_api = {
         `
         jQuery('#legend-bar').append(split_by_html)
         jQuery(`#${field_key} button`).on('click', function (e){
+          saved_data = []
           jQuery(this).toggleClass("selected-select-button")
           jQuery(this).toggleClass("empty-select-button")
 
@@ -195,12 +199,11 @@ let mapbox_library_api = {
   },
 
   points_map: {
-    setup: async function () {
-      let points = await window.makeRequest('POST', mapbox_library_api.obj.settings.points_rest_url, {
-        post_type: mapbox_library_api.post_type,
-        query: mapbox_library_api.query_args || {}
-      }, mapbox_library_api.obj.settings.rest_base_url)
-      this.load_layer(points)
+    setup: async function (){
+      jQuery('#loading-spinner').show()
+      let data = await recursive_load()
+      this.load_layer({features:data, type:'FeatureCollection'})
+      jQuery('#loading-spinner').hide()
     },
     load_layer: function ( points, layer_key = 'pointsLayer', color = '#11b4da', size = 6 ) {
       layer_key = 'dt-maps-' + layer_key
@@ -285,10 +288,38 @@ jQuery('.close-details').on('click', function() {
 
 
 
+let recursive_load = async function (data = [], offset = 0, limit = 50000) {
+  if ( saved_data && saved_data.length > 0 ){
+    return saved_data;
+  }
+  let geojson = await window.makeRequest("POST", mapbox_library_api.obj.settings.rest_url, {
+    post_type: mapbox_library_api.post_type,
+    query: mapbox_library_api.query_args || {},
+    offset,
+    limit
+  }, mapbox_library_api.obj.settings.rest_base_url)
+
+
+  data = data.concat(geojson.features)
+  jQuery('#loading-legend').html(`<span>(${data.length.toLocaleString()})</span>`)
+
+  // return data;
+  if (geojson.features.length > 0 && geojson.features.length === limit ) {
+    return recursive_load(data, offset + limit, limit)
+  }
+  jQuery('#loading-legend').html('');
+  saved_data = data;
+  return data
+
+}
+
+
 let cluster_map = {
   default_setup: async function (){
-    let geojson = await window.makeRequest( "POST", mapbox_library_api.obj.settings.rest_url, { post_type: mapbox_library_api.post_type, query: mapbox_library_api.query_args || {}} , mapbox_library_api.obj.settings.rest_base_url )
-    cluster_map.load_layer(geojson)
+    jQuery('#loading-spinner').show()
+    let data = await recursive_load()
+    cluster_map.load_layer({features:data, type:'FeatureCollection'})
+    jQuery('#loading-spinner').hide()
   },
   load_layer: function ( geojson ) {
 

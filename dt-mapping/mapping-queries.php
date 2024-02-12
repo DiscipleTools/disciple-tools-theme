@@ -1273,7 +1273,7 @@ class Disciple_Tools_Mapping_Queries {
             $features[] = array(
                 'type' => 'Feature',
                 'properties' => array(
-                    'address' => $result['address'],
+                    'address' => $result['address'] ?? '',
                     'post_id' => $result['post_id'],
                     'name' => $result['name'],
                     'post_type' => $post_type
@@ -1297,34 +1297,39 @@ class Disciple_Tools_Mapping_Queries {
         return $new_data;
     }
 
-    public static function post_type_geojson( $post_type, $args = [] ){
+    public static function post_type_geojson( $post_type, $args = [], $offset = 0, $limit = 50000 ){
         global $wpdb;
 
         //phpcs:disable
         if ( isset( $args['field_key'], $args['field_type'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
             $prepared_query = $wpdb->prepare( "
-                SELECT DISTINCT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                SELECT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
                   LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
                   WHERE lgm.post_type = %s
-                  AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ),
-                $post_type, $args['field_key'] );
+                  AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ) ."
+                  LIMIT %d, %d;
+              ", $post_type, $args['field_key'], $offset, $limit );
 
         } elseif ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ){
             $prepared_query = $wpdb->prepare("
-                SELECT DISTINCT lgm.label AS address, u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
+                SELECT u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
                   LEFT JOIN wp_usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = 'wp_corresponds_to_contact' )
-                  WHERE lgm.post_type = %s", 'users');
+                  WHERE lgm.post_type = %s
+                  LIMIT %d, %d;
+              ", 'users', $offset, $limit );
 
         } else {
             $prepared_query = $wpdb->prepare( "
-                SELECT DISTINCT lgm.label AS address, p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                SELECT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                     FROM $wpdb->dt_location_grid_meta AS lgm
                     JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
-                    WHERE lgm.post_type = %s", $post_type );
+                    WHERE lgm.post_type = %s
+                    LIMIT %d, %d;
+                ", $post_type, $offset, $limit );
         }
 
         $results = $wpdb->get_results( $prepared_query, ARRAY_A );
@@ -1333,7 +1338,7 @@ class Disciple_Tools_Mapping_Queries {
         return self::format_results( $results, $post_type );
     }
 
-    public static function cluster_geojson( $post_type, $query = [] ){
+    public static function cluster_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
         if ( empty( $sql['where_sql'] ) ){
@@ -1341,21 +1346,23 @@ class Disciple_Tools_Mapping_Queries {
         }
         //phpcs:disable
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT lgm.label as address, p.post_title as name, lgm.post_id, lgm.lng, lgm.lat
+            SELECT p.post_title as name, lgm.post_id, lgm.lng, lgm.lat
             FROM $wpdb->dt_location_grid_meta as lgm
             JOIN $wpdb->posts as p ON p.ID=lgm.post_id
             " . $sql["joins_sql"] . "
             WHERE lgm.post_type = %s
             AND
             " . $sql["where_sql"] . "
-            ", $post_type ), ARRAY_A
+            ORDER BY lgm.grid_meta_id
+            LIMIT %d, %d;
+            ", $post_type, $offset, $limit ), ARRAY_A
         );
         //phpcs:enable
 
         return self::format_results( $results, $post_type );
     }
 
-    public static function points_geojson( $post_type, $query = [] ){
+    public static function points_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
         if ( empty( $sql['where_sql'] ) ){
@@ -1363,15 +1370,15 @@ class Disciple_Tools_Mapping_Queries {
         }
         //phpcs:disable
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT lgm.label as address, p.post_title as name, lgm.post_id as post_id, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
+            SELECT p.post_title as name, lgm.post_id as post_id, lgm.lng, lgm.lat, lg.admin0_grid_id as a0, lg.admin1_grid_id as a1
             FROM $wpdb->dt_location_grid_meta as lgm
             JOIN $wpdb->posts as p ON p.ID=lgm.post_id
             LEFT JOIN $wpdb->dt_location_grid as lg ON lg.grid_id=lgm.grid_id
             " . $sql["joins_sql"] . "
             WHERE lgm.post_type = %s
             AND " . $sql["where_sql"] . "
-            LIMIT 40000;
-            ", $post_type ), ARRAY_A
+            LIMIT %d, %d;
+            ", $post_type, $offset, $limit ), ARRAY_A
         );
         //phpcs:enable
 

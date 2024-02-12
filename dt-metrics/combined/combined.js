@@ -1,32 +1,51 @@
 window.mapbox_library_api.current_map_type = "points"
 jQuery(document).ready(function($) {
 
+
+  let recursive_load = async function (body, data = [], offset = 0, limit = 50000) {
+    body.offset = offset
+    body.limit = limit
+    let geojson = await window.makeRequest(
+      "POST",
+      window.mapbox_library_api.obj.settings.points_rest_url,
+      body,
+      window.mapbox_library_api.obj.settings.rest_base_url)
+
+
+    data = data.concat(geojson.features)
+    jQuery('#loading-legend').html(`<span>(${data.length.toLocaleString()})</span>`)
+
+    // return data;
+    if (geojson.features.length > 0 && geojson.features.length === limit ) {
+      return recursive_load(body, data, offset + limit, limit)
+    }
+    jQuery('#loading-legend').html('');
+    return data
+  }
+
   //over-ride points setup so we can load 2 layers.
   window.mapbox_library_api.points_map.setup = async function (){
-    let contact_points = await window.makeRequest('POST', window. mapbox_library_api.obj.settings.points_rest_url, {
-      post_type: "contacts",
-      query: []
-    }, window. mapbox_library_api.obj.settings.rest_base_url)
-    let group_points = await window.makeRequest('POST', window. mapbox_library_api.obj.settings.points_rest_url, {
-      post_type: "groups",
-      query: []
-    }, window. mapbox_library_api.obj.settings.rest_base_url)
+    let contact_points_data = await recursive_load({post_type: "contacts", query: []})
+    let contact_points = {features:contact_points_data, type:'FeatureCollection'}
+    let group_points_data = await recursive_load({post_type: "groups", query: []})
+    let group_points = {features:group_points_data, type:'FeatureCollection'}
+
 
     window.mapbox_library_api.area_map.setup = async function (){
       let area_map = window.mapbox_library_api.area_map
-      area_map.grid_data = await window.makeRequest( "POST", window. mapbox_library_api.obj.settings.totals_rest_url, { post_type: window. mapbox_library_api.obj.settings.post_type, query: window. mapbox_library_api.query_args || {}} , window. mapbox_library_api.obj.settings.rest_base_url )
+      area_map.grid_data = await window.makeRequest( "POST", window.mapbox_library_api.obj.settings.totals_rest_url, { post_type: window.mapbox_library_api.obj.settings.post_type, query: window.mapbox_library_api.query_args || {}} , window.mapbox_library_api.obj.settings.rest_base_url )
       await area_map.load_layer()
       // load new layer on event
-      window. mapbox_library_api.map.on('zoomend', function() {
+      window.mapbox_library_api.map.on('zoomend', function() {
         area_map.load_layer()
       })
-      window. mapbox_library_api.map.on('dragend', function() {
+      window.mapbox_library_api.map.on('dragend', function() {
         area_map.load_layer()
       })
-      window. mapbox_library_api.map.on('click', function( e ) {
+      window.mapbox_library_api.map.on('click', function( e ) {
         // this section increments up the result on level because
         // it corresponds better to the viewable user intent for details
-        let level = window. mapbox_library_api.get_level()
+        let level = window.mapbox_library_api.get_level()
         area_map.load_detail_panel( e.lngLat.lng, e.lngLat.lat, level )
       })
     }
@@ -36,7 +55,7 @@ jQuery(document).ready(function($) {
     window.mapbox_library_api.points_map.load_layer( contact_points, "contacts_points_layer", '#11b4da' )
     await window.mapbox_library_api.area_map.setup()
     await window.mapbox_library_api.area_map.load_layer()
-
+    jQuery('#loading-spinner').hide();
   }
 
   let split_by_html = `
