@@ -711,7 +711,7 @@ dt_please_log_in();
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
-                    <div>
+                    <div class="table-container">
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">

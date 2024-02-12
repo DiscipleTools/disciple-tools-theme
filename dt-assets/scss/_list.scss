@@ -119,13 +119,24 @@ table.table-remove-top-border thead {
     border-top: 0;
 }
 table.js-list{
-    table-layout: fixed;
+    table-layout: auto;
     word-wrap: break-word;
     width: 100%;
+    white-space: nowrap;
+   
+}
+
+.table-container {
     display: block;
     overflow-x: auto;
-    white-space: nowrap;
 }
+
+.table-container, .table-container #records-table {
+    transform:rotateX(180deg);
+    -ms-transform:rotateX(180deg); /* IE 9 */
+    -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+}
+
 
 table.js-list th[data-id="name"] {
     position: sticky;
