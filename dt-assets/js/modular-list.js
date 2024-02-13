@@ -3048,10 +3048,16 @@
       });
 
       exporting_fields_visible.sort(function (a, b) {
-        if (a.name.trim() < b.name.trim()) {
+        if (a.show_in_table === undefined && b.show_in_table !== undefined) {
+          return 1;
+        }
+        if (a.show_in_table !== undefined && b.show_in_table === undefined) {
           return -1;
         }
-        if (a.name.trim() > b.name.trim()) {
+        if (parseInt(a.show_in_table) < parseInt(b.show_in_table)) {
+          return -1;
+        }
+        if (parseInt(a.show_in_table) > parseInt(b.show_in_table)) {
           return 1;
         }
         return 0;
@@ -3070,11 +3076,11 @@
         <div class="cell">
           <label>
             <input type="radio" name="csv_exported_list_fields" value="all" checked />
-            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_all'].replaceAll( '{0}', exporting_fields_all.length ) ) }
+            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_all'].replaceAll( '%2$s', exporting_fields_all.length ) ) }
           </label>
           <label>
             <input type="radio" name="csv_exported_list_fields" value="visible" />
-            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_visible'].replaceAll( '{0}', exporting_fields_visible.length ) ) }
+            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_visible'].replaceAll( '%2$s', exporting_fields_visible.length ) ) }
           </label>
           ${ fields_to_show_in_table_html }
         </div>`;
@@ -3260,9 +3266,6 @@
             if (String(item).includes('"')) {
               escapeditem = item.replaceAll('"', '""');
             }
-            if (String(item).includes('#')) {
-              escapeditem = item.replaceAll('#', encodeURIComponent('#'));
-            }
 
             return `"${escapeditem}"`;
           }).join(',');
@@ -3278,7 +3281,7 @@
         let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
         let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
         csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
-        csv_download_link.href = "data:text/csv;charset=utf-8," + csv;
+        csv_download_link.href = "data:text/csv;charset=utf-8;base64," + window.Base64.encode( csv );
         csv_download_link.click();
         csv_download_link.remove();
       }
