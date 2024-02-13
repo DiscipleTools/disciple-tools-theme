@@ -57,7 +57,7 @@ function dt_send_email( $email, $subject, $message_plain_text, bool $subject_pre
     $email = sanitize_email( $email );
     $subject = sanitize_text_field( $subject );
 
-    $message_plain_text = sanitize_textarea_field( $message_plain_text );
+    $message_plain_text = wp_kses_post( $message_plain_text );
 
     if ( $subject_prefix ) {
         $subject = dt_get_option( 'dt_email_base_subject' ) . ': ' . $subject;
