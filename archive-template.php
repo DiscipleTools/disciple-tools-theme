@@ -196,7 +196,7 @@ dt_please_log_in();
     </nav>
     <div id="content" class="archive-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-            <aside class="cell large-3" id="list-filters">
+            <aside class="cell large-3 xxlarge-2" id="list-filters">
                 <div class="bordered-box">
                     <div class="section-header">
                         <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
@@ -337,7 +337,7 @@ dt_please_log_in();
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
-            <main id="main" class="large-9 cell padding-bottom" role="main">
+            <main id="main" class="large-9 xxlarge-10 cell padding-bottom" role="main">
                 <div class="bordered-box">
                     <div >
                         <span class="section-header posts-header" style="display: inline-block">
