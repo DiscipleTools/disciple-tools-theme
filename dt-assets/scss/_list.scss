@@ -146,7 +146,7 @@ table.js-list th[data-id="name"] {
 table.js-list td[data-id="name"] {
     position: sticky;
     left: 0;
-    background-color: #ffffff;
+    background-color: inherit;
 }
 
 .current-filter-list {
