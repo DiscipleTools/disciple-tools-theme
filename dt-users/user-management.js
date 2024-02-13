@@ -818,12 +818,12 @@ jQuery(document).ready(function($) {
 
     let create_user = (corresponds_to_contact, archive_comments = false)=>{
 
-      let name = $('#name').val()
-      let email = $('#email').val()
+      let name = $('#eman').val()
+      let email = $('#liame').val()
       let locale = $('#locale').val();
 
-      const username = $('#username').val()
-      const password = $('#password').val()
+      const username = $('#emanresu').val()
+      const password = $('#drowssap').val()
 
       const optionalFields = document.querySelectorAll('[data-optional=""]')
       const optionalValues = {}
