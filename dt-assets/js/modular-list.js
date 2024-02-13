@@ -3066,7 +3066,7 @@
       // Create shown table fields supporting html.
       let fields_to_show_in_table_html = ``;
       exporting_fields_visible.forEach((field) => {
-        fields_to_show_in_table_html += `<span style="font-size: 11px; margin-right: 5px; color: #000000; background-color: #ecf5fc; border: 1px solid #c2e0ff; border-radius: 2px; padding: 4px; position: relative;">${window.SHAREDFUNCTIONS.escapeHTML(field['name'])}</span>`;
+        fields_to_show_in_table_html += `<span class="current-filter-list" style="padding: 4px;">${window.SHAREDFUNCTIONS.escapeHTML(field['name'])}</span>`;
       });
 
       // Take a two-step approach; first, display fields to be exported and on-demand, obtain records upon export request.
