@@ -3268,7 +3268,7 @@
             }
 
             return `"${escapeditem}"`;
-          }).join(',');
+          });
         }).join('\r\n');
 
         // Finally, automatically execute a download of generated csv data.
