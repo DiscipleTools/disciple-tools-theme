@@ -440,12 +440,16 @@ table.js-list td[data-id="name"] {
                 margin-right: 5%;
                 line-height:20px;
                 font-size: 10px;
+                vertical-align: top;
             }
             .mobile-list-field-value {
                 width: 70%;
                 display: inline-block;
                 overflow: hidden;
                 white-space: nowrap;
+                ul {
+                    white-space: normal;
+                }
             }
             ul {
                 li {
