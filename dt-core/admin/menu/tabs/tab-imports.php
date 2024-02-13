@@ -110,7 +110,9 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                         $custom_post_types = get_option( 'dt_custom_post_types', [] );
 
                         foreach ( $new_post_types as $post_type => $post_type_settings ) {
-                            if ( !in_array( $post_type, $existing_post_types ) && !isset( $custom_post_types[$post_type] ) ) {
+
+                            // As well as ensuring identified post type does not already exist, ensure it's included within import selection.
+                            if ( !in_array( $post_type, $existing_post_types ) && !isset( $custom_post_types[$post_type] ) && isset( $import_selections[$post_type] ) ) {
 
                                 // If all sanity checks have passed, proceed with custom post type creation.
                                 $custom_post_types[$post_type] = [
