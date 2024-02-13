@@ -718,7 +718,7 @@ dt_please_log_in();
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
                                     <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
-                                    <th style="width:32px; background-image:none; cursor:default"></th>
+                                    <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){

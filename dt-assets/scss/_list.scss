@@ -126,6 +126,10 @@ table.js-list{
    
 }
 
+table.js-list td {
+    max-width: 250px;
+}
+
 .table-container {
     display: block;
     overflow-x: auto;
@@ -140,14 +144,30 @@ table.js-list{
 
 table.js-list th[data-id="name"] {
     position: sticky;
-    left: 0;
+    left: 32px; /* Right edge + Width of index column = 32px */
     background-color: #ffffff;
 }
+
 table.js-list td[data-id="name"] {
     position: sticky;
-    left: 0;
+    left: 32px; /* Right edge + Width of index column = 32px */
     background-color: inherit;
 }
+
+table.js-list th[data-id="index"] {
+    position: sticky;
+    left: -1px;
+    background-color: #ffffff;
+}
+
+
+table.js-list td[data-id="index"] {
+    position: sticky;
+    left: -1px;
+    background-color: inherit;
+
+}
+
 
 .current-filter-list {
     font-size: 0.875rem;
