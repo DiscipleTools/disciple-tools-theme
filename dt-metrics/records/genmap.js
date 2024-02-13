@@ -101,6 +101,11 @@ jQuery(document).ready(function($) {
           `;
         };
 
+        // Ensure no result responses are reshaped accordingly.
+        if ( response && (typeof response === 'string') && response.includes('No Results') ) {
+          response = {};
+        }
+
         orgchart_container = container.orgchart({
           'data': response,
           'nodeContent': 'content',
@@ -180,18 +185,20 @@ jQuery(document).ready(function($) {
   }
 
   function identify_infinite_loops( data, loops ) {
-    data['children'].forEach(function ( item ) {
-      if ( item['has_infinite_loop'] ) {
-        loops.push({
-          'id': item['id'],
-          'name': item['name'],
-          'loop': extract_infinite_loop( item['id'], item['children'], [], false )
-        });
+    if ( data?.['children'] ) {
+      data['children'].forEach(function (item) {
+        if (item['has_infinite_loop']) {
+          loops.push({
+            'id': item['id'],
+            'name': item['name'],
+            'loop': extract_infinite_loop(item['id'], item['children'], [], false)
+          });
 
-      } else if ( item['children'].length > 0 ) {
-        loops = identify_infinite_loops( item, loops );
-      }
-    });
+        } else if (item?.['children'].length > 0) {
+          loops = identify_infinite_loops(item, loops);
+        }
+      });
+    }
 
     return loops;
   }
@@ -387,7 +394,7 @@ jQuery(document).ready(function($) {
       // Only focus on post types with valid connection types.
       let filtered_post_types = [];
       jQuery.each( post_types, function ( post_type, post_type_obj ) {
-        if ( post_type_obj && post_type_obj.connection_types && Array.isArray( post_type_obj.connection_types ) && post_type_obj.connection_types.length > 0 ) {
+        if ( post_type_obj && post_type_obj.connection_types && Array.isArray( post_type_obj.connection_types ) && filter_post_type_connection_fields( post_type ).length > 0 ) {
           filtered_post_types.push({
             value: post_type,
             text: post_type_obj.label_plural
@@ -419,30 +426,8 @@ jQuery(document).ready(function($) {
       let post_type_fields_select = jQuery('#select_post_type_fields');
       jQuery(post_type_fields_select).empty();
 
-      // Only capture connection type fields.
-      let filtered_post_type_fields = [];
-      jQuery.each( post_types[selected_post_type].connection_types, function ( idx, field_id ) {
-        if ( post_types[selected_post_type]['fields'][field_id] && post_types[selected_post_type]['fields'][field_id]['post_type'] && post_types[selected_post_type]['fields'][field_id]['post_type'] === selected_post_type ) {
-
-          // Hard filter some specific fields.
-          let to_be_filtered = true;
-          if ( ( selected_post_type === 'contacts' ) && window.lodash.includes( [ 'baptized_by', 'coached_by', 'subassigned' ], field_id ) ) {
-            to_be_filtered = false;
-          }
-          if ( ( selected_post_type === 'groups' ) && window.lodash.includes( [ 'parent_groups' ], field_id ) ) {
-            to_be_filtered = false;
-          }
-
-          if ( to_be_filtered ) {
-            filtered_post_type_fields.push({
-              value: field_id,
-              text: post_types[selected_post_type]['fields'][field_id]['name'],
-              p2p_key: post_types[selected_post_type]['fields'][field_id]['p2p_key'],
-              p2p_direction: post_types[selected_post_type]['fields'][field_id]['p2p_direction'],
-            });
-          }
-        }
-      });
+      // Capture related connection type fields.
+      let filtered_post_type_fields = filter_post_type_connection_fields( selected_post_type );
 
       let uniq_post_type_fields = window.lodash.uniqWith(filtered_post_type_fields, function (a, b) {
         return (a.p2p_key === b.p2p_key) && (a.p2p_direction === b.p2p_direction);
@@ -460,6 +445,39 @@ jQuery(document).ready(function($) {
     if ( callback ) {
       callback();
     }
+  }
+
+  function filter_post_type_connection_fields( post_type ) {
+    const post_types = window.dtMetricsProject.post_types;
+    let filtered_post_type_fields = [];
+    if (post_types && post_type && post_types[post_type] && post_types[post_type].connection_types) {
+
+      // Only capture related connection type fields.
+      post_types[post_type].connection_types.forEach( ( field_id, idx ) => {
+        if ( post_types[post_type]['fields'][field_id] && post_types[post_type]['fields'][field_id]['post_type'] && post_types[post_type]['fields'][field_id]['post_type'] === post_type ) {
+
+          // Hard filter some specific fields.
+          let to_be_filtered = true;
+          if ( ( post_type === 'contacts' ) && [ 'baptized_by', 'coached_by', 'subassigned' ].includes( field_id ) ) {
+            to_be_filtered = false;
+          }
+          if ( ( post_type === 'groups' ) && [ 'parent_groups' ].includes( field_id ) ) {
+            to_be_filtered = false;
+          }
+
+          if ( to_be_filtered ) {
+            filtered_post_type_fields.push({
+              value: field_id,
+              text: post_types[post_type]['fields'][field_id]['name'],
+              p2p_key: post_types[post_type]['fields'][field_id]['p2p_key'],
+              p2p_direction: post_types[post_type]['fields'][field_id]['p2p_direction']
+            });
+          }
+        }
+      });
+    }
+
+    return filtered_post_type_fields;
   }
 
   function open_modal_details( id, parent_id, post_type ) {
