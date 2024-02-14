@@ -338,16 +338,6 @@ dt_please_log_in();
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div id="export_reveal" class="large reveal" data-reveal data-v-offset="10px">
-                    <div id="export_modal_section_header">
-                        <span class="section-header" id="export_title"></span> <span id="reveal_loading_spinner" style="display: inline-block" class="loading-spinner active"></span>
-                        <hr>
-                    </div>
-                    <div id="export_content"></div>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
