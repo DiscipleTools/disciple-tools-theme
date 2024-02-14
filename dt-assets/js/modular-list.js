@@ -897,7 +897,7 @@
             values[0] = '&#9733;'
           }
           let tmp_html = `
-            <td dir="auto" title="${values.join(', ')}">
+            <td dir="auto" data-id="${field_key}" title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>
@@ -930,7 +930,7 @@
       } else {
         table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
-          <td style="white-space: nowrap" >${index+1}.</td>
+          <td style="white-space: nowrap" data-id="index" >${index+1}.</td>
           ${ row_fields_html }
         `
       }
@@ -3018,25 +3018,37 @@
     export_list_display('csv', $(e.currentTarget).text(), function () {
 
       // Identify fields to be exported; ignoring hidden and private fields.
-      let exporting_fields = [];
+      let exporting_fields_all = [];
+      let exporting_fields_visible = [];
+
       $.each(window.list_settings['post_type_settings']['fields'], function (field_id, field_setting) {
         if ( ( (field_setting['private'] === undefined) || !field_setting['private'] ) && ( (field_setting['hidden'] === undefined) || !field_setting['hidden'] ) && !['task', 'array'].includes( field_setting['type'] ) ) {
           let setting = field_setting;
           setting['field_id'] = field_id;
-          exporting_fields.push(setting);
+          exporting_fields_all.push(setting);
+
+          // Separately capture currently shown table fields.
+          if ( fields_to_show_in_table.includes( field_id ) ) {
+            exporting_fields_visible.push(setting);
+          }
 
           // Insert additional locations id column, if needed.
           if ( ['location', 'location_meta'].includes( setting['type'] ) ) {
             let location_settings = JSON.parse( JSON.stringify( setting ) );
             location_settings['name'] = `${location_settings['name']} [ID]`;
             location_settings['dynamic_csv_col'] = true;
-            exporting_fields.push(location_settings);
+            exporting_fields_all.push(location_settings);
+
+            // Separately capture currently shown table fields.
+            if ( fields_to_show_in_table.includes( field_id ) ) {
+              exporting_fields_visible.push(location_settings);
+            }
           }
         }
       });
 
       // Sort identified fields by name into ascending order.
-      exporting_fields.sort(function (a, b) {
+      exporting_fields_all.sort(function (a, b) {
         if (a.name.trim() < b.name.trim()) {
           return -1;
         }
@@ -3046,15 +3058,46 @@
         return 0;
       });
 
+      exporting_fields_visible.sort(function (a, b) {
+        if (a.show_in_table === undefined && b.show_in_table !== undefined) {
+          return 1;
+        }
+        if (a.show_in_table !== undefined && b.show_in_table === undefined) {
+          return -1;
+        }
+        if (parseInt(a.show_in_table) < parseInt(b.show_in_table)) {
+          return -1;
+        }
+        if (parseInt(a.show_in_table) > parseInt(b.show_in_table)) {
+          return 1;
+        }
+        return 0;
+      });
+
+      // Create shown table fields supporting html.
+      let fields_to_show_in_table_html = ``;
+      exporting_fields_visible.forEach((field) => {
+        fields_to_show_in_table_html += `<span class="current-filter-list" style="padding: 4px;">${window.SHAREDFUNCTIONS.escapeHTML(field['name'])}</span>`;
+      });
+
       // Take a two-step approach; first, display fields to be exported and on-demand, obtain records upon export request.
-      let html = `
-      <div class="grid-x">
-        <div class="cell">`;
+      let html = `<div class="grid-x">`;
 
-        html += `<span style="font-size: 20px;">${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg'].replaceAll( '{0}', exporting_fields.length ) ) }</span></div>`;
+      html += `
+        <div class="cell">
+          <label>
+            <input type="radio" name="csv_exported_list_fields" value="all" checked />
+            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_all'].replaceAll( '%2$s', exporting_fields_all.length ) ) }
+          </label>
+          <label>
+            <input type="radio" name="csv_exported_list_fields" value="visible" />
+            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_visible'].replaceAll( '%2$s', exporting_fields_visible.length ) ) }
+          </label>
+          ${ fields_to_show_in_table_html }
+        </div>`;
 
-        let record_total = window.records_list['total'];
-        html +=`<div class="cell"><hr></div>
+      let record_total = window.records_list['total'];
+      html +=`<div class="cell"><hr></div>
         <div class="cell">
             <button class="button" id="export_csv_list_download" ${ (record_total <= 0) ? 'disabled' : '' }>
             <i class="mdi mdi-cloud-download-outline" style="font-size: 22px; margin-right: 10px;"></i>
@@ -3071,7 +3114,8 @@
         $('.loading-spinner').addClass('active');
         $('#export_csv_list_download').prop('disabled', true);
 
-        export_csv_list_download(exporting_fields, function () {
+        // Ensure to determine which field groupings to move forward with....? All or Currently Visible?
+        export_csv_list_download( ( $('input[name="csv_exported_list_fields"]:checked').val() === 'visible' ) ? exporting_fields_visible : exporting_fields_all, function () {
           $('.loading-spinner').removeClass('active');
           $('#modal-large').foundation('close');
         });
@@ -3108,23 +3152,23 @@
                 case 'number':
                 case 'boolean':
                 case 'textarea': {
-                  let token = (post[field_id]) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]) : '';
+                  let token = (post[field_id]) ? post[field_id] : '';
                   csv_row.push(token);
                   break;
                 }
                 case 'user_select': {
-                  let token = (post[field_id] && post[field_id]['display']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['display']) : '';
+                  let token = (post[field_id] && post[field_id]['display']) ? post[field_id]['display'] : '';
                   csv_row.push(token);
                   break;
                 }
                 case 'key_select': {
-                  let token = (post[field_id] && post[field_id]['label']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['label']) : '';
+                  let token = (post[field_id] && post[field_id]['label']) ? post[field_id]['label'] : '';
                   csv_row.push(token);
                   break;
                 }
                 case 'date':
                 case 'datetime': {
-                  let token = (post[field_id] && post[field_id]['formatted']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['formatted']) : '';
+                  let token = (post[field_id] && post[field_id]['formatted']) ? post[field_id]['formatted'] : '';
                   csv_row.push(token);
                   break;
                 }
@@ -3132,7 +3176,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( field['default'][cell_value]['label'] ) );
+                      token_array.push( field['default'][cell_value]['label'] );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3142,7 +3186,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['post_title'] ) );
+                      token_array.push( cell_value['post_title'] );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3152,7 +3196,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['value'] ) );
+                      token_array.push( cell_value['value'] );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3164,7 +3208,7 @@
                   let id_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['label'] ) );
+                      token_array.push( cell_value['label'] );
 
                       // Extract id accordingly based on value shape; to be appended within dynamic csv column.
                       let grid_id = '';
@@ -3174,7 +3218,7 @@
                       } else if ( cell_value['grid_id'] ) {
                         grid_id = cell_value['grid_id'];
                       }
-                      id_array.push( window.SHAREDFUNCTIONS.escapeHTML( grid_id ) );
+                      id_array.push( grid_id );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3185,7 +3229,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value ) );
+                      token_array.push( cell_value );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3198,7 +3242,7 @@
                       if (field['default'][cell_value['type']]) {
                         let category_label = field['default'][cell_value['type']]['label'];
                         let token = category_label +': '+ cell_value['value'];
-                        token_array.push(window.SHAREDFUNCTIONS.escapeHTML(token));
+                        token_array.push(token);
                       }
                     });
                   }
@@ -3226,17 +3270,17 @@
         csv_export.unshift(csv_headers);
 
         // Convert csv arrays into raw downloadable data.
-        const csv = csv_export.map(row => row.map((item) => {
-          let escapeditem = item;
-          //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
-          if (String(item).includes('"')) {
-            escapeditem = item.replaceAll('"', '""');
-          }
-          if (String(item).includes('#')) {
-            escapeditem = item.replaceAll('#', encodeURIComponent('#'));
-          }
-          return `"${escapeditem}"`;
-        })).join('\r\n');
+        const csv = csv_export.map(row => {
+          return row.map((item) => {
+            let escapeditem = item;
+            //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
+            if (String(item).includes('"')) {
+              escapeditem = item.replaceAll('"', '""');
+            }
+
+            return `"${escapeditem}"`;
+          });
+        }).join('\r\n');
 
         // Finally, automatically execute a download of generated csv data.
         let csv_download_link = document.createElement('a');
@@ -3248,7 +3292,7 @@
         let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
         let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
         csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
-        csv_download_link.href = "data:text/csv;charset=utf-8," + csv;
+        csv_download_link.href = "data:text/csv;charset=utf-8;base64," + window.Base64.encode( csv );
         csv_download_link.click();
         csv_download_link.remove();
       }

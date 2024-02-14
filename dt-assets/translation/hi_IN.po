@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-01-12T11:26:56+00:00\n"
+"POT-Creation-Date: 2024-01-29T10:35:39+00:00\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -139,9 +139,9 @@ msgid "Filters"
 msgstr "फ़िल्टर"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:596
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
-#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
-#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:653
+#: dt-core/global-functions.php:681 dt-core/global-functions.php:813
+#: dt-core/global-functions.php:857 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -294,7 +294,7 @@ msgstr "सूची से अपडेट करने के लिए सभ
 
 #: archive-template.php:510 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:893
+#: dt-core/global-functions.php:895
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "उपयोगकर्ता को खोजें"
@@ -353,7 +353,7 @@ msgid "Update"
 msgstr "सुधार"
 
 #: archive-template.php:692 dt-assets/functions/enqueue-scripts.php:325
-#: dt-reports/magic-url-bulk-send.php:68
+#: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "नीचे सिलेक्शंस करें"
 
@@ -414,14 +414,14 @@ msgid "None Set"
 msgstr "कोई सेट नहीं"
 
 #: archive-template.php:874 archive-template.php:875
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:613
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "नही"
 
 #: archive-template.php:881 archive-template.php:882
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:614
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -459,7 +459,7 @@ msgstr "बचाना"
 #: dt-assets/functions/details-bar.php:51
 #: dt-assets/functions/details-bar.php:242
 #: dt-core/configuration/config-site-defaults.php:364
-#: dt-workflows/update-required.php:70 dt-workflows/update-required.php:109
+#: dt-workflows/update-required.php:71 dt-workflows/update-required.php:110
 msgid "Update Needed"
 msgstr "सुधार की ज़रूरत है"
 
@@ -701,7 +701,7 @@ msgid "No records found matching your filter."
 msgstr "आपके फ़िल्टर से मेल खाते कोई रिकॉर्ड नहीं मिले।"
 
 #: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1071 dt-posts/custom-post-type.php:439
+#: dt-groups/base-setup.php:1068 dt-posts/custom-post-type.php:439
 msgctxt "All records"
 msgid "All %s"
 msgstr "सभी %s"
@@ -729,8 +729,8 @@ msgstr "बिना"
 
 #: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Number of emails sent. i.e. 20 sent!"
-msgid "sent"
-msgstr "भेज दिए गए है"
+msgid "scheduled to be sent"
+msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -1805,8 +1805,8 @@ msgstr "लिंग"
 msgid "This record might be a duplicate of: "
 msgstr "इस रिकॉर्ड का एक डुप्लिकेट हो सकता है: "
 
-#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:483
-#: dt-contacts/duplicates-merging.php:565
+#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "डुप्लीकेट की जाँँच करने वाला"
 
@@ -2005,7 +2005,7 @@ msgstr "पुरालेख"
 msgid "Other"
 msgstr "अन्य"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1063
+#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1060
 #: dt-posts/custom-post-type.php:418
 msgid "Default Filters"
 msgstr "डिफ़ॉल्ट फ़िल्टर"
@@ -2015,23 +2015,23 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "सभी$s मैं देख सकता हूँ"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1080
+#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1074
 #: dt-posts/custom-post-type.php:451
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "पसंदीदा %s"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1086
+#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1079
 #: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
 msgid "Favorite"
 msgstr "पसंदीदा"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1092
+#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1085
 #: dt-posts/custom-post-type.php:466
 msgid "My Recently Viewed"
 msgstr "मेरा हाल ही में देखा गया"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1097
+#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1090
 #: dt-posts/custom-post-type.php:471
 msgid "Last 30 viewed"
 msgstr "अंतिम 30 को देखा"
@@ -2340,23 +2340,23 @@ msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "मल्टीप्लायर और संपर्कों को खोजें"
 
-#: dt-contacts/duplicates-merging.php:440
+#: dt-contacts/duplicates-merging.php:442
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(डुप्लीकेट): %s"
 
-#: dt-contacts/duplicates-merging.php:561
+#: dt-contacts/duplicates-merging.php:563
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "यह रिकॉर्ड डुप्लीकेट है और इसे %2$s में मर्ज कर दिया गया है"
 
-#: dt-contacts/duplicates-merging.php:574
+#: dt-contacts/duplicates-merging.php:576
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s ने %2$s को इस रिकॉर्ड में मर्ज किया"
 
 #. Template Name of the theme
-#: dt-contacts/duplicates-merging.php:586
+#: dt-contacts/duplicates-merging.php:588
 msgid "View Duplicates"
 msgstr "डुप्लीकेट देखें"
 
@@ -2646,17 +2646,17 @@ msgstr "अगर यह एक गलती थी, तो बस इस ईम
 msgid "To reset your password, visit the following address:"
 msgstr "अपना पासवर्ड बदलने के लिए दिए गए एड्रेस पर जाएं:"
 
-#: dt-core/global-functions.php:490 single-template.php:410
+#: dt-core/global-functions.php:492 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
 msgstr "यह ज़रूरी है"
 
-#: dt-core/global-functions.php:653
+#: dt-core/global-functions.php:655
 msgid "Add new tag \"%s\""
 msgstr "नया टैग \"%s\" जोड़ें"
 
-#: dt-core/global-functions.php:654
+#: dt-core/global-functions.php:656
 msgid "Tag \"%s\" is already being used"
 msgstr "टैग \"%s\" का उपयोग पहले से ही किया जा रहा है"
 
@@ -4091,16 +4091,16 @@ msgstr "नही"
 msgid "No Records Available"
 msgstr "कोई डेटा उपलब्ध नहीं"
 
-#: dt-notifications/notifications-email.php:125
+#: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
 msgstr "देखने या उत्तर देने के लिए यहाँ क्लिक करें"
 
-#: dt-notifications/notifications-email.php:131
+#: dt-notifications/notifications-email.php:138
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "#%2$s पर %1$s अपडेट करें"
 
-#: dt-notifications/notifications-email.php:135
+#: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
 msgstr "इस ईमेल का सीधे उत्तर न दें।"
 
@@ -4646,6 +4646,12 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s के साथ शेयर नहीं किया गया"
 
+#: dt-posts/posts.php:2477
+#, fuzzy
+#| msgid "Remove"
+msgid "Removed User"
+msgstr "हटाएँ"
+
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
 msgstr "बल्क भेजने वाला ऐप"
@@ -4654,35 +4660,70 @@ msgstr "बल्क भेजने वाला ऐप"
 msgid "Select all the %1$s to whom you want to send app links."
 msgstr "सभी %1$s को चुनें जिन्हें आप ऐप लिंक भेजना चाहते हों ।"
 
-#: dt-reports/magic-url-bulk-send.php:41
-msgid "Add optional greeting"
-msgstr "ऑप्शनल ग्रीटिंग ऐड करें"
+#: dt-reports/magic-url-bulk-send.php:43
+msgid ""
+"Hello {{name}},\n"
+"\n"
+"Please click on the button below to access your app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Thanks!"
+msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:42
-msgid "Add short greeting to be added above the app link."
-msgstr "ऐप लिंक के ऊपर ऐड करने के लिए शॉर्ट ग्रीटिंग ऐड करें"
+#: dt-reports/magic-url-bulk-send.php:51
+msgid "Configure email subject"
+msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:45
+#: dt-reports/magic-url-bulk-send.php:54
+msgid "{{app}} will be replaced with the selected app name."
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:56
+msgid "Configure email message"
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:58
+msgid "Message placeholders"
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:61
+#, fuzzy
+#| msgid "Select app to email"
+msgid "Selected app name"
+msgstr "ईमेल करने के लिए ऐप चुनें"
+
+#: dt-reports/magic-url-bulk-send.php:64
+#, fuzzy
+#| msgid "Create Record"
+msgid "Name of the Record"
+msgstr "रिकॉर्ड बनाएं"
+
+#: dt-reports/magic-url-bulk-send.php:67
+msgid "Unique link to access the app."
+msgstr ""
+
+#: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
 msgstr "ईमेल करने के लिए ऐप चुनें"
 
-#: dt-reports/magic-url-bulk-send.php:46
+#: dt-reports/magic-url-bulk-send.php:73
 msgid "You must select an app"
 msgstr "आपको एक ऐप चुनना होगा"
 
-#: dt-reports/magic-url-bulk-send.php:63
+#: dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "सिलेक्टेड रेकॉर्ड्स तो भेजें"
 
-#: dt-reports/magic-url-bulk-send.php:64
+#: dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "आपको कम से कम 1 रिकॉर्ड चुनना होगा"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:91
+#: dt-reports/magic-url-bulk-send.php:94 dt-reports/magic-url-setup.php:91
 msgid "Send"
 msgstr "भेजें"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "लिंक्स"
 
@@ -5572,6 +5613,16 @@ msgstr "संपर्क स्कैन किए गए:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "डुप्लिकेट मिला:"
+
+#~ msgctxt "Number of emails sent. i.e. 20 sent!"
+#~ msgid "sent"
+#~ msgstr "भेज दिए गए है"
+
+#~ msgid "Add optional greeting"
+#~ msgstr "ऑप्शनल ग्रीटिंग ऐड करें"
+
+#~ msgid "Add short greeting to be added above the app link."
+#~ msgstr "ऐप लिंक के ऊपर ऐड करने के लिए शॉर्ट ग्रीटिंग ऐड करें"
 
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
