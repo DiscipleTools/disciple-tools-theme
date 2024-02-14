@@ -64,7 +64,6 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
                     'totals_rest_url' => 'get_grid_totals',
                     'list_by_grid_rest_url' => 'get_list_by_grid_id',
                     'points_rest_url' => 'points_geojson',
-
                     'split_by' => [ 'group_status' => $field_settings['group_status'] ],
                 ],
             ]
@@ -122,8 +121,10 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
+        $offset = !empty( $params['offset'] ) ? $params['offset'] : 0;
+        $limit = !empty( $params['limit'] ) ? $params['limit'] : 50000;
 
-        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query );
+        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query, $offset, $limit );
     }
 
 
@@ -183,8 +184,10 @@ class DT_Metrics_Mapbox_Groups_Maps extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
+        $offset = !empty( $params['offset'] ) ? $params['offset'] : 0;
+        $limit = !empty( $params['limit'] ) ? $params['limit'] : 50000;
 
-        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
+        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query, $offset, $limit );
     }
 
 

@@ -531,7 +531,7 @@ class DT_Contacts_Base {
                     'sort' => 'name',
                     'overall_status' => [ '-closed' ],
                 ],
-                'count' => $shared_by_type_counts['keys']['personal'] ?? 0,
+                'count' => $shared_by_type_counts['keys']['personal'] ?? '',
             ];
             $filters['filters'] = self::add_default_custom_list_filters( $filters['filters'] );
         }

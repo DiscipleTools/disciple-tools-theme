@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-01-12T11:26:56+00:00\n"
-"PO-Revision-Date: 2024-01-16 18:58+0000\n"
+"POT-Creation-Date: 2024-01-29T10:35:39+00:00\n"
+"PO-Revision-Date: 2024-02-05 17:38+0000\n"
 "Last-Translator: Kyle Koval <kyle.koval@gmail.com>\n"
 "Language-Team: Italian <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/it_IT/>\n"
@@ -147,9 +147,9 @@ msgid "Filters"
 msgstr "Filtri"
 
 #: archive-template.php:36 archive-template.php:126 archive-template.php:596
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:651
-#: dt-core/global-functions.php:679 dt-core/global-functions.php:811
-#: dt-core/global-functions.php:855 dt-posts/custom-post-type.php:20
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:653
+#: dt-core/global-functions.php:681 dt-core/global-functions.php:813
+#: dt-core/global-functions.php:857 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -300,7 +300,7 @@ msgstr ""
 
 #: archive-template.php:510 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:893
+#: dt-core/global-functions.php:895
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Cerca Utenti"
@@ -356,7 +356,7 @@ msgid "Update"
 msgstr "Aggiorna"
 
 #: archive-template.php:692 dt-assets/functions/enqueue-scripts.php:325
-#: dt-reports/magic-url-bulk-send.php:68
+#: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "Effettua le selezioni qui sotto"
 
@@ -415,14 +415,14 @@ msgid "None Set"
 msgstr "Nessuno impostato"
 
 #: archive-template.php:874 archive-template.php:875
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:611
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:613
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "No"
 
 #: archive-template.php:881 archive-template.php:882
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:612
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:614
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
@@ -460,7 +460,7 @@ msgstr "Salva"
 #: dt-assets/functions/details-bar.php:51
 #: dt-assets/functions/details-bar.php:242
 #: dt-core/configuration/config-site-defaults.php:364
-#: dt-workflows/update-required.php:70 dt-workflows/update-required.php:109
+#: dt-workflows/update-required.php:71 dt-workflows/update-required.php:110
 msgid "Update Needed"
 msgstr "Aggiornamento necessario"
 
@@ -701,7 +701,7 @@ msgid "No records found matching your filter."
 msgstr "Nessun record corrisponde ai filtri impostati."
 
 #: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1071 dt-posts/custom-post-type.php:439
+#: dt-groups/base-setup.php:1068 dt-posts/custom-post-type.php:439
 msgctxt "All records"
 msgid "All %s"
 msgstr "Tutti i %s"
@@ -729,8 +729,8 @@ msgstr "Senza"
 
 #: dt-assets/functions/enqueue-scripts.php:327
 msgctxt "Number of emails sent. i.e. 20 sent!"
-msgid "sent"
-msgstr "inviati"
+msgid "scheduled to be sent"
+msgstr "invio programmato"
 
 #: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -1813,8 +1813,8 @@ msgstr "Genere"
 msgid "This record might be a duplicate of: "
 msgstr "Questa voce potrebbe essere un duplicato di: "
 
-#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:483
-#: dt-contacts/duplicates-merging.php:565
+#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "Controllo Duplicati"
 
@@ -2013,7 +2013,7 @@ msgstr "Archivia"
 msgid "Other"
 msgstr "Altro"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1063
+#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1060
 #: dt-posts/custom-post-type.php:418
 msgid "Default Filters"
 msgstr "Filtri predefiniti"
@@ -2023,23 +2023,23 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Tutte le %s che posso vedere"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1080
+#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1074
 #: dt-posts/custom-post-type.php:451
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "%s preferiti"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1086
+#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1079
 #: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
 msgid "Favorite"
 msgstr "Preferito"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1092
+#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1085
 #: dt-posts/custom-post-type.php:466
 msgid "My Recently Viewed"
 msgstr "I miei visti di recente"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1097
+#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1090
 #: dt-posts/custom-post-type.php:471
 msgid "Last 30 viewed"
 msgstr "Ultimi 30 visti"
@@ -2350,23 +2350,23 @@ msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "Cerca moltiplicatori e contatti"
 
-#: dt-contacts/duplicates-merging.php:440
+#: dt-contacts/duplicates-merging.php:442
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Da duplicato): %s"
 
-#: dt-contacts/duplicates-merging.php:561
+#: dt-contacts/duplicates-merging.php:563
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Questa voce è un duplicato ed è stata unita a %2$s"
 
-#: dt-contacts/duplicates-merging.php:574
+#: dt-contacts/duplicates-merging.php:576
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s è stato unito a %2$s in questa voce"
 
 #. Template Name of the theme
-#: dt-contacts/duplicates-merging.php:586
+#: dt-contacts/duplicates-merging.php:588
 msgid "View Duplicates"
 msgstr "Visualizza duplicati"
 
@@ -2663,17 +2663,17 @@ msgstr "Se è stato un errore, ignora questa email e non accadrà nulla."
 msgid "To reset your password, visit the following address:"
 msgstr "Per reimpostare la password, visita il seguente indirizzo:"
 
-#: dt-core/global-functions.php:490 single-template.php:410
+#: dt-core/global-functions.php:492 single-template.php:410
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
 msgstr "Questo elemento è obbligatorio"
 
-#: dt-core/global-functions.php:653
+#: dt-core/global-functions.php:655
 msgid "Add new tag \"%s\""
 msgstr "Aggiungi il nuovo tag \"%s\""
 
-#: dt-core/global-functions.php:654
+#: dt-core/global-functions.php:656
 msgid "Tag \"%s\" is already being used"
 msgstr "Il tag \"%s\" è già in uso"
 
@@ -4066,16 +4066,16 @@ msgstr "No."
 msgid "No Records Available"
 msgstr "Nessun Record Disponibile"
 
-#: dt-notifications/notifications-email.php:125
+#: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
 msgstr "Clicca qui per visualizzare o rispondere"
 
-#: dt-notifications/notifications-email.php:131
+#: dt-notifications/notifications-email.php:138
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "Aggiorna su%1$s #%2$s"
 
-#: dt-notifications/notifications-email.php:135
+#: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
 msgstr "Non rispondere direttamente a questa email."
 
@@ -4601,43 +4601,85 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Non condiviso con %s"
 
+#: dt-posts/posts.php:2477
+msgid "Removed User"
+msgstr "Utente Rimosso"
+
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
-msgstr "Invia l'app in massa"
+msgstr "Invio di massa dell'App"
 
 #: dt-reports/magic-url-bulk-send.php:38
 msgid "Select all the %1$s to whom you want to send app links."
-msgstr "Seleziona tutti i %1$s a cui vuoi inviare i link dell'app."
+msgstr "Seleziona tutti i %1$s a cui vuoi inviare il link dell'app."
 
-#: dt-reports/magic-url-bulk-send.php:41
-msgid "Add optional greeting"
-msgstr "Aggiungi un saluto facoltativo"
+#: dt-reports/magic-url-bulk-send.php:43
+msgid ""
+"Hello {{name}},\n"
+"\n"
+"Please click on the button below to access your app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Thanks!"
+msgstr ""
+"Ciao {{nome}},\n"
+"\n"
+"Clicca sul pulsante sotto per accedere alla tua app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Grazie!"
 
-#: dt-reports/magic-url-bulk-send.php:42
-msgid "Add short greeting to be added above the app link."
-msgstr "Aggiungi un breve saluto che verrà inserito sopra il link dell'app."
+#: dt-reports/magic-url-bulk-send.php:51
+msgid "Configure email subject"
+msgstr "Configurare oggetto dell'e-mail"
 
-#: dt-reports/magic-url-bulk-send.php:45
+#: dt-reports/magic-url-bulk-send.php:54
+msgid "{{app}} will be replaced with the selected app name."
+msgstr "{{app}} sarà sostituita dal nome dell'app selezionata."
+
+#: dt-reports/magic-url-bulk-send.php:56
+msgid "Configure email message"
+msgstr "Configurare messaggio dell'email"
+
+#: dt-reports/magic-url-bulk-send.php:58
+msgid "Message placeholders"
+msgstr "Segnaposti del messaggio"
+
+#: dt-reports/magic-url-bulk-send.php:61
+msgid "Selected app name"
+msgstr "Nome dell'app selezionata"
+
+#: dt-reports/magic-url-bulk-send.php:64
+msgid "Name of the Record"
+msgstr "Nome del record"
+
+#: dt-reports/magic-url-bulk-send.php:67
+msgid "Unique link to access the app."
+msgstr "Link unico per accedere all'app."
+
+#: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
 msgstr "Seleziona l'app da inviare via email"
 
-#: dt-reports/magic-url-bulk-send.php:46
+#: dt-reports/magic-url-bulk-send.php:73
 msgid "You must select an app"
 msgstr "Devi selezionare un'app"
 
-#: dt-reports/magic-url-bulk-send.php:63
+#: dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "Invia ai record selezionati"
 
-#: dt-reports/magic-url-bulk-send.php:64
+#: dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "Devi selezionare almeno un record"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:91
+#: dt-reports/magic-url-bulk-send.php:94 dt-reports/magic-url-setup.php:91
 msgid "Send"
 msgstr "Invia"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "Link"
 
@@ -5523,6 +5565,16 @@ msgstr "Accedi ai contatti analizzati:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Duplicati trovati:"
+
+#~ msgctxt "Number of emails sent. i.e. 20 sent!"
+#~ msgid "sent"
+#~ msgstr "inviati"
+
+#~ msgid "Add optional greeting"
+#~ msgstr "Aggiungi un saluto facoltativo"
+
+#~ msgid "Add short greeting to be added above the app link."
+#~ msgstr "Aggiungi un breve saluto che verrà inserito sopra il link dell'app."
 
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
