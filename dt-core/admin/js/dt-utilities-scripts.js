@@ -629,7 +629,7 @@ jQuery(document).ready(function ($) {
 
       if ( post_type_settings && tile_settings && field_settings ) {
         let post_type_name = post_type_settings['label_plural'] ? post_type_settings['label_plural'] : post_type;
-        if ( custom_post_type_settings['label_plural'] ) {
+        if ( custom_post_type_settings?.label_plural ) {
           post_type_name = custom_post_type_settings['label_plural'];
         }
 
