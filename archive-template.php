@@ -711,14 +711,14 @@ dt_please_log_in();
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
-                    <div>
+                    <div class="table-container">
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
                                     <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
-                                    <th style="width:32px; background-image:none; cursor:default"></th>
+                                    <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){

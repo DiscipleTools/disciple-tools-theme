@@ -122,10 +122,56 @@ table.table-remove-top-border thead {
     border-top: 0;
 }
 table.js-list{
-    table-layout: fixed;
+    table-layout: auto;
     word-wrap: break-word;
-    width: 100%
+    width: 100%;
+    white-space: nowrap;
+   
 }
+@media screen and (min-width : #{map-get($breakpoints, large)}) {
+    table.js-list td {
+        max-width: 250px;
+    }
+}
+
+.table-container {
+    display: block;
+    overflow-x: auto;
+}
+
+.table-container, .table-container #records-table {
+    transform:rotateX(180deg);
+    -ms-transform:rotateX(180deg); /* IE 9 */
+    -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+}
+
+
+table.js-list th[data-id="name"] {
+    position: sticky;
+    left: 32px; /* Right edge + Width of index column = 32px */
+    background-color: #ffffff;
+}
+
+table.js-list td[data-id="name"] {
+    position: sticky;
+    left: 32px; /* Right edge + Width of index column = 32px */
+    background-color: inherit;
+}
+
+table.js-list th[data-id="index"] {
+    position: sticky;
+    left: -1px;
+    background-color: #ffffff;
+}
+
+
+table.js-list td[data-id="index"] {
+    position: sticky;
+    left: -1px;
+    background-color: inherit;
+
+}
+
 
 .current-filter-list {
     font-size: 0.875rem;
@@ -418,12 +464,16 @@ table.js-list{
                 margin-right: 5%;
                 line-height:20px;
                 font-size: 10px;
+                vertical-align: top;
             }
             .mobile-list-field-value {
                 width: 70%;
                 display: inline-block;
                 overflow: hidden;
                 white-space: nowrap;
+                ul {
+                    white-space: normal;
+                }
             }
             ul {
                 li {

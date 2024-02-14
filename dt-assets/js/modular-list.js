@@ -897,7 +897,7 @@
             values[0] = '&#9733;'
           }
           let tmp_html = `
-            <td dir="auto" title="${values.join(', ')}">
+            <td dir="auto" data-id="${field_key}" title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>
@@ -930,7 +930,7 @@
       } else {
         table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
-          <td style="white-space: nowrap" >${index+1}.</td>
+          <td style="white-space: nowrap" data-id="index" >${index+1}.</td>
           ${ row_fields_html }
         `
       }
