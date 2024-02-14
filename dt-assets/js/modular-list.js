@@ -3585,6 +3585,7 @@
           <div class="cell medium-3" id="export_map_sidebar_menu">
             <!-- details panel -->
             <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px; max-height: 500px; overflow-y: scroll;">
+              <h3>${esc(window.list_settings.translations.exports.map['Records on zoomed map'])}</h3>
               <table id="export_map_sidebar_menu_details_panel_table"></table>
             </div>
           </div>
