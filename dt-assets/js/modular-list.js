@@ -2994,28 +2994,35 @@
    */
 
   function export_list_display(type, title, display_function) {
-
-    // Execute display function.
-    display_function();
+    let modal = null;
 
     // Adjust export reveal model accordingly, based on incoming type.
     switch ( type ) {
       case 'csv':
       case 'email':
       case 'phone': {
-        $('#modal-large-title').html(title);
-        $('#modal-large').foundation('open');
+        modal = $('#modal-large');
+        $('#modal-large-title').html(title + '<span class="loading-spinner" style="margin-left: 10px;"></span>');
         break;
       }
       case 'map': {
-        $('#modal-full').foundation('open');
+        modal = $('#modal-full');
         break;
       }
+    }
+
+    if ( modal ) {
+      display_function();
+      $(modal).foundation('open');
     }
   }
 
   $("#export_csv_list").on("click", function (e) {
     export_list_display('csv', $(e.currentTarget).text(), function () {
+
+      // Show spinners.
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
 
       // Identify fields to be exported; ignoring hidden and private fields.
       let exporting_fields_all = [];
@@ -3109,14 +3116,14 @@
       $('#modal-large-content').html(html);
 
       // Terminate any spinners and prepare download button event listener.
-      $('.loading-spinner').removeClass('active');
+      $(spinner).removeClass('active');
       $('#export_csv_list_download').on('click', function(){
-        $('.loading-spinner').addClass('active');
+        $(spinner).addClass('active');
         $('#export_csv_list_download').prop('disabled', true);
 
         // Ensure to determine which field groupings to move forward with....? All or Currently Visible?
         export_csv_list_download( ( $('input[name="csv_exported_list_fields"]:checked').val() === 'visible' ) ? exporting_fields_visible : exporting_fields_all, function () {
-          $('.loading-spinner').removeClass('active');
+          $(spinner).removeClass('active');
           $('#modal-large').foundation('close');
         });
       });
@@ -3340,7 +3347,8 @@
     export_list_display('email', $(e.currentTarget).text(), function () {
 
       // Show spinners.
-      $('.loading-spinner').addClass('active');
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
 
       let html = `
         <div class="grid-x">
@@ -3471,7 +3479,7 @@
         })
 
         // Hide spinners.
-        $('.loading-spinner').removeClass('active');
+        $(spinner).removeClass('active');
       });
     });
   });
@@ -3485,7 +3493,8 @@
     export_list_display('phone', $(e.currentTarget).text(), function () {
 
       // Show spinners.
-      $('.loading-spinner').addClass('active');
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
 
       let html = `
         <div class="grid-x">
@@ -3559,7 +3568,7 @@
         jQuery('#list-count-full').html(list_count['full'])
 
         // Hide spinners.
-        $('.loading-spinner').removeClass('active');
+        $(spinner).removeClass('active');
       });
     });
   });
@@ -3568,9 +3577,6 @@
     if ( window.list_settings['translations']['exports']['map']['mapbox_key'] ) {
       const title = $(e.currentTarget).text();
       export_list_display('map', title, function () {
-
-        // Show spinners.
-        $('.loading-spinner').addClass('active');
 
         // Generate modal html.
         let html = `
@@ -3592,6 +3598,10 @@
         </div>`;
 
         $('#modal-full-content').html(html);
+
+        // Show spinners.
+        const spinner = $('#modal-full').find('.loading-spinner');
+        $(spinner).addClass('active');
 
         // Insert dynamic styles.
         let map_content = jQuery('#dynamic-styles')
@@ -3738,7 +3748,7 @@
             }));
 
             // Hide spinners.
-            $('.loading-spinner').removeClass('active');
+            $(spinner).removeClass('active');
           });
         });
       });
