@@ -128,9 +128,10 @@ table.js-list{
     white-space: nowrap;
    
 }
-
-table.js-list td {
-    max-width: 250px;
+@media screen and (min-width : #{map-get($breakpoints, large)}) {
+    table.js-list td {
+        max-width: 250px;
+    }
 }
 
 .table-container {
