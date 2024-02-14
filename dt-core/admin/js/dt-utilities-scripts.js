@@ -660,7 +660,7 @@ jQuery(document).ready(function ($) {
 
             fields.forEach((field_id) => {
               let field_name = field_settings[field_id]['name'] ? field_settings[field_id]['name'] : field_id;
-              if ( custom_field_settings[field_id]['name'] ) {
+              if ( custom_field_settings[field_id]?.name ) {
                 field_name = custom_field_settings[field_id]['name'];
               }
 
