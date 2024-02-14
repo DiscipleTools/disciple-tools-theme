@@ -2998,29 +2998,20 @@
     // Execute display function.
     display_function();
 
-    const export_modal = $('#export_reveal');
-    $(export_modal).removeClass('large');
-    $(export_modal).removeClass('full');
-
     // Adjust export reveal model accordingly, based on incoming type.
     switch ( type ) {
       case 'csv':
       case 'email':
       case 'phone': {
-        $(export_modal).addClass('large');
-        $(export_modal).data('v-offset', '10px');
+        $('#modal-large-title').html(title);
+        $('#modal-large').foundation('open');
         break;
       }
       case 'map': {
-        $(export_modal).addClass('full');
-        $(export_modal).data('v-offset', '0px');
+        $('#modal-full').foundation('open');
         break;
       }
     }
-
-    // Set export title and display modal.
-    $('#export_title').html(title);
-    $(export_modal).foundation('open');
   }
 
   $("#export_csv_list").on("click", function (e) {
@@ -3072,8 +3063,7 @@
         </div>
       </div>`;
 
-      $('#export_content').html(html);
-      $('#export_modal_section_header').show();
+      $('#modal-large-content').html(html);
 
       // Terminate any spinners and prepare download button event listener.
       $('.loading-spinner').removeClass('active');
@@ -3083,7 +3073,7 @@
 
         export_csv_list_download(exporting_fields, function () {
           $('.loading-spinner').removeClass('active');
-          $('#export_reveal').foundation('close');
+          $('#modal-large').foundation('close');
         });
       });
     });
@@ -3328,8 +3318,7 @@
             </div>
         </div>`;
 
-      $('#export_content').html(html);
-      $('#export_modal_section_header').show();
+      $('#modal-large-content').html(html);
 
       // Recursively fetch all filtered list posts, to be processed.
       recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
@@ -3471,8 +3460,7 @@
             </div>
         </div>`;
 
-      $('#export_content').html(html);
-      $('#export_modal_section_header').show();
+      $('#modal-large-content').html(html);
 
       // Recursively fetch all filtered list posts, to be processed.
       recursively_fetch_posts(0, 500, window.records_list['total'], [], function (posts) {
@@ -3552,14 +3540,13 @@
           </div>
           <div class="cell medium-3" id="export_map_sidebar_menu">
             <!-- details panel -->
-            <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px;">
+            <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px; max-height: 500px; overflow-y: scroll;">
               <table id="export_map_sidebar_menu_details_panel_table"></table>
             </div>
           </div>
         </div>`;
 
-        $('#export_content').html(html);
-        $('#export_modal_section_header').hide();
+        $('#modal-full-content').html(html);
 
         // Insert dynamic styles.
         let map_content = jQuery('#dynamic-styles')
@@ -3682,29 +3669,9 @@
             });
 
             map.on('mousemove', function(e) {
-
-              // Specify bounding box and fetch available points.
-              const bbox = [
-                [e.point.x - 50, e.point.y - 50],
-                [e.point.x + 50, e.point.y + 50]
-              ];
-
-              const features = map.queryRenderedFeatures( bbox, {
+              render_map_feature_details(map.queryRenderedFeatures({
                 layers: ['points']
-              });
-
-              // Obtain a handle to details panel table and refresh accordingly.
-              const details_table = $('#export_map_sidebar_menu_details_panel_table');
-              if ( features && features.length > 0 ) {
-                let html = `<tbody>`;
-                features.forEach(function(feature) {
-                  if ( feature?.properties?.id && feature?.properties?.post_type && feature?.properties?.title && feature?.properties?.label ) {
-                    html += `<tr><td><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.post_type)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.id)}">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.title)}</a> <span style="color: #808080;">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.label)}</span></td></tr>`;
-                  }
-                });
-                html += `</tbody>`;
-                $(details_table).html(html);
-              }
+              }));
             });
 
             var bounds = new window.mapboxgl.LngLatBounds();
@@ -3715,6 +3682,16 @@
             });
             map.fitBounds(bounds);
 
+            // Display initial feature details.
+            const details_panel = $('#export_map_sidebar_menu_details_panel');
+            const map_height = $(map.getContainer()).height();
+            $(details_panel).css('height', map_height + 'px');
+            $(details_panel).css('min-height', map_height + 'px');
+            $(details_panel).css('max-height', map_height + 'px');
+            render_map_feature_details(map.queryRenderedFeatures({
+              layers: ['points']
+            }));
+
             // Hide spinners.
             $('.loading-spinner').removeClass('active');
           });
@@ -3722,6 +3699,20 @@
       });
     }
   });
+
+  function render_map_feature_details(features) {
+    const details_table = $('#export_map_sidebar_menu_details_panel_table');
+    if (features) {
+      let html = `<tbody>`;
+      features.forEach(function (feature) {
+        if (feature?.properties?.id && feature?.properties?.post_type && feature?.properties?.title && feature?.properties?.label) {
+          html += `<tr><td><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.post_type)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.id)}">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.title)}</a> <span style="color: #808080;">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.label)}</span></td></tr>`;
+        }
+      });
+      html += `</tbody>`;
+      $(details_table).html(html);
+    }
+  }
 
   /**
    * List Exports
