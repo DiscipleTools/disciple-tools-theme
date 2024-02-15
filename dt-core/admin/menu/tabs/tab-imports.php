@@ -264,20 +264,27 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                     // Ignore the no_tile special keyword.
                     if ( ( $tile !== 'no_tile' ) && isset( $import_config['dt_settings'][$uploaded_config_setting_keys['tiles_settings_key']]['values'][$post_type][$tile] ) ) {
 
-                        // Make tile options provision if needed, before committing.
-                        if ( !isset( $existing_tile_options[$post_type] ) ){
-                            $existing_tile_options[$post_type] = [];
-                        }
-
                         // Capture tile settings accordingly based on import meta flag.
-                        $tiles_settings_key = 'tiles_settings_key';
-                        if ( ( isset( $tile_config['import_meta'] ) && $tile_config['import_meta'] === true ) && isset( $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type][$tile] ) ) {
-                            $tiles_settings_key = 'custom_tiles_settings_key';
-                        }
-                        $existing_tile_options[$post_type][$tile] = $import_config['dt_settings'][$uploaded_config_setting_keys[$tiles_settings_key]]['values'][$post_type][$tile];
+                        if ( isset( $tile_config['import_meta'] ) ) {
 
-                        // Capture tile id, to signal a successful import.
-                        $response[$post_type]['tiles'][] = $tile;
+                            // Only update tile if meta flag true or fields have been assigned, but no tile settings currently detected.
+                            if ( ( $tile_config['import_meta'] === true ) || ( !empty( $tile_config['fields'] ) && !isset( $existing_tile_options[$post_type] ) ) ) {
+                                $tiles_settings_key = 'tiles_settings_key';
+                                if ( isset( $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type][$tile] ) ) {
+                                    $tiles_settings_key = 'custom_tiles_settings_key';
+                                }
+
+                                // Make tile options provision if needed, before committing.
+                                if ( !isset( $existing_tile_options[$post_type] ) ) {
+                                    $existing_tile_options[$post_type] = [];
+                                }
+
+                                $existing_tile_options[$post_type][$tile] = $import_config['dt_settings'][$uploaded_config_setting_keys[$tiles_settings_key]]['values'][$post_type][$tile];
+
+                                // Capture tile id, to signal a successful import.
+                                $response[$post_type]['tiles'][] = $tile;
+                            }
+                        }
                     }
 
                     // Capture tile fields for future processing.
