@@ -603,6 +603,15 @@ class Disciple_Tools_Notifications
                 dt_send_email_about_post( $user->user_email, $notification['post_id'], $message_plain_text );
             }
         }
+
+        // Filter out default channels and execute accordingly.
+        $custom_channels = array_filter( $open_channels, function ( $channel ) {
+            return !in_array( $channel, self::DEFAULT_CHANNELS );
+        });
+
+        foreach ( $custom_channels as $channel ) {
+            do_action( 'dt_communication_channels_notification', $channel, $user_id, $notification, $notification_type, $already_sent );
+        }
     }
 
     /**

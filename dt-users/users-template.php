@@ -33,7 +33,7 @@ function dt_get_site_notification_defaults(){
     }
     $notifications = apply_filters( 'dt_get_site_notification_options', $site_options['notifications'] );
 
-    return $notifications;
+    return apply_filters( 'dt_notification_channels', $notifications );
 }
 
 /**
