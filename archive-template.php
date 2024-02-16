@@ -305,12 +305,12 @@ dt_please_log_in();
                             <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a><br>
                             <?php
                         }
-//                        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
-//                            ?>
-<!--                            <a id="export_map_list">--><?php //esc_html_e( 'Map List', 'disciple_tools' ) ?><!--</a><br>-->
-<!--                            --><?php
-//                        }
-//                        ?>
+                        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
+                            ?>
+                            <a id="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a><br>
+                            <?php
+                        }
+                        ?>
                         <?php do_action( 'dt_list_exports_menu_items', $post_type ); ?>
 
                     </div>
@@ -331,10 +331,10 @@ dt_please_log_in();
                             <p><strong><?php esc_html_e( 'Phone Number List', 'disciple_tools' ); ?></strong></p>
                             <p><?php esc_html_e( 'Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation.', 'disciple_tools' ); ?></p>
                         </div>
-<!--                        <div class="cell">-->
-<!--                            <p><strong>--><?php //esc_html_e( 'Map List', 'disciple_tools' ); ?><!--</strong></p>-->
-<!--                            <p>--><?php //esc_html_e( 'Using the current filter, this creates a basic points map of known locations of listed individuals.', 'disciple_tools' ); ?><!--</p>-->
-<!--                        </div>-->
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'Map List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, this creates a basic points map of known locations of listed individuals.', 'disciple_tools' ); ?></p>
+                        </div>
                     </div>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
