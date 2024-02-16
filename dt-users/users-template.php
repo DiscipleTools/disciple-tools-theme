@@ -31,9 +31,7 @@ function dt_get_site_notification_defaults(){
             $channel['label'] = $default_notifications['channels'][$channel_key]['label'];
         }
     }
-    $notifications = apply_filters( 'dt_get_site_notification_options', $site_options['notifications'] );
-
-    return apply_filters( 'dt_notification_channels', $notifications );
+    return apply_filters( 'dt_get_site_notification_options', $site_options['notifications'] );
 }
 
 /**
@@ -181,9 +179,13 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
         $user_meta_data = get_user_meta( $user_id );
     }
 
-    //by default a notification is enabled unless set to false
-    return isset( $user_meta_data[ $notification_name . '_' . $channel ] ) ? $user_meta_data[ $notification_name . '_' . $channel ][0] == true : true;
-
+    //by default a notification is enabled unless set to false; unless it's a specific custom channel; which may require manual enabling.
+    $channel_notification_key = $notification_name . '_' . $channel;
+    if ( !isset( $user_meta_data[ $channel_notification_key ] ) && in_array( $channel, [ 'sms', 'whatsapp' ] ) ) {
+        return false;
+    } else {
+        return !isset( $user_meta_data[$channel_notification_key] ) || $user_meta_data[$channel_notification_key][0] == true;
+    }
 }
 
 /**

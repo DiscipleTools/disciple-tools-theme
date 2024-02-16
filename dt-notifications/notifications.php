@@ -610,7 +610,10 @@ class Disciple_Tools_Notifications
         });
 
         foreach ( $custom_channels as $channel ) {
-            do_action( 'dt_communication_channels_notification', $channel, $user_id, $notification, $notification_type, $already_sent );
+            do_action( 'dt_communication_channels_notification', $channel, $user_id, $notification, [
+                'notification_type' => $notification_type,
+                'already_sent' => $already_sent
+            ] );
         }
     }
 

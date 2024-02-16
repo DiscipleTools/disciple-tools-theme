@@ -511,7 +511,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                                     <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
                                                            name="<?php echo esc_html( $channel_notification_key ) ?>"
                                                            onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
-                                                        <?php print esc_attr( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ? '' : 'checked' ); ?>>
+                                                        <?php print esc_attr( ( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) || ( !isset( $dt_user_meta[ $channel_notification_key ] ) && in_array( $channel_key, [ 'sms', 'whatsapp' ] ) ) ) ? '' : 'checked' ); ?>>
                                                     <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
                                                         <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
                                                     </label>
