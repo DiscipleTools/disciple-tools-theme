@@ -298,7 +298,21 @@ dt_please_log_in();
                     </div>
                     <div class="section-body" style="padding-top:1em;">
                         <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a><br>
-                        <?php do_action( 'dt_post_list_exports_filters_sidebar', $post_type ) ?>
+                        <?php
+                        if ( $post_type === 'contacts' ) {
+                            ?>
+                            <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a><br>
+                            <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a><br>
+                            <?php
+                        }
+                        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
+                            ?>
+                            <a id="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a><br>
+                            <?php
+                        }
+                        ?>
+                        <?php do_action( 'dt_list_exports_menu_items', $post_type ); ?>
+
                     </div>
                 </div>
                 <div id="export_help_text" class="large reveal" data-reveal data-v-offset="10px">
@@ -309,26 +323,19 @@ dt_please_log_in();
                             <p><strong><?php esc_html_e( 'CSV List', 'disciple_tools' ); ?></strong></p>
                             <p><?php esc_html_e( 'Using the current filter, this is a simple way to export basic information and use it in other applications.', 'disciple_tools' ); ?></p>
                         </div>
-                        <?php
-                        $list_exports_help = apply_filters( 'dt_post_list_exports_filters_sidebar_help_text', [] );
-                        foreach ( $list_exports_help as $help ) {
-                            ?>
-                            <div class="cell">
-                                <p><strong><?php echo esc_attr( $help['title'] ); ?></strong></p>
-                                <p><?php echo esc_attr( $help['text'] ); ?></p>
-                            </div>
-                            <?php
-                        }
-                        ?>
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'BCC Email List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the "Open All" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers.', 'disciple_tools' ); ?></p>
+                        </div>
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'Phone Number List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation.', 'disciple_tools' ); ?></p>
+                        </div>
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'Map List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, this creates a basic points map of known locations of listed individuals.', 'disciple_tools' ); ?></p>
+                        </div>
                     </div>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="export_reveal" class="large reveal" data-reveal data-v-offset="10px">
-                    <span class="section-header" id="export_title"></span> <span id="reveal_loading_spinner" style="display: inline-block" class="loading-spinner active"></span>
-                    <hr>
-                    <div id="export_content"></div>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>

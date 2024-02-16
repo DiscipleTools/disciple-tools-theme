@@ -2993,18 +2993,36 @@
    * List Exports
    */
 
-  function export_list_display(title, display_function) {
+  function export_list_display(type, title, display_function) {
+    let modal = null;
 
-    // Execute display function.
-    display_function();
+    // Adjust export reveal model accordingly, based on incoming type.
+    switch ( type ) {
+      case 'csv':
+      case 'email':
+      case 'phone': {
+        modal = $('#modal-large');
+        $('#modal-large-title').html(title + '<span class="loading-spinner" style="margin-left: 10px;"></span>');
+        break;
+      }
+      case 'map': {
+        modal = $('#modal-full');
+        break;
+      }
+    }
 
-    // Set export title and display modal.
-    $('#export_title').html(title);
-    $('#export_reveal').foundation('open');
+    if ( modal ) {
+      display_function();
+      $(modal).foundation('open');
+    }
   }
 
   $("#export_csv_list").on("click", function (e) {
-    export_list_display($(e.currentTarget).text(), function () {
+    export_list_display('csv', $(e.currentTarget).text(), function () {
+
+      // Show spinners.
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
 
       // Identify fields to be exported; ignoring hidden and private fields.
       let exporting_fields_all = [];
@@ -3095,18 +3113,18 @@
         </div>
       </div>`;
 
-      $('#export_content').html(html);
+      $('#modal-large-content').html(html);
 
       // Terminate any spinners and prepare download button event listener.
-      $('.loading-spinner').removeClass('active');
+      $(spinner).removeClass('active');
       $('#export_csv_list_download').on('click', function(){
-        $('.loading-spinner').addClass('active');
+        $(spinner).addClass('active');
         $('#export_csv_list_download').prop('disabled', true);
 
         // Ensure to determine which field groupings to move forward with....? All or Currently Visible?
         export_csv_list_download( ( $('input[name="csv_exported_list_fields"]:checked').val() === 'visible' ) ? exporting_fields_visible : exporting_fields_all, function () {
-          $('.loading-spinner').removeClass('active');
-          $('#export_reveal').foundation('close');
+          $(spinner).removeClass('active');
+          $('#modal-large').foundation('close');
         });
       });
     });
@@ -3323,6 +3341,432 @@
       }
     });
 
+  }
+
+  $("#export_bcc_email_list").on("click", function (e) {
+    export_list_display('email', $(e.currentTarget).text(), function () {
+
+      // Show spinners.
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
+
+      let html = `
+        <div class="grid-x">
+            <div class="cell">
+               <table><tbody id="grouping-table"></tbody></table>
+            </div>
+
+            <div class="cell">
+                <a onclick="jQuery('#email-list-print').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['full_list'] )} (<span id="list-count-full"></span>)</strong></a>
+                <div class="cell" id="email-list-print" style="display:none;"></div>
+            </div>
+            <div class="cell">
+                <a onclick="jQuery('#contacts-without').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['no_addr'] )} (<span id="list-count-without"></span>)</strong></a>
+                <div id="contacts-without" style="display:none;"></div>
+            </div>
+            <div class="cell">
+                <a onclick="jQuery('#contacts-with').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['with_addr'] )} (<span id="list-count-with"></span>)</strong></a>
+                <div id="contacts-with" style="display:none;"></div>
+            </div>
+        </div>`;
+
+      $('#modal-large-content').html(html);
+
+      // Recursively fetch all filtered list posts, to be processed.
+      recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
+        let email_totals = []
+        let list_count = {
+          with: 0,
+          without: 0,
+          full: 0
+        }
+        let count = 0
+        let group = 0
+        let contacts_with = jQuery('#contacts-with')
+        let contacts_without = jQuery('#contacts-without')
+
+        // Generate totals.
+        $.each(posts, function (i, v) {
+          let has_email = false
+          if (typeof v.contact_email !== "undefined" && v.contact_email !== '') {
+            if (typeof email_totals[group] === "undefined") {
+              email_totals[group] = []
+            }
+            let non_empty_values = v.contact_email.filter(val=>val.value)
+            non_empty_values.forEach(vv => {
+              let email = window.SHAREDFUNCTIONS.escapeHTML(vv.value);
+              if (validate_email_address(email)) {
+                email_totals[group].push(email)
+                count++
+                list_count['full']++
+                has_email = true;
+              } else {
+                console.log(`Invalid Email Format: ${email}`);
+              }
+            })
+            if (count > 50) {
+              group++
+              count = 0
+            }
+            if ( non_empty_values.length > 1 ){
+              contacts_with.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+              list_count['with']++
+            }
+          }
+          if ( !has_email ){
+            contacts_without.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+            list_count['without']++
+          }
+        });
+
+        // Update count findings.
+        let list_print = jQuery('#email-list-print')
+        $.each(email_totals, function (index, values) {
+          list_print.append(window.SHAREDFUNCTIONS.escapeHTML(values.join(', ')))
+        })
+
+        jQuery('#list-count-with').html(list_count['with'])
+        jQuery('#list-count-without').html(list_count['without'])
+        jQuery('#list-count-full').html(list_count['full'])
+
+        // Generate links.
+        let email_links = []
+        group = 0
+
+        $.each(posts, function (i, v) {
+          if (typeof v.contact_email !== "undefined" && v.contact_email !== '') {
+            if (typeof email_links[group] === "undefined") {
+              email_links[group] = []
+            }
+            $.each(v.contact_email, function (ii, vv) {
+              let email = window.SHAREDFUNCTIONS.escapeHTML(vv.value);
+              if ( validate_email_address(email) ){
+                email_links[group].push( email )
+              }
+            })
+            if (email_links[group].length > 50) {
+              group++
+            }
+          }
+        });
+
+        // loop 50 each
+        let grouping_table = $('#grouping-table')
+        let email_strings = []
+        $.each(email_links, function (index, values) {
+          index++
+          email_strings = []
+          email_strings = window.SHAREDFUNCTIONS.escapeHTML(values.join(', '))
+          email_strings.replace(/,/g, ', ')
+
+          grouping_table.append(`
+            <tr><td style="vertical-align:top; width:50%;"><a href="mailto:?subject=group${index}&bcc=${email_strings}" id="group-link-${index}" class="button expanded export-link-button">${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['open_email'] )} ${index}</a></td>
+            <td><a onclick="jQuery('#group-addresses-${index}').toggle()">${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['show_group_addrs'] )}</a> <p style="display:none;overflow-wrap: break-word;" id="group-addresses-${index}">${email_strings.replace(/,/g, ', ')}</p></td></tr>
+          `)
+
+        })
+        grouping_table.append(`
+            <tr><td style="vertical-align:top; text-align:center; width:50%;"><a class="button expanded export-link-button" id="open_all">${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['open_all'] )}</a></td><td></td></tr>
+        `)
+
+        $('.export-link-button').on('click',function(){
+          $(this).addClass('warning');
+        })
+        $('#open_all').on('click', function(){
+          $('.export-link-button').each(function(i,v){
+            document.getElementById(v.id).click()
+          })
+        })
+
+        // Hide spinners.
+        $(spinner).removeClass('active');
+      });
+    });
+  });
+
+  function validate_email_address(email) {
+    const regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+  }
+
+  $("#export_phone_list").on("click", function (e) {
+    export_list_display('phone', $(e.currentTarget).text(), function () {
+
+      // Show spinners.
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
+
+      let html = `
+        <div class="grid-x">
+            <a onclick="jQuery('#email-list-print').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['phone']['full_list'] )} (<span id="list-count-full"></span>)</strong></a>
+            <div class="cell" id="email-list-print"></div>
+        </div>
+        <hr>
+        <div class="grid-x">
+            <div class="cell">
+                <a onclick="jQuery('#contacts-without').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['phone']['no_phone'] )} (<span id="list-count-without"></span>)</strong></a>
+                <div id="contacts-without" style="display:none;"></div>
+            </div>
+            <div class="cell">
+                <a onclick="jQuery('#contacts-with').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['phone']['with_phone'] )} (<span id="list-count-with"></span>)</strong></a>
+                <div id="contacts-with" style="display:none;"></div>
+            </div>
+        </div>`;
+
+      $('#modal-large-content').html(html);
+
+      // Recursively fetch all filtered list posts, to be processed.
+      recursively_fetch_posts(0, 500, window.records_list['total'], [], function (posts) {
+        let phone_list = []
+        let list_count = {
+          with: 0,
+          without: 0,
+          full: 0
+        }
+        let group = 0
+        let contacts_with = jQuery('#contacts-with')
+        let contacts_without = jQuery('#contacts-without')
+
+        // Generate totals.
+        $.each(posts, function (i, v) {
+          let has_phone = false
+          if (typeof v.contact_phone !== 'undefined' && v.contact_phone !== '') {
+            if (typeof phone_list[group]==="undefined") {
+              phone_list[group] = []
+            }
+            let non_empty_values = v.contact_phone.filter(val=>val.value)
+            non_empty_values.forEach(vv=>{
+              phone_list[group].push(vv.value)
+              list_count['full']++
+              has_phone = true
+            })
+            if ( non_empty_values.length > 1 ){
+              contacts_with.append(`<a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+              list_count['with']++
+            }
+            if (phone_list.length > 50) {
+              group++
+            }
+          }
+          if ( !has_phone ) {
+            contacts_without.append(`<a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+            list_count['without']++
+          }
+        });
+
+        // Update count findings.
+        let list_print = jQuery('#email-list-print')
+        let all_numbers = []
+        $.each(phone_list, function (index, values) {
+          all_numbers = all_numbers.concat(values)
+        })
+        list_print.append(window.SHAREDFUNCTIONS.escapeHTML(all_numbers.join(', ')))
+
+        // console.log(list_count)
+        jQuery('#list-count-with').html(list_count['with'])
+        jQuery('#list-count-without').html(list_count['without'])
+        jQuery('#list-count-full').html(list_count['full'])
+
+        // Hide spinners.
+        $(spinner).removeClass('active');
+      });
+    });
+  });
+
+  $("#export_map_list").on("click", function (e) {
+    if ( window.list_settings['translations']['exports']['map']['mapbox_key'] ) {
+      const title = $(e.currentTarget).text();
+      export_list_display('map', title, function () {
+
+        // Generate modal html.
+        let html = `
+        <span class="section-header"> ${window.SHAREDFUNCTIONS.escapeHTML(title)} | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['mapped_locations'] )}: <span id="mapped" class="loading-spinner active"></span> | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['without_locations'] )}: <span id="unmapped" class="loading-spinner active"></span> </span><br><br>
+        <div id="dynamic-styles"></div>
+        <div class="grid-x">
+          <div class="cell medium-9" id="export_map_container">
+            <div id="map-wrapper">
+                <div id='map'></div>
+            </div>
+          </div>
+          <div class="cell medium-3" id="export_map_sidebar_menu">
+            <!-- details panel -->
+            <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px; max-height: 500px; overflow-y: scroll;">
+              <h3>${esc(window.list_settings.translations.exports.map['Records on zoomed map'])}</h3>
+              <table id="export_map_sidebar_menu_details_panel_table"></table>
+            </div>
+          </div>
+        </div>`;
+
+        $('#modal-full-content').html(html);
+
+        // Show spinners.
+        const spinner = $('#modal-full').find('.loading-spinner');
+        $(spinner).addClass('active');
+
+        // Insert dynamic styles.
+        let map_content = jQuery('#dynamic-styles')
+        map_content
+          .append(`
+            <style>
+                #map-wrapper {
+                    height: ${window.innerHeight - 100}px !important;
+                    position:relative;
+                }
+                #map {
+                    height: ${window.innerHeight - 100}px !important;
+                }
+            </style>
+          `);
+
+        // Recursively fetch all filtered list posts, to be processed.
+        recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
+          window.mapboxgl.accessToken = window.list_settings['translations']['exports']['map']['mapbox_key'];
+          var map = new window.mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            center: [-30, 20],
+            minZoom: 1,
+            zoom: 2
+          });
+
+          // disable map rotation using right click + drag
+          map.dragRotate.disable();
+          map.touchZoomRotate.disableRotation();
+
+          // load sources
+          map.on('load', function () {
+            let features = []
+            let mapped = 0
+            let unmapped = 0
+            $.each(posts, function(i,v){
+              if ( typeof v.location_grid_meta !== "undefined") {
+                features.push({
+                  'type': 'Feature',
+                  'geometry': {
+                    'type': 'Point',
+                    'coordinates': [v.location_grid_meta[0].lng, v.location_grid_meta[0].lat]
+                  },
+                  'properties': {
+                    'id': v.ID,
+                    'post_type': v.post_type,
+                    'title': v.post_title,
+                    'label': v.location_grid_meta[0].label
+                  }
+                })
+                mapped++
+              }
+              else {
+                unmapped++
+              }
+            })
+
+            $('#mapped').html('(' + mapped + ')')
+            $('#unmapped').html('(' + unmapped + ')')
+
+            let geojson = {
+              'type': 'FeatureCollection',
+              'features': features
+            }
+
+            map.addSource('pointsSource', {
+              'type': 'geojson',
+              'data': geojson
+            });
+            map.addLayer({
+              id: 'points',
+              type: 'circle',
+              source: 'pointsSource',
+              paint: {
+                'circle-radius': {
+                  'base': 6,
+                  'stops': [
+                    [1, 6],
+                    [3, 6],
+                    [4, 6],
+                    [5, 8],
+                    [6, 10],
+                    [7, 12],
+                    [8, 14],
+                  ]
+                },
+                'circle-color': '#2CACE2'
+              }
+            });
+
+            if ( window.records_list['total'] < 5 ) {
+              $.each(posts, function(i,v){
+                if ( typeof v.location_grid_meta !== 'undefined') {
+                  new window.mapboxgl.Popup()
+                  .setLngLat([v.location_grid_meta[0].lng, v.location_grid_meta[0].lat])
+                  .setHTML(v.post_title + '<br>' + v.location_grid_meta[0].label)
+                  .addTo(map);
+                }
+              })
+            }
+
+            map.on('mouseenter', 'points', function(e) {
+              map.getCanvas().style.cursor = 'pointer';
+              var coordinates = e.features[0].geometry.coordinates.slice();
+              var description = e.features[0].properties.title + '<br>' + e.features[0].properties.label;
+
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              new window.mapboxgl.Popup()
+              .setLngLat(coordinates)
+              .setHTML(description)
+              .addTo(map);
+            });
+
+            map.on('mouseleave', 'points', function() {
+              map.getCanvas().style.cursor = '';
+            });
+
+            map.on('mousemove', function(e) {
+              render_map_feature_details(map.queryRenderedFeatures({
+                layers: ['points']
+              }));
+            });
+
+            var bounds = new window.mapboxgl.LngLatBounds();
+            geojson.features.forEach(function(feature) {
+              if ( feature.geometry.coordinates && !feature.geometry.coordinates.includes(undefined) ) {
+                bounds.extend(feature.geometry.coordinates);
+              }
+            });
+            map.fitBounds(bounds);
+
+            // Display initial feature details.
+            const details_panel = $('#export_map_sidebar_menu_details_panel');
+            const map_height = $(map.getContainer()).height();
+            $(details_panel).css('height', map_height + 'px');
+            $(details_panel).css('min-height', map_height + 'px');
+            $(details_panel).css('max-height', map_height + 'px');
+            render_map_feature_details(map.queryRenderedFeatures({
+              layers: ['points']
+            }));
+
+            // Hide spinners.
+            $(spinner).removeClass('active');
+          });
+        });
+      });
+    }
+  });
+
+  function render_map_feature_details(features) {
+    const details_table = $('#export_map_sidebar_menu_details_panel_table');
+    if (features) {
+      let html = `<tbody>`;
+      features.forEach(function (feature) {
+        if (feature?.properties?.id && feature?.properties?.post_type && feature?.properties?.title && feature?.properties?.label) {
+          html += `<tr><td><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.post_type)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.id)}">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.title)}</a> <span style="color: #808080;">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.label)}</span></td></tr>`;
+        }
+      });
+      html += `</tbody>`;
+      $(details_table).html(html);
+    }
   }
 
   /**
