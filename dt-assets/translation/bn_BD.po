@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-01-29T10:35:39+00:00\n"
+"POT-Creation-Date: 2024-02-08T09:38:28+00:00\n"
 "Language: bn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "অনুরোধ দাখিল করুন"
 
-#: 403.php:55 archive-template.php:920 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:944 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -79,7 +79,7 @@ msgid "Cancel"
 msgstr "বাতিল"
 
 #: 403.php:59 archive-template.php:446 archive-template.php:488
-#: archive-template.php:944 dt-assets/parts/loop-activity-comment.php:154
+#: archive-template.php:968 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -108,7 +108,7 @@ msgstr "বাতিল"
 #: dt-contacts/access-module.php:515 dt-contacts/access-module.php:546
 #: dt-contacts/access-module.php:574 dt-contacts/access-module.php:665
 #: dt-contacts/base-setup.php:385 dt-contacts/base-setup.php:420
-#: dt-contacts/dmm-module.php:523 dt-contacts/dmm-module.php:525
+#: dt-contacts/dmm-module.php:524 dt-contacts/dmm-module.php:526
 #: dt-contacts/user-module.php:168 dt-groups/base-setup.php:623
 #: dt-groups/base-setup.php:628 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
@@ -443,15 +443,54 @@ msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "পরিসর শেষ"
 
+#: archive-template.php:911
+#, fuzzy
+#| msgid "Filter Name"
+msgctxt "The value to be searched for"
+msgid "Filter By Value"
+msgstr "নাম ফিল্টার করুন"
+
+#: archive-template.php:916
+#, fuzzy
+#| msgctxt "All Contacts with Is Coaching"
+#| msgid "All %1$s with %2$s"
+msgctxt "All Contacts with filtered value in Emails"
+msgid "All %1$s with filtered value in %2$s"
+msgstr "%2$s সহ সমস্ত 1%$s"
+
+#: archive-template.php:920
+#, fuzzy
+#| msgctxt "All Contacts without Is Coaching"
+#| msgid "All %1$s without %2$s"
+msgctxt "All Contacts without filtered value in Emails"
+msgid "All %1$s without filtered value in %2$s"
+msgstr "%2$s ছাড়া সব %1$s"
+
+#: archive-template.php:924
+#, fuzzy
+#| msgctxt "All Contacts with Is Coaching"
+#| msgid "All %1$s with %2$s"
+msgctxt "All Contacts with any value in field"
+msgid "All %1$s with any value in %2$s"
+msgstr "%2$s সহ সমস্ত 1%$s"
+
 #: archive-template.php:928
+#, fuzzy
+#| msgctxt "All Contacts without Is Coaching"
+#| msgid "All %1$s without %2$s"
+msgctxt "All Contacts with no value in field"
+msgid "All %1$s with no value in %2$s"
+msgstr "%2$s ছাড়া সব %1$s"
+
+#: archive-template.php:952
 msgid "Filter Name"
 msgstr "নাম ফিল্টার করুন"
 
-#: archive-template.php:933
+#: archive-template.php:957
 msgid "Filter Records"
 msgstr "রেকর্ডসমূহ ফিল্টার করুন"
 
-#: archive-template.php:937 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:961 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -702,7 +741,7 @@ msgid "No records found matching your filter."
 msgstr "আপনার ফিল্টারের মানানসই কোনও রেকর্ড পাওয়া গেল না।"
 
 #: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1068 dt-posts/custom-post-type.php:439
+#: dt-groups/base-setup.php:1076 dt-posts/custom-post-type.php:439
 msgctxt "All records"
 msgid "All %s"
 msgstr "সব  %s"
@@ -717,7 +756,7 @@ msgstr "শেষ"
 
 #: dt-assets/functions/enqueue-scripts.php:323
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1302 dt-groups/base-setup.php:990
+#: dt-contacts/access-module.php:1307 dt-groups/base-setup.php:994
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-metrics/records/dynamic-records-map.php:96
 #: dt-users/mapbox-coverage-map.php:74
@@ -1754,66 +1793,66 @@ msgstr "গ্রহণ করুন"
 msgid "Decline"
 msgstr "প্রত্যাখ্যান করুন"
 
-#: dt-contacts/access-module.php:918 dt-contacts/access-module.php:928
+#: dt-contacts/access-module.php:921 dt-contacts/access-module.php:931
 msgid "My Follow-Up"
 msgstr "আমার ফলোআপ"
 
-#: dt-contacts/access-module.php:929 dt-contacts/access-module.php:950
-#: dt-contacts/access-module.php:973 dt-contacts/access-module.php:998
-#: dt-groups/base-setup.php:982
+#: dt-contacts/access-module.php:932 dt-contacts/access-module.php:953
+#: dt-contacts/access-module.php:976 dt-contacts/access-module.php:1001
+#: dt-groups/base-setup.php:986
 msgid "Assigned to me"
 msgstr "আমাকে অর্পণ"
 
-#: dt-contacts/access-module.php:930 dt-contacts/access-module.php:951
-#: dt-contacts/access-module.php:974 dt-contacts/access-module.php:999
+#: dt-contacts/access-module.php:933 dt-contacts/access-module.php:954
+#: dt-contacts/access-module.php:977 dt-contacts/access-module.php:1002
 msgid "Sub-assigned to me"
 msgstr "আমার কাছে সাব-এসাইনড"
 
-#: dt-contacts/access-module.php:1036
+#: dt-contacts/access-module.php:1041
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "%s অনুসরণ করুন"
 
-#: dt-contacts/access-module.php:1044
+#: dt-contacts/access-module.php:1049
 msgid "All Follow-Up"
 msgstr "সমস্ত ফলো-আপ"
 
-#: dt-contacts/access-module.php:1146 dt-contacts/access-module.php:1147
+#: dt-contacts/access-module.php:1151 dt-contacts/access-module.php:1152
 msgid "Subassigned only"
 msgstr "শুধুমাত্র অধি নিযুক্তি দেওয়া হয়েছিল"
 
-#: dt-contacts/access-module.php:1303
+#: dt-contacts/access-module.php:1308
 msgid "Ready"
 msgstr "প্রস্তুত"
 
-#: dt-contacts/access-module.php:1304
+#: dt-contacts/access-module.php:1309
 msgid "Recent"
 msgstr "সাম্প্রতিক"
 
-#: dt-contacts/access-module.php:1305
+#: dt-contacts/access-module.php:1310
 msgid "Location"
 msgstr "অবস্থান"
 
-#: dt-contacts/access-module.php:1306
+#: dt-contacts/access-module.php:1311
 msgid "Assign"
 msgstr "বরাদ্দ করুন"
 
-#: dt-contacts/access-module.php:1307 dt-users/template-new-user.php:134
+#: dt-contacts/access-module.php:1312 dt-users/template-new-user.php:134
 #: template-settings.php:216
 msgid "Language"
 msgstr "ভাষা"
 
-#: dt-contacts/access-module.php:1308 dt-contacts/base-setup.php:267
+#: dt-contacts/access-module.php:1313 dt-contacts/base-setup.php:267
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:223
 #: template-settings.php:653
 msgid "Gender"
 msgstr "লিঙ্গ"
 
-#: dt-contacts/access-module.php:1481
+#: dt-contacts/access-module.php:1486
 msgid "This record might be a duplicate of: "
 msgstr "এই রেকর্ডটি এর সদৃশ হতে পারে: "
 
-#: dt-contacts/access-module.php:1487 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/access-module.php:1492 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "সদৃশ পরীক্ষক"
@@ -2015,7 +2054,7 @@ msgstr "আর্কাইভ"
 msgid "Other"
 msgstr "অন্যান্য"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1060
+#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1068
 #: dt-posts/custom-post-type.php:418
 msgid "Default Filters"
 msgstr "ডিফল্ট ফিল্টার"
@@ -2025,23 +2064,23 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "সমস্ত$s আমি দেখতে পারি"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1074
+#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1082
 #: dt-posts/custom-post-type.php:451
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "প্রিয় %s"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1079
+#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1087
 #: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
 msgid "Favorite"
 msgstr "প্রিয়"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1085
+#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1093
 #: dt-posts/custom-post-type.php:466
 msgid "My Recently Viewed"
 msgstr "আমার সম্প্রতি দেখা হয়েছে"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1090
+#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1098
 #: dt-posts/custom-post-type.php:471
 msgid "Last 30 viewed"
 msgstr "সর্বশেষ 30 বার দেখা হয়েছে"
@@ -2328,26 +2367,26 @@ msgstr "বৈঠক না দেখানো"
 msgid "Faith"
 msgstr "বিশ্বাস"
 
-#: dt-contacts/dmm-module.php:360
+#: dt-contacts/dmm-module.php:361
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "সংযুক্ত$s"
 
-#: dt-contacts/dmm-module.php:373 dt-contacts/dmm-module.php:383
-#: dt-contacts/dmm-module.php:393 dt-contacts/dmm-module.php:394
+#: dt-contacts/dmm-module.php:374 dt-contacts/dmm-module.php:384
+#: dt-contacts/dmm-module.php:394 dt-contacts/dmm-module.php:395
 msgid "Coached by me"
 msgstr "আমি শিক্ষা দিয়েছি"
 
-#: dt-contacts/dmm-module.php:412
+#: dt-contacts/dmm-module.php:413
 #: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr "দ্রুত কর্ম সম্পাদন"
 
-#: dt-contacts/dmm-module.php:493
+#: dt-contacts/dmm-module.php:494
 msgid "Who was this contact baptized by and when?"
 msgstr "এই পরিচিতিকে কে এবং কখন বাপ্তিস্ম দিয়েছিল?"
 
-#: dt-contacts/dmm-module.php:507
+#: dt-contacts/dmm-module.php:508
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "বিস্তারকারীদের ও পরিচিতিদের অনুসন্ধান করুন"
@@ -4535,7 +4574,7 @@ msgstr "%1$s থেকে মুছে ফেলা %2$s"
 #| msgctxt "Total in January"
 #| msgid "%1$s in %2$s"
 msgctxt "User Select: User1"
-msgid "%1$1s: %2$2s"
+msgid "%1$s: %2$s"
 msgstr "%1$s ইঞ্চি %2$s"
 
 #: dt-posts/posts.php:416
@@ -4657,7 +4696,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "শেয়ার করা হয়নি %s"
 
-#: dt-posts/posts.php:2477
+#: dt-posts/posts.php:2481
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
