@@ -26,6 +26,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             add_action( 'dt_customizations_tab_content', [ $this, 'content' ], 99, 1 );
             add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
         }
+
         parent::__construct();
     }
 

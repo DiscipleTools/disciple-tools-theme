@@ -32,6 +32,29 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         parent::__construct();
     } // End __construct()
 
+    public function import_new_post_types( $post_types, $imported_config ) {
+
+        // Determine incoming import config settings keys to be used further down stream.
+        $uploaded_config_setting_keys = $this->determine_uploaded_config_setting_keys( $imported_config );
+        if ( isset( $uploaded_config_setting_keys['post_types_settings_key'] ) ){
+            $import_config_json_id = 'dt_settings';
+
+            // Fetch list of existing instance post types.
+            $existing_post_types = DT_Posts::get_post_types() ?? [];
+
+            // Identify any new incoming post types.
+            if ( isset( $imported_config[$import_config_json_id][$uploaded_config_setting_keys['post_types_settings_key']] ) ){
+                foreach ( $imported_config[$import_config_json_id][$uploaded_config_setting_keys['post_types_settings_key']]['values'] ?? [] as $post_type => $post_type_settings ){
+                    if ( !in_array( $post_type, $existing_post_types ) ){
+                        $post_types[$post_type] = $post_type_settings;
+                    }
+                }
+            }
+        }
+
+        return $post_types;
+    }
+
     public function add_submenu(){
         add_submenu_page( 'edit.php?post_type=imports', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
             'Disciple_Tools_Settings_Menu',
@@ -67,20 +90,140 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                 }
 
                 // Have user select services to be imported, based on state of uploaded config.
-                $this->display_services( $uploaded_config );
-                $this->template( 'right_column' );
-                $this->display_service_details( $uploaded_config );
+                $this->display_import_sections( $uploaded_config );
 
-            } else if ( $this->import_request_detected() && isset( $_POST['dt_import_uploaded_config'], $_POST['dt_import_selected_services'], $_POST['dt_import_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_import_nonce'] ) ), 'dt_import_nonce' ) ){
+            } else if ( $this->import_request_detected() && isset( $_POST['dt_import_uploaded_config'], $_POST['dt_import_selections'], $_POST['dt_import_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_import_nonce'] ) ), 'dt_import_nonce' ) ){
 
                 $uploaded_config = json_decode( base64_decode( sanitize_text_field( wp_unslash( $_POST['dt_import_uploaded_config'] ) ) ), true );
-                $selected_services = json_decode( sanitize_text_field( wp_unslash( $_POST['dt_import_selected_services'] ) ), true );
+                $import_selections = json_decode( sanitize_text_field( wp_unslash( $_POST['dt_import_selections'] ) ), true );
 
-                // If no services have been selected, then revert back to default upload prompt.
-                if ( !empty( $selected_services ) ){
+                // If no import selections detected, then revert back to default upload prompt.
+                if ( !empty( $uploaded_config ) && !empty( $import_selections ) ) {
 
-                    // Dispatch import request to respective listeners.
-                    do_action( 'dt_import_payload', $selected_services, $uploaded_config );
+                    // Ensure selected post types not already on the system, are installed ahead of import-payload request.
+                    $new_post_types = $this->import_new_post_types( [], $uploaded_config );
+                    $created_post_types = [];
+                    if ( !empty( $new_post_types ) ) {
+
+                        // Iterate over new post types, ensuring they do not already exist, before creating.
+                        $existing_post_types = DT_Posts::get_post_types() ?? [];
+                        $custom_post_types = get_option( 'dt_custom_post_types', [] );
+
+                        foreach ( $new_post_types as $post_type => $post_type_settings ) {
+
+                            // As well as ensuring identified post type does not already exist, ensure it's included within import selection.
+                            if ( !in_array( $post_type, $existing_post_types ) && !isset( $custom_post_types[$post_type] ) && isset( $import_selections[$post_type] ) ) {
+
+                                // If all sanity checks have passed, proceed with custom post type creation.
+                                $custom_post_types[$post_type] = [
+                                    'label_singular' => $post_type_settings['label_singular'] ?? $post_type,
+                                    'label_plural' => $post_type_settings['label_plural'] ?? $post_type,
+                                    'hidden' => $post_type_settings['hidden'] ?? false,
+                                    'is_custom' => $post_type_settings['is_custom'] ?? true
+                                ];
+
+                                $created_post_types[] = $post_type;
+                            }
+                        }
+
+                        // Update custom post types with any newly identified.
+                        update_option( 'dt_custom_post_types', $custom_post_types );
+                    }
+
+                    // Next, identify any post types with meta details to be updated.
+                    $uploaded_config_setting_keys = $this->determine_uploaded_config_setting_keys( $uploaded_config );
+
+                    //Always attempt to extract from custom settings first, before defaulting to general settings.
+                    $post_types_settings = $uploaded_config['dt_settings'][ $uploaded_config_setting_keys['custom_post_types_settings_key'] ?? $uploaded_config_setting_keys['post_types_settings_key'] ];
+                    $existing_custom_post_types = get_option( 'dt_custom_post_types', [] );
+                    foreach ( $import_selections as $post_type => $selections ) {
+
+                        // Identify any existing post types flagged for updating using custom meta details. Ensure to ignore recently created post types.
+                        if ( !in_array( $post_type, $created_post_types ) && isset( $post_types_settings['values'], $post_types_settings['values'][$post_type], $selections['import_meta'] ) && $selections['import_meta'] === true ) {
+
+                            // Create space if not already present.
+                            if ( !isset( $existing_custom_post_types[$post_type] ) ) {
+                                $existing_custom_post_types[$post_type] = [];
+                            }
+
+                            $existing_custom_post_types[$post_type]['label_singular'] = $post_types_settings['values'][$post_type]['label_singular'] ?? $post_type;
+                            $existing_custom_post_types[$post_type]['label_plural'] = $post_types_settings['values'][$post_type]['label_plural'] ?? $post_type;
+                        }
+                    }
+
+                    // Persist updated custom post type changes.
+                    update_option( 'dt_custom_post_types', $existing_custom_post_types );
+
+                    // Process import request and display results summary.
+                    $results = $this->process_imports( $uploaded_config, $import_selections );
+                    $this->box( 'top', 'Import Summary', [ 'col_span' => 4 ] );
+                    ?>
+                    <p>
+                        Summary of successfully imported record types, tiles and fields.
+                    </p>
+                    <br>
+                    <?php
+
+                    $uploaded_config_setting_keys = $this->determine_uploaded_config_setting_keys( $uploaded_config );
+                    foreach ( $results as $post_type => $result ) {
+                        if ( isset( $uploaded_config['dt_settings'][$uploaded_config_setting_keys['post_types_settings_key']]['values'][$post_type] ) ) {
+                            $post_type_settings = $uploaded_config['dt_settings'][$uploaded_config_setting_keys['post_types_settings_key']]['values'][$post_type];
+                            ?>
+                            <span style="font-weight: bold;"><?php echo esc_attr( $post_type_settings['label_plural'] ?? $post_type ); ?></span>
+                            <hr>
+                            <?php
+
+                            // Tiles result summary.
+                            if ( !empty( $result['tiles'] ) ) {
+                                ?>
+                                <table class="widefat striped" style="margin-bottom: 10px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Tiles</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    foreach ( $result['tiles'] as $tile ) {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo esc_attr( $uploaded_config['dt_settings'][$uploaded_config_setting_keys['tiles_settings_key']]['values'][$post_type][$tile]['label'] ?? $tile ); ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                                <?php
+                            }
+
+                            // Fields result summary.
+                            if ( !empty( $result['fields'] ) ) {
+                                ?>
+                                <table class="widefat striped" style="margin-bottom: 10px;">
+                                    <thead>
+                                    <tr>
+                                        <th>Fields</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    foreach ( $result['fields'] as $field ) {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo esc_attr( $uploaded_config['dt_settings'][$uploaded_config_setting_keys['fields_settings_key']]['values'][$post_type][$field]['name'] ?? $field ); ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                                <?php
+                            }
+                        }
+                    }
+
+                    $this->box( 'bottom' );
 
                 } else {
 
@@ -96,6 +239,88 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
             $this->template( 'end' );
 
         endif;
+    }
+
+    private function process_imports( $import_config, $import_selections ): array {
+        $response = [];
+
+        // Determine incoming import config settings keys to be used further down stream.
+        $uploaded_config_setting_keys = $this->determine_uploaded_config_setting_keys( $import_config );
+        if ( isset( $uploaded_config_setting_keys['tiles_settings_key'], $uploaded_config_setting_keys['fields_settings_key'], $uploaded_config_setting_keys['post_types_settings_key'] ) ){
+            $existing_tile_options = dt_get_option( 'dt_custom_tiles' );
+            $existing_field_options = dt_get_option( 'dt_field_customizations' );
+
+            // Start iterating and processing selected post types.
+            foreach ( $import_selections as $post_type => $selections ) {
+                $response[$post_type] = [
+                    'tiles' => [],
+                    'fields' => []
+                ];
+
+                // Post types should have already been created/updated, so process tiles and build list of fields to be imported.
+                $selected_fields = [];
+                foreach ( $selections['tiles'] ?? [] as $tile => $tile_config ) {
+
+                    // Ignore the no_tile special keyword.
+                    if ( ( $tile !== 'no_tile' ) && isset( $import_config['dt_settings'][$uploaded_config_setting_keys['tiles_settings_key']]['values'][$post_type][$tile] ) ) {
+
+                        // Capture tile settings accordingly based on import meta flag.
+                        if ( isset( $tile_config['import_meta'] ) ) {
+
+                            // Only update tile if meta flag true or fields have been assigned, but no tile settings currently detected.
+                            if ( ( $tile_config['import_meta'] === true ) || ( !empty( $tile_config['fields'] ) && !isset( $existing_tile_options[$post_type] ) ) ) {
+                                $tiles_settings_key = 'tiles_settings_key';
+                                if ( isset( $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type], $import_config['dt_settings'][$uploaded_config_setting_keys['custom_tiles_settings_key']]['values'][$post_type][$tile] ) ) {
+                                    $tiles_settings_key = 'custom_tiles_settings_key';
+                                }
+
+                                // Make tile options provision if needed, before committing.
+                                if ( !isset( $existing_tile_options[$post_type] ) ) {
+                                    $existing_tile_options[$post_type] = [];
+                                }
+
+                                $existing_tile_options[$post_type][$tile] = $import_config['dt_settings'][$uploaded_config_setting_keys[$tiles_settings_key]]['values'][$post_type][$tile];
+
+                                // Capture tile id, to signal a successful import.
+                                $response[$post_type]['tiles'][] = $tile;
+                            }
+                        }
+                    }
+
+                    // Capture tile fields for future processing.
+                    $selected_fields = array_merge( $selected_fields, $tile_config['fields'] ?? [] );
+                }
+
+                // Next, import captured fields, for current post type.
+                foreach ( $selected_fields as $field ) {
+                    $fields_settings_key = 'fields_settings_key';
+
+                    // Ensure a valid field import config can be referenced.
+                    if ( isset( $import_config['dt_settings'][$uploaded_config_setting_keys[$fields_settings_key]]['values'][$post_type][$field] ) ) {
+
+                        // Default to custom settings if available; otherwise just go with the generic flow.
+                        if ( isset( $import_config['dt_settings'][$uploaded_config_setting_keys['custom_fields_settings_key']]['values'][$post_type][$field] ) ) {
+                            $fields_settings_key = 'custom_fields_settings_key';
+                        }
+
+                        // Make tile options provision if needed, before committing.
+                        if ( !isset( $existing_field_options[$post_type] ) ){
+                            $existing_field_options[$post_type] = [];
+                        }
+                        $existing_field_options[$post_type][$field] = $import_config['dt_settings'][$uploaded_config_setting_keys[$fields_settings_key]]['values'][$post_type][$field];
+
+                        // Capture field id, to signal a successful import.
+                        $response[$post_type]['fields'][] = $field;
+                    }
+                }
+            }
+
+            // Update global custom settings.
+            update_option( 'dt_custom_tiles', $existing_tile_options );
+            update_option( 'dt_field_customizations', $existing_field_options );
+        }
+
+        return $response;
     }
 
     private function file_upload_detected_and_correct(): bool{
@@ -142,148 +367,204 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         $this->box( 'bottom' );
     }
 
-    private function display_services( $uploaded_config ){
+    private function determine_uploaded_config_setting_keys( $uploaded_config ): array{
+        $uploaded_config_setting_keys = [];
+        if ( isset( $uploaded_config['dt_settings'] ) ) {
+            $uploaded_config_setting_keys['type'] = $uploaded_config['dt_settings']['type'] ?? 'custom';
+            $uploaded_config_setting_keys['tiles_settings_key'] = 'dt_tiles_settings';
+            $uploaded_config_setting_keys['custom_tiles_settings_key'] = 'dt_tiles_custom_settings';
+            $uploaded_config_setting_keys['fields_settings_key'] = 'dt_fields_settings';
+            $uploaded_config_setting_keys['custom_fields_settings_key'] = 'dt_fields_custom_settings';
+            $uploaded_config_setting_keys['post_types_settings_key'] = 'dt_post_types_settings';
+            $uploaded_config_setting_keys['custom_post_types_settings_key'] = 'dt_post_types_custom_settings';
+        }
 
-        $this->box( 'top', 'Available Import Services', [ 'col_span' => 4 ] );
+        return $uploaded_config_setting_keys;
+    }
 
+    private function display_import_sections( $uploaded_config ){
         ?>
-        <p>
-            Select services below, to be imported into current D.T instance. Click on relevant service title to display additional selection details.
-        </p>
         <form id="dt_import_form" method="POST">
+            <input type="hidden" name="dt_import_nonce" id="dt_import_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'dt_import_nonce' ) ) ?>"/>
+
+            <input type="hidden" name="dt_import_uploaded_config" id="dt_import_uploaded_config"/>
+            <input type="hidden" name="dt_import_selections" id="dt_import_selections"/>
+        </form>
+        <?php
+        $this->box( 'top', 'Record Types', [ 'col_span' => 12 ] );
+
+        // Determine incoming import config settings keys to be used further down stream.
+        $uploaded_config_setting_keys = $this->determine_uploaded_config_setting_keys( $uploaded_config );
+        if ( isset( $uploaded_config_setting_keys['tiles_settings_key'], $uploaded_config_setting_keys['fields_settings_key'], $uploaded_config_setting_keys['post_types_settings_key'] ) ) {
+            ?>
 
             <!-- Capture uploaded import configuration, for further downstream processing. -->
             <div id="dt_import_uploaded_config_raw" style="display: none;">
                 <?php echo esc_attr( base64_encode( wp_json_encode( $uploaded_config, JSON_PRETTY_PRINT ) ) ) ?>
             </div>
 
-            <input type="hidden" name="dt_import_nonce" id="dt_import_nonce"
-                   value="<?php echo esc_attr( wp_create_nonce( 'dt_import_nonce' ) ) ?>"/>
+            <!-- Prepare space to house import selections. -->
+            <div id="dt_import_uploaded_config_selections" style="display: none;">
+                {}
+            </div>
 
-            <input type="hidden" name="dt_import_uploaded_config" id="dt_import_uploaded_config"/>
-            <input type="hidden" name="dt_import_selected_services" id="dt_import_selected_services"/>
+            <!-- Capture existing system post types. -->
+            <div id="dt_import_existing_post_types" style="display: none;">
+                <?php echo esc_attr( wp_json_encode( array_values( DT_Posts::get_post_types() ), JSON_PRETTY_PRINT ) ) ?>
+            </div>
 
-            <table class="widefat striped" id="dt_import_table">
-                <thead>
-                    <tr>
-                        <th style="text-align: right; padding-right: 14px;"></th>
-                        <th></th>
-                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
-                            <label for="dt_import_service_select_all">All Assets</label><br>
-                            <input type="radio" id="dt_import_service_select_all"
-                                   name="dt_import_service_select_th_option"
-                                   class="dt-import-service-select-th-option"
-                                   data-select_type="all"
-                                   checked/>
-                        </th>
-                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
-                            <label for="dt_import_service_select_some">Choose Assets</label><br>
-                            <input type="radio" id="dt_import_service_select_some"
-                                   name="dt_import_service_select_th_option"
-                                   class="dt-import-service-select-th-option"
-                                   data-select_type="some"/>
-                        </th>
-                        <th style="text-align: center; font-size: 12px; padding-right: 22px;">
-                            <label for="dt_import_service_select_none">None</label><br>
-                            <input type="radio" id="dt_import_service_select_none"
-                                   name="dt_import_service_select_th_option" class="dt-import-service-select-th-option"
-                                   data-select_type="none"/>
-                        </th>
-                    </tr>
-                </thead>
+            <!-- Capture import config setting keys. -->
+            <div id="dt_import_config_setting_keys" style="display: none;">
+                <?php echo esc_attr( wp_json_encode( $uploaded_config_setting_keys, JSON_PRETTY_PRINT ) ) ?>
+            </div>
+
+            <p>
+                Ensure to select all record type tiles & fields to be included within import process.
+            </p>
+            <table>
                 <tbody>
-                <?php
-                $import_services = apply_filters( 'dt_import_services', [] );
-                foreach ( $import_services as $id => $service ){
-
-                    // Only display enabled services; which are also present within uploaded import configuration.
-                    if ( isset( $service['id'], $service['config_json_id'], $service['enabled'], $service['label'], $uploaded_config[$service['config_json_id']], $uploaded_config[$service['config_json_id']][$id] ) && $service['enabled'] ){
-                        ?>
-                        <tr>
-                            <td style="text-align: right;"></td>
-                            <td>
-                                <a href="#" class="dt-import-service" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"><?php echo esc_attr( $service['label'] ) ?></a><br>
-                                <span style="font-size: 10px; color: #9a9797;">
-                                    <?php echo esc_attr( $service['description'] ?? '' ) ?>
-                                </span>
-                            </td>
+                    <tr>
+                    <?php
+                    $post_type_count = 0;
+                    foreach ( $uploaded_config['dt_settings'][ $uploaded_config_setting_keys['post_types_settings_key'] ]['values'] as $post_type => $post_type_settings ) {
+                        if ( isset( $post_type_settings['label_plural'] ) ) {
+                            $post_type_count++;
+                            ?>
                             <td style="text-align: center;">
-                                <input type="radio" class="dt-import-service-select-td-option"
-                                       name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="all"
-                                       checked/>
+                                <button class="button dt-import-post-type-but"
+                                        data-post_type="<?php echo esc_attr( $post_type ); ?>"><?php echo esc_attr( $post_type_settings['label_plural'] ); ?></button>
                             </td>
-                            <td style="text-align: center;">
-                                <input type="radio" class="dt-import-service-select-td-option"
-                                       name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="some"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="radio" class="dt-import-service-select-td-option"
-                                       name="dt_import_service_select_td_option_<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                                       data-select_type="none"/>
-                            </td>
-                        </tr>
-                        <?php
+                            <?php
+                        }
                     }
-                }
-                ?>
+                    ?>
+                    </tr>
                 </tbody>
             </table>
-            <br>
-            <span style="float:right;">
-                <button id="dt_import_submit_but" type="submit"
-                        class="button float-right"><?php esc_html_e( 'Import', 'disciple_tools' ) ?></button>
-            </span>
-        </form>
-        <?php
-
-        $this->box( 'bottom' );
-    }
-
-    private function display_service_details( $uploaded_config ){
-        $this->box( 'top', 'Service Details', [ 'col_span' => 3 ] );
-
-        $import_services_details = apply_filters( 'dt_import_services_details', [], $uploaded_config );
-        foreach ( $import_services_details as $id => $service ){
-            if ( isset( $service['id'], $service['enabled'], $service['html'], $service['html_js_handler_func'], $service['html_js_selection_handler_func'] ) && $service['enabled'] ){
-                ?>
-                <div class="dt-import-service-details" data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                     style="display: none;">
-                    <?php
-                    //phpcs:disable
-                    echo $service['html'];
-                    //phpcs:enable
-                    ?>
-                </div>
-                <div class="dt-import-service-details-js-handler-func"
-                     data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                     style="display: none;">
-                    <?php
-                    //phpcs:disable
-                    echo $service['html_js_handler_func'];
-                    //phpcs:enable
-                    ?>
-                </div>
-                <div class="dt-import-service-details-js-selection-handler-func"
-                     data-service_id="<?php echo esc_attr( $service['id'] ) ?>"
-                     style="display: none;">
-                    <?php
-                    //phpcs:disable
-                    echo $service['html_js_selection_handler_func'];
-                    //phpcs:enable
-                    ?>
-                </div>
-                <?php
-            }
+            <?php
+        } else {
+            echo esc_attr( __( 'Unable to detect any suitable import configuration settings.', 'disciple_tools' ) );
         }
-
         $this->box( 'bottom' );
+        ?>
+
+        <table>
+            <tbody>
+            <tr>
+                <td style="min-width: 500px; vertical-align: top;">
+                    <?php
+                    $this->display_import_post_type_meta();
+                    $this->display_import_tiles_fields();
+                    ?>
+                </td>
+                <td style="min-width: 350px; vertical-align: top;">
+                    <?php $this->display_import_selections(); ?>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <?php
     }
 
+    private function display_import_post_type_meta() {
+        ?>
+        <div id="dt_import_post_type_meta_div" style="display: none;">
+            <?php
+            $this->box( 'top', 'Record Type Details', [ 'col_span' => 12 ] );
+            ?>
+            <table class="widefat striped">
+                <tbody>
+                <tr>
+                    <td>
+                        <span style="font-weight: bold;">Key</span>
+                    </td>
+                    <td id="dt_import_details_key_td" style="text-align: left;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: bold;">Already Installed</span>
+                    </td>
+                    <td id="dt_import_details_already_installed_td" style="text-align: left;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: bold;">Label Singular</span>
+                    </td>
+                    <td id="dt_import_details_label_singular_td" style="text-align: left;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: bold;">Label Plural</span>
+                    </td>
+                    <td id="dt_import_details_label_plural_td" style="text-align: left;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-weight: bold;">Record Type</span>
+                    </td>
+                    <td id="dt_import_details_record_type_td" style="text-align: left;"></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        <span style="font-weight: bold;">Import Record Type Settings</span>
+                    </td>
+                    <td style="text-align: left;">
+                        <input  id="dt_import_details_record_type_settings_checkbox"
+                                type="checkbox"
+                                data-post_type=""/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <?php
+            $this->box( 'bottom' );
+            ?>
+        </div>
+        <?php
+    }
+
+    private function display_import_tiles_fields() {
+        ?>
+        <div id="dt_import_tiles_fields_div" style="display: none;">
+            <?php
+            $this->box( 'top', 'Tiles & Fields', [ 'col_span' => 12 ] );
+            ?>
+            <div id="dt_import_tiles_fields_content_div" style="display: none;"></div>
+            <?php
+            $this->box( 'bottom' );
+            ?>
+        </div>
+        <?php
+    }
+
+    private function display_import_selections() {
+        ?>
+        <div id="dt_import_selections_div" style="display: none;">
+            <?php
+            $this->box( 'top', 'Import Selections', [ 'col_span' => 12 ] );
+            ?>
+            <table style="min-width: 100%;">
+                <tbody>
+                <tr>
+                    <td>
+                        <button id="dt_import_submit_but" class="button" style="min-width: 100%;">Import</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="dt_import_selections_content_div"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <?php
+            $this->box( 'bottom' );
+            ?>
+        </div>
+        <?php
+    }
 }
 
 Disciple_Tools_Tab_Imports::instance();
