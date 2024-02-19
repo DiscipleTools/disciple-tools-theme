@@ -3707,25 +3707,6 @@
               })
             }
 
-            /*map.on('mouseenter', 'points', function(e) {
-              map.getCanvas().style.cursor = 'pointer';
-              var coordinates = e.features[0].geometry.coordinates.slice();
-              var description = e.features[0].properties.title + '<br>' + e.features[0].properties.label;
-
-              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-              }
-
-              new window.mapboxgl.Popup()
-              .setLngLat(coordinates)
-              .setHTML(description)
-              .addTo(map);
-            });
-
-            map.on('mouseleave', 'points', function() {
-              map.getCanvas().style.cursor = '';
-            });*/
-
             map.on('mousemove', function(e) {
               render_map_feature_details(map.queryRenderedFeatures({
                 layers: ['points']
