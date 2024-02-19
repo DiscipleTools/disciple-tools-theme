@@ -3670,7 +3670,10 @@
 
             map.addSource('pointsSource', {
               'type': 'geojson',
-              'data': geojson
+              'data': geojson,
+              'cluster': true,
+              'clusterMaxZoom': 14,
+              'clusterRadius': 50
             });
             map.addLayer({
               id: 'points',
@@ -3704,7 +3707,7 @@
               })
             }
 
-            map.on('mouseenter', 'points', function(e) {
+            /*map.on('mouseenter', 'points', function(e) {
               map.getCanvas().style.cursor = 'pointer';
               var coordinates = e.features[0].geometry.coordinates.slice();
               var description = e.features[0].properties.title + '<br>' + e.features[0].properties.label;
@@ -3721,7 +3724,7 @@
 
             map.on('mouseleave', 'points', function() {
               map.getCanvas().style.cursor = '';
-            });
+            });*/
 
             map.on('mousemove', function(e) {
               render_map_feature_details(map.queryRenderedFeatures({
