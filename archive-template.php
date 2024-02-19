@@ -299,7 +299,7 @@ dt_please_log_in();
                     <div class="section-body" style="padding-top:1em;">
                         <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a><br>
                         <?php
-                        if ( $post_type === 'contacts' ) {
+                        if ( !empty( DT_Posts::get_field_settings_by_type( $post_type, 'communication_channel' ) ) ) {
                             ?>
                             <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a><br>
                             <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a><br>
