@@ -55,6 +55,7 @@ class Disciple_Tools_Notifications_Comments
                 'notification_name'   => 'comment',
                 'notification_action' => 'comment',
                 'notification_note'   => '',
+                'notification_note_plain'   => $comment->comment_content,
                 'date_notified'       => current_time( 'mysql' ),
                 'is_new'              => 1,
                 'field_key'           => 'comments',
