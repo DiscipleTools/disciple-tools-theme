@@ -335,6 +335,17 @@ dt_please_log_in();
                             <p><strong><?php esc_html_e( 'Map List', 'disciple_tools' ); ?></strong></p>
                             <p><?php esc_html_e( 'Using the current filter, this creates a basic points map of known locations of listed individuals.', 'disciple_tools' ); ?></p>
                         </div>
+                        <?php
+                        $list_exports_help = apply_filters( 'dt_post_list_exports_filters_sidebar_help_text', [] );
+                        foreach ( $list_exports_help as $help ) {
+                            ?>
+                            <div class="cell">
+                                <p><strong><?php echo esc_attr( $help['title'] ); ?></strong></p>
+                                <p><?php echo esc_attr( $help['text'] ); ?></p>
+                            </div>
+                            <?php
+                        }
+                        ?>
                     </div>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
