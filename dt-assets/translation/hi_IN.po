@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-02-08T09:38:28+00:00\n"
+"POT-Creation-Date: 2024-02-16T15:14:30+00:00\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "अनुरोध सबमिट करें"
 
-#: 403.php:55 archive-template.php:944 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:951 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -79,8 +79,8 @@ msgstr "अनुरोध सबमिट करें"
 msgid "Cancel"
 msgstr "रद्द करें"
 
-#: 403.php:59 archive-template.php:446 archive-template.php:488
-#: archive-template.php:968 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:453 archive-template.php:495
+#: archive-template.php:975 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -138,7 +138,7 @@ msgstr "नया %s बनाएँ"
 msgid "Filters"
 msgstr "फ़िल्टर"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:596
+#: archive-template.php:36 archive-template.php:126 archive-template.php:603
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:653
 #: dt-core/global-functions.php:681 dt-core/global-functions.php:813
 #: dt-core/global-functions.php:857 dt-posts/custom-post-type.php:20
@@ -182,12 +182,12 @@ msgstr "सभी फ़ील्ड खोजें"
 msgid "Communication Channels"
 msgstr "कम्युनिकेशन के चैनल्स"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:483
+#: archive-template.php:106 archive-template.php:193 archive-template.php:490
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "लागू"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:484
+#: archive-template.php:107 archive-template.php:194 archive-template.php:491
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "वितथ पर ले जाएं"
@@ -217,89 +217,134 @@ msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:300 archive-template.php:309
+#: archive-template.php:300 archive-template.php:323
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "सूची"
 
+#: archive-template.php:304 archive-template.php:327
+msgid "BCC Email List"
+msgstr ""
+
 #: archive-template.php:305
+#, fuzzy
+#| msgid "Phone"
+msgid "Phone List"
+msgstr "फ़ोन"
+
+#: archive-template.php:310 archive-template.php:335
+#, fuzzy
+#| msgid "List"
+msgid "Map List"
+msgstr "सूची"
+
+#: archive-template.php:319
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:310
+#: archive-template.php:324
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:344
+#: archive-template.php:328
+msgid ""
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
+msgstr ""
+
+#: archive-template.php:331
+#, fuzzy
+#| msgid "Member List"
+msgid "Phone Number List"
+msgstr "सदस्य सूची"
+
+#: archive-template.php:332
+msgid ""
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
+msgstr ""
+
+#: archive-template.php:336
+msgid ""
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
+msgstr ""
+
+#: archive-template.php:351
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s सूची"
 
-#: archive-template.php:351
+#: archive-template.php:358
 msgid "Sort"
 msgstr "छांटना"
 
-#: archive-template.php:356
+#: archive-template.php:363
 msgid "Newest"
 msgstr "सबसे नया"
 
-#: archive-template.php:361
+#: archive-template.php:368
 msgid "Oldest"
 msgstr "सबसे पुराना"
 
-#: archive-template.php:366
+#: archive-template.php:373
 msgid "Most recently modified"
 msgstr "हाल ही में सुधारा गया"
 
-#: archive-template.php:371
+#: archive-template.php:378
 msgid "Least recently modified"
 msgstr "सबसे पहले सुधारा गया"
 
-#: archive-template.php:381 template-new-bulk-post.php:89
+#: archive-template.php:388 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "खेत"
 
-#: archive-template.php:388
+#: archive-template.php:395
 msgid "Bulk Edit"
 msgstr "थोक संपादित"
 
-#: archive-template.php:401 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:408 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
 msgstr "और ज्यादा"
 
-#: archive-template.php:422 dt-contacts/base-setup.php:309
+#: archive-template.php:429 dt-contacts/base-setup.php:309
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "संग्रहीत"
 
-#: archive-template.php:426
+#: archive-template.php:433
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "समाचार %s"
 
-#: archive-template.php:449
+#: archive-template.php:456
 msgid "Choose which fields to display as columns in the list"
 msgstr "सूची में कॉलम के रूप में प्रदर्शित करने के लिए कौन से फ़ील्ड चुनें"
 
-#: archive-template.php:492
+#: archive-template.php:499
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "सूची से अपडेट करने के लिए सभी %1$s का चयन करें, और उन्हें नीचे अपडेट करें"
 
-#: archive-template.php:510 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:517 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:895
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "उपयोगकर्ता को खोजें"
 
-#: archive-template.php:534 dt-metrics/groups/tree.php:87
+#: archive-template.php:541 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
 #: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2713
 #: dt-users/template-user-management.php:370 dt-users/users.php:175
@@ -307,57 +352,57 @@ msgstr "उपयोगकर्ता को खोजें"
 msgid "Status"
 msgstr "स्थिति"
 
-#: archive-template.php:584
+#: archive-template.php:591
 msgid "Share with:"
 msgstr "के साथ शेयर करें:"
 
-#: archive-template.php:604
+#: archive-template.php:611
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "%s के साथ शेयर नहीं किया गया"
 
-#: archive-template.php:616 dt-assets/functions/details-bar.php:166
+#: archive-template.php:623 dt-assets/functions/details-bar.php:166
 #: dt-posts/custom-post-type.php:209
 msgid "Follow"
 msgstr "फॉलो"
 
-#: archive-template.php:621 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:628 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "कमेंट्स और एक्टिविटी"
 
-#: archive-template.php:626 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:633 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "अपनी टिप्पणी या नोट यहाँ लिखें"
 
-#: archive-template.php:634 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:641 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "टाइप करें:"
 
-#: archive-template.php:654 dt-users/template-new-user.php:127
+#: archive-template.php:661 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "अधिक विकल्प देखें"
 
-#: archive-template.php:655 dt-users/template-new-user.php:130
+#: archive-template.php:662 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "कम विकल्प देखें"
 
-#: archive-template.php:691 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:698 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "सुधार"
 
-#: archive-template.php:692 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:699 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "नीचे सिलेक्शंस करें"
 
-#: archive-template.php:700 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:707 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -365,91 +410,91 @@ msgstr "नीचे सिलेक्शंस करें"
 msgid "Delete"
 msgstr "डिलीट"
 
-#: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:710 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "नीचे सिलेक्शंस करें"
 
-#: archive-template.php:745
+#: archive-template.php:752
 msgid "Loading..."
 msgstr "लोड हो रहा है..."
 
-#: archive-template.php:750 dt-assets/functions/enqueue-scripts.php:379
+#: archive-template.php:757 dt-assets/functions/enqueue-scripts.php:399
 msgid "Load More"
 msgstr "और लोड करें"
 
-#: archive-template.php:762
+#: archive-template.php:769
 msgid "Field Name"
 msgstr "फील्ड का नाम"
 
-#: archive-template.php:818
+#: archive-template.php:825
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "खोजने के लिए टाइप करें"
 
-#: archive-template.php:827
+#: archive-template.php:834
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s के साथ सभी %1$s"
 
-#: archive-template.php:830
+#: archive-template.php:837
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "सभी %2$s के बिना %1$s"
 
-#: archive-template.php:837
+#: archive-template.php:844
 msgid "Filter for subassigned OR Assigned To"
 msgstr "किसी के साथ या किसी को नियुक्त करने के लिए फ़िल्टर"
 
-#: archive-template.php:846 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:853 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "निर्माण की तिथि"
 
-#: archive-template.php:853 archive-template.php:860
+#: archive-template.php:860 archive-template.php:867
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
 msgid "None Set"
 msgstr "कोई सेट नहीं"
 
-#: archive-template.php:874 archive-template.php:875
+#: archive-template.php:881 archive-template.php:882
 #: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:613
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "नही"
 
-#: archive-template.php:881 archive-template.php:882
+#: archive-template.php:888 archive-template.php:889
 #: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:614
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "हां"
 
-#: archive-template.php:886
+#: archive-template.php:893
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "प्रारम्भ की सीमा"
 
-#: archive-template.php:889 archive-template.php:900
+#: archive-template.php:896 archive-template.php:907
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "साफ़"
 
-#: archive-template.php:896
+#: archive-template.php:903
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "समाप्ति की सीमा"
 
-#: archive-template.php:911
+#: archive-template.php:918
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "फ़िल्टर का नाम"
 
-#: archive-template.php:916
+#: archive-template.php:923
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -457,7 +502,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s के साथ सभी %1$s"
 
-#: archive-template.php:920
+#: archive-template.php:927
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -465,7 +510,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "सभी %2$s के बिना %1$s"
 
-#: archive-template.php:924
+#: archive-template.php:931
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -473,7 +518,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s के साथ सभी %1$s"
 
-#: archive-template.php:928
+#: archive-template.php:935
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -481,15 +526,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "सभी %2$s के बिना %1$s"
 
-#: archive-template.php:952
+#: archive-template.php:959
 msgid "Filter Name"
 msgstr "फ़िल्टर का नाम"
 
-#: archive-template.php:957
+#: archive-template.php:964
 msgid "Filter Records"
 msgstr "रिकॉर्ड फ़िल्टर करें"
 
-#: archive-template.php:961 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:968 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -781,16 +826,82 @@ msgid "Exclude Item"
 msgstr "आइटम को बाहर करें"
 
 #: dt-assets/functions/enqueue-scripts.php:332
-msgctxt "The exported csv data to contain all fields"
-msgid "The exported csv data to contain all {0} %s fields."
+msgctxt "The exported csv data to contain all 64 Contact fields."
+msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:359 dt-contacts/base-setup.php:51
+#: dt-assets/functions/enqueue-scripts.php:333
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgid ""
+"The exported csv data to contain the %2$s visible %1$s field(s) shown below."
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:336
+#: dt-assets/functions/enqueue-scripts.php:344
+#, fuzzy
+#| msgctxt "Contacts List"
+#| msgid "%s List"
+msgid "Full List"
+msgstr "%s सूची"
+
+#: dt-assets/functions/enqueue-scripts.php:337
+#, fuzzy
+#| msgid "Address"
+msgid "No Addresses"
+msgstr "पता"
+
+#: dt-assets/functions/enqueue-scripts.php:338
+msgid "With Additional Addresses"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:339
+msgid "Open Email for Group"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:340
+#, fuzzy
+#| msgid "Open Modal"
+msgid "Open All"
+msgstr "Modal खोलें"
+
+#: dt-assets/functions/enqueue-scripts.php:341
+msgid "Show Group Addresses"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:345
+msgid "Has No Phone Number"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:346
+msgid "Has Additional Phone Numbers"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:350
+#, fuzzy
+#| msgid "Used Locations"
+msgid "Mapped Locations"
+msgstr "उपयोग किए गए स्थान"
+
+#: dt-assets/functions/enqueue-scripts.php:351
+#, fuzzy
+#| msgctxt "Reason Paused label"
+#| msgid "Contact on vacation"
+msgid "Contacts Without Locations"
+msgstr "छुट्टी पर संपर्क करें"
+
+#: dt-assets/functions/enqueue-scripts.php:352
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records on zoomed map"
+msgstr "रिकॉर्ड्स ऐड करें"
+
+#: dt-assets/functions/enqueue-scripts.php:379 dt-contacts/base-setup.php:51
 #: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "संपर्क करे"
 
-#: dt-assets/functions/enqueue-scripts.php:360
+#: dt-assets/functions/enqueue-scripts.php:380
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
