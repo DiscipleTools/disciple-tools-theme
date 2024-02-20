@@ -65,12 +65,22 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     ), OBJECT );
                     foreach ( $contacts_need_update as $contact ) {
                         $user_name    = ( '@' . dt_get_assigned_name( $contact->ID, true ) . ' ' ) ?? '';
-                        $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] ?? $setting['comment'] );
-                        DT_Posts::add_post_comment( 'contacts', $contact->ID, $comment_html, 'comment', [
-                            'user_id'        => 0,
-                            'comment_author' => __( 'Update Needed', 'disciple_tools' )
-                        ], false, true );
-                        DT_Posts::update_post( 'contacts', $contact->ID, [ 'requires_update' => true ], false );
+                        $comment_html = null;
+
+                        if ( isset( $setting, $setting['comment_translations'], $setting['comment_translations'][$user_locale] ) ) {
+                            $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] );
+
+                        } elseif ( isset( $setting, $setting['comment'] ) ) {
+                            $comment_html = esc_html( $user_name . $setting['comment'] );
+                        }
+
+                        if ( !empty( $comment_html ) ) {
+                            DT_Posts::add_post_comment( 'contacts', $contact->ID, $comment_html, 'comment', [
+                                'user_id'        => 0,
+                                'comment_author' => __( 'Update Needed', 'disciple_tools' )
+                            ], false, true );
+                            DT_Posts::update_post( 'contacts', $contact->ID, [ 'requires_update' => true ], false );
+                        }
                     }
                 }
             }
@@ -104,12 +114,22 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                 ), OBJECT );
                 foreach ( $groups_need_update as $group ) {
                     $user_name    = ( '@' . dt_get_assigned_name( $group->ID, true ) . ' ' ) ?? '';
-                    $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] ?? $setting['comment'] );
-                    DT_Posts::add_post_comment( 'groups', $group->ID, $comment_html, 'updated_needed', [
-                        'user_id' => 0,
-                        'comment_author' => __( 'Update Needed', 'disciple_tools' )
-                    ], false, true );
-                    DT_Posts::update_post( 'groups', $group->ID, [ 'requires_update' => true ], false );
+                    $comment_html = null;
+
+                    if ( isset( $setting, $setting['comment_translations'], $setting['comment_translations'][$user_locale] ) ) {
+                        $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] );
+
+                    } elseif ( isset( $setting, $setting['comment'] ) ) {
+                        $comment_html = esc_html( $user_name . $setting['comment'] );
+                    }
+
+                    if ( !empty( $comment_html ) ) {
+                        DT_Posts::add_post_comment( 'groups', $group->ID, $comment_html, 'updated_needed', [
+                            'user_id' => 0,
+                            'comment_author' => __( 'Update Needed', 'disciple_tools' )
+                        ], false, true );
+                        DT_Posts::update_post( 'groups', $group->ID, [ 'requires_update' => true ], false );
+                    }
                 }
             }
         }
