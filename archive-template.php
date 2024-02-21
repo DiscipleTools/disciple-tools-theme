@@ -19,7 +19,7 @@ dt_please_log_in();
         <nav role="navigation"
              data-sticky data-options="marginTop:0;" data-top-anchor="1"
              class="second-bar list-actions-bar">
-            <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
+            <div class="container-width buttons-row" ><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
                     <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( 'Create New %s', 'Create New record', 'disciple_tools' ), $post_settings['label_singular'] ?? $post_type ) ) ?></span>
@@ -62,6 +62,11 @@ dt_please_log_in();
                     <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
                     <span><?php esc_html_e( 'Search', 'disciple_tools' ) ?></span>
                 </a>
+                <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
+                    <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
+                        <i class="fi-map"></i>
+                    </button>
+                <?php endif; ?>
             </div>
             <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
@@ -110,15 +115,22 @@ dt_please_log_in();
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
-            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
-        </a>
-        <a class="button filter-posts-mobile" data-open="filter-modal">
-            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
-        </a>
-        <a class="button" id="open-search">
-            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
-        </a>
+        <div class="buttons-row">
+            <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
+            </a>
+            <a class="button filter-posts-mobile" data-open="filter-modal">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
+            </a>
+            <a class="button" id="open-search">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
+            </a>
+            <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
+                <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
+                    <i class="fi-map"></i>
+                </button>
+            <?php endif; ?>
+        </div>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
@@ -150,6 +162,7 @@ dt_please_log_in();
                 <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( 'Search', 'disciple_tools' ) ?></button>
             </div>
         </div>
+
         <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
@@ -299,7 +312,7 @@ dt_please_log_in();
                     <div class="section-body" style="padding-top:1em;">
                         <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a><br>
                         <?php
-                        if ( $post_type === 'contacts' ) {
+                        if ( !empty( DT_Posts::get_field_settings_by_type( $post_type, 'communication_channel' ) ) ) {
                             ?>
                             <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a><br>
                             <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a><br>
@@ -307,7 +320,7 @@ dt_please_log_in();
                         }
                         if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
                             ?>
-                            <a id="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a><br>
+                            <a class="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a><br>
                             <?php
                         }
                         ?>
@@ -335,6 +348,17 @@ dt_please_log_in();
                             <p><strong><?php esc_html_e( 'Map List', 'disciple_tools' ); ?></strong></p>
                             <p><?php esc_html_e( 'Using the current filter, this creates a basic points map of known locations of listed individuals.', 'disciple_tools' ); ?></p>
                         </div>
+                        <?php
+                        $list_exports_help = apply_filters( 'dt_post_list_exports_filters_sidebar_help_text', [] );
+                        foreach ( $list_exports_help as $help ) {
+                            ?>
+                            <div class="cell">
+                                <p><strong><?php echo esc_attr( $help['title'] ); ?></strong></p>
+                                <p><?php echo esc_attr( $help['text'] ); ?></p>
+                            </div>
+                            <?php
+                        }
+                        ?>
                     </div>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>

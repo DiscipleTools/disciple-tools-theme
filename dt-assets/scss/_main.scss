@@ -82,6 +82,15 @@ object {
     height: 15px;
 }
 
+.no-margin {
+    margin: 0;
+}
+
+.button.icon-button {
+    display: flex;
+    align-items: center;
+}
+
 /*********************
 LINK STYLES
 *********************/
@@ -354,14 +363,18 @@ nav.second-bar {
     }
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
+    .buttons-row {
+        display: flex;
+        justify-content: center;
+        column-gap: 0.3rem
+    }
+
     .button {
         img {
             height: 17px;
             padding-right: 5px;
         }
         padding: 0.4em 0.75em;
-        margin-top: .2em;
-        margin-bottom: .2em;
 
         @media screen and (max-width : 639px) {
             &.follow {
@@ -370,6 +383,9 @@ nav.second-bar {
                     font-size: 22px;
                     line-height: 16px;
                 }
+            }
+            img {
+                padding-right: 0;
             }
         }
         &.favorite {
@@ -403,7 +419,7 @@ nav.second-bar {
     button,
     input {
         vertical-align: middle;
-        margin: 0 5px;
+        margin: 0;
 
         span {
             vertical-align: middle;

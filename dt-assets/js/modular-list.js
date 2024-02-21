@@ -3574,7 +3574,7 @@
     });
   });
 
-  $("#export_map_list").on("click", function (e) {
+  $(".export_map_list").on("click", function (e) {
     if ( window.list_settings['translations']['exports']['map']['mapbox_key'] ) {
       const title = $(e.currentTarget).text();
       export_list_display('map', title, function () {
@@ -3669,84 +3669,129 @@
               'features': features
             }
 
-            map.addSource('pointsSource', {
+            map.addSource('dt-records-source', {
               'type': 'geojson',
-              'data': geojson
+              'data': geojson,
+              'cluster': true,
+              'clusterMaxZoom': 14,
+              'clusterRadius': 50
             });
+
+            const layer_color = '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
             map.addLayer({
-              id: 'points',
+              id: 'dt-records-clusters',
               type: 'circle',
-              source: 'pointsSource',
+              source: 'dt-records-source',
+              filter: ['has', 'point_count'],
               paint: {
-                'circle-radius': {
-                  'base': 6,
-                  'stops': [
-                    [1, 6],
-                    [3, 6],
-                    [4, 6],
-                    [5, 8],
-                    [6, 10],
-                    [7, 12],
-                    [8, 14],
-                  ]
-                },
-                'circle-color': '#2CACE2'
+                'circle-color': [
+                  'step',
+                  ['get', 'point_count'],
+                  layer_color,
+                  100,
+                  layer_color,
+                  750,
+                  layer_color
+                ],
+                'circle-radius': [
+                  'step',
+                  ['get', 'point_count'],
+                  20,
+                  100,
+                  30,
+                  750,
+                  40
+                ],
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
               }
             });
 
-            if ( window.records_list['total'] < 5 ) {
-              $.each(posts, function(i,v){
-                if ( typeof v.location_grid_meta !== 'undefined') {
-                  new window.mapboxgl.Popup()
-                  .setLngLat([v.location_grid_meta[0].lng, v.location_grid_meta[0].lat])
-                  .setHTML(v.post_title + '<br>' + v.location_grid_meta[0].label)
-                  .addTo(map);
-                }
-              })
-            }
-
-            map.on('mouseenter', 'points', function(e) {
-              map.getCanvas().style.cursor = 'pointer';
-              var coordinates = e.features[0].geometry.coordinates.slice();
-              var description = e.features[0].properties.title + '<br>' + e.features[0].properties.label;
-
-              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            map.addLayer({
+              id: 'dt-records-clusters-count',
+              type: 'symbol',
+              source: 'dt-records-source',
+              filter: ['has', 'point_count'],
+              layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
               }
-
-              new window.mapboxgl.Popup()
-              .setLngLat(coordinates)
-              .setHTML(description)
-              .addTo(map);
             });
 
-            map.on('mouseleave', 'points', function() {
-              map.getCanvas().style.cursor = '';
+            map.addLayer({
+              id: 'dt-records-unclustered-points',
+              type: 'circle',
+              source: 'dt-records-source',
+              filter: ['!', ['has', 'point_count']],
+              paint: {
+                'circle-color': layer_color,
+                'circle-radius': 5,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
+              }
             });
 
-            map.on('mousemove', function(e) {
-              render_map_feature_details(map.queryRenderedFeatures({
-                layers: ['points']
+            map.on('click', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            });
+            map.on('dragend', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            });
+            map.on('zoomend', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
               }));
             });
 
-            var bounds = new window.mapboxgl.LngLatBounds();
-            geojson.features.forEach(function(feature) {
-              if ( feature.geometry.coordinates && !feature.geometry.coordinates.includes(undefined) ) {
-                bounds.extend(feature.geometry.coordinates);
-              }
+            map.on('mouseenter', 'dt-records-clusters', () => {
+              map.getCanvas().style.cursor = 'pointer';
             });
-            map.fitBounds(bounds);
 
-            // Display initial feature details.
-            const details_panel = $('#export_map_sidebar_menu_details_panel');
-            const map_height = $(map.getContainer()).height();
-            $(details_panel).css('height', map_height + 'px');
-            $(details_panel).css('min-height', map_height + 'px');
-            $(details_panel).css('max-height', map_height + 'px');
-            render_map_feature_details(map.queryRenderedFeatures({
-              layers: ['points']
-            }));
+            map.on('mouseenter', 'dt-records-clusters-count', () => {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseenter', 'dt-records-unclustered-points', () => {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'dt-records-clusters', () => {
+              map.getCanvas().style.cursor = '';
+            });
+
+            map.on('mouseleave', 'dt-records-clusters-count', () => {
+              map.getCanvas().style.cursor = '';
+            });
+
+            map.on('mouseleave', 'dt-records-unclustered-points', () => {
+              map.getCanvas().style.cursor = '';
+            });
+
+            // To avoid unwanted exceptions, ensure valid features are available, prior to rendering.
+            if (geojson.features && geojson.features.length > 0) {
+              var bounds = new window.mapboxgl.LngLatBounds();
+              geojson.features.forEach(function(feature) {
+                if ( feature.geometry.coordinates && !feature.geometry.coordinates.includes(undefined) ) {
+                  bounds.extend(feature.geometry.coordinates);
+                }
+              });
+              map.fitBounds(bounds);
+
+              // Display initial feature details.
+              const details_panel = $('#export_map_sidebar_menu_details_panel');
+              const map_height = $(map.getContainer()).height();
+              $(details_panel).css('height', map_height + 'px');
+              $(details_panel).css('min-height', map_height + 'px');
+              $(details_panel).css('max-height', map_height + 'px');
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            }
 
             // Hide spinners.
             $(spinner).removeClass('active');
@@ -3756,18 +3801,56 @@
     }
   });
 
-  function render_map_feature_details(features) {
-    const details_table = $('#export_map_sidebar_menu_details_panel_table');
+  function render_map_feature_details(map, features) {
     if (features) {
-      let html = `<tbody>`;
+
+      // First, reset details html.
+      const details_table = $('#export_map_sidebar_menu_details_panel_table');
+      $(details_table).html(`<tbody></tbody>`);
+
+      // Next, proceeding in display points; handling each accordingly based on parent layer.
       features.forEach(function (feature) {
-        if (feature?.properties?.id && feature?.properties?.post_type && feature?.properties?.title && feature?.properties?.label) {
-          html += `<tr><td><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.post_type)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.id)}">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.title)}</a> <span style="color: #808080;">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.label)}</span></td></tr>`;
+        if (feature?.layer?.id === 'dt-records-unclustered-points') {
+          let feature_html = render_map_feature_details_point_html(feature);
+          if (feature_html) {
+            $(details_table).find(`tbody`).append(feature_html);
+          }
+        } else if (feature?.layer?.id === 'dt-records-clusters') {
+          render_map_feature_details_for_clusters(map, feature);
         }
       });
-      html += `</tbody>`;
-      $(details_table).html(html);
     }
+  }
+
+  function render_map_feature_details_for_clusters(map, cluster) {
+    if (cluster?.source) {
+      const cluster_source = map.getSource(cluster.source);
+      const cluster_id = cluster?.properties.cluster_id;
+      const point_count = cluster?.properties.point_count;
+
+      if (cluster_source && cluster_id && point_count) {
+
+        // Get all points under given cluster.
+        cluster_source.getClusterLeaves(cluster_id, point_count, 0, function (err, features) {
+
+          // Ensure feature is a valid sought after record.
+          features.forEach(function (feature) {
+            let feature_html = render_map_feature_details_point_html(feature);
+            if (feature_html) {
+              $('#export_map_sidebar_menu_details_panel_table').find(`tbody`).append(feature_html);
+            }
+          });
+        });
+      }
+    }
+  }
+
+  function render_map_feature_details_point_html(feature) {
+    if (feature?.properties?.id && feature?.properties?.post_type && feature?.properties?.title && feature?.properties?.label) {
+      return `<tr><td><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.post_type)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.id)}">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.title)}</a> <span style="color: #808080;">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.label)}</span></td></tr>`;
+    }
+
+    return null;
   }
 
   /**
