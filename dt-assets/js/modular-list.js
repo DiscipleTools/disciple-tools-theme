@@ -3731,7 +3731,17 @@
               }
             });
 
-            map.on('mousemove', (e) => {
+            map.on('click', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            });
+            map.on('dragend', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            });
+            map.on('zoomend', () => {
               render_map_feature_details(map, map.queryRenderedFeatures({
                 layers: ['dt-records-clusters', 'dt-records-unclustered-points']
               }));
