@@ -1383,8 +1383,7 @@
   });
 
   function handle_filter_by_text_comms(options) {
-    const {id, field,} = options || {id: null, field: null};
-
+    const {id, field} = options || {id: null, field: null};
     if (id && field) {
 
       // Adjust filter text field state accordingly, based on option selection.
@@ -1405,22 +1404,24 @@
           }
         });
 
-        // Removed stale labels.
-        new_filter_labels = new_filter_labels.filter((existing_label) => {
-          let filtered = false;
-          removed_old_filter_labels.forEach((stale_label) => {
-            if ( (existing_label['id'] !== stale_label['id']) && (existing_label['name'] !== stale_label['name']) && (existing_label['field'] !== stale_label['field']) ) {
-              filtered = true;
-            }
+        // Remove stale labels, if detected.
+        if (removed_old_filter_labels.length > 0) {
+          new_filter_labels = new_filter_labels.filter((existing_label) => {
+            let filtered = false;
+            removed_old_filter_labels.forEach((stale_label) => {
+              if ( (existing_label['id'] !== stale_label['id']) && (existing_label['name'] !== stale_label['name']) && (existing_label['field'] !== stale_label['field']) ) {
+                filtered = true;
+              }
+            });
+
+            return filtered;
           });
 
-          return filtered;
-        });
-
-        // Remove associated ui labels.
-        removed_old_filter_labels.forEach((label) => {
-          $(selected_filters).find(`.current-filter[data-id="${label['id']}"].${label['field']}`).remove();
-        });
+          // Remove associated ui labels.
+          removed_old_filter_labels.forEach((label) => {
+            $(selected_filters).find(`.current-filter[data-id="${label['id']}"].${label['field']}`).remove();
+          });
+        }
 
         // Create new generic filter label.
         let {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
