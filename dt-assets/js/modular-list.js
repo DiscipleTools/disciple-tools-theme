@@ -3573,7 +3573,7 @@
     });
   });
 
-  $("#export_map_list").on("click", function (e) {
+  $(".export_map_list").on("click", function (e) {
     if ( window.list_settings['translations']['exports']['map']['mapbox_key'] ) {
       const title = $(e.currentTarget).text();
       export_list_display('map', title, function () {
