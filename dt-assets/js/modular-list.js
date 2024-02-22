@@ -3590,8 +3590,9 @@
           </div>
           <div class="cell medium-3" id="export_map_sidebar_menu">
             <!-- details panel -->
+            <h3 style="margin-left: 10px;">${esc(window.list_settings.translations.exports.map['records_on_zoomed_map'])}</h3>
+            <button id="export_map_sidebar_menu_open_but" class="button" style="min-width: 100%; margin-left: 10px;">${esc(window.list_settings.translations.exports.map['open_zoomed_map'])}</button>
             <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px; max-height: 500px; overflow-y: scroll;">
-              <h3>${esc(window.list_settings.translations.exports.map['Records on zoomed map'])}</h3>
               <table id="export_map_sidebar_menu_details_panel_table"></table>
             </div>
           </div>
@@ -3627,6 +3628,74 @@
             center: [-30, 20],
             minZoom: 1,
             zoom: 2
+          });
+
+          // Handle open zoomed map records button clicks.
+          $("#export_map_sidebar_menu_open_but").on("click", function (e) {
+            e.preventDefault();
+
+            // Obtain handle to current map bounds.
+            const bounds = map.getBounds();
+            const bounds_ne = bounds.getNorthEast();
+            const bounds_sw = bounds.getSouthWest();
+
+            // Build query based on current filter and identified map bounds.
+            let query = current_filter.query;
+            query["offset"] = 0;
+            query['limit'] = 500;
+            query['fields_to_return'] = [];
+            query['map_bounds'] = {
+              'ne': {
+                'lat': bounds_ne['lat'],
+                'lng': bounds_ne['lng']
+              },
+              'sw': {
+                'lat': bounds_sw['lat'],
+                'lng': bounds_sw['lng']
+              }
+            };
+
+            window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+            .promise()
+            .then(response => {
+              if ( response?.posts?.length > 0 ) {
+                items = response.posts || [];
+                window.records_list.posts = items // adds global access to current list for plugins
+                window.records_list.total = response.total
+
+                // save
+                if (Object.prototype.hasOwnProperty.call(response, 'posts') && response.posts.length > 0) {
+                  let records_list_ids_and_type = [];
+
+                  $.each(items, function(id, post_object ) {
+                    records_list_ids_and_type.push({ ID: post_object.ID });
+                  });
+
+                  window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);
+                }
+
+                $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
+                $('#load-more').toggle(items.length !== parseInt( response.total ));
+                let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total);
+                $('.filter-result-text').html(result_text);
+                build_table(items);
+                setup_current_filter_labels();
+
+                // Reset vertical scrollbar to start position.
+                window.setTimeout(function() {
+                  $(window).scrollTop(0);
+                }, 0);
+
+                // Close modal window to display updated records list.
+                $('#modal-full').foundation('close');
+
+              } else {
+                alert(`${esc(window.list_settings.translations.exports.map['no_records_on_zoomed_map_alert'])}`);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
           });
 
           // disable map rotation using right click + drag
@@ -3740,9 +3809,9 @@
             // Display initial feature details.
             const details_panel = $('#export_map_sidebar_menu_details_panel');
             const map_height = $(map.getContainer()).height();
-            $(details_panel).css('height', map_height + 'px');
-            $(details_panel).css('min-height', map_height + 'px');
-            $(details_panel).css('max-height', map_height + 'px');
+            $(details_panel).css('height', (map_height - 100) + 'px');
+            $(details_panel).css('min-height', (map_height - 100) + 'px');
+            $(details_panel).css('max-height', (map_height - 100) + 'px');
             render_map_feature_details(map.queryRenderedFeatures({
               layers: ['points']
             }));

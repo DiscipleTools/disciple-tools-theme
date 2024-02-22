@@ -1111,6 +1111,12 @@ class Disciple_Tools_Posts
             unset( $query['combine'] ); //remove deprecated combine
         }
 
+        $map_bounds = [];
+        if ( isset( $query['map_bounds'] ) ) {
+            $map_bounds = $query['map_bounds'];
+            unset( $query ['map_bounds'] );
+        }
+
         if ( isset( $query['fields'] ) ){
             $query = $query['fields'];
         }
@@ -1301,12 +1307,21 @@ class Disciple_Tools_Posts
             return $fields_sql;
         }
 
+        // If detected, ensure to also query by map bound lat/lng coordinates.
+        $map_bounds_join_sql = '';
+        $map_bounds_where_sql = '';
+        $has_map_bounds = isset( $map_bounds['ne'], $map_bounds['ne']['lat'], $map_bounds['ne']['lng'], $map_bounds['sw'], $map_bounds['sw']['lat'], $map_bounds['sw']['lng'] );
+        if ( $has_map_bounds ) {
+            $map_bounds_join_sql = 'LEFT JOIN wp_dt_location_grid_meta as location_grid_meta ON ( location_grid_meta.post_id = p.ID )';
+            $map_bounds_where_sql = '( (location_grid_meta.lng >= '. esc_sql( $map_bounds['sw']['lng'] ) .' AND location_grid_meta.lng <= '. esc_sql( $map_bounds['ne']['lng'] ) .') AND (location_grid_meta.lat >= '. esc_sql( $map_bounds['sw']['lat'] ) .' AND location_grid_meta.lat <= '. esc_sql( $map_bounds['ne']['lat'] ) .') )';
+        }
+
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $has_joins = strlen( $fields_sql["joins_sql"] ) > 0 || strlen( $joins ) > 0;
         $sql = "
             SELECT p.ID, p.post_title, p.post_type, p.post_date
-            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
+            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " " . ( $has_map_bounds ? $map_bounds_join_sql : "" ) . " WHERE " . ( $has_map_bounds ? $map_bounds_where_sql . " AND " : "" ) . " " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
             " . ( $has_joins ? "GROUP BY p.ID " . $group_by_sql : "" ) . "
             ORDER BY " . $sort_sql . "
@@ -1316,7 +1331,7 @@ class Disciple_Tools_Posts
 
         $total_rows = $wpdb->get_var("
             SELECT count(distinct p.ID)
-            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " WHERE " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
+            FROM $wpdb->posts p " . $fields_sql["joins_sql"] . " " . $joins . " " . ( $has_map_bounds ? $map_bounds_join_sql : "" ) . " WHERE " . ( $has_map_bounds ? $map_bounds_where_sql . " AND " : "" ) . " " . $fields_sql["where_sql"] . " " . ( empty( $fields_sql["where_sql"] ) ? "" : " AND " ) . "
             (p.post_status = 'publish') AND p.post_type = '" . esc_sql ( $post_type ) . "' " .  $post_query . "
         " );
         // phpcs:enable
