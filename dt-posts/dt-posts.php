@@ -3034,6 +3034,80 @@ class DT_Posts extends Disciple_Tools_Posts {
         return false;
     }
 
+    /**
+     * Post Messaging
+     *
+     * @param string $post_type
+     * @param int $post_id
+     * @param array $args
+     *
+     * @return array|WP_Error
+     */
+
+    public static function post_messaging( string $post_type, int $post_id, array $args = [] ): array {
+        $post = self::get_post( $post_type, $post_id, true, false );
+        if ( empty( $post ) || is_wp_error( $post ) ) {
+            return new WP_Error( __METHOD__, 'Invalid post record.' );
+        }
+
+        $is_sent = false;
+        $send_method = $args['send_method'] ?? 'email';
+        $message = $args['message'] ?? '';
+
+        // Replace placeholder.
+        $message = str_replace( '{{name}}', $post['title'], $message );
+
+        // Dispatch accordingly, based on specified send method.
+        if ( $send_method === 'email' && isset( $post['contact_email'] ) ) {
+
+            // Attempt to source specified from_name user details; defaulting to current user if unsuccessful.
+            $from_user = null;
+            foreach ( get_users() as $user ) {
+                if ( isset( $user->data->user_nicename ) && $user->data->user_nicename === ( $args['from_name'] ?? $post['title'] ) ) {
+                    $from_user = $user;
+                }
+            }
+
+            // Extract post's to email addresses.
+            $emails = [];
+            foreach ( $post['contact_email'] as $post_email ) {
+                $emails[] = $post_email['value'];
+            }
+
+            // Build email header and dispatch message.
+            if ( !empty( $emails ) ) {
+                $headers = [];
+
+                if ( !empty( $from_user ) ) {
+                    $from_name = $from_user->data->user_nicename . ' <' . $from_user->data->user_email . '>';
+                    $headers[] = 'From: ' . $from_name;
+                    $headers[] = 'Reply-To: ' . $from_name;
+                }
+
+                // Send email or schedule for later dispatch.
+                $subject = $args['subject'] ?? $post['title'];
+                $is_sent = dt_schedule_mail( $emails, $subject, $message, $headers );
+
+                // Capture activity record.
+                $activity = [
+                    'action'            => 'sent_post_msg',
+                    'object_type'       => $post_type,
+                    'object_subtype'    => 'email',
+                    'object_id'         => $post_id,
+                    'object_name'       => $post['title'],
+                    'object_note'       => implode( ', ', $emails )
+                ];
+                dt_activity_insert( $activity );
+            }
+        }
+
+        // TODO: Callout to registered send method action-hooks. E.g: SMS!
+
+        return [
+            'post_id' => $post_id,
+            'sent' => $is_sent
+        ];
+    }
 
     /**
      * Get available field types

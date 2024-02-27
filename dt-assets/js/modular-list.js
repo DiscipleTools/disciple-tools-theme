@@ -2387,6 +2387,14 @@
         }
         break;
       }
+      case 'message': {
+        if (update?.subject && update?.from_name && update?.send_method && update?.message) {
+          promises.push(window.makeRequestOnPosts("POST", `${list_settings.post_type}/${item}/post_messaging`, update).catch(err => {
+            console.error(err);
+          }));
+        }
+        break;
+      }
     }
     Promise.all(promises).then( function() {
         done();
@@ -2440,6 +2448,84 @@
         }
       },
     });
+  }
+
+  /**
+   * Bulk Send Message
+   */
+
+  $('#bulk_send_msg_submit').on('click', function (e) {
+    handle_bulk_send_messages();
+  });
+
+  function handle_bulk_send_messages() {
+    const spinner = $('#bulk_send_msg_submit-spinner');
+
+    let subject = $('#bulk_send_msg_subject').val().trim();
+    let from_name = $('#bulk_send_msg_from_name').val().trim();
+    let send_method = $('.bulk-send-msg-method:checked').val().trim();
+    let message = $('#bulk_send_msg').val().trim();
+
+    let queue =  [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        queue.push( parseInt( $(this).val() ) );
+      }
+    });
+
+    // Validate entries.
+    if (!subject) {
+      $("#bulk_send_msg_subject_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_subject_support_text").hide();
+    }
+
+    if (!from_name) {
+      $("#bulk_send_msg_from_name_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_from_name_support_text").hide();
+    }
+
+    if (!send_method) {
+      $("#bulk_send_msg_method_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_method_support_text").hide();
+    }
+
+    if (!message) {
+      $("#bulk_send_msg_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_support_text").hide();
+    }
+
+    if (!queue || queue.length < 1) {
+      $("#bulk_send_msg_submit_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_submit_support_text").hide();
+    }
+
+    // Proceed with staged-based message send requests.
+    $(spinner).addClass('active');
+    process(queue, 10, do_each, function () {
+      $(spinner).removeClass('active');
+      window.location.reload();
+
+    }, {
+      'subject': subject,
+      'from_name': from_name,
+      'send_method': send_method,
+      'message': message
+    }, {}, {}, 'message');
   }
 
   /**
