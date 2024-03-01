@@ -1546,6 +1546,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 'vi_VN' => [ 'label' => 'Vietlabelse (Vietnam)', 'native_name' => 'TiếNg ViệT (ViệT Nam)', 'flag' => '🇻🇳', 'rtl' => false ],
                 'vun' => [ 'label' => 'Vunjo', 'native_name' => 'Wunjo', 'flag' => '🇹🇿', 'rtl' => false ],
                 'vun_TZ' => [ 'label' => 'Vunjo (Tanzania)', 'native_name' => 'Wunjo (Tanzania)', 'flag' => '🇹🇿', 'rtl' => false ],
+                'wo' => [ 'label' => 'Wolof', 'native_name' => 'Wolof', 'flag' => '🇸🇳', 'rtl' => false ],
                 'xog' => [ 'label' => 'Soga', 'native_name' => 'Lusoga', 'flag' => '🇺🇬', 'rtl' => false ],
                 'xog_UG' => [ 'label' => 'Soga (Uganda)', 'native_name' => 'Lusoga (Uganda)', 'flag' => '🇺🇬', 'rtl' => false ],
                 'yo' => [ 'label' => 'Yoruba', 'native_name' => 'Èdè Yorùbá', 'flag' => '🇳🇬', 'rtl' => false ],
