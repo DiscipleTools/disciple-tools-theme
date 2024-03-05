@@ -186,6 +186,37 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                             </table>
                                         </div>
                                     </div>
+
+                                    <div id="magic_link_apps" class="bordered-box" style="display: none;">
+                                        <h4><?php esc_html_e( 'Magic Links', 'disciple_tools' ) ?></h4>
+                                        <div id="magic_link_apps_content"></div>
+                                    </div>
+                                    <?php
+                                    // Filter out user based post types and provide corresponding section if detected.
+                                    /*$user_apps = [];
+                                    $magic_link_apps = dt_get_registered_types();
+                                    //dt_write_log( $magic_link_apps );
+                                    foreach ( $magic_link_apps ?? [] as $app_root => $app_types ){
+                                        foreach ( $app_types as $app_type => $app_value ){
+                                            if ( $app_value['post_type'] === 'user' && isset( $app_value['show_app_tile'] ) && $app_value['show_app_tile'] === true ){
+                                                $user_apps[] = $app_value;
+                                            }
+                                        }
+                                    }
+
+                                    dt_write_log( $user_apps );
+                                    if ( !empty( $user_apps ) ){
+                                        $record = DT_Posts::get_post( 'contacts', get_the_ID() );
+                                        dt_write_log( $record );
+                                        ?>
+                                        <!-- Magic Links -->
+                                        <div class="bordered-box">
+                                            <h4><?php esc_html_e( 'Magic Links', 'disciple_tools' ) ?></h4>
+
+                                        </div>
+                                        <?php
+                                    }*/
+                                    ?>
                                 </div>
                                 <!-- end center -->
 

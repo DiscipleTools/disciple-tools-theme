@@ -79,6 +79,13 @@ jQuery(document).ready(function($) {
     $('#status-select').val('')
     $('#workload-select').val('')
 
+    // Determine if provision for magic link apps should be made.
+    const user_apps = get_magic_link_apps();
+    if ( user_apps ) {
+      $("#magic_link_apps_content").html(spinner);
+      $("#magic_link_apps").show();
+    }
+
     //clear the locations typeahead of previous values when the modal is opened
     let typeahead = window.Typeahead['.js-typeahead-location_grid']
     if (typeahead) {
@@ -118,6 +125,11 @@ jQuery(document).ready(function($) {
         //availability
         if ( details.dates_unavailable ) {
           display_dates_unavailable( details.dates_unavailable )
+        }
+
+        //magic links
+        if ( details.magic_links ) {
+          display_magic_link_apps( user_apps, details.magic_links );
         }
 
         let update_needed_list_html = ``;
@@ -335,6 +347,49 @@ jQuery(document).ready(function($) {
       console.log( 'error in days active')
       console.log( e)
     })
+  }
+
+  function get_magic_link_apps( post_type = null ) {
+    let apps = {};
+    const magic_link_apps = window.dt_user_management_localized?.magic_link_apps;
+    if ( magic_link_apps ) {
+      for ( const [app_root, app_types] of Object.entries( magic_link_apps ) ) {
+        for ( const [app_type, app_value] of Object.entries( app_types ) ) {
+          if ( app_value?.meta_key && ( ( post_type === null ) || ( app_value?.post_type === post_type ) ) ) {
+            apps[ app_value.meta_key ] = app_value;
+          }
+        }
+      }
+    }
+
+    return apps;
+  }
+
+  function display_magic_link_apps( apps, magic_links ) {
+    if ( apps && magic_links ) {
+      let html = ``;
+      let links_detected = false;
+
+      // Cherry-pick magic links to be displayed, based on specified apps.
+      for ( const [app_key, app] of Object.entries( apps ) ) {
+        if ( magic_links[ app_key ] ) {
+          links_detected = true;
+          const magic_link = magic_links[ app_key ];
+          const url = window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.site_url + `/${ app?.root }/${ app?.type }/${ magic_link?.meta_key_value }` );
+          html += `<a class="button" href="${url}" target="_blank" style="margin-right: 5px;">${ window.SHAREDFUNCTIONS.escapeHTML(magic_link['label']) } <img class="dt-icon dt-white-icon" src="${ window.SHAREDFUNCTIONS.escapeHTML( window.dt_user_management_localized?.theme_uri )}dt-assets/images/open-link.svg"/></a>`;
+        }
+      }
+
+      // Render link findings accordingly.
+      if ( links_detected ) {
+        $("#magic_link_apps_content").html(html);
+        $("#magic_link_apps").show();
+      } else {
+        $("#magic_link_apps").hide();
+      }
+    } else {
+      $("#magic_link_apps").hide();
+    }
   }
 
   if( window.wpApiShare.url_path.includes('user-management/users') ) {
