@@ -474,10 +474,18 @@
             ${ list_settings.filters.filters.map( filter =>{
               if (filter.tab === tab.key && filter.tab !== 'custom') {
                 let indent = filter.subfilter && Number.isInteger(filter.subfilter) ? 15 * filter.subfilter : 15;
+                let crop_name = filter.name;
+                let cropped = false;
+
+                if ( filter.name.length > 17 ) {
+                  cropped = true;
+                  crop_name = filter.name.substring( 0, 14 ) + '...';
+                }
+
                 return `
                         <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
                           <input type="radio" name="view" value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" class="js-list-view" autocomplete="off">
-                          <span id="total_filter_label">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
+                          <span id="total_filter_label" ${ (cropped) ? 'title="' + window.SHAREDFUNCTIONS.escapeHTML(filter.name) + '"' : '' }>${window.SHAREDFUNCTIONS.escapeHTML(crop_name)}</span>
                           <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.count )}</span>
                         </label>
                         `
