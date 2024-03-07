@@ -37,7 +37,8 @@
 }
 
 .filter input, .list-views input {
-    margin: 0 0.2rem 0 0;
+    margin-right: 0.2rem;
+    vertical-align: middle;
 }
 
 .typeahead__query.disabled {
@@ -73,6 +74,17 @@
 
 .list-view__count {
     float: right;
+}
+
+.list-view__text {
+    text-overflow: ellipsis;
+
+    width: 70%;
+    display: inline-block;
+
+    /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .priorities-show-all {
@@ -126,7 +138,7 @@ table.js-list{
     word-wrap: break-word;
     width: 100%;
     white-space: nowrap;
-   
+
 }
 @media screen and (min-width : #{map-get($breakpoints, large)}) {
     table.js-list td {
