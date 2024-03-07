@@ -3682,6 +3682,10 @@
                 build_table(items);
                 setup_current_filter_labels();
 
+                // Generate corresponding custom filter.
+                reset_split_by_filters();
+                add_custom_filter(esc(window.list_settings.translations.exports.map['filter_name']), "custom-filter", current_filter.query, new_filter_labels, false);
+
                 // Reset vertical scrollbar to start position.
                 window.setTimeout(function() {
                   $(window).scrollTop(0);

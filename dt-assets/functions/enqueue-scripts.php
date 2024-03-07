@@ -352,6 +352,7 @@ function dt_site_scripts() {
                     'records_on_zoomed_map' => __( 'Records on zoomed map', 'disciple_tools' ),
                     'no_records_on_zoomed_map_alert' => __( 'No Zoomed Map Records Found!', 'disciple_tools' ),
                     'open_zoomed_map' => __( 'Open Zoomed Map Records', 'disciple_tools' ),
+                    'filter_name' => __( 'Map List Filter', 'disciple_tools' )
                 ]
             ]
         ];
