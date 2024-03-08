@@ -3099,9 +3099,21 @@ class DT_Posts extends Disciple_Tools_Posts {
                 ];
                 dt_activity_insert( $activity );
             }
-        }
+        } elseif ( ( $send_method === 'sms' ) && class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled() ) {
+            $is_sent = true;
+            do_action( 'dt_twilio_send', $post_id, 'post', $message, [ 'service' => 'sms' ] );
 
-        // TODO: Callout to registered send method action-hooks. E.g: SMS!
+            // Capture activity record.
+            $activity = [
+                'action'            => 'sent_post_msg',
+                'object_type'       => $post_type,
+                'object_subtype'    => 'sms',
+                'object_id'         => $post_id,
+                'object_name'       => $post['title'],
+                'object_note'       => ''
+            ];
+            dt_activity_insert( $activity );
+        }
 
         return [
             'post_id' => $post_id,

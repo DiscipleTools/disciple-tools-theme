@@ -2322,7 +2322,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share, comment, event_type = 'update' ) {
+  function process( q, num, fn, done, update, share, comment, event_type = 'update', responses = [] ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -2330,7 +2330,7 @@
     // no more items?
     if ( !count ) {
         // exec done callback if specified
-        done && done();
+        done && done( responses );
         // quit
         return;
     }
@@ -2339,10 +2339,19 @@
     for ( let i = 0; i < count; i++ ) {
         // call callback, passing item and
         // a "done" callback
-        fn(items[i], function() {
+        fn(items[i], function( response ) {
+          // capture valid response
+          if ( response ) {
+            if ( Array.isArray( response ) ) {
+              response.forEach((element) => responses.push( element ));
+            } else {
+              responses.push( response );
+            }
+          }
+
           // when done, decrement counter and
           // if counter is 0, process next batch
-          --count || process(q, num, fn, done, update, share, comment, event_type);
+          --count || process(q, num, fn, done, update, share, comment, event_type, responses);
         }, update, share, comment, event_type);
 
     }
@@ -2396,8 +2405,8 @@
         break;
       }
     }
-    Promise.all(promises).then( function() {
-        done();
+    Promise.all(promises).then( function(responses) {
+      done(responses);
     });
   }
 
@@ -2463,8 +2472,14 @@
 
     let subject = $('#bulk_send_msg_subject').val().trim();
     let from_name = $('#bulk_send_msg_from_name').val().trim();
-    let send_method = $('.bulk-send-msg-method:checked').val().trim();
+    let send_method = 'email';
     let message = $('#bulk_send_msg').val().trim();
+
+    // If multiple options detected, ensure correct selection is made.
+    const checked_send_method = $('.bulk-send-msg-method:checked');
+    if ( $(checked_send_method).length > 0 ) {
+      send_method = $(checked_send_method).val().trim();
+    }
 
     let queue =  [];
     $('.bulk_edit_checkbox input').each(function () {
@@ -2516,9 +2531,22 @@
 
     // Proceed with staged-based message send requests.
     $(spinner).addClass('active');
-    process(queue, 10, do_each, function () {
+    process(queue, 10, do_each, function (responses) {
+
+      // If available, extract response summary.
+      if ( responses && responses.length > 0 ) {
+        let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
+        let count_sent = responses.filter((response) => String(response['sent']) == String('true') ).length;
+        let count_fails = responses.filter((response) => String(response['sent']) == String('false') ).length;
+        $('#bulk_send_msg_submit-message').html(`<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : '' }<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`);
+      }
+
+      // Reset record selections.
       $(spinner).removeClass('active');
-      window.location.reload();
+      $('#bulk_edit_master_checkbox').prop("checked", false);
+      $('.bulk_edit_checkbox input').prop("checked", false);
+      bulk_edit_count();
+      // window.location.reload();
 
     }, {
       'subject': subject,

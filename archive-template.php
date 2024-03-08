@@ -757,6 +757,7 @@ dt_please_log_in();
                         <div class="grid-x grid-margin-x">
                             <div class="cell">
                                 <?php
+                                $has_twilio = class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled();
                                 $dt_user = wp_get_current_user();
                                 $dt_site_notification_defaults = dt_get_site_notification_defaults();
                                 $default_subject = dt_get_option( 'dt_email_base_subject' );
@@ -765,6 +766,19 @@ dt_please_log_in();
 Bulk send message...
 
 Thanks!', 'disciple_tools' );
+                                // Filter communication channels.
+                                $comms_channels = [];
+                                foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ){
+                                    if ( $channel_key === 'web' ) {
+                                        continue;
+                                    }
+
+                                    if ( !$has_twilio && $channel_key === 'sms' ) {
+                                        continue;
+                                    }
+
+                                    $comms_channels[ $channel_key ] = $channel_value;
+                                }
                                 ?>
                                 <label for="bulk_send_msg_subject"><?php echo esc_html__( 'Configure message subject', 'disciple_tools' ); ?></label>
                                 <input type="text" id="bulk_send_msg_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
@@ -774,19 +788,26 @@ Thanks!', 'disciple_tools' );
                                 <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( $dt_user->nickname ); ?>" style="margin-bottom: 0"/>
                                 <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
 
-                                <label><?php echo esc_html__( 'Select message send method', 'disciple_tools' ); ?></label>
+                                <span><?php echo sprintf( esc_html__( 'Emails will be sent from: [%s]', 'disciple_tools' ), esc_html( apply_filters( 'wp_mail_from', '' ) ) ); ?></span><br>
+
                                 <?php
-                                foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ) {
-                                    if ( !in_array( $channel_key, [ 'web' ] ) ) {
-                                        $method_id = 'bulk_send_msg_method_' . $channel_key;
-                                        ?>
-                                        <input type="radio" class="bulk-send-msg-method"
-                                               id="<?php echo esc_attr( $method_id ); ?>" name="bulk_send_msg_method"
-                                               value="<?php echo esc_attr( $channel_key ); ?>"
-                                            <?php echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?>/>
-                                        <label
-                                            for="<?php echo esc_attr( $method_id ); ?>"><?php echo esc_html( $channel_value['label'] ); ?></label>
-                                        <?php
+                                if ( count( $comms_channels ) > 1 ) {
+                                    ?>
+                                    <br><label><?php echo esc_html__( 'Select message send method', 'disciple_tools' ); ?></label>
+                                    <?php
+                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
+                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
+                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
+                                            ?>
+                                            <input type="radio" class="bulk-send-msg-method"
+                                                   id="<?php echo esc_attr( $method_id ); ?>"
+                                                   name="bulk_send_msg_method"
+                                                   value="<?php echo esc_attr( $channel_key ); ?>"
+                                                <?php echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?>/>
+                                            <label
+                                                for="<?php echo esc_attr( $method_id ); ?>"><?php echo esc_html( $channel_value['label'] ); ?></label>
+                                            <?php
+                                        }
                                     }
                                 }
                                 ?>
@@ -807,7 +828,7 @@ Thanks!', 'disciple_tools' );
                                 <span id="bulk_send_msg_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
                                 <div>
                                     <button class="button dt-green" id="bulk_send_msg_submit">
-                                        <span class="bulk_msg_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
+                                        <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
                                             <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
                                         </span>
                                         <span id="bulk_send_msg_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
