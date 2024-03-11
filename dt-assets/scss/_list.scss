@@ -70,6 +70,7 @@
 
 .list-view {
     cursor: pointer;
+    margin-bottom: -10px;
 }
 
 .list-view__count {
@@ -80,6 +81,27 @@
     text-overflow: ellipsis;
 
     width: 70%;
+    display: inline-block;
+
+    /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.js-filter-checkbox-label {
+    cursor: pointer;
+    margin-bottom: -7px;
+}
+
+.js-list-view {
+    margin-right: 0.2rem;
+    vertical-align: middle;
+}
+
+.filter-list-name {
+    text-overflow: ellipsis;
+
+    width: 60%;
     display: inline-block;
 
     /* Required for text-overflow to do anything */
