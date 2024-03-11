@@ -57,6 +57,37 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( !function_exists( 'dt_default_email_address' ) ){
+        function dt_default_email_address(): string{
+            $default_addr = apply_filters( 'wp_mail_from', '' );
+
+            if ( empty( $default_addr ) ){
+
+                // Get the site domain and get rid of www.
+                $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+                if ( 'www.' === substr( $sitename, 0, 4 ) ){
+                    $sitename = substr( $sitename, 4 );
+                }
+
+                $default_addr = 'wordpress@' . $sitename;
+            }
+
+            return $default_addr;
+        }
+    }
+
+    if ( !function_exists( 'dt_default_email_name' ) ){
+        function dt_default_email_name(): string{
+            $default_name = apply_filters( 'wp_mail_from_name', '' );
+
+            if ( empty( $default_name ) ){
+                $default_name = 'WordPress';
+            }
+
+            return $default_name;
+        }
+    }
+
     if ( !function_exists( 'dt_is_rest' ) ) {
         /**
          * Checks if the current request is a WP REST API request.

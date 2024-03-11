@@ -758,7 +758,6 @@ dt_please_log_in();
                             <div class="cell">
                                 <?php
                                 $has_twilio = class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled();
-                                $dt_user = wp_get_current_user();
                                 $dt_site_notification_defaults = dt_get_site_notification_defaults();
                                 $default_subject = dt_get_option( 'dt_email_base_subject' );
                                 $default_message = __( 'Hello {{name}},
@@ -785,10 +784,10 @@ Thanks!', 'disciple_tools' );
                                 <span id="bulk_send_msg_subject_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid message subject must be entered.', 'disciple_tools' ); ?></span><br>
 
                                 <label for="bulk_send_msg_from_name"><?php echo esc_html__( 'Configure message from name', 'disciple_tools' ); ?></label>
-                                <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( $dt_user->nickname ); ?>" style="margin-bottom: 0"/>
+                                <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( dt_default_email_name() ); ?>" style="margin-bottom: 0"/>
                                 <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
 
-                                <span><?php echo sprintf( esc_html__( 'Emails will be sent from: [%s]', 'disciple_tools' ), esc_html( apply_filters( 'wp_mail_from', '' ) ) ); ?></span><br>
+                                <span><?php echo sprintf( esc_html__( 'Emails will be sent from: [%s]', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
 
                                 <?php
                                 if ( count( $comms_channels ) > 1 ) {

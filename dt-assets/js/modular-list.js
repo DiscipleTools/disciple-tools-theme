@@ -2536,8 +2536,18 @@
       // If available, extract response summary.
       if ( responses && responses.length > 0 ) {
         let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
-        let count_sent = responses.filter((response) => String(response['sent']) == String('true') ).length;
-        let count_fails = responses.filter((response) => String(response['sent']) == String('false') ).length;
+        let count_sent = 0;
+        let count_fails = 0;
+        responses.forEach(function (response) {
+          if ( response && ( response['sent'] !== undefined ) ) {
+            if ( response['sent'] ) {
+              count_sent++;
+            } else {
+              count_fails++;
+            }
+          }
+        });
+
         $('#bulk_send_msg_submit-message').html(`<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : '' }<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`);
       }
 

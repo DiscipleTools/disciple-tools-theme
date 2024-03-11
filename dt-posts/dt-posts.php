@@ -3086,7 +3086,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 // Send email or schedule for later dispatch.
                 $subject = $args['subject'] ?? $post['title'];
-                $is_sent = dt_schedule_mail( $emails, $subject, $message, $headers );
+                $is_sent = ( wp_queue()->push( new DT_Send_Email_Job( $emails, $subject, $message, $headers ) ) !== false );
 
                 // Capture activity record.
                 $activity = [
