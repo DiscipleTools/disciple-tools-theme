@@ -57,6 +57,47 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( !function_exists( 'dt_email_template_wrapper' ) ) {
+        /**
+         * A function which wraps specified plain text messages within
+         * email template.
+         *
+         * @param $message
+         * @param $subject
+         */
+        function dt_email_template_wrapper( $message, $subject ) {
+
+            // Load email template and replace content placeholder.
+            $email_template = file_get_contents( trailingslashit( get_template_directory() ) . 'dt-notifications/email-template.html' );
+            if ( $email_template ) {
+
+                // Clean < and > around text links in WP 3.1.
+                $message = preg_replace( '#<(https?://[^*]+)>#', '$1', $message );
+
+                // Convert line breaks.
+                if ( apply_filters( 'dt_email_template_convert_line_breaks', true ) ) {
+                    $message = nl2br( $message );
+                }
+
+                // Convert URLs to links.
+                if ( apply_filters( 'dt_email_template_convert_urls', true ) ) {
+                    $message = make_clickable( $message );
+                }
+
+                // Add template to message.
+                $email_body = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message, $email_template );
+
+                // Add footer to message
+                $email_body = str_replace( '{{EMAIL_TEMPLATE_FOOTER}}', get_bloginfo( 'name' ), $email_body );
+
+                // Replace remaining template variables.
+                return str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $subject, $email_body );
+            }
+
+            return $message;
+        }
+    }
+
     if ( !function_exists( 'dt_is_rest' ) ) {
         /**
          * Checks if the current request is a WP REST API request.

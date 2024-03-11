@@ -165,50 +165,39 @@ add_filter( 'wp_mail_from_name', function ( $name ) {
  * Intercept all outgoing messages and wrap within email template.
  */
 
-add_action( 'phpmailer_init', function ( $phpmailer ) {
+add_filter( 'wp_mail', function ( $args ) {
+    if ( empty( $args['headers'] ) || !html_content_type_detected( $args['headers'] ) ) {
+        $args['message'] = dt_email_template_wrapper( $args['message'] ?? '', $args['subject'] ?? '' );
 
-    // Terminate, if already of content type html.
-    // phpcs:ignore
-    if ( $phpmailer->ContentType === 'text/html' ) {
-        return;
-    }
-
-    // Load email template and replace content placeholder.
-    $email_template = file_get_contents( __DIR__ . '/email-template.html' );
-    if ( $email_template ) {
-
-        // phpcs:ignore
-        $message = $phpmailer->Body;
-
-        // Update content type to required html format.
-        // phpcs:ignore
-        $phpmailer->ContentType = 'text/html';
-
-        // Clean < and > around text links in WP 3.1.
-        $message = preg_replace( '#<(https?://[^*]+)>#', '$1', $message );
-
-        // Convert line breaks.
-        if ( apply_filters( 'dt_email_template_convert_line_breaks', true ) ) {
-            $message = nl2br( $message );
+        $headers = $args['headers'];
+        if ( empty( $headers ) ) {
+            $headers = [];
         }
 
-        // Convert URLs to links.
-        if ( apply_filters( 'dt_email_template_convert_urls', true ) ) {
-            $message = make_clickable( $message );
+        if ( is_array( $headers ) ) {
+            $headers[] = 'Content-Type: text/html; charset=UTF-8';
+        } else {
+            $headers .= '\r\nContent-Type: text/html; charset=UTF-8';
         }
 
-        // Add template to message.
-        $email_body = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message, $email_template );
-
-        // Add footer to message
-        $email_body = str_replace( '{{EMAIL_TEMPLATE_FOOTER}}', get_bloginfo( 'name' ), $email_body );
-
-
-        // Replace remaining template variables.
-        // phpcs:ignore
-        $phpmailer->Body = str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $phpmailer->Subject, $email_body );
+        $args['headers'] = $headers;
     }
+
+    return $args;
 } );
+
+function html_content_type_detected( $headers ): bool {
+    $detected = false;
+
+    foreach ( $headers as $header ) {
+        $header = strtolower( $header );
+        if ( ( strpos( $header, 'content-type' ) !== false ) && ( strpos( $header, 'text/html' ) !== false ) ) {
+            $detected = true;
+        }
+    }
+
+    return $detected;
+}
 
 /**
  * Send emails that have been put in the email queue
