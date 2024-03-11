@@ -132,21 +132,21 @@ if ( ! class_exists( 'Cron' ) ) {
 		 * @return bool
 		 */
 		protected function is_worker_locked() {
-			return (bool) get_site_transient( $this->id );
+			return (bool) get_transient( $this->id );
 		}
 
 		/**
 		 * Lock the cron worker.
 		 */
 		protected function lock_worker() {
-			set_site_transient( $this->id, time(), 300 );
+			set_transient( $this->id, time(), 300 );
 		}
 
 		/**
 		 * Unlock the cron worker.
 		 */
 		protected function unlock_worker() {
-			delete_site_transient( $this->id );
+			delete_transient( $this->id );
 		}
 
 		/**
