@@ -317,13 +317,13 @@ class DT_User_Management
                     $magic_link_apps = dt_get_registered_types();
                     foreach ( $magic_link_apps ?? [] as $app_root => $app_types ){
                         foreach ( $app_types as $app_type => $app_value ){
-                            if ( isset( $app_value['label'], $app_value['meta_key'], $app_value['post_type'], $record[$app_value['meta_key']] ) ){
+                            if ( isset( $app_value['label'], $app_value['meta_key'], $app_value['post_type'] ) ){
                                 $user_response['magic_links'][$app_value['meta_key']] = [
                                     'type' => $app_type,
                                     'label' => $app_value['label'],
                                     'post_type' => $app_value['post_type'],
                                     'meta_key' => $app_value['meta_key'],
-                                    'meta_key_value' => $record[$app_value['meta_key']]
+                                    'meta_key_value' => $record[$app_value['meta_key']] ?? ''
                                 ];
                             }
                         }

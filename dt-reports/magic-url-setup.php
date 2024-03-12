@@ -45,11 +45,12 @@ class DT_Magic_URL_Setup {
     public function dt_details_additional_section( $section, $post_type ){
         if ( $section === 'apps' ){
             $magic_link_apps = dt_get_registered_types();
+            $record = DT_Posts::get_post( $post_type, get_the_ID() );
             foreach ( $magic_link_apps as $app_root => $app_types ){
                 foreach ( $app_types as $app_type => $app_value ){
                     if ( $app_value['post_type'] === $post_type && isset( $app_value['show_app_tile'] ) && $app_value['show_app_tile'] === true ){
                         $this->add_app_row( $post_type, $app_value );
-                    } elseif ( dt_is_administrator() && isset( $app_value['post_type'] ) && $app_value['post_type'] === 'user' ) {
+                    } elseif ( ( isset( $record['type']['key'] ) && $record['type']['key'] === 'user' ) && isset( $app_value['post_type'] ) && ( $app_value['post_type'] === 'user' ) ) {
                         $this->add_app_row( $post_type, $app_value );
                     }
                 }
