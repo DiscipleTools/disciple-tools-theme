@@ -3045,6 +3045,9 @@ class DT_Posts extends Disciple_Tools_Posts {
      */
 
     public static function post_messaging( string $post_type, int $post_id, array $args = [] ): array {
+        if ( !self::can_view( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
+        }
         $post = self::get_post( $post_type, $post_id );
         if ( empty( $post ) || is_wp_error( $post ) ) {
             return new WP_Error( __METHOD__, 'Invalid post record.' );
