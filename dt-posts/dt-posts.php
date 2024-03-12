@@ -3045,7 +3045,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      */
 
     public static function post_messaging( string $post_type, int $post_id, array $args = [] ): array {
-        $post = self::get_post( $post_type, $post_id, true, false );
+        $post = self::get_post( $post_type, $post_id );
         if ( empty( $post ) || is_wp_error( $post ) ) {
             return new WP_Error( __METHOD__, 'Invalid post record.' );
         }
