@@ -2322,7 +2322,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share, comment, event_type = 'update' ) {
+  function process( q, num, fn, done, update, share, comment, event_type = 'update', responses = [] ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -2330,7 +2330,7 @@
     // no more items?
     if ( !count ) {
         // exec done callback if specified
-        done && done();
+        done && done( responses );
         // quit
         return;
     }
@@ -2339,10 +2339,19 @@
     for ( let i = 0; i < count; i++ ) {
         // call callback, passing item and
         // a "done" callback
-        fn(items[i], function() {
+        fn(items[i], function( response ) {
+          // capture valid response
+          if ( response ) {
+            if ( Array.isArray( response ) ) {
+              response.forEach((element) => responses.push( element ));
+            } else {
+              responses.push( response );
+            }
+          }
+
           // when done, decrement counter and
           // if counter is 0, process next batch
-          --count || process(q, num, fn, done, update, share, comment, event_type);
+          --count || process(q, num, fn, done, update, share, comment, event_type, responses);
         }, update, share, comment, event_type);
 
     }
@@ -2387,9 +2396,17 @@
         }
         break;
       }
+      case 'message': {
+        if (update?.subject && update?.from_name && update?.send_method && update?.message) {
+          promises.push(window.makeRequestOnPosts("POST", `${list_settings.post_type}/${item}/post_messaging`, update).catch(err => {
+            console.error(err);
+          }));
+        }
+        break;
+      }
     }
-    Promise.all(promises).then( function() {
-        done();
+    Promise.all(promises).then( function(responses) {
+      done(responses);
     });
   }
 
@@ -2440,6 +2457,113 @@
         }
       },
     });
+  }
+
+  /**
+   * Bulk Send Message
+   */
+
+  $('#bulk_send_msg_submit').on('click', function (e) {
+    handle_bulk_send_messages();
+  });
+
+  function handle_bulk_send_messages() {
+    const spinner = $('#bulk_send_msg_submit-spinner');
+
+    let subject = $('#bulk_send_msg_subject').val().trim();
+    let from_name = $('#bulk_send_msg_from_name').val().trim();
+    let send_method = 'email';
+    let message = $('#bulk_send_msg').val().trim();
+
+    // If multiple options detected, ensure correct selection is made.
+    const checked_send_method = $('.bulk-send-msg-method:checked');
+    if ( $(checked_send_method).length > 0 ) {
+      send_method = $(checked_send_method).val().trim();
+    }
+
+    let queue =  [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        queue.push( parseInt( $(this).val() ) );
+      }
+    });
+
+    // Validate entries.
+    if (!subject) {
+      $("#bulk_send_msg_subject_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_subject_support_text").hide();
+    }
+
+    if (!from_name) {
+      $("#bulk_send_msg_from_name_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_from_name_support_text").hide();
+    }
+
+    if (!send_method) {
+      $("#bulk_send_msg_method_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_method_support_text").hide();
+    }
+
+    if (!message) {
+      $("#bulk_send_msg_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_support_text").hide();
+    }
+
+    if (!queue || queue.length < 1) {
+      $("#bulk_send_msg_submit_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_submit_support_text").hide();
+    }
+
+    // Proceed with staged-based message send requests.
+    $(spinner).addClass('active');
+    process(queue, 10, do_each, function (responses) {
+
+      // If available, extract response summary.
+      if ( responses && responses.length > 0 ) {
+        let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
+        let count_sent = 0;
+        let count_fails = 0;
+        responses.forEach(function (response) {
+          if ( response && ( response['sent'] !== undefined ) ) {
+            if ( response['sent'] ) {
+              count_sent++;
+            } else {
+              count_fails++;
+            }
+          }
+        });
+
+        $('#bulk_send_msg_submit-message').html(`<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : '' }<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`);
+      }
+
+      // Reset record selections.
+      $(spinner).removeClass('active');
+      $('#bulk_edit_master_checkbox').prop("checked", false);
+      $('.bulk_edit_checkbox input').prop("checked", false);
+      bulk_edit_count();
+      // window.location.reload();
+
+    }, {
+      'subject': subject,
+      'from_name': from_name,
+      'send_method': send_method,
+      'message': message
+    }, {}, {}, 'message');
   }
 
   /**

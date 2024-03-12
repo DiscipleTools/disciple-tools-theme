@@ -491,6 +491,25 @@ class Disciple_Tools_Posts_Endpoints {
                 },
             ]
         );
+
+        //post_messaging
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/post_messaging', [
+                [
+                    'methods'  => 'POST',
+                    'callback' => [ $this, 'post_messaging' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                        'id' => $arg_schemas['id']
+                    ],
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        $params = $request->get_params();
+                        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+                        return DT_Posts::can_access( $post_type );
+                    }
+                ]
+            ]
+        );
     }
 
     /**
@@ -754,5 +773,19 @@ class Disciple_Tools_Posts_Endpoints {
             return $result;
         }
         return [];
+    }
+
+    public function post_messaging( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['subject'], $params['from_name'], $params['send_method'], $params['message'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        return DT_Posts::post_messaging( $params['post_type'], $params['id'], [
+            'subject' => $params['subject'],
+            'from_name' => $params['from_name'],
+            'send_method' => $params['send_method'],
+            'message' => $params['message']
+        ] );
     }
 }
