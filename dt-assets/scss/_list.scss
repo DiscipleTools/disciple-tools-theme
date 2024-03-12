@@ -38,7 +38,6 @@
 
 .filter input, .list-views input {
     margin: 0 0.2rem 0 0;
-    vertical-align: middle;
 }
 
 .typeahead__query.disabled {
@@ -78,7 +77,7 @@
     float: right;
 }
 
-.list-view__text {
+.list-view__text, .filter-list-name {
     text-overflow: ellipsis;
     flex-grow: 1;
     display: inline-block;
@@ -92,21 +91,6 @@
     cursor: pointer;
     display: flex;
     column-gap: 0.2rem;
-}
-
-.js-list-view {
-    margin: 0.4rem 0.2rem 0 0 !important;
-    vertical-align: middle;
-}
-
-.filter-list-name {
-    text-overflow: ellipsis;
-    flex-grow: 1;
-    display: inline-block;
-
-    /* Required for text-overflow to do anything */
-    white-space: nowrap;
-    overflow: hidden;
 }
 
 .priorities-show-all {
