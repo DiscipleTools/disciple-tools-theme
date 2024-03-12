@@ -349,7 +349,10 @@ function dt_site_scripts() {
                     'mapbox_key' => ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) ? esc_attr( DT_Mapbox_API::get_key() ) : null,
                     'mapped_locations' => __( 'Mapped Locations', 'disciple_tools' ),
                     'without_locations' => __( 'Contacts Without Locations', 'disciple_tools' ),
-                    'Records on zoomed map' => __( 'Records on zoomed map', 'disciple_tools' ),
+                    'records_on_zoomed_map' => __( 'Records on zoomed map', 'disciple_tools' ),
+                    'no_records_on_zoomed_map_alert' => __( 'No Zoomed Map Records Found!', 'disciple_tools' ),
+                    'open_zoomed_map' => __( 'Open Zoomed Map Records', 'disciple_tools' ),
+                    'filter_name' => __( 'Map List Filter', 'disciple_tools' )
                 ]
             ]
         ];
