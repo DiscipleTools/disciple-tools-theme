@@ -477,7 +477,7 @@
                 return `
                         <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
                           <input type="radio" name="view" value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" class="js-list-view" autocomplete="off">
-                          <span id="total_filter_label">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
+                          <span class="list-view__text" id="total_filter_label" title="${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
                           <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.count )}</span>
                         </label>
                         `
