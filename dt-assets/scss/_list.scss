@@ -37,7 +37,7 @@
 }
 
 .filter input, .list-views input {
-    margin-right: 0.2rem;
+    margin: 0 0.2rem 0 0;
     vertical-align: middle;
 }
 
@@ -70,7 +70,8 @@
 
 .list-view {
     cursor: pointer;
-    margin-bottom: -10px;
+    display: flex;
+    column-gap: 0.2rem;
 }
 
 .list-view__count {
@@ -79,8 +80,7 @@
 
 .list-view__text {
     text-overflow: ellipsis;
-
-    width: 70%;
+    flex-grow: 1;
     display: inline-block;
 
     /* Required for text-overflow to do anything */
@@ -90,18 +90,18 @@
 
 .js-filter-checkbox-label {
     cursor: pointer;
-    margin-bottom: -7px;
+    display: flex;
+    column-gap: 0.2rem;
 }
 
 .js-list-view {
-    margin-right: 0.2rem;
+    margin: 0.4rem 0.2rem 0 0 !important;
     vertical-align: middle;
 }
 
 .filter-list-name {
     text-overflow: ellipsis;
-
-    width: 60%;
+    flex-grow: 1;
     display: inline-block;
 
     /* Required for text-overflow to do anything */
