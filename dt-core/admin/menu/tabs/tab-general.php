@@ -138,7 +138,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      * Prints the user notifications box
      */
     public function user_notifications() {
-        $notifications = apply_filters( 'dt_get_site_notification_options', dt_get_option( 'dt_site_options' )['notifications'] );
+        $notifications = dt_get_site_notification_defaults();
         ?>
         <form method="post" name="notifications-form">
             <button type="submit" class="button-like-link" name="reset_notifications" value="1"><?php esc_html_e( 'reset', 'disciple_tools' ) ?></button>
@@ -190,9 +190,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 unset( $site_options['notifications'] );
                 $site_option_defaults = dt_get_site_options_defaults();
                 $site_options['notifications'] = $site_option_defaults['notifications'];
+                return update_option( 'dt_site_options', $site_options, true );
             }
 
-            $notifications = apply_filters( 'dt_get_site_notification_options', $site_options['notifications'] );
+            $notifications = dt_get_site_notification_defaults();
             $updated_types = [];
             foreach ( $notifications['types'] as $type => $type_settings ) {
                 $updated_types[$type] = $type_settings;
