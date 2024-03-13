@@ -179,13 +179,14 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
         $user_meta_data = get_user_meta( $user_id );
     }
 
-    //by default a notification is enabled unless set to false; unless it's a specific custom channel; which may require manual enabling.
     $channel_notification_key = $notification_name . '_' . $channel;
-    if ( !isset( $user_meta_data[ $channel_notification_key ] ) && in_array( $channel, [ 'sms', 'whatsapp' ] ) ) {
-        return false;
-    } else {
-        return !isset( $user_meta_data[$channel_notification_key] ) || $user_meta_data[$channel_notification_key][0] == true;
+
+    //if user preference is set, then use it
+    if ( isset( $user_meta_data[$channel_notification_key] ) ){
+        return !empty( $user_meta_data[$channel_notification_key][0] );
     }
+    //default to yes if email or web, otherwise no
+    return $channel === 'email' || $channel === 'web';
 }
 
 /**
