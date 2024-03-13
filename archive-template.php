@@ -427,7 +427,27 @@ dt_please_log_in();
                                     'icon' => get_template_directory_uri() . '/dt-assets/images/send.svg',
                                     'section_id' => 'bulk_send_msg_picker',
                                     'show_list_checkboxes' => true,
-                                    'valid_post_types' => [ 'contacts' ]
+                                    'valid_post_type' => function ( $current_post_type ) {
+                                        $post_type_valid = false;
+
+                                        // Specify list of valid communication channel fields to search for.
+                                        $valid_comm_fields = [
+                                            'contact_email',
+                                            'contact_phone'
+                                        ];
+
+                                        // For given post type, fetch associated communication channel fields.
+                                        $comm_fields = DT_Posts::get_field_settings_by_type( $current_post_type, 'communication_channel' );
+
+                                        // Attempt to validate listed communication channel fields.
+                                        foreach ( $valid_comm_fields as $valid_comm_field ) {
+                                            if ( in_array( $valid_comm_field, $comm_fields ) ) {
+                                                $post_type_valid = true;
+                                            }
+                                        }
+
+                                        return $post_type_valid;
+                                    }
                                 ]
                         ];
 
@@ -440,7 +460,7 @@ dt_please_log_in();
                                     <a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?></a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
                                     <?php foreach ( $dropdown_items as $key => $value ) : ?>
-                                        <?php if ( isset( $key ) && ( !isset( $value['valid_post_types'] ) || in_array( $post_type, $value['valid_post_types'] ) ) ) : ?>
+                                        <?php if ( isset( $key ) && ( !isset( $value['valid_post_type'] ) || $value['valid_post_type']( $post_type ) ) ) : ?>
                                             <?php $show_list_checkboxes = !empty( $value['show_list_checkboxes'] ) ? 'true' : 'false'; ?>
                                             <li>
                                                 <a href="javascript:void(0);" data-modal="<?php echo esc_html( $value['section_id'] ); ?>" data-checkboxes="<?php echo esc_html( $show_list_checkboxes ); ?>" class="list-dropdown-submenu-item-link" id="submenu-more-<?php echo esc_html( $key ); ?>">
