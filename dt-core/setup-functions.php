@@ -79,25 +79,25 @@ function dt_setup_roles_and_permissions(){
 add_action( 'export_filters', 'export_filters' );
 function export_filters() {
     ?>
-    <h2><?php _e( 'Custom post type notices' ); ?></h2>
+    <h2><?php esc_html_e( 'Custom post type notices' ); ?></h2>
     <ul style="list-style-type: circle !important; margin-left: 20px;">
-        <li><?php _e( 'Custom post types can be included within exports, by setting the <b>can_export</b> property to true.' ); ?></li>
-        <li><?php _e( 'Custom post types must be created in advance on target system, in order to successfully import records.' ); ?></li>
-        <li><?php _e( 'Custom post type record comments will also be included within exported file.' ); ?></li>
-        <li><?php _e( 'Custom post type record activities are currently not included within exported file.' ); ?></li>
-        <li><?php _e( 'Custom fields will also be included within exported file.' ); ?></li>
-        <li><?php _e( 'Complex field types, such as <b>connection</b> fields are currently not included within exported file.' ); ?></li>
+        <li><?php esc_html_e( 'Custom post types can be included within exports, by setting the <b>can_export</b> property to true.' ); ?></li>
+        <li><?php esc_html_e( 'Custom post types must be created in advance on target system, in order to successfully import records.' ); ?></li>
+        <li><?php esc_html_e( 'Custom post type record comments will also be included within exported file.' ); ?></li>
+        <li><?php esc_html_e( 'Custom post type record activities are currently not included within exported file.' ); ?></li>
+        <li><?php esc_html_e( 'Custom fields will also be included within exported file.' ); ?></li>
+        <li><?php esc_html_e( 'Complex field types, such as <b>connection</b> fields are currently not included within exported file.' ); ?></li>
     </ul>
 
     <h2 style="margin-top: 30px;"><?php _e( 'Importing steps to be followed' ); ?></h2>
     <ol>
-        <li><?php _e( 'Log in to target site as an administrator.' ); ?></li>
-        <li><?php _e( 'Go to Tools: Import in the WordPress admin panel.' ); ?></li>
-        <li><?php _e( 'Install the "WordPress" importer from the list.' ); ?></li>
-        <li><?php _e( 'Activate & Run Importer.' ); ?></li>
-        <li><?php _e( 'Upload exported file using the form provided on that page.' ); ?></li>
-        <li><?php _e( 'Map authors in export file to target system users or create new ones.' ); ?></li>
-        <li><?php _e( 'WordPress will then start the import process.' ); ?></li>
+        <li><?php esc_html_e( 'Log in to target site as an administrator.' ); ?></li>
+        <li><?php esc_html_e( 'Go to Tools: Import in the WordPress admin panel.' ); ?></li>
+        <li><?php esc_html_e( 'Install the "WordPress" importer from the list.' ); ?></li>
+        <li><?php esc_html_e( 'Activate & Run Importer.' ); ?></li>
+        <li><?php esc_html_e( 'Upload exported file using the form provided on that page.' ); ?></li>
+        <li><?php esc_html_e( 'Map authors in export file to target system users or create new ones.' ); ?></li>
+        <li><?php esc_html_e( 'WordPress will then start the import process.' ); ?></li>
     </ol>
     <?php
 }
