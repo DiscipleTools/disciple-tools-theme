@@ -89,7 +89,7 @@ function export_filters() {
         <li><?php esc_html_e( 'Complex field types, such as <b>connection</b> fields are currently not included within exported file.' ); ?></li>
     </ul>
 
-    <h2 style="margin-top: 30px;"><?php _e( 'Importing steps to be followed' ); ?></h2>
+    <h2 style="margin-top: 30px;"><?php esc_html_e( 'Importing steps to be followed' ); ?></h2>
     <ol>
         <li><?php esc_html_e( 'Log in to target site as an administrator.' ); ?></li>
         <li><?php esc_html_e( 'Go to Tools: Import in the WordPress admin panel.' ); ?></li>
