@@ -85,8 +85,39 @@ function export_filters() {
         <li><?php esc_html_e( 'Custom post types must be created in advance on target system, in order to successfully import records.' ); ?></li>
         <li><?php esc_html_e( 'Custom post type record comments will also be included within exported file.' ); ?></li>
         <li><?php esc_html_e( 'Custom post type record activities are currently not included within exported file.' ); ?></li>
-        <li><?php esc_html_e( 'Custom fields will also be included within exported file.' ); ?></li>
-        <li><?php esc_html_e( 'Complex field types, such as <b>connection</b> fields are currently not included within exported file.' ); ?></li>
+        <li><?php esc_html_e( 'Custom fields will also be included within exported file and must also be present within target system post type.' ); ?></li>
+        <li>
+            <?php esc_html_e( 'The field types listed below, are currently handled within export & import processes as follows:' ); ?>
+            <ul>
+                <li>
+                    <br><b><?php esc_html_e( 'Excluded:' ); ?></b>
+                    <ul style="list-style-type: circle !important; margin-left: 20px;">
+                        <li><?php esc_html_e( 'connection' ); ?></li>
+                        <li><?php esc_html_e( 'task' ); ?></li>
+                    </ul>
+                </li>
+                <li>
+                    <br><b><?php esc_html_e( 'Included:' ); ?></b>
+                    <ul style="list-style-type: circle !important; margin-left: 20px;">
+                        <li><?php esc_html_e( 'text' ); ?></li>
+                        <li><?php esc_html_e( 'textarea' ); ?></li>
+                        <li><?php esc_html_e( 'date' ); ?></li>
+                        <li><?php esc_html_e( 'datetime' ); ?></li>
+                        <li><?php esc_html_e( 'boolean' ); ?></li>
+                        <li><?php esc_html_e( 'key_select' ); ?></li>
+                        <li><?php esc_html_e( 'multi_select' ); ?></li>
+                        <li><?php esc_html_e( 'array' ); ?></li>
+                        <li><?php esc_html_e( 'number' ); ?></li>
+                        <li><?php esc_html_e( 'link' ); ?></li>
+                        <li><?php esc_html_e( 'communication_channel' ); ?></li>
+                        <li><?php esc_html_e( 'tags' ); ?></li>
+                        <li><?php esc_html_e( 'user_select' ); ?></li>
+                        <li><?php esc_html_e( 'location' ); ?></li>
+                        <li><?php esc_html_e( 'location_meta' ); ?></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
     </ul>
 
     <h2 style="margin-top: 30px;"><?php esc_html_e( 'Importing steps to be followed' ); ?></h2>
