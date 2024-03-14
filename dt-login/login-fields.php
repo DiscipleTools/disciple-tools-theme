@@ -484,6 +484,19 @@ class DT_Login_Fields {
                 ],
                 'multisite_level' => true,
             ],
+            'identity_providers_microsoft' => [
+                'tab' => 'identity_providers',
+                'key' => 'identity_providers_microsoft',
+                'label' => 'Microsoft',
+                'description' => '',
+                'value' => 'off',
+                'type' => 'select',
+                'default' => [
+                    'on' => 'on',
+                    'off' => 'off',
+                ],
+                'multisite_level' => true,
+            ],
 
             // captcha
             'google_captcha' => [
