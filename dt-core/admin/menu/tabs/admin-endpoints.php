@@ -246,7 +246,8 @@ class DT_Admin_Endpoints {
         //no apparent way for wp_queue to report an issue
         wp_queue()->cron()->cron_worker();
         return [
-            'success' => (bool) true
+            'success' => (bool) true,
+            'remaining' => wp_queue_count_jobs(),
         ];
     }
 }
