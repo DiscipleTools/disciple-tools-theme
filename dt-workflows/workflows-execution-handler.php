@@ -84,7 +84,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
         return true;
     }
 
-    public static function triggered_by_condition_field( $workflow, $initial_fields ): bool {
+    public static function triggered_by_condition_field( $workflow, $trigger_id, $post, $initial_fields ): bool {
 
         // Extract initial field keys to be checked
         $initial_field_keys = ! empty( $initial_fields ) ? array_keys( $initial_fields ) : [];
@@ -92,7 +92,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
         // Determine if trigger owner also doubles up as condition field
         $triggered_by_condition = false;
         foreach ( $workflow->conditions as $condition ) {
-            if ( in_array( $condition->field_id, $initial_field_keys ) ) {
+            if ( in_array( $condition->field_id, $initial_field_keys ) || ( ( $trigger_id === 'created' ) && isset( $post[ $condition->field_id ] ) ) ) {
                 $triggered_by_condition = true;
             }
         }
