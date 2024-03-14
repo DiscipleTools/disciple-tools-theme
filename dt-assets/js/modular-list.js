@@ -477,7 +477,7 @@
                 return `
                         <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
                           <input type="radio" name="view" value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" class="js-list-view" autocomplete="off">
-                          <span id="total_filter_label">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
+                          <span class="list-view__text" id="total_filter_label" title="${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
                           <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.count )}</span>
                         </label>
                         `
@@ -2322,7 +2322,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share, comment, event_type = 'update' ) {
+  function process( q, num, fn, done, update, share, comment, event_type = 'update', responses = [] ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -2330,7 +2330,7 @@
     // no more items?
     if ( !count ) {
         // exec done callback if specified
-        done && done();
+        done && done( responses );
         // quit
         return;
     }
@@ -2339,10 +2339,19 @@
     for ( let i = 0; i < count; i++ ) {
         // call callback, passing item and
         // a "done" callback
-        fn(items[i], function() {
+        fn(items[i], function( response ) {
+          // capture valid response
+          if ( response ) {
+            if ( Array.isArray( response ) ) {
+              response.forEach((element) => responses.push( element ));
+            } else {
+              responses.push( response );
+            }
+          }
+
           // when done, decrement counter and
           // if counter is 0, process next batch
-          --count || process(q, num, fn, done, update, share, comment, event_type);
+          --count || process(q, num, fn, done, update, share, comment, event_type, responses);
         }, update, share, comment, event_type);
 
     }
@@ -2387,9 +2396,17 @@
         }
         break;
       }
+      case 'message': {
+        if (update?.subject && update?.from_name && update?.send_method && update?.message) {
+          promises.push(window.makeRequestOnPosts("POST", `${list_settings.post_type}/${item}/post_messaging`, update).catch(err => {
+            console.error(err);
+          }));
+        }
+        break;
+      }
     }
-    Promise.all(promises).then( function() {
-        done();
+    Promise.all(promises).then( function(responses) {
+      done(responses);
     });
   }
 
@@ -2440,6 +2457,113 @@
         }
       },
     });
+  }
+
+  /**
+   * Bulk Send Message
+   */
+
+  $('#bulk_send_msg_submit').on('click', function (e) {
+    handle_bulk_send_messages();
+  });
+
+  function handle_bulk_send_messages() {
+    const spinner = $('#bulk_send_msg_submit-spinner');
+
+    let subject = $('#bulk_send_msg_subject').val().trim();
+    let from_name = $('#bulk_send_msg_from_name').val().trim();
+    let send_method = 'email';
+    let message = $('#bulk_send_msg').val().trim();
+
+    // If multiple options detected, ensure correct selection is made.
+    const checked_send_method = $('.bulk-send-msg-method:checked');
+    if ( $(checked_send_method).length > 0 ) {
+      send_method = $(checked_send_method).val().trim();
+    }
+
+    let queue =  [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        queue.push( parseInt( $(this).val() ) );
+      }
+    });
+
+    // Validate entries.
+    if (!subject) {
+      $("#bulk_send_msg_subject_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_subject_support_text").hide();
+    }
+
+    if (!from_name) {
+      $("#bulk_send_msg_from_name_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_from_name_support_text").hide();
+    }
+
+    if (!send_method) {
+      $("#bulk_send_msg_method_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_method_support_text").hide();
+    }
+
+    if (!message) {
+      $("#bulk_send_msg_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_support_text").hide();
+    }
+
+    if (!queue || queue.length < 1) {
+      $("#bulk_send_msg_submit_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_submit_support_text").hide();
+    }
+
+    // Proceed with staged-based message send requests.
+    $(spinner).addClass('active');
+    process(queue, 10, do_each, function (responses) {
+
+      // If available, extract response summary.
+      if ( responses && responses.length > 0 ) {
+        let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
+        let count_sent = 0;
+        let count_fails = 0;
+        responses.forEach(function (response) {
+          if ( response && ( response['sent'] !== undefined ) ) {
+            if ( response['sent'] ) {
+              count_sent++;
+            } else {
+              count_fails++;
+            }
+          }
+        });
+
+        $('#bulk_send_msg_submit-message').html(`<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : '' }<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`);
+      }
+
+      // Reset record selections.
+      $(spinner).removeClass('active');
+      $('#bulk_edit_master_checkbox').prop("checked", false);
+      $('.bulk_edit_checkbox input').prop("checked", false);
+      bulk_edit_count();
+      // window.location.reload();
+
+    }, {
+      'subject': subject,
+      'from_name': from_name,
+      'send_method': send_method,
+      'message': message
+    }, {}, {}, 'message');
   }
 
   /**
@@ -3591,8 +3715,9 @@
           </div>
           <div class="cell medium-3" id="export_map_sidebar_menu">
             <!-- details panel -->
+            <h3 style="margin-left: 10px;">${esc(window.list_settings.translations.exports.map['records_on_zoomed_map'])}</h3>
+            <button id="export_map_sidebar_menu_open_but" class="button" style="min-width: 100%; margin-left: 10px;">${esc(window.list_settings.translations.exports.map['open_zoomed_map'])}</button>
             <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px; max-height: 500px; overflow-y: scroll;">
-              <h3>${esc(window.list_settings.translations.exports.map['Records on zoomed map'])}</h3>
               <table id="export_map_sidebar_menu_details_panel_table"></table>
             </div>
           </div>
@@ -3628,6 +3753,78 @@
             center: [-30, 20],
             minZoom: 1,
             zoom: 2
+          });
+
+          // Handle open zoomed map records button clicks.
+          $("#export_map_sidebar_menu_open_but").on("click", function (e) {
+            e.preventDefault();
+
+            // Obtain handle to current map bounds.
+            const bounds = map.getBounds();
+            const bounds_ne = bounds.getNorthEast();
+            const bounds_sw = bounds.getSouthWest();
+
+            // Build query based on current filter and identified map bounds.
+            let query = current_filter.query;
+            query["offset"] = 0;
+            query['limit'] = 500;
+            query['fields_to_return'] = [];
+            query['map_bounds'] = {
+              'ne': {
+                'lat': bounds_ne['lat'],
+                'lng': bounds_ne['lng']
+              },
+              'sw': {
+                'lat': bounds_sw['lat'],
+                'lng': bounds_sw['lng']
+              }
+            };
+
+            window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+            .promise()
+            .then(response => {
+              if ( response?.posts?.length > 0 ) {
+                items = response.posts || [];
+                window.records_list.posts = items // adds global access to current list for plugins
+                window.records_list.total = response.total
+
+                // save
+                if (Object.prototype.hasOwnProperty.call(response, 'posts') && response.posts.length > 0) {
+                  let records_list_ids_and_type = [];
+
+                  $.each(items, function(id, post_object ) {
+                    records_list_ids_and_type.push({ ID: post_object.ID });
+                  });
+
+                  window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);
+                }
+
+                $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
+                $('#load-more').toggle(items.length !== parseInt( response.total ));
+                let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total);
+                $('.filter-result-text').html(result_text);
+                build_table(items);
+                setup_current_filter_labels();
+
+                // Generate corresponding custom filter.
+                reset_split_by_filters();
+                add_custom_filter(esc(window.list_settings.translations.exports.map['filter_name']), "custom-filter", current_filter.query, new_filter_labels, false);
+
+                // Reset vertical scrollbar to start position.
+                window.setTimeout(function() {
+                  $(window).scrollTop(0);
+                }, 0);
+
+                // Close modal window to display updated records list.
+                $('#modal-full').foundation('close');
+
+              } else {
+                alert(`${esc(window.list_settings.translations.exports.map['no_records_on_zoomed_map_alert'])}`);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
           });
 
           // disable map rotation using right click + drag
@@ -3785,10 +3982,10 @@
               // Display initial feature details.
               const details_panel = $('#export_map_sidebar_menu_details_panel');
               const map_height = $(map.getContainer()).height();
-              $(details_panel).css('height', map_height + 'px');
-              $(details_panel).css('min-height', map_height + 'px');
-              $(details_panel).css('max-height', map_height + 'px');
-              render_map_feature_details(map, map.queryRenderedFeatures({
+              $(details_panel).css('height', (map_height - 100) + 'px');
+              $(details_panel).css('min-height', (map_height - 100) + 'px');
+              $(details_panel).css('max-height', (map_height - 100) + 'px');
+              render_map_feature_details(map.queryRenderedFeatures({
                 layers: ['dt-records-clusters', 'dt-records-unclustered-points']
               }));
             }

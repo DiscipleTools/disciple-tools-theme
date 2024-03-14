@@ -1111,6 +1111,12 @@ class Disciple_Tools_Posts
             unset( $query['combine'] ); //remove deprecated combine
         }
 
+        $map_bounds = [];
+        if ( isset( $query['map_bounds'] ) ) {
+            $map_bounds = $query['map_bounds'];
+            unset( $query ['map_bounds'] );
+        }
+
         if ( isset( $query['fields'] ) ){
             $query = $query['fields'];
         }
@@ -1299,6 +1305,13 @@ class Disciple_Tools_Posts
         $fields_sql = self::fields_to_sql( $post_type, $query );
         if ( is_wp_error( $fields_sql ) ){
             return $fields_sql;
+        }
+
+        // If detected, ensure to also query by map bound lat/lng coordinates.
+        $has_map_bounds = isset( $map_bounds['ne'], $map_bounds['ne']['lat'], $map_bounds['ne']['lng'], $map_bounds['sw'], $map_bounds['sw']['lat'], $map_bounds['sw']['lng'] );
+        if ( $has_map_bounds ) {
+            $joins .= " LEFT JOIN $wpdb->dt_location_grid_meta as location_grid_meta ON ( location_grid_meta.post_id = p.ID )";
+            $post_query .= ' AND ( (location_grid_meta.lng >= '. esc_sql( $map_bounds['sw']['lng'] ) .' AND location_grid_meta.lng <= '. esc_sql( $map_bounds['ne']['lng'] ) .') AND (location_grid_meta.lat >= '. esc_sql( $map_bounds['sw']['lat'] ) .' AND location_grid_meta.lat <= '. esc_sql( $map_bounds['ne']['lat'] ) .') )';
         }
 
         // phpcs:disable

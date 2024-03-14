@@ -77,7 +77,8 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
             <table class="widefat striped">
                 <tr>
                     <td>
-                        <?php $this->display_job_total(); ?>
+                        Background Jobs Queued: <span id="job-queue-total"><?php $this->display_job_total(); ?></span>
+
                         <p>
                             <?php $this->display_job_queue_cron_schedule(); ?>
                         </p>
@@ -119,7 +120,7 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
 
     private function display_job_total() {
         $background_job_counts = $this->background_job_queue_counts();
-        echo esc_html( sprintf( 'Background Jobs Queued: %1$s', $background_job_counts['jobs'] ) );
+        echo esc_html( $background_job_counts['jobs'] );
     }
 
     private function display_jobs() {

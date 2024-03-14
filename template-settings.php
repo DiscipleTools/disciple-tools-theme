@@ -506,12 +506,13 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                                 <div style="height:2em;"><?php esc_html_e( 'required', 'disciple_tools' ) ?></div>
                                             <?php else :
                                                 $channel_notification_key = $dt_notification_key . '_' . $channel_key;
+                                                $checked = dt_user_notification_is_enabled( $dt_notification_key, $channel_key, $dt_user_meta, $dt_user->ID );
                                                 ?>
                                                 <div class="switch">
                                                     <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
                                                            name="<?php echo esc_html( $channel_notification_key ) ?>"
                                                            onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
-                                                        <?php print esc_attr( ( isset( $dt_user_meta[$channel_notification_key ] ) && $dt_user_meta[$channel_notification_key ][0] == false ) ? '' : 'checked' ); ?>>
+                                                           <?php checked( $checked ) ?>>
                                                     <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
                                                         <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
                                                     </label>
