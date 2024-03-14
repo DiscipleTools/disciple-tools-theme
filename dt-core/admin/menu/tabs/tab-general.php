@@ -138,9 +138,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      * Prints the user notifications box
      */
     public function user_notifications() {
-
-        $site_options = dt_get_option( 'dt_site_options' );
-        $notifications = $site_options['notifications']['types'];
+        $notifications = dt_get_site_notification_defaults();
         ?>
         <form method="post" name="notifications-form">
             <button type="submit" class="button-like-link" name="reset_notifications" value="1"><?php esc_html_e( 'reset', 'disciple_tools' ) ?></button>
@@ -148,21 +146,30 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="notifications_nonce" id="notifications_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'notifications' ) ) ?>'" />
 
             <table class="widefat">
-            <?php foreach ( $notifications as $notification_key => $notification_value ) : ?>
-                <tr>
-                    <td><?php echo esc_html( $notification_value['label'] ) ?></td>
-                    <td>
-                        <?php esc_html_e( 'Web', 'disciple_tools' ) ?>
-                        <input name="<?php echo esc_html( $notification_key ) ?>_web" type="checkbox"
-                            <?php echo $notifications[ $notification_key ]['web'] ? 'checked' : '' ?>  />
-                    </td>
-                    <td>
-                        <?php esc_html_e( 'Email', 'disciple_tools' ) ?>
-                        <input name="<?php echo esc_html( $notification_key ) ?>_email" type="checkbox"
-                            <?php echo $notifications[ $notification_key ]['email'] ? 'checked' : '' ?>  />
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+                <?php
+                foreach ( $notifications['types'] ?? [] as $type => $type_settings ) {
+                    ?>
+                    <tr>
+                        <td><?php echo esc_html( !empty( $type_settings['label'] ) ? $type_settings['label'] : $type ) ?></td>
+                        <?php
+                        foreach ( $type_settings as $setting_key => $setting_value ) {
+                            if ( $setting_key !== 'label' ) {
+                                $channel_label = isset( $notifications['channels'], $notifications['channels'][$setting_key], $notifications['channels'][$setting_key]['label'] ) ? $notifications['channels'][$setting_key]['label'] : $setting_key;
+                                $input_name = $type .'_'. $setting_key;
+                                ?>
+                                <td>
+                                    <?php echo esc_html( $channel_label ) ?>
+                                    <input name="<?php echo esc_html( $input_name ) ?>" type="checkbox"
+                                        <?php echo $setting_value ? 'checked' : '' ?> />
+                                </td>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </tr>
+                    <?php
+                }
+                ?>
             </table>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
@@ -183,12 +190,21 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 unset( $site_options['notifications'] );
                 $site_option_defaults = dt_get_site_options_defaults();
                 $site_options['notifications'] = $site_option_defaults['notifications'];
+                return update_option( 'dt_site_options', $site_options, true );
             }
 
-            foreach ( $site_options['notifications']['types'] as $key => $value ) {
-                $site_options['notifications']['types'][ $key ]['web'] = isset( $_POST[ $key.'_web' ] );
-                $site_options['notifications']['types'][ $key ]['email'] = isset( $_POST[ $key.'_email' ] );
+            $notifications = dt_get_site_notification_defaults();
+            $updated_types = [];
+            foreach ( $notifications['types'] as $type => $type_settings ) {
+                $updated_types[$type] = $type_settings;
+                foreach ( $type_settings as $setting_key => $setting_value ) {
+                    if ( $setting_key !== 'label' ) {
+                        $updated_types[$type][$setting_key] = isset( $_POST[ $type .'_'. $setting_key ] );
+                    }
+                }
             }
+            $notifications['types'] = $updated_types;
+            $site_options['notifications'] = $notifications;
 
             update_option( 'dt_site_options', $site_options, true );
         }
