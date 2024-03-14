@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-02-08T09:38:28+00:00\n"
+"POT-Creation-Date: 2024-02-16T15:14:30+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Yoruba <https://translate.disciple.tools/projects/disciple-"
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Fi Bere fun"
 
-#: 403.php:55 archive-template.php:944 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:951 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -84,8 +84,8 @@ msgstr "Fi Bere fun"
 msgid "Cancel"
 msgstr "Fagilee"
 
-#: 403.php:59 archive-template.php:446 archive-template.php:488
-#: archive-template.php:968 dt-assets/parts/loop-activity-comment.php:154
+#: 403.php:59 archive-template.php:453 archive-template.php:495
+#: archive-template.php:975 dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
 #: dt-assets/parts/loop-activity-comment.php:207
@@ -144,7 +144,7 @@ msgstr "Ṣẹda Tuntun %s"
 msgid "Filters"
 msgstr "Awọn Ajọ"
 
-#: archive-template.php:36 archive-template.php:126 archive-template.php:596
+#: archive-template.php:36 archive-template.php:126 archive-template.php:603
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:653
 #: dt-core/global-functions.php:681 dt-core/global-functions.php:813
 #: dt-core/global-functions.php:857 dt-posts/custom-post-type.php:20
@@ -188,12 +188,12 @@ msgstr "Wa Gbogbo Awọn aaye"
 msgid "Communication Channels"
 msgstr "Awọn ikanni ibaraẹnisọrọ"
 
-#: archive-template.php:106 archive-template.php:193 archive-template.php:483
+#: archive-template.php:106 archive-template.php:193 archive-template.php:490
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Waye"
 
-#: archive-template.php:107 archive-template.php:194 archive-template.php:484
+#: archive-template.php:107 archive-template.php:194 archive-template.php:491
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "tunto si aiyipada"
@@ -223,91 +223,136 @@ msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:300 archive-template.php:309
+#: archive-template.php:300 archive-template.php:323
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "Akojọ"
 
+#: archive-template.php:304 archive-template.php:327
+msgid "BCC Email List"
+msgstr ""
+
 #: archive-template.php:305
+#, fuzzy
+#| msgid "Phone"
+msgid "Phone List"
+msgstr "Foonu"
+
+#: archive-template.php:310 archive-template.php:335
+#, fuzzy
+#| msgid "List"
+msgid "Map List"
+msgstr "Akojọ"
+
+#: archive-template.php:319
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:310
+#: archive-template.php:324
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:344
+#: archive-template.php:328
+msgid ""
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
+msgstr ""
+
+#: archive-template.php:331
+#, fuzzy
+#| msgid "Member List"
+msgid "Phone Number List"
+msgstr "Akojọ omo egbe"
+
+#: archive-template.php:332
+msgid ""
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
+msgstr ""
+
+#: archive-template.php:336
+msgid ""
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
+msgstr ""
+
+#: archive-template.php:351
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "Akojọ%s"
 
-#: archive-template.php:351
+#: archive-template.php:358
 msgid "Sort"
 msgstr "Too"
 
-#: archive-template.php:356
+#: archive-template.php:363
 msgid "Newest"
 msgstr "Hunting"
 
-#: archive-template.php:361
+#: archive-template.php:368
 msgid "Oldest"
 msgstr "Atijọ julọ"
 
-#: archive-template.php:366
+#: archive-template.php:373
 msgid "Most recently modified"
 msgstr "Laipẹ julọ ti yipada"
 
-#: archive-template.php:371
+#: archive-template.php:378
 msgid "Least recently modified"
 msgstr "Kere laipe títúnṣe"
 
-#: archive-template.php:381 template-new-bulk-post.php:89
+#: archive-template.php:388 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Awọn aaye"
 
-#: archive-template.php:388
+#: archive-template.php:395
 msgid "Bulk Edit"
 msgstr "Olopobobo Ṣatunkọ"
 
-#: archive-template.php:401 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:408 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
 msgstr "Die e sii"
 
-#: archive-template.php:422 dt-contacts/base-setup.php:309
+#: archive-template.php:429 dt-contacts/base-setup.php:309
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "Gbepamo"
 
-#: archive-template.php:426
+#: archive-template.php:433
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Titun %s"
 
-#: archive-template.php:449
+#: archive-template.php:456
 msgid "Choose which fields to display as columns in the list"
 msgstr "Yan awọn aaye wo lati han bi awọn ọwọn ninu atokọ naa"
 
-#: archive-template.php:492
+#: archive-template.php:499
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "Yan gbogbo %1$s ti o fẹ ṣe imudojuiwọn lati atokọ naa, ki o ṣe imudojuiwọn "
 "wọn ni isalẹ"
 
-#: archive-template.php:510 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:517 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:895
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Wa Awọn olumulo"
 
-#: archive-template.php:534 dt-metrics/groups/tree.php:87
+#: archive-template.php:541 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
 #: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2713
 #: dt-users/template-user-management.php:370 dt-users/users.php:175
@@ -315,57 +360,57 @@ msgstr "Wa Awọn olumulo"
 msgid "Status"
 msgstr "Ipo"
 
-#: archive-template.php:584
+#: archive-template.php:591
 msgid "Share with:"
 msgstr "Pin pẹlu:"
 
-#: archive-template.php:604
+#: archive-template.php:611
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "Pinpin pẹlu %s"
 
-#: archive-template.php:616 dt-assets/functions/details-bar.php:166
+#: archive-template.php:623 dt-assets/functions/details-bar.php:166
 #: dt-posts/custom-post-type.php:209
 msgid "Follow"
 msgstr "Tẹle"
 
-#: archive-template.php:621 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:628 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Awọn asọye ati Iṣẹ"
 
-#: archive-template.php:626 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:633 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Kọ asọye rẹ tabi akọsilẹ nibi"
 
-#: archive-template.php:634 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:641 dt-assets/parts/loop-activity-comment.php:56
 msgid "Type:"
 msgstr "Iru:"
 
-#: archive-template.php:654 dt-users/template-new-user.php:127
+#: archive-template.php:661 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Wo Awọn aṣayan diẹ sii"
 
-#: archive-template.php:655 dt-users/template-new-user.php:130
+#: archive-template.php:662 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Wo Awọn aṣayan diẹ"
 
-#: archive-template.php:691 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:698 dt-assets/parts/loop-activity-comment.php:205
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Imudojuiwọn"
 
-#: archive-template.php:692 dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:699 dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "Ṣe Awọn aṣayan ni isalẹ"
 
-#: archive-template.php:700 dt-assets/functions/enqueue-scripts.php:174
+#: archive-template.php:707 dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/functions/enqueue-scripts.php:208
 #: dt-assets/functions/enqueue-scripts.php:273
 #: dt-assets/functions/enqueue-scripts.php:313
@@ -373,91 +418,91 @@ msgstr "Ṣe Awọn aṣayan ni isalẹ"
 msgid "Delete"
 msgstr "Paarẹ"
 
-#: archive-template.php:703 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:710 dt-assets/functions/enqueue-scripts.php:326
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "Ṣe Awọn aṣayan ni isalẹ"
 
-#: archive-template.php:745
+#: archive-template.php:752
 msgid "Loading..."
 msgstr "Nkojọpọ ..."
 
-#: archive-template.php:750 dt-assets/functions/enqueue-scripts.php:379
+#: archive-template.php:757 dt-assets/functions/enqueue-scripts.php:399
 msgid "Load More"
 msgstr "Fifuye Diẹ sii"
 
-#: archive-template.php:762
+#: archive-template.php:769
 msgid "Field Name"
 msgstr "Orukọ aaye"
 
-#: archive-template.php:818
+#: archive-template.php:825
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Tẹ lati wa"
 
-#: archive-template.php:827
+#: archive-template.php:834
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Gbogbo %1$s pẹlu %2$s"
 
-#: archive-template.php:830
+#: archive-template.php:837
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Gbogbo %1$s laisi %2$s"
 
-#: archive-template.php:837
+#: archive-template.php:844
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Àlẹmọ fun ipin-iṣẹ TABI Ti Firanṣẹ si"
 
-#: archive-template.php:846 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:853 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "Ọjọ Ẹda"
 
-#: archive-template.php:853 archive-template.php:860
+#: archive-template.php:860 archive-template.php:867
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
 msgid "None Set"
 msgstr "Kò Ṣeto"
 
-#: archive-template.php:874 archive-template.php:875
+#: archive-template.php:881 archive-template.php:882
 #: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:613
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:538
 msgid "No"
 msgstr "Rara"
 
-#: archive-template.php:881 archive-template.php:882
+#: archive-template.php:888 archive-template.php:889
 #: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:614
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:537
 msgid "Yes"
 msgstr "Bẹẹni"
 
-#: archive-template.php:886
+#: archive-template.php:893
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Ibẹrẹ Ibiti"
 
-#: archive-template.php:889 archive-template.php:900
+#: archive-template.php:896 archive-template.php:907
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Mu kuro"
 
-#: archive-template.php:896
+#: archive-template.php:903
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Opin Ibiti"
 
-#: archive-template.php:911
+#: archive-template.php:918
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "Orukọ Ajọ"
 
-#: archive-template.php:916
+#: archive-template.php:923
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -465,7 +510,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "Gbogbo %1$s pẹlu %2$s"
 
-#: archive-template.php:920
+#: archive-template.php:927
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -473,7 +518,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "Gbogbo %1$s laisi %2$s"
 
-#: archive-template.php:924
+#: archive-template.php:931
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -481,7 +526,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "Gbogbo %1$s pẹlu %2$s"
 
-#: archive-template.php:928
+#: archive-template.php:935
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -489,15 +534,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "Gbogbo %1$s laisi %2$s"
 
-#: archive-template.php:952
+#: archive-template.php:959
 msgid "Filter Name"
 msgstr "Orukọ Ajọ"
 
-#: archive-template.php:957
+#: archive-template.php:964
 msgid "Filter Records"
 msgstr "Awọn igbasilẹ Filter"
 
-#: archive-template.php:961 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:968 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:684
 msgid "Save"
@@ -790,16 +835,82 @@ msgid "Exclude Item"
 msgstr "Yasọtọ Nkan"
 
 #: dt-assets/functions/enqueue-scripts.php:332
-msgctxt "The exported csv data to contain all fields"
-msgid "The exported csv data to contain all {0} %s fields."
+msgctxt "The exported csv data to contain all 64 Contact fields."
+msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:359 dt-contacts/base-setup.php:51
+#: dt-assets/functions/enqueue-scripts.php:333
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgid ""
+"The exported csv data to contain the %2$s visible %1$s field(s) shown below."
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:336
+#: dt-assets/functions/enqueue-scripts.php:344
+#, fuzzy
+#| msgctxt "Contacts List"
+#| msgid "%s List"
+msgid "Full List"
+msgstr "Akojọ%s"
+
+#: dt-assets/functions/enqueue-scripts.php:337
+#, fuzzy
+#| msgid "Address"
+msgid "No Addresses"
+msgstr "Adirẹsi"
+
+#: dt-assets/functions/enqueue-scripts.php:338
+msgid "With Additional Addresses"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:339
+msgid "Open Email for Group"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:340
+#, fuzzy
+#| msgid "Open Modal"
+msgid "Open All"
+msgstr "Ṣii Modal"
+
+#: dt-assets/functions/enqueue-scripts.php:341
+msgid "Show Group Addresses"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:345
+msgid "Has No Phone Number"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:346
+msgid "Has Additional Phone Numbers"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:350
+#, fuzzy
+#| msgid "Used Locations"
+msgid "Mapped Locations"
+msgstr "Awọn ipo Ti a Lo"
+
+#: dt-assets/functions/enqueue-scripts.php:351
+#, fuzzy
+#| msgctxt "Reason Paused label"
+#| msgid "Contact on vacation"
+msgid "Contacts Without Locations"
+msgstr "Kan si isinmi"
+
+#: dt-assets/functions/enqueue-scripts.php:352
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records on zoomed map"
+msgstr "Fi Awọn igbasilẹ sii"
+
+#: dt-assets/functions/enqueue-scripts.php:379 dt-contacts/base-setup.php:51
 #: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Kan si"
 
-#: dt-assets/functions/enqueue-scripts.php:360
+#: dt-assets/functions/enqueue-scripts.php:380
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
