@@ -126,6 +126,11 @@ jQuery(document).ready(function($) {
               <div class="translation-bubble" dir=auto></div>
             <% } %>
             <div  class="comment-controls">
+              <% if ( a.meta && a.meta.audio_url ) { %>
+                <% window.lodash.forEach(a.meta.audio_url, function(url){ %>
+                  <audio controls><source src="<%- url %>" /></audio>
+                <% }) %>
+              <% } %>
               <div class="comment-reactions">
                 <div class="reaction-controls">
                   <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
@@ -384,6 +389,7 @@ jQuery(document).ready(function($) {
         comment_type : d.comment_type,
         action: d.action,
         reactions: d.comment_reactions || {},
+        meta: d.comment_meta || {},
       }
 
       let diff = first ? first.date.diff(obj.date, "hours") : 0

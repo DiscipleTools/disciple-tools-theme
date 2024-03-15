@@ -1512,18 +1512,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         // WordPress.WP.PreparedSQL.NotPrepared
         $comments_meta = $wpdb->get_results( $wpdb->prepare(
             "SELECT
-                m.comment_id, m.meta_key, u.display_name, u.ID
+                m.comment_id, m.meta_key, m.meta_value, u.display_name, u.ID
             FROM
                 `$wpdb->comments` AS c
             JOIN
                 `$wpdb->commentmeta` AS m
             ON c.comment_ID = m.comment_id
-            JOIN
+            LEFT JOIN
                 `$wpdb->users` AS u
             ON m.meta_value = u.ID
             WHERE
-                c.comment_post_ID = %s
-                AND m.meta_key LIKE 'reaction%'",
+                c.comment_post_ID = %s",
             $post_id
         ) );
         // phpcs:enable
@@ -1536,10 +1535,18 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
                 $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
             }
-            $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
-                'name' => $meta->display_name,
-                'user_id' => $meta->ID,
-            ];
+
+            // if meta_key starts with "reaction"...
+            if ( strpos( $meta->meta_key, 'reaction' ) === 0 ) {
+                // reaction meta data as a list of users who have reacted
+                $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
+                    'name' => $meta->display_name,
+                    'user_id' => $meta->ID,
+                ];
+            } else {
+                // all non-reaction meta data
+                $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = $meta->meta_value;
+            }
         }
 
         $response_body = [];
@@ -1561,6 +1568,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'comment_type' => $comment->comment_type,
                 'comment_post_ID' => $comment->comment_post_ID,
                 'comment_reactions' => array_key_exists( $comment->comment_ID, $comments_meta_dict ) ? $comments_meta_dict[$comment->comment_ID] : [],
+                'comment_meta' => array_key_exists( $comment->comment_ID, $comments_meta_dict ) ? $comments_meta_dict[$comment->comment_ID] : [],
             ];
             $response_body[] = $c;
         }
