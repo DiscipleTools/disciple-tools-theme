@@ -1453,7 +1453,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
         $update = wp_update_comment( $comment );
         if ( in_array( $update, [ 0, 1 ] ) ) {
-            if ( $args['comment_meta'] ) {
+            if ( key_exists( 'comment_meta', $args ) && $args['comment_meta'] ) {
                 foreach ( $args['comment_meta'] as $key => $value ) {
                     update_comment_meta( $comment_id, $key, $value );
                 }
