@@ -1416,7 +1416,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $created_comment_id = $new_comment;
             }
 
-            if ( $new_comment && $args['comment_meta'] ) {
+            if ( $new_comment && array_key_exists( 'comment_meta', $args ) ) {
                 foreach ( $args['comment_meta'] as $key => $value ) {
                     if ( is_array( $value ) ) {
                         foreach ( $value as $meta_val ) {
