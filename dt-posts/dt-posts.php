@@ -1415,6 +1415,18 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !$created_comment_id ){
                 $created_comment_id = $new_comment;
             }
+
+            if ( $new_comment && $args['comment_meta'] ) {
+                foreach ( $args['comment_meta'] as $key => $value ) {
+                    if ( is_array( $value ) ) {
+                        foreach ( $value as $meta_val ) {
+                            add_comment_meta( $new_comment, $key, $meta_val );
+                        }
+                    } else {
+                        add_comment_meta( $new_comment, $key, $value );
+                    }
+                }
+            }
         }
 
         if ( !$silent && !is_wp_error( $created_comment_id ) ){
@@ -1426,7 +1438,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $created_comment_id;
     }
 
-    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = 'comment' ){
+    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = 'comment', array $args = [] ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
@@ -1441,6 +1453,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
         $update = wp_update_comment( $comment );
         if ( in_array( $update, [ 0, 1 ] ) ) {
+            if ( $args['comment_meta'] ) {
+                foreach ( $args['comment_meta'] as $key => $value ) {
+                    update_comment_meta( $comment_id, $key, $value );
+                }
+            }
             return $comment_id;
         } else if ( is_wp_error( $update ) ) {
              return $update;
