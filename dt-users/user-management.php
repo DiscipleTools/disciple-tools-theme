@@ -191,7 +191,10 @@ class DT_User_Management
                         'view_user' => __( 'View User', 'disciple_tools' ),
                         'view_contact' => __( 'View Contact', 'disciple_tools' ),
                         'more' => __( 'More', 'disciple_tools' ),
-                        'less' => __( 'Less', 'disciple_tools' )
+                        'less' => __( 'Less', 'disciple_tools' ),
+                        'app_state_enable' => __( 'Enable', 'disciple_tools' ),
+                        'app_state_active' => __( 'Yes', 'disciple_tools' ),
+                        'app_state_inactive' => __( 'No', 'disciple_tools' )
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                     'default_language' => get_option( 'dt_user_default_language', 'en_US' ),

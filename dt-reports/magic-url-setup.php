@@ -82,6 +82,11 @@ class DT_Magic_URL_Setup {
         } else {
             $key = dt_create_unique_key();
             update_post_meta( get_the_ID(), $meta_key, $key );
+
+            // Ensure user meta options are also kept in sync.
+            if ( !empty( $record['corresponds_to_user'] ) ) {
+                update_user_option( $record['corresponds_to_user'], $meta_key, $key );
+            }
         }
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
