@@ -784,6 +784,7 @@ class Disciple_Tools_Posts_Endpoints {
         return DT_Posts::post_messaging( $params['post_type'], $params['id'], [
             'subject' => $params['subject'],
             'from_name' => $params['from_name'],
+            'reply_to' => $params['reply_to'] ?? '',
             'send_method' => $params['send_method'],
             'message' => $params['message']
         ] );

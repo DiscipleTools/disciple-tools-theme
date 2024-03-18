@@ -3081,11 +3081,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !empty( $emails ) ) {
                 $headers = [];
 
-                if ( !empty( $from_user ) ) {
-                    $from_name = $from_user->data->user_nicename . ' <' . $from_user->data->user_email . '>';
-                    $headers[] = 'From: ' . $from_name;
-                    $headers[] = 'Reply-To: ' . $from_name;
-                }
+                $from_name = ( !empty( $from_user ) ? $from_user->data->user_nicename : ( $args['from_name'] ?? $post['title'] ) ) . ' <' . ( !empty( $args['reply_to'] ) ? $args['reply_to'] : ( !empty( $from_user ) ? $from_user->data->user_email : dt_default_email_address() ) ) . '>';
+                $headers[] = 'From: ' . $from_name;
+                $headers[] = 'Reply-To: ' . $from_name;
 
                 // Send email or schedule for later dispatch.
                 $subject = $args['subject'] ?? $post['title'];

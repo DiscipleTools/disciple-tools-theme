@@ -2472,6 +2472,7 @@
 
     let subject = $('#bulk_send_msg_subject').val().trim();
     let from_name = $('#bulk_send_msg_from_name').val().trim();
+    let reply_to = $('#bulk_send_msg_reply_to').val().trim();
     let send_method = 'email';
     let message = $('#bulk_send_msg').val().trim();
 
@@ -2561,6 +2562,7 @@
     }, {
       'subject': subject,
       'from_name': from_name,
+      'reply_to': reply_to,
       'send_method': send_method,
       'message': message
     }, {}, {}, 'message');

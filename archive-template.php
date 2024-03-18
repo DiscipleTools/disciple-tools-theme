@@ -807,6 +807,10 @@ Thanks!';
                                 <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( dt_default_email_name() ); ?>" style="margin-bottom: 0"/>
                                 <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
 
+                                <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( dt_get_option( 'dt_email_base_address' ) ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
+
                                 <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
 
                                 <?php
