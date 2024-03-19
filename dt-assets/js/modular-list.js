@@ -3807,11 +3807,17 @@
                 let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total);
                 $('.filter-result-text').html(result_text);
                 build_table(items);
-                setup_current_filter_labels();
 
                 // Generate corresponding custom filter.
                 reset_split_by_filters();
                 add_custom_filter(esc(window.list_settings.translations.exports.map['filter_name']), "custom-filter", query, new_filter_labels, false);
+
+                // Capture custom filter label and refresh ui.
+                current_filter['labels'] = [{
+                  'id': 'map',
+                  'name': esc(window.list_settings.translations.exports.map['filter_label'])
+                }];
+                setup_current_filter_labels();
 
                 // Persist updated custom filter url parameters.
                 update_url_query( current_filter );
