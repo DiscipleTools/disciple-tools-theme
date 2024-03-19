@@ -528,13 +528,26 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
     private function display_import_tiles_fields() {
         ?>
         <div id="dt_import_tiles_fields_div" style="display: none;">
-            <?php
-            $this->box( 'top', 'Tiles & Fields', [ 'col_span' => 12 ] );
-            ?>
-            <div id="dt_import_tiles_fields_content_div" style="display: none;"></div>
-            <?php
-            $this->box( 'bottom' );
-            ?>
+            <table id="dt_import_tiles_fields_table" class="widefat striped">
+                <thead>
+                <tr>
+                    <th>Tiles & Fields</th>
+                    <th style="text-align: right;">
+                        <label>
+                            <span style="font-size: 10px;">Un/Check All Tiles & Fields</span>
+                            <input type="checkbox" id="dt_import_tiles_fields_table_checkbox" style="margin-right: 15px;" />
+                        </label>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <div id="dt_import_tiles_fields_content_div" style="display: none;"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <?php
     }
