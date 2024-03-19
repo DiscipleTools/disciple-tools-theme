@@ -813,27 +813,27 @@ Thanks!';
 
                                 <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
 
-                                <?php
-                                if ( count( $comms_channels ) > 1 ) {
-                                    ?>
-                                    <br><label><?php echo esc_html__( 'Select message send method', 'disciple_tools' ); ?></label>
-                                    <?php
-                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
-                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
-                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
-                                            ?>
-                                            <input type="radio" class="bulk-send-msg-method"
-                                                   id="<?php echo esc_attr( $method_id ); ?>"
-                                                   name="bulk_send_msg_method"
-                                                   value="<?php echo esc_attr( $channel_key ); ?>"
-                                                <?php echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?>/>
-                                            <label
-                                                for="<?php echo esc_attr( $method_id ); ?>"><?php echo esc_html( $channel_value['label'] ); ?></label>
-                                            <?php
-                                        }
-                                    }
-                                }
-                                ?>
+<!--                                --><?php
+//                                if ( count( $comms_channels ) > 1 ) {
+//                                    ?>
+<!--                                    <br><label>--><?php //echo esc_html__( 'Select message send method', 'disciple_tools' ); ?><!--</label>-->
+<!--                                    --><?php
+//                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
+//                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
+//                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
+//                                            ?>
+<!--                                            <input type="radio" class="bulk-send-msg-method"-->
+<!--                                                   id="--><?php //echo esc_attr( $method_id ); ?><!--"-->
+<!--                                                   name="bulk_send_msg_method"-->
+<!--                                                   value="--><?php //echo esc_attr( $channel_key ); ?><!--"-->
+<!--                                                --><?php //echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?><!--/>-->
+<!--                                            <label-->
+<!--                                                for="--><?php //echo esc_attr( $method_id ); ?><!--">--><?php //echo esc_html( $channel_value['label'] ); ?><!--</label>-->
+<!--                                            --><?php
+//                                        }
+//                                    }
+//                                }
+//                                ?>
                                 <span id="bulk_send_msg_method_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><br><?php echo esc_html__( 'Please ensure a valid send method has been specified.', 'disciple_tools' ); ?></span><br>
 
                                 <label for="bulk_send_msg"><?php echo esc_html__( 'Message', 'disciple_tools' ); ?></label>
