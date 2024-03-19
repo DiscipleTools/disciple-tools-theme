@@ -3063,14 +3063,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         // Dispatch accordingly, based on specified send method.
         if ( $send_method === 'email' && isset( $post['contact_email'] ) ) {
 
-            // Attempt to source specified from_name user details; defaulting to current user if unsuccessful.
-            $from_user = null;
-            foreach ( get_users() as $user ) {
-                if ( isset( $user->data->user_nicename ) && $user->data->user_nicename === ( $args['from_name'] ?? $post['title'] ) ) {
-                    $from_user = $user;
-                }
-            }
-
             // Extract post's to email addresses.
             $emails = [];
             foreach ( $post['contact_email'] as $post_email ) {
@@ -3081,14 +3073,14 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !empty( $emails ) ) {
                 $headers = [];
 
-                if ( !empty( $from_user ) ) {
-                    $from_name = $from_user->data->user_nicename . ' <' . $from_user->data->user_email . '>';
-                    $headers[] = 'From: ' . $from_name;
-                    $headers[] = 'Reply-To: ' . $from_name;
-                }
+                $default_email = dt_default_email_address();
+                $from_email = !empty( $args['reply_to'] ) ? $args['reply_to'] : $default_email;
+                $from_name = !empty( $args['from_name'] ) ? $args['from_name'] : get_bloginfo( 'name' );
+                $headers[] = 'From: ' . $from_name . ' <' . $default_email . '>';
+                $headers[] = 'Reply-To: ' . $from_name . ' <' . $from_email . '>';
 
                 // Send email or schedule for later dispatch.
-                $subject = $args['subject'] ?? $post['title'];
+                $subject = $args['subject'] ?? '';
                 $is_sent = ( wp_queue()->push( new DT_Send_Email_Job( $emails, $subject, $message, $headers ) ) !== false );
 
                 // Capture activity record.
