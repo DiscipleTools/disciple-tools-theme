@@ -328,14 +328,14 @@
    * Creates a custom filter from the query and labels in the encoded url
    */
   function create_custom_filter_from_query_params() {
-    const { query, labels } = get_url_query_params()
+    const { query, labels, filterName } = get_url_query_params()
 
     if (!query) return {}
 
     /* Creating object the same shape as cached_filter */
     let query_custom_filter = {
       ID: Date.now() / 1000,
-      name: 'Custom Filter',
+      name: (filterName) ? filterName : 'Custom Filter',
       type: 'custom_filter',
       labels: [],
       query: {},
@@ -365,13 +365,15 @@
     const encodedLabels = url.searchParams.get('labels')
     const filterID = url.searchParams.get('filter_id')
     const filterTab = url.searchParams.get('filter_tab')
+    const filterName = url.searchParams.get('filter_name')
     const query = encodedQuery && window.SHAREDFUNCTIONS.decodeJSON(encodedQuery)
     const labels = encodedLabels && window.SHAREDFUNCTIONS.decodeJSON(encodedLabels)
     return ({
       query,
       labels,
       filterID,
-      filterTab
+      filterTab,
+      filterName
     })
   }
 
@@ -393,6 +395,7 @@
     url.searchParams.set('labels', encodedLabels)
     url.searchParams.set('filter_id', currentFilter.ID)
     url.searchParams.set('filter_tab', currentFilter.tab || '')
+    url.searchParams.set('filter_name', currentFilter.name || '')
 
     window.history.pushState(null, document.title, url.search)
   }
@@ -3806,11 +3809,20 @@
                 let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total);
                 $('.filter-result-text').html(result_text);
                 build_table(items);
-                setup_current_filter_labels();
 
                 // Generate corresponding custom filter.
                 reset_split_by_filters();
-                add_custom_filter(esc(window.list_settings.translations.exports.map['filter_name']), "custom-filter", current_filter.query, new_filter_labels, false);
+                add_custom_filter(esc(window.list_settings.translations.exports.map['filter_name']), "custom-filter", query, new_filter_labels, false);
+
+                // Capture custom filter label and refresh ui.
+                current_filter['labels'] = [{
+                  'id': 'map',
+                  'name': esc(window.list_settings.translations.exports.map['filter_label'])
+                }];
+                setup_current_filter_labels();
+
+                // Persist updated custom filter url parameters.
+                update_url_query( current_filter );
 
                 // Reset vertical scrollbar to start position.
                 window.setTimeout(function() {
