@@ -127,8 +127,8 @@ jQuery(document).ready(function($) {
             <% } %>
             <div  class="comment-controls">
               <% if ( a.meta && a.meta.audio_url ) { %>
-                <% window.lodash.forEach(a.meta.audio_url, function(url){ %>
-                  <audio controls><source src="<%- url %>" /></audio>
+                <% window.lodash.forEach(a.meta.audio_url, function(meta){ %>
+                  <audio controls><source src="<%- meta.value %>" /></audio>
                 <% }) %>
               <% } %>
               <div class="comment-reactions">
