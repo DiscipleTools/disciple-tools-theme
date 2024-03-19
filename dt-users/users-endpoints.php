@@ -167,6 +167,10 @@ class Disciple_Tools_Users_Endpoints
     }
 
     public function app_switch( WP_REST_Request $request ) {
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [ 'status' => 400 ] );
+        }
+
         $params = $request->get_params();
         $user_id = !empty( $params['user_id'] ) ? $params['user_id'] : get_current_user_id();
         if ( !empty( $params['app_key'] ) && $user_id ) {

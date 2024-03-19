@@ -372,7 +372,7 @@ jQuery(document).ready(function($) {
 
       // Cherry-pick magic links to be displayed, based on specified apps.
       for ( const [app_key, app] of Object.entries( apps ) ) {
-        if ( magic_links[ app_key ] && ( magic_links[ app_key ]?.post_type === 'user' ) ) {
+        if ( magic_links[ app_key ] && ( magic_links[ app_key ]?.post_type === 'user' ) && window.dt_user_management_localized?.has_permission ) {
           links_detected = true;
           const magic_link = magic_links[ app_key ];
           const url = window.SHAREDFUNCTIONS.escapeHTML( window.wpApiShare.site_url + `/${ app?.root }/${ app?.type }/${ magic_link?.meta_key_value }` );
