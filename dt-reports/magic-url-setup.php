@@ -51,7 +51,12 @@ class DT_Magic_URL_Setup {
                     if ( $app_value['post_type'] === $post_type && isset( $app_value['show_app_tile'] ) && $app_value['show_app_tile'] === true ){
                         $this->add_app_row( $post_type, $app_value );
                     } elseif ( ( isset( $record['type']['key'] ) && $record['type']['key'] === 'user' ) && isset( $app_value['post_type'] ) && ( $app_value['post_type'] === 'user' ) && ( current_user_can( 'manage_dt' ) || current_user_can( 'list_users' ) ) ) {
-                        $this->add_app_row( $post_type, $app_value );
+
+                        // Ensure record has a corresponding user id; which has a valid key already set.
+                        $meta_key_value = get_user_option( $app_value['meta_key'], $record['corresponds_to_user'] );
+                        if ( !empty( $meta_key_value ) && isset( $record[$app_value['meta_key']] ) && $record[$app_value['meta_key']] === $meta_key_value ) {
+                            $this->add_app_row( $post_type, $app_value );
+                        }
                     }
                 }
             }
@@ -82,11 +87,6 @@ class DT_Magic_URL_Setup {
         } else {
             $key = dt_create_unique_key();
             update_post_meta( get_the_ID(), $meta_key, $key );
-
-            // Ensure user meta options are also kept in sync.
-            if ( !empty( $record['corresponds_to_user'] ) ) {
-                update_user_option( $record['corresponds_to_user'], $meta_key, $key );
-            }
         }
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
