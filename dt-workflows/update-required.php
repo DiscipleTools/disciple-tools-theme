@@ -67,10 +67,10 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                         $user_name    = ( '@' . dt_get_assigned_name( $contact->ID, true ) . ' ' ) ?? '';
                         $comment_html = null;
 
-                        if ( isset( $setting, $setting['comment_translations'], $setting['comment_translations'][$user_locale] ) ) {
+                        if ( isset( $setting['comment_translations'][$user_locale] ) && !empty( $setting['comment_translations'][$user_locale] ) ) {
                             $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] );
 
-                        } elseif ( isset( $setting, $setting['comment'] ) ) {
+                        } elseif ( isset( $setting['comment'] ) ) {
                             $comment_html = esc_html( $user_name . $setting['comment'] );
                         }
 
@@ -116,10 +116,10 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     $user_name    = ( '@' . dt_get_assigned_name( $group->ID, true ) . ' ' ) ?? '';
                     $comment_html = null;
 
-                    if ( isset( $setting, $setting['comment_translations'], $setting['comment_translations'][$user_locale] ) ) {
+                    if ( isset( $setting['comment_translations'][$user_locale] ) && !empty( $setting['comment_translations'][$user_locale] ) ) {
                         $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] );
 
-                    } elseif ( isset( $setting, $setting['comment'] ) ) {
+                    } elseif ( isset( $setting['comment'] ) ) {
                         $comment_html = esc_html( $user_name . $setting['comment'] );
                     }
 
