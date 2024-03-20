@@ -167,21 +167,24 @@ class Disciple_Tools_Users_Endpoints
     }
 
     public function app_switch( WP_REST_Request $request ) {
-        if ( ! current_user_can( 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [ 'status' => 400 ] );
-        }
-
         $params = $request->get_params();
         $user_id = !empty( $params['user_id'] ) ? $params['user_id'] : get_current_user_id();
-        if ( !empty( $params['app_key'] ) && $user_id ) {
-            $result = Disciple_Tools_Users::app_switch( $user_id, $params['app_key'] );
-            if ( $result['status'] ) {
-                return $result['response'];
+        $user = get_user_by( 'id', $user_id );
+
+        // Ensure identified user has sufficient permissions to app switch.
+        if ( !empty( $user ) && ( ( isset( $user->allcaps['manage_dt'] ) && $user->allcaps['manage_dt'] ) || ( isset( $user->allcaps['multiplier'] ) && $user->allcaps['multiplier'] ) ) ) {
+            if ( !empty( $params['app_key'] ) && $user_id ) {
+                $result = Disciple_Tools_Users::app_switch( $user_id, $params['app_key'] );
+                if ( $result['status'] ) {
+                    return $result['response'];
+                } else {
+                    return new WP_Error( __METHOD__, $result['message'], [ 'status' => 400 ] );
+                }
             } else {
-                return new WP_Error( __METHOD__, $result['message'], [ 'status' => 400 ] );
+                return new WP_Error( 'preference_error', 'Please provide a valid preference to change for user', [ 'status' => 400 ] );
             }
         } else {
-            return new WP_Error( 'preference_error', 'Please provide a valid preference to change for user', [ 'status' => 400 ] );
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [ 'status' => 400 ] );
         }
     }
 

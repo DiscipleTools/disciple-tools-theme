@@ -314,22 +314,16 @@ class DT_User_Management
             $user_response['user_fields'] = dt_build_user_fields_display( $dt_user_meta );
 
             // Capture any associated magic links.
-            if ( !empty( $contact_id ) ) {
-                $record = DT_Posts::get_post( 'contacts', $contact_id, false, false );
-                if ( !empty( $record ) && !is_wp_error( $record ) ) {
-                    $magic_link_apps = dt_get_registered_types();
-                    foreach ( $magic_link_apps ?? [] as $app_root => $app_types ){
-                        foreach ( $app_types as $app_type => $app_value ){
-                            if ( isset( $app_value['label'], $app_value['meta_key'], $app_value['post_type'] ) ){
-                                $user_response['magic_links'][$app_value['meta_key']] = [
-                                    'type' => $app_type,
-                                    'label' => $app_value['label'],
-                                    'post_type' => $app_value['post_type'],
-                                    'meta_key' => $app_value['meta_key'],
-                                    'meta_key_value' => $record[$app_value['meta_key']] ?? ''
-                                ];
-                            }
-                        }
+            foreach ( dt_get_registered_types() ?? [] as $app_root => $app_types ) {
+                foreach ( $app_types as $app_type => $app_value ) {
+                    if ( isset( $app_value['label'], $app_value['meta_key'], $app_value['post_type'] ) ) {
+                        $user_response['magic_links'][$app_value['meta_key']] = [
+                            'type' => $app_type,
+                            'label' => $app_value['label'],
+                            'post_type' => $app_value['post_type'],
+                            'meta_key' => $app_value['meta_key'],
+                            'meta_key_value' => get_user_option( $app_value['meta_key'], $user_id )
+                        ];
                     }
                 }
             }
