@@ -169,10 +169,9 @@ class Disciple_Tools_Users_Endpoints
     public function app_switch( WP_REST_Request $request ) {
         $params = $request->get_params();
         $user_id = !empty( $params['user_id'] ) ? $params['user_id'] : get_current_user_id();
-        $user = get_user_by( 'id', $user_id );
 
         // Ensure identified user has sufficient permissions to app switch.
-        if ( !empty( $user ) && ( ( isset( $user->allcaps['manage_dt'] ) && $user->allcaps['manage_dt'] ) || ( intval( $user_id ) === get_current_user_id() ) ) ) {
+        if ( user_can( $user_id, 'manage_dt' ) || ( intval( $user_id ) === get_current_user_id() ) ) {
             if ( !empty( $params['app_key'] ) && $user_id ) {
                 $result = Disciple_Tools_Users::app_switch( $user_id, $params['app_key'] );
                 if ( $result['status'] ) {
