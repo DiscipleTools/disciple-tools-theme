@@ -172,7 +172,7 @@ class Disciple_Tools_Users_Endpoints
         $user = get_user_by( 'id', $user_id );
 
         // Ensure identified user has sufficient permissions to app switch.
-        if ( !empty( $user ) && ( ( isset( $user->allcaps['manage_dt'] ) && $user->allcaps['manage_dt'] ) || ( isset( $user->allcaps['multiplier'] ) && $user->allcaps['multiplier'] ) ) ) {
+        if ( !empty( $user ) && ( ( isset( $user->allcaps['manage_dt'] ) && $user->allcaps['manage_dt'] ) || ( intval( $user_id ) === get_current_user_id() ) ) ) {
             if ( !empty( $params['app_key'] ) && $user_id ) {
                 $result = Disciple_Tools_Users::app_switch( $user_id, $params['app_key'] );
                 if ( $result['status'] ) {
