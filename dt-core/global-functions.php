@@ -568,6 +568,14 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    function dt_render_icon_slot( $field ) {
+        if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ): ?>
+            <span slot="icon-start">
+                <i class="dt-icon <?php echo esc_html( $field['font-icon'] ) ?>"></i>
+            </span>
+        <?php endif;
+    }
+
     /**
      * Accepts types: key_select, multi_select, text, textarea, number, date, connection, location, communication_channel, tags, user_select, link
      *
@@ -610,8 +618,30 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 return;
             }
 
+            $icon = null;
+            if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
+                $icon = 'icon=' . esc_attr( $fields[$field_key]['icon'] );
+            }
+            if ( isset( $fields[$field_key]['post_type'] ) ) {
+                $post_type = 'postType=' . esc_attr( $fields[$field_key]['post_type'] );
+            } else {
+                $post_type = 'postType=' . esc_attr( $post['post_type'] );
+            }
+
+            $shared_attributes = '
+                  id="' . esc_attr( $display_field_id ) . '"
+                  name="' . esc_attr( $field_key ) .'"
+                  label="' . esc_attr( $fields[$field_key]['name'] ) . '"
+                  ' . esc_html( $post_type ) . '
+                  ' . esc_html( $icon ) . '
+                  ' . esc_html( $required_tag ) . '
+                  ' . esc_html( $disabled ) . '
+                  ' . ( $is_private ? 'private privateLabel=' . esc_attr( _x( "Private Field: Only I can see it\'s content", 'disciple_tools' ) ) : null ) . '
+            ';
+            $supported_web_components = [ 'text', 'key_select', 'date', 'tags', 'connection', 'multi_select' ];
 
             ?>
+            <?php if ( !in_array( $field_type, $supported_web_components ) ): ?>
             <div class="section-subheader">
                 <?php dt_render_field_icon( $fields[$field_key] );
 
@@ -673,6 +703,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </button>
                 <?php endif ?>
             </div>
+            <?php endif; ?>
+
             <?php
             if ( $field_type === 'boolean' ) {
                 $selected = '';
@@ -687,77 +719,57 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     <option value="1" <?php echo esc_html( $selected ); ?>><?php esc_html_e( 'Yes', 'disciple_tools' ); ?></option>
                 </select>
                 <?php
-            } else if ( $field_type === 'key_select' ) :
-                $color_select = false;
-                $active_color = '';
-                if ( isset( $fields[$field_key]['default_color'] ) ) {
-                    $color_select = true;
-                    $active_color = $fields[$field_key]['default_color'];
-                    $current_key = $post[$field_key]['key'] ?? '';
-                    if ( isset( $fields[$field_key]['default'][ $current_key ]['color'] ) ){
-                        $active_color = $fields[$field_key]['default'][ $current_key ]['color'];
-                    }
-                }
+            } else if ( $field_type === 'key_select' ) :?>
+                <?php
+                $options_array = $fields[$field_key]['default'];
+                $options_array = array_map( function( $key, $value ) {
+                    return [
+                        'id' => $key,
+                        'label' => $value['label'],
+                        'color' => $value['color'] ?? null,
+                    ];
+                }, array_keys( $options_array ), $options_array );
                 ?>
-                <select class="select-field <?php echo esc_html( $color_select ? 'color-select' : '' ); ?>" id="<?php echo esc_html( $display_field_id ); ?>" style="<?php echo esc_html( $color_select ? ( 'background-color: ' . $active_color ) : '' ); ?>" <?php echo esc_html( $required_tag ) ?> <?php echo esc_html( $disabled ); ?>>
-                    <?php if ( !isset( $fields[$field_key]['default']['none'] ) && empty( $fields[$field_key]['select_cannot_be_empty'] ) ) : ?>
-                        <option value="" <?php echo esc_html( !isset( $post[$field_key] ) ?: 'selected' ) ?>></option>
-                    <?php endif; ?>
-                    <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ):
-                        if ( !$show_hidden && isset( $option_value['hidden'] ) && $option_value['hidden'] === true ){
-                            continue;
-                        }
-                        $selected = isset( $post[$field_key]['key'] ) && $post[$field_key]['key'] === strval( $option_key ); ?>
-                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? 'selected' : '' )?>>
-                            <?php echo esc_html( $option_value['label'] ) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <dt-single-select
+                    <?php echo wp_kses_post( $shared_attributes ) ?>
+                    options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
+                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? $post[$field_key]['key'] : '' ) ?>">
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-single-select>
             <?php elseif ( $field_type === 'tags' ) : ?>
-                <div id="<?php echo esc_html( $display_field_id ); ?>" class="tags">
-                    <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
-                    <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $field_key );?>"
-                                           name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                           autocomplete="off"
-                                           data-add-new-tag-text="<?php echo esc_html( __( 'Add new tag "%s"', 'disciple_tools' ) )?>"
-                                           data-tag-exists-text="<?php echo esc_html( __( 'Tag "%s" is already being used', 'disciple_tools' ) )?>" <?php echo esc_html( $disabled ); ?>>
-                                </span>
-                                <?php if ( $show_extra_controls ) : ?>
-                                <span class="typeahead__button">
-                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height" data-field="<?php echo esc_html( $field_key );?>" <?php echo esc_html( $disabled ); ?>>
-                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                    </button>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php $value = array_map(function ( $value ) {
+                    return [
+                        'id' => $value,
+                        'label' => $value,
+                    ];
+                }, $post[$field_key] ?? []);
+                ?>
+                <dt-tags
+                    <?php echo wp_kses_post( $shared_attributes ) ?>
+                    value="<?php echo esc_attr( json_encode( $value ) ) ?>"
+                    placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
+                    allowAdd
+                >
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-tags>
             <?php elseif ( $field_type === 'multi_select' ) :
-                if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ){
+                if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ){ ?>
+                    <?php
+                        $options_array = $fields[$field_key]['default'];
+                        $options_array = array_map( function( $key, $value ) {
+                            return [
+                                'id' => $key,
+                                'label' => $value['label'],
+                                'color' => $value['color'] ?? null,
+                            ];
+                        }, array_keys( $options_array ), $options_array );
                     ?>
-                    <div class="multi_select" id="<?php echo esc_html( $display_field_id ); ?>" >
-                        <var id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></var>
-                        <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-multi_select" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                               data-field="<?php echo esc_html( $field_key );?>"
-                                               name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                               placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                               autocomplete="off" <?php echo esc_html( $disabled ); ?>>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <dt-multi-select <?php echo wp_kses_post( $shared_attributes ) ?>
+                    options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
+                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>"
+                    >
+                        <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                    </dt-multi-select>
                 <?php } else { ?>
                     <div class="small button-group" style="display: inline-block">
                         <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
@@ -779,9 +791,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                 <?php } ?>
             <?php elseif ( $field_type === 'text' ) :?>
-                <input id="<?php echo esc_html( $display_field_id ); ?>" type="text" <?php echo esc_html( $required_tag ) ?>
-                       class="text-input"
-                       value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?>/>
+                <dt-text
+                    <?php echo wp_kses_post( $shared_attributes ) ?>
+                    value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>"
+                >
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-text>
             <?php elseif ( $field_type === 'textarea' ) :?>
                 <textarea id="<?php echo esc_html( $display_field_id ); ?>" <?php echo esc_html( $required_tag ) ?>
                        class="textarea dt_textarea" <?php echo esc_html( $disabled ); ?>><?php echo esc_html( $post[$field_key] ?? '' ) ?></textarea>
@@ -850,14 +865,10 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
 
             <?php elseif ( $field_type === 'date' ) :?>
-                <div class="<?php echo esc_html( $display_field_id ); ?> input-group dt_date_group">
-                    <input id="<?php echo esc_html( $display_field_id ); ?>" class="input-group-field dt_date_picker" type="text" autocomplete="off" <?php echo esc_html( $required_tag ) ?>
-                           value="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?> >
-
-                    <div class="input-group-button">
-                        <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
-                    </div>
-                </div>
+                <dt-date
+                    <?php echo wp_kses_post( $shared_attributes ) ?> timestamp="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>">
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-date>
             <?php elseif ( $field_type === 'datetime' ) :?>
                 <?php $timestamp = $post[$field_key]['timestamp'] ?? '' ?>
                 <div class="<?php echo esc_html( $display_field_id ); ?> input-group dt_date_time_group" data-timestamp="<?php echo esc_html( $timestamp ) ?>">
@@ -872,32 +883,22 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     </div>
                 </div>
             <?php elseif ( $field_type === 'connection' ) :?>
-                <div id="<?php echo esc_attr( $display_field_id . '_connection' ) ?>" class="dt_typeahead <?php echo esc_html( $disabled ) ?>">
-                    <span id="<?php echo esc_html( $display_field_id ); ?>-result-container" class="result-container"></span>
-                    <div id="<?php echo esc_html( $display_field_id ); ?>_t" name="form-<?php echo esc_html( $display_field_id ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                           data-field="<?php echo esc_html( $field_key ); ?>"
-                                           data-post_type="<?php echo esc_html( $fields[$field_key]['post_type'] ) ?>"
-                                           data-field_type="connection"
-                                           name="<?php echo esc_html( $display_field_id ); ?>[query]"
-                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                           autocomplete="off" <?php echo esc_html( $disabled ); ?>>
-                                </span>
-                                <?php if ( $show_extra_controls ) : ?>
-                                <span class="typeahead__button">
-                                    <button type="button" data-connection-key="<?php echo esc_html( $display_field_id ); ?>" class="create-new-record typeahead__image_button input-height" <?php echo esc_html( $disabled ); ?>>
-                                        <?php $icon = isset( $fields[$field_key]['create-icon'] ) ? $fields[$field_key]['create-icon'] : get_template_directory_uri() . '/dt-assets/images/add-contact.svg'; ?>
-                                        <img src="<?php echo esc_html( $icon ) ?>"/>
-                                    </button>
-                                </span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php $value = array_map(function ( $value ) {
+                    return [
+                        'id' => $value['ID'],
+                        'label' => $value['post_title'],
+                        'link' => $value['permalink'],
+                        'status' => $value['status'],
+                    ];
+                }, $post[$field_key] ?? []);
+                ?>
+                <dt-connection
+                    <?php echo wp_kses_post( $shared_attributes ) ?>
+                    value="<?php echo esc_attr( json_encode( $value ) ) ?>"
+                    allowAdd
+                >
+                    <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+                </dt-connection>
             <?php elseif ( $field_type === 'location_meta' ) : ?>
                 <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
                     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
