@@ -491,6 +491,25 @@ class Disciple_Tools_Posts_Endpoints {
                 },
             ]
         );
+
+        //post_messaging
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/post_messaging', [
+                [
+                    'methods'  => 'POST',
+                    'callback' => [ $this, 'post_messaging' ],
+                    'args' => [
+                        'post_type' => $arg_schemas['post_type'],
+                        'id' => $arg_schemas['id']
+                    ],
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        $params = $request->get_params();
+                        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+                        return DT_Posts::can_access( $post_type );
+                    }
+                ]
+            ]
+        );
     }
 
     /**
@@ -635,6 +654,9 @@ class Disciple_Tools_Posts_Endpoints {
         if ( isset( $body['date'] ) ){
             $args['comment_date'] = $body['date'];
         }
+        if ( isset( $body['meta'] ) ) {
+            $args['comment_meta'] = $body['meta'];
+        }
         $type = 'comment';
         if ( isset( $body['comment_type'] ) ){
             $type = $body['comment_type'];
@@ -644,7 +666,12 @@ class Disciple_Tools_Posts_Endpoints {
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
-            return get_comment( $result );
+            $ret = get_comment( $result )->to_array();
+            unset( $ret['children'] );
+            unset( $ret['populated_children'] );
+            unset( $ret['post_fields'] );
+            $ret['comment_meta'] = get_comment_meta( $ret['comment_ID'] );
+            return $ret;
         }
     }
 
@@ -652,14 +679,23 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         $type = 'comment';
+        $args = [];
         if ( isset( $body['comment_type'] ) ){
             $type = $body['comment_type'];
         }
-        $result = DT_Posts::update_post_comment( $url_params['comment_id'], $body['comment'], true, $type );
+        if ( isset( $body['meta'] ) ) {
+            $args['comment_meta'] = $body['meta'];
+        }
+        $result = DT_Posts::update_post_comment( $url_params['comment_id'], $body['comment'], true, $type, $args );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
-            return get_comment( $result );
+            $ret = get_comment( $result )->to_array();
+            unset( $ret['children'] );
+            unset( $ret['populated_children'] );
+            unset( $ret['post_fields'] );
+            $ret['comment_meta'] = get_comment_meta( $ret['comment_ID'] );
+            return $ret;
         }
     }
 
@@ -754,5 +790,20 @@ class Disciple_Tools_Posts_Endpoints {
             return $result;
         }
         return [];
+    }
+
+    public function post_messaging( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['subject'], $params['from_name'], $params['send_method'], $params['message'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        return DT_Posts::post_messaging( $params['post_type'], $params['id'], [
+            'subject' => $params['subject'],
+            'from_name' => $params['from_name'],
+            'reply_to' => $params['reply_to'] ?? '',
+            'send_method' => $params['send_method'],
+            'message' => $params['message']
+        ] );
     }
 }

@@ -905,7 +905,7 @@ class Disciple_Tools_Notifications
         if ( $html ){
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
         } else {
-            $link = $post_title;
+            $link = home_url( '/' ) . get_post_type( $object_id );
         }
         if ( $notification['notification_name'] === 'created' ) {
             $notification_note = sprintf( esc_html_x( '%s was created and assigned to you.', '%s was created and assigned to you.', 'disciple_tools' ), $link );
@@ -960,7 +960,7 @@ class Disciple_Tools_Notifications
             $user_who_declined = get_userdata( $notification['source_user_id'] );
             $notification_note = sprintf( esc_html_x( '%1$s declined assignment on: %2$s.', 'User1 declined assignment on: contact1', 'disciple_tools' ), $user_who_declined->display_name, $link );
         } else {
-            $notification_note = apply_filters( 'dt_custom_notification_note', '', $notification );
+            $notification_note = apply_filters( 'dt_custom_notification_note', '', $notification, $html, $condensed );
         }
         return $notification_note;
     }

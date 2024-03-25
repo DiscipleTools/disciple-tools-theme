@@ -66,7 +66,7 @@
     const { filterID, filterTab, query } = get_url_query_params()
 
     if (filterID && is_in_filter_list(filterID) ) {
-      const currentFilter = { ID: filterID, query: query ?? {} }
+      const currentFilter = { ID: filterID, query: query || {} }
       if (filterTab) currentFilter.tab = filterTab
       return currentFilter
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
@@ -328,14 +328,14 @@
    * Creates a custom filter from the query and labels in the encoded url
    */
   function create_custom_filter_from_query_params() {
-    const { query, labels } = get_url_query_params()
+    const { query, labels, filterName } = get_url_query_params()
 
     if (!query) return {}
 
     /* Creating object the same shape as cached_filter */
     let query_custom_filter = {
       ID: Date.now() / 1000,
-      name: 'Custom Filter',
+      name: (filterName) ? filterName : 'Custom Filter',
       type: 'custom_filter',
       labels: [],
       query: {},
@@ -365,13 +365,15 @@
     const encodedLabels = url.searchParams.get('labels')
     const filterID = url.searchParams.get('filter_id')
     const filterTab = url.searchParams.get('filter_tab')
+    const filterName = url.searchParams.get('filter_name')
     const query = encodedQuery && window.SHAREDFUNCTIONS.decodeJSON(encodedQuery)
     const labels = encodedLabels && window.SHAREDFUNCTIONS.decodeJSON(encodedLabels)
     return ({
       query,
       labels,
       filterID,
-      filterTab
+      filterTab,
+      filterName
     })
   }
 
@@ -393,6 +395,7 @@
     url.searchParams.set('labels', encodedLabels)
     url.searchParams.set('filter_id', currentFilter.ID)
     url.searchParams.set('filter_tab', currentFilter.tab || '')
+    url.searchParams.set('filter_name', currentFilter.name || '')
 
     window.history.pushState(null, document.title, url.search)
   }
@@ -418,6 +421,9 @@
       current_filter = window.lodash.find(list_settings.filters.filters, {ID: filter_id}) || window.lodash.find(list_settings.filters.filters, {ID: filter_id.toString()}) || current_filter
       current_filter.type = 'default'
       current_filter.labels = current_filter.labels || [{id: filter_id, name: current_filter.name}]
+    }
+    if ( current_filter.query === undefined ) {
+      current_filter.query = {}
     }
     sort = sort || current_filter.query.sort;
     current_filter.query.sort = (typeof sort === "string") ? sort : "-post_date"
@@ -463,7 +469,7 @@
         <a href="#" class="accordion-title" data-id="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
           ${window.SHAREDFUNCTIONS.escapeHTML(tab.label)}
           <span class="tab-count-span" data-tab="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
-              ${tab.count || tab.count >= 0 ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
+              ${Number.isInteger(tab.count) ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})`: ``}
           </span>
         </a>
         <div class="accordion-content" data-tab-content>
@@ -474,7 +480,7 @@
                 return `
                         <label class="list-view" style="${ filter.subfilter ? `margin-left:${indent}px` : ''}">
                           <input type="radio" name="view" value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}" class="js-list-view" autocomplete="off">
-                          <span id="total_filter_label">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
+                          <span class="list-view__text" id="total_filter_label" title="${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.name)}</span>
                           <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(filter.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(filter.count )}</span>
                         </label>
                         `
@@ -621,7 +627,7 @@
   }
 
   function reset_sorting_in_table_header(currentFilter) {
-    let sort_field = window.lodash.get(currentFilter, "query.sort", "name");
+    let sort_field = window.lodash.get(currentFilter, "query.sort", "-post_date");
     //reset sorting in table header
     table_header_row.removeClass("sorting_asc");
     table_header_row.removeClass("sorting_desc");
@@ -894,7 +900,7 @@
             values[0] = '&#9733;'
           }
           let tmp_html = `
-            <td dir="auto" title="${values.join(', ')}">
+            <td dir="auto" data-id="${field_key}" title="${values.join(', ')}">
               <ul>
                 ${values_html}
               </ul>
@@ -927,7 +933,7 @@
       } else {
         table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
-          <td style="white-space: nowrap" >${index+1}.</td>
+          <td style="white-space: nowrap" data-id="index" >${index+1}.</td>
           ${ row_fields_html }
         `
       }
@@ -948,8 +954,8 @@
     loading_spinner.addClass("active");
     let query = current_filter.query
     if ( offset ){
-      query["offset"] = offset
-      query['limit'] = 500
+      query.offset = offset
+      query.limit = 500
     }
     if ( sort ){
       query.sort = sort
@@ -1038,7 +1044,7 @@
     })
     let filterRow = $(`<label class='list-view ${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}'>`).append(`
       <input type="radio" name="view" value="custom_filter" data-id="${window.SHAREDFUNCTIONS.escapeHTML( ID.toString() )}" class="js-list-view" checked autocomplete="off">
-        ${window.SHAREDFUNCTIONS.escapeHTML( name )}
+        ${window.SHAREDFUNCTIONS.escapeHTML(name)}
     `).append(save_filter)
     $(".custom-filters").append(filterRow)
     if ( load_records ){
@@ -1081,6 +1087,38 @@
           date.end = end
         }
         search_query.push({[field]: date})
+      } else if ( type === "text" || type === "communication_channel" ){
+        let filter = $('#' + field + '_text_comms_filter').val();
+        let value = filter;
+
+        switch ( $('.filter-by-text-comms-option:checked').val() ) {
+          case 'all-with-set-value': {
+            value = '*';
+            break;
+          }
+          case 'all-without-set-value': {
+            value = null;
+            break;
+          }
+          case 'all-with-filtered-value': {
+            value = filter;
+            break;
+          }
+          case 'all-without-filtered-value': {
+            value = '-' + filter;
+            break;
+          }
+        }
+
+        // Package accordingly based on field type.
+        switch ( type ) {
+          case 'text':
+          case 'communication_channel': {
+            search_query.push({[field]: (value !== null) ? [value] : []});
+            break;
+          }
+        }
+
       } else {
         let options = []
         $(`#${field}-options input:checked`).each(function(){
@@ -1110,7 +1148,7 @@
   }
   $("#confirm-filter-records").on("click", function () {
     let search_query = get_custom_filter_search_query()
-    let filterName = window.SHAREDFUNCTIONS.escapeHTML( $('#new-filter-name').val() )
+    let filterName = $('#new-filter-name').val()
     reset_split_by_filters();
     add_custom_filter( filterName || "Custom Filter", "custom-filter", search_query, new_filter_labels)
   })
@@ -1300,6 +1338,108 @@
 
   $('.all-without-connections').on("click", without_connections_handler)
 
+  $('.text-comms-filter-input').on("keyup", function (e) {
+
+    // Ensure to assign default settings accordingly.
+    const field = $(e.target).data('field');
+    const panel = $(`#${field}.tabs-panel`);
+    const field_settings = list_settings?.post_type_settings?.fields[field];
+    if ( panel && field_settings && field_settings['type'] ) {
+      switch ( field_settings['type'] ) {
+        case 'text':
+        case 'communication_channel': {
+          const checked_options = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const existing_label = new_filter_labels.find((label) => ( label['field'] === field ) );
+
+          // Only apply default settings if unable to detect and previous selections.
+          if ( ( checked_options.length === 0 ) && ( existing_label === undefined ) ) {
+            const default_option = $(panel).find(`.filter-by-text-comms-option[value="all-with-filtered-value"]`);
+            if ( default_option ) {
+              $(default_option).prop('checked', true);
+              $(default_option).trigger('click');
+            }
+          }
+
+          // Update label with latest filtered value.
+          const filtered_value = $(e.target).val();
+          const latest_checked_option = $(panel).find(`.filter-by-text-comms-option:checked`);
+          const latest_existing_label = new_filter_labels.find( (label) => ( label['field'] === field ) );
+          if ( ( latest_checked_option.length === 1 ) && ( latest_existing_label !== undefined ) && ['all-with-filtered-value', 'all-without-filtered-value'].includes( $(latest_checked_option).val() ) ) {
+            const updated_label_text = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+            $(selected_filters).find(`.current-filter[data-id="${$(latest_checked_option).val()}"].${field}`).text( updated_label_text );
+
+            // Update global filter labels array.
+            const label_idx = new_filter_labels.findIndex( (label) => ( label['field'] === field ) );
+            new_filter_labels[label_idx]['name'] = updated_label_text;
+          }
+          break;
+        }
+      }
+    }
+  });
+
+  $('.filter-by-text-comms-option').on("click", function (e) {
+    handle_filter_by_text_comms( {
+      id: $(this).val(),
+      field: $(this).data('field')
+    } );
+  });
+
+  function handle_filter_by_text_comms(options) {
+    const {id, field} = options || {id: null, field: null};
+    if (id && field) {
+
+      // Adjust filter text field state accordingly, based on option selection.
+      let filter_text_field = $('#' + field + '_text_comms_filter');
+      $(filter_text_field).prop('disabled', ['all-with-set-value', 'all-without-set-value'].includes(id));
+
+      // Ensure duplicates are avoided.
+      const existing_label = new_filter_labels.find((label) => ( label['id'] === id ) && ( label['field'] === field ) );
+      if ( existing_label === undefined ) {
+
+        // Identify stale labels to be deleted.
+        let removed_old_filter_labels = [];
+        new_filter_labels.forEach((label) => {
+          if ( label['field'] === field ) {
+            if ( !( label['id'] === id ) ) {
+              removed_old_filter_labels.push( label );
+            }
+          }
+        });
+
+        // Remove stale labels, if detected.
+        if (removed_old_filter_labels.length > 0) {
+          new_filter_labels = new_filter_labels.filter((existing_label) => {
+            let filtered = false;
+            removed_old_filter_labels.forEach((stale_label) => {
+              if ( (existing_label['id'] !== stale_label['id']) && (existing_label['name'] !== stale_label['name']) && (existing_label['field'] !== stale_label['field']) ) {
+                filtered = true;
+              }
+            });
+
+            return filtered;
+          });
+
+          // Remove associated ui labels.
+          removed_old_filter_labels.forEach((label) => {
+            $(selected_filters).find(`.current-filter[data-id="${label['id']}"].${label['field']}`).remove();
+          });
+        }
+
+        // Create new generic filter label.
+        let {newLabel, filterName} = create_label_all(field, ['all-without-set-value', 'all-without-filtered-value'].includes(id), id, list_settings);
+
+        // Adjust label to reflect filtered text.
+        if ( ['all-with-filtered-value', 'all-without-filtered-value'].includes(id) ) {
+          let filtered_value = $(`#${field}_text_comms_filter`).val();
+          newLabel['name'] = filterName = `${esc( list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '' )}: ${esc(filtered_value)}`;
+        }
+
+        selected_filters.append(`<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`);
+        new_filter_labels.push(newLabel);
+      }
+    }
+  }
 
   let load_multi_select_typeaheads = async function load_multi_select_typeaheads() {
     for (let input of $("#filter-modal .multi_select .typeahead__query input")) {
@@ -1714,8 +1854,9 @@
 
   $('#filter-tabs').on('change.zf.tabs', function (a, b) {
     let field = $(b).data("field")
+    const panel = $(`#${field}.tabs-panel`);
     $(`.tabs-panel`).removeClass('is-active')
-    $(`#${field}.tabs-panel`).addClass('is-active')
+    $(panel).addClass('is-active')
     if (field && window.Typeahead[`.js-typeahead-${field}`]) {
       window.Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
@@ -2184,7 +2325,7 @@
   })
 
   //Bulk Update Queue
-  function process( q, num, fn, done, update, share, comment, event_type = 'update' ) {
+  function process( q, num, fn, done, update, share, comment, event_type = 'update', responses = [] ) {
     // remove a batch of items from the queue
     let items = q.splice(0, num),
         count = items.length;
@@ -2192,7 +2333,7 @@
     // no more items?
     if ( !count ) {
         // exec done callback if specified
-        done && done();
+        done && done( responses );
         // quit
         return;
     }
@@ -2201,10 +2342,19 @@
     for ( let i = 0; i < count; i++ ) {
         // call callback, passing item and
         // a "done" callback
-        fn(items[i], function() {
+        fn(items[i], function( response ) {
+          // capture valid response
+          if ( response ) {
+            if ( Array.isArray( response ) ) {
+              response.forEach((element) => responses.push( element ));
+            } else {
+              responses.push( response );
+            }
+          }
+
           // when done, decrement counter and
           // if counter is 0, process next batch
-          --count || process(q, num, fn, done, update, share, comment, event_type);
+          --count || process(q, num, fn, done, update, share, comment, event_type, responses);
         }, update, share, comment, event_type);
 
     }
@@ -2249,9 +2399,17 @@
         }
         break;
       }
+      case 'message': {
+        if (update?.subject && update?.from_name && update?.send_method && update?.message) {
+          promises.push(window.makeRequestOnPosts("POST", `${list_settings.post_type}/${item}/post_messaging`, update).catch(err => {
+            console.error(err);
+          }));
+        }
+        break;
+      }
     }
-    Promise.all(promises).then( function() {
-        done();
+    Promise.all(promises).then( function(responses) {
+      done(responses);
     });
   }
 
@@ -2302,6 +2460,115 @@
         }
       },
     });
+  }
+
+  /**
+   * Bulk Send Message
+   */
+
+  $('#bulk_send_msg_submit').on('click', function (e) {
+    handle_bulk_send_messages();
+  });
+
+  function handle_bulk_send_messages() {
+    const spinner = $('#bulk_send_msg_submit-spinner');
+
+    let subject = $('#bulk_send_msg_subject').val().trim();
+    let from_name = $('#bulk_send_msg_from_name').val().trim();
+    let reply_to = $('#bulk_send_msg_reply_to').val().trim();
+    let send_method = 'email';
+    let message = $('#bulk_send_msg').val().trim();
+
+    // If multiple options detected, ensure correct selection is made.
+    const checked_send_method = $('.bulk-send-msg-method:checked');
+    if ( $(checked_send_method).length > 0 ) {
+      send_method = $(checked_send_method).val().trim();
+    }
+
+    let queue =  [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        queue.push( parseInt( $(this).val() ) );
+      }
+    });
+
+    // Validate entries.
+    if (!subject) {
+      $("#bulk_send_msg_subject_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_subject_support_text").hide();
+    }
+
+    if (!from_name) {
+      $("#bulk_send_msg_from_name_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_from_name_support_text").hide();
+    }
+
+    if (!send_method) {
+      $("#bulk_send_msg_method_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_method_support_text").hide();
+    }
+
+    if (!message) {
+      $("#bulk_send_msg_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_support_text").hide();
+    }
+
+    if (!queue || queue.length < 1) {
+      $("#bulk_send_msg_submit_support_text").show();
+      return;
+
+    } else {
+      $("#bulk_send_msg_submit_support_text").hide();
+    }
+
+    // Proceed with staged-based message send requests.
+    $(spinner).addClass('active');
+    process(queue, 10, do_each, function (responses) {
+
+      // If available, extract response summary.
+      if ( responses && responses.length > 0 ) {
+        let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
+        let count_sent = 0;
+        let count_fails = 0;
+        responses.forEach(function (response) {
+          if ( response && ( response['sent'] !== undefined ) ) {
+            if ( response['sent'] ) {
+              count_sent++;
+            } else {
+              count_fails++;
+            }
+          }
+        });
+
+        $('#bulk_send_msg_submit-message').html(`<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : '' }<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`);
+      }
+
+      // Reset record selections.
+      $(spinner).removeClass('active');
+      $('#bulk_edit_master_checkbox').prop("checked", false);
+      $('.bulk_edit_checkbox input').prop("checked", false);
+      bulk_edit_count();
+      // window.location.reload();
+
+    }, {
+      'subject': subject,
+      'from_name': from_name,
+      'reply_to': reply_to,
+      'send_method': send_method,
+      'message': message
+    }, {}, {}, 'message');
   }
 
   /**
@@ -2685,7 +2952,8 @@
 
   function bulk_send_app() {
 
-    let note = $('#bulk_send_app_note').val()
+    let subject = $('#bulk_send_app_subject').val();
+    let note = $('#bulk_send_app_msg').val();
 
     let selected_input = jQuery('.bulk_send_app.dt-radio.button-group input:checked')
     if ( selected_input.length < 1 ) {
@@ -2715,10 +2983,12 @@
 
     $('#bulk_send_app_submit-spinner').addClass('active')
 
-    window.makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, note: note, post_ids: queue } )
+    let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">See queue</a>`;
+
+    window.makeRequest('POST', list_settings.post_type + '/email_magic', { root: root, type: type, subject: subject, note: note, post_ids: queue } )
       .done( data => {
         $('#bulk_send_app_submit-spinner').removeClass('active')
-        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}!<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
+        $('#bulk_send_app_submit-message').html(`<strong>${data.total_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : '' }<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`)
         $('#bulk_edit_master_checkbox').prop("checked", false);
         $('.bulk_edit_checkbox input').prop("checked", false);
         bulk_edit_count()
@@ -2853,39 +3123,69 @@
    * List Exports
    */
 
-  function export_list_display(title, display_function) {
+  function export_list_display(type, title, display_function) {
+    let modal = null;
 
-    // Execute display function.
-    display_function();
+    // Adjust export reveal model accordingly, based on incoming type.
+    switch ( type ) {
+      case 'csv':
+      case 'email':
+      case 'phone': {
+        modal = $('#modal-large');
+        $('#modal-large-title').html(title + '<span class="loading-spinner" style="margin-left: 10px;"></span>');
+        break;
+      }
+      case 'map': {
+        modal = $('#modal-full');
+        break;
+      }
+    }
 
-    // Set export title and display modal.
-    $('#export_title').html(title);
-    $('#export_reveal').foundation('open');
+    if ( modal ) {
+      display_function();
+      $(modal).foundation('open');
+    }
   }
 
   $("#export_csv_list").on("click", function (e) {
-    export_list_display($(e.currentTarget).text(), function () {
+    export_list_display('csv', $(e.currentTarget).text(), function () {
+
+      // Show spinners.
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
 
       // Identify fields to be exported; ignoring hidden and private fields.
-      let exporting_fields = [];
+      let exporting_fields_all = [];
+      let exporting_fields_visible = [];
+
       $.each(window.list_settings['post_type_settings']['fields'], function (field_id, field_setting) {
         if ( ( (field_setting['private'] === undefined) || !field_setting['private'] ) && ( (field_setting['hidden'] === undefined) || !field_setting['hidden'] ) && !['task', 'array'].includes( field_setting['type'] ) ) {
           let setting = field_setting;
           setting['field_id'] = field_id;
-          exporting_fields.push(setting);
+          exporting_fields_all.push(setting);
+
+          // Separately capture currently shown table fields.
+          if ( fields_to_show_in_table.includes( field_id ) ) {
+            exporting_fields_visible.push(setting);
+          }
 
           // Insert additional locations id column, if needed.
           if ( ['location', 'location_meta'].includes( setting['type'] ) ) {
             let location_settings = JSON.parse( JSON.stringify( setting ) );
             location_settings['name'] = `${location_settings['name']} [ID]`;
             location_settings['dynamic_csv_col'] = true;
-            exporting_fields.push(location_settings);
+            exporting_fields_all.push(location_settings);
+
+            // Separately capture currently shown table fields.
+            if ( fields_to_show_in_table.includes( field_id ) ) {
+              exporting_fields_visible.push(location_settings);
+            }
           }
         }
       });
 
       // Sort identified fields by name into ascending order.
-      exporting_fields.sort(function (a, b) {
+      exporting_fields_all.sort(function (a, b) {
         if (a.name.trim() < b.name.trim()) {
           return -1;
         }
@@ -2895,15 +3195,46 @@
         return 0;
       });
 
+      exporting_fields_visible.sort(function (a, b) {
+        if (a.show_in_table === undefined && b.show_in_table !== undefined) {
+          return 1;
+        }
+        if (a.show_in_table !== undefined && b.show_in_table === undefined) {
+          return -1;
+        }
+        if (parseInt(a.show_in_table) < parseInt(b.show_in_table)) {
+          return -1;
+        }
+        if (parseInt(a.show_in_table) > parseInt(b.show_in_table)) {
+          return 1;
+        }
+        return 0;
+      });
+
+      // Create shown table fields supporting html.
+      let fields_to_show_in_table_html = ``;
+      exporting_fields_visible.forEach((field) => {
+        fields_to_show_in_table_html += `<span class="current-filter-list" style="padding: 4px;">${window.SHAREDFUNCTIONS.escapeHTML(field['name'])}</span>`;
+      });
+
       // Take a two-step approach; first, display fields to be exported and on-demand, obtain records upon export request.
-      let html = `
-      <div class="grid-x">
-        <div class="cell">`;
+      let html = `<div class="grid-x">`;
 
-        html += `<span style="font-size: 20px;">${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg'].replaceAll( '{0}', exporting_fields.length ) ) }</span></div>`;
+      html += `
+        <div class="cell">
+          <label>
+            <input type="radio" name="csv_exported_list_fields" value="all" checked />
+            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_all'].replaceAll( '%2$s', exporting_fields_all.length ) ) }
+          </label>
+          <label>
+            <input type="radio" name="csv_exported_list_fields" value="visible" />
+            ${ window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['csv']['fields_msg_visible'].replaceAll( '%2$s', exporting_fields_visible.length ) ) }
+          </label>
+          ${ fields_to_show_in_table_html }
+        </div>`;
 
-        let record_total = window.records_list['total'];
-        html +=`<div class="cell"><hr></div>
+      let record_total = window.records_list['total'];
+      html +=`<div class="cell"><hr></div>
         <div class="cell">
             <button class="button" id="export_csv_list_download" ${ (record_total <= 0) ? 'disabled' : '' }>
             <i class="mdi mdi-cloud-download-outline" style="font-size: 22px; margin-right: 10px;"></i>
@@ -2912,17 +3243,18 @@
         </div>
       </div>`;
 
-      $('#export_content').html(html);
+      $('#modal-large-content').html(html);
 
       // Terminate any spinners and prepare download button event listener.
-      $('.loading-spinner').removeClass('active');
+      $(spinner).removeClass('active');
       $('#export_csv_list_download').on('click', function(){
-        $('.loading-spinner').addClass('active');
+        $(spinner).addClass('active');
         $('#export_csv_list_download').prop('disabled', true);
 
-        export_csv_list_download(exporting_fields, function () {
-          $('.loading-spinner').removeClass('active');
-          $('#export_reveal').foundation('close');
+        // Ensure to determine which field groupings to move forward with....? All or Currently Visible?
+        export_csv_list_download( ( $('input[name="csv_exported_list_fields"]:checked').val() === 'visible' ) ? exporting_fields_visible : exporting_fields_all, function () {
+          $(spinner).removeClass('active');
+          $('#modal-large').foundation('close');
         });
       });
     });
@@ -2957,23 +3289,23 @@
                 case 'number':
                 case 'boolean':
                 case 'textarea': {
-                  let token = (post[field_id]) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]) : '';
+                  let token = (post[field_id]) ? post[field_id] : '';
                   csv_row.push(token);
                   break;
                 }
                 case 'user_select': {
-                  let token = (post[field_id] && post[field_id]['display']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['display']) : '';
+                  let token = (post[field_id] && post[field_id]['display']) ? post[field_id]['display'] : '';
                   csv_row.push(token);
                   break;
                 }
                 case 'key_select': {
-                  let token = (post[field_id] && post[field_id]['label']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['label']) : '';
+                  let token = (post[field_id] && post[field_id]['label']) ? post[field_id]['label'] : '';
                   csv_row.push(token);
                   break;
                 }
                 case 'date':
                 case 'datetime': {
-                  let token = (post[field_id] && post[field_id]['formatted']) ? window.SHAREDFUNCTIONS.escapeHTML(post[field_id]['formatted']) : '';
+                  let token = (post[field_id] && post[field_id]['formatted']) ? post[field_id]['formatted'] : '';
                   csv_row.push(token);
                   break;
                 }
@@ -2981,7 +3313,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( field['default'][cell_value]['label'] ) );
+                      token_array.push( field['default'][cell_value]['label'] );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -2991,7 +3323,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['post_title'] ) );
+                      token_array.push( cell_value['post_title'] );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3001,7 +3333,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['value'] ) );
+                      token_array.push( cell_value['value'] );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3013,7 +3345,7 @@
                   let id_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value['label'] ) );
+                      token_array.push( cell_value['label'] );
 
                       // Extract id accordingly based on value shape; to be appended within dynamic csv column.
                       let grid_id = '';
@@ -3023,7 +3355,7 @@
                       } else if ( cell_value['grid_id'] ) {
                         grid_id = cell_value['grid_id'];
                       }
-                      id_array.push( window.SHAREDFUNCTIONS.escapeHTML( grid_id ) );
+                      id_array.push( grid_id );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3034,7 +3366,7 @@
                   let token_array = [];
                   if (post[field_id]) {
                     $.each(post[field_id], function(cell_index, cell_value) {
-                      token_array.push( window.SHAREDFUNCTIONS.escapeHTML( cell_value ) );
+                      token_array.push( cell_value );
                     });
                   }
                   csv_row.push(token_array.join(token_array_delimiter));
@@ -3047,7 +3379,7 @@
                       if (field['default'][cell_value['type']]) {
                         let category_label = field['default'][cell_value['type']]['label'];
                         let token = category_label +': '+ cell_value['value'];
-                        token_array.push(window.SHAREDFUNCTIONS.escapeHTML(token));
+                        token_array.push(token);
                       }
                     });
                   }
@@ -3075,7 +3407,17 @@
         csv_export.unshift(csv_headers);
 
         // Convert csv arrays into raw downloadable data.
-        let csv = csv_export.map((csv) => '"' + csv.join('","') + '"').join("\r\n");
+        const csv = csv_export.map(row => {
+          return row.map((item) => {
+            let escapeditem = item;
+            //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
+            if (String(item).includes('"')) {
+              escapeditem = item.replaceAll('"', '""');
+            }
+
+            return `"${escapeditem}"`;
+          });
+        }).join('\r\n');
 
         // Finally, automatically execute a download of generated csv data.
         let csv_download_link = document.createElement('a');
@@ -3087,7 +3429,7 @@
         let minute = new Intl.DateTimeFormat('en', { minute: 'numeric' }).format(date);
         let second = new Intl.DateTimeFormat('en', { second: 'numeric' }).format(date);
         csv_download_link.download = `${year}_${month}_${day}_${hour}_${minute}_${second}_${window.list_settings.post_type}_list_export.csv`;
-        csv_download_link.href = "data:text/csv;charset=utf-8," + escape(csv);
+        csv_download_link.href = "data:text/csv;charset=utf-8;base64," + window.Base64.encode( csv );
         csv_download_link.click();
         csv_download_link.remove();
       }
@@ -3129,6 +3471,597 @@
       }
     });
 
+  }
+
+  $("#export_bcc_email_list").on("click", function (e) {
+    export_list_display('email', $(e.currentTarget).text(), function () {
+
+      // Show spinners.
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
+
+      let html = `
+        <div class="grid-x">
+            <div class="cell">
+               <table><tbody id="grouping-table"></tbody></table>
+            </div>
+
+            <div class="cell">
+                <a onclick="jQuery('#email-list-print').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['full_list'] )} (<span id="list-count-full"></span>)</strong></a>
+                <div class="cell" id="email-list-print" style="display:none;"></div>
+            </div>
+            <div class="cell">
+                <a onclick="jQuery('#contacts-without').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['no_addr'] )} (<span id="list-count-without"></span>)</strong></a>
+                <div id="contacts-without" style="display:none;"></div>
+            </div>
+            <div class="cell">
+                <a onclick="jQuery('#contacts-with').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['with_addr'] )} (<span id="list-count-with"></span>)</strong></a>
+                <div id="contacts-with" style="display:none;"></div>
+            </div>
+        </div>`;
+
+      $('#modal-large-content').html(html);
+
+      // Recursively fetch all filtered list posts, to be processed.
+      recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
+        let email_totals = []
+        let list_count = {
+          with: 0,
+          without: 0,
+          full: 0
+        }
+        let count = 0
+        let group = 0
+        let contacts_with = jQuery('#contacts-with')
+        let contacts_without = jQuery('#contacts-without')
+
+        // Generate totals.
+        $.each(posts, function (i, v) {
+          let has_email = false
+          if (typeof v.contact_email !== "undefined" && v.contact_email !== '') {
+            if (typeof email_totals[group] === "undefined") {
+              email_totals[group] = []
+            }
+            let non_empty_values = v.contact_email.filter(val=>val.value)
+            non_empty_values.forEach(vv => {
+              let email = window.SHAREDFUNCTIONS.escapeHTML(vv.value);
+              if (validate_email_address(email)) {
+                email_totals[group].push(email)
+                count++
+                list_count['full']++
+                has_email = true;
+              } else {
+                console.log(`Invalid Email Format: ${email}`);
+              }
+            })
+            if (count > 50) {
+              group++
+              count = 0
+            }
+            if ( non_empty_values.length > 1 ){
+              contacts_with.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+              list_count['with']++
+            }
+          }
+          if ( !has_email ){
+            contacts_without.append(`<a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+            list_count['without']++
+          }
+        });
+
+        // Update count findings.
+        let list_print = jQuery('#email-list-print')
+        $.each(email_totals, function (index, values) {
+          list_print.append(window.SHAREDFUNCTIONS.escapeHTML(values.join(', ')))
+        })
+
+        jQuery('#list-count-with').html(list_count['with'])
+        jQuery('#list-count-without').html(list_count['without'])
+        jQuery('#list-count-full').html(list_count['full'])
+
+        // Generate links.
+        let email_links = []
+        group = 0
+
+        $.each(posts, function (i, v) {
+          if (typeof v.contact_email !== "undefined" && v.contact_email !== '') {
+            if (typeof email_links[group] === "undefined") {
+              email_links[group] = []
+            }
+            $.each(v.contact_email, function (ii, vv) {
+              let email = window.SHAREDFUNCTIONS.escapeHTML(vv.value);
+              if ( validate_email_address(email) ){
+                email_links[group].push( email )
+              }
+            })
+            if (email_links[group].length > 50) {
+              group++
+            }
+          }
+        });
+
+        // loop 50 each
+        let grouping_table = $('#grouping-table')
+        let email_strings = []
+        $.each(email_links, function (index, values) {
+          index++
+          email_strings = []
+          email_strings = window.SHAREDFUNCTIONS.escapeHTML(values.join(', '))
+          email_strings.replace(/,/g, ', ')
+
+          grouping_table.append(`
+            <tr><td style="vertical-align:top; width:50%;"><a href="mailto:?subject=group${index}&bcc=${email_strings}" id="group-link-${index}" class="button expanded export-link-button">${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['open_email'] )} ${index}</a></td>
+            <td><a onclick="jQuery('#group-addresses-${index}').toggle()">${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['show_group_addrs'] )}</a> <p style="display:none;overflow-wrap: break-word;" id="group-addresses-${index}">${email_strings.replace(/,/g, ', ')}</p></td></tr>
+          `)
+
+        })
+        grouping_table.append(`
+            <tr><td style="vertical-align:top; text-align:center; width:50%;"><a class="button expanded export-link-button" id="open_all">${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['bcc']['open_all'] )}</a></td><td></td></tr>
+        `)
+
+        $('.export-link-button').on('click',function(){
+          $(this).addClass('warning');
+        })
+        $('#open_all').on('click', function(){
+          $('.export-link-button').each(function(i,v){
+            document.getElementById(v.id).click()
+          })
+        })
+
+        // Hide spinners.
+        $(spinner).removeClass('active');
+      });
+    });
+  });
+
+  function validate_email_address(email) {
+    const regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+  }
+
+  $("#export_phone_list").on("click", function (e) {
+    export_list_display('phone', $(e.currentTarget).text(), function () {
+
+      // Show spinners.
+      const spinner = $('#modal-large-title').find('.loading-spinner');
+      $(spinner).addClass('active');
+
+      let html = `
+        <div class="grid-x">
+            <a onclick="jQuery('#email-list-print').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['phone']['full_list'] )} (<span id="list-count-full"></span>)</strong></a>
+            <div class="cell" id="email-list-print"></div>
+        </div>
+        <hr>
+        <div class="grid-x">
+            <div class="cell">
+                <a onclick="jQuery('#contacts-without').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['phone']['no_phone'] )} (<span id="list-count-without"></span>)</strong></a>
+                <div id="contacts-without" style="display:none;"></div>
+            </div>
+            <div class="cell">
+                <a onclick="jQuery('#contacts-with').toggle();"><strong>${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['phone']['with_phone'] )} (<span id="list-count-with"></span>)</strong></a>
+                <div id="contacts-with" style="display:none;"></div>
+            </div>
+        </div>`;
+
+      $('#modal-large-content').html(html);
+
+      // Recursively fetch all filtered list posts, to be processed.
+      recursively_fetch_posts(0, 500, window.records_list['total'], [], function (posts) {
+        let phone_list = []
+        let list_count = {
+          with: 0,
+          without: 0,
+          full: 0
+        }
+        let group = 0
+        let contacts_with = jQuery('#contacts-with')
+        let contacts_without = jQuery('#contacts-without')
+
+        // Generate totals.
+        $.each(posts, function (i, v) {
+          let has_phone = false
+          if (typeof v.contact_phone !== 'undefined' && v.contact_phone !== '') {
+            if (typeof phone_list[group]==="undefined") {
+              phone_list[group] = []
+            }
+            let non_empty_values = v.contact_phone.filter(val=>val.value)
+            non_empty_values.forEach(vv=>{
+              phone_list[group].push(vv.value)
+              list_count['full']++
+              has_phone = true
+            })
+            if ( non_empty_values.length > 1 ){
+              contacts_with.append(`<a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+              list_count['with']++
+            }
+            if (phone_list.length > 50) {
+              group++
+            }
+          }
+          if ( !has_phone ) {
+            contacts_without.append(`<a  href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(v.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(v.post_title)}</a><br>`)
+            list_count['without']++
+          }
+        });
+
+        // Update count findings.
+        let list_print = jQuery('#email-list-print')
+        let all_numbers = []
+        $.each(phone_list, function (index, values) {
+          all_numbers = all_numbers.concat(values)
+        })
+        list_print.append(window.SHAREDFUNCTIONS.escapeHTML(all_numbers.join(', ')))
+
+        // console.log(list_count)
+        jQuery('#list-count-with').html(list_count['with'])
+        jQuery('#list-count-without').html(list_count['without'])
+        jQuery('#list-count-full').html(list_count['full'])
+
+        // Hide spinners.
+        $(spinner).removeClass('active');
+      });
+    });
+  });
+
+  $(".export_map_list").on("click", function (e) {
+    if ( window.list_settings['translations']['exports']['map']['mapbox_key'] ) {
+      const title = $(e.currentTarget).text();
+      export_list_display('map', title, function () {
+
+        // Generate modal html.
+        let html = `
+        <span class="section-header"> ${window.SHAREDFUNCTIONS.escapeHTML(title)} | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['mapped_locations'] )}: <span id="mapped" class="loading-spinner active"></span> | ${window.SHAREDFUNCTIONS.escapeHTML( window.list_settings['translations']['exports']['map']['without_locations'] )}: <span id="unmapped" class="loading-spinner active"></span> </span><br><br>
+        <div id="dynamic-styles"></div>
+        <div class="grid-x">
+          <div class="cell medium-9" id="export_map_container">
+            <div id="map-wrapper">
+                <div id='map'></div>
+            </div>
+          </div>
+          <div class="cell medium-3" id="export_map_sidebar_menu">
+            <!-- details panel -->
+            <h3 style="margin-left: 10px;">${esc(window.list_settings.translations.exports.map['records_on_zoomed_map'])}</h3>
+            <button id="export_map_sidebar_menu_open_but" class="button" style="min-width: 100%; margin-left: 10px;">${esc(window.list_settings.translations.exports.map['open_zoomed_map'])}</button>
+            <div id="export_map_sidebar_menu_details_panel" style="margin-left: 10px; max-height: 500px; overflow-y: scroll;">
+              <table id="export_map_sidebar_menu_details_panel_table"></table>
+            </div>
+          </div>
+        </div>`;
+
+        $('#modal-full-content').html(html);
+
+        // Show spinners.
+        const spinner = $('#modal-full').find('.loading-spinner');
+        $(spinner).addClass('active');
+
+        // Insert dynamic styles.
+        let map_content = jQuery('#dynamic-styles')
+        map_content
+          .append(`
+            <style>
+                #map-wrapper {
+                    height: ${window.innerHeight - 100}px !important;
+                    position:relative;
+                }
+                #map {
+                    height: ${window.innerHeight - 100}px !important;
+                }
+            </style>
+          `);
+
+        // Recursively fetch all filtered list posts, to be processed.
+        recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
+          window.mapboxgl.accessToken = window.list_settings['translations']['exports']['map']['mapbox_key'];
+          var map = new window.mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            center: [-30, 20],
+            minZoom: 1,
+            zoom: 2
+          });
+
+          // Handle open zoomed map records button clicks.
+          $("#export_map_sidebar_menu_open_but").on("click", function (e) {
+            e.preventDefault();
+
+            // Obtain handle to current map bounds.
+            const bounds = map.getBounds();
+            const bounds_ne = bounds.getNorthEast();
+            const bounds_sw = bounds.getSouthWest();
+
+            // Build query based on current filter and identified map bounds.
+            let query = current_filter.query;
+            query["offset"] = 0;
+            query['limit'] = 500;
+            query['fields_to_return'] = [];
+            query['map_bounds'] = {
+              'ne': {
+                'lat': bounds_ne['lat'],
+                'lng': bounds_ne['lng']
+              },
+              'sw': {
+                'lat': bounds_sw['lat'],
+                'lng': bounds_sw['lng']
+              }
+            };
+
+            window.makeRequestOnPosts( 'POST', `${window.list_settings.post_type}/list`, JSON.parse(JSON.stringify(query)))
+            .promise()
+            .then(response => {
+              if ( response?.posts?.length > 0 ) {
+                items = response.posts || [];
+                window.records_list.posts = items // adds global access to current list for plugins
+                window.records_list.total = response.total
+
+                // save
+                if (Object.prototype.hasOwnProperty.call(response, 'posts') && response.posts.length > 0) {
+                  let records_list_ids_and_type = [];
+
+                  $.each(items, function(id, post_object ) {
+                    records_list_ids_and_type.push({ ID: post_object.ID });
+                  });
+
+                  window.SHAREDFUNCTIONS.save_json_cookie(`records_list`, records_list_ids_and_type, list_settings.post_type);
+                }
+
+                $('#bulk_edit_master_checkbox').prop("checked", false); //unchecks the bulk edit master checkbox when the list reloads.
+                $('#load-more').toggle(items.length !== parseInt( response.total ));
+                let result_text = list_settings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", response.total);
+                $('.filter-result-text').html(result_text);
+                build_table(items);
+
+                // Generate corresponding custom filter.
+                reset_split_by_filters();
+                add_custom_filter(esc(window.list_settings.translations.exports.map['filter_name']), "custom-filter", query, new_filter_labels, false);
+
+                // Capture custom filter label and refresh ui.
+                current_filter['labels'] = [{
+                  'id': 'map',
+                  'name': esc(window.list_settings.translations.exports.map['filter_label'])
+                }];
+                setup_current_filter_labels();
+
+                // Persist updated custom filter url parameters.
+                update_url_query( current_filter );
+
+                // Reset vertical scrollbar to start position.
+                window.setTimeout(function() {
+                  $(window).scrollTop(0);
+                }, 0);
+
+                // Close modal window to display updated records list.
+                $('#modal-full').foundation('close');
+
+              } else {
+                alert(`${esc(window.list_settings.translations.exports.map['no_records_on_zoomed_map_alert'])}`);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+          });
+
+          // disable map rotation using right click + drag
+          map.dragRotate.disable();
+          map.touchZoomRotate.disableRotation();
+
+          // load sources
+          map.on('load', function () {
+            let features = []
+            let mapped = 0
+            let unmapped = 0
+            $.each(posts, function(i,v){
+              if ( typeof v.location_grid_meta !== "undefined") {
+                features.push({
+                  'type': 'Feature',
+                  'geometry': {
+                    'type': 'Point',
+                    'coordinates': [v.location_grid_meta[0].lng, v.location_grid_meta[0].lat]
+                  },
+                  'properties': {
+                    'id': v.ID,
+                    'post_type': v.post_type,
+                    'title': v.post_title,
+                    'label': v.location_grid_meta[0].label
+                  }
+                })
+                mapped++
+              }
+              else {
+                unmapped++
+              }
+            })
+
+            $('#mapped').html('(' + mapped + ')')
+            $('#unmapped').html('(' + unmapped + ')')
+
+            let geojson = {
+              'type': 'FeatureCollection',
+              'features': features
+            }
+
+            map.addSource('dt-records-source', {
+              'type': 'geojson',
+              'data': geojson,
+              'cluster': true,
+              'clusterMaxZoom': 14,
+              'clusterRadius': 50
+            });
+
+            const layer_color = '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+            map.addLayer({
+              id: 'dt-records-clusters',
+              type: 'circle',
+              source: 'dt-records-source',
+              filter: ['has', 'point_count'],
+              paint: {
+                'circle-color': [
+                  'step',
+                  ['get', 'point_count'],
+                  layer_color,
+                  100,
+                  layer_color,
+                  750,
+                  layer_color
+                ],
+                'circle-radius': [
+                  'step',
+                  ['get', 'point_count'],
+                  20,
+                  100,
+                  30,
+                  750,
+                  40
+                ],
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
+              }
+            });
+
+            map.addLayer({
+              id: 'dt-records-clusters-count',
+              type: 'symbol',
+              source: 'dt-records-source',
+              filter: ['has', 'point_count'],
+              layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
+              }
+            });
+
+            map.addLayer({
+              id: 'dt-records-unclustered-points',
+              type: 'circle',
+              source: 'dt-records-source',
+              filter: ['!', ['has', 'point_count']],
+              paint: {
+                'circle-color': layer_color,
+                'circle-radius': 5,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
+              }
+            });
+
+            map.on('click', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            });
+            map.on('dragend', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            });
+            map.on('zoomend', () => {
+              render_map_feature_details(map, map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            });
+
+            map.on('mouseenter', 'dt-records-clusters', () => {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseenter', 'dt-records-clusters-count', () => {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseenter', 'dt-records-unclustered-points', () => {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'dt-records-clusters', () => {
+              map.getCanvas().style.cursor = '';
+            });
+
+            map.on('mouseleave', 'dt-records-clusters-count', () => {
+              map.getCanvas().style.cursor = '';
+            });
+
+            map.on('mouseleave', 'dt-records-unclustered-points', () => {
+              map.getCanvas().style.cursor = '';
+            });
+
+            // To avoid unwanted exceptions, ensure valid features are available, prior to rendering.
+            if (geojson.features && geojson.features.length > 0) {
+              var bounds = new window.mapboxgl.LngLatBounds();
+              geojson.features.forEach(function(feature) {
+                if ( feature.geometry.coordinates && !feature.geometry.coordinates.includes(undefined) ) {
+                  bounds.extend(feature.geometry.coordinates);
+                }
+              });
+              map.fitBounds(bounds);
+
+              // Display initial feature details.
+              const details_panel = $('#export_map_sidebar_menu_details_panel');
+              const map_height = $(map.getContainer()).height();
+              $(details_panel).css('height', (map_height - 100) + 'px');
+              $(details_panel).css('min-height', (map_height - 100) + 'px');
+              $(details_panel).css('max-height', (map_height - 100) + 'px');
+              render_map_feature_details(map.queryRenderedFeatures({
+                layers: ['dt-records-clusters', 'dt-records-unclustered-points']
+              }));
+            }
+
+            // Hide spinners.
+            $(spinner).removeClass('active');
+          });
+        });
+      });
+    }
+  });
+
+  function render_map_feature_details(map, features) {
+    if (features) {
+
+      // First, reset details html.
+      const details_table = $('#export_map_sidebar_menu_details_panel_table');
+      $(details_table).html(`<tbody></tbody>`);
+
+      // Next, proceeding in display points; handling each accordingly based on parent layer.
+      features.forEach(function (feature) {
+        if (feature?.layer?.id === 'dt-records-unclustered-points') {
+          let feature_html = render_map_feature_details_point_html(feature);
+          if (feature_html) {
+            $(details_table).find(`tbody`).append(feature_html);
+          }
+        } else if (feature?.layer?.id === 'dt-records-clusters') {
+          render_map_feature_details_for_clusters(map, feature);
+        }
+      });
+    }
+  }
+
+  function render_map_feature_details_for_clusters(map, cluster) {
+    if (cluster?.source) {
+      const cluster_source = map.getSource(cluster.source);
+      const cluster_id = cluster?.properties.cluster_id;
+      const point_count = cluster?.properties.point_count;
+
+      if (cluster_source && cluster_id && point_count) {
+
+        // Get all points under given cluster.
+        cluster_source.getClusterLeaves(cluster_id, point_count, 0, function (err, features) {
+
+          // Ensure feature is a valid sought after record.
+          features.forEach(function (feature) {
+            let feature_html = render_map_feature_details_point_html(feature);
+            if (feature_html) {
+              $('#export_map_sidebar_menu_details_panel_table').find(`tbody`).append(feature_html);
+            }
+          });
+        });
+      }
+    }
+  }
+
+  function render_map_feature_details_point_html(feature) {
+    if (feature?.properties?.id && feature?.properties?.post_type && feature?.properties?.title && feature?.properties?.label) {
+      return `<tr><td><a target="_blank" href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.post_type)}/${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.id)}">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.title)}</a> <span style="color: #808080;">${window.SHAREDFUNCTIONS.escapeHTML(feature?.properties?.label)}</span></td></tr>`;
+    }
+
+    return null;
   }
 
   /**

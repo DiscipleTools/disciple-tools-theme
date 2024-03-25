@@ -129,15 +129,18 @@ abstract class DT_Metrics_Chart_Base
     }
 
     public function _no_results() {
-        return '<p>'. esc_attr__( 'No Results', 'disciple_tools' ) .'</p>';
+        return esc_attr__( 'No Results', 'disciple_tools' );
     }
     public function _circular_structure_error( $wp_error ) {
-        $link = false;
         $data = $wp_error->get_error_data();
 
         if ( isset( $data['record'] ) ){
             $link = "<a target='_blank' href=" . get_permalink( $data['record'] ) . '>Open record</a>';
+
+            return '<p>' . esc_html( $wp_error->get_error_message() ) . ' ' . $link . '</p>';
+
+        } else {
+            return esc_html( $wp_error->get_error_message() );
         }
-        return '<p>' . esc_html( $wp_error->get_error_message() ) . ' ' . $link . '</p>';
     }
 }

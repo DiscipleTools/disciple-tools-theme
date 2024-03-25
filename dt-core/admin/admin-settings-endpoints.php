@@ -1171,6 +1171,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
             }
 
+            // Boolean Field Types: Checked by default
+            if ( isset( $post_submission['visibility']['checked_by_default'] ) ) {
+                $custom_field['default'] = $post_submission['visibility']['checked_by_default'];
+            }
+
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );
             wp_cache_delete( $post_type . '_field_settings' );

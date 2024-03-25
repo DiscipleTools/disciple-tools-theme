@@ -364,6 +364,10 @@ DT comments and activity
         flex-wrap: wrap;
     }
 
+    .comment-controls > audio {
+        width: 100%;
+    }
+
     .edit-comment-controls {
         margin-right: 10px;
         margin-top: 4px;

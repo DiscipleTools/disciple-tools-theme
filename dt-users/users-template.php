@@ -31,9 +31,7 @@ function dt_get_site_notification_defaults(){
             $channel['label'] = $default_notifications['channels'][$channel_key]['label'];
         }
     }
-    $notifications = apply_filters( 'dt_get_site_notification_options', $site_options['notifications'] );
-
-    return $notifications;
+    return apply_filters( 'dt_get_site_notification_options', $site_options['notifications'] );
 }
 
 /**
@@ -181,9 +179,14 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
         $user_meta_data = get_user_meta( $user_id );
     }
 
-    //by default a notification is enabled unless set to false
-    return isset( $user_meta_data[ $notification_name . '_' . $channel ] ) ? $user_meta_data[ $notification_name . '_' . $channel ][0] == true : true;
+    $channel_notification_key = $notification_name . '_' . $channel;
 
+    //if user preference is set, then use it
+    if ( isset( $user_meta_data[$channel_notification_key] ) ){
+        return !empty( $user_meta_data[$channel_notification_key][0] );
+    }
+    //default to yes if email or web, otherwise no
+    return $channel === 'email' || $channel === 'web';
 }
 
 /**

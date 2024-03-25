@@ -57,6 +57,78 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( !function_exists( 'dt_default_email_address' ) ){
+        function dt_default_email_address(): string{
+            $default_addr = apply_filters( 'wp_mail_from', '' );
+
+            if ( empty( $default_addr ) ){
+
+                // Get the site domain and get rid of www.
+                $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+                if ( 'www.' === substr( $sitename, 0, 4 ) ){
+                    $sitename = substr( $sitename, 4 );
+                }
+
+                $default_addr = 'wordpress@' . $sitename;
+            }
+
+            return $default_addr;
+        }
+    }
+
+    if ( !function_exists( 'dt_default_email_name' ) ){
+        function dt_default_email_name(): string{
+            $default_name = apply_filters( 'wp_mail_from_name', '' );
+
+            if ( empty( $default_name ) ){
+                $default_name = 'WordPress';
+            }
+
+            return $default_name;
+        }
+    }
+
+    if ( !function_exists( 'dt_email_template_wrapper' ) ) {
+        /**
+         * A function which wraps specified plain text messages within
+         * email template.
+         *
+         * @param $message
+         * @param $subject
+         */
+        function dt_email_template_wrapper( $message, $subject ) {
+
+            // Load email template and replace content placeholder.
+            $email_template = file_get_contents( trailingslashit( get_template_directory() ) . 'dt-notifications/email-template.html' );
+            if ( $email_template ) {
+
+                // Clean < and > around text links in WP 3.1.
+                $message = preg_replace( '#<(https?://[^*]+)>#', '$1', $message );
+
+                // Convert line breaks.
+                if ( apply_filters( 'dt_email_template_convert_line_breaks', true ) ) {
+                    $message = nl2br( $message );
+                }
+
+                // Convert URLs to links.
+                if ( apply_filters( 'dt_email_template_convert_urls', true ) ) {
+                    $message = make_clickable( $message );
+                }
+
+                // Add template to message.
+                $email_body = str_replace( '{{EMAIL_TEMPLATE_CONTENT}}', $message, $email_template );
+
+                // Add footer to message
+                $email_body = str_replace( '{{EMAIL_TEMPLATE_FOOTER}}', get_bloginfo( 'name' ), $email_body );
+
+                // Replace remaining template variables.
+                return str_replace( '{{EMAIL_TEMPLATE_TITLE}}', $subject, $email_body );
+            }
+
+            return $message;
+        }
+    }
+
     if ( !function_exists( 'dt_is_rest' ) ) {
         /**
          * Checks if the current request is a WP REST API request.
@@ -136,13 +208,15 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     if ( ! function_exists( 'dt_array_to_sql' ) ) {
-        function dt_array_to_sql( $values ) {
+        function dt_array_to_sql( $values, $numeric = false ) {
             if ( empty( $values ) ) {
                 return 'NULL';
             }
             foreach ( $values as &$val ) {
                 if ( '\N' === $val || empty( $val ) ) {
                     $val = 'NULL';
+                } elseif ( $numeric ){
+                    $val = esc_sql( trim( $val ) );
                 } else {
                     $val = "'" . esc_sql( trim( $val ) ) . "'";
                 }
@@ -515,6 +589,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @param string $field_id_prefix // add a prefix to avoid fields with duplicate ids.
      */
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
+        $fields = apply_filters( 'dt_render_field_for_display_fields', $fields, $field_key, $post );
         $disabled = 'disabled';
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
             $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
@@ -907,7 +982,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 </div>
             <?php endif;
         }
-        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display );
+        do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display, $fields );
     }
 
     function render_link_field( $field_key, $option_key, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
@@ -1545,6 +1620,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 'vi_VN' => [ 'label' => 'Vietlabelse (Vietnam)', 'native_name' => 'TiếNg ViệT (ViệT Nam)', 'flag' => '🇻🇳', 'rtl' => false ],
                 'vun' => [ 'label' => 'Vunjo', 'native_name' => 'Wunjo', 'flag' => '🇹🇿', 'rtl' => false ],
                 'vun_TZ' => [ 'label' => 'Vunjo (Tanzania)', 'native_name' => 'Wunjo (Tanzania)', 'flag' => '🇹🇿', 'rtl' => false ],
+                'wo' => [ 'label' => 'Wolof', 'native_name' => 'Wolof', 'flag' => '🇸🇳', 'rtl' => false ],
                 'xog' => [ 'label' => 'Soga', 'native_name' => 'Lusoga', 'flag' => '🇺🇬', 'rtl' => false ],
                 'xog_UG' => [ 'label' => 'Soga (Uganda)', 'native_name' => 'Lusoga (Uganda)', 'flag' => '🇺🇬', 'rtl' => false ],
                 'yo' => [ 'label' => 'Yoruba', 'native_name' => 'Èdè Yorùbá', 'flag' => '🇳🇬', 'rtl' => false ],

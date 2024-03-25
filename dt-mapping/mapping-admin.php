@@ -1901,11 +1901,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function get_record_count_with_no_location_meta(){
             global $wpdb;
             return $wpdb->get_var( "
-                SELECT count(*)
+                SELECT ( count(*) - (SELECT COUNT(DISTINCT( postmeta_id_location_grid )) FROM $wpdb->dt_location_grid_meta WHERE post_type != 'users') )
                 FROM $wpdb->postmeta pm
-                INNER JOIN $wpdb->dt_location_grid as lg ON ( pm.meta_value = lg.grid_id )
-                WHERE meta_key = 'location_grid'
-                AND meta_id NOT IN (SELECT DISTINCT( postmeta_id_location_grid ) FROM $wpdb->dt_location_grid_meta) AND meta_value >= 100000000"
+                WHERE pm.meta_key = 'location_grid'
+                "
             );
         }
         public function get_user_count_with_no_location_meta(){

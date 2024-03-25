@@ -244,6 +244,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $meta_value = 'value_deleted';
         }
 
+        $object_subtype = $meta_key;
+
         // Ensure the best efforts are made to avoid blank field types.
         if ( empty( $field_type ) ) {
 
@@ -251,6 +253,22 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             foreach ( DT_Posts::get_field_settings_by_type( $parent_post['post_type'], 'link' ) ?? [] as $link_field ) {
                 if ( strpos( $meta_key, $link_field ) !== false ) {
                     $field_type = $fields[$link_field]['type'] ?? '';
+
+                    // Also determine actual field key; by corresponding options match.
+                    foreach ( array_keys( $fields[$link_field]['default'] ?? [] ) as $default_key ){
+                        if ( strpos( $meta_key, $default_key ) !== false ){
+                            $object_subtype = $link_field;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Final field type specific operations.
+        if ( $field_type === 'communication_channel' && strrpos( $object_subtype, '_details' ) === false ) {
+            foreach ( DT_Posts::get_field_settings_by_type( $parent_post['post_type'], 'communication_channel' ) ?? [] as $comms_field ) {
+                if ( strpos( $meta_key, $comms_field ) !== false ) {
+                    $object_subtype = $comms_field;
                 }
             }
         }
@@ -259,7 +277,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             [
                 'action'         => 'field_update',
                 'object_type'    => ( empty( $parent_post['post_type'] ) ) ? 'unknown' : $parent_post['post_type'],
-                'object_subtype' => $meta_key,
+                'object_subtype' => $object_subtype,
                 'object_id'      => $object_id,
                 'object_name'    => ( empty( $parent_post['post_title'] ) ) ? 'unknown' : $parent_post['post_title'],
                 'meta_id'        => $meta_id,

@@ -73,6 +73,17 @@ function dt_is_locale_rtl( $locale = null ){
 }
 
 function dt_custom_dir_attr( $lang ){
+    /**
+     * If true overrides this filter and returns $lang
+     *
+     * @since 1.57
+     *
+     * @param bool       $override Whether to override dt_custom_dir_attr or not
+     */
+    if ( apply_filters( 'dt_custom_dir_attr_override', false ) ) {
+        return $lang;
+    }
+
     if ( is_admin() ) {
         return $lang;
     }

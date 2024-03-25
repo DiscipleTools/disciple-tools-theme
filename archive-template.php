@@ -19,7 +19,7 @@ dt_please_log_in();
         <nav role="navigation"
              data-sticky data-options="marginTop:0;" data-top-anchor="1"
              class="second-bar list-actions-bar">
-            <div class="container-width center"><!--  /* DESKTOP VIEW BUTTON AREA */ -->
+            <div class="container-width buttons-row" ><!--  /* DESKTOP VIEW BUTTON AREA */ -->
                 <a class="button dt-green create-post-desktop" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
                     <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php echo esc_html( sprintf( _x( 'Create New %s', 'Create New record', 'disciple_tools' ), $post_settings['label_singular'] ?? $post_type ) ) ?></span>
@@ -62,6 +62,11 @@ dt_please_log_in();
                     <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
                     <span><?php esc_html_e( 'Search', 'disciple_tools' ) ?></span>
                 </a>
+                <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
+                    <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
+                        <i class="fi-map"></i>
+                    </button>
+                <?php endif; ?>
             </div>
             <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
@@ -110,15 +115,22 @@ dt_please_log_in();
     </div>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
-            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
-        </a>
-        <a class="button filter-posts-mobile" data-open="filter-modal">
-            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
-        </a>
-        <a class="button" id="open-search">
-            <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
-        </a>
+        <div class="buttons-row">
+            <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
+            </a>
+            <a class="button filter-posts-mobile" data-open="filter-modal">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
+            </a>
+            <a class="button" id="open-search">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
+            </a>
+            <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
+                <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
+                    <i class="fi-map"></i>
+                </button>
+            <?php endif; ?>
+        </div>
         <div class="hideable-search" style="display: none; margin-top:5px">
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
@@ -150,6 +162,7 @@ dt_please_log_in();
                 <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( 'Search', 'disciple_tools' ) ?></button>
             </div>
         </div>
+
         <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
@@ -196,7 +209,7 @@ dt_please_log_in();
     </nav>
     <div id="content" class="archive-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-            <aside class="cell large-3" id="list-filters">
+            <aside class="cell large-3 xxlarge-2" id="list-filters">
                 <div class="bordered-box">
                     <div class="section-header">
                         <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
@@ -298,7 +311,21 @@ dt_please_log_in();
                     </div>
                     <div class="section-body" style="padding-top:1em;">
                         <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a><br>
-                        <?php do_action( 'dt_post_list_exports_filters_sidebar', $post_type ) ?>
+                        <?php
+                        if ( !empty( DT_Posts::get_field_settings_by_type( $post_type, 'communication_channel' ) ) ) {
+                            ?>
+                            <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a><br>
+                            <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a><br>
+                            <?php
+                        }
+                        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
+                            ?>
+                            <a class="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a><br>
+                            <?php
+                        }
+                        ?>
+                        <?php do_action( 'dt_list_exports_menu_items', $post_type ); ?>
+
                     </div>
                 </div>
                 <div id="export_help_text" class="large reveal" data-reveal data-v-offset="10px">
@@ -308,6 +335,18 @@ dt_please_log_in();
                         <div class="cell">
                             <p><strong><?php esc_html_e( 'CSV List', 'disciple_tools' ); ?></strong></p>
                             <p><?php esc_html_e( 'Using the current filter, this is a simple way to export basic information and use it in other applications.', 'disciple_tools' ); ?></p>
+                        </div>
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'BCC Email List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the "Open All" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers.', 'disciple_tools' ); ?></p>
+                        </div>
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'Phone Number List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation.', 'disciple_tools' ); ?></p>
+                        </div>
+                        <div class="cell">
+                            <p><strong><?php esc_html_e( 'Map List', 'disciple_tools' ); ?></strong></p>
+                            <p><?php esc_html_e( 'Using the current filter, this creates a basic points map of known locations of listed individuals.', 'disciple_tools' ); ?></p>
                         </div>
                         <?php
                         $list_exports_help = apply_filters( 'dt_post_list_exports_filters_sidebar_help_text', [] );
@@ -325,19 +364,11 @@ dt_please_log_in();
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div id="export_reveal" class="large reveal" data-reveal data-v-offset="10px">
-                    <span class="section-header" id="export_title"></span> <span id="reveal_loading_spinner" style="display: inline-block" class="loading-spinner active"></span>
-                    <hr>
-                    <div id="export_content"></div>
-                    <button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
-            <main id="main" class="large-9 cell padding-bottom" role="main">
+            <main id="main" class="large-9 xxlarge-10 cell padding-bottom" role="main">
                 <div class="bordered-box">
                     <div >
                         <span class="section-header posts-header" style="display: inline-block">
@@ -390,6 +421,34 @@ dt_please_log_in();
                                     'section_id' => 'bulk_edit_picker',
                                     'show_list_checkboxes' => true,
                                 ],
+                            'bulk-msg' =>
+                                [
+                                    'label' => __( 'Bulk Send Message', 'disciple_tools' ),
+                                    'icon' => get_template_directory_uri() . '/dt-assets/images/send.svg',
+                                    'section_id' => 'bulk_send_msg_picker',
+                                    'show_list_checkboxes' => true,
+                                    'valid_post_type' => function ( $current_post_type ) {
+                                        $post_type_valid = false;
+
+                                        // Specify list of valid communication channel fields to search for.
+                                        $valid_comm_fields = [
+                                            'contact_email',
+                                            'contact_phone'
+                                        ];
+
+                                        // For given post type, fetch associated communication channel fields.
+                                        $comm_fields = DT_Posts::get_field_settings_by_type( $current_post_type, 'communication_channel' );
+
+                                        // Attempt to validate listed communication channel fields.
+                                        foreach ( $valid_comm_fields as $valid_comm_field ) {
+                                            if ( in_array( $valid_comm_field, $comm_fields ) ) {
+                                                $post_type_valid = true;
+                                            }
+                                        }
+
+                                        return $post_type_valid;
+                                    }
+                                ]
                         ];
 
                         // Add custom menu items
@@ -401,7 +460,7 @@ dt_please_log_in();
                                     <a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?></a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
                                     <?php foreach ( $dropdown_items as $key => $value ) : ?>
-                                        <?php if ( isset( $key ) ) : ?>
+                                        <?php if ( isset( $key ) && ( !isset( $value['valid_post_type'] ) || $value['valid_post_type']( $post_type ) ) ) : ?>
                                             <?php $show_list_checkboxes = !empty( $value['show_list_checkboxes'] ) ? 'true' : 'false'; ?>
                                             <li>
                                                 <a href="javascript:void(0);" data-modal="<?php echo esc_html( $value['section_id'] ); ?>" data-checkboxes="<?php echo esc_html( $show_list_checkboxes ); ?>" class="list-dropdown-submenu-item-link" id="submenu-more-<?php echo esc_html( $key ); ?>">
@@ -709,16 +768,111 @@ dt_please_log_in();
                         </span>
                     </div>
 
+                    <div id="bulk_send_msg_picker" class="list_action_section">
+                        <button class="close-button list-action-close-button" data-close="bulk_send_msg_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <p style="font-weight:bold"><?php
+                            echo sprintf( esc_html__( 'Select all the %1$s to whom you want to message.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                        <div class="grid-x grid-margin-x">
+                            <div class="cell">
+                                <?php
+                                $has_twilio = class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled();
+                                $dt_site_notification_defaults = dt_get_site_notification_defaults();
+                                $default_subject = dt_get_option( 'dt_email_base_subject' );
+                                $default_message = 'Hello {{name}},
+
+Bulk send message...
+
+Thanks!';
+                                // Filter communication channels.
+                                $comms_channels = [];
+                                foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ){
+                                    if ( $channel_key === 'web' ) {
+                                        continue;
+                                    }
+
+                                    if ( !$has_twilio && $channel_key === 'sms' ) {
+                                        continue;
+                                    }
+
+                                    $comms_channels[ $channel_key ] = $channel_value;
+                                }
+                                ?>
+                                <label for="bulk_send_msg_subject"><?php echo esc_html__( 'Message subject', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_subject_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid message subject must be entered.', 'disciple_tools' ); ?></span><br>
+
+                                <label for="bulk_send_msg_from_name"><?php echo esc_html__( 'Message from name', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( dt_default_email_name() ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
+
+                                <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( dt_get_option( 'dt_email_base_address' ) ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
+
+                                <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
+
+<!--                                --><?php
+//                                if ( count( $comms_channels ) > 1 ) {
+//                                    ?>
+<!--                                    <br><label>--><?php //echo esc_html__( 'Select message send method', 'disciple_tools' ); ?><!--</label>-->
+<!--                                    --><?php
+//                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
+//                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
+//                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
+//                                            ?>
+<!--                                            <input type="radio" class="bulk-send-msg-method"-->
+<!--                                                   id="--><?php //echo esc_attr( $method_id ); ?><!--"-->
+<!--                                                   name="bulk_send_msg_method"-->
+<!--                                                   value="--><?php //echo esc_attr( $channel_key ); ?><!--"-->
+<!--                                                --><?php //echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?><!--/>-->
+<!--                                            <label-->
+<!--                                                for="--><?php //echo esc_attr( $method_id ); ?><!--">--><?php //echo esc_html( $channel_value['label'] ); ?><!--</label>-->
+<!--                                            --><?php
+//                                        }
+//                                    }
+//                                }
+//                                ?>
+                                <span id="bulk_send_msg_method_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><br><?php echo esc_html__( 'Please ensure a valid send method has been specified.', 'disciple_tools' ); ?></span><br>
+
+                                <label for="bulk_send_msg"><?php echo esc_html__( 'Message', 'disciple_tools' ); ?></label>
+                                <textarea type="text" id="bulk_send_msg" rows="10"><?php echo esc_textarea( $default_message ); ?></textarea>
+                                <span id="bulk_send_msg_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Please ensure a valid send message has been entered.', 'disciple_tools' ); ?></span><br>
+                                <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
+                                <ul>
+                                    <li><span
+                                            style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Name of the Record', 'disciple_tools' ); ?>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="cell">
+                                <label for="bulk_send_msg_required_elements"><?php echo esc_html__( 'Send to selected records', 'disciple_tools' ); ?></label>
+                                <span id="bulk_send_msg_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
+                                <div>
+                                    <button class="button dt-green" id="bulk_send_msg_submit">
+                                        <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
+                                            <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
+                                        </span>
+                                        <span id="bulk_send_msg_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                                    </button><br>
+                                    <span id="bulk_send_msg_submit_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Ensure valid record selections have been made.', 'disciple_tools' ); ?></span>
+                                </div>
+                                <span id="bulk_send_msg_submit-message"></span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
-                    <div>
+                    <div class="table-container">
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
                                     <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
-                                    <th style="width:32px; background-image:none; cursor:default"></th>
+                                    <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
@@ -770,7 +924,7 @@ dt_please_log_in();
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags' ];
+                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'communication_channel' ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
@@ -903,7 +1057,31 @@ dt_please_log_in();
                                                data-date-format='yy-mm-dd'
                                                class="dt_date_picker" data-delimit="end"
                                                data-field="<?php echo esc_html( $field ) ?>">
+                                    <?php elseif ( isset( $field_options[$field] ) && in_array( $field_options[$field]['type'], [ 'text', 'communication_channel' ] ) ) : ?>
+                                        <input id="<?php echo esc_html( $field ) ?>_text_comms_filter"
+                                               type="text"
+                                               class="text-comms-filter-input"
+                                               data-field="<?php echo esc_html( $field ) ?>"
+                                               placeholder="<?php echo esc_html_x( 'Filter By Value', 'The value to be searched for', 'disciple_tools' ) ?>" />
 
+                                        <p>
+                                            <label>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-with-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s with filtered value in %2$s', 'All Contacts with filtered value in Emails', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                            <label>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s without filtered value in %2$s', 'All Contacts without filtered value in Emails', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                            <label>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-with-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s with any value in %2$s', 'All Contacts with any value in field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                            <label>
+                                                <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s with no value in %2$s', 'All Contacts with no value in field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                        </p>
                                     <?php endif; ?>
                                 </div>
                             </div>

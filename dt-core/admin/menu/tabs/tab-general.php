@@ -83,6 +83,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             /* Update Required */
             if ( isset( $modules['access_module']['enabled'] ) && $modules['access_module']['enabled'] ){
+
+                /* Translation Dialog */
+                dt_display_translation_dialog();
+
                 $this->box( 'top', 'Update Needed Triggers' );
                 $this->process_update_required();
                 $this->update_required_options();
@@ -118,6 +122,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->custom_logo();
             $this->box( 'bottom' );
 
+            $this->box( 'top', 'Performance Mode' );
+            $this->process_dt_performance_mode();
+            $this->dt_performance_mode();
+            $this->box( 'bottom' );
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -129,9 +138,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      * Prints the user notifications box
      */
     public function user_notifications() {
-
-        $site_options = dt_get_option( 'dt_site_options' );
-        $notifications = $site_options['notifications']['types'];
+        $notifications = dt_get_site_notification_defaults();
         ?>
         <form method="post" name="notifications-form">
             <button type="submit" class="button-like-link" name="reset_notifications" value="1"><?php esc_html_e( 'reset', 'disciple_tools' ) ?></button>
@@ -139,21 +146,30 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="notifications_nonce" id="notifications_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'notifications' ) ) ?>'" />
 
             <table class="widefat">
-            <?php foreach ( $notifications as $notification_key => $notification_value ) : ?>
-                <tr>
-                    <td><?php echo esc_html( $notification_value['label'] ) ?></td>
-                    <td>
-                        <?php esc_html_e( 'Web', 'disciple_tools' ) ?>
-                        <input name="<?php echo esc_html( $notification_key ) ?>_web" type="checkbox"
-                            <?php echo $notifications[ $notification_key ]['web'] ? 'checked' : '' ?>  />
-                    </td>
-                    <td>
-                        <?php esc_html_e( 'Email', 'disciple_tools' ) ?>
-                        <input name="<?php echo esc_html( $notification_key ) ?>_email" type="checkbox"
-                            <?php echo $notifications[ $notification_key ]['email'] ? 'checked' : '' ?>  />
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+                <?php
+                foreach ( $notifications['types'] ?? [] as $type => $type_settings ) {
+                    ?>
+                    <tr>
+                        <td><?php echo esc_html( !empty( $type_settings['label'] ) ? $type_settings['label'] : $type ) ?></td>
+                        <?php
+                        foreach ( $type_settings as $setting_key => $setting_value ) {
+                            if ( $setting_key !== 'label' ) {
+                                $channel_label = isset( $notifications['channels'], $notifications['channels'][$setting_key], $notifications['channels'][$setting_key]['label'] ) ? $notifications['channels'][$setting_key]['label'] : $setting_key;
+                                $input_name = $type .'_'. $setting_key;
+                                ?>
+                                <td>
+                                    <?php echo esc_html( $channel_label ) ?>
+                                    <input name="<?php echo esc_html( $input_name ) ?>" type="checkbox"
+                                        <?php echo $setting_value ? 'checked' : '' ?> />
+                                </td>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </tr>
+                    <?php
+                }
+                ?>
             </table>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
@@ -174,12 +190,21 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 unset( $site_options['notifications'] );
                 $site_option_defaults = dt_get_site_options_defaults();
                 $site_options['notifications'] = $site_option_defaults['notifications'];
+                return update_option( 'dt_site_options', $site_options, true );
             }
 
-            foreach ( $site_options['notifications']['types'] as $key => $value ) {
-                $site_options['notifications']['types'][ $key ]['web'] = isset( $_POST[ $key.'_web' ] );
-                $site_options['notifications']['types'][ $key ]['email'] = isset( $_POST[ $key.'_email' ] );
+            $notifications = dt_get_site_notification_defaults();
+            $updated_types = [];
+            foreach ( $notifications['types'] as $type => $type_settings ) {
+                $updated_types[$type] = $type_settings;
+                foreach ( $type_settings as $setting_key => $setting_value ) {
+                    if ( $setting_key !== 'label' ) {
+                        $updated_types[$type][$setting_key] = isset( $_POST[ $type .'_'. $setting_key ] );
+                    }
+                }
             }
+            $notifications['types'] = $updated_types;
+            $site_options['notifications'] = $notifications;
 
             update_option( 'dt_site_options', $site_options, true );
         }
@@ -243,7 +268,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label
-                            for="email_address"><?php echo esc_html( sprintf( 'Specify notification from email address. Leave blank to use default (%s)', self::default_email_address() ) ) ?></label>
+                            for="email_address"><?php echo esc_html( sprintf( 'Specify notification from email address. Leave blank to use default (%s)', dt_default_email_address() ) ) ?></label>
                     </td>
                     <td>
                         <input name="email_address" id="email_address"
@@ -253,7 +278,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label
-                            for="email_name"><?php echo esc_html( sprintf( 'Specify notification from name. Leave blank to use default (%s)', self::default_email_name() ) ) ?></label>
+                            for="email_name"><?php echo esc_html( sprintf( 'Specify notification from name. Leave blank to use default (%s)', dt_default_email_name() ) ) ?></label>
                     </td>
                     <td>
                         <input name="email_name" id="email_name"
@@ -278,33 +303,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                                class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
         </form>
         <?php
-    }
-
-    private function default_email_address(): string {
-        $default_addr = apply_filters( 'wp_mail_from', '' );
-
-        if ( empty( $default_addr ) ) {
-
-            // Get the site domain and get rid of www.
-            $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
-            if ( 'www.' === substr( $sitename, 0, 4 ) ) {
-                $sitename = substr( $sitename, 4 );
-            }
-
-            $default_addr = 'wordpress@' . $sitename;
-        }
-
-        return $default_addr;
-    }
-
-    private function default_email_name(): string {
-        $default_name = apply_filters( 'wp_mail_from_name', '' );
-
-        if ( empty( $default_name ) ) {
-            $default_name = 'WordPress';
-        }
-
-        return $default_name;
     }
 
     /**
@@ -345,6 +343,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST[$option_index . '_comment'] ) ){
                     $site_options['update_required']['options'][$option_index]['comment'] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . '_comment'] ) ) );
                 }
+                if ( isset( $_POST[$option_index . '_translations'] ) ){
+                    $translations = [];
+                    $uploaded_translations = dt_recursive_sanitize_array( $_POST[$option_index . '_translations'] );
+                    foreach ( $uploaded_translations ?? [] as $lang_key => $translation ) {
+                        if ( !empty( $translation ) ) {
+                            $translations[$lang_key] = sanitize_text_field( wp_unslash( $translation ) );
+                        }
+                    }
+                    $site_options['update_required']['options'][$option_index]['translations'] = $translations;
+                }
             }
             update_option( 'dt_site_options', $site_options, true );
         }
@@ -365,6 +373,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $_POST[$option_index . '_comment'] ) ){
                     $site_options['group_update_required']['options'][$option_index]['comment'] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . '_comment'] ) ) );
                 }
+                if ( isset( $_POST[$option_index . '_translations'] ) ){
+                    $translations = [];
+                    $uploaded_translations = dt_recursive_sanitize_array( $_POST[$option_index . '_translations'] );
+                    foreach ( $uploaded_translations ?? [] as $lang_key => $translation ) {
+                        if ( !empty( $translation ) ) {
+                            $translations[$lang_key] = sanitize_text_field( wp_unslash( $translation ) );
+                        }
+                    }
+                    $site_options['group_update_required']['options'][$option_index]['translations'] = $translations;
+                }
             }
             update_option( 'dt_site_options', $site_options, true );
         }
@@ -374,6 +392,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $site_options            = dt_seeker_path_triggers_capture_pre_existing_options( dt_get_option( 'dt_site_options' ) );
         $update_required_options = $site_options['update_required']['options'];
         $field_options           = DT_Posts::get_post_field_settings( 'contacts' );
+        $available_languages = dt_get_available_languages();
         ?>
         <h3><?php esc_html_e( 'Contacts', 'disciple_tools' ) ?></h3>
         <form method="post" name="update_required-form">
@@ -408,6 +427,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <th><?php esc_html_e( 'Seeker Path', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Days to wait', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Comment', 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( 'Translations', 'disciple_tools' ) ?></th>
                     </tr>
                 </thead>
 
@@ -428,6 +448,30 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                     <td>
                                         <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
                                                   style="width:100%"><?php echo esc_html( $option['comment'] ) ?></textarea>
+                                    </td>
+                                    <td>
+                                        <button class="button small expand_translations"
+                                                data-form_name="update_required-form"
+                                                data-source="update_needed_triggers">
+                                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                                            (<span><?php echo esc_html( count( $option['translations'] ?? [] ) ); ?></span>)
+                                        </button>
+                                        <div class="translation_container hide">
+                                            <table>
+                                                <?php foreach ( $available_languages as $lang => $val ) : ?>
+                                                    <tr>
+                                                        <td><label
+                                                                for="<?php echo esc_html( $option_key ) ?>_translations[<?php echo esc_html( $val['language'] ) ?>]"><?php echo esc_html( $val['native_name'] ) ?></label>
+                                                        </td>
+                                                        <td><input
+                                                                name="<?php echo esc_html( $option_key ) ?>_translations[<?php echo esc_html( $val['language'] ) ?>]"
+                                                                type="text"
+                                                                value="<?php echo esc_html( $option['translations'][$val['language']] ?? '' ); ?>"/>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </table>
+                                        </div>
                                     </td>
                                 </tr>
                                 <?php
@@ -462,6 +506,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <th><?php esc_html_e( 'Group Status', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Days to wait', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Comment', 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( 'Translations', 'disciple_tools' ) ?></th>
                     </tr>
                 </thead>
                 <?php foreach ( $update_required_options as $option_key => $option ) : ?>
@@ -474,6 +519,30 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <td>
                             <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
                                       style="width:100%"><?php echo esc_html( $option['comment'] ) ?></textarea>
+                        </td>
+                        <td>
+                            <button class="button small expand_translations"
+                                    data-form_name="group_update_required-form"
+                                    data-source="update_needed_triggers">
+                                <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
+                                (<span><?php echo esc_html( count( $option['translations'] ?? [] ) ); ?></span>)
+                            </button>
+                            <div class="translation_container hide">
+                                <table>
+                                    <?php foreach ( $available_languages as $lang => $val ) : ?>
+                                        <tr>
+                                            <td><label
+                                                    for="<?php echo esc_html( $option_key ) ?>_translations[<?php echo esc_html( $val['language'] ) ?>]"><?php echo esc_html( $val['native_name'] ) ?></label>
+                                            </td>
+                                            <td><input
+                                                    name="<?php echo esc_html( $option_key ) ?>_translations[<?php echo esc_html( $val['language'] ) ?>]"
+                                                    type="text"
+                                                    value="<?php echo esc_html( $option['translations'][$val['language']] ?? '' ); ?>"/>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -718,6 +787,44 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                 </tr>
                 <?php wp_nonce_field( 'dt_contact_preferences' . get_current_user_id(), 'dt_contact_preferences_nonce' )?>
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
+    }
+
+    public function process_dt_performance_mode(){
+
+        if ( isset( $_POST['dt_performance_mode_nonce'] ) &&
+            wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_performance_mode_nonce'] ) ), 'dt_performance_mode' ) ) {
+
+            $dt_performance_mode = ! empty( $_POST['dt_performance_mode'] );
+
+            update_option( 'dt_performance_mode', $dt_performance_mode, true );
+        }
+
+    }
+
+    public function dt_performance_mode(){
+        $dt_performance_mode = get_option( 'dt_performance_mode', false );
+        ?>
+        <form method="post" >
+            <table class="widefat">
+                <tr>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="dt_performance_mode" <?php echo $dt_performance_mode ? 'checked' : '' ?> /> Performance Mode
+                        </label>
+                    </td>
+                    <td>
+                        This is useful for large databases. Performance Mode will disable some features to improve performance:
+                        <ul style="list-style: disc; padding: revert">
+                            <li>Counts on Contact and Group list filters</li>
+                        </ul>
+                    </td>
+                </tr>
+                <?php wp_nonce_field( 'dt_performance_mode', 'dt_performance_mode_nonce' )?>
             </table>
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>

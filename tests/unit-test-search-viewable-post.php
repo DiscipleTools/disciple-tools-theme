@@ -216,6 +216,10 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [] ], false );
         $this->assertContains( $empty_contact['ID'], $this->map_ids( $res['posts'] ) );
         $this->assertNotContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
+        //search for posts with any values set for field x
+        $res = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => [ '*' ] ], false );
+        $this->assertContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
+        $this->assertNotContains( $empty_contact['ID'], $this->map_ids( $res['posts'] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'contact_phone' => '79845678' ], false );
         $this->assertWPError( $res );
@@ -267,6 +271,10 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'nickname' => [] ], false );
         $this->assertContains( $empty_contact['ID'], $this->map_ids( $res['posts'] ) );
         $this->assertNotContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
+        //search for posts with any values set for field x
+        $res = DT_Posts::search_viewable_post( 'contacts', [ 'nickname' => [ '*' ] ], false );
+        $this->assertContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
+        $this->assertNotContains( $empty_contact['ID'], $this->map_ids( $res['posts'] ) );
         //bad request
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'nickname' => 'Bob' ], false );
         $this->assertWPError( $res );

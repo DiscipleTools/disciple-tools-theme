@@ -409,15 +409,17 @@ class DT_Duplicate_Checker_And_Merging {
                     $update[ $key ] = $fields['assigned-to'];
                 }
             }
-
-            // Remove private fields; which are handled directly, along with tasks
-            if ( isset( $update[ $key ], $field_settings[ $key ]['private'] ) && $field_settings[ $key ]['private'] ) {
-                unset( $update[ $key ] );
-            }
         }
-        //remove merged connection fields from archived
+
         foreach ( $update as $key => $value ){
             $field_type = $field_settings[ $key ]['type'] ?? null;
+
+            // Remove private fields; which are handled directly, along with tasks
+            if ( isset( $field_settings[ $key ]['private'] ) && $field_settings[ $key ]['private'] ) {
+                unset( $update[ $key ] );
+            }
+
+            //remove merged connection fields from archived
             if ( $field_type === 'connection' ){
                 $update_for_duplicate[ $key ]['values'] = [];
                 foreach ( $value['values'] as $update_value ) {

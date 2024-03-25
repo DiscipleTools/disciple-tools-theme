@@ -22,16 +22,18 @@ if ( !defined( 'ABSPATH' ) ) {
  * dt_send_email(
  *     'recipients@email.com',
  *     'subject line',
- *     'content of the message'
+ *     'content of the message',
+ *      true,
  * );
  *
  * @param $email
  * @param $subject
  * @param $message_plain_text
+ * @param bool $subject_prefix
  *
  * @return bool|\WP_Error
  */
-function dt_send_email( $email, $subject, $message_plain_text ) {
+function dt_send_email( $email, $subject, $message_plain_text, bool $subject_prefix = true ) {
 
     /**
      * Filter for development use.
@@ -54,9 +56,12 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     // Sanitize
     $email = sanitize_email( $email );
     $subject = sanitize_text_field( $subject );
-    $message_plain_text = sanitize_textarea_field( $message_plain_text );
 
-    $subject = dt_get_option( 'dt_email_base_subject' ) . ': ' . $subject;
+    $message_plain_text = wp_kses_post( $message_plain_text );
+
+    if ( $subject_prefix ) {
+        $subject = dt_get_option( 'dt_email_base_subject' ) . ': ' . $subject;
+    }
 
     $user = get_user_by( 'email', $email );
     $continue = true;
@@ -68,18 +73,20 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     if ( !$continue ){
         return false;
     }
-    $is_sent = true;
 
+    return dt_schedule_mail( $email, $subject, $message_plain_text );
+}
+
+function dt_schedule_mail( $email, $subject, $message, $headers = [] ){
     /**
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
      */
     if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON && !( defined( 'WP_DEBUG' ) && WP_DEBUG ) ){
-        wp_queue()->push( new DT_Send_Email_Job( $user->ID, $email, $subject, $message_plain_text ) );
+        $is_sent = wp_queue()->push( new DT_Send_Email_Job( $email, $subject, $message, $headers ) );
     } else {
-        $is_sent = wp_mail( $email, $subject, $message_plain_text );
+        $is_sent = wp_mail( $email, $subject, $message, $headers );
     }
-
     return $is_sent;
 }
 
@@ -154,6 +161,43 @@ add_filter( 'wp_mail_from_name', function ( $name ) {
     return $name;
 } );
 
+/**
+ * Intercept all outgoing messages and wrap within email template.
+ */
+
+add_filter( 'wp_mail', function ( $args ) {
+    if ( empty( $args['headers'] ) || !html_content_type_detected( $args['headers'] ) ) {
+        $args['message'] = dt_email_template_wrapper( $args['message'] ?? '', $args['subject'] ?? '' );
+
+        $headers = $args['headers'];
+        if ( empty( $headers ) ) {
+            $headers = [];
+        }
+
+        if ( is_array( $headers ) ) {
+            $headers[] = 'Content-Type: text/html; charset=UTF-8';
+        } else {
+            $headers .= '\r\nContent-Type: text/html; charset=UTF-8';
+        }
+
+        $args['headers'] = $headers;
+    }
+
+    return $args;
+} );
+
+function html_content_type_detected( $headers ): bool {
+    $detected = false;
+
+    foreach ( $headers as $header ) {
+        $header = strtolower( $header );
+        if ( ( strpos( $header, 'content-type' ) !== false ) && ( strpos( $header, 'text/html' ) !== false ) ) {
+            $detected = true;
+        }
+    }
+
+    return $detected;
+}
 
 /**
  * Send emails that have been put in the email queue
@@ -162,31 +206,25 @@ add_filter( 'wp_mail_from_name', function ( $name ) {
 use WP_Queue\Job;
 class DT_Send_Email_Job extends Job{
 
-    /**
-     * @var int
-     */
-    public $user_id;
+
     public $email_address;
     public $email_message;
     public $email_subject;
+    public $email_headers;
 
-    /**
-     * Subscribe_User_Job constructor.
-     *
-     * @param int $user_id
-     */
-    public function __construct( $user_id, $email_address, $email_subject, $email_message ){
-        $this->user_id = $user_id;
+
+    public function __construct( $email_address, $email_subject, $email_message, $email_headers = [] ){
         $this->email_address = $email_address;
         $this->email_message = $email_message;
         $this->email_subject = $email_subject;
+        $this->email_headers = $email_headers;
     }
 
     /**
      * Handle job logic.
      */
     public function handle(){
-        wp_mail( $this->email_address, $this->email_subject, $this->email_message );
+        wp_mail( $this->email_address, $this->email_subject, $this->email_message, $this->email_headers );
     }
 }
 

@@ -341,12 +341,37 @@ function dt_site_scripts() {
             'without' => __( 'Without', 'disciple_tools' ),
             'make_selections_below' => __( 'Make Selections Below', 'disciple_tools' ),
             'delete_selections_below' => __( 'Delete Selections Below', 'disciple_tools' ),
-            'sent' => _x( 'sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
+            'sent' => _x( 'scheduled to be sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
             'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
+            'see_queue' => _x( 'See queue', 'See queue of messages to be sent.', 'disciple_tools' ),
             'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
             'exports' => [
                 'csv' => [
-                    'fields_msg' => sprintf( _x( 'The exported csv data to contain all {0} %s fields.', 'The exported csv data to contain all fields', 'disciple_tools' ), $post_settings['label_singular'] )
+                    'fields_msg_all' => sprintf( _x( 'The exported csv data to contain all %2$s %1$s fields.', 'The exported csv data to contain all 64 Contact fields.', 'disciple_tools' ), $post_settings['label_singular'], '%2$s' ),
+                    'fields_msg_visible' => sprintf( _x( 'The exported csv data to contain the %2$s visible %1$s field(s) shown below.', 'The exported csv data to contain the 6 visible Contact field(s) shown below.', 'disciple_tools' ), $post_settings['label_singular'], '%2$s' )
+                ],
+                'bcc' => [
+                    'full_list' => __( 'Full List', 'disciple_tools' ),
+                    'no_addr' => __( 'No Addresses', 'disciple_tools' ),
+                    'with_addr' => __( 'With Additional Addresses', 'disciple_tools' ),
+                    'open_email' => __( 'Open Email for Group', 'disciple_tools' ),
+                    'open_all' => __( 'Open All', 'disciple_tools' ),
+                    'show_group_addrs' => __( 'Show Group Addresses', 'disciple_tools' )
+                ],
+                'phone' => [
+                    'full_list' => __( 'Full List', 'disciple_tools' ),
+                    'no_phone' => __( 'Has No Phone Number', 'disciple_tools' ),
+                    'with_phone' => __( 'Has Additional Phone Numbers', 'disciple_tools' )
+                ],
+                'map' => [
+                    'mapbox_key' => ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) ? esc_attr( DT_Mapbox_API::get_key() ) : null,
+                    'mapped_locations' => __( 'Mapped Locations', 'disciple_tools' ),
+                    'without_locations' => __( 'Contacts Without Locations', 'disciple_tools' ),
+                    'records_on_zoomed_map' => __( 'Records on zoomed map', 'disciple_tools' ),
+                    'no_records_on_zoomed_map_alert' => __( 'No Zoomed Map Records Found!', 'disciple_tools' ),
+                    'open_zoomed_map' => __( 'Open Zoomed Map Records', 'disciple_tools' ),
+                    'filter_name' => __( 'Filtered Map', 'disciple_tools' ),
+                    'filter_label' => __( 'Filtered Map', 'disciple_tools' )
                 ]
             ]
         ];

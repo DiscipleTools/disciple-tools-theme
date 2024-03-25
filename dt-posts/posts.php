@@ -413,7 +413,7 @@ class Disciple_Tools_Posts
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
                         $user = get_user_by( 'ID', $meta_array[1] );
-                        $message = sprintf( _x( '%1$1s: %2$2s', 'User Select: User1', 'disciple_tools' ), $fields[$activity->meta_key]['name'], ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
+                        $message = sprintf( _x( '%1$s: %2$s', 'User Select: User1', 'disciple_tools' ), $fields[$activity->meta_key]['name'], ( $user ? $user->display_name : __( 'Nobody', 'disciple_tools' ) ) );
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'text' ){
@@ -688,7 +688,7 @@ class Disciple_Tools_Posts
         foreach ( $query_array as $query_key => $query_value ) {
             if ( is_string( $query_key ) ){
                 $where_sql = '';
-                $table_key = esc_sql( 'field_' . $query_key );
+                $table_key = esc_sql( 'field_' . str_replace( '-', '_', $query_key ) );
                 if ( isset( $field_settings[$query_key]['type'] ) ){
                     $field_type = $field_settings[$query_key]['type'];
 
@@ -963,15 +963,18 @@ class Disciple_Tools_Posts
                             $index = -1;
                             $connector = ' OR ';
                             $query_for_null_values = null;
+
                             if ( !is_array( $query_value ) ){
                                 return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
+                                $where_sql .= " OR $table_key.meta_value = '' ";
                             }
                             foreach ( $query_value as $value_key => $value ){
                                 $index ++;
                                 $equality = 'LIKE';
+
                                 //allow negative searches
                                 if ( strpos( $value, '-' ) === 0 ){
                                     $equality = 'NOT LIKE';
@@ -1106,6 +1109,12 @@ class Disciple_Tools_Posts
         }
         if ( isset( $query['combine'] ) ){
             unset( $query['combine'] ); //remove deprecated combine
+        }
+
+        $map_bounds = [];
+        if ( isset( $query['map_bounds'] ) ) {
+            $map_bounds = $query['map_bounds'];
+            unset( $query ['map_bounds'] );
         }
 
         if ( isset( $query['fields'] ) ){
@@ -1276,7 +1285,7 @@ class Disciple_Tools_Posts
             }
         }
         if ( empty( $sort_sql ) ){
-            $sort_sql = 'p.post_title asc';
+            $sort_sql = 'p.post_date desc';
         }
 
         $group_by_sql = '';
@@ -1296,6 +1305,13 @@ class Disciple_Tools_Posts
         $fields_sql = self::fields_to_sql( $post_type, $query );
         if ( is_wp_error( $fields_sql ) ){
             return $fields_sql;
+        }
+
+        // If detected, ensure to also query by map bound lat/lng coordinates.
+        $has_map_bounds = isset( $map_bounds['ne'], $map_bounds['ne']['lat'], $map_bounds['ne']['lng'], $map_bounds['sw'], $map_bounds['sw']['lat'], $map_bounds['sw']['lng'] );
+        if ( $has_map_bounds ) {
+            $joins .= " LEFT JOIN $wpdb->dt_location_grid_meta as location_grid_meta ON ( location_grid_meta.post_id = p.ID )";
+            $post_query .= ' AND ( (location_grid_meta.lng >= '. esc_sql( $map_bounds['sw']['lng'] ) .' AND location_grid_meta.lng <= '. esc_sql( $map_bounds['ne']['lng'] ) .') AND (location_grid_meta.lat >= '. esc_sql( $map_bounds['sw']['lat'] ) .' AND location_grid_meta.lat <= '. esc_sql( $map_bounds['ne']['lat'] ) .') )';
         }
 
         // phpcs:disable
@@ -1470,6 +1486,7 @@ class Disciple_Tools_Posts
         $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c left join $wpdb->commentmeta cm on cm.comment_id = c.comment_ID WHERE c.comment_post_ID = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_location_grid_meta WHERE post_id = %s AND post_type = %s", $post_id, $post_type ) );
 
         dt_activity_insert( [
             'action' => 'record_deleted',
@@ -2474,7 +2491,7 @@ class Disciple_Tools_Posts
                                 $fields[$key] = [
                                     'id' => $id,
                                     'type' => $type,
-                                    'display' => wp_specialchars_decode( $user ? $user->display_name : 'Nobody' ),
+                                    'display' => wp_specialchars_decode( $user && is_user_member_of_blog( $id ) ? $user->display_name : __( 'Removed User', 'disciple_tools' ) ),
                                     'assigned-to' => $value[0]['value']
                                 ];
                             }
