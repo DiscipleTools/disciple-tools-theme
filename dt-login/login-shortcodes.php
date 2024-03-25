@@ -46,6 +46,7 @@ function dt_firebase_login_ui( $atts ) {
     $sign_in_options['email'] = DT_Login_Fields::get( 'identity_providers_email' ) === 'on' ? true : false;
     $sign_in_options['github'] = DT_Login_Fields::get( 'identity_providers_github' ) === 'on' ? true : false;
     $sign_in_options['twitter'] = DT_Login_Fields::get( 'identity_providers_twitter' ) === 'on' ? true : false;
+    $sign_in_options['microsoft'] = DT_Login_Fields::get( 'identity_providers_microsoft' ) === 'on' ? true : false; // Add this line for Microsoft
 
     $config['sign_in_options'] = $sign_in_options;
 
@@ -59,8 +60,8 @@ function dt_firebase_login_ui( $atts ) {
 
         const signInOptions = []
 
-        const { google, facebook, email, github, twitter } = config.sign_in_options
-        const hasASignInProvider = google || facebook || email || github || twitter
+        const { google, facebook, email, github, twitter, microsoft} = config.sign_in_options
+        const hasASignInProvider = google || facebook || email || github || twitter || microsoft
 
         if (google) {
             signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID)
@@ -81,6 +82,9 @@ function dt_firebase_login_ui( $atts ) {
         }
         if (twitter) {
             signInOptions.push(firebase.auth.TwitterAuthProvider.PROVIDER_ID)
+        }
+        if (microsoft) {
+          signInOptions.push('microsoft.com');
         }
 
         const firebaseConfig = {

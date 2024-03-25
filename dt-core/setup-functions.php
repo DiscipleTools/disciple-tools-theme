@@ -71,5 +71,3 @@ function dt_setup_roles_and_permissions(){
         }
     }
 }
-
-

@@ -56,7 +56,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     WHERE ( requires_update_field.meta_value = '' OR requires_update_field.meta_value = '0' OR requires_update_field.meta_key IS NULL )
                     AND overall_status_field.meta_value = %s
                     AND seeker_path_field.meta_value = %s
-                    AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 )
+                    AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 && action = 'field_update' )
                     AND $wpdb->posts.post_type = 'contacts' AND $wpdb->posts.post_status = 'publish'
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",
                         esc_sql( $setting['status'] ),
@@ -67,10 +67,10 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                         $user_name    = ( '@' . dt_get_assigned_name( $contact->ID, true ) . ' ' ) ?? '';
                         $comment_html = null;
 
-                        if ( isset( $setting, $setting['comment_translations'], $setting['comment_translations'][$user_locale] ) ) {
+                        if ( isset( $setting['comment_translations'][$user_locale] ) && !empty( $setting['comment_translations'][$user_locale] ) ) {
                             $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] );
 
-                        } elseif ( isset( $setting, $setting['comment'] ) ) {
+                        } elseif ( isset( $setting['comment'] ) ) {
                             $comment_html = esc_html( $user_name . $setting['comment'] );
                         }
 
@@ -106,7 +106,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     LEFT JOIN $wpdb->postmeta AS group_status_field ON ( $wpdb->posts.ID = group_status_field.post_id AND group_status_field.meta_key = 'group_status' )
                     WHERE ( requires_update_field.meta_value = '' OR requires_update_field.meta_value = '0' OR requires_update_field.meta_value IS NULL )
                     AND group_status_field.meta_value = %s
-                    AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 )
+                    AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 && action = 'field_update' )
                     AND $wpdb->posts.post_type = 'groups' AND $wpdb->posts.post_status = 'publish'
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",
                     esc_sql( $setting['status'] ),
@@ -116,10 +116,10 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     $user_name    = ( '@' . dt_get_assigned_name( $group->ID, true ) . ' ' ) ?? '';
                     $comment_html = null;
 
-                    if ( isset( $setting, $setting['comment_translations'], $setting['comment_translations'][$user_locale] ) ) {
+                    if ( isset( $setting['comment_translations'][$user_locale] ) && !empty( $setting['comment_translations'][$user_locale] ) ) {
                         $comment_html = esc_html( $user_name . $setting['comment_translations'][$user_locale] );
 
-                    } elseif ( isset( $setting, $setting['comment'] ) ) {
+                    } elseif ( isset( $setting['comment'] ) ) {
                         $comment_html = esc_html( $user_name . $setting['comment'] );
                     }
 

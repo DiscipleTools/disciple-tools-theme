@@ -260,6 +260,26 @@ jQuery(document).ready(function ($) {
     update_config_selections( $(e.currentTarget).data('post_type'), 'update', update_config_selections_display );
   });
 
+  $(document).on('change', '#dt_import_tiles_fields_table_checkbox', function (e) {
+    const select_all_checkbox = $(e.currentTarget);
+
+    // Un/Check tile & field elements accordingly.
+    const tile_checkboxes = $('.dt-tile-select-settings-checkbox');
+    const field_checkboxes = $('.dt-tile-select-fields-checkbox');
+
+    $(tile_checkboxes).prop('checked', $(select_all_checkbox).prop('checked'));
+    $(field_checkboxes).prop('checked', $(select_all_checkbox).prop('checked'));
+
+    // Next, iterate over elements and trigger associated change events.
+    $(tile_checkboxes).each(function (idx, tile) {
+      $(tile).trigger('change');
+    });
+
+    $(field_checkboxes).each(function (idx, field) {
+      $(field).trigger('change');
+    });
+  });
+
   $(document).on('change', '.dt-tile-select-settings-checkbox', function (e) {
     update_config_selections( $(e.currentTarget).data('post_type'), 'update', update_config_selections_display );
   });
@@ -455,6 +475,7 @@ jQuery(document).ready(function ($) {
     let field_settings = dt_settings[dt_import_config_setting_keys['fields_settings_key']]['values'][post_type];
 
     $(dt_import_tiles_fields_div).fadeOut('fast', function () {
+      $('#dt_import_tiles_fields_table_checkbox').prop('checked', false);
 
       // Next, iterate over tile buckets and display.
       let html = ``;
