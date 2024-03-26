@@ -92,72 +92,77 @@ jQuery(function($) {
 
   /* breadcrumb: new-field-type Add the new link type data to the new_post array */
   $(".js-create-post").on("submit", function() {
-    $(".js-create-post-button")
-    .attr("disabled", true)
-    .addClass("loading");
-    new_post.title = $(".js-create-post input[name=title]").val()
-    $('.select-field').each((index, entry)=>{
-      if ( $(entry).val() ){
-        new_post[$(entry).attr('id')] = $(entry).val()
+    $(".js-create-post-button").attr("disabled", true).addClass("loading");
+    // new_post.title = $(".js-create-post input[name=title]").val()
+    new_post.name = $("#name").val();
+    $(".select-field").each((index, entry) => {
+      if ($(entry).val()) {
+        new_post[$(entry).attr("id")] = $(entry).val();
       }
-    })
-    $('.text-input').each((index, entry)=>{
-      if ( $(entry).val() ){
-        new_post[$(entry).attr('id')] = $(entry).val()
+    });
+    $(".text-input").each((index, entry) => {
+      if ($(entry).val()) {
+        new_post[$(entry).attr("id")] = $(entry).val();
       }
-    })
-    $('.link-input').each((index, entry) => {
-      let fieldKey = $(entry).data('field-key')
-      let type = $(entry).data('type')
-      if ( $(entry).val() ){
-        if ( !Object.prototype.hasOwnProperty.call( new_post, fieldKey ) ) {
-          new_post[fieldKey] = { values: [] }
+    });
+    $(".link-input").each((index, entry) => {
+      let fieldKey = $(entry).data("field-key");
+      let type = $(entry).data("type");
+      if ($(entry).val()) {
+        if (!Object.prototype.hasOwnProperty.call(new_post, fieldKey)) {
+          new_post[fieldKey] = { values: [] };
         }
-        new_post[fieldKey].values.push( {
+        new_post[fieldKey].values.push({
           value: $(entry).val(),
           type: type,
-        } )
-      }
-    })
-    $('.dt_textarea').each((index, entry)=>{
-      if ( $(entry).val() ){
-        new_post[$(entry).attr('id')] = $(entry).val()
+        });
       }
     });
-    $('.dt-communication-channel').each((index, entry)=>{
-      let val = $(entry).val()
-      if ( val.length > 0 ){
-        let channel = $(entry).data('field')
-        if ( !new_post[channel]){
-          new_post[channel] =[]
+    $(".dt_textarea").each((index, entry) => {
+      if ($(entry).val()) {
+        new_post[$(entry).attr("id")] = $(entry).val();
+      }
+    });
+    $(".dt-communication-channel").each((index, entry) => {
+      let val = $(entry).val();
+      if (val.length > 0) {
+        let channel = $(entry).data("field");
+        if (!new_post[channel]) {
+          new_post[channel] = [];
         }
         new_post[channel].push({
-          value: $(entry).val()
-        })
+          value: $(entry).val(),
+        });
       }
-    })
-    $('.selected-select-button').each((index, entry)=>{
-      let optionKey = $(entry).attr('id')
-      let fieldKey = $(entry).data("field-key")
-      if ( !new_post[fieldKey]){
-        new_post[fieldKey] = {values:[]};
+    });
+    $(".selected-select-button").each((index, entry) => {
+      let optionKey = $(entry).attr("id");
+      let fieldKey = $(entry).data("field-key");
+      if (!new_post[fieldKey]) {
+        new_post[fieldKey] = { values: [] };
       }
       new_post[fieldKey].values.push({
-        "value": optionKey
-      })
-    })
-    if ( typeof window.selected_location_grid_meta !== 'undefined' ){
-      new_post['location_grid_meta'] = window.selected_location_grid_meta.location_grid_meta
+        value: optionKey,
+      });
+    });
+    if (typeof window.selected_location_grid_meta !== "undefined") {
+      new_post["location_grid_meta"] =
+        window.selected_location_grid_meta.location_grid_meta;
     }
 
-
-    window.API.create_post( window.new_record_localized.post_type, new_post).promise().then(function(data) {
-      window.location = data.permalink;
-    }).catch(function(error) {
-      const message = error.responseJSON?.message || error.responseText
-      $(".js-create-post-button").removeClass("loading").addClass("alert").attr("disabled", false)
-      $(".error-text").html(message);
-    });
+    window.API.create_post(window.new_record_localized.post_type, new_post)
+      .promise()
+      .then(function (data) {
+        window.location = data.permalink;
+      })
+      .catch(function (error) {
+        const message = error.responseJSON?.message || error.responseText;
+        $(".js-create-post-button")
+          .removeClass("loading")
+          .addClass("alert")
+          .attr("disabled", false);
+        $(".error-text").html(message);
+      });
     return false;
   });
 
