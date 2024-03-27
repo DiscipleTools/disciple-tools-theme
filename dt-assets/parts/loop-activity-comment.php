@@ -39,8 +39,10 @@
                           placeholder="<?php echo esc_html_x( 'Write your comment or note here', 'input field placeholder', 'disciple_tools' ) ?>"
                 ></textarea>
 
-                <?php if ( is_singular( 'contacts' ) ) :
-                    $post_type = get_post_type();
+                <?php
+                $post_type = get_post_type();
+                if ( is_singular( $post_type ) ) :
+
                     $sections = [
                         [
                             'key' => 'comment',
@@ -49,8 +51,9 @@
                             'always_show' => true,
                         ]
                     ];
-                    $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );?>
+                    $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
 
+                    if ( count( $sections ) > 1 ) : ?>
                         <div class="grid-x">
                             <div class="section-subheader cell shrink">
                                 <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
@@ -67,6 +70,7 @@
                                 } ?>
                             </select>
                         </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
