@@ -21,6 +21,12 @@ jQuery(function($) {
     new_post.type = type
     /* Focus first field in form */
     document.querySelector('.form-fields input').focus()
+
+    //change type field in fields list too
+    const type_field = $('.form-field #type')
+    if (type_field.length) {
+      type_field.val(type)
+    }
   })
   $('#show-hidden-fields').on('click', function (){
     $('.form-field').show()
