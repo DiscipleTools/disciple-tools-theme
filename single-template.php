@@ -296,6 +296,7 @@ function dt_display_tile( $tile, $post ): bool {
                     </section>
                     <?php endif; ?>
 
+                    <?php do_action( 'dt_record_after_details_section', $post_type, $dt_post ); ?>
 
                     <!--
                         Tiles Section
