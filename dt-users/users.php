@@ -1012,6 +1012,12 @@ class Disciple_Tools_Users
         $args = [];
         $args['ID'] = $current_user->ID;
 
+        // If specified, directly upload profile pic to registered 3rd-party media object store.
+        if ( isset( $_FILES['user_profile_pic'] ) && !empty( $_FILES['user_profile_pic']['tmp_name'] ) ) {
+            $file_path = '/users/' . md5( $args['ID'] ) . '/' . md5( 'user_profile_pic' );
+            apply_filters( 'dt_media_connections_obj_upload', false, dt_get_option( 'dt_media_connection_id' ), $file_path, dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ) );
+        }
+
         // build user name variables
         if ( isset( $_POST['first_name'] ) ) {
             $args['first_name'] = sanitize_text_field( wp_unslash( $_POST['first_name'] ) );
@@ -1078,7 +1084,6 @@ class Disciple_Tools_Users
 
         return wp_redirect( get_site_url() .'/settings' );
     }
-
 
     public function get_date_availability_hook( $settings ){
         $dates_unavailable = get_user_option( 'user_dates_unavailable', get_current_user_id() );
