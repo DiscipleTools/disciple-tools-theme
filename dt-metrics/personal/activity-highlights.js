@@ -1,22 +1,26 @@
-jQuery(document).ready(function($) {
-  if ( window.wpApiShare.url_path.startsWith( 'metrics/personal/activity-highlights' ) ) {
-    my_stats()
+jQuery(document).ready(function ($) {
+  if (
+    window.wpApiShare.url_path.startsWith(
+      'metrics/personal/activity-highlights',
+    )
+  ) {
+    my_stats();
   }
 
   function my_stats() {
-    "use strict";
-    let chartDiv = jQuery('#chart')
-    let sourceData = window.dtMetricsActivity.data
-    let translations = window.dtMetricsActivity.translations
+    'use strict';
+    let chartDiv = jQuery('#chart');
+    let sourceData = window.dtMetricsActivity.data;
+    let translations = window.dtMetricsActivity.translations;
 
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
 
-    const title = window.SHAREDFUNCTIONS.escapeHTML( translations.title )
+    const title = window.SHAREDFUNCTIONS.escapeHTML(translations.title);
 
     /* highlights */
     chartDiv.empty().html(`
       <div class="cell center">
-        <h3>${ title }</h3>
+        <h3>${title}</h3>
       </div>
       <div class="section-subheader">${window.SHAREDFUNCTIONS.escapeHTML(translations.filter_contacts_to_date_range)}</div>
       <div class="date_range_picker">
@@ -28,24 +32,24 @@ jQuery(document).ready(function($) {
       <hr>
 
       <div id="activity_highlights"></div>
-    `)
+    `);
 
     window.METRICS.setupDatePicker(
       `${window.dtMetricsActivity.rest_endpoints_base}/highlights_data/`,
       function (data, label) {
         if (data) {
           $('.date_range_picker span').html(label);
-          buildHighlights(data, label)
+          buildHighlights(data, label);
         }
-      }
-    )
+      },
+    );
 
-    buildHighlights(sourceData.highlights)
+    buildHighlights(sourceData.highlights);
   }
-})
+});
 
-function buildHighlights(data, label = "all time") {
-  console.log(data, label)
+function buildHighlights(data, label = 'all time') {
+  console.log(data, label);
 
   const {
     baptisms,
@@ -63,7 +67,7 @@ function buildHighlights(data, label = "all time") {
     quick_actions_done,
     seeker_path_changed,
     seeker_path_changed_by_others,
-  } = data
+  } = data;
 
   const {
     field_I_changed,
@@ -73,9 +77,11 @@ function buildHighlights(data, label = "all time") {
     baptism_by_others,
     comments_I_liked,
     comments_I_posted,
-  } = window.SHAREDFUNCTIONS.escapeObject(window.dtMetricsActivity.translations)
+  } = window.SHAREDFUNCTIONS.escapeObject(
+    window.dtMetricsActivity.translations,
+  );
 
-  const chartDiv = jQuery('#activity_highlights')
+  const chartDiv = jQuery('#activity_highlights');
 
   chartDiv.html(`
     <div class="grid-x grid-margin-x">
@@ -136,29 +142,31 @@ function buildHighlights(data, label = "all time") {
         </div>
       </div>
     </div>
-    `)
+    `);
 
-    const filterComments = (e) => {
-      const { value } = e.target
+  const filterComments = (e) => {
+    const { value } = e.target;
 
-      if (value === 'all') {
-        jQuery('.liked-comments').show()
-      } else {
-        jQuery('.liked-comments').hide()
-        jQuery(`.comment.${value}`).show()
-      }
+    if (value === 'all') {
+      jQuery('.liked-comments').show();
+    } else {
+      jQuery('.liked-comments').hide();
+      jQuery(`.comment.${value}`).show();
     }
+  };
 
-    document.querySelector('#comment-filter').addEventListener('change' , filterComments)
+  document
+    .querySelector('#comment-filter')
+    .addEventListener('change', filterComments);
 }
 
 function makeTitle(data, title_text) {
-  const { field_label, post_type_label } = data
+  const { field_label, post_type_label } = data;
 
   let title = title_text.replace('%1$s', field_label);
 
   if (post_type_label) {
-    title = title.replace('%2$s', post_type_label)
+    title = title.replace('%2$s', post_type_label);
   }
 
   return title;
@@ -170,7 +178,7 @@ function makeDataTable(data) {
     <div class="left-margin">
       ${none()}
     </div>
-    `
+    `;
   }
 
   return `
@@ -187,11 +195,11 @@ function makeDataTable(data) {
               <td>${info.label}</td>
               <td>${info.count}</td>
             </tr>
-          `
+          `;
         }, '')}
       </tbody>
     </table>
-  `
+  `;
 }
 
 function makeSentence(data) {
@@ -203,10 +211,10 @@ function makeSentence(data) {
           <p>
             <span>${info.count}</span> ${info.label}
           </p>
-        `
+        `;
       }, '')}
     </div>
-  `
+  `;
 }
 
 function makeBaptismsSection(data) {
@@ -215,10 +223,12 @@ function makeBaptismsSection(data) {
     <div class="left-margin">
       ${none()}
     </div>
-    `
+    `;
   }
 
-  const { date, contact } = window.SHAREDFUNCTIONS.escapeObject( window.dtMetricsActivity.translations )
+  const { date, contact } = window.SHAREDFUNCTIONS.escapeObject(
+    window.dtMetricsActivity.translations,
+  );
 
   return `
     <div>
@@ -238,12 +248,12 @@ function makeBaptismsSection(data) {
                 <td>${window.SHAREDFUNCTIONS.formatDate(info.baptism_date)}</td>
                 <td><a href="/contacts/${info.ID}">${info.contact}</a></td>
               </tr>
-            `
+            `;
           }, '')}
         </tbody>
       </table>
     </div>
-  `
+  `;
 }
 
 function makeBaptismsByOthersSection(data) {
@@ -252,12 +262,14 @@ function makeBaptismsByOthersSection(data) {
     <div class="left-margin">
       ${none()}
     </div>
-    `
+    `;
   }
 
-  const { date, contact, baptized_by } = window.SHAREDFUNCTIONS.escapeObject( window.dtMetricsActivity.translations )
+  const { date, contact, baptized_by } = window.SHAREDFUNCTIONS.escapeObject(
+    window.dtMetricsActivity.translations,
+  );
 
-  const baptisms = []
+  const baptisms = [];
 
   return `
     <div>
@@ -271,22 +283,41 @@ function makeBaptismsByOthersSection(data) {
         </thead>
         <tbody>
           ${data.reduce((html, info) => {
+            const {
+              from_name,
+              from_id,
+              to_name,
+              to_id,
+              connection_direction,
+              baptism_date,
+            } = info;
 
-            const {from_name, from_id, to_name, to_id, connection_direction, baptism_date} = info
+            const baptizer_to_baptized_direction =
+              connection_direction === 'connection to';
 
-            const baptizer_to_baptized_direction = connection_direction === 'connection to';
-
-            const baptizer_name = baptizer_to_baptized_direction ? from_name : to_name
-            const baptizer_id = baptizer_to_baptized_direction ? from_id : to_id
-            const contact = baptizer_to_baptized_direction ? to_name : from_name
-            const contact_id = baptizer_to_baptized_direction ? to_id : from_id
+            const baptizer_name = baptizer_to_baptized_direction
+              ? from_name
+              : to_name;
+            const baptizer_id = baptizer_to_baptized_direction
+              ? from_id
+              : to_id;
+            const contact = baptizer_to_baptized_direction
+              ? to_name
+              : from_name;
+            const contact_id = baptizer_to_baptized_direction ? to_id : from_id;
 
             // Don't display duplicate baptisms
-            const baptism = { baptizer_id, contact_id, baptism_date }
+            const baptism = { baptizer_id, contact_id, baptism_date };
 
-            if (baptisms.find((b) => b.baptizer_id === baptizer_id && b.contact_id === contact_id)) return html
+            if (
+              baptisms.find(
+                (b) =>
+                  b.baptizer_id === baptizer_id && b.contact_id === contact_id,
+              )
+            )
+              return html;
 
-            baptisms.push(baptism)
+            baptisms.push(baptism);
 
             return `
               ${html}
@@ -295,34 +326,36 @@ function makeBaptismsByOthersSection(data) {
                 <td><a href="/contacts/${contact_id}">${contact}</a></td>
                 <td>${baptizer_name}</td>
               </tr>
-            `
+            `;
           }, '')}
         </tbody>
       </table>
     </div>
-  `
+  `;
 }
 
 function makeCommentsSection(data) {
   if (empty(data)) {
-    return none()
+    return none();
   }
 
-  const { group, contact } = window.dtMetricsActivity.translations
+  const { group, contact } = window.dtMetricsActivity.translations;
 
   const postTypeLabels = {
-    'contacts': window.SHAREDFUNCTIONS.escapeHTML(contact),
-    'groups': window.SHAREDFUNCTIONS.escapeHTML(group),
-  }
+    contacts: window.SHAREDFUNCTIONS.escapeHTML(contact),
+    groups: window.SHAREDFUNCTIONS.escapeHTML(group),
+  };
 
   return `
     <div id="comment-activity-section">
       ${data.reduce((html, info) => {
         const reactionClasses = info.reactions
-          ? [{key: 'liked-comments'}, ...info.reactions].map((reaction) => reaction.key).join(' ')
-          : ''
+          ? [{ key: 'liked-comments' }, ...info.reactions]
+              .map((reaction) => reaction.key)
+              .join(' ')
+          : '';
 
-        const epochDateTime = (new Date(info.comment_date)).getTime() / 1000;
+        const epochDateTime = new Date(info.comment_date).getTime() / 1000;
 
         return `
           ${html}
@@ -336,25 +369,30 @@ function makeCommentsSection(data) {
               <div class="comment-bubble">${window.SHAREDFUNCTIONS.formatComment(info.comment_content)}</div>
               <div class="comment-controls">
                 <div class="comment-reactions">
-                  ${info.reactions
-                      ? info.reactions.reduce((reactionsHtml, { name, emoji, path }) => {
-                          return `
+                  ${
+                    info.reactions
+                      ? info.reactions.reduce(
+                          (reactionsHtml, { name, emoji, path }) => {
+                            return `
                             ${reactionsHtml}
                             <div class="comment-reaction" title="${name}">
                               <span>
                                 ${displayReaction({ path, emoji })}
                               </span>
-                            </div>`
-                        }, '')
-                      : ''}
+                            </div>`;
+                          },
+                          '',
+                        )
+                      : ''
+                  }
                 </div>
               </div>
             </div>
           </div>
-        `
+        `;
       }, '')}
     </div>
-  `
+  `;
 }
 
 function makeRecordsCreatedSection(data) {
@@ -366,30 +404,34 @@ function makeRecordsCreatedSection(data) {
 }
 
 function makeCommentFilterSelect() {
-  const { reaction_options, translations } = window.dtMetricsActivity
+  const { reaction_options, translations } = window.dtMetricsActivity;
 
-  const { all } = translations
+  const { all } = translations;
 
   return `
     <select id="comment-filter">
       <option value="all">${window.SHAREDFUNCTIONS.escapeHTML(all)}</option>
-      ${Object.entries(reaction_options).map(([key, reaction]) => `
+      ${Object.entries(reaction_options).map(
+        ([key, reaction]) => `
         <option value="${key}">${displayReaction(reaction)}</option>
-      `)}
+      `,
+      )}
     </select>
-  `
+  `;
 }
 
 function displayReaction({ emoji, path }) {
-  return (emoji && emoji !== '') ? emoji : `<img class="emoji" src="${path}">`
+  return emoji && emoji !== '' ? emoji : `<img class="emoji" src="${path}">`;
 }
 
 function empty(data) {
-  return !data || data.length === 0
+  return !data || data.length === 0;
 }
 
 function none() {
-  const { none } = window.SHAREDFUNCTIONS.escapeObject(window.dtMetricsActivity.translations)
+  const { none } = window.SHAREDFUNCTIONS.escapeObject(
+    window.dtMetricsActivity.translations,
+  );
 
   return none;
 }
