@@ -137,7 +137,10 @@ if ( typeof window.dtMapbox === "undefined" ) {
             data: {
               s: "{{query}}",
               filter: function () {
-                return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                const { dropdown } =
+                  window.Typeahead[".js-typeahead-location_grid"].filters;
+                const value = dropdown?.value ?? "all";
+                return value;
               }
             },
             beforeSend: function (xhr) {
@@ -248,7 +251,7 @@ jQuery('#add_unavailable_dates').on('click', function () {
 let display_dates_unavailable = (list = [], first_run )=>{
   let date_unavailable_table = jQuery('#unavailable-list')
   let rows = ``
-  list = window.lodash.orderBy( list, [ "start_date" ], "desc")
+  list.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
   list.forEach(range=>{
     rows += `<tr>
         <td>${window.SHAREDFUNCTIONS.escapeHTML(range.start_date)}</td>
@@ -278,7 +281,9 @@ let color_workload_buttons = (name) =>{
   if ( name ){
     let selected = jQuery(`.status-button[name=${name}]`)
     selected.removeClass("hollow")
-    selected.css('background-color', window.lodash.get(window.wpApiSettingsPage, `workload_status_options.${name}.color`))
+    const color =
+      window.wpApiSettingsPage?.workload_status_options?.[name]?.color;
+    selected.css("background-color", color);
     selected.blur()
   }
 }
