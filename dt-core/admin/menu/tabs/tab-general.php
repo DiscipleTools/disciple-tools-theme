@@ -60,6 +60,23 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* End Base User */
 
+            /* Media Settings */
+            $this->box( 'top', 'Media Settings' );
+            $media_connections = apply_filters( 'dt_media_connections', [] );
+            if ( !empty( $media_connections ) ) {
+                $this->process_media_settings();
+                $this->media_settings( $media_connections );
+
+            } else {
+                ?>
+                <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
+                    <?php echo esc_html( 'Ensure Disciple.Tools Media Plugin has been installed and valid connections have been created and enabled.' ); ?>
+                </span>
+                <?php
+            }
+            $this->box( 'bottom' );
+            /* End Media Settings */
+
             /* Email Settings */
             $this->box( 'top', 'Email Settings' );
             $this->process_email_settings();
@@ -253,6 +270,52 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 if ( is_numeric( $user_id ) ) {
                     update_option( 'dt_base_user', $user_id );
                 }
+            }
+        }
+    }
+
+    public function media_settings( $media_connections ): void {
+        ?>
+        <form method="POST">
+            <input type="hidden" name="media_settings_nonce" id="media_settings_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'media_settings' ) ) ?>"/>
+
+            <table class="widefat">
+                <tbody>
+                <tr>
+                    <td>
+                        <label
+                            for="media_connection"><?php esc_html_e( 'Select media connection to be used when processing D.T media assets', 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <select name="media_connection" id="media_connection">
+                            <option value="">--- None ---</option>
+                            <?php
+                            $media_connection_id = dt_get_option( 'dt_media_connection_id' );
+                            foreach ( $media_connections as $connection ) {
+                                $selected = $connection['id'] === $media_connection_id;
+                                ?>
+                                <option <?php echo ( $selected ? 'selected' : '' ) ?> value="<?php echo esc_attr( $connection['id'] ) ?>"><?php echo esc_attr( $connection['name'] ) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <span style="float:right;"><button type="submit"
+                                               class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
+        </form>
+        <?php
+    }
+
+    public function process_media_settings() {
+        if ( isset( $_POST['media_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['media_settings_nonce'] ) ), 'media_settings' ) ) {
+            if ( isset( $_POST['media_connection'] ) ) {
+                update_option( 'dt_media_connection_id', sanitize_text_field( wp_unslash( $_POST['media_connection'] ) ) );
             }
         }
     }

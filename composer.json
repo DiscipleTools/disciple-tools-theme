@@ -8,5 +8,8 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
+    },
+    "require": {
+        "aws/aws-sdk-php": "3.*"
     }
 }
