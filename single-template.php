@@ -166,6 +166,7 @@ function dt_display_tile( $tile, $post ): bool {
                     <!--
                         Main details section
                     -->
+                    <?php if ( isset( $tiles['details'] ) && empty( $tiles['details']['hidden'] ) ) : ?>
                     <section id="details-tile" class="small-12 cell bordered-box collapsed" >
                         <h3 class="section-header">
                             <?php if ( isset( $tiles['details']['label'] ) && !empty( $tiles['details']['label'] ) ) {
@@ -293,7 +294,9 @@ function dt_display_tile( $tile, $post ): bool {
                             </div>
                         </div>
                     </section>
+                    <?php endif; ?>
 
+                    <?php do_action( 'dt_record_after_details_section', $post_type, $dt_post ); ?>
 
                     <!--
                         Tiles Section

@@ -685,26 +685,26 @@ dt_please_log_in();
                                                 placeholder="<?php echo esc_html_x( 'Write your comment or note here', 'input field placeholder', 'disciple_tools' ) ?>"
                                         ></textarea>
 
-                                        <?php if ( $post_type == 'contacts' ) :
-                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );?>
-
-                                                <div class="grid-x">
-                                                    <div class="section-subheader cell shrink">
-                                                        <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
-                                                    </div>
-                                                    <select id="comment_type_selector" class="cell auto">
-                                                        <?php
-                                                        $section_keys = [ 'activity' ];
-                                                        foreach ( $sections as $section ) {
-                                                            if ( !in_array( $section['key'], $section_keys ) ) {
-                                                                $section_keys[] = $section['key'] ?>
-                                                                <option value="<?php echo esc_html( $section['key'] ); ?>">
-                                                                <?php echo esc_html( $section['label'] );
-                                                            }
-                                                        } ?>
-                                                    </select>
+                                        <?php
+                                        $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );
+                                        if ( sizeof( $sections ) > 0 ) : ?>
+                                            <div class="grid-x">
+                                                <div class="section-subheader cell shrink">
+                                                    <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
                                                 </div>
-                                                <?php endif; ?>
+                                                <select id="comment_type_selector" class="cell auto">
+                                                    <?php
+                                                    $section_keys = [ 'activity' ];
+                                                    foreach ( $sections as $section ) {
+                                                        if ( !in_array( $section['key'], $section_keys ) ) {
+                                                            $section_keys[] = $section['key'] ?>
+                                                            <option value="<?php echo esc_html( $section['key'] ); ?>">
+                                                            <?php echo esc_html( $section['label'] );
+                                                        }
+                                                    } ?>
+                                                </select>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
