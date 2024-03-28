@@ -288,7 +288,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                             </td>
                                             <td class="tall-3">
                                                 <input class="switch-input" id="app_state_<?php echo esc_attr( $app_key )?>" type="checkbox" name="follow_all"
-                                                       onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                                       onclick="app_switch('<?php echo esc_attr( get_current_user_id() )?>', '<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
                                                 <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
                                                     <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
                                                     <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>

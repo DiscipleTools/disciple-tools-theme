@@ -191,11 +191,15 @@ class DT_User_Management
                         'view_user' => __( 'View User', 'disciple_tools' ),
                         'view_contact' => __( 'View Contact', 'disciple_tools' ),
                         'more' => __( 'More', 'disciple_tools' ),
-                        'less' => __( 'Less', 'disciple_tools' )
+                        'less' => __( 'Less', 'disciple_tools' ),
+                        'app_state_enable' => __( 'Enable', 'disciple_tools' ),
+                        'app_state_active' => __( 'Yes', 'disciple_tools' ),
+                        'app_state_inactive' => __( 'No', 'disciple_tools' )
                     ],
                     'language_dropdown' => dt_get_available_languages(),
                     'default_language' => get_option( 'dt_user_default_language', 'en_US' ),
-                    'has_permission' => self::has_permission()
+                    'has_permission' => self::has_permission(),
+                    'magic_link_apps' => dt_get_registered_types()
                 ]
             );
 
@@ -277,6 +281,7 @@ class DT_User_Management
             'unaccepted_contacts' => [],
             'unattempted_contacts' => [],
             'allowed_sources' => [],
+            'magic_links' => []
         ];
 
         /* details section */
@@ -303,10 +308,25 @@ class DT_User_Management
             $user_response['gender'] = get_user_option( 'user_gender', $user_id );
             $user_response['languages'] = get_user_option( 'user_languages', $user_id );
             $user_response['description'] = get_user_meta( $user_id, 'description', true );
-            $user_response['corresponds_to_contact'] = Disciple_Tools_Users::get_contact_for_user( $user_id );
+            $contact_id = Disciple_Tools_Users::get_contact_for_user( $user_id );
+            $user_response['corresponds_to_contact'] = $contact_id;
             $dt_user_meta = get_user_meta( $user_id ); // Full array of user meta data
             $user_response['user_fields'] = dt_build_user_fields_display( $dt_user_meta );
 
+            // Capture any associated magic links.
+            foreach ( dt_get_registered_types() ?? [] as $app_root => $app_types ) {
+                foreach ( $app_types as $app_type => $app_value ) {
+                    if ( isset( $app_value['label'], $app_value['meta_key'], $app_value['post_type'] ) ) {
+                        $user_response['magic_links'][$app_value['meta_key']] = [
+                            'type' => $app_type,
+                            'label' => $app_value['label'],
+                            'post_type' => $app_value['post_type'],
+                            'meta_key' => $app_value['meta_key'],
+                            'meta_key_value' => get_user_option( $app_value['meta_key'], $user_id )
+                        ];
+                    }
+                }
+            }
         }
 
         $modules = dt_get_option( 'dt_post_type_modules' );
@@ -673,7 +693,7 @@ class DT_User_Management
                 if ( !empty( $meta_key ) && !empty( $meta_value ) ){
                     $inner = "INNER JOIN $wpdb->postmeta pm2 ON ( pm2.post_id = pm.post_id AND pm2.meta_key = '$meta_key' AND pm2.meta_value = '$meta_value' )";
                 }
-                $joins .= " LEFT JOIN ( 
+                $joins .= " LEFT JOIN (
                     SELECT REPLACE(pm.meta_value, 'user-', '') as user_id, COUNT(pm.post_id) as count
                     FROM $wpdb->postmeta pm
                     $inner
