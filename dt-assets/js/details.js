@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
   window.masonGrid = $('.grid'); // responsible for resizing and moving the tiles
   window.masonGrid.masonry({
     itemSelector: '.grid-item',
-    columnWidth: '.grid-item:not(.hidden-grid-item)',
+    columnWidth: ".grid-item:not(.hidden-grid-item)",
     percentPosition: true,
   });
 
