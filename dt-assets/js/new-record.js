@@ -91,10 +91,11 @@ jQuery(function($) {
   })
 
   /* breadcrumb: new-field-type Add the new link type data to the new_post array */
-  $(".js-create-post").on("submit", function() {
+  $(".js-create-post").on("submit", function (e) {
     $(".js-create-post-button").attr("disabled", true).addClass("loading");
-    // new_post.title = $(".js-create-post input[name=title]").val()
-    new_post.name = $("#name").val();
+
+    new_post.title = $(".js-create-post [name=name]").val();
+
     $(".select-field").each((index, entry) => {
       if ($(entry).val()) {
         new_post[$(entry).attr("id")] = $(entry).val();
