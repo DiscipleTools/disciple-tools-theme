@@ -12,10 +12,63 @@ jQuery(document).ready(function($) {
   let activity = [] // not guaranteed to be in any particular order
   let langcode = document.querySelector('html').getAttribute('lang') ? document.querySelector('html').getAttribute('lang').replace('_', '-') : "en";// get the language attribute from the HTML or default to english if it doesn't exists.
 
+  function convertComment(text) {
+    //**text** becomes <strong>text</strong> */
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    //__text__ becomes <strong>text</strong> */
+    text = text.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
+    //*text* becomes <em>text</em> */
+    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    //- text or * text or + text becomes <strong>text</strong> */
+    text = text.replace(/^\s*[*+-]\s+(.*)$/gm, '<li>$1</li>');
+    // also, #. becomes a numbered list
+    text = text.replace(/^\s*\d+\.\s+(.*)$/gm, '<li>$1</li>');
+    //creates lists with the help of line 23 and 25
+    if (text.includes('<li>')) {
+      text = '<ul>' + text + '</ul>';
+  }
+    //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
+    text = text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2">');
+    //return modified comment
+    return text;
+  }
+  //pre-simplification
+//   //**text** becomes <strong>text</strong> */
+//   function convertToBold(text) {
+//     return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+//   }
+//     //__text__ becomes <strong>text</strong> */
+//   function convertToBoldPartTwo(text) {
+//     return text.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
+//   }
+//   //*text* becomes <em>text</em> */
+//   function convertToItalics(text) {
+//     return text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+//   }
+//   //- text or * text or + text becomes <strong>text</strong> */
+//   // also, #. becomes a numbered list
+//   function convertToList(text) {
+//     text = text.replace(/^\s*[*+-]\s+(.*)$/gm, '<li>$1</li>');
+//     text = text.replace(/^\s*\d+\.\s+(.*)$/gm, '<li>$1</li>');
+
+//     if (text.includes('<li>')) {
+//         text = '<ul>' + text + '</ul>';
+//     }
+
+//     return text;
+// }
+//   //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
+//   function convertImage(text) {
+//     return text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2">');
+//   }
+
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
     let commentType = $('#comment_type_selector').val()
+    let commentText = commentInput.val();
+    commentText = convertComment(commentText);
+ 
     getCommentWithMentions(comment_plain_text=>{
       if (comment_plain_text) {
         commentButton.toggleClass('loading')
@@ -602,6 +655,7 @@ jQuery(document).ready(function($) {
         })
       }).catch(err => { console.error(err) })
     },
+    //probably here
     templates : {
       mentionItemSyntax : function (data) {
         return `[${data.value}](${data.id})`
