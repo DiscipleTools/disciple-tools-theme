@@ -1014,8 +1014,19 @@ class Disciple_Tools_Users
 
         // If specified, directly upload profile pic to registered 3rd-party media object store.
         if ( isset( $_FILES['user_profile_pic'] ) && !empty( $_FILES['user_profile_pic']['tmp_name'] ) ) {
-            $file_path = '/users/' . md5( $args['ID'] ) . '/' . md5( 'user_profile_pic' );
-            apply_filters( 'dt_media_connections_obj_upload', false, dt_get_option( 'dt_media_connection_id' ), $file_path, dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ) );
+
+            // To avoid a build up of stale object keys, relating to the same user, reuse existing keys.
+            $profile_pic_key = get_user_meta( $current_user->ID, 'dt_user_profile_picture', true );
+            $uploaded = apply_filters( 'dt_media_connections_obj_upload', false, dt_get_option( 'dt_media_connection_id' ), 'users/', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), [
+                'include_extension' => empty( $profile_pic_key ),
+                'auto_generate_key' => empty( $profile_pic_key ),
+                'default_key' => $profile_pic_key
+            ] );
+
+            // If successful, persist uploaded object file key.
+            if ( !empty( $uploaded ) ) {
+                update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded );
+            }
         }
 
         // build user name variables

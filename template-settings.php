@@ -35,28 +35,6 @@ $contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
  * An app leverages the magic link structure
  */
 $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
-
-function load_user_profile_pic( $user_id, $size ): void {
-    $profile_pic_url = null;
-    $media_connection_id = dt_get_option( 'dt_media_connection_id' );
-    $media_connections_enabled = apply_filters( 'dt_media_connections_enabled', false, $media_connection_id );
-
-    // Determine how and where user profile pic is to be sourced.
-    if ( $media_connections_enabled ) {
-        $file_path = '/users/' . md5( $user_id ) . '/' . md5( 'user_profile_pic' );
-        $profile_pic_url = apply_filters( 'dt_media_connections_obj_url', null, $media_connection_id, $file_path, [ 'keep_alive' => '+10 minutes' ] );
-    }
-
-    // Default to avatar approach, if unable to locate url.
-    if ( empty( $profile_pic_url ) ) {
-        echo get_avatar( $user_id, $size );
-
-    } else {
-        ?>
-        <img src="<?php echo esc_attr( $profile_pic_url ); ?>" alt="" width="<?php echo esc_attr( $size ); ?>" height="<?php echo esc_attr( $size ); ?>" />
-        <?php
-    }
-}
 ?>
 
 <?php get_header(); ?>
@@ -146,7 +124,16 @@ function load_user_profile_pic( $user_id, $size ): void {
                             <div class="small-12 medium-4 cell">
 
                                 <p>
-                                    <?php load_user_profile_pic( $dt_user->ID, '150' ); ?>
+                                    <?php
+                                    if ( !empty( $dt_user_meta['dt_user_profile_picture'][0] ) ) {
+                                        do_action( 'dt_media_connections_obj_content', $dt_user_meta['dt_user_profile_picture'][0], dt_get_option( 'dt_media_connection_id' ), [
+                                            'html_tag' => 'img',
+                                            'size' => 150
+                                        ] );
+                                    } else {
+                                        echo get_avatar( $dt_user->ID, '150' );
+                                    }
+                                    ?>
                                 </p>
 
                                 <p>
@@ -598,7 +585,16 @@ function load_user_profile_pic( $user_id, $size ): void {
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <?php load_user_profile_pic( $dt_user->ID, '32' ); ?>
+                                        <?php
+                                        if ( !empty( $dt_user_meta['dt_user_profile_picture'][0] ) ) {
+                                            do_action( 'dt_media_connections_obj_content', $dt_user_meta['dt_user_profile_picture'][0], dt_get_option( 'dt_media_connection_id' ), [
+                                                'html_tag' => 'img',
+                                                'size' => 32
+                                            ] );
+                                        } else {
+                                            echo get_avatar( $dt_user->ID, '32' );
+                                        }
+                                        ?>
                                     </td>
                                     <td>
                                         <?php
