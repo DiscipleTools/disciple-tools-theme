@@ -63,16 +63,22 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* Media Settings */
             $this->box( 'top', 'Media Settings' );
             $media_connections = apply_filters( 'dt_media_connections', [] );
-            if ( !empty( $media_connections ) ) {
-                $this->process_media_settings();
-                $this->media_settings( $media_connections );
 
-            } else {
+            if ( !array_key_exists( 'disciple-tools-media/disciple-tools-media.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-media/disciple-tools-media.php' ) ) {
                 ?>
                 <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo esc_html( 'Ensure Disciple.Tools Media Plugin has been installed and valid connections have been created and enabled.' ); ?>
+                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-media' ); ?>
                 </span>
                 <?php
+            } elseif ( empty( $media_connections ) ) {
+                ?>
+                <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
+                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ); ?>
+                </span>
+                <?php
+            } else {
+                $this->process_media_settings();
+                $this->media_settings( $media_connections );
             }
             $this->box( 'bottom' );
             /* End Media Settings */
