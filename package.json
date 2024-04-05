@@ -15,6 +15,7 @@
     "browser-sync": "^2.27.5",
     "cssnano": "^5.0.8",
     "eslint": "^8.18.0",
+    "eslint-config-prettier": "^9.1.0",
     "foundation-sites": "^6.7.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
@@ -32,6 +33,7 @@
     "jquery": "^3.6.0",
     "lint-staged": "^12.4.1",
     "motion-ui": "^2.0.3",
+    "prettier": "3.2.5",
     "sass": "^1.39.0",
     "what-input": "^5.2.10"
   },
@@ -46,16 +48,19 @@
     "styles": "gulp styles",
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
+    "lint": "npx eslint",
+    "prettier": "npx prettier --write .",
     "update-foundation": "npm install foundation-sites",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "*.php": [
       "./phpcbf.sh"
     ],
     "*.js": [
-      "eslint"
+      "eslint",
+      "prettier --write --ignore-unknown"
     ]
   },
   "eslintIgnore": [

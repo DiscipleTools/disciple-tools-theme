@@ -1,21 +1,22 @@
-"use strict";
-let LISTDATA = null
+'use strict';
+let LISTDATA = null;
 
-jQuery(document).ready(function() {
-  jQuery('#metrics-sidemenu').foundation('down', jQuery(`#${window.wp_js_object.base_slug}-menu`));
+jQuery(document).ready(function () {
+  jQuery('#metrics-sidemenu').foundation(
+    'down',
+    jQuery(`#${window.wp_js_object.base_slug}-menu`),
+  );
 
-  let chartDiv = jQuery('#chart')
+  let chartDiv = jQuery('#chart');
   chartDiv.empty().html(`
     <div id="mapping_chart"></div>
-  `)
+  `);
 
-
-  if( window.wpApiShare.url_path.startsWith( window.wp_js_object.load_url )) {
-    LISTDATA = window.wp_js_object.mapping_module
-    page_mapping_list()
+  if (window.wpApiShare.url_path.startsWith(window.wp_js_object.load_url)) {
+    LISTDATA = window.wp_js_object.mapping_module;
+    page_mapping_list();
   }
-
-})
+});
 
 /**********************************************************************************************************************
  *
@@ -26,8 +27,8 @@ jQuery(document).ready(function() {
  **********************************************************************************************************************/
 
 function page_mapping_list() {
-  "use strict";
-  let chartDiv = jQuery('#chart')
+  'use strict';
+  let chartDiv = jQuery('#chart');
   chartDiv.empty().html(`
     <style>
       .map_wrapper {}
@@ -74,192 +75,213 @@ function page_mapping_list() {
     </div> <!-- end widget -->
   `);
 
-  get_data(false).then(response=>{
-    LISTDATA.data = response
-    // set the depth of the drill down
-    LISTDATA.settings.hide_final_drill_down = false
-    // load drill down
-    window.DRILLDOWN.get_drill_down('location_list_drilldown', LISTDATA.settings.current_map, LISTDATA.settings.cached)
-  }).fail(err=>{
-    console.log(err)
-  })
+  get_data(false)
+    .then((response) => {
+      LISTDATA.data = response;
+      // set the depth of the drill down
+      LISTDATA.settings.hide_final_drill_down = false;
+      // load drill down
+      window.DRILLDOWN.get_drill_down(
+        'location_list_drilldown',
+        LISTDATA.settings.current_map,
+        LISTDATA.settings.cached,
+      );
+    })
+    .fail((err) => {
+      console.log(err);
+    });
 }
 
-window.DRILLDOWN.location_list_drilldown = function( grid_id ) {
-  location_grid_list( 'location_list', grid_id )
-}
-function get_data( force_refresh = false ) {
-  let spinner = jQuery('.loading-spinner')
-  spinner.addClass('active')
-  return jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: `${window.wp_js_object.rest_endpoint}?refresh=${force_refresh}`,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', window.wp_js_object.nonce );
-    },
-  })
-    .then( function( response ) {
-      spinner.removeClass('active')
-      return response
+window.DRILLDOWN.location_list_drilldown = function (grid_id) {
+  location_grid_list('location_list', grid_id);
+};
+function get_data(force_refresh = false) {
+  let spinner = jQuery('.loading-spinner');
+  spinner.addClass('active');
+  return jQuery
+    .ajax({
+      type: 'GET',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      url: `${window.wp_js_object.rest_endpoint}?refresh=${force_refresh}`,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', window.wp_js_object.nonce);
+      },
+    })
+    .then(function (response) {
+      spinner.removeClass('active');
+      return response;
     })
     .fail(function (err) {
-      spinner.removeClass('active')
-      console.log("error")
-      console.log(err)
-    })
+      spinner.removeClass('active');
+      console.log('error');
+      console.log(err);
+    });
 }
 
-function location_grid_list( div, grid_id ) {
-  window.DRILLDOWN.show_spinner()
+function location_grid_list(div, grid_id) {
+  window.DRILLDOWN.show_spinner();
 
   // Find data source before build
-  if ( grid_id === 'top_map_level' ) {
-    let map_data = null
-    let default_map_settings = LISTDATA.settings.default_map_settings
+  if (grid_id === 'top_map_level') {
+    let map_data = null;
+    let default_map_settings = LISTDATA.settings.default_map_settings;
 
-    if (window.DRILLDOWN.isEmpty( default_map_settings.children ) ) {
-      map_data = LISTDATA.data[default_map_settings.parent]
-    }
-    else {
-      if ( default_map_settings.children.length < 2 ) {
+    if (window.DRILLDOWN.isEmpty(default_map_settings.children)) {
+      map_data = LISTDATA.data[default_map_settings.parent];
+    } else {
+      if (default_map_settings.children.length < 2) {
         // single child
-        map_data = LISTDATA.data[default_map_settings.children[0]]
+        map_data = LISTDATA.data[default_map_settings.children[0]];
       } else {
         // multiple child
-        jQuery('#section_title').empty()
-        jQuery('#current_level').empty()
-        jQuery('#location_list').empty().append('Select Location')
-        window.DRILLDOWN.hide_spinner()
+        jQuery('#section_title').empty();
+        jQuery('#current_level').empty();
+        jQuery('#location_list').empty().append('Select Location');
+        window.DRILLDOWN.hide_spinner();
         return;
       }
     }
 
     // Initialize Location Data
-    if ( map_data === undefined ) {
-      console.log('error getting map_data')
+    if (map_data === undefined) {
+      console.log('error getting map_data');
       return;
     }
 
-    build_location_grid_list( div, map_data )
-  }
-  else if ( LISTDATA.data[grid_id] === undefined ) {
-    let rest = LISTDATA.settings.endpoints.get_map_by_grid_id_endpoint
+    build_location_grid_list(div, map_data);
+  } else if (LISTDATA.data[grid_id] === undefined) {
+    let rest = LISTDATA.settings.endpoints.get_map_by_grid_id_endpoint;
 
-    jQuery.ajax({
-      type: rest.method,
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify( { 'grid_id': grid_id, 'cached': LISTDATA.settings.cached, 'cached_length': LISTDATA.settings.cached_length } ),
-      dataType: "json",
-      url: LISTDATA.settings.root + rest.namespace + rest.route,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
-      },
-    })
-      .done( function( response ) {
-        LISTDATA.data[grid_id] = response
-        build_location_grid_list( div, LISTDATA.data[grid_id] )
+    jQuery
+      .ajax({
+        type: rest.method,
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+          grid_id: grid_id,
+          cached: LISTDATA.settings.cached,
+          cached_length: LISTDATA.settings.cached_length,
+        }),
+        dataType: 'json',
+        url: LISTDATA.settings.root + rest.namespace + rest.route,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+        },
+      })
+      .done(function (response) {
+        LISTDATA.data[grid_id] = response;
+        build_location_grid_list(div, LISTDATA.data[grid_id]);
       })
       .fail(function (err) {
-        console.log("error")
-        console.log(err)
-        window.DRILLDOWN.hide_spinner()
-      })
-
+        console.log('error');
+        console.log(err);
+        window.DRILLDOWN.hide_spinner();
+      });
   } else {
-    build_location_grid_list( div, LISTDATA.data[grid_id] )
+    build_location_grid_list(div, LISTDATA.data[grid_id]);
   }
 
   // build list
-  function build_location_grid_list( div, map_data ) {
-    let translations = window.wp_js_object.translations
+  function build_location_grid_list(div, map_data) {
+    let translations = window.wp_js_object.translations;
 
     // Place Title
-    let title = jQuery('#section_title')
-    title.empty().html(map_data.self.name)
+    let title = jQuery('#section_title');
+    title.empty().html(map_data.self.name);
 
     // Population Division and Check for Custom Division
-    let pd_settings = LISTDATA.settings.population_division
-    let population_division = pd_settings.base
-    if ( !window.DRILLDOWN.isEmpty( pd_settings.custom ) ) {
-      jQuery.each( pd_settings.custom, function(i,v) {
-        if ( map_data.self.grid_id === i ) {
-          population_division = v
+    let pd_settings = LISTDATA.settings.population_division;
+    let population_division = pd_settings.base;
+    if (!window.DRILLDOWN.isEmpty(pd_settings.custom)) {
+      jQuery.each(pd_settings.custom, function (i, v) {
+        if (map_data.self.grid_id === i) {
+          population_division = v;
         }
-      })
+      });
     }
 
     // Self Data
-    let self_population = map_data.self.population_formatted
-    jQuery('#current_level').empty().html(`${window.SHAREDFUNCTIONS.escapeHTML(translations.population)} ${window.SHAREDFUNCTIONS.escapeHTML( self_population )}`)
+    let self_population = map_data.self.population_formatted;
+    jQuery('#current_level')
+      .empty()
+      .html(
+        `${window.SHAREDFUNCTIONS.escapeHTML(translations.population)} ${window.SHAREDFUNCTIONS.escapeHTML(self_population)}`,
+      );
 
     // Build List
-    let locations = jQuery('#location_list')
-    locations.empty()
+    let locations = jQuery('#location_list');
+    locations.empty();
 
-    let html = `<table id="country-list-table" class="display">`
+    let html = `<table id="country-list-table" class="display">`;
 
     // Header Section
-    html += `<thead><tr><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.name)}</th><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}</th>`
+    html += `<thead><tr><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.name)}</th><th>${window.SHAREDFUNCTIONS.escapeHTML(translations.population)}</th>`;
 
     /* Additional Columns */
-    if ( LISTDATA.data.custom_column_labels ) {
-      jQuery.each( LISTDATA.data.custom_column_labels, function(i,v) {
-        html += `<th>${window.SHAREDFUNCTIONS.escapeHTML( v.label )}</th>`
-      })
+    if (LISTDATA.data.custom_column_labels) {
+      jQuery.each(LISTDATA.data.custom_column_labels, function (i, v) {
+        html += `<th>${window.SHAREDFUNCTIONS.escapeHTML(v.label)}</th>`;
+      });
     }
     /* End Additional Columns */
 
-    html += `</tr></thead>`
+    html += `</tr></thead>`;
     // End Header Section
 
     // Children List Section
-    let sorted_children =  window.lodash.sortBy(map_data.children, [function(o) { return o.name; }]);
+    let sorted_children = window.lodash.sortBy(map_data.children, [
+      function (o) {
+        return o.name;
+      },
+    ]);
 
-    html += `<tbody>`
+    html += `<tbody>`;
 
-    jQuery.each( sorted_children, function(i, v) {
-      let population = v.population_formatted
+    jQuery.each(sorted_children, function (i, v) {
+      let population = v.population_formatted;
 
       html += `<tr>
-                    <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${window.SHAREDFUNCTIONS.escapeHTML( v.grid_id )} )">${window.SHAREDFUNCTIONS.escapeHTML( v.name )}</a></strong></td>
-                    <td>${window.SHAREDFUNCTIONS.escapeHTML( population )}</td>`
+                    <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${window.SHAREDFUNCTIONS.escapeHTML(v.grid_id)} )">${window.SHAREDFUNCTIONS.escapeHTML(v.name)}</a></strong></td>
+                    <td>${window.SHAREDFUNCTIONS.escapeHTML(population)}</td>`;
 
       /* Additional Columns */
-      if ( LISTDATA.data.custom_column_data[v.grid_id] ) {
-        jQuery.each( LISTDATA.data.custom_column_data[v.grid_id], function(ii,vv) {
-          html += `<td><strong>${window.SHAREDFUNCTIONS.escapeHTML( vv )}</strong></td>`
-        })
+      if (LISTDATA.data.custom_column_data[v.grid_id]) {
+        jQuery.each(
+          LISTDATA.data.custom_column_data[v.grid_id],
+          function (ii, vv) {
+            html += `<td><strong>${window.SHAREDFUNCTIONS.escapeHTML(vv)}</strong></td>`;
+          },
+        );
       } else {
-        jQuery.each( LISTDATA.data.custom_column_labels, function(ii,vv) {
-          html += `<td class="grey">0</td>`
-        })
+        jQuery.each(LISTDATA.data.custom_column_labels, function (ii, vv) {
+          html += `<td class="grey">0</td>`;
+        });
       }
       /* End Additional Columns */
 
-      html += `</tr>`
-
-    })
-    html += `</tbody>`
+      html += `</tr>`;
+    });
+    html += `</tbody>`;
     // end Child section
 
-    html += `</table>`
-    locations.append(html)
+    html += `</table>`;
+    locations.append(html);
 
-    let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+    let isMobile = window.matchMedia(
+      'only screen and (max-width: 760px)',
+    ).matches;
 
     if (isMobile) {
       jQuery('#country-list-table').DataTable({
-        "paging":   false,
-        "scrollX": true
+        paging: false,
+        scrollX: true,
       });
     } else {
       jQuery('#country-list-table').DataTable({
-        "paging":   false
+        paging: false,
       });
     }
 
-    window.DRILLDOWN.hide_spinner()
+    window.DRILLDOWN.hide_spinner();
   }
 }
