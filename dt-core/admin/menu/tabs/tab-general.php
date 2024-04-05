@@ -73,7 +73,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             } elseif ( empty( $media_connections ) ) {
                 ?>
                 <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ); ?>
+                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ) ); ?>
                 </span>
                 <?php
             } else {
