@@ -29,8 +29,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function __construct() {
 //        add_action( 'admin_menu', [ $this, 'add_submenu' ] );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 5, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 10, 1 );
+        add_action( 'dt_settings_tab_menu', array( $this, 'add_tab' ), 5, 1 );
+        add_action( 'dt_settings_tab_content', array( $this, 'content' ), 10, 1 );
 
         parent::__construct();
     }
@@ -61,25 +61,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* End Base User */
 
             /* Media Settings */
-            $this->box( 'top', 'Media Settings' );
-            $media_connections = apply_filters( 'dt_media_connections', [] );
-
-            if ( !array_key_exists( 'disciple-tools-media/disciple-tools-media.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-media/disciple-tools-media.php' ) ) {
-                ?>
-                <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-media' ); ?>
-                </span>
-                <?php
-            } elseif ( empty( $media_connections ) ) {
-                ?>
-                <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ) ); ?>
-                </span>
-                <?php
-            } else {
-                $this->process_media_settings();
-                $this->media_settings( $media_connections );
-            }
+            $this->box( 'top', 'Storage Settings' );
+            $this->process_media_settings();
+            $this->media_settings();
             $this->box( 'bottom' );
             /* End Media Settings */
 
@@ -170,7 +154,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             <table class="widefat">
                 <?php
-                foreach ( $notifications['types'] ?? [] as $type => $type_settings ) {
+                foreach ( $notifications['types'] ?? array() as $type => $type_settings ) {
                     ?>
                     <tr>
                         <td><?php echo esc_html( !empty( $type_settings['label'] ) ? $type_settings['label'] : $type ) ?></td>
@@ -217,7 +201,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
 
             $notifications = dt_get_site_notification_defaults();
-            $updated_types = [];
+            $updated_types = array();
             foreach ( $notifications['types'] as $type => $type_settings ) {
                 $updated_types[$type] = $type_settings;
                 foreach ( $type_settings as $setting_key => $setting_value ) {
@@ -239,11 +223,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function base_user() {
         $base_user = dt_get_base_user();
         $potential_user_list = get_users(
-            [
-                'role__in' => [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ],
+            array(
+                'role__in' => array( 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ),
                 'order'    => 'ASC',
                 'orderby'  => 'display_name',
-            ]
+            )
         );
 
         echo '<form method="post" name="extension_modules_form">';
@@ -280,8 +264,21 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function media_settings( $media_connections ): void {
-        ?>
+    public function media_settings(): void {
+        $media_connections = apply_filters( 'dt_media_connections', array() );
+        if ( !array_key_exists( 'disciple-tools-media/disciple-tools-media.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-media/disciple-tools-media.php' ) ) {
+            ?>
+          <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
+                    <?php printf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-media' ); ?>
+                </span>
+            <?php
+        } elseif ( empty( $media_connections ) ) {
+            ?>
+          <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
+                    <?php printf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ) ); ?>
+                </span>
+            <?php
+        } else { ?>
         <form method="POST">
             <input type="hidden" name="media_settings_nonce" id="media_settings_nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'media_settings' ) ) ?>"/>
@@ -290,8 +287,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <tr>
                     <td>
-                        <label
-                            for="media_connection"><?php esc_html_e( 'Select media connection to be used when processing D.T media assets', 'disciple_tools' ) ?></label>
+                        <label for="media_connection"><?php esc_html_e( 'Select storage connection for uploading pictures and files.', 'disciple_tools' ) ?></label>
+                        <br>
+                        See configuration settings <a href="<?php echo esc_html( admin_url( 'admin.php?page=disciple_tools_media' ) ) ?>">here</a>
                     </td>
                     <td>
                         <select name="media_connection" id="media_connection">
@@ -312,10 +310,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <span style="float:right;"><button type="submit"
-                                               class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
+            <span style="float:right;">
+              <button type="submit" class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
         </form>
-        <?php
+        <?php }
     }
 
     public function process_media_settings() {
@@ -413,9 +411,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     $site_options['update_required']['options'][$option_index]['comment'] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . '_comment'] ) ) );
                 }
                 if ( isset( $_POST[$option_index . '_translations'] ) ){
-                    $translations = [];
+                    $translations = array();
                     $uploaded_translations = dt_recursive_sanitize_array( $_POST[$option_index . '_translations'] );
-                    foreach ( $uploaded_translations ?? [] as $lang_key => $translation ) {
+                    foreach ( $uploaded_translations ?? array() as $lang_key => $translation ) {
                         if ( !empty( $translation ) ) {
                             $translations[$lang_key] = sanitize_text_field( wp_unslash( $translation ) );
                         }
@@ -443,9 +441,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     $site_options['group_update_required']['options'][$option_index]['comment'] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . '_comment'] ) ) );
                 }
                 if ( isset( $_POST[$option_index . '_translations'] ) ){
-                    $translations = [];
+                    $translations = array();
                     $uploaded_translations = dt_recursive_sanitize_array( $_POST[$option_index . '_translations'] );
-                    foreach ( $uploaded_translations ?? [] as $lang_key => $translation ) {
+                    foreach ( $uploaded_translations ?? array() as $lang_key => $translation ) {
                         if ( !empty( $translation ) ) {
                             $translations[$lang_key] = sanitize_text_field( wp_unslash( $translation ) );
                         }
@@ -523,7 +521,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                                 data-form_name="update_required-form"
                                                 data-source="update_needed_triggers">
                                             <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
-                                            (<span><?php echo esc_html( count( $option['translations'] ?? [] ) ); ?></span>)
+                                            (<span><?php echo esc_html( count( $option['translations'] ?? array() ) ); ?></span>)
                                         </button>
                                         <div class="translation_container hide">
                                             <table>
@@ -594,7 +592,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                     data-form_name="group_update_required-form"
                                     data-source="update_needed_triggers">
                                 <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
-                                (<span><?php echo esc_html( count( $option['translations'] ?? [] ) ); ?></span>)
+                                (<span><?php echo esc_html( count( $option['translations'] ?? array() ) ); ?></span>)
                             </button>
                             <div class="translation_container hide">
                                 <table>
@@ -631,8 +629,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             $site_options = dt_get_option( 'dt_site_options' );
             $tile_options = dt_get_option( 'dt_custom_tiles' );
-            $four_fields_tile = $tile_options['groups']['four-fields'] ?? [];
-            $church_metrics_tile = $tile_options['groups']['health-metrics'] ?? [];
+            $four_fields_tile = $tile_options['groups']['four-fields'] ?? array();
+            $church_metrics_tile = $tile_options['groups']['health-metrics'] ?? array();
 
             if ( isset( $_POST['church_metrics'] ) && ! empty( $_POST['church_metrics'] ) ) {
                 $site_options['group_preferences']['church_metrics'] = true;
@@ -659,7 +657,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_options', $site_options, true );
             update_option( 'dt_custom_tiles', $tile_options, true );
         }
-
     }
 
     public function update_group_preferences(){
@@ -693,7 +690,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function process_user_preferences(){
         if ( isset( $_POST['user_preferences_nonce'] ) &&
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['user_preferences_nonce'] ) ), 'user_preferences' . get_current_user_id() ) ) {
-            $role_options = get_option( 'dt_options_roles_and_permissions', [] );
+            $role_options = get_option( 'dt_options_roles_and_permissions', array() );
             $dt_roles = dt_multi_role_get_editable_role_names();
             foreach ( $dt_roles as $role_key => $name ) :
                 $role_object = get_role( $role_key );
@@ -840,11 +837,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_contact_preferences', $contact_preferences, true );
         }
-
     }
 
     public function show_dt_contact_preferences(){
-        $contact_preferences = get_option( 'dt_contact_preferences', [] );
+        $contact_preferences = get_option( 'dt_contact_preferences', array() );
         ?>
         <form method="post" >
             <table class="widefat">
@@ -872,7 +868,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_performance_mode', $dt_performance_mode, true );
         }
-
     }
 
     public function dt_performance_mode(){
@@ -929,7 +924,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <td>
                             <?php echo esc_html( join( ', ', array_map( function ( $req_key ) use ( $modules ) {
                                 return $modules[$req_key]['name'];
-                            }, ( $module_values['prerequisites'] ?? [] ) ) ) );
+                            }, ( $module_values['prerequisites'] ?? array() ) ) ) );
                             ?>
                         </td>
                         <td>
@@ -950,14 +945,14 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['contact_modules_nonce'] ) ), 'contact_modules' ) ) {
 
             $module_settings = dt_get_option( 'dt_post_type_modules' );
-            $module_option = get_option( 'dt_post_type_modules', [] );
+            $module_option = get_option( 'dt_post_type_modules', array() );
             foreach ( $module_settings as $module_key => $module_values ){
                 if ( !isset( $module_option[$module_key] ) ){
-                    $module_option[$module_key] = [ 'enabled' => false ];
+                    $module_option[$module_key] = array( 'enabled' => false );
                 }
                 $module_option[$module_key]['enabled'] = isset( $_POST[$module_key] ) || ( $module_settings[$module_key]['locked'] ?? false );
                 if ( isset( $_POST[$module_key] ) ){
-                    foreach ( $module_settings[$module_key]['prerequisites'] ?? [] as $prereq ){
+                    foreach ( $module_settings[$module_key]['prerequisites'] ?? array() as $prereq ){
                         if ( !isset( $_POST[$prereq] ) && !( $module_settings[$prereq]['locked'] ?? false ) ){
                             $module_option[$module_key]['enabled'] = false;
                         }
