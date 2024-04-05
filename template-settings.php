@@ -34,7 +34,8 @@ $contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
  * Filter for adding user apps to the settings area.
  * An app leverages the magic link structure
  */
-$apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = array() );
+$apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
+
 ?>
 
 <?php get_header(); ?>
@@ -363,7 +364,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = array() );
                                 <?php foreach ( $contact_fields['languages']['default'] as $option_key => $option_value ): ?>
                                     <?php
                                     $user_languages = get_user_option( 'user_languages', get_current_user_id() );
-                                    $class = ( in_array( $option_key, $user_languages ?: array() ) ) ?
+                                    $class = ( in_array( $option_key, $user_languages ?: [] ) ) ?
                                         'selected-select-button' : 'empty-select-button'; ?>
                                     <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( 'languages' ) ?>"
                                             class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
@@ -404,7 +405,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = array() );
                                 <span id="workload-spinner" style="display: inline-block" class="loading-spinner"></span>
                             </div>
 
-                            <?php $options = Disciple_Tools_Users::get_users_fields()['workload_status']['options'] ?? array();
+                            <?php $options = Disciple_Tools_Users::get_users_fields()['workload_status']['options'] ?? [];
                             foreach ( $options as $option_key => $option_val ) :
                                 $icon = $option_key === 'active' ? 'play' : ( $option_key === 'existing' ? 'pause' : 'stop' ); ?>
                                 <button style="display: block" class="button hollow status-button" name="<?php echo esc_html( $option_key ) ?>">
