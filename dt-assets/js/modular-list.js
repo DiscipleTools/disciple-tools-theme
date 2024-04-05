@@ -3261,6 +3261,11 @@
   });
 
   function export_csv_list_download(exporting_fields, callback = null) {
+    const exporting_field_ids = exporting_fields.map((field) => field['field_id']);
+    if ( !exporting_field_ids.includes('name') ) {
+      exporting_fields.push(window.list_settings.post_type_settings.fields.name);
+    }
+
 
     // First retrieve all records associated with currently selected filter.
     recursively_fetch_posts(0, 500, window.records_list['total'], [], function ( posts ) {
