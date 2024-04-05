@@ -221,11 +221,12 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post" >
             <p><?php esc_html_e( 'Add the API endpoints that should not require authentication (1 per line).', 'disciple_tools' ) ?></p>
-
+            <p><?php esc_html_e( 'Use the * character as a wildcard if you need to whitelist endpoints that pass parameters in the path.', 'disciple_tools' ) ?></p>
             <textarea
                 name="dt_api_whitelist"
                 style="width: 100%"
                 rows="10"
+                placeholder="wp-json/my-plugin/v1/my-endpoint/*"
             ><?php echo esc_html( $textarea_value ) ?></textarea>
             <?php wp_nonce_field( 'dt_api_whitelist' . get_current_user_id(), 'dt_api_whitelist_nonce' )?>
             <br>
