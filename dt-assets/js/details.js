@@ -19,8 +19,6 @@ jQuery(document).ready(function ($) {
     percentPosition: true,
   });
 
-  console.log('colceu');
-
   const detailsBarCreatedOnElements = document.querySelectorAll(
     '.details-bar-created-on',
   );
