@@ -1017,11 +1017,7 @@ class Disciple_Tools_Users
 
             // To avoid a build up of stale object keys, relating to the same user, reuse existing keys.
             $profile_pic_key = get_user_meta( $current_user->ID, 'dt_user_profile_picture', true );
-            $uploaded = apply_filters( 'dt_media_connections_obj_upload', false, dt_get_option( 'dt_media_connection_id' ), 'users/', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), [
-                'include_extension' => empty( $profile_pic_key ),
-                'auto_generate_key' => empty( $profile_pic_key ),
-                'default_key' => $profile_pic_key
-            ] );
+            $uploaded = DT_Storage::upload_file( 'users', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), $profile_pic_key );
 
             // If successful, persist uploaded object file key.
             if ( !empty( $uploaded ) ) {

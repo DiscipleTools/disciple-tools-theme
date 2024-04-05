@@ -61,25 +61,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* End Base User */
 
             /* Media Settings */
-            $this->box( 'top', 'Media Settings' );
-            $media_connections = apply_filters( 'dt_media_connections', [] );
-
-            if ( !array_key_exists( 'disciple-tools-media/disciple-tools-media.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-media/disciple-tools-media.php' ) ) {
-                ?>
-                <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-media' ); ?>
-                </span>
-                <?php
-            } elseif ( empty( $media_connections ) ) {
-                ?>
-                <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Media Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ) ); ?>
-                </span>
-                <?php
-            } else {
-                $this->process_media_settings();
-                $this->media_settings( $media_connections );
-            }
+            $this->box( 'top', 'Storage Settings' );
+            $this->process_media_settings();
+            $this->media_settings();
             $this->box( 'bottom' );
             /* End Media Settings */
 
@@ -280,8 +264,21 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function media_settings( $media_connections ): void {
-        ?>
+    public function media_settings(): void {
+        $media_connections = apply_filters( 'dt_media_connections', [] );
+        if ( !array_key_exists( 'disciple-tools-media/disciple-tools-media.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-media/disciple-tools-media.php' ) ) {
+            ?>
+          <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
+                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-media' ); ?>
+                </span>
+            <?php
+        } elseif ( empty( $media_connections ) ) {
+            ?>
+          <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
+                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ) ); ?>
+                </span>
+            <?php
+        } else { ?>
         <form method="POST">
             <input type="hidden" name="media_settings_nonce" id="media_settings_nonce"
                    value="<?php echo esc_attr( wp_create_nonce( 'media_settings' ) ) ?>"/>
@@ -290,8 +287,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <tr>
                     <td>
-                        <label
-                            for="media_connection"><?php esc_html_e( 'Select media connection to be used when processing D.T media assets', 'disciple_tools' ) ?></label>
+                        <label for="media_connection"><?php esc_html_e( 'Select storage connection for uploading pictures and files.', 'disciple_tools' ) ?></label>
+                        <br>
+                        See configuration settings <a href="<?php echo esc_html( admin_url( 'admin.php?page=disciple_tools_media' ) ) ?>">here</a>
                     </td>
                     <td>
                         <select name="media_connection" id="media_connection">
@@ -312,10 +310,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <span style="float:right;"><button type="submit"
-                                               class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
+            <span style="float:right;">
+              <button type="submit" class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
         </form>
-        <?php
+        <?php }
     }
 
     public function process_media_settings() {

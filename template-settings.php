@@ -125,11 +125,10 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                                 <p>
                                     <?php
-                                    if ( !empty( $dt_user_meta['dt_user_profile_picture'][0] ) && !empty( apply_filters( 'dt_media_connections', [] ) ) ) {
-                                        do_action( 'dt_media_connections_obj_content', $dt_user_meta['dt_user_profile_picture'][0], dt_get_option( 'dt_media_connection_id' ), [
-                                            'html_tag' => 'img',
-                                            'size' => 150
-                                        ] );
+                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
+                                        $picture_url = DT_Storage::get_file_url( $dt_user_meta['dt_user_profile_picture'][0] ); ?>
+                                        <img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="150px" height="150px" />
+                                        <?php
                                     } else {
                                         echo get_avatar( $dt_user->ID, '150', null, false, [ 'scheme' => 'https' ] );
                                     }
