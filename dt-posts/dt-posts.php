@@ -1415,6 +1415,18 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !$created_comment_id ){
                 $created_comment_id = $new_comment;
             }
+
+            if ( $new_comment && array_key_exists( 'comment_meta', $args ) ) {
+                foreach ( $args['comment_meta'] as $key => $value ) {
+                    if ( is_array( $value ) ) {
+                        foreach ( $value as $meta_val ) {
+                            add_comment_meta( $new_comment, $key, $meta_val );
+                        }
+                    } else {
+                        add_comment_meta( $new_comment, $key, $value );
+                    }
+                }
+            }
         }
 
         if ( !$silent && !is_wp_error( $created_comment_id ) ){
@@ -1426,7 +1438,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $created_comment_id;
     }
 
-    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = 'comment' ){
+    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = 'comment', array $args = [] ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
@@ -1441,6 +1453,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
         $update = wp_update_comment( $comment );
         if ( in_array( $update, [ 0, 1 ] ) ) {
+            if ( key_exists( 'comment_meta', $args ) && $args['comment_meta'] ) {
+                foreach ( $args['comment_meta'] as $key => $value ) {
+                    update_comment_meta( $comment_id, $key, $value );
+                }
+            }
             return $comment_id;
         } else if ( is_wp_error( $update ) ) {
              return $update;
@@ -1506,41 +1523,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $comments = get_comments( $comments_query );
 
-        // add in getting the meta data for the comments JOINed with the user table to get
-        // the username
-        // phpcs:disable
-        // WordPress.WP.PreparedSQL.NotPrepared
-        $comments_meta = $wpdb->get_results( $wpdb->prepare(
-            "SELECT
-                m.comment_id, m.meta_key, u.display_name, u.ID
-            FROM
-                `$wpdb->comments` AS c
-            JOIN
-                `$wpdb->commentmeta` AS m
-            ON c.comment_ID = m.comment_id
-            JOIN
-                `$wpdb->users` AS u
-            ON m.meta_value = u.ID
-            WHERE
-                c.comment_post_ID = %s
-                AND m.meta_key LIKE 'reaction%'",
-            $post_id
-        ) );
-        // phpcs:enable
-
-        $comments_meta_dict = [];
-        foreach ( $comments_meta as $meta ) {
-            if ( !array_key_exists( $meta->comment_id, $comments_meta_dict ) ) {
-                $comments_meta_dict[$meta->comment_id] = [];
-            }
-            if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
-                $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
-            }
-            $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
-                'name' => $meta->display_name,
-                'user_id' => $meta->ID,
-            ];
-        }
+        $comments_meta = self::get_post_comments_meta( $post_id );
 
         $response_body = [];
         foreach ( $comments as $comment ){
@@ -1560,7 +1543,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'user_id' => $comment->user_id,
                 'comment_type' => $comment->comment_type,
                 'comment_post_ID' => $comment->comment_post_ID,
-                'comment_reactions' => array_key_exists( $comment->comment_ID, $comments_meta_dict ) ? $comments_meta_dict[$comment->comment_ID] : [],
+                'comment_reactions' => array_key_exists( $comment->comment_ID, $comments_meta['reactions'] ) ? $comments_meta['reactions'][$comment->comment_ID] : [],
+                'comment_meta' => array_key_exists( $comment->comment_ID, $comments_meta['meta'] ) ? $comments_meta['meta'][$comment->comment_ID] : [],
             ];
             $response_body[] = $c;
         }
@@ -1574,6 +1558,75 @@ class DT_Posts extends Disciple_Tools_Posts {
         return [
             'comments' => $response_body,
             'total' => wp_count_comments( $post_id )->total_comments
+        ];
+    }
+
+    /**
+     * Get comment meta for a given post, split into reactions vs general meta data
+     * @param int $post_id
+     * @return array
+     * @internal
+     */
+    private static function get_post_comments_meta( int $post_id ) {
+        global $wpdb;
+
+        // add in getting the meta data for the comments JOINed with the user table to get
+        // the username
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $comments_meta = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                m.comment_id, m.meta_id, m.meta_key, m.meta_value, u.display_name, u.ID
+            FROM
+                `$wpdb->comments` AS c
+            JOIN
+                `$wpdb->commentmeta` AS m
+            ON c.comment_ID = m.comment_id
+            LEFT JOIN
+                `$wpdb->users` AS u
+            ON m.meta_value = u.ID
+            WHERE
+                c.comment_post_ID = %s",
+            $post_id
+        ) );
+        // phpcs:enable
+
+        $comments_reactions_dict = [];
+        $comments_meta_dict = [];
+        foreach ( $comments_meta as $meta ) {
+
+            // if meta_key starts with "reaction"...
+            if ( strpos( $meta->meta_key, 'reaction' ) === 0 ) {
+                if ( !array_key_exists( $meta->comment_id, $comments_reactions_dict ) ) {
+                    $comments_reactions_dict[$meta->comment_id] = [];
+                }
+                if ( !array_key_exists( $meta->meta_key, $comments_reactions_dict[$meta->comment_id] ) ) {
+                    $comments_reactions_dict[$meta->comment_id][$meta->meta_key] = [];
+                }
+
+                // reaction meta data as a list of users who have reacted
+                $comments_reactions_dict[$meta->comment_id][$meta->meta_key][] = [
+                    'name' => $meta->display_name,
+                    'user_id' => $meta->ID,
+                ];
+            } else {
+                // all non-reaction meta data
+                if ( !array_key_exists( $meta->comment_id, $comments_meta_dict ) ) {
+                    $comments_meta_dict[$meta->comment_id] = [];
+                }
+                if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
+                    $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
+                }
+                $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
+                    'id' => $meta->meta_id,
+                    'value' => $meta->meta_value,
+                ];
+            }
+        }
+
+        return [
+            'reactions' => $comments_reactions_dict,
+            'meta' => $comments_meta_dict,
         ];
     }
 
@@ -3034,6 +3087,87 @@ class DT_Posts extends Disciple_Tools_Posts {
         return false;
     }
 
+    /**
+     * Post Messaging
+     *
+     * @param string $post_type
+     * @param int $post_id
+     * @param array $args
+     *
+     * @return array|WP_Error
+     */
+
+    public static function post_messaging( string $post_type, int $post_id, array $args = [] ): array {
+        if ( !self::can_view( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
+        }
+        $post = self::get_post( $post_type, $post_id );
+        if ( empty( $post ) || is_wp_error( $post ) ) {
+            return new WP_Error( __METHOD__, 'Invalid post record.' );
+        }
+
+        $is_sent = false;
+        $send_method = $args['send_method'] ?? 'email';
+        $message = $args['message'] ?? '';
+
+        // Replace placeholder.
+        $message = str_replace( '{{name}}', $post['title'], $message );
+
+        // Dispatch accordingly, based on specified send method.
+        if ( $send_method === 'email' && isset( $post['contact_email'] ) ) {
+
+            // Extract post's to email addresses.
+            $emails = [];
+            foreach ( $post['contact_email'] as $post_email ) {
+                $emails[] = $post_email['value'];
+            }
+
+            // Build email header and dispatch message.
+            if ( !empty( $emails ) ) {
+                $headers = [];
+
+                $default_email = dt_default_email_address();
+                $from_email = !empty( $args['reply_to'] ) ? $args['reply_to'] : $default_email;
+                $from_name = !empty( $args['from_name'] ) ? $args['from_name'] : get_bloginfo( 'name' );
+                $headers[] = 'From: ' . $from_name . ' <' . $default_email . '>';
+                $headers[] = 'Reply-To: ' . $from_name . ' <' . $from_email . '>';
+
+                // Send email or schedule for later dispatch.
+                $subject = $args['subject'] ?? '';
+                $is_sent = ( wp_queue()->push( new DT_Send_Email_Job( $emails, $subject, $message, $headers ) ) !== false );
+
+                // Capture activity record.
+                $activity = [
+                    'action'            => 'sent_post_msg',
+                    'object_type'       => $post_type,
+                    'object_subtype'    => 'email',
+                    'object_id'         => $post_id,
+                    'object_name'       => $post['title'],
+                    'object_note'       => implode( ', ', $emails )
+                ];
+                dt_activity_insert( $activity );
+            }
+        } elseif ( ( $send_method === 'sms' ) && class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled() ) {
+            $is_sent = true;
+            do_action( 'dt_twilio_send', $post_id, 'post', $message, [ 'service' => 'sms' ] );
+
+            // Capture activity record.
+            $activity = [
+                'action'            => 'sent_post_msg',
+                'object_type'       => $post_type,
+                'object_subtype'    => 'sms',
+                'object_id'         => $post_id,
+                'object_name'       => $post['title'],
+                'object_note'       => ''
+            ];
+            dt_activity_insert( $activity );
+        }
+
+        return [
+            'post_id' => $post_id,
+            'sent' => $is_sent
+        ];
+    }
 
     /**
      * Get available field types

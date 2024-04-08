@@ -326,6 +326,7 @@ function dt_site_scripts() {
             'delete_selections_below' => __( 'Delete Selections Below', 'disciple_tools' ),
             'sent' => _x( 'scheduled to be sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
             'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
+            'see_queue' => _x( 'See queue', 'See queue of messages to be sent.', 'disciple_tools' ),
             'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
             'exports' => [
                 'csv' => [
@@ -349,7 +350,11 @@ function dt_site_scripts() {
                     'mapbox_key' => ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) ? esc_attr( DT_Mapbox_API::get_key() ) : null,
                     'mapped_locations' => __( 'Mapped Locations', 'disciple_tools' ),
                     'without_locations' => __( 'Contacts Without Locations', 'disciple_tools' ),
-                    'Records on zoomed map' => __( 'Records on zoomed map', 'disciple_tools' ),
+                    'records_on_zoomed_map' => __( 'Records on zoomed map', 'disciple_tools' ),
+                    'no_records_on_zoomed_map_alert' => __( 'No Zoomed Map Records Found!', 'disciple_tools' ),
+                    'open_zoomed_map' => __( 'Open Zoomed Map Records', 'disciple_tools' ),
+                    'filter_name' => __( 'Filtered Map', 'disciple_tools' ),
+                    'filter_label' => __( 'Filtered Map', 'disciple_tools' )
                 ]
             ]
         ];

@@ -69,10 +69,28 @@
 
 .list-view {
     cursor: pointer;
+    display: flex;
+    column-gap: 0.2rem;
 }
 
 .list-view__count {
     float: right;
+}
+
+.list-view__text, .filter-list-name {
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    display: inline-block;
+
+    /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.js-filter-checkbox-label {
+    cursor: pointer;
+    display: flex;
+    column-gap: 0.2rem;
 }
 
 .priorities-show-all {
@@ -126,7 +144,7 @@ table.js-list{
     word-wrap: break-word;
     width: 100%;
     white-space: nowrap;
-   
+
 }
 @media screen and (min-width : #{map-get($breakpoints, large)}) {
     table.js-list td {
