@@ -92,6 +92,13 @@ jQuery(document).ready(function ($) {
     $('#status-select').val('');
     $('#workload-select').val('');
 
+    // Determine if provision for magic link apps should be made.
+    const user_apps = get_magic_link_apps();
+    if (user_apps) {
+      $('#magic_link_apps_spinner').html(spinner);
+      $('#magic_link_apps').show();
+    }
+
     //clear the locations typeahead of previous values when the modal is opened
     let typeahead = window.Typeahead['.js-typeahead-location_grid'];
     if (typeahead) {
@@ -144,6 +151,11 @@ jQuery(document).ready(function ($) {
           //availability
           if (details.dates_unavailable) {
             display_dates_unavailable(details.dates_unavailable);
+          }
+
+          //magic links
+          if (details.magic_links) {
+            display_magic_link_apps(user_id, user_apps, details.magic_links);
           }
 
           let update_needed_list_html = ``;
@@ -476,6 +488,114 @@ jQuery(document).ready(function ($) {
         console.log(e);
       });
   };
+
+  function get_magic_link_apps(post_type = null) {
+    let apps = {};
+    const magic_link_apps =
+      window.dt_user_management_localized?.magic_link_apps;
+    if (magic_link_apps) {
+      for (const [app_root, app_types] of Object.entries(magic_link_apps)) {
+        for (const [app_type, app_value] of Object.entries(app_types)) {
+          if (
+            app_value?.meta_key &&
+            (post_type === null || app_value?.post_type === post_type)
+          ) {
+            apps[app_value.meta_key] = app_value;
+          }
+        }
+      }
+    }
+
+    return apps;
+  }
+
+  function display_magic_link_apps(user_id, apps, magic_links) {
+    if (apps && magic_links) {
+      let html = ``;
+      let links_detected = false;
+
+      // Cherry-pick magic links to be displayed, based on specified apps.
+      for (const [app_key, app] of Object.entries(apps)) {
+        if (
+          magic_links[app_key] &&
+          magic_links[app_key]?.post_type === 'user' &&
+          window.dt_user_management_localized?.has_permission
+        ) {
+          links_detected = true;
+          const magic_link = magic_links[app_key];
+          const url = window.SHAREDFUNCTIONS.escapeHTML(
+            window.wpApiShare.site_url +
+              `/${app?.root}/${app?.type}/${magic_link?.meta_key_value}`,
+          );
+          const activated =
+            magic_link['meta_key_value'] !== undefined &&
+            magic_link['meta_key_value'].length > 0;
+          html += `
+          <tr>
+            <td>
+                <a id="app_link_${app_key}" ${activated ? '' : 'disabled'} class="button" href="${url}" target="_blank" style="margin-right: 5px;">${window.SHAREDFUNCTIONS.escapeHTML(magic_link['label'])} <img class="dt-icon dt-white-icon" src="${window.SHAREDFUNCTIONS.escapeHTML(window.dt_user_management_localized?.theme_uri)}dt-assets/images/open-link.svg"/></a>
+            </td>
+            <td style="vertical-align: top;">
+                <input id="app_state_${app_key}"
+                        class="switch-input app-state-switches" type="checkbox"
+                        data-user_id="${user_id}" data-app_key="${app_key}" data-app_root="${app?.root}" data-app_type="${app?.type}"
+                        ${activated ? 'checked' : ''}
+                />
+                <label class="switch-paddle" for="app_state_${app_key}">
+                    <span class="show-for-sr">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_enable)}</span>
+                    <span class="switch-active" aria-hidden="true" style="color:white;">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_active)}</span>
+                    <span class="switch-inactive" aria-hidden="false">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_inactive)}</span>
+                </label>
+            </td>
+          </tr>`;
+        }
+      }
+
+      // Render link findings accordingly.
+      if (links_detected) {
+        $('#magic_link_apps_table tbody').html(html);
+        $('#magic_link_apps').show();
+      } else {
+        $('#magic_link_apps').hide();
+      }
+    } else {
+      $('#magic_link_apps').hide();
+    }
+    $('#magic_link_apps_spinner').hide();
+  }
+
+  $(document).on('click', '.app-state-switches', function (e) {
+    const app_state = $(e.target);
+    switch_magic_link_app_state(
+      $(app_state).data('user_id'),
+      $(app_state).data('app_key'),
+      $(app_state).data('app_root'),
+      $(app_state).data('app_type'),
+    );
+  });
+
+  function switch_magic_link_app_state(user_id, app_key, app_root, app_type) {
+    if (user_id && app_key) {
+      window
+        .makeRequest('POST', 'users/app_switch', { user_id, app_key })
+        .done(function (data) {
+          const app_link = $('#app_link_' + app_key);
+          if (data === 'removed') {
+            $(app_link).attr('disabled', 'disabled');
+          } else {
+            const url = window.SHAREDFUNCTIONS.escapeHTML(
+              window.wpApiShare.site_url + `/${app_root}/${app_type}/${data}`,
+            );
+            $(app_link).removeAttr('disabled');
+            $(app_link).attr('href', url);
+          }
+        })
+        .fail(function (err) {
+          console.log('error');
+          console.log(err);
+        });
+    }
+  }
 
   if (window.wpApiShare.url_path.includes('user-management/users')) {
   } else if (window.wpApiShare.url_path.includes('user-management/user/')) {

@@ -3,11 +3,11 @@ jQuery(document).ready(function () {
   load_locations();
 });
 
-function app_switch(app_key = null) {
+function app_switch(user_id = null, app_key = null) {
   let a = jQuery('#app_link_' + app_key);
   a.empty().html(`<span class="loading-spinner active"></span>`);
   window
-    .makeRequest('post', 'users/app_switch', { app_key })
+    .makeRequest('post', 'users/app_switch', { user_id, app_key })
     .done(function (data) {
       if ('removed' === data) {
         jQuery('#app_link_' + app_key).empty();
