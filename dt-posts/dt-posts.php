@@ -1198,6 +1198,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !empty( $search_string ) ){
                 $query['name'] = [ $search_string ];
             }
+            $query['sort'] = '-last_modified';
             $query = apply_filters( 'dt_get_viewable_compact_search_query', $query, $post_type, $search_string, $args );
             // if user can't list_all_, check permissions so they don't get access to things they shouldn't
             $check_permissions = !self::can_list_all( $post_type );
