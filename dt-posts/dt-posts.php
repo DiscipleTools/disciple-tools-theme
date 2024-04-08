@@ -1282,7 +1282,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             }
             if ( !empty( $search_string ) ){
-                //place user records first, then sort by name.
+                //place user records first, and then exact matches
                 uasort( $compact, function ( $a, $b ) use ( $search_string ) {
                     if ( isset( $a['user'] ) && !empty( $a['user'] ) ){
                         return - 3;
@@ -1293,7 +1293,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     } else if ( $b['name'] === $search_string ){
                         return 1;
                     } else {
-                        return $a['name'] <=> $b['name'];
+                        return 0;
                     }
                 });
             }
