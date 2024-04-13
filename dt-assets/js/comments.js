@@ -11,8 +11,7 @@ jQuery(document).ready(function($) {
   let comments = []
   let activity = [] // not guaranteed to be in any particular order
   let langcode = document.querySelector('html').getAttribute('lang') ? document.querySelector('html').getAttribute('lang').replace('_', '-') : "en";// get the language attribute from the HTML or default to english if it doesn't exists.
-
-  function convertComment(text) {
+	function convertComment(text) {
     //**text** becomes <strong>text</strong> */
     text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     //__text__ becomes <strong>text</strong> */
@@ -22,65 +21,58 @@ jQuery(document).ready(function($) {
     //- text or * text or + text becomes <strong>text</strong> */
     text = text.replace(/^\s*[*+-]\s+(.*)$/gm, '<li>$1</li>');
     // also, #. becomes a numbered list
-    text = text.replace(/^\s*\d+\.\s+(.*)$/gm, '<li>$1</li>');
+    text = text.replace(/^\s*(\d+\.)\s+(.*)$/gm, '<li>$1 $2</li>');
     //creates lists with the help of line 23 and 25
-    if (text.includes('<li>')) {
-      text = '<ul>' + text + '</ul>';
-  }
+	
+ if (text.includes('<li>')) {
+    const firstLi = /<li>/;
+    const lastLi = /<\/li>/g;
+    const firstLiIndex = text.search(firstLi);
+    if (firstLiIndex === -1) {
+        return text;
+    }
+
+    const lastLiIndex = text.lastIndexOf("</li>");
+    const digits = /\d\./;
+    let listItemContent = text.slice(firstLiIndex + 4, lastLiIndex); // Extract text content between <li> and </li>
+
+	let nonlistItemContent = text.slice(lastLiIndex + 5);
+
+    if (digits.test(listItemContent) == true) {
+        text = text.slice(0, firstLiIndex) + '<ol>' + '<li>' + listItemContent + '</li>' + text.slice(lastLiIndex, lastLiIndex + 5) + '</ol>\n' + nonlistItemContent; // Add newline character
+    } else {
+        text = text.slice(0, firstLiIndex) + '<ul>' + '<li>' + listItemContent + '</li>' + text.slice(lastLiIndex, lastLiIndex + 5) + '</ul>\n' + nonlistItemContent; // Add newline character
+    }
+}
     //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
-    text = text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2">');
+    text = text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">');
     //return modified comment
     return text;
   }
-  //pre-simplification
-//   //**text** becomes <strong>text</strong> */
-//   function convertToBold(text) {
-//     return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-//   }
-//     //__text__ becomes <strong>text</strong> */
-//   function convertToBoldPartTwo(text) {
-//     return text.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
-//   }
-//   //*text* becomes <em>text</em> */
-//   function convertToItalics(text) {
-//     return text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-//   }
-//   //- text or * text or + text becomes <strong>text</strong> */
-//   // also, #. becomes a numbered list
-//   function convertToList(text) {
-//     text = text.replace(/^\s*[*+-]\s+(.*)$/gm, '<li>$1</li>');
-//     text = text.replace(/^\s*\d+\.\s+(.*)$/gm, '<li>$1</li>');
-
-//     if (text.includes('<li>')) {
-//         text = '<ul>' + text + '</ul>';
-//     }
-
-//     return text;
-// }
-//   //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
-//   function convertImage(text) {
-//     return text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2">');
-//   }
 
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
     let commentType = $('#comment_type_selector').val()
-    let commentText = commentInput.val();
+	 let commentText = commentInput.val();
     commentText = convertComment(commentText);
- 
     getCommentWithMentions(comment_plain_text=>{
       if (comment_plain_text) {
+	comment_plain_text = convertComment(comment_plain_text);
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
         rest_api.post_comment(postType, postId, comment_plain_text, commentType ).then(data => {
-          let updated_comment = data.comment || data
+ 
+			let updated_comment = data.comment || data
+			updated_comment.comment_content = comment_plain_text
+	
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
           updated_comment.date = window.moment(updated_comment.comment_date_gmt + "Z")
           comments.push(updated_comment)
           display_activity_comment()
+
           // fire comment posted event
           $('#content')[0].dispatchEvent(commentPostedEvent);
           commentInput.attr("disabled", false)
@@ -91,7 +83,9 @@ jQuery(document).ready(function($) {
           console.log(err)
           jQuery("#errors").append(err.responseText)
         })
-      }
+      } else {
+		  console.log('not comment_plain_text')
+	  }
     });
   }
 
@@ -173,12 +167,25 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>" data-comment-id="<%- a.comment_ID %>">
-              <div class="comment-text" title="<%- a.date_formatted %>" dir=auto><%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %></div>
+				<div class="comment-text" title="<%- a.date_formatted %>" dir=auto>
+    <% 
+    if (a.text.indexOf('<li>') === -1) {
+    %>
+        <%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %>
+    <% } else { %>
+        <%= a.text %>
+    <% } %>
+</div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
             <% } %>
             <div  class="comment-controls">
+              <% if ( a.meta && a.meta.audio_url ) { %>
+                <% window.lodash.forEach(a.meta.audio_url, function(meta){ %>
+                  <audio controls><source src="<%- meta.value %>" /></audio>
+                <% }) %>
+              <% } %>
               <div class="comment-reactions">
                 <div class="reaction-controls">
                   <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
@@ -425,6 +432,7 @@ jQuery(document).ready(function($) {
       let first = window.lodash.first(array)
       let name = d.comment_author || d.name
       let gravatar = d.gravatar || ""
+
       let obj = {
         name: name,
         date: d.date,
@@ -437,11 +445,13 @@ jQuery(document).ready(function($) {
         comment_type : d.comment_type,
         action: d.action,
         reactions: d.comment_reactions || {},
+        meta: d.comment_meta || {},
       }
 
       let diff = first ? first.date.diff(obj.date, "hours") : 0
       if (!first || (first.name === name && diff < 1) ){
         array.push(obj)
+
       } else {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
@@ -449,9 +459,11 @@ jQuery(document).ready(function($) {
           date: array[0].date_formatted,
           activity: array
         }))
+
         array = [obj]
       }
     })
+	
     if (array.length > 0){
       commentsWrapper.append(commentTemplate({
         gravatar: array[0].gravatar,
@@ -549,7 +561,6 @@ jQuery(document).ready(function($) {
   }
 
 
-
   let getAllPromise = null
   let getCommentsPromise = null
   let getActivityPromise = null
@@ -567,7 +578,8 @@ jQuery(document).ready(function($) {
     )
     getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
       $("#comments-activity-spinner.loading-spinner").removeClass("active")
-      const commentData = commentDataStatusJQXHR[0].comments;
+		const commentData = commentDataStatusJQXHR[0].comments = comments[comments.length - 1]
+
       const activityData = activityDataStatusJQXHR[0].activity;
 
       prepareData(commentData, activityData)
@@ -583,6 +595,7 @@ jQuery(document).ready(function($) {
   let prepareData = function(commentData, activityData){
     let typesCount = {};
     commentData.forEach(comment => {
+
       comment.date = window.moment(comment.comment_date_gmt + "Z")
       comment.sort_date = window.moment(comment.comment_date_gmt + "Z").add(5, 'seconds')
 
@@ -611,6 +624,7 @@ jQuery(document).ready(function($) {
       tab.text(text)
       tab.parent().parent('.hide').removeClass('hide')
     })
+
     comments = commentData
     activity = activityData
     prepareActivityData(activity)
@@ -655,7 +669,6 @@ jQuery(document).ready(function($) {
         })
       }).catch(err => { console.error(err) })
     },
-    //probably here
     templates : {
       mentionItemSyntax : function (data) {
         return `[${data.value}](${data.id})`
