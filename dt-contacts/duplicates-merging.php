@@ -215,7 +215,7 @@ class DT_Duplicate_Checker_And_Merging {
                 if ( $field_settings[$field_key]['type'] === 'communication_channel' ){
                     foreach ( $post[$field_key] as $value ){
                         foreach ( $possible_duplicate[$field_key] as $dup_value ){
-                            $points +=1;
+                            $points++;
                             if ( $value['value'] === $dup_value['value'] ){
                                 $match_on[] = [ 'field' => $field_key, 'value' => $dup_value['value'] ];
                                 $points += 4;

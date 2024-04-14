@@ -133,7 +133,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        $ignore_field_types = [ 'array' ];
+        $ignore_field_types = [ 'array', 'hash' ];
 
         $fields      = DT_Posts::get_post_field_settings( $parent_post['post_type'] );
         $field_type = $fields[$meta_key]['type'] ?? null;

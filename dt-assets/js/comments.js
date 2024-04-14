@@ -210,8 +210,7 @@ jQuery(document).ready(function ($) {
         </div>
     <% } %>
     </div>
-  </div>`
-  )
+  </div>`);
 
   $(document).on('click', '.translate-button.showTranslation', function () {
     let combinedArray = [];
@@ -757,4 +756,6 @@ jQuery(document).ready(function ($) {
       return true;
     }
   };
+
 });
+
