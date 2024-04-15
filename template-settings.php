@@ -597,7 +597,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </td>
                                     <td>
                                         <?php
-                                        if ( !apply_filters( 'dt_media_connections_enabled', false, dt_get_option( 'dt_media_connection_id' ) ) ) {
+                                        if ( !apply_filters( 'dt_storage_connections_enabled', false, dt_get_option( 'dt_storage_connection_id' ) ) ) {
                                             ?>
                                             <span data-tooltip data-click-open="true" class="top" tabindex="1"
                                                       title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">

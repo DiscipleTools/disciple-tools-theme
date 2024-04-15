@@ -230,8 +230,8 @@ function dt_get_option( string $name ) {
             return $setting;
             break;
 
-        case 'dt_media_connection_id':
-            return get_option( 'dt_media_connection_id', '' );
+        case 'dt_storage_connection_id':
+            return get_option( 'dt_storage_connection_id', '' );
 
         case 'dt_email_base_subject':
             $subject_base = get_option( 'dt_email_base_subject', 'Disciple.Tools' );

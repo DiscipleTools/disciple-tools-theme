@@ -60,12 +60,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* End Base User */
 
-            /* Media Settings */
+            /* Storage Settings */
             $this->box( 'top', 'Storage Settings' );
-            $this->process_media_settings();
-            $this->media_settings();
+            $this->process_storage_settings();
+            $this->storage_settings();
             $this->box( 'bottom' );
-            /* End Media Settings */
+            /* End Storage Settings */
 
             /* Email Settings */
             $this->box( 'top', 'Email Settings' );
@@ -264,40 +264,40 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function media_settings(): void {
-        $media_connections = apply_filters( 'dt_media_connections', [] );
-        if ( !array_key_exists( 'disciple-tools-media/disciple-tools-media.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-media/disciple-tools-media.php' ) ) {
+    public function storage_settings(): void {
+        $storage_connections = apply_filters( 'dt_storage_connections', [] );
+        if ( !array_key_exists( 'disciple-tools-storage/disciple-tools-storage.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-storage/disciple-tools-storage.php' ) ) {
             ?>
           <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-media' ); ?>
+                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-storage' ); ?>
                 </span>
             <?php
-        } elseif ( empty( $media_connections ) ) {
+        } elseif ( empty( $storage_connections ) ) {
             ?>
           <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_media' ) ) ); ?>
+                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_storage' ) ) ); ?>
                 </span>
             <?php
         } else { ?>
         <form method="POST">
-            <input type="hidden" name="media_settings_nonce" id="media_settings_nonce"
-                   value="<?php echo esc_attr( wp_create_nonce( 'media_settings' ) ) ?>"/>
+            <input type="hidden" name="storage_settings_nonce" id="storage_settings_nonce"
+                   value="<?php echo esc_attr( wp_create_nonce( 'storage_settings' ) ) ?>"/>
 
             <table class="widefat">
                 <tbody>
                 <tr>
                     <td>
-                        <label for="media_connection"><?php esc_html_e( 'Select storage connection for uploading pictures and files.', 'disciple_tools' ) ?></label>
+                        <label for="storage_connection"><?php esc_html_e( 'Select storage connection for uploading pictures and files.', 'disciple_tools' ) ?></label>
                         <br>
-                        See configuration settings <a href="<?php echo esc_html( admin_url( 'admin.php?page=disciple_tools_media' ) ) ?>">here</a>
+                        See configuration settings <a href="<?php echo esc_html( admin_url( 'admin.php?page=disciple_tools_storage' ) ) ?>">here</a>
                     </td>
                     <td>
-                        <select name="media_connection" id="media_connection">
+                        <select name="storage_connection" id="storage_connection">
                             <option value="">--- None ---</option>
                             <?php
-                            $media_connection_id = dt_get_option( 'dt_media_connection_id' );
-                            foreach ( $media_connections as $connection ) {
-                                $selected = $connection['id'] === $media_connection_id;
+                            $storage_connection_id = dt_get_option( 'dt_storage_connection_id' );
+                            foreach ( $storage_connections as $connection ) {
+                                $selected = $connection['id'] === $storage_connection_id;
                                 ?>
                                 <option <?php echo ( $selected ? 'selected' : '' ) ?> value="<?php echo esc_attr( $connection['id'] ) ?>"><?php echo esc_attr( $connection['name'] ) ?></option>
                                 <?php
@@ -316,10 +316,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php }
     }
 
-    public function process_media_settings() {
-        if ( isset( $_POST['media_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['media_settings_nonce'] ) ), 'media_settings' ) ) {
-            if ( isset( $_POST['media_connection'] ) ) {
-                update_option( 'dt_media_connection_id', sanitize_text_field( wp_unslash( $_POST['media_connection'] ) ) );
+    public function process_storage_settings() {
+        if ( isset( $_POST['storage_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['storage_settings_nonce'] ) ), 'storage_settings' ) ) {
+            if ( isset( $_POST['storage_connection'] ) ) {
+                update_option( 'dt_storage_connection_id', sanitize_text_field( wp_unslash( $_POST['storage_connection'] ) ) );
             }
         }
     }
