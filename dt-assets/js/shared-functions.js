@@ -702,6 +702,9 @@ window.SHAREDFUNCTIONS = {
   */
   formatComment(comment) {
     if(comment){
+		    //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
+    comment = comment.replace(/!\[(.*?)\]\((.*?)\)/g, "<img src='$2' alt='$1'>");
+		console.log(comment, 'line 705 format comment')
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
       comment = comment.replace(mentionRegex, (match, text, id)=>{
         /* dir=auto means that @ will be put to the left of the name if the
@@ -711,7 +714,9 @@ window.SHAREDFUNCTIONS = {
         return `<a dir="auto">@${text}</a>`
       })
       let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
-      comment = comment.replace(urlRegex, (match)=>{
+      if (comment.includes('<img')) {
+		  console.log("image") } else {
+	  comment = comment.replace(urlRegex, (match)=>{
         let url = match
         if(match.indexOf("@") === -1 && match.indexOf("[") === -1 && match.indexOf("(") === -1 && match.indexOf("href") === -1) {
           if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
@@ -732,6 +737,7 @@ window.SHAREDFUNCTIONS = {
         url = url.includes('http') ? url : `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`
         return `<a href="${url}">${text}</a>`
       })
+		  }
 
     //**comment** becomes <strong>comment</strong> */
     comment = comment.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -765,8 +771,7 @@ window.SHAREDFUNCTIONS = {
         comment = comment.slice(0, firstLiIndex) + '<ul>' + '<li>' + listItemContent + '</li>' + comment.slice(lastLiIndex, lastLiIndex + 5) + '</ul>\n' + nonlistItemContent; // Add newline character
     }
 }
-    //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
-    comment = comment.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">');
+
     //return modified comment
     return comment;
   
