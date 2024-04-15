@@ -29,7 +29,8 @@ class DT_Contacts_Access extends DT_Module_Base {
         //display tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
         add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
-        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 6 );
+        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 7 );
+        add_filter( 'dt_render_field_for_display_fields', [ $this, 'dt_render_field_for_display_fields' ], 100, 3 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -127,7 +128,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg?v=2',
                 'show_in_table' => 25,
                 'only_for_types' => [ 'access', 'user' ],
-                'custom_display' => true
+                'custom_display' => false
             ];
             $fields['seeker_path'] = [
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
@@ -420,8 +421,15 @@ class DT_Contacts_Access extends DT_Module_Base {
         return $sections;
     }
 
-    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display = false ){
-        $contact_fields = DT_Posts::get_post_field_settings( 'contacts' );
+    public function dt_render_field_for_display_fields( $fields, $field_key, $post ){
+        if ( $post && $post['post_type'] === 'contacts' && $field_key === 'assigned_to' ){
+            $fields['assigned_to']['custom_display'] = true;
+        }
+        return $fields;
+    }
+
+    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display = false, $fields = [] ){
+        $contact_fields = !empty( $fields ) ? $fields : DT_Posts::get_post_field_settings( 'contacts' );
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
             $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
         } else {

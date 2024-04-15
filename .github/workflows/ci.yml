@@ -35,7 +35,7 @@ jobs:
 
     - uses: actions/setup-node@v3
       with:
-        node-version: 16.x
+        node-version: 21.x
         cache: 'npm'
     - run: npm install -g gulp-cli eslint @babel/eslint-parser
 

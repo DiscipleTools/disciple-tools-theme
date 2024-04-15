@@ -654,6 +654,9 @@ class Disciple_Tools_Posts_Endpoints {
         if ( isset( $body['date'] ) ){
             $args['comment_date'] = $body['date'];
         }
+        if ( isset( $body['meta'] ) ) {
+            $args['comment_meta'] = $body['meta'];
+        }
         $type = 'comment';
         if ( isset( $body['comment_type'] ) ){
             $type = $body['comment_type'];
@@ -663,7 +666,12 @@ class Disciple_Tools_Posts_Endpoints {
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
-            return get_comment( $result );
+            $ret = get_comment( $result )->to_array();
+            unset( $ret['children'] );
+            unset( $ret['populated_children'] );
+            unset( $ret['post_fields'] );
+            $ret['comment_meta'] = get_comment_meta( $ret['comment_ID'] );
+            return $ret;
         }
     }
 
@@ -671,14 +679,23 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $body = $request->get_json_params() ?? $request->get_body_params();
         $type = 'comment';
+        $args = [];
         if ( isset( $body['comment_type'] ) ){
             $type = $body['comment_type'];
         }
-        $result = DT_Posts::update_post_comment( $url_params['comment_id'], $body['comment'], true, $type );
+        if ( isset( $body['meta'] ) ) {
+            $args['comment_meta'] = $body['meta'];
+        }
+        $result = DT_Posts::update_post_comment( $url_params['comment_id'], $body['comment'], true, $type, $args );
         if ( is_wp_error( $result ) ) {
             return $result;
         } else {
-            return get_comment( $result );
+            $ret = get_comment( $result )->to_array();
+            unset( $ret['children'] );
+            unset( $ret['populated_children'] );
+            unset( $ret['post_fields'] );
+            $ret['comment_meta'] = get_comment_meta( $ret['comment_ID'] );
+            return $ret;
         }
     }
 

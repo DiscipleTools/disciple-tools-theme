@@ -1415,6 +1415,18 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( !$created_comment_id ){
                 $created_comment_id = $new_comment;
             }
+
+            if ( $new_comment && array_key_exists( 'comment_meta', $args ) ) {
+                foreach ( $args['comment_meta'] as $key => $value ) {
+                    if ( is_array( $value ) ) {
+                        foreach ( $value as $meta_val ) {
+                            add_comment_meta( $new_comment, $key, $meta_val );
+                        }
+                    } else {
+                        add_comment_meta( $new_comment, $key, $value );
+                    }
+                }
+            }
         }
 
         if ( !$silent && !is_wp_error( $created_comment_id ) ){
@@ -1426,7 +1438,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         return $created_comment_id;
     }
 
-    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = 'comment' ){
+    public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = 'comment', array $args = [] ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
@@ -1441,6 +1453,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
         $update = wp_update_comment( $comment );
         if ( in_array( $update, [ 0, 1 ] ) ) {
+            if ( key_exists( 'comment_meta', $args ) && $args['comment_meta'] ) {
+                foreach ( $args['comment_meta'] as $key => $value ) {
+                    update_comment_meta( $comment_id, $key, $value );
+                }
+            }
             return $comment_id;
         } else if ( is_wp_error( $update ) ) {
              return $update;
@@ -1506,41 +1523,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $comments = get_comments( $comments_query );
 
-        // add in getting the meta data for the comments JOINed with the user table to get
-        // the username
-        // phpcs:disable
-        // WordPress.WP.PreparedSQL.NotPrepared
-        $comments_meta = $wpdb->get_results( $wpdb->prepare(
-            "SELECT
-                m.comment_id, m.meta_key, u.display_name, u.ID
-            FROM
-                `$wpdb->comments` AS c
-            JOIN
-                `$wpdb->commentmeta` AS m
-            ON c.comment_ID = m.comment_id
-            JOIN
-                `$wpdb->users` AS u
-            ON m.meta_value = u.ID
-            WHERE
-                c.comment_post_ID = %s
-                AND m.meta_key LIKE 'reaction%'",
-            $post_id
-        ) );
-        // phpcs:enable
-
-        $comments_meta_dict = [];
-        foreach ( $comments_meta as $meta ) {
-            if ( !array_key_exists( $meta->comment_id, $comments_meta_dict ) ) {
-                $comments_meta_dict[$meta->comment_id] = [];
-            }
-            if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
-                $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
-            }
-            $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
-                'name' => $meta->display_name,
-                'user_id' => $meta->ID,
-            ];
-        }
+        $comments_meta = self::get_post_comments_meta( $post_id );
 
         $response_body = [];
         foreach ( $comments as $comment ){
@@ -1560,7 +1543,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'user_id' => $comment->user_id,
                 'comment_type' => $comment->comment_type,
                 'comment_post_ID' => $comment->comment_post_ID,
-                'comment_reactions' => array_key_exists( $comment->comment_ID, $comments_meta_dict ) ? $comments_meta_dict[$comment->comment_ID] : [],
+                'comment_reactions' => array_key_exists( $comment->comment_ID, $comments_meta['reactions'] ) ? $comments_meta['reactions'][$comment->comment_ID] : [],
+                'comment_meta' => array_key_exists( $comment->comment_ID, $comments_meta['meta'] ) ? $comments_meta['meta'][$comment->comment_ID] : [],
             ];
             $response_body[] = $c;
         }
@@ -1574,6 +1558,75 @@ class DT_Posts extends Disciple_Tools_Posts {
         return [
             'comments' => $response_body,
             'total' => wp_count_comments( $post_id )->total_comments
+        ];
+    }
+
+    /**
+     * Get comment meta for a given post, split into reactions vs general meta data
+     * @param int $post_id
+     * @return array
+     * @internal
+     */
+    private static function get_post_comments_meta( int $post_id ) {
+        global $wpdb;
+
+        // add in getting the meta data for the comments JOINed with the user table to get
+        // the username
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $comments_meta = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                m.comment_id, m.meta_id, m.meta_key, m.meta_value, u.display_name, u.ID
+            FROM
+                `$wpdb->comments` AS c
+            JOIN
+                `$wpdb->commentmeta` AS m
+            ON c.comment_ID = m.comment_id
+            LEFT JOIN
+                `$wpdb->users` AS u
+            ON m.meta_value = u.ID
+            WHERE
+                c.comment_post_ID = %s",
+            $post_id
+        ) );
+        // phpcs:enable
+
+        $comments_reactions_dict = [];
+        $comments_meta_dict = [];
+        foreach ( $comments_meta as $meta ) {
+
+            // if meta_key starts with "reaction"...
+            if ( strpos( $meta->meta_key, 'reaction' ) === 0 ) {
+                if ( !array_key_exists( $meta->comment_id, $comments_reactions_dict ) ) {
+                    $comments_reactions_dict[$meta->comment_id] = [];
+                }
+                if ( !array_key_exists( $meta->meta_key, $comments_reactions_dict[$meta->comment_id] ) ) {
+                    $comments_reactions_dict[$meta->comment_id][$meta->meta_key] = [];
+                }
+
+                // reaction meta data as a list of users who have reacted
+                $comments_reactions_dict[$meta->comment_id][$meta->meta_key][] = [
+                    'name' => $meta->display_name,
+                    'user_id' => $meta->ID,
+                ];
+            } else {
+                // all non-reaction meta data
+                if ( !array_key_exists( $meta->comment_id, $comments_meta_dict ) ) {
+                    $comments_meta_dict[$meta->comment_id] = [];
+                }
+                if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
+                    $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
+                }
+                $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
+                    'id' => $meta->meta_id,
+                    'value' => $meta->meta_value,
+                ];
+            }
+        }
+
+        return [
+            'reactions' => $comments_reactions_dict,
+            'meta' => $comments_meta_dict,
         ];
     }
 
