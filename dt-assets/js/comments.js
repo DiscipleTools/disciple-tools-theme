@@ -113,7 +113,7 @@ jQuery(document).ready(function ($) {
     saveTabs();
   });
 
- /* We use the CSS 'white-space:pre-wrap' and '<div dir=auto>' HTML elements
+  /* We use the CSS 'white-space:pre-wrap' and '<div dir=auto>' HTML elements
    * to match the behaviour that the user sees when editing the comment in an
    * input with dir=auto set, especially when using a right-to-left language
    * with multiple paragraphs. */
@@ -756,6 +756,4 @@ jQuery(document).ready(function ($) {
       return true;
     }
   };
-
 });
-
