@@ -966,7 +966,7 @@ class Disciple_Tools_Users
      */
     public static function app_switch( int $user_id, string $preference_key ) {
 
-        $value = get_user_option( $preference_key );
+        $value = get_user_option( $preference_key, $user_id );
         $hash = dt_create_unique_key();
 
         $contact = self::get_contact_for_user( $user_id );
