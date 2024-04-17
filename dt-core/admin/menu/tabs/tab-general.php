@@ -266,7 +266,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function storage_settings(): void {
         $storage_connections = apply_filters( 'dt_storage_connections', [] );
-        if ( !array_key_exists( 'disciple-tools-storage/disciple-tools-storage.php', get_plugins() ) || !is_plugin_active( 'disciple-tools-storage/disciple-tools-storage.php' ) ) {
+        if ( !class_exists( 'DT_Storage' ) ) {
             ?>
           <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
                     <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-storage' ); ?>
