@@ -153,12 +153,10 @@ if (typeof window.dtMapbox === 'undefined') {
               s: '{{query}}',
               filter: function () {
                 const { dropdown } =
-
                   window.Typeahead['.js-typeahead-location_grid'].filters;
                 const value = dropdown?.value ?? 'all';
                 return value;
               },
-
             },
             beforeSend: function (xhr) {
               xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
@@ -273,7 +271,6 @@ dateFields.forEach((key) => {
 });
 
 jQuery('#add_unavailable_dates').on('click', function () {
-
   let start_date = jQuery('#start_date').val();
   let end_date = jQuery('#end_date').val();
   jQuery('#add_unavailable_dates_spinner').addClass('active');
@@ -289,7 +286,6 @@ let display_dates_unavailable = (list = [], first_run) => {
   let rows = ``;
   list = window.lodash.orderBy(list, ['start_date'], 'desc');
   list.forEach((range) => {
-
     rows += `<tr>
         <td>${window.SHAREDFUNCTIONS.escapeHTML(range.start_date)}</td>
         <td>${window.SHAREDFUNCTIONS.escapeHTML(range.end_date)}</td>
@@ -314,7 +310,6 @@ jQuery(document).on('click', '.remove_dates_unavailable', function () {
   });
 });
 
-
 let status_buttons = jQuery('.status-button');
 let color_workload_buttons = (name) => {
   status_buttons.css('background-color', '');
@@ -330,7 +325,6 @@ let color_workload_buttons = (name) => {
       ),
     );
     selected.blur();
-
   }
 };
 color_workload_buttons(window.wpApiSettingsPage.workload_status);
