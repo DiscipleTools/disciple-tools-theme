@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-03-14T14:34:13+00:00\n"
+"POT-Creation-Date: 2024-03-25T14:39:01+00:00\n"
 "Language: bn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,13 +63,13 @@ msgstr ""
 msgid "Submit Request"
 msgstr "অনুরোধ দাখিল করুন"
 
-#: 403.php:55 archive-template.php:1094 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1098 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:510 dt-contacts/access-module.php:541
-#: dt-contacts/access-module.php:569 dt-contacts/base-setup.php:380
+#: dt-contacts/access-module.php:518 dt-contacts/access-module.php:549
+#: dt-contacts/access-module.php:577 dt-contacts/base-setup.php:380
 #: dt-contacts/base-setup.php:415 dt-contacts/user-module.php:159
 #: single-template.php:415 single-template.php:432
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
@@ -79,7 +79,7 @@ msgid "Cancel"
 msgstr "বাতিল"
 
 #: 403.php:59 archive-template.php:505 archive-template.php:547
-#: archive-template.php:772 archive-template.php:1118
+#: archive-template.php:772 archive-template.php:1122
 #: dt-assets/parts/loop-activity-comment.php:154
 #: dt-assets/parts/loop-activity-comment.php:159
 #: dt-assets/parts/loop-activity-comment.php:202
@@ -106,8 +106,8 @@ msgstr "বাতিল"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/access-module.php:515 dt-contacts/access-module.php:546
-#: dt-contacts/access-module.php:574 dt-contacts/access-module.php:665
+#: dt-contacts/access-module.php:523 dt-contacts/access-module.php:554
+#: dt-contacts/access-module.php:582 dt-contacts/access-module.php:673
 #: dt-contacts/base-setup.php:385 dt-contacts/base-setup.php:420
 #: dt-contacts/dmm-module.php:524 dt-contacts/dmm-module.php:526
 #: dt-contacts/user-module.php:168 dt-groups/base-setup.php:623
@@ -139,9 +139,9 @@ msgid "Filters"
 msgstr "ফিল্টার করুন"
 
 #: archive-template.php:36 archive-template.php:138 archive-template.php:655
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:725
-#: dt-core/global-functions.php:753 dt-core/global-functions.php:885
-#: dt-core/global-functions.php:929 dt-posts/custom-post-type.php:20
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:726
+#: dt-core/global-functions.php:754 dt-core/global-functions.php:886
+#: dt-core/global-functions.php:930 dt-posts/custom-post-type.php:20
 #: template-settings.php:381
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -346,15 +346,15 @@ msgstr ""
 "নীচে আপডেট করুন"
 
 #: archive-template.php:569 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:598 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:967
+#: dt-contacts/access-module.php:606 dt-contacts/user-module.php:137
+#: dt-core/global-functions.php:968
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ইউজারদের অনুসন্ধান করুন"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
-#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2713
+#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2766
 #: dt-users/template-user-management.php:370 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -405,7 +405,7 @@ msgstr "কম বিকল্প দেখুন"
 msgid "Update"
 msgstr "হালনাগাত"
 
-#: archive-template.php:751 archive-template.php:851
+#: archive-template.php:751 archive-template.php:855
 #: dt-assets/functions/enqueue-scripts.php:325
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
@@ -448,135 +448,139 @@ msgid "A valid from name must be specified."
 msgstr ""
 
 #: archive-template.php:810
+msgid "Message reply to"
+msgstr ""
+
+#: archive-template.php:812
+msgid "A valid reply to email address must be specified."
+msgstr ""
+
+#: archive-template.php:814
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:815
-msgid "Select message send method"
-msgstr ""
-
-#: archive-template.php:833
+#: archive-template.php:837
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:835
+#: archive-template.php:839
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:837
+#: archive-template.php:841
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:838 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:842 dt-reports/magic-url-bulk-send.php:58
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:841 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:845 dt-reports/magic-url-bulk-send.php:64
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "রেকর্ড তৈরি করুন"
 
-#: archive-template.php:846 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "নির্বাচিত রেকর্ডে পাঠান"
 
-#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:851 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "আপনাকে অবশ্যই অন্তত একটি রেকর্ড নির্বাচন করতে হবে৷"
 
-#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:91
 msgid "Send"
 msgstr "পাঠান"
 
-#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "লিঙ্ক"
 
-#: archive-template.php:855
+#: archive-template.php:859
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:895
+#: archive-template.php:899
 msgid "Loading..."
 msgstr "লোড নিচ্ছে......"
 
-#: archive-template.php:900 dt-assets/functions/enqueue-scripts.php:403
+#: archive-template.php:904 dt-assets/functions/enqueue-scripts.php:404
 msgid "Load More"
 msgstr "আরও শিখতে"
 
-#: archive-template.php:912
+#: archive-template.php:916
 msgid "Field Name"
 msgstr "ক্ষেত্র নাম"
 
-#: archive-template.php:968
+#: archive-template.php:972
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "অনুসন্ধান করতে টাইপ করুন"
 
-#: archive-template.php:977
+#: archive-template.php:981
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s সহ সমস্ত 1%$s"
 
-#: archive-template.php:980
+#: archive-template.php:984
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s ছাড়া সব %1$s"
 
-#: archive-template.php:987
+#: archive-template.php:991
 msgid "Filter for subassigned OR Assigned To"
 msgstr "ফিল্টারের জন্য অনুবরাদ্দ অথবা বরাদ্দ করুন"
 
-#: archive-template.php:996 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:1000 dt-assets/functions/enqueue-scripts.php:316
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "তৈরির তারিখ"
 
-#: archive-template.php:1003 archive-template.php:1010
+#: archive-template.php:1007 archive-template.php:1014
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
 msgid "None Set"
 msgstr "কোন সেট নেই"
 
-#: archive-template.php:1024 archive-template.php:1025
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:685
+#: archive-template.php:1028 archive-template.php:1029
+#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:686
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: template-settings.php:295 template-settings.php:539
 msgid "No"
 msgstr "না"
 
-#: archive-template.php:1031 archive-template.php:1032
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:686
+#: archive-template.php:1035 archive-template.php:1036
+#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:687
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:538
 msgid "Yes"
 msgstr "হ্যাঁ"
 
-#: archive-template.php:1036
+#: archive-template.php:1040
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "পরিসর শুরু"
 
-#: archive-template.php:1039 archive-template.php:1050
+#: archive-template.php:1043 archive-template.php:1054
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "পরিষ্কার"
 
-#: archive-template.php:1046
+#: archive-template.php:1050
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "পরিসর শেষ"
 
-#: archive-template.php:1061
+#: archive-template.php:1065
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "নাম ফিল্টার করুন"
 
-#: archive-template.php:1066
+#: archive-template.php:1070
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -584,7 +588,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s সহ সমস্ত 1%$s"
 
-#: archive-template.php:1070
+#: archive-template.php:1074
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -592,7 +596,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%2$s ছাড়া সব %1$s"
 
-#: archive-template.php:1074
+#: archive-template.php:1078
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -600,7 +604,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s সহ সমস্ত 1%$s"
 
-#: archive-template.php:1078
+#: archive-template.php:1082
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -608,15 +612,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$s ছাড়া সব %1$s"
 
-#: archive-template.php:1102
+#: archive-template.php:1106
 msgid "Filter Name"
 msgstr "নাম ফিল্টার করুন"
 
-#: archive-template.php:1107
+#: archive-template.php:1111
 msgid "Filter Records"
 msgstr "রেকর্ডসমূহ ফিল্টার করুন"
 
-#: archive-template.php:1111 dt-assets/functions/enqueue-scripts.php:276
+#: archive-template.php:1115 dt-assets/functions/enqueue-scripts.php:276
 #: dt-assets/functions/enqueue-scripts.php:311
 #: dt-users/user-initial-setup.php:79 template-settings.php:685
 msgid "Save"
@@ -724,7 +728,7 @@ msgstr "আপনার কাছে কোনো অপঠিত প্রজ�
 msgid "You don't have any notifications"
 msgstr "আপনার কোনও প্রজ্ঞাপন নেই"
 
-#: dt-assets/functions/enqueue-scripts.php:171 dt-posts/dt-posts.php:1653
+#: dt-assets/functions/enqueue-scripts.php:171 dt-posts/dt-posts.php:1706
 msgid "D.T System"
 msgstr "ডিটি সিস্টেম"
 
@@ -882,7 +886,7 @@ msgstr "শেষ"
 
 #: dt-assets/functions/enqueue-scripts.php:323
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1307 dt-groups/base-setup.php:994
+#: dt-contacts/access-module.php:1315 dt-groups/base-setup.php:994
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-metrics/records/dynamic-records-map.php:96
 #: dt-users/mapbox-coverage-map.php:74
@@ -992,17 +996,18 @@ msgid "Open Zoomed Map Records"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:357
 #, fuzzy
-#| msgid "List"
-msgid "Map List Filter"
-msgstr "তালিকা"
+#| msgid "Filter Name"
+msgid "Filtered Map"
+msgstr "নাম ফিল্টার করুন"
 
-#: dt-assets/functions/enqueue-scripts.php:383 dt-contacts/base-setup.php:51
+#: dt-assets/functions/enqueue-scripts.php:384 dt-contacts/base-setup.php:51
 #: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "পরিচিতি"
 
-#: dt-assets/functions/enqueue-scripts.php:384
+#: dt-assets/functions/enqueue-scripts.php:385
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1597,59 +1602,59 @@ msgstr "সবগুলো দেখুন"
 msgid "Mark All"
 msgstr "সব চিহ্নিত করুন"
 
-#: dt-contacts/access-module.php:58
+#: dt-contacts/access-module.php:59
 msgid "Dispatcher"
 msgstr "প্রেরক"
 
-#: dt-contacts/access-module.php:65
+#: dt-contacts/access-module.php:66
 msgid "Partner"
 msgstr "অংশীদার"
 
-#: dt-contacts/access-module.php:72
+#: dt-contacts/access-module.php:73
 msgid "Digital Responder"
 msgstr "ডিজিটাল প্রতিক্রিয়াশীল"
 
-#: dt-contacts/access-module.php:103
+#: dt-contacts/access-module.php:104
 msgid "Standard Contact"
 msgstr "স্ট্যান্ডার্ড পরিচিতি"
 
-#: dt-contacts/access-module.php:105
+#: dt-contacts/access-module.php:106
 msgid "A contact to collaborate on"
 msgstr "সহযোগিতা করার জন্য একটি পরিচিতি৷"
 
-#: dt-contacts/access-module.php:106
+#: dt-contacts/access-module.php:107
 msgid "Me and project leadership"
 msgstr "আমি এবং প্রকল্প নেতৃত্ব"
 
-#: dt-contacts/access-module.php:112
+#: dt-contacts/access-module.php:113
 msgid "Connection"
 msgstr "সংযোগ"
 
-#: dt-contacts/access-module.php:114 dt-contacts/dmm-module.php:51
+#: dt-contacts/access-module.php:115 dt-contacts/dmm-module.php:51
 msgid "Connected to a contact, or generational fruit"
 msgstr "কোনও পরিচিতিতে বা প্রজন্মের ফলের সাথে সংযুক্ত"
 
-#: dt-contacts/access-module.php:117
+#: dt-contacts/access-module.php:118
 msgid "Collaborators"
 msgstr "সহযোগী"
 
-#: dt-contacts/access-module.php:122 dt-groups/base-setup.php:137
+#: dt-contacts/access-module.php:123 dt-groups/base-setup.php:137
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
 #: dt-metrics/records/genmap.php:91 dt-metrics/records/genmap.php:98
 msgid "Assigned To"
 msgstr "নিযুক্ত করুন"
 
-#: dt-contacts/access-module.php:123
+#: dt-contacts/access-module.php:124
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "এই পরিচিতির প্রতিবেদনের জন্য দায়বদ্ধ প্রধান ব্যক্তিটি নির্বাচন করুন।"
 
-#: dt-contacts/access-module.php:133 dt-metrics/contacts/seeker-path.php:25
+#: dt-contacts/access-module.php:134 dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
 msgstr "অনুসন্ধানকারীর পথ"
 
-#: dt-contacts/access-module.php:134
+#: dt-contacts/access-module.php:135
 msgctxt "Seeker Path field description"
 msgid ""
 "Set the status of your progression with the contact. These are the steps "
@@ -1658,52 +1663,52 @@ msgstr ""
 "পরিচিতির সাথে আপনার অগ্রগতির অবস্থা উল্লেখ্য করুন। এ ধাপগুলি যা কোনও পরিচিতিকে "
 "এগিয়ে যেতে সহায়তা করার জন্য একটি নির্দিষ্ট ক্রমে ঘটে।"
 
-#: dt-contacts/access-module.php:138
+#: dt-contacts/access-module.php:139
 msgid "Contact Attempt Needed"
 msgstr "যোগাযোগ করা প্রয়োজন"
 
-#: dt-contacts/access-module.php:142
+#: dt-contacts/access-module.php:143
 msgid "Contact Attempted"
 msgstr "যোগাযোগ করা হয়েছে"
 
-#: dt-contacts/access-module.php:146 dt-contacts/dmm-module.php:232
+#: dt-contacts/access-module.php:147 dt-contacts/dmm-module.php:232
 msgid "Contact Established"
 msgstr "যোগাযোগ স্থাপন হয়েছে"
 
-#: dt-contacts/access-module.php:150
+#: dt-contacts/access-module.php:151
 msgid "First Meeting Scheduled"
 msgstr "প্রথম বৈঠকের সময়সূচী নির্ধারণ হয়েছে"
 
-#: dt-contacts/access-module.php:154
+#: dt-contacts/access-module.php:155
 msgid "First Meeting Complete"
 msgstr "প্রথম বৈঠক সম্পন্ন"
 
-#: dt-contacts/access-module.php:158 dt-metrics/counter.php:140
+#: dt-contacts/access-module.php:159 dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
 msgstr "বৈঠক চলমান"
 
-#: dt-contacts/access-module.php:162
+#: dt-contacts/access-module.php:163
 msgid "Being Coached"
 msgstr "শিক্ষা দেওয়া হচ্ছে"
 
-#: dt-contacts/access-module.php:174 dt-contacts/base-setup.php:299
+#: dt-contacts/access-module.php:175 dt-contacts/base-setup.php:299
 msgid "Contact Status"
 msgstr "পরিচিতির অবস্থা"
 
-#: dt-contacts/access-module.php:179
+#: dt-contacts/access-module.php:180
 msgid "New Contact"
 msgstr "নতুন পরিচিতি"
 
-#: dt-contacts/access-module.php:180
+#: dt-contacts/access-module.php:181
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "পরিচিতিটি সিস্টেমে নতুন"
 
-#: dt-contacts/access-module.php:184
+#: dt-contacts/access-module.php:185
 msgid "Not Ready"
 msgstr "প্রস্তুত নয়"
 
-#: dt-contacts/access-module.php:185
+#: dt-contacts/access-module.php:186
 msgctxt "Contact Status field description"
 msgid ""
 "There is not enough information to move forward with the contact at this "
@@ -1712,73 +1717,73 @@ msgstr ""
 "এই মুহূর্তে পরিচিতির সাথে এগিয়ে যাওয়ার মতো \n"
 " যথেষ্ট তথ্য নেই।"
 
-#: dt-contacts/access-module.php:189
+#: dt-contacts/access-module.php:190
 msgid "Dispatch Needed"
 msgstr "প্রেরণ করা প্রয়োজন"
 
-#: dt-contacts/access-module.php:190
+#: dt-contacts/access-module.php:191
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "এই পরিচিতিটি একটি বৃদ্ধিদাতার নিকট নিযুক্ত করা প্রয়োজন।"
 
-#: dt-contacts/access-module.php:194
+#: dt-contacts/access-module.php:195
 msgid "Waiting to be accepted"
 msgstr "গৃহীত হওয়ার অপেক্ষায়"
 
-#: dt-contacts/access-module.php:195
+#: dt-contacts/access-module.php:196
 msgctxt "Contact Status field description"
 msgid ""
 "The contact has been assigned to someone, but has not yet been accepted by "
 "that person."
 msgstr "পরিচিতিকে কারও কাছে নিযুক্ত করা হয়েছে, কিন্তু তাকে এখনো গ্রহন করা হয়নি। "
 
-#: dt-contacts/access-module.php:200
+#: dt-contacts/access-module.php:201
 msgid "Paused"
 msgstr "বিরতি"
 
-#: dt-contacts/access-module.php:201
+#: dt-contacts/access-module.php:202
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "এই পরিছিতি বর্তমানে আটকে আছে (অর্থাৎ ছুটিতে অথবা সাড়া দিচ্ছে না)"
 
-#: dt-contacts/access-module.php:216
+#: dt-contacts/access-module.php:217
 msgid "Reason Not Ready"
 msgstr "উদ্দেশ্য অপ্রস্তুত"
 
-#: dt-contacts/access-module.php:217
+#: dt-contacts/access-module.php:218
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "পরিচিতিকে কোনও ইউজারের কাছে নিযুক্ত করতে প্রস্তুত না হওয়ার মূল কারণ।"
 
-#: dt-contacts/access-module.php:224
+#: dt-contacts/access-module.php:225
 msgid "Insufficient Contact Information"
 msgstr "অপর্যাপ্ত যোগাযোগ তথ্য"
 
-#: dt-contacts/access-module.php:227
+#: dt-contacts/access-module.php:228
 msgid "Unknown Location"
 msgstr "অবস্থান অপরিচিত"
 
-#: dt-contacts/access-module.php:230
+#: dt-contacts/access-module.php:231
 msgid "Only wants media"
 msgstr "শুধু মিডিয়া বিষয়ে আগ্রহী"
 
-#: dt-contacts/access-module.php:233
+#: dt-contacts/access-module.php:234
 msgid "Outside Area"
 msgstr "বাইরের এলাকা"
 
-#: dt-contacts/access-module.php:236
+#: dt-contacts/access-module.php:237
 msgid "Needs Review"
 msgstr "পর্যালোচনা প্রয়োজন"
 
-#: dt-contacts/access-module.php:239
+#: dt-contacts/access-module.php:240
 msgid "Waiting for Confirmation"
 msgstr "গৃহীত হওয়ার অপেক্ষায়"
 
-#: dt-contacts/access-module.php:247
+#: dt-contacts/access-module.php:248
 msgid "Reason Paused"
 msgstr "কারণ বিরতি দেওয়া হয়েছে"
 
-#: dt-contacts/access-module.php:248
+#: dt-contacts/access-module.php:249
 msgctxt "Optional Documentation"
 msgid ""
 "A paused contact is one you are not currently interacting with but expect to "
@@ -1787,131 +1792,131 @@ msgstr ""
 "একটি স্থবির পরিচিতি হ'ল যার সঙ্গে আপনি বর্তমানে আলাপচারিতার করছেন না তবে "
 "ভবিষ্যতে প্রত্যাশা করছেন।"
 
-#: dt-contacts/access-module.php:252
+#: dt-contacts/access-module.php:253
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "পরিচিতি ছুটিতে আছে"
 
-#: dt-contacts/access-module.php:253
+#: dt-contacts/access-module.php:254
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "পরিচিতি সাড়া দিচ্ছে না"
 
-#: dt-contacts/access-module.php:254
+#: dt-contacts/access-module.php:255
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "পরিচিতি কে পাওয়া যাচ্ছে না"
 
-#: dt-contacts/access-module.php:255
+#: dt-contacts/access-module.php:256
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "পরিচিতির সামান্য আগ্রহ আছে/ক্ষুধার্ত"
 
-#: dt-contacts/access-module.php:256
+#: dt-contacts/access-module.php:257
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "পরিচিতির কোনো উদ্যোগ নেই"
 
-#: dt-contacts/access-module.php:257
+#: dt-contacts/access-module.php:258
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "পরিচিতির উদ্দেশ্য প্রশ্নবিদ্ধ"
 
-#: dt-contacts/access-module.php:258
+#: dt-contacts/access-module.php:259
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "এটা তার দায়িত্ব"
 
-#: dt-contacts/access-module.php:259
+#: dt-contacts/access-module.php:260
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "দেখতে চান কিনা/কীভাবে তারা স্বয়ংক্রিয় পাঠ্য বার্তাগুলিতে সাড়া দেয়"
 
-#: dt-contacts/access-module.php:266
+#: dt-contacts/access-module.php:267
 msgid "Reason Archived"
 msgstr "কারণ সংরক্ষণাগারভুক্ত"
 
-#: dt-contacts/access-module.php:267
+#: dt-contacts/access-module.php:268
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr ""
 "একটি বদ্ধ পরিচিটি হ'ল এমন যার সঙ্গে আপনি আলোচনা করতে পারেন না বা করতে চান না। "
 
-#: dt-contacts/access-module.php:271
+#: dt-contacts/access-module.php:272
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "আনুলিপি"
 
-#: dt-contacts/access-module.php:272
+#: dt-contacts/access-module.php:273
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "পরিচিতির তথ্য অপর্যাপ্ত"
 
-#: dt-contacts/access-module.php:273
+#: dt-contacts/access-module.php:274
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "যোগাযোগের অনুরোধ জমা দেওয়ার বিষয়টি অস্বীকার করে"
 
-#: dt-contacts/access-module.php:274
+#: dt-contacts/access-module.php:275
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "বিরোধী, খেলছে অথবা আত্ম বিজয়ী"
 
-#: dt-contacts/access-module.php:275
+#: dt-contacts/access-module.php:276
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "শুধুমাত্র যুক্তি তর্ক বা বিতর্ক করতে চায়"
 
-#: dt-contacts/access-module.php:276
+#: dt-contacts/access-module.php:277
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "শুধু মিডিয়া বা বই চেয়েছিলেন"
 
-#: dt-contacts/access-module.php:277
+#: dt-contacts/access-module.php:278
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "আর আগ্রহী নন"
 
-#: dt-contacts/access-module.php:278
+#: dt-contacts/access-module.php:279
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "আর সাড়া দিচ্ছে না"
 
-#: dt-contacts/access-module.php:279
+#: dt-contacts/access-module.php:280
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "ইতিমধ্যে চার্চে অথবা অন্যদের সাথে সংযুক্ত"
 
-#: dt-contacts/access-module.php:280
+#: dt-contacts/access-module.php:281
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "অংশীদাররের কাছে পরিচিতি স্থানান্তরিত হয়েছে"
 
-#: dt-contacts/access-module.php:281
+#: dt-contacts/access-module.php:282
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "শহীদ হয়েছেন"
 
-#: dt-contacts/access-module.php:282
+#: dt-contacts/access-module.php:283
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "সরানো বা স্থানান্তরিত"
 
-#: dt-contacts/access-module.php:283
+#: dt-contacts/access-module.php:284
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "জিডিপিআর অনুরোধ"
 
-#: dt-contacts/access-module.php:284
+#: dt-contacts/access-module.php:285
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "অপরিচিত"
 
-#: dt-contacts/access-module.php:291
+#: dt-contacts/access-module.php:292
 msgid "Accepted"
 msgstr "গৃহীত"
 
-#: dt-contacts/access-module.php:299 dt-contacts/base-setup.php:528
+#: dt-contacts/access-module.php:300 dt-contacts/base-setup.php:528
 #: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -1920,150 +1925,150 @@ msgstr "গৃহীত"
 msgid "Personal"
 msgstr "ব্যক্তিগত"
 
-#: dt-contacts/access-module.php:303
+#: dt-contacts/access-module.php:304
 #: dt-core/configuration/config-site-defaults.php:344
 msgid "Web"
 msgstr "ওয়েব"
 
-#: dt-contacts/access-module.php:307 dt-contacts/base-setup.php:230
+#: dt-contacts/access-module.php:308 dt-contacts/base-setup.php:230
 msgid "Facebook"
 msgstr "ফেইসবুক"
 
-#: dt-contacts/access-module.php:311 dt-contacts/base-setup.php:238
+#: dt-contacts/access-module.php:312 dt-contacts/base-setup.php:238
 msgid "Twitter"
 msgstr "টুইটার"
 
-#: dt-contacts/access-module.php:315
+#: dt-contacts/access-module.php:316
 msgid "Transfer"
 msgstr "স্থানান্তর"
 
-#: dt-contacts/access-module.php:317
+#: dt-contacts/access-module.php:318
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "অন্য শিষ্য.টুলস সাইটের সাথে অংশীদারি থেকে পরিচিতি স্থানান্তরিত।"
 
-#: dt-contacts/access-module.php:330 dt-metrics/contacts/sources.php:90
+#: dt-contacts/access-module.php:331 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "উৎসসমূহ"
 
-#: dt-contacts/access-module.php:331
+#: dt-contacts/access-module.php:332
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "এই পরিচিতিটি ওয়েবসাইট, ইভেন্ট বা অবস্থান থেকে এসেছে।"
 
-#: dt-contacts/access-module.php:343
+#: dt-contacts/access-module.php:344
 msgid "Campaigns"
 msgstr "ক্যাম্পেইন"
 
-#: dt-contacts/access-module.php:344
+#: dt-contacts/access-module.php:345
 msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr "বিপণন প্রচারনা বা অ্যাক্সেস ক্রিয়াকলাপগুলির সাথে এই পরিচিতি যোগাযোগ করে।"
 
-#: dt-contacts/access-module.php:411 dt-metrics/combined/critical-path.php:77
+#: dt-contacts/access-module.php:412 dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "অনুসরণ করুন"
 
-#: dt-contacts/access-module.php:491 dt-contacts/access-module.php:522
-#: dt-contacts/access-module.php:553 dt-contacts/base-setup.php:394
+#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
+#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:394
 msgid "Choose an option:"
 msgstr "একটি বিকল্প নির্বাচন করুন:"
 
-#: dt-contacts/access-module.php:513 dt-contacts/access-module.php:544
-#: dt-contacts/access-module.php:572 dt-contacts/base-setup.php:418
+#: dt-contacts/access-module.php:521 dt-contacts/access-module.php:552
+#: dt-contacts/access-module.php:580 dt-contacts/base-setup.php:418
 msgid "Confirm"
 msgstr "নিশ্চিত করুন"
 
-#: dt-contacts/access-module.php:616
+#: dt-contacts/access-module.php:624
 msgid "Multipliers"
 msgstr "প্রসারক"
 
-#: dt-contacts/access-module.php:619
+#: dt-contacts/access-module.php:627
 msgid "Dispatchers"
 msgstr "প্রেরক"
 
-#: dt-contacts/access-module.php:622
+#: dt-contacts/access-module.php:630
 msgid "Digital Responders"
 msgstr "ডিজিটাল উত্তরদাতা"
 
-#: dt-contacts/access-module.php:629
+#: dt-contacts/access-module.php:637
 msgid "Assign To"
 msgstr "ধার্য"
 
-#: dt-contacts/access-module.php:681
+#: dt-contacts/access-module.php:689
 msgid "This contact has been assigned to you."
 msgstr "এই পরিচিতি আপনার জন্য বরাদ্দ করা হয়েছে."
 
-#: dt-contacts/access-module.php:682
+#: dt-contacts/access-module.php:690
 msgid "Accept"
 msgstr "গ্রহণ করুন"
 
-#: dt-contacts/access-module.php:683
+#: dt-contacts/access-module.php:691
 msgid "Decline"
 msgstr "প্রত্যাখ্যান করুন"
 
-#: dt-contacts/access-module.php:921 dt-contacts/access-module.php:931
+#: dt-contacts/access-module.php:929 dt-contacts/access-module.php:939
 msgid "My Follow-Up"
 msgstr "আমার ফলোআপ"
 
-#: dt-contacts/access-module.php:932 dt-contacts/access-module.php:953
-#: dt-contacts/access-module.php:976 dt-contacts/access-module.php:1001
+#: dt-contacts/access-module.php:940 dt-contacts/access-module.php:961
+#: dt-contacts/access-module.php:984 dt-contacts/access-module.php:1009
 #: dt-groups/base-setup.php:986
 msgid "Assigned to me"
 msgstr "আমাকে অর্পণ"
 
-#: dt-contacts/access-module.php:933 dt-contacts/access-module.php:954
-#: dt-contacts/access-module.php:977 dt-contacts/access-module.php:1002
+#: dt-contacts/access-module.php:941 dt-contacts/access-module.php:962
+#: dt-contacts/access-module.php:985 dt-contacts/access-module.php:1010
 msgid "Sub-assigned to me"
 msgstr "আমার কাছে সাব-এসাইনড"
 
-#: dt-contacts/access-module.php:1041
+#: dt-contacts/access-module.php:1049
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "%s অনুসরণ করুন"
 
-#: dt-contacts/access-module.php:1049
+#: dt-contacts/access-module.php:1057
 msgid "All Follow-Up"
 msgstr "সমস্ত ফলো-আপ"
 
-#: dt-contacts/access-module.php:1151 dt-contacts/access-module.php:1152
+#: dt-contacts/access-module.php:1159 dt-contacts/access-module.php:1160
 msgid "Subassigned only"
 msgstr "শুধুমাত্র অধি নিযুক্তি দেওয়া হয়েছিল"
 
-#: dt-contacts/access-module.php:1308
+#: dt-contacts/access-module.php:1316
 msgid "Ready"
 msgstr "প্রস্তুত"
 
-#: dt-contacts/access-module.php:1309
+#: dt-contacts/access-module.php:1317
 msgid "Recent"
 msgstr "সাম্প্রতিক"
 
-#: dt-contacts/access-module.php:1310
+#: dt-contacts/access-module.php:1318
 msgid "Location"
 msgstr "অবস্থান"
 
-#: dt-contacts/access-module.php:1311
+#: dt-contacts/access-module.php:1319
 msgid "Assign"
 msgstr "বরাদ্দ করুন"
 
-#: dt-contacts/access-module.php:1312 dt-users/template-new-user.php:134
+#: dt-contacts/access-module.php:1320 dt-users/template-new-user.php:134
 #: template-settings.php:216
 msgid "Language"
 msgstr "ভাষা"
 
-#: dt-contacts/access-module.php:1313 dt-contacts/base-setup.php:267
+#: dt-contacts/access-module.php:1321 dt-contacts/base-setup.php:267
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:223
 #: template-settings.php:654
 msgid "Gender"
 msgstr "লিঙ্গ"
 
-#: dt-contacts/access-module.php:1486
+#: dt-contacts/access-module.php:1494
 msgid "This record might be a duplicate of: "
 msgstr "এই রেকর্ডটি এর সদৃশ হতে পারে: "
 
-#: dt-contacts/access-module.php:1492 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/access-module.php:1500 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "সদৃশ পরীক্ষক"
@@ -2910,11 +2915,11 @@ msgstr "আপনার পাসওয়ার্ড পুনরায় স
 msgid "This is required"
 msgstr "এটি চাওয়া হয়েছে"
 
-#: dt-core/global-functions.php:727
+#: dt-core/global-functions.php:728
 msgid "Add new tag \"%s\""
 msgstr "্নতুন ট্যাগ \"%s\" যোগ করুন"
 
-#: dt-core/global-functions.php:728
+#: dt-core/global-functions.php:729
 msgid "Tag \"%s\" is already being used"
 msgstr "্ট্যাগ \"%s\" ইতোমধ্যেই ব্যবহার করা হচ্ছে"
 
@@ -4540,33 +4545,33 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1645
+#: dt-posts/dt-posts.php:1698
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "ম্যাজিক লিঙ্ক জমা"
 
-#: dt-posts/dt-posts.php:1645
+#: dt-posts/dt-posts.php:1698
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "ম্যাজিক লিঙ্ক জমা"
 
-#: dt-posts/dt-posts.php:1647 dt-posts/dt-posts.php:2194
+#: dt-posts/dt-posts.php:1700 dt-posts/dt-posts.php:2247
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "পূর্বের কর্মকাণ্ডে ফিরুন"
 
-#: dt-posts/dt-posts.php:2434
+#: dt-posts/dt-posts.php:2487
 msgid "Post already shared with user."
 msgstr "পোস্টটি ইতিমধ্যে ব্যবহারকারীর সাথে শেয়ার করা হয়েছে।"
 
-#: dt-posts/dt-posts.php:2714 single-template.php:174
+#: dt-posts/dt-posts.php:2767 single-template.php:174
 msgid "Details"
 msgstr "বিশদ"
 
-#: dt-posts/dt-posts.php:2783
+#: dt-posts/dt-posts.php:2836
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4578,7 +4583,7 @@ msgstr ""
 "@[%1$s](%2$s) - ইউজার %3$s %4$s [%5$s](%6$s) এর অ্যাক্সেস পাওয়ার অনুরোধ করেছেন। "
 "যদি চান, তাহলে অ্যাক্সেস দেয়ার জন্য ইউজারটির সাথে এই রেকর্ডটি শেয়ার করুন।"
 
-#: dt-posts/dt-posts.php:2789
+#: dt-posts/dt-posts.php:2842
 msgid "Access Request"
 msgstr "অ্যাক্সেসের অনুরোধ"
 
@@ -5850,6 +5855,11 @@ msgstr "স্ক্যানকৃত অ্যাক্সেস কনট্�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "প্রাপ্ত ডুপ্লিকেটসমূহ:"
+
+#, fuzzy
+#~| msgid "List"
+#~ msgid "Map List Filter"
+#~ msgstr "তালিকা"
 
 #~ msgctxt "Number of emails sent. i.e. 20 sent!"
 #~ msgid "sent"
