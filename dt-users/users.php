@@ -1021,7 +1021,12 @@ class Disciple_Tools_Users
 
             // If successful, persist uploaded object file key.
             if ( !empty( $uploaded ) ) {
-                update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded );
+                if ( !empty( $uploaded['uploaded_key'] ) ) {
+                    update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded['uploaded_key'] );
+                }
+                if ( !empty( $uploaded['uploaded_thumbnail_key'] ) ) {
+                    update_user_meta( $current_user->ID, 'dt_user_profile_picture_thumbnail', $uploaded['uploaded_thumbnail_key'] );
+                }
             }
         }
 
