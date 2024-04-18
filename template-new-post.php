@@ -133,7 +133,7 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
                             <div <?php echo esc_html( !$show_field ? 'style=display:none' : '' ); ?>
                                 class="form-field <?php echo esc_html( $classes ); ?>">
                                 <?php
-                                render_field_for_display( $field_key, $post_settings['fields'], [] );
+                                render_field_for_display( $field_key, $post_settings['fields'], ['post_type' => $dt_post_type ] );
                                 if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
                                     <p class="help-text" id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
                                 <?php } ?>
@@ -151,7 +151,7 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
 
                         <div style="text-align: center">
                             <a href="<?php echo esc_html( get_site_url() . '/' . $dt_post_type )?>" class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' )?></a>
-                            <button class="button loader js-create-post-button dt-green" type="submit" disabled><?php esc_html_e( 'Save and continue editing', 'disciple_tools' ); ?></button>
+                            <button class="button loader js-create-post-button dt-green ashima" type="submit" disabled><?php esc_html_e( 'Save and continue editing', 'disciple_tools' ); ?></button>
                         </div>
                         <div class="error-text"></div>
                     </div>

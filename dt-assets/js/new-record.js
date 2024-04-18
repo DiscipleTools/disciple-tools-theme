@@ -91,21 +91,23 @@ jQuery(function($) {
   })
 
   /* breadcrumb: new-field-type Add the new link type data to the new_post array */
-  $(".js-create-post").on("submit", function() {
+  $(".js-create-post").on("submit", function(e) {
     $(".js-create-post-button")
     .attr("disabled", true)
     .addClass("loading");
-    new_post.title = $(".js-create-post input[name=title]").val()
-    $('.select-field').each((index, entry)=>{
+    e.preventDefault();
+    new_post.title = $(".js-create-post [name= name]").val()
+
+    $('dt-single-select').each((entry) => {
+      new_post[$(entry).attr('id')] = $(entry).attr('value')
+    })
+
+    $('dt-text').each((entry)=>{
       if ( $(entry).val() ){
         new_post[$(entry).attr('id')] = $(entry).val()
       }
     })
-    $('.text-input').each((index, entry)=>{
-      if ( $(entry).val() ){
-        new_post[$(entry).attr('id')] = $(entry).val()
-      }
-    })
+
     $('.link-input').each((index, entry) => {
       let fieldKey = $(entry).data('field-key')
       let type = $(entry).data('type')
@@ -119,23 +121,28 @@ jQuery(function($) {
         } )
       }
     })
+
     $('.dt_textarea').each((index, entry)=>{
       if ( $(entry).val() ){
         new_post[$(entry).attr('id')] = $(entry).val()
       }
     });
-    $('.dt-communication-channel').each((index, entry)=>{
-      let val = $(entry).val()
-      if ( val.length > 0 ){
-        let channel = $(entry).data('field')
-        if ( !new_post[channel]){
-          new_post[channel] =[]
-        }
-        new_post[channel].push({
-          value: $(entry).val()
-        })
+
+    $('dt-comm-channel').each((index, entry)=>{
+      let channel = $(entry).attr('id');
+      console.log('id', channel)
+      const commChannelComponentValue = JSON.parse($(entry).attr('value'))
+      if (typeof new_post[channel] === 'undefined') {
+        new_post[channel] = [];
       }
+      console.log('value---',typeof(commChannelComponentValue))
+      commChannelComponentValue.map(currentItem => {
+        console.log('currentItem', currentItem.value)
+        new_post[channel].push({value: currentItem.value});
+      })
+      console.log('new_post', new_post)
     })
+
     $('.selected-select-button').each((index, entry)=>{
       let optionKey = $(entry).attr('id')
       let fieldKey = $(entry).data("field-key")
@@ -1103,6 +1110,7 @@ jQuery(function($) {
     });
 
     $(record).find('.multi_select .typeahead__query input').each((index, entry) => {
+      console.log('here-----multi-select')
       if ($(entry).is(':visible')) {
         fields.push($(entry).data('field'));
       }

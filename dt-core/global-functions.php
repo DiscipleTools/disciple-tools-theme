@@ -638,72 +638,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                   ' . esc_html( $disabled ) . '
                   ' . ( $is_private ? 'private privateLabel=' . esc_attr( _x( "Private Field: Only I can see it\'s content", 'disciple_tools' ) ) : null ) . '
             ';
-            $supported_web_components = [ 'text', 'key_select', 'date', 'tags', 'connection', 'multi_select' ];
+            $supported_web_components = [ 'text', 'key_select', 'date', 'tags', 'connection', 'multi_select'];
 
             ?>
-            <?php if ( !in_array( $field_type, $supported_web_components ) ): ?>
-            <div class="section-subheader">
-                <?php dt_render_field_icon( $fields[$field_key] );
 
-                echo esc_html( $fields[$field_key]['name'] );
-                ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-                <?php if ( $is_private ) : ?>
-                    <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
-                <?php endif;
-                if ( $field_type === 'communication_channel' ) : ?>
-                    <button data-field-type="<?php echo esc_html( $field_type ) ?>" data-list-class="<?php echo esc_html( $display_field_id ); ?>" class="add-button" type="button" <?php echo esc_html( $disabled ); ?>>
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                    </button>
-                <?php endif ?>
-                <?php if ( $field_type === 'link' ) : ?>
-
-                    <?php $only_one_option = count( $fields[$field_key]['default'] ) === 1 ? esc_attr( array_keys( $fields[$field_key]['default'] )[0] ) : '' ?>
-
-                    <div class="add-link-dropdown"
-                        <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
-                        data-link-type="<?php echo esc_attr( $only_one_option ) ?>"
-                        data-field-key="<?php echo esc_attr( $field_key ) ?>">
-                        <button
-                            class="add-button add-link-dropdown__button"
-                            type="button"
-                            data-field-type="<?php echo esc_html( $field_type ) ?>"
-                            data-list-class="<?php echo esc_html( $display_field_id ); ?>"
-                            <?php echo esc_html( $disabled ); ?>
-                        >
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                        </button>
-
-                        <div class="add-link-dropdown__content add-link-<?php echo esc_attr( $display_field_id ) ?>"
-                            style="<?php echo count( $fields[$field_key]['default'] ) < 2 ? 'display: none' : '' ?>">
-                            <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
-
-                                <?php if ( isset( $option_value['deleted'] ) && $option_value['deleted'] === true ) {
-                                    continue;
-                                } ?>
-
-                                <div
-                                    class="add-link__option"
-                                    <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
-                                    data-link-type="<?php echo esc_attr( $option_key ) ?>"
-                                    data-field-key="<?php echo esc_attr( $field_key ) ?>"
-                                >
-                                    <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
-                                    <?php echo esc_html( $option_value['label'] ) ?>
-                                </div>
-
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-
-                <?php endif; ?>
-                <!-- location add -->
-                <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
-                    <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                    </button>
-                <?php endif ?>
-            </div>
+          <?php if ( !in_array( $field_type, $supported_web_components ) ): ?>
+                <dt-comm-channel
+                    <?php echo wp_kses_post( $shared_attributes ) ?>
+                    requiredmessage="" icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" iconalttext="Icon Alt Text" privatelabel="" error="" onchange=""
+                    >
+                 </dt-comm-channel>
             <?php endif; ?>
+
 
             <?php
             if ( $field_type === 'boolean' ) {
@@ -950,12 +896,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     <?php endforeach;
                     if ( empty( $post[$field_key] ) ?? [] ): ?>
-                        <div class="input-group">
-                            <input type="text"
-                                    <?php echo esc_html( $required_tag ) ?>
-                                   data-field="<?php echo esc_html( $field_key ) ?>"
-                                   class="dt-communication-channel input-group-field" dir="auto" <?php echo esc_html( $disabled ); ?>/>
-                        </div>
+
                     <?php endif ?>
                 </div>
             <?php elseif ( $field_type === 'user_select' ) : ?>
