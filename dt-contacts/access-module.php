@@ -1547,7 +1547,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $u = [
                     'name' => wp_specialchars_decode( $user['display_name'] ),
                     'ID' => $user['ID'],
-                    'avatar' => get_avatar_url( $user['ID'], [ 'size' => '16' ] ),
+                    'avatar' => get_avatar_url( $user['ID'], [ 'size' => '16', 'scheme' => 'https' ] ),
                     'last_assignment' => $last_assignments[$user['ID']] ?? null,
                     'roles' => array_keys( $roles ),
                     'location' => null,

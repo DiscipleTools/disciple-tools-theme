@@ -334,7 +334,7 @@ class Disciple_Tools_Users
                 $u = [
                     'name' => wp_specialchars_decode( $user->display_name ),
                     'ID'   => $user->ID,
-                    'avatar' => get_avatar_url( $user->ID, [ 'size' => '16' ] ),
+                    'avatar' => get_avatar_url( $user->ID, [ 'size' => '16', 'scheme' => 'https' ] ),
                     'contact_id' => self::get_contact_for_user( $user->ID )
                 ];
                 //extra information for the dispatcher
@@ -1012,6 +1012,21 @@ class Disciple_Tools_Users
         $args = [];
         $args['ID'] = $current_user->ID;
 
+        // If specified, directly upload profile pic to registered 3rd-party media object store.
+        if ( isset( $_FILES['user_profile_pic'] ) && !empty( $_FILES['user_profile_pic']['tmp_name'] ) ) {
+
+            // To avoid a build up of stale object keys, relating to the same user, reuse existing keys.
+            $profile_pic_key = get_user_meta( $current_user->ID, 'dt_user_profile_picture', true );
+            $uploaded = DT_Storage::upload_file( 'users', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), $profile_pic_key );
+
+            // If successful, persist uploaded object file key.
+            if ( !empty( $uploaded ) ) {
+                if ( !empty( $uploaded['uploaded_key'] ) ) {
+                    update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded['uploaded_key'] );
+                }
+            }
+        }
+
         // build user name variables
         if ( isset( $_POST['first_name'] ) ) {
             $args['first_name'] = sanitize_text_field( wp_unslash( $_POST['first_name'] ) );
@@ -1078,7 +1093,6 @@ class Disciple_Tools_Users
 
         return wp_redirect( get_site_url() .'/settings' );
     }
-
 
     public function get_date_availability_hook( $settings ){
         $dates_unavailable = get_user_option( 'user_dates_unavailable', get_current_user_id() );

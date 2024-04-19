@@ -1531,7 +1531,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( $comment->comment_author_url ){
                 $url = str_replace( '&amp;', '&', $comment->comment_author_url );
             } else {
-                $url = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+                $url = get_avatar_url( $comment->user_id, [ 'size' => '16', 'scheme' => 'https' ] );
             }
             $c = [
                 'comment_ID' => $comment->comment_ID,
@@ -1687,7 +1687,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $user = get_user_by( 'id', $a->user_id );
                     if ( $user ){
                         $a->name = $user->display_name;
-                        $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                        $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16', 'scheme' => 'https' ] );
                     }
                 } else if ( isset( $a->user_caps ) && strlen( $a->user_caps ) === 32 ){
                     //get site-link name
@@ -1803,7 +1803,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $user = get_user_by( 'id', $activity->user_id );
                     if ( $user ) {
                         $activity->name     = sanitize_text_field( $user->display_name );
-                        $activity->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                        $activity->gravatar = get_avatar_url( $user->ID, [ 'size' => '16', 'scheme' => 'https' ] );
                     }
                 }
             }

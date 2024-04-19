@@ -124,7 +124,17 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                             <div class="small-12 medium-4 cell">
 
-                                <p><?php echo get_avatar( $dt_user->ID, '150' ); ?></p>
+                                <p>
+                                    <?php
+                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ) {
+                                        $picture_url = DT_Storage::get_file_url( $dt_user_meta['dt_user_profile_picture'][0] ); ?>
+                                        <img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="150px" height="150px" />
+                                        <?php
+                                    } else {
+                                        echo get_avatar( $dt_user->ID, '150', null, false, array( 'scheme' => 'https' ) );
+                                    }
+                                    ?>
+                                </p>
 
                                 <p>
                                     <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
@@ -568,19 +578,41 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                     <div class="row column medium-12">
 
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
 
                             <?php wp_nonce_field( 'user_' . $dt_user->ID . '_update', 'user_update_nonce', false, true ); ?>
 
                             <table class="table">
-
                                 <tr>
-                                    <td><?php echo get_avatar( $dt_user->ID, '32' ); ?></td>
                                     <td>
-                                        <span data-tooltip data-click-open="true" class="top" tabindex="1"
-                                              title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
-                                            <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'disciple_tools' ) ?> <i class="fi-link"></i></a>
-                                        </span>
+                                        <?php
+                                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ){
+                                            $picture_url = DT_Storage::get_thumbnail_url( $dt_user_meta['dt_user_profile_picture'][0] );
+                                            ?><img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="100px"/><?php
+                                        } else {
+                                            echo get_avatar( $dt_user->ID, '32', null, false, array( 'scheme' => 'https' ) );
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if ( !apply_filters( 'dt_storage_connections_enabled', false, dt_get_option( 'dt_storage_connection_id' ) ) ) {
+                                            ?>
+                                            <span data-tooltip data-click-open="true" class="top" tabindex="1"
+                                                      title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
+                                                <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'disciple_tools' ) ?> <i class="fi-link"></i></a>
+                                            </span>
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <span data-tooltip data-click-open="true" class="top" tabindex="1"
+                                                  title="<?php esc_html_e( 'Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
+                                                <br><?php esc_html_e( 'upload new profile image', 'disciple_tools' ) ?><br>
+                                                <input id="user_profile_pic" name="user_profile_pic" type="file" accept=".gif,.jpg,.jpeg,.png" />
+                                            </span>
+                                            <?php
+                                        }
+                                        ?>
                                     </td>
                                 </tr>
                                 <tr>
