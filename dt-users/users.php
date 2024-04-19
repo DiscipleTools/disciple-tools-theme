@@ -1024,9 +1024,6 @@ class Disciple_Tools_Users
                 if ( !empty( $uploaded['uploaded_key'] ) ) {
                     update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded['uploaded_key'] );
                 }
-                if ( !empty( $uploaded['uploaded_thumbnail_key'] ) ) {
-                    update_user_meta( $current_user->ID, 'dt_user_profile_picture_thumbnail', $uploaded['uploaded_thumbnail_key'] );
-                }
             }
         }
 

@@ -586,8 +586,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <tr>
                                     <td>
                                         <?php
-                                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture_thumbnail'][0] ) ){
-                                            $picture_url = DT_Storage::get_file_url( $dt_user_meta['dt_user_profile_picture_thumbnail'][0] );
+                                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ){
+                                            $picture_url = DT_Storage::get_thumbnail_url( $dt_user_meta['dt_user_profile_picture'][0] );
                                             ?><img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="32px"
                                                    height="32px" /><?php
                                         } else {
