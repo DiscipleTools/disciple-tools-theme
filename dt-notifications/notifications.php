@@ -905,7 +905,7 @@ class Disciple_Tools_Notifications
         if ( $html ){
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
         } else {
-            $link = home_url( '/' ) . get_post_type( $object_id );
+            $link = home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
         }
         if ( $notification['notification_name'] === 'created' ) {
             $notification_note = sprintf( esc_html_x( '%s was created and assigned to you.', '%s was created and assigned to you.', 'disciple_tools' ), $link );
