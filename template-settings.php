@@ -477,6 +477,21 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
 
+                        <p>
+                            <strong><?php esc_html_e( 'Notification Endpoints', 'disciple_tools' ) ?></strong>
+                        </p>
+                        <div>
+                            <ul>
+                                <li><?php echo esc_html( sprintf( _x( 'Email will be sent to: %s', 'Email will be sent to: [email]', 'disciple_tools' ), $dt_user->user_email ?? esc_html( '[email]', 'disciple_tools' ) ) ); ?></li>
+                            </ul>
+                            <ul>
+                                <li><?php echo esc_html( sprintf( _x( 'SMS notifications will be sent to: %s', 'SMS notifications will be sent to: [work number]', 'disciple_tools' ), ( isset( $dt_user_meta['dt_user_work_phone'][0] ) && !empty( trim( $dt_user_meta['dt_user_work_phone'][0] ) ) ? $dt_user_meta['dt_user_work_phone'][0] : esc_html( '[work number]', 'disciple_tools' ) ) ) ); ?></li>
+                            </ul>
+                            <ul>
+                                <li><?php echo esc_html( sprintf( _x( 'Whatsapp notifications will be sent to: %s', 'Whatsapp notifications will be sent to: [whatsapp number]', 'disciple_tools' ), ( isset( $dt_user_meta['dt_user_work_whatsapp'][0] ) && !empty( trim( $dt_user_meta['dt_user_work_whatsapp'][0] ) ) ? $dt_user_meta['dt_user_work_whatsapp'][0] : esc_html( '[whatsapp number]', 'disciple_tools' ) ) ) ); ?></li>
+                            </ul>
+                        </div>
+
                         <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
                         <p>
                             <strong><?php esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
