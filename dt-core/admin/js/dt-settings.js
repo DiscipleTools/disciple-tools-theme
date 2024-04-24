@@ -1222,6 +1222,20 @@ jQuery(document).ready(function ($) {
     $(this).parent().remove();
   });
 
+  // Determine if post-type already contains field type.
+  function hasFieldType(fields, field_type) {
+    let has_field_type = false;
+    if (fields && field_type) {
+      for (const [key, value] of Object.entries(fields)) {
+        if (value?.type === field_type) {
+          has_field_type = true;
+        }
+      }
+    }
+
+    return has_field_type;
+  }
+
   // Add Field Modal
   function loadAddFieldContentBox(tile_key) {
     let post_type = get_post_type();
@@ -1280,6 +1294,7 @@ jQuery(document).ready(function ($) {
                     <option value="datetime">Date Time</option>
                     <option value="connection">Connection</option>
                     <option value="user_select">User Select</option>
+                    ${all_settings?.post_type_settings?.is_custom && !hasFieldType(all_settings?.post_type_settings?.fields, 'location') ? '<option value="location">Location</option>' : ''}
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}
