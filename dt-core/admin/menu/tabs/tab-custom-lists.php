@@ -624,6 +624,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         });
         $form_name = 'languages_box';
         ?>
+        <?php print_r( $form_name ); ?>
         <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="languages">
             <input type="hidden" name="languages_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'languages_box' ) ) ?>" />
             <table class="widefat">
@@ -671,6 +672,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <div class="translation_container hide">
                                 <table>
                                     <?php foreach ( $langs as $lang => $val ) : ?>
+                                        
                                         <tr>
                                             <td><label for="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
                                             <td><input name="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $language_option['translations'][$val['language']] ?? '' );?>"/></td>
@@ -720,7 +722,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
         $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
-
+//this section
         $langs = dt_get_available_languages();
         foreach ( $languages as $language_key => $language_options ){
 
@@ -750,7 +752,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             $languages[$language_key]['deleted'] = !isset( $_POST['language_enabled'][$language_key] );
         }
-
+//to here
         if ( !empty( $_POST['new_lang_select'] ) ) {
             $lang_key = sanitize_text_field( wp_unslash( $_POST['new_lang_select'] ) );
             $lang = isset( $dt_global_languages_list[ $lang_key ] ) ? $dt_global_languages_list[ $lang_key ] : null;
@@ -759,6 +761,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             };
             $languages[$lang_key] = $dt_global_languages_list[ $lang_key ];
             $languages[$lang_key]['enabled'] = true;
+            echo 'testing';
         }
         if ( !empty( $_POST['create_custom_language'] ) ) {
             $language = sanitize_text_field( wp_unslash( $_POST['create_custom_language'] ) );
@@ -775,6 +778,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $languages[$lang_key]['iso_639-3'] = $code;
             }
         }
+
 
         update_option( 'dt_working_languages', $languages, false );
     }

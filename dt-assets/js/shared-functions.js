@@ -760,7 +760,6 @@ window.SHAREDFUNCTIONS = {
         /!\[(.*?)\]\((.*?)\)/g,
         "<img src='$2' alt='$1'>",
       );
-      console.log(comment, 'line 705 format comment');
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g;
       comment = comment.replace(mentionRegex, (match, text, id) => {
         /* dir=auto means that @ will be put to the left of the name if the
@@ -786,7 +785,7 @@ window.SHAREDFUNCTIONS = {
             url = 'http://' + match;
           }
           if (comment.includes('<img')) {
-            console.log('image');
+            //do nothing
           } else {
             return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`;
           }
@@ -794,7 +793,6 @@ window.SHAREDFUNCTIONS = {
         return match;
       });
       let linkRegex = /\[(.*?)\]\((.+?)\)/g; //format [text](link)
-      console.log(comment, 'line 733');
       comment = comment.replace(linkRegex, (match, text, url) => {
         if (text.includes('http') && !url.includes('http')) {
           [url, text] = [text, url];
