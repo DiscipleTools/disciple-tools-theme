@@ -1536,7 +1536,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             $c = [
                 'comment_ID' => $comment->comment_ID,
                 'comment_author' => !empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
-                'comment_author_email' => $comment->comment_author_email,
                 'comment_date' => $comment->comment_date,
                 'comment_date_gmt' => $comment->comment_date_gmt,
                 'gravatar' => preg_replace( '/^http:/i', 'https:', $url ),
