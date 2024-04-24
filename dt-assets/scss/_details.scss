@@ -177,9 +177,16 @@ DT comments and activity
     }
 
     .gravatar {
+        display: flex;
+        align-self: center;
         img {
             height: 16px;
         }
+    }
+    .activity-block .comment-header {
+        display: flex;
+        align-items: baseline;
+        grid-gap: 5px;
     }
 
     #add-comment-button {
@@ -390,7 +397,6 @@ DT comments and activity
     }
 
     .comment-date {
-        text-align: right;
         margin-right: 20px;
         font-size:12px;
     }
