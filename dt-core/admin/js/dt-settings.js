@@ -1280,7 +1280,7 @@ jQuery(document).ready(function ($) {
                     <option value="datetime">Date Time</option>
                     <option value="connection">Connection</option>
                     <option value="user_select">User Select</option>
-                    ${all_settings?.post_type_settings?.is_custom ? '<option value="location">Location</option>' : ''}
+                    <option value="location">Location</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}
