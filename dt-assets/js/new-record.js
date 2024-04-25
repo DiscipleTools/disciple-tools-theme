@@ -1,7 +1,18 @@
 jQuery(function($) {
+  if (window.WebComponentServices && window.WebComponentServices.ComponentService) {
+    console.log(window.new_record_localized,'okok')
+    const service = new window.WebComponentServices.ComponentService(
+      window.new_record_localized.post_type,
+      '',
+      // eslint-disable-next-line no-undef
+      wpApiShare.nonce);
+    service.initialize();
+    window.componentService = service;
+  }
   window.post_type_fields = window.new_record_localized.post_type_settings.fields
   let new_post = {}
   let temp_type = $('.type-options .selected').attr('id')
+  console.log('temp_type', temp_type);
   if ( temp_type ){
     new_post.type = temp_type;
   }
@@ -96,19 +107,45 @@ jQuery(function($) {
     .attr("disabled", true)
     .addClass("loading");
     e.preventDefault();
-    new_post.title = $(".js-create-post [name= name]").val()
+    new_post.title = $(".js-create-post [name=name]").val()
 
-    $('dt-single-select').each((entry) => {
-      new_post[$(entry).attr('id')] = $(entry).attr('value')
-    })
-
-    $('dt-text').each((entry)=>{
+    $('.text-input').each((index, entry)=>{
       if ( $(entry).val() ){
         new_post[$(entry).attr('id')] = $(entry).val()
       }
     })
 
-    $('.link-input').each((index, entry) => {
+    // $('dt-text').each((index, entry)=>{
+    //   if ( $(entry).val() ){
+    //     new_post[$(entry).attr('id')] = $(entry).attr('value')
+    //   }
+    // })
+
+    // $('dt-comm-channel').each((index, entry)=>{
+    //   let channel = $(entry).attr('id');
+    //   console.log('channel', channel)
+    //   console.log('typeof new_post[channel]', typeof(commChannelComponentValue))
+    //   if (typeof new_post[channel] === 'undefined') {
+    //     new_post[channel] = [];
+    //   }
+    // console.log('$(entry)', entry)
+    //   if($(entry).attr('value')) {
+    //     console.log('here')
+    //     const commChannelComponentValue = JSON.parse($(entry).attr('value'))
+    //     commChannelComponentValue && commChannelComponentValue.map(currentItem => {
+    //       new_post[channel].push({value: currentItem.value});
+    //     })
+
+    //   }
+    //   console.log('newpost', new_post)
+
+    // })
+
+    // $('dt-single-select').each((entry) => {
+    //   new_post[$(entry).attr('id')] = $(entry).attr('value')
+    // })
+
+    $('.link-input').each(( entry) => {
       let fieldKey = $(entry).data('field-key')
       let type = $(entry).data('type')
       if ( $(entry).val() ){
@@ -128,22 +165,15 @@ jQuery(function($) {
       }
     });
 
-    $('dt-comm-channel').each((index, entry)=>{
-      let channel = $(entry).attr('id');
-      console.log('id', channel)
-      const commChannelComponentValue = JSON.parse($(entry).attr('value'))
-      if (typeof new_post[channel] === 'undefined') {
-        new_post[channel] = [];
-      }
-      console.log('value---',typeof(commChannelComponentValue))
-      commChannelComponentValue.map(currentItem => {
-        console.log('currentItem', currentItem.value)
-        new_post[channel].push({value: currentItem.value});
-      })
-      console.log('new_post', new_post)
-    })
+    // $('dt-connection').each((index, entry)=>{
+    //     let channel = $(entry).attr('id');
+    //     const dtConnectionValues =  JSON.parse($(entry).attr('value'))
+    //     dtConnectionValues.map(currentItem => {
+    //       new_post[channel].push({value: currentItem.value});
+    //     })
+    // });
 
-    $('.selected-select-button').each((index, entry)=>{
+      $('.selected-select-button').each((index, entry)=>{
       let optionKey = $(entry).attr('id')
       let fieldKey = $(entry).data("field-key")
       if ( !new_post[fieldKey]){
@@ -153,12 +183,13 @@ jQuery(function($) {
         "value": optionKey
       })
     })
+
     if ( typeof window.selected_location_grid_meta !== 'undefined' ){
       new_post['location_grid_meta'] = window.selected_location_grid_meta.location_grid_meta
     }
 
-
     window.API.create_post( window.new_record_localized.post_type, new_post).promise().then(function(data) {
+      // console.log('data', data)
       window.location = data.permalink;
     }).catch(function(error) {
       const message = error.responseJSON?.message || error.responseText
