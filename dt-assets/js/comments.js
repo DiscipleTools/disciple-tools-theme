@@ -118,15 +118,15 @@ jQuery(document).ready(function ($) {
    * input with dir=auto set, especially when using a right-to-left language
    * with multiple paragraphs. */
   let commentTemplate = window.lodash.template(`
-  <div class="activity-block">
-    <div>
-        <span class="gravatar">
+  <div class="activity-block" >
+    <div class="comment-header" style="">
+        <div class="gravatar">
         <% if( $.trim( gravatar ) ) { %>
             <img src="<%- gravatar  %>"/>
         <% } else { %>
             <i class="mdi mdi-robot-outline"></i>
         <% } %>
-        </span>
+        </div>
         <span><strong><%- name %></strong></span>
         <span class="comment-date"> <%- date %> </span>
       </div>
