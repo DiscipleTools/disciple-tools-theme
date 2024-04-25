@@ -91,7 +91,7 @@ jQuery(document).ready(function ($) {
             `post_settings.fields[${item.meta_key}].name`,
           );
         }
-        item.action = `<a class="revert-activity dt_tooltip" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.histid)}">
+        item.action = `<a class="revert-activity dt-tooltip" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.histid)}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
           <span class="tooltiptext">${window.SHAREDFUNCTIONS.escapeHTML(field || item.meta_key)} </span>
         </a>`;

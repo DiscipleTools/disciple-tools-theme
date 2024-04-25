@@ -91,14 +91,15 @@ class DT_Magic_URL_Setup {
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
         <div class="section-app-links <?php echo esc_attr( $meta_key ); ?>">
-            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Copy to clipboard', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
+            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
+            <a type="button" class="app-copy dt-tooltip dt-action-button small button copy_to_clipboard"
                data-value="<?php echo esc_url( site_url() . '/' . $app['root'] . '/' . $app['type'] . '/' . $key ) ?>">
-                <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+              <span class="tooltiptext"><?php esc_html_e( 'Copy', 'disciple_tools' ); ?></span>
+              <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
             </a>
-            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
         </div>
         <script>
             jQuery(document).ready(function($){
@@ -111,7 +112,6 @@ class DT_Magic_URL_Setup {
                 window.app_key['<?php echo esc_attr( $meta_key ) ?>'] = '<?php echo esc_attr( $key ) ?>'
                 window.app_url['<?php echo esc_attr( $meta_key ) ?>'] = '<?php echo esc_url( site_url() . '/' . $app['root'] . '/' .$app['type'] . '/' ) ?>'
 
-                $('.<?php echo esc_attr( $meta_key ); ?>.select-button.button.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .view').on('click', function(e){
                     $('#modal-large-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html( $app['description'] ?? '' ) ?></span><hr>`)
                     $('#modal-large-content').empty().html(`<iframe src="${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}" style="width:100%;height: ${window.innerHeight - 170}px;border:1px solid lightgrey;"></iframe>`)
@@ -170,7 +170,7 @@ class DT_Magic_URL_Setup {
                         .done( newPost => {
                             $('#modal-small').foundation('close')
                             window.app_key['<?php echo esc_attr( $meta_key ) ?>'] = newPost['<?php echo esc_attr( $meta_key ) ?>']
-                            $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .select-button.button.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
+                            $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .app-copy.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
                         })
                     })
                 })
