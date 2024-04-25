@@ -278,10 +278,6 @@ NAVIGATION STYLES
         }
     }
 
-    .dropdown.menu .is-submenu-item a:hover {
-        background-color: #224f72
-    }
-
     a {
         font-weight: bold;
         padding: 1rem;
@@ -424,12 +420,6 @@ nav.second-bar {
         span {
             vertical-align: middle;
         }
-    }
-    .dropdown.menu .is-submenu-item a:hover {
-        color:white;
-    }
-    .dropdown.menu .is-submenu-item:hover {
-        background-color: $primary-color;
     }
 }
 
@@ -1195,6 +1185,19 @@ div.help-more h5 {
 .dropdown.menu > li.is-dropdown-submenu-parent > a.menu-white-dropdown-arrow:after {
     border-color: #FFF transparent transparent;
 }
+
+.dropdown.menu .is-submenu-item:hover {
+    background-color: $primary-color;
+    color: white;
+}
+.dropdown.menu .is-submenu-item a:hover {
+    color:white;
+    img {
+        filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+    }
+
+}
+
 @media screen and (max-width : 640px) {
     table.js-list {
         tbody tr:nth-child(even) {
