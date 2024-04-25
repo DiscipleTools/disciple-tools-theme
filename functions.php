@@ -553,8 +553,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
     }
 }
 
-
-
 /**
  * Php Version Alert
  */

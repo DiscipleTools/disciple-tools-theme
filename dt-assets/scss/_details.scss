@@ -201,6 +201,9 @@ DT comments and activity
         .comment-text {
             min-height: 1em;
         }
+        .comment-text ul li {
+            list-style: disc !important;
+        }
     }
 
     .emoji {
