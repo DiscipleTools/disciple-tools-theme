@@ -1000,7 +1000,17 @@ jQuery(document).ready(function () {
       document.getSelection().removeAllRanges();
       document.getSelection().addRange(selected);
     }
-    alert('Copied');
+
+    const tooltip = this.getElementsByClassName('tooltiptext');
+    if (!tooltip.length) {
+      return alert('Copied');
+    }
+    tooltip[0].innerHTML = window.SHAREDFUNCTIONS.escapeHTML(
+      window.wpApiShare.translations.copied_text,
+    ).replace('%s', str);
+    setTimeout(() => {
+      tooltip[0].innerHTML = window.wpApiShare.translations.copy;
+    }, 3000);
   });
 });
 
