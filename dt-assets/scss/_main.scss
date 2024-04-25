@@ -119,7 +119,7 @@ object {
     left: 50%;
     margin-left: -75px;
     opacity: 1;
-    transition: opacity 5.3s;
+    transition: opacity 0.3s;
 }
 
 .dt-tooltip .tooltiptext::after {
@@ -137,6 +137,7 @@ object {
     visibility: visible;
     opacity: 1;
     overflow-wrap: break-word;
+    transition: opacity 0.3s;
 }
 
 /*********************
