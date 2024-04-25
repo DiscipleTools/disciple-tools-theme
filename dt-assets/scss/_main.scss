@@ -1056,31 +1056,6 @@ html[dir='rtl'] {
 a.dt-green:hover {
     background-color: #4CAF50;
 }
-//
-.dt_tooltip {
-    position: relative;
-    display: inline-block;
-    //border-bottom: 1px dotted black;
-}
-
-.dt_tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    top: -5px;
-    right: 105%;
-}
-
-.dt_tooltip:hover .tooltiptext {
-    visibility: visible;
-}
 
 #content {
     max-width: 1440px;
