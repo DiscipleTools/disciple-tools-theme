@@ -755,6 +755,11 @@ window.SHAREDFUNCTIONS = {
    */
   formatComment(comment) {
     if (comment) {
+      //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
+      comment = comment.replace(
+        /!\[(.*?)\]\((.*?)\)/g,
+        "<img src='$2' alt='$1'>",
+      );
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g;
       comment = comment.replace(mentionRegex, (match, text, id) => {
         /* dir=auto means that @ will be put to the left of the name if the
@@ -765,6 +770,7 @@ window.SHAREDFUNCTIONS = {
       });
       let urlRegex =
         /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g;
+
       comment = comment.replace(urlRegex, (match) => {
         let url = match;
         if (
@@ -778,7 +784,11 @@ window.SHAREDFUNCTIONS = {
           } else if (match.indexOf('http') === -1) {
             url = 'http://' + match;
           }
-          return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`;
+          if (comment.includes('<img')) {
+            //do nothing
+          } else {
+            return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`;
+          }
         }
         return match;
       });
@@ -792,7 +802,60 @@ window.SHAREDFUNCTIONS = {
           : `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`;
         return `<a href="${url}">${text}</a>`;
       });
+
+      //**comment** becomes <strong>comment</strong> */
+      comment = comment.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      //__comment__ becomes <strong>comment</strong> */
+      comment = comment.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
+      //*comment* becomes <em>comment</em> */
+      comment = comment.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      //- comment or * comment or + comment becomes <strong>comment</strong> */
+      comment = comment.replace(/^\s*[*+-]\s+(.*)$/gm, '<li>$1</li>');
+      // also, #. becomes a numbered list
+      comment = comment.replace(/^\s*(\d+\.)\s+(.*)$/gm, '<li>$1 $2</li>');
+      //creates lists with the help of line 23 and 25
+
+      if (comment.includes('<li>')) {
+        const firstLi = /<li>/;
+        const lastLi = /<\/li>/g;
+        const firstLiIndex = comment.search(firstLi);
+        if (firstLiIndex === -1) {
+          return comment;
+        }
+
+        const lastLiIndex = comment.lastIndexOf('</li>');
+        const digits = /\d\./;
+        let listItemContent = comment.slice(firstLiIndex + 4, lastLiIndex); // Extract comment content between <li> and </li>
+
+        let nonlistItemContent = comment.slice(lastLiIndex + 5);
+
+        if (digits.test(listItemContent) == true) {
+          comment =
+            comment.slice(0, firstLiIndex) +
+            '<ol>' +
+            '<li>' +
+            listItemContent +
+            '</li>' +
+            comment.slice(lastLiIndex, lastLiIndex + 5) +
+            '</ol>' +
+            nonlistItemContent; // Add newline character
+        } else {
+          comment =
+            comment.slice(0, firstLiIndex) +
+            '<ul>' +
+            '<li>' +
+            listItemContent +
+            '</li>' +
+            comment.slice(lastLiIndex, lastLiIndex + 5) +
+            '</ul>' +
+            nonlistItemContent; // Add newline character
+        }
+      }
+
+      //return modified comment
+      return comment;
     }
+
     return comment;
   },
   convertArabicToEnglishNumbers(string) {
