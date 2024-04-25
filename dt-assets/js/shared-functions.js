@@ -837,7 +837,7 @@ window.SHAREDFUNCTIONS = {
             listItemContent +
             '</li>' +
             comment.slice(lastLiIndex, lastLiIndex + 5) +
-            '</ol>\n' +
+            '</ol>' +
             nonlistItemContent; // Add newline character
         } else {
           comment =
@@ -847,7 +847,7 @@ window.SHAREDFUNCTIONS = {
             listItemContent +
             '</li>' +
             comment.slice(lastLiIndex, lastLiIndex + 5) +
-            '</ul>\n' +
+            '</ul>' +
             nonlistItemContent; // Add newline character
         }
       }
