@@ -1531,12 +1531,11 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( $comment->comment_author_url ){
                 $url = str_replace( '&amp;', '&', $comment->comment_author_url );
             } else {
-                $url = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+                $url = get_avatar_url( $comment->user_id, [ 'size' => '16', 'scheme' => 'https' ] );
             }
             $c = [
                 'comment_ID' => $comment->comment_ID,
                 'comment_author' => !empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
-                'comment_author_email' => $comment->comment_author_email,
                 'comment_date' => $comment->comment_date,
                 'comment_date_gmt' => $comment->comment_date_gmt,
                 'gravatar' => preg_replace( '/^http:/i', 'https:', $url ),
@@ -1687,7 +1686,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $user = get_user_by( 'id', $a->user_id );
                     if ( $user ){
                         $a->name = $user->display_name;
-                        $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                        $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16', 'scheme' => 'https' ] );
                     }
                 } else if ( isset( $a->user_caps ) && strlen( $a->user_caps ) === 32 ){
                     //get site-link name
@@ -1803,7 +1802,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $user = get_user_by( 'id', $activity->user_id );
                     if ( $user ) {
                         $activity->name     = sanitize_text_field( $user->display_name );
-                        $activity->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                        $activity->gravatar = get_avatar_url( $user->ID, [ 'size' => '16', 'scheme' => 'https' ] );
                     }
                 }
             }
