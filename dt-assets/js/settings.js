@@ -2,22 +2,25 @@ jQuery(document).ready(function () {
   window.current_user_lookup = window.wpApiSettingsPage.current_user_id;
   load_locations();
 });
+window.wpApiSettingsPage.translations = window.SHAREDFUNCTIONS.escapeObject(
+  window.wpApiSettingsPage.translations,
+);
 
 function app_switch(user_id = null, app_key = null) {
   let a = jQuery('#app_link_' + app_key);
-  a.empty().html(`<span class="loading-spinner active"></span>`);
   window
     .makeRequest('post', 'users/app_switch', { user_id, app_key })
     .done(function (data) {
       if ('removed' === data) {
-        jQuery('#app_link_' + app_key).empty();
+        a.children().hide();
       } else {
         let u = a.data('url-base');
-        a.empty().html(
-          `<a class="button small"  href="${u}${data}" title="${window.wpApiSettingsPage.translations.link}"><i class="fi-link"></i></a>
-            <button class="button small copy_to_clipboard" data-value="${u}${data}" title="${window.wpApiSettingsPage.translations.copy}"><i class="fi-page-copy"></i></button>`,
-        );
-        load_user_app_copy_to_clipboard_listener();
+        a.find('.app-link')
+          .attr('href', u + data)
+          .show();
+        a.find('.app-copy')
+          .attr('data-value', u + data)
+          .show();
       }
     })
     .fail(function (err) {
@@ -26,31 +29,6 @@ function app_switch(user_id = null, app_key = null) {
       a.empty().html(`error`);
     });
 }
-
-function load_user_app_copy_to_clipboard_listener() {
-  jQuery('.copy_to_clipboard').on('click', function () {
-    let str = jQuery(this).data('value');
-    const el = document.createElement('textarea');
-    el.value = str;
-    el.setAttribute('readonly', '');
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
-    document.body.appendChild(el);
-    const selected =
-      document.getSelection().rangeCount > 0
-        ? document.getSelection().getRangeAt(0)
-        : false;
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-    if (selected) {
-      document.getSelection().removeAllRanges();
-      document.getSelection().addRange(selected);
-    }
-    alert('Copied');
-  });
-}
-load_user_app_copy_to_clipboard_listener();
 
 /**
  * Password reset

@@ -1528,9 +1528,10 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $response_body = [];
         foreach ( $comments as $comment ){
+            $url = '';
             if ( $comment->comment_author_url ){
                 $url = str_replace( '&amp;', '&', $comment->comment_author_url );
-            } else {
+            } else if ( !empty( $comment->user_id ) ){
                 $url = get_avatar_url( $comment->user_id, [ 'size' => '16', 'scheme' => 'https' ] );
             }
             $c = [
