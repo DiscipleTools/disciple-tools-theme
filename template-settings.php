@@ -492,16 +492,17 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                             <ul>
                                 <li><?php echo esc_html( sprintf( _x( 'Email will be sent to: %s', 'Email will be sent to: [email]', 'disciple_tools' ), $dt_user->user_email ?? esc_html( '[email]', 'disciple_tools' ) ) ); ?></li>
                             </ul>
-                            <?php if ( isset( $dt_site_notification_defaults['channels']['sms'] ) ) { ?>
-                                <ul>
-                                    <li><?php echo esc_html( sprintf( _x( 'SMS notifications will be sent to: %s', 'SMS notifications will be sent to: [work number]', 'disciple_tools' ), ( isset( $dt_user_meta['dt_user_work_phone'][0] ) && !empty( trim( $dt_user_meta['dt_user_work_phone'][0] ) ) ? $dt_user_meta['dt_user_work_phone'][0] : esc_html( '[work number]', 'disciple_tools' ) ) ) ); ?></li>
-                                </ul>
-                            <?php } ?>
-                            <?php if ( isset( $dt_site_notification_defaults['channels']['whatsapp'] ) ) { ?>
-                                <ul>
-                                    <li><?php echo esc_html( sprintf( _x( 'Whatsapp notifications will be sent to: %s', 'Whatsapp notifications will be sent to: [whatsapp number]', 'disciple_tools' ), ( isset( $dt_user_meta['dt_user_work_whatsapp'][0] ) && !empty( trim( $dt_user_meta['dt_user_work_whatsapp'][0] ) ) ? $dt_user_meta['dt_user_work_whatsapp'][0] : esc_html( '[whatsapp number]', 'disciple_tools' ) ) ) ); ?></li>
-                                </ul>
-                            <?php } ?>
+                            <?php
+                            foreach ( apply_filters( 'dt_communication_channel_notification_endpoints_text', [], $dt_user->ID ) ?? [] as $endpoint_text ) {
+                                if ( !empty( $endpoint_text ) ) {
+                                    ?>
+                                    <ul>
+                                        <li><?php echo esc_html( $endpoint_text ); ?>&nbsp;&nbsp;<button data-open="edit-profile-modal"><i class="fi-pencil"></i></button></li>
+                                    </ul>
+                                    <?php
+                                }
+                            }
+                            ?>
                         </div>
 
                         <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
