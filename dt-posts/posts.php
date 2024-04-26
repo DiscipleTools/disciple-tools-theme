@@ -259,7 +259,7 @@ class Disciple_Tools_Posts
             $to = get_post( $p2p_record->p2p_to );
             $to_title = $to->post_title;
             $to_link = get_permalink( $p2p_record->p2p_to );
-            $from_title = $from->post_title;
+            $from_title = $from->post_title ?? '';
             $from_link = get_permalink( $p2p_record->p2p_from );
         }
 
