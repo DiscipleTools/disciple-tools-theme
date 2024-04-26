@@ -486,11 +486,11 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <hr/>
 
                         <p>
-                            <strong><?php esc_html_e( 'Notification Endpoints', 'disciple_tools' ) ?></strong>
+                            <strong><?php esc_html_e( 'Contact Info', 'disciple_tools' ) ?></strong>
                         </p>
                         <div>
                             <ul>
-                                <li><?php echo esc_html( sprintf( _x( 'Email will be sent to: %s', 'Email will be sent to: [email]', 'disciple_tools' ), $dt_user->user_email ?? esc_html( '[email]', 'disciple_tools' ) ) ); ?></li>
+                                <li><?php echo esc_html( sprintf( _x( 'Email notifications will be sent to: %s', 'Email will be sent to: [email]', 'disciple_tools' ), $dt_user->user_email ?? esc_html( '[email]', 'disciple_tools' ) ) ); ?></li>
                             </ul>
                             <?php
                             foreach ( apply_filters( 'dt_communication_channel_notification_endpoints_text', [], $dt_user->ID ) ?? [] as $endpoint_text ) {
