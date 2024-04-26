@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-03-25T14:39:01+00:00\n"
-"PO-Revision-Date: 2024-01-29 23:21+0000\n"
+"POT-Creation-Date: 2024-04-17T09:16:21+00:00\n"
+"PO-Revision-Date: 2024-04-18 00:15+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.disciple.tools/"
 "projects/disciple-tools/disciple-tools-theme/es_419/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.4.3\n"
 
 #. Theme Name of the theme
 msgid "Disciple Tools"
@@ -228,19 +228,15 @@ msgstr "Lista de CSV"
 
 #: archive-template.php:317 archive-template.php:340
 msgid "BCC Email List"
-msgstr ""
+msgstr "Lista de correo electrónico CCO"
 
 #: archive-template.php:318
-#, fuzzy
-#| msgid "Phone"
 msgid "Phone List"
-msgstr "Teléfono"
+msgstr "Lista de números de teléfono"
 
 #: archive-template.php:323 archive-template.php:348
-#, fuzzy
-#| msgid "List"
 msgid "Map List"
-msgstr "Lista"
+msgstr "Lista de mapas"
 
 #: archive-template.php:332
 msgid "List Exports Help"
@@ -263,12 +259,19 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"Con el filtro actual, los correos electrónicos disponibles se agrupan en 50 "
+"y pueden iniciarse en su cliente de correo electrónico predeterminado por "
+"grupo. Muchos proveedores de correo electrónico ponen un límite de 50 en los "
+"correos electrónicos CCO. Puede abrir todos los grupos a la vez usando el "
+"botón \"Abrir todo\". Si la lista es demasiado grande, esto podría alertar a "
+"su proveedor de correo electrónico. La herramienta de correo electrónico CCO "
+"está destinada a ayudar con el envío de correos electrónicos de grupos "
+"pequeños. El correo electrónico masivo debe manejarse a través de "
+"proveedores de correo electrónico masivo."
 
 #: archive-template.php:344
-#, fuzzy
-#| msgid "Member List"
 msgid "Phone Number List"
-msgstr "Listado de miembros"
+msgstr "Lista de números de teléfono"
 
 #: archive-template.php:345
 msgid ""
@@ -276,18 +279,17 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"Usando el filtro actual, está diseñado para copiar y pegar una lista de "
+"números en una aplicación de mensajería, WhatsApp, Signal, etc. Esta es una "
+"forma rápida de iniciar una conversación grupal."
 
 #: archive-template.php:349
-#, fuzzy
-#| msgid ""
-#| "Using the current filter, this is a simple way to export basic "
-#| "information and use it in other applications."
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
-"Usando el filtro actual, esta es una forma simple de exportar información "
-"básica y usarla en otras aplicaciones."
+"Usando el filtro actual, esto crea un mapa de puntos básicos de ubicaciones "
+"conocidas de las personas incluidas en la lista."
 
 #: archive-template.php:375
 msgctxt "Contacts List"
@@ -323,10 +325,8 @@ msgid "Bulk Edit"
 msgstr "Edición múltiple"
 
 #: archive-template.php:426
-#, fuzzy
-#| msgid "Bulk Send App"
 msgid "Bulk Send Message"
-msgstr "App de Envío Masivo"
+msgstr "Mandar mensaje de gran volumen"
 
 #: archive-template.php:460 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
@@ -430,53 +430,50 @@ msgid "Delete Selections Below"
 msgstr "Eliminar Selecciones Debajo"
 
 #: archive-template.php:776
-#, fuzzy
-#| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
-msgstr ""
-"Seleccione a todos los %1$s a los cuales desees enviarle links a la app."
+msgstr "Seleccione a todos los %1$s a los cuales desee enviarle el mensaje."
 
 #: archive-template.php:802
 msgid "Message subject"
-msgstr ""
+msgstr "Asunto del mensaje"
 
 #: archive-template.php:804
 msgid "A valid message subject must be entered."
-msgstr ""
+msgstr "Se debe ingresar un asunto de mensaje válido."
 
 #: archive-template.php:806
 msgid "Message from name"
-msgstr ""
+msgstr "De parte de"
 
 #: archive-template.php:808
 msgid "A valid from name must be specified."
-msgstr ""
+msgstr "Se debe especificar un nombre de origen válido."
 
 #: archive-template.php:810
-#, fuzzy
-#| msgid "Message placeholders"
 msgid "Message reply to"
-msgstr "Marcadores de posición de mensajes"
+msgstr "Mensaje de respuesta a"
 
 #: archive-template.php:812
 msgid "A valid reply to email address must be specified."
 msgstr ""
+"Se debe especificar una respuesta válida a la dirección de correo "
+"electrónico."
 
 #: archive-template.php:814
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "Los correos electrónicos se enviarán desde: %s"
 
 #: archive-template.php:837
 msgid "Please ensure a valid send method has been specified."
-msgstr ""
+msgstr "Asegúrese de que se haya especificado un método de envío válido."
 
 #: archive-template.php:839
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #: archive-template.php:841
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "Asegúrese de haber ingresado un mensaje de envío válido."
 
 #: archive-template.php:842 dt-reports/magic-url-bulk-send.php:58
 msgid "Message placeholders"
@@ -505,7 +502,7 @@ msgstr "Enlaces"
 
 #: archive-template.php:859
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "Asegúrese de que se hayan realizado selecciones de registros válidas."
 
 #: archive-template.php:899
 msgid "Loading..."
@@ -579,43 +576,29 @@ msgid "Range End"
 msgstr "Rango hasta"
 
 #: archive-template.php:1065
-#, fuzzy
-#| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
-msgstr "Filtrar nombre"
+msgstr "Filtrar por valor"
 
 #: archive-template.php:1070
-#, fuzzy
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "Todos %1$s con %2$s"
+msgstr "Todos %1$s con valor filtrado en %2$s"
 
 #: archive-template.php:1074
-#, fuzzy
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "Todos los %1$s sin %2$s"
+msgstr "Todos %1$s sin valor filtrado en %2$s"
 
 #: archive-template.php:1078
-#, fuzzy
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "Todos %1$s con %2$s"
+msgstr "Todos %1$s con cualquier valor en %2$s"
 
 #: archive-template.php:1082
-#, fuzzy
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "Todos los %1$s sin %2$s"
+msgstr "Todos %1$s sin valor en %2$s"
 
 #: archive-template.php:1106
 msgid "Filter Name"
@@ -914,99 +897,83 @@ msgstr "no enviado (probablemente falte una dirección de correo válida)"
 #: dt-assets/functions/enqueue-scripts.php:329
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "Ver cola"
 
 #: dt-assets/functions/enqueue-scripts.php:330
 msgid "Exclude Item"
 msgstr "Excluir Ítem"
 
 #: dt-assets/functions/enqueue-scripts.php:333
-#, fuzzy
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr "Los datos csv exportados deben contener todos los {0} %s campos."
+msgstr "Los datos csv exportados deben contener todos los %2$s %1$s campos."
 
 #: dt-assets/functions/enqueue-scripts.php:334
-#, fuzzy
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
-msgstr "Los datos csv exportados deben contener todos los {0} %s campos."
+msgstr ""
+"Los datos csv exportados deben contener los %1$s campos %2$s visibles que se "
+"muestran a continuación."
 
 #: dt-assets/functions/enqueue-scripts.php:337
 #: dt-assets/functions/enqueue-scripts.php:345
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
 msgid "Full List"
-msgstr "Lista de %s"
+msgstr "Lista Completa"
 
 #: dt-assets/functions/enqueue-scripts.php:338
-#, fuzzy
-#| msgid "Address"
 msgid "No Addresses"
-msgstr "Dirección"
+msgstr "Sin Direcciónes"
 
 #: dt-assets/functions/enqueue-scripts.php:339
 msgid "With Additional Addresses"
-msgstr ""
+msgstr "Con direcciones adicionales"
 
 #: dt-assets/functions/enqueue-scripts.php:340
 msgid "Open Email for Group"
-msgstr ""
+msgstr "Abrir correo electrónico para grupo"
 
 #: dt-assets/functions/enqueue-scripts.php:341
-#, fuzzy
-#| msgid "Open Modal"
 msgid "Open All"
-msgstr "Abrir Modal"
+msgstr "Abrir Todos"
 
 #: dt-assets/functions/enqueue-scripts.php:342
 msgid "Show Group Addresses"
-msgstr ""
+msgstr "Mostrar direcciones del grupo"
 
 #: dt-assets/functions/enqueue-scripts.php:346
 msgid "Has No Phone Number"
-msgstr ""
+msgstr "No tiene número de teléfono"
 
 #: dt-assets/functions/enqueue-scripts.php:347
 msgid "Has Additional Phone Numbers"
-msgstr ""
+msgstr "Tiene números de teléfono adicionales"
 
 #: dt-assets/functions/enqueue-scripts.php:351
-#, fuzzy
-#| msgid "Used Locations"
 msgid "Mapped Locations"
-msgstr "Ubicaciones utilizadas"
+msgstr "Ubicaciones mapeadas"
 
 #: dt-assets/functions/enqueue-scripts.php:352
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
-msgstr "El contacto está de vacaciones"
+msgstr "Contactos sin ubicaciones"
 
 #: dt-assets/functions/enqueue-scripts.php:353
-#, fuzzy
-#| msgid "Records Map"
 msgid "Records on zoomed map"
-msgstr "Mapa de registros"
+msgstr "Registros en mapa ampliado"
 
 #: dt-assets/functions/enqueue-scripts.php:354
 msgid "No Zoomed Map Records Found!"
-msgstr ""
+msgstr "¡No se encontraron registros de mapas ampliados!"
 
 #: dt-assets/functions/enqueue-scripts.php:355
 msgid "Open Zoomed Map Records"
-msgstr ""
+msgstr "Abrir registros de mapas ampliados"
 
 #: dt-assets/functions/enqueue-scripts.php:356
 #: dt-assets/functions/enqueue-scripts.php:357
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filtered Map"
-msgstr "Filtrar nombre"
+msgstr "Mapa filtrado"
 
 #: dt-assets/functions/enqueue-scripts.php:384 dt-contacts/base-setup.php:51
 #: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
@@ -2888,8 +2855,6 @@ msgid "Login Page"
 msgstr "Página de inicio de sesión"
 
 #: dt-core/configuration/restrict-site-access.php:254
-#, fuzzy
-#| msgid "login"
 msgid "login page"
 msgstr "página de inicio de sesión"
 
@@ -3692,13 +3657,12 @@ msgid "Church Planters"
 msgstr "Plantadores de iglesias"
 
 #: dt-metrics/combined/critical-path.php:333
-#, fuzzy
 msgid ""
 "Number of contacts or users who have started a church and are marked as the "
 "church coach"
 msgstr ""
 "Cantidad de contactos o usuarios que plantaron una iglesia y están marcados "
-"como sobreveedor congregacional"
+"como entrenador de iglesia"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -4265,8 +4229,6 @@ msgid "Hide"
 msgstr "Esconder"
 
 #: dt-metrics/records/genmap.php:109
-#, fuzzy
-#| msgid "Child Group"
 msgid "Add Child To"
 msgstr "Agregar hijo a"
 
@@ -4275,7 +4237,6 @@ msgid "Add Child"
 msgstr "Agregar hijo"
 
 #: dt-metrics/records/genmap.php:112
-#, fuzzy
 msgid "Focus On Node"
 msgstr "Enfocar en el nodo"
 
@@ -4284,7 +4245,6 @@ msgid "Are you sure you wish to focus on node?"
 msgstr "¿Estás seguro de que deseas centrarte en el nodo?"
 
 #: dt-metrics/records/genmap.php:117
-#, fuzzy
 msgid "Infinite Loops"
 msgstr "Bucles Infinitos"
 
@@ -4322,8 +4282,6 @@ msgid "Single cumulative totals"
 msgstr "Totales acumulados únicos"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
 msgstr "Cambios de registros"
 
@@ -4758,12 +4716,9 @@ msgid "%1$s removed from %2$s"
 msgstr "%1$s removido de %2$s"
 
 #: dt-posts/posts.php:416
-#, fuzzy
-#| msgctxt "User Select: User1"
-#| msgid "%1$1s: %2$2s"
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%1$1s: %2$2s"
+msgstr "%1$s: %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
