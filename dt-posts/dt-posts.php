@@ -1528,15 +1528,15 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $response_body = [];
         foreach ( $comments as $comment ){
+            $url = '';
             if ( $comment->comment_author_url ){
                 $url = str_replace( '&amp;', '&', $comment->comment_author_url );
-            } else {
+            } else if ( !empty( $comment->user_id ) ){
                 $url = get_avatar_url( $comment->user_id, [ 'size' => '16', 'scheme' => 'https' ] );
             }
             $c = [
                 'comment_ID' => $comment->comment_ID,
                 'comment_author' => !empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
-                'comment_author_email' => $comment->comment_author_email,
                 'comment_date' => $comment->comment_date,
                 'comment_date_gmt' => $comment->comment_date_gmt,
                 'gravatar' => preg_replace( '/^http:/i', 'https:', $url ),

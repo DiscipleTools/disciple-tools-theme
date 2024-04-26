@@ -116,6 +116,8 @@ function dt_site_scripts() {
                 'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
                 'edit' => __( 'Edit', 'disciple_tools' ),
+                'copy' => __( 'Copy', 'disciple_tools' ),
+                'copied_text' => __( 'Copied: %s', 'disciple_tools' ),
             ],
             'post_type' => $post_type,
             'url_path' => $url_path,
