@@ -1095,15 +1095,26 @@
         }
       });
 
+      // Prepare record profile pic html.
+      let profile_pic_html = ``;
+      if (record['dt_record_profile_picture']) {
+        profile_pic_html = `<img src="${record['dt_record_profile_picture']}" style="width:32px; vertical-align:middle;">`;
+      } else {
+        // Use a generic icon for now.....
+        profile_pic_html = `<i class="mdi mdi-account-outline medium" style="font-size: 32px; opacity: 0.125;"></i>`;
+      }
+
       if (mobile) {
         table_rows += `<tr data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox">
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
           </td>
           <td>
-              <div class="mobile-list-field-name">
-                ${index + 1}.
-              </div>
+            <div class="mobile-list-field-name">${index + 1}.</div>
+            <div class="mobile-list-field-value">${profile_pic_html}</div>
+          </td>
+          <td>
+              <div class="mobile-list-field-name"></div>
               <div class="mobile-list-field-value">
                   <a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a>
               </div>
@@ -1114,6 +1125,7 @@
         table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
           <td style="white-space: nowrap" data-id="index" >${index + 1}.</td>
+          <td style="white-space: nowrap" data-id="profile_pic">${profile_pic_html}</td>
           ${row_fields_html}
         `;
       }
@@ -1157,6 +1169,7 @@
       get_records_promise.abort();
     }
     query.fields_to_return = fields_to_show_in_table;
+    query.fields_to_return.unshift('dt_record_profile_picture');
     get_records_promise = window.makeRequestOnPosts(
       'POST',
       `${list_settings.post_type}/list`,

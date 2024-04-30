@@ -696,9 +696,9 @@ class DT_Contacts_Base {
     public function dt_record_icon( $icon, $post_type, $dt_post ){
         if ( $post_type == 'contacts' ) {
             $gender = isset( $dt_post['gender'] ) ? $dt_post['gender']['key'] : 'male';
-            $icon = 'mdi mdi-face-man-profile';
+            $icon = 'mdi mdi-face-man-outline';
             if ( $gender == 'female' ) {
-                $icon = 'mdi mdi-face-woman-profile';
+                $icon = 'mdi mdi-face-woman-outline';
             }
         }
         return $icon;

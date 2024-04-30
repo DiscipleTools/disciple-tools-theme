@@ -768,6 +768,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         self::get_all_connected_fields_on_list( $post_settings['fields'], $records, $fields_to_return );
         $site_url = site_url();
+        $dt_storage_enabled = ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() );
         foreach ( $records as  &$record ){
 
             self::adjust_post_custom_fields( $post_type, $record['ID'], $record, $fields_to_return, $all_posts[ $record['ID'] ] ?? [], $all_post_user_meta[ $record['ID'] ] ?? [] );
@@ -778,6 +779,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                     'timestamp' => is_numeric( $record['post_date'] ) ? $record['post_date'] : dt_format_date( $record['post_date'], 'U' ),
                     'formatted' => dt_format_date( $record['post_date'] )
                 ];
+            }
+            if ( $dt_storage_enabled && !empty( $record['dt_record_profile_picture'] ) ) {
+                $picture_url = DT_Storage::get_thumbnail_url( $record['dt_record_profile_picture'] );
+                if ( !empty( $picture_url ) ) {
+                    $record['dt_record_profile_picture'] = $picture_url;
+                }
             }
         }
         $data['posts'] = $records;
