@@ -485,6 +485,26 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
 
+                        <p>
+                            <strong><?php esc_html_e( 'Contact Info', 'disciple_tools' ) ?></strong>
+                        </p>
+                        <div>
+                            <ul>
+                                <li><?php echo esc_html( sprintf( _x( 'Email notifications will be sent to: %s', 'Email will be sent to: [email]', 'disciple_tools' ), $dt_user->user_email ?? esc_html( '[email]', 'disciple_tools' ) ) ); ?></li>
+                            </ul>
+                            <?php
+                            foreach ( apply_filters( 'dt_communication_channel_notification_endpoints_text', [], $dt_user->ID ) ?? [] as $endpoint_text ) {
+                                if ( !empty( $endpoint_text ) ) {
+                                    ?>
+                                    <ul>
+                                        <li><?php echo esc_html( $endpoint_text ); ?>&nbsp;&nbsp;<button data-open="edit-profile-modal"><i class="fi-pencil"></i></button></li>
+                                    </ul>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </div>
+
                         <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
                         <p>
                             <strong><?php esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
