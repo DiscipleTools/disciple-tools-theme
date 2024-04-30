@@ -406,6 +406,36 @@ function dt_site_scripts() {
         'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
 
+    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
+        dt_theme_enqueue_script( 'dt-storage', 'dt-assets/js/dt-storage.js', [ 'jquery' ], true );
+        wp_localize_script( 'dt-storage', 'storage_settings',
+            [
+                'rest_url' => esc_url_raw( rest_url() ),
+                'accepted_file_types' => [
+                    'image/png',
+                    'image/gif',
+                    'image/jpeg',
+                    'image/jpg',
+                    'audio/*',
+                    'video/*'
+                ],
+                'translations' => [
+                    'modals' => [
+                        'upload' => [
+                            'title' => __( 'File Upload', 'disciple_tools' ),
+                            'choose_file' => __( 'Choose a file', 'disciple_tools' ),
+                            'or_drag_it' => __( 'or drag it here', 'disciple_tools' ),
+                            'success' => __( 'Successfully Uploaded!', 'disciple_tools' ),
+                            'error' => __( 'Error!', 'disciple_tools' ),
+                            'error_msg' => __( 'Unable to upload, please try again', 'disciple_tools' ),
+                            'but_upload' => __( 'Upload', 'disciple_tools' ),
+                            'but_close' => __( 'Close', 'disciple_tools' )
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
 
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

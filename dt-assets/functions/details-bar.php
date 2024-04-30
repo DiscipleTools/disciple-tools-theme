@@ -105,12 +105,20 @@ function dt_print_details_bar(
                             <table style="margin: 0;">
                                 <tbody style="border: 0;">
                                 <tr style="border: 0;">
-                                    <td style="padding: 0 15px 0 0;">
+                                    <td style="padding: <?php echo !empty( $picture ) ? '0' : '10px'; ?> 15px 0 0;">
                                         <?php
                                         if ( !empty( $picture ) ) : ?>
-                                            <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
+                                            <img class="dt-storage-upload" src="<?php echo esc_html( $picture )?>" style="width:55px; vertical-align:middle; cursor: pointer;"
+                                                 data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
+                                                 data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
+                                                 data-storage_upload_meta_key="dt_record_profile_picture"
+                                                 data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>">
                                         <?php else : ?>
-                                            <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>; font-size: 55px;"></i>
+                                            <i class="dt-storage-upload <?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>; font-size: 55px; cursor: pointer;"
+                                               data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
+                                               data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
+                                               data-storage_upload_meta_key="dt_record_profile_picture"
+                                               data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>"></i>
                                         <?php endif; ?>
                                     </td>
                                     <td style="padding: 0;">
@@ -271,13 +279,21 @@ function dt_print_details_bar(
                         <table style="margin: 0; max-width: 60%;">
                             <tbody style="border: 0;">
                             <tr style="border: 0;">
-                                <td style="padding: 0 15px 0 0;">
+                                <td style="padding: <?php echo !empty( $picture ) ? '0' : '10px'; ?> 15px 0 0;">
                                     <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
                                     $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
                                     if ( !empty( $picture ) ) : ?>
-                                        <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
+                                        <img class="dt-storage-upload" src="<?php echo esc_html( $picture )?>" style="width:55px; vertical-align:middle"
+                                             data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
+                                             data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
+                                             data-storage_upload_meta_key="dt_record_profile_picture"
+                                             data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>">
                                     <?php else : ?>
-                                        <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                                        <i class="dt-storage-upload <?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>; font-size: 55px;"
+                                           data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
+                                           data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
+                                           data-storage_upload_meta_key="dt_record_profile_picture"
+                                           data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>"></i>
                                     <?php endif; ?>
                                 </td>
                                 <td style="padding: 0;">

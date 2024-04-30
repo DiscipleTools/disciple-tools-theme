@@ -22,16 +22,25 @@ abstract class DT_Module_Base{
     }
 
     public function dt_record_picture_base( $picture, $post_type, $post_id ){
-        if ( !in_array( $post_type, [ 'contacts' ] ) ) {
-            $picture = null;
+        if ( ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) ) {
+            $meta_key_value = get_post_meta( $post_id, 'dt_record_profile_picture', true );
+            if ( !empty( $meta_key_value ) ) {
+                $picture_url = DT_Storage::get_thumbnail_url( $meta_key_value );
+                if ( !empty( $picture_url ) ) {
+                    $picture = $picture_url;
+                }
+            }
         }
 
         return $picture;
     }
 
     public function dt_record_icon_base( $icon, $post_type, $post_id ){
-        if ( !in_array( $post_type, [ 'contacts' ] ) ) {
-            $icon = 'fi-torsos-all';
+        if ( $post_type != 'contacts' ) {
+            $icon = 'mdi mdi-account-group-outline';
+            if ( $post_type != 'groups' ) {
+                $icon = 'mdi mdi-account-outline';
+            }
         }
 
         return $icon;
