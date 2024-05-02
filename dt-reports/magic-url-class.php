@@ -45,8 +45,8 @@ if ( ! function_exists( 'dt_registered_types' ) ) {
      * @see DT_Magic_URL registered_types() for description
      * @return array
      */
-    function dt_get_registered_types() {
-        return DT_Magic_URL::registered_types_static();
+    function dt_get_registered_types( $by_key = false ) {
+        return DT_Magic_URL::registered_types_static( $by_key );
     }
 }
 
@@ -120,8 +120,18 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return apply_filters( 'dt_magic_url_register_types', $types = [] );
         }
 
-        public static function registered_types_static() : array {
-            return apply_filters( 'dt_magic_url_register_types', $types = [] );
+        public static function registered_types_static( $by_key = false ) : array {
+            $apps = apply_filters( 'dt_magic_url_register_types', $types = [] );
+            if ( $by_key ) {
+                $by_key = [];
+                foreach ( $apps as $root => $types ) {
+                    foreach ( $types as $type => $values ) {
+                        $by_key[$values['meta_key']] = $values;
+                    }
+                }
+                return $by_key;
+            }
+            return $apps;
         }
 
         /**
