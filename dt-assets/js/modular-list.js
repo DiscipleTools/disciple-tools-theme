@@ -1111,7 +1111,7 @@
           </td>
           <td>
             <div class="mobile-list-field-name">${index + 1}.</div>
-            <div class="mobile-list-field-value">${profile_pic_html}</div>
+            ${window.wpApiShare.features.storage ? `<div class="mobile-list-field-value">${profile_pic_html}</div>` : ''}
           </td>
           <td>
               <div class="mobile-list-field-name"></div>
@@ -1125,7 +1125,7 @@
         table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
           <td style="white-space: nowrap" data-id="index" >${index + 1}.</td>
-          <td style="white-space: nowrap" data-id="profile_pic">${profile_pic_html}</td>
+          ${window.wpApiShare.features.storage ? `<td style="white-space: nowrap" data-id="profile_pic">${profile_pic_html}</td>` : ''}
           ${row_fields_html}
         `;
       }
@@ -1169,7 +1169,9 @@
       get_records_promise.abort();
     }
     query.fields_to_return = fields_to_show_in_table;
-    query.fields_to_return.unshift('dt_record_profile_picture');
+    if (window.wpApiShare.features.storage) {
+      query.fields_to_return.unshift('dt_record_profile_picture');
+    }
     get_records_promise = window.makeRequestOnPosts(
       'POST',
       `${list_settings.post_type}/list`,

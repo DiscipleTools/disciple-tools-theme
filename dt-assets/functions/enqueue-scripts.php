@@ -124,6 +124,9 @@ function dt_site_scripts() {
             'post_type_modules' => dt_get_option( 'dt_post_type_modules' ),
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
             'can_manage_dt' => current_user_can( 'manage_dt' ),
+            'features' => [
+                'storage' => class_exists( 'DT_Storage' ) && DT_Storage::is_enabled(),
+            ]
         )
     );
 

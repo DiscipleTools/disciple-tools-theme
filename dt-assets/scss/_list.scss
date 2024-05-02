@@ -166,13 +166,13 @@ table.js-list{
 
 table.js-list th[data-id="name"] {
     position: sticky;
-    left: 77px; /* Right edge + Width of index (32px) + Profile Pic (45px) column = 77px */
+    left: 32px;
     background-color: #ffffff;
 }
 
 table.js-list td[data-id="name"] {
     position: sticky;
-    left: 77px; /* Right edge + Width of index (32px) + Profile Pic (45px) column = 77px */
+    left: 32px;
     background-color: inherit;
 }
 

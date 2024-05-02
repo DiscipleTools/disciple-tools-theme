@@ -873,7 +873,9 @@ Thanks!';
                                     <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
                                     <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
-                                    <th data-id="profile_pic" style="width:32px; background-image:none; cursor:default"></th>
+                                    <?php if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ): ?>
+                                        <th data-id="profile_pic" style="width:32px; background-image:none; cursor:default"></th>
+                                    <?php endif; ?>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
