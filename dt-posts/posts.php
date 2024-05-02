@@ -2576,6 +2576,15 @@ class Disciple_Tools_Posts
                             $fields[$field_key][] = $meta;
                         }
                     }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'image' ){
+                    if ( !empty( $value[0]['value'] ) ){
+                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
+                            $fields[$key] = [
+                                'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
+                                'full' => DT_storage::get_file_url( $value[0]['value'] ),
+                            ];
+                        }
+                    }
                 } else {
                     $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 }

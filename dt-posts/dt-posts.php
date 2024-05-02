@@ -780,12 +780,6 @@ class DT_Posts extends Disciple_Tools_Posts {
                     'formatted' => dt_format_date( $record['post_date'] )
                 ];
             }
-            if ( $dt_storage_enabled && !empty( $record['dt_record_profile_picture'] ) ) {
-                $picture_url = DT_Storage::get_thumbnail_url( $record['dt_record_profile_picture'] );
-                if ( !empty( $picture_url ) ) {
-                    $record['dt_record_profile_picture'] = $picture_url;
-                }
-            }
         }
         $data['posts'] = $records;
 

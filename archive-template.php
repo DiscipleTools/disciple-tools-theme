@@ -873,9 +873,6 @@ Thanks!';
                                     <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
                                     <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
-                                    <?php if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ): ?>
-                                        <th data-id="profile_pic" style="width:32px; background-image:none; cursor:default"></th>
-                                    <?php endif; ?>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
@@ -887,8 +884,13 @@ Thanks!';
                                         <th style="width:36px; background-image:none; cursor:default"></th>
                                         <?php
                                     }
+                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ):
+                                        if ( in_array( 'record_picture', $columns ) ) : ?>
+                                            <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
+                                        <?php endif; ?>
+                                    <?php endif;
                                     foreach ( $columns as $field_key ):
-                                        if ( ! in_array( $field_key, [ 'favorite' ] ) ):
+                                        if ( ! in_array( $field_key, [ 'favorite', 'record_picture' ] ) ):
                                             if ( isset( $post_settings['fields'][$field_key]['name'] ) ) : ?>
                                                 <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
                                                     <?php echo esc_html( $post_settings['fields'][ $field_key ]['name'] ) ?>

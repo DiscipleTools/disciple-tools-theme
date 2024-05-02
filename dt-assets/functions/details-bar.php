@@ -27,7 +27,8 @@ function dt_print_details_bar(
     }
 
 
-    $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+    $record_picture = isset( $dt_post['record_picture']['thumb'] ) ? $dt_post['record_picture']['thumb'] : null;
+    $picture = apply_filters( 'dt_record_picture', $record_picture, $dt_post_type, $post_id );
     $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
 
     $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
@@ -111,13 +112,13 @@ function dt_print_details_bar(
                                             <img class="dt-storage-upload" src="<?php echo esc_html( $picture )?>" style="width:55px; vertical-align:middle; cursor: pointer;"
                                                  data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                                  data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
-                                                 data-storage_upload_meta_key="dt_record_profile_picture"
+                                                 data-storage_upload_meta_key="record_picture"
                                                  data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>">
                                         <?php else : ?>
                                             <i class="dt-storage-upload <?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>; font-size: 55px; cursor: pointer;"
                                                data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                                data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
-                                               data-storage_upload_meta_key="dt_record_profile_picture"
+                                               data-storage_upload_meta_key="record_picture"
                                                data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>"></i>
                                         <?php endif; ?>
                                     </td>
@@ -286,13 +287,13 @@ function dt_print_details_bar(
                                         <img class="dt-storage-upload" src="<?php echo esc_html( $picture )?>" style="width:55px; vertical-align:middle"
                                              data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                              data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
-                                             data-storage_upload_meta_key="dt_record_profile_picture"
+                                             data-storage_upload_meta_key="record_picture"
                                              data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>">
                                     <?php else : ?>
                                         <i class="dt-storage-upload <?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>; font-size: 55px;"
                                            data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                            data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
-                                           data-storage_upload_meta_key="dt_record_profile_picture"
+                                           data-storage_upload_meta_key="record_picture"
                                            data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>"></i>
                                     <?php endif; ?>
                                 </td>
