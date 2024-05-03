@@ -1025,6 +1025,8 @@
                 .map((v) => {
                   return `${window.SHAREDFUNCTIONS.escapeHTML(v.value.note)}`;
                 });
+            } else if (field_settings.type === 'image') {
+              values = [`<img src='${field_value.thumb}' class='list-image'>`];
             }
           } else if (
             !field_value &&
@@ -1040,6 +1042,10 @@
             field_settings.default === true
           ) {
             values = ['&check;'];
+          } else if (field_settings.type === 'image') {
+            values = [
+              `<i class='mdi mdi-account-outline medium list-image'></i>`,
+            ];
           }
         } else {
           return;
@@ -1101,9 +1107,7 @@
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
           </td>
           <td>
-              <div class="mobile-list-field-name">
-                ${index + 1}.
-              </div>
+              <div class="mobile-list-field-name">${index + 1}.</div>
               <div class="mobile-list-field-value">
                   <a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a>
               </div>
@@ -1157,6 +1161,9 @@
       get_records_promise.abort();
     }
     query.fields_to_return = fields_to_show_in_table;
+    // if (window.wpApiShare.features.storage) {
+    //   query.fields_to_return.unshift('record_picture');
+    // }
     get_records_promise = window.makeRequestOnPosts(
       'POST',
       `${list_settings.post_type}/list`,

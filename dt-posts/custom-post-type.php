@@ -32,6 +32,8 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'register_p2p_connections' ], 50, 0 );
         add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 50, 1 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 11, 1 );
+        add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 100, 3 );
+
     }
 
     public function register_post_type(){
@@ -173,6 +175,12 @@ class Disciple_Tools_Post_Type_Template {
             'required' => true,
             'icon' => get_template_directory_uri() . '/dt-assets/images/name.svg',
             'show_in_table' => 5
+        ];
+        $fields['record_picture'] = [
+            'name' => __( 'Picture', 'disciple_tools' ),
+            'type' => 'image',
+            'tile' => 'details',
+            'show_in_table' => 1,
         ];
         $fields['last_modified'] =[
             'name' => __( 'Last Modified', 'disciple_tools' ),
@@ -377,6 +385,15 @@ class Disciple_Tools_Post_Type_Template {
         ];
 
         return $capabilities;
+    }
+
+    public function dt_record_icon( $icon, $post_type, $post_id ){
+        if ( $icon ){
+            return $icon;
+        }
+        $icon = 'mdi mdi-image-outline';
+
+        return $icon;
     }
 }
 

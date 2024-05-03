@@ -768,6 +768,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         self::get_all_connected_fields_on_list( $post_settings['fields'], $records, $fields_to_return );
         $site_url = site_url();
+        $dt_storage_enabled = ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() );
         foreach ( $records as  &$record ){
 
             self::adjust_post_custom_fields( $post_type, $record['ID'], $record, $fields_to_return, $all_posts[ $record['ID'] ] ?? [], $all_post_user_meta[ $record['ID'] ] ?? [] );
