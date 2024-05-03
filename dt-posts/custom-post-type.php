@@ -260,6 +260,7 @@ class Disciple_Tools_Post_Type_Template {
                 'connection_types' => array_keys( array_filter( $fields, function ( $a ) {
                     return $a['type'] === 'connection';
                 } ) ),
+                'magic_link_apps' => dt_get_registered_types( true ),
                 'label_singular' => $this->singular,
                 'label_plural' => $this->plural,
                 'post_type' => $this->post_type,

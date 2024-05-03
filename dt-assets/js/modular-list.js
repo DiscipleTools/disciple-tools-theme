@@ -3925,15 +3925,20 @@
       let exporting_fields_all = [];
       let exporting_fields_visible = [];
 
-      $.each(
-        window.list_settings['post_type_settings']['fields'],
-        function (field_id, field_setting) {
+      const magic_link_app_keys = Object.keys(
+        window.list_settings.post_type_settings.magic_link_apps,
+      );
+      Object.keys(window.list_settings.post_type_settings.fields).forEach(
+        (field_id) => {
+          const field_setting =
+            window.list_settings.post_type_settings.fields[field_id];
           if (
-            (field_setting['private'] === undefined ||
+            magic_link_app_keys.includes(field_id) ||
+            ((field_setting['private'] === undefined ||
               !field_setting['private']) &&
-            (field_setting['hidden'] === undefined ||
-              !field_setting['hidden']) &&
-            !['task', 'array'].includes(field_setting['type'])
+              (field_setting['hidden'] === undefined ||
+                !field_setting['hidden']) &&
+              !['task', 'array'].includes(field_setting['type']))
           ) {
             let setting = field_setting;
             setting['field_id'] = field_id;
@@ -4051,6 +4056,9 @@
         window.list_settings.post_type_settings.fields.name,
       );
     }
+    const magic_link_app_keys = Object.keys(
+      window.list_settings.post_type_settings.magic_link_apps,
+    );
 
     // First retrieve all records associated with currently selected filter.
     recursively_fetch_posts(
@@ -4194,6 +4202,25 @@
                     csv_row.push(token_array.join(token_array_delimiter));
                     break;
                   }
+                  case 'hash':
+                  case 'magic_link':
+                    {
+                      if (
+                        magic_link_app_keys.includes(field_id) &&
+                        post[field_id]
+                      ) {
+                        const token = post[field_id] ? post[field_id] : '';
+                        const url =
+                          window.wpApiShare.site_url +
+                          '/' +
+                          window.list_settings.post_type_settings
+                            .magic_link_apps[field_id]['url_base'] +
+                          '/' +
+                          token;
+                        csv_row.push(url);
+                      }
+                    }
+                    break;
                   case 'task':
                   case 'array':
                   default: {
