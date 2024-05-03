@@ -199,7 +199,7 @@ jQuery(document).ready(function ($) {
             <hr style="margin:10px 5px;">
             <div style="float: right;">
               <button id="display_records_toggle" class="button small select-button empty-select-button" style="display: none;">
-                  <i class="mdi mdi-glasses" style="font-size: 25px;"></i>
+                  <i class="mdi mdi-eye-check-outline" style="font-size: 25px;"></i>
               </button>
               <button id="update_records_request" class="button small select-button empty-select-button">
                   <i class="mdi mdi-content-save-outline" style="font-size: 25px;"></i>
