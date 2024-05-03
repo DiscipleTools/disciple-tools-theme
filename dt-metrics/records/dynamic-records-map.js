@@ -113,7 +113,7 @@ jQuery(document).ready(function ($) {
             <div id="legend-bar" class="grid-x grid-margin-x grid-padding-x">
               <div class="cell small-2 center info-bar-font">
                   ${window.lodash.escape(this.title)}
-                  <span id="loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
+                  <span id="loading-spinner" style="display: none;" class="loading-spinner active"></span>
                   <div id="loading-legend"></div>
               </div>
               <div id="map-type" class="border-left">
@@ -145,6 +145,16 @@ jQuery(document).ready(function ($) {
             <div id="add_records_div_content">
               <table>
                   <tbody>
+                      <tr>
+                        <td>
+                          <input type="color" id="add_records_div_content_layer_color">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="text" id="add_records_div_content_layer_name">
+                        </td>
+                      </tr>
                       <tr>
                           <td>
                             <select id="add_records_div_content_post_type">
@@ -189,7 +199,10 @@ jQuery(document).ready(function ($) {
             <hr style="margin:10px 5px;">
             <div style="float: right;">
               <button id="display_records_toggle" class="button small select-button empty-select-button" style="display: none;">
-                  <i class="mdi mdi-earth" style="font-size: 25px;"></i>
+                  <i class="mdi mdi-eye-check-outline" style="font-size: 25px;"></i>
+              </button>
+              <button id="update_records_request" class="button small select-button empty-select-button">
+                  <i class="mdi mdi-content-save-outline" style="font-size: 25px;"></i>
               </button>
               <button id="delete_records_request" class="button small select-button empty-select-button" style="display: none;">
                   <i class="mdi mdi-delete-forever-outline" style="font-size: 25px;"></i>
@@ -385,9 +398,10 @@ jQuery(document).ready(function ($) {
                 // Remove existing map query layer sources.
                 mapbox_library_api.remove_map_record_layer(response.request.id);
 
-                // Generate layer color.
-                let layer_color =
-                  mapbox_library_api.add_records_generate_hex_color();
+                // Capture layer color.
+                let layer_color = payload.layer_color
+                  ? payload.layer_color
+                  : mapbox_library_api.add_records_generate_hex_color();
 
                 // Add corresponding mqp query source and layer.
                 mapbox_library_api.add_map_record_layer(
@@ -405,7 +419,7 @@ jQuery(document).ready(function ($) {
                 class="button map-layers-tab-button"
                 style="background-color: ${layer_color} !important;"
                 data-query_id="${response.request.id}">
-                ${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${map_layers_tab_count}
+                ${payload.layer_name ? payload.layer_name : window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title) + ' ' + map_layers_tab_count}
               </button>`;
                 $(map_layers_tab).append(map_layers_tab_button_html);
 
@@ -448,6 +462,62 @@ jQuery(document).ready(function ($) {
                 $('#add_records_div').fadeOut('fast');
               }
             });
+            break;
+          }
+          case 'update_records_request': {
+            // Fetch current snapshot and previous settings.
+            let payload =
+              mapbox_library_api.add_records_capture_state_snapshot_payload();
+            let map_query_layer_payload =
+              mapbox_library_api.map_query_layer_payloads[div_layer_id];
+
+            // Capture latest layer colour & name updates.
+            const layer_id = map_query_layer_payload?.id;
+            const layer_color = payload?.layer_color
+              ? payload.layer_color
+              : map_query_layer_payload?.layer_color;
+            const layer_name = payload?.layer_name
+              ? payload.layer_name
+              : map_query_layer_payload?.layer_name;
+
+            // Update UI to reflect latest changes.
+            const layer_but = $('#map_layers_tab').find(
+              `.button.map-layers-tab-button[data-query_id="${layer_id}"]`,
+            );
+            if (layer_but) {
+              $(layer_but).css('background-color', layer_color);
+              $(layer_but).text(layer_name);
+
+              mapbox_library_api.update_map_record_layer(layer_id, {
+                layer_color: layer_color,
+              });
+
+              // Persist updates.
+              map_query_layer_payload.color = layer_color;
+              map_query_layer_payload.layer_color = layer_color;
+              map_query_layer_payload.layer_name = layer_name;
+              mapbox_library_api.map_query_layer_payloads[div_layer_id] =
+                map_query_layer_payload;
+
+              let dt_maps_layers_cookie =
+                window.SHAREDFUNCTIONS.get_json_from_local_storage(
+                  mapbox_library_api.dt_maps_layers_cookie_id,
+                  {},
+                );
+              if (!dt_maps_layers_cookie) {
+                dt_maps_layers_cookie = {};
+              }
+
+              dt_maps_layers_cookie['' + layer_id] = map_query_layer_payload;
+              window.SHAREDFUNCTIONS.save_json_to_local_storage(
+                mapbox_library_api.dt_maps_layers_cookie_id,
+                dt_maps_layers_cookie,
+                null,
+              );
+
+              // Close layer records edit modal.
+              $('#add_records_div').fadeOut('fast');
+            }
             break;
           }
           case 'delete_records_request': {
@@ -691,7 +761,7 @@ jQuery(document).ready(function ($) {
                 class="button map-layers-tab-button"
                 style="background-color: ${cookie.color} !important;"
                 data-query_id="${cookie.id}">
-                ${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${$(map_layers_tab).children().length + 1}
+                ${cookie.layer_name ? cookie.layer_name : window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title) + ' ' + ($(map_layers_tab).children().length + 1)}
               </button>`;
         $(map_layers_tab).append(map_layers_tab_button_html);
 
@@ -770,6 +840,35 @@ jQuery(document).ready(function ($) {
       let query_source = mapbox_library_api.map.getSource(query_source_key);
       if (typeof query_source !== 'undefined') {
         mapbox_library_api.map.removeSource(query_source_key);
+      }
+    },
+    update_map_record_layer: function (layer_id, updates = {}) {
+      let query_layer_key = `dt-maps-${layer_id}-layer`;
+      let query_layer_key_clustered = `dt-maps-${layer_id}-layer-clustered`;
+
+      if (
+        typeof mapbox_library_api.map.getLayer(query_layer_key) !== 'undefined'
+      ) {
+        if (updates?.layer_color) {
+          mapbox_library_api.map.setPaintProperty(
+            query_layer_key,
+            'circle-color',
+            updates.layer_color,
+          );
+        }
+      }
+
+      if (
+        typeof mapbox_library_api.map.getLayer(query_layer_key_clustered) !==
+        'undefined'
+      ) {
+        if (updates?.layer_color) {
+          mapbox_library_api.map.setPaintProperty(
+            query_layer_key_clustered,
+            'circle-color',
+            updates.layer_color,
+          );
+        }
       }
     },
     add_map_record_layer: function (layer_id, layer_color, geojson_data) {
@@ -1048,6 +1147,14 @@ jQuery(document).ready(function ($) {
           ),
         );
 
+        // Reset layer colour & default name.
+        $('#add_records_div_content_layer_color').val(
+          mapbox_library_api.add_records_generate_hex_color(),
+        );
+        $('#add_records_div_content_layer_name').val(
+          `${window.lodash.escape(mapbox_library_api.obj.translations.add_records.layer_tab_button_title)} ${$('#map_layers_tab').children().length + 1}`,
+        );
+
         // Reset select widgets.
         let add_records_div_content_post_type = $(
           '#add_records_div_content_post_type',
@@ -1058,6 +1165,7 @@ jQuery(document).ready(function ($) {
         // Reset default buttons.
         $('#display_records_toggle').hide();
         $('#delete_records_request').hide();
+        $('#update_records_request').hide();
         $('#add_records_request').show();
 
         $(add_records_div).fadeIn('fast');
@@ -1073,6 +1181,12 @@ jQuery(document).ready(function ($) {
           // Update modal title.
           $('#add_records_div_title').text(window.lodash.escape(title));
 
+          // Reset layer colour & default name.
+          $('#add_records_div_content_layer_color').val(settings.layer_color);
+          $('#add_records_div_content_layer_name').val(
+            window.lodash.escape(title),
+          );
+
           // Reset select widgets, passing layer settings downstream.
           let add_records_div_content_post_type = $(
             '#add_records_div_content_post_type',
@@ -1086,6 +1200,7 @@ jQuery(document).ready(function ($) {
           // Reset edit-mode buttons.
           $('#display_records_toggle').show();
           $('#delete_records_request').show();
+          $('#update_records_request').show();
           $('#add_records_request').hide();
 
           $(add_records_div).fadeIn('fast');
@@ -1202,6 +1317,8 @@ jQuery(document).ready(function ($) {
       }
     },
     add_records_capture_state_snapshot_payload: function () {
+      let layer_color = $('#add_records_div_content_layer_color').val();
+      let layer_name = $('#add_records_div_content_layer_name').val();
       let post_type = $('#add_records_div_content_post_type').val();
       let field_key = $('#add_records_div_content_post_type_fields').val();
       let field_values_div = $(
@@ -1211,6 +1328,8 @@ jQuery(document).ready(function ($) {
         mapbox_library_api.obj.settings.post_types[post_type];
 
       let payload = {
+        layer_color: layer_color,
+        layer_name: layer_name,
         post_type: post_type,
         field_key: field_key,
       };
