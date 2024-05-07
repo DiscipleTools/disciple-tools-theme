@@ -2750,7 +2750,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $a_order <=> $b_order;
         });
         foreach ( $fields as $field_key => $field_value ){
-            if ( ( isset( $field_value['show_in_table'] ) && $field_value['show_in_table'] ) ){
+            if ( ( isset( $field_value['show_in_table'] ) && $field_value['show_in_table'] ) && empty( $field_value['hidden'] ) ){
                 $columns[] = $field_key;
             }
         }

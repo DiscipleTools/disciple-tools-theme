@@ -1085,8 +1085,13 @@
           ) {
             values[0] = '&#9733;';
           }
+          let title = values.join(', ');
+          //exclude html tags from title
+          if (title.includes('<')) {
+            title = '';
+          }
           let tmp_html = `
-            <td dir="auto" data-id="${field_key}" title="${values.join(', ')}">
+            <td dir="auto" data-id="${field_key}" title="${title}">
               <ul>
                 ${values_html}
               </ul>
