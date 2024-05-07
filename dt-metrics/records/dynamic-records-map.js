@@ -250,10 +250,8 @@ jQuery(document).ready(function ($) {
           // Determine post type to be adopted.
           if (adopt_layer_settings) {
             $(this).val(layer_settings.post_type);
-            $(this).prop('disabled', true);
-          } else {
-            $(this).prop('disabled', false);
           }
+          $(this).prop('disabled', false);
 
           let selected_post_type = $(this).val();
           $(add_records_div_content_post_type_field_values).fadeOut(
@@ -277,16 +275,11 @@ jQuery(document).ready(function ($) {
                         $(add_records_div_content_post_type_fields).val(
                           layer_settings.field_key,
                         );
-                        $(add_records_div_content_post_type_fields).prop(
-                          'disabled',
-                          true,
-                        );
-                      } else {
-                        $(add_records_div_content_post_type_fields).prop(
-                          'disabled',
-                          false,
-                        );
                       }
+                      $(add_records_div_content_post_type_fields).prop(
+                        'disabled',
+                        false,
+                      );
 
                       $(add_records_div_content_post_type_fields).trigger(
                         'change',
@@ -330,7 +323,7 @@ jQuery(document).ready(function ($) {
                       )
                       .each(function () {
                         let checkbox = $(this);
-                        $(checkbox).prop('disabled', true);
+                        $(checkbox).prop('disabled', false);
                         $(checkbox).prop(
                           'checked',
                           window.lodash.includes(
@@ -493,6 +486,10 @@ jQuery(document).ready(function ($) {
               });
 
               // Persist updates.
+              map_query_layer_payload.post_type = payload.post_type;
+              map_query_layer_payload.field_key = payload.field_key;
+              map_query_layer_payload.field_type = payload.field_type;
+              map_query_layer_payload.field_values = payload.field_values;
               map_query_layer_payload.color = layer_color;
               map_query_layer_payload.layer_color = layer_color;
               map_query_layer_payload.layer_name = layer_name;
@@ -517,6 +514,11 @@ jQuery(document).ready(function ($) {
 
               // Close layer records edit modal.
               $('#add_records_div').fadeOut('fast');
+
+              // Reload map and reflect latest changes.
+              mapbox_library_api.reload_record_layers(true, function () {
+                mapbox_library_api.adjust_layer_point_sizes();
+              });
             }
             break;
           }
