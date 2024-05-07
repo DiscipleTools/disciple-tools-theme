@@ -179,8 +179,8 @@ class Disciple_Tools_Post_Type_Template {
         $fields['record_picture'] = [
             'name' => __( 'Picture', 'disciple_tools' ),
             'type' => 'image',
-            'tile' => 'details',
             'show_in_table' => 1,
+            'hidden' => !class_exists( 'DT_Storage' ) || !DT_Storage::is_enabled()
         ];
         $fields['last_modified'] =[
             'name' => __( 'Last Modified', 'disciple_tools' ),
