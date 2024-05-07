@@ -476,6 +476,9 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 case 'remove':
                     $already_executed[] = ! $current_state;
                     break;
+                case 'custom': // custom actions
+                    $already_executed[] = apply_filters( $action->value . '__already_executed', false, $action, $post );
+                    break;
             }
         }
 
