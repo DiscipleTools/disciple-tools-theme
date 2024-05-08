@@ -142,7 +142,7 @@ jQuery(document).ready(function ($) {
             <input id="add_records_div_layer_id" type="hidden" value="" />
             <span id="add_records_div_title">${window.lodash.escape(this.obj.translations.add_records.title)}</span><span class="close-add-records-div" style="float:right;"><i class="fi-x"></i></span>
             <hr style="margin:10px 5px;">
-            <div id="add_records_div_content">
+            <div id="add_records_div_content" style="overflow: auto;">
               <table>
                   <tbody>
                       <tr>
