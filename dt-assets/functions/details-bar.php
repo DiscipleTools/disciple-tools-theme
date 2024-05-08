@@ -113,7 +113,8 @@ function dt_print_details_bar(
                                                  data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                                  data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
                                                  data-storage_upload_meta_key="record_picture"
-                                                 data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>">
+                                                 data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>"
+                                                 data-storage_upload_delete_enabled="1">
                                         <?php else : ?>
                                             <i class="dt-storage-upload <?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>; font-size: 55px; cursor: pointer;"
                                                data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
@@ -281,14 +282,15 @@ function dt_print_details_bar(
                             <tbody style="border: 0;">
                             <tr style="border: 0;">
                                 <td style="padding: <?php echo !empty( $picture ) ? '0' : '10px'; ?> 15px 0 0;">
-                                    <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                                    <?php $picture = apply_filters( 'dt_record_picture', $record_picture, $dt_post_type, $post_id );
                                     $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
                                     if ( !empty( $picture ) ) : ?>
                                         <img class="dt-storage-upload" src="<?php echo esc_html( $picture )?>" style="width:55px; vertical-align:middle"
                                              data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                              data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
                                              data-storage_upload_meta_key="record_picture"
-                                             data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>">
+                                             data-storage_upload_key_prefix="<?php echo esc_attr( $dt_post_type )?>"
+                                             data-storage_upload_delete_enabled="1">
                                     <?php else : ?>
                                         <i class="dt-storage-upload <?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>; font-size: 55px;"
                                            data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
