@@ -4438,11 +4438,13 @@
 
           // Update count findings.
           let list_print = jQuery('#email-list-print');
+          let all_emails = [];
           $.each(email_totals, function (index, values) {
-            list_print.append(
-              window.SHAREDFUNCTIONS.escapeHTML(values.join(', ')),
-            );
+            all_emails.push(values.join(', '));
           });
+          list_print.append(
+            window.SHAREDFUNCTIONS.escapeHTML(all_emails.join(', ')),
+          );
 
           jQuery('#list-count-with').html(list_count['with']);
           jQuery('#list-count-without').html(list_count['without']);
