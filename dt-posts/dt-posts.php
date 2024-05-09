@@ -1398,6 +1398,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         $user = wp_get_current_user();
         $user_id = $args['user_id'] ?? get_current_user_id();
 
+        // Adhere to db comment_type 20 char constraint.
+        if ( strlen( $type ) > 20 ) {
+            $type = substr( $type, 0, 20 );
+        }
+
         $created_comment_id = null;
         foreach ( $comments as $comment ){
             $comment_data = [
