@@ -67,21 +67,6 @@
     display:none;
 }
 
-@media screen and (max-width : 1140px) {
-    #add_records_div {
-        top: 20%;
-    }
-    #add_records_div_content {
-        height: 270px;
-    }
-}
-
-@media screen and (min-width: 1141px) {
-    #add_records_div {
-        top: 10%;
-    }
-}
-
 .close-add-records-div {
     cursor:pointer;
 }
