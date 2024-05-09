@@ -9,6 +9,7 @@ jQuery(document).ready(function ($) {
       $(element).data('storage_upload_post_id'),
       $(element).data('storage_upload_meta_key'),
       $(element).data('storage_upload_key_prefix'),
+      $(element).data('storage_upload_delete_enabled') !== undefined,
     );
   });
 
@@ -21,6 +22,7 @@ jQuery(document).ready(function ($) {
     post_id,
     meta_key,
     key_prefix,
+    delete_enabled = false,
   ) {
     const modal_html = `
       <div class="reveal medium" id="dt_storage_upload_modal" data-reveal data-reset-on-close>
@@ -190,6 +192,9 @@ jQuery(document).ready(function ($) {
             <a class="button box__button_upload">${escape(storage_settings?.translations?.modals?.upload?.but_upload)}</a>
         </form>
 
+        <br>
+        <button class="button box__button_delete" style="display: ${delete_enabled ? `initial` : `none`};">${escape(storage_settings?.translations?.modals?.upload?.but_delete)}</button>
+
         <button class="close-button" data-close aria-label="${escape(storage_settings?.translations?.modals?.upload?.but_close)}" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -259,6 +264,7 @@ jQuery(document).ready(function ($) {
         $label = $form.find('label'),
         $error_msg = $form.find('.box__error span'),
         $upload_button = $form.find('.box__button_upload'),
+        $delete_button = $form.parent().find('.box__button_delete'),
         $restart = $form.find('.box__restart'),
         dropped_files = false,
         show_files = function (files) {
@@ -432,6 +438,70 @@ jQuery(document).ready(function ($) {
         .on('blur', function () {
           $input.removeClass('has-focus');
         });
+
+      // Support file deletion requests.
+      if ($delete_button) {
+        $delete_button.on('click', function (e) {
+          e.preventDefault();
+          if (
+            confirm(
+              `${escape(storage_settings?.translations?.modals?.upload?.delete_msg)}`,
+            )
+          ) {
+            // Hijack the existing form uploading state and disable delete button.
+            $form.addClass('is-uploading').removeClass('is-error');
+            $delete_button.attr('disabled', true);
+
+            const payload = {
+              meta_key: meta_key,
+            };
+
+            $.ajax({
+              type: 'POST',
+              contentType: 'application/json; charset=utf-8',
+              dataType: 'json',
+              cache: false,
+              data: JSON.stringify(payload),
+              url: `${storage_settings?.rest_url + 'dt-posts/v2/' + post_type + '/' + post_id + '/storage_delete'}`,
+              beforeSend: (xhr) => {
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+              },
+              complete: function () {
+                $form.removeClass('is-uploading');
+              },
+              success: function (response) {
+                if (response && response?.deleted === true) {
+                  $delete_button.text(
+                    escape(
+                      storage_settings?.translations?.modals?.upload
+                        ?.delete_success_msg,
+                    ),
+                  );
+                  window.location.reload();
+                } else {
+                  $delete_button.text(
+                    escape(
+                      storage_settings?.translations?.modals?.upload
+                        ?.delete_error_msg,
+                    ),
+                  );
+                  $delete_button.attr('disabled', false);
+                }
+              },
+              error: function (err) {
+                console.log(err);
+                $form.addClass('is-error');
+                $error_msg.text(
+                  escape(
+                    storage_settings?.translations?.modals?.upload
+                      ?.delete_error_msg,
+                  ),
+                );
+              },
+            });
+          }
+        });
+      }
     });
   }
 });
