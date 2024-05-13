@@ -592,7 +592,7 @@ class DT_User_Management
             $columns = [ 'user_login', 'user_email', 'display_name' ];
             $where .= ' AND ( ';
             foreach ( $columns as $column ){
-                $where .= $wpdb->prepare( "$column LIKE %s OR ", '%'. $search .'%' );
+                $where .= $wpdb->prepare( "$column LIKE %s OR ", '%'. $search .'%' ); //phpcs:ignore
             }
             $where = rtrim( $where, ' OR ' );
             $where .= ' ) ';
