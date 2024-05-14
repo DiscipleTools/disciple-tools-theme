@@ -190,7 +190,7 @@ jQuery(document).ready(function ($) {
                       <tr>
                           <td>
                               <select id="add_records_div_content_post_type_fields"></select>
-                              <div id="add_records_div_content_post_type_field_values" style="overflow: auto; max-height: 200px;"></div>
+                              <div id="add_records_div_content_post_type_field_values"></div>
                           </td>
                       </tr>
                   </tbody>
