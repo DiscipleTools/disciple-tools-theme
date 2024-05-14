@@ -156,7 +156,7 @@ function dt_print_details_bar(
                             </a>
                         </div>
                     </div>
-                    <div class="cell small-5 large-4 align-right grid-x">
+                    <div class="cell small-5 large-4 align-right grid-x control-buttons">
                         <div class="cell shrink center-items">
                             <button class="button favorite" data-favorite="false">
                                 <svg class='icon-star' viewBox="0 0 32 32">
