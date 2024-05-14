@@ -87,7 +87,13 @@
 
     if (filterID && is_in_filter_list(filterID)) {
       const currentFilter = { ID: filterID, query: query || {} };
-      if (filterTab) currentFilter.tab = filterTab;
+      if (filterTab) {
+        currentFilter.tab = filterTab;
+      } else {
+        currentFilter.tab = list_settings.filters.filters.find(
+          (filter) => filterID === filter.ID,
+        )?.tab;
+      }
       return currentFilter;
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
       return urlCustomFilter;
@@ -430,13 +436,9 @@
   }
 
   function is_in_filter_list(filterID) {
-    if (
-      list_settings.filters.filters.some((filter) => filterID === filter.ID)
-    ) {
-      return true;
-    }
-
-    return false;
+    return list_settings.filters.filters.some(
+      (filter) => filterID === filter.ID,
+    );
   }
 
   function update_url_query(currentFilter) {
