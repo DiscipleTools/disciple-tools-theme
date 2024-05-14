@@ -190,7 +190,7 @@ jQuery(document).ready(function ($) {
                       <tr>
                           <td>
                               <select id="add_records_div_content_post_type_fields"></select>
-                              <div id="add_records_div_content_post_type_field_values" style="overflow: auto;"></div>
+                              <div id="add_records_div_content_post_type_field_values"></div>
                           </td>
                       </tr>
                   </tbody>
@@ -1137,13 +1137,7 @@ jQuery(document).ready(function ($) {
       }
     },
     show_records_modal_add_mode: function () {
-      let legend = $('#legend');
-      let map_wrapper = $('#map-wrapper');
       let add_records_div = $('#add_records_div');
-      let add_records_div_content = $('#add_records_div_content');
-      let add_records_div_content_post_type_field_values = $(
-        '#add_records_div_content_post_type_field_values',
-      );
       $(add_records_div).fadeOut('fast', function () {
         // Reset metadata.
         $('#add_records_div_layer_id').val('');
@@ -1176,30 +1170,12 @@ jQuery(document).ready(function ($) {
         $('#update_records_request').hide();
         $('#add_records_request').show();
 
-        // Ensure dynamic positioning is observed, prior to display.
-        let modal_top =
-          parseInt($(legend).css('top'), 10) + $(legend).height() + 30;
-        let modal_content_height = 0.6 * $(map_wrapper).height();
-        let field_values_height = 0.5 * modal_content_height;
-
-        $(add_records_div).css('top', `${modal_top}px`);
-        $(add_records_div_content).css('height', `${modal_content_height}px`);
-        $(add_records_div_content_post_type_field_values).css(
-          'height',
-          `${field_values_height}px`,
-        );
         $(add_records_div).fadeIn('fast');
       });
     },
     show_records_modal_edit_mode: function (id, settings, title) {
       if (id && settings) {
-        let legend = $('#legend');
-        let map_wrapper = $('#map-wrapper');
         let add_records_div = $('#add_records_div');
-        let add_records_div_content = $('#add_records_div_content');
-        let add_records_div_content_post_type_field_values = $(
-          '#add_records_div_content_post_type_field_values',
-        );
         $(add_records_div).fadeOut('fast', function () {
           // Reset metadata.
           $('#add_records_div_layer_id').val(id);
@@ -1229,18 +1205,6 @@ jQuery(document).ready(function ($) {
           $('#update_records_request').show();
           $('#add_records_request').hide();
 
-          // Ensure dynamic positioning is observed, prior to display.
-          let modal_top =
-            parseInt($(legend).css('top'), 10) + $(legend).height() + 30;
-          let modal_content_height = 0.6 * $(map_wrapper).height();
-          let field_values_height = 0.5 * modal_content_height;
-
-          $(add_records_div).css('top', `${modal_top}px`);
-          $(add_records_div_content).css('height', `${modal_content_height}px`);
-          $(add_records_div_content_post_type_field_values).css(
-            'height',
-            `${field_values_height}px`,
-          );
           $(add_records_div).fadeIn('fast');
         });
       }

@@ -53,8 +53,11 @@
 }
 #add_records_div {
     position: absolute;
+    top: 90px;
     left: 10px;
     z-index: 2;
+    max-height: 100%;
+    overflow-x: auto;
 }
 .add-records-div {
     background-color: #ffffff;
