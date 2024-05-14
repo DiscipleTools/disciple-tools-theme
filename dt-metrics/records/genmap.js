@@ -16,18 +16,27 @@ jQuery(document).ready(function ($) {
 
     chart.empty().html(`
           <div class="grid-x grid-padding-x">
-              <div class="cell medium-8">
+              <div class="cell medium-10">
                   <span>
                     <select id="select_post_types" style="width: 200px;"></select>
                   </span>
                   <span>
                     <select id="select_post_type_fields" style="width: 200px;"></select>
                   </span>
+                  <span style="display: inline-block; margin-right: 10px; margin-left: 10px;" class="show-closed-switch">
+                      ${window.lodash.escape(translations.show_archived)}
+                      <div class="switch tiny">
+                          <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
+                          <label class="switch-paddle" for="archivedToggle">
+                              <span class="show-for-sr">${window.lodash.escape(translations.show_archived)}</span>
+                          </label>
+                      </div>
+                  </span>
                   <span>
                     <i class="fi-loop" onclick="window.load_genmap()" style="font-size: 1.5em; padding:.5em;cursor:pointer;"></i>
                   </span>
               </div>
-              <div class="cell medium-4" >
+              <div class="cell medium-2" >
                 <h2 style="float:right;">${window.lodash.escape(translations.title)}</h2>
               </div>
           </div>
@@ -70,6 +79,7 @@ jQuery(document).ready(function ($) {
           .data('p2p_direction'),
         post_type: selected_post_type,
         gen_depth_limit: 100,
+        show_archived: jQuery('#archivedToggle').prop('checked'),
       };
 
       // Dynamically update URL parameters.
@@ -205,6 +215,10 @@ jQuery(document).ready(function ($) {
 
     jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
       handle_add_child();
+    });
+
+    jQuery(document).on('click', '#archivedToggle', function (e) {
+      window.load_genmap();
     });
   }
 

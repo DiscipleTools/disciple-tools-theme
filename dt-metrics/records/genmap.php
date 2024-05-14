@@ -56,9 +56,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         if ( ! isset( $params['p2p_type'], $params['p2p_direction'], $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type ]', [ 'status' => 400 ] );
         }
-
-        $query = $this->get_query( $params['post_type'], $params['p2p_type'], $params['p2p_direction'] );
-
+        dt_write_log( $params );
+        $query = $this->get_query( $params['post_type'], $params['p2p_type'], $params['p2p_direction'], [
+            'show_archived' => $params['show_archived'] ?? false
+        ] );
+        dt_write_log( $query );
         return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0 );
     }
 
@@ -84,6 +86,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'data' => [],
                 'translations' => [
                     'title' => __( 'Generation Map', 'disciple_tools' ),
+                    'show_archived' => __( 'Show Archived', 'disciple_tools' ),
                     'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                     'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
                     'members' => __( 'Members', 'disciple_tools' ),
@@ -131,7 +134,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         wp_enqueue_style( 'orgchart_css', $css_uri, [], filemtime( $css_dir ) );
     }
 
-    public function get_query( $post_type, $p2p_type, $p2p_direction ) {
+    public function get_query( $post_type, $p2p_type, $p2p_direction, $filters = [] ) {
         global $wpdb;
 
         // p2p direction will govern overall query sql shape.
@@ -147,33 +150,59 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             $select_parent_id = 'p2p_from';
         }
 
-        $query = $wpdb->get_results( $wpdb->prepare( "
+        // Determine archived meta values.
+        $post_settings = DT_Posts::get_post_settings( $post_type );
+        dt_write_log( $post_settings['status_field'] );
+        $primary_join_sql = '';
+        $union_join_sql = '';
+        if ( isset( $filters['show_archived'], $post_settings['status_field']['status_key'], $post_settings['status_field']['archived_key'] ) && $filters['show_archived'] ) {
+            $status_key = $post_settings['status_field']['status_key'];
+            $archived_key = $post_settings['status_field']['archived_key'];
+
+            dt_write_log( $status_key );
+            dt_write_log( $archived_key );
+
+            //$primary_join_sql = "INNER JOIN $wpdb->postmeta p_status ON( p_status.post_id = a.ID AND p_status.meta_key = '$status_key' AND p_status.meta_value = '$archived_key' )";
+            $union_join_sql = "INNER JOIN $wpdb->postmeta u_status ON( u_status.post_id = p.p2p_from AND u_status.meta_key = '$status_key' AND u_status.meta_value = '$archived_key' )";
+        }
+
+        $sql = "
                     SELECT
                       a.ID         as id,
                       0            as parent_id,
                       a.post_title as name
                     FROM $wpdb->posts as a
-                    WHERE a.post_type = %s
-                    AND a.ID %1s IN (
+
+                    $primary_join_sql
+
+                    WHERE a.post_type = '$post_type'
+                    AND a.ID $not_from IN (
                       SELECT DISTINCT (p2p_from)
                       FROM $wpdb->p2p
-                      WHERE p2p_type = %s
+                      WHERE p2p_type = '$p2p_type'
                       GROUP BY p2p_from
                     )
-                      AND a.ID %1s IN (
+                      AND a.ID $not_to IN (
                       SELECT DISTINCT (p2p_to)
                       FROM $wpdb->p2p
-                      WHERE p2p_type = %s
+                      WHERE p2p_type = '$p2p_type'
                       GROUP BY p2p_to
                     )
                     UNION
                     SELECT
-                      p.%1s  as id,
-                      p.%1s    as parent_id,
-                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name
+                      p.$select_id  as id,
+                      p.$select_parent_id    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.$select_id ) as name
                     FROM $wpdb->p2p as p
-                    WHERE p.p2p_type = %s;
-                ", $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $p2p_type ), ARRAY_A );
+
+                    $union_join_sql
+
+                    WHERE p.p2p_type = '$p2p_type';
+                ";
+
+        // @phpcs:ignore
+        $query = $wpdb->get_results( $sql, ARRAY_A );
+        dt_write_log( $wpdb->last_query );
 
         return $query;
     }
