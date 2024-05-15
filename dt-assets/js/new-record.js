@@ -74,8 +74,7 @@ if (
       });
       // Call the createPost method of initApiService to create a post with the collected data
       initApiService.createPost("contacts", data.el).then(function (response) {
-        // window.location = response.permalink
-        console.log("response", response);
+        window.location = response.permalink
       });
     });
 
@@ -250,103 +249,6 @@ jQuery(function ($) {
     ).remove();
     $(this).parent().remove();
   });
-
-  /* breadcrumb: new-field-type Add the new link type data to the new_post array */
-  // $(".js-create-post").on("submit", function(e) {
-  //   $(".js-create-post-button")
-  //   .attr("disabled", true)
-  //   .addClass("loading");
-  //   e.preventDefault();
-  //   new_post.title = $(".js-create-post [name=name]").val()
-
-  //   $('.text-input').each((index, entry)=>{
-  //     if ( $(entry).val() ){
-  //       new_post[$(entry).attr('id')] = $(entry).val()
-  //     }
-  //   })
-
-  // $('dt-text').each((index, entry)=>{
-  //   if ( $(entry).val() ){
-  //     new_post[$(entry).attr('id')] = $(entry).attr('value')
-  //   }
-  // })
-
-  // $('dt-comm-channel').each((index, entry)=>{
-  //   let channel = $(entry).attr('id');
-  //   console.log('channel', channel)
-  //   console.log('typeof new_post[channel]', typeof(commChannelComponentValue))
-  //   if (typeof new_post[channel] === 'undefined') {
-  //     new_post[channel] = [];
-  //   }
-  // console.log('$(entry)', entry)
-  //   if($(entry).attr('value')) {
-  //     console.log('here')
-  //     const commChannelComponentValue = JSON.parse($(entry).attr('value'))
-  //     commChannelComponentValue && commChannelComponentValue.map(currentItem => {
-  //       new_post[channel].push({value: currentItem.value});
-  //     })
-
-  //   }
-  //   console.log('newpost', new_post)
-
-  // })
-
-  // $('dt-single-select').each((entry) => {
-  //   new_post[$(entry).attr('id')] = $(entry).attr('value')
-  // })
-
-  // $('.link-input').each(( entry) => {
-  //   let fieldKey = $(entry).data('field-key')
-  //   let type = $(entry).data('type')
-  //   if ( $(entry).val() ){
-  //     if ( !Object.prototype.hasOwnProperty.call( new_post, fieldKey ) ) {
-  //       new_post[fieldKey] = { values: [] }
-  //     }
-  //     new_post[fieldKey].values.push( {
-  //       value: $(entry).val(),
-  //       type: type,
-  //     } )
-  //   }
-  // })
-
-  // $('.dt_textarea').each((index, entry)=>{
-  //   if ( $(entry).val() ){
-  //     new_post[$(entry).attr('id')] = $(entry).val()
-  //   }
-  // });
-
-  // $('dt-connection').each((index, entry)=>{
-  //     let channel = $(entry).attr('id');
-  //     const dtConnectionValues =  JSON.parse($(entry).attr('value'))
-  //     dtConnectionValues.map(currentItem => {
-  //       new_post[channel].push({value: currentItem.value});
-  //     })
-  // });
-
-  //     $('.selected-select-button').each((index, entry)=>{
-  //     let optionKey = $(entry).attr('id')
-  //     let fieldKey = $(entry).data("field-key")
-  //     if ( !new_post[fieldKey]){
-  //       new_post[fieldKey] = {values:[]};
-  //     }
-  //     new_post[fieldKey].values.push({
-  //       "value": optionKey
-  //     })
-  //   })
-
-  //   if ( typeof window.selected_location_grid_meta !== 'undefined' ){
-  //     new_post['location_grid_meta'] = window.selected_location_grid_meta.location_grid_meta
-  //   }
-
-  //   window.API.create_post( window.new_record_localized.post_type, new_post).promise().then(function(data) {
-  //     window.location = data.permalink;
-  //   }).catch(function(error) {
-  //     const message = error.responseJSON?.message || error.responseText
-  //     $(".js-create-post-button").removeClass("loading").addClass("alert").attr("disabled", false)
-  //     $(".error-text").html(message);
-  //   });
-  //   return false;
-  // });
 
   let field_settings = window.new_record_localized.post_type_settings.fields;
 
@@ -1920,55 +1822,6 @@ jQuery(function ($) {
           </div>`);
     }
   });
-
-  // function check_field_value_exists(field_type, element_index) {
-  //   var email = $(`input[data-${field_type}-index="${element_index}"]`).val();
-  //   console.log(email);
-  //   $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner active');
-  //   if (!email) {
-  //     $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).hide();
-  //     $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner');
-  //     return;
-  //   }
-  //   var post_type = window.wpApiShare.post_type;
-  //   var data = {"communication_channel": `${field_type}`, "field_value": email,}
-  //   jQuery.ajax({
-  //     type: "POST",
-  //     data: JSON.stringify(data),
-  //     contentType: "application/json; charset=utf-8",
-  //     dataType: "json",
-  //     url: window.wpApiShare.root + `dt-posts/v2/${post_type}/check_field_value_exists`,
-  //     beforeSend: (xhr) => {
-  //       xhr.setRequestHeader("X-WP-Nonce", window.wpApiShare.nonce);
-  //     },
-  //   }).then(result => {
-  //     if (!$.isEmptyObject(result)) {
-  //       var duplicate_ids_html = '';
-  //       $.each(result, function(k,v) {
-  //         if ( k > 0 ) {
-  //           duplicate_ids_html += ', ';
-  //         }
-  //         duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">${window.new_record_localized.translations.contact} #${v.post_id}</a>`;
-  //       });
-  //       $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html(duplicate_ids_html);
-  //       $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).show();
-  //     } else {
-  //       $(`.communication-channel-error[data-${field_type}-index="${element_index}"]`).hide();
-  //       $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html('');
-  //     }
-  //     $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr('class','loading-spinner');
-  //   });
-  // }
-
-  // $('.form-fields dt-comm-channel').on('change',  function(e) {
-  //   // $('#contact_').on('change', function() {
-  //   console.log('cnjdcjdncjd');
-  //   var post_type = $(this).attr('posttype');
-  //   console.log(post_type);
-  //   var element_index = $(this).attr('id');;
-  //   console.log(element_index);
-  //   check_field_value_exists(post_type, element_index)
-  // });
 
   /**
    * ============== [ BULK RECORD ADDING FUNCTIONALITY ] ==============
