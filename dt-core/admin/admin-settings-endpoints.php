@@ -215,6 +215,29 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/languages', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_languages' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+    }
+
+    public function update_languages( WP_REST_REQUEST $request ) {
+        $params = $request->get_params();
+        // var_dump( $params );
+        // $languages = dt_get_option( 'dt_working_languages' ) ?: [];
+        $languages = $params;
+        // $dt_global_languages_list = dt_get_global_languages_list();
+        // $langs = dt_get_available_languages();
+        // // $languages = $params['tableLangs'];
+        // $test = $params['tableLangs'];
+
+        // //need to build $languages
+        update_option( 'dt_working_languages', $languages, false );
+
     }
 
     public static function get_post_fields() {
