@@ -498,6 +498,21 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         }
 
     } // End Class
+
+
+    /**
+     * Initialize Disciple_Tools
+     */
     disciple_tools();
+
+    /**
+     * Register Plugins
+     */
+    do_action( 'disciple_tools_register_plugins' );
+
+    /**
+     * Run actions and views
+     */
+    do_action( 'disciple_tools_loaded' );
 
 }
