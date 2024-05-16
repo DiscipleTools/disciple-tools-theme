@@ -24,45 +24,14 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      * For this to work, this file must be compatible with old PHP versions.
      * Feel free to use PHP 7 features in other files, but not in this one.
      */
-    add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
-} else {
-
-    /**
-     * Adds the Disciple_Tools Class and runs database and roles version checks.
-     */
-    function dt_theme_loaded() {
-        /** We want to make sure roles are up-to-date. */
-        require_once( 'dt-core/configuration/class-roles.php' );
-        Disciple_Tools_Roles::instance()->set_roles_if_needed();
-
-        disciple_tools();
-
-
-
-        /**
-         * Load Language Files
-         */
-        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
-    }
-    add_action( 'after_setup_theme', 'dt_theme_loaded', 5 );
-
-
-    /**
-     * Run migrations after theme is loaded
-     */
-    add_action( 'init', function (){
-        /**
-         * We want to make sure migrations are run on updates.
-         *
-         * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
-         */
-        try {
-            require_once( 'dt-core/configuration/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
-        } catch ( Throwable $e ) {
-            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
-        }
+    add_action( 'admin_notices', function (){
+        ?>
+        <div class="notice notice-error">
+          <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.4 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
+        </div>
+        <?php
     } );
+} else {
 
     /** Setup key for JWT authentication */
     if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
@@ -85,6 +54,11 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         return Disciple_Tools::instance();
     }
 
+
+    /**
+     * Adds the Disciple_Tools Class and runs database and roles version checks.
+     */
+
     /**
      * Main Disciple_Tools Class
      *
@@ -92,9 +66,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      * @since   0.1.0
      * @package Disciple.Tools
      */
-    class Disciple_Tools
-    {
-
+    class Disciple_Tools {
         /**
          * Declared variables
          *
@@ -169,7 +141,9 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             $this->user_locale = get_user_locale();
             $this->site_locale = get_locale();
 
-            set_up_wpdb_tables();
+            /** We want to make sure roles are up-to-date. */
+            require_once( 'dt-core/configuration/class-roles.php' );
+            Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
             /**
              * Load first files
@@ -177,6 +151,8 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/multisite.php' );
             require_once( 'dt-core/global-functions.php' );
             require_once( 'dt-core/utilities/loader.php' );
+            require_once( 'dt-core/setup-functions.php' );
+            dt_set_up_wpdb_tables();
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
@@ -196,7 +172,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-reports/magic-url-setup.php' );
             require_once( 'dt-reports/magic-url-bulk-send.php' );
 
-
             /**
              * User Groups & Multi Roles
              */
@@ -212,45 +187,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
                 require_once( 'dt-assets/functions/menu.php' ); // Register menus and menu walkers
                 require_once( 'dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
             }
-
-
-            /**
-             * URL loader
-             */
-            add_action( 'wp_loaded', function() {
-                $template_for_url = [
-                    'metrics'               => 'template-metrics.php',
-                    'settings'              => 'template-settings.php',
-                    'notifications'         => 'template-notifications.php',
-                    'view-duplicates'       => 'template-view-duplicates.php'
-                ];
-
-                $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
-
-                $url_path = untrailingslashit( dt_get_url_path( true ) ); //allow get parameters
-
-                if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
-                    $template_filename = locate_template( $template_for_url[ $url_path ], true );
-                    if ( $template_filename ) {
-                        exit(); // just exit if template was found and loaded
-                    } else {
-                        throw new Error( 'Expected to find template ' . $template_for_url[ $url_path ] );
-                    }
-                }
-            }, 10000 );
-            /**
-             * Set the locale for the user
-             * must be loaded after most files
-             *
-             * @return string
-             */
-            add_filter( 'locale', function() {
-                if ( is_admin() ) {
-                    return $this->site_locale;
-                } else {
-                    return $this->user_locale;
-                }
-            } );
 
             /**
              * Versioning System
@@ -271,7 +207,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
 
             require_once( 'dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
-
 
             /**
              * dt-posts
@@ -346,8 +281,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-users/mapbox-coverage-map.php' );
             require_once( 'dt-users/template-no-permission.php' );
 
-
-
             /**
              * dt-notifications
              */
@@ -375,17 +308,13 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-login/login-fields.php' );
             require_once( 'dt-login/login-shortcodes.php' );
             require_once( 'dt-login/login-endpoints.php' );
-
             require_once( 'dt-login/pages/base.php' );
             require_once( 'dt-login/login-functions.php' );
             require_once( 'dt-login/login-email.php' );
-
-            // pages
             require_once( 'dt-login/login-page.php' );
             require_once( 'dt-login/pages/privacy-policy.php' ); // {site}/privacy-policy
             require_once( 'dt-login/pages/terms-of-service.php' ); // {site}/terms-of-service
             //require_once( 'dt-login/pages/registration-holding.php' ); // {site}/reghold
-
 
             /**
              * Logging
@@ -468,9 +397,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
                 require_once( 'dt-core/admin/menu/menu-customizations.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-customizations.php' );
                 /* End menu tab section */
-
-                require_once( 'dt-core/setup-functions.php' );
-
             }
             require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
 
@@ -481,8 +407,14 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
 
             require_once( 'dt-core/dependencies/deprecated-dt-functions.php' );
 
-            add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
 
+            add_action( 'after_setup_theme', [ $this, 'dt_theme_loaded' ], 5 );
+            add_action( 'init', [ $this, 'dt_migrations' ] );
+            /**
+             * URL loader
+             */
+            add_action( 'wp_loaded', [ $this, 'dt_url_loader' ], 10000 );
+            add_filter( 'locale', [ $this, 'dt_locale' ] );
         } // End __construct()
 
         /**
@@ -505,61 +437,67 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
 
-    } // End Class
-
-
-    /**
-     * Route Front Page depending on login role
-     */
-    function dt_route_front_page() {
-        if ( current_user_can( 'access_disciple_tools' ) || current_user_can( 'access_contacts' ) ) {
+        public function dt_theme_loaded(){
             /**
-             * Use this filter to add a new landing page for logged in users with 'access_contacts' capabilities
+             * Load Language Files
              */
-            if ( current_user_can( 'access_contacts' ) ){
-                wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
-            } else {
-                wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/settings' ) ) );
+            load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+        }
+
+        public function dt_url_loader(){
+            $template_for_url = [
+                'metrics'               => 'template-metrics.php',
+                'settings'              => 'template-settings.php',
+                'notifications'         => 'template-notifications.php',
+                'view-duplicates'       => 'template-view-duplicates.php'
+            ];
+
+            $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
+
+            $url_path = untrailingslashit( dt_get_url_path( true ) ); //allow get parameters
+
+            if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
+                $template_filename = locate_template( $template_for_url[ $url_path ], true );
+                if ( $template_filename ) {
+                    exit(); // just exit if template was found and loaded
+                } else {
+                    throw new Error( 'Expected to find template ' . $template_for_url[ $url_path ] );
+                }
             }
         }
-        else if ( ! is_user_logged_in() ) {
-            dt_please_log_in();
+
+        /**
+         * Set the locale for the user
+         * must be loaded after most files
+         *
+         * @return string
+         */
+        public function dt_locale( $locale ) {
+            if ( is_admin() ) {
+                return $this->site_locale;
+            } else {
+                return $this->user_locale;
+            }
         }
-        else {
+
+        /**
+         * Run migrations after theme is loaded
+         */
+        public function dt_migrations(){
             /**
-             * Use this filter to give a front page for logged in users who do not have basic 'access_contacts' capabilities
-             * This is used for specific custom roles that are not intended to see the basic framework of DT.
-             * Use this to create a dedicated landing page for partners, donors, or subscribers.
+             * We want to make sure migrations are run on updates.
+             *
+             * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
              */
-            wp_safe_redirect( apply_filters( 'dt_non_standard_front_page', home_url( '/registered' ) ) );
+            try {
+                require_once( 'dt-core/configuration/class-migration-engine.php' );
+                Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
+            } catch ( Throwable $e ) {
+                new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
+            }
         }
-    }
-    function set_up_wpdb_tables(){
-        global $wpdb;
-        $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
-        $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
-        $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
-        $wpdb->dt_share = $wpdb->prefix . 'dt_share';
-        $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
-        $wpdb->dt_notifications_queue = $wpdb->prefix . 'dt_notifications_queue';
-        $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
-        $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
-        $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
-        $more_tables = apply_filters( 'dt_custom_tables', [] );
-        foreach ( $more_tables as $table ){
-            $wpdb->$table = $wpdb->prefix . $table;
-        }
-    }
-}
+    } // End Class
+    disciple_tools();
 
-/**
- * Php Version Alert
- */
-function dt_theme_admin_notice_required_php_version() {
-    ?>
-    <div class="notice notice-error">
-        <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.4 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
-    </div>
-    <?php
 }

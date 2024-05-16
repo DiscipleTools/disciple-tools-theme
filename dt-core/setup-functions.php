@@ -71,3 +71,49 @@ function dt_setup_roles_and_permissions(){
         }
     }
 }
+
+add_action( 'switch_blog', 'dt_set_up_wpdb_tables', 99, 2 );
+function dt_set_up_wpdb_tables(){
+    global $wpdb;
+    $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
+    $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
+    $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
+    $wpdb->dt_share = $wpdb->prefix . 'dt_share';
+    $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
+    $wpdb->dt_notifications_queue = $wpdb->prefix . 'dt_notifications_queue';
+    $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
+    $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+    $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
+
+    $more_tables = apply_filters( 'dt_custom_tables', [] );
+    foreach ( $more_tables as $table ){
+        $wpdb->$table = $wpdb->prefix . $table;
+    }
+}
+
+/**
+ * Route Front Page depending on login role
+ */
+function dt_route_front_page() {
+    if ( current_user_can( 'access_disciple_tools' ) || current_user_can( 'access_contacts' ) ) {
+        /**
+         * Use this filter to add a new landing page for logged in users with 'access_contacts' capabilities
+         */
+        if ( current_user_can( 'access_contacts' ) ){
+            wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/contacts' ) ) );
+        } else {
+            wp_safe_redirect( apply_filters( 'dt_front_page', home_url( '/settings' ) ) );
+        }
+    }
+    else if ( ! is_user_logged_in() ) {
+        dt_please_log_in();
+    }
+    else {
+        /**
+         * Use this filter to give a front page for logged in users who do not have basic 'access_contacts' capabilities
+         * This is used for specific custom roles that are not intended to see the basic framework of DT.
+         * Use this to create a dedicated landing page for partners, donors, or subscribers.
+         */
+        wp_safe_redirect( apply_filters( 'dt_non_standard_front_page', home_url( '/registered' ) ) );
+    }
+}
