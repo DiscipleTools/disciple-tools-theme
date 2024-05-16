@@ -56,12 +56,19 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         if ( ! isset( $params['p2p_type'], $params['p2p_direction'], $params['post_type'] ) ) {
             return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type ]', [ 'status' => 400 ] );
         }
-        dt_write_log( $params );
-        $query = $this->get_query( $params['post_type'], $params['p2p_type'], $params['p2p_direction'], [
-            'show_archived' => $params['show_archived'] ?? false
-        ] );
-        dt_write_log( $query );
-        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0 );
+
+        $post_type = $params['post_type'];
+        $post_settings = DT_Posts::get_post_settings( $post_type );
+
+        $filters = [
+            'post_type' => $post_type,
+            'show_archived' => $params['show_archived'] ?? false,
+            'status_key' => $post_settings['status_field']['status_key'] ?? '',
+            'archived_key' => $post_settings['status_field']['archived_key'] ?? ''
+        ];
+        $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
+
+        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0, $filters );
     }
 
     public function scripts() {
@@ -151,63 +158,41 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
 
         // Determine archived meta values.
-        $post_settings = DT_Posts::get_post_settings( $post_type );
-        dt_write_log( $post_settings['status_field'] );
-        $primary_join_sql = '';
-        $union_join_sql = '';
-        if ( isset( $filters['show_archived'], $post_settings['status_field']['status_key'], $post_settings['status_field']['archived_key'] ) && $filters['show_archived'] ) {
-            $status_key = $post_settings['status_field']['status_key'];
-            $archived_key = $post_settings['status_field']['archived_key'];
-
-            dt_write_log( $status_key );
-            dt_write_log( $archived_key );
-
-            //$primary_join_sql = "INNER JOIN $wpdb->postmeta p_status ON( p_status.post_id = a.ID AND p_status.meta_key = '$status_key' AND p_status.meta_value = '$archived_key' )";
-            $union_join_sql = "INNER JOIN $wpdb->postmeta u_status ON( u_status.post_id = p.p2p_from AND u_status.meta_key = '$status_key' AND u_status.meta_value = '$archived_key' )";
-        }
-
-        $sql = "
+        $status_key = $filters['status_key'] ?? '';
+        $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       a.ID         as id,
                       0            as parent_id,
-                      a.post_title as name
+                      a.post_title as name,
+                      ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status
                     FROM $wpdb->posts as a
-
-                    $primary_join_sql
-
-                    WHERE a.post_type = '$post_type'
-                    AND a.ID $not_from IN (
+                    WHERE a.post_type = %s
+                    AND a.ID %1s IN (
                       SELECT DISTINCT (p2p_from)
                       FROM $wpdb->p2p
-                      WHERE p2p_type = '$p2p_type'
+                      WHERE p2p_type = %s
                       GROUP BY p2p_from
                     )
-                      AND a.ID $not_to IN (
+                      AND a.ID %1s IN (
                       SELECT DISTINCT (p2p_to)
                       FROM $wpdb->p2p
-                      WHERE p2p_type = '$p2p_type'
+                      WHERE p2p_type = %s
                       GROUP BY p2p_to
                     )
                     UNION
                     SELECT
-                      p.$select_id  as id,
-                      p.$select_parent_id    as parent_id,
-                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.$select_id ) as name
+                      p.%1s  as id,
+                      p.%1s    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name,
+                      ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status
                     FROM $wpdb->p2p as p
-
-                    $union_join_sql
-
-                    WHERE p.p2p_type = '$p2p_type';
-                ";
-
-        // @phpcs:ignore
-        $query = $wpdb->get_results( $sql, ARRAY_A );
-        dt_write_log( $wpdb->last_query );
+                    WHERE p.p2p_type = %s;
+                ", $status_key, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $p2p_type ), ARRAY_A );
 
         return $query;
     }
 
-    public function get_genmap( $query, $depth_limit, $focus_id ) {
+    public function get_genmap( $query, $depth_limit, $focus_id, $filters = [] ) {
 
         if ( is_wp_error( $query ) ){
             return $this->_circular_structure_error( $query );
@@ -217,7 +202,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
         $menu_data = $this->prepare_menu_array( $query );
 
-        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit );
+        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters );
     }
 
     public function prepare_menu_array( $query ) {
@@ -235,7 +220,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function build_array( $parent_id, $menu_data, $gen, $depth_limit ) {
+    public function build_array( $parent_id, $menu_data, $gen, $depth_limit, $filters = [] ) {
         $children = [];
         if ( isset( $menu_data['parents'][$parent_id] ) && ( $gen < $depth_limit ) )
         {
@@ -243,33 +228,71 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
-                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit );
+                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit, $filters );
             }
         }
+
         $array = [
             'id' => $parent_id,
             'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM',
-            'content' => 'Gen ' . $gen,
-            'children' => $children,
-            'has_infinite_loop' => $this->has_infinite_loop( $parent_id, $children )
+            'status' => $menu_data['items'][ $parent_id ]['status'] ?? '',
+            'content' => 'Gen ' . $gen
         ];
+
+        // Determine if archived records are to be excluded.
+        if ( !$filters['show_archived'] ) {
+
+            // Recursively exclude associated children.
+            $children = $this->exclude_archived_children( $children, $filters['archived_key'] );
+
+            // Only capture node, if active children are still detected; otherwise return empty array.
+            if ( !empty( $children ) ) {
+                $array['children'] = $children;
+                $array['has_infinite_loop'] = $this->has_infinite_loop( $parent_id, $children );
+            } else {
+                $array['children'] = [];
+                $array['has_infinite_loop'] = false;
+            }
+        } else {
+            $array['children'] = $children;
+            $array['has_infinite_loop'] = $this->has_infinite_loop( $parent_id, $children );
+        }
 
         return $array;
     }
 
     public function has_infinite_loop( $parent_id, $children ): bool {
         foreach ( $children ?? [] as $child ) {
-            if ( $parent_id === $child['id'] ) {
-                return true;
-            }
-            if ( !empty( $child['children'] ) ) {
-                if ( $this->has_infinite_loop( $parent_id, $child['children'] ) ) {
+            if ( isset( $child['id'], $child['children'] ) ) {
+                if ( $parent_id === $child['id'] ){
                     return true;
+                }
+                if ( !empty( $child['children'] ) ){
+                    if ( $this->has_infinite_loop( $parent_id, $child['children'] ) ){
+                        return true;
+                    }
                 }
             }
         }
 
         return false;
+    }
+
+    public function exclude_archived_children( $children, $archived_key ): array {
+        $updated_children = [];
+        foreach ( $children ?? [] as $child ) {
+            if ( isset( $child['status'] ) && $child['status'] == $archived_key ) {
+                $child['children'] = $this->exclude_archived_children( $child['children'], $archived_key );
+
+                if ( !empty( $child['children'] ) ) {
+                    $updated_children[] = $child;
+                }
+            } else {
+                $updated_children[] = $child;
+            }
+        }
+
+        return $updated_children;
     }
 }
 new DT_Metrics_Groups_Genmap();

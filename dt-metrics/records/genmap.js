@@ -130,6 +130,29 @@ jQuery(document).ready(function ($) {
             nodeContent: 'content',
             direction: 'l2r',
             nodeTemplate: nodeTemplate,
+            initCompleted: function (chart) {
+              // Identify archived items, in order to update corresponding node color.
+              const archived_items = identify_items_by_field_value(
+                response,
+                'status',
+                'closed',
+                {},
+              );
+
+              // Tweak node colouring of identified items; which have been archived.
+              if (archived_items) {
+                for (const [id, item] of Object.entries(archived_items)) {
+                  const node = $(chart).find(`#${id}.node`);
+                  if (node) {
+                    const color = '#808080';
+                    $(node).css('background-color', color);
+                    $(node).find('.title').css('background-color', color);
+                    $(node).find('.content').css('background-color', color);
+                    $(node).find('.content').css('border', '0px');
+                  }
+                }
+              }
+            },
           });
 
           let container_height = window.innerHeight - 200; // because it is rotated
@@ -220,6 +243,24 @@ jQuery(document).ready(function ($) {
     jQuery(document).on('click', '#archivedToggle', function (e) {
       window.load_genmap();
     });
+  }
+
+  function identify_items_by_field_value(data, field, value, items) {
+    if (data?.[field] === value) {
+      items[data['id']] = {
+        id: data['id'],
+        name: data['name'],
+        status: data['status'],
+      };
+    }
+
+    if (data?.['children']) {
+      data['children'].forEach(function (item) {
+        items = identify_items_by_field_value(item, field, value, items);
+      });
+    }
+
+    return items;
   }
 
   function identify_infinite_loops(data, loops) {
