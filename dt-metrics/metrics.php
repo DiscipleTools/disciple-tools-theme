@@ -33,7 +33,7 @@ class Disciple_Tools_Metrics{
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, 'metrics' ) !== false ){
             // wait for D.T post type classes to be set up before building metrics for them
-            add_action( 'after_setup_theme', function (){
+            add_action( 'disciple_tools_loaded', function (){
                 $modules = dt_get_option( 'dt_post_type_modules' );
                 // Personal
                 require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
