@@ -1185,6 +1185,20 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    /**
+     * AJAX handler to store the state of dismissible notices.
+     */
+    if ( !function_exists( 'dt_hook_ajax_notice_handler' ) ){
+        function dt_hook_ajax_notice_handler(){
+            check_ajax_referer( 'wp_rest_dismiss', 'security' );
+            if ( isset( $_POST['type'] ) ){
+                $type = sanitize_text_field( wp_unslash( $_POST['type'] ) );
+                update_option( 'dismissed-' . $type, true );
+            }
+        }
+    }
+    add_action( 'wp_ajax_dismissed_notice_handler', 'dt_hook_ajax_notice_handler' );
+
     if ( !function_exists( 'dt_get_global_languages_list' ) ){
         function dt_get_global_languages_list(){
             /* You can find flags with country codes here https://unpkg.com/country-flag-emoji@1.0.3/dist/country-flag-emoji.umd.js */
