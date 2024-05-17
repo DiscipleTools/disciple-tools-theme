@@ -131,24 +131,34 @@ jQuery(document).ready(function ($) {
             direction: 'l2r',
             nodeTemplate: nodeTemplate,
             initCompleted: function (chart) {
-              // Identify archived items, in order to update corresponding node color.
-              const archived_items = identify_items_by_field_value(
-                response,
-                'status',
-                'closed',
-                {},
-              );
+              const post_types = window.dtMetricsProject.post_types;
 
-              // Tweak node colouring of identified items; which have been archived.
-              if (archived_items) {
-                for (const [id, item] of Object.entries(archived_items)) {
-                  const node = $(chart).find(`#${id}.node`);
-                  if (node) {
-                    const color = '#808080';
-                    $(node).css('background-color', color);
-                    $(node).find('.title').css('background-color', color);
-                    $(node).find('.content').css('background-color', color);
-                    $(node).find('.content').css('border', '0px');
+              // Identify archived items, in order to update corresponding node color.
+              if (
+                post_types &&
+                post_types[selected_post_type] &&
+                post_types[selected_post_type]?.status_field?.archived_key
+              ) {
+                const archived_items = identify_items_by_field_value(
+                  response,
+                  'status',
+                  post_types[selected_post_type]['status_field'][
+                    'archived_key'
+                  ],
+                  {},
+                );
+
+                // Tweak node colouring of identified items; which have been archived.
+                if (archived_items) {
+                  for (const [id, item] of Object.entries(archived_items)) {
+                    const node = $(chart).find(`#${id}.node`);
+                    if (node) {
+                      const color = '#808080';
+                      $(node).css('background-color', color);
+                      $(node).find('.title').css('background-color', color);
+                      $(node).find('.content').css('background-color', color);
+                      $(node).find('.content').css('border', '0px');
+                    }
                   }
                 }
               }
