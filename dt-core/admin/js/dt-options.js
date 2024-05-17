@@ -40,6 +40,22 @@ jQuery(document).ready(function ($) {
     let tableLangs = {};
     let i = 0;
 
+    //option one, get all the inputs
+    $('.custom_label input, .iso_code input, .enabled input').each(
+      function (index, element) {
+        console.log(element.name);
+        console.log(element.value);
+      },
+    );
+
+    //option two, got through each row
+    $('#language_table .language-row').each(function (index, element) {
+      const lang = $(element).data('lang');
+      console.log(lang);
+      const label = $(element).find('.custom_label input').val();
+      console.log(label);
+    });
+
     while (i < langkey.length) {
       // console.log(customlabel, "customlabel");
       if (!tableLangs[langkey[i].textContent]) {

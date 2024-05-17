@@ -644,12 +644,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
                     $enabled = !isset( $language_option['deleted'] ) || $language_option['deleted'] == false; ?>
                     
-                    <tr>
-                        <td class='lang_key' id='lang_key'><?php echo esc_html( $language_key ) ?></td>
-                        <td class='default_label' id='default_label'><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
-                        <td class='custom_label' id='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
-                        <td class='iso_code' id='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
-                        <td class='enabled' id='enabled'>
+                    <tr class="language-row" data-lang="<?php echo esc_html( $language_key ) ?>">
+                        <td class='lang_key'><?php echo esc_html( $language_key ) ?></td>
+                        <td class='default_label'><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
+                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
+                        <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
+                        <td class='enabled'>
                             <input name="language_enabled[<?php echo esc_html( $language_key ) ?>]"
                                    type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?> />
                         </td>
