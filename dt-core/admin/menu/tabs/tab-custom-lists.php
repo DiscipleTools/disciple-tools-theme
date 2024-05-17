@@ -657,8 +657,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <td class='translation_key'>
                             <?php $langs = dt_get_available_languages(); ?>
                             <button class="button small expand_translations"
-                                    data-form_name="<?php echo esc_html( $form_name ) ?>"
-                                    data-source="lists">
+                                    data-source="dt_languages"
+                                    data-value="<?php echo esc_html( $language_key ); ?>"
+                                    data-callback="update_language_translations"
+                            >
                                 <?php
                                 $number_of_translations = 0;
                                 foreach ( $langs as $lang => $val ){
@@ -675,7 +677,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     <?php foreach ( $langs as $lang => $val ) : ?>
                                         <tr>
                                             <td><label for="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                            <td><input name="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $language_option['translations'][$val['language']] ?? '' );?>"/></td>
+                                            <td><input
+                                                class="language_label_translations"
+                                                data-field="<?php echo esc_html( $language_key ); ?>"
+                                                data-value="<?php echo esc_html( $val['language'] ) ?>"
+                                                name="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]"
+                                                type="text"
+                                                value="<?php echo esc_html( $language_option['translations'][$val['language']] ?? '' );?>"/></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>

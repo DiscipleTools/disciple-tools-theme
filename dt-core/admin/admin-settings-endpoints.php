@@ -227,17 +227,17 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public function update_languages( WP_REST_REQUEST $request ) {
         $params = $request->get_params();
-        // var_dump( $params );
-        // $languages = dt_get_option( 'dt_working_languages' ) ?: [];
-        $languages = $params;
-        // $dt_global_languages_list = dt_get_global_languages_list();
-        // $langs = dt_get_available_languages();
-        // // $languages = $params['tableLangs'];
-        // $test = $params['tableLangs'];
+        $saved_language_options = get_option( 'dt_working_languages', [] );
 
-        // //need to build $languages
-        update_option( 'dt_working_languages', $languages, false );
+        /**
+         * @todo:
+         * only save user provided customizations to the dt_working_languages options
+         * this includes labels, the iso code, the enabled status and translations
+         * does not include: the key, default labels etc
+         */
 
+        update_option( 'dt_working_languages', $saved_language_options, false );
+        return true;
     }
 
     public static function get_post_fields() {
