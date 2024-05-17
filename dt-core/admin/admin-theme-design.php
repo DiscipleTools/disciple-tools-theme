@@ -41,7 +41,7 @@ function dt_modify_admin_bar( $wp_admin_bar ) {
 
     if ( 0 != $user_id ) {
         /* Add the "My Account" menu */
-        $avatar = get_avatar( $user_id, 28 );
+        $avatar = get_avatar( $user_id, 28, null, false, [ 'scheme' => 'https' ] );
         $howdy = sprintf( __( 'Welcome, %1$s' ), $current_user->display_name );
         $class = empty( $avatar ) ? '' : 'with-avatar';
 

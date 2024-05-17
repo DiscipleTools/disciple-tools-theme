@@ -116,12 +116,17 @@ function dt_site_scripts() {
                 'showing_x_items' => _x( 'Showing %s items. Type to find more.', 'Showing 30 items', 'disciple_tools' ),
                 'showing_x_items_matching' => _x( 'Showing %1$s items matching %2$s', 'Showing 30 items matching bob', 'disciple_tools' ),
                 'edit' => __( 'Edit', 'disciple_tools' ),
+                'copy' => __( 'Copy', 'disciple_tools' ),
+                'copied_text' => __( 'Copied: %s', 'disciple_tools' ),
             ],
             'post_type' => $post_type,
             'url_path' => $url_path,
             'post_type_modules' => dt_get_option( 'dt_post_type_modules' ),
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
             'can_manage_dt' => current_user_can( 'manage_dt' ),
+            'features' => [
+                'storage' => class_exists( 'DT_Storage' ) && DT_Storage::is_enabled(),
+            ]
         )
     );
 
@@ -404,6 +409,40 @@ function dt_site_scripts() {
         'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
 
+    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
+        dt_theme_enqueue_script( 'dt-storage', 'dt-assets/js/dt-storage.js', [ 'jquery' ], true );
+        wp_localize_script( 'dt-storage', 'storage_settings',
+            [
+                'rest_url' => esc_url_raw( rest_url() ),
+                'accepted_file_types' => [
+                    'image/png',
+                    'image/gif',
+                    'image/jpeg',
+                    'image/jpg',
+                    'audio/*',
+                    'video/*'
+                ],
+                'translations' => [
+                    'modals' => [
+                        'upload' => [
+                            'title' => __( 'File Upload', 'disciple_tools' ),
+                            'choose_file' => __( 'Choose a file', 'disciple_tools' ),
+                            'or_drag_it' => __( 'or drag it here', 'disciple_tools' ),
+                            'success' => __( 'Successfully Uploaded!', 'disciple_tools' ),
+                            'error' => __( 'Error!', 'disciple_tools' ),
+                            'error_msg' => __( 'Unable to upload, please try again', 'disciple_tools' ),
+                            'but_upload' => __( 'Upload', 'disciple_tools' ),
+                            'but_delete' => __( 'Delete Existing File', 'disciple_tools' ),
+                            'delete_msg' => __( 'Are you sure you wish to delete existing file?', 'disciple_tools' ),
+                            'delete_success_msg' => __( 'Successfully Deleted!', 'disciple_tools' ),
+                            'delete_error_msg' => __( 'Delete failed, please try again', 'disciple_tools' ),
+                            'but_close' => __( 'Close', 'disciple_tools' )
+                        ]
+                    ]
+                ]
+            ]
+        );
+    }
 
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

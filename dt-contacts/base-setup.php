@@ -175,7 +175,7 @@ class DT_Contacts_Base {
                     'Whatsapp' => [
                         'name' => __( 'WhatsApp', 'disciple_tools' ),
                         'link' => 'https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS',
-                        'icon' => get_template_directory_uri() . '/dt-assets/images/signal.svg'
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/whatsapp.svg'
                     ],
                 ]
             ];
@@ -696,9 +696,9 @@ class DT_Contacts_Base {
     public function dt_record_icon( $icon, $post_type, $dt_post ){
         if ( $post_type == 'contacts' ) {
             $gender = isset( $dt_post['gender'] ) ? $dt_post['gender']['key'] : 'male';
-            $icon = 'fi-torso';
+            $icon = 'mdi mdi-face-man-outline';
             if ( $gender == 'female' ) {
-                $icon = $icon.'-'.$gender;
+                $icon = 'mdi mdi-face-woman-outline';
             }
         }
         return $icon;

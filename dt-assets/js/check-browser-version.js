@@ -6,7 +6,7 @@
  * any fancy features, and don't depend on any libraries except Modernizr.
  */
 
-(function(Modernizr) {
+(function (Modernizr) {
   var requiredFeatures = [
     'arrow',
     'csscalc',
@@ -21,45 +21,49 @@
     'hidden',
     'promises',
     'strictmode',
-    'templatestrings'
+    'templatestrings',
     // remember not to use a trailing comma, as older browsers don't support it
   ];
 
   var supportsAllFeatures = true;
   for (var i = 0; i < requiredFeatures.length; i++) {
-    if (! Modernizr[requiredFeatures[i]]) {
+    if (!Modernizr[requiredFeatures[i]]) {
       if (window.console && window.console.log) {
-        console.log("Required feature is missing: " + requiredFeatures[i]);
+        console.log('Required feature is missing: ' + requiredFeatures[i]);
       }
       supportsAllFeatures = false;
     }
   }
 
-  if (! supportsAllFeatures) {
+  if (!supportsAllFeatures) {
     if (window.console && window.console.log) {
-      console.log("Not all required features are supported, please update your browser. Internet Explorer is not supported.");
+      console.log(
+        'Not all required features are supported, please update your browser. Internet Explorer is not supported.',
+      );
     }
 
-    ready(function() {
+    ready(function () {
       try {
-        document.querySelector("#js-missing-required-browser-features-notice").removeAttribute("hidden");
+        document
+          .querySelector('#js-missing-required-browser-features-notice')
+          .removeAttribute('hidden');
       } catch (e) {
-        alert("Please update your browser. Internet Explorer is not supported.");
+        alert(
+          'Please update your browser. Internet Explorer is not supported.',
+        );
       }
     });
   }
 
   function ready(fn) {
-    if (document.readyState != 'loading'){
+    if (document.readyState != 'loading') {
       fn();
     } else if (document.addEventListener) {
       document.addEventListener('DOMContentLoaded', fn);
     } else {
-      document.attachEvent('onreadystatechange', function() {
-        if (document.readyState != 'loading')
-          fn();
+      document.attachEvent('onreadystatechange', function () {
+        if (document.readyState != 'loading') fn();
       });
     }
   }
-
 })(window.Modernizr);

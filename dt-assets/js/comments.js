@@ -91,7 +91,7 @@ jQuery(document).ready(function ($) {
             `post_settings.fields[${item.meta_key}].name`,
           );
         }
-        item.action = `<a class="revert-activity dt_tooltip" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.histid)}">
+        item.action = `<a class="revert-activity dt-tooltip" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.histid)}">
           <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
           <span class="tooltiptext">${window.SHAREDFUNCTIONS.escapeHTML(field || item.meta_key)} </span>
         </a>`;
@@ -113,20 +113,20 @@ jQuery(document).ready(function ($) {
     saveTabs();
   });
 
- /* We use the CSS 'white-space:pre-wrap' and '<div dir=auto>' HTML elements
+  /* We use the CSS 'white-space:pre-wrap' and '<div dir=auto>' HTML elements
    * to match the behaviour that the user sees when editing the comment in an
    * input with dir=auto set, especially when using a right-to-left language
    * with multiple paragraphs. */
   let commentTemplate = window.lodash.template(`
-  <div class="activity-block">
-    <div>
-        <span class="gravatar">
+  <div class="activity-block" >
+    <div class="comment-header" style="">
+        <div class="gravatar">
         <% if( $.trim( gravatar ) ) { %>
             <img src="<%- gravatar  %>"/>
         <% } else { %>
             <i class="mdi mdi-robot-outline"></i>
         <% } %>
-        </span>
+        </div>
         <span><strong><%- name %></strong></span>
         <span class="comment-date"> <%- date %> </span>
       </div>
@@ -136,15 +136,9 @@ jQuery(document).ready(function ($) {
         if (a.comment){ %>
           <% is_Comment = true; %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>" data-comment-id="<%- a.comment_ID %>">
-				<div class="comment-text" title="<%- a.date_formatted %>" dir=auto>
-    <% 
-    if (a.text.indexOf('<li>') === -1) {
-    %>
-        <%= a.text.replace(/\\n/g, '</div><div class="comment-text" dir=auto>') /* not escaped on purpose */ %>
-    <% } else { %>
-        <%= a.text %>
-    <% } %>
-</div>
+              <div class="comment-text" title="<%- a.date_formatted %>" dir=auto>
+                  <%= a.text.replace(/\\n/g, '<br>') /* not escaped on purpose */ %>
+              </div>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
@@ -210,8 +204,7 @@ jQuery(document).ready(function ($) {
         </div>
     <% } %>
     </div>
-  </div>`
-  )
+  </div>`);
 
   $(document).on('click', '.translate-button.showTranslation', function () {
     let combinedArray = [];

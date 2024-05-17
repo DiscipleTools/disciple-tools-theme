@@ -6,16 +6,16 @@ require('dotenv').config();
 
 // Most packages are lazy loaded
 var gulp = require('gulp'),
-  log = require('fancy-log');
+  log = require('fancy-log'),
   browserSync = require('browser-sync'),
   plugin = require('gulp-load-plugins')(),
   sass = require('gulp-sass')(require('sass')),
   touch = require('gulp-touch-cmd'),
   rename = require('gulp-rename'),
   frep = require('gulp-frep'),
-  merge = require('merge-stream'),
   postcss = require('gulp-postcss'),
   cssnano = require('cssnano');
+
 
 /**
  * DEFINE GULP VARIABLE VALUES TO MATCH YOUR PROJECT NEEDS
@@ -106,7 +106,7 @@ gulp.task('scripts', function () {
     }))
     .pipe(plugin.sourcemaps.init())
     .pipe(plugin.babel({
-      presets: ['env'],
+      // presets: ['@babel/preset-env'],
       compact: true,
       ignore: ['what-input.js']
     }))
