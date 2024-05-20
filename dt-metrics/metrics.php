@@ -35,6 +35,14 @@ class Disciple_Tools_Metrics{
             // wait for D.T post type classes to be set up before building metrics for them
             add_action( 'after_setup_theme', function (){
                 $modules = dt_get_option( 'dt_post_type_modules' );
+
+                if ( dt_has_permissions( [ 'multiplier' ] ) ) {
+                    /* Record Types */
+                    $genmap_base_slug = 'personal';
+                    $genmap_base_title = __( 'Personal', 'disciple_tools' );
+                    require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+                }
+
                 // Personal
                 require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );

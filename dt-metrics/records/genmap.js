@@ -1,5 +1,9 @@
 jQuery(document).ready(function ($) {
-  if (window.wpApiShare.url_path.startsWith('metrics/records/genmap')) {
+  if (
+    window.wpApiShare.url_path.startsWith(
+      `metrics/${window.dtMetricsProject.base_slug}/genmap`,
+    )
+  ) {
     project_records_genmap();
   }
 
@@ -88,7 +92,11 @@ jQuery(document).ready(function ($) {
 
       // Fetch generational map chart.
       window
-        .makeRequest('POST', 'metrics/records/genmap', payload)
+        .makeRequest(
+          'POST',
+          `metrics/${window.dtMetricsProject.base_slug}/genmap`,
+          payload,
+        )
         .promise()
         .then((response) => {
           let container = jQuery('#genmap');

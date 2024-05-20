@@ -3,24 +3,27 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-
 class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 {
     //slug and title of the top menu folder
-    public $base_slug = 'records'; // lowercase
+    public $base_slug; // lowercase
     public $slug = 'genmap'; // lowercase
     public $base_title;
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics', 'multiplier' ];
     public $namespace = null;
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct( $base_slug, $base_title ) {
         if ( !$this->has_permission() ){
             return;
         }
-        $this->base_title = __( 'Genmap', 'disciple_tools' );
+
+        $this->base_slug = $base_slug;
+        $this->base_title = $base_title;
+
+        parent::__construct();
+
         $this->title = __( 'Generation Map', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
@@ -36,7 +39,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         $version = '1';
         $namespace = 'dt/v' . $version;
         register_rest_route(
-            $namespace, '/metrics/records/genmap', [
+            $namespace, "/metrics/$this->base_slug/genmap", [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'tree' ],
@@ -75,6 +78,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root' => esc_url_raw( rest_url() ),
+                'base_slug' => $this->base_slug,
                 'site_url' => esc_url_raw( site_url() ),
                 'theme_uri' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
@@ -243,5 +247,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         return false;
     }
 }
-new DT_Metrics_Groups_Genmap();
+
+if ( isset( $genmap_base_slug, $genmap_base_title ) ) {
+    new DT_Metrics_Groups_Genmap( $genmap_base_slug, $genmap_base_title );
+
+} else {
+    new DT_Metrics_Groups_Genmap( 'records', __( 'Genmap', 'disciple_tools' ) );
+}
 
