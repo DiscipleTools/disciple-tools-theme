@@ -129,6 +129,24 @@ class DT_Contacts_Base {
                         'hidden' => !$private_contacts_enabled,
                         'default' => true
                     ],
+                    'access' => [
+                        'label' => __( 'Standard Contact', 'disciple_tools' ),
+                        'color' => '#2196F3',
+                        'description' => __( 'A contact to collaborate on', 'disciple_tools' ),
+                        'visibility' => __( 'Me and project leadership', 'disciple_tools' ),
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/share.svg?v=2',
+                        'order' => 20,
+                        'default' => true,
+                    ],
+                    'access_placeholder' => [
+                        'label' => __( 'Connection', 'disciple_tools' ),
+                        'color' => '#FF9800',
+                        'description' => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/share.svg?v=2',
+                        'order' => 40,
+                        'visibility' => __( 'Collaborators', 'disciple_tools' ),
+                        'in_create_form' => false,
+                    ]
                 ],
                 'description' => 'See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
@@ -467,8 +485,25 @@ class DT_Contacts_Base {
     //Add, remove or modify fields before the fields are processed in post create
     public function dt_post_create_fields( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
+            if ( !isset( $fields['type'] ) && isset( $fields['additional_meta']['created_from'] ) ){
+                $from_post = DT_Posts::get_post( 'contacts', $fields['additional_meta']['created_from'], true, false );
+                if ( !is_wp_error( $from_post ) && isset( $from_post['type']['key'] ) ){
+                    switch ( $from_post['type']['key'] ){
+                        case 'personal':
+                        case 'placeholder':
+                            $fields['type'] = 'placeholder';
+                            break;
+                        case 'access':
+                        case 'access_placeholder':
+                        case 'user':
+                            $fields['type'] = 'access_placeholder';
+                            break;
+                    }
+                }
+            }
+
             if ( !isset( $fields['type'] ) ){
-                $fields['type'] = 'personal';
+                $fields['type'] = 'access';
             }
         }
         return $fields;

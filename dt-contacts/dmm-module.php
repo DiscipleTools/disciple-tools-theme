@@ -330,11 +330,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     //Add, remove or modify fields before the fields are processed in post create
     public function dt_post_create_fields( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
-            if ( !isset( $fields['type'] ) ){
-                $fields['type'] = 'placeholder';
-            }
             //mark a new user contact as being coached be the user who added the new user.
-            if ( $fields['type'] === 'user' ){
+            if ( isset( $fields['type'] ) && $fields['type'] === 'user' ){
                 $current_user_contact = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
                 if ( $current_user_contact && !is_wp_error( $current_user_contact ) ){
                     $fields['coached_by'] = [ 'values' => [ [ 'value' => $current_user_contact ] ] ];

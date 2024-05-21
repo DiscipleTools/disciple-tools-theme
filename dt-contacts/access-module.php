@@ -100,25 +100,6 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( isset( $fields['type']['default']['personal'] ) ){
                 $fields['type']['default']['personal']['default'] = false;
             }
-            $fields['type']['default']['access'] = [
-                'label' => __( 'Standard Contact', 'disciple_tools' ),
-                'color' => '#2196F3',
-                'description' => __( 'A contact to collaborate on', 'disciple_tools' ),
-                'visibility' => __( 'Me and project leadership', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . '/dt-assets/images/share.svg?v=2',
-                'order' => 20,
-                'default' => true,
-            ];
-            $fields['type']['default']['access_placeholder'] = [
-                'label' => __( 'Connection', 'disciple_tools' ),
-                'color' => '#FF9800',
-                'description' => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . '/dt-assets/images/share.svg?v=2',
-                'order' => 40,
-                'visibility' => __( 'Collaborators', 'disciple_tools' ),
-                'in_create_form' => false,
-            ];
-
             $fields['assigned_to'] = [
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
                 'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
@@ -777,7 +758,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         if ( isset( $fields['additional_meta']['created_from'] ) ){
             $from_post = DT_Posts::get_post( 'contacts', $fields['additional_meta']['created_from'], true, false );
-            if ( !is_wp_error( $from_post ) && isset( $from_post['type']['key'] ) && $from_post['type']['key'] === 'access' ){
+            if ( !is_wp_error( $from_post ) && isset( $from_post['type']['key'] ) && in_array( $from_post['type']['key'], [ 'access', 'access_placeholder', 'user' ] ) ){
                 $fields['type'] = 'access_placeholder';
             }
         }
