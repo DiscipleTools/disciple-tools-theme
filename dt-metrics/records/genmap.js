@@ -141,6 +141,39 @@ jQuery(document).ready(function ($) {
             initCompleted: function (chart) {
               const post_types = window.dtMetricsProject.post_types;
 
+              /**
+               * Non-Shared Items
+               */
+
+              // Identify and obfuscate items not shared with current user.
+              const non_shared_items = identify_items_by_field_value(
+                response,
+                'shared',
+                0,
+                {},
+              );
+
+              // Obfuscate identified items.
+              if (non_shared_items) {
+                for (const [id, item] of Object.entries(non_shared_items)) {
+                  const node = $(chart).find(`#${id}.node`);
+                  if (node) {
+                    const color = '#808080';
+                    $(node).css('background-color', color);
+                    $(node).find('.title').text('.......');
+                    $(node).find('.title').css('background-color', color);
+                    $(node).find('.content').css('background-color', color);
+                    $(node).find('.content').css('border', '0px');
+
+                    $(node).data('shared', '0');
+                  }
+                }
+              }
+
+              /**
+               * Archived Items
+               */
+
               // Identify archived items, in order to update corresponding node color.
               if (
                 post_types &&
@@ -182,7 +215,13 @@ jQuery(document).ready(function ($) {
             let node_id = node.attr('id');
             let node_parent_id = node.data('parent');
 
-            open_modal_details(node_id, node_parent_id, selected_post_type);
+            // Ensure non-shared item nodes are ignored.
+            const node_shared = node.data('shared');
+            if (!node_shared || String(node_shared) !== '0') {
+              open_modal_details(node_id, node_parent_id, selected_post_type);
+            } else {
+              jQuery('#genmap-details').empty();
+            }
           });
         })
         .catch((error) => {
@@ -264,11 +303,12 @@ jQuery(document).ready(function ($) {
   }
 
   function identify_items_by_field_value(data, field, value, items) {
-    if (data?.[field] === value) {
+    if (String(data?.[field]) === String(value)) {
       items[data['id']] = {
         id: data['id'],
         name: data['name'],
         status: data['status'],
+        shared: data['shared'],
       };
     }
 

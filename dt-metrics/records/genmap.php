@@ -161,6 +161,8 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             $select_parent_id = 'p2p_from';
         }
 
+        $user = wp_get_current_user();
+
         // Determine archived meta values.
         $status_key = $filters['status_key'] ?? '';
         $query = $wpdb->get_results( $wpdb->prepare( "
@@ -168,7 +170,8 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                       a.ID         as id,
                       0            as parent_id,
                       a.post_title as name,
-                      ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status
+                      ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status,
+                      ( SELECT EXISTS( SELECT p_shared.user_id FROM $wpdb->dt_share as p_shared WHERE p_shared.user_id = %d AND p_shared.post_id = a.ID ) ) as shared
                     FROM $wpdb->posts as a
                     WHERE a.post_type = %s
                     AND a.ID %1s IN (
@@ -188,10 +191,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                       p.%1s  as id,
                       p.%1s    as parent_id,
                       (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name,
-                      ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status
+                      ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status,
+                      ( SELECT EXISTS( SELECT u_shared.user_id FROM $wpdb->dt_share as u_shared WHERE u_shared.user_id = %d AND u_shared.post_id = p.%1s ) ) as shared
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = %s;
-                ", $status_key, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $p2p_type ), ARRAY_A );
+                ", $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type ), ARRAY_A );
 
         return $query;
     }
@@ -240,6 +244,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             'id' => $parent_id,
             'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM',
             'status' => $menu_data['items'][ $parent_id ]['status'] ?? '',
+            'shared' => $menu_data['items'][ $parent_id ]['shared'] ?? 0,
             'content' => 'Gen ' . $gen
         ];
 
