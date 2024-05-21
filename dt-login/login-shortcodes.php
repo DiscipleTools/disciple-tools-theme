@@ -128,9 +128,9 @@ function dt_firebase_login_ui( $atts ) {
 
 
     <script>
-      let ui
+      let newUi
       if (hasASignInProvider) {
-        ui = new firebaseui.auth.AuthUI(firebase.auth());
+        newUi = new firebaseui.auth.AuthUI(firebase.auth());
         showLoader()
       }
       let rest_url = '<?php echo esc_url( rest_url( 'dt/v1' ) ) ?>';
@@ -217,7 +217,7 @@ function dt_firebase_login_ui( $atts ) {
       }
 
       function startUI() {
-        ui.start('#firebaseui-auth-container', uiConfig);
+        newUi.start('#firebaseui-auth-container', uiConfig);
       }
 
       function showErrorMessage(message) {

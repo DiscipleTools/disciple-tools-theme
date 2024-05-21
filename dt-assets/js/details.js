@@ -716,6 +716,11 @@ jQuery(document).ready(function ($) {
 
           // If available, display item status colours within labels
           set_item_label_status(this);
+
+          //make sure tiles are displayed correctly
+          if (this.items.length) {
+            window.masonGrid.masonry('layout');
+          }
         },
         onClick: function (node, a, item, event) {
           $(`#${field_id}-spinner`).addClass('active');

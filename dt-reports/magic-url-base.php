@@ -394,8 +394,8 @@ abstract class DT_Magic_Url_Base {
      * @note Copy function to 'extends' class to override or modify
      */
     public function _footer(){
-        $this->footer_javascript();
         wp_footer();
+        $this->footer_javascript();
     }
 
     /**
