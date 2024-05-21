@@ -44,7 +44,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     public function dt_custom_fields_settings( $fields, $post_type ){
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
-            $contact_preferences = get_option( 'dt_contact_preferences', [] );
+            $private_contacts_enabled = $post_type_settings['contacts']['enable_private_contacts'] ?? false;
             $fields['type']['default']['placeholder'] = [
                 'label' => __( 'Private Connection', 'disciple_tools' ),
                 'color' => '#FF9800',
@@ -53,7 +53,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'order' => 40,
                 'visibility' => __( 'Only me', 'disciple_tools' ),
                 'in_create_form' => false,
-                'hidden' => !empty( $contact_preferences['hide_personal_contact_type'] ),
+                'hidden' => !$private_contacts_enabled,
             ];
             $fields['milestones'] = [
                 'name'    => __( 'Faith Milestones', 'disciple_tools' ),

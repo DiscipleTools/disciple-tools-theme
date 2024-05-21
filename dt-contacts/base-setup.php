@@ -106,7 +106,8 @@ class DT_Contacts_Base {
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/nametag.svg?v=2',
             ];
-            $contact_preferences = get_option( 'dt_contact_preferences', [] );
+            $post_type_settings = get_option( 'dt_custom_post_types', [] );
+            $private_contacts_enabled = $post_type_settings['contacts']['enable_private_contacts'] ?? false;
             $fields['type'] = [
                 'name'        => __( 'Contact Type', 'disciple_tools' ),
                 'type'        => 'key_select',
@@ -125,7 +126,7 @@ class DT_Contacts_Base {
                         'visibility' => __( 'Only me', 'disciple_tools' ),
                         'icon' => get_template_directory_uri() . '/dt-assets/images/locked.svg?v=2',
                         'order' => 50,
-                        'hidden' => !empty( $contact_preferences['hide_personal_contact_type'] ),
+                        'hidden' => !$private_contacts_enabled,
                         'default' => true
                     ],
                 ],
