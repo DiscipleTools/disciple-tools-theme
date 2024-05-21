@@ -12,69 +12,80 @@ jQuery(document).ready(function ($) {
 
   // Handle label language translations on a language
   window.update_language_translations = function (source, value) {
-    let translations = {};
+    console.log(source, 'line 17');
+    let translations_list = {};
     $(
       `#language_table .language_label_translations[data-field="${value}"]`,
     ).each(function (index, element) {
       const language = $(element).data('field');
-      if (!translations[language]) {
-        translations[language] = {};
+      if (!translations_list[language]) {
+        translations_list[language] = {};
+      }
+      if (!translations_list[language].translations) {
+        translations_list[language].translations = {};
       }
       const translation_key = $(element).data('value');
-      translations[language][translation_key] = $(element).val();
+      translations_list[language].translations[translation_key] =
+        $(element).val();
     });
-    console.log(translations);
-    //@todo ajax call to save the translations
+    console.log(translations_list, 'line 26');
+
+    $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(translations_list),
+      contentType: 'application/json; charset=utf-8',
+      url: `${window.dt_admin_scripts.rest_root}dt-admin-settings/languages/`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+      },
+      success: function (response) {
+        var languages = JSON.parse(response);
+        console.log(languages, 'success line 40');
+      },
+      error: function (xhr, status, error) {
+        console.log(error, 'error line 43');
+        console.log(status, 'status line 44');
+        console.error(xhr.responseText, 'responsetext line 45');
+      },
+    });
   };
 
   // Handle languages tables
   $('#save_lang_button').click(function (e) {
-    let button = $(e.currentTarget);
     e.preventDefault();
-    let langkey = $('.lang_key');
-    let defaultlabel = $('.default_label');
-    let customlabel = $('.custom_label');
-    let isocode = $('.iso_code');
-    let enabledkey = $('.enabled');
-    let translationkey = $('.translation_key');
     let tableLangs = {};
-    let i = 0;
-
-    //option one, get all the inputs
-    $('.custom_label input, .iso_code input, .enabled input').each(
-      function (index, element) {
-        console.log(element.name);
-        console.log(element.value);
-      },
-    );
 
     //option two, got through each row
     $('#language_table .language-row').each(function (index, element) {
+      // console.log(translations_list, "line 100");
+      // console.log(tableLangs, "line 74");
       const lang = $(element).data('lang');
-      console.log(lang);
+      // console.log(lang, "line 55");
       const label = $(element).find('.custom_label input').val();
-      console.log(label);
+      // console.log(label, "line 57");
+      const iso_code = $(element).find('.iso_code input').val();
+      // console.log(iso_code, "line 59");
+      const enabled = $(element).find('.enabled input').prop('checked');
+      // console.log(enabled, "line 82");
+
+      if (!tableLangs[lang]) {
+        tableLangs[lang] = {
+          label: '',
+          native_name: '',
+          flag: '',
+          rtl: false,
+          enabled: '',
+          // translations: "",
+        };
+      }
+
+      tableLangs[lang]['label'] = label;
+      tableLangs[lang]['flag'] = iso_code;
+      tableLangs[lang]['enabled'] = enabled;
+      // tableLangs[lang]["translations"] = extractedTranslations;
     });
 
-    while (i < langkey.length) {
-      // console.log(customlabel, "customlabel");
-      if (!tableLangs[langkey[i].textContent]) {
-        tableLangs[langkey[i].textContent] = {};
-      }
-      tableLangs[langkey[i].textContent]['label'] = langkey[i].textContent;
-      tableLangs[langkey[i].textContent]['native_name'] =
-        defaultlabel[i].textContent;
-      // tableLangs[langkey[i].textContent]["flag"] = customlabel;
-      tableLangs[langkey[i].textContent]['flag'] =
-        customlabel[i].children[0].value;
-      // tableLangs[langkey[i].textContent]["flag"] = "";
-      tableLangs[langkey[i].textContent]['rtl'] = isocode[i].textContent;
-      // tableLangs[langkey[i].textContent].push(
-      //   enabledkey[i].children[0].checked
-      // );
-
-      i++;
-    }
     console.log(tableLangs, 'line 134');
 
     $.ajax({

@@ -229,6 +229,15 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $params = $request->get_params();
         $saved_language_options = get_option( 'dt_working_languages', [] );
 
+        function recursive_array_update( &$target, $source ) {
+            foreach ( $source as $key => $value ) {
+                if ( is_array( $value ) && isset( $target[$key] ) && is_array( $target[$key] ) ) {
+                    recursive_array_update( $target[$key], $value );
+                } elseif ( !isset( $target[$key] ) || $target[$key] !== $value ) {
+                    $target[$key] = $value;
+                }
+            }
+        }
         /**
          * @todo:
          * only save user provided customizations to the dt_working_languages options
@@ -236,6 +245,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
          * does not include: the key, default labels etc
          */
 
+        recursive_array_update( $saved_language_options, $params );
         update_option( 'dt_working_languages', $saved_language_options, false );
         return true;
     }
