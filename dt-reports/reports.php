@@ -311,6 +311,54 @@ class Disciple_Tools_Reports
     }
 
     /**
+     * Get posts filtered by where clauses
+     *
+     * @param array $where An assoc array of key, value pairs
+     */
+    public static function where( $where = [] ) {
+        global $wpdb;
+        $report = [];
+
+        $sql = '';
+        $args = [];
+
+        foreach ( $where as $key => $value ) {
+            $new_sql = '';
+            if ( !empty( $sql ) ) {
+                $new_sql .= ' AND';
+            } else {
+                $new_sql .= ' WHERE';
+            }
+
+            $new_sql .= $wpdb->prepare( ' %1$s = ', $key );
+
+            if ( is_numeric( $value ) ) {
+                $new_sql .= '%d';
+            } else if ( is_string( $value ) ) {
+                $new_sql .= '%s';
+            } else {
+                dt_write_log( __METHOD__ . ' $value is of type ' . gettype( $value ) . ' but should be a string or number' );
+                continue;
+            }
+            $sql .= $new_sql;
+            $args[] = $value;
+        }
+
+        //phpcs:ignore
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reports $sql", $args ), ARRAY_A );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $index => $result ){
+                if ( isset( $result['payload'] ) ){
+                    $results[$index]['payload'] = maybe_unserialize( $result['payload'] );
+                }
+            }
+            $report = $results;
+        }
+
+        return $report;
+    }
+
+    /**
      * Delete report
      *
      * @param $report_id
