@@ -108,7 +108,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'tile'        => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg?v=2',
                 'show_in_table' => 25,
-                'only_for_types' => [ 'access', 'user' ],
+                'only_for_types' => [ 'access', 'user', 'access_placeholder' ],
                 'custom_display' => false
             ];
             $fields['seeker_path'] = [
@@ -190,7 +190,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'custom_display' => true,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg?v=2',
                 'show_in_table' => 10,
-                'only_for_types' => [ 'access' ],
+                'only_for_types' => [ 'access', 'access_placeholder' ],
                 'select_cannot_be_empty' => true
             ];
 
@@ -771,11 +771,12 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( !isset( $fields['type'] ) && get_current_user_id() === 0 ){
             $fields['type'] = 'access';
         }
-        if ( !isset( $fields['type'] ) || $fields['type'] !== 'access' ){
-            return $fields;
-        }
-        if ( !isset( $fields['seeker_path'] ) ){
-            $fields['seeker_path'] = 'none';
+        if ( !isset( $fields['overall_status'] ) ){
+            if ( get_current_user_id() ){
+                $fields['overall_status'] = 'active';
+            } else {
+                $fields['overall_status'] = 'new';
+            }
         }
         if ( !isset( $fields['assigned_to'] ) ){
             if ( get_current_user_id() ) {
@@ -795,13 +796,17 @@ class DT_Contacts_Access extends DT_Module_Base {
                 }
             }
         }
-        if ( !isset( $fields['overall_status'] ) ){
-            if ( get_current_user_id() ){
-                $fields['overall_status'] = 'active';
-            } else {
-                $fields['overall_status'] = 'new';
-            }
+
+        /**
+         * Stop here if the type is not "access"
+         */
+        if ( !isset( $fields['type'] ) || $fields['type'] !== 'access' ){
+            return $fields;
         }
+        if ( !isset( $fields['seeker_path'] ) ){
+            $fields['seeker_path'] = 'none';
+        }
+
         if ( !isset( $fields['sources'] ) ) {
             $fields['sources'] = [ 'values' => [ [ 'value' => 'personal' ] ] ];
         }
