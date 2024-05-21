@@ -204,8 +204,11 @@ table.js-list td[data-id="profile_pic"] {
 
 table.js-list img.list-image {
     width: 32px;
+    height: 32px;
+    object-fit: cover;
     min-width: 32px;
     vertical-align: middle;
+    border-radius: 5px;
 }
 
 table.js-list i.list-image {
