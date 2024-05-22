@@ -227,7 +227,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public function update_languages( WP_REST_REQUEST $request ) {
         $params = $request->get_params();
-        $saved_language_options = get_option( 'dt_working_languages', [] );
+        $saved_language_options = dt_get_option( 'dt_working_languages' );
 
         function recursive_array_update( &$target, $source ) {
             foreach ( $source as $key => $value ) {
