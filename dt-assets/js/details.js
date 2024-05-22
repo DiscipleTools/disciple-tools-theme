@@ -1907,8 +1907,7 @@ jQuery(document).ready(function ($) {
     const service = new window.WebComponentServices.ComponentService(
       window.detailsSettings.post_type,
       window.detailsSettings.post_id,
-      // eslint-disable-next-line no-undef
-      wpApiShare.nonce,
+      window.wpApiShare.nonce,
     );
     service.initialize();
     window.componentService = service;
