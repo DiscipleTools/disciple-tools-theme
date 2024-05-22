@@ -157,6 +157,8 @@ class DT_Posts_Hooks {
                     switch ( $field_type ) {
                         case 'text':
                         case 'textarea':
+                            $search_values[ $search_field ] = [ '^' . $fields[ $search_field ] ];
+                            break;
                         case 'boolean':
                         case 'key_select':
                         case 'date':

@@ -1,7 +1,6 @@
 jQuery(document).ready(function ($) {
-
   if (window.wpApiShare.url_path.startsWith('metrics/combined/site-links')) {
-    display_site_link_metrics()
+    display_site_link_metrics();
   }
 
   function display_site_link_metrics() {
@@ -10,7 +9,8 @@ jQuery(document).ready(function ($) {
     let chartDiv = jQuery('#chart');
 
     // Display chart controls
-    chartDiv.empty().html(`
+    chartDiv.empty().html(
+      `
     <div class="section-header">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.header)}</div>
     <div class="section-subheader">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.sub_header)}:</div>
     <br>
@@ -25,8 +25,12 @@ jQuery(document).ready(function ($) {
         </thead>
         <tbody>
             <tr>
-                <td>` + date_ranges_select_html() + `</td>
-                <td>` + site_links_select_html() + `</td>
+                <td>` +
+        date_ranges_select_html() +
+        `</td>
+                <td>` +
+        site_links_select_html() +
+        `</td>
             </tr>
         </tbody>
     </table>
@@ -133,7 +137,8 @@ jQuery(document).ready(function ($) {
                 </tr>
             </tbody>
         </table>
-    </div>`);
+    </div>`,
+    );
 
     // Activate date range picker
     window.METRICS.setupDatePickerWithoutEndpoint(
@@ -142,7 +147,7 @@ jQuery(document).ready(function ($) {
         refresh_charts();
       },
       window.moment().startOf('year'),
-      window.moment().endOf('year')
+      window.moment().endOf('year'),
     );
 
     // Trigger data refreshes, following a site link change
@@ -157,7 +162,7 @@ jQuery(document).ready(function ($) {
   function date_ranges_select_html() {
     return `<div class="date_range_picker" style="min-width: 150px;">
                 <i class="fi-calendar"></i>
-                <span>${window.moment().format("YYYY")}</span>
+                <span>${window.moment().format('YYYY')}</span>
                 <i class="dt_caret down"></i>
             </div>`;
   }
@@ -166,17 +171,22 @@ jQuery(document).ready(function ($) {
     let sites = window.wp_js_object.data.sites;
 
     if (sites && sites.length > 0) {
-
       let html = '<select id="site_links_filter" style="min-width: 150px;">';
       $.each(sites, function (idx, val) {
-        html += '<option value="' + window.SHAREDFUNCTIONS.escapeHTML(val['id']) + '">' + window.SHAREDFUNCTIONS.escapeHTML(val['name']) + '</option>';
+        html +=
+          '<option value="' +
+          window.SHAREDFUNCTIONS.escapeHTML(val['id']) +
+          '">' +
+          window.SHAREDFUNCTIONS.escapeHTML(val['name']) +
+          '</option>';
       });
 
       html += '</select>';
       return html;
-
     } else {
-      return window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.headings.site_links_none_header);
+      return window.SHAREDFUNCTIONS.escapeHTML(
+        window.wp_js_object.translations.headings.site_links_none_header,
+      );
     }
   }
 
@@ -195,7 +205,7 @@ jQuery(document).ready(function ($) {
     $('#metrics_msg').fadeOut('fast');
 
     // Indicate something is happening..!
-    $(".loading-spinner").addClass("active");
+    $('.loading-spinner').addClass('active');
 
     // Fetch current parameters
     let drp = $('.date_range_picker').data('daterangepicker');
@@ -206,33 +216,51 @@ jQuery(document).ready(function ($) {
     // Fetch metrics from specified endpoint
     jQuery
       .ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         url: `${window.wp_js_object.rest_endpoints_base}/site-links/?site_id=${site_id}&start=${start_date}&end=${end_date}`,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader("X-WP-Nonce", window.wpApiShare.nonce);
+          xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
         },
       })
       .done(function (data) {
         // Disable loading spinner
-        $(".loading-spinner").removeClass("active");
+        $('.loading-spinner').removeClass('active');
 
         if (no_data_available(data)) {
           display_msg(window.wp_js_object.translations.general.no_data_msg);
         } else {
-          display_site_link_charts(data['total'], data['statuses_current'], data['statuses_changes'], data['seeker_paths_current'], data['seeker_paths_changes'], data['milestones_current'], data['milestones_changes']);
+          display_site_link_charts(
+            data['total'],
+            data['statuses_current'],
+            data['statuses_changes'],
+            data['seeker_paths_current'],
+            data['seeker_paths_changes'],
+            data['milestones_current'],
+            data['milestones_changes'],
+          );
         }
       })
       .fail(function (err) {
-        console.log("error");
+        console.log('error');
         console.log(err);
         display_msg(err);
       });
   }
 
   function no_data_available(data) {
-    return !data || data.length === 0 || (!data['total'] && data['statuses_current'].length === 0 && data['statuses_changes'].length === 0 && data['seeker_paths_current'].length === 0 && data['seeker_paths_changes'].length === 0 && data['milestones_current'].length === 0 && data['milestones_changes'].length === 0);
+    return (
+      !data ||
+      data.length === 0 ||
+      (!data['total'] &&
+        data['statuses_current'].length === 0 &&
+        data['statuses_changes'].length === 0 &&
+        data['seeker_paths_current'].length === 0 &&
+        data['seeker_paths_changes'].length === 0 &&
+        data['milestones_current'].length === 0 &&
+        data['milestones_changes'].length === 0)
+    );
   }
 
   function display_msg(msg) {
@@ -241,7 +269,15 @@ jQuery(document).ready(function ($) {
     });
   }
 
-  function display_site_link_charts(total, statuses_current, statuses_changes, seeker_paths_current, seeker_paths_changes, milestones_current, milestones_changes) {
+  function display_site_link_charts(
+    total,
+    statuses_current,
+    statuses_changes,
+    seeker_paths_current,
+    seeker_paths_changes,
+    milestones_current,
+    milestones_changes,
+  ) {
     // Ensure overwritten charts are automatically disposed.
     window.am4core.options.autoDispose = true;
     window.am4core.useTheme(window.am4themes_animated);
@@ -255,36 +291,60 @@ jQuery(document).ready(function ($) {
 
     // Display created based metrics
     $('#status_created_div').fadeOut('fast', function () {
-      display_site_link_charts_status(statuses_current, 'status_created_chart', function () {
-        $('#status_created_div').fadeIn('slow');
-      });
+      display_site_link_charts_status(
+        statuses_current,
+        'status_created_chart',
+        function () {
+          $('#status_created_div').fadeIn('slow');
+        },
+      );
     });
     $('#seeker_created_div').fadeOut('fast', function () {
-      display_site_link_charts_seeker(seeker_paths_current, 'seeker_created_chart', function () {
-        $('#seeker_created_div').fadeIn('slow');
-      });
+      display_site_link_charts_seeker(
+        seeker_paths_current,
+        'seeker_created_chart',
+        function () {
+          $('#seeker_created_div').fadeIn('slow');
+        },
+      );
     });
     $('#milestones_created_div').fadeOut('fast', function () {
-      display_site_link_charts_milestones(milestones_current, 'milestones_created_chart', function () {
-        $('#milestones_created_div').fadeIn('slow');
-      });
+      display_site_link_charts_milestones(
+        milestones_current,
+        'milestones_created_chart',
+        function () {
+          $('#milestones_created_div').fadeIn('slow');
+        },
+      );
     });
 
     // Display changes based metrics
     $('#status_changes_div').fadeOut('fast', function () {
-      display_site_link_charts_status(statuses_changes, 'status_changes_chart', function () {
-        $('#status_changes_div').fadeIn('slow');
-      });
+      display_site_link_charts_status(
+        statuses_changes,
+        'status_changes_chart',
+        function () {
+          $('#status_changes_div').fadeIn('slow');
+        },
+      );
     });
     $('#seeker_changes_div').fadeOut('fast', function () {
-      display_site_link_charts_seeker(seeker_paths_changes, 'seeker_changes_chart', function () {
-        $('#seeker_changes_div').fadeIn('slow');
-      });
+      display_site_link_charts_seeker(
+        seeker_paths_changes,
+        'seeker_changes_chart',
+        function () {
+          $('#seeker_changes_div').fadeIn('slow');
+        },
+      );
     });
     $('#milestones_changes_div').fadeOut('fast', function () {
-      display_site_link_charts_milestones(milestones_changes, 'milestones_changes_chart', function () {
-        $('#milestones_changes_div').fadeIn('slow');
-      });
+      display_site_link_charts_milestones(
+        milestones_changes,
+        'milestones_changes_chart',
+        function () {
+          $('#milestones_changes_div').fadeIn('slow');
+        },
+      );
     });
   }
 
@@ -297,7 +357,6 @@ jQuery(document).ready(function ($) {
 
   function display_site_link_charts_status(statuses, chart_div, callback) {
     window.am4core.ready(function () {
-
       // Create chart instance
       let chart = window.am4core.create(chart_div, window.am4charts.PieChart);
 
@@ -307,17 +366,17 @@ jQuery(document).ready(function ($) {
         $.each(statuses, function (idx, metric) {
           if (metric['status'] && metric['count']) {
             chart.data.push({
-              'status': metric['status'],
-              'count': metric['count']
+              status: metric['status'],
+              count: metric['count'],
             });
           }
         });
 
         // Add and configure Series
         let pieSeries = chart.series.push(new window.am4charts.PieSeries());
-        pieSeries.dataFields.value = "count";
-        pieSeries.dataFields.category = "status";
-        pieSeries.slices.template.stroke = window.am4core.color("#fff");
+        pieSeries.dataFields.value = 'count';
+        pieSeries.dataFields.category = 'status';
+        pieSeries.slices.template.stroke = window.am4core.color('#fff');
         pieSeries.slices.template.strokeWidth = 2;
         pieSeries.slices.template.strokeOpacity = 1;
 
@@ -334,7 +393,6 @@ jQuery(document).ready(function ($) {
 
   function display_site_link_charts_seeker(seeker_paths, chart_div, callback) {
     window.am4core.ready(function () {
-
       // Create chart instance
       let chart = window.am4core.create(chart_div, window.am4charts.XYChart);
 
@@ -344,16 +402,18 @@ jQuery(document).ready(function ($) {
         $.each(seeker_paths, function (idx, metric) {
           if (metric['seeker_path'] && metric['count']) {
             chart.data.push({
-              'seeker_path': metric['seeker_path'],
-              'count': metric['count']
+              seeker_path: metric['seeker_path'],
+              count: metric['count'],
             });
           }
         });
 
         // Create axes
-        let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "seeker_path";
-        categoryAxis.numberFormatter.numberFormat = "#";
+        let categoryAxis = chart.yAxes.push(
+          new window.am4charts.CategoryAxis(),
+        );
+        categoryAxis.dataFields.category = 'seeker_path';
+        categoryAxis.numberFormatter.numberFormat = '#';
         categoryAxis.renderer.inversed = true;
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.cellStartLocation = 0.1;
@@ -362,7 +422,7 @@ jQuery(document).ready(function ($) {
         let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
         valueAxis.renderer.opposite = true;
 
-        createSeries("count", "");
+        createSeries('count', '');
 
         // Execute callback() function
         callback();
@@ -372,33 +432,40 @@ jQuery(document).ready(function ($) {
       function createSeries(field, name) {
         let series = chart.series.push(new window.am4charts.ColumnSeries());
         series.dataFields.valueX = field;
-        series.dataFields.categoryY = "seeker_path";
+        series.dataFields.categoryY = 'seeker_path';
         series.name = name;
-        series.columns.template.tooltipText = "{categoryY}: [bold]{valueX}[/]";
+        series.columns.template.tooltipText = '{categoryY}: [bold]{valueX}[/]';
         series.columns.template.height = window.am4core.percent(100);
         series.sequencedInterpolation = true;
 
-        let valueLabel = series.bullets.push(new window.am4charts.LabelBullet());
-        valueLabel.label.text = "{valueX}";
-        valueLabel.label.horizontalCenter = "left";
+        let valueLabel = series.bullets.push(
+          new window.am4charts.LabelBullet(),
+        );
+        valueLabel.label.text = '{valueX}';
+        valueLabel.label.horizontalCenter = 'left';
         valueLabel.label.dx = 10;
         valueLabel.label.hideOversized = false;
         valueLabel.label.truncate = false;
 
-        let categoryLabel = series.bullets.push(new window.am4charts.LabelBullet());
-        categoryLabel.label.text = "{name}";
-        categoryLabel.label.horizontalCenter = "right";
+        let categoryLabel = series.bullets.push(
+          new window.am4charts.LabelBullet(),
+        );
+        categoryLabel.label.text = '{name}';
+        categoryLabel.label.horizontalCenter = 'right';
         categoryLabel.label.dx = -10;
-        categoryLabel.label.fill = window.am4core.color("#fff");
+        categoryLabel.label.fill = window.am4core.color('#fff');
         categoryLabel.label.hideOversized = false;
         categoryLabel.label.truncate = false;
       }
     }); // end window.am4core.ready()
   }
 
-  function display_site_link_charts_milestones(milestones, chart_div, callback) {
+  function display_site_link_charts_milestones(
+    milestones,
+    chart_div,
+    callback,
+  ) {
     window.am4core.ready(function () {
-
       // Create chart instance
       let chart = window.am4core.create(chart_div, window.am4charts.XYChart);
 
@@ -408,34 +475,39 @@ jQuery(document).ready(function ($) {
         $.each(milestones, function (idx, metric) {
           if (metric['milestone'] && metric['count']) {
             chart.data.push({
-              'milestone': metric['milestone'],
-              'count': metric['count']
+              milestone: metric['milestone'],
+              count: metric['count'],
             });
           }
         });
 
         // Create axes
-        let categoryAxis = chart.xAxes.push(new window.am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "milestone";
+        let categoryAxis = chart.xAxes.push(
+          new window.am4charts.CategoryAxis(),
+        );
+        categoryAxis.dataFields.category = 'milestone';
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.minGridDistance = 30;
 
-        categoryAxis.renderer.labels.template.adapter.add("dy", function (dy, target) {
-          if (target.dataItem && target.dataItem.index & 2 == 2) {
-            return dy + 25;
-          }
-          return dy;
-        });
+        categoryAxis.renderer.labels.template.adapter.add(
+          'dy',
+          function (dy, target) {
+            if (target.dataItem && target.dataItem.index & (2 == 2)) {
+              return dy + 25;
+            }
+            return dy;
+          },
+        );
 
         let valueAxis = chart.yAxes.push(new window.am4charts.ValueAxis());
 
         // Create series
         let series = chart.series.push(new window.am4charts.ColumnSeries());
-        series.dataFields.valueY = "count";
-        series.dataFields.categoryX = "milestone";
-        series.name = "Milestones";
-        series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-        series.columns.template.fillOpacity = .8;
+        series.dataFields.valueY = 'count';
+        series.dataFields.categoryX = 'milestone';
+        series.name = 'Milestones';
+        series.columns.template.tooltipText = '{categoryX}: [bold]{valueY}[/]';
+        series.columns.template.fillOpacity = 0.8;
 
         let columnTemplate = series.columns.template;
         columnTemplate.strokeWidth = 2;

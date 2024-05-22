@@ -4,7 +4,8 @@ abstract class DT_Module_Base{
     public $post_type = 'contacts';
     public $module = '';
 
-    public function __construct(){}
+    public function __construct() {
+    }
 
     protected function check_enabled_and_prerequisites(){
         $modules = dt_get_option( 'dt_post_type_modules' );
@@ -17,5 +18,6 @@ abstract class DT_Module_Base{
         }
         return $module_enabled;
     }
+
 
 }

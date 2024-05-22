@@ -897,6 +897,11 @@ if ( !class_exists(UpdateChecker::class, false) ):
 				return $source;
 			}
 
+            //don't conflict with wppusher plugin
+            if ( property_exists( $upgrader, 'plugin') && property_exists( $upgrader->plugin, 'pusherStatus' ) ){
+                return $source;
+            }
+
 			//If WordPress is upgrading anything other than our plugin/theme, leave the directory name unchanged.
 			if ( !$this->isBeingUpgraded($upgrader) ) {
 				return $source;

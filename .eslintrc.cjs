@@ -8,7 +8,10 @@ module.exports = {
     "ecmaVersion": 2017, // enables parsing async functions correctly
     "requireConfigFile": false
   },
-  "extends": "eslint:recommended",
+  "extends": [
+      "eslint:recommended",
+      "prettier"
+  ],
   "globals": {
     "jQuery": false,
   },
@@ -28,5 +31,15 @@ module.exports = {
     ]
   },
   "parser": "@babel/eslint-parser",
-  ignorePatterns: [ 'dt-core/admin/multi-role/*' ]
+  ignorePatterns: [
+    'dt-assets/js/modernizr-custom.js',
+    'dt-core/admin/multi-role/js/min/',
+    'dt-core/admin/multi-role/*',
+    'dt-core/dependencies/',
+    'dt-core/libraries/',
+    'gulpfile.js',
+    'node_modules',
+    'vendor',
+    '*.min.js',
+  ]
 };

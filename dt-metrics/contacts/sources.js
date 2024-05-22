@@ -1,10 +1,8 @@
-jQuery(document).ready(function($) {
-
+jQuery(document).ready(function ($) {
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
 
   function show_sources_overview() {
-
-    let chartDiv = jQuery('#chart')
+    let chartDiv = jQuery('#chart');
 
     chartDiv.empty().html(`
       <span class="section-header">${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources)}</span>
@@ -18,33 +16,34 @@ jQuery(document).ready(function($) {
       <hr>
 
       <div id="charts"></div>
-    `)
+    `);
 
     window.METRICS.setupDatePicker(
       `${window.wp_js_object.rest_endpoints_base}/sources_chart_data/`,
       function (data, label) {
         if (data) {
           $('.date_range_picker span').html(label);
-          draw_data(data, label)
+          draw_data(data, label);
         }
-      }
-    )
+      },
+    );
 
-    function draw_data(data, label = "all time") {
+    function draw_data(data, label = 'all time') {
       if (!data) {
-        data = window.wp_js_object.data.sources
+        data = window.wp_js_object.data.sources;
       }
-      let chartsDiv = $("#charts").empty()
+      let chartsDiv = $('#charts').empty();
 
       data = Object.values(data);
 
-      let height = Math.min(60 * data.length, 1000) + "px"
+      let height = Math.min(60 * data.length, 1000) + 'px';
 
-      chartDiv.find(".js-loading").remove()
+      chartDiv.find('.js-loading').remove();
 
       let filteringOutText = `${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.milestones)} ${label}.`;
 
-      chartsDiv.append($("<div>").html(`
+      chartsDiv.append(
+        $('<div>').html(`
 
         <h3>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.sources_all_contacts_by_source_and_status)}</h3>
 
@@ -74,9 +73,10 @@ jQuery(document).ready(function($) {
         <p><b>${window.SHAREDFUNCTIONS.escapeHTML(window.wp_js_object.translations.faith_milestone)}:</b> <select class="js-milestone"></select></p>
 
         <div id="chartdiv3" style="min-height: ${height}"></div>
-      `))
+      `),
+      );
 
-      let localizedObject = window.wp_js_object
+      let localizedObject = window.wp_js_object;
 
       // Prepare data
       for (let item of data) {
@@ -84,33 +84,37 @@ jQuery(document).ready(function($) {
           item.translated_source = 'null (none set)';
         } else {
           item.translated_source =
-            window.lodash.get(localizedObject, `sources.${item.name_of_source}`) || item.name_of_source;
+            window.lodash.get(
+              localizedObject,
+              `sources.${item.name_of_source}`,
+            ) || item.name_of_source;
         }
       }
       // We need to collect all status names, because not all of them are in localizedObject
       const status_names = []; /* eg: ['assigned', 'closed'] */
-      status_names.push(...localizedObject.overall_status_settings.order)
+      status_names.push(...localizedObject.overall_status_settings.order);
 
-      const seeker_path_names = [] /* eg: ['attempted', 'established'] */
-      seeker_path_names.push(...localizedObject.seeker_path_settings.order)
+      const seeker_path_names = []; /* eg: ['attempted', 'established'] */
+      seeker_path_names.push(...localizedObject.seeker_path_settings.order);
 
-      const milestone_names = [] /* eg: ['milestone_belief', 'milestone_has_bible'] */
-      milestone_names.push(...Object.keys(localizedObject.milestone_settings))
+      const milestone_names =
+        []; /* eg: ['milestone_belief', 'milestone_has_bible'] */
+      milestone_names.push(...Object.keys(localizedObject.milestone_settings));
 
       for (let item of data) {
         for (let key of Object.keys(item)) {
           if (key.startsWith('status_')) {
             let status_name = key.replace('status_', '', 1);
             if (!status_names.includes(status_name)) {
-              status_names.push(status_name)
+              status_names.push(status_name);
             }
           } else if (key.startsWith('active_seeker_path_')) {
-            let seeker_path_name = key.replace('active_seeker_path_', '', 1)
+            let seeker_path_name = key.replace('active_seeker_path_', '', 1);
             if (!seeker_path_names.includes(seeker_path_name)) {
-              seeker_path_names.push(seeker_path_name)
+              seeker_path_names.push(seeker_path_name);
             }
           } else if (key.startsWith('active_milestone_')) {
-            let milestone_name = key.replace('active_', '', 1)
+            let milestone_name = key.replace('active_', '', 1);
             if (!milestone_names.includes(milestone_name)) {
               milestone_names.push(milestone_name);
             }
@@ -120,33 +124,53 @@ jQuery(document).ready(function($) {
 
       {
         // Create chart instance
-        let chart = window.am4core.create("chartdiv1", window.am4charts.XYChart);
+        let chart = window.am4core.create(
+          'chartdiv1',
+          window.am4charts.XYChart,
+        );
 
-        chart.data = window.lodash.orderBy(data, (a => {
-          return a["total"] || 0
-        }), ['asc']);
+        chart.data = window.lodash.orderBy(
+          data,
+          (a) => {
+            return a['total'] || 0;
+          },
+          ['asc'],
+        );
 
         // Create axes
-        let categoryAxis = chart.yAxes.push(new window.am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "translated_source";
-        categoryAxis.title.text = "Source";
+        let categoryAxis = chart.yAxes.push(
+          new window.am4charts.CategoryAxis(),
+        );
+        categoryAxis.dataFields.category = 'translated_source';
+        categoryAxis.title.text = 'Source';
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.minGridDistance = 20;
 
         let valueAxis = chart.xAxes.push(new window.am4charts.ValueAxis());
-        valueAxis.title.text = "Contacts";
+        valueAxis.title.text = 'Contacts';
 
         // Create series
         for (let status of status_names) {
           let series = chart.series.push(new window.am4charts.ColumnSeries());
-          if (window.lodash.get(localizedObject.overall_status_settings.default[status], "color")) {
-            series.columns.template.fill = window.am4core.color(localizedObject.overall_status_settings.default[status].color);
+          if (
+            window.lodash.get(
+              localizedObject.overall_status_settings.default[status],
+              'color',
+            )
+          ) {
+            series.columns.template.fill = window.am4core.color(
+              localizedObject.overall_status_settings.default[status].color,
+            );
           }
-          series.stroke = window.am4core.color("#000000");
-          series.dataFields.valueX = "status_" + status;
-          series.dataFields.categoryY = "translated_source";
-          series.name = window.lodash.get(localizedObject.overall_status_settings.default[status], "label", status);
-          series.tooltipText = "{name}: [bold]{valueX}[/]";
+          series.stroke = window.am4core.color('#000000');
+          series.dataFields.valueX = 'status_' + status;
+          series.dataFields.categoryY = 'translated_source';
+          series.name = window.lodash.get(
+            localizedObject.overall_status_settings.default[status],
+            'label',
+            status,
+          );
+          series.tooltipText = '{name}: [bold]{valueX}[/]';
           series.stacked = true;
         }
 
@@ -157,29 +181,41 @@ jQuery(document).ready(function($) {
       }
 
       {
-
         // Create chart instance
-        let chart2 = window.am4core.create("chartdiv2", window.am4charts.XYChart);
-        chart2.data = window.lodash.orderBy(data, a => a.total_active_seeker_path || 0, ['asc']);
+        let chart2 = window.am4core.create(
+          'chartdiv2',
+          window.am4charts.XYChart,
+        );
+        chart2.data = window.lodash.orderBy(
+          data,
+          (a) => a.total_active_seeker_path || 0,
+          ['asc'],
+        );
 
         // Create axes
-        let categoryAxis = chart2.yAxes.push(new window.am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "translated_source";
-        categoryAxis.title.text = "Source";
+        let categoryAxis = chart2.yAxes.push(
+          new window.am4charts.CategoryAxis(),
+        );
+        categoryAxis.dataFields.category = 'translated_source';
+        categoryAxis.title.text = 'Source';
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.minGridDistance = 20;
 
         let valueAxis = chart2.xAxes.push(new window.am4charts.ValueAxis());
-        valueAxis.title.text = "Contacts";
+        valueAxis.title.text = 'Contacts';
 
         // Create series
         for (let seeker_path of seeker_path_names) {
           let series = chart2.series.push(new window.am4charts.ColumnSeries());
-          series.dataFields.valueX = "active_seeker_path_" + seeker_path;
-          series.dataFields.categoryY = "translated_source";
-          series.stroke = window.am4core.color("#000");
-          series.name = window.lodash.get(localizedObject, `seeker_path_settings.default[${seeker_path}].label`, seeker_path);
-          series.tooltipText = "{name}: [bold]{valueX}[/]";
+          series.dataFields.valueX = 'active_seeker_path_' + seeker_path;
+          series.dataFields.categoryY = 'translated_source';
+          series.stroke = window.am4core.color('#000');
+          series.name = window.lodash.get(
+            localizedObject,
+            `seeker_path_settings.default[${seeker_path}].label`,
+            seeker_path,
+          );
+          series.tooltipText = '{name}: [bold]{valueX}[/]';
           series.stacked = true;
         }
 
@@ -191,62 +227,73 @@ jQuery(document).ready(function($) {
 
       {
         for (let milestone of milestone_names) {
-          let name = (localizedObject.milestone_settings[milestone] || {}) || milestone;
-          $(".js-milestone").append($("<option>").val(milestone).text(name));
+          let name =
+            localizedObject.milestone_settings[milestone] || {} || milestone;
+          $('.js-milestone').append($('<option>').val(milestone).text(name));
         }
 
         // Create chart instance
         let allSeries = [];
-        let chart3 = window.am4core.create("chartdiv3", window.am4charts.XYChart);
+        let chart3 = window.am4core.create(
+          'chartdiv3',
+          window.am4charts.XYChart,
+        );
         chart3.data = window.lodash.orderBy(data, ['total'], ['asc']);
 
         // Create axes
-        let categoryAxis = chart3.yAxes.push(new window.am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "translated_source";
-        categoryAxis.title.text = "Source";
+        let categoryAxis = chart3.yAxes.push(
+          new window.am4charts.CategoryAxis(),
+        );
+        categoryAxis.dataFields.category = 'translated_source';
+        categoryAxis.title.text = 'Source';
         categoryAxis.renderer.grid.template.location = 0;
         categoryAxis.renderer.minGridDistance = 20;
 
         let valueAxis = chart3.xAxes.push(new window.am4charts.ValueAxis());
-        valueAxis.title.text = "Contacts";
+        valueAxis.title.text = 'Contacts';
 
         // Create series
         for (let milestone of milestone_names) {
           let series = chart3.series.push(new window.am4charts.ColumnSeries());
-          series.dataFields.valueX = "active_" + milestone;
-          series.dataFields.categoryY = "translated_source";
-          series.stroke = window.am4core.color("#000");
-          series.name = (localizedObject.milestone_settings[milestone] || {}) || milestone;
-          series.tooltipText = "{name}: [bold]{valueX}[/]";
+          series.dataFields.valueX = 'active_' + milestone;
+          series.dataFields.categoryY = 'translated_source';
+          series.stroke = window.am4core.color('#000');
+          series.name =
+            localizedObject.milestone_settings[milestone] || {} || milestone;
+          series.tooltipText = '{name}: [bold]{valueX}[/]';
           // series.stacked = true;
-          series.clustered = false
-          series.hide()
+          series.clustered = false;
+          series.hide();
           allSeries.push(series);
         }
         // Add cursor
         chart3.cursor = new window.am4charts.XYCursor();
-        chart3.events.on("inited", function (ev) {
-          $(".js-milestone").trigger("change");
-        })
+        chart3.events.on('inited', function (ev) {
+          $('.js-milestone').trigger('change');
+        });
 
-        $(".js-milestone").on("change", function () {
+        $('.js-milestone').on('change', function () {
           let milestone = $(this).val();
-          chart3.data = window.lodash.orderBy(data, (a => {
-            return a["active_" + milestone] || 0
-          }), ['asc']);
+          chart3.data = window.lodash.orderBy(
+            data,
+            (a) => {
+              return a['active_' + milestone] || 0;
+            },
+            ['asc'],
+          );
           for (let series of allSeries) {
-            if (series.dataFields.valueX == "active_" + milestone) {
+            if (series.dataFields.valueX == 'active_' + milestone) {
               series.show();
             } else {
               series.hide();
             }
           }
-        })
+        });
       }
     }
 
-    draw_data()
+    draw_data();
   }
 
-  show_sources_overview()
-})
+  show_sources_overview();
+});

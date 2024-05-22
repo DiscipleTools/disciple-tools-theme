@@ -45,10 +45,18 @@ class DT_Magic_URL_Setup {
     public function dt_details_additional_section( $section, $post_type ){
         if ( $section === 'apps' ){
             $magic_link_apps = dt_get_registered_types();
+            $record = DT_Posts::get_post( $post_type, get_the_ID() );
             foreach ( $magic_link_apps as $app_root => $app_types ){
                 foreach ( $app_types as $app_type => $app_value ){
                     if ( $app_value['post_type'] === $post_type && isset( $app_value['show_app_tile'] ) && $app_value['show_app_tile'] === true ){
                         $this->add_app_row( $post_type, $app_value );
+                    } elseif ( ( isset( $record['type']['key'] ) && $record['type']['key'] === 'user' ) && isset( $app_value['post_type'] ) && ( $app_value['post_type'] === 'user' ) && current_user_can( 'manage_dt' ) ) {
+
+                        // Ensure record has a corresponding user id; which has a valid key already set.
+                        $meta_key_value = get_user_option( $app_value['meta_key'], $record['corresponds_to_user'] );
+                        if ( !empty( $meta_key_value ) && isset( $record[$app_value['meta_key']] ) && $record[$app_value['meta_key']] === $meta_key_value ) {
+                            $this->add_app_row( $post_type, $app_value );
+                        }
                     }
                 }
             }
@@ -83,14 +91,15 @@ class DT_Magic_URL_Setup {
         ?>
         <div class="section-subheader"><?php echo esc_html( $app['label'] ) ?></div>
         <div class="section-app-links <?php echo esc_attr( $meta_key ); ?>">
-            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Copy to clipboard', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button copy_to_clipboard"
+            <a data-tooltip title="<?php esc_html_e( 'View', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button view"><img class="dt-icon" alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ) ?>" /></a>
+            <a type="button" class="app-copy dt-tooltip dt-action-button small button copy_to_clipboard"
                data-value="<?php echo esc_url( site_url() . '/' . $app['root'] . '/' . $app['type'] . '/' . $key ) ?>">
-                <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
+              <span class="tooltiptext"><?php esc_html_e( 'Copy', 'disciple_tools' ); ?></span>
+              <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
             </a>
-            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
-            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>" type="button" class="empty-select-button select-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Send', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button send"><img class="dt-icon" alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'QR code', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button qr"><img class="dt-icon" alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ) ?>" /></a>
+            <a data-tooltip title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>" type="button" class="dt-action-button small button reset"><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
         </div>
         <script>
             jQuery(document).ready(function($){
@@ -103,15 +112,36 @@ class DT_Magic_URL_Setup {
                 window.app_key['<?php echo esc_attr( $meta_key ) ?>'] = '<?php echo esc_attr( $key ) ?>'
                 window.app_url['<?php echo esc_attr( $meta_key ) ?>'] = '<?php echo esc_url( site_url() . '/' . $app['root'] . '/' .$app['type'] . '/' ) ?>'
 
-                $('.<?php echo esc_attr( $meta_key ); ?>.select-button.button.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .view').on('click', function(e){
                     $('#modal-large-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html( $app['description'] ?? '' ) ?></span><hr>`)
                     $('#modal-large-content').empty().html(`<iframe src="${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}" style="width:100%;height: ${window.innerHeight - 170}px;border:1px solid lightgrey;"></iframe>`)
                     $('#modal-large').foundation('open')
                 })
+                <?php
+                $default_message = __( 'Hello,
+
+Please click on the button below to access your app.
+
+{{link}}
+
+Thanks!', 'disciple_tools' );
+                ?>
                 $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .send').on('click', function(e){
                     $('#modal-small-title').empty().html(`<h3 class="section-header"><?php echo esc_html( $app['label'] )  ?></h3><span class="small-text"><?php echo esc_html__( 'Send the link via email.', 'disciple_tools' ) ?></span><input type="text" class="email <?php echo esc_attr( $meta_key ); ?>" placeholder="<?php echo esc_attr__( 'Add email address', 'disciple_tools' )?>"/><hr>`)
-                    $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><input type="text" class="note <?php echo esc_attr( $meta_key ); ?>" placeholder="<?php echo esc_attr__( 'Add a note', 'disciple_tools' )?>" /><br><button type="button" class="button <?php echo esc_attr( $meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="<?php echo esc_attr( $meta_key ); ?> loading-spinner"></span></button></div></div>`)
+                    $('#modal-small-content').empty().html(`<div class="grid-x"><div class="cell"><textarea type="text" class="note <?php echo esc_attr( $meta_key ); ?>" placeholder="<?php echo esc_attr__( 'Add a note', 'disciple_tools' )?>" rows="8"><?php echo esc_textarea( $default_message ); ?></textarea><span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
+                    <ul>
+                        <li>
+                            <span style="font-weight: bold;">{{app}}</span>: <?php echo esc_html__( 'Selected app name', 'disciple_tools' ); ?>
+                        </li>
+                        <li>
+                            <span style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Name of the Record', 'disciple_tools' ); ?>
+                        </li>
+                        <li>
+                            <span style="font-weight: bold;">{{link}}</span>: <?php echo esc_html__( 'Unique link to access the app.', 'disciple_tools' ); ?>
+                        </li>
+                    </ul>
+                    <br>
+                    <button type="button" class="button <?php echo esc_attr( $meta_key ); ?>"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="<?php echo esc_attr( $meta_key ); ?> loading-spinner"></span></button></div></div>`)
                     $('.button.<?php echo esc_attr( $meta_key ); ?>').prop('disabled', true);
                     $('#modal-small').foundation('open')
 
@@ -162,7 +192,7 @@ class DT_Magic_URL_Setup {
                         .done( newPost => {
                             $('#modal-small').foundation('close')
                             window.app_key['<?php echo esc_attr( $meta_key ) ?>'] = newPost['<?php echo esc_attr( $meta_key ) ?>']
-                            $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .select-button.button.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
+                            $('.section-app-links.<?php echo esc_attr( $meta_key ); ?> .app-copy.copy_to_clipboard').data('value', `${window.app_url['<?php echo esc_attr( $meta_key ) ?>']}${window.app_key['<?php echo esc_attr( $meta_key ) ?>']}`)
                         })
                     })
                 })

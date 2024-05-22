@@ -186,6 +186,20 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                             </table>
                                         </div>
                                     </div>
+
+                                    <div id="magic_link_apps" class="bordered-box" style="display: none;">
+                                        <h4><?php esc_html_e( 'User Apps', 'disciple_tools' ) ?></h4>
+                                        <span id="magic_link_apps_spinner"></span>
+                                        <table id="magic_link_apps_table" class="form-table">
+                                            <thead>
+                                            <tr>
+                                                <td><?php esc_html_e( 'Name', 'disciple_tools' )?></td>
+                                                <td><?php esc_html_e( 'Activation', 'disciple_tools' )?></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <!-- end center -->
 

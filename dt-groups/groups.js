@@ -1,37 +1,40 @@
-"use strict"
-jQuery(document).ready(function($) {
-
-  let post_id        = window.detailsSettings.post_id;
-  let post_type      = window.detailsSettings.post_type;
-  let post           = window.detailsSettings.post_fields;
+'use strict';
+jQuery(document).ready(function ($) {
+  let post_id = window.detailsSettings.post_id;
+  let post_type = window.detailsSettings.post_type;
+  let post = window.detailsSettings.post_fields;
   let field_settings = window.detailsSettings.post_settings.fields;
 
   /* Health Metrics */
   let health_keys = Object.keys(field_settings.health_metrics.default);
 
   function fillOutChurchHealthMetrics() {
-    let practiced_items = window.detailsSettings.post_fields.health_metrics || [];
+    let practiced_items =
+      window.detailsSettings.post_fields.health_metrics || [];
 
     /* Make church commitment circle green */
-    if ( practiced_items.indexOf( 'church_commitment' ) !== -1 ) {
-      $('#health-items-container').addClass( 'committed' );
+    if (practiced_items.indexOf('church_commitment') !== -1) {
+      $('#health-items-container').addClass('committed');
       $('#is-church-switch').prop('checked', true);
     }
 
     /* Color church circle items that are being practiced */
-    let items = $( 'div[id^="icon_"]' );
+    let items = $('div[id^="icon_"]');
 
-    items.each( function( k, v ) {
-        if ( practiced_items.indexOf( v.id.replace( 'icon_', '' ), practiced_items ) !== -1 ) {
-            $( this ).children( 'img' ).attr( 'class','practiced-item' );
-        }
+    items.each(function (k, v) {
+      if (
+        practiced_items.indexOf(v.id.replace('icon_', ''), practiced_items) !==
+        -1
+      ) {
+        $(this).children('img').attr('class', 'practiced-item');
+      }
     });
 
     /* Color group progress buttons */
-    let icons = $( '.group-progress-button' );
-    icons.each( function( k, v ) {
-      if ( practiced_items.indexOf( v.id, practiced_items ) !== -1 ) {
-        $( this ).addClass( 'practiced-button' );
+    let icons = $('.group-progress-button');
+    icons.each(function (k, v) {
+      if (practiced_items.indexOf(v.id, practiced_items) !== -1) {
+        $(this).addClass('practiced-button');
       }
     });
   }
@@ -39,216 +42,250 @@ jQuery(document).ready(function($) {
   fillOutChurchHealthMetrics();
   distributeItems();
 
-  $('.health-item').on( 'click', function() {
-    let fieldId = $( this ).attr( 'id' ).replace('icon_', '');
-    let already_set = window.lodash.get(post, 'health_metrics', []).includes( fieldId );
-    let update = { values: [ { value : fieldId } ] };
-    if ( already_set ){
+  $('.health-item').on('click', function () {
+    let fieldId = $(this).attr('id').replace('icon_', '');
+    let already_set = window.lodash
+      .get(post, 'health_metrics', [])
+      .includes(fieldId);
+    let update = { values: [{ value: fieldId }] };
+    if (already_set) {
       update.values[0].delete = true;
     }
-    window.API.update_post( post_type, post_id, { 'health_metrics': update })
-      .then( groupData => {
+    window.API.update_post(post_type, post_id, { health_metrics: update })
+      .then((groupData) => {
         post = groupData;
         /* Update icon */
-        if ( $( this ).attr( 'id' ) === 'church_commitment' ) {
-          $( '#health-items-container' ).toggleClass( 'committed' );
-          $( this ).toggleClass( 'practiced-button' );
+        if ($(this).attr('id') === 'church_commitment') {
+          $('#health-items-container').toggleClass('committed');
+          $(this).toggleClass('practiced-button');
           return true;
         }
         /* Toggle church health circle item color */
-        $( this ).children( 'img' ).toggleClass( 'practiced-item' );
-        $( this ).children( 'i' ).toggleClass( 'practiced-item' );
-      }).catch( err=>{
-        console.log( err );
-    });
+        $(this).children('img').toggleClass('practiced-item');
+        $(this).children('i').toggleClass('practiced-item');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 
-  $('#is-church-switch').on( 'click', function() {
+  $('#is-church-switch').on('click', function () {
     let fieldId = 'church_commitment';
-    let already_set = window.lodash.get(post, 'health_metrics', []).includes( fieldId );
-    let update = { values: [ { value : fieldId } ] };
-    if ( already_set ){
+    let already_set = window.lodash
+      .get(post, 'health_metrics', [])
+      .includes(fieldId);
+    let update = { values: [{ value: fieldId }] };
+    if (already_set) {
       update.values[0].delete = true;
     }
-    window.API.update_post( post_type, post_id, { 'health_metrics': update })
-      .then( groupData => {
+    window.API.update_post(post_type, post_id, { health_metrics: update })
+      .then((groupData) => {
         post = groupData;
         /* Update commitment circle */
-        $( '#health-items-container' ).toggleClass( 'committed' );
-      }).catch( err=>{
-        console.log( err );
-    });
-  })
+        $('#health-items-container').toggleClass('committed');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 
   /* Dynamically distribute items in Church Health Circle
      according to amount of health metric elements */
   function distributeItems() {
     let radius = 75;
-    let items = $( '.health-item' ),
-        container = $( '#health-items-container' ),
-        item_count = items.length,
-        fade_delay = 45,
-        width = container.width(),
-        height = container.height() + 66,
-        angle = 0,
-        step = (2*Math.PI) / items.length,
-        y_offset = -35;
+    let items = $('.health-item'),
+      container = $('#health-items-container'),
+      item_count = items.length,
+      fade_delay = 45,
+      width = container.width(),
+      height = container.height() + 66,
+      angle = 0,
+      step = (2 * Math.PI) / items.length,
+      y_offset = -35;
 
-        if ( item_count >= 5 && item_count < 7 ) {
-            radius = 90;
-        }
+    if (item_count >= 5 && item_count < 7) {
+      radius = 90;
+    }
 
-        if ( item_count >= 7 & item_count < 11 ) {
-            radius = 100;
-        }
+    if ((item_count >= 7) & (item_count < 11)) {
+      radius = 100;
+    }
 
-        if ( item_count >= 11 ) {
-            radius = 110;
-        }
+    if (item_count >= 11) {
+      radius = 110;
+    }
 
-        if ( item_count == 3 ) {
-            angle = 22.5;
-        }
+    if (item_count == 3) {
+      angle = 22.5;
+    }
 
-    items.each(function() {
-        let X = Math.round( width / 2 + radius * Math.cos(angle) - $( this ).width() / 2 );
-        let y = Math.round( height / 2 + radius * Math.sin(angle) - $( this ).height() / 2 ) + y_offset;
+    items.each(function () {
+      let X = Math.round(
+        width / 2 + radius * Math.cos(angle) - $(this).width() / 2,
+      );
+      let y =
+        Math.round(
+          height / 2 + radius * Math.sin(angle) - $(this).height() / 2,
+        ) + y_offset;
 
-        if ( item_count == 1 ) {
-            X = 112.5;
-            y = 68;
-        }
+      if (item_count == 1) {
+        X = 112.5;
+        y = 68;
+      }
 
-        $(this).css({
-            left: X + 'px',
-            top: y + 'px',
-        });
-        $(this).delay(fade_delay).fadeIn( 1000, 'linear' );
-        angle += step;
-        fade_delay += 45;
+      $(this).css({
+        left: X + 'px',
+        top: y + 'px',
+      });
+      $(this).delay(fade_delay).fadeIn(1000, 'linear');
+      angle += step;
+      fade_delay += 45;
     });
   }
   /* End Health Metrics*/
 
-  let { template_dir } = window.wpApiShare
+  let { template_dir } = window.wpApiShare;
 
   /* Member List*/
-  let memberList = $('.member-list')
-  let memberCountInput = $('#member_count')
-  let leaderCountInput = $('#leader_count')
-  let populateMembersList = ()=>{
-    memberList.empty()
+  let memberList = $('.member-list');
+  let memberCountInput = $('#member_count');
+  let leaderCountInput = $('#leader_count');
+  let populateMembersList = () => {
+    memberList.empty();
 
-    post.members.forEach(m=>{
-      if ( window.lodash.find( post.leaders || [], {ID: m.ID} ) ){
-        m.leader = true
+    post.members.forEach((m) => {
+      if (window.lodash.find(post.leaders || [], { ID: m.ID })) {
+        m.leader = true;
       }
-    })
-    post.members = window.lodash.sortBy(post.members, ["leader", member => member.post_title.toLowerCase()]);
-    post.members.forEach(member=>{
+    });
+    post.members = window.lodash.sortBy(post.members, [
+      'leader',
+      (member) => member.post_title.toLowerCase(),
+    ]);
+    post.members.forEach((member) => {
       let leaderHTML = '';
       let leaderStatus = 'not-leader';
       let leaderStyle = '';
-      if( member.leader ){
+      if (member.leader) {
         leaderStatus = 'leader';
         leaderStyle = 'color:black;';
       }
 
+      const contactStatusHTML =
+        member.data && member.data.overall_status
+          ? `<i class="fi-torso small" style="color: ${window.SHAREDFUNCTIONS.escapeHTML(member.data.overall_status.color)}" title="${window.SHAREDFUNCTIONS.escapeHTML(member.data.overall_status.label)}"></i>`
+          : '<i class="fi-torso small"></i>';
 
-      const contactStatusHTML = ( member.data && member.data.overall_status )
-        ? `<i class="fi-torso small" style="color: ${window.SHAREDFUNCTIONS.escapeHTML( member.data.overall_status.color )}" title="${window.SHAREDFUNCTIONS.escapeHTML( member.data.overall_status.label )}"></i>`
-        : '<i class="fi-torso small"></i>'
-
-      const milestonesHTML = member.data.milestones.reduce((htmlString, milestone) => {
-        return milestone.icon
-          ? htmlString + `<img class="dt-icon" src="${window.SHAREDFUNCTIONS.escapeHTML( milestone.icon )}" alt="${window.SHAREDFUNCTIONS.escapeHTML( milestone.label )}" title="${window.SHAREDFUNCTIONS.escapeHTML( milestone.label )}">`
-          : htmlString
-      }, '')
-      let memberHTML = `<div class="member-row" style="" data-id="${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">
+      const milestonesHTML = member.data.milestones.reduce(
+        (htmlString, milestone) => {
+          return milestone.icon
+            ? htmlString +
+                `<img class="dt-icon" src="${window.SHAREDFUNCTIONS.escapeHTML(milestone.icon)}" alt="${window.SHAREDFUNCTIONS.escapeHTML(milestone.label)}" title="${window.SHAREDFUNCTIONS.escapeHTML(milestone.label)}">`
+            : htmlString;
+        },
+        '',
+      );
+      let memberHTML = `<div class="member-row" style="" data-id="${window.SHAREDFUNCTIONS.escapeHTML(member.ID)}">
           <div style="flex-grow: 1" class="member-status">
               ${contactStatusHTML}
-              <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">${window.SHAREDFUNCTIONS.escapeHTML(member.post_title)}</a>
+              <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${window.SHAREDFUNCTIONS.escapeHTML(member.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(member.post_title)}</a>
               ${leaderHTML}
               ${milestonesHTML}
           </div>
-          <button class="button clear make-leader member-row-actions ${leaderStatus}" style="${leaderStyle}" data-id="${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">
+          <button class="button clear make-leader member-row-actions ${leaderStatus}" style="${leaderStyle}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(member.ID)}">
             <i class="fi-foot small"></i>
           </button>
-          <button class="button clear delete-member member-row-actions" data-id="${window.SHAREDFUNCTIONS.escapeHTML( member.ID )}">
+          <button class="button clear delete-member member-row-actions" data-id="${window.SHAREDFUNCTIONS.escapeHTML(member.ID)}">
             <i class="fi-x small"></i>
           </button>
-        </div>`
-      memberList.append(memberHTML)
-    })
+        </div>`;
+      memberList.append(memberHTML);
+    });
     if (post.members.length === 0) {
-      $("#empty-members-list-message").show()
+      $('#empty-members-list-message').show();
     } else {
-      $("#empty-members-list-message").hide()
+      $('#empty-members-list-message').hide();
     }
-    memberCountInput.val( post.member_count )
-    leaderCountInput.val( post.leader_count )
-    window.masonGrid.masonry('layout')
-    document.dispatchEvent(new CustomEvent("dt-member-list-populated", {detail: post}))
-  }
-  populateMembersList()
+    memberCountInput.val(post.member_count);
+    leaderCountInput.val(post.leader_count);
+    window.masonGrid.masonry('layout');
+    document.dispatchEvent(
+      new CustomEvent('dt-member-list-populated', { detail: post }),
+    );
+  };
+  populateMembersList();
 
-  $( document ).on( "dt-post-connection-created", function( e, new_post, field_key ){
-    if ( field_key === "members" ){
-      post = new_post
-      populateMembersList()
+  $(document).on(
+    'dt-post-connection-created',
+    function (e, new_post, field_key) {
+      if (field_key === 'members') {
+        post = new_post;
+        populateMembersList();
+      }
+    },
+  );
+  $(document).on('click', '.delete-member', function () {
+    let id = $(this).data('id');
+    $(`.member-row[data-id="${id}"]`).remove();
+    window.API.update_post(post_type, post_id, {
+      members: { values: [{ value: id, delete: true }] },
+    }).then((groupRes) => {
+      post = groupRes;
+      populateMembersList();
+      window.masonGrid.masonry('layout');
+    });
+    if (window.lodash.find(post.leaders || [], { ID: id })) {
+      window.API.update_post(post_type, post_id, {
+        leaders: { values: [{ value: id, delete: true }] },
+      });
     }
-  } )
-  $(document).on("click", ".delete-member", function () {
-    let id = $(this).data('id')
-    $(`.member-row[data-id="${id}"]`).remove()
-    window.API.update_post( post_type, post_id, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
-      post=groupRes
-      populateMembersList()
-      window.masonGrid.masonry('layout')
-    })
-    if( window.lodash.find( post.leaders || [], {ID: id}) ) {
-      window.API.update_post( post_type, post_id, {'leaders': {values: [{value: id, delete: true}]}})
+  });
+  $(document).on('click', '.make-leader', function () {
+    $(this).children('i').attr('class', 'small');
+    let spinner = `<img src="${template_dir}/dt-assets/images/ajax-loader.gif" width="15px">`;
+    $(this).append(spinner);
+    let id = $(this).data('id');
+    let remove = false;
+    let existingLeaderIcon = $(`.member-row[data-id="${id}"] .leader`);
+    if (
+      window.lodash.find(post.leaders || [], { ID: id }) ||
+      existingLeaderIcon.length !== 0
+    ) {
+      remove = true;
     }
-  })
-  $(document).on("click", ".make-leader", function () {
-    $(this).children('i').attr('class', 'small')
-    let spinner = `<img src="${template_dir}/dt-assets/images/ajax-loader.gif" width="15px">`
-    $(this).append(spinner)
-    let id = $(this).data('id')
-    let remove = false
-    let existingLeaderIcon = $(`.member-row[data-id="${id}"] .leader`)
-    if( window.lodash.find( post.leaders || [], {ID: id}) || existingLeaderIcon.length !== 0){
-      remove = true
-    }
-    window.API.update_post( post_type, post_id, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
-      post=groupRes
-      populateMembersList()
-      window.masonGrid.masonry('layout')
-    })
-  })
-  $('.add-new-member').on("click", function () {
+    window.API.update_post(post_type, post_id, {
+      leaders: { values: [{ value: id, delete: remove }] },
+    }).then((groupRes) => {
+      post = groupRes;
+      populateMembersList();
+      window.masonGrid.masonry('layout');
+    });
+  });
+  $('.add-new-member').on('click', function () {
     $('#add-new-group-member-modal').foundation('open');
-    window.Typeahead[`.js-typeahead-members`].adjustInputSize()
-  })
-  $( document ).on( "dt-post-connection-added", function( e, new_post, field_key ){
+    window.Typeahead[`.js-typeahead-members`].adjustInputSize();
+  });
+  $(document).on('dt-post-connection-added', function (e, new_post, field_key) {
     post = new_post;
-    if ( field_key === "members" ){
-      populateMembersList()
+    if (field_key === 'members') {
+      populateMembersList();
     }
-  })
+  });
 
   /* end Member List */
 
   /* Four Fields */
-  let loadFourFields = ()=>{
-    if ( $('#four-fields').length ) {
-      $('#four_fields_unbelievers').val( post.four_fields_unbelievers )
-      $('#four_fields_believers').val( post.four_fields_believers )
-      $('#four_fields_accountable').val( post.four_fields_accountable )
-      $('#four_fields_church_commitment').val( post.four_fields_church_commitment )
-      $('#four_fields_multiplying').val( post.four_fields_multiplying )
+  let loadFourFields = () => {
+    if ($('#four-fields').length) {
+      $('#four_fields_unbelievers').val(post.four_fields_unbelievers);
+      $('#four_fields_believers').val(post.four_fields_believers);
+      $('#four_fields_accountable').val(post.four_fields_accountable);
+      $('#four_fields_church_commitment').val(
+        post.four_fields_church_commitment,
+      );
+      $('#four_fields_multiplying').val(post.four_fields_multiplying);
     }
-  }
+  };
 
   let ffInputs = `
     <label style="margin-left:33.3%;">
@@ -275,26 +312,31 @@ jQuery(document).ready(function($) {
         <input class="four_fields" style="width: 60%;height: 25%;border: 1px solid #000;text-align: center;font-size: 24px;margin-bottom:0" type="text" name="four_fields_church_commitment" id="four_fields_church_commitment">
         ${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.post_settings.fields.four_fields_church_commitment.name)}
     </label>
-  `
-  $('#four-fields-inputs').append(ffInputs)
-  loadFourFields()
+  `;
+  $('#four-fields-inputs').append(ffInputs);
+  loadFourFields();
 
-  $('input.four_fields').on("blur", function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
+  $('input.four_fields').on('blur', function () {
+    const id = $(this).attr('id');
+    const val = $(this).val();
 
-    window.API.update_post( post_type, post_id, { [id]: val }).then((resp)=>{
-      $( document ).trigger( "text-input-updated", [ resp, id, val ] );
-    }).catch(window.handleAjaxError)
-  })
+    window.API.update_post(post_type, post_id, { [id]: val })
+      .then((resp) => {
+        $(document).trigger('text-input-updated', [resp, id, val]);
+      })
+      .catch(window.handleAjaxError);
+  });
   /* End Four Fields */
 
-
   //update the end date input when group is closed.
-  $( document ).on( 'select-field-updated', function (e, new_group, field_key, val) {
-    if ( field_key === "group_status" && new_group.end_date){
-      $('#end_date').val(window.SHAREDFUNCTIONS.formatDate( new_group.end_date.timestamp) )
-    }
-  })
-
-})
+  $(document).on(
+    'select-field-updated',
+    function (e, new_group, field_key, val) {
+      if (field_key === 'group_status' && new_group.end_date) {
+        $('#end_date').val(
+          window.SHAREDFUNCTIONS.formatDate(new_group.end_date.timestamp),
+        );
+      }
+    },
+  );
+});
