@@ -240,13 +240,17 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             }
         }
 
+        $shared = intval( $menu_data['items'][ $parent_id ]['shared'] ?? 0 );
         $array = [
             'id' => $parent_id,
-            'name' => $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM',
+            'name' => ( ( $shared === 1 ) || ( $gen === 0 ) ) ? ( $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM' ) : '',
             'status' => $menu_data['items'][ $parent_id ]['status'] ?? '',
-            'shared' => $menu_data['items'][ $parent_id ]['shared'] ?? 0,
+            'shared' => $shared,
             'content' => 'Gen ' . $gen
         ];
+
+        // Ensure to exclude non-shared generations.
+        $children = $this->exclude_non_shared_generations( $children );
 
         // Determine if archived records are to be excluded.
         if ( !$filters['show_archived'] ) {
@@ -297,6 +301,20 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                     $updated_children[] = $child;
                 }
             } else {
+                $updated_children[] = $child;
+            }
+        }
+
+        return $updated_children;
+    }
+
+    public function exclude_non_shared_generations( $children ): array {
+        $updated_children = [];
+        foreach ( $children ?? [] as $child ) {
+            if ( !empty( $child['children'] ) ) {
+                $child['children'] = $this->exclude_non_shared_generations( $child['children'] );
+            }
+            if ( !empty( $child['children'] ) || ( isset( $child['shared'] ) && intval( $child['shared'] ) === 1 ) ) {
                 $updated_children[] = $child;
             }
         }
