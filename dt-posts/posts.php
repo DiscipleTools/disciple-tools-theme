@@ -259,7 +259,7 @@ class Disciple_Tools_Posts
             $to = get_post( $p2p_record->p2p_to );
             $to_title = $to->post_title;
             $to_link = get_permalink( $p2p_record->p2p_to );
-            $from_title = $from->post_title;
+            $from_title = $from->post_title ?? '';
             $from_link = get_permalink( $p2p_record->p2p_from );
         }
 
@@ -2574,6 +2574,15 @@ class Disciple_Tools_Posts
                             ];
 
                             $fields[$field_key][] = $meta;
+                        }
+                    }
+                } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'image' ){
+                    if ( !empty( $value[0]['value'] ) ){
+                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
+                            $fields[$key] = [
+                                'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
+                                'full' => DT_storage::get_file_url( $value[0]['value'] ),
+                            ];
                         }
                     }
                 } else {

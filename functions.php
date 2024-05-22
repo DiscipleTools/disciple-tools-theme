@@ -27,10 +27,36 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
     add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
 } else {
 
+
+    /**
+     * Load the Disciple Tools Theme
+     * Note: This will be moved before of the after_setup_theme hook
+     */
+    add_action( 'after_setup_theme', 'dt_theme_load', 5 );
+
+
+    /**
+     * The disciple_tools_load_plugins hook
+     * Set up hook for loading plugins
+     */
+    add_action( 'after_setup_theme', function (){
+        do_action( 'disciple_tools_load_plugins' );
+    }, 30 );
+
+    /**
+     * The disciple_tools_loaded hook
+     * Disciple.Tools theme and plugins are loaded.
+     * It is now safe to us the Disciple.Tools API, run actions and views
+     */
+    add_action( 'init', function (){
+        do_action( 'disciple_tools_loaded' );
+    }, 10 );
+
+
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
      */
-    function dt_theme_loaded() {
+    function dt_theme_load() {
         /** We want to make sure roles are up-to-date. */
         require_once( 'dt-core/configuration/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
@@ -44,7 +70,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
          */
         load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
     }
-    add_action( 'after_setup_theme', 'dt_theme_loaded', 5 );
 
 
     /**
@@ -154,7 +179,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.58.0';
+            $this->version = '1.62.1';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';

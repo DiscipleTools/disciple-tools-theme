@@ -1,20 +1,19 @@
 /*global amcharts:false, am4maps:false */
-"use strict";
-let translations = window.mappingModule.mapping_module.translations
+'use strict';
+let translations = window.mappingModule.mapping_module.translations;
 
-let MAPPINGDATA = window.mappingModule.mapping_module
+let MAPPINGDATA = window.mappingModule.mapping_module;
 
-let openChart = null
+let openChart = null;
 
-let mapFillColor = "rgb(217, 217, 217)"
+let mapFillColor = 'rgb(217, 217, 217)';
 
 //called when a drilldown option is selected or when the map clicked
-window.DRILLDOWN.map_chart_drilldown = function( grid_id ) {
-  MAPPINGDATA.settings.current_map = grid_id || 'world'
-  location_grid_map( 'map_chart', grid_id )
-  data_type_list( 'data_type_list' )
-}
-
+window.DRILLDOWN.map_chart_drilldown = function (grid_id) {
+  MAPPINGDATA.settings.current_map = grid_id || 'world';
+  location_grid_map('map_chart', grid_id);
+  data_type_list('data_type_list');
+};
 
 /**********************************************************************************************************************
  *
@@ -23,9 +22,9 @@ window.DRILLDOWN.map_chart_drilldown = function( grid_id ) {
  * This displays a vision map and allows for drill down through clicking on map sections.
  *
  **********************************************************************************************************************/
-function page_mapping_view( rest_endpoints_base = null ) {
-  MAPPINGDATA.rest_endpoints_base = rest_endpoints_base
-  let chartDiv = jQuery('#mapping_chart')
+function page_mapping_view(rest_endpoints_base = null) {
+  MAPPINGDATA.rest_endpoints_base = rest_endpoints_base;
+  let chartDiv = jQuery('#mapping_chart');
   chartDiv.empty().html(`
     <style>#chart { height: ${window.innerHeight - 100}px !important; }
     #map_chart { height: ${window.innerHeight - 300}px !important; }
@@ -57,29 +56,35 @@ function page_mapping_view( rest_endpoints_base = null ) {
       <hr id="map_hr_2" class="map_hr">
     </div>
 
-    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${window.lodash.escape( translations.refresh_data )}</a></span>
+    <span id="refresh_data" class="refresh_data"><a onclick="get_data(true)">${window.lodash.escape(translations.refresh_data)}</a></span>
   `);
 
-  if ( MAPPINGDATA.data ){
-    window.DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
+  if (MAPPINGDATA.data) {
+    window.DRILLDOWN.get_drill_down(
+      'map_chart_drilldown',
+      MAPPINGDATA.settings.current_map,
+    );
   } else {
-    return get_data(false).then(response=>{
-      MAPPINGDATA.data = response
-      // set the depth of the drill down
-      MAPPINGDATA.settings.hide_final_drill_down = false
-      // load drill down
-      window.DRILLDOWN.get_drill_down('map_chart_drilldown', MAPPINGDATA.settings.current_map)
-    }).fail(err=>{
-      console.log(err)
-    })
+    return get_data(false)
+      .then((response) => {
+        MAPPINGDATA.data = response;
+        // set the depth of the drill down
+        MAPPINGDATA.settings.hide_final_drill_down = false;
+        // load drill down
+        window.DRILLDOWN.get_drill_down(
+          'map_chart_drilldown',
+          MAPPINGDATA.settings.current_map,
+        );
+      })
+      .fail((err) => {
+        console.log(err);
+      });
   }
-
 }
 
-
-function setCommonMapSettings( chart ) {
+function setCommonMapSettings(chart) {
   let polygonSeries = chart.series.push(new window.am4maps.MapPolygonSeries());
-  polygonSeries.exclude = ["AQ","GL"];
+  polygonSeries.exclude = ['AQ', 'GL'];
   polygonSeries.useGeodata = true;
   let template = polygonSeries.mapPolygons.template;
 
@@ -88,358 +93,422 @@ function setCommonMapSettings( chart ) {
                             ---------<br>
                             ${window.lodash.escape(translations.population)}: {population}<br>
                             `;
-  jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-    toolTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
-  })
+  jQuery.each(MAPPINGDATA.data.custom_column_labels, function (labelIndex, vc) {
+    toolTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape(vc.key)}}<br>`;
+  });
 
-  template.tooltipHTML = toolTipContent
+  template.tooltipHTML = toolTipContent;
 
   // Create hover state and set alternative fill color
-  let hs = template.states.create("hover");
-  hs.properties.fill = window.am4core.color("#000");
+  let hs = template.states.create('hover');
+  hs.properties.fill = window.am4core.color('#000');
 
-  template.propertyFields.fill = "fill";
+  template.propertyFields.fill = 'fill';
   polygonSeries.tooltip.label.interactionsEnabled = true;
-  polygonSeries.tooltip.pointerOrientation = "vertical";
-  template.fill = window.am4core.color("#FFFFFF");
+  polygonSeries.tooltip.pointerOrientation = 'vertical';
+  template.fill = window.am4core.color('#FFFFFF');
   // template.stroke = window.am4core.color("rgba(89,89,89,0.51)");
 
   polygonSeries.heatRules.push({
-    property: "fill",
+    property: 'fill',
     target: template,
     min: chart.colors.getIndex(1).brighten(1.5),
-    max: chart.colors.getIndex(1).brighten(-0.3)
+    max: chart.colors.getIndex(1).brighten(-0.3),
   });
   // Zoom control
   chart.zoomControl = new window.am4maps.ZoomControl();
 
   let homeButton = new window.am4core.Button();
-  homeButton.events.on("hit", function(){
+  homeButton.events.on('hit', function () {
     chart.goHome();
   });
 
   homeButton.icon = new window.am4core.Sprite();
   homeButton.padding(7, 5, 7, 5);
   homeButton.width = 30;
-  homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+  homeButton.icon.path =
+    'M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8';
   homeButton.marginBottom = 10;
   homeButton.parent = chart.zoomControl;
   homeButton.insertBefore(chart.zoomControl.plusButton);
 
-
   /* Click navigation */
-  template.events.on("hit", function(ev) {
-    // if (MAPPINGDATA.data[ev.target.dataItem.dataContext.grid_id]) {
-    return window.DRILLDOWN.get_drill_down('map_chart_drilldown', ev.target.dataItem.dataContext.grid_id)
-    // }
-  }, this);
+  template.events.on(
+    'hit',
+    function (ev) {
+      // if (MAPPINGDATA.data[ev.target.dataItem.dataContext.grid_id]) {
+      return window.DRILLDOWN.get_drill_down(
+        'map_chart_drilldown',
+        ev.target.dataItem.dataContext.grid_id,
+      );
+      // }
+    },
+    this,
+  );
 
-
-  let default_map_settings = MAPPINGDATA.settings.default_map_settings
-  if ( default_map_settings.children.length > 1 && default_map_settings.type !== "world" && MAPPINGDATA.settings.current_map == default_map_settings.parent ){
+  let default_map_settings = MAPPINGDATA.settings.default_map_settings;
+  if (
+    default_map_settings.children.length > 1 &&
+    default_map_settings.type !== 'world' &&
+    MAPPINGDATA.settings.current_map == default_map_settings.parent
+  ) {
     // Pre-zoom to a list of countries
     let zoomTo = MAPPINGDATA.settings.default_map_settings.children;
-    chart.events.on("appeared", function(ev) {
+    chart.events.on('appeared', function (ev) {
       // Init extrems
       let north, south, west, east;
 
       // Find extreme coordinates for all pre-zoom countries
-      for(let i = 0; i < zoomTo.length; i++) {
+      for (let i = 0; i < zoomTo.length; i++) {
         let country = polygonSeries.getPolygonById(zoomTo[i]);
-        if (north === undefined || (country.north > north)) {
+        if (north === undefined || country.north > north) {
           north = country.north;
         }
-        if (south === undefined || (country.south < south)) {
+        if (south === undefined || country.south < south) {
           south = country.south;
         }
-        if (west === undefined || (country.west < west)) {
+        if (west === undefined || country.west < west) {
           west = country.west;
         }
-        if (east === undefined || (country.east > east)) {
+        if (east === undefined || country.east > east) {
           east = country.east;
         }
 
         country.isActive = true;
       }
       chart.zoomToRectangle(north, east, south, west, 1, true);
-    })
+    });
   }
 }
 
-function setUpData( features, map_data ){
-  jQuery.each( features, function(featureIndex, mapFeature ) {
-    let grid_id =  mapFeature.properties.grid_id
-    let locationData =  window.lodash.get( map_data, `children[${grid_id}]` ) || window.lodash.get(map_data, `children[${mapFeature.id}]`)  || window.lodash.get( map_data, `${grid_id}.self` );
-    if ( locationData ) {
-      mapFeature.properties.grid_id = locationData.grid_id
-      mapFeature.properties.population = locationData.population
-      mapFeature.properties.name = locationData.name
+function setUpData(features, map_data) {
+  jQuery.each(features, function (featureIndex, mapFeature) {
+    let grid_id = mapFeature.properties.grid_id;
+    let locationData =
+      window.lodash.get(map_data, `children[${grid_id}]`) ||
+      window.lodash.get(map_data, `children[${mapFeature.id}]`) ||
+      window.lodash.get(map_data, `${grid_id}.self`);
+    if (locationData) {
+      mapFeature.properties.grid_id = locationData.grid_id;
+      mapFeature.properties.population = locationData.population;
+      mapFeature.properties.name = locationData.name;
 
       /* custom columns */
-      if ( MAPPINGDATA.data.custom_column_data[grid_id] ) {
+      if (MAPPINGDATA.data.custom_column_data[grid_id]) {
         /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
-        * heatmap variable to the end of the array */
-        let focus = MAPPINGDATA.settings.heatmap_focus
-        jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-          mapFeature.properties.fill = null;
-          if ( labelIndex !== focus ) {
-            mapFeature.properties[label.key] = MAPPINGDATA.data.custom_column_data[grid_id][labelIndex]
-            mapFeature.properties.value = mapFeature.properties[label.key]
-          }
-        })
-        jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-          if ( labelIndex === focus ) {
-            mapFeature.properties[label.key] = MAPPINGDATA.data.custom_column_data[grid_id][labelIndex]
-            mapFeature.properties.value = mapFeature.properties[label.key]
-            if ( mapFeature.properties.value === 0 ){
-              mapFeature.properties.fill = window.am4core.color(mapFillColor);
+         * heatmap variable to the end of the array */
+        let focus = MAPPINGDATA.settings.heatmap_focus;
+        jQuery.each(
+          MAPPINGDATA.data.custom_column_labels,
+          function (labelIndex, label) {
+            mapFeature.properties.fill = null;
+            if (labelIndex !== focus) {
+              mapFeature.properties[label.key] =
+                MAPPINGDATA.data.custom_column_data[grid_id][labelIndex];
+              mapFeature.properties.value = mapFeature.properties[label.key];
             }
-          }
-        })
+          },
+        );
+        jQuery.each(
+          MAPPINGDATA.data.custom_column_labels,
+          function (labelIndex, label) {
+            if (labelIndex === focus) {
+              mapFeature.properties[label.key] =
+                MAPPINGDATA.data.custom_column_data[grid_id][labelIndex];
+              mapFeature.properties.value = mapFeature.properties[label.key];
+              if (mapFeature.properties.value === 0) {
+                mapFeature.properties.fill = window.am4core.color(mapFillColor);
+              }
+            }
+          },
+        );
       } else {
-        jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-          mapFeature.properties[label.key] = 0
-          mapFeature.properties.value = 0
-          mapFeature.properties.fill = window.am4core.color(mapFillColor);
-        })
+        jQuery.each(
+          MAPPINGDATA.data.custom_column_labels,
+          function (labelIndex, label) {
+            mapFeature.properties[label.key] = 0;
+            mapFeature.properties.value = 0;
+            mapFeature.properties.fill = window.am4core.color(mapFillColor);
+          },
+        );
       }
       /* end custom column */
     }
-  })
-  return features
+  });
+  return features;
 }
 
-
-function location_grid_map( div, grid_id = 'world' ) {
+function location_grid_map(div, grid_id = 'world') {
   window.am4core.useTheme(window.am4themes_animated);
 
-  let chart = null
-  if ( openChart ){
-    openChart.dispose()
+  let chart = null;
+  if (openChart) {
+    openChart.dispose();
   }
-  chart = window.am4core.create( div, window.am4maps.MapChart);
-  setCommonMapSettings( chart );
+  chart = window.am4core.create(div, window.am4maps.MapChart);
+  setCommonMapSettings(chart);
   chart.projection = new window.am4maps.projections.Miller(); // Set projection
-  chart.reverseGeodata = true
-  openChart = chart
-  let title = jQuery('#section_title')
-  let rest = MAPPINGDATA.settings.endpoints.get_map_by_grid_id_endpoint
+  chart.reverseGeodata = true;
+  openChart = chart;
+  let title = jQuery('#section_title');
+  let rest = MAPPINGDATA.settings.endpoints.get_map_by_grid_id_endpoint;
 
+  title.empty();
 
-  title.empty()
-
-
-  if ( MAPPINGDATA.data[grid_id] ) {
-    build_map( MAPPINGDATA.data[grid_id] )
+  if (MAPPINGDATA.data[grid_id]) {
+    build_map(MAPPINGDATA.data[grid_id]);
   } else {
-    jQuery.ajax({
-      type: rest.method,
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify( { 'grid_id': grid_id, 'cached': MAPPINGDATA.settings.cached, 'cached_length': MAPPINGDATA.settings.cached_length } ),
-      dataType: "json",
-      url: MAPPINGDATA.settings.root + rest.namespace + rest.route,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
-      },
-    })
-    .done( function( response ) {
-      MAPPINGDATA.data[grid_id] = response
-      build_map(response)
-
-    }) // end success statement
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-    })
+    jQuery
+      .ajax({
+        type: rest.method,
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({
+          grid_id: grid_id,
+          cached: MAPPINGDATA.settings.cached,
+          cached_length: MAPPINGDATA.settings.cached_length,
+        }),
+        dataType: 'json',
+        url: MAPPINGDATA.settings.root + rest.namespace + rest.route,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+        },
+      })
+      .done(function (response) {
+        MAPPINGDATA.data[grid_id] = response;
+        build_map(response);
+      }) // end success statement
+      .fail(function (err) {
+        console.log('error');
+        console.log(err);
+      });
   }
 
-  function build_map( response ) {
-    title.html(response.self.name)
+  function build_map(response) {
+    title.html(response.self.name);
 
-    jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'collection/' + grid_id+'.geojson', function( data ) { // get geojson data
+    jQuery
+      .getJSON(
+        MAPPINGDATA.settings.mapping_source_url +
+          'collection/' +
+          grid_id +
+          '.geojson',
+        function (data) {
+          // get geojson data
 
-      // load geojson with additional parameters
-      let mapData = data
-      mapData.features = setUpData( mapData.features, response )
-      chart.geodata = mapData
+          // load geojson with additional parameters
+          let mapData = data;
+          mapData.features = setUpData(mapData.features, response);
+          chart.geodata = mapData;
 
-      //minimap
-      let coordinates = []
-      coordinates.push({
-        "latitude": response.self.latitude || 0,
-        "longitude": response.self.longitude || 0,
-        "title": response.self.name || 'World'
-      })
-      mini_map( 'minimap', coordinates )
+          //minimap
+          let coordinates = [];
+          coordinates.push({
+            latitude: response.self.latitude || 0,
+            longitude: response.self.longitude || 0,
+            title: response.self.name || 'World',
+          });
+          mini_map('minimap', coordinates);
 
-      //add totals section under the minimap
-      let totals = MAPPINGDATA.data.custom_column_data[grid_id] || []
-      if ( grid_id === "world" ){
-        totals = new Array(MAPPINGDATA.data.custom_column_labels.length).fill(0)
-        Object.keys(MAPPINGDATA.data.world.children).forEach(id=>{
-          if ( MAPPINGDATA.data.custom_column_data[id] ){
-            totals = totals.map((num, idx)=>{
-              return num + MAPPINGDATA.data.custom_column_data[id][idx]
-            })
+          //add totals section under the minimap
+          let totals = MAPPINGDATA.data.custom_column_data[grid_id] || [];
+          if (grid_id === 'world') {
+            totals = new Array(
+              MAPPINGDATA.data.custom_column_labels.length,
+            ).fill(0);
+            Object.keys(MAPPINGDATA.data.world.children).forEach((id) => {
+              if (MAPPINGDATA.data.custom_column_data[id]) {
+                totals = totals.map((num, idx) => {
+                  return num + MAPPINGDATA.data.custom_column_data[id][idx];
+                });
+              }
+            });
           }
-        })
-      }
-      let self_info = jQuery('#self_info')
-      self_info.empty()
-      let self_html = `<ul class="ul-no-bullets">`
-      jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-        let value = totals[labelIndex] || 0
-        self_html += `<li><strong>${label.label}</strong>: ${value}</li>`
+          let self_info = jQuery('#self_info');
+          self_info.empty();
+          let self_html = `<ul class="ul-no-bullets">`;
+          jQuery.each(
+            MAPPINGDATA.data.custom_column_labels,
+            function (labelIndex, label) {
+              let value = totals[labelIndex] || 0;
+              self_html += `<li><strong>${label.label}</strong>: ${value}</li>`;
+            },
+          );
+          self_info.html(self_html + `</ul`);
+        },
+      ) // end get geojson
 
-      })
-      self_info.html(self_html + `</ul`)
+      .fail(function () {
+        // if failed to get multi polygon map, then get boundary map and fill with placemarks
 
-    }) // end get geojson
+        jQuery
+          .getJSON(
+            MAPPINGDATA.settings.mapping_source_url +
+              'low/' +
+              grid_id +
+              '.geojson',
+          )
+          .then(function (data) {
+            // Create map polygon series
+            chart.geodata = data;
 
+            chart.projection = new window.am4maps.projections.Miller();
+            chart.reverseGeodata = true;
+            let polygonSeries = chart.series.push(
+              new window.am4maps.MapPolygonSeries(),
+            );
+            polygonSeries.useGeodata = true;
 
-    .fail(function() {
-      // if failed to get multi polygon map, then get boundary map and fill with placemarks
+            let imageSeries = chart.series.push(
+              new window.am4maps.MapImageSeries(),
+            );
 
-      jQuery.getJSON( MAPPINGDATA.settings.mapping_source_url + 'low/' + grid_id+'.geojson' ).then(function( data ) {
-        // Create map polygon series
-        chart.geodata = data
+            let locations = [];
+            jQuery.each(MAPPINGDATA.data[grid_id].children, function (i, v) {
+              /* custom columns */
+              let focus = MAPPINGDATA.settings.heatmap_focus;
+              jQuery.each(
+                MAPPINGDATA.data.custom_column_labels,
+                function (labelIndex, label) {
+                  v[label.key] = window.lodash.get(
+                    MAPPINGDATA.data.custom_column_data,
+                    `[${v.grid_id}][${labelIndex}]`,
+                    0,
+                  );
+                },
+              );
 
-        chart.projection = new window.am4maps.projections.Miller();
-        chart.reverseGeodata = true
-        let polygonSeries = chart.series.push(new window.am4maps.MapPolygonSeries());
-        polygonSeries.useGeodata = true;
+              locations.push(v);
+            });
+            imageSeries.data = locations;
 
-        let imageSeries = chart.series.push(new window.am4maps.MapImageSeries());
+            let imageSeriesTemplate = imageSeries.mapImages.template;
+            let circle = imageSeriesTemplate.createChild(window.am4core.Circle);
+            circle.radius = 6;
+            circle.fill = window.am4core.color('#3c5bdc');
+            circle.stroke = window.am4core.color('#3c5bdc');
+            circle.strokeWidth = 2;
+            circle.nonScaling = true;
 
-        let locations = []
-        jQuery.each( MAPPINGDATA.data[grid_id].children, function(i, v) {
-          /* custom columns */
-          let focus = MAPPINGDATA.settings.heatmap_focus
-          jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, label) {
-            v[label.key] = window.lodash.get( MAPPINGDATA.data.custom_column_data, `[${v.grid_id}][${labelIndex}]`, 0 )
-          })
+            // Click navigation
+            circle.events.on(
+              'hit',
+              function (ev) {
+                return window.DRILLDOWN.get_drill_down(
+                  'map_chart_drilldown',
+                  ev.target.dataItem.dataContext.grid_id,
+                  MAPPINGDATA.settings.cached,
+                );
+              },
+              this,
+            );
 
-          locations.push( v )
-        } )
-        imageSeries.data = locations;
-
-
-        let imageSeriesTemplate = imageSeries.mapImages.template;
-        let circle = imageSeriesTemplate.createChild(window.am4core.Circle);
-        circle.radius = 6;
-        circle.fill = window.am4core.color("#3c5bdc");
-        circle.stroke = window.am4core.color("#3c5bdc");
-        circle.strokeWidth = 2;
-        circle.nonScaling = true;
-
-        // Click navigation
-        circle.events.on("hit", function (ev) {
-
-          return window.DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.grid_id, MAPPINGDATA.settings.cached )
-
-        }, this);
-
-        let circleTipContent = `<strong>{name}</strong><br>
+            let circleTipContent = `<strong>{name}</strong><br>
                             ---------<br>
                             ${window.lodash.escape(translations.population)}: {population}<br>
                             `;
-        jQuery.each( MAPPINGDATA.data.custom_column_labels, function(labelIndex, vc) {
-          circleTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape( vc.key )}}<br>`
-        })
-        circle.tooltipHTML = circleTipContent
+            jQuery.each(
+              MAPPINGDATA.data.custom_column_labels,
+              function (labelIndex, vc) {
+                circleTipContent += `${window.lodash.escape(vc.label)}: {${window.lodash.escape(vc.key)}}<br>`;
+              },
+            );
+            circle.tooltipHTML = circleTipContent;
 
-        imageSeries.heatRules.push({
-          property: "fill",
-          target: circle,
-          min: chart.colors.getIndex(1).brighten(1.5),
-          max: chart.colors.getIndex(1).brighten(-0.3)
-        });
+            imageSeries.heatRules.push({
+              property: 'fill',
+              target: circle,
+              min: chart.colors.getIndex(1).brighten(1.5),
+              max: chart.colors.getIndex(1).brighten(-0.3),
+            });
 
-        imageSeriesTemplate.propertyFields.latitude = "latitude";
-        imageSeriesTemplate.propertyFields.longitude = "longitude";
-        imageSeriesTemplate.nonScaling = true;
-
-      })
-    })
+            imageSeriesTemplate.propertyFields.latitude = 'latitude';
+            imageSeriesTemplate.propertyFields.longitude = 'longitude';
+            imageSeriesTemplate.nonScaling = true;
+          });
+      });
   }
 }
 
-function data_type_list( div ) {
-  let list = jQuery('#'+div )
-  list.empty()
-  let focus = MAPPINGDATA.settings.heatmap_focus
+function data_type_list(div) {
+  let list = jQuery('#' + div);
+  list.empty();
+  let focus = MAPPINGDATA.settings.heatmap_focus;
 
-  jQuery.each( MAPPINGDATA.data.custom_column_labels, function(i,v) {
-    let hollow = 'hollow'
-    if ( i === focus ) {
-      hollow = ''
+  jQuery.each(MAPPINGDATA.data.custom_column_labels, function (i, v) {
+    let hollow = 'hollow';
+    if (i === focus) {
+      hollow = '';
     }
     list.append(`
-      <a onclick="heatmap_focus_change( ${window.lodash.escape( i )}, '${MAPPINGDATA.settings.current_map}' )"
+      <a onclick="heatmap_focus_change( ${window.lodash.escape(i)}, '${MAPPINGDATA.settings.current_map}' )"
         class="button ${hollow}"
-        id="${window.lodash.escape( v.key )}">
-        ${window.lodash.escape( v.label )}
+        id="${window.lodash.escape(v.key)}">
+        ${window.lodash.escape(v.label)}
       </a>
-    `)
-  })
+    `);
+  });
 }
 
-function heatmap_focus_change( focus_id, current_map ) {
+function heatmap_focus_change(focus_id, current_map) {
+  MAPPINGDATA.settings.heatmap_focus = focus_id;
+  let geodata = openChart.geodata;
+  geodata.features = setUpData(
+    geodata.features,
+    MAPPINGDATA.data[MAPPINGDATA.settings.current_map],
+  );
 
-  MAPPINGDATA.settings.heatmap_focus = focus_id
-  let geodata = openChart.geodata
-  geodata.features = setUpData( geodata.features, MAPPINGDATA.data[MAPPINGDATA.settings.current_map])
+  openChart.reverseGeodata = false;
+  openChart.geodata = [];
+  openChart.geodata = geodata;
+  openChart.reverseGeodata = true;
 
-  openChart.reverseGeodata = false
-  openChart.geodata = []
-  openChart.geodata = geodata
-  openChart.reverseGeodata = true
-
-  data_type_list( 'data_type_list' )
+  data_type_list('data_type_list');
 }
 
-
-let minimapChart = null
-function mini_map( div, marker_data ) {
+let minimapChart = null;
+function mini_map(div, marker_data) {
   //if the minimap is not set
-  if ( !jQuery('#' + div ).length ){
-    return
+  if (!jQuery('#' + div).length) {
+    return;
   }
 
-  if ( window.am4geodata_worldLow === undefined ) {
-    let mapUrl = MAPPINGDATA.settings.mapping_source_url + 'collection/world.geojson'
-    jQuery.getJSON( mapUrl, function( data ) {
-      window.am4geodata_worldLow = data
-      build_minimap()
-    })
+  if (window.am4geodata_worldLow === undefined) {
+    let mapUrl =
+      MAPPINGDATA.settings.mapping_source_url + 'collection/world.geojson';
+    jQuery.getJSON(mapUrl, function (data) {
+      window.am4geodata_worldLow = data;
+      build_minimap();
+    });
   } else {
-    build_minimap()
+    build_minimap();
   }
 
-  function build_minimap(){
-    if (minimapChart){
-      minimapChart.dispose()
+  function build_minimap() {
+    if (minimapChart) {
+      minimapChart.dispose();
     }
 
     window.am4core.useTheme(window.am4themes_animated);
 
-    minimapChart = window.am4core.create( div, window.am4maps.MapChart);
-    let chart = minimapChart
+    minimapChart = window.am4core.create(div, window.am4maps.MapChart);
+    let chart = minimapChart;
 
     chart.projection = new window.am4maps.projections.Orthographic(); // Set projection
-    chart.reverseGeodata = true
+    chart.reverseGeodata = true;
 
     chart.seriesContainer.draggable = false;
     chart.seriesContainer.resizable = false;
 
-    if ( parseInt(marker_data[0].longitude) < 0 ) {
+    if (parseInt(marker_data[0].longitude) < 0) {
       chart.deltaLongitude = parseInt(Math.abs(marker_data[0].longitude));
     } else {
       chart.deltaLongitude = parseInt(-Math.abs(marker_data[0].longitude));
     }
 
     chart.geodata = window.am4geodata_worldLow;
-    let polygonSeries = chart.series.push(new window.am4maps.MapPolygonSeries());
+    let polygonSeries = chart.series.push(
+      new window.am4maps.MapPolygonSeries(),
+    );
 
     polygonSeries.useGeodata = true;
 
@@ -450,38 +519,36 @@ function mini_map( div, marker_data ) {
     let imageSeriesTemplate = imageSeries.mapImages.template;
     let circle = imageSeriesTemplate.createChild(window.am4core.Circle);
     circle.radius = 4;
-    circle.fill = window.am4core.color("#B27799");
-    circle.stroke = window.am4core.color("#FFFFFF");
+    circle.fill = window.am4core.color('#B27799');
+    circle.stroke = window.am4core.color('#FFFFFF');
     circle.strokeWidth = 2;
     circle.nonScaling = true;
-    circle.tooltipText = "{title}";
-    imageSeriesTemplate.propertyFields.latitude = "latitude";
-    imageSeriesTemplate.propertyFields.longitude = "longitude";
+    circle.tooltipText = '{title}';
+    imageSeriesTemplate.propertyFields.latitude = 'latitude';
+    imageSeriesTemplate.propertyFields.longitude = 'longitude';
   }
 }
 
-function get_data( force_refresh = false ) {
-  let spinner = jQuery('.loading-spinner')
-  spinner.addClass('active')
-  return jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: `${MAPPINGDATA.rest_endpoints_base}/data?refresh=${force_refresh}`,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', window.mappingModule.nonce );
-    },
-  })
-  .then( function( response ) {
-    spinner.removeClass('active')
-    return response
-  })
-  .fail(function (err) {
-    spinner.removeClass('active')
-    console.log("error")
-    console.log(err)
-  })
+function get_data(force_refresh = false) {
+  let spinner = jQuery('.loading-spinner');
+  spinner.addClass('active');
+  return jQuery
+    .ajax({
+      type: 'GET',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      url: `${MAPPINGDATA.rest_endpoints_base}/data?refresh=${force_refresh}`,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', window.mappingModule.nonce);
+      },
+    })
+    .then(function (response) {
+      spinner.removeClass('active');
+      return response;
+    })
+    .fail(function (err) {
+      spinner.removeClass('active');
+      console.log('error');
+      console.log(err);
+    });
 }
-
-
-

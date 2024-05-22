@@ -124,7 +124,17 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                             <div class="small-12 medium-4 cell">
 
-                                <p><?php echo get_avatar( $dt_user->ID, '150' ); ?></p>
+                                <p>
+                                    <?php
+                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ) {
+                                        $picture_url = DT_Storage::get_file_url( $dt_user_meta['dt_user_profile_picture'][0] ); ?>
+                                        <img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="150px" height="150px" />
+                                        <?php
+                                    } else {
+                                        echo get_avatar( $dt_user->ID, '150', null, false, array( 'scheme' => 'https' ) );
+                                    }
+                                    ?>
+                                </p>
 
                                 <p>
                                     <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
@@ -281,14 +291,22 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                             <td class="tall-3"><?php echo esc_html( $app_value['label'] )?></td>
                                             <td class="tall-3"><?php echo esc_html( $app_value['description'] )?></td>
                                             <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
-                                                <?php if ( $app_link ) { ?>
-                                                    <a class="button small"  href="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"><i class="fi-link"></i></a>
-                                                    <button class="button small copy_to_clipboard" data-value="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'copy', 'disciple_tools' ) ?>"><i class="fi-page-copy"></i></button>
-                                                <?php } ?>
+                                                <a class="app-link button small"
+                                                   href="<?php echo esc_url( $app_link ) ?>"
+                                                   title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"
+                                                   style="<?php echo esc_html( $app_link ? '' : 'display:none' ); ?>">
+                                                  <i class="fi-link"></i>
+                                                </a>
+                                                <button class="app-copy dt-tooltip button small copy_to_clipboard"
+                                                        data-value="<?php echo esc_url( $app_link ) ?>"
+                                                        style="<?php echo esc_html( $app_link ? '' : 'display:none' ); ?>">
+                                                  <span class="tooltiptext"><?php esc_html_e( 'Copy', 'disciple_tools' ); ?></span>
+                                                  <i class="fi-page-copy"></i>
+                                                </button>
                                             </td>
                                             <td class="tall-3">
                                                 <input class="switch-input" id="app_state_<?php echo esc_attr( $app_key )?>" type="checkbox" name="follow_all"
-                                                       onclick="app_switch('<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                                       onclick="app_switch('<?php echo esc_attr( get_current_user_id() )?>', '<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
                                                 <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
                                                     <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
                                                     <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
@@ -467,6 +485,26 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
 
+                        <p>
+                            <strong><?php esc_html_e( 'Contact Info', 'disciple_tools' ) ?></strong>
+                        </p>
+                        <div>
+                            <ul>
+                                <li><?php echo esc_html( sprintf( _x( 'Email notifications will be sent to: %s', 'Email will be sent to: [email]', 'disciple_tools' ), $dt_user->user_email ?? esc_html( '[email]', 'disciple_tools' ) ) ); ?></li>
+                            </ul>
+                            <?php
+                            foreach ( apply_filters( 'dt_communication_channel_notification_endpoints_text', [], $dt_user->ID ) ?? [] as $endpoint_text ) {
+                                if ( !empty( $endpoint_text ) ) {
+                                    ?>
+                                    <ul>
+                                        <li><?php echo esc_html( $endpoint_text ); ?>&nbsp;&nbsp;<button data-open="edit-profile-modal"><i class="fi-pencil"></i></button></li>
+                                    </ul>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </div>
+
                         <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
                         <p>
                             <strong><?php esc_html_e( 'Email preferences', 'disciple_tools' ) ?></strong>
@@ -568,19 +606,41 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                     <div class="row column medium-12">
 
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
 
                             <?php wp_nonce_field( 'user_' . $dt_user->ID . '_update', 'user_update_nonce', false, true ); ?>
 
                             <table class="table">
-
                                 <tr>
-                                    <td><?php echo get_avatar( $dt_user->ID, '32' ); ?></td>
                                     <td>
-                                        <span data-tooltip data-click-open="true" class="top" tabindex="1"
-                                              title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
-                                            <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'disciple_tools' ) ?> <i class="fi-link"></i></a>
-                                        </span>
+                                        <?php
+                                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ){
+                                            $picture_url = DT_Storage::get_thumbnail_url( $dt_user_meta['dt_user_profile_picture'][0] );
+                                            ?><img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="100px"/><?php
+                                        } else {
+                                            echo get_avatar( $dt_user->ID, '32', null, false, array( 'scheme' => 'https' ) );
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if ( !apply_filters( 'dt_storage_connections_enabled', false, dt_get_option( 'dt_storage_connection_id' ) ) ) {
+                                            ?>
+                                            <span data-tooltip data-click-open="true" class="top" tabindex="1"
+                                                      title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
+                                                <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'disciple_tools' ) ?> <i class="fi-link"></i></a>
+                                            </span>
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <span data-tooltip data-click-open="true" class="top" tabindex="1"
+                                                  title="<?php esc_html_e( 'Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
+                                                <br><?php esc_html_e( 'upload new profile image', 'disciple_tools' ) ?><br>
+                                                <input id="user_profile_pic" name="user_profile_pic" type="file" accept=".gif,.jpg,.jpeg,.png" />
+                                            </span>
+                                            <?php
+                                        }
+                                        ?>
                                     </td>
                                 </tr>
                                 <tr>

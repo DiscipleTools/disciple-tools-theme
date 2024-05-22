@@ -109,6 +109,14 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
         $authorized = true;
     }
 
+    foreach ( $allowed_paths as $allowed_path ) {
+        if ( substr( $allowed_path, -1 ) === '*' ) {
+            if ( strpos( $path, substr( $allowed_path, 0, -1 ) ) === 0 ) {
+                $authorized = true;
+            }
+        }
+    }
+
     $authorized = apply_filters( 'dt_allow_rest_access', $authorized );
 
     // validate site to site transfer token

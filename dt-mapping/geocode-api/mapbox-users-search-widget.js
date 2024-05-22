@@ -1,120 +1,131 @@
 /** Mapbox search box widget for users */
-jQuery(document).ready(function(){
-
+jQuery(document).ready(function () {
   // load widget
-  if ( window.dtMapbox.user_location.length !== 0 ) {
-    window.write_results_box()
+  if (window.dtMapbox.user_location.length !== 0) {
+    window.write_results_box();
   }
-  jQuery( '#new-mapbox-search' ).on( "click", function() {
-    window.write_input_widget()
+  jQuery('#new-mapbox-search').on('click', function () {
+    window.write_input_widget();
   });
-
-})
+});
 
 function write_results_box() {
-  jQuery('#mapbox-wrapper').empty().append(`<div id="location-grid-meta-results"></div>`)
+  jQuery('#mapbox-wrapper')
+    .empty()
+    .append(`<div id="location-grid-meta-results"></div>`);
 
-  if ( window.dtMapbox.user_location.location_grid_meta !== undefined && window.dtMapbox.user_location.location_grid_meta.length !== 0 ) {
-    let lgm_results = jQuery('#location-grid-meta-results')
-    jQuery.each( window.dtMapbox.user_location.location_grid_meta, function(i,v) {
-      lgm_results.append(`<div class="input-group">
-                              <input type="text" class="active-location input-group-field " id="location-${window.lodash.escape( v.grid_meta_id )}" value="${window.lodash.escape( v.label )}" readonly />
+  if (
+    window.dtMapbox.user_location.location_grid_meta !== undefined &&
+    window.dtMapbox.user_location.location_grid_meta.length !== 0
+  ) {
+    let lgm_results = jQuery('#location-grid-meta-results');
+    jQuery.each(
+      window.dtMapbox.user_location.location_grid_meta,
+      function (i, v) {
+        lgm_results.append(`<div class="input-group">
+                              <input type="text" class="active-location input-group-field " id="location-${window.lodash.escape(v.grid_meta_id)}" value="${window.lodash.escape(v.label)}" readonly />
                               <div class="input-group-button">
-                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="${ window.lodash.escape( window.dtMapbox.translations.delete_location ) /*Delete Location*/}" data-id="${window.lodash.escape( v.grid_meta_id )}">&times;</button>
+                                <button type="button" class="button alert clear-date-button delete-button mapbox-delete-button" title="${window.lodash.escape(window.dtMapbox.translations.delete_location) /*Delete Location*/}" data-id="${window.lodash.escape(v.grid_meta_id)}">&times;</button>
                               </div>
-                            </div>`)
-    })
-    delete_location_listener()
-    reset_tile_spacing()
+                            </div>`);
+      },
+    );
+    delete_location_listener();
+    reset_tile_spacing();
   } /*end valid check*/
 }
 
 function delete_location_listener() {
-  jQuery( '.mapbox-delete-button' ).on( "click", function(e) {
-
+  jQuery('.mapbox-delete-button').on('click', function (e) {
     let data = {
       user_id: window.dtMapbox.user_id,
       user_location: {
         location_grid_meta: [
           {
-            grid_meta_id: jQuery(this).data("id"),
-          }
-        ]
-      }
-    }
+            grid_meta_id: jQuery(this).data('id'),
+          },
+        ],
+      },
+    };
 
-    window.makeRequest( "DELETE", `users/user_location`, data )
-    .then(function (response) {
-      window.dtMapbox.user_location = response.user_location
-      window.dtMapbox.user_id = response.user_id
-      window.write_results_box()
-    }).catch(err => { console.error(err) })
-
+    window
+      .makeRequest('DELETE', `users/user_location`, data)
+      .then(function (response) {
+        window.dtMapbox.user_location = response.user_location;
+        window.dtMapbox.user_id = response.user_id;
+        window.write_results_box();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   });
 }
 
 function reset_tile_spacing() {
-  let masonGrid = jQuery('.grid')
+  let masonGrid = jQuery('.grid');
   masonGrid.masonry({
     itemSelector: '.grid-item',
-    percentPosition: true
+    percentPosition: true,
   });
 }
 
 function write_input_widget() {
-
-  if ( jQuery('#mapbox-autocomplete').length === 0 ) {
+  if (jQuery('#mapbox-autocomplete').length === 0) {
     jQuery('#mapbox-wrapper').prepend(`
     <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true">
         <input id="mapbox-search" type="text" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" />
         <div class="input-group-button">
             <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
-            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${ window.lodash.escape( window.dtMapbox.translations.clear ) /*Delete Location*/}" >&times;</button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${window.lodash.escape(window.dtMapbox.translations.clear) /*Delete Location*/}" >&times;</button>
         </div>
         <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
     </div>
-  `)
+  `);
   }
 
-  window.currentfocus = -1
+  window.currentfocus = -1;
 
   //hide the geocoding options when the user clicks out of the input.
-  let hide_list_setup = false
-  let setup_hide_list = function (){
-    if ( !hide_list_setup ){
-      hide_list_setup = true
-      jQuery(document).mouseup(function(e){
-        let container = jQuery("#mapbox-autocomplete");
-        let list = jQuery('#mapbox-autocomplete-list')
+  let hide_list_setup = false;
+  let setup_hide_list = function () {
+    if (!hide_list_setup) {
+      hide_list_setup = true;
+      jQuery(document).mouseup(function (e) {
+        let container = jQuery('#mapbox-autocomplete');
+        let list = jQuery('#mapbox-autocomplete-list');
         let isEmpty = !jQuery.trim(list.html());
         // if the target of the click isn't the container nor a descendant of the container
-        if (!container.is(e.target) && container.has(e.target).length === 0 && !isEmpty )
-        {
-          list.empty()
+        if (
+          !container.is(e.target) &&
+          container.has(e.target).length === 0 &&
+          !isEmpty
+        ) {
+          list.empty();
         }
       });
     }
-  }
+  };
 
-  let mapbox_search = jQuery('#mapbox-search')
-  mapbox_search.on("keydown", function (e){
+  let mapbox_search = jQuery('#mapbox-search');
+  mapbox_search.on('keydown', function (e) {
     if (e.which === 13) {
       /*If the ENTER key is pressed, prevent the form from being submitted,*/
       e.preventDefault();
     }
-  })
+  });
 
-  mapbox_search.on("keyup", function(e){
-    setup_hide_list()
-    var x = document.getElementById("mapbox-autocomplete-list");
-    if (x) x = x.getElementsByTagName("div");
+  mapbox_search.on('keyup', function (e) {
+    setup_hide_list();
+    var x = document.getElementById('mapbox-autocomplete-list');
+    if (x) x = x.getElementsByTagName('div');
     if (e.which === 40) {
       /*If the arrow DOWN key is pressed,
       increase the currentFocus variable:*/
       window.currentfocus++;
       /*and and make the current item more visible:*/
       add_active(x);
-    } else if (e.which === 38) { //up
+    } else if (e.which === 38) {
+      //up
       /*If the arrow UP key is pressed,
       decrease the currentFocus variable:*/
       window.currentfocus--;
@@ -128,120 +139,120 @@ function write_input_widget() {
         close_all_lists(window.currentfocus);
       }
     } else {
-      validate_timer()
+      validate_timer();
     }
+  });
 
-  })
+  let mapbox_clear = jQuery('#mapbox-clear-autocomplete');
+  mapbox_clear.hide().on('click', function () {
+    clear_autocomplete();
+  });
 
-  let mapbox_clear = jQuery('#mapbox-clear-autocomplete')
-  mapbox_clear.hide().on('click', function(){
-    clear_autocomplete()
-  })
-
-  reset_tile_spacing()
-
+  reset_tile_spacing();
 }
 
 // delay location lookup
 window.validate_timer_id = '';
 function validate_timer() {
-
-  clear_timer()
+  clear_timer();
 
   // toggle buttons
-  jQuery('#mapbox-spinner-button').show()
+  jQuery('#mapbox-spinner-button').show();
 
   // set timer
-  window.validate_timer_id = setTimeout(function(){
+  window.validate_timer_id = setTimeout(function () {
     // call geocoder
-    if ( window.dtMapbox.google_map_key ) {
-      google_autocomplete( jQuery('#mapbox-search').val() )
+    if (window.dtMapbox.google_map_key) {
+      google_autocomplete(jQuery('#mapbox-search').val());
     } else {
-      mapbox_autocomplete( jQuery('#mapbox-search').val() )
+      mapbox_autocomplete(jQuery('#mapbox-search').val());
     }
 
     // toggle buttons back
-    jQuery('#mapbox-spinner-button').hide()
-    jQuery('#mapbox-clear-autocomplete').show()
+    jQuery('#mapbox-spinner-button').hide();
+    jQuery('#mapbox-clear-autocomplete').show();
   }, 700);
-
 }
 function clear_timer() {
   clearTimeout(window.validate_timer_id);
 }
 // end delay location lookup
 
-function mapbox_autocomplete(address){
-  if ( address.length < 1 ) {
-    jQuery('#mapbox-clear-autocomplete').hide()
+function mapbox_autocomplete(address) {
+  if (address.length < 1) {
+    jQuery('#mapbox-clear-autocomplete').hide();
     return;
   }
 
-  let root = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
-  let settings = '.json?types=country,region,postcode,district,place,locality,neighborhood,address&limit=6&access_token='
-  let key = window.dtMapbox.map_key
+  let root = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+  let settings =
+    '.json?types=country,region,postcode,district,place,locality,neighborhood,address&limit=6&access_token=';
+  let key = window.dtMapbox.map_key;
 
-  let url = root + encodeURI( address ) + settings + key
+  let url = root + encodeURI(address) + settings + key;
 
-  fetch( url, {
-    referrerPolicy: "strict-origin-when-cross-origin"
-  }).then(response => response.json())
-  .then( data => {
-    if( data.features.length < 1 ) {
-      // destroy lists
-      return
-    }
+  fetch(url, {
+    referrerPolicy: 'strict-origin-when-cross-origin',
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.features.length < 1) {
+        // destroy lists
+        return;
+      }
 
-    let list = jQuery('#mapbox-autocomplete-list')
-    list.empty()
+      let list = jQuery('#mapbox-autocomplete-list');
+      list.empty();
 
-    jQuery.each( data.features, function( index, value ) {
-      list.append(`<div data-value="${window.lodash.escape(index)}">${window.lodash.escape(value.place_name)}</div>`)
-    })
+      jQuery.each(data.features, function (index, value) {
+        list.append(
+          `<div data-value="${window.lodash.escape(index)}">${window.lodash.escape(value.place_name)}</div>`,
+        );
+      });
 
-    jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
-      close_all_lists(e.target.attributes['data-value'].value);
-    });
-
-    // Set globals
-    window.mapbox_result_features = data.features
-
-
-  }); // end get request
-} // end validate
-
-function google_autocomplete(address){
-  if ( address.length < 1 ) {
-    jQuery('#mapbox-clear-autocomplete').hide()
-    return;
-  }
-
-  let service = new window.google.maps.places.AutocompleteService();
-  service.getPlacePredictions({ 'input': address }, function(predictions, status ) {
-    let list = jQuery('#mapbox-autocomplete-list')
-    list.empty()
-    if (status === 'OK') {
-
-      jQuery.each( predictions, function( index, value ) {
-        list.append(`<div data-value="${window.lodash.escape(index)}">${window.lodash.escape(value.description)}</div>`)
-      })
-
-      jQuery('#mapbox-autocomplete-list div').on("click", function (e) {
+      jQuery('#mapbox-autocomplete-list div').on('click', function (e) {
         close_all_lists(e.target.attributes['data-value'].value);
       });
 
       // Set globals
-      window.mapbox_result_features = predictions
+      window.mapbox_result_features = data.features;
+    }); // end get request
+} // end validate
 
-    }
-    else if ( status === 'ZERO_RESULTS' ) {
-      list.append(`<div>No Results Found</div>`)
-    }
-    else {
-      console.log('Predictions was not successful for the following reason: ' + status)
-    }
-  } )
+function google_autocomplete(address) {
+  if (address.length < 1) {
+    jQuery('#mapbox-clear-autocomplete').hide();
+    return;
+  }
 
+  let service = new window.google.maps.places.AutocompleteService();
+  service.getPlacePredictions(
+    { input: address },
+    function (predictions, status) {
+      let list = jQuery('#mapbox-autocomplete-list');
+      list.empty();
+      if (status === 'OK') {
+        jQuery.each(predictions, function (index, value) {
+          list.append(
+            `<div data-value="${window.lodash.escape(index)}">${window.lodash.escape(value.description)}</div>`,
+          );
+        });
+
+        jQuery('#mapbox-autocomplete-list div').on('click', function (e) {
+          close_all_lists(e.target.attributes['data-value'].value);
+        });
+
+        // Set globals
+        window.mapbox_result_features = predictions;
+      } else if (status === 'ZERO_RESULTS') {
+        list.append(`<div>No Results Found</div>`);
+      } else {
+        console.log(
+          'Predictions was not successful for the following reason: ' + status,
+        );
+      }
+    },
+  );
 } // end validate
 
 function add_active(x) {
@@ -250,48 +261,54 @@ function add_active(x) {
   /*start by removing the "active" class on all items:*/
   remove_active(x);
   if (window.currentfocus >= x.length) window.currentfocus = 0;
-  if (window.currentfocus < 0) window.currentfocus = (x.length - 1);
+  if (window.currentfocus < 0) window.currentfocus = x.length - 1;
   /*add class "autocomplete-active":*/
-  x[window.currentfocus].classList.add("mapbox-autocomplete-active");
+  x[window.currentfocus].classList.add('mapbox-autocomplete-active');
 }
 function remove_active(x) {
   /*a function to remove the "active" class from all autocomplete items:*/
   for (var i = 0; i < x.length; i++) {
-    x[i].classList.remove("mapbox-autocomplete-active");
+    x[i].classList.remove('mapbox-autocomplete-active');
   }
 }
 function close_all_lists(selection_id) {
-
-  if ( window.dtMapbox.google_map_key ) {
-    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].description)
-    jQuery('#mapbox-autocomplete-list').empty()
+  if (window.dtMapbox.google_map_key) {
+    jQuery('#mapbox-search').val(
+      window.mapbox_result_features[selection_id].description,
+    );
+    jQuery('#mapbox-autocomplete-list').empty();
 
     const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ placeId: window.mapbox_result_features[selection_id].place_id }, (results, status) => {
-      if (status !== "OK") {
-        console.log("Geocoder failed due to: " + status);
-        return;
-      }
-
-      window.location_data = {
-        user_id: window.dtMapbox.user_id,
-        user_location: {
-          location_grid_meta: [
-            {
-              lng: results[0].geometry.location.lng(),
-              lat: results[0].geometry.location.lat(),
-              level: convert_level( results[0].types[0] ),
-              label: results[0].formatted_address,
-              source: 'user'
-            }
-          ]
+    geocoder.geocode(
+      { placeId: window.mapbox_result_features[selection_id].place_id },
+      (results, status) => {
+        if (status !== 'OK') {
+          console.log('Geocoder failed due to: ' + status);
+          return;
         }
-      }
-      post_geocoded_location()
-    });
+
+        window.location_data = {
+          user_id: window.dtMapbox.user_id,
+          user_location: {
+            location_grid_meta: [
+              {
+                lng: results[0].geometry.location.lng(),
+                lat: results[0].geometry.location.lat(),
+                level: convert_level(results[0].types[0]),
+                label: results[0].formatted_address,
+                source: 'user',
+              },
+            ],
+          },
+        };
+        post_geocoded_location();
+      },
+    );
   } else {
-    jQuery('#mapbox-search').val(window.mapbox_result_features[selection_id].place_name)
-    jQuery('#mapbox-autocomplete-list').empty()
+    jQuery('#mapbox-search').val(
+      window.mapbox_result_features[selection_id].place_name,
+    );
+    jQuery('#mapbox-autocomplete-list').empty();
 
     window.location_data = {
       user_id: window.dtMapbox.user_id,
@@ -302,59 +319,62 @@ function close_all_lists(selection_id) {
             lat: window.mapbox_result_features[selection_id].center[1],
             level: window.mapbox_result_features[selection_id].place_type[0],
             label: window.mapbox_result_features[selection_id].place_name,
-            source: 'user'
-          }
-        ]
-      }
-    }
-    post_geocoded_location()
+            source: 'user',
+          },
+        ],
+      },
+    };
+    post_geocoded_location();
   }
 }
 
-function post_geocoded_location(){
-  if ( jQuery('#mapbox-autocomplete').data('autosubmit') ) {
-    jQuery('#mapbox-spinner-button').show()
-    window.makeRequest( "POST", `users/user_location`, window.location_data )
-    .done(response => {
-      window.dtMapbox.user_location = response.user_location
-      window.dtMapbox.user_id = response.user_id
-      window.write_results_box()
-    })
-    .catch(err => { console.error(err) })
+function post_geocoded_location() {
+  if (jQuery('#mapbox-autocomplete').data('autosubmit')) {
+    jQuery('#mapbox-spinner-button').show();
+    window
+      .makeRequest('POST', `users/user_location`, window.location_data)
+      .done((response) => {
+        window.dtMapbox.user_location = response.user_location;
+        window.dtMapbox.user_id = response.user_id;
+        window.write_results_box();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   } else {
-    window.selected_location_grid_meta = window.location_data
-    jQuery('#mapbox-spinner-button').hide()
-    jQuery('#mapbox-clear-autocomplete').show()
+    window.selected_location_grid_meta = window.location_data;
+    jQuery('#mapbox-spinner-button').hide();
+    jQuery('#mapbox-clear-autocomplete').show();
   }
 }
 
-function clear_autocomplete(){
-  jQuery('#mapbox-search').val('')
-  jQuery('#mapbox-autocomplete-list').empty()
-  jQuery('#mapbox-spinner-button').hide()
-  jQuery('#mapbox-clear-autocomplete').hide()
+function clear_autocomplete() {
+  jQuery('#mapbox-search').val('');
+  jQuery('#mapbox-autocomplete-list').empty();
+  jQuery('#mapbox-spinner-button').hide();
+  jQuery('#mapbox-clear-autocomplete').hide();
 }
 
-function convert_level( level ) {
-  switch(level){
+function convert_level(level) {
+  switch (level) {
     case 'administrative_area_level_0':
-      level = 'admin0'
-      break
+      level = 'admin0';
+      break;
     case 'administrative_area_level_1':
-      level = 'admin1'
-      break
+      level = 'admin1';
+      break;
     case 'administrative_area_level_2':
-      level = 'admin2'
-      break
+      level = 'admin2';
+      break;
     case 'administrative_area_level_3':
-      level = 'admin3'
-      break
+      level = 'admin3';
+      break;
     case 'administrative_area_level_4':
-      level = 'admin4'
-      break
+      level = 'admin4';
+      break;
     case 'administrative_area_level_5':
-      level = 'admin5'
-      break
+      level = 'admin5';
+      break;
   }
-  return level
+  return level;
 }
