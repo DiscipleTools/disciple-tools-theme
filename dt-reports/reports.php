@@ -337,8 +337,7 @@ class Disciple_Tools_Reports
             } else if ( is_string( $value ) ) {
                 $new_sql .= '%s';
             } else {
-                dt_write_log( __METHOD__ . ' $value is of type ' . gettype( $value ) . ' but should be a string or number' );
-                continue;
+                return new WP_Error( 'invalid-value-type', ' $value is of type ' . gettype( $value ) . ' but should be a string or number' );
             }
             $sql .= $new_sql;
             $args[] = $value;
