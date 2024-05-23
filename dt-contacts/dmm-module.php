@@ -44,7 +44,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     public function dt_custom_fields_settings( $fields, $post_type ){
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
-            $contact_preferences = get_option( 'dt_contact_preferences', [] );
+            $private_contacts_enabled = $post_type_settings['contacts']['enable_private_contacts'] ?? false;
             $fields['type']['default']['placeholder'] = [
                 'label' => __( 'Private Connection', 'disciple_tools' ),
                 'color' => '#FF9800',
@@ -53,7 +53,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
                 'order' => 40,
                 'visibility' => __( 'Only me', 'disciple_tools' ),
                 'in_create_form' => false,
-                'hidden' => !empty( $contact_preferences['hide_personal_contact_type'] ),
+                'hidden' => !$private_contacts_enabled,
             ];
             $fields['milestones'] = [
                 'name'    => __( 'Faith Milestones', 'disciple_tools' ),
@@ -330,11 +330,8 @@ class DT_Contacts_DMM  extends DT_Module_Base {
     //Add, remove or modify fields before the fields are processed in post create
     public function dt_post_create_fields( $fields, $post_type ){
         if ( $post_type === 'contacts' ){
-            if ( !isset( $fields['type'] ) ){
-                $fields['type'] = 'placeholder';
-            }
             //mark a new user contact as being coached be the user who added the new user.
-            if ( $fields['type'] === 'user' ){
+            if ( isset( $fields['type'] ) && $fields['type'] === 'user' ){
                 $current_user_contact = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
                 if ( $current_user_contact && !is_wp_error( $current_user_contact ) ){
                     $fields['coached_by'] = [ 'values' => [ [ 'value' => $current_user_contact ] ] ];
