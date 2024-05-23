@@ -592,7 +592,7 @@ class DT_User_Management
             $columns = [ 'user_login', 'user_email', 'display_name' ];
             $where .= ' AND ( ';
             foreach ( $columns as $column ){
-                $where .= " $column LIKE '%$search%' OR ";
+                $where .= $wpdb->prepare( "$column LIKE %s OR ", '%'. $search .'%' ); //phpcs:ignore
             }
             $where = rtrim( $where, ' OR ' );
             $where .= ' ) ';
@@ -754,13 +754,13 @@ class DT_User_Management
         foreach ( $users_query as &$user ){
             foreach ( $fields_by_type['array'] as $field_key ){
                 if ( isset( $user[ $field_key ] ) ){
-                    $user[ $field_key ] = unserialize( $user[ $field_key ] );
+                    $user[ $field_key ] = maybe_unserialize( $user[ $field_key ] );
                 }
             }
             foreach ( $fields_by_type['array_keys'] as $field_key ){
                 if ( isset( $user[ $field_key ] ) ){
-                    $user[ $field_key ] = unserialize( $user[ $field_key ] );
-                    $user[ $field_key ] = array_keys( $user[ $field_key ] );
+                    $user[ $field_key ] = maybe_unserialize( $user[ $field_key ] );
+                    $user[ $field_key ] = is_array( $user[ $field_key ] ) ? array_keys( $user[ $field_key ] ) : [];
                 }
             }
             foreach ( $fields_by_type['location_grid'] as $field_key ){

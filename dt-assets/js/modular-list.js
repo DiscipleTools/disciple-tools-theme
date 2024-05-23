@@ -87,7 +87,13 @@
 
     if (filterID && is_in_filter_list(filterID)) {
       const currentFilter = { ID: filterID, query: query || {} };
-      if (filterTab) currentFilter.tab = filterTab;
+      if (filterTab) {
+        currentFilter.tab = filterTab;
+      } else {
+        currentFilter.tab = list_settings.filters.filters.find(
+          (filter) => filterID === filter.ID,
+        )?.tab;
+      }
       return currentFilter;
     } else if (urlCustomFilter && !window.lodash.isEmpty(urlCustomFilter)) {
       return urlCustomFilter;
@@ -430,13 +436,9 @@
   }
 
   function is_in_filter_list(filterID) {
-    if (
-      list_settings.filters.filters.some((filter) => filterID === filter.ID)
-    ) {
-      return true;
-    }
-
-    return false;
+    return list_settings.filters.filters.some(
+      (filter) => filterID === filter.ID,
+    );
   }
 
   function update_url_query(currentFilter) {
@@ -1025,6 +1027,8 @@
                 .map((v) => {
                   return `${window.SHAREDFUNCTIONS.escapeHTML(v.value.note)}`;
                 });
+            } else if (field_settings.type === 'image') {
+              values = [`<img src='${field_value.thumb}' class='list-image'>`];
             }
           } else if (
             !field_value &&
@@ -1040,6 +1044,10 @@
             field_settings.default === true
           ) {
             values = ['&check;'];
+          } else if (field_settings.type === 'image') {
+            values = [
+              `<i class='${window.SHAREDFUNCTIONS.escapeHTML(list_settings.default_icon)} medium list-image'></i>`,
+            ];
           }
         } else {
           return;
@@ -1079,8 +1087,13 @@
           ) {
             values[0] = '&#9733;';
           }
+          let title = values.join(', ');
+          //exclude html tags from title
+          if (title.includes('<')) {
+            title = '';
+          }
           let tmp_html = `
-            <td dir="auto" data-id="${field_key}" title="${values.join(', ')}">
+            <td dir="auto" data-id="${field_key}" title="${title}">
               <ul>
                 ${values_html}
               </ul>
@@ -1101,9 +1114,7 @@
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
           </td>
           <td>
-              <div class="mobile-list-field-name">
-                ${index + 1}.
-              </div>
+              <div class="mobile-list-field-name">${index + 1}.</div>
               <div class="mobile-list-field-value">
                   <a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a>
               </div>
@@ -1157,6 +1168,9 @@
       get_records_promise.abort();
     }
     query.fields_to_return = fields_to_show_in_table;
+    // if (window.wpApiShare.features.storage) {
+    //   query.fields_to_return.unshift('record_picture');
+    // }
     get_records_promise = window.makeRequestOnPosts(
       'POST',
       `${list_settings.post_type}/list`,
@@ -3918,15 +3932,20 @@
       let exporting_fields_all = [];
       let exporting_fields_visible = [];
 
-      $.each(
-        window.list_settings['post_type_settings']['fields'],
-        function (field_id, field_setting) {
+      const magic_link_app_keys = Object.keys(
+        window.list_settings.post_type_settings.magic_link_apps,
+      );
+      Object.keys(window.list_settings.post_type_settings.fields).forEach(
+        (field_id) => {
+          const field_setting =
+            window.list_settings.post_type_settings.fields[field_id];
           if (
-            (field_setting['private'] === undefined ||
+            magic_link_app_keys.includes(field_id) ||
+            ((field_setting['private'] === undefined ||
               !field_setting['private']) &&
-            (field_setting['hidden'] === undefined ||
-              !field_setting['hidden']) &&
-            !['task', 'array'].includes(field_setting['type'])
+              (field_setting['hidden'] === undefined ||
+                !field_setting['hidden']) &&
+              !['task', 'array'].includes(field_setting['type']))
           ) {
             let setting = field_setting;
             setting['field_id'] = field_id;
@@ -4044,6 +4063,9 @@
         window.list_settings.post_type_settings.fields.name,
       );
     }
+    const magic_link_app_keys = Object.keys(
+      window.list_settings.post_type_settings.magic_link_apps,
+    );
 
     // First retrieve all records associated with currently selected filter.
     recursively_fetch_posts(
@@ -4187,6 +4209,25 @@
                     csv_row.push(token_array.join(token_array_delimiter));
                     break;
                   }
+                  case 'hash':
+                  case 'magic_link':
+                    {
+                      if (
+                        magic_link_app_keys.includes(field_id) &&
+                        post[field_id]
+                      ) {
+                        const token = post[field_id] ? post[field_id] : '';
+                        const url =
+                          window.wpApiShare.site_url +
+                          '/' +
+                          window.list_settings.post_type_settings
+                            .magic_link_apps[field_id]['url_base'] +
+                          '/' +
+                          token;
+                        csv_row.push(url);
+                      }
+                    }
+                    break;
                   case 'task':
                   case 'array':
                   default: {
@@ -4399,11 +4440,13 @@
 
           // Update count findings.
           let list_print = jQuery('#email-list-print');
+          let all_emails = [];
           $.each(email_totals, function (index, values) {
-            list_print.append(
-              window.SHAREDFUNCTIONS.escapeHTML(values.join(', ')),
-            );
+            all_emails.push(values.join(', '));
           });
+          list_print.append(
+            window.SHAREDFUNCTIONS.escapeHTML(all_emails.join(', ')),
+          );
 
           jQuery('#list-count-with').html(list_count['with']);
           jQuery('#list-count-without').html(list_count['without']);

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-03-25T14:39:01+00:00\n"
+"POT-Creation-Date: 2024-04-26T16:53:47+00:00\n"
 "PO-Revision-Date: 2023-10-21 06:17+0000\n"
 "Last-Translator: Bijo Thomas <bijothoma@gmail.com>\n"
 "Language-Team: Malayalam <https://translate.disciple.tools/projects/disciple-"
@@ -75,7 +75,7 @@ msgstr "അഭ്യർത്ഥന സമർപ്പിക്കുക"
 #: dt-contacts/access-module.php:518 dt-contacts/access-module.php:549
 #: dt-contacts/access-module.php:577 dt-contacts/base-setup.php:380
 #: dt-contacts/base-setup.php:415 dt-contacts/user-module.php:159
-#: single-template.php:415 single-template.php:432
+#: single-template.php:418 single-template.php:435
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:180
@@ -84,10 +84,10 @@ msgstr "റദ്ദാക്കുക"
 
 #: 403.php:59 archive-template.php:505 archive-template.php:547
 #: archive-template.php:772 archive-template.php:1122
-#: dt-assets/parts/loop-activity-comment.php:154
-#: dt-assets/parts/loop-activity-comment.php:159
-#: dt-assets/parts/loop-activity-comment.php:202
-#: dt-assets/parts/loop-activity-comment.php:207
+#: dt-assets/parts/loop-activity-comment.php:158
+#: dt-assets/parts/loop-activity-comment.php:163
+#: dt-assets/parts/loop-activity-comment.php:206
+#: dt-assets/parts/loop-activity-comment.php:211
 #: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
 #: dt-assets/parts/merge-details.php:75
 #: dt-assets/parts/modals/modal-advanced-search.php:65
@@ -118,10 +118,10 @@ msgstr "റദ്ദാക്കുക"
 #: dt-groups/base-setup.php:628 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:420
-#: single-template.php:437 template-new-bulk-post.php:223
+#: dt-users/user-initial-setup.php:82 single-template.php:423
+#: single-template.php:440 template-new-bulk-post.php:223
 #: template-new-bulk-post.php:295 template-new-post.php:185
-#: template-settings.php:564
+#: template-settings.php:602
 msgid "Close"
 msgstr "അടയ്‌ക്കുക"
 
@@ -147,7 +147,7 @@ msgstr "ഫിൽട്ടറുകൾ"
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:726
 #: dt-core/global-functions.php:754 dt-core/global-functions.php:886
 #: dt-core/global-functions.php:930 dt-posts/custom-post-type.php:20
-#: template-settings.php:381
+#: template-settings.php:399
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "%s തിരയുക"
@@ -163,15 +163,15 @@ msgstr "മായ്‌ക്കുക"
 msgid "Advanced Search"
 msgstr "വിപുലമായ തിരയൽ"
 
-#: archive-template.php:46 dt-assets/parts/loop-activity-comment.php:47
-#: dt-assets/parts/loop-activity-comment.php:95
-#: dt-assets/parts/loop-activity-comment.php:179
+#: archive-template.php:46 dt-assets/parts/loop-activity-comment.php:49
+#: dt-assets/parts/loop-activity-comment.php:99
+#: dt-assets/parts/loop-activity-comment.php:183
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "അഭിപ്രായങ്ങൾ"
 
 #: archive-template.php:63 archive-template.php:162
-#: dt-users/user-management.php:227
+#: dt-users/user-management.php:231
 msgid "Search"
 msgstr "തിരയുക"
 
@@ -355,8 +355,8 @@ msgstr "ഉപയോക്താക്കളെ തിരയുക"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
-#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2766
-#: dt-users/template-user-management.php:370 dt-users/users.php:175
+#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2767
+#: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
 msgstr "പദവി"
@@ -384,7 +384,7 @@ msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "നിങ്ങളുടെ അഭിപ്രായമോ കുറിപ്പോ ഇവിടെ എഴുതുക"
 
-#: archive-template.php:693 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:693 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "തരം:"
 
@@ -398,26 +398,26 @@ msgstr "കൂടുതൽ ഓപ്ഷനുകൾ കാണുക"
 msgid "See Fewer Options"
 msgstr "കുറച്ച് ഓപ്ഷനുകൾ കാണുക"
 
-#: archive-template.php:750 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:750 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "അപ്ഡേറ്റ് ചെയ്യുക"
 
 #: archive-template.php:751 archive-template.php:855
-#: dt-assets/functions/enqueue-scripts.php:325
+#: dt-assets/functions/enqueue-scripts.php:327
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "താഴെ കൊടുത്തിരിക്കുന്നതില്‍ നിന്ന് തിരഞ്ഞെടുക്കുക"
 
-#: archive-template.php:759 dt-assets/functions/enqueue-scripts.php:174
-#: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:273
-#: dt-assets/functions/enqueue-scripts.php:313
-#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
+#: archive-template.php:759 dt-assets/functions/enqueue-scripts.php:176
+#: dt-assets/functions/enqueue-scripts.php:210
+#: dt-assets/functions/enqueue-scripts.php:275
+#: dt-assets/functions/enqueue-scripts.php:315
+#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:438
 msgid "Delete"
 msgstr "ഇല്ലാതാക്കുക"
 
-#: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:328
 msgid "Delete Selections Below"
 msgstr "താഴെയുള്ള തിരഞ്ഞെടുപ്പുകള്‍  നീക്കം ചെയ്യുക"
 
@@ -484,7 +484,7 @@ msgid "You must select at least one record"
 msgstr ""
 
 #: archive-template.php:854 dt-reports/magic-url-bulk-send.php:94
-#: dt-reports/magic-url-setup.php:91
+#: dt-reports/magic-url-setup.php:100
 msgid "Send"
 msgstr ""
 
@@ -500,7 +500,7 @@ msgstr ""
 msgid "Loading..."
 msgstr "ലോഡിംഗ്..."
 
-#: archive-template.php:904 dt-assets/functions/enqueue-scripts.php:404
+#: archive-template.php:904 dt-assets/functions/enqueue-scripts.php:406
 msgid "Load More"
 msgstr "കൂടുതൽ ലോഡുചെയ്യുക"
 
@@ -527,7 +527,7 @@ msgstr ""
 msgid "Filter for subassigned OR Assigned To"
 msgstr "നിയുക്തമാക്കിയ അല്ലെങ്കിൽ നിയുക്തമാക്കിയതിന് ഫിൽട്ടർ ചെയ്യുക"
 
-#: archive-template.php:1000 dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:1000 dt-assets/functions/enqueue-scripts.php:318
 #: dt-posts/custom-post-type.php:186
 msgid "Creation Date"
 msgstr "സൃഷ്ടിക്കൽ തീയതി"
@@ -539,16 +539,18 @@ msgid "None Set"
 msgstr "ഒന്നുമില്ല സജ്ജമാക്കി"
 
 #: archive-template.php:1028 archive-template.php:1029
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:686
+#: dt-assets/functions/enqueue-scripts.php:226 dt-core/global-functions.php:686
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: template-settings.php:295 template-settings.php:539
+#: dt-users/user-management.php:197 template-settings.php:313
+#: template-settings.php:577
 msgid "No"
 msgstr "ഇല്ല"
 
 #: archive-template.php:1035 archive-template.php:1036
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:687
+#: dt-assets/functions/enqueue-scripts.php:225 dt-core/global-functions.php:687
 #: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:538
+#: dt-posts/posts.php:460 dt-users/user-management.php:196
+#: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "അതെ"
 
@@ -614,15 +616,15 @@ msgstr "പേര് ഫിൽട്ടർ ചെയ്യുക"
 msgid "Filter Records"
 msgstr "റെക്കോർഡുകൾ ഫിൽട്ടർ ചെയ്യുക"
 
-#: archive-template.php:1115 dt-assets/functions/enqueue-scripts.php:276
-#: dt-assets/functions/enqueue-scripts.php:311
-#: dt-users/user-initial-setup.php:79 template-settings.php:685
+#: archive-template.php:1115 dt-assets/functions/enqueue-scripts.php:278
+#: dt-assets/functions/enqueue-scripts.php:313
+#: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
 msgstr "രക്ഷിക്കും"
 
 #: dt-assets/functions/details-bar.php:51
 #: dt-assets/functions/details-bar.php:242
-#: dt-core/configuration/config-site-defaults.php:364
+#: dt-core/configuration/config-site-defaults.php:367
 #: dt-workflows/update-required.php:80 dt-workflows/update-required.php:129
 msgid "Update Needed"
 msgstr "അപ്‌ഡേറ്റ് ആവശ്യമാണ്"
@@ -631,7 +633,7 @@ msgstr "അപ്‌ഡേറ്റ് ആവശ്യമാണ്"
 msgid "Admin Actions"
 msgstr "അഡ്‌മിൻ പ്രവർത്തനങ്ങൾ"
 
-#: dt-assets/functions/details-bar.php:67 single-template.php:427
+#: dt-assets/functions/details-bar.php:67 single-template.php:430
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "%s ഇല്ലാതാക്കുക"
@@ -710,177 +712,186 @@ msgid "Showing %1$s items matching %2$s"
 msgstr "%2$s മായി പൊരുത്തപ്പെടുന്ന %1$s ഇനങ്ങൾ കാണിക്കുന്നു"
 
 #: dt-assets/functions/enqueue-scripts.php:118
-#: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:312 template-settings.php:119
-#: template-settings.php:567
+#: dt-assets/functions/enqueue-scripts.php:175
+#: dt-assets/functions/enqueue-scripts.php:314 template-settings.php:119
+#: template-settings.php:605
 msgid "Edit"
 msgstr "എഡിറ്റുചെയ്യുക"
 
-#: dt-assets/functions/enqueue-scripts.php:136
+#: dt-assets/functions/enqueue-scripts.php:119
+#: dt-reports/magic-url-setup.php:97 template-settings.php:303
+msgid "Copy"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:120
+msgid "Copied: %s"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:138
 msgid "You don't have any unread notifications"
 msgstr "നിങ്ങൾക്ക് വായിക്കാത്ത അറിയിപ്പുകളൊന്നുമില്ല"
 
-#: dt-assets/functions/enqueue-scripts.php:137
+#: dt-assets/functions/enqueue-scripts.php:139
 msgid "You don't have any notifications"
 msgstr "നിങ്ങൾക്ക് അറിയിപ്പുകളൊന്നുമില്ല"
 
-#: dt-assets/functions/enqueue-scripts.php:171 dt-posts/dt-posts.php:1706
+#: dt-assets/functions/enqueue-scripts.php:173 dt-posts/dt-posts.php:1707
 msgid "D.T System"
 msgstr "D.T സിസ്റ്റം"
 
-#: dt-assets/functions/enqueue-scripts.php:175
+#: dt-assets/functions/enqueue-scripts.php:177
 msgid "Translate with Google Translate"
 msgstr "Google വിവർത്തനം ഉപയോഗിച്ച് വിവർത്തനം ചെയ്യുക"
 
-#: dt-assets/functions/enqueue-scripts.php:176
+#: dt-assets/functions/enqueue-scripts.php:178
 msgid "Hide Translation"
 msgstr "വിവർത്തനം മറയ്‌ക്കുക"
 
-#: dt-assets/functions/enqueue-scripts.php:177
+#: dt-assets/functions/enqueue-scripts.php:179
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s %2$s ഇമോജികളുമായി പ്രതികരിച്ചു"
 
-#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:180
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s ഉം %1$s ഉം %2$s ഇമോജികളുമായി പ്രതികരിച്ചു"
 
-#: dt-assets/functions/enqueue-scripts.php:209
+#: dt-assets/functions/enqueue-scripts.php:211
 msgid "Mark as complete"
 msgstr "പൂർത്തിയായതായി അടയാളപ്പെടുത്തുക"
 
-#: dt-assets/functions/enqueue-scripts.php:210
+#: dt-assets/functions/enqueue-scripts.php:212
 msgid "No task created"
 msgstr "ഒരു ജോലിയും സൃഷ്ടിച്ചിട്ടില്ല"
 
-#: dt-assets/functions/enqueue-scripts.php:211
+#: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "ഓർമ്മപ്പെടുത്തൽ"
 
-#: dt-assets/functions/enqueue-scripts.php:212
+#: dt-assets/functions/enqueue-scripts.php:214
 msgid "No note set"
 msgstr "കുറിപ്പ് സജ്ജമാക്കിയിട്ടില്ല"
 
-#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/functions/enqueue-scripts.php:215
 msgid "Duplicates Detected"
 msgstr "തനിപ്പകർപ്പുകൾ കണ്ടെത്തി"
 
-#: dt-assets/functions/enqueue-scripts.php:214
+#: dt-assets/functions/enqueue-scripts.php:216
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
 #: dt-users/template-new-user.php:293 template-merge-post-details.php:130
 #: template-merge-post-details.php:187
 msgid "Merge"
 msgstr "ലയിപ്പിക്കുക"
 
-#: dt-assets/functions/enqueue-scripts.php:215
+#: dt-assets/functions/enqueue-scripts.php:217
 msgid "Dismiss"
 msgstr "നിരസിക്കുക"
 
-#: dt-assets/functions/enqueue-scripts.php:216
+#: dt-assets/functions/enqueue-scripts.php:218
 msgid "Dismissed Duplicates"
 msgstr "നിരസിച്ച തനിപ്പകർപ്പുകൾ"
 
-#: dt-assets/functions/enqueue-scripts.php:217
+#: dt-assets/functions/enqueue-scripts.php:219
 msgid "Duplicates on: %s"
 msgstr "ഇതിലെ തനിപ്പകർപ്പുകൾ:%s"
 
-#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:220
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "കൈമാറ്റം പരാജയപ്പെട്ടു. സൈറ്റ്-ടു-സൈറ്റ് കോൺഫിഗറേഷൻ പരിശോധിക്കുക."
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:221
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:222
 msgid "Transfer update successful."
 msgstr "കൈമാറ്റ പ്രക്രിയ പുതിക്കല്‍ വിജയകരം."
 
-#: dt-assets/functions/enqueue-scripts.php:221
+#: dt-assets/functions/enqueue-scripts.php:223
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "%s- ൽ സൃഷ്‌ടിച്ചു"
 
-#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:224
 msgid "Open With"
 msgstr "എന്തുപയോഗിച്ച് തുറക്കണം"
 
-#: dt-assets/functions/enqueue-scripts.php:242
+#: dt-assets/functions/enqueue-scripts.php:244
 msgid "Revert Record Back To This Point"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:243
+#: dt-assets/functions/enqueue-scripts.php:245
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "%s ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?"
 
-#: dt-assets/functions/enqueue-scripts.php:274
+#: dt-assets/functions/enqueue-scripts.php:276
 msgid "Locations you are responsible for"
 msgstr "നിങ്ങൾക്ക് ഉത്തരവാദിത്തമുള്ള ലൊക്കേഷനുകൾ"
 
-#: dt-assets/functions/enqueue-scripts.php:275
+#: dt-assets/functions/enqueue-scripts.php:277
 #: dt-metrics/records/genmap.php:104
 msgid "Add"
 msgstr "ചേർക്കുക"
 
-#: dt-assets/functions/enqueue-scripts.php:277 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:279 template-settings.php:296
 msgid "link"
 msgstr "ലിങ്ക്"
 
-#: dt-assets/functions/enqueue-scripts.php:278 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:280
 msgid "copy"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:296
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "പൊരുത്തങ്ങൾ കണ്ടെത്തി:"
 
-#: dt-assets/functions/enqueue-scripts.php:295
+#: dt-assets/functions/enqueue-scripts.php:297
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "%s നുള്ള എല്ലാ പൊരുത്തങ്ങളും നിരസിക്കുക"
 
-#: dt-assets/functions/enqueue-scripts.php:314
+#: dt-assets/functions/enqueue-scripts.php:316
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "_TOTAL_ ന്റെ _START_ കാണിക്കുന്നു"
 
-#: dt-assets/functions/enqueue-scripts.php:315
+#: dt-assets/functions/enqueue-scripts.php:317
 msgid "Sorting By"
 msgstr "പ്രകാരം അടുക്കുന്നു"
 
-#: dt-assets/functions/enqueue-scripts.php:317
+#: dt-assets/functions/enqueue-scripts.php:319
 msgid "Date Modified"
 msgstr "പുതുക്കിയ തീയതി"
 
-#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-assets/functions/enqueue-scripts.php:320
 msgid "No filters, create one below"
 msgstr "ഫിൽട്ടറുകളൊന്നുമില്ല, ചുവടെ ഒന്ന് സൃഷ്‌ടിക്കുക"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:321
 msgid "No records found matching your filter."
 msgstr "നിങ്ങളുടെ ഫിൽട്ടറുമായി പൊരുത്തപ്പെടുന്ന രേഖകളൊന്നും കണ്ടെത്തിയില്ല."
 
-#: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
+#: dt-assets/functions/enqueue-scripts.php:322 dt-contacts/base-setup.php:490
 #: dt-groups/base-setup.php:1076 dt-posts/custom-post-type.php:439
 msgctxt "All records"
 msgid "All %s"
 msgstr "എല്ലാം%s"
 
-#: dt-assets/functions/enqueue-scripts.php:321
+#: dt-assets/functions/enqueue-scripts.php:323
 msgid "start"
 msgstr "ആരംഭിക്കുക"
 
-#: dt-assets/functions/enqueue-scripts.php:322
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "end"
 msgstr "അവസാനിക്കുന്നു"
 
-#: dt-assets/functions/enqueue-scripts.php:323
+#: dt-assets/functions/enqueue-scripts.php:325
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/access-module.php:1315 dt-groups/base-setup.php:994
 #: dt-metrics/personal/activity-highlights.php:56
@@ -889,121 +900,121 @@ msgstr "അവസാനിക്കുന്നു"
 msgid "All"
 msgstr "എല്ലാം"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "Without"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:329
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:330
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:329
+#: dt-assets/functions/enqueue-scripts.php:331
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "Exclude Item"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:336
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:337
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:347
 #, fuzzy
 #| msgctxt "Contacts List"
 #| msgid "%s List"
 msgid "Full List"
 msgstr "%s പട്ടിക"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:340
 #, fuzzy
 #| msgid "Address"
 msgid "No Addresses"
 msgstr "വിലാസം"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:341
 msgid "With Additional Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:342
 msgid "Open Email for Group"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:343
 #, fuzzy
 #| msgid "See All"
 msgid "Open All"
 msgstr "എല്ലാം കാണൂ"
 
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:344
 msgid "Show Group Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:348
 msgid "Has No Phone Number"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:349
 msgid "Has Additional Phone Numbers"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:353
 #, fuzzy
 #| msgid "Used Locations"
 msgid "Mapped Locations"
 msgstr "ഉപയോഗിച്ച ലൊക്കേഷനുകൾ"
 
-#: dt-assets/functions/enqueue-scripts.php:352
+#: dt-assets/functions/enqueue-scripts.php:354
 #, fuzzy
 #| msgctxt "Reason Paused label"
 #| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
 msgstr "അവധിക്കാലത്ത് ബന്ധപ്പെടുക"
 
-#: dt-assets/functions/enqueue-scripts.php:353
+#: dt-assets/functions/enqueue-scripts.php:355
 #, fuzzy
 #| msgid "Record Hits:"
 msgid "Records on zoomed map"
 msgstr "റെക്കോർഡ് ഹിറ്റുകൾ:"
 
-#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:356
 msgid "No Zoomed Map Records Found!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:355
+#: dt-assets/functions/enqueue-scripts.php:357
 msgid "Open Zoomed Map Records"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:356
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:358
+#: dt-assets/functions/enqueue-scripts.php:359
 #, fuzzy
 #| msgid "Filter Name"
 msgid "Filtered Map"
 msgstr "പേര് ഫിൽട്ടർ ചെയ്യുക"
 
-#: dt-assets/functions/enqueue-scripts.php:384 dt-contacts/base-setup.php:51
+#: dt-assets/functions/enqueue-scripts.php:386 dt-contacts/base-setup.php:51
 #: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "ബന്ധപ്പെടുക"
 
-#: dt-assets/functions/enqueue-scripts.php:385
+#: dt-assets/functions/enqueue-scripts.php:387
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1027,7 +1038,7 @@ msgstr "പുതിയത് ചേർക്കുക"
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
 #: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
-#: template-settings.php:60 template-settings.php:467
+#: template-settings.php:60 template-settings.php:485
 msgid "Notifications"
 msgstr "അറിയിപ്പുകൾ"
 
@@ -1046,7 +1057,7 @@ msgstr "അഡ്മിൻ"
 #: dt-metrics/combined/hover-map.php:265
 #: dt-metrics/combined/locations-list.php:260
 #: dt-metrics/records/dynamic-records-map.php:65
-#: dt-users/user-management.php:135 dt-users/user-management.php:228
+#: dt-users/user-management.php:135 dt-users/user-management.php:232
 msgid "Users"
 msgstr "ഉപയോക്താക്കൾ"
 
@@ -1060,52 +1071,52 @@ msgstr "സഹായം"
 msgid "D.T Forum"
 msgstr "ഡി.ടി റെക്കോർഡ്"
 
-#: dt-assets/parts/loop-activity-comment.php:79
+#: dt-assets/parts/loop-activity-comment.php:83
 msgid "Submit comment"
 msgstr "അഭിപ്രായം സമർപ്പിക്കുക"
 
-#: dt-assets/parts/loop-activity-comment.php:87
+#: dt-assets/parts/loop-activity-comment.php:91
 msgid "Showing:"
 msgstr "കാണിക്കുന്നു:"
 
-#: dt-assets/parts/loop-activity-comment.php:101
+#: dt-assets/parts/loop-activity-comment.php:105
 #: dt-users/template-user-management.php:91
 msgid "Activity"
 msgstr "പ്രവർത്തനം"
 
-#: dt-assets/parts/loop-activity-comment.php:134
+#: dt-assets/parts/loop-activity-comment.php:138
 #: dt-assets/parts/modals/modal-record-history.php:28
 #: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "എല്ലാം കാണിക്കൂ"
 
-#: dt-assets/parts/loop-activity-comment.php:138
+#: dt-assets/parts/loop-activity-comment.php:142
 msgid "hide all"
 msgstr "എല്ലാം മറയ്‌ക്കുക"
 
-#: dt-assets/parts/loop-activity-comment.php:150
+#: dt-assets/parts/loop-activity-comment.php:154
 msgid "Delete Comment:"
 msgstr "അഭിപ്രായം ഇല്ലാതാക്കുക:"
 
-#: dt-assets/parts/loop-activity-comment.php:164
-#: dt-assets/parts/loop-activity-comment.php:212
+#: dt-assets/parts/loop-activity-comment.php:168
+#: dt-assets/parts/loop-activity-comment.php:216
 #: template-merge-post-details.php:104
 msgid "Sorry, something went wrong"
 msgstr "ക്ഷമിക്കണം, എന്തോ കുഴപ്പം സംഭവിച്ചു"
 
-#: dt-assets/parts/loop-activity-comment.php:165
+#: dt-assets/parts/loop-activity-comment.php:169
 msgid "The comment could not be deleted."
 msgstr "അഭിപ്രായം ഇല്ലാതാക്കാൻ കഴിഞ്ഞില്ല."
 
-#: dt-assets/parts/loop-activity-comment.php:170
+#: dt-assets/parts/loop-activity-comment.php:174
 msgid "Edit Comment:"
 msgstr "അഭിപ്രായം എഡിറ്റുചെയ്യുക:"
 
-#: dt-assets/parts/loop-activity-comment.php:186
+#: dt-assets/parts/loop-activity-comment.php:190
 msgid "Type of Comment"
 msgstr "അഭിപ്രായത്തിന്റെ തരം"
 
-#: dt-assets/parts/loop-activity-comment.php:213
+#: dt-assets/parts/loop-activity-comment.php:217
 msgid "The comment could not be updated."
 msgstr "അഭിപ്രായം അപ്‌ഡേറ്റുചെയ്യാനായില്ല."
 
@@ -1446,15 +1457,15 @@ msgstr ""
 msgid "Copy the link to the clipboard"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:113
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:121
 msgid "Send the link via email."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:150
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:158
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:155
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:163
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1468,7 +1479,7 @@ msgstr "റെക്കോർഡ് സൃഷ്ടിക്കുക"
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
 #: dt-metrics/records/genmap.php:110 dt-posts/custom-post-type.php:169
-#: template-settings.php:136
+#: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "പേര്"
 
@@ -1919,7 +1930,7 @@ msgid "Personal"
 msgstr "വ്യക്തിഗതം"
 
 #: dt-contacts/access-module.php:304
-#: dt-core/configuration/config-site-defaults.php:344
+#: dt-core/configuration/config-site-defaults.php:347
 msgid "Web"
 msgstr "വെബ്"
 
@@ -2047,13 +2058,13 @@ msgid "Assign"
 msgstr ""
 
 #: dt-contacts/access-module.php:1320 dt-users/template-new-user.php:134
-#: template-settings.php:216
+#: template-settings.php:226
 msgid "Language"
 msgstr "ഭാഷ"
 
 #: dt-contacts/access-module.php:1321 dt-contacts/base-setup.php:267
-#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:223
-#: template-settings.php:654
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
+#: template-settings.php:714
 msgid "Gender"
 msgstr "ലിംഗഭേദം"
 
@@ -2082,7 +2093,7 @@ msgstr "ഡ്യൂപ്ലിക്കേറ്റ് ചെക്കർ"
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
 #: dt-people-groups/people-groups-base.php:156
-#: dt-users/template-user-management.php:452
+#: dt-users/template-user-management.php:466
 msgid "Contacts"
 msgstr "കോൺ‌ടാക്റ്റുകൾ"
 
@@ -2118,7 +2129,7 @@ msgstr "ഞാൻ മാത്രം"
 msgid "Languages"
 msgstr "ഭാഷകൾ"
 
-#: dt-contacts/base-setup.php:158 template-settings.php:169
+#: dt-contacts/base-setup.php:158 template-settings.php:179
 msgid "Phone"
 msgstr "ഫോൺ"
 
@@ -2137,10 +2148,10 @@ msgid "WhatsApp"
 msgstr "വാട്ട്‌സ്ആപ്പ് പ്രവർത്തിക്കുക"
 
 #: dt-contacts/base-setup.php:183
-#: dt-core/configuration/config-site-defaults.php:341
+#: dt-core/configuration/config-site-defaults.php:344
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
-#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:215
-#: dt-users/users.php:129 template-settings.php:156
+#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
+#: dt-users/users.php:129 template-settings.php:166
 msgid "Email"
 msgstr "ഇമെയിൽ"
 
@@ -2156,7 +2167,7 @@ msgid "Locations or Address"
 msgstr "ലൊക്കേഷനുകൾ അല്ലെങ്കിൽ വിലാസം"
 
 #: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:378
-#: dt-people-groups/people-groups-base.php:213 template-settings.php:180
+#: dt-people-groups/people-groups-base.php:213 template-settings.php:190
 msgid "Address"
 msgstr "വിലാസം"
 
@@ -2174,11 +2185,11 @@ msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "സിസ്റ്റത്തിലെ മറ്റൊരു കോൺ‌ടാക്റ്റുമായി ഈ കോൺ‌ടാക്റ്റിന് ഉള്ള ബന്ധം."
 
-#: dt-contacts/base-setup.php:270 dt-users/template-user-management.php:227
+#: dt-contacts/base-setup.php:270 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "ആൺ"
 
-#: dt-contacts/base-setup.php:271 dt-users/template-user-management.php:228
+#: dt-contacts/base-setup.php:271 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "പെൺ"
 
@@ -2256,8 +2267,8 @@ msgid "Archive"
 msgstr "ശേഖരം"
 
 #: dt-contacts/base-setup.php:442
-#: dt-core/configuration/config-site-defaults.php:543
-#: dt-groups/base-setup.php:647 template-settings.php:202
+#: dt-core/configuration/config-site-defaults.php:546
+#: dt-groups/base-setup.php:647 template-settings.php:212
 msgid "Other"
 msgstr "മറ്റുള്ളവ"
 
@@ -2703,28 +2714,28 @@ msgstr "അഡ്മിനിസ്ട്രേറ്റർ"
 msgid "Subscriber"
 msgstr "വരിക്കാരൻ"
 
-#: dt-core/configuration/config-site-defaults.php:349
+#: dt-core/configuration/config-site-defaults.php:352
 msgid "Newly Assigned Contact"
 msgstr "പുതുതായി നിയോഗിച്ച കോൺടാക്റ്റ്"
 
-#: dt-core/configuration/config-site-defaults.php:354
+#: dt-core/configuration/config-site-defaults.php:357
 msgid "@Mentions"
 msgstr "പരാമർശങ്ങൾ"
 
-#: dt-core/configuration/config-site-defaults.php:359
+#: dt-core/configuration/config-site-defaults.php:362
 msgid "New Comments"
 msgstr "പുതിയ അഭിപ്രായങ്ങൾ"
 
-#: dt-core/configuration/config-site-defaults.php:369
+#: dt-core/configuration/config-site-defaults.php:372
 msgid "Contact Info Changed"
 msgstr "കോൺ‌ടാക്റ്റ് വിവരം മാറ്റി"
 
-#: dt-core/configuration/config-site-defaults.php:374
+#: dt-core/configuration/config-site-defaults.php:377
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "നാഴികക്കല്ലുകളെയും ഗ്രൂപ്പ് ആരോഗ്യ അളവുകളെയും ബന്ധപ്പെടുക"
 
-#: dt-core/configuration/config-site-defaults.php:399
+#: dt-core/configuration/config-site-defaults.php:402
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
@@ -2732,15 +2743,15 @@ msgstr ""
 "ഈ കോൺ‌ടാക്റ്റ് സജീവമാണെങ്കിലും ആരും അവരുമായി ബന്ധപ്പെട്ടതായി രേഖകളൊന്നുമില്ല. ദയവായി അവരെ "
 "ബന്ധപ്പെടുക."
 
-#: dt-core/configuration/config-site-defaults.php:405
+#: dt-core/configuration/config-site-defaults.php:408
 msgid "Please try connecting with this contact again."
 msgstr "ഈ കോൺ‌ടാക്റ്റുമായി വീണ്ടും ബന്ധിപ്പിക്കാൻ ശ്രമിക്കുക."
 
-#: dt-core/configuration/config-site-defaults.php:411
-#: dt-core/configuration/config-site-defaults.php:417
-#: dt-core/configuration/config-site-defaults.php:423
-#: dt-core/configuration/config-site-defaults.php:429
-#: dt-core/configuration/config-site-defaults.php:435
+#: dt-core/configuration/config-site-defaults.php:414
+#: dt-core/configuration/config-site-defaults.php:420
+#: dt-core/configuration/config-site-defaults.php:426
+#: dt-core/configuration/config-site-defaults.php:432
+#: dt-core/configuration/config-site-defaults.php:438
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
@@ -2748,108 +2759,108 @@ msgstr ""
 "ഈ വ്യക്തിയെക്കുറിച്ച് കുറച്ചുകാലമായി ഞങ്ങൾ കേട്ടിട്ടില്ല. ഈ കോൺ‌ടാക്റ്റിനായി നിങ്ങൾക്ക് ഒരു "
 "അപ്‌ഡേറ്റ് ഉണ്ടോ?"
 
-#: dt-core/configuration/config-site-defaults.php:445
+#: dt-core/configuration/config-site-defaults.php:448
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "ഈ ഗ്രൂപ്പിനെക്കുറിച്ച് കുറച്ചുകാലമായി ഞങ്ങൾ കേട്ടിട്ടില്ല. നിങ്ങൾക്ക് ഒരു അപ്‌ഡേറ്റ് ഉണ്ടോ?"
 
-#: dt-core/configuration/config-site-defaults.php:476
+#: dt-core/configuration/config-site-defaults.php:479
 msgid "Personal Phone"
 msgstr "സ്വകാര്യ ഫോൺ"
 
-#: dt-core/configuration/config-site-defaults.php:479
+#: dt-core/configuration/config-site-defaults.php:482
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "വ്യക്തിഗത ഫോൺ ടീമിന് സ്വകാര്യമാണ്, വിതരണത്തിനല്ല."
 
-#: dt-core/configuration/config-site-defaults.php:483
+#: dt-core/configuration/config-site-defaults.php:486
 msgid "Personal Email"
 msgstr "സ്വകാര്യ ഇമെയിൽ"
 
-#: dt-core/configuration/config-site-defaults.php:486
+#: dt-core/configuration/config-site-defaults.php:489
 msgid "Personal email is private to the team, not for distribution."
 msgstr "വ്യക്തിഗത ഇമെയിൽ ടീമിന് സ്വകാര്യമാണ്, വിതരണത്തിനല്ല."
 
-#: dt-core/configuration/config-site-defaults.php:490
+#: dt-core/configuration/config-site-defaults.php:493
 msgid "Personal Address"
 msgstr "വ്യക്തിഗത വിലാസം"
 
-#: dt-core/configuration/config-site-defaults.php:493
+#: dt-core/configuration/config-site-defaults.php:496
 msgid "Personal address is private to the team, not for distribution."
 msgstr "വ്യക്തിഗത വിലാസം ടീമിന് സ്വകാര്യമാണ്, വിതരണത്തിനല്ല."
 
-#: dt-core/configuration/config-site-defaults.php:497
+#: dt-core/configuration/config-site-defaults.php:500
 msgid "Work Phone"
 msgstr "ഔദ്യോഗിക ഫോൺ"
 
-#: dt-core/configuration/config-site-defaults.php:500
+#: dt-core/configuration/config-site-defaults.php:503
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "കോൺടാക്റ്റുകൾക്കും അന്വേഷകർക്കും വിതരണം ചെയ്യുന്നതിനാണ് work ദ്യോഗിക ഫോൺ."
 
-#: dt-core/configuration/config-site-defaults.php:504
+#: dt-core/configuration/config-site-defaults.php:507
 msgid "Work Email"
 msgstr "Email ദ്യോഗിക ഇമെയിൽ"
 
-#: dt-core/configuration/config-site-defaults.php:507
+#: dt-core/configuration/config-site-defaults.php:510
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "Contact ദ്യോഗിക ഇമെയിൽ കോൺടാക്റ്റുകൾക്കും അന്വേഷകർക്കും വിതരണം ചെയ്യുന്നതിനാണ്."
 
-#: dt-core/configuration/config-site-defaults.php:511
+#: dt-core/configuration/config-site-defaults.php:514
 msgid "Work Facebook"
 msgstr "ഫേസ്ബുക്ക് പ്രവർത്തിക്കുക"
 
-#: dt-core/configuration/config-site-defaults.php:514
+#: dt-core/configuration/config-site-defaults.php:517
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "കോൺ‌ടാക്റ്റുകൾക്കും അന്വേഷകർക്കും വിതരണം ചെയ്യുന്നതിനാണ് വർക്ക് ഫേസ്ബുക്ക്."
 
-#: dt-core/configuration/config-site-defaults.php:518
+#: dt-core/configuration/config-site-defaults.php:521
 msgid "Work WhatsApp"
 msgstr "വാട്ട്‌സ്ആപ്പ് പ്രവർത്തിക്കുക"
 
-#: dt-core/configuration/config-site-defaults.php:521
+#: dt-core/configuration/config-site-defaults.php:524
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "കോൺ‌ടാക്റ്റുകൾക്കും അന്വേഷകർക്കും വിതരണം ചെയ്യുന്നതിനാണ് വർക്ക് വാട്ട്‌സ്ആപ്പ്."
 
-#: dt-core/configuration/config-site-defaults.php:528
+#: dt-core/configuration/config-site-defaults.php:531
 msgid "thumbs up"
 msgstr "വിജയചിഹ്നം"
 
-#: dt-core/configuration/config-site-defaults.php:529
+#: dt-core/configuration/config-site-defaults.php:532
 msgid "heart"
 msgstr "ഹൃദയം"
 
-#: dt-core/configuration/config-site-defaults.php:530
+#: dt-core/configuration/config-site-defaults.php:533
 msgid "laugh"
 msgstr "ചിരിക്കുക"
 
-#: dt-core/configuration/config-site-defaults.php:531
+#: dt-core/configuration/config-site-defaults.php:534
 msgid "wow"
 msgstr "വൗ"
 
-#: dt-core/configuration/config-site-defaults.php:532
+#: dt-core/configuration/config-site-defaults.php:535
 msgid "sad"
 msgstr "ദുഃഖകരമായ"
 
-#: dt-core/configuration/config-site-defaults.php:533
+#: dt-core/configuration/config-site-defaults.php:536
 msgid "prayer"
 msgstr ""
 
-#: dt-core/configuration/config-site-defaults.php:541
+#: dt-core/configuration/config-site-defaults.php:544
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "വീട്"
 
-#: dt-core/configuration/config-site-defaults.php:542
+#: dt-core/configuration/config-site-defaults.php:545
 msgid "Work"
 msgstr "ജോലി"
 
-#: dt-core/configuration/config-site-defaults.php:552
+#: dt-core/configuration/config-site-defaults.php:555
 msgid "Accepting new contacts"
 msgstr "പുതിയ കോൺടാക്റ്റുകൾ സ്വീകരിക്കുന്നു"
 
-#: dt-core/configuration/config-site-defaults.php:556
+#: dt-core/configuration/config-site-defaults.php:559
 msgid "I'm only investing in existing contacts"
 msgstr "നിലവിലുള്ള കോൺടാക്റ്റുകളിൽ മാത്രമാണ് ഞാൻ നിക്ഷേപം നടത്തുന്നത്"
 
-#: dt-core/configuration/config-site-defaults.php:560
+#: dt-core/configuration/config-site-defaults.php:563
 msgid "I have too many contacts"
 msgstr "എനിക്ക് വളരെയധികം കോൺ‌ടാക്റ്റുകൾ ഉണ്ട്"
 
@@ -2900,7 +2911,7 @@ msgstr "ഇത് ഒരു തെറ്റാണെങ്കിൽ, ഈ ഇമ�
 msgid "To reset your password, visit the following address:"
 msgstr "നിങ്ങളുടെ പാസ്‌വേഡ് പുന reset സജ്ജമാക്കാൻ, ഇനിപ്പറയുന്ന വിലാസം സന്ദർശിക്കുക:"
 
-#: dt-core/global-functions.php:564 single-template.php:410
+#: dt-core/global-functions.php:564 single-template.php:413
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
@@ -2961,7 +2972,7 @@ msgid "Translate"
 msgstr ""
 
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
-#: template-settings.php:675
+#: template-settings.php:735
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
@@ -3181,7 +3192,7 @@ msgid "The group has committed to be church."
 msgstr "സംഘം സഭയായിരിക്കാൻ പ്രതിജ്ഞാബദ്ധരാണ്."
 
 #: dt-groups/base-setup.php:253 dt-users/template-user-management.php:180
-#: template-settings.php:426 template-settings.php:445
+#: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "ആരംഭിക്കുന്ന തീയതി"
 
@@ -3200,7 +3211,7 @@ msgid "The date this group first identified as being a church."
 msgstr "ഈ സംഘം ആദ്യമായി ഒരു സഭയാണെന്ന് തിരിച്ചറിഞ്ഞ തീയതി."
 
 #: dt-groups/base-setup.php:270 dt-users/template-user-management.php:181
-#: template-settings.php:432 template-settings.php:446
+#: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "അവസാന ദിവസം"
 
@@ -3458,7 +3469,7 @@ msgid "Username or password does not match. Try again."
 msgstr ""
 
 #: dt-login/login-template.php:489 dt-users/template-new-user.php:121
-#: dt-users/template-new-user.php:122 template-settings.php:601
+#: dt-users/template-new-user.php:122 template-settings.php:661
 msgid "Password"
 msgstr "Password"
 
@@ -3480,7 +3491,7 @@ msgstr "പള്ളികൾ"
 
 #: dt-mapping/geocode-api/mapbox-api.php:288
 #: dt-mapping/geocode-api/mapbox-api.php:323
-#: dt-users/template-user-management.php:124 template-settings.php:322
+#: dt-users/template-user-management.php:124 template-settings.php:340
 msgid "add"
 msgstr "ചേർക്കുക"
 
@@ -3579,7 +3590,7 @@ msgstr "മുഖാമുഖ സന്ദർശനത്തിനായി ന�
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:374
+#: dt-users/template-user-management.php:388
 msgid "Active Contacts"
 msgstr "സജീവ കോൺടാക്റ്റുകൾ"
 
@@ -3677,12 +3688,12 @@ msgid "This Week"
 msgstr ""
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:404
+#: dt-users/template-user-management.php:418
 msgid "This Month"
 msgstr "ഈ മാസം"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:408
+#: dt-users/template-user-management.php:422
 msgid "Last Month"
 msgstr "കഴിഞ്ഞ മാസം"
 
@@ -3828,7 +3839,7 @@ msgstr "തീയതി ശ്രേണിയിലേക്ക് കോൺട�
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
 #: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:418
+#: dt-users/template-user-management.php:432
 msgid "All Time"
 msgstr "എല്ലാ സമയവും"
 
@@ -4353,11 +4364,11 @@ msgstr "%1$s # %2$s- ൽ അപ്‌ഡേറ്റുചെയ്യുക"
 msgid "Do not reply directly to this email."
 msgstr "ഈ ഇമെയിലിലേക്ക് നേരിട്ട് മറുപടി നൽകരുത്."
 
-#: dt-notifications/notifications-scheduler.php:140 template-settings.php:482
+#: dt-notifications/notifications-scheduler.php:140 template-settings.php:520
 msgid "Hourly Digest"
 msgstr ""
 
-#: dt-notifications/notifications-scheduler.php:143 template-settings.php:486
+#: dt-notifications/notifications-scheduler.php:143 template-settings.php:524
 msgid "Daily Digest"
 msgstr ""
 
@@ -4528,29 +4539,29 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1698
+#: dt-posts/dt-posts.php:1699
 msgid "%s Submission"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1698
+#: dt-posts/dt-posts.php:1699
 msgid "Magic Link"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1700 dt-posts/dt-posts.php:2247
+#: dt-posts/dt-posts.php:1701 dt-posts/dt-posts.php:2248
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "പ്രവർത്തനം പഴയപടിയാക്കുക"
 
-#: dt-posts/dt-posts.php:2487
+#: dt-posts/dt-posts.php:2488
 msgid "Post already shared with user."
 msgstr "പോസ്റ്റ് ഇതിനകം ഉപയോക്താവുമായി പങ്കിട്ടു."
 
-#: dt-posts/dt-posts.php:2767 single-template.php:174
+#: dt-posts/dt-posts.php:2768 single-template.php:175
 msgid "Details"
 msgstr "വിശദാംശങ്ങൾ"
 
-#: dt-posts/dt-posts.php:2836
+#: dt-posts/dt-posts.php:2837
 #, fuzzy
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
@@ -4563,7 +4574,7 @@ msgstr ""
 "@[%1$s](%2$s) - %3$s ഉപയോക്താവ് %4$s [%5$s](%6$s) ലേക്ക് ആക്സസ് അഭ്യർത്ഥിച്ചു. "
 "വേണമെങ്കിൽ, ആക്സസ് അനുവദിക്കുന്നതിന് ഈ റെക്കോർഡ് ഉപയോക്താവുമായി പങ്കിടുക."
 
-#: dt-posts/dt-posts.php:2842
+#: dt-posts/dt-posts.php:2843
 msgid "Access Request"
 msgstr "പ്രവേശന അഭ്യർത്ഥന"
 
@@ -4973,37 +4984,33 @@ msgstr ""
 msgid "Magic Links available on this record."
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:86
+#: dt-reports/magic-url-setup.php:94
 #, fuzzy
 #| msgid "View User"
 msgid "View"
 msgstr "ഉപയോക്താവിനെ കാണുക"
 
-#: dt-reports/magic-url-setup.php:87
-msgid "Copy to clipboard"
-msgstr ""
-
-#: dt-reports/magic-url-setup.php:92
+#: dt-reports/magic-url-setup.php:101
 msgid "QR code"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:93
+#: dt-reports/magic-url-setup.php:102
 msgid "Reset"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:113
+#: dt-reports/magic-url-setup.php:121
 msgid "Add email address"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:114
+#: dt-reports/magic-url-setup.php:122
 msgid "Add a note"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:114
+#: dt-reports/magic-url-setup.php:122
 msgid "Send email with link"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:156
+#: dt-reports/magic-url-setup.php:164
 msgid "Delete and replace the app link"
 msgstr ""
 
@@ -5062,18 +5069,18 @@ msgstr "ഒരു ഉപയോക്താവാക്കുന്നതിന�
 msgid "Search multipliers and contacts"
 msgstr "മൾട്ടിപ്ലയറുകളും കോൺ‌ടാക്റ്റുകളും തിരയുക"
 
-#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:218
+#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:232
 #: dt-users/users.php:141
 msgid "Display Name"
 msgstr "പ്രദർശന നാമം"
 
-#: dt-users/template-new-user.php:115 template-settings.php:143
-#: template-settings.php:622
+#: dt-users/template-new-user.php:115 template-settings.php:153
+#: template-settings.php:682
 msgid "Nickname (Display Name)"
 msgstr "വിളിപ്പേര് (പ്രദർശന നാമം)"
 
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
-#: dt-users/users.php:135 template-settings.php:130 template-settings.php:587
+#: dt-users/users.php:135 template-settings.php:140 template-settings.php:647
 msgid "Username"
 msgstr "ഉപയോക്തൃനാമം"
 
@@ -5081,7 +5088,7 @@ msgstr "ഉപയോക്തൃനാമം"
 msgid "Role"
 msgstr ""
 
-#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:279
+#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:293
 msgid "Click here to see roles documentation"
 msgstr "റോളുകളുടെ ഡോക്യുമെന്റേഷൻ കാണാൻ ഇവിടെ ക്ലിക്കുചെയ്യുക"
 
@@ -5090,7 +5097,7 @@ msgid "Create User"
 msgstr "ഉപയോക്താവിനെ സൃഷ്ടിക്കുക"
 
 #: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
-#: template-settings.php:611
+#: template-settings.php:671
 msgid "First Name"
 msgstr "പേരിന്റെ ആദ്യഭാഗം"
 
@@ -5101,14 +5108,14 @@ msgid "optional"
 msgstr ""
 
 #: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
-#: template-settings.php:617
+#: template-settings.php:677
 msgid "Last Name"
 msgstr "പേരിന്റെ അവസാന ഭാഗം"
 
 #: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
-#: dt-users/template-user-management.php:255
-#: dt-users/template-user-management.php:262 template-settings.php:226
-#: template-settings.php:646
+#: dt-users/template-user-management.php:269
+#: dt-users/template-user-management.php:276 template-settings.php:236
+#: template-settings.php:706
 msgid "Biography"
 msgstr "ജീവചരിത്രം"
 
@@ -5169,16 +5176,16 @@ msgstr "ജോലിഭാരം നില"
 msgid "Location Responsibility"
 msgstr "ലൊക്കേഷൻ ഉത്തരവാദിത്തം"
 
-#: dt-users/template-user-management.php:136 template-settings.php:337
+#: dt-users/template-user-management.php:136 template-settings.php:355
 msgid "Search Locations"
 msgstr "ലൊക്കേഷനുകൾ തിരയുക"
 
-#: dt-users/template-user-management.php:147 template-settings.php:350
+#: dt-users/template-user-management.php:147 template-settings.php:368
 msgid "Languages you are comfortable speaking"
 msgstr "നിങ്ങൾക്ക് സംസാരിക്കാൻ സുഖമുള്ള ഭാഷകൾ"
 
 #: dt-users/template-user-management.php:163 template-settings.php:59
-#: template-settings.php:413
+#: template-settings.php:431
 msgid "Availability"
 msgstr "ലഭ്യത"
 
@@ -5198,44 +5205,56 @@ msgstr "ലഭ്യത ഷെഡ്യൂൾ ചെയ്യുക"
 msgid "Travel or Away Dates"
 msgstr "യാത്ര അല്ലെങ്കിൽ തീയതികൾ"
 
-#: dt-users/template-user-management.php:198
+#: dt-users/template-user-management.php:191
+#, fuzzy
+#| msgid "Users"
+msgid "User Apps"
+msgstr "ഉപയോക്താക്കൾ"
+
+#: dt-users/template-user-management.php:197
+#, fuzzy
+#| msgid "App Activation"
+msgid "Activation"
+msgstr "അപ്ലിക്കേഷൻ സജീവമാക്കൽ"
+
+#: dt-users/template-user-management.php:212
 msgid "User Profile"
 msgstr ""
 
-#: dt-users/template-user-management.php:201
+#: dt-users/template-user-management.php:215
 #: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "കോൺ‌ടാക്റ്റ് റെക്കോർഡ് കാണുക"
 
-#: dt-users/template-user-management.php:206
+#: dt-users/template-user-management.php:220
 msgid "Edit User"
 msgstr ""
 
-#: dt-users/template-user-management.php:211
+#: dt-users/template-user-management.php:225
 #, fuzzy
 #| msgid "Password"
 msgid "Email Password Reset"
 msgstr "Password"
 
-#: dt-users/template-user-management.php:274 dt-users/users.php:147
-#: template-settings.php:149
+#: dt-users/template-user-management.php:288 dt-users/users.php:147
+#: template-settings.php:159
 msgid "Roles"
 msgstr "റോളുകൾ"
 
-#: dt-users/template-user-management.php:306
+#: dt-users/template-user-management.php:320
 msgid "Save Roles"
 msgstr "റോളുകൾ സംരക്ഷിക്കുക"
 
-#: dt-users/template-user-management.php:314
+#: dt-users/template-user-management.php:328
 msgid "Access by Source"
 msgstr "ഉറവിടം ഉപയോഗിച്ച് ആക്സസ് ചെയ്യുക"
 
-#: dt-users/template-user-management.php:320
+#: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "എല്ലാ ഉറവിടങ്ങളും - എല്ലാ കോൺ‌ടാക്റ്റുകളിലേക്കും പ്രവേശനം നൽകുന്നു"
 
-#: dt-users/template-user-management.php:326
+#: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
@@ -5244,60 +5263,60 @@ msgstr ""
 "ഇഷ്‌ടാനുസൃതം - ചുവടെയുള്ള തിരഞ്ഞെടുത്ത ഉറവിടങ്ങളുടെ സ്വന്തം കോൺടാക്റ്റുകളും എല്ലാ കോൺടാക്റ്റുകളും "
 "ആക്‌സസ്സുചെയ്യുക"
 
-#: dt-users/template-user-management.php:332
+#: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "ഉറവിടങ്ങളൊന്നുമില്ല - സ്വന്തം കോൺ‌ടാക്റ്റുകൾ മാത്രം"
 
-#: dt-users/template-user-management.php:338
+#: dt-users/template-user-management.php:352
 msgid "Sources List"
 msgstr "ഉറവിടങ്ങളുടെ പട്ടിക"
 
-#: dt-users/template-user-management.php:350
+#: dt-users/template-user-management.php:364
 msgid "Save Allowed Sources"
 msgstr "അനുവദനീയമായ ഉറവിടങ്ങൾ സംരക്ഷിക്കുക"
 
-#: dt-users/template-user-management.php:380
+#: dt-users/template-user-management.php:394
 msgid "Updates Needed"
 msgstr "അപ്‌ഡേറ്റുകൾ ആവശ്യമാണ്"
 
-#: dt-users/template-user-management.php:386
+#: dt-users/template-user-management.php:400
 msgid "Pending"
 msgstr "ശേഷിക്കുന്നു"
 
-#: dt-users/template-user-management.php:393
+#: dt-users/template-user-management.php:407
 msgid "Unread Notifications"
 msgstr "വായിക്കാത്ത അറിയിപ്പുകൾ"
 
-#: dt-users/template-user-management.php:400
+#: dt-users/template-user-management.php:414
 msgid "Assignments"
 msgstr "അസൈൻമെന്റുകൾ"
 
-#: dt-users/template-user-management.php:414
+#: dt-users/template-user-management.php:428
 msgid "This Year"
 msgstr "ഈവർഷം"
 
-#: dt-users/template-user-management.php:432
+#: dt-users/template-user-management.php:446
 msgid "Pace"
 msgstr "പേസ്"
 
-#: dt-users/template-user-management.php:433
+#: dt-users/template-user-management.php:447
 msgid "Assigned and not accepted"
 msgstr "നിയുക്തമാക്കി, സ്വീകരിച്ചില്ല"
 
-#: dt-users/template-user-management.php:435
+#: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "അവസാന 10 കോൺ‌ടാക്റ്റുകൾ‌ക്കായി സ്വീകരിച്ച കോൺ‌ടാക്റ്റിലേക്കുള്ള സമയം സ്വീകരിച്ചു"
 
-#: dt-users/template-user-management.php:437
+#: dt-users/template-user-management.php:451
 msgid "Accepted with no contact attempt"
 msgstr "ഒരു കോൺ‌ടാക്റ്റ് ശ്രമവുമില്ലാതെ സ്വീകരിച്ചു"
 
-#: dt-users/template-user-management.php:439
+#: dt-users/template-user-management.php:453
 msgid "Oldest 10 update needed"
 msgstr "ഏറ്റവും പഴയ 10 അപ്‌ഡേറ്റ് ആവശ്യമാണ്"
 
-#: dt-users/template-user-management.php:441
+#: dt-users/template-user-management.php:455
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "അവസാന 10 കോൺ‌ടാക്റ്റുകൾ‌ക്കായുള്ള കോൺ‌ടാക്റ്റ് ശ്രമത്തിനുള്ള സമയം"
 
@@ -5416,18 +5435,23 @@ msgstr "ഈ കോൺ‌ടാക്റ്റ് ഇതിനകം ഒരു �
 msgid "View User"
 msgstr "ഉപയോക്താവിനെ കാണുക"
 
-#: dt-users/user-management.php:226
+#: dt-users/user-management.php:195 template-settings.php:311
+#: template-settings.php:575
+msgid "Enable"
+msgstr "പ്രവർത്തനക്ഷമമാക്കുക"
+
+#: dt-users/user-management.php:230
 msgid "Go"
 msgstr ""
 
-#: dt-users/user-management.php:229
+#: dt-users/user-management.php:233
 #, fuzzy
 #| msgctxt "Showing 30 items matching bob"
 #| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
 msgstr "%2$s മായി പൊരുത്തപ്പെടുന്ന %1$s ഇനങ്ങൾ കാണിക്കുന്നു"
 
-#: dt-users/user-management.php:334
+#: dt-users/user-management.php:354
 msgid "%s days since last update"
 msgstr "അവസാന അപ്‌ഡേറ്റ് മുതൽ%s ദിവസങ്ങൾ"
 
@@ -5498,7 +5522,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "ഇഷ്‌ടാനുസൃത ഫിൽട്ടറുകൾ"
 
-#: dt-users/users.php:1305 template-settings.php:159 template-settings.php:593
+#: dt-users/users.php:1319 template-settings.php:169 template-settings.php:653
 msgid "System Email"
 msgstr "സിസ്റ്റം ഇമെയിൽ"
 
@@ -5546,36 +5570,36 @@ msgstr "ഈ%s ന് ഒരു അപ്‌ഡേറ്റ് ആവശ്യമ
 msgid "Please provide an update by posting a comment."
 msgstr "ഒരു അഭിപ്രായം പോസ്റ്റുചെയ്‌ത് ഒരു അപ്‌ഡേറ്റ് നൽകുക."
 
-#: single-template.php:258
+#: single-template.php:259
 msgid "Edit all details fields"
 msgstr "എല്ലാ വിശദാംശങ്ങളും ഫീൽഡുകൾ എഡിറ്റുചെയ്യുക"
 
-#: single-template.php:381
+#: single-template.php:384
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:402 template-new-bulk-post.php:276
+#: single-template.php:405 template-new-bulk-post.php:276
 #: template-new-post.php:167
 msgid "Create Tag"
 msgstr "ടാഗ് സൃഷ്ടിക്കുക"
 
-#: single-template.php:403 template-new-bulk-post.php:277
+#: single-template.php:406 template-new-bulk-post.php:277
 #: template-new-post.php:168
 msgid "Create a tag and apply it to this record."
 msgstr "ഒരു ടാഗ് സൃഷ്‌ടിച്ച് ഈ റെക്കോർഡിലേക്ക് പ്രയോഗിക്കുക."
 
-#: single-template.php:407 single-template.php:409
+#: single-template.php:410 single-template.php:412
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
 #: template-new-post.php:172 template-new-post.php:174
 msgid "Tag"
 msgstr "ടാഗ് ചെയ്യുക"
 
-#: single-template.php:418 template-new-bulk-post.php:293
+#: single-template.php:421 template-new-bulk-post.php:293
 #: template-new-post.php:183
 msgid "Create and apply tag"
 msgstr "ടാഗ് സൃഷ്ടിച്ച് പ്രയോഗിക്കുക"
 
-#: single-template.php:428
+#: single-template.php:431
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "%s ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?"
@@ -5659,7 +5683,7 @@ msgstr "കൂടുതൽ അറിയിപ്പുകൾ ലോഡുചെ�
 msgid "Apps"
 msgstr "അപ്ലിക്കേഷനുകൾ"
 
-#: template-settings.php:58 template-settings.php:314
+#: template-settings.php:58 template-settings.php:332
 msgid "Multiplier Preferences"
 msgstr "ഗുണിത മുൻഗണനകൾ"
 
@@ -5671,55 +5695,51 @@ msgstr ""
 msgid "View Contact Record"
 msgstr ""
 
-#: template-settings.php:191
+#: template-settings.php:201
 msgid "Social"
 msgstr "സാമൂഹിക"
 
-#: template-settings.php:222
+#: template-settings.php:232
 msgid "English"
 msgstr "ഇംഗ്ലീഷ്"
 
-#: template-settings.php:247
+#: template-settings.php:257
 msgid "Your Apps"
 msgstr "നിങ്ങളുടെ അപ്ലിക്കേഷനുകൾ"
 
-#: template-settings.php:252
+#: template-settings.php:262
 msgid "App Name"
 msgstr "അപ്ലിക്കേഷന്റെ പേര്"
 
-#: template-settings.php:253
+#: template-settings.php:263
 msgid "App Description"
 msgstr "അപ്ലിക്കേഷൻ വിവരണം"
 
-#: template-settings.php:254
+#: template-settings.php:264
 msgid "App Link"
 msgstr "അപ്ലിക്കേഷൻ ലിങ്ക്"
 
-#: template-settings.php:255
+#: template-settings.php:265
 msgid "App Activation"
 msgstr "അപ്ലിക്കേഷൻ സജീവമാക്കൽ"
 
-#: template-settings.php:265
+#: template-settings.php:275
 msgid "No apps installed"
 msgstr "അപ്ലിക്കേഷനുകളൊന്നും ഇൻസ്റ്റാളുചെയ്‌തിട്ടില്ല"
 
-#: template-settings.php:293 template-settings.php:537
-msgid "Enable"
-msgstr "പ്രവർത്തനക്ഷമമാക്കുക"
-
-#: template-settings.php:322 template-settings.php:327
+#: template-settings.php:340 template-settings.php:345
 msgid "Locations you are willing to be responsible for"
 msgstr "നിങ്ങൾ ഉത്തരവാദിത്തമുള്ള സ്ഥലങ്ങൾ"
 
-#: template-settings.php:371
+#: template-settings.php:389
 msgid "People Groups you wish to serve"
 msgstr "നിങ്ങൾ സേവിക്കാൻ ആഗ്രഹിക്കുന്ന ആളുകൾ ഗ്രൂപ്പുകൾ"
 
-#: template-settings.php:394
+#: template-settings.php:412
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "ഡിസ്പാച്ചറിൽ നിന്ന് കോൺടാക്റ്റുകൾ സ്വീകരിക്കുന്നതിനുള്ള ലഭ്യത"
 
-#: template-settings.php:416
+#: template-settings.php:434
 msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
@@ -5727,44 +5747,55 @@ msgstr ""
 "നിങ്ങൾ യാത്ര ചെയ്യുന്ന അല്ലെങ്കിൽ ലഭ്യമല്ലാത്ത തീയതികൾ സജ്ജമാക്കുക, അതുവഴി പുതിയ കോൺ‌ടാക്റ്റുകൾ "
 "സ്വീകരിക്കുന്നതിനുള്ള നിങ്ങളുടെ ലഭ്യത ഡിസ്പാച്ചറിന് അറിയാം"
 
-#: template-settings.php:420
+#: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "ഷെഡ്യൂൾ യാത്ര അല്ലെങ്കിൽ തീയതികൾ ലഭ്യമല്ല"
 
-#: template-settings.php:437
+#: template-settings.php:455
 msgid "Add Unavailable dates"
 msgstr "ലഭ്യമല്ലാത്ത തീയതികൾ ചേർക്കുക"
 
-#: template-settings.php:451
+#: template-settings.php:469
 msgid "No Travel Scheduled"
 msgstr "യാത്രാ ഷെഡ്യൂൾ ഇല്ല"
 
-#: template-settings.php:472
+#: template-settings.php:489
+#, fuzzy
+#| msgid "Contact Info Changed"
+msgid "Contact Info"
+msgstr "കോൺ‌ടാക്റ്റ് വിവരം മാറ്റി"
+
+#: template-settings.php:493
+msgctxt "Email will be sent to: [email]"
+msgid "Email notifications will be sent to: %s"
+msgstr ""
+
+#: template-settings.php:510
 msgid "Email preferences"
 msgstr ""
 
-#: template-settings.php:478
+#: template-settings.php:516
 msgid "Real time"
 msgstr ""
 
-#: template-settings.php:493
+#: template-settings.php:531
 msgid "Type of Notification"
 msgstr "അറിയിപ്പ് തരം"
 
-#: template-settings.php:506
+#: template-settings.php:544
 msgid "required"
 msgstr "ആവശ്യമാണ്"
 
-#: template-settings.php:530
+#: template-settings.php:568
 msgid "Follow all contacts"
 msgstr "എല്ലാ കോൺ‌ടാക്റ്റുകളും പിന്തുടരുക"
 
-#: template-settings.php:532
+#: template-settings.php:570
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr "സിസ്റ്റത്തിൽ സംഭവിക്കുന്ന ഏത് അപ്‌ഡേറ്റിനുമായി നിങ്ങൾക്ക് ഒരു അറിയിപ്പ് ലഭിക്കും."
 
-#: template-settings.php:581
+#: template-settings.php:630
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
 "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
@@ -5776,27 +5807,49 @@ msgstr ""
 "ഉപയോഗിക്കരുതെന്ന് ഞങ്ങൾ നിർദ്ദേശിക്കുന്നു, പകരം നിങ്ങളെ പ്രതിനിധീകരിക്കുന്നതിന് ഒരു കാർട്ടൂൺ, "
 "അമൂർത്ത അല്ലെങ്കിൽ അപരനാമ ഫോട്ടോ തിരഞ്ഞെടുക്കുക."
 
-#: template-settings.php:582
+#: template-settings.php:631
 msgid "edit image on gravatar.com"
 msgstr "gravatar.com ൽ ചിത്രം എഡിറ്റുചെയ്യുക"
 
-#: template-settings.php:588 template-settings.php:589
+#: template-settings.php:637
+#, fuzzy
+#| msgid ""
+#| "Disciple Tools System does not store images. For profile images we use "
+#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+#| "suggest not using a personal photo, but instead choose a cartoon, "
+#| "abstract, or alias photo to represent you."
+msgid ""
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
+msgstr ""
+"ശിഷ്യ ഉപകരണ സിസ്റ്റം ഇമേജുകൾ സംഭരിക്കുന്നില്ല. പ്രൊഫൈൽ ഇമേജുകൾക്കായി ഞങ്ങൾ Gravatar "
+"(ആഗോള അംഗീകൃത അവതാർ) ഉപയോഗിക്കുന്നു. നിങ്ങൾക്ക് സുരക്ഷാ ആശങ്കകളുണ്ടെങ്കിൽ, ഒരു സ്വകാര്യ ഫോട്ടോ "
+"ഉപയോഗിക്കരുതെന്ന് ഞങ്ങൾ നിർദ്ദേശിക്കുന്നു, പകരം നിങ്ങളെ പ്രതിനിധീകരിക്കുന്നതിന് ഒരു കാർട്ടൂൺ, "
+"അമൂർത്ത അല്ലെങ്കിൽ അപരനാമ ഫോട്ടോ തിരഞ്ഞെടുക്കുക."
+
+#: template-settings.php:638
+msgid "upload new profile image"
+msgstr ""
+
+#: template-settings.php:648 template-settings.php:649
 msgid "Username cannot be changed"
 msgstr "ഉപയോക്തൃനാമം മാറ്റാൻ കഴിയില്ല"
 
-#: template-settings.php:594
+#: template-settings.php:654
 msgid "User email can be changed by site administrator."
 msgstr "സൈറ്റ് അഡ്മിനിസ്ട്രേറ്ററിന് ഉപയോക്തൃ ഇമെയിൽ മാറ്റാൻ കഴിയും."
 
-#: template-settings.php:602
+#: template-settings.php:662
 msgid "Use this email reset form to create a new password."
 msgstr "ഒരു പുതിയ പാസ്‌വേഡ് സൃഷ്ടിക്കുന്നതിന് ഈ ഇമെയിൽ പുന reset സജ്ജീകരണ ഫോം ഉപയോഗിക്കുക."
 
-#: template-settings.php:604
+#: template-settings.php:664
 msgid "go to password change form"
 msgstr "പാസ്‌വേഡ് മാറ്റുന്ന ഫോമിലേക്ക് പോകുക"
 
-#: template-settings.php:668
+#: template-settings.php:728
 msgid "System Language"
 msgstr "സിസ്റ്റം ഭാഷ"
 

@@ -291,10 +291,18 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                             <td class="tall-3"><?php echo esc_html( $app_value['label'] )?></td>
                                             <td class="tall-3"><?php echo esc_html( $app_value['description'] )?></td>
                                             <td class="tall-3" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
-                                                <?php if ( $app_link ) { ?>
-                                                    <a class="button small"  href="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"><i class="fi-link"></i></a>
-                                                    <button class="button small copy_to_clipboard" data-value="<?php echo esc_url( $app_link ) ?>" title="<?php esc_html_e( 'copy', 'disciple_tools' ) ?>"><i class="fi-page-copy"></i></button>
-                                                <?php } ?>
+                                                <a class="app-link button small"
+                                                   href="<?php echo esc_url( $app_link ) ?>"
+                                                   title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>"
+                                                   style="<?php echo esc_html( $app_link ? '' : 'display:none' ); ?>">
+                                                  <i class="fi-link"></i>
+                                                </a>
+                                                <button class="app-copy dt-tooltip button small copy_to_clipboard"
+                                                        data-value="<?php echo esc_url( $app_link ) ?>"
+                                                        style="<?php echo esc_html( $app_link ? '' : 'display:none' ); ?>">
+                                                  <span class="tooltiptext"><?php esc_html_e( 'Copy', 'disciple_tools' ); ?></span>
+                                                  <i class="fi-page-copy"></i>
+                                                </button>
                                             </td>
                                             <td class="tall-3">
                                                 <input class="switch-input" id="app_state_<?php echo esc_attr( $app_key )?>" type="checkbox" name="follow_all"
@@ -476,6 +484,26 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                         </button>
                         <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr/>
+
+                        <p>
+                            <strong><?php esc_html_e( 'Contact Info', 'disciple_tools' ) ?></strong>
+                        </p>
+                        <div>
+                            <ul>
+                                <li><?php echo esc_html( sprintf( _x( 'Email notifications will be sent to: %s', 'Email will be sent to: [email]', 'disciple_tools' ), $dt_user->user_email ?? esc_html( '[email]', 'disciple_tools' ) ) ); ?></li>
+                            </ul>
+                            <?php
+                            foreach ( apply_filters( 'dt_communication_channel_notification_endpoints_text', [], $dt_user->ID ) ?? [] as $endpoint_text ) {
+                                if ( !empty( $endpoint_text ) ) {
+                                    ?>
+                                    <ul>
+                                        <li><?php echo esc_html( $endpoint_text ); ?>&nbsp;&nbsp;<button data-open="edit-profile-modal"><i class="fi-pencil"></i></button></li>
+                                    </ul>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </div>
 
                         <?php $email_preference = isset( $dt_user_meta['email_preference'] ) ? $dt_user_meta['email_preference'][0] : null ?>
                         <p>

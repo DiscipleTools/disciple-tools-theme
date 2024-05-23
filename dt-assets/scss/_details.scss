@@ -177,9 +177,16 @@ DT comments and activity
     }
 
     .gravatar {
+        display: flex;
+        align-self: center;
         img {
             height: 16px;
         }
+    }
+    .activity-block .comment-header {
+        display: flex;
+        align-items: baseline;
+        grid-gap: 5px;
     }
 
     #add-comment-button {
@@ -200,6 +207,12 @@ DT comments and activity
         padding-bottom: 2px;
         .comment-text {
             min-height: 1em;
+        }
+        .comment-text ul li {
+            list-style: disc !important;
+        }
+        .comment-text ul br, .comment-text ol br {
+            display: none;
         }
     }
 
@@ -390,7 +403,6 @@ DT comments and activity
     }
 
     .comment-date {
-        text-align: right;
         margin-right: 20px;
         font-size:12px;
     }
@@ -722,6 +734,66 @@ select.color-select {
         height: 10px;
         width: 10px;
         vertical-align: baseline;
+    }
+    .control-buttons {
+        grid-gap: 0.3em;
+    }
+    .details-bar-picture {
+        vertical-align: middle;
+        cursor: pointer;
+    }
+    img.details-bar-picture {
+        min-width: 55px;
+        width: 55px;
+        height: 55px;
+        border-radius: 5px;
+        object-fit: cover;
+    }
+    i.details-bar-picture {
+        font-size: 55px;
+        height: 40px;
+        opacity: 0.3;
+        display: flex;
+    }
+    i.details-bar-picture::before {
+        align-self: center;
+    }
+}
+.is-stuck {
+    #second-bar-small {
+        img.details-bar-picture {
+            min-width: 40px;
+            width: 40px;
+            height: 40px;
+        }
+        i.details-bar-picture {
+            height: 40px;
+            font-size: 40px;
+        }
+        border-top: .5rem solid $primary-color;
+        .mobile-nav-actions {
+            display: none;
+        }
+        #record-tagline {
+            opacity:0;
+            height: 0;
+            display: none;
+        }
+    }
+    .hide-on-scroll {
+        display: none;
+    }
+}
+
+#second-bar-small{
+    border-top: none;
+    #record-tagline {
+        transition: all .3s;
+        opacity:1;
+    }
+    .mobile-nav-actions {
+        margin-bottom: 5px;
+        grid-gap: 5px;
     }
 }
 

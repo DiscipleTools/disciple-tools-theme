@@ -884,8 +884,13 @@ Thanks!';
                                         <th style="width:36px; background-image:none; cursor:default"></th>
                                         <?php
                                     }
+                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ):
+                                        if ( in_array( 'record_picture', $columns ) ) : ?>
+                                            <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
+                                        <?php endif; ?>
+                                    <?php endif;
                                     foreach ( $columns as $field_key ):
-                                        if ( ! in_array( $field_key, [ 'favorite' ] ) ):
+                                        if ( ! in_array( $field_key, [ 'favorite', 'record_picture' ] ) ):
                                             if ( isset( $post_settings['fields'][$field_key]['name'] ) ) : ?>
                                                 <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
                                                     <?php echo esc_html( $post_settings['fields'][ $field_key ]['name'] ) ?>

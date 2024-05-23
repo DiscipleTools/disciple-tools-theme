@@ -510,6 +510,38 @@ class Disciple_Tools_Posts_Endpoints {
                 ]
             ]
         );
+
+        //Storage Uploads
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_upload', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'storage_upload' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                    'id' => $arg_schemas['id']
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
+                    $params = $request->get_params();
+                    return DT_Posts::can_update( sanitize_text_field( wp_unslash( $params['post_type'] ) ), sanitize_text_field( wp_unslash( $params['id'] ) ) );
+                }
+            ]
+        );
+
+        //Storage Delete
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_delete', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'storage_delete' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                    'id' => $arg_schemas['id']
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
+                    $params = $request->get_params();
+                    return DT_Posts::can_update( sanitize_text_field( wp_unslash( $params['post_type'] ) ), sanitize_text_field( wp_unslash( $params['id'] ) ) );
+                }
+            ]
+        );
     }
 
     /**
@@ -805,5 +837,90 @@ class Disciple_Tools_Posts_Endpoints {
             'send_method' => $params['send_method'],
             'message' => $params['message']
         ] );
+    }
+
+    public function storage_upload( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['meta_key'], $_FILES['storage_upload_files'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        if ( !( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) ) {
+            return new WP_Error( __METHOD__, 'DT_Storage Unavailable.' );
+        }
+
+        $uploaded = false;
+        $uploaded_key = '';
+
+        $post_type = $params['post_type'];
+        $post_id = $params['id'];
+        $meta_key = $params['meta_key'];
+        $key_prefix = $params['key_prefix'] ?? '';
+        $files = dt_recursive_sanitize_array( $_FILES['storage_upload_files'] );
+
+        // Only process the first file within the uploaded array.
+        $uploaded_file = [
+            'name' => $files['name'][0],
+            'full_path' => $files['full_path'][0],
+            'type' => $files['type'][0],
+            'tmp_name' => $files['tmp_name'][0],
+            'error' => $files['error'][0],
+            'size' => $files['size'][0]
+        ];
+
+        // To avoid a build up of stale object storage keys, reuse existing keys.
+        $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+
+        // Push uploaded file to backend storage service.
+        $uploaded = DT_Storage::upload_file( $key_prefix, $uploaded_file, $meta_key_value );
+
+        // If successful, persist uploaded object file key.
+        if ( !empty( $uploaded ) ) {
+            if ( !empty( $uploaded['uploaded_key'] ) ) {
+                $uploaded_key = $uploaded['uploaded_key'];
+                update_post_meta( $post_id, $meta_key, $uploaded_key );
+                $uploaded = true;
+            }
+        }
+
+        return [
+            'uploaded' => $uploaded,
+            'uploaded_key' => $uploaded_key
+        ];
+    }
+
+    public function storage_delete( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['meta_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        if ( !( class_exists( 'DT_Storage' ) && method_exists( 'DT_Storage', 'delete_file' ) && DT_Storage::is_enabled() ) ) {
+            return new WP_Error( __METHOD__, 'DT_Storage Delete Function Unavailable.' );
+        }
+
+        $deleted = false;
+        $deleted_key = '';
+
+        $post_type = $params['post_type'];
+        $post_id = $params['id'];
+        $meta_key = $params['meta_key'];
+
+        // Fetch existing meta key value.
+        $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+
+        if ( !empty( $meta_key_value ) ) {
+            $result = DT_Storage::delete_file( $meta_key_value );
+            $deleted = $result['file_deleted'] ?? false;
+            $deleted_key = $result['file_key'] ?? '';
+        }
+
+        // Finally, delete corresponding meta data.
+        delete_post_meta( $post_id, $meta_key );
+
+        return [
+            'deleted' => $deleted,
+            'deleted_key' => $deleted_key
+        ];
     }
 }

@@ -768,6 +768,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         self::get_all_connected_fields_on_list( $post_settings['fields'], $records, $fields_to_return );
         $site_url = site_url();
+        $dt_storage_enabled = ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() );
         foreach ( $records as  &$record ){
 
             self::adjust_post_custom_fields( $post_type, $record['ID'], $record, $fields_to_return, $all_posts[ $record['ID'] ] ?? [], $all_post_user_meta[ $record['ID'] ] ?? [] );
@@ -1397,6 +1398,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         $user = wp_get_current_user();
         $user_id = $args['user_id'] ?? get_current_user_id();
 
+        // Adhere to db comment_type 20 char constraint.
+        if ( strlen( $type ) > 20 ) {
+            $type = substr( $type, 0, 20 );
+        }
+
         $created_comment_id = null;
         foreach ( $comments as $comment ){
             $comment_data = [
@@ -1528,15 +1534,15 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $response_body = [];
         foreach ( $comments as $comment ){
+            $url = '';
             if ( $comment->comment_author_url ){
                 $url = str_replace( '&amp;', '&', $comment->comment_author_url );
-            } else {
+            } else if ( !empty( $comment->user_id ) ){
                 $url = get_avatar_url( $comment->user_id, [ 'size' => '16', 'scheme' => 'https' ] );
             }
             $c = [
                 'comment_ID' => $comment->comment_ID,
                 'comment_author' => !empty( $display_name ) ? $display_name : wp_specialchars_decode( $comment->comment_author ),
-                'comment_author_email' => $comment->comment_author_email,
                 'comment_date' => $comment->comment_date,
                 'comment_date_gmt' => $comment->comment_date_gmt,
                 'gravatar' => preg_replace( '/^http:/i', 'https:', $url ),
@@ -2749,7 +2755,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $a_order <=> $b_order;
         });
         foreach ( $fields as $field_key => $field_value ){
-            if ( ( isset( $field_value['show_in_table'] ) && $field_value['show_in_table'] ) ){
+            if ( ( isset( $field_value['show_in_table'] ) && $field_value['show_in_table'] ) && empty( $field_value['hidden'] ) ){
                 $columns[] = $field_key;
             }
         }
