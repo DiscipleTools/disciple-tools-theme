@@ -16,9 +16,10 @@ class Disciple_Tools_Migration_0057 extends Disciple_Tools_Migration {
         $contact_preferences = get_option( 'dt_contact_preferences', [] );
         $hide_personal_contact_type = $contact_preferences['hide_personal_contact_type'] ?? false;
 
-        $post_type_custom_settings = $custom_settings['contacts'] ?? [];
-        $post_type_custom_settings['enable_private_contacts'] = !$hide_personal_contact_type;
-        $custom_settings['contacts'] = $post_type_custom_settings;
+        $custom_settings = get_option( 'dt_custom_post_types', [] );
+        $contact_settings = $custom_settings['contacts'] ?? [];
+        $contact_settings['enable_private_contacts'] = !$hide_personal_contact_type;
+        $custom_settings['contacts'] = $contact_settings;
         update_option( 'dt_custom_post_types', $custom_settings );
         delete_option( 'dt_contact_preferences' );
     }
