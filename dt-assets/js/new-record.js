@@ -1,6 +1,143 @@
+// Check if the web component services and ComponentService are available
+if (
+  window.WebComponentServices &&
+  window.WebComponentServices.ComponentService
+) {
+  // Create a new instance of ComponentService
+  const service = new window.WebComponentServices.ComponentService(
+    window.new_record_localized.post_type,
+    '',
+    // eslint-disable-next-line no-undef
+    wpApiShare.nonce,
+  );
+  // Initialize the ComponentService
+  service.initialize();
+  window.componentService = service;
+
+  // Create a new instance of apiService
+  const initApiService = new window.WebComponentServices.ApiService(
+    // eslint-disable-next-line no-undef
+    wpApiShare.nonce,
+  );
+
+  // Add an event listener to the form with the class 'js-create-post' when it's submitted
+  document
+    .querySelector('.js-create-post')
+    .addEventListener('submit', function (event) {
+      if (event) {
+        event.preventDefault();
+      }
+      const form = event.target;
+      // Initialize an object to store form data and element data
+      const formData = new FormData(form);
+      const data = {
+        form: {},
+        el: {
+          type: 'access',
+        },
+      };
+
+      formData.forEach((value, key) => (data.form[key] = value));
+      Array.from(form.elements).forEach((el) => {
+        if (
+          el.localName.startsWith('dt-') &&
+          el.value &&
+          String(el.value).trim() !== ''
+        ) {
+          // Check specific element types and handle accordingly
+          if (el.localName.startsWith('dt-comm')) {
+            // For 'dt-comm' elements, extract and store filtered values
+            const filteredValues = el.value.map((item) => {
+              return { value: item.value };
+            });
+            data.el[el.name] = filteredValues;
+          } else if (
+            el.localName.startsWith('dt-multi') ||
+            el.localName.startsWith('dt-tags')
+          ) {
+            // For 'dt-multi' or 'dt-tags' elements, extract and store filtered values
+            const filteredValues = el.value.map((item) => {
+              return { value: item };
+            });
+            data.el[el.name] = { values: filteredValues };
+          } else if (el.localName.startsWith('dt-connection')) {
+            // For 'dt-connection' elements, extract and store filtered values
+            const filteredValues = el.value.map((item) => {
+              return { value: item.label };
+            });
+            data.el[el.name] = { values: filteredValues };
+          } else {
+            // For other elements, simply store the value
+            data.el[el.name] = el.value;
+          }
+        }
+      });
+      // Call the createPost method of initApiService to create a post with the collected data
+      initApiService.createPost('contacts', data.el).then(function (response) {
+        window.location = response.permalink;
+      });
+    });
+
+  // Select all elements with class '.form-fields' and 'dt-comm-channel'
+  document
+    .querySelectorAll('.form-fields dt-comm-channel')
+    .forEach(function (element) {
+      element.addEventListener('change', function (event) {
+        let element_index = event.target.id;
+        let valueAttri = event.target.value;
+        valueAttri.forEach(function (item) {
+          let value = item.value;
+          // Call a function to check if the field value exists
+          check_field_value_exists(element_index, value);
+        });
+      });
+    });
+
+  // Function to capitalize the first letter of a given string
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  // eslint-disable-next-line no-inner-declarations
+  async function check_field_value_exists(field_type, value) {
+    const email = value;
+    let post_type = window.wpApiShare.post_type;
+    let data = {
+      communication_channel: field_type,
+      field_value: email,
+    };
+    await initApiService
+      .checkFieldValueExists(post_type, data)
+      .then((response) => {
+        return response;
+      })
+      .then((result) => {
+        if (!Object.keys(result).length) {
+          document
+            .querySelector(`.form-fields dt-comm-channel[id="${field_type}"]`)
+            .setAttribute('error', '');
+        } else {
+          document
+            .querySelector(`.form-fields dt-comm-channel[id="${field_type}"]`)
+            .setAttribute(
+              'error',
+              `${capitalizeFirstLetter(
+                field_type.split('_')[1],
+              )} already exists`,
+            );
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+}
+// Below JQuery code would gradually removed, when all the web-components are integrate abd tested.
+
 jQuery(function ($) {
   window.post_type_fields =
     window.new_record_localized.post_type_settings.fields;
+  // console.log('dededded',window.post_type_fields);
   let new_post = {};
   let temp_type = $('.type-options .selected').attr('id');
   if (temp_type) {
@@ -179,6 +316,14 @@ jQuery(function ($) {
   });
 
   let field_settings = window.new_record_localized.post_type_settings.fields;
+  $('.js-create-post').on('click', '.delete-button', function () {
+    var field_type = $(this).prev('input').data('field');
+    var element_index = $(this).data(`${field_type}-index`);
+    $(
+      `.communication-channel-error[data-${field_type}-index="${element_index}"]`,
+    ).remove();
+    $(this).parent().remove();
+  });
 
   function date_picker_init(is_bulk = false, bulk_id = 0) {
     // Determine field class name to be used.
@@ -797,8 +942,12 @@ jQuery(function ($) {
       let new_records_count = ++bulk_record_id_counter;
       let html = `<div class="form-fields-record form-fields-record-subsequent">
         <input type="hidden" id="bulk_record_id" value="${new_records_count}">
-        <div class="record-divider"><span>${generate_record_removal_button_html(new_records_count)}</span></div>
-        <span class="landscape-record-removal-button">${generate_record_removal_button_html(new_records_count)}</span>
+        <div class="record-divider"><span>${generate_record_removal_button_html(
+          new_records_count,
+        )}</span></div>
+        <span class="landscape-record-removal-button">${generate_record_removal_button_html(
+          new_records_count,
+        )}</span>
         ${fields_html}
       </div>`;
       let updated_records = $('#form_fields_records').append(html);
@@ -1685,7 +1834,9 @@ jQuery(function ($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_record_removal_but_img_uri)}"></button>`;
+    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.SHAREDFUNCTIONS.escapeHTML(
+      window.new_record_localized.bulk_record_removal_but_img_uri,
+    )}"></button>`;
     return button_html;
   }
 
@@ -1724,7 +1875,10 @@ jQuery(function ($) {
       );
       $(`input[data-field="${field_type}"]`).parent().after(`
         <div class="communication-channel-error" data-${field_type}-index="0" style="display: none;">
-          ${window.new_record_localized.translations.value_already_exists.replace('%s', field_name)}:
+          ${window.new_record_localized.translations.value_already_exists.replace(
+            '%s',
+            field_name,
+          )}:
           <span class="duplicate-ids" data-${field_type}-index="0" style="color: #3f729b;"></span>
           </div>`);
     }

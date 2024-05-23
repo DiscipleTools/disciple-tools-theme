@@ -36,3 +36,4 @@ class o{constructor(){this.settled=!1,this.promise=new Promise(((e,t)=>{this._re
  * SPDX-License-Identifier: BSD-3-Clause
  */
 let E=r,S=!1;export{s as L,L as c,E as m,e as s};
+//# sourceMappingURL=lit-localize-763e4978.js.map
