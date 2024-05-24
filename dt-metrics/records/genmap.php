@@ -323,10 +323,3 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     }
 }
 
-if ( isset( $genmap_base_slug, $genmap_base_title ) ) {
-    new DT_Metrics_Groups_Genmap( $genmap_base_slug, $genmap_base_title );
-
-} else {
-    new DT_Metrics_Groups_Genmap( 'records', __( 'Genmap', 'disciple_tools' ) );
-}
-

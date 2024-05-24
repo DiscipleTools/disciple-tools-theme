@@ -36,11 +36,10 @@ class Disciple_Tools_Metrics{
             add_action( 'after_setup_theme', function (){
                 $modules = dt_get_option( 'dt_post_type_modules' );
 
-                if ( dt_has_permissions( [ 'multiplier' ] ) ) {
-                    /* Record Types */
-                    $genmap_base_slug = 'personal';
-                    $genmap_base_title = __( 'Personal', 'disciple_tools' );
-                    require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+                require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+
+                if ( dt_has_permissions( [ 'multiplier' ] ) || dt_has_permissions( [ 'dt_all_access_contacts', 'view_project_metrics' ] ) ) {
+                    new DT_Metrics_Groups_Genmap( 'personal', __( 'Personal', 'disciple_tools' ) );
                 }
 
                 // Personal
@@ -84,7 +83,7 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
 
                     /* Record Types */
-                    require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+                    new DT_Metrics_Groups_Genmap( 'records', __( 'Genmap', 'disciple_tools' ) );
                     require_once( get_template_directory() . '/dt-metrics/records/dynamic-records-map.php' );
                 }
                 if ( !empty( $modules['access_module']['enabled'] ) ){
