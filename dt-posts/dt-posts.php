@@ -625,6 +625,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $p = [ [ 'ID' => $post_id ] ];
         self::get_all_connected_fields_on_list( $field_settings, $p );
         $fields = $p[0];
+
         $fields['ID'] = $post_id;
         $fields['post_date'] = [
             'timestamp' => is_numeric( $wp_post->post_date ) ? $wp_post->post_date : dt_format_date( $wp_post->post_date, 'U' ),

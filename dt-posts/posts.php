@@ -1598,6 +1598,13 @@ class Disciple_Tools_Posts
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
 
         foreach ( $fields as $field_key => $field ){
+            if ( in_array( $field_key, [ 'location_grid', 'location_grid_meta' ] ) ) {
+                $location_grid_key = 'location_grid';
+                $location_grid_meta_key = 'location_grid_meta';
+            } else {
+                $location_grid_key = null;
+                $location_grid_meta_key = $field_key;
+            }
 
             /********************************************************
              * Basic Locations
@@ -1658,9 +1665,14 @@ class Disciple_Tools_Posts
 
                 // delete everything
                 if ( isset( $field['force_values'] ) && $field['force_values'] == true ){
-                    delete_post_meta( $post_id, 'location_grid' );
-                    delete_post_meta( $post_id, 'location_grid_meta' );
-                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0 );
+                    if ( !empty( $location_grid_key ) ) {
+                        delete_post_meta( $post_id, $location_grid_key );
+                    }
+                    if ( !empty( $location_grid_meta_key ) ) {
+                        delete_post_meta( $post_id, $location_grid_meta_key );
+                    }
+
+                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0, null, $location_grid_meta_key );
                     $existing_post[ $field_key ] = [];
                 }
 
@@ -1669,7 +1681,7 @@ class Disciple_Tools_Posts
 
                     // delete
                     if ( isset( $value['delete'] ) && $value['delete'] == true ) {
-                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post );
+                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post, $location_grid_meta_key );
                     }
 
                     // Add by grid_id
@@ -1688,7 +1700,7 @@ class Disciple_Tools_Posts
                             $location_meta_grid['level'] = $grid['level_name'];
                             $location_meta_grid['label'] = $grid['name'];
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $location_grid_key, $location_grid_meta_key );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -1710,7 +1722,7 @@ class Disciple_Tools_Posts
                             $value['grid_id'] = $grid['grid_id'];
                             $value['post_type'] = $post_type;
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value, null, $location_grid_key, $location_grid_meta_key );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -1734,7 +1746,7 @@ class Disciple_Tools_Posts
                             $location_meta_grid['level'] = $grid['level_name'];
                             $location_meta_grid['label'] = $full_name;
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $location_grid_key, $location_grid_meta_key );
                             if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
                             }
@@ -2545,7 +2557,7 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location_meta' ) {
                     $fields[$key] = [];
                     foreach ( $value as $meta ) {
-                        $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta['value'] );
+                        $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta[ ( in_array( $key, [ 'location_grid_meta' ] ) ? 'value' : 'meta_id' ) ] );
                         if ( $location_grid_meta ) {
                             $fields[$key][] = $location_grid_meta;
                         }

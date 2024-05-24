@@ -603,10 +603,10 @@ jQuery(document).ready(function ($) {
       }
     });
 
-    let field_order = all_settings['post_type_tiles'][tile_key]['order'];
+    /*let field_order = all_settings['post_type_tiles'][tile_key]['order'];
     if (field_order) {
       fields = field_order;
-    }
+    }*/
 
     $.each(fields, function (field_index, field_key) {
       let field = all_settings.post_type_settings.fields[field_key];
@@ -1281,6 +1281,7 @@ jQuery(document).ready(function ($) {
                     <option value="connection">Connection</option>
                     <option value="user_select">User Select</option>
                     <option value="location">Location</option>
+                    <option value="location_meta">Locations or Address</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}
