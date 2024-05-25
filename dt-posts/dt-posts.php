@@ -1223,7 +1223,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //filter out users if requested.
         foreach ( $posts as $post ) {
-            if ( isset( $args['include-users'] ) && $args['include-users'] === 'false' && $post->corresponds_to_user >= 1 ){
+            if ( isset( $args['include-users'] ) && $args['include-users'] === 'false' && property_exists( $post, 'corresponds_to_user' ) && $post->corresponds_to_user >= 1 ){
                 continue;
             }
             $compact[] = [
