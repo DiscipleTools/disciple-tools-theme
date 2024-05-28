@@ -1223,7 +1223,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //filter out users if requested.
         foreach ( $posts as $post ) {
-            if ( isset( $args['include-users'] ) && $args['include-users'] === 'false' && $post->corresponds_to_user >= 1 ){
+            if ( isset( $args['include-users'] ) && $args['include-users'] === 'false' && property_exists( $post, 'corresponds_to_user' ) && $post->corresponds_to_user >= 1 ){
                 continue;
             }
             $compact[] = [
@@ -1397,6 +1397,11 @@ class DT_Posts extends Disciple_Tools_Posts {
         $comments = str_split( $comment_html, 4999 );
         $user = wp_get_current_user();
         $user_id = $args['user_id'] ?? get_current_user_id();
+
+        // Adhere to db comment_type 20 char constraint.
+        if ( strlen( $type ) > 20 ) {
+            $type = substr( $type, 0, 20 );
+        }
 
         $created_comment_id = null;
         foreach ( $comments as $comment ){

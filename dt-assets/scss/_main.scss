@@ -529,32 +529,7 @@ html[dir='rtl'] nav.second-bar .advanced_search {
     left: 1.15rem;
 }
 
-.is-stuck {
-    #second-bar-small {
-        border-top: .5rem solid $primary-color;
-        .mobile-nav-actions {
-            display: none;
-        }
-        #record-tagline {
-            opacity:0;
-            height: 0;
-        }
-    }
-    .hide-on-scroll {
-        display: none;
-    }
-}
 
-#second-bar-small{
-    border-top: none;
-    .grid-x {
-        margin-bottom: .3rem;
-    }
-    #record-tagline {
-        transition: all .3s;
-        opacity:1;
-    }
-}
 .off-canvas-list {
     ul {
         margin-left: 0;
