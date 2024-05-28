@@ -95,7 +95,7 @@ function dt_site_scripts() {
         return $tag;
     }
     dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
-    dt_theme_enqueue_script( 'web-components-services', 'dt-assets/build/components/services.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'web-components-services', 'dt-assets/build/components/services.min.js', array( 'jquery' ), false );
 
 
     // Comment reply script for threaded comments
