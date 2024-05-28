@@ -227,27 +227,66 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public function update_languages( WP_REST_REQUEST $request ) {
         $params = $request->get_params();
-        $saved_language_options = get_option( 'dt_working_languages', [] );
+        // $saved_language_options = get_option( 'dt_working_languages', [] );
 
-        function recursive_array_update( &$target, $source ) {
-            foreach ( $source as $key => $value ) {
-                if ( is_array( $value ) && isset( $target[$key] ) && is_array( $target[$key] ) ) {
-                    recursive_array_update( $target[$key], $value );
-                } elseif ( !isset( $target[$key] ) || $target[$key] !== $value ) {
-                    $target[$key] = $value;
+        // function recursive_array_update( &$target, $source ) {
+        //     foreach ( $source as $key => $value ) {
+        //         if ( is_array( $value ) && isset( $target[$key] ) && is_array( $target[$key] ) ) {
+        //             recursive_array_update( $target[$key], $value );
+        //         } elseif ( !isset( $target[$key] ) || $target[$key] !== $value ) {
+        //             $target[$key] = $value;
+        //         }
+        //     }
+        // }
+        // /**
+        //  * @todo:
+        //  * only save user provided customizations to the dt_working_languages options
+        //  * this includes labels, the iso code, the enabled status and translations
+        //  * does not include: the key, default labels etc
+        //  */
+
+        // recursive_array_update( $saved_language_options, $params );
+        // update_option( 'dt_working_languages', $saved_language_options, false );
+        // return true;
+        if ( !wp_verify_nonce( sanitize_key( $_POST['languages_box_nonce'] ), 'languages_box' ) ) {
+            self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
+            return;
+        }
+
+        $languages = dt_get_option( 'dt_working_languages' ) ?: [];
+        $dt_global_languages_list = dt_get_global_languages_list();
+
+        $langs = dt_get_available_languages();
+        foreach ( $languages as $language_key => $language_options ){
+
+            if ( isset( $_POST['language_label'][$language_key]['default'] ) ){
+                $label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key]['default'] ) );
+                if ( $language_options['label'] != $label ){
+                    $languages[$language_key]['label'] = $label;
+                }
+                if ( empty( $label ) && isset( $dt_global_languages_list[$language_key]['label'] ) ){
+                    $languages[$language_key]['label'] = $dt_global_languages_list[$language_key]['label'];
                 }
             }
+            if ( isset( $_POST['language_code'][$language_key] ) ){
+                $code = sanitize_text_field( wp_unslash( $_POST['language_code'][$language_key] ) );
+                if ( ( $language_options['iso_639-3'] ?? '' ) != $code ) {
+                    $languages[$language_key]['iso_639-3'] = $code;
+                }
+            }
+            foreach ( $langs as $lang => $val ){
+                $langcode = $val['language'];
+                if ( isset( $_POST['language_label'][$language_key][$langcode] ) ) {
+                    $translated_label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key][$langcode] ) );
+                    if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
+                        $languages[$language_key]['translations'][$langcode] = $translated_label;
+                    }
+                }
+            }
+            $languages[$language_key]['deleted'] = !isset( $_POST['language_enabled'][$language_key] );
         }
-        /**
-         * @todo:
-         * only save user provided customizations to the dt_working_languages options
-         * this includes labels, the iso code, the enabled status and translations
-         * does not include: the key, default labels etc
-         */
 
-        recursive_array_update( $saved_language_options, $params );
-        update_option( 'dt_working_languages', $saved_language_options, false );
-        return true;
+        update_option( 'dt_working_languages', $languages, false );
     }
 
     public static function get_post_fields() {

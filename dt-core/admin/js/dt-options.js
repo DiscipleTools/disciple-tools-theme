@@ -42,6 +42,7 @@ jQuery(document).ready(function ($) {
       success: function (response) {
         var languages = JSON.parse(response);
         console.log(languages, 'success line 40');
+        window.location.reload();
       },
       error: function (xhr, status, error) {
         console.log(error, 'error line 43');
@@ -72,16 +73,13 @@ jQuery(document).ready(function ($) {
       if (!tableLangs[lang]) {
         tableLangs[lang] = {
           label: '',
-          native_name: '',
-          flag: '',
-          rtl: false,
+          'iso_639-3': '',
           enabled: '',
-          // translations: "",
         };
       }
 
       tableLangs[lang]['label'] = label;
-      tableLangs[lang]['flag'] = iso_code;
+      tableLangs[lang]['iso_639-3'] = iso_code;
       tableLangs[lang]['enabled'] = enabled;
       // tableLangs[lang]["translations"] = extractedTranslations;
     });
@@ -100,6 +98,7 @@ jQuery(document).ready(function ($) {
       success: function (response) {
         var languages = JSON.parse(response);
         console.log(languages, 'success');
+        window.location.reload();
       },
       error: function (xhr, status, error) {
         console.log(error, 'error line 82');

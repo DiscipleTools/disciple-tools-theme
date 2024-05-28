@@ -628,7 +628,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat" id='language_table'>
                 <thead>
                 <tr>
-                    <td><?php esc_html_e( 'Key', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'ey', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Default Label', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Custom Label', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'ISO 639-3 code', 'disciple_tools' ) ?></td>
@@ -644,8 +644,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <tr class="language-row" data-lang="<?php echo esc_html( $language_key ) ?>">
                         <td class='lang_key'><?php echo esc_html( $language_key ) ?></td>
                         <td class='default_label'><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
-                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( $language_option['label'] ?? '' )?>"></td>
-                        <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option['flag'] ?? '' ) ?>"></td>
+                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
+                        <!-- <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( $language_option['label'] ?? '' )?>"></td> -->
+                        <!-- <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td> -->
+                        <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
+
                         <td class='enabled'>
                             <input name="language_enabled[<?php echo esc_html( $language_key ) ?>]"
                                    type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?> />
@@ -769,6 +772,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             };
             $languages[$lang_key] = $dt_global_languages_list[ $lang_key ];
             $languages[$lang_key]['enabled'] = true;
+            $languages[$lang_key]['iso_639-3'] = '';
         }
         if ( !empty( $_POST['create_custom_language'] ) ) {
             $language = sanitize_text_field( wp_unslash( $_POST['create_custom_language'] ) );
