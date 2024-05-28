@@ -14,7 +14,10 @@ jQuery(document).ready(function ($) {
     let spinner = ' <span class="loading-spinner active"></span> ';
 
     chart.empty().html(spinner);
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
+    jQuery('#metrics-sidemenu').foundation(
+      'down',
+      jQuery(`#${window.dtMetricsProject.base_slug}-menu`),
+    );
 
     let translations = window.dtMetricsProject.translations;
 
