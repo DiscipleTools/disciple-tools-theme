@@ -36,13 +36,9 @@ class Disciple_Tools_Metrics{
             add_action( 'after_setup_theme', function (){
                 $modules = dt_get_option( 'dt_post_type_modules' );
 
-                require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
-
-                if ( dt_has_permissions( [ 'multiplier' ] ) || dt_has_permissions( [ 'dt_all_access_contacts', 'view_project_metrics' ] ) ) {
-                    new DT_Metrics_Groups_Genmap( 'personal', __( 'Personal', 'disciple_tools' ) );
-                }
-
                 // Personal
+                require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+                new DT_Metrics_Groups_Genmap( 'personal', __( 'Personal', 'disciple_tools' ) );
                 require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
