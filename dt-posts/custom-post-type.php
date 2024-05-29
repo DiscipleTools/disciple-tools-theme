@@ -237,6 +237,34 @@ class Disciple_Tools_Post_Type_Template {
             'type' => 'array',
             'hidden' => true
         ];
+
+        // add location fields
+        $fields['location_grid'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
+            'type'        => 'location',
+            'mapbox'    => false,
+            'in_create_form' => true,
+            'tile' => 'details',
+            'icon' => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
+        ];
+        $fields['location_grid_meta'] = [
+            'name'        => __( 'Locations or Address', 'disciple_tools' ),
+            'type'        => 'location_meta',
+            'tile'      => 'details',
+            'mapbox'    => false,
+            'hidden' => true,
+            'in_create_form' => true,
+            'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+        ];
+
+        if ( DT_Mapbox_API::get_key() ) {
+            $fields['location_grid']['mapbox'] = true;
+            $fields['location_grid']['hidden'] = true;
+            $fields['location_grid_meta']['mapbox'] = true;
+            $fields['location_grid_meta']['hidden'] = false;
+        }
+
         return $fields;
     }
 
