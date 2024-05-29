@@ -241,7 +241,7 @@ class Disciple_Tools_Post_Type_Template {
         // add location fields
         $fields['location_grid'] = [
             'name'        => __( 'Locations', 'disciple_tools' ),
-            'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
+            'description' => _x( 'The general location where this record is located.', 'Optional Documentation', 'disciple_tools' ),
             'type'        => 'location',
             'mapbox'    => false,
             'in_create_form' => true,
