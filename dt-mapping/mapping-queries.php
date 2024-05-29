@@ -1320,7 +1320,7 @@ class Disciple_Tools_Mapping_Queries {
                   LEFT JOIN $wpdb->usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = %s )
                   WHERE lgm.post_type = %s
                   LIMIT %d, %d;
-              ", 'wp_corresponds_to_contact', 'users', $offset, $limit );
+              ", ( $wpdb->prefix . 'corresponds_to_contact' ), 'users', $offset, $limit );
 
         } else {
             $prepared_query = $wpdb->prepare( "

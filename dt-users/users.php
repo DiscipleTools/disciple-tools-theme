@@ -1164,10 +1164,13 @@ class Disciple_Tools_Users
     //======================================================================
 
     public static function get_user_location( $user_id = null ) {
+        $grid = [];
+
         if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
+        } elseif ( ! get_user_by( 'ID', $user_id ) ) {
+            return $grid;
         }
-        $grid = [];
 
         global $wpdb;
         if ( DT_Mapbox_API::get_key() ) {
