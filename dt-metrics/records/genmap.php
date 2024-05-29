@@ -24,7 +24,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         parent::__construct();
 
-        $this->title = __( 'Generation Map', 'disciple_tools' );
+        $this->title = __( 'Generational Trees', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -96,7 +96,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'map_key' => empty( DT_Mapbox_API::get_key() ) ? '' : DT_Mapbox_API::get_key(),
                 'data' => [],
                 'translations' => [
-                    'title' => __( 'Generation Map', 'disciple_tools' ),
+                    'title' => __( 'Generational Trees', 'disciple_tools' ),
                     'show_archived' => __( 'Show Archived', 'disciple_tools' ),
                     'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                     'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
