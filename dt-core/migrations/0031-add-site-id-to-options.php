@@ -2,7 +2,7 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * find and the missed seeker path activity and create records for them.
+ * create and save the site id
  *
  */
 class Disciple_Tools_Migration_0031 extends Disciple_Tools_Migration
