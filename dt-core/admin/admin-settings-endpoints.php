@@ -248,10 +248,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         // recursive_array_update( $saved_language_options, $params );
         // update_option( 'dt_working_languages', $saved_language_options, false );
         // return true;
-        if ( !wp_verify_nonce( sanitize_key( $_POST['languages_box_nonce'] ), 'languages_box' ) ) {
-            self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
-            return;
-        }
 
         $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
@@ -287,6 +283,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         }
 
         update_option( 'dt_working_languages', $languages, false );
+        return true;
     }
 
     public static function get_post_fields() {
