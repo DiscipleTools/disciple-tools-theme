@@ -375,6 +375,7 @@ function dt_site_scripts() {
             'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
+            'default_icon' => apply_filters( 'dt_record_icon', null, $post_type, null ),
         ) );
         if ( DT_Mapbox_API::get_key() ){
             DT_Mapbox_API::load_mapbox_search_widget();
