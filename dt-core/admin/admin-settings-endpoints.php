@@ -226,9 +226,15 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function update_languages( WP_REST_REQUEST $request ) {
+                /**
+         * @todo:
+         * only save user provided customizations to the dt_working_languages options
+         * this includes labels, the iso code, the enabled status and translations
+         * does not include: the key, default labels etc
+         */
         $params = $request->get_params();
+        $languages = dt_get_option( 'dt_working_languages' );
 
-        $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         if ( !wp_verify_nonce( sanitize_key( $_POST['languages_box_nonce'] ), 'languages_box' ) ) {
             self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
             return;
@@ -265,12 +271,13 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         $languages[$language_key]['translations'][$langcode] = $translated_label;
                     }
                 }
-                }
             }
-            $languages[$language_key]['deleted'] = !isset( $_POST['language_enabled'][$language_key] );
+        }
+            $languages[$language_key]['deleted'] = !isset( $params[$language_key]['deleted'] );
         }
 
         update_option( 'dt_working_languages', $languages, false );
+        return true;
     }
 
     public static function get_post_fields() {
