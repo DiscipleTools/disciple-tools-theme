@@ -162,6 +162,10 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
 
         $user = wp_get_current_user();
+        $user_contact_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+        if ( ( $post_type !== 'contacts' ) || ! intval( $user_contact_id ) ) {
+            $user_contact_id = 0;
+        }
 
         // Determine archived meta values.
         $status_key = $filters['status_key'] ?? '';
@@ -173,7 +177,10 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                       ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status,
                       ( SELECT EXISTS( SELECT p_shared.user_id FROM $wpdb->dt_share as p_shared WHERE p_shared.user_id = %d AND p_shared.post_id = a.ID ) ) as shared
                     FROM $wpdb->posts as a
+                    LEFT JOIN $wpdb->postmeta AS pm_assigned ON ( a.ID = pm_assigned.post_id AND pm_assigned.meta_key = 'assigned_to' )
+                    LEFT JOIN $wpdb->p2p AS p2p_subassigned ON ( a.ID = p2p_subassigned.p2p_to AND p2p_subassigned.p2p_type = 'contacts_to_subassigned' )
                     WHERE a.post_type = %s
+                    AND ( pm_assigned.meta_value = %s OR p2p_subassigned.p2p_from = %d )
                     AND a.ID %1s IN (
                       SELECT DISTINCT (p2p_from)
                       FROM $wpdb->p2p
@@ -195,7 +202,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                       ( SELECT EXISTS( SELECT u_shared.user_id FROM $wpdb->dt_share as u_shared WHERE u_shared.user_id = %d AND u_shared.post_id = p.%1s ) ) as shared
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = %s;
-                ", $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type ), ARRAY_A );
+                ", $status_key, $user->ID, $post_type, ( 'user-' . $user->ID ), $user_contact_id, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type ), ARRAY_A );
 
         return $query;
     }
