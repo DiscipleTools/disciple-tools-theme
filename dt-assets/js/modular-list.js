@@ -1046,7 +1046,7 @@
             values = ['&check;'];
           } else if (field_settings.type === 'image') {
             values = [
-              `<i class='mdi mdi-account-outline medium list-image'></i>`,
+              `<i class='${window.SHAREDFUNCTIONS.escapeHTML(list_settings.default_icon)} medium list-image'></i>`,
             ];
           }
         } else {

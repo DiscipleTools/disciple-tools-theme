@@ -1,5 +1,9 @@
 jQuery(document).ready(function ($) {
-  if (window.wpApiShare.url_path.startsWith('metrics/records/genmap')) {
+  if (
+    window.wpApiShare.url_path.startsWith(
+      `metrics/${window.dtMetricsProject.base_slug}/genmap`,
+    )
+  ) {
     project_records_genmap();
   }
 
@@ -10,24 +14,36 @@ jQuery(document).ready(function ($) {
     let spinner = ' <span class="loading-spinner active"></span> ';
 
     chart.empty().html(spinner);
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
+    jQuery('#metrics-sidemenu').foundation(
+      'down',
+      jQuery(`#${window.dtMetricsProject.base_slug}-menu`),
+    );
 
     let translations = window.dtMetricsProject.translations;
 
     chart.empty().html(`
           <div class="grid-x grid-padding-x">
-              <div class="cell medium-8">
+              <div class="cell medium-10">
                   <span>
                     <select id="select_post_types" style="width: 200px;"></select>
                   </span>
                   <span>
                     <select id="select_post_type_fields" style="width: 200px;"></select>
                   </span>
+                  <span style="display: inline-block; margin-right: 10px; margin-left: 10px;" class="show-closed-switch">
+                      ${window.lodash.escape(translations.show_archived)}
+                      <div class="switch tiny">
+                          <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
+                          <label class="switch-paddle" for="archivedToggle">
+                              <span class="show-for-sr">${window.lodash.escape(translations.show_archived)}</span>
+                          </label>
+                      </div>
+                  </span>
                   <span>
                     <i class="fi-loop" onclick="window.load_genmap()" style="font-size: 1.5em; padding:.5em;cursor:pointer;"></i>
                   </span>
               </div>
-              <div class="cell medium-4" >
+              <div class="cell medium-2" >
                 <h2 style="float:right;">${window.lodash.escape(translations.title)}</h2>
               </div>
           </div>
@@ -70,6 +86,7 @@ jQuery(document).ready(function ($) {
           .data('p2p_direction'),
         post_type: selected_post_type,
         gen_depth_limit: 100,
+        show_archived: jQuery('#archivedToggle').prop('checked'),
       };
 
       // Dynamically update URL parameters.
@@ -88,7 +105,11 @@ jQuery(document).ready(function ($) {
 
       // Fetch generational map chart.
       window
-        .makeRequest('POST', 'metrics/records/genmap', payload)
+        .makeRequest(
+          'POST',
+          `metrics/${window.dtMetricsProject.base_slug}/genmap`,
+          payload,
+        )
         .promise()
         .then((response) => {
           let container = jQuery('#genmap');
@@ -120,6 +141,72 @@ jQuery(document).ready(function ($) {
             nodeContent: 'content',
             direction: 'l2r',
             nodeTemplate: nodeTemplate,
+            initCompleted: function (chart) {
+              const post_types = window.dtMetricsProject.post_types;
+
+              /**
+               * Non-Shared Items
+               */
+
+              // Identify and obfuscate items not shared with current user.
+              const non_shared_items = identify_items_by_field_value(
+                response,
+                'shared',
+                0,
+                {},
+              );
+
+              // Obfuscate identified items.
+              if (non_shared_items) {
+                for (const [id, item] of Object.entries(non_shared_items)) {
+                  const node = $(chart).find(`#${id}.node`);
+                  if (node) {
+                    const color = '#808080';
+                    $(node).css('background-color', color);
+                    $(node).find('.title').text('.......');
+                    $(node).find('.title').css('background-color', color);
+                    $(node).find('.content').css('background-color', color);
+                    $(node).find('.content').css('border', '0px');
+
+                    $(node).data('shared', '0');
+                  }
+                }
+              }
+
+              /**
+               * Archived Items
+               */
+
+              // Identify archived items, in order to update corresponding node color.
+              if (
+                post_types &&
+                post_types[selected_post_type] &&
+                post_types[selected_post_type]?.status_field?.archived_key
+              ) {
+                const archived_items = identify_items_by_field_value(
+                  response,
+                  'status',
+                  post_types[selected_post_type]['status_field'][
+                    'archived_key'
+                  ],
+                  {},
+                );
+
+                // Tweak node colouring of identified items; which have been archived.
+                if (archived_items) {
+                  for (const [id, item] of Object.entries(archived_items)) {
+                    const node = $(chart).find(`#${id}.node`);
+                    if (node) {
+                      const color = '#808080';
+                      $(node).css('background-color', color);
+                      $(node).find('.title').css('background-color', color);
+                      $(node).find('.content').css('background-color', color);
+                      $(node).find('.content').css('border', '0px');
+                    }
+                  }
+                }
+              }
+            },
           });
 
           let container_height = window.innerHeight - 200; // because it is rotated
@@ -131,7 +218,13 @@ jQuery(document).ready(function ($) {
             let node_id = node.attr('id');
             let node_parent_id = node.data('parent');
 
-            open_modal_details(node_id, node_parent_id, selected_post_type);
+            // Ensure non-shared item nodes are ignored.
+            const node_shared = node.data('shared');
+            if (!node_shared || String(node_shared) !== '0') {
+              open_modal_details(node_id, node_parent_id, selected_post_type);
+            } else {
+              jQuery('#genmap-details').empty();
+            }
           });
         })
         .catch((error) => {
@@ -206,6 +299,29 @@ jQuery(document).ready(function ($) {
     jQuery(document).on('click', '#gen_tree_add_child_but', function (e) {
       handle_add_child();
     });
+
+    jQuery(document).on('click', '#archivedToggle', function (e) {
+      window.load_genmap();
+    });
+  }
+
+  function identify_items_by_field_value(data, field, value, items) {
+    if (String(data?.[field]) === String(value)) {
+      items[data['id']] = {
+        id: data['id'],
+        name: data['name'],
+        status: data['status'],
+        shared: data['shared'],
+      };
+    }
+
+    if (data?.['children']) {
+      data['children'].forEach(function (item) {
+        items = identify_items_by_field_value(item, field, value, items);
+      });
+    }
+
+    return items;
   }
 
   function identify_infinite_loops(data, loops) {
