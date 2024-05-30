@@ -617,7 +617,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      * UI for picking languages
      */
     private function languages_box(){
-
         $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
         uasort($dt_global_languages_list, function( $a, $b ) {
@@ -628,7 +627,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat" id='language_table'>
                 <thead>
                 <tr>
-                    <td><?php esc_html_e( 'ey', 'disciple_tools' ) ?></td>
+                    <td><?php esc_html_e( 'Key', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Default Label', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'Custom Label', 'disciple_tools' ) ?></td>
                     <td><?php esc_html_e( 'ISO 639-3 code', 'disciple_tools' ) ?></td>
@@ -644,9 +643,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <tr class="language-row" data-lang="<?php echo esc_html( $language_key ) ?>">
                         <td class='lang_key'><?php echo esc_html( $language_key ) ?></td>
                         <td class='default_label'><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
-                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
-                        <!-- <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( $language_option['label'] ?? '' )?>"></td> -->
-                        <!-- <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td> -->
+                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_option['label'] ?? '' )?>]" value="<?php echo esc_html( isset($languages[$language_key]) ? $language_option['label'] : '' )?>"></td>
                         <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
 
                         <td class='enabled'>
@@ -734,36 +731,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
 
-        $langs = dt_get_available_languages();
-        foreach ( $languages as $language_key => $language_options ){
-
-            if ( isset( $_POST['language_label'][$language_key]['default'] ) ){
-                $label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key]['default'] ) );
-                if ( $language_options['label'] != $label ){
-                    $languages[$language_key]['label'] = $label;
-                }
-                if ( empty( $label ) && isset( $dt_global_languages_list[$language_key]['label'] ) ){
-                    $languages[$language_key]['label'] = $dt_global_languages_list[$language_key]['label'];
-                }
-            }
-            if ( isset( $_POST['language_code'][$language_key] ) ){
-                $code = sanitize_text_field( wp_unslash( $_POST['language_code'][$language_key] ) );
-                if ( ( $language_options['iso_639-3'] ?? '' ) != $code ) {
-                    $languages[$language_key]['iso_639-3'] = $code;
-                }
-            }
-            foreach ( $langs as $lang => $val ){
-                $langcode = $val['language'];
-                if ( isset( $_POST['language_label'][$language_key][$langcode] ) ) {
-                    $translated_label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key][$langcode] ) );
-                    if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
-                        $languages[$language_key]['translations'][$langcode] = $translated_label;
-                    }
-                }
-            }
-            $languages[$language_key]['deleted'] = !isset( $_POST['language_enabled'][$language_key] );
-        }
-
         if ( !empty( $_POST['new_lang_select'] ) ) {
             $lang_key = sanitize_text_field( wp_unslash( $_POST['new_lang_select'] ) );
             $lang = isset( $dt_global_languages_list[ $lang_key ] ) ? $dt_global_languages_list[ $lang_key ] : null;
@@ -772,7 +739,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             };
             $languages[$lang_key] = $dt_global_languages_list[ $lang_key ];
             $languages[$lang_key]['enabled'] = true;
-            $languages[$lang_key]['iso_639-3'] = '';
+            $languages[$lang_key]['label'] = '';
         }
         if ( !empty( $_POST['create_custom_language'] ) ) {
             $language = sanitize_text_field( wp_unslash( $_POST['create_custom_language'] ) );
