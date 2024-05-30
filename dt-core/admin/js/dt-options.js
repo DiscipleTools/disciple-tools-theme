@@ -12,7 +12,6 @@ jQuery(document).ready(function ($) {
 
   // Handle label language translations on a language
   window.update_language_translations = function (source, value) {
-    console.log(source, 'line 17');
     let translations_list = {};
     $(
       `#language_table .language_label_translations[data-field="${value}"]`,
@@ -28,7 +27,6 @@ jQuery(document).ready(function ($) {
       translations_list[language].translations[translation_key] =
         $(element).val();
     });
-    console.log(translations_list, 'line 26');
 
     $.ajax({
       type: 'POST',
@@ -41,13 +39,13 @@ jQuery(document).ready(function ($) {
       },
       success: function (response) {
         var languages = JSON.parse(response);
-        console.log(languages, 'success line 40');
+        console.log(languages);
         window.location.reload();
       },
       error: function (xhr, status, error) {
-        console.log(error, 'error line 43');
-        console.log(status, 'status line 44');
-        console.error(xhr.responseText, 'responsetext line 45');
+        console.log(error);
+        console.log(status);
+        console.error(xhr.responseText);
       },
     });
   };
@@ -56,19 +54,11 @@ jQuery(document).ready(function ($) {
   $('#save_lang_button').click(function (e) {
     e.preventDefault();
     let tableLangs = {};
-
-    //option two, got through each row
     $('#language_table .language-row').each(function (index, element) {
-      // console.log(translations_list, "line 100");
-      // console.log(tableLangs, "line 74");
       const lang = $(element).data('lang');
-      // console.log(lang, "line 55");
       const label = $(element).find('.custom_label input').val();
-      // console.log(label, "line 57");
       const iso_code = $(element).find('.iso_code input').val();
-      // console.log(iso_code, "line 59");
       const enabled = $(element).find('.enabled input').prop('checked');
-      // console.log(enabled, "line 82");
 
       if (!tableLangs[lang]) {
         tableLangs[lang] = {
@@ -81,10 +71,8 @@ jQuery(document).ready(function ($) {
       tableLangs[lang]['label'] = label;
       tableLangs[lang]['iso_639-3'] = iso_code;
       tableLangs[lang]['enabled'] = enabled;
-      // tableLangs[lang]["translations"] = extractedTranslations;
     });
 
-    console.log(tableLangs, 'line 134');
 
     $.ajax({
       type: 'POST',
@@ -101,9 +89,9 @@ jQuery(document).ready(function ($) {
         window.location.reload();
       },
       error: function (xhr, status, error) {
-        console.log(error, 'error line 82');
-        console.log(status, 'status line 83');
-        console.error(xhr.responseText, 'responsetext line 84');
+        console.log(error);
+        console.log(status);
+        console.error(xhr.responseText);
       },
     });
   });
