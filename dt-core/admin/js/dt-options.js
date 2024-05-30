@@ -5,7 +5,107 @@ jQuery(document).ready(function ($) {
       $(this).siblings(),
       $(this).data('form_name'),
       $(this).data('source'),
+      $(this).data('value'),
+      $(this).data('callback'),
     );
+  });
+
+  // Handle label language translations on a language
+  window.update_language_translations = function (source, value) {
+    console.log(source, 'line 17');
+    let translations_list = {};
+    $(
+      `#language_table .language_label_translations[data-field="${value}"]`,
+    ).each(function (index, element) {
+      const language = $(element).data('field');
+      if (!translations_list[language]) {
+        translations_list[language] = {};
+      }
+      if (!translations_list[language].translations) {
+        translations_list[language].translations = {};
+      }
+      const translation_key = $(element).data('value');
+      translations_list[language].translations[translation_key] =
+        $(element).val();
+    });
+    console.log(translations_list, 'line 26');
+
+    $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(translations_list),
+      contentType: 'application/json; charset=utf-8',
+      url: `${window.dt_admin_scripts.rest_root}dt-admin-settings/languages/`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+      },
+      success: function (response) {
+        var languages = JSON.parse(response);
+        console.log(languages, 'success line 40');
+        window.location.reload();
+      },
+      error: function (xhr, status, error) {
+        console.log(error, 'error line 43');
+        console.log(status, 'status line 44');
+        console.error(xhr.responseText, 'responsetext line 45');
+      },
+    });
+  };
+
+  // Handle languages tables
+  $('#save_lang_button').click(function (e) {
+    e.preventDefault();
+    let tableLangs = {};
+
+    //option two, got through each row
+    $('#language_table .language-row').each(function (index, element) {
+      // console.log(translations_list, "line 100");
+      // console.log(tableLangs, "line 74");
+      const lang = $(element).data('lang');
+      // console.log(lang, "line 55");
+      const label = $(element).find('.custom_label input').val();
+      // console.log(label, "line 57");
+      const iso_code = $(element).find('.iso_code input').val();
+      // console.log(iso_code, "line 59");
+      const enabled = $(element).find('.enabled input').prop('checked');
+      // console.log(enabled, "line 82");
+
+      if (!tableLangs[lang]) {
+        tableLangs[lang] = {
+          label: '',
+          'iso_639-3': '',
+          enabled: '',
+        };
+      }
+
+      tableLangs[lang]['label'] = label;
+      tableLangs[lang]['iso_639-3'] = iso_code;
+      tableLangs[lang]['enabled'] = enabled;
+      // tableLangs[lang]["translations"] = extractedTranslations;
+    });
+
+    console.log(tableLangs, 'line 134');
+
+    $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(tableLangs),
+      contentType: 'application/json; charset=utf-8',
+      url: `${window.dt_admin_scripts.rest_root}dt-admin-settings/languages/`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+      },
+      success: function (response) {
+        var languages = JSON.parse(response);
+        console.log(languages, 'success');
+        window.location.reload();
+      },
+      error: function (xhr, status, error) {
+        console.log(error, 'error line 82');
+        console.log(status, 'status line 83');
+        console.error(xhr.responseText, 'responsetext line 84');
+      },
+    });
   });
 
   $('.change-icon-button').click(function (e) {
@@ -194,9 +294,15 @@ jQuery(document).ready(function ($) {
    * Translation modal dialog
    */
 
-  function display_translation_dialog(container, form_name, source = '') {
+  function display_translation_dialog(
+    container,
+    form_name,
+    source = '',
+    value = '',
+    callback = '',
+  ) {
     let dialog = $('#dt_translation_dialog');
-    if (container && form_name && dialog) {
+    if (container && dialog) {
       // Update dialog div
       $(dialog)
         .empty()
@@ -227,7 +333,9 @@ jQuery(document).ready(function ($) {
                 $('.dt-custom-fields-save-button')[0],
                 true,
               );
-            } else {
+            } else if (callback) {
+              window[callback](source, value);
+            } else if (form_name) {
               $('form[name="' + form_name + '"]').submit();
             }
           },
@@ -236,10 +344,6 @@ jQuery(document).ready(function ($) {
 
       // Display updated dialog
       dialog.dialog('open');
-    } else {
-      console.log(
-        'Unable to reference a valid: [container, form-name, dialog]',
-      );
     }
   }
 
