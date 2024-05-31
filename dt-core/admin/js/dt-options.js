@@ -37,9 +37,8 @@ jQuery(document).ready(function ($) {
       beforeSend: (xhr) => {
         xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
       },
-      success: function (response) {
-        var languages = JSON.parse(response);
-        console.log(languages);
+      success: function () {
+        window.location.reload();
       },
       error: function (xhr, status, error) {
         console.log(error);
@@ -81,9 +80,8 @@ jQuery(document).ready(function ($) {
       beforeSend: (xhr) => {
         xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
       },
-      success: function (response) {
-        var languages = JSON.parse(response);
-        console.log(languages, 'success');
+      success: function () {
+        window.location.reload();
       },
       error: function (xhr, status, error) {
         console.log(error);
