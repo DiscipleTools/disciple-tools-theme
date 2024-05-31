@@ -643,7 +643,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <tr class="language-row" data-lang="<?php echo esc_html( $language_key ) ?>">
                         <td class='lang_key'><?php echo esc_html( $language_key ) ?></td>
                         <td class='default_label'><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
-                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_option['label'] ?? '' )?>]" value="<?php echo esc_html( isset($languages[$language_key]) ? $language_option['label'] : '' )?>"></td>
+                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_option['label'] ?? '' )?>]" value="<?php echo esc_html( isset( $languages[$language_key] ) ? $language_option['label'] : '' )?>"></td>
                         <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
 
                         <td class='enabled'>
