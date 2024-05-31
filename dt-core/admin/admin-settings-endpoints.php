@@ -226,12 +226,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function update_languages( WP_REST_REQUEST $request ) {
-                /**
-         * @todo:
-         * only save user provided customizations to the dt_working_languages options
-         * this includes labels, the iso code, the enabled status and translations
-         * does not include: the key, default labels etc
-         */
         $params = $request->get_params();
         $languages = dt_get_option( 'dt_working_languages' );
 
@@ -253,13 +247,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             if ( isset( $params[$language_key]['enabled'] ) ){
                 $enabled = sanitize_text_field( wp_unslash( $params[$language_key]['enabled'] ) );
                 if ( ( $language_options['enabled'] ?? '' ) != $enabled ) {
-                    $languages[$language_key]['enabled'] = $enabled;
+                    $languages[$language_key]['enabled'] = !empty( $enabled );
                 }
             }
             if ( isset( $params[$language_key]['translations'] ) ) {
                 foreach ( $langs as $lang => $val ){
                     $langcode = $val['language'];
-                    $translations = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
                     if ( isset( $params[$language_key]['translations'][$langcode] ) ) {
                         $translated_label = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
                         if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
@@ -268,7 +261,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     }
                 }
             }
-            $languages[$language_key]['deleted'] = !isset( $params[$language_key]['deleted'] );
+            $languages[$language_key]['deleted'] = empty( $params[$language_key]['enabled'] );
         }
 
         update_option( 'dt_working_languages', $languages, false );
