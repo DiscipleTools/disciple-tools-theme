@@ -235,17 +235,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $params = $request->get_params();
         $languages = dt_get_option( 'dt_working_languages' );
 
-        if ( !wp_verify_nonce( sanitize_key( $_POST['languages_box_nonce'] ), 'languages_box' ) ) {
-            self::admin_notice( __( 'Something went wrong', 'disciple_tools' ), 'error' );
-            return;
-        }
-
         $langs = dt_get_available_languages();
         foreach ( $languages as $language_key => $language_options ){
 
             if ( isset( $params[$language_key]['label'] ) ){
                 $label = sanitize_text_field( wp_unslash( $params[$language_key]['label'] ) );
-                if ( ($language_options['label'] ?? '' ) != $label ){
+                if ( ( $language_options['label'] ?? '' ) != $label ){
                     $languages[$language_key]['label'] = $label;
                 }
             }
@@ -261,18 +256,18 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     $languages[$language_key]['enabled'] = $enabled;
                 }
             }
-            if ( isset ($params[$language_key]['translations'])) {
-            foreach ( $langs as $lang => $val ){
-                $langcode = $val['language'];
-                $translations = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
-                if ( isset( $params[$language_key]['translations'][$langcode] ) ) {
-                    $translated_label = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
-                    if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
-                        $languages[$language_key]['translations'][$langcode] = $translated_label;
+            if ( isset( $params[$language_key]['translations']) ) {
+                foreach ( $langs as $lang => $val ){
+                    $langcode = $val['language'];
+                    $translations = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
+                    if ( isset( $params[$language_key]['translations'][$langcode] ) ) {
+                        $translated_label = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
+                        if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
+                            $languages[$language_key]['translations'][$langcode] = $translated_label;
+                        }
                     }
                 }
             }
-        }
             $languages[$language_key]['deleted'] = !isset( $params[$language_key]['deleted'] );
         }
 
