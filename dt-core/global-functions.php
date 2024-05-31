@@ -115,6 +115,7 @@ if (!defined('DT_FUNCTIONS_READY')) {
                 }
 
                 // Convert URLs to links.
+
                 if (apply_filters('dt_email_template_convert_urls', true)) {
                     $message = make_clickable($message);
                 }
