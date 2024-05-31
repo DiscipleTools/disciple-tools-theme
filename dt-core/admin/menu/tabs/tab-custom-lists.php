@@ -638,7 +638,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php foreach ( $languages as $language_key => $language_option ) :
 
-                    $enabled = !isset( $language_option['enabled'] ) || $language_option['enabled'] == true; ?>
+                    $enabled = !isset( $language_option['deleted'] ) || $language_option['deleted'] == false; ?>
                     
                     <tr class="language-row" data-lang="<?php echo esc_html( $language_key ) ?>">
                         <td class='lang_key'><?php echo esc_html( $language_key ) ?></td>
