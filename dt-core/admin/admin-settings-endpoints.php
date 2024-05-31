@@ -256,7 +256,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     $languages[$language_key]['enabled'] = $enabled;
                 }
             }
-            if ( isset( $params[$language_key]['translations']) ) {
+            if ( isset( $params[$language_key]['translations'] ) ) {
                 foreach ( $langs as $lang => $val ){
                     $langcode = $val['language'];
                     $translations = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
