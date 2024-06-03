@@ -1317,10 +1317,11 @@ class Disciple_Tools_Mapping_Queries {
                 SELECT u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
-                  LEFT JOIN wp_usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = 'wp_corresponds_to_contact' )
+                  LEFT JOIN $wpdb->usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = %s )
+                  INNER JOIN $wpdb->usermeta AS um_cap ON ( u.ID = um_cap.user_id AND um_cap.meta_key = %s )
                   WHERE lgm.post_type = %s
                   LIMIT %d, %d;
-              ", 'users', $offset, $limit );
+              ", ( $wpdb->prefix . 'corresponds_to_contact' ), ( $wpdb->prefix . 'capabilities' ), 'users', $offset, $limit );
 
         } else {
             $prepared_query = $wpdb->prepare( "
