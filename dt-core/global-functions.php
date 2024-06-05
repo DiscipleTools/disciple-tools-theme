@@ -1066,6 +1066,17 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
         }
     }
 
+    if ( ! function_exists( 'dt_site_id' ) ) {
+        function dt_site_id() {
+            $site_id = get_option( 'dt_site_id' );
+            if ( empty( $site_id ) ) {
+                $site_id = hash( 'SHA256', site_url() . time() );
+                add_option( 'dt_site_id', $site_id );
+            }
+            return $site_id;
+        }
+    }
+
     /**
      * Convert a slug like 'name_or_title' to a label like 'Name or Title'
      */
