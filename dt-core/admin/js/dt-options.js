@@ -960,7 +960,8 @@ jQuery(document).ready(function ($) {
           $(tr)
             .find("input[id^='" + option_key_prefix + "']")
             .each(function (okt_idx, okt_input) {
-              let locale = window.lodash.split($(okt_input).attr('id'), '-')[1];
+              // expected format: field_option_{option_value}_translation-{locale}
+              let locale = okt_input.id.replace(option_key_prefix, '');
               let value = $(okt_input).val();
               if (locale && value) {
                 translations['option_translations'].push({
