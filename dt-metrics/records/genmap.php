@@ -71,7 +71,10 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         ];
         $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
 
-        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0, $filters );
+        return [
+            'data_layers' => $this->package_data_layer_post_fields( $query, $post_type, $post_settings, $params['data_layers'] ?? [] ),
+            'genmap' => $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0, $filters )
+        ];
     }
 
     public function scripts() {
@@ -98,6 +101,13 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'translations' => [
                     'title' => __( 'Generational Trees', 'disciple_tools' ),
                     'show_archived' => __( 'Show Archived', 'disciple_tools' ),
+                    'show_data_layer' => __( 'Show Data Layer Settings', 'disciple_tools' ),
+                    'hide_data_layer' => __( 'Hide Data Layer Settings', 'disciple_tools' ),
+                    'data_layer_settings_color_label' => __( 'Node Color', 'disciple_tools' ),
+                    'data_layer_settings_color_default_label' => __( 'Default', 'disciple_tools' ),
+                    'add_data_layer' => __( 'Add Data Layer', 'disciple_tools' ),
+                    'del_data_layer' => __( 'Remove', 'disciple_tools' ),
+                    'select_data_layer_field' => __( 'select data layer field to capture', 'disciple_tools' ),
                     'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                     'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
                     'members' => __( 'Members', 'disciple_tools' ),
@@ -131,7 +141,14 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                         'title' => __( 'Infinite Loops', 'disciple_tools' )
                     ]
                 ],
-                'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? []
+                'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? [],
+                'data_layer_supported_field_types' => [
+                    'date',
+                    'key_select',
+                    'multi_select',
+                    'tags'
+                ],
+                'data_layers' => []
             ]
         );
 
@@ -320,6 +337,67 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
 
         return $updated_children;
+    }
+
+    public function package_data_layer_post_fields( $query, $post_type, $post_settings, $data_layer_settings ): array {
+        global $wpdb;
+
+        if ( !isset( $data_layer_settings['color'], $data_layer_settings['layers'] ) || empty( $data_layer_settings['layers'] ) ) {
+            return [];
+        }
+
+        $packaged_data_layer_post_fields = [];
+        $post_field_settings = $post_settings['fields'] ?? [];
+
+        // Capture all query post ids; which shall be interrogated further.
+        $post_ids = [];
+        foreach ( $query as $post ) {
+            if ( !empty( $post['id'] ) ) {
+                $post_ids[] = $post['id'];
+            }
+        }
+
+        if ( !empty( $post_ids ) ) {
+
+            // Next, package post meta fields to be captured.
+            $data_layer_fields = array_merge( $data_layer_settings['layers'], ( ( $data_layer_settings['color'] !== 'default-node-color' ) ? [ $data_layer_settings['color'] ] : [] ) );
+
+            // Construct sql to fetch identified post data layer fields.
+            $post_ids_array_sql = dt_array_to_sql( $post_ids, true );
+            $data_layer_fields_array_sql = dt_array_to_sql( $data_layer_fields );
+
+            $query = $wpdb->get_results( $wpdb->prepare( "
+                SELECT post_id, meta_key, meta_value
+                FROM $wpdb->postmeta
+                WHERE post_id IN ($post_ids_array_sql) AND meta_key IN ($data_layer_fields_array_sql)
+            " ), ARRAY_A );
+
+            // Package data layer post fields.
+            foreach ( $query as $postmeta ) {
+                $post_id = $postmeta['post_id'];
+                $meta_key = $postmeta['meta_key'];
+                $meta_value = $postmeta['meta_value'];
+
+                if ( !isset( $post_field_settings[ $meta_key ] ) ) {
+                    continue;
+                }
+
+                if ( !isset( $packaged_data_layer_post_fields[ $post_id ] ) ) {
+                    $packaged_data_layer_post_fields[ $post_id ] = [];
+                }
+
+                if ( !isset( $packaged_data_layer_post_fields[ $post_id ][ $meta_key ] ) ) {
+                    $packaged_data_layer_post_fields[ $post_id ][ $meta_key ] = [];
+                }
+
+                $packaged_data_layer_post_fields[ $post_id ][ $meta_key ][] = [
+                    'label' => $post_field_settings[ $meta_key ]['name'],
+                    'value' => $meta_value
+                ];
+            }
+        }
+
+        return $packaged_data_layer_post_fields;
     }
 }
 
