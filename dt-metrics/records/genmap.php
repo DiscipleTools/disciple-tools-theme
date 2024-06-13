@@ -366,11 +366,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             $post_ids_array_sql = dt_array_to_sql( $post_ids, true );
             $data_layer_fields_array_sql = dt_array_to_sql( $data_layer_fields );
 
-            $query = $wpdb->get_results( $wpdb->prepare( "
+            $query = $wpdb->get_results( "
                 SELECT post_id, meta_key, meta_value
                 FROM $wpdb->postmeta
                 WHERE post_id IN ($post_ids_array_sql) AND meta_key IN ($data_layer_fields_array_sql)
-            " ), ARRAY_A );
+            ", ARRAY_A );
 
             // Package data layer post fields.
             foreach ( $query as $postmeta ) {
