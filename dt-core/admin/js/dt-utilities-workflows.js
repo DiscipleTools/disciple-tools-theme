@@ -1060,6 +1060,14 @@ jQuery(function ($) {
           },
         );
         break;
+      case 'comments':
+        actions.push(
+          {
+            id: 'append',
+            name: 'Add Comment',
+          }
+        );
+        break;
     }
 
     // Append custom option if any custom actions are detected
@@ -1580,6 +1588,8 @@ jQuery(function ($) {
         return generate_event_value_connections(base_url, field);
       case 'user_select':
         return generate_event_value_user_select(base_url);
+      case 'comments':
+        return generate_event_value_textareafield();
       case 'array':
       case 'task':
       case 'post_user_meta':
@@ -1597,6 +1607,15 @@ jQuery(function ($) {
     response['id'] = Date.now();
     response['html'] =
       `<input type="text" placeholder="Enter a value..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
+
+    return response;
+  }
+
+  function generate_event_value_textareafield() {
+    let response = {};
+    response['id'] = Date.now();
+    response['html'] =
+      `<textarea placeholder="Enter text..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
 
     return response;
   }

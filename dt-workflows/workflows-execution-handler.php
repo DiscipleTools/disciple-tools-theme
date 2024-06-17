@@ -489,9 +489,8 @@ class Disciple_Tools_Workflows_Execution_Handler {
     private static function process_action( $field_id, $action, $value, $post, $post_type_settings ) {
         if ( ! empty( $field_id ) && ! empty( $action ) && ! empty( $value ) ) {
 
-            if ( isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {
+            if ( isset( $post_type_settings['fields'][ $field_id ]['type'] )) {
                 $field_type = $post_type_settings['fields'][ $field_id ]['type'];
-
                 $updated_fields = [];
                 switch ( $action ) {
                     case 'update':
@@ -575,6 +574,10 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     ];
                 }
                 break;
+            case 'comments':
+                $updated['notes'] = [
+                    $value,
+                ];
         }
 
         return $updated;

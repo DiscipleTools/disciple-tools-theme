@@ -27,6 +27,11 @@ function process_trigger( $trigger_id, $post, $initial_fields ) {
 
             // Fetch post type settings
             $post_type_settings = DT_Posts::get_post_settings( $post['post_type'] );
+            $post_type_settings['fields'][ 'comments' ] = [
+                'id' => 'comments',
+                'name' => 'Comments',
+                'type' => 'comments',
+            ];
 
             // Iterate over returned workflows; evaluating and executing accordingly
             foreach ( $workflows as $workflow ) {
