@@ -464,6 +464,16 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         $current_state = self::condition_contains( $field_type, $field, $action->value );
                         break;
                 }
+            } else if ( $action->field_id === 'comments' ) {
+                $post_comments = DT_Posts::get_post_comments($post['post_type'], $post['ID'], false);
+                //$current_state = in_array($action->value, $comments, false);
+                //$comment->comment_content;
+                foreach ( $post_comments['comments'] as $comment ) {
+                    if ( $comment['comment_content'] ==  $action->value) {
+                        $current_state = true;
+                        break;
+                    }
+                }
             }
 
             // Determine if field has already been worked on based on the current action to be carried out!
@@ -489,7 +499,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
     private static function process_action( $field_id, $action, $value, $post, $post_type_settings ) {
         if ( ! empty( $field_id ) && ! empty( $action ) && ! empty( $value ) ) {
 
-            if ( isset( $post_type_settings['fields'][ $field_id ]['type'] )) {
+            if ( isset( $post_type_settings['fields'][ $field_id ]['type'] )) {// || $field_id == 'comments'
                 $field_type = $post_type_settings['fields'][ $field_id ]['type'];
                 $updated_fields = [];
                 switch ( $action ) {
