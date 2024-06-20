@@ -668,7 +668,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 <?php endif; ?>
                 <!-- location add -->
                 <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
-                    <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
+                    <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button new-mapbox-search" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 <?php endif ?>
@@ -709,7 +709,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         }
                         $selected = isset( $post[$field_key]['key'] ) && $post[$field_key]['key'] === strval( $option_key ); ?>
                         <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? 'selected' : '' )?>>
-                            <?php echo esc_html( $option_value['label'] ) ?>
+                            <?php echo esc_html( $option_value['label'] ?? '' ) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -898,30 +898,16 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 </div>
-            <?php elseif ( $field_type === 'location_meta' ) : ?>
-                <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
-                    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
-                        <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
-                        <div class="input-group-button">
-                            <button id="mapbox-spinner-button" class="button hollow" style="display:none;" <?php echo esc_html( $disabled ); ?>><span class="loading-spinner active"></span></button>
-                            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button" <?php echo esc_html( $disabled ); ?>>&times;</button>
-                        </div>
-                        <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
-                    </div>
-                    <script>
-                        jQuery(document).ready(function(){
-                            window.write_input_widget()
-                        })
-                    </script>
-                <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
-                    <div id="mapbox-wrapper"></div>
-                <?php endif; ?>
             <?php elseif ( $field_type === 'location' ) :?>
-                <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
-                    <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
-                    <div id="<?php echo esc_html( $field_key ); ?>_t" name="form-<?php echo esc_html( $field_key ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
+                <?php
+                switch ( $fields[$field_key]['mode'] ?? 'normal' ) {
+                    case 'normal':
+                        ?>
+                        <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
+                            <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
+                            <div id="<?php echo esc_html( $field_key ); ?>_t" name="form-<?php echo esc_html( $field_key ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
                                            data-field="<?php echo esc_html( $field_key ); ?>"
@@ -930,10 +916,35 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                                            placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
                                            autocomplete="off" <?php echo esc_html( $disabled ); ?>/>
                                 </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <?php
+                        break;
+                    case 'geolocation':
+                        ?>
+                        <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
+                        <div id="<?php echo esc_html( $field_key ); ?>_mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
+                            <input id="<?php echo esc_html( $field_key ); ?>_mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
+                            <div class="input-group-button">
+                                <button id="<?php echo esc_html( $field_key ); ?>_mapbox-spinner-button" class="button hollow" style="display:none;" <?php echo esc_html( $disabled ); ?>><span class="loading-spinner active"></span></button>
+                                <button id="<?php echo esc_html( $field_key ); ?>_mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button" <?php echo esc_html( $disabled ); ?>>&times;</button>
+                            </div>
+                            <div id="<?php echo esc_html( $field_key ); ?>_mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+                        </div>
+                        <script>
+                            jQuery(document).ready(function(){
+                                window.write_input_widget()
+                            })
+                        </script>
+                        <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
+                            <div id="<?php echo esc_html( $field_key ); ?>_mapbox-wrapper"></div>
+                        <?php endif; ?>
+                        <?php
+                        break;
+                }
+                ?>
             <?php elseif ( $field_type === 'communication_channel' ) : ?>
                 <div id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>

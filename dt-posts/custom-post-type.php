@@ -247,22 +247,13 @@ class Disciple_Tools_Post_Type_Template {
             'in_create_form' => true,
             'tile' => 'details',
             'icon' => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
-        ];
-        $fields['location_grid_meta'] = [
-            'name'        => __( 'Locations or Address', 'disciple_tools' ),
-            'type'        => 'location_meta',
-            'tile'      => 'details',
-            'mapbox'    => false,
-            'hidden' => true,
-            'in_create_form' => true,
-            'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+            'mode' => 'normal'
         ];
 
         if ( DT_Mapbox_API::get_key() ) {
+            $fields['location_grid']['mode'] = 'geolocation';
             $fields['location_grid']['mapbox'] = true;
-            $fields['location_grid']['hidden'] = true;
-            $fields['location_grid_meta']['mapbox'] = true;
-            $fields['location_grid_meta']['hidden'] = false;
+            $fields['location_grid']['hidden'] = false;
         }
 
         return $fields;
