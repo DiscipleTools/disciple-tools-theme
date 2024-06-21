@@ -113,6 +113,7 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
                 }
 
                 // Convert URLs to links.
+
                 if ( apply_filters( 'dt_email_template_convert_urls', true ) ) {
                     $message = make_clickable( $message );
                 }
@@ -653,7 +654,7 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
                     onchange="">
                 </dt-comm-channel>
             <?php endif; ?>
-            <?php if ( $field_type === 'location' ): ?>
+            <?php if ( $field_type === 'location_meta' ): ?>
                 <dt-location <?php echo wp_kses_post( $shared_attributes ) ?>                 <?php dt_render_icon_slot( $fields[$field_key] ) ?>
                     value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" requiredmessage=""
                     icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" iconalttext="Icon Alt Text" privatelabel="" error=""
@@ -694,10 +695,7 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
                     </dt-single-select>
             <?php elseif ( $field_type === 'tags' ): ?>
                 <?php $value = array_map(function ( $value ) {
-                    return [
-                        'id' => $value,
-                        'label' => $value,
-                    ];
+                    return $value;
                 }, $post[$field_key] ?? []);
                 ?>
                     <dt-tags <?php echo wp_kses_post( $shared_attributes ) ?> value="<?php echo esc_attr( json_encode( $value ) ) ?>"
