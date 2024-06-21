@@ -12,8 +12,6 @@
  * @author     Disciple.Tools
  */
 
-
-
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }

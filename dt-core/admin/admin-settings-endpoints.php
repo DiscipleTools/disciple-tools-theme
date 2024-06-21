@@ -223,6 +223,57 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/languages', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_languages' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+    }
+
+    public function update_languages( WP_REST_REQUEST $request ) {
+        $params = $request->get_params();
+        $languages = dt_get_option( 'dt_working_languages' );
+
+        $langs = dt_get_available_languages();
+        foreach ( $languages as $language_key => $language_options ){
+
+            if ( isset( $params[$language_key]['label'] ) ){
+                $label = sanitize_text_field( wp_unslash( $params[$language_key]['label'] ) );
+                if ( ( $language_options['label'] ?? '' ) != $label ){
+                    $languages[$language_key]['label'] = $label;
+                }
+            }
+            if ( isset( $params[$language_key]['iso_639-3'] ) ){
+                $code = sanitize_text_field( wp_unslash( $params[$language_key]['iso_639-3'] ) );
+                if ( ( $language_options['iso_639-3'] ?? '' ) != $code ) {
+                    $languages[$language_key]['iso_639-3'] = $code;
+                }
+            }
+            if ( isset( $params[$language_key]['enabled'] ) ){
+                $enabled = sanitize_text_field( wp_unslash( $params[$language_key]['enabled'] ) );
+                if ( ( $language_options['enabled'] ?? '' ) != $enabled ) {
+                    $languages[$language_key]['enabled'] = !empty( $enabled );
+                }
+            }
+            if ( isset( $params[$language_key]['translations'] ) ) {
+                foreach ( $langs as $lang => $val ){
+                    $langcode = $val['language'];
+                    if ( isset( $params[$language_key]['translations'][$langcode] ) ) {
+                        $translated_label = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
+                        if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
+                            $languages[$language_key]['translations'][$langcode] = $translated_label;
+                        }
+                    }
+                }
+            }
+            $languages[$language_key]['deleted'] = empty( $params[$language_key]['enabled'] );
+        }
+
+        update_option( 'dt_working_languages', $languages, false );
+        return true;
     }
 
     public static function get_post_fields() {
