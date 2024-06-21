@@ -100,25 +100,6 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( isset( $fields['type']['default']['personal'] ) ){
                 $fields['type']['default']['personal']['default'] = false;
             }
-            $fields['type']['default']['access'] = [
-                'label' => __( 'Standard Contact', 'disciple_tools' ),
-                'color' => '#2196F3',
-                'description' => __( 'A contact to collaborate on', 'disciple_tools' ),
-                'visibility' => __( 'Me and project leadership', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . '/dt-assets/images/share.svg?v=2',
-                'order' => 20,
-                'default' => true,
-            ];
-            $fields['type']['default']['access_placeholder'] = [
-                'label' => __( 'Connection', 'disciple_tools' ),
-                'color' => '#FF9800',
-                'description' => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . '/dt-assets/images/share.svg?v=2',
-                'order' => 40,
-                'visibility' => __( 'Collaborators', 'disciple_tools' ),
-                'in_create_form' => false,
-            ];
-
             $fields['assigned_to'] = [
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
                 'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
@@ -448,28 +429,30 @@ class DT_Contacts_Access extends DT_Module_Base {
                 return;
             }
             ?>
-                <div class="section-subheader">
-                    <?php dt_render_field_icon( $contact_fields[$field_key] ) ?>
-                    <?php echo esc_html( $contact_fields[$field_key]['name'] ) ?>
-                </div>
                 <?php
-                $active_color = '#366184';
-                $current_key = $contact['overall_status']['key'] ?? '';
-                if ( isset( $contact_fields['overall_status']['default'][ $current_key ]['color'] ) ){
-                    $active_color = $contact_fields['overall_status']['default'][ $current_key ]['color'];
+                $options_array = $contact_fields[$field_key]['default'];
+                $options_array = array_map( function( $key, $value ) {
+                    return [
+                        'id' => $key,
+                        'label' => $value['label'],
+                        'color' => $value['color'] ?? null,
+                    ];
+                }, array_keys( $options_array ), $options_array );
+
+                if ( isset( $contact_fields[$field_key]['icon'] ) && !empty( $contact_fields[$field_key]['icon'] ) ) {
+                    $icon = 'icon=' . esc_attr( $contact_fields[$field_key]['icon'] );
                 }
                 ?>
-                <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>" <?php echo esc_html( $disabled ); ?>>
-                    <?php foreach ( $contact_fields['overall_status']['default'] as $key => $option ){
-                        $value = $option['label'] ?? '';
-                        if ( $current_key === $key ) {
-                            ?>
-                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                        <?php } else { ?>
-                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                        <?php } ?>
-                    <?php } ?>
-                </select>
+                <dt-single-select
+                    id="overall_status"
+                    name="overall_status"
+                    label="<?php echo esc_attr( $contact_fields[$field_key]['name'] )?>"
+                    <?php echo esc_html( $icon ) ?>
+                    options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
+                    value="<?php echo esc_attr( $post[$field_key] ? $post[$field_key]['key'] : '' ) ?>">
+                    <?php dt_render_icon_slot( $contact_fields[$field_key] ) ?>
+                </dt-single-select>
+
                 <p>
                     <span id="reason">
                         <?php
@@ -777,7 +760,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         if ( isset( $fields['additional_meta']['created_from'] ) ){
             $from_post = DT_Posts::get_post( 'contacts', $fields['additional_meta']['created_from'], true, false );
-            if ( !is_wp_error( $from_post ) && isset( $from_post['type']['key'] ) && $from_post['type']['key'] === 'access' ){
+            if ( !is_wp_error( $from_post ) && isset( $from_post['type']['key'] ) && in_array( $from_post['type']['key'], [ 'access', 'access_placeholder', 'user' ] ) ){
                 $fields['type'] = 'access_placeholder';
             }
         }
@@ -790,11 +773,19 @@ class DT_Contacts_Access extends DT_Module_Base {
         if ( !isset( $fields['type'] ) && get_current_user_id() === 0 ){
             $fields['type'] = 'access';
         }
+
+        /**
+         * Stop here if the type is not "access"
+         */
         if ( !isset( $fields['type'] ) || $fields['type'] !== 'access' ){
             return $fields;
         }
-        if ( !isset( $fields['seeker_path'] ) ){
-            $fields['seeker_path'] = 'none';
+        if ( !isset( $fields['overall_status'] ) ){
+            if ( get_current_user_id() ){
+                $fields['overall_status'] = 'active';
+            } else {
+                $fields['overall_status'] = 'new';
+            }
         }
         if ( !isset( $fields['assigned_to'] ) ){
             if ( get_current_user_id() ) {
@@ -814,13 +805,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                 }
             }
         }
-        if ( !isset( $fields['overall_status'] ) ){
-            if ( get_current_user_id() ){
-                $fields['overall_status'] = 'active';
-            } else {
-                $fields['overall_status'] = 'new';
-            }
+        if ( !isset( $fields['seeker_path'] ) ){
+            $fields['seeker_path'] = 'none';
         }
+
         if ( !isset( $fields['sources'] ) ) {
             $fields['sources'] = [ 'values' => [ [ 'value' => 'personal' ] ] ];
         }

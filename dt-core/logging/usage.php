@@ -9,7 +9,7 @@ class Disciple_Tools_Usage {
      *
      * @var int
      */
-    public $version = 6;
+    public $version = 7;
 
     public function send_usage() {
         $disable_usage = get_option( 'dt_disable_usage_data' );
@@ -56,14 +56,16 @@ class Disciple_Tools_Usage {
         $using_mapbox = (bool) DT_Mapbox_API::get_key();
         $using_google_geocode = (bool) Disciple_Tools_Google_Geocode_API::get_key();
 
+        $dt_site_id = dt_site_id();
+
         $data = [
             'validator' => hash( 'sha256', time() ),
-            'site_id' => hash( 'sha256', $site_url ),
+            'site_id' => $dt_site_id,
             'usage_version' => $this->version,
             'payload' => [
 
                 // BASIC STATS
-                'site_id' => hash( 'sha256', $site_url ),
+                'site_id' => $dt_site_id,
                 'usage_version' => $this->version,
                 'php_version' => phpversion(),
                 'wp_version' => $wp_version,

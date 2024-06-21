@@ -35,7 +35,10 @@ class Disciple_Tools_Metrics{
             // wait for D.T post type classes to be set up before building metrics for them
             add_action( 'after_setup_theme', function (){
                 $modules = dt_get_option( 'dt_post_type_modules' );
+
                 // Personal
+                require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+                new DT_Metrics_Groups_Genmap( 'personal', __( 'Personal', 'disciple_tools' ) );
                 require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
@@ -76,7 +79,7 @@ class Disciple_Tools_Metrics{
                     require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );
 
                     /* Record Types */
-                    require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
+                    new DT_Metrics_Groups_Genmap( 'records', __( 'Genmap', 'disciple_tools' ) );
                     require_once( get_template_directory() . '/dt-metrics/records/dynamic-records-map.php' );
                 }
                 if ( !empty( $modules['access_module']['enabled'] ) ){

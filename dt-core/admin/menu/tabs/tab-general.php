@@ -829,27 +829,31 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $_POST['dt_contact_preferences_nonce'] ) &&
             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['dt_contact_preferences_nonce'] ) ), 'dt_contact_preferences' . get_current_user_id() ) ) {
 
-            $contact_preferences = get_option( 'dt_contact_preferences' );
-            if ( isset( $_POST['hide_personal_contact_type'] ) && ! empty( $_POST['hide_personal_contact_type'] ) ) {
-                $contact_preferences['hide_personal_contact_type'] = false;
-            } else {
-                $contact_preferences['hide_personal_contact_type'] = true;
-            }
+            $post_type_settings = get_option( 'dt_custom_post_types', [] );
+            $contact_preferences = $post_type_settings['contacts'] ?? [];
 
-            update_option( 'dt_contact_preferences', $contact_preferences, true );
+            if ( isset( $_POST['private_contacts_enabled'] ) && ! empty( $_POST['private_contacts_enabled'] ) ) {
+                $contact_preferences['enable_private_contacts'] = true;
+            } else {
+                $contact_preferences['enable_private_contacts'] = false;
+            }
+            $post_type_settings['contacts'] = $contact_preferences;
+
+            update_option( 'dt_custom_post_types', $post_type_settings, true );
         }
 
     }
 
     public function show_dt_contact_preferences(){
-        $contact_preferences = get_option( 'dt_contact_preferences', [] );
+        $post_type_settings = get_option( 'dt_custom_post_types', [] );
+        $private_contacts_enabled = $post_type_settings['contacts']['enable_private_contacts'] ?? false;
         ?>
         <form method="post" >
             <table class="widefat">
                 <tr>
                     <td>
                         <label>
-                            <input type="checkbox" name="hide_personal_contact_type" <?php echo empty( $contact_preferences['hide_personal_contact_type'] ) ? 'checked' : '' ?> /> Personal Contact Type Enabled
+                            <input type="checkbox" name="private_contacts_enabled" <?php echo $private_contacts_enabled ? 'checked' : '' ?> /> Private Contact Type Enabled. See <a href="https://disciple.tools/user-docs/getting-started-info/contacts/contact-types/" target="_blank">Contact Types Documentation</a>
                         </label>
                     </td>
                 </tr>

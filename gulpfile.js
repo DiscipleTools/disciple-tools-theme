@@ -14,6 +14,7 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   frep = require('gulp-frep'),
   postcss = require('gulp-postcss'),
+  del = require('del'),
   cssnano = require('cssnano');
 
 
@@ -71,12 +72,17 @@ const SOURCE = {
   ],
 
   // Scss files will be concantonated, minified if ran with --production
-  styles: 'dt-assets/scss/**/*.scss',
+  styles: [
+    'dt-assets/scss/**/*.scss',
+    'node_modules/@disciple.tools/web-components/src/styles/*',
+  ],
 
   otherjs: [
     'dt-assets/**/*.js',
     '!dt-assets/js/footer-scripts.js',
   ],
+
+  components: 'node_modules/@disciple.tools/web-components/dist/**/*',
 
   php: '**/*.php'
 };
@@ -85,6 +91,7 @@ const SOURCE = {
 const BUILD_DIRS = {
   styles: 'dt-assets/build/css/',
   scripts: 'dt-assets/build/js/',
+  components: 'dt-assets/build/components/',
 };
 
 const patterns = [
@@ -138,8 +145,20 @@ gulp.task('styles', function () {
     .pipe(touch());
 });
 
+// Clean out components directory before copying new files
+gulp.task('components:clean', function () {
+  return del([BUILD_DIRS.components]);
+});
+// Copy components to build directory
+gulp.task('components:copy', function () {
+  return gulp.src(SOURCE.components)
+    .pipe(gulp.dest(BUILD_DIRS.components));
+});
+// clean & copy web components assets folder
+gulp.task('components', gulp.series('components:clean', 'components:copy'));
+
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts'));
+gulp.task('default', gulp.parallel('styles', 'scripts', 'components'));
 
 
 /**

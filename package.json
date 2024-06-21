@@ -14,6 +14,7 @@
     "@babel/preset-env": "^7.24.4",
     "browser-sync": "^3.0.2",
     "cssnano": "^6.1.2",
+    "del": "^6.1.1",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^9.1.0",
     "foundation-sites": "^6.7.2",
@@ -29,7 +30,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "jquery": "^3.6.0",
     "lint-staged": "^12.4.1",
     "prettier": "3.2.5",
@@ -64,7 +65,8 @@
   },
   "eslintIgnore": [
     "dt-assets/build/js/scripts.min.js",
-    "dt-core/dependencies/*"
+    "dt-core/dependencies/*",
+    "dt-assets/build/components/**/*"
   ],
   "jshintConfig": {
     "globals": {
@@ -73,6 +75,7 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
+    "@disciple.tools/web-components": "^0.6.1",
     "babel-eslint": "^10.1.0",
     "browserslist": "^4.17.0",
     "dotenv": "^16.4.5",

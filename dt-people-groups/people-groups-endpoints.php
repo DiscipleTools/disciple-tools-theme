@@ -101,6 +101,20 @@ class Disciple_Tools_People_Groups_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/people-groups/add_bulk_people_groups', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'add_bulk_people_groups' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/people-groups/get_bulk_people_groups_import_batches', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_bulk_people_groups_import_batches' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/people-groups/link_or_update', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'link_or_update' ],
