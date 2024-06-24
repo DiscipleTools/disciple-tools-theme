@@ -465,9 +465,9 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         break;
                 }
             } else if ( $action->field_id === 'comments' ) {
-                $post_comments = DT_Posts::get_post_comments($post['post_type'], $post['ID'], false);
+                $post_comments = DT_Posts::get_post_comments( $post['post_type'], $post['ID'], false );
                 foreach ( $post_comments['comments'] as $comment ) {
-                    if ( $comment['comment_content'] ==  $action->value) {
+                    if ( $comment['comment_content'] === $action->value ) {
                         $current_state = true;
                         break;
                     }
@@ -497,7 +497,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
     private static function process_action( $field_id, $action, $value, $post, $post_type_settings ) {
         if ( ! empty( $field_id ) && ! empty( $action ) && ! empty( $value ) ) {
 
-            if ( isset( $post_type_settings['fields'][ $field_id ]['type'] )) {
+            if ( isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {
                 $field_type = $post_type_settings['fields'][ $field_id ]['type'];
                 $updated_fields = [];
                 switch ( $action ) {
