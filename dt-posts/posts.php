@@ -2558,7 +2558,7 @@ class Disciple_Tools_Posts
                     }
 
                     // Handle subsequent entries accordingly, by location mode type.
-                    if ( ( ( $field_settings[$key]['type'] === 'location' ) && ( $field_settings[$key]['mode'] === 'geolocation' ) ) || $field_settings[$key]['type'] === 'location_meta' ) {
+                    if ( ( ( $field_settings[$key]['type'] === 'location' ) && ( ( $field_settings[$key]['mode'] ?? 'geolocation' ) === 'geolocation' ) ) || $field_settings[$key]['type'] === 'location_meta' ) {
 
                         // Capture field key within relevant normal mode entry, for further downstream processing.
                         if ( !isset( $location_modes_field_ids['geolocation'] ) ) {
