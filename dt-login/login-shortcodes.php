@@ -21,8 +21,16 @@ function dt_firebase_login_ui( $atts ) {
     $lang_code = $atts['lang_code'];
     $redirect_to = $atts['redirect_to'];
 
-    if ( !in_array( $lang_code, dt_login_firebase_supported_languages() ) ) {
-        $lang_code = $default_lang;
+    $firebase_langs = dt_login_firebase_supported_languages();
+
+
+    if ( !in_array( $lang_code, $firebase_langs ) ) {
+        if ( strpos( $lang_code, '_' ) !== false ) {
+            $lang_code = explode( '_', $lang_code )[0];
+        }
+        if ( !in_array( $lang_code, $firebase_langs ) ) {
+            $lang_code = $default_lang;
+        }
     }
 
     $lang_prefix = '';

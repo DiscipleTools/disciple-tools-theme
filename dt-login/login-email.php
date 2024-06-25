@@ -50,7 +50,7 @@ class DT_Login_Email {
             return $error;
         }
 
-        /* if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
+        if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
             $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple_tools' ) );
             return $error;
         }
@@ -59,7 +59,7 @@ class DT_Login_Email {
             'body' => array(
                 'secret' => $dt_login['google_captcha_server_secret_key'],
                 'response' => isset( $_POST['g-recaptcha-response'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) ) : '',
-            )
+            ),
         );
         $post_result = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', $args );
         $post_body = json_decode( wp_remote_retrieve_body( $post_result ), true );
@@ -67,7 +67,6 @@ class DT_Login_Email {
             $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'disciple_tools' ) );
             return $error;
         }
-         */
         // validate elements
         if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) || empty( $_POST['password2'] ) ) {
             $error->add( __METHOD__, __( 'Missing email or password.', 'disciple_tools' ) );
