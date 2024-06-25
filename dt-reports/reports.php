@@ -311,18 +311,24 @@ class Disciple_Tools_Reports
     }
 
     /**
-     * Get posts filtered by where clauses
+     * List reports filtered by where clauses
      *
      * @param array $where An assoc array of key, value pairs
+     *
+     * The value parts of the array should be arrays, with 'value' => $value. This allows for adding functionality like operators etc.
      */
-    public static function where( $where = [] ) {
+    public static function list( $where = [] ) {
         global $wpdb;
         $report = [];
 
         $sql = '';
         $args = [];
 
-        foreach ( $where as $key => $value ) {
+        foreach ( $where as $key => $details ) {
+            if ( !is_array( $details ) || !isset( $details['value'] ) ) {
+                return new WP_Error( 'missing-value-type', 'value key is missing for ' . $key );
+            }
+            $value = $details['value'];
             $new_sql = '';
             if ( !empty( $sql ) ) {
                 $new_sql .= ' AND';
