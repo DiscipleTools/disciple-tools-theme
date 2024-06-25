@@ -1599,7 +1599,7 @@ class Disciple_Tools_Posts
 
         foreach ( $fields as $field_key => $field ){
 
-            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location' ) && ( $field_settings[$field_key]['mode'] === 'normal' ) ) {
+            if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location' ) && ( ( $field_settings[$field_key]['mode'] ?? 'normal' ) === 'normal' ) ) {
 
                 /********************************************************
                  * Basic Locations
@@ -1626,7 +1626,7 @@ class Disciple_Tools_Posts
                         return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                     }
                 }
-            } elseif ( ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location' ) && ( $field_settings[$field_key]['mode'] === 'geolocation' ) ) || ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location_meta' ) ) ) {
+            } elseif ( ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location' ) && ( ( $field_settings[$field_key]['mode'] ?? 'geolocation' ) === 'geolocation' ) ) || ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location_meta' ) ) ) {
 
                 /********************************************************
                  * Location Meta Grid - Mapbox Extension
