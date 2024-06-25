@@ -162,12 +162,6 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 if ( !is_null( $field_key ) ) {
                     $postmeta_id_location_grid = add_post_meta( $post_id, $field_key, $location_grid_meta['grid_id'] );
                 } else {
-                    /**
-                     * TODO:
-                     *  Dynamically determine location fields with geolocation modes. However; which
-                     *  field should be updated?
-                     */
-
                     $postmeta_id_location_grid = false;
                 }
             }
@@ -208,12 +202,6 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             if ( !is_null( $field_key ) ) {
                 $location_grid_meta_mid = add_post_meta( $post_id, $field_key, $wpdb->insert_id );
             } else {
-                /**
-                 * TODO:
-                 *  Dynamically determine location fields with geolocation modes. However; which
-                 *  field should be updated?
-                 */
-
                 $location_grid_meta_mid = false;
             }
             if ( !$location_grid_meta_mid ) {
@@ -249,14 +237,8 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                         ]);
                         if ( !is_null( $field_key ) ) {
                             delete_post_meta( $post_id, $field_key, $value );
-                        } else {
-                            /**
-                             * TODO:
-                             *  Dynamically determine location fields with geolocation modes. Assuming all
-                             *  identified fields to be updated?
-                             */
-                            $status = true;
                         }
+
                         $status = true;
                         break;
 

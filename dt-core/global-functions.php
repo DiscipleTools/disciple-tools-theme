@@ -945,6 +945,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         break;
                 }
                 ?>
+            <?php elseif ( $field_type === 'location_meta' ) : ?>
+                <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
+                    <div id="<?php echo esc_html( $field_key ); ?>_mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
+                        <input id="<?php echo esc_html( $field_key ); ?>_mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
+                        <div class="input-group-button">
+                            <button id="<?php echo esc_html( $field_key ); ?>_mapbox-spinner-button" class="button hollow" style="display:none;" <?php echo esc_html( $disabled ); ?>><span class="loading-spinner active"></span></button>
+                            <button id="<?php echo esc_html( $field_key ); ?>_mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button" <?php echo esc_html( $disabled ); ?>>&times;</button>
+                        </div>
+                        <div id="<?php echo esc_html( $field_key ); ?>_mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+                    </div>
+                    <script>
+                        jQuery(document).ready(function(){
+                            window.write_input_widget()
+                        })
+                    </script>
+                <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
+                    <div id="<?php echo esc_html( $field_key ); ?>_mapbox-wrapper"></div>
+                <?php endif; ?>
             <?php elseif ( $field_type === 'communication_channel' ) : ?>
                 <div id="edit-<?php echo esc_html( $field_key ) ?>" >
                     <?php foreach ( $post[$field_key] ?? [] as $field_value ) : ?>

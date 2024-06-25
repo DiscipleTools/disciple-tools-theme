@@ -16,8 +16,9 @@ function write_results_box() {
     window.dtMapbox.post_settings.fields,
     function (field_id, field_settings) {
       if (
-        field_settings?.type === 'location' &&
-        field_settings?.mode === 'geolocation'
+        (field_settings?.type === 'location' &&
+          field_settings?.mode === 'geolocation') ||
+        field_settings?.type === 'location_meta'
       ) {
         jQuery(`#${field_id}_mapbox-wrapper`).empty().append(`
         <div id="${field_id}_location-grid-meta-results"></div>

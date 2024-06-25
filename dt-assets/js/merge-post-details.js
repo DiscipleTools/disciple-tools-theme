@@ -636,13 +636,17 @@ jQuery(function ($) {
 
             break;
 
+          case 'location_meta':
           case 'location': {
             if (
               window.merge_post_details?.post_settings?.fields[post_field_id]
             ) {
               const field_settings =
                 window.merge_post_details.post_settings.fields[post_field_id];
-              if (field_settings?.mode === 'normal') {
+              if (
+                field_type === 'location' &&
+                field_settings?.mode === 'normal'
+              ) {
                 let translations = window.merge_post_details['translations'];
 
                 let typeahead_field_input = '.js-typeahead-' + field_id;
@@ -758,7 +762,11 @@ jQuery(function ($) {
                     });
                   });
                 }
-              } else if (field_settings?.mode === 'geolocation') {
+              } else if (
+                (field_type === 'location' &&
+                  field_settings?.mode === 'geolocation') ||
+                field_type === 'location_meta'
+              ) {
                 let mapbox = window.merge_post_details['mapbox'];
 
                 /**
@@ -1487,11 +1495,12 @@ jQuery(function ($) {
         break;
       }
 
+      case 'location_meta':
       case 'location': {
         if (window.merge_post_details?.post_settings?.fields[update_field_id]) {
           const field_settings =
             window.merge_post_details.post_settings.fields[update_field_id];
-          if (field_settings?.mode === 'normal') {
+          if (field_type === 'location' && field_settings?.mode === 'normal') {
             // Determine values to be updated
             let source_typeahead =
               window.Typeahead['.js-typeahead-' + field_id];
@@ -1605,7 +1614,11 @@ jQuery(function ($) {
 
               update_typeahead.adjustInputSize();
             }
-          } else if (field_settings?.mode === 'geolocation') {
+          } else if (
+            (field_type === 'location' &&
+              field_settings?.mode === 'geolocation') ||
+            field_type === 'location_meta'
+          ) {
             // Determine values to be updated
             let location_elements = $(selector.parent().parent()).find(
               'input.input-group-field',
@@ -2120,11 +2133,15 @@ jQuery(function ($) {
             break;
           }
 
+          case 'location_meta':
           case 'location': {
             if (window.merge_post_details?.post_settings?.fields[field_id]) {
               const field_settings =
                 window.merge_post_details.post_settings.fields[field_id];
-              if (field_settings?.mode === 'normal') {
+              if (
+                field_type === 'location' &&
+                field_settings?.mode === 'normal'
+              ) {
                 let typeahead = window.Typeahead['.js-typeahead-' + field_id];
                 if (typeahead) {
                   // Determine values to be processed
@@ -2155,7 +2172,11 @@ jQuery(function ($) {
                     };
                   }
                 }
-              } else if (field_settings?.mode === 'geolocation') {
+              } else if (
+                (field_type === 'location' &&
+                  field_settings?.mode === 'geolocation') ||
+                field_type === 'location_meta'
+              ) {
                 // Determine values to be processed
                 let location_meta_entries = [];
                 let location_meta_deletions = field_meta.val()
