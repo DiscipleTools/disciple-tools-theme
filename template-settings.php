@@ -148,10 +148,10 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </p>
                                 <?php endif; ?>
 
-                                <?php if ( ! empty( $dt_user->nickname ) ) : ?>
+                                <?php if ( ! empty( $dt_user->display_name ) ) : ?>
                                     <p>
                                         <strong dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></strong><br>
-                                        <span dir="auto"><?php echo esc_html( $dt_user->nickname ); ?></span>
+                                        <span dir="auto"><?php echo esc_html( $dt_user->display_name ); ?></span>
                                     </p>
                                 <?php endif; ?>
 
@@ -681,7 +681,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <tr>
                                     <td><label for="nickname"><span dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></span></label></td>
                                     <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
-                                               value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
+                                               value=" <?php echo esc_html( $dt_user->display_name ); ?>"/></td>
                                 </tr>
 
                                 <?php // site defined fields
