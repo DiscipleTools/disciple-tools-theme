@@ -757,6 +757,7 @@ jQuery(function ($) {
         $('#workflows_design_section_step2_exception_message').html('');
       },
     );
+    fields_select.find('option[value = "comments"]').remove();
   }
 
   function reset_step3_elements() {
