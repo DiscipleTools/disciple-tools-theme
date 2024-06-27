@@ -12,6 +12,7 @@ class DT_Login_User_Manager {
     private $email;
     private $name;
     private $identities;
+    private $sign_in_provider;
 
     const DEFAULT_AUTH_SERVICE_ENDPOINT = 'wp-json/jwt-auth/v1/token';
 
@@ -21,6 +22,7 @@ class DT_Login_User_Manager {
         $this->email = $this->firebase_auth['email'];
         $this->name = $this->firebase_auth['name'];
         $this->identities = (array) $this->firebase_auth['firebase']->identities;
+        $this->sign_in_provider = $this->firebase_auth['firebase']->sign_in_provider;
         add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
     }
 
@@ -105,6 +107,17 @@ class DT_Login_User_Manager {
     private function update_user_meta( int $user_id ) {
         update_user_meta( $user_id, 'firebase_uid', $this->uid );
         update_user_meta( $user_id, 'firebase_identities', $this->identities );
+
+        $sign_in_providers = maybe_unserialize( get_user_meta( $user_id, 'sign_in_providers', true ) );
+
+        if ( empty( $sign_in_providers ) ) {
+            $sign_in_providers = [];
+        }
+        if ( !in_array( $this->sign_in_provider, $sign_in_providers ) ) {
+            $sign_in_providers[] = $this->sign_in_provider;
+        }
+
+        update_user_meta( $user_id, 'sign_in_providers', $sign_in_providers );
     }
 
     public function add_user_to_blog_if_needed( int $user_id, string $user_role ) {
