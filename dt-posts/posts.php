@@ -2312,8 +2312,10 @@ class Disciple_Tools_Posts
         if ( !isset( $field_setting['p2p_key'], $field_setting['p2p_direction'] ) ) {
             return new WP_Error( __FUNCTION__, 'Could not add connection. Field settings missing', [ 'status' => 400 ] );
         }
+
+        $associated_workflow_detected = Disciple_Tools_Workflows_Execution_Handler::has_workflows_by_fields( $post_type, ( $post_settings['connection_types'] ?? [] ) );
         $current_connected_post = null;
-        if ( $field_setting['post_type'] !== $post_type ){
+        if ( ( $field_setting['post_type'] !== $post_type ) || $associated_workflow_detected ){
             $current_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, true, false );
         }
 
@@ -2337,7 +2339,7 @@ class Disciple_Tools_Posts
             $connection->permalink = get_permalink( $value );
 
             // Determine if update action to be fired for corresponding connection.
-            if ( $connection->post_type != $post_type ) {
+            if ( ( $connection->post_type != $post_type ) || $associated_workflow_detected ) {
                 $reversed_field = self::get_reverse_connection_field( $field_key, $field_setting );
                 if ( ! empty( $reversed_field ) ) {
 
