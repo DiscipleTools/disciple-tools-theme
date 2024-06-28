@@ -1062,12 +1062,10 @@ jQuery(function ($) {
         );
         break;
       case 'comments':
-        actions.push(
-          {
-            id: 'append',
-            name: 'Add Comment',
-          }
-        );
+        actions.push({
+          id: 'append',
+          name: 'Add Comment',
+        });
         break;
     }
 
