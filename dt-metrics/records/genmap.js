@@ -32,6 +32,9 @@ jQuery(document).ready(function ($) {
                   <span>
                     <select id="select_post_type_fields" style="width: 200px;"></select>
                   </span>
+                  <span id="show_data_layer_title" class="button select-button empty-select-button" style="margin-top: 5px; margin-left: 10px;">
+                    <i class="mdi mdi-image-filter-none"></i>
+                  </span>
                   <span style="display: inline-block; margin-right: 10px; margin-left: 10px;" class="show-closed-switch">
                       ${window.lodash.escape(translations.show_archived)}
                       <div class="switch tiny">
@@ -44,6 +47,7 @@ jQuery(document).ready(function ($) {
                   <span>
                     <i class="fi-loop" onclick="window.load_genmap()" style="font-size: 1.5em; padding:.5em;cursor:pointer;"></i>
                   </span>
+                  <br>
               </div>
               <div class="cell medium-2" >
                 <h2 style="float:right;">${window.lodash.escape(translations.title)}</h2>
@@ -51,15 +55,17 @@ jQuery(document).ready(function ($) {
           </div>
           <div class="grid-x grid-padding-x">
             <div class="cell medium-10">
-              <span id="show_data_layer_title" class="button">${window.lodash.escape(translations.show_data_layer)}</span><br>
               <div id="data_layer_settings" style="display: none;">
                 <label for="data_layer_settings_color">${window.lodash.escape(translations.data_layer_settings_color_label)}<br>
                   <select id="data_layer_settings_color" name="data_layer_settings_color" style="max-width: 70%;"></select>
                 </label>
-                <span id="add_data_layer" class="button">${window.lodash.escape(translations.add_data_layer)}</span><br>
-                <table id="data_layer_settings_table">
-                  <tbody style="border: none;"></tbody>
-                </table>
+                <br>
+                <label for="data_layer_settings_table">${window.lodash.escape(translations.data_layer_title)}<br>
+                  <table id="data_layer_settings_table" name="data_layer_settings_table">
+                    <tbody style="border: none;"></tbody>
+                  </table>
+                </label>
+                <span id="add_data_layer" class="button">${window.lodash.escape(translations.add_data_layer)}</span>
               </div>
             </div>
           </div>
@@ -84,6 +90,15 @@ jQuery(document).ready(function ($) {
           </div>
 
           <div id="modal" class="reveal" data-reveal></div>
+
+          <style>
+            .orgchart .hierarchy .custom-adjusted-connect-left:first-child::before {
+                left: 70px;
+            }
+            .orgchart .hierarchy .custom-adjusted-connect-width:last-child::before {
+                width: 70px;
+            }
+          </style>
        `);
 
     window.load_genmap = (focus_id = null) => {
@@ -139,11 +154,18 @@ jQuery(document).ready(function ($) {
             display_infinite_loops(loops);
           }
 
+          const has_data_layers = payload?.data_layers?.layers.length > 0;
           var nodeTemplate = function (data) {
             return `
             <div class="title" data-item-id="${window.lodash.escape(data.id)}">${window.lodash.escape(data.name)}</div>
-            <div class="content">${window.lodash.escape(data.content)}</div>
+            <div class="content" style="${has_data_layers ? 'height: 110px;' : ''} padding-left: 5px; padding-right: 5px; overflow: auto;">${window.lodash.escape(data.content)}</div>
           `;
+          };
+
+          var createNode = function ($node, data) {
+            if (has_data_layers) {
+              $node.css('width', 'auto');
+            }
           };
 
           // Ensure no result responses are reshaped accordingly.
@@ -160,6 +182,7 @@ jQuery(document).ready(function ($) {
             nodeContent: 'content',
             direction: 'l2r',
             nodeTemplate: nodeTemplate,
+            createNode: createNode,
             initCompleted: function (chart) {
               const post_types = window.dtMetricsProject.post_types;
 
@@ -181,7 +204,6 @@ jQuery(document).ready(function ($) {
                   const node = $(chart).find(`#${id}.node`);
                   if (node) {
                     const color = '#808080';
-                    $(node).css('background-color', color);
                     $(node).find('.title').text('.......');
                     $(node).find('.title').css('background-color', color);
                     $(node).find('.content').css('background-color', color);
@@ -217,7 +239,6 @@ jQuery(document).ready(function ($) {
                     const node = $(chart).find(`#${id}.node`);
                     if (node) {
                       const color = '#808080';
-                      $(node).css('background-color', color);
                       $(node).find('.title').css('background-color', color);
                       $(node).find('.content').css('background-color', color);
                       $(node).find('.content').css('border', '0px');
@@ -281,12 +302,12 @@ jQuery(document).ready(function ($) {
                     switch (post_type_field_settings[field_id]['type']) {
                       case 'date':
                       case 'key_select': {
-                        data_layer_content_html += ` / ${content['label']}: ${content['content']}`;
+                        data_layer_content_html += `<br><b>${content['label']}</b><br> ${content['content']}`;
                         break;
                       }
                       case 'tags':
                       case 'multi_select': {
-                        data_layer_content_html += ` / ${content['label']}: ${content['content'].join(', ')}`;
+                        data_layer_content_html += `<br><b>${content['label']}</b><br> ${content['content'].join('<br>')}`;
                         break;
                       }
                     }
@@ -300,7 +321,6 @@ jQuery(document).ready(function ($) {
 
                   // Finally, adjust node color accordingly, by specified node color.
                   if (data_layer_node_color) {
-                    $(node).css('background-color', data_layer_node_color);
                     $(node)
                       .find('.title')
                       .css('background-color', data_layer_node_color);
@@ -313,6 +333,36 @@ jQuery(document).ready(function ($) {
               }
             },
           });
+
+          // Adjust node sizes accordingly, if data layers have been assigned.
+          if (has_data_layers) {
+            $(container)
+              .find('.node')
+              .each(function (idx, node) {
+                const children = orgchart_container.getChildren($(node));
+
+                // Ensure node has multiple children; before extracting the first & last siblings.
+                if (children.length > 1) {
+                  const first_child = $(children).first();
+                  if (first_child) {
+                    $(first_child)
+                      .parent()
+                      .toggleClass('custom-adjusted-connect-left');
+                  }
+
+                  const last_child = $(children).last();
+                  if (last_child) {
+                    $(last_child)
+                      .parent()
+                      .toggleClass('custom-adjusted-connect-width');
+                  }
+                } else if (children.length === 1) {
+                  $(children)
+                    .parent()
+                    .toggleClass('custom-adjusted-connect-left');
+                }
+              });
+          }
 
           let container_height = window.innerHeight - 200; // because it is rotated
           container.height(container_height);
@@ -426,15 +476,13 @@ jQuery(document).ready(function ($) {
       const show_data_layer_title = jQuery('#show_data_layer_title');
       if (data_layer_settings.is(':visible')) {
         data_layer_settings.slideUp('fast', function () {
-          show_data_layer_title.text(
-            `${window.lodash.escape(translations.show_data_layer)}`,
-          );
+          show_data_layer_title.removeClass('selected-select-button');
+          show_data_layer_title.addClass('empty-select-button');
         });
       } else {
         data_layer_settings.slideDown('fast', function () {
-          show_data_layer_title.text(
-            `${window.lodash.escape(translations.hide_data_layer)}`,
-          );
+          show_data_layer_title.removeClass('empty-select-button');
+          show_data_layer_title.addClass('selected-select-button');
         });
       }
     });
@@ -587,9 +635,8 @@ jQuery(document).ready(function ($) {
 
     // First, reset data layer elements.
     data_layer_settings_div.slideUp('fast', function () {
-      show_data_layer_title.text(
-        `${window.lodash.escape(window.dtMetricsProject.translations.show_data_layer)}`,
-      );
+      show_data_layer_title.removeClass('selected-select-button');
+      show_data_layer_title.addClass('empty-select-button');
       data_layer_settings_table.find('tbody').empty();
 
       // Next, proceed with loading and displaying any previously stored data layers.
@@ -607,9 +654,8 @@ jQuery(document).ready(function ($) {
 
         // Once re-populated, display loaded data layers.
         data_layer_settings_div.slideDown('fast', function () {
-          show_data_layer_title.text(
-            `${window.lodash.escape(window.dtMetricsProject.translations.hide_data_layer)}`,
-          );
+          show_data_layer_title.removeClass('empty-select-button');
+          show_data_layer_title.addClass('selected-select-button');
 
           if (callback) {
             callback();
@@ -728,7 +774,7 @@ jQuery(document).ready(function ($) {
                 })(selected_fields, selected_field_id)}
               </select>
             </td>
-            <td><button class="button del-data-layer">${window.lodash.escape(window.dtMetricsProject.translations.del_data_layer)}</button></td>
+            <td><button class="button clear-date-button del-data-layer" style="border: 1px solid #cacaca;">${window.lodash.escape(window.dtMetricsProject.translations.del_data_layer)}</button></td>
           </tr>
         `);
       }

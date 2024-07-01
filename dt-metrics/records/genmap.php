@@ -101,12 +101,13 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'translations' => [
                     'title' => __( 'Generational Trees', 'disciple_tools' ),
                     'show_archived' => __( 'Show Archived', 'disciple_tools' ),
+                    'data_layer_title' => __( 'Data Layers', 'disciple_tools' ),
                     'show_data_layer' => __( 'Show Data Layer Settings', 'disciple_tools' ),
                     'hide_data_layer' => __( 'Hide Data Layer Settings', 'disciple_tools' ),
                     'data_layer_settings_color_label' => __( 'Node Color', 'disciple_tools' ),
                     'data_layer_settings_color_default_label' => __( 'Default', 'disciple_tools' ),
                     'add_data_layer' => __( 'Add Data Layer', 'disciple_tools' ),
-                    'del_data_layer' => __( 'Remove', 'disciple_tools' ),
+                    'del_data_layer' => __( 'x', 'disciple_tools' ),
                     'select_data_layer_field' => __( 'select data layer field to capture', 'disciple_tools' ),
                     'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                     'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
@@ -342,7 +343,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     public function package_data_layer_post_fields( $query, $post_type, $post_settings, $data_layer_settings ): array {
         global $wpdb;
 
-        if ( !isset( $data_layer_settings['color'], $data_layer_settings['layers'] ) || empty( $data_layer_settings['layers'] ) ) {
+        if ( !isset( $data_layer_settings['color'], $data_layer_settings['layers'] ) ) {
             return [];
         }
 
