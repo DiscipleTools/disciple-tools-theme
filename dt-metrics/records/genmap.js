@@ -87,6 +87,7 @@ jQuery(document).ready(function ($) {
         post_type: selected_post_type,
         gen_depth_limit: 100,
         show_archived: jQuery('#archivedToggle').prop('checked'),
+        slug: window.dtMetricsProject.base_slug,
       };
 
       // Dynamically update URL parameters.
