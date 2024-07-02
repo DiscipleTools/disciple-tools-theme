@@ -687,4 +687,38 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
         return $updated;
     }
+
+    public static function has_workflows_by_fields( $post_type, $fields ) {
+        $has_workflow = false;
+        $workflows = self::get_workflows( $post_type, true, true );
+        foreach ( $workflows as $workflow ) {
+            if ( $has_workflow ) {
+                continue;
+            }
+
+            // First check condition fields.
+            foreach ( $workflow->conditions ?? [] as $condition ) {
+                if ( $has_workflow ) {
+                    continue;
+                }
+                if ( in_array( ( $condition->field_id ?? '' ), $fields ) ) {
+                    $has_workflow = true;
+                }
+            }
+
+            // If still required, also check action fields.
+            if ( !$has_workflow ) {
+                foreach ( $workflow->actions ?? [] as $action ) {
+                    if ( $has_workflow ) {
+                        continue;
+                    }
+                    if ( in_array( ( $action->field_id ?? '' ), $fields ) ) {
+                        $has_workflow = true;
+                    }
+                }
+            }
+        }
+
+        return $has_workflow;
+    }
 }
