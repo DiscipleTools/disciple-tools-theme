@@ -85,6 +85,7 @@ class Disciple_Tools_Metrics{
                 if ( !empty( $modules['access_module']['enabled'] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
                 }
+                require_once( get_template_directory() . '/dt-metrics/records/select-tags-charts.php' );
                 require_once( get_template_directory() . '/dt-metrics/records/time-charts.php' );
                 require_once( get_template_directory() . '/dt-metrics/records/date-range-activity.php' );
             }, 1000);
