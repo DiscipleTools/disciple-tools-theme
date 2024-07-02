@@ -233,7 +233,6 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
         $menu_data = $this->prepare_menu_array( $query );
 
-        //dt_write_log( $menu_data );
         return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters );
     }
 
