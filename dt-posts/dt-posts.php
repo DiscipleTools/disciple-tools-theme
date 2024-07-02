@@ -2677,6 +2677,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                             unset( $fields[$key] );
                         }
                     }
+                    if ( $field_type === 'location' ){
+                        if ( isset( $fields[$key] ) ) {
+                            $fields[$key]['mode'] = ! empty( DT_Mapbox_API::get_key() ) ? 'geolocation' : 'normal';
+                        }
+                    }
                 }
             }
         }

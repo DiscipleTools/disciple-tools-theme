@@ -158,8 +158,11 @@ jQuery(function ($) {
       });
     });
     if (typeof window.selected_location_grid_meta !== 'undefined') {
-      new_post['location_grid_meta'] =
-        window.selected_location_grid_meta.location_grid_meta;
+      for (const [field_id, location_data] of Object.entries(
+        window.selected_location_grid_meta,
+      )) {
+        new_post[field_id] = location_data;
+      }
     }
 
     window.API.create_post(window.new_record_localized.post_type, new_post)
@@ -311,118 +314,126 @@ jQuery(function ($) {
             },
           });
         } else if (field_type === 'location') {
-          $.typeahead({
-            input: field_class,
-            minLength: 0,
-            accent: true,
-            searchOnFocus: true,
-            maxItem: 20,
-            dropdownFilter: [
-              {
-                key: 'group',
-                value: 'focus',
-                template: window.SHAREDFUNCTIONS.escapeHTML(
-                  window.wpApiShare.translations.regions_of_focus,
-                ),
-                all: window.SHAREDFUNCTIONS.escapeHTML(
-                  window.wpApiShare.translations.all_locations,
-                ),
-              },
-            ],
-            source: {
-              focus: {
-                display: 'name',
-                ajax: {
-                  url:
-                    window.wpApiShare.root +
-                    'dt/v1/mapping_module/search_location_grid_by_name',
-                  data: {
-                    s: '{{query}}',
-                    filter: function () {
-                      return window.lodash.get(
-                        window.Typeahead[field_class].filters.dropdown,
-                        'value',
-                        'all',
-                      );
-                    },
-                  },
-                  beforeSend: function (xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-                  },
-                  callback: {
-                    done: function (data) {
-                      if (typeof window.typeaheadTotals !== 'undefined') {
-                        window.typeaheadTotals.field = data.total;
-                      }
-                      return data.location_grid;
-                    },
-                  },
-                },
-              },
-            },
-            display: 'name',
-            templateValue: '{{name}}',
-            dynamic: true,
-            multiselect: {
-              matchOn: ['ID'],
-              data: [],
-              callback: {
-                onCancel: function (node, item) {
-                  if (!is_bulk) {
-                    window.lodash.pullAllBy(
-                      new_post[field_key].values,
-                      [{ value: item.ID }],
-                      'value',
-                    );
-                  }
-                },
-              },
-            },
-            callback: {
-              onClick: function (node, a, item, event) {
-                if (!is_bulk) {
-                  if (!new_post[field_key]) {
-                    new_post[field_key] = { values: [] };
-                  }
-                  new_post[field_key].values.push({ value: item.ID });
-                }
-                //get list from opening again
-                this.addMultiselectItemLayout(item);
-                event.preventDefault();
-                this.hideLayout();
-                this.resetInput();
-              },
-              onReady() {
-                this.filters.dropdown = {
+          if (
+            window.post_type_fields[field_key] &&
+            window.post_type_fields[field_key]?.mode === 'normal'
+          ) {
+            $.typeahead({
+              input: field_class,
+              minLength: 0,
+              accent: true,
+              searchOnFocus: true,
+              maxItem: 20,
+              dropdownFilter: [
+                {
                   key: 'group',
                   value: 'focus',
                   template: window.SHAREDFUNCTIONS.escapeHTML(
                     window.wpApiShare.translations.regions_of_focus,
                   ),
-                };
-                this.container
-                  .removeClass('filter')
-                  .find('.' + this.options.selector.filterButton)
-                  .html(
-                    window.SHAREDFUNCTIONS.escapeHTML(
+                  all: window.SHAREDFUNCTIONS.escapeHTML(
+                    window.wpApiShare.translations.all_locations,
+                  ),
+                },
+              ],
+              source: {
+                focus: {
+                  display: 'name',
+                  ajax: {
+                    url:
+                      window.wpApiShare.root +
+                      'dt/v1/mapping_module/search_location_grid_by_name',
+                    data: {
+                      s: '{{query}}',
+                      filter: function () {
+                        return window.lodash.get(
+                          window.Typeahead[field_class].filters.dropdown,
+                          'value',
+                          'all',
+                        );
+                      },
+                    },
+                    beforeSend: function (xhr) {
+                      xhr.setRequestHeader(
+                        'X-WP-Nonce',
+                        window.wpApiShare.nonce,
+                      );
+                    },
+                    callback: {
+                      done: function (data) {
+                        if (typeof window.typeaheadTotals !== 'undefined') {
+                          window.typeaheadTotals.field = data.total;
+                        }
+                        return data.location_grid;
+                      },
+                    },
+                  },
+                },
+              },
+              display: 'name',
+              templateValue: '{{name}}',
+              dynamic: true,
+              multiselect: {
+                matchOn: ['ID'],
+                data: [],
+                callback: {
+                  onCancel: function (node, item) {
+                    if (!is_bulk) {
+                      window.lodash.pullAllBy(
+                        new_post[field_key].values,
+                        [{ value: item.ID }],
+                        'value',
+                      );
+                    }
+                  },
+                },
+              },
+              callback: {
+                onClick: function (node, a, item, event) {
+                  if (!is_bulk) {
+                    if (!new_post[field_key]) {
+                      new_post[field_key] = { values: [] };
+                    }
+                    new_post[field_key].values.push({ value: item.ID });
+                  }
+                  //get list from opening again
+                  this.addMultiselectItemLayout(item);
+                  event.preventDefault();
+                  this.hideLayout();
+                  this.resetInput();
+                },
+                onReady() {
+                  this.filters.dropdown = {
+                    key: 'group',
+                    value: 'focus',
+                    template: window.SHAREDFUNCTIONS.escapeHTML(
                       window.wpApiShare.translations.regions_of_focus,
                     ),
+                  };
+                  this.container
+                    .removeClass('filter')
+                    .find('.' + this.options.selector.filterButton)
+                    .html(
+                      window.SHAREDFUNCTIONS.escapeHTML(
+                        window.wpApiShare.translations.regions_of_focus,
+                      ),
+                    );
+                },
+                onResult: function (node, query, result, resultCount) {
+                  resultCount = window.typeaheadTotals.location_grid;
+                  let text = window.TYPEAHEADS.typeaheadHelpText(
+                    resultCount,
+                    query,
+                    result,
                   );
+                  $('#location_grid-result-container').html(text);
+                },
+                onHideLayout: function () {
+                  $('#location_grid-result-container').html('');
+                },
               },
-              onResult: function (node, query, result, resultCount) {
-                resultCount = window.typeaheadTotals.location_grid;
-                let text = window.TYPEAHEADS.typeaheadHelpText(
-                  resultCount,
-                  query,
-                  result,
-                );
-                $('#location_grid-result-container').html(text);
-              },
-              onHideLayout: function () {
-                $('#location_grid-result-container').html('');
-              },
-            },
-          });
+            });
+          }
         } else if (field_type === 'user_select') {
           $.typeahead({
             input: field_class,
@@ -921,13 +932,19 @@ jQuery(function ($) {
    * Alter the shape of mapbox-search location input fields.
    */
 
-  function alter_mapbox_search_location_input_shape(record) {
-    let mapbox_autocomplete = $(record).find('#mapbox-autocomplete');
-    let mapbox_search = $(record).find('#mapbox-search');
-    let mapbox_autocomplete_list = $(record).find('#mapbox-autocomplete-list');
-    let mapbox_spinner_button = $(record).find('#mapbox-spinner-button');
+  function alter_mapbox_search_location_input_shape(record, field_id = '') {
+    let mapbox_autocomplete = $(record).find(
+      `#${field_id}_mapbox-autocomplete`,
+    );
+    let mapbox_search = $(record).find(`#${field_id}_mapbox-search`);
+    let mapbox_autocomplete_list = $(record).find(
+      `#${field_id}_mapbox-autocomplete-list`,
+    );
+    let mapbox_spinner_button = $(record).find(
+      `#${field_id}_mapbox-spinner-button`,
+    );
     let mapbox_clear_autocomplete = $(record).find(
-      '#mapbox-clear-autocomplete',
+      `#${field_id}_mapbox-clear-autocomplete`,
     );
     if (
       mapbox_autocomplete &&
@@ -957,7 +974,7 @@ jQuery(function ($) {
       );
       $(mapbox_search).addClass('button');
       $(mapbox_search).addClass('mapbox-altered-input');
-      $(mapbox_search).data('field', 'location_grid_meta');
+      $(mapbox_search).data('field', field_id);
 
       // Capture record id for processing further downstream.
       $(mapbox_search).data(
@@ -1002,38 +1019,46 @@ jQuery(function ($) {
       'bulk_record_id',
     );
     if (bulk_record_id && window.selected_location_grid_meta !== undefined) {
-      let selected_location = window.selected_location_grid_meta;
+      for (const [field_id, selected_location] of Object.entries(
+        window.selected_location_grid_meta,
+      )) {
+        // Search for corresponding record.
+        $('#form_fields_records')
+          .find('.form-fields-record')
+          .each((key, record) => {
+            if ($(record).find('#bulk_record_id').val() === bulk_record_id) {
+              let mapbox_search = $(record).find('#mapbox-search-altered');
 
-      // Search for corresponding record.
-      $('#form_fields_records')
-        .find('.form-fields-record')
-        .each((key, record) => {
-          if ($(record).find('#bulk_record_id').val() === bulk_record_id) {
-            let mapbox_search = $(record).find('#mapbox-search-altered');
-
-            // Update button text to selected location.
-            mapbox_search.val(
-              window.lodash.truncate(
-                window.SHAREDFUNCTIONS.escapeHTML(
-                  selected_location['location_grid_meta']['values'][0]['label'],
+              // Update button text to selected location.
+              mapbox_search.val(
+                window.lodash.truncate(
+                  window.SHAREDFUNCTIONS.escapeHTML(
+                    selected_location['values'][0]['label'],
+                  ),
                 ),
-              ),
-            );
+              );
 
-            // Capture selected location within data attribute.
-            mapbox_search.data(
-              'selected_location',
-              JSON.stringify(selected_location),
-            );
-          }
-        });
+              // Capture selected location within data attribute.
+              mapbox_search.data(
+                'selected_location',
+                JSON.stringify(selected_location),
+              );
+            }
+          });
+      }
     }
     $('#altered_mapbox_search_modal').foundation('close');
   });
 
   function reset_altered_mapbox_search_field_values() {
     $('#mapbox-search').val('');
-    window.selected_location_grid_meta = undefined;
+
+    if (typeof window.selected_location_grid_meta !== 'undefined') {
+      Object.keys(window.selected_location_grid_meta).forEach(
+        (field_id) =>
+          (window.selected_location_grid_meta[field_id] = undefined),
+      );
+    }
   }
 
   /*
@@ -1121,9 +1146,13 @@ jQuery(function ($) {
         // Capture available mapbox related locations
         let mapbox_search = $(record).find('#mapbox-search-altered');
         if (mapbox_search && mapbox_search.data('selected_location')) {
-          new_post['location_grid_meta'] = JSON.parse(
-            mapbox_search.data('selected_location'),
-          )['location_grid_meta'];
+          if (typeof window.selected_location_grid_meta !== 'undefined') {
+            for (const [field_id, location_data] of Object.entries(
+              window.selected_location_grid_meta,
+            )) {
+              new_post[field_id] = location_data;
+            }
+          }
         }
 
         // Package any available typeahead values
