@@ -477,10 +477,13 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         ];
     }
 
-    public static function get_multi_field_by_year( $post_type, $field ) {
+    public static function get_multi_field_by_year( $post_type, $field, $current_year = null ) {
         global $wpdb;
 
-        $current_year = gmdate( 'Y' );
+        if ( empty( $current_year ) ) {
+            $current_year = gmdate( 'Y' );
+        }
+
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 

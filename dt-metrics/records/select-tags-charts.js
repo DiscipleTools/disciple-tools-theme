@@ -8,10 +8,10 @@ jQuery(function () {
 
 const CUMULATIVE_PREFIX = 'cumulative_';
 
-const get_time_metrics_by_year = (post_type, field) =>
+const get_time_metrics_by_year = (post_type, field, year) =>
   window.makeRequest(
     'GET',
-    `metrics/time_metrics_by_year/${post_type}/${field}`,
+    `metrics/time_metrics_by_year/${post_type}/${field}/${year}`,
   );
 
 const get_time_metrics_by_month = (post_type, field, year) =>
@@ -136,9 +136,8 @@ function get_data() {
   const { post_type, field_type, field, year } = window.dtMetricsProject.state;
 
   const is_all_time = year === 'all-time';
-  const data = is_all_time
-    ? get_time_metrics_by_year(post_type, field)
-    : get_time_metrics_by_month(post_type, field, year);
+  const metrics_year = is_all_time ? new Date().getFullYear() : year;
+  const data = get_time_metrics_by_year(post_type, field, metrics_year);
 
   const loading_spinner = document.querySelector('.loading-spinner');
   const chart_element = document.querySelector('#chart_area');
@@ -169,9 +168,7 @@ function get_data() {
             response.cumulative_offset !== undefined
               ? response.cumulative_offset
               : 0;
-          window.dtMetricsProject.data = is_all_time
-            ? format_year_data(data)
-            : format_month_data(data);
+          window.dtMetricsProject.data = format_year_data(data);
           window.dtMetricsProject.data_changes = format_time_units(
             response.changes,
           );
@@ -807,7 +804,17 @@ function initialise_chart(id) {
 
   const category_axis = chart.xAxes.push(new window.am4charts.CategoryAxis());
   category_axis.dataFields.category = 'label';
-  category_axis.title.text = year === 'all-time' ? all_time : String(year);
+  category_axis.renderer.grid.template.location = 0;
+  category_axis.renderer.minGridDistance = 30;
+  category_axis.renderer.labels.template.adapter.add(
+    'dy',
+    function (dy, target) {
+      if (target.dataItem && target.dataItem.index & (2 == 2)) {
+        return dy + 25;
+      }
+      return dy;
+    },
+  );
 
   const value_axis = chart.yAxes.push(new window.am4charts.ValueAxis());
   value_axis.maxPrecision = 0;

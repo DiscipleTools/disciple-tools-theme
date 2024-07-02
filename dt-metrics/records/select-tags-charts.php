@@ -125,7 +125,7 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
         );
 
         register_rest_route(
-            $namespace, '/metrics/time_metrics_by_year/(?P<post_type>\w+)/(?P<field>\w+)', [
+            $namespace, '/metrics/time_metrics_by_year/(?P<post_type>\w+)/(?P<field>\w+)/(?P<year>\d+)', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'time_metrics_by_year' ],
@@ -156,20 +156,21 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
             wp_send_json_error( $error );
         }
 
-        return $this->get_stats_by_month( $url_params['post_type'], $url_params['field'], $url_params['year'] );
+        return $this->get_stats_by_month( $post_type, $field, $year );
     }
 
     public function time_metrics_by_year( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
         $field = $url_params['field'];
+        $year = $url_params['year'];
 
-        $error = $this->check_input( $post_type, $field );
+        $error = $this->check_input( $post_type, $field, $year );
         if ( $error ) {
             wp_send_json_error( $error );
         }
 
-        return $this->get_stats_by_year( $url_params['post_type'], $url_params['field'] );
+        return $this->get_stats_by_year( $post_type, $field, $year );
     }
 
     public function field_settings( WP_REST_Request $request ): array {
@@ -186,10 +187,10 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
         }
     }
 
-    public function get_stats_by_year( $post_type, $field ): array {
+    public function get_stats_by_year( $post_type, $field, $year ): array {
         $field_settings = $this->get_field_settings( $post_type );
         if ( in_array( $field_settings[$field]['type'], $this->post_field_types_filter ) ) {
-            return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field );
+            return DT_Counter_Post_Stats::get_multi_field_by_year( $post_type, $field, $year );
         } else {
             return [];
         }
