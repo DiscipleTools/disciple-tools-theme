@@ -893,25 +893,6 @@ if (!defined('DT_FUNCTIONS_READY')) {
                             </div>
                         </div>
                     </div>
-            <?php elseif ($field_type === 'communication_channel'): ?>
-                    <div id="edit-<?php echo esc_html($field_key) ?>">
-                    <?php foreach ($post[$field_key] ?? [] as $field_value): ?>
-                            <div class="input-group">
-                                <input id="<?php echo esc_html($field_value['key']) ?>" type="text"
-                                    data-field="<?php echo esc_html($field_key); ?>" value="<?php echo esc_html($field_value['value']) ?>"
-                                    class="dt-communication-channel input-group-field" dir="auto" <?php echo esc_html($disabled); ?> />
-                                <div class="input-group-button">
-                                    <button
-                                        class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html($field_key); ?>"
-                                        data-field="<?php echo esc_html($field_key); ?>" data-key="<?php echo esc_html($field_value['key']); ?>"
-                                    <?php echo esc_html($disabled); ?>>&times;</button>
-                                </div>
-                            </div>
-                    <?php endforeach;
-                    if (empty($post[$field_key]) ?? []): ?>
-
-                    <?php endif ?>
-                    </div>
             <?php elseif ($field_type === 'user_select'): ?>
                     <div id="<?php echo esc_html($field_key); ?>" class="<?php echo esc_html($display_field_id); ?> dt_user_select">
                         <var id="<?php echo esc_html($display_field_id); ?>-result-container"
