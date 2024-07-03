@@ -426,21 +426,13 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             $multi_values = self::get_meta_values( $field );
         }
 
-        // Build dynamic sql for counting meta_values
-        $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
-        }, $multi_values);
-        $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
-        if ( strlen( $count_dynamic_values_query ) !== 0 ) {
-            $count_dynamic_values_query = ", $count_dynamic_values_query";
-        }
-
         $results = $wpdb->get_results(
             // phpcs:disable
             $wpdb->prepare( "
                 SELECT
-                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month
-                    $count_dynamic_values_query
+                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month,
+                    pm.meta_value AS value,
+                    count( Distinct( pm.post_id)) AS count
                 FROM $wpdb->posts AS p
                 JOIN $wpdb->postmeta AS pm
                     ON p.ID = pm.post_id
@@ -450,10 +442,13 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 WHERE p.post_type = %s
                     AND pm.meta_key = %s
                     AND log.meta_value = pm.meta_value
+                    AND pm.meta_value != ''
+                    AND pm.meta_value IS NOT NULL
                     AND log.hist_time = (
                         SELECT MAX( log2.hist_time )
                         FROM $wpdb->dt_activity_log AS log2
                         WHERE log.meta_value = log2.meta_value
+                        AND log.meta_value = pm.meta_value
                         AND log.object_id = log2.object_id
                         AND log2.hist_time >= %s
                         AND log2.hist_time <= %s
@@ -464,14 +459,14 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     AND log.hist_time <= %s
                 GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
-            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
+            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
             // phpcs:enable
         );
 
         $cumulative_offset = self::get_multi_field_cumulative_offsets( $post_type, $field, $start, $multi_values );
 
         return [
-            'data' => $results,
+            'data' => self::reshape_multi_field_results( $results, 'month' ),
             'cumulative_offset' => $cumulative_offset,
             'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, true )
         ];
@@ -487,34 +482,13 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
-        // get possible values of multi select field
-        $multi_values = [];
-
-        $field_settings = DT_Posts::get_post_field_settings( $post_type );
-        $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : [];
-
-        if ( !empty( $default_values ) ) {
-            $multi_values = array_keys( $default_values );
-        } else {
-            // there are no defaults hardcoded, so we will need to get them
-            // from the metadata
-            $multi_values = self::get_meta_values( $field );
-        }
-
-        $count_dynamic_values = array_map( function ( $value ) {
-            return "COUNT( CASE WHEN log.meta_value = '" . esc_sql( $value ) . "' THEN log.meta_value END ) AS `" . esc_sql( $value ) . '`';
-        }, $multi_values);
-        $count_dynamic_values_query = implode( ', ', $count_dynamic_values );
-        if ( strlen( $count_dynamic_values_query ) !== 0 ) {
-            $count_dynamic_values_query = ", $count_dynamic_values_query";
-        }
-
         $results = $wpdb->get_results(
             // phpcs:disable
             $wpdb->prepare( "
                 SELECT
-                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year
-                    $count_dynamic_values_query
+                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
+                    pm.meta_value AS value,
+                    count( Distinct( pm.post_id)) AS count
                 FROM $wpdb->posts AS p
                 JOIN $wpdb->postmeta AS pm
                     ON p.ID = pm.post_id
@@ -524,28 +498,60 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 WHERE p.post_type = %s
                     AND pm.meta_key = %s
                     AND log.meta_value = pm.meta_value
+                    AND pm.meta_value != ''
+                    AND pm.meta_value IS NOT NULL
                     AND log.hist_time = (
                         SELECT MAX( log2.hist_time )
                         FROM $wpdb->dt_activity_log AS log2
                         WHERE log.meta_value = log2.meta_value
-                        AND log.object_id = log2.object_id
-                        AND log2.hist_time >= %s
-                        AND log2.hist_time <= %s
-                        AND log2.meta_key = %s
+                            AND log.meta_value = pm.meta_value
+                            AND log.object_id = log2.object_id
+                            AND log2.hist_time >= %s
+                            AND log2.hist_time <= %s
+                            AND log2.meta_key = %s
                     )
                     AND log.object_type = %s
                     AND log.hist_time >= %s
                     AND log.hist_time <= %s
-                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) ), pm.meta_value
                 ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
-            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end )
+            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
             // phpcs:enable
         );
 
         return [
-            'data' => $results,
+            'data' => self::reshape_multi_field_results( $results, 'year' ),
             'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, false )
         ];
+    }
+
+    private static function reshape_multi_field_results( $multi_field_results, $time_unit_label ): array {
+        $reshaped_results = [];
+        $grouped_results = [];
+        foreach ( $multi_field_results as $value_count ) {
+            $time_unit = $value_count[ $time_unit_label ];
+            $value = $value_count['value'];
+            $count = $value_count['count'];
+
+            if ( !isset( $grouped_results[ $time_unit ] ) ) {
+                $grouped_results[ $time_unit ] = [];
+            }
+            $grouped_results[ $time_unit ][] = [
+                'value' => $value,
+                'count' => $count
+            ];
+        }
+
+        foreach ( $grouped_results as $time_unit => $grouped_result ) {
+            $updated_grouping = [];
+            $updated_grouping[ $time_unit_label ] = $time_unit;
+            foreach ( $grouped_result as $group ) {
+                $updated_grouping[ $group['value'] ] = $group['count'];
+            }
+            $reshaped_results[] = $updated_grouping;
+        }
+
+        return $reshaped_results;
     }
 
     public static function get_connection_field_by_state_month( $post_type, $field, $connection_type, $start, $end ) {
@@ -936,10 +942,13 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                             WHERE p.post_type = %s
                                 AND pm.meta_key = %s
                                 AND log.meta_value = pm.meta_value
+                                AND pm.meta_value != ''
+                                AND pm.meta_value IS NOT NULL
                                 AND log.hist_time = (
                                     SELECT MAX( log2.hist_time )
                                     FROM $wpdb->dt_activity_log AS log2
                                     WHERE log.meta_value = log2.meta_value
+                                    AND log.meta_value = pm.meta_value
                                     AND log.object_id = log2.object_id
                                     AND log2.hist_time >= %s
                                     AND log2.hist_time <= %s
@@ -964,10 +973,13 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                             WHERE p.post_type = %s
                                 AND pm.meta_key = %s
                                 AND log.meta_value = pm.meta_value
+                                AND pm.meta_value != ''
+                                AND pm.meta_value IS NOT NULL
                                 AND log.hist_time = (
                                     SELECT MAX( log2.hist_time )
                                     FROM $wpdb->dt_activity_log AS log2
                                     WHERE log.meta_value = log2.meta_value
+                                    AND log.meta_value = pm.meta_value
                                     AND log.object_id = log2.object_id
                                     AND log2.hist_time >= %s
                                     AND log2.hist_time <= %s

@@ -1251,7 +1251,9 @@ function formatCompoundYearData(yearlyData) {
   const formattedYearlyData = [];
   let i = 0;
   for (let year = minYear; year < maxYear + 1; year++, i++) {
-    const yearData = yearlyData.find((data) => data.year === String(year));
+    const yearData = yearlyData.find(
+      (data) => String(data.year) === String(year),
+    );
 
     cumulativeTotals = calculateCumulativeTotals(
       keys,
@@ -1347,7 +1349,9 @@ function formatCompoundMonthData(monthlyData) {
     }
 
     const monthData =
-      monthlyData.find((mData) => mData.month === String(monthNumber)) || {};
+      monthlyData.find(
+        (mData) => String(mData.month) === String(monthNumber),
+      ) || {};
     cumulativeTotals = calculateCumulativeTotals(
       keys,
       monthData,

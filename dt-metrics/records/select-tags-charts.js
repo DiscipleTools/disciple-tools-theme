@@ -332,7 +332,9 @@ function format_compound_year_data(yearly_data) {
   const formatted_yearly_data = [];
   let i = 0;
   for (let year = min_year; year < max_year + 1; year++, i++) {
-    const year_data = yearly_data.find((data) => data.year === String(year));
+    const year_data = yearly_data.find(
+      (data) => String(data.year) === String(year),
+    );
 
     cumulative_totals = calculate_cumulative_totals(
       keys,
@@ -361,7 +363,9 @@ function format_simple_year_data(yearly_data) {
   const formatted_yearly_data = [];
   let i = 0;
   for (let year = min_year; year < max_year + 1; year++, i++) {
-    const year_data = yearly_data.find((data) => data.year === String(year));
+    const year_data = yearly_data.find(
+      (data) => String(data.year) === String(year),
+    );
     const count = year_data ? parseInt(year_data.count) : 0;
     cumulative_total += count;
 
@@ -436,7 +440,7 @@ function format_simple_month_data(monthly_data) {
     }
 
     const month_data = monthly_data.find(
-      (m_data) => m_data.month === String(month_number),
+      (m_data) => String(m_data.month) === String(month_number),
     );
     const count = month_data ? parseInt(month_data.count) : 0;
     cumulative_total = cumulative_total + count;
@@ -484,8 +488,9 @@ function format_compound_month_data(monthly_data) {
     }
 
     const month_data =
-      monthly_data.find((m_data) => m_data.month === String(month_number)) ||
-      {};
+      monthly_data.find(
+        (m_data) => String(m_data.month) === String(month_number),
+      ) || {};
     cumulative_totals = calculate_cumulative_totals(
       keys,
       month_data,
