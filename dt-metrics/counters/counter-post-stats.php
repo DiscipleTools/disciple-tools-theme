@@ -457,7 +457,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                     AND log.object_type = %s
                     AND log.hist_time >= %s
                     AND log.hist_time <= %s
-                GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+                GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) ), pm.meta_value
                 ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
             ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
             // phpcs:enable
