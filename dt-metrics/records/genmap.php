@@ -85,7 +85,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters );
 
         // Ensure empty hits on personal based slugs, still ensure user node is accessible.
-        if ( ( $focus_id !== 0 ) && !$generated_genmap['shared'] && empty( $generated_genmap['children'] ) ) {
+        if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
             $generated_genmap['shared'] = 1;
             $generated_genmap['name'] = $user->display_name;
         }
@@ -263,7 +263,11 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             }
         }
 
+        // Ensure to force a record node share for administrators.
         $shared = intval( $menu_data['items'][ $parent_id ]['shared'] ?? 0 );
+        if ( dt_is_administrator() || current_user_can( 'manage_dt' ) || ( isset( $filters['post_type'] ) && current_user_can( 'access_' . $filters['post_type'] ) ) ) {
+            $shared = 1;
+        }
         $array = [
             'id' => $parent_id,
             'name' => ( ( $shared === 1 ) || ( $gen === 0 ) ) ? ( $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM' ) : '',
