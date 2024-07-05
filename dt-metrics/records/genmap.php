@@ -369,7 +369,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
             // phpcs:disable
             $query = $wpdb->get_results( $wpdb->prepare( "
-                SELECT post_id, meta_key, meta_value
+                SELECT DISTINCT post_id, meta_key, meta_value
                 FROM $wpdb->postmeta
                 WHERE post_id IN (%1s) AND meta_key IN ($data_layer_fields_array_sql)
             ", $post_ids_array_sql ), ARRAY_A );

@@ -33,7 +33,7 @@ jQuery(document).ready(function ($) {
                     <select id="select_post_type_fields" style="width: 200px;"></select>
                   </span>
                   <span id="show_data_layer_title" class="button select-button empty-select-button" style="margin-top: 5px; margin-left: 10px;">
-                    <i class="mdi mdi-image-filter-none"></i>
+                    <i class="mdi mdi-filter-plus-outline" style="font-size: 15px;"></i>
                   </span>
                   <span style="display: inline-block; margin-right: 10px; margin-left: 10px;" class="show-closed-switch">
                       ${window.lodash.escape(translations.show_archived)}
@@ -93,10 +93,10 @@ jQuery(document).ready(function ($) {
 
           <style>
             .orgchart .hierarchy .custom-adjusted-connect-left:first-child::before {
-                left: 70px;
+                left: 54px;
             }
             .orgchart .hierarchy .custom-adjusted-connect-width:last-child::before {
-                width: 70px;
+                width: 55px;
             }
           </style>
        `);
@@ -158,13 +158,13 @@ jQuery(document).ready(function ($) {
           var nodeTemplate = function (data) {
             return `
             <div class="title" data-item-id="${window.lodash.escape(data.id)}">${window.lodash.escape(data.name)}</div>
-            <div class="content" style="${has_data_layers ? 'height: 110px;' : ''} padding-left: 5px; padding-right: 5px; overflow: auto;">${window.lodash.escape(data.content)}</div>
+            <div class="content" style="${has_data_layers ? 'height: 80px;' : ''} padding-left: 5px; padding-right: 5px; ">${window.lodash.escape(data.content)}</div>
           `;
           };
 
           var createNode = function ($node, data) {
             if (has_data_layers) {
-              $node.css('width', 'auto');
+              $node.css('width', '110px');
             }
           };
 
@@ -204,6 +204,7 @@ jQuery(document).ready(function ($) {
                   const node = $(chart).find(`#${id}.node`);
                   if (node) {
                     const color = '#808080';
+                    $(node).css('background-color', color);
                     $(node).find('.title').text('.......');
                     $(node).find('.title').css('background-color', color);
                     $(node).find('.content').css('background-color', color);
@@ -239,6 +240,7 @@ jQuery(document).ready(function ($) {
                     const node = $(chart).find(`#${id}.node`);
                     if (node) {
                       const color = '#808080';
+                      $(node).css('background-color', color);
                       $(node).find('.title').css('background-color', color);
                       $(node).find('.content').css('background-color', color);
                       $(node).find('.content').css('border', '0px');
@@ -294,33 +296,120 @@ jQuery(document).ready(function ($) {
                   let collated_data_layer_content =
                     collate_data_layer_content(post_id);
 
+                  // Toggle between label/icon node displays.
+                  const use_icons = true;
+
+                  let label_counter = 0;
+                  const label_counter_offset = 4;
+
+                  let icons_total = 0;
+                  let icons_total_limit = 6;
+                  let icons_total_limit_counter = 0;
+                  let icons_per_line_limit = 4;
+                  let icons_per_line_limit_counter = 0;
+
                   // Convert collated data layer content to html representation.
-                  let data_layer_content_html = ``;
+                  let data_layer_content_html = use_icons ? `<br>` : ``;
                   for (const [field_id, content] of Object.entries(
                     collated_data_layer_content,
                   )) {
-                    switch (post_type_field_settings[field_id]['type']) {
-                      case 'date':
-                      case 'key_select': {
-                        data_layer_content_html += `<br><b>${content['label']}</b><br> ${content['content']}`;
-                        break;
+                    if (!use_icons) {
+                      if (++label_counter < label_counter_offset) {
+                        switch (post_type_field_settings[field_id]['type']) {
+                          case 'date':
+                          case 'key_select': {
+                            data_layer_content_html += `<br> ${content['content']}`;
+                            break;
+                          }
+                          case 'tags':
+                          case 'multi_select': {
+                            content['content'].forEach((label) => {
+                              if (++label_counter < label_counter_offset) {
+                                data_layer_content_html += `<br> ${label}`;
+                              } else if (
+                                label_counter === label_counter_offset
+                              ) {
+                                data_layer_content_html += `<br>.......`;
+                              }
+                            });
+                            break;
+                          }
+                        }
+                      } else if (label_counter === label_counter_offset) {
+                        data_layer_content_html += `<br>.......`;
                       }
-                      case 'tags':
-                      case 'multi_select': {
-                        data_layer_content_html += `<br><b>${content['label']}</b><br> ${content['content'].join('<br>')}`;
-                        break;
+                    } else {
+                      const collated_data_layer_field_icons =
+                        collate_data_layer_field_icons(
+                          post_type_field_settings[field_id],
+                          content['content'],
+                        );
+
+                      // Ensure to default to showing default icons over field icon.
+                      let icons = [];
+                      if (
+                        collated_data_layer_field_icons['default_icons']
+                          .length > 0
+                      ) {
+                        icons =
+                          collated_data_layer_field_icons['default_icons'];
+                      } else if (
+                        collated_data_layer_field_icons['field_icons'].length >
+                        0
+                      ) {
+                        icons = collated_data_layer_field_icons['field_icons'];
                       }
+
+                      // Proceed with displaying icons, accordingly by line limits.
+                      icons_total +=
+                        icons.length +
+                        collated_data_layer_field_icons['no_icons_counter'];
+                      icons.forEach((icon) => {
+                        if (icons_total_limit_counter < icons_total_limit) {
+                          data_layer_content_html += icon;
+
+                          // Start a new line if icons per line limit reached.
+                          if (
+                            icons_per_line_limit_counter < icons_per_line_limit
+                          ) {
+                            data_layer_content_html += '&nbsp;';
+                            icons_per_line_limit_counter++;
+
+                            if (
+                              icons_per_line_limit_counter >=
+                              icons_per_line_limit
+                            ) {
+                              data_layer_content_html += '<br>';
+                              icons_per_line_limit_counter = 0;
+                            }
+                          }
+                        } else if (
+                          icons_total_limit_counter === icons_total_limit
+                        ) {
+                          // Determine if a plus extra count is required.
+                          let plus_count =
+                            icons_total - icons_total_limit_counter;
+                          if (plus_count > 0) {
+                            data_layer_content_html += `<span style="font-size: 12px; font-weight: bold;">+${plus_count}</span>`;
+                          }
+                        }
+                        icons_total_limit_counter++;
+                      });
                     }
                   }
 
                   // Update post node's content.
-                  const node_content = $(node).find('.content').first();
-                  $(node_content).html(
-                    `${$(node_content).text()}${data_layer_content_html}`,
-                  );
+                  const initial_node_content = $(node)
+                    .find('.content')
+                    .first()
+                    .text();
+                  $(node)
+                    .find('.content')
+                    .html(`${initial_node_content}${data_layer_content_html}`);
 
                   // Finally, adjust node color accordingly, by specified node color.
                   if (data_layer_node_color) {
+                    $(node).css('background-color', data_layer_node_color);
                     $(node)
                       .find('.title')
                       .css('background-color', data_layer_node_color);
@@ -625,6 +714,89 @@ jQuery(document).ready(function ($) {
     }
 
     return data_layer_content_raw;
+  }
+
+  function collate_data_layer_field_icons(field_settings, content) {
+    let field_icons = [];
+    let default_icons = [];
+    let no_icons_counter = 0;
+
+    // Determine if there are any available field level icons.
+    let field_icon = null;
+    if (field_settings['icon']) {
+      field_icon = field_settings['icon'];
+    } else if (field_settings['font-icon']) {
+      field_icon = field_settings['font-icon'];
+    }
+
+    // Generate corresponding icon html accordingly, based on identified field icon.
+    if (field_icon) {
+      field_icon = field_icon.trim().toLowerCase();
+      if (field_icon.startsWith('mdi')) {
+        field_icons.push(
+          `<i class="mdi ${field_icon}" style="font-size: 20px;"></i>`,
+        );
+      } else {
+        field_icons.push(
+          `<img src="${field_icon}" alt="${field_settings['name']}" width="20px" height="20px"/>`,
+        );
+      }
+    } else {
+      no_icons_counter++;
+    }
+
+    // Extract default icons for specific field types.
+    switch (field_settings['type']) {
+      case 'key_select':
+      case 'multi_select': {
+        if (field_settings['default'] && content.length > 0) {
+          for (const [option_id, option] of Object.entries(
+            field_settings['default'],
+          )) {
+            if (content.includes(option['label'])) {
+              if (
+                option?.icon &&
+                option.icon.trim().toLowerCase().startsWith('mdi')
+              ) {
+                default_icons.push(
+                  `<i class="mdi ${option.icon}" style="font-size: 20px;"></i>`,
+                );
+              } else if (
+                option?.icon &&
+                option.icon.trim().toLowerCase().startsWith('http')
+              ) {
+                default_icons.push(
+                  `<img src="${option.icon}" alt="${option['label']}" width="20px" height="20px"/>`,
+                );
+              } else if (
+                option['font-icon'] &&
+                option['font-icon'].trim().toLowerCase().startsWith('mdi')
+              ) {
+                default_icons.push(
+                  `<i class="mdi ${option['font-icon']}" style="font-size: 20px;"></i>`,
+                );
+              } else if (
+                option['font-icon'] &&
+                option['font-icon'].trim().toLowerCase().startsWith('http')
+              ) {
+                default_icons.push(
+                  `<img src="${option['font-icon']}" alt="${option['label']}" width="20px" height="20px"/>`,
+                );
+              } else {
+                no_icons_counter++;
+              }
+            }
+          }
+        }
+        break;
+      }
+    }
+
+    return {
+      field_icons: field_icons,
+      default_icons: default_icons,
+      no_icons_counter: no_icons_counter,
+    };
   }
 
   function load_data_layer_settings(callback = null) {
