@@ -82,7 +82,12 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             'archived_key' => $post_settings['status_field']['archived_key'] ?? ''
         ];
         $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
-        $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters );
+
+        $can_list_all = current_user_can( 'list_all_' . $post_type );
+        if ( $post_type === 'contacts' && current_user_can( 'dt_all_access_contacts' ) ){
+            $can_list_all = true;
+        }
+        $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters, $can_list_all );
 
         // Ensure empty hits on personal based slugs, still ensure user node is accessible.
         if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
@@ -223,7 +228,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         //phpcs:enable
     }
 
-    public function get_genmap( $query, $depth_limit, $focus_id, $filters = [] ) {
+    public function get_genmap( $query, $depth_limit, $focus_id, $filters = [], $can_list_all = false ){
 
         if ( is_wp_error( $query ) ){
             return $this->_circular_structure_error( $query );
@@ -233,7 +238,9 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
         $menu_data = $this->prepare_menu_array( $query );
 
-        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters );
+        $user_contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+
+        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters, $can_list_all, $user_contact_id );
     }
 
     public function prepare_menu_array( $query ) {
@@ -251,7 +258,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function build_array( $parent_id, $menu_data, $gen, $depth_limit, $filters = [] ) {
+    public function build_array( $parent_id, $menu_data, $gen, $depth_limit, $filters = [], $can_list_all = false, $user_contact_id = null ) {
         $children = [];
         if ( isset( $menu_data['parents'][$parent_id] ) && ( $gen < $depth_limit ) )
         {
@@ -259,13 +266,13 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
-                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit, $filters );
+                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit, $filters, $can_list_all, $user_contact_id );
             }
         }
 
         // Ensure to force a record node share for administrators.
         $shared = intval( $menu_data['items'][ $parent_id ]['shared'] ?? 0 );
-        if ( dt_is_administrator() || current_user_can( 'manage_dt' ) || ( isset( $filters['post_type'] ) && current_user_can( 'access_' . $filters['post_type'] ) ) ) {
+        if ( $parent_id === $user_contact_id ){
             $shared = 1;
         }
         $array = [
