@@ -862,7 +862,7 @@ function displayPostListModalRecordsHandler(records, limit) {
           <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_no)}</th>
+                    <th></th>
                     <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_title)}</th>
                 </tr>
             </thead>

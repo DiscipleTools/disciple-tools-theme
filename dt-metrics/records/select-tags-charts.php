@@ -29,7 +29,7 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
             return;
         }
 
-        $this->title = __( 'Select & Tags Charts', 'disciple_tools' );
+        $this->title = __( 'Field Cumulative Values', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
@@ -91,12 +91,12 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
                 'data' => [],
                 'translations' => [
                     'title_select_tags_charts' => $this->title,
+                    'description' => __( 'This chart shows the total number for each field value at the end of the selected date.', 'disciple_tools' ),
                     'post_type_select_label' => __( 'Record Type', 'disciple_tools' ),
                     'post_field_select_label' => __( 'Field', 'disciple_tools' ),
                     'date_select_label' => __( 'Date', 'disciple_tools' ),
                     'all_time' => __( 'All Time', 'disciple_tools' ),
                     'modal_title' => __( 'Records', 'disciple_tools' ),
-                    'modal_table_head_no' => __( 'No.', 'disciple_tools' ),
                     'modal_table_head_title' => __( 'Title', 'disciple_tools' ),
                     'modal_no_records' => __( 'No Records Available', 'disciple_tools' )
                 ],

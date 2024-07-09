@@ -32,6 +32,7 @@ function display_select_tags_charts() {
   const chart = document.querySelector('#chart');
   const {
     title_select_tags_charts,
+    description,
     post_type_select_label,
     post_field_select_label,
     date_select_label,
@@ -46,6 +47,7 @@ function display_select_tags_charts() {
 
   chart.innerHTML = `
     <div class="section-header">${title_select_tags_charts}</div>
+      <p>${description}</p>
       <section class="chart-controls">
         <label class="section-subheader" for="post_type_select">${post_type_select_label}</label>
         <select class="select-field" id="post_type_select">
@@ -740,7 +742,7 @@ function display_post_list_modal_records_handler(records, limit) {
           <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_no)}</th>
+                    <th></th>
                     <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_title)}</th>
                 </tr>
             </thead>
