@@ -60,10 +60,22 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type ]', [ 'status' => 400 ] );
         }
 
+        $user = wp_get_current_user();
         $post_type = $params['post_type'];
         $post_settings = DT_Posts::get_post_settings( $post_type );
 
+        // Determine scope of query focus, based on specified slug.
+        $slug = $params['slug'] ?? 'personal';
+        $focus_id = $params['focus_id'] ?? 0;
+        if ( ( $post_type === 'contacts' ) && ( $slug === 'personal' ) ) {
+            $user_contact_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+            if ( intval( $user_contact_id ) ){
+                $focus_id = $user_contact_id;
+            }
+        }
+
         $filters = [
+            'slug' => $slug,
             'post_type' => $post_type,
             'show_archived' => $params['show_archived'] ?? false,
             'status_key' => $post_settings['status_field']['status_key'] ?? '',
@@ -71,7 +83,19 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         ];
         $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
 
-        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0, $filters );
+        $can_list_all = current_user_can( 'list_all_' . $post_type );
+        if ( $post_type === 'contacts' && current_user_can( 'dt_all_access_contacts' ) ){
+            $can_list_all = true;
+        }
+        $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters, $can_list_all );
+
+        // Ensure empty hits on personal based slugs, still ensure user node is accessible.
+        if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
+            $generated_genmap['shared'] = 1;
+            $generated_genmap['name'] = $user->display_name;
+        }
+
+        return $generated_genmap;
     }
 
     public function scripts() {
@@ -165,42 +189,46 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         // Determine archived meta values.
         $status_key = $filters['status_key'] ?? '';
-        $query = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT
-                      a.ID         as id,
-                      0            as parent_id,
-                      a.post_title as name,
-                      ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status,
-                      ( SELECT EXISTS( SELECT p_shared.user_id FROM $wpdb->dt_share as p_shared WHERE p_shared.user_id = %d AND p_shared.post_id = a.ID ) ) as shared
-                    FROM $wpdb->posts as a
-                    WHERE a.post_type = %s
-                    AND a.ID %1s IN (
-                      SELECT DISTINCT (p2p_from)
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = %s
-                      GROUP BY p2p_from
-                    )
-                      AND a.ID %1s IN (
-                      SELECT DISTINCT (p2p_to)
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = %s
-                      GROUP BY p2p_to
-                    )
-                    UNION
-                    SELECT
-                      p.%1s  as id,
-                      p.%1s    as parent_id,
-                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name,
-                      ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status,
-                      ( SELECT EXISTS( SELECT u_shared.user_id FROM $wpdb->dt_share as u_shared WHERE u_shared.user_id = %d AND u_shared.post_id = p.%1s ) ) as shared
-                    FROM $wpdb->p2p as p
-                    WHERE p.p2p_type = %s;
-                ", $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type ), ARRAY_A );
 
-        return $query;
+        // Prepare sql shape to be executed.
+        $prepared_query = $wpdb->prepare( "
+                SELECT
+                  a.ID         as id,
+                  0            as parent_id,
+                  a.post_title as name,
+                  ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status,
+                  ( SELECT EXISTS( SELECT p_shared.user_id FROM $wpdb->dt_share as p_shared WHERE p_shared.user_id = %d AND p_shared.post_id = a.ID ) ) as shared
+                FROM $wpdb->posts as a
+                WHERE a.post_type = %s
+                AND a.ID %1s IN (
+                  SELECT DISTINCT (p2p_from)
+                  FROM $wpdb->p2p
+                  WHERE p2p_type = %s
+                  GROUP BY p2p_from
+                )
+                  AND a.ID %1s IN (
+                  SELECT DISTINCT (p2p_to)
+                  FROM $wpdb->p2p
+                  WHERE p2p_type = %s
+                  GROUP BY p2p_to
+                )
+                UNION
+                SELECT
+                  p.%1s  as id,
+                  p.%1s    as parent_id,
+                  (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name,
+                  ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status,
+                  ( SELECT EXISTS( SELECT u_shared.user_id FROM $wpdb->dt_share as u_shared WHERE u_shared.user_id = %d AND u_shared.post_id = p.%1s ) ) as shared
+                FROM $wpdb->p2p as p
+                WHERE p.p2p_type = %s;
+            ", $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type );
+
+        //phpcs:disable
+        return $wpdb->get_results( $prepared_query, ARRAY_A );
+        //phpcs:enable
     }
 
-    public function get_genmap( $query, $depth_limit, $focus_id, $filters = [] ) {
+    public function get_genmap( $query, $depth_limit, $focus_id, $filters = [], $can_list_all = false ){
 
         if ( is_wp_error( $query ) ){
             return $this->_circular_structure_error( $query );
@@ -210,7 +238,9 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
         $menu_data = $this->prepare_menu_array( $query );
 
-        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters );
+        $user_contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+
+        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters, $can_list_all, $user_contact_id );
     }
 
     public function prepare_menu_array( $query ) {
@@ -228,7 +258,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function build_array( $parent_id, $menu_data, $gen, $depth_limit, $filters = [] ) {
+    public function build_array( $parent_id, $menu_data, $gen, $depth_limit, $filters = [], $can_list_all = false, $user_contact_id = null ) {
         $children = [];
         if ( isset( $menu_data['parents'][$parent_id] ) && ( $gen < $depth_limit ) )
         {
@@ -236,11 +266,15 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
-                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit, $filters );
+                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit, $filters, $can_list_all, $user_contact_id );
             }
         }
 
+        // Ensure to force a record node share for administrators.
         $shared = intval( $menu_data['items'][ $parent_id ]['shared'] ?? 0 );
+        if ( $parent_id === $user_contact_id ){
+            $shared = 1;
+        }
         $array = [
             'id' => $parent_id,
             'name' => ( ( $shared === 1 ) || ( $gen === 0 ) ) ? ( $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM' ) : '',
