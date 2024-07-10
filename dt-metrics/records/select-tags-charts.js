@@ -14,12 +14,6 @@ const get_time_metrics_by_year = (post_type, field, year) =>
     `metrics/time_metrics_by_year/${post_type}/${field}/${year}`,
   );
 
-const get_time_metrics_by_month = (post_type, field, year) =>
-  window.makeRequest(
-    'GET',
-    `metrics/time_metrics_by_month/${post_type}/${field}/${year}`,
-  );
-
 const get_metrics_cumulative_posts = (data) =>
   window.makeRequest('POST', `metrics/cumulative-posts`, data);
 
@@ -419,97 +413,6 @@ function calculate_cumulative_totals(
  *
  * Deals with data coming back from different types of fields (e.g. multi_select, date etc.)
  */
-function format_month_data(monthly_data) {
-  const { field_type } = window.dtMetricsProject.state;
-
-  if (window.dtMetricsProject.multi_fields.includes(field_type)) {
-    return format_compound_month_data(monthly_data);
-  } else {
-    return format_simple_month_data(monthly_data);
-  }
-}
-
-function format_simple_month_data(monthly_data) {
-  const month_labels = window.SHAREDFUNCTIONS.get_months_labels();
-
-  let cumulative_total = window.dtMetricsProject.cumulative_offset;
-  const formatted_monthly_data = month_labels.map((month_label, i) => {
-    const month_number = i + 1;
-    if (is_in_future(month_number)) {
-      return {
-        month: month_label,
-      };
-    }
-
-    const month_data = monthly_data.find(
-      (m_data) => String(m_data.month) === String(month_number),
-    );
-    const count = month_data ? parseInt(month_data.count) : 0;
-    cumulative_total = cumulative_total + count;
-
-    return {
-      month: month_label,
-      count: count,
-      cumulative_count: cumulative_total,
-    };
-  });
-
-  return formatted_monthly_data;
-}
-
-function is_in_future(month_number) {
-  const { year } = window.dtMetricsProject.state;
-  const now = new Date();
-  return (
-    now.getUTCFullYear() === parseInt(year) && month_number > now.getMonth() + 1
-  );
-}
-
-function format_compound_month_data(monthly_data) {
-  const month_labels = window.SHAREDFUNCTIONS.get_months_labels();
-  const keys = get_data_keys(monthly_data);
-
-  const cumulative_offsets = window.dtMetricsProject.cumulative_offset;
-  let cumulative_totals = {};
-  const cumulative_keys = make_cumulative_keys(keys);
-
-  // initialise the totals with the offset data
-  cumulative_totals = calculate_cumulative_totals(
-    keys,
-    cumulative_offsets,
-    cumulative_totals,
-    cumulative_keys,
-  );
-
-  const formatted_monthly_data = month_labels.map((month_label, i) => {
-    const month_number = i + 1;
-    if (is_in_future(month_number)) {
-      return {
-        month: month_label,
-      };
-    }
-
-    const month_data =
-      monthly_data.find(
-        (m_data) => String(m_data.month) === String(month_number),
-      ) || {};
-    cumulative_totals = calculate_cumulative_totals(
-      keys,
-      month_data,
-      cumulative_totals,
-      cumulative_keys,
-    );
-
-    return {
-      ...month_data,
-      ...cumulative_totals,
-      month: month_label,
-    };
-  });
-
-  return formatted_monthly_data;
-}
-
 function fetch_url_search_params() {
   const url_search_params = new URLSearchParams(window.location.search);
 
@@ -604,11 +507,6 @@ function create_charts() {
   create_chart('select_tags_chart', cumulative_keys, {
     single: true,
   });
-}
-
-function hide_chart(id) {
-  const chart_section = document.getElementById(id);
-  chart_section.style.display = 'none';
 }
 
 function show_chart(id) {

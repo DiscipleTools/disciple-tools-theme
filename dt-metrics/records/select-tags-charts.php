@@ -76,11 +76,6 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'site' => esc_url_raw( site_url( '/' ) ),
-                'root' => esc_url_raw( rest_url() ),
-                'theme_uri' => get_template_directory_uri(),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id' => get_current_user_id(),
                 'state' => [
                     'chart_view' => 'month',
                     'post_type' => $post_type,
@@ -101,8 +96,7 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
                     'modal_no_records' => __( 'No Records Available', 'disciple_tools' )
                 ],
                 'select_options' => [
-                    'post_type_select_options' => $this->post_type_select_options,
-                    'post_field_select_options' => $this->post_field_select_options,
+                    'post_type_select_options' => $this->post_type_select_options
                 ],
                 'multi_fields' => $this->post_field_types_filter,
                 'field_settings' => $this->field_settings
@@ -113,16 +107,6 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
     public function add_api_routes() {
         $version   = '1';
         $namespace = 'dt/v' . $version;
-
-        register_rest_route(
-            $namespace, '/metrics/time_metrics_by_month/(?P<post_type>\w+)/(?P<field>\w+)/(?P<year>\d+)', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'time_metrics_by_month' ],
-                    'permission_callback' => [ $this, 'has_permission' ],
-                ],
-            ]
-        );
 
         register_rest_route(
             $namespace, '/metrics/time_metrics_by_year/(?P<post_type>\w+)/(?P<field>\w+)/(?P<year>\d+)', [
@@ -145,20 +129,6 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
         );
     }
 
-    public function time_metrics_by_month( WP_REST_Request $request ) {
-        $url_params = $request->get_url_params();
-        $post_type = $url_params['post_type'];
-        $field = $url_params['field'];
-        $year = $url_params['year'];
-
-        $error = $this->check_input( $post_type, $field, $year );
-        if ( $error ) {
-            wp_send_json_error( $error );
-        }
-
-        return $this->get_stats_by_month( $post_type, $field, $year );
-    }
-
     public function time_metrics_by_year( WP_REST_Request $request ) {
         $url_params = $request->get_url_params();
         $post_type = $url_params['post_type'];
@@ -176,15 +146,6 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
     public function field_settings( WP_REST_Request $request ): array {
         $url_params = $request->get_url_params();
         return $this->get_field_settings( $url_params['post_type'] );
-    }
-
-    public function get_stats_by_month( $post_type, $field, $year ): array {
-        $field_settings = $this->get_field_settings( $post_type );
-        if ( in_array( $field_settings[$field]['type'], $this->post_field_types_filter ) ) {
-            return DT_Counter_Post_Stats::get_multi_field_by_month( $post_type, $field, $year );
-        } else {
-            return [];
-        }
     }
 
     public function get_stats_by_year( $post_type, $field, $year ): array {
@@ -232,6 +193,8 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
         if ( $year !== null && $year > $current_year ) {
             return new WP_Error( 'time_metrics_by_month', 'year is in the future', [ 'status' => 400 ] );
         }
+
+        return null;
     }
 }
 new DT_Metrics_Select_Tags_Charts();
