@@ -1,3 +1,4 @@
+@use "sass:map";
 /************************************************
 
 Stylesheet: Main Stylesheet
@@ -43,6 +44,13 @@ color:$light-gray;
     width: 100%;
 }
 
+html {
+    --primary-color: #{map.get($foundation-palette, "primary")};
+    --secondary-color: #{map.get($foundation-palette, "secondary")};
+    --success-color: #{map.get($foundation-palette, "success")};
+    --warning-color: #{map.get($foundation-palette, "warning")};
+    --alert-color: #{map.get($foundation-palette, "alert")};
+}
 body {
     background-color: #e2e2e2;
 }

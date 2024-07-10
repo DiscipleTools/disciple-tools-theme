@@ -118,6 +118,7 @@ jQuery(document).ready(function ($) {
         gen_depth_limit: 100,
         show_archived: jQuery('#archivedToggle').prop('checked'),
         data_layers: package_data_layer_settings(),
+        slug: window.dtMetricsProject.base_slug,
       };
 
       // Dynamically update URL parameters.

@@ -227,6 +227,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 'role__in' => [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ],
                 'order'    => 'ASC',
                 'orderby'  => 'display_name',
+                'number'    => '200',
             ]
         );
 
