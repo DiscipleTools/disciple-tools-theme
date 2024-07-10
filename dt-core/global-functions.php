@@ -745,10 +745,13 @@ if (!defined('DT_FUNCTIONS_READY')) {
                         </dt-multi-select>
                 <?php } else { ?>
                     <?php $faithMilestone = array($fields[$field_key]['default']);
-                    $faithMilestoneJson = json_encode($faithMilestone); ?>
-                        <dt-multiselect-button-group <?php echo wp_kses_post($shared_attributes) ?> name="milestones"
-                            buttons='<?php echo esc_attr($faithMilestoneJson); ?>'>
-                        <?php dt_render_icon_slot($fields[$field_key]) ?></dt-multiselect-button-group>
+                    $faithMilestoneJson = json_encode($faithMilestone);
+                    ?>
+
+                        <dt-multiselect-buttons-group context=<?php echo wp_kses_post($shared_attributes) ?>
+                            buttons='<?php echo esc_attr($faithMilestoneJson); ?>'
+                            value="<?php echo esc_attr(isset($post[$field_key]) ? json_encode($post[$field_key]) : '') ?>">
+                        <?php dt_render_icon_slot($fields[$field_key]) ?></dt-multiselect-buttons-group>
                 <?php } ?>
             <?php elseif ($field_type === 'text'): ?>
                     <dt-text <?php echo wp_kses_post($shared_attributes) ?> value="<?php echo esc_html($post[$field_key] ?? '') ?>">
