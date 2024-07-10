@@ -434,7 +434,8 @@ if (!defined('DT_FUNCTIONS_READY')) {
                 $icon_rendered = true;
                 ?>
 
-                    <i class="<?php echo esc_html($field['font-icon']); ?> <?php echo esc_html($class); ?>" style="font-size: 15px;"></i>
+                    <i class="<?php echo esc_html($field['font-icon']); ?> <?php echo esc_html($class); ?>"
+                        style="font-size: 15px;"></i>
 
                 <?php
             } else if ($default_to_name && !empty($field['name'])) {
@@ -672,9 +673,9 @@ if (!defined('DT_FUNCTIONS_READY')) {
 
             <?php if ($field_type === 'communication_channel'): ?>
                 <dt-comm-channel <?php echo wp_kses_post($shared_attributes) ?>                 <?php dt_render_icon_slot($fields[$field_key]) ?>
-                    value="<?php echo esc_attr(isset($post[$field_key]) ? json_encode($post[$field_key]) : '') ?>" requiredmessage=""
-                    icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" iconalttext="Icon Alt Text" privatelabel="" error=""
-                    onchange="">
+                    value="<?php echo esc_attr(isset($post[$field_key]) ? json_encode($post[$field_key]) : '') ?>"
+                    requiredmessage="" icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" iconalttext="Icon Alt Text"
+                    privatelabel="" error="" onchange="">
                 </dt-comm-channel>
             <?php endif; ?>
             <?php if ($field_type === 'location_meta'): ?>
@@ -747,7 +748,6 @@ if (!defined('DT_FUNCTIONS_READY')) {
                     <?php $faithMilestone = array($fields[$field_key]['default']);
                     $faithMilestoneJson = json_encode($faithMilestone);
                     ?>
-
                         <dt-multiselect-buttons-group context=<?php echo wp_kses_post($shared_attributes) ?>
                             buttons='<?php echo esc_attr($faithMilestoneJson); ?>'
                             value="<?php echo esc_attr(isset($post[$field_key]) ? json_encode($post[$field_key]) : '') ?>">

@@ -226,7 +226,6 @@ jQuery(function ($) {
 
   /* breadcrumb: new-field-type Add the new link type data to the new_post array */
 
-
   let field_settings = window.new_record_localized.post_type_settings.fields;
   $('.js-create-post').on('click', '.delete-button', function () {
     var field_type = $(this).prev('input').data('field');
