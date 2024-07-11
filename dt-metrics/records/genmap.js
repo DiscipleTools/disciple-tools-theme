@@ -93,10 +93,10 @@ jQuery(document).ready(function ($) {
 
           <style>
             .orgchart .hierarchy .custom-adjusted-connect-left:first-child::before {
-                left: 54px;
+                left: 60px;
             }
             .orgchart .hierarchy .custom-adjusted-connect-width:last-child::before {
-                width: 55px;
+                width: 60px;
             }
           </style>
        `);
@@ -159,13 +159,13 @@ jQuery(document).ready(function ($) {
           var nodeTemplate = function (data) {
             return `
             <div class="title" data-item-id="${window.lodash.escape(data.id)}">${window.lodash.escape(data.name)}</div>
-            <div class="content" style="${has_data_layers ? 'height: 80px;' : ''} padding-left: 5px; padding-right: 5px; ">${window.lodash.escape(data.content)}</div>
+            <div class="content" style="${has_data_layers ? 'height: 90px;' : ''} padding-left: 5px; padding-right: 5px; ">${window.lodash.escape(data.content)}</div>
           `;
           };
 
           var createNode = function ($node, data) {
             if (has_data_layers) {
-              $node.css('width', '110px');
+              $node.css('width', '120px');
             }
           };
 
@@ -254,6 +254,13 @@ jQuery(document).ready(function ($) {
                * Data Layer Settings
                */
 
+              const data_layer_local_storage_settings =
+                window.SHAREDFUNCTIONS.get_json_from_local_storage(
+                  DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+                  {},
+                  jQuery('#select_post_types').val(),
+                );
+
               const post_type_field_settings =
                 post_types[selected_post_type]['fields'];
               const data_layer_node_color_field = $(
@@ -297,47 +304,36 @@ jQuery(document).ready(function ($) {
                   let collated_data_layer_content =
                     collate_data_layer_content(post_id);
 
-                  // Toggle between label/icon node displays.
-                  const use_icons = true;
-
-                  let label_counter = 0;
-                  const label_counter_offset = 4;
-
                   let icons_total = 0;
-                  let icons_total_limit = 6;
+                  let icons_total_limit = 4;
                   let icons_total_limit_counter = 0;
-                  let icons_per_line_limit = 4;
-                  let icons_per_line_limit_counter = 0;
 
                   // Convert collated data layer content to html representation.
-                  let data_layer_content_html = use_icons ? `<br>` : ``;
+                  let data_layer_content_html = '';
                   for (const [field_id, content] of Object.entries(
                     collated_data_layer_content,
                   )) {
+                    data_layer_content_html += `<br>`;
+
+                    // Toggle between label/icon node displays, accordingly by local storage setting.
+                    const use_icons =
+                      data_layer_local_storage_settings?.show_icons_for_fields.includes(
+                        field_id,
+                      );
+
                     if (!use_icons) {
-                      if (++label_counter < label_counter_offset) {
-                        switch (post_type_field_settings[field_id]['type']) {
-                          case 'date':
-                          case 'key_select': {
-                            data_layer_content_html += `<br> ${content['content']}`;
-                            break;
-                          }
-                          case 'tags':
-                          case 'multi_select': {
-                            content['content'].forEach((label) => {
-                              if (++label_counter < label_counter_offset) {
-                                data_layer_content_html += `<br> ${label}`;
-                              } else if (
-                                label_counter === label_counter_offset
-                              ) {
-                                data_layer_content_html += `<br>.......`;
-                              }
-                            });
-                            break;
-                          }
+                      switch (post_type_field_settings[field_id]['type']) {
+                        case 'date':
+                        case 'key_select': {
+                          data_layer_content_html += `${content['content']}`;
+                          break;
                         }
-                      } else if (label_counter === label_counter_offset) {
-                        data_layer_content_html += `<br>.......`;
+                        case 'tags':
+                        case 'multi_select': {
+                          data_layer_content_html +=
+                            content['content'].join(', ');
+                          break;
+                        }
                       }
                     } else {
                       const collated_data_layer_field_icons =
@@ -367,23 +363,7 @@ jQuery(document).ready(function ($) {
                         collated_data_layer_field_icons['no_icons_counter'];
                       icons.forEach((icon) => {
                         if (icons_total_limit_counter < icons_total_limit) {
-                          data_layer_content_html += icon;
-
-                          // Start a new line if icons per line limit reached.
-                          if (
-                            icons_per_line_limit_counter < icons_per_line_limit
-                          ) {
-                            data_layer_content_html += '&nbsp;';
-                            icons_per_line_limit_counter++;
-
-                            if (
-                              icons_per_line_limit_counter >=
-                              icons_per_line_limit
-                            ) {
-                              data_layer_content_html += '<br>';
-                              icons_per_line_limit_counter = 0;
-                            }
-                          }
+                          data_layer_content_html += icon + '&nbsp;';
                         } else if (
                           icons_total_limit_counter === icons_total_limit
                         ) {
@@ -595,6 +575,18 @@ jQuery(document).ready(function ($) {
       window.load_genmap();
     });
 
+    jQuery(document).on('change', '.show-data-layer-icons-input', function (e) {
+      // Save updated data layers settings.
+      window.SHAREDFUNCTIONS.save_json_to_local_storage(
+        DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+        package_data_layer_settings(),
+        jQuery('#select_post_types').val(),
+      );
+
+      // Refresh tree shape and subsequent node data.
+      window.load_genmap();
+    });
+
     jQuery(document).on('change', '.data-layer-field', function (e) {
       // Save updated data layers settings.
       window.SHAREDFUNCTIONS.save_json_to_local_storage(
@@ -735,11 +727,11 @@ jQuery(document).ready(function ($) {
       field_icon = field_icon.trim().toLowerCase();
       if (field_icon.startsWith('mdi')) {
         field_icons.push(
-          `<i class="mdi ${field_icon}" style="font-size: 20px;"></i>`,
+          `<i class="mdi ${field_icon}" style="font-size: 15px;"></i>`,
         );
       } else {
         field_icons.push(
-          `<img src="${field_icon}" alt="${field_settings['name']}" width="20px" height="20px"/>`,
+          `<img src="${field_icon}" alt="${field_settings['name']}" width="15px" height="15px"/>`,
         );
       }
     } else {
@@ -760,28 +752,28 @@ jQuery(document).ready(function ($) {
                 option.icon.trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="mdi ${option.icon}" style="font-size: 20px;"></i>`,
+                  `<i class="mdi ${option.icon}" style="font-size: 15px;"></i>`,
                 );
               } else if (
                 option?.icon &&
                 option.icon.trim().toLowerCase().startsWith('http')
               ) {
                 default_icons.push(
-                  `<img src="${option.icon}" alt="${option['label']}" width="20px" height="20px"/>`,
+                  `<img src="${option.icon}" alt="${option['label']}" width="15px" height="15px"/>`,
                 );
               } else if (
                 option['font-icon'] &&
                 option['font-icon'].trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="mdi ${option['font-icon']}" style="font-size: 20px;"></i>`,
+                  `<i class="mdi ${option['font-icon']}" style="font-size: 15px;"></i>`,
                 );
               } else if (
                 option['font-icon'] &&
                 option['font-icon'].trim().toLowerCase().startsWith('http')
               ) {
                 default_icons.push(
-                  `<img src="${option['font-icon']}" alt="${option['label']}" width="20px" height="20px"/>`,
+                  `<img src="${option['font-icon']}" alt="${option['label']}" width="15px" height="15px"/>`,
                 );
               } else {
                 no_icons_counter++;
@@ -820,10 +812,23 @@ jQuery(document).ready(function ($) {
           jQuery('#select_post_types').val(),
         );
       if (data_layer_settings?.color && data_layer_settings?.layers) {
+        // Set default color and data layers.
         data_layer_settings_color.val(data_layer_settings.color);
         data_layer_settings.layers.forEach(function (field_id, idx) {
           add_data_layer_settings(field_id);
         });
+
+        // Select any identified icon toggles.
+        data_layer_settings.show_icons_for_fields.forEach(
+          function (field_id, idx) {
+            const icons_input = $(
+              `.show-data-layer-icons-input[data-field_id='${field_id}']`,
+            );
+            if (icons_input) {
+              $(icons_input).prop('checked', true);
+            }
+          },
+        );
 
         // Once re-populated, display loaded data layers.
         data_layer_settings_div.slideDown('fast', function () {
@@ -844,15 +849,28 @@ jQuery(document).ready(function ($) {
     let packaged_data_layer_settings = {
       color: $('#data_layer_settings_color').val(),
       layers: [],
+      show_icons_for_fields: [],
     };
 
     // Iterate and capture specified data field layers.
     $('#data_layer_settings_table')
       .find('tbody tr')
       .each(function (idx, tr) {
+        // Capture data layer fields.
         const data_layer_field = $(tr).find('.data-layer-field').val();
         if (data_layer_field) {
           packaged_data_layer_settings['layers'].push(data_layer_field);
+        }
+
+        // Capture data layers to be shown as icons.
+        const show_data_layer_icons = $(tr).find(
+          '.show-data-layer-icons-input',
+        );
+        const show_icons = $(show_data_layer_icons).prop('checked');
+        if (data_layer_field && show_icons) {
+          packaged_data_layer_settings['show_icons_for_fields'].push(
+            data_layer_field,
+          );
         }
       });
 
@@ -930,10 +948,13 @@ jQuery(document).ready(function ($) {
           },
         ]);
 
-        $('#data_layer_settings_table').find('tbody').append(`
+        const translations = window.dtMetricsProject.translations;
+        const data_layer_settings_table = $('#data_layer_settings_table');
+        const data_row_count = $(data_layer_settings_table).find('tr').length;
+        $(data_layer_settings_table).find('tbody').append(`
           <tr style="border: none;">
             <td style="padding-left: 0;">
-              <select class="data-layer-field">
+              <select class="data-layer-field" style="margin-top: 15px;">
                 <option selected disabled value="">--- ${window.lodash.escape(window.dtMetricsProject.translations.select_data_layer_field)} ---</option>
                 ${(function (options, option_id) {
                   let options_html = ``;
@@ -946,6 +967,18 @@ jQuery(document).ready(function ($) {
                   return options_html;
                 })(selected_fields, selected_field_id)}
               </select>
+            </td>
+            <td style="vertical-align: top; text-align: center;">
+                <span style="display: inline-block; margin-right: 10px; margin-left: 10px;" class="show-closed-switch">
+                    ${window.lodash.escape(translations.icon_data_layer)}
+                    <br>
+                    <div class="switch tiny">
+                        <input class="switch-input show-data-layer-icons-input" id="show_data_layer_icons_${data_row_count}" type="checkbox" name="show_data_layer_icons_${data_row_count}" data-field_id="${selected_field_id}">
+                        <label class="switch-paddle show-data-layer-icons-label" for="show_data_layer_icons_${data_row_count}" data-field_id="${selected_field_id}">
+                            <span class="show-for-sr">${window.lodash.escape(translations.icon_data_layer)}</span>
+                        </label>
+                    </div>
+                </span>
             </td>
             <td><button class="button clear-date-button del-data-layer" style="border: 1px solid #cacaca;">${window.lodash.escape(window.dtMetricsProject.translations.del_data_layer)}</button></td>
           </tr>
