@@ -117,10 +117,8 @@ function display_select_tags_charts() {
   });
 
   document.querySelector('#date_select').addEventListener('change', (e) => {
-    const year = e.target.value;
-    window.dtMetricsProject.state.year = year;
-    window.dtMetricsProject.state.chart_view =
-      year === 'all-time' ? 'year' : 'month';
+    window.dtMetricsProject.state.year = e.target.value;
+    window.dtMetricsProject.state.chart_view = 'year';
     get_data();
   });
 
@@ -443,8 +441,7 @@ function handle_request_defaults() {
     if (request_params.date) {
       const year = request_params.date;
       window.dtMetricsProject.state.year = year;
-      window.dtMetricsProject.state.chart_view =
-        year === 'all-time' ? 'year' : 'month';
+      window.dtMetricsProject.state.chart_view = 'year';
       jQuery('#date_select').val(year);
     }
     document

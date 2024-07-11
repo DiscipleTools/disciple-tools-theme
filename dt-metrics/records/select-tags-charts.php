@@ -53,9 +53,6 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
     }
 
     public function scripts() {
-        wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', array(), false, true );
-        wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
-
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, false, true );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, false, true );
         wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', [ 'amcharts-core' ], '4', true );
@@ -67,7 +64,6 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
             'amcharts-core',
             'amcharts-charts',
             'amcharts-animated',
-            'datepicker',
             'wp-i18n'
         ], filemtime( get_theme_file_path() . $this->js_file_name ), true );
 
@@ -77,7 +73,7 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'site' => esc_url_raw( site_url( '/' ) ),
                 'state' => [
-                    'chart_view' => 'month',
+                    'chart_view' => 'year',
                     'post_type' => $post_type,
                     'field' => $field,
                     'year' => gmdate( 'Y' ),
@@ -185,13 +181,13 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
     private function check_input( $post_type, $field, $year = null ) {
         $current_year = gmdate( 'Y' );
         if ( !in_array( $post_type, $this->post_types, true ) ) {
-            return new WP_Error( 'time_metrics_by_month', 'not a suitable post type', [ 'status' => 400 ] );
+            return new WP_Error( 'input_checker', 'not a suitable post type', [ 'status' => 400 ] );
         }
         if ( !array_key_exists( $field, $this->get_field_settings( $post_type ) ) ) {
-            return new WP_Error( 'time_metrics_by_month', 'not a suitable post type field', [ 'status' => 400 ] );
+            return new WP_Error( 'input_checker', 'not a suitable post type field', [ 'status' => 400 ] );
         }
         if ( $year !== null && $year > $current_year ) {
-            return new WP_Error( 'time_metrics_by_month', 'year is in the future', [ 'status' => 400 ] );
+            return new WP_Error( 'input_checker                           ', 'year is in the future', [ 'status' => 400 ] );
         }
 
         return null;
