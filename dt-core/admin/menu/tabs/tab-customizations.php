@@ -251,7 +251,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             ?>
             <span id="custom_tab_notice" class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 99%;">
                 <span style="font-weight: bold;">WP Object Cache Detected</span><br>
-                An object cache reduces repeated and unnecessary queries as it stores the query results from the first request. Force a cache refresh by clicking on the Flush button below.
+                An object cache reduces repeated and unnecessary queries as it stores the query results from the first request. Force a cache refresh by selecting an object group and clicking on the Flush button below.
                 <br>
                 <select id="custom_tab_notice_select" style="margin-top: 20px;">
                     <?php
