@@ -61,6 +61,16 @@ class DT_Admin_Endpoints {
                 },
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/scripts/wp_obj_cache_flush', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'wp_obj_cache_flush' ],
+                'permission_callback' => function() {
+                    return current_user_can( 'manage_dt' );
+                }
+            ]
+        );
     }
 
     public function reset_count_field( WP_REST_Request $request ){
@@ -252,6 +262,28 @@ class DT_Admin_Endpoints {
             'success' => (bool) true,
             'remaining' => wp_queue_count_jobs(),
         ];
+    }
+
+    public function wp_obj_cache_flush( WP_REST_Request $request ) {
+        global $wp_object_cache;
+        $params = $request->get_params();
+        $response = [
+            'flushed' => false
+        ];
+        if ( !empty( $wp_object_cache ) && isset( $params['group'] ) ) {
+            $group = $params['group'];
+            $response['group'] = $group;
+            switch ( $group ) {
+                case 'all':
+                    $response['flushed'] = $wp_object_cache->flush();
+                    break;
+                default:
+                    $response['flushed'] = $wp_object_cache->flush_group( $group );
+                    break;
+            }
+        }
+
+        return $response;
     }
 }
 

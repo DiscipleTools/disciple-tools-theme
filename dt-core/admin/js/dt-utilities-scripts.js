@@ -918,4 +918,33 @@ jQuery(document).ready(function ($) {
   /**
    * DT IMPORTS
    */
+
+  /**
+   * WP OBJECT CACHE MANAGEMENT
+   */
+
+  $(document).on('click', '#custom_tab_notice_flush_but', function (e) {
+    const custom_tab_notice = $('#custom_tab_notice');
+    const custom_tab_notice_select = $('#custom_tab_notice_select');
+    const custom_tab_notice_flush_but = $('#custom_tab_notice_flush_but');
+    const custom_tab_notice_spinner = $('#custom_tab_notice_spinner');
+
+    $(custom_tab_notice_select).prop('disabled', true);
+    $(custom_tab_notice_flush_but).prop('disabled', true);
+    $(custom_tab_notice_spinner).fadeIn('fast');
+
+    make_admin_request('POST', 'wp_obj_cache_flush', {
+      group: $(custom_tab_notice_select).val(),
+    }).then((response) => {
+      $(custom_tab_notice).slideUp('fast', function () {
+        $(custom_tab_notice_select).prop('disabled', false);
+        $(custom_tab_notice_flush_but).prop('disabled', false);
+        $(custom_tab_notice_spinner).fadeOut('fast');
+      });
+    });
+  });
+
+  /**
+   * WP OBJECT CACHE MANAGEMENT
+   */
 });

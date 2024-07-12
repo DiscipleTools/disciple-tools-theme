@@ -220,6 +220,53 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
     }
 
     private function space_between_div_open() {
+        global $wp_object_cache;
+
+        // Determine current state of the object cache and notify user accordingly.
+        if ( !empty( $wp_object_cache ) ) {
+            // $wp_object_cache->stats();
+            $obj_cache_groups = [
+                'all',
+                'options',
+                'default',
+                'site-options',
+                'themes',
+                'translation_files',
+                'users',
+                'userlogins',
+                'userslugs',
+                'useremail',
+                'user_meta',
+                'theme_files',
+                'itsec_database_bans',
+                'plugins',
+                'comment',
+                'comment-queries',
+                'counts',
+                'posts',
+                'post_meta',
+                'theme_json'
+            ];
+            sort( $obj_cache_groups );
+            ?>
+            <span id="custom_tab_notice" class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 99%;">
+                <span style="font-weight: bold;">WP Object Cache Detected</span><br>
+                An object cache reduces repeated and unnecessary queries as it stores the query results from the first request. Force a cache refresh by clicking on the Flush button below.
+                <br>
+                <select id="custom_tab_notice_select" style="margin-top: 20px;">
+                    <?php
+                    foreach ( $obj_cache_groups as $group ) {
+                        ?>
+                        <option value="<?php echo esc_attr( $group ) ?>"><?php echo esc_attr( $group ) ?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
+                <button id="custom_tab_notice_flush_but" class="button" style="margin-top: 20px;">Flush</button>
+                <span id="custom_tab_notice_spinner" class="loading-spinner active" style="margin-top: 20px; display: none;"></span>
+            </span>
+            <?php
+        }
         ?>
         <p style="margin-bottom: 50px">
             This feature is in BETA. Please download a copy of your settings  <a target='_blank' href="<?php echo esc_url( admin_url( 'admin.php?page=dt_utilities&tab=exports' ) ); ?>">here</a>. before making any changes.
