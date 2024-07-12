@@ -129,7 +129,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                     'data_layer_settings_color_label' => __( 'Node Color', 'disciple_tools' ),
                     'data_layer_settings_color_default_label' => __( 'Default', 'disciple_tools' ),
                     'add_data_layer' => __( 'Add Data Layer', 'disciple_tools' ),
-                    'icon_data_layer' => __( 'Show Icons', 'disciple_tools' ),
+                    'icon_data_layer' => __( 'Show as icons', 'disciple_tools' ),
                     'del_data_layer' => __( 'x', 'disciple_tools' ),
                     'select_data_layer_field' => __( 'select data layer field to capture', 'disciple_tools' ),
                     'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
