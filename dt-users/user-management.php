@@ -133,7 +133,7 @@ class DT_User_Management
 
     public function add_menu( $content ) {
         $content .= '<li><a href="'. site_url( '/user-management/users/' ) .'" >' .  esc_html__( 'Users', 'disciple_tools' ) . '</a></li>';
-        if ( current_user_can( 'manage_dt' ) ){
+        if ( current_user_can( 'manage_dt' ) || current_user_can( 'create_users' ) ){
             $content .= '<li><a href="'. esc_url( site_url( '/user-management/add-user/' ) ) .'" >' .  esc_html__( 'Add User', 'disciple_tools' ) . '</a></li>';
         }
         return $content;

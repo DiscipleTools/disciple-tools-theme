@@ -464,6 +464,14 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         $current_state = self::condition_contains( $field_type, $field, $action->value );
                         break;
                 }
+            } else if ( $action->field_id === 'comments' ) {
+                $post_comments = DT_Posts::get_post_comments( $post['post_type'], $post['ID'], false );
+                foreach ( $post_comments['comments'] as $comment ) {
+                    if ( $comment['comment_content'] === $action->value ) {
+                        $current_state = true;
+                        break;
+                    }
+                }
             }
 
             // Determine if field has already been worked on based on the current action to be carried out!
@@ -491,7 +499,6 @@ class Disciple_Tools_Workflows_Execution_Handler {
 
             if ( isset( $post_type_settings['fields'][ $field_id ]['type'] ) ) {
                 $field_type = $post_type_settings['fields'][ $field_id ]['type'];
-
                 $updated_fields = [];
                 switch ( $action ) {
                     case 'update':
@@ -575,6 +582,10 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     ];
                 }
                 break;
+            case 'comments':
+                $updated['notes'] = [
+                    $value,
+                ];
         }
 
         return $updated;
@@ -686,5 +697,39 @@ class Disciple_Tools_Workflows_Execution_Handler {
         }
 
         return $updated;
+    }
+
+    public static function has_workflows_by_fields( $post_type, $fields ) {
+        $has_workflow = false;
+        $workflows = self::get_workflows( $post_type, true, true );
+        foreach ( $workflows as $workflow ) {
+            if ( $has_workflow ) {
+                continue;
+            }
+
+            // First check condition fields.
+            foreach ( $workflow->conditions ?? [] as $condition ) {
+                if ( $has_workflow ) {
+                    continue;
+                }
+                if ( in_array( ( $condition->field_id ?? '' ), $fields ) ) {
+                    $has_workflow = true;
+                }
+            }
+
+            // If still required, also check action fields.
+            if ( !$has_workflow ) {
+                foreach ( $workflow->actions ?? [] as $action ) {
+                    if ( $has_workflow ) {
+                        continue;
+                    }
+                    if ( in_array( ( $action->field_id ?? '' ), $fields ) ) {
+                        $has_workflow = true;
+                    }
+                }
+            }
+        }
+
+        return $has_workflow;
     }
 }
