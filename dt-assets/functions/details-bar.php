@@ -166,10 +166,42 @@ function dt_print_details_bar(
                         </div>
                         <?php if ( $task ) : ?>
                         <div class="cell shrink center-items">
-                            <button class="button open-set-task">
-                                <?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>
-                                <i class="fi-clock"></i>
-                            </button>
+
+                        <div class="reveal" id="tasks-modal" data-reveal xmlns="http://www.w3.org/1999/html"></div>
+                        <dt-modal class="open-set-task" buttonLabel="<?php esc_html_e( 'Tasks', 'disciple_tools' ); ?>" title="Tasks" buttonClass=<?php esc_html_e( 'Tasks', 'disciple_tools' ); ?> buttonStyle="">
+                        <span slot="content">
+                                <form class="js-add-task-form">
+                                    <p style="color: red" class="error-text"></p>
+                                    <p><?php echo esc_html__( 'Set a reminder or a task with a note and receive a notification on the due date.', 'disciple_tools' ); ?></p>
+                                        <strong><?php echo esc_html__( 'Task Type', 'disciple_tools' ); ?></strong>
+                                    <ul class="ul-no-bullets no-bullets--custom">
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="task-type" value="reminder" checked><?php echo esc_html__( 'Reminder', 'disciple_tools' ); ?>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label style="display: flex; align-items: baseline">
+                                                <input type="radio" name="task-type" value="custom"><?php echo esc_html__( 'Custom', 'disciple_tools' ); ?>:&nbsp;
+                                                <input type="text" id="task-custom-text" style="">
+                                            </label>
+                                        </li>
+                                    </ul>
+
+                                    <label><strong><?php echo esc_html__( 'Due Date', 'disciple_tools' ); ?></strong></label>
+                                    <input id="create-task-date" name="task-date" type="text" class="" required autocomplete="off" >
+
+                                    <button class="button loader button---margin-top " type="submit" id="create-task">
+                                        <?php echo esc_html__( 'Create Task', 'disciple_tools' ); ?>
+                                    </button>
+                                </form>
+                                <hr>
+                                <div>
+                                    <h5><?php echo esc_html__( 'Existing tasks for this record:', 'disciple_tools' ); ?><span id="tasks-spinner" class="loading-spinner"></span></h5>
+                                    <ul class="existing-tasks"></ul>
+                                </div>
+                                </span>
+                                </dt-modal>
                         </div>
                         <?php endif; ?>
                         <div class="cell shrink center-items">
@@ -191,10 +223,46 @@ function dt_print_details_bar(
                         </div>
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
-                            <button class="center-items open-share">
-                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/share.svg' ); ?>">
-                                <span data-tooltip title="<?php echo esc_html( sprintf( '%s', ltrim( $shared_with_text, ',' ) ) ); ?>" style="margin:0 10px 2px 10px"><?php esc_html_e( 'Share', 'disciple_tools' ); ?> (<?php echo esc_html( count( $shared_with ) ); ?>)</span>
-                            </button>
+                            <div class="reveal" id="share-contact-modal" data-reveal style="min-height:550px"></div>
+                            <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/share.svg' ); ?>">
+                            <dt-modal title="Share Settings" class="open-share" buttonStyle={"background":"white","border":"0px","color":"black"} buttonLabel="<?php esc_html_e( 'Share', 'disciple_tools' ); ?> (<?php echo esc_html( count( $shared_with ) ); ?>)">
+                            <span slot="content" class="content-min-height">
+                            <?php
+                                global $post;
+                                ?>
+                                <h6>
+                                    <?php
+                                    if ( is_singular( 'groups' ) ){
+                                        esc_html_e( 'This group is shared with:', 'disciple_tools' );
+                                    } else if ( is_singular( 'contacts' ) ) {
+                                        esc_html_e( 'This contact is shared with:', 'disciple_tools' );
+                                    }
+                                    ?>
+                                </h6>
+
+                                <div class="share details">
+                                    <var id="share-result-container" class="result-container share-result-container"></var>
+                                    <div id="share_t" name="form-share" class="scrollable-typeahead">
+                                        <div class="typeahead__container">
+                                            <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-share input-height"
+                                                        name="share[query]"
+                                                        placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                        autocomplete="off">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                                    /**
+                                     * This fires below the share section, and can add additional share based elements.
+                                     */
+                                    do_action( 'dt_share_panel', $post );
+                                ?>
+                                                            </span>
+                                                            </dt-modal>
                         </div>
                         <?php endif; ?>
                     </div>

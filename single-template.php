@@ -8,6 +8,39 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
     wp_safe_redirect( '/settings' );
     exit();
 }
+//template for tile info on edit page (?)
+function get_help_modal_html() {
+    ob_start();
+    ?>
+    <p id="help-modal-field-description " class="make-links-clickable dt-test" style="white-space: pre-line"></p>
+    <div class="help-modal-field-body field-body--custom"></div>
+    <div id="tile-help-section-apps" class="help-section help-modal-icon" style="">
+        <ul>
+            <li>
+                <img alt="show" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/visibility.svg' ); ?>" />
+                <strong><?php esc_html_e( 'Open the link', 'disciple_tools' ); ?></strong>
+            </li>
+            <li>
+                <img alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ); ?>"/>
+                <strong><?php esc_html_e( 'Copy the link to the clipboard', 'disciple_tools' ); ?></strong>
+            </li>
+            <li>
+                <img alt="send" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/send.svg' ); ?>" />
+                <strong><?php esc_html_e( 'Send the link via email.', 'disciple_tools' ); ?></strong>
+            </li>
+            <li>
+                <img alt="qrcode" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/qrcode-solid.svg' ); ?>" />
+                <strong><?php esc_html_e( 'Scan the QR code to open the magic link on a mobile device.', 'disciple_tools' ); ?></strong>
+            </li>
+            <li>
+                <img alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ); ?>" />
+                <strong><?php esc_html_e( 'Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created.', 'disciple_tools' ); ?></strong>
+            </li>
+        </ul>
+    </div>
+    <?php
+    return ob_get_clean();
+}
 
 function dt_display_tile( $tile, $post ): bool {
 
@@ -127,9 +160,17 @@ function dt_display_tile( $tile, $post ): bool {
                             } else {
                                 echo esc_html__( 'Status', 'disciple_tools' );
                             }?>
-                            <button class="help-button-tile" data-tile="status">
-                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                            </button>
+                           
+                            <div class="reveal" id="help-modal-field" data-reveal></div>
+                            <dt-modal data-tile="status" class="help-button-tile" title="status" context="alert" ishelp="" buttonClass={help-button-tile} buttonStyle={"background":"none","border":"0px"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" imageStyle={"height":"15px"} tileLabel="status">
+                            <span slot="content"> 
+                            <?php
+                                $html = get_help_modal_html();
+                                echo $html;
+                                ?>
+                            </span>
+                            </dt-modal>
+                            
                         </h3>
 
                         <div class="grid-x grid-margin-x">
@@ -174,9 +215,14 @@ function dt_display_tile( $tile, $post ): bool {
                             } else {
                                 echo esc_html__( 'Details', 'disciple_tools' );
                             }?>
-                            <button class="help-button-tile" data-tile="details">
-                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                            </button>
+                            <dt-modal  class="help-button-tile" data-tile="details" title="details" context="alert" ishelp="" buttonClass={"alert":true} buttonStyle={"background":"none","border":"0px"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" imageStyle={"height":"15px"} tileLabel="details">
+                            <span slot="content"> 
+                            <?php
+                                $html = get_help_modal_html();
+                                echo $html;
+                            ?>
+                            </span>
+                            </dt-modal>
                             <div class="details-title-section"></div>
                             <button class="section-chevron chevron_down show-details-section">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
@@ -326,15 +372,23 @@ function dt_display_tile( $tile, $post ): bool {
                                     <div class="bordered-box" id="<?php echo esc_html( $tile_key ) ?>-tile">
                                         <?php
                                         //setup tile label if see by customizations
-                                        if ( isset( $tile_options['label'] ) ){ ?>
+                                        $tile_label = 'Default Tile Label';
+                                        if ( isset( $tile_options['label'] ) ){ 
+                                         $tile_label = esc_html($tile_options['label']);
+                                         ?>
                                             <h3 class="section-header">
                                                 <?php echo esc_html( $tile_options['label'] )?>
-                                                <button class="help-button-tile" data-tile="<?php echo esc_html( $tile_key ) ?>">
-                                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                                </button>
-                                                <button class="section-chevron chevron_down">
-                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                                </button>
+                                                <dt-modal data-tile="<?php echo esc_html( $tile_key ) ?>" class="help-button-tile" title=<?php echo esc_html( $tile_key ) ?> context="alert" ishelp="" buttonClass={"alert":true} buttonStyle={"background":"none","border":"0px"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" imageStyle={"height":"15px"} tileLabel="<?php echo esc_html( $tile_label )?>">
+                                                <span slot="content"> 
+                                               <?php
+                                               $html = get_help_modal_html();
+                                               echo $html;
+                                                ?>
+                                                </span>
+                                            </dt-modal>
+                                                <button class="section-chevron chevron_down">   
+                                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                                            </button>
                                                 <button class="section-chevron chevron_up">
                                                     <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
                                                 </button>

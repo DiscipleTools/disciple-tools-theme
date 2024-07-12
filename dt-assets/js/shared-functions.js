@@ -267,7 +267,7 @@ jQuery(document).on('click', '.help-button', function () {
   jQuery(`#${section}`).show();
 });
 jQuery(document).on('click', '.help-button-tile', function () {
-  jQuery('#help-modal-field').foundation('open');
+  // jQuery('#help-modal-field').foundation('open');
   let section = jQuery(this).data('tile');
   jQuery('.help-section').hide();
   let tile = window.wpApiShare.tiles[section];
@@ -338,7 +338,7 @@ jQuery(document).on('click', '.help-button-tile', function () {
         }
       }
     });
-    jQuery('#help-modal-field-body').html(html);
+    jQuery('.help-modal-field-body').html(html);
   }
   /* #apps for example was the tile id, so this is the new more unique id to show relevant help text */
   jQuery(`#tile-help-section-${section}`).show();
