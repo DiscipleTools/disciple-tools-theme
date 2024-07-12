@@ -307,77 +307,82 @@ jQuery(document).ready(function ($) {
                   let icons_total = 0;
                   let icons_total_limit = 4;
                   let icons_total_limit_counter = 0;
-
-                  // Convert collated data layer content to html representation.
                   let data_layer_content_html = '';
-                  for (const [field_id, content] of Object.entries(
-                    collated_data_layer_content,
-                  )) {
-                    data_layer_content_html += `<br>`;
 
-                    // Toggle between label/icon node displays, accordingly by local storage setting.
-                    const use_icons =
-                      data_layer_local_storage_settings?.show_icons_for_fields.includes(
-                        field_id,
-                      );
+                  // Loop, extract & display accordingly, by data layer order.
+                  data_layer_local_storage_settings.layers.forEach(
+                    (field_id) => {
+                      const content = collated_data_layer_content[field_id];
+                      if (content) {
+                        // Convert collated data layer content to html representation.
+                        data_layer_content_html += `<br>`;
 
-                    if (!use_icons) {
-                      switch (post_type_field_settings[field_id]['type']) {
-                        case 'date':
-                        case 'key_select': {
-                          data_layer_content_html += `${content['content']}`;
-                          break;
-                        }
-                        case 'tags':
-                        case 'multi_select': {
-                          data_layer_content_html +=
-                            content['content'].join(', ');
-                          break;
-                        }
-                      }
-                    } else {
-                      const collated_data_layer_field_icons =
-                        collate_data_layer_field_icons(
-                          post_type_field_settings[field_id],
-                          content['content'],
-                        );
+                        // Toggle between label/icon node displays, accordingly by local storage setting.
+                        const use_icons =
+                          data_layer_local_storage_settings?.show_icons_for_fields.includes(
+                            field_id,
+                          );
 
-                      // Ensure to default to showing default icons over field icon.
-                      let icons = [];
-                      if (
-                        collated_data_layer_field_icons['default_icons']
-                          .length > 0
-                      ) {
-                        icons =
-                          collated_data_layer_field_icons['default_icons'];
-                      } else if (
-                        collated_data_layer_field_icons['field_icons'].length >
-                        0
-                      ) {
-                        icons = collated_data_layer_field_icons['field_icons'];
-                      }
-
-                      // Proceed with displaying icons, accordingly by line limits.
-                      icons_total +=
-                        icons.length +
-                        collated_data_layer_field_icons['no_icons_counter'];
-                      icons.forEach((icon) => {
-                        if (icons_total_limit_counter < icons_total_limit) {
-                          data_layer_content_html += icon + '&nbsp;';
-                        } else if (
-                          icons_total_limit_counter === icons_total_limit
-                        ) {
-                          // Determine if a plus extra count is required.
-                          let plus_count =
-                            icons_total - icons_total_limit_counter;
-                          if (plus_count > 0) {
-                            data_layer_content_html += `<span style="font-size: 12px; font-weight: bold;">+${plus_count}</span>`;
+                        if (!use_icons) {
+                          switch (post_type_field_settings[field_id]['type']) {
+                            case 'date':
+                            case 'key_select': {
+                              data_layer_content_html += `${content['content']}`;
+                              break;
+                            }
+                            case 'tags':
+                            case 'multi_select': {
+                              data_layer_content_html +=
+                                content['content'].join(', ');
+                              break;
+                            }
                           }
+                        } else {
+                          const collated_data_layer_field_icons =
+                            collate_data_layer_field_icons(
+                              post_type_field_settings[field_id],
+                              content['content'],
+                            );
+
+                          // Ensure to default to showing default icons over field icon.
+                          let icons = [];
+                          if (
+                            collated_data_layer_field_icons['default_icons']
+                              .length > 0
+                          ) {
+                            icons =
+                              collated_data_layer_field_icons['default_icons'];
+                          } else if (
+                            collated_data_layer_field_icons['field_icons']
+                              .length > 0
+                          ) {
+                            icons =
+                              collated_data_layer_field_icons['field_icons'];
+                          }
+
+                          // Proceed with displaying icons, accordingly by line limits.
+                          icons_total +=
+                            icons.length +
+                            collated_data_layer_field_icons['no_icons_counter'];
+                          icons.forEach((icon) => {
+                            if (icons_total_limit_counter < icons_total_limit) {
+                              data_layer_content_html += icon + '&nbsp;';
+                            } else if (
+                              icons_total_limit_counter === icons_total_limit
+                            ) {
+                              // Determine if a plus extra count is required.
+                              let plus_count =
+                                icons_total - icons_total_limit_counter;
+                              if (plus_count > 0) {
+                                data_layer_content_html += `<span style="font-size: 12px; font-weight: bold;">+${plus_count}</span>`;
+                              }
+                            }
+                            icons_total_limit_counter++;
+                          });
                         }
-                        icons_total_limit_counter++;
-                      });
-                    }
-                  }
+                      }
+                    },
+                  );
 
                   // Update post node's content.
                   const initial_node_content = $(node)
