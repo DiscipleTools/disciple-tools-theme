@@ -2,31 +2,35 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.63.0\n"
+"Project-Id-Version: Disciple Tools 1.64.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-25T10:59:06+00:00\n"
+"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: disciple_tools\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr ""
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr ""
 
 #. Description of the theme
+#: style.css
 msgid "Disciple.Tools is a coalition management system for disciple making movements."
 msgstr ""
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr ""
 
@@ -377,8 +381,8 @@ msgstr ""
 #: archive-template.php:593
 #: dt-metrics/groups/tree.php:87
 #: dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:106
-#: dt-metrics/records/genmap.php:110
+#: dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:134
 #: dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384
 #: dt-users/users.php:175
@@ -601,7 +605,7 @@ msgstr ""
 #: archive-template.php:1041
 #: dt-assets/functions/enqueue-scripts.php:228
 #: dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:128
+#: dt-metrics/records/genmap.php:152
 #: dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460
 #: dt-users/user-management.php:196
@@ -882,7 +886,7 @@ msgid "Locations you are responsible for"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:118
+#: dt-metrics/records/genmap.php:142
 msgid "Add"
 msgstr ""
 
@@ -1478,7 +1482,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:124
+#: dt-metrics/records/genmap.php:148
 #: dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196
 #: template-settings.php:146
@@ -1517,6 +1521,7 @@ msgstr ""
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr ""
@@ -1620,8 +1625,8 @@ msgstr ""
 #: dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:105
-#: dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:129
+#: dt-metrics/records/genmap.php:136
 msgid "Assigned To"
 msgstr ""
 
@@ -1888,7 +1893,7 @@ msgstr ""
 #: dt-contacts/access-module.php:281
 #: dt-contacts/base-setup.php:541
 #: dt-metrics/metrics.php:41
-#: dt-metrics/metrics.php:96
+#: dt-metrics/metrics.php:97
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -2078,7 +2083,7 @@ msgstr ""
 #: dt-metrics/contacts/seeker-path.php:26
 #: dt-metrics/contacts/sources.php:25
 #: dt-metrics/groups/overview.php:64
-#: dt-metrics/metrics.php:105
+#: dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
@@ -3010,10 +3015,10 @@ msgstr ""
 #: dt-metrics/groups/overview.php:65
 #: dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24
-#: dt-metrics/metrics.php:109
+#: dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59
-#: dt-metrics/records/genmap.php:111
+#: dt-metrics/records/genmap.php:135
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr ""
@@ -3228,7 +3233,7 @@ msgid "The date this group stopped meeting (if applicable)."
 msgstr ""
 
 #: dt-groups/base-setup.php:279
-#: dt-metrics/records/genmap.php:115
+#: dt-metrics/records/genmap.php:139
 msgid "Member Count"
 msgstr ""
 
@@ -3542,8 +3547,9 @@ msgstr ""
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26
 #: dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:101
+#: dt-metrics/metrics.php:102
 #: dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr ""
@@ -3703,7 +3709,7 @@ msgstr ""
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86
-#: dt-metrics/metrics.php:129
+#: dt-metrics/metrics.php:130
 msgid "Metrics"
 msgstr ""
 
@@ -3835,6 +3841,7 @@ msgstr ""
 #: dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:432
 msgid "All Time"
@@ -3983,38 +3990,38 @@ msgstr ""
 
 #: dt-metrics/groups/tree.php:82
 #: dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:101
+#: dt-metrics/records/genmap.php:125
 msgid "Highlight Active"
 msgstr ""
 
 #: dt-metrics/groups/tree.php:83
 #: dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:102
+#: dt-metrics/records/genmap.php:126
 msgid "Highlight Churches"
 msgstr ""
 
 #: dt-metrics/groups/tree.php:84
 #: dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:103
-#: dt-metrics/records/genmap.php:116
+#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:140
 msgid "Members"
 msgstr ""
 
 #: dt-metrics/groups/tree.php:85
 #: dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:104
+#: dt-metrics/records/genmap.php:128
 msgid "View Record"
 msgstr ""
 
 #: dt-metrics/groups/tree.php:88
 #: dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:107
+#: dt-metrics/records/genmap.php:131
 msgid "Total Members"
 msgstr ""
 
 #: dt-metrics/groups/tree.php:89
 #: dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:108
+#: dt-metrics/records/genmap.php:132
 msgid "View Group"
 msgstr ""
 
@@ -4022,7 +4029,7 @@ msgstr ""
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:112
+#: dt-metrics/metrics.php:113
 msgid "Dynamic Metrics"
 msgstr ""
 
@@ -4064,6 +4071,7 @@ msgid "Comments I Posted"
 msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr ""
@@ -4139,6 +4147,7 @@ msgid "Field Activity"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
 msgid "Record Type"
 msgstr ""
@@ -4165,7 +4174,8 @@ msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
 msgstr ""
 
@@ -4221,52 +4231,70 @@ msgid "System"
 msgstr ""
 
 #: dt-metrics/records/genmap.php:27
-#: dt-metrics/records/genmap.php:99
+#: dt-metrics/records/genmap.php:123
 msgid "Generational Trees"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:124
 msgid "Show Archived"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:137
 msgid "Coaches"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:114
+#: dt-metrics/records/genmap.php:138
 msgid "Type"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:117
+#: dt-metrics/records/genmap.php:141
 msgid "Open"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:119
+#: dt-metrics/records/genmap.php:143
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:120
+#: dt-metrics/records/genmap.php:144
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:123
+#: dt-metrics/records/genmap.php:147
 msgid "Add Child To"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:125
+#: dt-metrics/records/genmap.php:149
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:150
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:151
 msgid "Are you sure you wish to focus on node?"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:155
 msgid "Infinite Loops"
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:32
+msgid "Field Cumulative Values"
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid "This chart shows the total number for each field value at the end of the selected date."
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+msgid "Records"
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+msgid "No Records Available"
 msgstr ""
 
 #: dt-metrics/records/time-charts.php:41
@@ -4304,18 +4332,6 @@ msgstr ""
 
 #: dt-metrics/records/time-charts.php:118
 msgid "Records changes"
-msgstr ""
-
-#: dt-metrics/records/time-charts.php:121
-msgid "Records"
-msgstr ""
-
-#: dt-metrics/records/time-charts.php:122
-msgid "No."
-msgstr ""
-
-#: dt-metrics/records/time-charts.php:124
-msgid "No Records Available"
 msgstr ""
 
 #: dt-notifications/notifications-email.php:132
@@ -4875,7 +4891,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr ""
 
-#: dt-posts/posts.php:2494
+#: dt-posts/posts.php:2496
 msgid "Removed User"
 msgstr ""
 
@@ -5508,7 +5524,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr ""
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr ""
 

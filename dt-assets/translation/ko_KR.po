@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-05-22T14:08:25+00:00\n"
+"POT-Creation-Date: 2024-06-25T10:59:06+00:00\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,9 +67,9 @@ msgstr "요청 입력"
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:518 dt-contacts/access-module.php:549
-#: dt-contacts/access-module.php:577 dt-contacts/base-setup.php:380
-#: dt-contacts/base-setup.php:415 dt-contacts/user-module.php:159
+#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
+#: dt-contacts/access-module.php:558 dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:411 dt-contacts/user-module.php:159
 #: single-template.php:418 single-template.php:435
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
@@ -106,12 +106,12 @@ msgstr "취소"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/access-module.php:523 dt-contacts/access-module.php:554
-#: dt-contacts/access-module.php:582 dt-contacts/access-module.php:673
-#: dt-contacts/base-setup.php:385 dt-contacts/base-setup.php:420
-#: dt-contacts/dmm-module.php:524 dt-contacts/dmm-module.php:526
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:621
-#: dt-groups/base-setup.php:626 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/access-module.php:504 dt-contacts/access-module.php:535
+#: dt-contacts/access-module.php:563 dt-contacts/access-module.php:654
+#: dt-contacts/base-setup.php:381 dt-contacts/base-setup.php:416
+#: dt-contacts/dmm-module.php:521 dt-contacts/dmm-module.php:523
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:598
+#: dt-groups/base-setup.php:603 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:423
@@ -322,7 +322,7 @@ msgstr "대량 전송 앱"
 msgid "More"
 msgstr "더 많이"
 
-#: archive-template.php:481 dt-contacts/base-setup.php:309
+#: archive-template.php:481 dt-contacts/base-setup.php:305
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "보관 처리됨"
@@ -346,15 +346,15 @@ msgstr ""
 "세요"
 
 #: archive-template.php:569 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:606 dt-contacts/user-module.php:137
+#: dt-contacts/access-module.php:587 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:968
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "사용자 검색"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:102
-#: dt-metrics/records/genmap.php:106 dt-posts/dt-posts.php:2773
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:106
+#: dt-metrics/records/genmap.php:110 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -556,7 +556,7 @@ msgstr "아니요"
 
 #: archive-template.php:1040 archive-template.php:1041
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:124 dt-metrics/records/time-charts.php:119
+#: dt-metrics/records/genmap.php:128 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
@@ -840,7 +840,7 @@ msgid "Locations you are responsible for"
 msgstr "담당 위치"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:114
+#: dt-metrics/records/genmap.php:118
 msgid "Add"
 msgstr "추가"
 
@@ -883,8 +883,8 @@ msgstr "필터가 없습니다. 아래에서 만드세요"
 msgid "No records found matching your filter."
 msgstr "필터에 일치하는 기록이 없습니다."
 
-#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1074 dt-posts/custom-post-type.php:457
+#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:503
+#: dt-groups/base-setup.php:1051 dt-posts/custom-post-type.php:485
 msgctxt "All records"
 msgid "All %s"
 msgstr "모든 %s"
@@ -899,7 +899,7 @@ msgstr "종료"
 
 #: dt-assets/functions/enqueue-scripts.php:328
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1315 dt-groups/base-setup.php:992
+#: dt-contacts/access-module.php:1301 dt-groups/base-setup.php:969
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-metrics/records/dynamic-records-map.php:96
 #: dt-users/mapbox-coverage-map.php:74
@@ -1348,9 +1348,8 @@ msgid ""
 msgstr ""
 "'수정'을 클릭하면 본 시스템이 운영되는 언어 등의 사항을 조정할 수 있습니다."
 
-#: dt-assets/parts/modals/modal-help.php:66 dt-contacts/base-setup.php:192
-#: dt-groups/base-setup.php:357 dt-people-groups/people-groups-base.php:194
-#: dt-people-groups/people-groups-base.php:203 dt-users/users.php:169
+#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:243
+#: dt-users/users.php:169
 msgid "Locations"
 msgstr "위치"
 
@@ -1530,7 +1529,7 @@ msgstr "레코드 삭제"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:120 dt-posts/custom-post-type.php:171
+#: dt-metrics/records/genmap.php:124 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "이름"
@@ -1669,47 +1668,23 @@ msgstr "파트너"
 msgid "Digital Responder"
 msgstr "디지털 응답기"
 
-#: dt-contacts/access-module.php:104
-msgid "Standard Contact"
-msgstr "기본 연락처"
-
-#: dt-contacts/access-module.php:106
-msgid "A contact to collaborate on"
-msgstr "협업할 연락처"
-
-#: dt-contacts/access-module.php:107
-msgid "Me and project leadership"
-msgstr "나와 프로젝트 리더십"
-
-#: dt-contacts/access-module.php:113
-msgid "Connection"
-msgstr "연결"
-
-#: dt-contacts/access-module.php:115 dt-contacts/dmm-module.php:51
-msgid "Connected to a contact, or generational fruit"
-msgstr "연락처, 또는 세대 간 열매에 연결"
-
-#: dt-contacts/access-module.php:118
-msgid "Collaborators"
-msgstr "협업자"
-
-#: dt-contacts/access-module.php:123 dt-groups/base-setup.php:135
+#: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:101 dt-metrics/records/genmap.php:108
+#: dt-metrics/records/genmap.php:105 dt-metrics/records/genmap.php:112
 msgid "Assigned To"
 msgstr "할당 대상"
 
-#: dt-contacts/access-module.php:124
+#: dt-contacts/access-module.php:105
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "이 연락처에 대한 보고를 담당하는 주 담당자를 선택하세요."
 
-#: dt-contacts/access-module.php:134 dt-metrics/contacts/seeker-path.php:25
+#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
 msgstr "구도자의 길"
 
-#: dt-contacts/access-module.php:135
+#: dt-contacts/access-module.php:116
 msgctxt "Seeker Path field description"
 msgid ""
 "Set the status of your progression with the contact. These are the steps "
@@ -1718,125 +1693,125 @@ msgstr ""
 "해당 연락자와의 진행 상황을 설정하세요. 이 단계는 연락자가 연락을 계속할 수 "
 "있도록 특정한 순서로 발생합니다."
 
-#: dt-contacts/access-module.php:139
+#: dt-contacts/access-module.php:120
 msgid "Contact Attempt Needed"
 msgstr "연락 시도 필요"
 
-#: dt-contacts/access-module.php:143
+#: dt-contacts/access-module.php:124
 msgid "Contact Attempted"
 msgstr "연락 시도함"
 
-#: dt-contacts/access-module.php:147 dt-contacts/dmm-module.php:232
+#: dt-contacts/access-module.php:128 dt-contacts/dmm-module.php:232
 msgid "Contact Established"
 msgstr "연락 성사"
 
-#: dt-contacts/access-module.php:151
+#: dt-contacts/access-module.php:132
 msgid "First Meeting Scheduled"
 msgstr "첫 모임 예정"
 
-#: dt-contacts/access-module.php:155
+#: dt-contacts/access-module.php:136
 msgid "First Meeting Complete"
 msgstr "첫 모임 완료"
 
-#: dt-contacts/access-module.php:159 dt-metrics/counter.php:140
+#: dt-contacts/access-module.php:140 dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
 msgstr "진행중인 모임"
 
-#: dt-contacts/access-module.php:163
+#: dt-contacts/access-module.php:144
 msgid "Being Coached"
 msgstr "코치를 받는 중"
 
-#: dt-contacts/access-module.php:175 dt-contacts/base-setup.php:299
+#: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:295
 msgid "Contact Status"
 msgstr "연락처 상태"
 
-#: dt-contacts/access-module.php:180
+#: dt-contacts/access-module.php:161
 msgid "New Contact"
 msgstr "새 연락처"
 
-#: dt-contacts/access-module.php:181
+#: dt-contacts/access-module.php:162
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "시스템의 신규 연락자입니다."
 
-#: dt-contacts/access-module.php:185
+#: dt-contacts/access-module.php:166
 msgid "Not Ready"
 msgstr "준비되지 않음"
 
-#: dt-contacts/access-module.php:186
+#: dt-contacts/access-module.php:167
 msgctxt "Contact Status field description"
 msgid ""
 "There is not enough information to move forward with the contact at this "
 "time."
 msgstr "현재 해당 연락자와 계속 연락하는 데 필요한 정보가 부족합니다."
 
-#: dt-contacts/access-module.php:190
+#: dt-contacts/access-module.php:171
 msgid "Dispatch Needed"
 msgstr "파견 필요"
 
-#: dt-contacts/access-module.php:191
+#: dt-contacts/access-module.php:172
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "이 연락자는 배가자에게 배정되어야 합니다."
 
-#: dt-contacts/access-module.php:195
+#: dt-contacts/access-module.php:176
 msgid "Waiting to be accepted"
 msgstr "수락 대기 중"
 
-#: dt-contacts/access-module.php:196
+#: dt-contacts/access-module.php:177
 msgctxt "Contact Status field description"
 msgid ""
 "The contact has been assigned to someone, but has not yet been accepted by "
 "that person."
 msgstr "해당 연락자는 누군가에게 배정되었으나, 아직 수락되지 않았습니다."
 
-#: dt-contacts/access-module.php:201
+#: dt-contacts/access-module.php:182
 msgid "Paused"
 msgstr "일시 중지됨"
 
-#: dt-contacts/access-module.php:202
+#: dt-contacts/access-module.php:183
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "이 연락자는 현재 보류 중입니다. (예: 휴가 중이거나 응답하지 않음)"
 
-#: dt-contacts/access-module.php:217
+#: dt-contacts/access-module.php:198
 msgid "Reason Not Ready"
 msgstr "준비되지 않은 이유"
 
-#: dt-contacts/access-module.php:218
+#: dt-contacts/access-module.php:199
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "연락처를 사용자에게 배정하기에 아직 준비가 되지 않은 주된 사유."
 
-#: dt-contacts/access-module.php:225
+#: dt-contacts/access-module.php:206
 msgid "Insufficient Contact Information"
 msgstr "불충분한 연락처 정보"
 
-#: dt-contacts/access-module.php:228
+#: dt-contacts/access-module.php:209
 msgid "Unknown Location"
 msgstr "위치 알려지지 않음"
 
-#: dt-contacts/access-module.php:231
+#: dt-contacts/access-module.php:212
 msgid "Only wants media"
 msgstr "미디어 정보만 원함"
 
-#: dt-contacts/access-module.php:234
+#: dt-contacts/access-module.php:215
 msgid "Outside Area"
 msgstr "구역 외"
 
-#: dt-contacts/access-module.php:237
+#: dt-contacts/access-module.php:218
 msgid "Needs Review"
 msgstr "검토 필요"
 
-#: dt-contacts/access-module.php:240
+#: dt-contacts/access-module.php:221
 msgid "Waiting for Confirmation"
 msgstr "승인 대기중"
 
-#: dt-contacts/access-module.php:248
+#: dt-contacts/access-module.php:229
 msgid "Reason Paused"
 msgstr "일시정지 이유"
 
-#: dt-contacts/access-module.php:249
+#: dt-contacts/access-module.php:230
 msgctxt "Optional Documentation"
 msgid ""
 "A paused contact is one you are not currently interacting with but expect to "
@@ -1845,131 +1820,132 @@ msgstr ""
 "일시정지된 연락처는 현재 연락중이지 않지만 향후 연락할 가능성이 있는 연락처입"
 "니다."
 
-#: dt-contacts/access-module.php:253
+#: dt-contacts/access-module.php:234
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "휴가 중인 연락자"
 
-#: dt-contacts/access-module.php:254
+#: dt-contacts/access-module.php:235
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "응답하지 않는 연락자"
 
-#: dt-contacts/access-module.php:255
+#: dt-contacts/access-module.php:236
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "부재인 연락자"
 
-#: dt-contacts/access-module.php:256
+#: dt-contacts/access-module.php:237
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "연락자가 관심이나 의욕이 적음"
 
-#: dt-contacts/access-module.php:257
+#: dt-contacts/access-module.php:238
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "연락자가 주도적이지 않음"
 
-#: dt-contacts/access-module.php:258
+#: dt-contacts/access-module.php:239
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "연락자가 의심스러운 동기를 가지고 있음"
 
-#: dt-contacts/access-module.php:259
+#: dt-contacts/access-module.php:240
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "연락자에게 결정권이 있음"
 
-#: dt-contacts/access-module.php:260
+#: dt-contacts/access-module.php:241
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "연락자가 자동 문자 메시지에 어떻게 응답하는지 확인하고자 합니다."
 
-#: dt-contacts/access-module.php:267
+#: dt-contacts/access-module.php:248
 msgid "Reason Archived"
 msgstr "보관된 이유"
 
-#: dt-contacts/access-module.php:268
+#: dt-contacts/access-module.php:249
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr "종료된 연락처는 연락할 수 없거나 연락하고 싶지 않은 연락처입니다."
 
-#: dt-contacts/access-module.php:272
+#: dt-contacts/access-module.php:253
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "중복"
 
-#: dt-contacts/access-module.php:273
+#: dt-contacts/access-module.php:254
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "충분하지 않은 연락자 정보"
 
-#: dt-contacts/access-module.php:274
+#: dt-contacts/access-module.php:255
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "연락처 제출 요청 거부"
 
-#: dt-contacts/access-module.php:275
+#: dt-contacts/access-module.php:256
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "적대적이거나 장난치고 있거나 자기 이익을 위함"
 
-#: dt-contacts/access-module.php:276
+#: dt-contacts/access-module.php:257
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "논의나 토론만을 원함"
 
-#: dt-contacts/access-module.php:277
+#: dt-contacts/access-module.php:258
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "미디어나 책만을 원함"
 
-#: dt-contacts/access-module.php:278
+#: dt-contacts/access-module.php:259
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "더 이상 관심 없음"
 
-#: dt-contacts/access-module.php:279
+#: dt-contacts/access-module.php:260
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "더 이상 응답하지 않음"
 
-#: dt-contacts/access-module.php:280
+#: dt-contacts/access-module.php:261
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "이미 교회에 다니고 있거나 다른 사람과 연락 중임"
 
-#: dt-contacts/access-module.php:281
+#: dt-contacts/access-module.php:262
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "파트너에 연락자 이전함"
 
-#: dt-contacts/access-module.php:282
+#: dt-contacts/access-module.php:263
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "순교함"
 
-#: dt-contacts/access-module.php:283
+#: dt-contacts/access-module.php:264
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "이사했거나 위치 변경됨"
 
-#: dt-contacts/access-module.php:284
+#: dt-contacts/access-module.php:265
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "GDPR(개인정보보호 규정) 요청"
 
-#: dt-contacts/access-module.php:285
+#: dt-contacts/access-module.php:266
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: dt-contacts/access-module.php:292
+#: dt-contacts/access-module.php:273
 msgid "Accepted"
 msgstr "승인됨"
 
-#: dt-contacts/access-module.php:300 dt-contacts/base-setup.php:528
-#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:96
+#: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1977,156 +1953,156 @@ msgstr "승인됨"
 msgid "Personal"
 msgstr "개인"
 
-#: dt-contacts/access-module.php:304
+#: dt-contacts/access-module.php:285
 #: dt-core/configuration/config-site-defaults.php:347
 msgid "Web"
 msgstr "웹"
 
-#: dt-contacts/access-module.php:308 dt-contacts/base-setup.php:230
+#: dt-contacts/access-module.php:289 dt-contacts/base-setup.php:226
 msgid "Facebook"
 msgstr "페이스북"
 
-#: dt-contacts/access-module.php:312 dt-contacts/base-setup.php:238
+#: dt-contacts/access-module.php:293 dt-contacts/base-setup.php:234
 msgid "Twitter"
 msgstr "트위터"
 
-#: dt-contacts/access-module.php:316
+#: dt-contacts/access-module.php:297
 msgid "Transfer"
 msgstr "이전"
 
-#: dt-contacts/access-module.php:318
+#: dt-contacts/access-module.php:299
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "다른 Disciple.Tools 사이트와 제휴를 맺으면서 이전된 연락처입니다."
 
-#: dt-contacts/access-module.php:331 dt-metrics/contacts/sources.php:90
+#: dt-contacts/access-module.php:312 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "자료"
 
-#: dt-contacts/access-module.php:332
+#: dt-contacts/access-module.php:313
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "이 연락처가 수집된 웹사이트, 행사 또는 위치."
 
-#: dt-contacts/access-module.php:344
+#: dt-contacts/access-module.php:325
 msgid "Campaigns"
 msgstr "캠페인"
 
-#: dt-contacts/access-module.php:345
+#: dt-contacts/access-module.php:326
 msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr "이 연락처가 상호 작용한 마케팅 캠페인 또는 액세스 활동."
 
-#: dt-contacts/access-module.php:412 dt-metrics/combined/critical-path.php:77
+#: dt-contacts/access-module.php:393 dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "추적"
 
-#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
-#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:394
+#: dt-contacts/access-module.php:480 dt-contacts/access-module.php:511
+#: dt-contacts/access-module.php:542 dt-contacts/base-setup.php:390
 msgid "Choose an option:"
 msgstr "선택 사항 고르기:"
 
-#: dt-contacts/access-module.php:521 dt-contacts/access-module.php:552
-#: dt-contacts/access-module.php:580 dt-contacts/base-setup.php:418
+#: dt-contacts/access-module.php:502 dt-contacts/access-module.php:533
+#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:414
 msgid "Confirm"
 msgstr "확인"
 
-#: dt-contacts/access-module.php:624
+#: dt-contacts/access-module.php:605
 msgid "Multipliers"
 msgstr "증대 참여자"
 
-#: dt-contacts/access-module.php:627
+#: dt-contacts/access-module.php:608
 msgid "Dispatchers"
 msgstr "발송인"
 
-#: dt-contacts/access-module.php:630
+#: dt-contacts/access-module.php:611
 msgid "Digital Responders"
 msgstr "디지털 응답기"
 
-#: dt-contacts/access-module.php:637
+#: dt-contacts/access-module.php:618
 msgid "Assign To"
 msgstr "다음에게 배정"
 
-#: dt-contacts/access-module.php:689
+#: dt-contacts/access-module.php:670
 msgid "This contact has been assigned to you."
 msgstr "이 연락처는 귀하에게 할당되었습니다."
 
-#: dt-contacts/access-module.php:690
+#: dt-contacts/access-module.php:671
 msgid "Accept"
 msgstr "수락"
 
-#: dt-contacts/access-module.php:691
+#: dt-contacts/access-module.php:672
 msgid "Decline"
 msgstr "거절"
 
-#: dt-contacts/access-module.php:929 dt-contacts/access-module.php:939
+#: dt-contacts/access-module.php:915 dt-contacts/access-module.php:925
 msgid "My Follow-Up"
 msgstr "나의 팔로우업"
 
-#: dt-contacts/access-module.php:940 dt-contacts/access-module.php:961
-#: dt-contacts/access-module.php:984 dt-contacts/access-module.php:1009
-#: dt-groups/base-setup.php:984
+#: dt-contacts/access-module.php:926 dt-contacts/access-module.php:947
+#: dt-contacts/access-module.php:970 dt-contacts/access-module.php:995
+#: dt-groups/base-setup.php:961
 msgid "Assigned to me"
 msgstr "나에게 할당"
 
-#: dt-contacts/access-module.php:941 dt-contacts/access-module.php:962
-#: dt-contacts/access-module.php:985 dt-contacts/access-module.php:1010
+#: dt-contacts/access-module.php:927 dt-contacts/access-module.php:948
+#: dt-contacts/access-module.php:971 dt-contacts/access-module.php:996
 msgid "Sub-assigned to me"
 msgstr "나에게 부속 할당"
 
-#: dt-contacts/access-module.php:1049
+#: dt-contacts/access-module.php:1035
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "%s 팔로우업"
 
-#: dt-contacts/access-module.php:1057
+#: dt-contacts/access-module.php:1043
 msgid "All Follow-Up"
 msgstr "모든 팔로우업"
 
-#: dt-contacts/access-module.php:1159 dt-contacts/access-module.php:1160
+#: dt-contacts/access-module.php:1145 dt-contacts/access-module.php:1146
 msgid "Subassigned only"
 msgstr "하위 할당 전용"
 
-#: dt-contacts/access-module.php:1316
+#: dt-contacts/access-module.php:1302
 msgid "Ready"
 msgstr "준비"
 
-#: dt-contacts/access-module.php:1317
+#: dt-contacts/access-module.php:1303
 msgid "Recent"
 msgstr "최근"
 
-#: dt-contacts/access-module.php:1318
+#: dt-contacts/access-module.php:1304
 msgid "Location"
 msgstr "위치"
 
-#: dt-contacts/access-module.php:1319
+#: dt-contacts/access-module.php:1305
 msgid "Assign"
 msgstr "배정"
 
-#: dt-contacts/access-module.php:1320 dt-users/template-new-user.php:134
+#: dt-contacts/access-module.php:1306 dt-users/template-new-user.php:134
 #: template-settings.php:226
 msgid "Language"
 msgstr "언어"
 
-#: dt-contacts/access-module.php:1321 dt-contacts/base-setup.php:267
+#: dt-contacts/access-module.php:1307 dt-contacts/base-setup.php:263
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
 #: template-settings.php:714
 msgid "Gender"
 msgstr "성별"
 
-#: dt-contacts/access-module.php:1494
+#: dt-contacts/access-module.php:1480
 msgid "This record might be a duplicate of: "
 msgstr "이 레코드는 다음의 중복일 수 있습니다:"
 
-#: dt-contacts/access-module.php:1500 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/access-module.php:1486 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "중복 확인 도구"
 
 #: dt-contacts/base-setup.php:51 dt-contacts/base-setup.php:64
-#: dt-contacts/base-setup.php:255 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:251 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
 #: dt-metrics/combined/locations-list.php:123
@@ -2136,7 +2112,7 @@ msgstr "중복 확인 도구"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:102
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:105
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
@@ -2149,53 +2125,77 @@ msgstr "연락처"
 msgid "Nickname"
 msgstr "닉네임"
 
-#: dt-contacts/base-setup.php:111
+#: dt-contacts/base-setup.php:112
 msgid "Contact Type"
 msgstr "연락처 유형"
 
-#: dt-contacts/base-setup.php:115
+#: dt-contacts/base-setup.php:116
 msgid "User"
 msgstr "사용자"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:117
 msgid "Representing a User in the system"
 msgstr "시스템의 사용자를 표현"
 
-#: dt-contacts/base-setup.php:122
+#: dt-contacts/base-setup.php:123
 msgid "Private Contact"
 msgstr "비공개 연락처"
 
-#: dt-contacts/base-setup.php:124
+#: dt-contacts/base-setup.php:125
 msgid "A friend, family member or acquaintance"
 msgstr "친구, 가족 구성원 또는 지인"
 
-#: dt-contacts/base-setup.php:125 dt-contacts/dmm-module.php:54
+#: dt-contacts/base-setup.php:126 dt-contacts/dmm-module.php:54
 msgid "Only me"
 msgstr "오직 나만"
 
-#: dt-contacts/base-setup.php:149 dt-users/users.php:162
+#: dt-contacts/base-setup.php:133
+msgid "Standard Contact"
+msgstr "기본 연락처"
+
+#: dt-contacts/base-setup.php:135
+msgid "A contact to collaborate on"
+msgstr "협업할 연락처"
+
+#: dt-contacts/base-setup.php:136
+msgid "Me and project leadership"
+msgstr "나와 프로젝트 리더십"
+
+#: dt-contacts/base-setup.php:142
+msgid "Connection"
+msgstr "연결"
+
+#: dt-contacts/base-setup.php:144 dt-contacts/dmm-module.php:51
+msgid "Connected to a contact, or generational fruit"
+msgstr "연락처, 또는 세대 간 열매에 연결"
+
+#: dt-contacts/base-setup.php:147
+msgid "Collaborators"
+msgstr "협업자"
+
+#: dt-contacts/base-setup.php:168 dt-users/users.php:162
 msgid "Languages"
 msgstr "언어"
 
-#: dt-contacts/base-setup.php:158 template-settings.php:179
+#: dt-contacts/base-setup.php:177 template-settings.php:179
 msgid "Phone"
 msgstr "휴대폰"
 
-#: dt-contacts/base-setup.php:166
+#: dt-contacts/base-setup.php:185
 msgid "Signal"
 msgstr "시그널"
 
-#: dt-contacts/base-setup.php:171
+#: dt-contacts/base-setup.php:190
 msgid "Viber"
 msgstr "바이버"
 
-#: dt-contacts/base-setup.php:176
+#: dt-contacts/base-setup.php:195
 #, fuzzy
 #| msgid "Whatsapp"
 msgid "WhatsApp"
 msgstr "왓츠앱"
 
-#: dt-contacts/base-setup.php:183
+#: dt-contacts/base-setup.php:202
 #: dt-core/configuration/config-site-defaults.php:344
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
@@ -2203,86 +2203,75 @@ msgstr "왓츠앱"
 msgid "Email"
 msgstr "이메일"
 
-#: dt-contacts/base-setup.php:193 dt-groups/base-setup.php:358
-#: dt-people-groups/people-groups-base.php:195
-#: dt-people-groups/people-groups-base.php:205
-msgctxt "Optional Documentation"
-msgid "The general location where this contact is located."
-msgstr "이 연락처가 보통 위치한 장소."
-
-#: dt-contacts/base-setup.php:201 dt-groups/base-setup.php:367
-msgid "Locations or Address"
-msgstr "위치 또는 주소"
-
-#: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:376
-#: dt-people-groups/people-groups-base.php:213 template-settings.php:190
+#: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:357
+#: dt-people-groups/people-groups-base.php:194 template-settings.php:190
 msgid "Address"
 msgstr "주소"
 
-#: dt-contacts/base-setup.php:246
+#: dt-contacts/base-setup.php:242
 msgid "Other Social Links"
 msgstr "기타 소셜 링크"
 
-#: dt-contacts/base-setup.php:255
+#: dt-contacts/base-setup.php:251
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "다른 %s(으)로의 연결"
 
-#: dt-contacts/base-setup.php:256
+#: dt-contacts/base-setup.php:252
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "시스템 내 이 연락처와 다른 연락처의 관계입니다."
 
-#: dt-contacts/base-setup.php:270 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:266 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "남성"
 
-#: dt-contacts/base-setup.php:271 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:267 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "여성"
 
-#: dt-contacts/base-setup.php:278
+#: dt-contacts/base-setup.php:274
 msgid "Age"
 msgstr "연령"
 
-#: dt-contacts/base-setup.php:282
+#: dt-contacts/base-setup.php:278
 msgid "Under 18 years old"
 msgstr "18세 미만"
 
-#: dt-contacts/base-setup.php:283
+#: dt-contacts/base-setup.php:279
 msgid "18-25 years old"
 msgstr "18~25세"
 
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/base-setup.php:280
 msgid "26-40 years old"
 msgstr "26~40세"
 
-#: dt-contacts/base-setup.php:285
+#: dt-contacts/base-setup.php:281
 msgid "Over 40 years old"
 msgstr "40세 이상"
 
-#: dt-contacts/base-setup.php:293 dt-groups/base-setup.php:102
+#: dt-contacts/base-setup.php:289 dt-groups/base-setup.php:102
 #: dt-people-groups/people-groups-base.php:150
 msgid "Requires Update"
 msgstr "업데이트가 필요합니다"
 
-#: dt-contacts/base-setup.php:300
+#: dt-contacts/base-setup.php:296
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "연락처 상태에서는 해당 연락처와 연락 진행 상황이 나타납니다."
 
-#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:118
+#: dt-contacts/base-setup.php:300 dt-groups/base-setup.php:118
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "활성화"
 
-#: dt-contacts/base-setup.php:305
+#: dt-contacts/base-setup.php:301
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "해당 연락자는 현재 연락 중이거나 계속 갱신되는 중입니다."
 
-#: dt-contacts/base-setup.php:311
+#: dt-contacts/base-setup.php:307
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
@@ -2291,76 +2280,76 @@ msgstr ""
 "이 연락자는 계속 연락하길 원하지 않는다고 알렸거나 귀하가 해당 연락자와 계속 "
 "연락하지 않기로 결정했습니다."
 
-#: dt-contacts/base-setup.php:346 dt-contacts/base-setup.php:375
+#: dt-contacts/base-setup.php:342 dt-contacts/base-setup.php:371
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "%s 보관"
 
-#: dt-contacts/base-setup.php:353
+#: dt-contacts/base-setup.php:349
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "%s 타입 변경"
 
-#: dt-contacts/base-setup.php:359
+#: dt-contacts/base-setup.php:355
 msgid "See duplicates"
 msgstr "중복 보기"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:372
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "정말 %s을(를) 보관하시겠습니까?"
 
-#: dt-contacts/base-setup.php:383
+#: dt-contacts/base-setup.php:379
 msgid "Archive"
 msgstr "보관"
 
-#: dt-contacts/base-setup.php:442
+#: dt-contacts/base-setup.php:438
 #: dt-core/configuration/config-site-defaults.php:546
-#: dt-groups/base-setup.php:645 template-settings.php:212
+#: dt-groups/base-setup.php:622 template-settings.php:212
 msgid "Other"
 msgstr "다른"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1066
-#: dt-posts/custom-post-type.php:436
+#: dt-contacts/base-setup.php:497 dt-groups/base-setup.php:1043
+#: dt-posts/custom-post-type.php:464
 msgid "Default Filters"
 msgstr "기본 필터"
 
-#: dt-contacts/base-setup.php:494
+#: dt-contacts/base-setup.php:507
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "조회 가능한 모든 %s"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1080
-#: dt-posts/custom-post-type.php:469
+#: dt-contacts/base-setup.php:518 dt-groups/base-setup.php:1057
+#: dt-posts/custom-post-type.php:497
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "자주 사용하는 %s"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1085
-#: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:475
+#: dt-contacts/base-setup.php:524 dt-groups/base-setup.php:1062
+#: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:503
 msgid "Favorite"
 msgstr "자주 사용하는"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1091
-#: dt-posts/custom-post-type.php:484
+#: dt-contacts/base-setup.php:530 dt-groups/base-setup.php:1068
+#: dt-posts/custom-post-type.php:512
 msgid "My Recently Viewed"
 msgstr "나의 최근 조회"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1096
-#: dt-posts/custom-post-type.php:489
+#: dt-contacts/base-setup.php:535 dt-groups/base-setup.php:1073
+#: dt-posts/custom-post-type.php:517
 msgid "Last 30 viewed"
 msgstr "마지막 조회 30개"
 
-#: dt-contacts/base-setup.php:552 dt-contacts/base-setup.php:560
-#: dt-contacts/base-setup.php:578 dt-contacts/base-setup.php:579
+#: dt-contacts/base-setup.php:565 dt-contacts/base-setup.php:573
+#: dt-contacts/base-setup.php:591 dt-contacts/base-setup.php:592
 msgid "Shared with me"
 msgstr "나와 공유됨"
 
-#: dt-contacts/base-setup.php:688
+#: dt-contacts/base-setup.php:701
 msgid "This %s is archived"
 msgstr "이 %s은(는) 보관 처리되었습니다"
 
-#: dt-contacts/base-setup.php:690
+#: dt-contacts/base-setup.php:703
 msgid "Restore"
 msgstr "복원"
 
@@ -2601,7 +2590,7 @@ msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "이 연락처가 세례를 베푼 사람"
 
-#: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:397
+#: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:374
 #: dt-people-groups/people-groups-base.php:96
 #: dt-people-groups/people-groups-base.php:106
 msgid "People Groups"
@@ -2632,26 +2621,26 @@ msgstr "모임에 나타나지 않음"
 msgid "Faith"
 msgstr "신앙"
 
-#: dt-contacts/dmm-module.php:361
+#: dt-contacts/dmm-module.php:358
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "연결된 %s"
 
-#: dt-contacts/dmm-module.php:374 dt-contacts/dmm-module.php:384
-#: dt-contacts/dmm-module.php:394 dt-contacts/dmm-module.php:395
+#: dt-contacts/dmm-module.php:371 dt-contacts/dmm-module.php:381
+#: dt-contacts/dmm-module.php:391 dt-contacts/dmm-module.php:392
 msgid "Coached by me"
 msgstr "내가 코치"
 
-#: dt-contacts/dmm-module.php:413
+#: dt-contacts/dmm-module.php:410
 #: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr "빠른 동작"
 
-#: dt-contacts/dmm-module.php:494
+#: dt-contacts/dmm-module.php:491
 msgid "Who was this contact baptized by and when?"
 msgstr "이 연락자가 누구에게, 언제 세례받았습니까?"
 
-#: dt-contacts/dmm-module.php:508
+#: dt-contacts/dmm-module.php:505
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "배가자 및 연락자 검색"
@@ -3046,16 +3035,16 @@ msgid "Group"
 msgstr "그룹"
 
 #: dt-groups/base-setup.php:49 dt-groups/base-setup.php:62
-#: dt-groups/base-setup.php:460 dt-groups/base-setup.php:644
+#: dt-groups/base-setup.php:437 dt-groups/base-setup.php:621
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:106
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:109
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:107
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:111
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "그룹"
@@ -3139,7 +3128,7 @@ msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr "교회로 모이지 않거나 교회가 되려고 하지 않는 특별 그룹."
 
-#: dt-groups/base-setup.php:190 dt-groups/base-setup.php:637
+#: dt-groups/base-setup.php:190 dt-groups/base-setup.php:614
 msgid "Church Health"
 msgstr "교회 건강"
 
@@ -3229,7 +3218,7 @@ msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "그룹에 리더들이 있습니다."
 
-#: dt-groups/base-setup.php:240 dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:240 dt-groups/base-setup.php:415
 msgid "Church Commitment"
 msgstr "교회 헌신"
 
@@ -3267,7 +3256,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "(해당되는 경우) 이 그룹이 만나기 중단한 일자."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:111
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:115
 msgid "Member Count"
 msgstr "구성원 수"
 
@@ -3283,8 +3272,8 @@ msgstr ""
 "동으로 업데이트됩니다. 시스템에는 없을 수 있지만 그룹의 구성원인 사람을 포함"
 "하려면 이 수를 수동으로 변경하세요."
 
-#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:592
-#: dt-groups/base-setup.php:636
+#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:569
+#: dt-groups/base-setup.php:613
 msgid "Member List"
 msgstr "그룹원 리스트"
 
@@ -3328,48 +3317,48 @@ msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "이 그룹에서 탄생한 그룹."
 
-#: dt-groups/base-setup.php:398
+#: dt-groups/base-setup.php:375
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "이 그룹이 대표하는 사람 그룹."
 
-#: dt-groups/base-setup.php:411
+#: dt-groups/base-setup.php:388
 msgid "Unbelievers"
 msgstr "불신자"
 
-#: dt-groups/base-setup.php:412
+#: dt-groups/base-setup.php:389
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "이 그룹 내 불신자 수"
 
-#: dt-groups/base-setup.php:420
+#: dt-groups/base-setup.php:397
 msgid "Believers"
 msgstr "신자"
 
-#: dt-groups/base-setup.php:421
+#: dt-groups/base-setup.php:398
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "이 그룹 내 신자 수"
 
-#: dt-groups/base-setup.php:429
+#: dt-groups/base-setup.php:406
 msgid "Accountable"
 msgstr "책임 있음"
 
-#: dt-groups/base-setup.php:430
+#: dt-groups/base-setup.php:407
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "어카운터빌리티 그룹 내 사람 수"
 
-#: dt-groups/base-setup.php:439
+#: dt-groups/base-setup.php:416
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "이 그룹은 교회입니까, 아닙니까?"
 
-#: dt-groups/base-setup.php:447
+#: dt-groups/base-setup.php:424
 msgid "Multiplying"
 msgstr "증대"
 
-#: dt-groups/base-setup.php:448
+#: dt-groups/base-setup.php:425
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
@@ -3378,37 +3367,37 @@ msgstr ""
 "다른 그룹을 돕는 사람의 수입니다. 얼마나 많은 그룹원이 증대에 참여하고 있습니"
 "까?"
 
-#: dt-groups/base-setup.php:461
+#: dt-groups/base-setup.php:438
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "이 연락처가 속한 그룹."
 
-#: dt-groups/base-setup.php:473
+#: dt-groups/base-setup.php:450
 msgid "Leader of Group"
 msgstr "그룹 리더"
 
-#: dt-groups/base-setup.php:483
+#: dt-groups/base-setup.php:460
 msgid "Coach of Group"
 msgstr "그룹 코치"
 
-#: dt-groups/base-setup.php:595
+#: dt-groups/base-setup.php:572
 msgid "Create"
 msgstr "생성"
 
-#: dt-groups/base-setup.php:600
+#: dt-groups/base-setup.php:577
 msgid "Select"
 msgstr "선택"
 
-#: dt-groups/base-setup.php:605
+#: dt-groups/base-setup.php:582
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "새 멤버를 추가하려면, '생성' 또는 '선택'을 클릭하세요"
 
-#: dt-groups/base-setup.php:611
+#: dt-groups/base-setup.php:588
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "기존 연락처에서 멤버 추가"
 
-#: dt-groups/base-setup.php:612
+#: dt-groups/base-setup.php:589
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3417,11 +3406,11 @@ msgstr ""
 "\"멤버 목록\" 항목에는 기존 연락처의 이름을 입력해 멤버들을 이 그룹에 추가합"
 "니다."
 
-#: dt-groups/base-setup.php:640
+#: dt-groups/base-setup.php:617
 msgid "Four Fields"
 msgstr "4개 항목"
 
-#: dt-groups/base-setup.php:641
+#: dt-groups/base-setup.php:618
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3580,7 +3569,7 @@ msgstr "목록"
 msgid "Refresh Cached Data"
 msgstr "캐시 데이터 새로고침"
 
-#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:283
+#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:260
 msgid "Population"
 msgstr "인구"
 
@@ -3603,7 +3592,7 @@ msgstr "최상 경로"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:98 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:101 dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "프로젝트"
@@ -3759,7 +3748,7 @@ msgid ""
 msgstr "일정 하루 요약을 클릭하면 아래 메트릭스 세부 목록이 표시됩니다."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:126
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:129
 msgid "Metrics"
 msgstr "지표"
 
@@ -4022,36 +4011,40 @@ msgid "Group Generation Tree"
 msgstr "그룹 세대 지도"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:97
+#: dt-metrics/records/genmap.php:101
 msgid "Highlight Active"
 msgstr "활성 강조"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:98
+#: dt-metrics/records/genmap.php:102
 msgid "Highlight Churches"
 msgstr "교회 강조"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:99 dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:103 dt-metrics/records/genmap.php:116
 msgid "Members"
 msgstr "멤버"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:104
 msgid "View Record"
 msgstr "기록 보기"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:103
+#: dt-metrics/records/genmap.php:107
 msgid "Total Members"
 msgstr "총 멤버"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:104
+#: dt-metrics/records/genmap.php:108
 msgid "View Group"
 msgstr "그룹 보기"
 
-#: dt-metrics/metrics.php:109
+#: dt-metrics/metrics.php:82
+msgid "Genmap"
+msgstr ""
+
+#: dt-metrics/metrics.php:112
 #, fuzzy
 #| msgid "Metrics"
 msgid "Dynamic Metrics"
@@ -4274,68 +4267,64 @@ msgstr "레코드"
 msgid "System"
 msgstr "시스템"
 
-#: dt-metrics/records/genmap.php:23
-msgid "Genmap"
-msgstr ""
-
-#: dt-metrics/records/genmap.php:24 dt-metrics/records/genmap.php:95
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:99
 #, fuzzy
-#| msgid "Generation"
-msgid "Generation Map"
-msgstr "세대"
+#| msgid "Group Generation Tree"
+msgid "Generational Trees"
+msgstr "그룹 세대 지도"
 
-#: dt-metrics/records/genmap.php:96
+#: dt-metrics/records/genmap.php:100
 #, fuzzy
 #| msgid "Archived"
 msgid "Show Archived"
 msgstr "보관 처리됨"
 
-#: dt-metrics/records/genmap.php:109
+#: dt-metrics/records/genmap.php:113
 msgid "Coaches"
 msgstr "코치"
 
-#: dt-metrics/records/genmap.php:110
+#: dt-metrics/records/genmap.php:114
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "유형:"
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:117
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "다음으로 열기"
 
-#: dt-metrics/records/genmap.php:115
+#: dt-metrics/records/genmap.php:119
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:116
+#: dt-metrics/records/genmap.php:120
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:119
+#: dt-metrics/records/genmap.php:123
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "아동 그룹"
 
-#: dt-metrics/records/genmap.php:121
+#: dt-metrics/records/genmap.php:125
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:122
+#: dt-metrics/records/genmap.php:126
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:123
+#: dt-metrics/records/genmap.php:127
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "정말 %s을(를) 삭제하시겠습니까?"
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:131
 msgid "Infinite Loops"
 msgstr ""
 
@@ -4525,32 +4514,32 @@ msgstr ""
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:221
+#: dt-people-groups/people-groups-base.php:202
 #: dt-posts/custom-post-type.php:186
 msgid "Last Modified"
 msgstr "마지막으로 수정됨"
 
-#: dt-people-groups/people-groups-base.php:290
+#: dt-people-groups/people-groups-base.php:267
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:297
+#: dt-people-groups/people-groups-base.php:274
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:304
+#: dt-people-groups/people-groups-base.php:281
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:311
+#: dt-people-groups/people-groups-base.php:288
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:302
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:327
+#: dt-people-groups/people-groups-base.php:304
 msgid "Joshua Project"
 msgstr ""
 
@@ -4586,6 +4575,18 @@ msgstr "관련 항목을 그룹으로 분류하는 유용한 방법입니다."
 #: dt-posts/custom-post-type.php:223
 msgid "Un-Follow"
 msgstr "팔로우 해제"
+
+#: dt-posts/custom-post-type.php:244
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid "The general location where this contact is located."
+msgctxt "Optional Documentation"
+msgid "The general location where this record is located."
+msgstr "이 연락처가 보통 위치한 장소."
+
+#: dt-posts/custom-post-type.php:252
+msgid "Locations or Address"
+msgstr "위치 또는 주소"
 
 #: dt-posts/dt-posts.php:100
 msgid ""
@@ -5954,6 +5955,11 @@ msgid "Duplicates found:"
 msgstr "찾은 중복 항목:"
 
 #, fuzzy
+#~| msgid "Generation"
+#~ msgid "Generation Map"
+#~ msgstr "세대"
+
+#, fuzzy
 #~| msgid "List"
 #~ msgid "Map List Filter"
 #~ msgstr "목록"
@@ -5971,11 +5977,6 @@ msgstr "찾은 중복 항목:"
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
 #~ msgstr "여기에 배정됨: %s"
-
-#, fuzzy
-#~| msgid "Group Generation Tree"
-#~ msgid "Generation Tree"
-#~ msgstr "그룹 세대 지도"
 
 #, fuzzy
 #~| msgid "Generation"
