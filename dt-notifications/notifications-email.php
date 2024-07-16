@@ -183,7 +183,7 @@ add_filter( 'wp_mail', function ( $args ) {
         $args['headers'] = $headers;
     }
 
-   return $args;
+    return $args;
 } );
 
 /**
