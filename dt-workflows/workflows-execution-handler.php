@@ -505,7 +505,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
                         $updated_fields = self::action_update( $field_type, $field_id, $value );
                         break;
                     case 'append':
-                        $updated_fields = self::action_append( $field_type, $field_id, $value );
+                        $updated_fields = self::action_append( $field_type, $field_id, $value, $post );
                         break;
                     case 'connect':
                         $updated_fields = self::action_connect( $field_type, $field_id, $value );
@@ -547,7 +547,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
         return $updated;
     }
 
-    private static function action_append( $field_type, $field_id, $value ): array {
+    private static function action_append( $field_type, $field_id, $value, $post ): array {
         $updated = [];
         switch ( $field_type ) {
             case 'tags':
@@ -583,9 +583,33 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 }
                 break;
             case 'comments':
+
+                $sub_assigneds = $post['subassigned']; //then filter
+                if ( str_contains( $value, '{subassigned}' ) ) {
+                    $replacement = '';
+                    $current = 0;
+                    foreach ( $sub_assigneds as $sub_assigned ) {
+                        ++$current;
+
+                        $id = '';
+                        $test = DT_Posts::get_post( $sub_assigned['post_type'], $sub_assigned['ID'], false, false );
+                        if ( !empty( $test['corresponds_to_user'] ) ) {
+                            $id = $test['corresponds_to_user'];
+                            $replacement = $replacement . '@[' . $sub_assigned['post_title'] . '](' . $id . ')';
+                        } else {
+                            $replacement = $replacement . $sub_assigned['post_title'];
+                        }
+                        if ( $current != sizeof( $sub_assigneds ) ) { //if not last subAssigned, add space
+                            $replacement = $replacement . ', ';
+                        }
+                    }
+                    $value = str_replace( '{subassigned}', $replacement, $value );
+                }
+                dt_write_log( $value );
                 $updated['notes'] = [
                     $value,
                 ];
+
         }
 
         return $updated;
