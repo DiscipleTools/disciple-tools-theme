@@ -1079,3 +1079,42 @@ html[dir="rtl"] .add-link-dropdown__content {
     margin-bottom: 0;
     padding: .5em .5em;
 }
+/** DT Modal Content CSS Starts **/
+dt-modal:not(:defined){
+    display: none;
+}
+
+.field-body--custom {
+    p {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        text-rendering: optimizeLegibility;
+    }
+    ul {
+        li {
+            font-size: 15px;
+        }
+    }
+}
+.content-min-height {
+    display: block;
+    min-height: 210px;
+}
+.button {
+    padding: .85em 1em !important;
+    &.button---margin-top {
+        margin-top: 15px;
+    }
+}
+.ul-no-bullets {
+    &.no-bullets--custom {
+        li {
+            margin-bottom: 10px;
+            input {
+                margin-right: .5333333333rem;
+            }
+        }
+    }
+
+}

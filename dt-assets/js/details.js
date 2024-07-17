@@ -1190,7 +1190,7 @@ jQuery(document).ready(function ($) {
    */
   let shareTypeahead = null;
   $('.open-share').on('click', function () {
-    $('#share-contact-modal').foundation('open');
+    // $('#share-contact-modal').foundation('open');
     if (!shareTypeahead) {
       shareTypeahead = window.TYPEAHEADS.share(post_type, post_id);
     }
@@ -1261,7 +1261,7 @@ jQuery(document).ready(function ($) {
   $('.open-set-task').on('click', function () {
     $('.js-add-task-form .error-text').empty();
     build_task_list();
-    $('#tasks-modal').foundation('open');
+    // $('#tasks-modal').foundation('open');
   });
   $('#task-custom-text').on('click', function () {
     $('input:radio[name="task-type"]')
