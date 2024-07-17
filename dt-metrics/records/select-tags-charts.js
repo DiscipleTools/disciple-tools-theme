@@ -43,18 +43,34 @@ function display_select_tags_charts() {
     <div class="section-header">${title_select_tags_charts}</div>
       <p>${description}</p>
       <section class="chart-controls">
-        <label class="section-subheader" for="post_type_select">${post_type_select_label}</label>
-        <select class="select-field" id="post_type_select">
-          ${Object.entries(post_type_options).map(([value, label]) => `<option value="${value}">${label}</option>`)}
-        </select>
-        <label class="section-subheader" for="post_field_select">${post_field_select_label}</label>
-        <select class="select-field" id="post_field_select">
-          ${build_field_select_options()}
-        </select>
-        <label class="section-subheader" for="date_select">${date_select_label}</label>
-        <select class="select-field" id="date_select">
-          ${build_date_select_options(all_time)}
-        </select>
+        <table>
+            <thead>
+                <tr>
+                    <th><label class="section-subheader" for="post_type_select">${post_type_select_label}</label></th>
+                    <th><label class="section-subheader" for="post_field_select">${post_field_select_label}</label></th>
+                    <th><label class="section-subheader" for="date_select">${date_select_label}</label></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="vertical-align: top;">
+                        <select class="select-field" id="post_type_select">
+                          ${Object.entries(post_type_options).map(([value, label]) => `<option value="${value}">${label}</option>`)}
+                        </select>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <select class="select-field" id="post_field_select">
+                          ${build_field_select_options()}
+                        </select>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <select class="select-field" id="date_select">
+                          ${build_date_select_options(all_time)}
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <div id="chart_loading_spinner" class="loading-spinner active"></div>
       </section>
       <hr>
