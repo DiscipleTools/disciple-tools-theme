@@ -160,17 +160,17 @@ function dt_display_tile( $tile, $post ): bool {
                             } else {
                                 echo esc_html__( 'Status', 'disciple_tools' );
                             }?>
-                           
+
                             <div class="reveal" id="help-modal-field" data-reveal></div>
                             <dt-modal data-tile="status" class="help-button-tile" title="status" context="alert" ishelp="" buttonClass={help-button-tile} buttonStyle={"background":"none","border":"0px"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" imageStyle={"height":"15px"} tileLabel="status">
-                            <span slot="content"> 
+                            <span slot="content">
                             <?php
                                 $html = get_help_modal_html();
-                                echo $html;
+                                echo wp_kses_post( $html );
                             ?>
                             </span>
                             </dt-modal>
-                            
+
                         </h3>
 
                         <div class="grid-x grid-margin-x">
@@ -216,10 +216,10 @@ function dt_display_tile( $tile, $post ): bool {
                                 echo esc_html__( 'Details', 'disciple_tools' );
                             }?>
                             <dt-modal  class="help-button-tile" data-tile="details" title="details" context="alert" ishelp="" buttonClass={"alert":true} buttonStyle={"background":"none","border":"0px"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" imageStyle={"height":"15px"} tileLabel="details">
-                            <span slot="content"> 
+                            <span slot="content">
                             <?php
                                 $html = get_help_modal_html();
-                                echo $html;
+                                echo wp_kses_post( $html );
                             ?>
                             </span>
                             </dt-modal>
@@ -379,14 +379,14 @@ function dt_display_tile( $tile, $post ): bool {
                                             <h3 class="section-header">
                                                 <?php echo esc_html( $tile_options['label'] )?>
                                                 <dt-modal data-tile="<?php echo esc_html( $tile_key ) ?>" class="help-button-tile" title=<?php echo esc_html( $tile_key ) ?> context="alert" ishelp="" buttonClass={"alert":true} buttonStyle={"background":"none","border":"0px"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" imageStyle={"height":"15px"} tileLabel="<?php echo esc_html( $tile_label )?>">
-                                                <span slot="content"> 
+                                                <span slot="content">
                                                <?php
                                                 $html = get_help_modal_html();
-                                                echo $html;
+                                                echo wp_kses_post( $html );
                                                 ?>
                                                 </span>
                                             </dt-modal>
-                                                <button class="section-chevron chevron_down">   
+                                                <button class="section-chevron chevron_down">
                                                             <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                                             </button>
                                                 <button class="section-chevron chevron_up">
