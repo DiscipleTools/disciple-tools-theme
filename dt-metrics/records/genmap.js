@@ -727,7 +727,7 @@ jQuery(document).ready(function ($) {
       field_icon = field_icon.trim().toLowerCase();
       if (field_icon.startsWith('mdi')) {
         field_icons.push(
-          `<i class="dt-white-icon mdi ${field_icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
+          `<i class="mdi ${field_icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
         );
       } else {
         field_icons.push(
@@ -752,7 +752,7 @@ jQuery(document).ready(function ($) {
                 option.icon.trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="dt-white-icon mdi ${option.icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
+                  `<i class="mdi ${option.icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
                 );
               } else if (
                 option?.icon &&
@@ -766,7 +766,7 @@ jQuery(document).ready(function ($) {
                 option['font-icon'].trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="dt-white-icon mdi ${option['font-icon']}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
+                  `<i class="mdi ${option['font-icon']}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
                 );
               } else if (
                 option['font-icon'] &&
