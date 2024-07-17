@@ -304,9 +304,6 @@ jQuery(document).ready(function ($) {
                   let collated_data_layer_content =
                     collate_data_layer_content(post_id);
 
-                  let icons_total = 0;
-                  let icons_total_limit = 4;
-                  let icons_total_limit_counter = 0;
                   let data_layer_content_html = '';
 
                   // Loop, extract & display accordingly, by data layer order.
@@ -342,6 +339,10 @@ jQuery(document).ready(function ($) {
                             }
                           }
                         } else {
+                          let icons_total = 0;
+                          let icons_total_limit = 4;
+                          let icons_total_limit_counter = 0;
+
                           const collated_data_layer_field_icons =
                             collate_data_layer_field_icons(
                               post_type_field_settings[field_id],
@@ -726,11 +727,11 @@ jQuery(document).ready(function ($) {
       field_icon = field_icon.trim().toLowerCase();
       if (field_icon.startsWith('mdi')) {
         field_icons.push(
-          `<i class="mdi ${field_icon}" style="font-size: 15px;"></i>`,
+          `<i class="dt-white-icon mdi ${field_icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
         );
       } else {
         field_icons.push(
-          `<img src="${field_icon}" alt="${field_settings['name']}" width="15px" height="15px"/>`,
+          `<img class="dt-white-icon" src="${field_icon}" alt="${field_settings['name']}" style="min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"/>`,
         );
       }
     } else {
@@ -751,28 +752,28 @@ jQuery(document).ready(function ($) {
                 option.icon.trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="mdi ${option.icon}" style="font-size: 15px;"></i>`,
+                  `<i class="dt-white-icon mdi ${option.icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
                 );
               } else if (
                 option?.icon &&
                 option.icon.trim().toLowerCase().startsWith('http')
               ) {
                 default_icons.push(
-                  `<img src="${option.icon}" alt="${option['label']}" width="15px" height="15px"/>`,
+                  `<img class="dt-white-icon" src="${option.icon}" alt="${option['label']}" style="min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"/>`,
                 );
               } else if (
                 option['font-icon'] &&
                 option['font-icon'].trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="mdi ${option['font-icon']}" style="font-size: 15px;"></i>`,
+                  `<i class="dt-white-icon mdi ${option['font-icon']}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
                 );
               } else if (
                 option['font-icon'] &&
                 option['font-icon'].trim().toLowerCase().startsWith('http')
               ) {
                 default_icons.push(
-                  `<img src="${option['font-icon']}" alt="${option['label']}" width="15px" height="15px"/>`,
+                  `<img class="dt-white-icon" src="${option['font-icon']}" alt="${option['label']}" style="min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"/>`,
                 );
               } else {
                 no_icons_counter++;
@@ -985,7 +986,7 @@ jQuery(document).ready(function ($) {
                     </div>
                 </span>
             </td>
-            <td><button class="button clear-date-button del-data-layer" style="border: 1px solid #cacaca;">${window.lodash.escape(window.dtMetricsProject.translations.del_data_layer)}</button></td>
+            <td><button class="button clear-date-button del-data-layer" style="border: 1px solid #cacaca;">x</button></td>
           </tr>
         `);
       }
