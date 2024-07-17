@@ -93,10 +93,10 @@ class DT_Login_User_Manager {
     private function update_user() {
         $user = get_user_by( 'email', $this->email );
 
-        $user_role = $user->roles[0];
-
-        if ( !$user_role ) {
+        if ( !isset( $user->roles ) || !is_array( $user->roles ) || empty( $user_roles ) ) {
             $user_role = $this->get_default_role();
+        } else {
+            $user_role = $user->roles[0];
         }
 
         $this->add_user_to_blog_if_needed( $user->ID, $user_role ); // add user to site.
