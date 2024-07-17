@@ -73,7 +73,7 @@ class DT_Login_User_Manager {
     }
 
     private function user_exists() {
-        return !empty($this->get_user());
+        return !empty( $this->get_user() );
     }
 
     private function create_user() {
