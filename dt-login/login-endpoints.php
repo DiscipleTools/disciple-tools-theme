@@ -71,6 +71,14 @@ class DT_Login_Endpoints {
             $payload['name'] = $body->user->displayName;
         }
 
+        if ( empty( $prayload['email'] ) && isset( $body->user->email ) ) {
+            $payload['email'] = $body->user->email;
+        }
+
+        if ( empty( $prayload['email'] ) && isset( $body->additionalUserInfo->profile->email ) ){
+            $payload['email'] = $body->additionalUserInfo->profile->email;
+        }
+
         $user_manager = new DT_Login_User_Manager( $payload );
 
         try {
