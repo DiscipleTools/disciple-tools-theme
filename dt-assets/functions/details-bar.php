@@ -229,7 +229,7 @@ function dt_print_details_bar(
                             <span slot="content" class="content-min-height">
                             <?php
                                 global $post;
-                                ?>
+                            ?>
                                 <h6>
                                     <?php
                                     if ( is_singular( 'groups' ) ){

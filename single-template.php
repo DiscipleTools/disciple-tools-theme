@@ -167,7 +167,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <?php
                                 $html = get_help_modal_html();
                                 echo $html;
-                                ?>
+                            ?>
                             </span>
                             </dt-modal>
                             
@@ -373,16 +373,16 @@ function dt_display_tile( $tile, $post ): bool {
                                         <?php
                                         //setup tile label if see by customizations
                                         $tile_label = 'Default Tile Label';
-                                        if ( isset( $tile_options['label'] ) ){ 
-                                         $tile_label = esc_html($tile_options['label']);
-                                         ?>
+                                        if ( isset( $tile_options['label'] ) ){
+                                            $tile_label = esc_html( $tile_options['label'] );
+                                            ?>
                                             <h3 class="section-header">
                                                 <?php echo esc_html( $tile_options['label'] )?>
                                                 <dt-modal data-tile="<?php echo esc_html( $tile_key ) ?>" class="help-button-tile" title=<?php echo esc_html( $tile_key ) ?> context="alert" ishelp="" buttonClass={"alert":true} buttonStyle={"background":"none","border":"0px"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" imageStyle={"height":"15px"} tileLabel="<?php echo esc_html( $tile_label )?>">
                                                 <span slot="content"> 
                                                <?php
-                                               $html = get_help_modal_html();
-                                               echo $html;
+                                                $html = get_help_modal_html();
+                                                echo $html;
                                                 ?>
                                                 </span>
                                             </dt-modal>
