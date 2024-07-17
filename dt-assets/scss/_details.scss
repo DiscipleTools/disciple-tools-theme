@@ -1080,6 +1080,10 @@ html[dir="rtl"] .add-link-dropdown__content {
     padding: .5em .5em;
 }
 /** DT Modal Content CSS Starts **/
+dt-modal:not(:defined){
+    display: none;
+}
+
 .field-body--custom {
     p {
         font-size: 15px;
@@ -1112,5 +1116,5 @@ html[dir="rtl"] .add-link-dropdown__content {
             }
         }
     }
-  
+
 }
