@@ -61,8 +61,9 @@ function dt_firebase_login_ui( $atts ) {
     ?>
 
     <?php //phpcs:disable ?>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth-compat.js"></script>
     <script>
         const config = [<?php echo json_encode( $config ) ?>][0]
 
@@ -114,8 +115,8 @@ function dt_firebase_login_ui( $atts ) {
         }
 
     </script>
-    <script src="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth<?php echo esc_html( $lang_prefix ) ?>.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth.css" />
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth<?php echo esc_html( $lang_prefix ) ?>.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
 
     <style>
         #firebaseui-auth-container .firebaseui-tos {
