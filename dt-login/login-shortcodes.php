@@ -115,8 +115,8 @@ function dt_firebase_login_ui( $atts ) {
         }
 
     </script>
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth<?php echo esc_html( $lang_prefix ) ?>.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <script src="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth<?php echo esc_html( $lang_prefix ) ?>.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/5.0.0/firebase-ui-auth.css" />
 
     <style>
         #firebaseui-auth-container .firebaseui-tos {
