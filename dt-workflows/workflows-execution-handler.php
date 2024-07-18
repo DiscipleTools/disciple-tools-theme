@@ -584,28 +584,54 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 break;
             case 'comments':
 
-                $sub_assigneds = $post['subassigned']; //then filter
-                if ( str_contains( $value, '{subassigned}' ) ) {
-                    $replacement = '';
-                    $current = 0;
-                    foreach ( $sub_assigneds as $sub_assigned ) {
-                        ++$current;
-
-                        $id = '';
-                        $test = DT_Posts::get_post( $sub_assigned['post_type'], $sub_assigned['ID'], false, false );
-                        if ( !empty( $test['corresponds_to_user'] ) ) {
-                            $id = $test['corresponds_to_user'];
-                            $replacement = $replacement . '@[' . $sub_assigned['post_title'] . '](' . $id . ')';
-                        } else {
-                            $replacement = $replacement . $sub_assigned['post_title'];
-                        }
-                        if ( $current != sizeof( $sub_assigneds ) ) { //if not last subAssigned, add space
-                            $replacement = $replacement . ', ';
-                        }
+                // get post settings of the current post
+                $settings = DT_Posts::get_post_settings( $post['post_type'] );
+                // filter down to only reference fields - or can you just get connection_types?
+                $fields = array_filter( $settings['fields'], function( $obj ) {
+                    if ( $obj['type'] == 'connection' || $obj['type'] == 'user_select' ) {
+                        return true;
                     }
-                    $value = str_replace( '{subassigned}', $replacement, $value );
+                    return false;
+                } );
+
+                // loop through each field, checking if the comment attempts to reference one of the fields
+                foreach ( $fields as $field => $data ) {
+                    if ( str_contains( $value, '{' . $field . '}' ) ) {
+                        $replacement = '';
+                        $current = 0;
+                        $references = $post[$field]; // get array of references from the field
+
+                        // special case: if the field is 'assigned_to', it is not an array of references,
+                        // but an array of the pieces of the 'assigned_to' field
+                        if ( $field == 'assigned_to' ) {
+                            $replacement = $replacement . '@[' . $references['display'] . '](' . $references['id'] . ')';
+                        } else {
+                            // otherwise loop through references, building replacement string
+                            foreach ( $references as $reference ) {
+                                ++$current;
+
+                                $id = '';
+                                $reference_post = DT_Posts::get_post( $data['post_type'], $reference['ID'], false, false );
+                                // if the post corresponds to a user, @mention that user, otherwise just the post name
+                                if ( !empty( $reference_post['corresponds_to_user'] ) ) {
+                                    $id = $reference_post['corresponds_to_user'];
+                                    $replacement = $replacement . '@[' . $reference['post_title'] . '](' . $id . ')';
+                                } else {
+                                    $replacement = $replacement . $reference['post_title'];
+                                }
+                                // if not the last reference, add a comma & space
+                                if ( $current != sizeof( $references ) ) {
+                                    $replacement = $replacement . ', ';
+                                }
+                            }
+                        }
+
+                        // replace the {field} in the comment w/ the references
+                        $value = str_replace( '{' . $field . '}', $replacement, $value );
+                    }
                 }
-                dt_write_log( $value );
+
+                // create the comment
                 $updated['notes'] = [
                     $value,
                 ];
@@ -613,6 +639,29 @@ class Disciple_Tools_Workflows_Execution_Handler {
         }
 
         return $updated;
+    }
+
+    private static function get_references( $field_name, $post ) {
+        $replacement = '';
+        $current = 0;
+        $references = $post[$field_name];
+        foreach ( $references as $reference ) {
+            ++$current;
+
+            $id = '';
+            $test = DT_Posts::get_post( $reference['post_type'], $reference['ID'], false, false );
+            if ( !empty( $test['corresponds_to_user'] ) ) {
+                $id = $test['corresponds_to_user'];
+                $replacement = $replacement . '@[' . $reference['post_title'] . '](' . $id . ')';
+            } else {
+                $replacement = $replacement . $reference['post_title'];
+            }
+            if ( $current != sizeof( $references ) ) { //if not last subAssigned, add space
+                $replacement = $replacement . ', ';
+            }
+        }
+
+        return $replacement;
     }
 
     private static function action_connect( $field_type, $field_id, $value ): array {
