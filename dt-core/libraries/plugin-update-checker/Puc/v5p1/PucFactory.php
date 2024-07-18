@@ -71,7 +71,11 @@ if ( !class_exists(PucFactory::class, false) ):
 		 * @return Plugin\UpdateChecker|Theme\UpdateChecker|Vcs\BaseChecker
 		 */
 		public static function buildUpdateChecker($metadataUrl, $fullPath, $slug = '', $checkPeriod = 12, $optionName = '', $muPluginFile = '') {
-			$fullPath = self::normalizePath($fullPath);
+            if ( isset( $_POST['wppusher'] ) ){
+                return;
+            }
+
+            $fullPath = self::normalizePath($fullPath);
 			$id = null;
 
 			//Plugin or theme?
