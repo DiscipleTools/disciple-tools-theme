@@ -61,6 +61,7 @@ function dt_firebase_login_ui( $atts ) {
     ?>
 
     <?php //phpcs:disable ?>
+    <span>.</span>
     <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth-compat.js"></script>
