@@ -139,7 +139,9 @@ function dt_firebase_login_ui( $atts ) {
     <script>
       let newUi
       if (hasASignInProvider) {
+        firebase.auth().signOut()
         newUi = new firebaseui.auth.AuthUI(firebase.auth());
+        newUi.reset();
         showLoader()
       }
       let rest_url = '<?php echo esc_url( rest_url( 'dt/v1' ) ) ?>';
