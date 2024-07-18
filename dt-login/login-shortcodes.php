@@ -62,8 +62,8 @@ function dt_firebase_login_ui( $atts ) {
 
     <?php //phpcs:disable ?>
     <span>.</span>
-    <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script>
         const config = [<?php echo json_encode( $config ) ?>][0]
 
