@@ -326,6 +326,7 @@ class DT_Login_Email {
         }
         $hashed = time() . ':' . $wp_hasher->HashPassword( $key );
         $key_saved = $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user->user_login ) );
+        clean_user_cache( $user->ID );
         if ( false === $key_saved ) {
             return new WP_Error( 'no_password_key_update', __( 'Could not save password reset key to database.', 'disciple_tools' ) );
         }

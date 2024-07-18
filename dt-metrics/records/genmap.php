@@ -272,7 +272,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         // Ensure to force a record node share for administrators.
         $shared = intval( $menu_data['items'][ $parent_id ]['shared'] ?? 0 );
-        if ( $parent_id === $user_contact_id ){
+        if ( $parent_id === $user_contact_id || $can_list_all ){
             $shared = 1;
         }
         $array = [
