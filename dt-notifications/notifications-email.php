@@ -177,7 +177,7 @@ add_filter( 'wp_mail', function ( $args ) {
         if ( is_array( $headers ) ) {
             $headers[] = 'Content-Type: text/html; charset=UTF-8';
         } else {
-            $headers .= '\r\nContent-Type: text/html; charset=UTF-8';
+            $headers .= "\r\nContent-Type: text/html; charset=UTF-8";
         }
 
         $args['headers'] = $headers;
@@ -186,10 +186,23 @@ add_filter( 'wp_mail', function ( $args ) {
     return $args;
 } );
 
+/**
+ * Check if $headers contains Content-Type: text/html
+ *
+ * @param string|string[] $headers
+ * @return bool
+ */
 function html_content_type_detected( $headers ): bool {
     $detected = false;
 
-    foreach ( $headers as $header ) {
+    if ( is_array( $headers ) ) {
+        $tempheaders = $headers;
+    } else {
+        // borrowed from wp_mail functions way of dealing with headers as string /wp-includes/pluggable/wp-mail.php
+        $tempheaders = explode( "\n", str_replace( "\r\n", "\n", $headers ) );
+    }
+
+    foreach ( $tempheaders as $header ) {
         $header = strtolower( $header );
         if ( ( strpos( $header, 'content-type' ) !== false ) && ( strpos( $header, 'text/html' ) !== false ) ) {
             $detected = true;
