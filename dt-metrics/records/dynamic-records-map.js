@@ -30,6 +30,7 @@ jQuery(document).ready(function ($) {
 
       body.offset = offset;
       body.limit = limit;
+      body.list_all = mapbox_library_api.obj.settings.can_list_all;
       let query = await window.makeRequest(
         'POST',
         mapbox_library_api.obj.settings.post_type_rest_url,
@@ -1502,13 +1503,15 @@ jQuery(document).ready(function ($) {
 
     points_map: {
       setup: async function () {
+        let payload = {
+          post_type: mapbox_library_api.post_type,
+          query: mapbox_library_api.query_args || {},
+        };
+        payload.query.list_all = mapbox_library_api.obj.settings.can_list_all;
         let points = await window.makeRequest(
           'POST',
           mapbox_library_api.obj.settings.points_rest_url,
-          {
-            post_type: mapbox_library_api.post_type,
-            query: mapbox_library_api.query_args || {},
-          },
+          payload,
           mapbox_library_api.obj.settings.rest_base_url,
         );
         this.load_layer(points);
@@ -1645,13 +1648,15 @@ jQuery(document).ready(function ($) {
 
   let cluster_map = {
     default_setup: async function () {
+      let payload = {
+        post_type: mapbox_library_api.post_type,
+        query: mapbox_library_api.query_args || {},
+      };
+      payload.query.list_all = mapbox_library_api.obj.settings.can_list_all;
       let geojson = await window.makeRequest(
         'POST',
         mapbox_library_api.obj.settings.rest_url,
-        {
-          post_type: mapbox_library_api.post_type,
-          query: mapbox_library_api.query_args || {},
-        },
+        payload,
         mapbox_library_api.obj.settings.rest_base_url,
       );
       cluster_map.load_layer(geojson);
@@ -1792,13 +1797,15 @@ jQuery(document).ready(function ($) {
     behind_layer: null,
     setup: async function (behind_layer = null) {
       area_map.behind_layer = behind_layer;
+      let payload = {
+        post_type: mapbox_library_api.obj.settings.post_type,
+        query: mapbox_library_api.query_args || {},
+      };
+      payload.query.list_all = mapbox_library_api.obj.settings.can_list_all;
       area_map.grid_data = await window.makeRequest(
         'POST',
         mapbox_library_api.obj.settings.totals_rest_url,
-        {
-          post_type: mapbox_library_api.obj.settings.post_type,
-          query: mapbox_library_api.query_args || {},
-        },
+        payload,
         mapbox_library_api.obj.settings.rest_base_url,
       );
       await area_map.load_layer();
@@ -2051,15 +2058,18 @@ jQuery(document).ready(function ($) {
 
           if (details.admin2_grid_id !== null) {
             jQuery('#admin2_list').html(spinner_html);
+            let payload = {
+              grid_id: details.admin2_grid_id,
+              post_type: mapbox_library_api.post_type,
+              query: mapbox_library_api.query_args || {},
+            };
+            payload.query.list_all =
+              mapbox_library_api.obj.settings.can_list_all;
             window
               .makeRequest(
                 'POST',
                 mapbox_library_api.obj.settings.list_by_grid_rest_url,
-                {
-                  grid_id: details.admin2_grid_id,
-                  post_type: mapbox_library_api.post_type,
-                  query: mapbox_library_api.query_args || {},
-                },
+                payload,
                 mapbox_library_api.obj.settings.rest_base_url,
               )
               .done((list_by_grid) => {
@@ -2071,15 +2081,18 @@ jQuery(document).ready(function ($) {
               });
           } else if (details.admin1_grid_id !== null) {
             jQuery('#admin1_list').html(spinner_html);
+            let payload = {
+              grid_id: details.admin1_grid_id,
+              post_type: mapbox_library_api.post_type,
+              query: mapbox_library_api.query_args || {},
+            };
+            payload.query.list_all =
+              mapbox_library_api.obj.settings.can_list_all;
             window
               .makeRequest(
                 'POST',
                 mapbox_library_api.obj.settings.list_by_grid_rest_url,
-                {
-                  grid_id: details.admin1_grid_id,
-                  post_type: mapbox_library_api.post_type,
-                  query: mapbox_library_api.query_args || {},
-                },
+                payload,
                 mapbox_library_api.obj.settings.rest_base_url,
               )
               .done((list_by_grid) => {
@@ -2091,15 +2104,18 @@ jQuery(document).ready(function ($) {
               });
           } else if (details.admin0_grid_id !== null) {
             jQuery('#admin0_list').html(spinner_html);
+            let payload = {
+              grid_id: details.admin0_grid_id,
+              post_type: mapbox_library_api.post_type,
+              query: mapbox_library_api.query_args || {},
+            };
+            payload.query.list_all =
+              mapbox_library_api.obj.settings.can_list_all;
             window
               .makeRequest(
                 'POST',
                 mapbox_library_api.obj.settings.list_by_grid_rest_url,
-                {
-                  grid_id: details.admin0_grid_id,
-                  post_type: mapbox_library_api.post_type,
-                  query: mapbox_library_api.query_args || {},
-                },
+                payload,
                 mapbox_library_api.obj.settings.rest_base_url,
               )
               .done((list_by_grid) => {

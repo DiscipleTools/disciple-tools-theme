@@ -1267,26 +1267,28 @@ class Disciple_Tools_Mapping_Queries {
     }
 
 
-    private static function format_results( $results, $post_type ){
+    private static function format_results( $results, $post_type, $can_list_all = true, $allowed_post_ids = [] ){
         $features = [];
         foreach ( $results as $result ) {
-            $features[] = array(
-                'type' => 'Feature',
-                'properties' => array(
-                    'address' => $result['address'] ?? '',
-                    'post_id' => $result['post_id'],
-                    'name' => $result['name'],
-                    'post_type' => $post_type
-                ),
-                'geometry' => array(
-                    'type' => 'Point',
-                    'coordinates' => array(
-                        $result['lng'],
-                        $result['lat'],
-                        1
+            if ( $can_list_all || in_array( $result['post_id'], $allowed_post_ids ) ) {
+                $features[] = array(
+                    'type' => 'Feature',
+                    'properties' => array(
+                        'address' => $result['address'] ?? '',
+                        'post_id' => $result['post_id'],
+                        'name' => $result['name'],
+                        'post_type' => $post_type
                     ),
-                ),
-            );
+                    'geometry' => array(
+                        'type' => 'Point',
+                        'coordinates' => array(
+                            $result['lng'],
+                            $result['lat'],
+                            1
+                        ),
+                    ),
+                );
+            }
         }
 
         $new_data = array(
@@ -1336,7 +1338,7 @@ class Disciple_Tools_Mapping_Queries {
         $results = $wpdb->get_results( $prepared_query, ARRAY_A );
         //phpcs:enable
 
-        return self::format_results( $results, $post_type );
+        return self::format_results( $results, $post_type, $args['list_all'], $args['assigned_post_ids'] );
     }
 
     public static function cluster_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
@@ -1360,7 +1362,7 @@ class Disciple_Tools_Mapping_Queries {
         );
         //phpcs:enable
 
-        return self::format_results( $results, $post_type );
+        return self::format_results( $results, $post_type, $query['list_all'], $query['assigned_post_ids'] );
     }
 
     public static function points_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
@@ -1383,7 +1385,7 @@ class Disciple_Tools_Mapping_Queries {
         );
         //phpcs:enable
 
-        return self::format_results( $results, $post_type );
+        return self::format_results( $results, $post_type, $query['list_all'], $query['assigned_post_ids'] );
     }
 
     public static function get_location_grid_meta_label( $location_grid_meta_id ){
