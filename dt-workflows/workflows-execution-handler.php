@@ -466,8 +466,9 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 }
             } else if ( $action->field_id === 'comments' ) {
                 $post_comments = DT_Posts::get_post_comments( $post['post_type'], $post['ID'], false );
+                $value = self::get_references( $action->value, $post );
                 foreach ( $post_comments['comments'] as $comment ) {
-                    if ( $comment['comment_content'] === $action->value ) {
+                    if ( $comment['comment_content'] === $value ) {
                         $current_state = true;
                         break;
                     }
@@ -584,52 +585,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 break;
             case 'comments':
 
-                // get post settings of the current post
-                $settings = DT_Posts::get_post_settings( $post['post_type'] );
-                // filter down to only reference fields - or can you just get connection_types?
-                $fields = array_filter( $settings['fields'], function( $obj ) {
-                    if ( $obj['type'] == 'connection' || $obj['type'] == 'user_select' ) {
-                        return true;
-                    }
-                    return false;
-                } );
-
-                // loop through each field, checking if the comment attempts to reference one of the fields
-                foreach ( $fields as $field => $data ) {
-                    if ( str_contains( $value, '{' . $field . '}' ) ) {
-                        $replacement = '';
-                        $current = 0;
-                        $references = $post[$field]; // get array of references from the field
-
-                        // special case: if the field is 'assigned_to', it is not an array of references,
-                        // but an array of the pieces of the 'assigned_to' field
-                        if ( $field == 'assigned_to' ) {
-                            $replacement = $replacement . '@[' . $references['display'] . '](' . $references['id'] . ')';
-                        } else {
-                            // otherwise loop through references, building replacement string
-                            foreach ( $references as $reference ) {
-                                ++$current;
-
-                                $id = '';
-                                $reference_post = DT_Posts::get_post( $data['post_type'], $reference['ID'], false, false );
-                                // if the post corresponds to a user, @mention that user, otherwise just the post name
-                                if ( !empty( $reference_post['corresponds_to_user'] ) ) {
-                                    $id = $reference_post['corresponds_to_user'];
-                                    $replacement = $replacement . '@[' . $reference['post_title'] . '](' . $id . ')';
-                                } else {
-                                    $replacement = $replacement . $reference['post_title'];
-                                }
-                                // if not the last reference, add a comma & space
-                                if ( $current != sizeof( $references ) ) {
-                                    $replacement = $replacement . ', ';
-                                }
-                            }
-                        }
-
-                        // replace the {field} in the comment w/ the references
-                        $value = str_replace( '{' . $field . '}', $replacement, $value );
-                    }
-                }
+                $value = self::get_references( $value, $post );
 
                 // create the comment
                 $updated['notes'] = [
@@ -641,27 +597,53 @@ class Disciple_Tools_Workflows_Execution_Handler {
         return $updated;
     }
 
-    private static function get_references( $field_name, $post ) {
+    public static function get_references( $value, $post ) {
+        // get post settings of the current post
+        $settings = DT_Posts::get_post_settings( $post['post_type'] );
+        // filter down to only reference fields - or can you just get connection_types?
+        $fields = array_filter( $settings['fields'], function( $obj ) {
+            if ( $obj['type'] == 'connection' || $obj['type'] == 'user_select' ) {
+                return true;
+            }
+            return false;
+        } );
+
+        $re = '/\{(\S+?)\}/m';
         $replacement = '';
-        $current = 0;
-        $references = $post[$field_name];
-        foreach ( $references as $reference ) {
-            ++$current;
+        //$str = 'Notify {subassigned} and {assigned_to}';
 
-            $id = '';
-            $test = DT_Posts::get_post( $reference['post_type'], $reference['ID'], false, false );
-            if ( !empty( $test['corresponds_to_user'] ) ) {
-                $id = $test['corresponds_to_user'];
-                $replacement = $replacement . '@[' . $reference['post_title'] . '](' . $id . ')';
+        preg_match_all($re, $value, $matches, PREG_SET_ORDER, 0);
+
+        // Print the entire match result
+        //var_dump($matches);
+
+        foreach ( $matches as $match ) {
+            $references = $post[$match[1]];
+
+            if ( $fields[$match[1]]['type'] == 'user_select' ) {
+                $replacement = $replacement . '@[' . $references['display'] . '](' . $references['id'] . ')';
             } else {
-                $replacement = $replacement . $reference['post_title'];
+                // otherwise loop through references, building replacement string
+                foreach ( $references as $current => $reference ) {
+                    $id = '';
+                    $reference_post = DT_Posts::get_post( $fields[$match[1]]['post_type'], $reference['ID'], false, false );
+                    // if the post corresponds to a user, @mention that user, otherwise just the post name
+                    if ( !empty( $reference_post['corresponds_to_user'] ) ) {
+                        $id = $reference_post['corresponds_to_user'];
+                        $replacement = $replacement . '@[' . $reference['post_title'] . '](' . $id . ')';
+                    } else {
+                        $replacement = $replacement . $reference['post_title'];
+                    }
+                    // if not the last reference, add a comma & space
+                    if ( $current != sizeof( $references ) ) {
+                        $replacement = $replacement . ', ';
+                    }
+                }
             }
-            if ( $current != sizeof( $references ) ) { //if not last subAssigned, add space
-                $replacement = $replacement . ', ';
-            }
-        }
 
-        return $replacement;
+            // replace the {field} in the comment w/ the references
+            return str_replace( $match[0], $replacement, $value );
+        }
     }
 
     private static function action_connect( $field_type, $field_id, $value ): array {
