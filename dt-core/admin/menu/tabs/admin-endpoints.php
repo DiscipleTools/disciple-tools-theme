@@ -313,7 +313,7 @@ class DT_Admin_Endpoints {
             $dt_cache_test_value = $params['value'];
             update_option( 'dt_cache_test_value', $dt_cache_test_value );
 
-            return $dt_cache_test_value;
+            return get_option( 'dt_cache_test_value' );
         }
 
         return '';
