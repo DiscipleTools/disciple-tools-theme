@@ -251,8 +251,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             ?>
             <span id="custom_tab_notice" class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 99%;">
                 <span style="font-weight: bold;">WP Object Cache Detected</span><br>
-                An object cache reduces repeated and unnecessary queries as it stores the query results from the first request. Force a cache refresh by selecting an object group and clicking on the Flush button below.
-                <br>
+                An object cache reduces repeated and unnecessary queries as it stores the query results from the first request. Manually forcing a cache refresh may be required, to ensure most recent updates are shown within the frontend display.
+                <!--<br>
                 <select id="custom_tab_notice_select" style="margin-top: 20px;">
                     <?php
                     foreach ( $obj_cache_groups as $group ) {
@@ -264,6 +264,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                 </select>
                 <button id="custom_tab_notice_flush_but" class="button" style="margin-top: 20px;">Flush</button>
                 <span id="custom_tab_notice_spinner" class="loading-spinner active" style="margin-top: 20px; display: none;"></span>
+                -->
             </span>
             <?php
         }
