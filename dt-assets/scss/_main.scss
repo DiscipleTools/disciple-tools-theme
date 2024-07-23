@@ -1474,6 +1474,29 @@ img.dt-black-icon, i.dt-black-icon {
     filter: invert(0%) sepia(0%) saturate(17%) hue-rotate(193deg) brightness(99%) contrast(101%);
 }
 
+/**
+ * Metrics - Gen-Mapper
+ */
+
+.dt-metrics-plus-count {
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+}
+
+.dt-metrics-node-icon-small {
+    font-size: 15px;
+    min-width: 15px;
+    min-height: 15px;
+    max-width: 15px;
+    max-height: 15px;
+}
+
+/**
+ * Metrics - Gen-Mapper
+ */
+
+
 .error-text {
     color: red;
 }

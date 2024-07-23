@@ -379,7 +379,7 @@ jQuery(document).ready(function ($) {
                               let plus_count =
                                 icons_total - icons_total_limit_counter;
                               if (plus_count > 0) {
-                                data_layer_content_html += `<span style="font-size: 12px; font-weight: bold;">+${plus_count}</span>`;
+                                data_layer_content_html += `<span class="dt-metrics-plus-count">+${plus_count}</span>`;
                               }
                             }
                             icons_total_limit_counter++;
@@ -727,11 +727,11 @@ jQuery(document).ready(function ($) {
       field_icon = field_icon.trim().toLowerCase();
       if (field_icon.startsWith('mdi')) {
         field_icons.push(
-          `<i class="mdi ${field_icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
+          `<i class="mdi ${field_icon} dt-metrics-node-icon-small"></i>`,
         );
       } else {
         field_icons.push(
-          `<img class="dt-white-icon" src="${field_icon}" alt="${field_settings['name']}" style="min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"/>`,
+          `<img class="dt-white-icon dt-metrics-node-icon-small" src="${field_icon}" alt="${field_settings['name']}"/>`,
         );
       }
     } else {
@@ -752,28 +752,28 @@ jQuery(document).ready(function ($) {
                 option.icon.trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="mdi ${option.icon}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
+                  `<i class="mdi ${option.icon} dt-metrics-node-icon-small"></i>`,
                 );
               } else if (
                 option?.icon &&
                 option.icon.trim().toLowerCase().startsWith('http')
               ) {
                 default_icons.push(
-                  `<img class="dt-white-icon" src="${option.icon}" alt="${option['label']}" style="min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"/>`,
+                  `<img class="dt-white-icon dt-metrics-node-icon-small" src="${option.icon}" alt="${option['label']}"/>`,
                 );
               } else if (
                 option['font-icon'] &&
                 option['font-icon'].trim().toLowerCase().startsWith('mdi')
               ) {
                 default_icons.push(
-                  `<i class="mdi ${option['font-icon']}" style="font-size: 15px; min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"></i>`,
+                  `<i class="mdi ${option['font-icon']} dt-metrics-node-icon-small"></i>`,
                 );
               } else if (
                 option['font-icon'] &&
                 option['font-icon'].trim().toLowerCase().startsWith('http')
               ) {
                 default_icons.push(
-                  `<img class="dt-white-icon" src="${option['font-icon']}" alt="${option['label']}" style="min-width: 15px; min-height: 15px; max-width: 15px; max-height: 15px;"/>`,
+                  `<img class="dt-white-icon dt-metrics-node-icon-small" src="${option['font-icon']}" alt="${option['label']}"/>`,
                 );
               } else {
                 no_icons_counter++;
