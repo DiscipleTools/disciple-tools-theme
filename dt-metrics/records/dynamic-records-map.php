@@ -196,8 +196,8 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
             // Execute request query.
             $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params, $offset, $limit );
 
-            // Ensure to unset assigned_post_ids for security reasons.
-            unset( $params['assigned_post_ids'] );
+            // Ensure to unset list_all_by_user_id for security reasons.
+            unset( $params['list_all_by_user_id'] );
         }
 
         return [
@@ -215,7 +215,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, self::capture_list_all_setting( $query ) );
+        return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query );
     }
 
 
@@ -228,7 +228,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
-        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, self::capture_list_all_setting( $query ) );
+        $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
 
         $list = [];
         foreach ( $results as $result ) {
@@ -249,7 +249,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return Disciple_Tools_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, self::capture_list_all_setting( $query ) );
+        return Disciple_Tools_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, $query );
     }
 
 
@@ -265,33 +265,19 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
-        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, self::capture_list_all_setting( $query ) );
+        return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
     }
 
     private function capture_list_all_setting( $params ) {
         if ( !isset( $params['list_all'] ) || !$params['list_all'] ) {
             $params['list_all'] = false;
-            $params['assigned_post_ids'] = self::list_assigned_post_ids( ( ( $params['post_type'] === 'system-users' ) ? 'contacts' : $params['post_type'] ), get_current_user_id() );
+            $params['list_all_by_user_id'] = get_current_user_id();
         } else {
             $params['list_all'] = true;
-            $params['assigned_post_ids'] = [];
+            $params['list_all_by_user_id'] = null;
         }
 
         return $params;
-    }
-
-    private function list_assigned_post_ids( $post_type, $user_id, $fields = [ 'ID' ], $limit = 500000 ): array {
-        $assigned_posts = DT_Posts::search_viewable_post( $post_type, [
-            'limit' => $limit,
-            'fields' => $fields,
-            'assigned_to' => [ $user_id ],
-            'subassigned' => [ $user_id ],
-            'shared_with' => [ $user_id ]
-        ] );
-
-        return array_map( function ( $post ) {
-            return $post->ID;
-        }, $assigned_posts['posts'] ?? [] );
     }
 
 }

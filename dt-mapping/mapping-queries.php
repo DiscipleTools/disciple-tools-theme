@@ -1267,28 +1267,26 @@ class Disciple_Tools_Mapping_Queries {
     }
 
 
-    private static function format_results( $results, $post_type, $can_list_all = true, $allowed_post_ids = [] ){
+    private static function format_results( $results, $post_type ){
         $features = [];
         foreach ( $results as $result ) {
-            if ( $can_list_all || in_array( $result['post_id'], $allowed_post_ids ) ) {
-                $features[] = array(
-                    'type' => 'Feature',
-                    'properties' => array(
-                        'address' => $result['address'] ?? '',
-                        'post_id' => $result['post_id'],
-                        'name' => $result['name'],
-                        'post_type' => $post_type
+            $features[] = array(
+                'type' => 'Feature',
+                'properties' => array(
+                    'address' => $result['address'] ?? '',
+                    'post_id' => $result['post_id'],
+                    'name' => $result['name'],
+                    'post_type' => $post_type
+                ),
+                'geometry' => array(
+                    'type' => 'Point',
+                    'coordinates' => array(
+                        $result['lng'],
+                        $result['lat'],
+                        1
                     ),
-                    'geometry' => array(
-                        'type' => 'Point',
-                        'coordinates' => array(
-                            $result['lng'],
-                            $result['lat'],
-                            1
-                        ),
-                    ),
-                );
-            }
+                ),
+            );
         }
 
         $new_data = array(
@@ -1303,34 +1301,65 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         //phpcs:disable
+        // Determine if post id filtering should take place.
+        $post_id_filter_sql = '';
+        if ( isset( $args['list_all'], $args['list_all_by_user_id'] ) && !$args['list_all'] ) {
+            $post_id_filter_sql = $wpdb->prepare( "
+            SELECT * FROM
+                      (
+                        SELECT api_p.ID
+                        FROM $wpdb->posts api_p
+                        LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = api_p.ID )
+                        LEFT JOIN $wpdb->postmeta as field_type ON ( field_type.post_id = api_p.ID AND field_type.meta_key = 'type' )
+                        WHERE (
+                          (field_shared_with.user_id IN ( %d ))
+                          OR ((field_type.meta_value = 'access' OR field_type.meta_value = 'user' OR field_type.meta_value = 'access_placeholder')
+                          ))
+                          AND (api_p.post_status = 'publish')
+                          AND api_p.post_type = %s
+                          GROUP BY api_p.ID
+                          LIMIT 0, 50000
+                      ) AS assigned_post_ids
+            ", $args['list_all_by_user_id'], ( ( $post_type === 'system-users' ) ? 'contacts' : $post_type ) );
+
+            if ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ) {
+                $post_id_filter_sql = 'AND (um.meta_value IN ('. $post_id_filter_sql .'))';
+            } else {
+                $post_id_filter_sql = 'AND (p.ID IN ('. $post_id_filter_sql .'))';
+            }
+        }
+
         if ( isset( $args['field_key'], $args['field_type'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
             $prepared_query = $wpdb->prepare( "
-                SELECT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                SELECT DISTINCT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
                   LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
                   WHERE lgm.post_type = %s
                   AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ) ."
+                  ". $post_id_filter_sql ."
                   LIMIT %d, %d;
               ", $post_type, $args['field_key'], $offset, $limit );
 
         } elseif ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ){
             $prepared_query = $wpdb->prepare("
-                SELECT u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
+                SELECT DISTINCT u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
                   LEFT JOIN $wpdb->usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = %s )
                   INNER JOIN $wpdb->usermeta AS um_cap ON ( u.ID = um_cap.user_id AND um_cap.meta_key = %s )
                   WHERE lgm.post_type = %s
+                  ". $post_id_filter_sql ."
                   LIMIT %d, %d;
               ", ( $wpdb->prefix . 'corresponds_to_contact' ), ( $wpdb->prefix . 'capabilities' ), 'users', $offset, $limit );
 
         } else {
             $prepared_query = $wpdb->prepare( "
-                SELECT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                SELECT DISTINCT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                     FROM $wpdb->dt_location_grid_meta AS lgm
                     JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
                     WHERE lgm.post_type = %s
+                    ". $post_id_filter_sql ."
                     LIMIT %d, %d;
                 ", $post_type, $offset, $limit );
         }
@@ -1338,7 +1367,7 @@ class Disciple_Tools_Mapping_Queries {
         $results = $wpdb->get_results( $prepared_query, ARRAY_A );
         //phpcs:enable
 
-        return self::format_results( $results, $post_type, $args['list_all'], $args['assigned_post_ids'] );
+        return self::format_results( $results, $post_type );
     }
 
     public static function cluster_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
@@ -1362,7 +1391,7 @@ class Disciple_Tools_Mapping_Queries {
         );
         //phpcs:enable
 
-        return self::format_results( $results, $post_type, $query['list_all'], $query['assigned_post_ids'] );
+        return self::format_results( $results, $post_type );
     }
 
     public static function points_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
@@ -1385,7 +1414,7 @@ class Disciple_Tools_Mapping_Queries {
         );
         //phpcs:enable
 
-        return self::format_results( $results, $post_type, $query['list_all'], $query['assigned_post_ids'] );
+        return self::format_results( $results, $post_type );
     }
 
     public static function get_location_grid_meta_label( $location_grid_meta_id ){
