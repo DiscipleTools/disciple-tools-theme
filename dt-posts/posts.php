@@ -1596,7 +1596,7 @@ class Disciple_Tools_Posts
     }
 
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
-
+        global $wpdb;
         foreach ( $fields as $field_key => $field ){
 
             /********************************************************
@@ -1672,6 +1672,28 @@ class Disciple_Tools_Posts
                         Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post );
                     }
 
+                    // Add by transfer.
+                    else if ( ( isset( $value['transfer'] ) && $value['transfer'] ) && isset( $value['grid_id'], $value['label'], $value['level'], $value['lng'], $value['lat'] ) ) {
+                        $location_meta_grid = [];
+
+                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                        $location_meta_grid['post_id'] = $post_id;
+                        $location_meta_grid['post_type'] = $post_type;
+                        $location_meta_grid['grid_id'] = $value['grid_id'];
+                        $location_meta_grid['lng'] = $value['lng'];
+                        $location_meta_grid['lat'] = $value['lat'];
+                        $location_meta_grid['level'] = $value['level'];
+                        $location_meta_grid['label'] = $value['label'];
+
+                        // Check for pre-existing grid entries and avoid duplicates.
+                        $duplicate_location_grid_meta = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'location_grid' AND meta_value = %d", $post_id, $value['grid_id'] ), ARRAY_A );
+
+                        // Proceed accordingly with addition.
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, ( ( count( $duplicate_location_grid_meta ) > 0 ) ? $duplicate_location_grid_meta[0]['meta_id'] : null ) );
+                        if ( is_wp_error( $potential_error ) ) {
+                            return $potential_error;
+                        }
+                    }
                     // Add by grid_id
                     else if ( isset( $value['grid_id'] ) && ! empty( $value['grid_id'] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value['grid_id'] );

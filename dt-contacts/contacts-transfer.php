@@ -374,6 +374,8 @@ class Disciple_Tools_Contacts_Transfer {
                             $location_grid_meta = $wpdb->get_results( $wpdb->prepare( "SELECT grid_id, lng, lat, level, label FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
                             if ( ( count( $location_grid_meta ) > 0 ) && isset( $location_grid_meta[0]['grid_id'], $location_grid_meta[0]['lng'], $location_grid_meta[0]['lat'], $location_grid_meta[0]['level'], $location_grid_meta[0]['label'] ) ) {
                                 $updated_location_metas[] = [
+                                    'transfer' => true,
+                                    'grid_id' => $location_grid_meta[0]['grid_id'],
                                     'lng' => $location_grid_meta[0]['lng'],
                                     'lat' => $location_grid_meta[0]['lat'],
                                     'level' => $location_grid_meta[0]['level'],
