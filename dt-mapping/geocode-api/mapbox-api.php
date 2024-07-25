@@ -279,6 +279,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         'post_type' => get_post_type(),
                         'post_id' => $post->ID ?? 0,
                         'post' => $post_record ?? false,
+                        'post_settings' => DT_Posts::get_post_settings( get_post_type() ),
                         'map_key' => self::get_key(),
                         'mirror_source' => dt_get_location_grid_mirror( true ),
                         'google_map_key' => ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,

@@ -636,261 +636,288 @@ jQuery(function ($) {
 
             break;
 
-          case 'location_meta': {
-            let mapbox = window.merge_post_details['mapbox'];
-
-            /**
-             * Load
-             */
-
-            $(td).find('#mapbox-wrapper').empty().append(`
-              <div id="location-grid-meta-results"></div>
-              <div class="reveal" id="mapping-modal" data-v-offset="0" data-reveal>
-                <div id="mapping-modal-contents"></div>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-          `);
-
-            // Display previously saved locations
-            let lgm_results = $(td).find('#location-grid-meta-results');
+          case 'location_meta':
+          case 'location': {
             if (
-              post &&
-              post['location_grid_meta'] !== undefined &&
-              post['location_grid_meta'].length !== 0
+              window.merge_post_details?.post_settings?.fields[post_field_id]
             ) {
-              $.each(post['location_grid_meta'], function (i, v) {
-                if (v.grid_meta_id) {
-                  lgm_results.append(`<div class="input-group">
-                    <input type="text" class="active-location input-group-field" id="location-${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" dir="auto" value="${window.SHAREDFUNCTIONS.escapeHTML(v.label)}" readonly />
-                    <div class="input-group-button">
-                      <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['open_modal'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}"><i class="fi-map"></i></button>
-                      <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}">&times;</button>
-                    </div>
-                  </div>`);
-                } else {
-                  lgm_results.append(`<div class="input-group">
-                    <input type="text" class="dt-communication-channel input-group-field" id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}" value="${window.SHAREDFUNCTIONS.escapeHTML(v.label)}" dir="auto" data-field="contact_address" />
-                    <div class="input-group-button">
-                      <button type="button" class="button success delete-button-style open-mapping-address-modal"
-                          title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['open_modal'])}"
-                          data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}"
-                          data-field="contact_address"
-                          data-key="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}">
-                          <i class="fi-pencil"></i>
-                      </button>
-                      <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}" data-field="contact_address" data-key="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}">&times;</button>
-                    </div>
-                  </div>`);
+              const field_settings =
+                window.merge_post_details.post_settings.fields[post_field_id];
+              if (
+                field_type === 'location' &&
+                field_settings?.mode === 'normal'
+              ) {
+                let translations = window.merge_post_details['translations'];
+
+                let typeahead_field_input = '.js-typeahead-' + field_id;
+
+                // Disable field accordingly, based on read-only flag
+                $(td).find(typeahead_field_input).prop('disabled', read_only);
+
+                /**
+                 * Load Typeahead
+                 */
+
+                $(td)
+                  .find(typeahead_field_input)
+                  .typeahead({
+                    input: typeahead_field_input,
+                    minLength: 0,
+                    accent: true,
+                    searchOnFocus: true,
+                    maxItem: 20,
+                    dropdownFilter: [
+                      {
+                        key: 'group',
+                        value: 'focus',
+                        template: window.SHAREDFUNCTIONS.escapeHTML(
+                          translations['regions_of_focus'],
+                        ),
+                        all: window.SHAREDFUNCTIONS.escapeHTML(
+                          translations['all_locations'],
+                        ),
+                      },
+                    ],
+                    source: {
+                      focus: {
+                        display: 'name',
+                        ajax: {
+                          url:
+                            url_root +
+                            'dt/v1/mapping_module/search_location_grid_by_name',
+                          data: {
+                            s: '{{query}}',
+                            filter: function () {
+                              return window.lodash.get(
+                                window.Typeahead[typeahead_field_input].filters
+                                  .dropdown,
+                                'value',
+                                'all',
+                              );
+                            },
+                          },
+                          beforeSend: function (xhr) {
+                            xhr.setRequestHeader('X-WP-Nonce', nonce);
+                          },
+                          callback: {
+                            done: function (data) {
+                              return data.location_grid;
+                            },
+                          },
+                        },
+                      },
+                    },
+                    display: 'name',
+                    templateValue: '{{name}}',
+                    dynamic: true,
+                    multiselect: {
+                      matchOn: ['ID'],
+                      data: function () {
+                        return [];
+                      },
+                      callback: {
+                        onCancel: function (node, item) {
+                          // Keep a record of deleted options
+                          let deleted_items = field_meta.val()
+                            ? JSON.parse(field_meta.val())
+                            : [];
+                          deleted_items.push(item);
+                          field_meta.val(JSON.stringify(deleted_items));
+                        },
+                      },
+                    },
+                    callback: {
+                      onClick: function (node, a, item, event) {},
+                      onReady() {
+                        this.filters.dropdown = {
+                          key: 'group',
+                          value: 'focus',
+                          template: window.SHAREDFUNCTIONS.escapeHTML(
+                            translations['regions_of_focus'],
+                          ),
+                        };
+                        this.container
+                          .removeClass('filter')
+                          .find('.' + this.options.selector.filterButton)
+                          .html(
+                            window.SHAREDFUNCTIONS.escapeHTML(
+                              translations['regions_of_focus'],
+                            ),
+                          );
+                      },
+                    },
+                  });
+
+                // If available, load previous post record locations
+                let typeahead = window.Typeahead[typeahead_field_input];
+                let post_locations = post ? post[post_field_id] : undefined;
+
+                if (post_locations !== undefined && typeahead) {
+                  $.each(post_locations, function (idx, location) {
+                    typeahead.addMultiselectItemLayout({
+                      ID: location['id'],
+                      name: window.SHAREDFUNCTIONS.escapeHTML(
+                        location['label'],
+                      ),
+                    });
+                  });
                 }
-              });
-            }
+              } else if (
+                (field_type === 'location' &&
+                  field_settings?.mode === 'geolocation') ||
+                field_type === 'location_meta'
+              ) {
+                let mapbox = window.merge_post_details['mapbox'];
 
-            /**
-             * Add
-             */
+                /**
+                 * Load
+                 */
 
-            if (!read_only) {
-              $(td)
-                .find('#new-mapbox-search')
-                .on('click', (evt) => {
-                  // Display search field with autosubmit disabled!
-                  if ($(td).find('#mapbox-autocomplete').length === 0) {
-                    $(td).find('#mapbox-wrapper').prepend(`
-              <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
-                  <input id="mapbox-search" type="text" name="mapbox_search" placeholder="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['search_location'])}" autocomplete="off" dir="auto" />
-                  <div class="input-group-button">
-                      <button id="mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
-                      <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" >&times;</button>
-                  </div>
-                  <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
-              </div>`);
-                  }
+                $(td).find(`#${post_field_id}_mapbox-wrapper`).empty().append(`
+                    <div id="${field_id}_location-grid-meta-results"></div>
+                    <div class="reveal" id="${field_id}_mapping-modal" data-v-offset="0" data-reveal>
+                      <div id="${field_id}_mapping-modal-contents"></div>
+                      <button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                `);
+                new window.Foundation.Reveal(
+                  $(td).find(`#${field_id}_mapping-modal`),
+                );
 
-                  // Switch over to standard workflow, with autosubmit disabled!
-                  window.write_input_widget();
-                });
-
-              // Hide new button and default to single entry
-              $(td).find('#new-mapbox-search').hide();
-              $(td).find('#new-mapbox-search').trigger('click');
-            }
-
-            /**
-             * Remove
-             */
-
-            $(document).on('click', '.mapbox-delete-button', (evt) => {
-              let id = $(evt.currentTarget).data('id');
-
-              // If needed, keep a record of key for future api removal.
-              if (id !== undefined) {
-                let deleted_ids = field_meta.val()
-                  ? JSON.parse(field_meta.val())
-                  : [];
-                deleted_ids.push(id);
-                field_meta.val(JSON.stringify(deleted_ids));
-
-                // Final removal of input group
-                $(evt.currentTarget).parent().parent().remove();
-              } else {
-                // Remove global selected location
-                window.selected_location_grid_meta = null;
-              }
-            });
-
-            /**
-             * Open Modal
-             */
-
-            $(td)
-              .find('.open-mapping-grid-modal')
-              .on('click', (evt) => {
-                let grid_meta_id = $(evt.currentTarget).data('id');
-                let post_location_grid_meta = post
-                  ? post['location_grid_meta']
-                  : undefined;
+                // Display previously saved locations
+                let lgm_results = $(td).find(
+                  `#${field_id}_location-grid-meta-results`,
+                );
 
                 if (
-                  post_location_grid_meta !== undefined &&
-                  post_location_grid_meta.length !== 0
+                  post &&
+                  post[post_field_id] !== undefined &&
+                  post[post_field_id].length !== 0
                 ) {
-                  $.each(post_location_grid_meta, function (i, v) {
-                    if (String(grid_meta_id) === String(v.grid_meta_id)) {
-                      return window.load_modal(
-                        v.lng,
-                        v.lat,
-                        v.level,
-                        v.label,
-                        v.grid_id,
-                      );
+                  $.each(post[post_field_id], function (i, v) {
+                    if (v.grid_meta_id) {
+                      lgm_results.append(`<div class="input-group">
+                        <input type="text" class="active-location input-group-field" id="${field_id}_location-${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" dir="auto" value="${window.SHAREDFUNCTIONS.escapeHTML(v.label)}" readonly />
+                        <div class="input-group-button">
+                          <button type="button" class="button success delete-button-style open-mapping-grid-modal" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['open_modal'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" data-field_id="${window.lodash.escape(field_id)}"><i class="fi-map"></i></button>
+                          <button type="button" class="button alert delete-button-style delete-button mapbox-delete-button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.grid_meta_id)}" data-field_id="${window.lodash.escape(field_id)}">&times;</button>
+                        </div>
+                      </div>`);
+                    } else if (v.key) {
+                      lgm_results.append(`<div class="input-group">
+                        <input type="text" class="dt-communication-channel input-group-field" id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}" value="${window.SHAREDFUNCTIONS.escapeHTML(v.label)}" dir="auto" data-field="contact_address" />
+                        <div class="input-group-button">
+                          <button type="button" class="button success delete-button-style open-mapping-address-modal"
+                              title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['open_modal'])}"
+                              data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}"
+                              data-field="contact_address"
+                              data-key="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}">
+                              <i class="fi-pencil"></i>
+                          </button>
+                          <button type="button" class="button alert input-height delete-button-style channel-delete-button delete-button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}" data-field="contact_address" data-key="${window.SHAREDFUNCTIONS.escapeHTML(v.key)}">&times;</button>
+                        </div>
+                      </div>`);
                     }
                   });
                 }
-              });
 
-            // Disable field accordingly, based on read-only flag
-            $(td).find('#mapbox-search').prop('disabled', read_only);
+                /**
+                 * Add
+                 */
 
-            break;
-          }
+                if (!read_only) {
+                  $(td)
+                    .find('.new-mapbox-search')
+                    .on('click', (evt) => {
+                      // Display search field with autosubmit disabled!
+                      if (
+                        $(td).find(`#${post_field_id}_mapbox-autocomplete`)
+                          .length === 0
+                      ) {
+                        $(td).find(`#${post_field_id}_mapbox-wrapper`).prepend(`
+                        <div id="${post_field_id}_mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
+                            <input id="${field_id}_mapbox-search" type="text" name="mapbox_search" placeholder="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['search_location'])}" autocomplete="off" dir="auto" />
+                            <div class="input-group-button">
+                                <button id="${field_id}_mapbox-spinner-button" class="button hollow" style="display:none;"><span class="loading-spinner active"></span></button>
+                                <button id="${field_id}_mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="${window.SHAREDFUNCTIONS.escapeHTML(mapbox['translations']['delete_location'])}" >&times;</button>
+                            </div>
+                            <div id="${field_id}_mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+                        </div>`);
+                      }
 
-          case 'location': {
-            let translations = window.merge_post_details['translations'];
+                      // Switch over to standard workflow, with autosubmit disabled!
+                      window.write_input_widget();
+                    });
 
-            let typeahead_field_input = '.js-typeahead-' + field_id;
+                  // Hide new button and default to single entry
+                  $(td).find('.new-mapbox-search').hide();
+                  $(td).find('.new-mapbox-search').trigger('click');
+                }
 
-            // Disable field accordingly, based on read-only flag
-            $(td).find(typeahead_field_input).prop('disabled', read_only);
+                /**
+                 * Remove
+                 */
 
-            /**
-             * Load Typeahead
-             */
+                $(document).on('click', '.mapbox-delete-button', (evt) => {
+                  let id = $(evt.currentTarget).data('id');
 
-            $(td)
-              .find(typeahead_field_input)
-              .typeahead({
-                input: typeahead_field_input,
-                minLength: 0,
-                accent: true,
-                searchOnFocus: true,
-                maxItem: 20,
-                dropdownFilter: [
-                  {
-                    key: 'group',
-                    value: 'focus',
-                    template: window.SHAREDFUNCTIONS.escapeHTML(
-                      translations['regions_of_focus'],
-                    ),
-                    all: window.SHAREDFUNCTIONS.escapeHTML(
-                      translations['all_locations'],
-                    ),
-                  },
-                ],
-                source: {
-                  focus: {
-                    display: 'name',
-                    ajax: {
-                      url:
-                        url_root +
-                        'dt/v1/mapping_module/search_location_grid_by_name',
-                      data: {
-                        s: '{{query}}',
-                        filter: function () {
-                          return window.lodash.get(
-                            window.Typeahead[typeahead_field_input].filters
-                              .dropdown,
-                            'value',
-                            'all',
-                          );
-                        },
-                      },
-                      beforeSend: function (xhr) {
-                        xhr.setRequestHeader('X-WP-Nonce', nonce);
-                      },
-                      callback: {
-                        done: function (data) {
-                          return data.location_grid;
-                        },
-                      },
-                    },
-                  },
-                },
-                display: 'name',
-                templateValue: '{{name}}',
-                dynamic: true,
-                multiselect: {
-                  matchOn: ['ID'],
-                  data: function () {
-                    return [];
-                  },
-                  callback: {
-                    onCancel: function (node, item) {
-                      // Keep a record of deleted options
-                      let deleted_items = field_meta.val()
-                        ? JSON.parse(field_meta.val())
-                        : [];
-                      deleted_items.push(item);
-                      field_meta.val(JSON.stringify(deleted_items));
-                    },
-                  },
-                },
-                callback: {
-                  onClick: function (node, a, item, event) {},
-                  onReady() {
-                    this.filters.dropdown = {
-                      key: 'group',
-                      value: 'focus',
-                      template: window.SHAREDFUNCTIONS.escapeHTML(
-                        translations['regions_of_focus'],
-                      ),
-                    };
-                    this.container
-                      .removeClass('filter')
-                      .find('.' + this.options.selector.filterButton)
-                      .html(
-                        window.SHAREDFUNCTIONS.escapeHTML(
-                          translations['regions_of_focus'],
-                        ),
-                      );
-                  },
-                },
-              });
+                  // If needed, keep a record of key for future api removal.
+                  if (id !== undefined) {
+                    let deleted_ids = field_meta.val()
+                      ? JSON.parse(field_meta.val())
+                      : [];
+                    deleted_ids.push(id);
+                    field_meta.val(JSON.stringify(deleted_ids));
 
-            // If available, load previous post record locations
-            let typeahead = window.Typeahead[typeahead_field_input];
-            let post_locations = post ? post[post_field_id] : undefined;
-
-            if (post_locations !== undefined && typeahead) {
-              $.each(post_locations, function (idx, location) {
-                typeahead.addMultiselectItemLayout({
-                  ID: location['id'],
-                  name: window.SHAREDFUNCTIONS.escapeHTML(location['label']),
+                    // Final removal of input group
+                    $(evt.currentTarget).parent().parent().remove();
+                  } else {
+                    // Remove global selected location
+                    if (window.selected_location_grid_meta?.field_id) {
+                      window.selected_location_grid_meta[field_id] = null;
+                    }
+                  }
                 });
-              });
-            }
 
+                /**
+                 * Open Modal
+                 */
+
+                $(td)
+                  .find('.open-mapping-grid-modal')
+                  .on('click', (evt) => {
+                    let grid_meta_id = $(evt.currentTarget).data('id');
+                    let post_location_grid_meta = post
+                      ? post[post_field_id]
+                      : undefined;
+
+                    if (
+                      post_location_grid_meta !== undefined &&
+                      post_location_grid_meta.length !== 0
+                    ) {
+                      $.each(post_location_grid_meta, function (i, v) {
+                        if (String(grid_meta_id) === String(v.grid_meta_id)) {
+                          return window.load_modal(
+                            v.lng,
+                            v.lat,
+                            v.level,
+                            v.label,
+                            v.grid_id,
+                            field_id,
+                          );
+                        }
+                      });
+                    }
+                  });
+
+                // Disable field accordingly, based on read-only flag
+                $(td)
+                  .find(`#${field_id}_mapbox-search`)
+                  .prop('disabled', read_only);
+              }
+            }
             break;
           }
 
@@ -1468,105 +1495,228 @@ jQuery(function ($) {
         break;
       }
 
-      case 'location_meta': {
-        // Determine values to be updated
-        let location_elements = $(selector.parent().parent()).find(
-          'input.input-group-field',
-        );
+      case 'location_meta':
+      case 'location': {
+        if (window.merge_post_details?.post_settings?.fields[update_field_id]) {
+          const field_settings =
+            window.merge_post_details.post_settings.fields[update_field_id];
+          if (field_type === 'location' && field_settings?.mode === 'normal') {
+            // Determine values to be updated
+            let source_typeahead =
+              window.Typeahead['.js-typeahead-' + field_id];
+            let update_typeahead =
+              window.Typeahead['.js-typeahead-' + update_field_id];
 
-        // Update values accordingly
-        if (location_elements) {
-          // Obtain handle to existing list
-          let td = $('#main_updated_fields_div')
-            .find('#mapbox-autocomplete')
-            .parent();
+            // Update values accordingly
+            if (source_typeahead && update_typeahead) {
+              // Obtain handle onto update field meta - deletion array
+              let update_field_meta = $('#main_updated_fields_div')
+                .find('#merge_field_id[value="' + update_field_id + '"]')
+                .parent()
+                .find('#field_meta');
+              let deleted_items =
+                update_field_meta &&
+                $(update_field_meta).length > 0 &&
+                $(update_field_meta).val()
+                  ? JSON.parse($(update_field_meta).val())
+                  : [];
 
-          // Obtain handle onto update field meta - deletion array
-          let update_field_meta = $('#main_updated_fields_div')
-            .find('#merge_field_id[value="' + update_field_id + '"]')
-            .parent()
-            .find('#field_meta');
-          let deleted_items =
-            update_field_meta &&
-            $(update_field_meta).length > 0 &&
-            $(update_field_meta).val()
-              ? JSON.parse($(update_field_meta).val())
-              : [];
+              // Iterate source tags, updating accordingly
+              $.each(source_typeahead.items, function (idx, source) {
+                if (is_selected) {
+                  // Add, if not already present
 
-          // Iterate over values; processing accordingly
-          $.each(location_elements, function (idx, element) {
-            // Determine if the value already exists within update list
-            let has_value = false;
-            let value_ele = null;
+                  if (
+                    !window.lodash.includes(
+                      update_typeahead.items,
+                      source['ID'],
+                    )
+                  ) {
+                    update_typeahead.addMultiselectItemLayout(source);
 
-            $(td)
-              .find('input.input-group-field')
-              .each(function (idx, input) {
-                if ($(input).val() === $(element).val()) {
-                  has_value = true;
-                  value_ele = input;
+                    // Keep deleted items in sync
+                    let found = window.lodash.find(
+                      deleted_items,
+                      function (item) {
+                        return (
+                          new String(item['ID']).valueOf() ==
+                          new String(source['ID'].valueOf())
+                        );
+                      },
+                    );
+
+                    if (found) {
+                      window.lodash.remove(deleted_items, found);
+                      $(update_field_meta).val(JSON.stringify(deleted_items));
+                    }
+                  }
+                } else {
+                  // Remove, if present and not still selected anywhere else!
+
+                  if (
+                    !is_field_value_still_selected(
+                      update_field_id,
+                      field_type,
+                      source,
+                    )
+                  ) {
+                    // Remove item object
+                    window.lodash.remove(
+                      update_typeahead.items,
+                      function (value) {
+                        return value['name'] === source['name'];
+                      },
+                    );
+
+                    // Remove compared item string
+                    window.lodash.remove(
+                      update_typeahead.comparedItems,
+                      function (value) {
+                        return (
+                          new String(value).valueOf() ==
+                          new String(source['ID'].valueOf())
+                        );
+                      },
+                    );
+
+                    // Remove matching label container
+                    $(update_typeahead.label.container)
+                      .find('.typeahead__label')
+                      .each(function (idx, label) {
+                        if (
+                          $(label)
+                            .find('span')
+                            .not('span.typeahead__cancel-button')
+                            .text() === source['name']
+                        ) {
+                          $(label).remove();
+                        }
+                      });
+
+                    // Keep deleted items in sync
+                    let found = window.lodash.find(
+                      deleted_items,
+                      function (item) {
+                        return (
+                          new String(item['ID']).valueOf() ==
+                          new String(source['ID'].valueOf())
+                        );
+                      },
+                    );
+
+                    if (!found) {
+                      deleted_items.push(source);
+                      $(update_field_meta).val(JSON.stringify(deleted_items));
+                    }
+                  }
                 }
               });
 
-            // Add/Remove accordingly
-            if (is_selected && !has_value) {
-              // Add, if not already present
-              let clone = $(element).clone();
-              $(clone).css('margin-bottom', '10px');
-              td.append(clone);
+              update_typeahead.adjustInputSize();
+            }
+          } else if (
+            (field_type === 'location' &&
+              field_settings?.mode === 'geolocation') ||
+            field_type === 'location_meta'
+          ) {
+            // Determine values to be updated
+            let location_elements = $(selector.parent().parent()).find(
+              'input.input-group-field',
+            );
 
-              // Keep deleted items in sync
-              if (
-                $(clone).attr('id') &&
-                $(clone).attr('id').length > 0 &&
-                $(clone).attr('id').indexOf('-') >= 0
-              ) {
-                let id = $(clone)
-                  .attr('id')
-                  .substring($(clone).attr('id').indexOf('-') + 1);
-                if (window.lodash.includes(deleted_items, id)) {
-                  window.lodash.remove(deleted_items, function (item) {
-                    return new String(item).valueOf() == new String(id);
+            // Update values accordingly
+            if (location_elements) {
+              // Obtain handle to existing list
+              let td = $('#main_updated_fields_div')
+                .find(`#${update_field_id}_mapbox-autocomplete`)
+                .parent();
+
+              // Obtain handle onto update field meta - deletion array
+              let update_field_meta = $('#main_updated_fields_div')
+                .find('#merge_field_id[value="' + update_field_id + '"]')
+                .parent()
+                .find('#field_meta');
+              let deleted_items =
+                update_field_meta &&
+                $(update_field_meta).length > 0 &&
+                $(update_field_meta).val()
+                  ? JSON.parse($(update_field_meta).val())
+                  : [];
+
+              // Iterate over values; processing accordingly
+              $.each(location_elements, function (idx, element) {
+                // Determine if the value already exists within update list
+                let has_value = false;
+                let value_ele = null;
+
+                $(td)
+                  .find('input.input-group-field')
+                  .each(function (idx, input) {
+                    if ($(input).val() === $(element).val()) {
+                      has_value = true;
+                      value_ele = input;
+                    }
                   });
 
-                  $(update_field_meta).val(JSON.stringify(deleted_items));
-                }
-              }
-            } else if (!is_selected && has_value && value_ele) {
-              // Remove, if present and not still selected anywhere else!
-              if (
-                !is_field_value_still_selected(
-                  update_field_id,
-                  field_type,
-                  $(value_ele).val(),
-                )
-              ) {
-                $(value_ele).remove();
+                // Add/Remove accordingly
+                if (is_selected && !has_value) {
+                  // Add, if not already present
+                  let clone = $(element).clone();
+                  $(clone).css('margin-bottom', '10px');
+                  td.append(clone);
 
-                // Keep deleted items in sync
-                if (
-                  $(value_ele).attr('id') &&
-                  $(value_ele).attr('id').length > 0 &&
-                  $(value_ele).attr('id').indexOf('-') >= 0
-                ) {
-                  let id = $(value_ele)
-                    .attr('id')
-                    .substring($(value_ele).attr('id').indexOf('-') + 1);
-                  if (!window.lodash.includes(deleted_items, id)) {
-                    deleted_items.push(id);
-                    $(update_field_meta).val(JSON.stringify(deleted_items));
+                  // Keep deleted items in sync
+                  if (
+                    $(clone).attr('id') &&
+                    $(clone).attr('id').length > 0 &&
+                    $(clone).attr('id').indexOf('-') >= 0
+                  ) {
+                    let id = $(clone)
+                      .attr('id')
+                      .substring($(clone).attr('id').indexOf('-') + 1);
+                    if (window.lodash.includes(deleted_items, id)) {
+                      window.lodash.remove(deleted_items, function (item) {
+                        return new String(item).valueOf() == new String(id);
+                      });
+
+                      $(update_field_meta).val(JSON.stringify(deleted_items));
+                    }
+                  }
+                } else if (!is_selected && has_value && value_ele) {
+                  // Remove, if present and not still selected anywhere else!
+                  if (
+                    !is_field_value_still_selected(
+                      update_field_id,
+                      field_type,
+                      $(value_ele).val(),
+                    )
+                  ) {
+                    $(value_ele).remove();
+
+                    // Keep deleted items in sync
+                    if (
+                      $(value_ele).attr('id') &&
+                      $(value_ele).attr('id').length > 0 &&
+                      $(value_ele).attr('id').indexOf('-') >= 0
+                    ) {
+                      let id = $(value_ele)
+                        .attr('id')
+                        .substring($(value_ele).attr('id').indexOf('-') + 1);
+                      if (!window.lodash.includes(deleted_items, id)) {
+                        deleted_items.push(id);
+                        $(update_field_meta).val(JSON.stringify(deleted_items));
+                      }
+                    }
                   }
                 }
-              }
+              });
             }
-          });
+          }
         }
-
         break;
       }
 
-      case 'connection':
-      case 'location': {
+      case 'connection': {
         // Determine values to be updated
         let source_typeahead = window.Typeahead['.js-typeahead-' + field_id];
         let update_typeahead =
@@ -1949,7 +2099,6 @@ jQuery(function ($) {
           }
 
           case 'tags':
-          case 'location':
           case 'connection': {
             let typeahead = window.Typeahead['.js-typeahead-' + field_id];
             if (typeahead) {
@@ -1984,42 +2133,90 @@ jQuery(function ($) {
             break;
           }
 
-          case 'location_meta': {
-            // Determine values to be processed
-            let location_meta_entries = [];
-            let location_meta_deletions = field_meta.val()
-              ? JSON.parse(field_meta.val())
-              : [];
+          case 'location_meta':
+          case 'location': {
+            if (window.merge_post_details?.post_settings?.fields[field_id]) {
+              const field_settings =
+                window.merge_post_details.post_settings.fields[field_id];
+              if (
+                field_type === 'location' &&
+                field_settings?.mode === 'normal'
+              ) {
+                let typeahead = window.Typeahead['.js-typeahead-' + field_id];
+                if (typeahead) {
+                  // Determine values to be processed
+                  let key = 'ID';
+                  let items = typeahead.items;
+                  let deletions = field_meta.val()
+                    ? JSON.parse(field_meta.val())
+                    : [];
 
-            // Package values and any deletions
-            $(td)
-              .find('input.input-group-field')
-              .each(function (idx, input) {
-                if ($(input).val()) {
+                  // Package values and any deletions
+                  let entries = [];
+                  $.each(items, function (idx, item) {
+                    entries.push({
+                      value: item[key],
+                    });
+                  });
+                  $.each(deletions, function (idx, item) {
+                    entries.push({
+                      value: item[key],
+                      delete: true,
+                    });
+                  });
+
+                  // If present, capture entries
+                  if (entries) {
+                    values[post_field_id] = {
+                      values: entries,
+                    };
+                  }
+                }
+              } else if (
+                (field_type === 'location' &&
+                  field_settings?.mode === 'geolocation') ||
+                field_type === 'location_meta'
+              ) {
+                // Determine values to be processed
+                let location_meta_entries = [];
+                let location_meta_deletions = field_meta.val()
+                  ? JSON.parse(field_meta.val())
+                  : [];
+
+                // Package values and any deletions
+                $(td)
+                  .find('input.input-group-field')
+                  .each(function (idx, input) {
+                    if ($(input).val()) {
+                      location_meta_entries.push({
+                        value: $(input).val(),
+                      });
+                    }
+                  });
+
+                if (
+                  window.selected_location_grid_meta !== undefined &&
+                  window.selected_location_grid_meta[field_id]
+                ) {
                   location_meta_entries.push({
-                    value: $(input).val(),
+                    value: window.selected_location_grid_meta[field_id],
                   });
                 }
-              });
 
-            if (window.selected_location_grid_meta !== undefined) {
-              location_meta_entries.push({
-                value: window.selected_location_grid_meta,
-              });
-            }
+                $.each(location_meta_deletions, function (idx, id) {
+                  location_meta_entries.push({
+                    grid_meta_id: id,
+                    delete: true,
+                  });
+                });
 
-            $.each(location_meta_deletions, function (idx, id) {
-              location_meta_entries.push({
-                grid_meta_id: id,
-                delete: true,
-              });
-            });
-
-            // If present, capture entries
-            if (location_meta_entries) {
-              values[post_field_id] = {
-                values: location_meta_entries,
-              };
+                // If present, capture entries
+                if (location_meta_entries) {
+                  values[post_field_id] = {
+                    values: location_meta_entries,
+                  };
+                }
+              }
             }
             break;
           }
