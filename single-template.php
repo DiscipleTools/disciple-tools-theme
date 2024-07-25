@@ -223,8 +223,11 @@ function dt_display_tile( $tile, $post ): bool {
                             ?>
                             </span>
                             </dt-modal>
+                            <!-- duplicate check button integration -->
                             <dt-modal class="duplicate-detected" buttonClass={"duplicates-detected-button":true} buttonLabel="Duplicate Detected" buttonStyle={"background-color":"transparent","border":"1px","color":"#3f729b","border-style":"solid","font-weight":"600","border-color":"#3f729b","display":""} imageStyle={"filter":"hue-rotate(180deg)invert(1)"} imageSrc="http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/broken.svg" title="Duplicate Detected">
+<slot>
 
+</slot>
 
                             </dt-modal>
                             <!-- <div class="details-title-section"></div> -->
