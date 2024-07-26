@@ -8,6 +8,7 @@
   let filterToEdit = '';
   let filter_accordions = $('#list-filter-tabs');
   let currentFilters = $('#current-filters');
+  let split_by_filter_labels = $('#split_by_current_filter_select_labels');
   let cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(
     'last_view',
     {},
@@ -505,7 +506,7 @@
         checked_split_by.data('field_option_label'),
       );
     }
-
+    console.log(current_filter);
     clear_search_query();
 
     get_records();
@@ -732,6 +733,7 @@
       &nbsp;</span>`;
     }
     currentFilters.html(html);
+    split_by_filter_labels.html(html);
   }
 
   function reset_sorting_in_table_header(currentFilter) {
@@ -3786,7 +3788,7 @@
     let split_by_accordion = $('.split-by-current-filter-accordion');
     let split_by_results = $('#split_by_current_filter_results');
     let split_by_no_results_msg = $('#split_by_current_filter_no_results_msg');
-
+    console.log(split_by_results);
     $(split_by_no_results_msg).fadeOut('fast');
 
     $(split_by_results).slideUp('fast', function () {
