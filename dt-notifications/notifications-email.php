@@ -166,25 +166,47 @@ add_filter( 'wp_mail_from_name', function ( $name ) {
  */
 
 add_filter( 'wp_mail', function ( $args ) {
-    if ( empty( $args['headers'] ) || !html_content_type_detected( $args['headers'] ) ) {
+    $headers = convert_headers_to_array( $args['headers'] );
+    if ( empty( $headers ) || !html_content_type_detected( $args['headers'] ) ) {
         $args['message'] = dt_email_template_wrapper( $args['message'] ?? '', $args['subject'] ?? '' );
 
-        $headers = $args['headers'];
-        if ( empty( $headers ) ) {
-            $headers = [];
-        }
-
-        if ( is_array( $headers ) ) {
-            $headers[] = 'Content-Type: text/html; charset=UTF-8';
-        } else {
-            $headers .= "\r\nContent-Type: text/html; charset=UTF-8";
-        }
-
-        $args['headers'] = $headers;
+        $headers[] = 'Content-Type: text/html; charset=UTF-8';
     }
+
+    // Determine if default reply-to address should be used.
+    $base_email_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
+    if ( !empty( $base_email_reply_to ) ) {
+
+        // Filter out any existing custom reply-to headers.
+        $headers = array_filter( $headers, function ( $header ) {
+            return strpos( strtolower( $header ), 'reply-to' ) !== 0;
+        } );
+
+        $headers[] = 'Reply-To: ' . dt_default_email_name() . ' <' . $base_email_reply_to . '>';
+    }
+
+    $args['headers'] = $headers;
 
     return $args;
 } );
+
+/**
+ * Convert $headers to array structure.
+ *
+ * @param string|string[] $headers
+ * @return array
+ */
+function convert_headers_to_array( $headers ): array {
+    if ( !empty( $headers ) ) {
+        if ( ! is_array( $headers ) ) {
+            $headers = array_filter( explode( "\n", str_replace( "\r\n", "\n", $headers ) ) );
+        }
+    } else {
+        $headers = [];
+    }
+
+    return $headers;
+}
 
 /**
  * Check if $headers contains Content-Type: text/html

@@ -336,6 +336,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label
+                            for="email_address_reply_to"><?php echo esc_html( 'Specify default notification reply to email address. Leave blank to use custom addresses.' ) ?></label>
+                    </td>
+                    <td>
+                        <input name="email_address_reply_to" id="email_address_reply_to"
+                               value="<?php echo esc_html( dt_get_option( 'dt_email_base_address_reply_to' ) ) ?>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label
                             for="email_address"><?php echo esc_html( sprintf( 'Specify notification from email address. Leave blank to use default (%s)', dt_default_email_address() ) ) ?></label>
                     </td>
                     <td>
@@ -383,14 +393,19 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 update_option( 'dt_email_base_subject', $email_subject );
             }
 
+            if ( isset( $_POST['email_address_reply_to'] ) ) {
+                $email_address_reply_to = sanitize_text_field( wp_unslash( $_POST['email_address_reply_to'] ) );
+                update_option( 'dt_email_base_address_reply_to', $email_address_reply_to );
+            }
+
             if ( isset( $_POST['email_address'] ) ) {
-                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_address'] ) );
-                update_option( 'dt_email_base_address', $email_subject );
+                $email_address = sanitize_text_field( wp_unslash( $_POST['email_address'] ) );
+                update_option( 'dt_email_base_address', $email_address );
             }
 
             if ( isset( $_POST['email_name'] ) ) {
-                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_name'] ) );
-                update_option( 'dt_email_base_name', $email_subject );
+                $email_name = sanitize_text_field( wp_unslash( $_POST['email_name'] ) );
+                update_option( 'dt_email_base_name', $email_name );
             }
         }
     }

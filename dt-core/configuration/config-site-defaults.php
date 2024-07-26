@@ -241,6 +241,8 @@ function dt_get_option( string $name ) {
             return $subject_base;
             break;
 
+        case 'dt_email_base_address_reply_to':
+            return get_option( 'dt_email_base_address_reply_to', '' );
         case 'dt_email_base_address':
             return get_option( 'dt_email_base_address', '' );
         case 'dt_email_base_name':
