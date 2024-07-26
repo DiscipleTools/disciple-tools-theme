@@ -506,7 +506,7 @@
         checked_split_by.data('field_option_label'),
       );
     }
-    console.log(current_filter);
+
     clear_search_query();
 
     get_records();
@@ -3788,7 +3788,7 @@
     let split_by_accordion = $('.split-by-current-filter-accordion');
     let split_by_results = $('#split_by_current_filter_results');
     let split_by_no_results_msg = $('#split_by_current_filter_no_results_msg');
-    console.log(split_by_results);
+
     $(split_by_no_results_msg).fadeOut('fast');
 
     $(split_by_results).slideUp('fast', function () {
