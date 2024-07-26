@@ -77,22 +77,6 @@ if (
         window.location = response.permalink;
       });
     });
-
-  // Select all elements with class '.form-fields' and 'dt-comm-channel'
-  document
-    .querySelectorAll('.form-fields dt-comm-channel')
-    .forEach(function (element) {
-      element.addEventListener('change', function (event) {
-        let element_index = event.target.id;
-        let valueAttri = event.target.value;
-        valueAttri.forEach(function (item) {
-          let value = item.value;
-          // Call a function to check if the field value exists
-          check_field_value_exists(element_index, value);
-        });
-      });
-    });
-
   // Function to capitalize the first letter of a given string
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);

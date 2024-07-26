@@ -443,37 +443,39 @@ class DT_Contacts_Access extends DT_Module_Base {
                     $icon = 'icon=' . esc_attr( $contact_fields[$field_key]['icon'] );
                 }
                 ?>
-                <dt-single-select
-                    id="overall_status"
-                    name="overall_status"
-                    label="<?php echo esc_attr( $contact_fields[$field_key]['name'] )?>"
-                    <?php echo esc_html( $icon ) ?>
+                <dt-single-select id="overall_status" name="overall_status"
+                    label="<?php echo esc_attr( $contact_fields[$field_key]['name'] ) ?>" <?php echo esc_html( $icon ) ?>
                     options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
-                    value="<?php echo esc_attr( $post[$field_key] ? $post[$field_key]['key'] : '' ) ?>">
+                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? $post[$field_key]['key'] : '' ) ?>">
                     <?php dt_render_icon_slot( $contact_fields[$field_key] ) ?>
                 </dt-single-select>
-
+    
                 <p>
                     <span id="reason">
                         <?php
                         $hide_edit_button = false;
                         $status_key = isset( $contact['overall_status']['key'] ) ? $contact['overall_status']['key'] : '';
-                        if ( $status_key === 'paused' &&
-                            isset( $contact['reason_paused']['label'] ) ){
+                        if (
+                            $status_key === 'paused' &&
+                            isset( $contact['reason_paused']['label'] )
+                        ) {
                             echo '(' . esc_html( $contact['reason_paused']['label'] ) . ')';
-                        } else if ( $status_key === 'closed' &&
-                            isset( $contact['reason_closed']['label'] ) ){
+                        } else if (
+                            $status_key === 'closed' &&
+                            isset( $contact['reason_closed']['label'] )
+                        ) {
                             echo '(' . esc_html( $contact['reason_closed']['label'] ) . ')';
-                        } else if ( $status_key === 'unassignable' &&
-                            isset( $contact['reason_unassignable']['label'] ) ){
+                        } else if (
+                            $status_key === 'unassignable' &&
+                            isset( $contact['reason_unassignable']['label'] )
+                        ) {
                             echo '(' . esc_html( $contact['reason_unassignable']['label'] ) . ')';
                         } else {
-                            if ( !in_array( $status_key, [ 'paused', 'closed', 'unassignable' ] ) ){
+                            if ( !in_array( $status_key, [ 'paused', 'closed', 'unassignable' ] ) ) {
                                 $hide_edit_button = true;
                             }
                         }
                         ?>
-                    </span>
                     <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
                 </p>
             <div class="reveal" id="paused-contact-modal" data-reveal>

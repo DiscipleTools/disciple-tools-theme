@@ -418,7 +418,8 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
                 $icon_rendered = true;
                 ?>
 
-                    <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>" style="font-size: 15px;"></i>
+                    <i class="<?php echo esc_html( $field['font-icon'] ); ?> <?php echo esc_html( $class ); ?>"
+                        style="font-size: 15px;"></i>
 
                 <?php
             } else if ( $default_to_name && !empty( $field['name'] ) ) {
@@ -649,9 +650,9 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
 
             <?php if ( $field_type === 'communication_channel' ): ?>
                 <dt-comm-channel <?php echo wp_kses_post( $shared_attributes ) ?>                 <?php dt_render_icon_slot( $fields[$field_key] ) ?>
-                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>" requiredmessage=""
-                    icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" iconalttext="Icon Alt Text" privatelabel="" error=""
-                    onchange="">
+                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>"
+                    requiredmessage="" icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" iconalttext="Icon Alt Text"
+                    privatelabel="" error="" onchange="">
                 </dt-comm-channel>
             <?php endif; ?>
             <?php if ( $field_type === 'location_meta' ): ?>
@@ -721,25 +722,13 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
                         <?php dt_render_icon_slot( $fields[$field_key] ) ?>
                         </dt-multi-select>
                 <?php } else { ?>
-                        <div class="small button-group" style="display: inline-block">
-                        <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
-                                <?php
-                                $haystack = $post[$field_key] ?? [];
-                                if ( !is_array( $haystack ) ) {
-                                    $haystack = explode( ' ', $haystack );
-                                }
-                                $class = ( in_array( $option_key, $haystack ) ) ?
-                                    'selected-select-button' : 'empty-select-button'; ?>
-                                <button id="<?php echo esc_html( $option_key ) ?>" value="<?php echo esc_html( $option_key ) ?>" type="button"
-                                    data-field-key="<?php echo esc_html( $field_key ); ?>"
-                                    class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button" <?php echo esc_html( $disabled ); ?>>
-                                    <?php
-                                    dt_render_field_icon( $option_value );
-                                    echo esc_html( $option_value['label'] ?? $option_key );
-                                    ?>
-                                </button>
-                        <?php endforeach; ?>
-                        </div>
+                    <?php $faith_milestone = array( $fields[$field_key]['default'] );
+                    $faith_milestone_json = json_encode( $faith_milestone );
+                    ?>
+                        <dt-multiselect-buttons-group context=<?php echo wp_kses_post( $shared_attributes ) ?>
+                            buttons='<?php echo esc_attr( $faith_milestone_json ); ?>'
+                            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+                        <?php dt_render_icon_slot( $fields[$field_key] ) ?></dt-multiselect-buttons-group>
                 <?php } ?>
             <?php elseif ( $field_type === 'text' ): ?>
                     <dt-text <?php echo wp_kses_post( $shared_attributes ) ?> value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>">
@@ -883,25 +872,6 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
                                 </div>
                             </div>
                         </div>
-                    </div>
-            <?php elseif ( $field_type === 'communication_channel' ): ?>
-                    <div id="edit-<?php echo esc_html( $field_key ) ?>">
-                    <?php foreach ( $post[$field_key] ?? [] as $field_value ): ?>
-                            <div class="input-group">
-                                <input id="<?php echo esc_html( $field_value['key'] ) ?>" type="text"
-                                    data-field="<?php echo esc_html( $field_key ); ?>" value="<?php echo esc_html( $field_value['value'] ) ?>"
-                                    class="dt-communication-channel input-group-field" dir="auto" <?php echo esc_html( $disabled ); ?> />
-                                <div class="input-group-button">
-                                    <button
-                                        class="button alert input-height delete-button-style channel-delete-button delete-button new-<?php echo esc_html( $field_key ); ?>"
-                                        data-field="<?php echo esc_html( $field_key ); ?>" data-key="<?php echo esc_html( $field_value['key'] ); ?>"
-                                    <?php echo esc_html( $disabled ); ?>>&times;</button>
-                                </div>
-                            </div>
-                    <?php endforeach;
-                    if ( empty( $post[$field_key] ) ?? [] ): ?>
-
-                    <?php endif ?>
                     </div>
             <?php elseif ( $field_type === 'user_select' ): ?>
                     <div id="<?php echo esc_html( $field_key ); ?>" class="<?php echo esc_html( $display_field_id ); ?> dt_user_select">
@@ -1064,7 +1034,7 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
         }
     }
 
-    if ( ! function_exists( 'dt_site_id' ) ) {
+    if ( !function_exists( 'dt_site_id' ) ) {
         function dt_site_id() {
             $site_id = get_option( 'dt_site_id' );
             if ( empty( $site_id ) ) {
