@@ -224,7 +224,7 @@ function dt_display_tile( $tile, $post ): bool {
                             </span>
                             </dt-modal>
                             <!-- duplicate check button integration -->
-                            <dt-modal class="duplicate-detected" buttonClass={"duplicates-detected-button":true} buttonLabel="Duplicate Detected" buttonStyle={"background-color":"transparent","border":"1px","color":"#3f729b","border-style":"solid","font-weight":"600","border-color":"#3f729b","display":""} imageStyle={"filter":"hue-rotate(0deg)"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>" title="Duplicate Detected">
+                            <dt-modal class="duplicate-detected" buttonClass={"duplicates-detected-button":true} buttonLabel="<?php echo esc_html__( 'Duplicate Detected', 'disciple_tools' ); ?>" buttonStyle={"background-color":"transparent","border":"1px","color":"#3f729b","border-style":"solid","font-weight":"600","border-color":"#3f729b","display":""} imageStyle={"filter":"hue-rotate(0deg)"} imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>" title="<?php echo esc_html__( 'Duplicate Detected', 'disciple_tools' ); ?>">
 <slot>
 
 </slot>
