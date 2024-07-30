@@ -73,7 +73,6 @@
     <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.SpaceBeforeBrace" />
     <exclude name="Generic.PHP.ForbiddenFunctions.FoundWithAlternative" />
     <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
-    <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
     <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
     <exclude name="PSR2.ControlStructures.SwitchDeclaration.BodyOnNextLineCASE" />
     <exclude name="PSR2.ControlStructures.SwitchDeclaration.BreakIndent" />
@@ -175,7 +174,29 @@
     <exclude name="WordPress.WP.EnqueuedResourceParameters.MissingVersion" />
     <exclude name="WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion" />
 
+    <exclude name="Squiz.CSS.ClassDefinitionOpeningBraceSpace" />
+    <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
+    <exclude name="PEAR.Functions.FunctionDeclaration.SpaceAfterFunction" />
   </rule>
+
+  <rule ref="Generic.Classes">
+    <exclude name="Generic.Classes.OpeningBraceSameLine" />
+  </rule>
+
+  <rule ref="Generic.Functions">
+    <!--<exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman" />-->
+    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+  </rule>
+
+  <rule ref="Generic.WhiteSpace">
+    <exclude name="Generic.WhiteSpace.IncrementDecrementSpacing" />
+  </rule>
+
+  <rule ref="Squiz.Arrays">
+    <exclude name="Squiz.Arrays.ArrayDeclaration" />
+    <exclude name="Squiz.Arrays.ArrayBracketSpacing" />
+  </rule>
+
 
   <!-- Keeping these ones: -->
   <rule ref="Generic.ControlStructures.InlineControlStructure"/>
