@@ -956,16 +956,41 @@ jQuery(document).ready(function ($) {
         value: Date.now(),
       }).then((secondary_ts) => {
         // Next, fetch most recently stored cache test value.
-        make_admin_request('GET', 'wp_cache_test_get').then((stored_ts) => {
-          // Based on timestamp matches, determine if server caching is enabled.
-          const custom_tab_notice = $('#custom_tab_notice');
-          if (
-            parseInt(stored_ts, 10) === parseInt(primary_ts, 10) ||
-            parseInt(stored_ts, 10) !== parseInt(secondary_ts, 10)
-          ) {
-            $(custom_tab_notice).slideDown('fast');
-          }
-        });
+        make_admin_request('GET', 'wp_cache_test_get').then(
+          (stored_ts, status, request) => {
+            // Prior to checking values, attempt to determine if cache status can be determined from response http headers.
+            let http_caching_detected = true;
+            const cache_control_header =
+              request.getResponseHeader('cache-control');
+            if (cache_control_header) {
+              const cache_control = cache_control_header.split(',');
+              cache_control.forEach(function (directive) {
+                directive = directive.trim().toLowerCase();
+
+                if (directive.startsWith('no-store')) {
+                  http_caching_detected = false;
+                }
+
+                if (
+                  directive.startsWith('max-age') &&
+                  directive.includes('=') &&
+                  parseInt(directive.split('=')[1]) <= 0
+                ) {
+                  http_caching_detected = false;
+                }
+              });
+            }
+
+            // Finally, based on timestamp matches, determine if server caching is enabled.
+            if (
+              http_caching_detected ||
+              parseInt(stored_ts, 10) === parseInt(primary_ts, 10) ||
+              parseInt(stored_ts, 10) !== parseInt(secondary_ts, 10)
+            ) {
+              $(custom_tab_notice).slideDown('fast');
+            }
+          },
+        );
       });
     });
   }
