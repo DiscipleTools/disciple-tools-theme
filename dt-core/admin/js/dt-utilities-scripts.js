@@ -918,4 +918,85 @@ jQuery(document).ready(function ($) {
   /**
    * DT IMPORTS
    */
+
+  /**
+   * WP OBJECT CACHE MANAGEMENT
+   */
+
+  const custom_tab_notice = $('#custom_tab_notice');
+  $(document).on('click', '#custom_tab_notice_flush_but', function (e) {
+    const custom_tab_notice_select = $('#custom_tab_notice_select');
+    const custom_tab_notice_flush_but = $('#custom_tab_notice_flush_but');
+    const custom_tab_notice_spinner = $('#custom_tab_notice_spinner');
+
+    $(custom_tab_notice_select).prop('disabled', true);
+    $(custom_tab_notice_flush_but).prop('disabled', true);
+    $(custom_tab_notice_spinner).fadeIn('fast');
+
+    make_admin_request('POST', 'wp_cache_obj_flush', {
+      group: $(custom_tab_notice_select).val(),
+    }).then((response) => {
+      $(custom_tab_notice).slideUp('fast', function () {
+        $(custom_tab_notice_select).prop('disabled', false);
+        $(custom_tab_notice_flush_but).prop('disabled', false);
+        $(custom_tab_notice_spinner).fadeOut('fast');
+      });
+    });
+  });
+
+  function server_caching_detection_test() {
+    $(custom_tab_notice).hide();
+
+    // First, set cache test primary value (timestamp).
+    make_admin_request('POST', 'wp_cache_test_set', {
+      value: Date.now(),
+    }).then((primary_ts) => {
+      // Then, set cache test secondary value (timestamp).
+      make_admin_request('POST', 'wp_cache_test_set', {
+        value: Date.now(),
+      }).then((secondary_ts) => {
+        // Next, fetch most recently stored cache test value.
+        make_admin_request('GET', 'wp_cache_test_get').then(
+          (stored_ts, status, request) => {
+            // Prior to checking values, attempt to determine if cache status can be determined from response http headers.
+            let http_caching_detected = true;
+            const cache_control_header =
+              request.getResponseHeader('cache-control');
+            if (cache_control_header) {
+              const cache_control = cache_control_header.split(',');
+              cache_control.forEach(function (directive) {
+                directive = directive.trim().toLowerCase();
+
+                if (directive.startsWith('no-store')) {
+                  http_caching_detected = false;
+                }
+
+                if (
+                  directive.startsWith('max-age') &&
+                  directive.includes('=') &&
+                  parseInt(directive.split('=')[1]) <= 0
+                ) {
+                  http_caching_detected = false;
+                }
+              });
+            }
+
+            // Finally, based on timestamp matches, determine if server caching is enabled.
+            if (
+              http_caching_detected ||
+              parseInt(stored_ts, 10) === parseInt(primary_ts, 10) ||
+              parseInt(stored_ts, 10) !== parseInt(secondary_ts, 10)
+            ) {
+              $(custom_tab_notice).slideDown('fast');
+            }
+          },
+        );
+      });
+    });
+  }
+  server_caching_detection_test();
+
+  /**
+   * WP OBJECT CACHE MANAGEMENT
+   */
 });

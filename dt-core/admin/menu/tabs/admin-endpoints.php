@@ -61,6 +61,36 @@ class DT_Admin_Endpoints {
                 },
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/scripts/wp_cache_obj_flush', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'cache_obj_flush' ],
+                'permission_callback' => function() {
+                    return current_user_can( 'manage_dt' );
+                }
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/scripts/wp_cache_test_set', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'cache_test_set' ],
+                'permission_callback' => function() {
+                    return current_user_can( 'manage_dt' );
+                }
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/scripts/wp_cache_test_get', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'cache_test_get' ],
+                'permission_callback' => function() {
+                    return current_user_can( 'manage_dt' );
+                }
+            ]
+        );
     }
 
     public function reset_count_field( WP_REST_Request $request ){
@@ -252,6 +282,45 @@ class DT_Admin_Endpoints {
             'success' => (bool) true,
             'remaining' => wp_queue_count_jobs(),
         ];
+    }
+
+    public function wp_cache_obj_flush( WP_REST_Request $request ) {
+        global $wp_object_cache;
+        $params = $request->get_params();
+        $response = [
+            'flushed' => false
+        ];
+        if ( !empty( $wp_object_cache ) && isset( $params['group'] ) ) {
+            $group = $params['group'];
+            $response['group'] = $group;
+            switch ( $group ) {
+                case 'all':
+                    $response['flushed'] = $wp_object_cache->flush();
+                    break;
+                default:
+                    $response['flushed'] = $wp_object_cache->flush_group( $group );
+                    break;
+            }
+        }
+
+        return $response;
+    }
+
+    public function cache_test_set( WP_REST_Request $request ) {
+        $params = $request->get_params();
+
+        if ( isset( $params['value'] ) ) {
+            $dt_cache_test_value = $params['value'];
+            update_option( 'dt_cache_test_value', $dt_cache_test_value );
+
+            return get_option( 'dt_cache_test_value' );
+        }
+
+        return '';
+    }
+
+    public function cache_test_get( WP_REST_Request $request ) {
+        return get_option( 'dt_cache_test_value' );
     }
 }
 
