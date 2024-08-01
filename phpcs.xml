@@ -56,8 +56,6 @@
 
     <!-- We currently don't want these rules that WordPress imports: -->
 
-    <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine" />
-    <exclude name="Generic.Classes.OpeningBraceSameLine.SpaceBeforeBrace" />
     <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSE" />
     <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSEIF" />
     <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedIF" />
@@ -67,10 +65,6 @@
     <exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
     <exclude name="Generic.Commenting.DocComment.SpacingAfter" />
     <exclude name="Generic.Commenting.DocComment.SpacingBeforeTags" />
-    <exclude name="Generic.Files.EndFileNewline.NotFound" />
-    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
-    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.ContentAfterBrace" />
-    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.SpaceBeforeBrace" />
     <exclude name="Generic.PHP.ForbiddenFunctions.FoundWithAlternative" />
     <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
     <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
@@ -174,9 +168,11 @@
     <exclude name="WordPress.WP.EnqueuedResourceParameters.MissingVersion" />
     <exclude name="WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion" />
 
-    <exclude name="Squiz.CSS.ClassDefinitionOpeningBraceSpace" />
-    <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
-    <exclude name="PEAR.Functions.FunctionDeclaration.SpaceAfterFunction" />
+    <exclude name="PEAR.Files.IncludingFile" />
+    <exclude name="PSR2.Methods.FunctionClosingBrace" />
+    <exclude name="WordPress.Security.EscapeOutput" />
+    <exclude name="WordPress.DB.PreparedSQL" />
+    <exclude name="WordPress.Security.NonceVerification" />
   </rule>
 
   <rule ref="Generic.Classes">
@@ -184,12 +180,26 @@
   </rule>
 
   <rule ref="Generic.Functions">
-    <!--<exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman" />-->
+    <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman" />
     <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+  </rule>
+
+  <rule ref="Generic.CodeAnalysis">
+    <exclude name="Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence" />
   </rule>
 
   <rule ref="Generic.WhiteSpace">
     <exclude name="Generic.WhiteSpace.IncrementDecrementSpacing" />
+  </rule>
+
+  <rule ref="Generic.Files">
+    <exclude name="Generic.Files.OneObjectStructurePerFile" />
+    <exclude name="Generic.Files.EndFileNoNewline" />
+    <exclude name="Generic.Files.LineLength" />
+    <exclude name="Generic.Files.InlineHTML" />
+    <exclude name="Generic.Files.ExecutableFile" />
+    <exclude name="Generic.Files.OneClassPerFile" />
+    <exclude name="Generic.Files.EndFileNewline" />
   </rule>
 
   <rule ref="Squiz.Arrays">
@@ -197,6 +207,65 @@
     <exclude name="Squiz.Arrays.ArrayBracketSpacing" />
   </rule>
 
+  <rule ref="Universal.Arrays">
+    <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
+    <exclude name="Universal.Arrays.DuplicateArrayKey" />
+    <exclude name="Universal.Arrays.MixedArrayKeyTypes" />
+    <exclude name="Universal.Arrays.MixedKeyedUnkeyedArray" />
+  </rule>
+
+  <rule ref="Universal.Operators">
+    <exclude name="Universal.Operators.DisallowShortTernary" />
+    <exclude name="Universal.Operators.ConcatPosition" />
+  </rule>
+
+  <rule ref="Universal.Files">
+    <exclude name="Universal.Files.SeparateFunctionsFromOO" />
+  </rule>
+
+  <rule ref="Universal.CodeAnalysis">
+    <exclude name="Universal.CodeAnalysis.NoEchoSprintf" />
+  </rule>
+
+  <rule ref="Universal.ControlStructures">
+    <exclude name="Universal.ControlStructures.DisallowLonelyIf" />
+    <exclude name="Universal.ControlStructures.DisallowAlternativeSyntax" />
+    <exclude name="Universal.ControlStructures.IfElseDeclaration" />
+  </rule>
+
+  <rule ref="Universal.WhiteSpace">
+    <exclude name="Universal.WhiteSpace.CommaSpacing" />
+  </rule>
+
+  <rule ref="NormalizedArrays.Arrays">
+    <exclude name="NormalizedArrays.Arrays.CommaAfterLast" />
+    <exclude name="NormalizedArrays.Arrays.ArrayBraceSpacing" />
+  </rule>
+
+  <rule ref="PSR2.Classes">
+    <exclude name="PSR2.Classes.ClassDeclaration" />
+  </rule>
+
+  <rule ref="PSR2.Files">
+    <exclude name="PSR2.Files.EndFileNewline" />
+  </rule>
+
+  <rule ref="Squiz.Functions">
+    <exclude name="Squiz.Functions.FunctionDeclaration" />
+    <exclude name="Squiz.Functions.LowercaseFunctionKeywords" />
+  </rule>
+
+  <rule ref="Squiz.CSS">
+    <exclude name="Squiz.CSS.ClassDefinitionOpeningBraceSpace" />
+  </rule>
+
+  <rule ref="PSR12.Functions">
+    <exclude name="PSR12.Functions.ReturnTypeDeclaration" />
+  </rule>
+
+  <rule ref="Modernize.FunctionCalls">
+    <exclude name="Modernize.FunctionCalls.Dirname" />
+  </rule>
 
   <!-- Keeping these ones: -->
   <rule ref="Generic.ControlStructures.InlineControlStructure"/>
