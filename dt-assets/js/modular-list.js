@@ -709,6 +709,9 @@
       });
     }
 
+    // Capture available filters, ensuring to ignore any sort labels below.
+    split_by_filter_labels.html(html);
+
     if (filter.query.sort) {
       let sortLabel = filter.query.sort;
       if (sortLabel.includes('last_modified')) {
@@ -733,7 +736,6 @@
       &nbsp;</span>`;
     }
     currentFilters.html(html);
-    split_by_filter_labels.html(html);
   }
 
   function reset_sorting_in_table_header(currentFilter) {
