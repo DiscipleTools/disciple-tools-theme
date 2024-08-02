@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-06-25T10:59:06+00:00\n"
+"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsac <corsacca+muggle@gmail.com>\n"
 "Language-Team: Somali <https://translate.disciple.tools/projects/disciple-"
@@ -16,20 +16,24 @@ msgstr ""
 "X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr "Qalabka Xerta"
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
+#: style.css
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
 msgstr ""
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
@@ -355,8 +359,8 @@ msgid "Search Users"
 msgstr "Raadi Isticmaalayaasha"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:106
-#: dt-metrics/records/genmap.php:110 dt-posts/dt-posts.php:2773
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:134 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -556,7 +560,7 @@ msgstr "Maya"
 
 #: archive-template.php:1040 archive-template.php:1041
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:128 dt-metrics/records/time-charts.php:119
+#: dt-metrics/records/genmap.php:152 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
@@ -838,7 +842,7 @@ msgid "Locations you are responsible for"
 msgstr "Goobaha aad masuulka ka tahay"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:118
+#: dt-metrics/records/genmap.php:142
 msgid "Add"
 msgstr "Ku dar"
 
@@ -1544,7 +1548,7 @@ msgstr "Abuur Diiwaan"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:124 dt-posts/custom-post-type.php:171
+#: dt-metrics/records/genmap.php:148 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "Magaca"
@@ -1585,6 +1589,7 @@ msgstr "Dib u noqo Firfircoonida"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "Goob"
@@ -1685,7 +1690,7 @@ msgstr "Jawaab Dijital ah"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:105 dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:129 dt-metrics/records/genmap.php:136
 msgid "Assigned To"
 msgstr "Loogu talagalay"
 
@@ -1966,7 +1971,7 @@ msgid "Accepted"
 msgstr "La aqbalay"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:96
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -2138,7 +2143,7 @@ msgstr "Checker nuqul"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:105
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
@@ -3078,9 +3083,9 @@ msgstr "Koox"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:109
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:111
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:135
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "Kooxaha"
@@ -3298,7 +3303,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Taariikhda kooxdani joojisay kulanka (haddii ay khuseyso)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:115
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:139
 msgid "Member Count"
 msgstr "Tirinta Xubnaha"
 
@@ -3636,7 +3641,8 @@ msgstr "Dariiqa Halis ah"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:101 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "Mashruuc"
@@ -3797,7 +3803,7 @@ msgid ""
 msgstr ""
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:129
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
 msgid "Metrics"
 msgstr "Qiyaaso"
 
@@ -3921,6 +3927,7 @@ msgstr "Sifee xiriirada ilaa taariikhda:"
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:432
 msgid "All Time"
@@ -4061,32 +4068,32 @@ msgid "Group Generation Tree"
 msgstr "Geedka Abuurka Kooxda"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:101
+#: dt-metrics/records/genmap.php:125
 msgid "Highlight Active"
 msgstr "Muuji Firfircoon"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:102
+#: dt-metrics/records/genmap.php:126
 msgid "Highlight Churches"
 msgstr "Muuji Kaniisadaha"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:103 dt-metrics/records/genmap.php:116
+#: dt-metrics/records/genmap.php:127 dt-metrics/records/genmap.php:140
 msgid "Members"
 msgstr "Xubnaha"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:104
+#: dt-metrics/records/genmap.php:128
 msgid "View Record"
 msgstr "Eeg Diiwaanka"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:107
+#: dt-metrics/records/genmap.php:131
 msgid "Total Members"
 msgstr "Wadarta Xubnaha"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:108
+#: dt-metrics/records/genmap.php:132
 msgid "View Group"
 msgstr "Kooxda Eeg"
 
@@ -4094,7 +4101,7 @@ msgstr "Kooxda Eeg"
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:112
+#: dt-metrics/metrics.php:113
 #, fuzzy
 #| msgid "Metrics"
 msgid "Dynamic Metrics"
@@ -4138,6 +4145,7 @@ msgid "Comments I Posted"
 msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "Taariikhda"
@@ -4214,6 +4222,7 @@ msgid "Field Activity"
 msgstr "Waxqabadka Maalinlaha ah"
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
 #, fuzzy
 #| msgid "Record"
@@ -4248,7 +4257,8 @@ msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
 msgstr ""
 
@@ -4315,63 +4325,87 @@ msgstr "Diiwaan"
 msgid "System"
 msgstr "Nidaamka"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:99
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:123
 #, fuzzy
 #| msgid "Group Generation Tree"
 msgid "Generational Trees"
 msgstr "Geedka Abuurka Kooxda"
 
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:124
 #, fuzzy
 #| msgid "Archived"
 msgid "Show Archived"
 msgstr "Kaydiyay"
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:137
 msgid "Coaches"
 msgstr "Tababarayaasha"
 
-#: dt-metrics/records/genmap.php:114
+#: dt-metrics/records/genmap.php:138
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "Nooca:"
 
-#: dt-metrics/records/genmap.php:117
+#: dt-metrics/records/genmap.php:141
 msgid "Open"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:119
+#: dt-metrics/records/genmap.php:143
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:120
+#: dt-metrics/records/genmap.php:144
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:123
+#: dt-metrics/records/genmap.php:147
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "Kooxda Carruurta"
 
-#: dt-metrics/records/genmap.php:125
+#: dt-metrics/records/genmap.php:149
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:150
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:151
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:155
 msgid "Infinite Loops"
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:32
+#, fuzzy
+#| msgid "All cumulative totals"
+msgid "Field Cumulative Values"
+msgstr "Dhamaan wadarta wadarta"
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid ""
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+#, fuzzy
+#| msgid "Record Hits:"
+msgid "Records"
+msgstr "Diiwaanada Diiwaangelinta:"
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+msgid "No Records Available"
 msgstr ""
 
 #: dt-metrics/records/time-charts.php:41
@@ -4422,22 +4456,6 @@ msgstr "Isugeyn isugeyn ah"
 #| msgid "Record Hits:"
 msgid "Records changes"
 msgstr "Diiwaanada Diiwaangelinta:"
-
-#: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Record Hits:"
-msgid "Records"
-msgstr "Diiwaanada Diiwaangelinta:"
-
-#: dt-metrics/records/time-charts.php:122
-#, fuzzy
-#| msgid "No"
-msgid "No."
-msgstr "Maya"
-
-#: dt-metrics/records/time-charts.php:124
-msgid "No Records Available"
-msgstr ""
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4996,7 +5014,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Lama wadaagin %s"
 
-#: dt-posts/posts.php:2494
+#: dt-posts/posts.php:2496
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -5642,7 +5660,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "Waxaad ku dejisay hawshan %1$s: %2$s"
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr ""
 
@@ -5986,6 +6004,11 @@ msgstr "Xiriirinta marin u helka ayaa la marsiiyey"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Nuqullada la helay:"
+
+#, fuzzy
+#~| msgid "No"
+#~ msgid "No."
+#~ msgstr "Maya"
 
 #, fuzzy
 #~| msgid "Generation"

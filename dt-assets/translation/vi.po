@@ -3,23 +3,30 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-06-25T10:59:06+00:00\n"
+"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
+"PO-Revision-Date: 2024-07-20 02:59+0000\n"
+"Last-Translator: Charlie Ritchie <ritchiecharlie@gmail.com>\n"
+"Language-Team: Vietnamese <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr "Disciple Tools (Công cụ môn đồ)"
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
+#: style.css
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
@@ -28,6 +35,7 @@ msgstr ""
 "môn đồ."
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
@@ -78,7 +86,7 @@ msgstr "Gửi Yêu cầu"
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:180
 msgid "Cancel"
-msgstr "Hủy"
+msgstr "Huỷ"
 
 #: 403.php:59 archive-template.php:505 archive-template.php:547
 #: archive-template.php:772 archive-template.php:1127
@@ -153,7 +161,7 @@ msgstr "Tìm kiếm %s"
 #: archive-template.php:37 archive-template.php:139
 #: dt-mapping/geocode-api/mapbox-api.php:293
 msgid "Clear"
-msgstr "Xóa"
+msgstr "Xoá"
 
 #: archive-template.php:41 archive-template.php:42 archive-template.php:143
 #: archive-template.php:144 dt-assets/functions/menu.php:57
@@ -207,50 +215,44 @@ msgstr "Tạo bộ lọc tùy chỉnh"
 #: archive-template.php:234
 msgctxt "Split By"
 msgid "Split By"
-msgstr ""
+msgstr "Chia theo"
 
 #: archive-template.php:295
-#, fuzzy
-#| msgid "No duplicates found."
 msgid "No results found"
-msgstr "Không tìm thấy bản trùng lặp."
+msgstr "Không tìm thấy kết quả"
 
 #: archive-template.php:301
 msgctxt "List Exports"
 msgid "List Exports"
-msgstr ""
+msgstr "Danh sách xuất"
 
 #: archive-template.php:313 archive-template.php:336
-#, fuzzy
-#| msgid "List"
 msgid "CSV List"
-msgstr "Danh sách"
+msgstr "Danh sách CSV"
 
 #: archive-template.php:317 archive-template.php:340
 msgid "BCC Email List"
-msgstr ""
+msgstr "Danh sách email BCC"
 
 #: archive-template.php:318
-#, fuzzy
-#| msgid "Phone"
 msgid "Phone List"
-msgstr "Điện thoại"
+msgstr "Danh bạ điện thoại"
 
 #: archive-template.php:323 archive-template.php:348
-#, fuzzy
-#| msgid "List"
 msgid "Map List"
-msgstr "Danh sách"
+msgstr "Danh sách bản đồ"
 
 #: archive-template.php:332
 msgid "List Exports Help"
-msgstr ""
+msgstr "Hỗ trợ để xuất danh sách"
 
 #: archive-template.php:337
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
+"Sử dụng bộ lọc hiện tại, đây là cách đơn giản để xuất thông tin cơ bản và sử "
+"dụng cho các ứng dụng khác."
 
 #: archive-template.php:341
 msgid ""
@@ -261,12 +263,17 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"Bằng cách sử dụng bộ lọc hiện tại, các email có sẵn được nhóm thành 50 và có "
+"thể được khởi chạy vào ứng dụng email khách mặc định của bạn theo nhóm. "
+"Nhiều nhà cung cấp email đặt giới hạn 50 cho email BCC. Bạn có thể mở tất cả "
+"các nhóm cùng một lúc bằng nút \"Mở tất cả\". Nếu danh sách quá lớn, điều "
+"này có thể cảnh báo nhà cung cấp email của bạn. Công cụ email BCC nhằm hỗ "
+"trợ các email nhóm nhỏ. Email số lượng lớn nên được xử lý thông qua các nhà "
+"cung cấp dịch vụ email."
 
 #: archive-template.php:344
-#, fuzzy
-#| msgid "Member List"
 msgid "Phone Number List"
-msgstr "Danh sách thành viên"
+msgstr "Danh bạ"
 
 #: archive-template.php:345
 msgid ""
@@ -274,12 +281,17 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"Sử dụng bộ lọc hiện tại, nhằm mục đích sao chép và dán danh sách các số vào "
+"ứng dụng nhắn tin, WhatsApp, Signal, v.v. Đây là cách nhanh chóng để bắt đầu "
+"cuộc trò chuyện nhóm."
 
 #: archive-template.php:349
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
+"Sử dụng bộ lọc hiện tại, sẽ tạo ra bản đồ điểm cơ bản về các vị trí đã liệt "
+"kê của các cá nhân."
 
 #: archive-template.php:375
 msgctxt "Contacts List"
@@ -315,15 +327,13 @@ msgid "Bulk Edit"
 msgstr "Chỉnh sửa Hàng loạt"
 
 #: archive-template.php:426
-#, fuzzy
-#| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "Ứng dụng Gửi Hàng loạt"
 
 #: archive-template.php:460 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
 msgid "More"
-msgstr "Nhiều hơn"
+msgstr "Thêm nữa"
 
 #: archive-template.php:481 dt-contacts/base-setup.php:305
 #: dt-users/users.php:530
@@ -331,11 +341,9 @@ msgid "Archived"
 msgstr "Đã lưu trữ"
 
 #: archive-template.php:485
-#, fuzzy
-#| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "Mới %s"
+msgstr "Hiển thị %s"
 
 #: archive-template.php:508
 msgid "Choose which fields to display as columns in the list"
@@ -355,8 +363,8 @@ msgid "Search Users"
 msgstr "Tìm Người dùng"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:106
-#: dt-metrics/records/genmap.php:110 dt-posts/dt-posts.php:2773
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:134 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -367,16 +375,13 @@ msgid "Share with:"
 msgstr "Chia sẻ với:"
 
 #: archive-template.php:663
-#, fuzzy
-#| msgctxt "message"
-#| msgid "Unshared with %s"
 msgid "Unshare with selected user"
-msgstr "Đã ngừng chia sẻ với %s"
+msgstr "Ngừng chia sẻ với người dùng"
 
 #: archive-template.php:675 dt-assets/functions/details-bar.php:186
 #: dt-posts/custom-post-type.php:217
 msgid "Follow"
-msgstr "Theo dõi"
+msgstr "Theo"
 
 #: archive-template.php:680 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
@@ -419,71 +424,65 @@ msgstr "Thực hiện các Lựa chọn Bên dưới"
 #: dt-assets/functions/enqueue-scripts.php:318
 #: dt-assets/parts/loop-activity-comment.php:161 single-template.php:438
 msgid "Delete"
-msgstr "Xóa"
+msgstr "Xoá"
 
 #: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:331
-#, fuzzy
-#| msgid "Make Selections Below"
 msgid "Delete Selections Below"
-msgstr "Thực hiện các Lựa chọn Bên dưới"
+msgstr "Xoá các Lựa chọn Bên dưới"
 
 #: archive-template.php:776
-#, fuzzy
-#| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
-msgstr "Chọn tất cả %1$s người bạn muốn gửi liên kết ứng dụng."
+msgstr "Chọn tất cả %1$s người bạn muốn gửi tin nhắn."
 
 #: archive-template.php:802
 msgid "Message subject"
-msgstr ""
+msgstr "Tiêu đề thư"
 
 #: archive-template.php:804
 msgid "A valid message subject must be entered."
-msgstr ""
+msgstr "Phải nhập chủ đề thư hợp lệ."
 
 #: archive-template.php:806
 msgid "Message from name"
-msgstr ""
+msgstr "Thư từ tên"
 
 #: archive-template.php:808
 msgid "A valid from name must be specified."
-msgstr ""
+msgstr "Tên hợp lệ phải được ghi rõ."
 
 #: archive-template.php:810
 msgid "Message reply to"
-msgstr ""
+msgstr "Thư trả lời cho"
 
 #: archive-template.php:812
 msgid "A valid reply to email address must be specified."
-msgstr ""
+msgstr "Một câu trả lời hợp lệ cho địa chỉ email phải được ghi rõ."
 
 #: archive-template.php:814
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "Email được gửi từ:%s"
 
 #: archive-template.php:837
 msgid "Please ensure a valid send method has been specified."
-msgstr ""
+msgstr "Hãy đảm bảo bạn đã chọn phương thức gửi hợp lệ."
 
 #: archive-template.php:839
 msgid "Message"
-msgstr ""
+msgstr "Nội dung"
 
 #: archive-template.php:841
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "Hãy đảm bảo tin nhắn hợp lệ đã được nhập."
 
 #: archive-template.php:842 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
-msgstr ""
+msgstr "Nội dung giữ chỗ"
 
 #: archive-template.php:845 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:137
-#, fuzzy
-#| msgid "Create Record"
 msgid "Name of the Record"
-msgstr "Tạo Hồ sơ"
+msgstr "Tên của bản ghi"
 
 #: archive-template.php:850 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
@@ -504,7 +503,7 @@ msgstr "Liên kết"
 
 #: archive-template.php:859
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "Đảm bảo lựa chọn hồ sơ hợp lệ được thực hiện."
 
 #: archive-template.php:904
 msgid "Loading..."
@@ -558,7 +557,7 @@ msgstr "Không"
 
 #: archive-template.php:1040 archive-template.php:1041
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:128 dt-metrics/records/time-charts.php:119
+#: dt-metrics/records/genmap.php:152 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
@@ -580,43 +579,29 @@ msgid "Range End"
 msgstr "Phạm vi Kết thúc"
 
 #: archive-template.php:1070
-#, fuzzy
-#| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
-msgstr "Lọc Tên"
+msgstr "Lọc theo giá trị"
 
 #: archive-template.php:1075
-#, fuzzy
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "Tất cả %1$s với %2$s"
+msgstr "Tất cả %1$s vớ giá trị trong %2$s"
 
 #: archive-template.php:1079
-#, fuzzy
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "Tất cả %1$s không có %2$s"
+msgstr "Tất cả %1$s không có giá trị trong %2$s"
 
 #: archive-template.php:1083
-#, fuzzy
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "Tất cả %1$s với %2$s"
+msgstr "Tất cả %1$s với bất kỳ giá trị trong %2$s"
 
 #: archive-template.php:1087
-#, fuzzy
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "Tất cả %1$s không có %2$s"
+msgstr "Tất cả %1$s nhưng không có giá trị trong %2$s"
 
 #: archive-template.php:1111
 msgid "Filter Name"
@@ -651,7 +636,7 @@ msgstr "Xóa %s"
 #: dt-assets/functions/details-bar.php:73
 msgctxt "View Contact History"
 msgid "View %s History"
-msgstr ""
+msgstr "Xem%s Lịch sử"
 
 #: dt-assets/functions/details-bar.php:81
 msgctxt "Merge with another record"
@@ -724,16 +709,16 @@ msgstr "Đang hiển thị %1$s mục khớp với %2$s"
 #: dt-assets/functions/enqueue-scripts.php:317 template-settings.php:119
 #: template-settings.php:605
 msgid "Edit"
-msgstr "Sửa"
+msgstr "Chỉnh sửa"
 
 #: dt-assets/functions/enqueue-scripts.php:119
 #: dt-reports/magic-url-setup.php:97 template-settings.php:303
 msgid "Copy"
-msgstr ""
+msgstr "Sao chép"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 msgid "Copied: %s"
-msgstr ""
+msgstr "Đã sao chép:%s"
 
 #: dt-assets/functions/enqueue-scripts.php:141
 msgid "You don't have any unread notifications"
@@ -828,23 +813,20 @@ msgstr "Mở bằng"
 
 #: dt-assets/functions/enqueue-scripts.php:247
 msgid "Revert Record Back To This Point"
-msgstr ""
+msgstr "Hoàn nguyên bản ghi tại đây"
 
 #: dt-assets/functions/enqueue-scripts.php:248
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Bạn có chắc chắn muốn xóa %s không?"
+msgstr "Bạn có chắc chắn muốn hoàn nguyên %s không?"
 
 #: dt-assets/functions/enqueue-scripts.php:279
 msgid "Locations you are responsible for"
 msgstr "Các địa điểm bạn chịu trách nhiệm"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:118
+#: dt-metrics/records/genmap.php:142
 msgid "Add"
-msgstr "Bổ sung"
+msgstr "Thêm"
 
 #: dt-assets/functions/enqueue-scripts.php:282 template-settings.php:296
 msgid "link"
@@ -915,7 +897,7 @@ msgstr "Không có"
 #: dt-assets/functions/enqueue-scripts.php:332
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
-msgstr ""
+msgstr "Dự kiến gửi"
 
 #: dt-assets/functions/enqueue-scripts.php:333
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -925,7 +907,7 @@ msgstr "không gửi được (có thể thiếu email hợp lệ)"
 #: dt-assets/functions/enqueue-scripts.php:334
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "Xem hàng đợi"
 
 #: dt-assets/functions/enqueue-scripts.php:335
 msgid "Exclude Item"
@@ -934,7 +916,7 @@ msgstr "Loại trừ Mục"
 #: dt-assets/functions/enqueue-scripts.php:338
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr ""
+msgstr "Dữ liệu csv đã xuất để chứa tất cả các trường %2$s %1$s."
 
 #: dt-assets/functions/enqueue-scripts.php:339
 msgctxt ""
@@ -942,80 +924,66 @@ msgctxt ""
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
+"Dữ liệu csv đã xuất để chứa các trường %2$s hiển thị %1$s được hiển thị bên "
+"dưới."
 
 #: dt-assets/functions/enqueue-scripts.php:342
 #: dt-assets/functions/enqueue-scripts.php:350
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
 msgid "Full List"
-msgstr "Danh sách %s"
+msgstr "Toàn bộ danh sách"
 
 #: dt-assets/functions/enqueue-scripts.php:343
-#, fuzzy
-#| msgid "Address"
 msgid "No Addresses"
-msgstr "Địa chỉ"
+msgstr "Không có địa chỉ"
 
 #: dt-assets/functions/enqueue-scripts.php:344
 msgid "With Additional Addresses"
-msgstr ""
+msgstr "Thêm địa chỉ"
 
 #: dt-assets/functions/enqueue-scripts.php:345
 msgid "Open Email for Group"
-msgstr ""
+msgstr "Mở email cho Nhóm"
 
 #: dt-assets/functions/enqueue-scripts.php:346
-#, fuzzy
-#| msgid "Open Modal"
 msgid "Open All"
-msgstr "Phương thức mở"
+msgstr "Mở toàn bộ"
 
 #: dt-assets/functions/enqueue-scripts.php:347
 msgid "Show Group Addresses"
-msgstr ""
+msgstr "Hiện thị địa chỉ nhóm"
 
 #: dt-assets/functions/enqueue-scripts.php:351
 msgid "Has No Phone Number"
-msgstr ""
+msgstr "Không có số điện thoại"
 
 #: dt-assets/functions/enqueue-scripts.php:352
 msgid "Has Additional Phone Numbers"
-msgstr ""
+msgstr "Có thêm số điện thoại"
 
 #: dt-assets/functions/enqueue-scripts.php:356
-#, fuzzy
-#| msgid "Used Locations"
 msgid "Mapped Locations"
 msgstr "Vị trí Đã sử dụng"
 
 #: dt-assets/functions/enqueue-scripts.php:357
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
-msgstr "Người liên hệ đang đi nghỉ"
+msgstr "Người liên hệ không có địa điểm"
 
 #: dt-assets/functions/enqueue-scripts.php:358
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records on zoomed map"
-msgstr "Thêm Hồ sơ"
+msgstr "Ghi lại trên bản đồ được phóng to"
 
 #: dt-assets/functions/enqueue-scripts.php:359
 msgid "No Zoomed Map Records Found!"
-msgstr ""
+msgstr "Không tìm thấy bản Ghi lại trên bản đồ!"
 
 #: dt-assets/functions/enqueue-scripts.php:360
 msgid "Open Zoomed Map Records"
-msgstr ""
+msgstr "Mở bản ghi được phóng to trên bản đồ"
 
 #: dt-assets/functions/enqueue-scripts.php:361
 #: dt-assets/functions/enqueue-scripts.php:362
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filtered Map"
-msgstr "Lọc Tên"
+msgstr "Bản đồ đã lọc"
 
 #: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:51
 #: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
@@ -1025,62 +993,51 @@ msgstr "Liên hệ"
 #: dt-assets/functions/enqueue-scripts.php:391
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s đã tồn tại"
 
 #: dt-assets/functions/enqueue-scripts.php:429
 msgid "File Upload"
-msgstr ""
+msgstr "Dữ liệu tải lên"
 
 #: dt-assets/functions/enqueue-scripts.php:430
-#, fuzzy
-#| msgid "Choose an option:"
 msgid "Choose a file"
-msgstr "Chọn một phương án:"
+msgstr "Chọn một tài liệu"
 
 #: dt-assets/functions/enqueue-scripts.php:431
 msgid "or drag it here"
-msgstr ""
+msgstr "hoặc kéo vào đây"
 
 #: dt-assets/functions/enqueue-scripts.php:432
 msgid "Successfully Uploaded!"
-msgstr ""
+msgstr "Tải lên thành công!"
 
 #: dt-assets/functions/enqueue-scripts.php:433
 msgid "Error!"
-msgstr ""
+msgstr "Lỗi!"
 
 #: dt-assets/functions/enqueue-scripts.php:434
-#, fuzzy
-#| msgid "Unable to update"
 msgid "Unable to upload, please try again"
-msgstr "Không thể cập nhật"
+msgstr "Không thể tải lên, vui lòng thử lại"
 
 #: dt-assets/functions/enqueue-scripts.php:435
 msgid "Upload"
-msgstr ""
+msgstr "Tải lên"
 
 #: dt-assets/functions/enqueue-scripts.php:436
-#, fuzzy
-#| msgid "Delete Filter"
 msgid "Delete Existing File"
-msgstr "Xóa Bộ lọc"
+msgstr "Xóa dữ liệu đã có"
 
 #: dt-assets/functions/enqueue-scripts.php:437
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete existing file?"
-msgstr "Bạn có chắc chắn muốn xóa %s không?"
+msgstr "Bạn có chắc chắn muốn xóa tài liệu này không?"
 
 #: dt-assets/functions/enqueue-scripts.php:438
 msgid "Successfully Deleted!"
-msgstr ""
+msgstr "Đã xoá thành công!"
 
 #: dt-assets/functions/enqueue-scripts.php:439
-#, fuzzy
-#| msgid "Delete and replace the app link"
 msgid "Delete failed, please try again"
-msgstr "Xóa và thay thế liên kết ứng dụng"
+msgstr "Xóa thất bại, vui lòng thử lại"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1129,8 +1086,6 @@ msgid "Help"
 msgstr "Giúp đỡ"
 
 #: dt-assets/functions/menu.php:106
-#, fuzzy
-#| msgid "D.T Record"
 msgid "D.T Forum"
 msgstr "Hồ sơ D.T"
 
@@ -1270,14 +1225,6 @@ msgstr ""
 "hơn và đếm số lần mỗi hành động đã được thực hiện."
 
 #: dt-assets/parts/modals/modal-help.php:15
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid ""
-#| "For example, If you click the 'No Answer' button 4 times, we will log "
-#| "that you attempted to reach this contact 4 times, but they did not "
-#| "answer.\n"
-#| "                This action will also change the 'Seeker Path' to "
-#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
@@ -1285,9 +1232,9 @@ msgid ""
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
 "Ví dụ: Nếu bạn bấm vào nút \"Không Trả lời\" 4 lần, chúng tôi sẽ ghi lại "
-"rằng bạn đã cố gắn liên lạc với liên hệ này 4 lần, nhưng họ không trả lời.\n"
-"                Hành động này cũng sẽ thay đổi \"Con đường của Người tìm "
-"kiếm\" thành \"Đã Cố gắng Liên hệ\"."
+"rằng bạn đã cố gắn liên lạc với liên hệ này 4 lần, nhưng không trả lời. Hành "
+"động này cũng sẽ thay đổi \"Con đường của Người tìm kiếm\" thành \"Đã Cố "
+"gắng Liên hệ\"."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1358,7 +1305,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:243
 #: dt-users/users.php:169
 msgid "Locations"
-msgstr "Vị trí"
+msgstr "Địa điểm"
 
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
@@ -1515,14 +1462,12 @@ msgid "Read the documentation"
 msgstr "Đọc tài liệu"
 
 #: dt-assets/parts/modals/modal-help.php:143
-#, fuzzy
-#| msgid "Open With"
 msgid "Open the link"
-msgstr "Mở bằng"
+msgstr "Mở liên kết"
 
 #: dt-assets/parts/modals/modal-help.php:147
 msgid "Copy the link to the clipboard"
-msgstr ""
+msgstr "Sao chép đường link về"
 
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:130
 msgid "Send the link via email."
@@ -1547,7 +1492,7 @@ msgstr "Tạo Hồ sơ"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:124 dt-posts/custom-post-type.php:171
+#: dt-metrics/records/genmap.php:148 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "Tên"
@@ -1566,23 +1511,17 @@ msgid "Back to %s"
 msgstr "Quay về %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "Lượt truy cập Bản ghi:"
+msgstr "%s Lịch sử truy cập bản ghi"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filter To Date"
-msgstr "Lọc Tên"
+msgstr "Lọc tên"
 
 #: dt-assets/parts/modals/modal-record-history.php:22
-#, fuzzy
-#| msgid "Create custom filter"
 msgid "select date to filter by"
-msgstr "Tạo bộ lọc tùy chỉnh"
+msgstr "Chọn ngày để lọc bởi"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
@@ -1590,6 +1529,7 @@ msgstr "Hoàn tác hoạt động"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "Trường"
@@ -1690,9 +1630,9 @@ msgstr "Đội phản ứng số"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:105 dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:129 dt-metrics/records/genmap.php:136
 msgid "Assigned To"
-msgstr "Đã gán cho"
+msgstr "Phân công cho"
 
 #: dt-contacts/access-module.php:105
 msgid ""
@@ -1973,7 +1913,7 @@ msgid "Accepted"
 msgstr "Đã chấp nhận"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:96
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -2127,7 +2067,7 @@ msgstr "Giới tính"
 
 #: dt-contacts/access-module.php:1480
 msgid "This record might be a duplicate of: "
-msgstr "Hồ sơ này có thể là bản sao của:"
+msgstr "Hồ sơ này có thể là bản sao của: "
 
 #: dt-contacts/access-module.php:1486 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
@@ -2145,14 +2085,14 @@ msgstr "Trình kiểm tra bản trùng lặp"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:105
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
-msgstr "Danh bạ"
+msgstr "Liên lạc"
 
 #: dt-contacts/base-setup.php:104
 msgid "Nickname"
@@ -2223,10 +2163,8 @@ msgid "Viber"
 msgstr "Viber"
 
 #: dt-contacts/base-setup.php:195
-#, fuzzy
-#| msgid "Whatsapp"
 msgid "WhatsApp"
-msgstr "Whatsapp"
+msgstr "WhatsApp"
 
 #: dt-contacts/base-setup.php:202
 #: dt-core/configuration/config-site-defaults.php:344
@@ -2287,7 +2225,7 @@ msgstr "Trên 40 tuổi"
 #: dt-contacts/base-setup.php:289 dt-groups/base-setup.php:102
 #: dt-people-groups/people-groups-base.php:150
 msgid "Requires Update"
-msgstr "Yêu cầu Cập nhật"
+msgstr "Yêu cầu cập nhật"
 
 #: dt-contacts/base-setup.php:296
 msgctxt "Contact Status field description"
@@ -2602,7 +2540,7 @@ msgstr "Thế hệ báp-tem"
 
 #: dt-contacts/dmm-module.php:182
 msgid "Coached by"
-msgstr "Được kèm cặp bởi"
+msgstr "Được huấn luyện bởi"
 
 #: dt-contacts/dmm-module.php:183
 msgctxt "Optional Documentation"
@@ -2628,7 +2566,7 @@ msgstr "Người liên hệ này đã rửa tội cho ai"
 #: dt-people-groups/people-groups-base.php:96
 #: dt-people-groups/people-groups-base.php:106
 msgid "People Groups"
-msgstr "Nhóm Người"
+msgstr "Nhóm người"
 
 #: dt-contacts/dmm-module.php:213
 msgctxt "Optional Documentation"
@@ -2718,10 +2656,8 @@ msgstr ""
 "Vui lòng cập nhật chi tiết liên hệ trên trang hồ sơ của bạn thay vì tại đây."
 
 #: dt-contacts/user-module.php:73
-#, fuzzy
-#| msgid "Settings"
 msgid "Profile Settings"
-msgstr "Cài đặt"
+msgstr "Cài đặt cấu hình"
 
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
@@ -2766,7 +2702,7 @@ msgstr "Đã đăng ký"
 
 #: dt-core/configuration/class-roles.php:97
 msgid "Multiplier"
-msgstr "Hệ số"
+msgstr "Hệ số nhân"
 
 #: dt-core/configuration/class-roles.php:104
 msgid "Strategist"
@@ -2778,7 +2714,7 @@ msgstr "Quản lý Người dùng"
 
 #: dt-core/configuration/class-roles.php:118
 msgid "Disciple.Tools Admin"
-msgstr "Tông đồ. Người quản trị công cụ"
+msgstr "Quản trị viên công cụ"
 
 #: dt-core/configuration/class-roles.php:125
 msgid "Administrator"
@@ -2953,19 +2889,19 @@ msgstr "Tôi có quá nhiều người liên hệ"
 
 #: dt-core/configuration/restrict-site-access.php:249
 msgid "Check your email for the confirmation link, then visit the"
-msgstr ""
+msgstr "Kiểm tra email của bạn để tìm đường dẫn xác nhận, sau đó truy cập vào"
 
 #: dt-core/configuration/restrict-site-access.php:253
 msgid "Login Page"
-msgstr ""
+msgstr "Trang Đăng Nhập"
 
 #: dt-core/configuration/restrict-site-access.php:254
 msgid "login page"
-msgstr ""
+msgstr "trang đăng nhập"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
-msgstr "LỖI: Tổ hợp tên người dùng/mật khẩu không hợp lệ"
+msgstr "LỖI: Tên người dùng/mật khẩu không hợp lệ."
 
 #: dt-core/configuration/restrict-site-access.php:261
 msgid "Reset password"
@@ -3020,45 +2956,47 @@ msgstr "(không có chức vụ)"
 
 #: dt-core/release-notifications.php:58
 msgid "Release Announcement!"
-msgstr ""
+msgstr "Phát hành Thông báo!"
 
 #: dt-core/release-notifications.php:59
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Môn đồ. Công cụ. Chủ đề phiên bản %1$s"
 
 #: dt-core/release-notifications.php:65
 msgid "Theme News"
-msgstr ""
+msgstr "Chủ đề Tin tức"
 
 #: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
 msgid "Other News"
-msgstr ""
+msgstr "Các tin khác"
 
 #: dt-core/release-notifications.php:68
 msgid "Get Involved"
-msgstr ""
+msgstr "Tham gia"
 
 #: dt-core/release-notifications.php:80
 msgid "Other news not available."
-msgstr ""
+msgstr "Chưa có tin khác."
 
 #: dt-core/release-notifications.php:95
 msgid "Freely given, but not cheap"
-msgstr ""
+msgstr "Miễn phí nhưng không hề rẻ"
 
 #: dt-core/release-notifications.php:97
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
+"Môn đồ. Công cụ dựa vào sự đóng góp để tiếp tục phát triển và duy trì. Bạn "
+"sẽ tham gia chứ?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
-msgstr ""
+msgstr "Dâng hiến"
 
 #: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
 msgid "Translate"
-msgstr ""
+msgstr "Dịch"
 
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
@@ -3066,20 +3004,23 @@ msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
+"Dịch Môn đồ. Công cụ sang ngôn ngữ của bạn hoặc hỗ trợ bản dịch tốt hơn."
 
 #: dt-core/release-notifications.php:112
 msgid "Build or Document"
-msgstr ""
+msgstr "Xây dựng hoặc Tài liệu"
 
 #: dt-core/release-notifications.php:114
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
+"Cải thiện Môn đồ. Công cụ bằng cách xây dựng một tính năng hoặc giúp chúng "
+"tôi cải thiện tài liệu."
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
-msgstr ""
+msgstr "Tìm hiểu thêm"
 
 #: dt-groups/base-setup.php:49 dt-groups/base-setup.php:61
 #: dt-groups/base-setup.php:166 dt-metrics/personal/activity-highlights.php:58
@@ -3095,12 +3036,12 @@ msgstr "Nhóm"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:109
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:111
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:135
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
-msgstr "Nhóm"
+msgstr "Các nhóm"
 
 #: dt-groups/base-setup.php:113
 msgid "Group Status"
@@ -3155,7 +3096,7 @@ msgstr "Tiền Nhóm"
 #: dt-groups/base-setup.php:163
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr "Một đoàn thể chủ yếu là người ngoại đạo"
+msgstr "Một nhóm chủ yếu là người ngoại đạo."
 
 #: dt-groups/base-setup.php:167
 msgctxt "Optional Documentation"
@@ -3266,7 +3207,7 @@ msgstr "Nhóm đang chia sẻ phúc âm."
 
 #: dt-groups/base-setup.php:235 dt-groups/base-setup.php:298
 msgid "Leaders"
-msgstr "Người lãnh đạo"
+msgstr "Lãnh đạo"
 
 #: dt-groups/base-setup.php:236
 msgctxt "Optional Documentation"
@@ -3294,7 +3235,7 @@ msgstr "Ngày mà đoàn thể này bắt đầu nhóm họp."
 
 #: dt-groups/base-setup.php:259
 msgid "Church Start Date"
-msgstr "Ngày bắt đầu Hội thánh"
+msgstr "Ngày thành lập Hội thánh"
 
 #: dt-groups/base-setup.php:260
 msgctxt "Optional Documentation"
@@ -3311,9 +3252,9 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Ngày mà đoàn thể này ngừng nhóm họp (nếu phù hợp)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:115
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:139
 msgid "Member Count"
-msgstr "Số thành viên"
+msgstr "Số lượng thành viên"
 
 #: dt-groups/base-setup.php:280
 msgctxt "Optional Documentation"
@@ -3340,7 +3281,7 @@ msgstr "Những người liên hệ là thành viên của đoàn thể này."
 
 #: dt-groups/base-setup.php:308
 msgid "Leader Count"
-msgstr "Số Người lãnh đạo"
+msgstr "Số Đội trưởng"
 
 #: dt-groups/base-setup.php:316
 msgid "Parent Group"
@@ -3446,12 +3387,12 @@ msgstr "Chọn"
 
 #: dt-groups/base-setup.php:582
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "Để thêm thành viên mới, hãy bấm vào \"Tạo\" hoặc \"Chọn\"."
+msgstr "Để thêm thành viên mới, nhấp vào 'Tạo' hoặc 'Chọn'."
 
 #: dt-groups/base-setup.php:588
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
-msgstr "Thêm thành viên từ danh bạ hiện có"
+msgstr "Thêm thành viên từ các liên hệ hiện có"
 
 #: dt-groups/base-setup.php:589
 msgctxt "Add members modal"
@@ -3482,86 +3423,78 @@ msgid ""
 "Your password reset link appears to be invalid. Please request a new link "
 "below."
 msgstr ""
+"Liên kết đặt lại mật khẩu của bạn dường như không hợp lệ. Vui lòng yêu cầu "
+"một liên kết mới dưới đây."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
+"Liên kết đặt lại mật khẩu của bạn đã hết hạn. Vui lòng yêu cầu một liên kết "
+"mới dưới đây."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
-msgstr "Mật khẩu"
+msgstr "Đặt Mật khẩu Mới"
 
 #: dt-login/login-template.php:98 dt-login/login-template.php:488
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "Thêm địa chỉ email"
+msgstr "Địa chỉ email"
 
 #: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
+"Email đặt lại mật khẩu của bạn đã được gửi. Kiểm tra email hoặc thư rác để "
+"tìm liên kết đặt lại mật khẩu của bạn."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
-msgstr ""
+msgstr "Thiếu email hoặc mật khẩu."
 
 #: dt-login/login-template.php:164 dt-login/login-template.php:244
 #: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
-msgstr ""
+msgstr "Mật khẩu không khớp. Vui lòng thử lại."
 
 #: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
 msgstr "Cài lại mật khẩu"
 
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
-msgstr "Mật khẩu"
+msgstr "Cần nhập Mật khẩu"
 
 #: dt-login/login-template.php:241 dt-login/login-template.php:362
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
-msgstr "Cài lại mật khẩu"
+msgstr "Điền lại mật khẩu"
 
 #: dt-login/login-template.php:312 dt-login/login-template.php:374
 #: dt-login/login-template.php:545
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
-msgstr "Đã đăng ký"
+msgstr "Đăng ký"
 
 #: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr "Có một số lỗi trong biểu mẫu của bạn."
 
 #: dt-login/login-template.php:345
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "Tên hiển thị"
+msgstr "Tên hiển thị (không bắt buộc)"
 
 #: dt-login/login-template.php:456
 msgid "User action confirmed."
-msgstr ""
+msgstr "Hoạt động của người dùng được xác nhận."
 
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr ""
+msgstr "Đăng nhập"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
-msgstr ""
+msgstr "Tên hoặc mật khẩu không đúng. Vui lòng thử lại."
 
 #: dt-login/login-template.php:489 dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122 template-settings.php:661
@@ -3570,13 +3503,11 @@ msgstr "Mật khẩu"
 
 #: dt-login/login-template.php:490
 msgid "Remember Me"
-msgstr ""
+msgstr "Lưu lại thông tin"
 
 #: dt-login/login-template.php:552
-#, fuzzy
-#| msgid "Reset password"
 msgid "Lost Password"
-msgstr "Cài lại mật khẩu"
+msgstr "Mất mật khẩu"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
@@ -3588,7 +3519,7 @@ msgstr "Hội Thánh"
 #: dt-mapping/geocode-api/mapbox-api.php:323
 #: dt-users/template-user-management.php:124 template-settings.php:340
 msgid "add"
-msgstr "bổ sung"
+msgstr "thêm vào"
 
 #: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:97
 msgid "Use"
@@ -3598,16 +3529,16 @@ msgstr "Sử dụng"
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
-msgstr "Tìm Vị trí"
+msgstr "Tìm kiếm vị trí"
 
 #: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:96
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
-msgstr "Xóa Vị trí"
+msgstr "Xóa vị trí"
 
 #: dt-mapping/geocode-api/mapbox-api.php:292
 msgid "Open Mapping"
-msgstr "Mở Bản đồ"
+msgstr "Mở bản đồ"
 
 #: dt-mapping/mapping-module-config.php:74 dt-mapping/mapping.php:147
 #: dt-mapping/mapping.php:302
@@ -3649,7 +3580,8 @@ msgstr "Đường lối quan trọng"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:101 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "Dự án"
@@ -3812,7 +3744,7 @@ msgstr ""
 "số liệu bên dưới."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:129
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
 msgid "Metrics"
 msgstr "Số liệu"
 
@@ -3851,7 +3783,7 @@ msgstr "Bản đồ Kết hợp"
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
-msgstr ""
+msgstr "Để xem bản đồ này, cần có khoá mapbox; bấm vào đây để thêm."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3936,6 +3868,7 @@ msgstr "Lọc các liên hệ theo phạm vi ngày:"
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:432
 msgid "All Time"
@@ -3967,7 +3900,7 @@ msgstr "Đang chờ cập nhật"
 #: dt-metrics/contacts/overview.php:66 dt-metrics/groups/overview.php:70
 #: dt-metrics/personal/overview.php:60 dt-metrics/personal/overview.php:65
 msgid "Total Groups"
-msgstr "Tổng số Nhóm"
+msgstr "Tổng số nhóm"
 
 #: dt-metrics/contacts/overview.php:68 dt-metrics/groups/overview.php:74
 msgid "Follow-up of all active contacts"
@@ -4017,7 +3950,7 @@ msgstr "Buổi gặp mặt đầu tiên"
 
 #: dt-metrics/counter.php:145
 msgid "Total Baptisms"
-msgstr "Tổng số lượt báp-tem"
+msgstr "Tổng số phép báp-têm"
 
 #: dt-metrics/counter.php:150
 msgid "Total Baptizers"
@@ -4077,44 +4010,42 @@ msgid "Group Generation Tree"
 msgstr "Cây Phả hệ Nhóm"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:101
+#: dt-metrics/records/genmap.php:125
 msgid "Highlight Active"
 msgstr "Làm nổi bật hoạt động"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:102
+#: dt-metrics/records/genmap.php:126
 msgid "Highlight Churches"
 msgstr "Làm nổi bật hội thánh"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:103 dt-metrics/records/genmap.php:116
+#: dt-metrics/records/genmap.php:127 dt-metrics/records/genmap.php:140
 msgid "Members"
-msgstr "Thành viên"
+msgstr "Các thành viên"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:104
+#: dt-metrics/records/genmap.php:128
 msgid "View Record"
 msgstr "Xem hồ sơ"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:107
+#: dt-metrics/records/genmap.php:131
 msgid "Total Members"
 msgstr "Tổng số thành viên"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:108
+#: dt-metrics/records/genmap.php:132
 msgid "View Group"
 msgstr "Xem Nhóm"
 
 #: dt-metrics/metrics.php:82
 msgid "Genmap"
-msgstr ""
+msgstr "Bản đồ phả hệ"
 
-#: dt-metrics/metrics.php:112
-#, fuzzy
-#| msgid "Metrics"
+#: dt-metrics/metrics.php:113
 msgid "Dynamic Metrics"
-msgstr "Số liệu"
+msgstr "Số liệu động"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4154,6 +4085,7 @@ msgid "Comments I Posted"
 msgstr "Bình luận tôi đã đăng"
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "Ngày"
@@ -4224,21 +4156,16 @@ msgid "stats as of"
 msgstr "số liệu thống kê tính đến"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Daily Activity"
 msgid "Field Activity"
-msgstr "Hoạt động Hàng ngày"
+msgstr "Trường hoạt động"
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
-#, fuzzy
-#| msgid "Record"
 msgid "Record Type"
-msgstr "Hồ sơ"
+msgstr "Loại hồ sơ"
 
 #: dt-metrics/records/date-range-activity.php:103
-#, fuzzy
-#| msgid "Activity"
 msgid "Any Activity"
 msgstr "Hoạt động"
 
@@ -4248,80 +4175,62 @@ msgid "Total"
 msgstr "Tổng cộng"
 
 #: dt-metrics/records/date-range-activity.php:105
-#, fuzzy
-#| msgid "Date Ranges"
 msgid "Date Range"
 msgstr "Phạm vi Ngày"
 
 #: dt-metrics/records/date-range-activity.php:106
-#, fuzzy
-#| msgid "Custom"
 msgid "Custom Range"
-msgstr "Tùy chỉnh"
+msgstr "Phạm vi tùy chỉnh"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
-msgstr ""
+msgstr "Tải lại"
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "Tiêu đề"
 
 #: dt-metrics/records/date-range-activity.php:109
-#, fuzzy
-#| msgid "No Activity Detected!"
 msgid "Time Activity Recorded"
-msgstr "Không Phát hiện Hoạt động nào!"
+msgstr "Đã lưu thời gian hoạt động"
 
 #: dt-metrics/records/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
 msgid "New Value"
-msgstr "Giá trị cũ"
+msgstr "Giá trị mới"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "True"
-msgstr ""
+msgstr "Đúng"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
-msgstr ""
+msgstr "Sai"
 
 #: dt-metrics/records/dynamic-records-map.php:30
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records Map"
-msgstr "Thêm Hồ sơ"
+msgstr "Bản đồ Hồ sơ"
 
 #: dt-metrics/records/dynamic-records-map.php:91 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "Thêm Hồ sơ"
 
 #: dt-metrics/records/dynamic-records-map.php:92
-#, fuzzy
-#| msgid "Post Type"
 msgid "Post Types"
 msgstr "Loại Bài đăng"
 
 #: dt-metrics/records/dynamic-records-map.php:93
-#, fuzzy
-#| msgid "prayer"
 msgid "Layer"
-msgstr "người cầu nguyện"
+msgstr "Lớp"
 
 #: dt-metrics/records/dynamic-records-map.php:94
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
-msgstr "Bạn có chắc chắn muốn xóa %s không?"
+msgstr "Bạn có chắc chắn muốn xóa lớp này không?"
 
 #: dt-metrics/records/dynamic-records-map.php:95
-#, fuzzy
-#| msgid "Record"
 msgid "Record Types"
-msgstr "Hồ sơ"
+msgstr "Loại Hồ sơ"
 
 #: dt-metrics/records/dynamic-records-map.php:97
 #: dt-notifications/notifications.php:922
@@ -4333,96 +4242,94 @@ msgstr "Hồ sơ"
 msgid "System"
 msgstr "Hệ thống"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:99
-#, fuzzy
-#| msgid "Group Generation Tree"
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:123
 msgid "Generational Trees"
-msgstr "Cây Phả hệ Nhóm"
+msgstr "Cây Phả hệ"
 
-#: dt-metrics/records/genmap.php:100
-#, fuzzy
-#| msgid "Archived"
+#: dt-metrics/records/genmap.php:124
 msgid "Show Archived"
-msgstr "Đã lưu trữ"
+msgstr "Hiển thị Lưu trữ"
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:137
 msgid "Coaches"
-msgstr "Người huấn luyện"
+msgstr "Huấn luyện viên"
 
-#: dt-metrics/records/genmap.php:114
-#, fuzzy
-#| msgid "Type:"
+#: dt-metrics/records/genmap.php:138
 msgid "Type"
-msgstr "Loại:"
+msgstr "Loại"
 
-#: dt-metrics/records/genmap.php:117
-#, fuzzy
-#| msgid "Open With"
+#: dt-metrics/records/genmap.php:141
 msgid "Open"
-msgstr "Mở bằng"
+msgstr "Mở"
 
-#: dt-metrics/records/genmap.php:119
+#: dt-metrics/records/genmap.php:143
 msgid "Focus"
-msgstr ""
+msgstr "Tiêu điểm"
 
-#: dt-metrics/records/genmap.php:120
+#: dt-metrics/records/genmap.php:144
 msgid "Hide"
-msgstr ""
+msgstr "Ẩn"
 
-#: dt-metrics/records/genmap.php:123
-#, fuzzy
-#| msgid "Child Group"
+#: dt-metrics/records/genmap.php:147
 msgid "Add Child To"
-msgstr "Nhóm Trẻ em"
+msgstr "Thêm Nhóm Trẻ em"
 
-#: dt-metrics/records/genmap.php:125
+#: dt-metrics/records/genmap.php:149
 msgid "Add Child"
-msgstr ""
+msgstr "Thêm Trẻ em"
 
-#: dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:150
 msgid "Focus On Node"
-msgstr ""
+msgstr "Tập trung vào Node"
 
-#: dt-metrics/records/genmap.php:127
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#: dt-metrics/records/genmap.php:151
 msgid "Are you sure you wish to focus on node?"
-msgstr "Bạn có chắc chắn muốn xóa %s không?"
+msgstr "Bạn có chắc chắn muốn tập trung vào node không?"
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:155
 msgid "Infinite Loops"
+msgstr "Vòng lặp vô hạn"
+
+#: dt-metrics/records/select-tags-charts.php:32
+msgid "Field Cumulative Values"
+msgstr "Trường Giá trị tích lũy"
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid ""
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr ""
+"Biểu đồ này hiển thị tổng số cho từng trường giá trị vào cuối ngày đã chọn."
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+msgid "Records"
+msgstr "Hồ sơ"
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+msgid "No Records Available"
+msgstr "Không Có Dữ liệu"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Fields over Time Charts"
 msgid "Field Charts"
-msgstr "Các trường theo Biểu đồ Thời gian"
+msgstr "Biểu đồ trường"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "Đã thêm"
 
 #: dt-metrics/records/time-charts.php:110
-#, fuzzy
-#| msgid "Delete"
 msgid "Deleted"
-msgstr "Xóa"
+msgstr "Đã xóa"
 
 #: dt-metrics/records/time-charts.php:111
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Connected"
-msgstr "%s Đã kết nối"
+msgstr "Đã kết nối"
 
 #: dt-metrics/records/time-charts.php:112
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Disconnected"
-msgstr "%s Đã kết nối"
+msgstr "Đã ngắt kết nối"
 
 #: dt-metrics/records/time-charts.php:113
 msgctxt "Total in January"
@@ -4438,28 +4345,8 @@ msgid "Single cumulative totals"
 msgstr "Các tổng lũy kế đơn lẻ"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
-msgstr "Thêm Hồ sơ"
-
-#: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records"
-msgstr "Thêm Hồ sơ"
-
-#: dt-metrics/records/time-charts.php:122
-#, fuzzy
-#| msgid "No"
-msgid "No."
-msgstr "Không"
-
-#: dt-metrics/records/time-charts.php:124
-#, fuzzy
-#| msgid "No Data Available"
-msgid "No Records Available"
-msgstr "Không Có Dữ liệu"
+msgstr "Những thay đổi của hồ sơ"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4574,11 +4461,11 @@ msgstr "Nhóm Người"
 
 #: dt-people-groups/people-groups-base.php:168
 msgid "Contacts Total"
-msgstr ""
+msgstr "Tổng số liên lạc"
 
 #: dt-people-groups/people-groups-base.php:187
 msgid "Groups Total"
-msgstr ""
+msgstr "Tổng số nhóm"
 
 #: dt-people-groups/people-groups-base.php:202
 #: dt-posts/custom-post-type.php:186
@@ -4587,27 +4474,27 @@ msgstr "Sửa đổi lần cuối"
 
 #: dt-people-groups/people-groups-base.php:267
 msgid "People Group Code"
-msgstr ""
+msgstr "Mã các nhóm thành viên"
 
 #: dt-people-groups/people-groups-base.php:274
 msgid "People ID"
-msgstr ""
+msgstr "ID thành viên"
 
 #: dt-people-groups/people-groups-base.php:281
 msgid "Primary Language"
-msgstr ""
+msgstr "Ngôn ngữ chính"
 
 #: dt-people-groups/people-groups-base.php:288
 msgid "Country"
-msgstr ""
+msgstr "Quốc gia"
 
 #: dt-people-groups/people-groups-base.php:302
 msgid "Connections"
-msgstr ""
+msgstr "Kết nối"
 
 #: dt-people-groups/people-groups-base.php:304
 msgid "Joshua Project"
-msgstr ""
+msgstr "Chương trình Giô-suê"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -4627,7 +4514,7 @@ msgstr "Nhập tiêu đề Nhóm Người tại đây"
 
 #: dt-posts/custom-post-type.php:180
 msgid "Picture"
-msgstr ""
+msgstr "Ảnh"
 
 #: dt-posts/custom-post-type.php:209
 msgid "Tags"
@@ -4643,12 +4530,9 @@ msgid "Un-Follow"
 msgstr "Bỏ theo dõi"
 
 #: dt-posts/custom-post-type.php:244
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid "The general location where this contact is located."
 msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
-msgstr "Vị trí chung nơi người liên hệ này cư trú."
+msgstr "Vị trí nơi người liên hệ này cư trú."
 
 #: dt-posts/custom-post-type.php:252
 msgid "Locations or Address"
@@ -4657,23 +4541,17 @@ msgstr "Vị trí hoặc Địa chỉ"
 #: dt-posts/dt-posts.php:100
 msgid ""
 "This record was automatically updated rather than creating a new record."
-msgstr ""
+msgstr "Bản ghi này được cập nhật tự động thay vì tạo bản ghi mới."
 
 #: dt-posts/dt-posts.php:1705
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "%s Submission"
-msgstr "Gửi Liên kết Ma thuật"
+msgstr "%s Nộp hồ sơ"
 
 #: dt-posts/dt-posts.php:1705
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Link"
-msgstr "Gửi Liên kết Ma thuật"
+msgstr "Liên kết nhanh"
 
 #: dt-posts/dt-posts.php:1707 dt-posts/dt-posts.php:2254
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "Hoàn tác hoạt động"
 
@@ -4879,9 +4757,6 @@ msgid "Connected to %s"
 msgstr "Được kết nối với %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
 msgstr "%1$s được thêm vào %2$s"
@@ -4893,20 +4768,14 @@ msgid "Removed connection to %s"
 msgstr "Bị loại bỏ kết nối với %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s bị loại bỏ khỏi %2$s"
 
 #: dt-posts/posts.php:416
-#, fuzzy
-#| msgctxt "Total in January"
-#| msgid "%1$s in %2$s"
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%1$s trong %2$s"
+msgstr "%1$s : %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -4942,20 +4811,14 @@ msgid "%1$s added to locations"
 msgstr "%1$s đã được bổ sung vào các địa điểm"
 
 #: dt-posts/posts.php:512
-#, fuzzy
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "%1$s bị loại bỏ khỏi %2$s"
+msgstr "%1$s bị loại bỏ khỏi %2$s liên kết"
 
 #: dt-posts/posts.php:515
-#, fuzzy
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "%1$s được thêm vào %2$s"
+msgstr "%1$s được thêm vào %2$sliên kết"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -5027,11 +4890,9 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Đã ngừng chia sẻ với %s"
 
-#: dt-posts/posts.php:2494
-#, fuzzy
-#| msgid "Remove"
+#: dt-posts/posts.php:2496
 msgid "Removed User"
-msgstr "Loại bỏ"
+msgstr "Người dùng bị xoá bỏ"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -5051,28 +4912,33 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Xin chào {{tên}},\n"
+"\n"
+"Vui lòng nhấp chuột vào liên kết dưới đây để vào ứng dụng của bạn.\n"
+"\n"
+"{{đường dẫn}}\n"
+"\n"
+"Xin cảm ơn!"
 
 #: dt-reports/magic-url-bulk-send.php:51
 msgid "Configure email subject"
-msgstr ""
+msgstr "Cấu hình chủ đề email"
 
 #: dt-reports/magic-url-bulk-send.php:54
 msgid "{{app}} will be replaced with the selected app name."
-msgstr ""
+msgstr "{{ứng dụng}} sẽ được thay thế với ứng dụng đã chọn."
 
 #: dt-reports/magic-url-bulk-send.php:56
 msgid "Configure email message"
-msgstr ""
+msgstr "Cấu hình nội dung email"
 
 #: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:134
-#, fuzzy
-#| msgid "Select app to email"
 msgid "Selected app name"
-msgstr "Chọn ứng dụng để gửi email"
+msgstr "Tên ứng dụng đã chọn"
 
 #: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:140
 msgid "Unique link to access the app."
-msgstr ""
+msgstr "Đường dẫn duy nhất để vào ứng dụng."
 
 #: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
@@ -5084,48 +4950,40 @@ msgstr "Bạn phải chọn một ứng dụng"
 
 #: dt-reports/magic-url-landing-page.php:29
 #: dt-reports/magic-url-landing-page.php:33
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "Gửi Liên kết Ma thuật"
+msgstr "Liên kết nhanh không tồn tại"
 
 #: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "Đường dẫn không khả dụng hoặc không tồn tại."
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "Vui lòng %s hoặc tìm khóa gần đây hơn hoặc yêu cầu cấp mới."
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "login"
-msgstr ""
+msgstr "đăng nhập"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
-msgstr "Gửi Liên kết Ma thuật"
+msgstr "Gửi Liên kết nhanh"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
-msgstr "Ứng dụng có sẵn trên hồ sơ này."
+msgstr "Liên kết nhanh có sẵn trên hồ sơ này."
 
 #: dt-reports/magic-url-setup.php:94
-#, fuzzy
-#| msgid "View User"
 msgid "View"
-msgstr "Xem người dùng"
+msgstr "Xem"
 
 #: dt-reports/magic-url-setup.php:101
 msgid "QR code"
-msgstr ""
+msgstr "Mã QR"
 
 #: dt-reports/magic-url-setup.php:102
 msgid "Reset"
-msgstr ""
+msgstr "Cài lại"
 
 #: dt-reports/magic-url-setup.php:121
 msgid ""
@@ -5137,6 +4995,13 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Xin chào,\n"
+"\n"
+" Hãy nhấp chuột vào nút phía dưới để vào ứng dụng của bạn.\n"
+"\n"
+"{{đường dẫn}}\n"
+"\n"
+"Xin cảm ơn!"
 
 #: dt-reports/magic-url-setup.php:130
 msgid "Add email address"
@@ -5352,16 +5217,12 @@ msgid "Travel or Away Dates"
 msgstr "Ngày Vắng mặt hoặc Du lịch"
 
 #: dt-users/template-user-management.php:191
-#, fuzzy
-#| msgid "Users"
 msgid "User Apps"
-msgstr "Người dùng"
+msgstr "Ứng dụng người dùng"
 
 #: dt-users/template-user-management.php:197
-#, fuzzy
-#| msgid "App Activation"
 msgid "Activation"
-msgstr "Kích hoạt Ứng dụng"
+msgstr "Kích hoạt"
 
 #: dt-users/template-user-management.php:212
 msgid "User Profile"
@@ -5377,10 +5238,8 @@ msgid "Edit User"
 msgstr "Chỉnh sửa Người dùng"
 
 #: dt-users/template-user-management.php:225
-#, fuzzy
-#| msgid "Password"
 msgid "Email Password Reset"
-msgstr "Mật khẩu"
+msgstr "Cài lại mật khẩu email"
 
 #: dt-users/template-user-management.php:288 dt-users/users.php:147
 #: template-settings.php:159
@@ -5527,16 +5386,12 @@ msgid "User Language"
 msgstr "Ngôn ngữ Người dùng"
 
 #: dt-users/user-initial-setup.php:44
-#, fuzzy
-#| msgid "Invite User"
 msgid "Initial User Setup!"
-msgstr "Mời Người dùng"
+msgstr "Thiết lập Ban đầu của Người dùng!"
 
 #: dt-users/user-initial-setup.php:52
-#, fuzzy
-#| msgid "User Language"
 msgid "Default Language"
-msgstr "Ngôn ngữ Người dùng"
+msgstr "Ngôn ngữ Mặc định"
 
 #: dt-users/user-management.php:137
 msgid "Add User"
@@ -5580,7 +5435,7 @@ msgstr "Tên người dùng đã có trong hệ thống với tư cách là ngư
 
 #: dt-users/user-management.php:189
 msgid "Remove"
-msgstr "Loại bỏ"
+msgstr "Gỡ"
 
 #: dt-users/user-management.php:190
 msgid "This contact is already a user."
@@ -5597,14 +5452,11 @@ msgstr "Bật"
 
 #: dt-users/user-management.php:230
 msgid "Go"
-msgstr ""
+msgstr "Đi"
 
 #: dt-users/user-management.php:233
-#, fuzzy
-#| msgctxt "Showing 30 items matching bob"
-#| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
-msgstr "Đang hiển thị %1$s mục khớp với %2$s"
+msgstr "Đang hiển thị %1$s của%2$s"
 
 #: dt-users/user-management.php:354
 msgid "%s days since last update"
@@ -5637,11 +5489,11 @@ msgstr "Đã từ chối chỉ định cho %s"
 
 #: dt-users/users.php:124
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: dt-users/users.php:154
 msgid "Locale"
-msgstr ""
+msgstr "Ngôn ngữ"
 
 #: dt-users/users.php:178
 msgid "Away"
@@ -5691,7 +5543,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "Bạn đã đặt nhiệm vụ này cho %1$s: %2$s"
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr "Quy trình làm việc D.T"
 
@@ -5731,7 +5583,7 @@ msgstr "Chỉnh sửa tất cả các trường chi tiết"
 
 #: single-template.php:384
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "Hiển thị các ô ẩn"
 
 #: single-template.php:405 template-new-bulk-post.php:276
 #: template-new-post.php:167
@@ -5918,15 +5770,13 @@ msgid "No Travel Scheduled"
 msgstr "Không có chuyến đi nào được lên lịch"
 
 #: template-settings.php:489
-#, fuzzy
-#| msgid "Contact Info Changed"
 msgid "Contact Info"
-msgstr "Thông tin liên hệ đã thay đổi"
+msgstr "Thông tin liên hệ"
 
 #: template-settings.php:493
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
-msgstr ""
+msgstr "Email thông báo sẽ được gửi tới:%s"
 
 #: template-settings.php:510
 msgid "Email preferences"
@@ -5972,26 +5822,20 @@ msgid "edit image on gravatar.com"
 msgstr "sửa hình ảnh trên gravatar.com"
 
 #: template-settings.php:637
-#, fuzzy
-#| msgid ""
-#| "Disciple Tools System does not store images. For profile images we use "
-#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
-#| "suggest not using a personal photo, but instead choose a cartoon, "
-#| "abstract, or alias photo to represent you."
 msgid ""
 "Disciple Tools System does not store images. All media assets will be placed "
 "within specified media connection storage service. If you have security "
 "concerns, we suggest not using a personal photo, but instead choose a "
 "cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Hệ thống Công cụ Môn đồ không lưu trữ hình ảnh. Về ảnh đại diện, chúng tôi "
-"sử dụng Gravatar (Ảnh đại diện được công nhận toàn cầu). Nếu bạn lo ngại về "
-"bảo mật, chúng tôi khuyên bạn không nên sử dụng ảnh cá nhân mà nên chọn ảnh "
-"hoạt hình, ảnh trừu tượng hoặc hình ảnh bí danh làm ảnh đại diện."
+"Hệ thống Công cụ Môn đồ không lưu trữ hình ảnh. Tất cả phương tiện truyền "
+"thông sẽ được đặt trong dịch vụ lưu trữ kết nối nhất định. Nếu bạn lo ngại "
+"về bảo mật, chúng tôi khuyên bạn không nên sử dụng ảnh cá nhân mà nên chọn "
+"ảnh hoạt hình, ảnh trừu tượng hoặc hình ảnh bí danh làm ảnh đại diện."
 
 #: template-settings.php:638
 msgid "upload new profile image"
-msgstr ""
+msgstr "tải ảnh đại diện mới"
 
 #: template-settings.php:648 template-settings.php:649
 msgid "Username cannot be changed"
@@ -6035,6 +5879,11 @@ msgstr "Liên hệ truy cập đã quét:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Đã tìm thấy liên hệ trùng lặp:"
+
+#, fuzzy
+#~| msgid "No"
+#~ msgid "No."
+#~ msgstr "Không"
 
 #, fuzzy
 #~| msgid "Generation"

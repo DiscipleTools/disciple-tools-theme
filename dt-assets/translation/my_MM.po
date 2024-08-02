@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-06-25T10:59:06+00:00\n"
+"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
 "PO-Revision-Date: 2024-02-08 09:16+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Burmese <https://translate.disciple.tools/projects/disciple-"
@@ -16,20 +16,24 @@ msgstr ""
 "X-Generator: Weblate 5.3.1\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr "Disciple Tools"
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
+#: style.css
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
 msgstr "Disciple.Tools သည် တပည့်လှုပ်ရှားမှုများပြုလုပ်ရန်အတွက် ညွန့်ပေါင်းစီမံခန့်ခွဲမှုစနစ်တစ်ခုဖြစ်သည်။"
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
@@ -357,8 +361,8 @@ msgid "Search Users"
 msgstr "အသုံးပြုသူများကိုရှာပါ"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:106
-#: dt-metrics/records/genmap.php:110 dt-posts/dt-posts.php:2773
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:134 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -561,7 +565,7 @@ msgstr "မဟုတ်ဘူး"
 
 #: archive-template.php:1040 archive-template.php:1041
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:128 dt-metrics/records/time-charts.php:119
+#: dt-metrics/records/genmap.php:152 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
@@ -847,7 +851,7 @@ msgid "Locations you are responsible for"
 msgstr "သင်တာ ၀ န်ရှိသောနေရာများ"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:118
+#: dt-metrics/records/genmap.php:142
 msgid "Add"
 msgstr "ထည့်ပါ"
 
@@ -1530,7 +1534,7 @@ msgstr "မှတ်တမ်း ကိုဖန်တီးပါ"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:124 dt-posts/custom-post-type.php:171
+#: dt-metrics/records/genmap.php:148 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "နာမည်"
@@ -1574,6 +1578,7 @@ msgstr "ပြန်လည်လှုပ်ရှားမှု"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "နယ်ပယ်"
@@ -1674,7 +1679,7 @@ msgstr "ဒစ်ဂျစ်တယ်တုံ့ပြန်မှု"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:105 dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:129 dt-metrics/records/genmap.php:136
 msgid "Assigned To"
 msgstr "တာဝန်ပေးအပ်သည်"
 
@@ -1954,7 +1959,7 @@ msgid "Accepted"
 msgstr "လက်ခံသည်"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:96
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -2125,7 +2130,7 @@ msgstr "ပုံတူပွား စစ်ဆေးသူ"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:105
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
@@ -3060,9 +3065,9 @@ msgstr "အုပ်စု"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:109
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:111
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:135
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "အုပ်စုများ"
@@ -3274,7 +3279,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "ဤအုပ်စုသည်အစည်းအဝေးကိုရပ်ဆိုင်းသည့်နေ့ရက် (သက်ဆိုင်လျှင်) ။"
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:115
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:139
 msgid "Member Count"
 msgstr "အသင်းဝင် ရေတွက်ခြင်း"
 
@@ -3607,7 +3612,8 @@ msgstr "အရေးကြီးသောလမ်းကြောင်း"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:101 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "စီမံကိန်း"
@@ -3769,7 +3775,7 @@ msgid ""
 msgstr "အောက်ဖော်ပြပါ မက်ထရစ်များ၏ အသေးစိတ်စာရင်းကို ပြသရန် အချိန်ဇယားရက်အကျဉ်းကို နှိပ်ပါ။"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:129
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
 #, fuzzy
 msgid "Metrics"
 msgstr "မက်ထရစ်"
@@ -3895,6 +3901,7 @@ msgstr "ဆက်သွယ်ရန်ရက်စွဲအကွာအဝေး
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:432
 msgid "All Time"
@@ -4035,34 +4042,34 @@ msgid "Group Generation Tree"
 msgstr "မျိုးဆက်အုပ်စုပုံစံ"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:101
+#: dt-metrics/records/genmap.php:125
 #, fuzzy
 msgid "Highlight Active"
 msgstr "Active ကိုအထူးပြုပါ"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:102
+#: dt-metrics/records/genmap.php:126
 #, fuzzy
 msgid "Highlight Churches"
 msgstr "အသင်းတော်များကိုမီးမောင်းထိုးပြ"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:103 dt-metrics/records/genmap.php:116
+#: dt-metrics/records/genmap.php:127 dt-metrics/records/genmap.php:140
 msgid "Members"
 msgstr "အဖွဲ့ဝင်များ"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:104
+#: dt-metrics/records/genmap.php:128
 msgid "View Record"
 msgstr "မှတ်တမ်းကိုကြည့်ပါ"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:107
+#: dt-metrics/records/genmap.php:131
 msgid "Total Members"
 msgstr "အဖွဲ့ဝင်များစုစုပေါင်း"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:108
+#: dt-metrics/records/genmap.php:132
 msgid "View Group"
 msgstr "အုပ်စုကိုကြည့်ပါ"
 
@@ -4070,7 +4077,7 @@ msgstr "အုပ်စုကိုကြည့်ပါ"
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:112
+#: dt-metrics/metrics.php:113
 #, fuzzy
 msgid "Dynamic Metrics"
 msgstr "မက်ထရစ်"
@@ -4113,6 +4120,7 @@ msgid "Comments I Posted"
 msgstr "ကျွန်တော် တင်ထားသော မှတ်ချက်များ"
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "ရက်စွဲ"
@@ -4191,6 +4199,7 @@ msgid "Field Activity"
 msgstr "နေ့စဉ်လှုပ်ရှားမှု"
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
 #, fuzzy
 #| msgid "Record"
@@ -4225,7 +4234,8 @@ msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
 msgstr ""
 
@@ -4294,66 +4304,92 @@ msgstr "မှတ်တမ်း"
 msgid "System"
 msgstr "စနစ်"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:99
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:123
 #, fuzzy
 #| msgid "Group Generation Tree"
 msgid "Generational Trees"
 msgstr "မျိုးဆက်အုပ်စုပုံစံ"
 
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:124
 #, fuzzy
 #| msgid "Archived"
 msgid "Show Archived"
 msgstr "မော်ကွန်းတင်သည်။"
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:137
 msgid "Coaches"
 msgstr "နည်းပြများ"
 
-#: dt-metrics/records/genmap.php:114
+#: dt-metrics/records/genmap.php:138
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "အမျိုးအစား:"
 
-#: dt-metrics/records/genmap.php:117
+#: dt-metrics/records/genmap.php:141
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "ဖြင့်ဖွင့်ပါ။"
 
-#: dt-metrics/records/genmap.php:119
+#: dt-metrics/records/genmap.php:143
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:120
+#: dt-metrics/records/genmap.php:144
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:123
+#: dt-metrics/records/genmap.php:147
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "ကလေးအုပ်စု"
 
-#: dt-metrics/records/genmap.php:125
+#: dt-metrics/records/genmap.php:149
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:150
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:151
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "%s ကိုသင်ဖျက်ဖို့သေချာပါသလား။"
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:155
 msgid "Infinite Loops"
 msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:32
+#, fuzzy
+#| msgid "All cumulative totals"
+msgid "Field Cumulative Values"
+msgstr "အားလုံးစုစုပေါင်းစုစုပေါင်း"
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid ""
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records"
+msgstr "မှတ်တမ်းများထည့်ပါ။"
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+#, fuzzy
+#| msgid "No Data Available"
+msgid "No Records Available"
+msgstr "Data မရနိုင်ပါ။"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
@@ -4403,24 +4439,6 @@ msgstr "လူပျိုစုစုပေါင်းစုစုပေါင
 #| msgid "Add Records"
 msgid "Records changes"
 msgstr "မှတ်တမ်းများထည့်ပါ။"
-
-#: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records"
-msgstr "မှတ်တမ်းများထည့်ပါ။"
-
-#: dt-metrics/records/time-charts.php:122
-#, fuzzy
-#| msgid "No"
-msgid "No."
-msgstr "မဟုတ်ဘူး"
-
-#: dt-metrics/records/time-charts.php:124
-#, fuzzy
-#| msgid "No Data Available"
-msgid "No Records Available"
-msgstr "Data မရနိုင်ပါ။"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4997,7 +5015,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s နှင့်မမျှဝေပါ"
 
-#: dt-posts/posts.php:2494
+#: dt-posts/posts.php:2496
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -5658,7 +5676,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "ဤအလုပ်ကို %1$s : %2$s တွင်သင်သတ်မှတ်ထားသည်"
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr "D.T အလုပ်အသွားအလာ"
 
@@ -5999,6 +6017,11 @@ msgstr "ဆက်သွယ်မှုကိုစစ်ဆေးပြီး"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ပုံတူပွားများ တွေ့ရှိသည်"
+
+#, fuzzy
+#~| msgid "No"
+#~ msgid "No."
+#~ msgstr "မဟုတ်ဘူး"
 
 #, fuzzy
 #~| msgid "Generation"
