@@ -36,7 +36,7 @@ class Disciple_Tools_Mapping_Queries {
         ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'get_by_grid_id', $results, $grid_id );
@@ -77,7 +77,7 @@ class Disciple_Tools_Mapping_Queries {
         ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'get_parent_by_grid_id', $results, $grid_id );
@@ -117,7 +117,7 @@ class Disciple_Tools_Mapping_Queries {
         ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'get_children_by_grid_id', $results, $grid_id );
@@ -129,7 +129,7 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         if ( empty( $list ) ) {
-            return [];
+            return array();
         }
 
         $prepared_list = dt_array_to_sql( $list );
@@ -179,7 +179,7 @@ class Disciple_Tools_Mapping_Queries {
         // phpcs:enable
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         return $results;
@@ -247,7 +247,7 @@ class Disciple_Tools_Mapping_Queries {
         }
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         return $results;
@@ -338,7 +338,7 @@ class Disciple_Tools_Mapping_Queries {
         }
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'get_hierarchy', $results, $grid_id );
@@ -391,7 +391,7 @@ class Disciple_Tools_Mapping_Queries {
         ", $grid_id ), ARRAY_A );
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'get_drilldown_by_grid_id', $results, $grid_id );
@@ -435,7 +435,7 @@ class Disciple_Tools_Mapping_Queries {
 //        ", ARRAY_A );
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'get_regions', $results );
@@ -470,7 +470,7 @@ class Disciple_Tools_Mapping_Queries {
 //        ", ARRAY_A );
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         return $results;
@@ -501,7 +501,7 @@ class Disciple_Tools_Mapping_Queries {
         ", ARRAY_A );
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         return $results;
@@ -552,7 +552,7 @@ class Disciple_Tools_Mapping_Queries {
         ");
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'counter', $results );
@@ -566,7 +566,7 @@ class Disciple_Tools_Mapping_Queries {
      * Count post types, churches and groups in each used location and across admin levels
      * @todo rewrite. user is no longer found here and these are listing milstones
      */
-    public static function get_location_grid_totals_on_field( $post_type, $field, $force_refresh = false ) : array {
+    public static function get_location_grid_totals_on_field( $post_type, $field, $force_refresh = false ): array {
 
         global $wpdb;
 
@@ -653,7 +653,7 @@ class Disciple_Tools_Mapping_Queries {
 
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         return $results;
@@ -663,7 +663,7 @@ class Disciple_Tools_Mapping_Queries {
     /**
      * Count post types, churches and groups in each used location and across admin levels
      */
-    public static function get_location_grid_totals() : array {
+    public static function get_location_grid_totals(): array {
 
         global $wpdb;
 
@@ -766,7 +766,7 @@ class Disciple_Tools_Mapping_Queries {
 
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         return $results;
@@ -804,7 +804,7 @@ class Disciple_Tools_Mapping_Queries {
 
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'get_location_grid_totals_for_countries', $results );
@@ -812,7 +812,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function active_admin0_grid_ids() : array {
+    public static function active_admin0_grid_ids(): array {
 
         if ( wp_cache_get( 'active_admin0_grid_ids' ) ) {
             return wp_cache_get( 'active_admin0_grid_ids' );
@@ -829,7 +829,7 @@ class Disciple_Tools_Mapping_Queries {
         ");
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'active_admin0_grid_ids', $results );
@@ -837,7 +837,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function active_admin1_grid_ids() : array {
+    public static function active_admin1_grid_ids(): array {
 
         if ( wp_cache_get( 'active_admin1_grid_ids' ) ) {
             return wp_cache_get( 'active_admin1_grid_ids' );
@@ -854,7 +854,7 @@ class Disciple_Tools_Mapping_Queries {
         ");
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'active_admin1_grid_ids', $results );
@@ -862,7 +862,7 @@ class Disciple_Tools_Mapping_Queries {
         return $results;
     }
 
-    public static function active_admin2_grid_ids() : array {
+    public static function active_admin2_grid_ids(): array {
 
         if ( wp_cache_get( 'active_admin2_grid_ids' ) ) {
             return wp_cache_get( 'active_admin2_grid_ids' );
@@ -879,7 +879,7 @@ class Disciple_Tools_Mapping_Queries {
         ");
 
         if ( empty( $results ) ) {
-            $results = [];
+            $results = array();
         }
 
         wp_cache_set( 'active_admin2_grid_ids', $results );
@@ -983,10 +983,10 @@ class Disciple_Tools_Mapping_Queries {
         // phpcs:enable
 
         $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
-        return [
+        return array(
             'location_grid' => $location_grid,
-            'total' => $total_rows
-        ];
+            'total' => $total_rows,
+        );
     }
 
     public static function search_used_location_grid_by_name( $args ) {
@@ -1025,10 +1025,10 @@ class Disciple_Tools_Mapping_Queries {
             ARRAY_A
         );
         $total_rows = $wpdb->get_var( 'SELECT found_rows();' );
-        return [
+        return array(
             'location_grid' => $location_grid,
-            'total' => $total_rows
-        ];
+            'total' => $total_rows,
+        );
     }
 
     public static function get_names_from_ids( $location_grid_ids ) {
@@ -1043,7 +1043,7 @@ class Disciple_Tools_Mapping_Queries {
                             WHERE grid_id IN ( $ids )
                         ", ARRAY_A );
         // phpcs:enable
-        $prepared = [];
+        $prepared = array();
         foreach ( $results as $row ){
             $prepared[$row['grid_id']] = $row['alt_name'];
         }
@@ -1053,13 +1053,13 @@ class Disciple_Tools_Mapping_Queries {
     public static function get_location_grid_ids_and_names_for_post_ids( $post_ids ) {
         global $wpdb;
 
-        $prepared = [];
+        $prepared = array();
 
         foreach ( $post_ids as $post_id ) {
-            $prepared[$post_id] = [];
+            $prepared[$post_id] = array();
         }
         if ( empty( $post_ids ) ){
-            return [];
+            return array();
         }
         $joined_post_ids = dt_array_to_sql( $post_ids );
         // phpcs:disable
@@ -1081,16 +1081,16 @@ class Disciple_Tools_Mapping_Queries {
                             WHERE grid_id IN ( $joined_location_grid_ids )
                         ", ARRAY_A );
         // phpcs:enable
-        $mapped_location_grid_id_to_name = [];
+        $mapped_location_grid_id_to_name = array();
         foreach ( $location_grid_id_names as $location_grid ){
             $mapped_location_grid_id_to_name[$location_grid['grid_id']] = $location_grid['alt_name'];
         }
         foreach ( $location_grids as $location_grid ){
             if ( isset( $mapped_location_grid_id_to_name[$location_grid['meta_value']] ) ){
-                $prepared[$location_grid['post_id']][] = [
+                $prepared[$location_grid['post_id']][] = array(
                     'location_grid_id' => $location_grid['meta_value'],
-                    'name' => $mapped_location_grid_id_to_name[$location_grid['meta_value']]
-                ];
+                    'name' => $mapped_location_grid_id_to_name[$location_grid['meta_value']],
+                );
             }
         }
         return $prepared;
@@ -1256,7 +1256,7 @@ class Disciple_Tools_Mapping_Queries {
             ", $wpdb->prefix . 'location_grid', $wpdb->prefix . 'location_grid', $wpdb->prefix . 'location_grid', $wpdb->prefix . 'location_grid', $wpdb->prefix . 'location_grid', $wpdb->prefix . 'location_grid' ), ARRAY_A );
         }
 
-        $list = [];
+        $list = array();
         if ( is_array( $results ) ) {
             foreach ( $results as $result ) {
                 $list[$result['grid_id']] = $result;
@@ -1268,7 +1268,7 @@ class Disciple_Tools_Mapping_Queries {
 
 
     private static function format_results( $results, $post_type ){
-        $features = [];
+        $features = array();
         foreach ( $results as $result ) {
             $features[] = array(
                 'type' => 'Feature',
@@ -1276,14 +1276,14 @@ class Disciple_Tools_Mapping_Queries {
                     'address' => $result['address'] ?? '',
                     'post_id' => $result['post_id'],
                     'name' => $result['name'],
-                    'post_type' => $post_type
+                    'post_type' => $post_type,
                 ),
                 'geometry' => array(
                     'type' => 'Point',
                     'coordinates' => array(
                         $result['lng'],
                         $result['lat'],
-                        1
+                        1,
                     ),
                 ),
             );
@@ -1297,36 +1297,37 @@ class Disciple_Tools_Mapping_Queries {
         return $new_data;
     }
 
-    public static function post_type_geojson( $post_type, $args = [], $offset = 0, $limit = 50000 ){
+    public static function post_type_geojson( $post_type, $args = array(), $offset = 0, $limit = 50000 ){
         global $wpdb;
 
         //phpcs:disable
         // Determine if post id filtering should take place.
         $post_id_filter_sql = '';
+        $shared_user_join_sql = '';
+        $shared_user_condition_sql = '';
         if ( isset( $args['list_all'], $args['list_all_by_user_id'] ) && !$args['list_all'] ) {
             $post_id_filter_sql = $wpdb->prepare( "
             SELECT * FROM
                       (
                         SELECT api_p.ID
                         FROM $wpdb->posts api_p
-                        LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = api_p.ID )
                         LEFT JOIN $wpdb->postmeta as field_type ON ( field_type.post_id = api_p.ID AND field_type.meta_key = 'type' )
-                        WHERE (
-                          (field_shared_with.user_id IN ( %d ))
-                          OR ((field_type.meta_value = 'access' OR field_type.meta_value = 'user' OR field_type.meta_value = 'access_placeholder')
-                          ))
+                        WHERE (field_type.meta_value = 'access' OR field_type.meta_value = 'user' OR field_type.meta_value = 'access_placeholder')
                           AND (api_p.post_status = 'publish')
                           AND api_p.post_type = %s
                           GROUP BY api_p.ID
                           LIMIT 0, 50000
                       ) AS assigned_post_ids
-            ", $args['list_all_by_user_id'], ( ( $post_type === 'system-users' ) ? 'contacts' : $post_type ) );
+            ", ( ( $post_type === 'system-users' ) ? 'contacts' : $post_type ) );
 
             if ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ) {
+                $shared_user_join_sql = "LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = um.meta_value            )";
                 $post_id_filter_sql = 'AND (um.meta_value IN ('. $post_id_filter_sql .'))';
             } else {
+                $shared_user_join_sql = "LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = p.ID )";
                 $post_id_filter_sql = 'AND (p.ID IN ('. $post_id_filter_sql .'))';
             }
+            $shared_user_condition_sql = "AND (field_shared_with.user_id = ". $args['list_all_by_user_id'] .")";
         }
 
         if ( isset( $args['field_key'], $args['field_type'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
@@ -1335,7 +1336,9 @@ class Disciple_Tools_Mapping_Queries {
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
                   LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
+                  ". $shared_user_join_sql ."
                   WHERE lgm.post_type = %s
+                  ". $shared_user_condition_sql ."
                   AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ) ."
                   ". $post_id_filter_sql ."
                   LIMIT %d, %d;
@@ -1348,7 +1351,9 @@ class Disciple_Tools_Mapping_Queries {
                   JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
                   LEFT JOIN $wpdb->usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = %s )
                   INNER JOIN $wpdb->usermeta AS um_cap ON ( u.ID = um_cap.user_id AND um_cap.meta_key = %s )
+                  ". $shared_user_join_sql ."
                   WHERE lgm.post_type = %s
+                  ". $shared_user_condition_sql ."
                   ". $post_id_filter_sql ."
                   LIMIT %d, %d;
               ", ( $wpdb->prefix . 'corresponds_to_contact' ), ( $wpdb->prefix . 'capabilities' ), 'users', $offset, $limit );
@@ -1358,7 +1363,9 @@ class Disciple_Tools_Mapping_Queries {
                 SELECT DISTINCT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                     FROM $wpdb->dt_location_grid_meta AS lgm
                     JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+                    ". $shared_user_join_sql ."
                     WHERE lgm.post_type = %s
+                    ". $shared_user_condition_sql ."
                     ". $post_id_filter_sql ."
                     LIMIT %d, %d;
                 ", $post_type, $offset, $limit );
@@ -1370,7 +1377,7 @@ class Disciple_Tools_Mapping_Queries {
         return self::format_results( $results, $post_type );
     }
 
-    public static function cluster_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
+    public static function cluster_geojson( $post_type, $query = array(), $offset = 0, $limit = 50000 ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
         if ( empty( $sql['where_sql'] ) ){
@@ -1394,7 +1401,7 @@ class Disciple_Tools_Mapping_Queries {
         return self::format_results( $results, $post_type );
     }
 
-    public static function points_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
+    public static function points_geojson( $post_type, $query = array(), $offset = 0, $limit = 50000 ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
         if ( empty( $sql['where_sql'] ) ){
@@ -1510,7 +1517,7 @@ class Disciple_Tools_Mapping_Queries {
         //phpcs:enable
 
 
-        $list = [];
+        $list = array();
         if ( is_array( $results ) ) {
             foreach ( $results as $result ) {
                 $list[$result['grid_id']] = $result;
@@ -1743,7 +1750,7 @@ class Disciple_Tools_Mapping_Queries {
             ", ARRAY_A );
         }
 
-        $list = [];
+        $list = array();
         if ( is_array( $results ) ) {
             foreach ( $results as $result ) {
                 $list[$result['grid_id']] = $result;
@@ -1897,7 +1904,7 @@ class Disciple_Tools_Mapping_Queries {
             ", ARRAY_A );
         }
 
-        $list = [];
+        $list = array();
         if ( is_array( $results ) ) {
             foreach ( $results as $result ) {
                 $list[$result['grid_id']] = $result;
@@ -2063,7 +2070,7 @@ class Disciple_Tools_Mapping_Queries {
             ", ARRAY_A );
         }
 
-        $list = [];
+        $list = array();
         if ( is_array( $results ) ) {
             foreach ( $results as $result ) {
                 $list[$result['grid_id']] = $result;
