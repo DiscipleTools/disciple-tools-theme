@@ -378,7 +378,7 @@
     $(label).remove();
 
     // Refresh view records
-    get_records_for_current_filter(current_filter);
+    get_records_for_current_filter(current_filter, true);
   }
 
   /**
@@ -459,7 +459,10 @@
     window.history.pushState(null, document.title, url.search);
   }
 
-  function get_records_for_current_filter(custom_filter = null) {
+  function get_records_for_current_filter(
+    custom_filter = null,
+    remove_all_split_by_checked_options = false,
+  ) {
     let checked = $('.js-list-view:checked');
     let current_view = checked.val();
     let filter_id = checked.data('id') || current_view || '';
@@ -469,8 +472,10 @@
     if (custom_filter) {
       current_filter = custom_filter;
 
-      // Ensure to uncheck all split by option filters, to avoid infinity loops!
-      $('.js-list-view-split-by').prop('checked', false);
+      // If specified, ensure to uncheck all split by option filters, to avoid infinity loops!
+      if (remove_all_split_by_checked_options) {
+        $('.js-list-view-split-by').prop('checked', false);
+      }
     } else if (current_view === 'custom_filter') {
       let filterId = checked.data('id');
       current_filter = window.lodash.find(custom_filters, { ID: filterId });
@@ -510,6 +515,8 @@
     clear_search_query();
 
     get_records();
+
+    refresh_split_by_view();
   }
 
   function clear_search_query() {
@@ -3782,14 +3789,27 @@
    */
 
   $('#split_by_current_filter_button').on('click', function () {
+    refresh_split_by_view();
+  });
+
+  $(document).on('change', '.js-list-view-split-by', () => {
+    get_records_for_current_filter(current_filter);
+  });
+
+  function refresh_split_by_view() {
     let field_id = $('#split_by_current_filter_select').val();
     if (!field_id) {
       return;
     }
-    $(this).addClass('loading');
-    let split_by_accordion = $('.split-by-current-filter-accordion');
-    let split_by_results = $('#split_by_current_filter_results');
-    let split_by_no_results_msg = $('#split_by_current_filter_no_results_msg');
+
+    const split_by_current_filter_button = $('#split_by_current_filter_button');
+    const split_by_accordion = $('.split-by-current-filter-accordion');
+    const split_by_results = $('#split_by_current_filter_results');
+    const split_by_no_results_msg = $(
+      '#split_by_current_filter_no_results_msg',
+    );
+
+    $(split_by_current_filter_button).addClass('loading');
 
     $(split_by_no_results_msg).fadeOut('fast');
 
@@ -3798,7 +3818,7 @@
         current_filter.query !== undefined ? current_filter.query : [];
       window.API.split_by(list_settings.post_type, field_id, filters).then(
         function (response) {
-          $('#split_by_current_filter_button').removeClass('loading');
+          $(split_by_current_filter_button).removeClass('loading');
           let summary_displayed = false;
           if (response && response.length > 0) {
             let html = '';
@@ -3833,11 +3853,7 @@
         },
       );
     });
-  });
-
-  $(document).on('change', '.js-list-view-split-by', () => {
-    get_records_for_current_filter();
-  });
+  }
 
   function apply_split_by_filters(filter, field_id, option_id, option_label) {
     if (filter && field_id && option_id && option_label) {
@@ -3849,22 +3865,38 @@
         field_id_label = setting_fields[field_id]['name'];
       }
 
-      // Add new label.
-      filter['labels'].push({
-        id: option_id,
-        field: field_id,
-        name: `${window.SHAREDFUNCTIONS.escapeHTML(field_id_label)}: ${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}`,
-      });
-
       // Ensure a fields array is available.
       if (filter['query']['fields'] === undefined) {
         filter['query']['fields'] = [];
       }
 
-      let query_field_obj = {};
-      query_field_obj[field_id] = option_id !== 'NULL' ? [option_id] : [];
-      if (filter['query']['fields'].push !== undefined) {
-        filter['query']['fields'].push(query_field_obj);
+      // Ensure to avoid duplicate entries.
+      let dup_detected = false;
+      if (Array.isArray(filter['query']['fields'])) {
+        const dup_filter = filter['query']['fields'].filter((field) => {
+          return (
+            Object.prototype.hasOwnProperty.call(field, field_id) &&
+            Array.isArray(field[field_id]) &&
+            field[field_id].includes(option_id)
+          );
+        });
+        dup_detected = dup_filter.length > 0;
+      }
+
+      // Only proceed with filter insert, if no duplications have been detected.
+      if (!dup_detected) {
+        // Add new label.
+        filter['labels'].push({
+          id: option_id,
+          field: field_id,
+          name: `${window.SHAREDFUNCTIONS.escapeHTML(field_id_label)}: ${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}`,
+        });
+
+        let query_field_obj = {};
+        query_field_obj[field_id] = option_id !== 'NULL' ? [option_id] : [];
+        if (filter['query']['fields'].push !== undefined) {
+          filter['query']['fields'].push(query_field_obj);
+        }
       }
     }
 
