@@ -662,6 +662,14 @@ window.SHAREDFUNCTIONS = {
       window.localStorage.setItem(key, JSON.stringify(json));
     }
   },
+  remove_json_from_local_storage(key, path) {
+    if (path) {
+      key = path + '_' + key;
+    }
+    if (localStorage) {
+      window.localStorage.removeItem(key);
+    }
+  },
   createCustomFilter(field, value) {
     return {
       fields: [
