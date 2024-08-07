@@ -33,7 +33,7 @@ class Disciple_Tools_Metrics{
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, 'metrics' ) !== false ){
             // wait for D.T post type classes to be set up before building metrics for them
-            add_action( 'after_setup_theme', function (){
+            add_action( 'after_setup_theme', function () {
                 $modules = dt_get_option( 'dt_post_type_modules' );
 
                 // Personal
@@ -91,7 +91,7 @@ class Disciple_Tools_Metrics{
             }, 1000);
 
             // default menu order
-            add_filter( 'dt_metrics_menu', function ( $content ){
+            add_filter( 'dt_metrics_menu', function ( $content ) {
                 $modules = dt_get_option( 'dt_post_type_modules' );
                 if ( $content === '' ){
                     $content .= '<li><a>' . __( 'Personal', 'disciple_tools' ) . '</a>
@@ -124,7 +124,7 @@ class Disciple_Tools_Metrics{
          * Add Navigation Menu
          */
         if ( current_user_can( 'access_disciple_tools' ) ) {
-            add_filter( 'desktop_navbar_menu_options', function ( $tabs ){
+            add_filter( 'desktop_navbar_menu_options', function ( $tabs ) {
                 $tabs['metrics'] = [
                     'link' => site_url( '/metrics/' ),
                     'label' => __( 'Metrics', 'disciple_tools' )

@@ -577,7 +577,7 @@ class DT_Contacts_Base {
             ]
         ];
         //prepend filter if it is not already created.
-        $contact_filter_ids = array_map( function ( $a ){
+        $contact_filter_ids = array_map( function ( $a ) {
             return $a['ID'];
         }, $filters );
         foreach ( $default_filters as $filter ) {
@@ -619,7 +619,7 @@ class DT_Contacts_Base {
                     continue;
                 }
                 $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
-                if ( $channel_key == 'contact_phone' || $channel_key == 'contact_email' || $channel_key == 'contact_address' || !$enabled ){
+                if ( $channel_key === 'contact_phone' || $channel_key === 'contact_email' || $channel_key === 'contact_address' || !$enabled ){
                     continue;
                 }
                 $sections[] = [
@@ -680,7 +680,7 @@ class DT_Contacts_Base {
     private function comm_channel_comment_section_already_assigned( $sections, $key ){
         $found = false;
         foreach ( $sections ?? [] as $idx => $section ){
-            if ( isset( $section['key'] ) && $section['key'] == $key ){
+            if ( isset( $section['key'] ) && $section['key'] === $key ){
                 $found = $idx;
             }
         }
@@ -707,7 +707,7 @@ class DT_Contacts_Base {
 
     }
     public function dt_record_icon( $icon, $post_type, $dt_post ){
-        if ( $post_type == 'contacts' ) {
+        if ( $post_type === 'contacts' ) {
             $icon = 'mdi mdi-account-box-outline';
         }
         return $icon;

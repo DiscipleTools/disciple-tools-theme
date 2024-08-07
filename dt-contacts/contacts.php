@@ -1,6 +1,6 @@
 <?php
 
-add_filter( 'dt_post_type_modules', function( $modules ){
+add_filter( 'dt_post_type_modules', function ( $modules ) {
     $modules['contacts_base'] = [
         'name' => 'Contacts',
         'enabled' => true,

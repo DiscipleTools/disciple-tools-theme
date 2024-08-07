@@ -49,7 +49,8 @@ class Disciple_Tools_People_Groups
         return $imb_csv;
     }
 
-    public static function search_csv( $search ) { // gets a list by country
+    public static function search_csv( $search ) {
+        // gets a list by country
         if ( ! current_user_can( 'manage_dt' ) ) {
             return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
         }
@@ -64,7 +65,8 @@ class Disciple_Tools_People_Groups
         return $result;
     }
 
-    public static function search_csv_by_rop3( $search ) { // gets a list by country
+    public static function search_csv_by_rop3( $search ) {
+        // gets a list by country
         if ( ! current_user_can( 'manage_dt' ) ) {
             return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
         }
@@ -171,7 +173,7 @@ class Disciple_Tools_People_Groups
         $columns = $data[0];
         $rop3_row = '';
         foreach ( $data as $row ) {
-            if ( $row[3] == $rop3 && $row[1] === $country ) {
+            if ( $row[3] === $rop3 && $row[1] === $country ) {
                 $rop3_row = $row;
                 break;
             }
@@ -188,7 +190,7 @@ class Disciple_Tools_People_Groups
         $imb_columns = $imb_data[0];
         $imb_rop3_row = '';
         foreach ( $imb_data as $imb_row ) {
-            if ( $imb_row[32] == $rop3 && $imb_row[5] === $country ) {
+            if ( $imb_row[32] === $rop3 && $imb_row[5] === $country ) {
                 $imb_rop3_row = $imb_row;
                 break;
             }
@@ -324,7 +326,7 @@ class Disciple_Tools_People_Groups
                 // Attempt to locate corresponding jp csv row.
                 $jp_data_rop3_row = '';
                 foreach ( $jp_data as $row ){
-                    if ( $row[3] == $rop3 && $row[1] === $country ){
+                    if ( $row[3] === $rop3 && $row[1] === $country ){
                         $jp_data_rop3_row = $row;
                         break;
                     }
@@ -333,7 +335,7 @@ class Disciple_Tools_People_Groups
                 // Attempt to locate corresponding imb csv row.
                 $imb_data_rop3_row = '';
                 foreach ( $imb_data as $row ){
-                    if ( $row[32] == $rop3 && $row[5] === $country ){
+                    if ( $row[32] === $rop3 && $row[5] === $country ){
                         $imb_data_rop3_row = $row;
                         break;
                     }
@@ -536,7 +538,7 @@ class Disciple_Tools_People_Groups
         foreach ( $jp_data as $row ){
             $country = $row[1];
             $rop3 = $row[3];
-            if ( isset( $country, $rop3 ) && ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) == 0 ) ){
+            if ( isset( $country, $rop3 ) && ( self::duplicate_db_checker_by_rop3( $country, $rop3 ) === 0 ) ){
                 $total_records++;
 
                 // Instantiate if need be.
@@ -577,7 +579,7 @@ class Disciple_Tools_People_Groups
         $columns = $data[0];
         $rop3_row = '';
         foreach ( $data as $row ) {
-            if ( $row[3] == $rop3 && $row[1] === $country ) {
+            if ( $row[3] === $rop3 && $row[1] === $country ) {
                 $rop3_row = $row;
                 break;
             }
@@ -594,7 +596,7 @@ class Disciple_Tools_People_Groups
         $imb_columns = $imb_data[0];
         $imb_rop3_row = '';
         foreach ( $imb_data as $imb_row ) {
-            if ( $imb_row[32] == $rop3 && $imb_row[5] === $country ) {
+            if ( $imb_row[32] === $rop3 && $imb_row[5] === $country ) {
                 $imb_rop3_row = $imb_row;
                 break;
             }

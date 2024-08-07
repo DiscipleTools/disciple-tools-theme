@@ -105,14 +105,14 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         //test contacts create
         $contact_shared_with = DT_Posts::get_shared_with( 'contacts', $contact['ID'], false );
-        $user_ids = array_map(  function ( $post ){
+        $user_ids = array_map(  function ( $post ) {
             return (int) $post['user_id'];
         }, $contact_shared_with );
         $this->assertContains( (int) $user_id, $user_ids );
 
         //test group create
         $group_shared_with = DT_Posts::get_shared_with( 'groups', $group['ID'], false );
-        $user_ids = array_map(  function ( $post ){
+        $user_ids = array_map(  function ( $post ) {
             return (int) $post['user_id'];
         }, $group_shared_with );
         $this->assertContains( (int) $user_id, $user_ids );
@@ -124,7 +124,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $update = DT_Posts::update_post( 'contacts', $contact['ID'], [ 'assigned_to' => $user_2 ], true, false );
         $this->assertNotWPError( $update );
         $contact_shared_with = DT_Posts::get_shared_with( 'contacts', $contact['ID'], false );
-        $user_ids = array_map(  function ( $post ){
+        $user_ids = array_map(  function ( $post ) {
             return (int) $post['user_id'];
         }, $contact_shared_with );
         $this->assertContains( (int) $user_id, $user_ids );

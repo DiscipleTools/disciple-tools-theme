@@ -30,11 +30,14 @@ class Disciple_Tools_Login_Base extends DT_Login_Page_Base
 
         if ( $login_page_enabled && ( $login_url === substr( $url, 0, strlen( $login_url ) ) ) ) {
             add_action( 'template_redirect', [ $this, 'theme_redirect' ] );
-            add_filter( 'dt_blank_access', function(){ return true;
+            add_filter( 'dt_blank_access', function () {
+                return true;
             }, 100, 1 );
-            add_filter( 'dt_allow_non_login_access', function(){ return true;
+            add_filter( 'dt_allow_non_login_access', function () {
+                return true;
             }, 100, 1 );
-            add_filter( 'dt_override_header_meta', function (){ return true;
+            add_filter( 'dt_override_header_meta', function () {
+                return true;
             }, 100, 1 );
 
             add_filter( 'dt_blank_title', [ $this, '_browser_tab_title' ] );

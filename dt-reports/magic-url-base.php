@@ -51,7 +51,8 @@ abstract class DT_Magic_Url_Base {
         // register url and access
         add_filter( 'dt_blank_access', [ $this, '_has_access' ] ); // gives access once above tests are passed
         add_filter( 'dt_templates_for_urls', [ $this, 'register_url' ], 199, 1 ); // registers url as valid once tests are passed
-        add_filter( 'dt_allow_non_login_access', function (){ // allows non-logged in visit
+        add_filter( 'dt_allow_non_login_access', function () {
+            // allows non-logged in visit
             return true;
         }, 100, 1 );
         add_filter( 'dt_blank_title', [ $this, 'page_tab_title' ] ); // adds basic title to browser tab

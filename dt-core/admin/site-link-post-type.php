@@ -355,8 +355,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $request_header = get_http_origin();
 
             foreach ( $approved_urls as $approved_url ) {
-                if ( $request_header == $approved_url ) {
-                    add_filter( 'rest_pre_serve_request', function( $value ) {
+                if ( $request_header === $approved_url ) {
+                    add_filter( 'rest_pre_serve_request', function ( $value ) {
                         header( 'Access-Control-Allow-Origin: ' . get_http_origin() );
                         header( 'Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS' );
                         header( 'Access-Control-Allow-Credentials: true' );
@@ -557,7 +557,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 foreach ( $field_data as $k => $v ) {
 
-                    if ( $v['section'] == $section ) {
+                    if ( $v['section'] === $section ) {
 
                         $data = $v['default'];
                         if ( isset( $fields[ $k ] ) && isset( $fields[ $k ][0] ) ) {
@@ -636,7 +636,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 // Iterate the options
                                 foreach ( $v['default'] as $vv ) {
                                     echo '<option value="' . esc_attr( $vv ) . '" ';
-                                    if ( $vv == $data ) {
+                                    if ( $vv === $data ) {
                                         echo 'selected';
                                     }
                                     echo '>' . esc_html( $vv ) . '</option>';
@@ -653,7 +653,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 // Iterate the options
                                 foreach ( $v['default'] as $kk => $vv ) {
                                     echo '<option value="' . esc_attr( $kk ) . '" ';
-                                    if ( $kk == $data ) {
+                                    if ( $kk === $data ) {
                                         echo 'selected';
                                     }
                                     echo '>' . esc_attr( $vv ) . '</option>';
@@ -690,7 +690,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public function meta_box_save( $post_id ) {
 
             // Verify
-            if ( get_post_type() != $this->post_type ) {
+            if ( get_post_type() !== $this->post_type ) {
                 return $post_id;
             }
 
@@ -699,7 +699,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 return $post_id;
             }
 
-            if ( isset( $_POST['post_type'] ) && 'page' == sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ) {
+            if ( isset( $_POST['post_type'] ) && 'page' === sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ) {
                 if ( ! current_user_can( 'edit_page', $post_id ) ) {
                     return $post_id;
                 }
@@ -710,7 +710,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             if ( isset( $_GET['action'] ) ) {
-                if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
+                if ( $_GET['action'] === 'trash' || $_GET['action'] === 'untrash' || $_GET['action'] === 'delete' ) {
                     $this->build_cached_option(); // rebuilds cache for options
                     return $post_id;
                 }
@@ -747,13 +747,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) ) );
 
                 // Escape and confirm format of the URL fields.
-                if ( 'url' == $field_data[ $f ]['type'] ) {
+                if ( 'url' === $field_data[ $f ]['type'] ) {
                     if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false ) {
                         ${$f} = parse_url( ${$f}, PHP_URL_HOST );
                     }
                 }
 
-                if ( 'ip_address' == $field_data[ $f ]['type'] ) {
+                if ( 'ip_address' === $field_data[ $f ]['type'] ) {
                     if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false || strpos( ${$f}, '/' ) !== false ) {
                         ${$f} = str_replace( 'https://', '', ${$f} );
                         ${$f} = str_replace( 'http://', '', ${$f} );
@@ -763,11 +763,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     }
                 }
 
-                if ( get_post_meta( $post_id, $f ) == '' ) {
+                if ( get_post_meta( $post_id, $f ) === '' ) {
                     add_post_meta( $post_id, $f, ${$f}, true );
-                } elseif ( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+                } elseif ( ${$f} !== get_post_meta( $post_id, $f, true ) ) {
                     update_post_meta( $post_id, $f, ${$f} );
-                } elseif ( ${$f} == '' ) {
+                } elseif ( ${$f} === '' ) {
                     delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
                 }
             }
@@ -858,7 +858,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $this->build_cached_option(); // rests cached version of the site_link_details
 
             // check if new
-            if ( 'page-new.php' == $pagenow /* check if this is the post-new page */ ) {
+            if ( 'page-new.php' === $pagenow /* check if this is the post-new page */ ) {
                 echo 'First save the record';
             } else {
                 if ( $this->is_key_locked( $post_id, true ) /* check if key has been created and linked */ ) {
@@ -975,7 +975,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             if ( $this->post_type === $pt ) {
 
                 $url = self::get_current_site_base_url();
-                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? "http://$url" : "https://$url";
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] !== 'on' ) ) ? "http://$url" : "https://$url";
 
                 echo "<script type='text/javascript'>
 
@@ -1068,7 +1068,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public function get_url_path() {
             if ( isset( $_SERVER['HTTP_HOST'] ) ) {
-                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
+                $url  = ( !isset( $_SERVER['HTTPS'] ) || @( $_SERVER['HTTPS'] !== 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
                 if ( isset( $_SERVER['REQUEST_URI'] ) ) {
                     $url .= sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
                 }
@@ -1078,7 +1078,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         public function enter_title_here( $title ) {
-            if ( get_post_type() == $this->post_type ) {
+            if ( get_post_type() === $this->post_type ) {
                 $title = __( 'Enter the title here' );
             }
 
@@ -1116,7 +1116,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 return false;
             }
 
-            if ( $site1 == $site2 ) {
+            if ( $site1 === $site2 ) {
                 delete_post_meta( $post_id, 'site_key' );
                 if ( $admin_notice ) {
                     self::admin_notice( 'Sites1 and Site2 cannot be the same site.', 'error' );
@@ -1204,7 +1204,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public static function get_non_local_site( $site1, $site2 ) {
             $local_site = self::get_current_site_base_url();
-            if ( $local_site == $site1 ) {
+            if ( $local_site === $site1 ) {
                 return $site2;
             } else {
                 return $site1;
@@ -1222,10 +1222,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function verify_one_site_is_local( $site1, $site2 ) {
             $local_site = self::get_current_site_base_url();
-            if ( $local_site == $site1 ) {
+            if ( $local_site === $site1 ) {
                 return true;
             }
-            if ( $local_site == $site2 ) {
+            if ( $local_site === $site2 ) {
                 return true;
             }
 
@@ -1416,7 +1416,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                  */
 
                 if ( isset( $array['token'], $array['token_as_transfer_key'] ) && $array['token_as_transfer_key'] ){
-                    if ( $array['token'] == $transfer_token ){
+                    if ( $array['token'] === $transfer_token ){
                         return $key;
                     }
                 } else {
@@ -1426,9 +1426,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     $next = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '+1 hour' ) );
                     $next_hour = md5( $key . $next );
 
-                    if ( $current_hour == $transfer_token
-                        || $past_hour == $transfer_token
-                        || $next_hour == $transfer_token ){
+                    if ( $current_hour === $transfer_token
+                        || $past_hour === $transfer_token
+                        || $next_hour === $transfer_token ){
 
                         return $key;
                     }
@@ -1464,7 +1464,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public static function filter_for_target_site( $value ) {
             $local_site = self::get_current_site_base_url();
-            if ( $local_site == $value['site1'] ) {
+            if ( $local_site === $value['site1'] ) {
                 return $value['site2'];
             } else {
                 return $value['site1'];
@@ -1580,7 +1580,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 if ( isset( $_GET['post_type'] ) ) {
                     $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
-                    if ( $pt === $this->post_type && $pagenow == 'edit.php' ) {
+                    if ( $pt === $this->post_type && $pagenow === 'edit.php' ) {
                         add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                         add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
                     }

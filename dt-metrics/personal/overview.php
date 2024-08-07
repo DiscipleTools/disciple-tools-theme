@@ -77,7 +77,7 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
             $this->namespace, 'data', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'overview' ],
-                'permission_callback' => function(){
+                'permission_callback' => function () {
                     return $this->has_permission();
                 },
             ]

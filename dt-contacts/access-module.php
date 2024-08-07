@@ -350,7 +350,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $declared_fields  = dt_array_merge_recursive_distinct( $declared_fields, $fields );
 
             //order overall status options
-            uksort( $declared_fields['overall_status']['default'], function ( $a, $b ) use ( $fields ){
+            uksort( $declared_fields['overall_status']['default'], function ( $a, $b ) use ( $fields ) {
                 return array_search( $a, array_keys( $fields['overall_status']['default'] ) ) <=> array_search( $b, array_keys( $fields['overall_status']['default'] ) );
             } );
             $fields = $declared_fields;
@@ -417,7 +417,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $can_update = true;
         }
         $disabled = 'disabled';
-        if ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) {
+        if ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] === get_current_user_id() ) {
             $disabled = '';
         }
         if ( isset( $post['post_type'] ) && $post['post_type'] === 'contacts' && $field_key === 'overall_status'
@@ -663,8 +663,8 @@ class DT_Contacts_Access extends DT_Module_Base {
     public function dt_record_top_above_details( $post_type, $contact ){
         if ( $post_type === 'contacts' && isset( $contact['type'] ) && $contact['type']['key'] === 'access' ) {
             $current_user = wp_get_current_user();
-            if ( isset( $contact['overall_status'] ) && $contact['overall_status']['key'] == 'assigned' &&
-                isset( $contact['assigned_to'] ) && $contact['assigned_to']['id'] == $current_user->ID ) { ?>
+            if ( isset( $contact['overall_status'] ) && $contact['overall_status']['key'] === 'assigned' &&
+                isset( $contact['assigned_to'] ) && $contact['assigned_to']['id'] === $current_user->ID ) { ?>
                 <section class="cell accept-contact" id="accept-contact">
                     <div class="bordered-box detail-notification-box">
                         <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
@@ -688,7 +688,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 if ( !isset( $existing_post['assigned_to'] ) || $fields['assigned_to'] !== $existing_post['assigned_to']['assigned-to'] ){
                     $user_id = dt_get_user_id_from_assigned_to( $fields['assigned_to'] );
                     if ( !isset( $fields['overall_status'] ) && ( !isset( $existing_post['overall_status']['key'] ) || $existing_post['overall_status']['key'] !== 'closed' ) ){
-                        if ( $user_id != get_current_user_id() ){
+                        if ( $user_id !== get_current_user_id() ){
                             if ( current_user_can( 'assign_any_contacts' ) ) {
                                 $fields['overall_status'] = 'assigned';
                             }
@@ -833,7 +833,7 @@ class DT_Contacts_Access extends DT_Module_Base {
      * @param $previous_values
      */
     public function check_seeker_path( $contact_id, $contact, $previous_values ){
-        if ( isset( $contact['seeker_path']['key'] ) && $contact['seeker_path']['key'] != 'none' ){
+        if ( isset( $contact['seeker_path']['key'] ) && $contact['seeker_path']['key'] !== 'none' ){
             $current_key = $contact['seeker_path']['key'];
             $prev_key = isset( $previous_values['seeker_path']['key'] ) ? $previous_values['seeker_path']['key'] : 'none';
             $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
@@ -842,7 +842,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $current_index = array_search( $current_key, $option_keys );
             $prev_option_key = $option_keys[ $current_index - 1 ];
 
-            if ( $prev_option_key != $prev_key && $current_index > array_search( $prev_key, $option_keys ) ){
+            if ( $prev_option_key !== $prev_key && $current_index > array_search( $prev_key, $option_keys ) ){
                 global $wpdb;
                 $seeker_path_activity = $wpdb->get_results( $wpdb->prepare( "
                     SELECT meta_value, hist_time, meta_id
@@ -1131,7 +1131,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 ],
             ],
         ];
-        $contact_filter_ids = array_map( function ( $a ){
+        $contact_filter_ids = array_map( function ( $a ) {
             return $a['ID'];
         }, $filters );
         foreach ( $default_filters as $filter ) {
@@ -1314,15 +1314,15 @@ class DT_Contacts_Access extends DT_Module_Base {
         $update = [];
         $key = key( $field );
 
-        if ( $key == 'quick_button_no_answer' ) {
+        if ( $key === 'quick_button_no_answer' ) {
             $update['seeker_path'] = 'attempted';
-        } elseif ( $key == 'quick_button_phone_off' ) {
+        } elseif ( $key === 'quick_button_phone_off' ) {
             $update['seeker_path'] = 'attempted';
-        } elseif ( $key == 'quick_button_contact_established' ) {
+        } elseif ( $key === 'quick_button_contact_established' ) {
             $update['seeker_path'] = 'established';
-        } elseif ( $key == 'quick_button_meeting_scheduled' ) {
+        } elseif ( $key === 'quick_button_meeting_scheduled' ) {
             $update['seeker_path'] = 'scheduled';
-        } elseif ( $key == 'quick_button_meeting_complete' ) {
+        } elseif ( $key === 'quick_button_meeting_complete' ) {
             $update['seeker_path'] = 'met';
         }
 
@@ -1337,19 +1337,19 @@ class DT_Contacts_Access extends DT_Module_Base {
     public static function update_quick_action_buttons( $contact_id, $seeker_path ){
         if ( $seeker_path === 'established' ){
             $quick_button = get_post_meta( $contact_id, 'quick_button_contact_established', true );
-            if ( empty( $quick_button ) || $quick_button == '0' ){
+            if ( empty( $quick_button ) || $quick_button === '0' ){
                 update_post_meta( $contact_id, 'quick_button_contact_established', '1' );
             }
         }
         if ( $seeker_path === 'scheduled' ){
             $quick_button = get_post_meta( $contact_id, 'quick_button_meeting_scheduled', true );
-            if ( empty( $quick_button ) || $quick_button == '0' ){
+            if ( empty( $quick_button ) || $quick_button === '0' ){
                 update_post_meta( $contact_id, 'quick_button_meeting_scheduled', '1' );
             }
         }
         if ( $seeker_path === 'met' ){
             $quick_button = get_post_meta( $contact_id, 'quick_button_meeting_complete', true );
-            if ( empty( $quick_button ) || $quick_button == '0' ){
+            if ( empty( $quick_button ) || $quick_button === '0' ){
                 update_post_meta( $contact_id, 'quick_button_meeting_complete', '1' );
             }
         }
@@ -1384,7 +1384,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     private static function check_requires_update( $contact_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, 'requires_update', true );
-            if ( $requires_update == 'yes' || $requires_update == true || $requires_update == '1' ){
+            if ( $requires_update === 'yes' || $requires_update === true || $requires_update === '1' ){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
                 if ( current_user_can( 'dt_all_access_contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, 'assigned_to', true ) ) === get_current_user_id() ){

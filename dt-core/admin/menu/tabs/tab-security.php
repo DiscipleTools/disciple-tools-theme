@@ -39,14 +39,14 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function add_tab( $tab ) {
         echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=security" class="nav-tab ';
-        if ( $tab == 'security' ) {
+        if ( $tab === 'security' ) {
             echo 'nav-tab-active';
         }
         echo '">'. esc_attr__( 'Security', 'disciple_tools' ) .'</a>';
     }
 
     public function content( $tab ) {
-        if ( 'security' == $tab ) {
+        if ( 'security' === $tab ) {
             // security
             self::template( 'begin', 1 );
 
@@ -203,7 +203,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             preg_match_all( $re, $api_whitelist, $matches, PREG_SET_ORDER, 0 );
             if ( isset( $matches ) && count( $matches ) ) {
-                $api_whitelist = array_map( function( $match ) {
+                $api_whitelist = array_map( function ( $match ) {
                     return 'wp-json/' . $match[1];
                 }, $matches );
             }

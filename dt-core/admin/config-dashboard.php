@@ -231,7 +231,7 @@ final class Disciple_Tools_Dashboard
 
         add_meta_box( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), 'dt_show_news_widget', 'dashboard', 'side', 'high' );
 
-        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function () {
 
             $setup_options = get_option( 'dt_setup_wizard_options', [] );
             $default = [
@@ -364,7 +364,7 @@ final class Disciple_Tools_Dashboard
 }
 
 
-add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
+add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ) {
     $mapbox_key = DT_Mapbox_API::get_key();
 
     $items['https_check'] = [

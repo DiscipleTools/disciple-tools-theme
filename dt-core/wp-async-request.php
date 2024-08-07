@@ -167,7 +167,7 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
                 $this->run_action();
             }
 
-            add_filter( 'dt_die_handler', function() {
+            add_filter( 'dt_die_handler', function () {
                 die();
             } );
             wp_die();
@@ -204,12 +204,12 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
             $i = wp_nonce_tick();
 
             // Nonce generated 0-12 hours ago
-            if ( substr( wp_hash( $i . $action . get_class( $this ), 'nonce' ), -12, 10 ) == $nonce ) {
+            if ( substr( wp_hash( $i . $action . get_class( $this ), 'nonce' ), -12, 10 ) === $nonce ) {
                 return 1;
             }
 
             // Nonce generated 12-24 hours ago
-            if ( substr( wp_hash( ( $i - 1 ) . $action . get_class( $this ), 'nonce' ), -12, 10 ) == $nonce ) {
+            if ( substr( wp_hash( ( $i - 1 ) . $action . get_class( $this ), 'nonce' ), -12, 10 ) === $nonce ) {
                 return 2;
             }
 

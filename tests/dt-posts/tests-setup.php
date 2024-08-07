@@ -1,14 +1,14 @@
 <?php
 
 
-add_filter( 'dt_details_additional_tiles', function ( $tiles, $post_type ){
+add_filter( 'dt_details_additional_tiles', function ( $tiles, $post_type ) {
     $tiles['a_beautiful_tile'] = [
         'label' => 'A beautiful tile'
     ];
     return $tiles;
 }, 10, 2 );
 
-add_filter( 'dt_custom_fields_settings', function( $fields, $post_type ){
+add_filter( 'dt_custom_fields_settings', function ( $fields, $post_type ) {
     //@todo connection
 
     $fields['number_test'] = [

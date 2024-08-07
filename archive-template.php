@@ -51,7 +51,7 @@ dt_please_log_in();
                             }
                         }
                         //order fields alphabetically by Name
-                        uasort( $all_searchable_fields, function ( $a, $b ){
+                        uasort( $all_searchable_fields, function ( $a, $b ) {
                             return $a['name'] <=> $b['name'];
                         });
                         ?>
@@ -153,7 +153,7 @@ dt_please_log_in();
                         }
                     }
                     //order fields alphabetically by Name
-                    uasort( $all_searchable_fields, function ( $a, $b ){
+                    uasort( $all_searchable_fields, function ( $a, $b ) {
                         return $a['name'] <=> $b['name'];
                     });
                     ?>
@@ -257,8 +257,8 @@ dt_please_log_in();
                                         }
 
                                         // Sort identified list of split by fields;
-                                        uasort( $split_by_fields, function ( $a, $b ){
-                                            if ( $a['name'] == $b['name'] ){
+                                        uasort( $split_by_fields, function ( $a, $b ) {
+                                            if ( $a['name'] === $b['name'] ){
                                                 return 0;
                                             }
                                             return ( $a['name'] < $b['name'] ) ? -1 : 1;
@@ -516,7 +516,7 @@ dt_please_log_in();
                         }
 
                         //order fields alphabetically by Name
-                        uasort( $post_settings['fields'], function ( $a, $b ){
+                        uasort( $post_settings['fields'], function ( $a, $b ) {
                             return $a['name'] <=> $b['name'];
                         });
 
@@ -576,7 +576,7 @@ dt_please_log_in();
                             </div>
                             <?php endif; ?>
                                 <?php
-                                if ( $post_type == 'contacts' ) {?>
+                                if ( $post_type === 'contacts' ) {?>
                                     <?php if ( isset( $field_options['subassigned'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
                                         <?php $field_options['subassigned']['custom_display'] = false ?>
@@ -631,7 +631,7 @@ dt_please_log_in();
                                     </div>
                                     <?php endif; ?>
 
-                                <?php } elseif ( $post_type == 'groups' ) {?>
+                                <?php } elseif ( $post_type === 'groups' ) {?>
                                     <div class="cell small-12 medium-4">
                                     <?php $field_options['coaches']['custom_display'] = false ?>
                                     <?php
@@ -735,7 +735,7 @@ dt_please_log_in();
                                 $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
                                 foreach ( $field_options as $field_option => $value ) :
                                     if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
-                                        && $value['type'] != 'communication_channel' && empty( $value['hidden'] ) ) : ?>
+                                        && $value['type'] !== 'communication_channel' && empty( $value['hidden'] ) ) : ?>
                                         <div class="cell small-12 medium-<?php echo esc_attr( ( $value['type'] === 'multi_select' && ( $value['display'] ?? '' ) !== 'typeahead' ) ? '12' : '4' ) ?>">
                                             <?php $field_options[$field_option]['custom_display'] = false;
                                             render_field_for_display( $field_option, $field_options, null, false, false, 'bulk_' ); ?>
@@ -931,7 +931,7 @@ Thanks!';
                     <?php $fields = [];
                     $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'communication_channel' ];
                     //order fields alphabetically by Name
-                    uasort( $field_options, function ( $a, $b ){
+                    uasort( $field_options, function ( $a, $b ) {
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
                     });
                     foreach ( $field_options as $field_key => $field ){
@@ -1004,7 +1004,7 @@ Thanks!';
                             <div class="tabs-panel <?php if ( $index === 0 ){ echo 'is-active'; } ?>"" id="<?php echo esc_html( $field ) ?>">
                                 <div class="section-header"><?php echo esc_html( $field === 'post_date' ? __( 'Creation Date', 'disciple_tools' ) : $field_options[$field]['name'] ?? $field ) ?></div>
                                 <div id="<?php echo esc_html( $field ) ?>-options">
-                                    <?php if ( isset( $field_options[$field] ) && $field_options[$field]['type'] == 'key_select' ) :
+                                    <?php if ( isset( $field_options[$field] ) && $field_options[$field]['type'] === 'key_select' ) :
                                         if ( !isset( $field_options[$field]['default']['none'] ) ) :?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
@@ -1026,7 +1026,7 @@ Thanks!';
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
-                                    <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]['type'] == 'boolean' ) : ?>
+                                    <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]['type'] === 'boolean' ) : ?>
                                         <div class="boolean_options">
                                             <label style="cursor: pointer">
                                                 <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"

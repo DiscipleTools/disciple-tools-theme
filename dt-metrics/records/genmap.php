@@ -43,7 +43,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'tree' ],
-                    'permission_callback' => function() {
+                    'permission_callback' => function () {
                         return $this->has_permission();
                     }
                 ],
@@ -344,7 +344,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     public function exclude_archived_children( $children, $archived_key ): array {
         $updated_children = [];
         foreach ( $children ?? [] as $child ) {
-            if ( isset( $child['status'] ) && $child['status'] == $archived_key ) {
+            if ( isset( $child['status'] ) && $child['status'] === $archived_key ) {
                 $child['children'] = $this->exclude_archived_children( $child['children'], $archived_key );
 
                 if ( !empty( $child['children'] ) ) {

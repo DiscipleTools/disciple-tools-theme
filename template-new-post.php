@@ -64,7 +64,7 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
                     </div>
                     <div class="type-options">
                         <?php if ( isset( $post_settings['fields']['type']['default'] ) ) {
-                            uasort( $post_settings['fields']['type']['default'], function ( $a, $b ){
+                            uasort( $post_settings['fields']['type']['default'], function ( $a, $b ) {
                                 return ( $a['order'] ?? 100 ) <=> ( $b['order'] ?? 100 );
                             });
                         }

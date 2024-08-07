@@ -440,7 +440,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             if ( empty( $title ) ){
                 return new WP_Error( __FUNCTION__, 'Name/Title field can not be empty', [ 'status' => 400 ] );
             }
-            if ( $existing_post['name'] != $title ) {
+            if ( $existing_post['name'] !== $title ) {
                 wp_update_post( [
                     'ID' => $post_id,
                     'post_title' => $title
@@ -963,7 +963,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             $p2p_key = $post_fields[$field_key]['p2p_key'] ?? '';
             $p2p_direction = $post_fields[$field_key]['p2p_direction'] ?? '';
 
-            $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( ( $p2p_direction == 'from' ) || ( $p2p_direction == 'any' ) ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
+            $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON group_by." . ( ( ( $p2p_direction === 'from' ) || ( $p2p_direction === 'any' ) ) ? 'p2p_from' : 'p2p_to' ) . " = p.ID AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
             if ( $p2p_direction === 'any' ){
                 $group_by_join = "LEFT JOIN $wpdb->p2p group_by ON ( group_by.p2p_from = p.ID OR group_by.p2p_to = p.ID ) AND group_by.p2p_type = '" . esc_sql( $p2p_key ) . "'";
             }
@@ -1045,19 +1045,19 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $post['value'] = 'NULL';
                 $post['label'] = __( 'None Set', 'disciple_tools' );
                 $updated_posts[] = $post;
-            } elseif ( $group_by_field_type == 'location' ){
+            } elseif ( $group_by_field_type === 'location' ){
                 $grid = $geocoder->query_by_grid_id( $post['value'] );
                 $post['label'] = $grid['name'] ?? $post['value'];
                 $updated_posts[] = $post;
-            } elseif ( $group_by_field_type == 'location_meta' ){
+            } elseif ( $group_by_field_type === 'location_meta' ){
                 $post['label'] = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( $post['value'] ) ?? $post['value'];
                 $updated_posts[] = $post;
-            } elseif ( $group_by_field_type == 'user_select' ){
+            } elseif ( $group_by_field_type === 'user_select' ){
                 $user_id = dt_get_user_id_from_assigned_to( $post['value'] );
                 $post['label'] = dt_get_user_display_name( $user_id ) ?: $post['value'];
                 $post['value'] = $user_id;
                 $updated_posts[] = $post;
-            } elseif ( $group_by_field_type == 'boolean' ){
+            } elseif ( $group_by_field_type === 'boolean' ){
                 $post['label'] = $post['value'] ? _x( 'True', 'disciple_tools' ) : _x( 'False', 'disciple_tools' );
                 if ( !$post['value'] && intval( $post['count'] ) > 0 ){
                     $post['value'] = '0';
@@ -1079,8 +1079,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Sort returning posts by count.
-        usort( $updated_posts, function ( $a, $b ){
-            if ( $a['count'] == $b['count'] ){
+        usort( $updated_posts, function ( $a, $b ) {
+            if ( $a['count'] === $b['count'] ){
                 return 0;
             }
             return ( $a['count'] > $b['count'] ) ? -1 : 1;
@@ -1177,7 +1177,9 @@ class DT_Posts extends Disciple_Tools_Posts {
                 ", $current_user->ID, $action, $post_type, $field_settings[$args['field_key']]['p2p_key'], $field_type, $field_type, $post_type ), OBJECT );
 
                 $post_ids = array_map(
-                    function ( $post ) { return (int) $post->ID; }, $posts
+                    function ( $post ) {
+                        return (int) $post->ID;
+                    }, $posts
                 );
                 foreach ( $posts_2 as $p ){
                     if ( !in_array( (int) $p->ID, $post_ids, true ) ){
@@ -1215,7 +1217,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         $post_ids = array_map(
-            function( $post ) {
+            function ( $post ) {
                 return (int) $post->ID;
             },
             $posts
@@ -1447,7 +1449,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function update_post_comment( int $comment_id, string $comment_content, bool $check_permissions = true, string $comment_type = 'comment', array $args = [] ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id !== get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
@@ -1475,7 +1477,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function delete_post_comment( int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
-        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
+        if ( $check_permissions && ( ( isset( $comment->user_id ) && $comment->user_id !== get_current_user_id() ) || !self::can_update( get_post_type( $comment->comment_post_ID ), $comment->comment_post_ID ?? 0 ) ) ) {
             return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
@@ -1492,7 +1494,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         // If the reaction exists for this user, then delete it
         $reactions = get_comment_meta( $comment_id, $reaction );
         foreach ( $reactions as $reaction_user_id ) {
-            if ( $reaction_user_id == $user_id ) {
+            if ( $reaction_user_id === $user_id ) {
                 delete_comment_meta( $comment_id, $reaction, $reaction_user_id );
                 return true;
             }
@@ -1848,13 +1850,13 @@ class DT_Posts extends Disciple_Tools_Posts {
             $field_value = $activity->meta_value;
             $field_old_value = $activity->old_value;
             $field_note_raw = $activity->object_note_raw;
-            $is_deleted = strtolower( trim( $field_value ) ) == 'value_deleted';
+            $is_deleted = strtolower( trim( $field_value ) ) === 'value_deleted';
 
             // Ensure to accommodate special case field types.
             if ( in_array( $field_action, [ 'connected to', 'disconnected from' ] ) ) {
 
                 // Determine actual field key to be used.
-                $field_setting = self::get_post_field_settings_by_p2p( $post_type_fields, $field_key, ( $field_action == 'disconnected from' ) ? [ 'from', 'to', 'any' ] : [ 'to', 'from', 'any' ] );
+                $field_setting = self::get_post_field_settings_by_p2p( $post_type_fields, $field_key, ( $field_action === 'disconnected from' ) ? [ 'from', 'to', 'any' ] : [ 'to', 'from', 'any' ] );
                 if ( ! empty( $field_setting ) ) {
                     $field_key = $field_setting['key'];
                     $field_type = $field_action;
@@ -1863,7 +1865,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     $field_key  = null;
                     $field_type = null;
                 }
-            } elseif ( ( empty( $field_type ) || $field_type === 'communication_channel' ) && substr( $field_key, 0, strlen( 'contact_' ) ) == 'contact_' ){
+            } elseif ( ( empty( $field_type ) || $field_type === 'communication_channel' ) && substr( $field_key, 0, strlen( 'contact_' ) ) === 'contact_' ){
                 $field_type = 'communication_channel';
 
                 // Determine actual field key.
@@ -1917,7 +1919,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 switch ( $field_type ){
                     case 'connected to':
                     case 'disconnected from':
-                        $is_deleted = strtolower( trim( $field_action ) ) == 'disconnected from';
+                        $is_deleted = strtolower( trim( $field_action ) ) === 'disconnected from';
 
                         $reverted_updates[$field_key]['values'][$field_value] = [
                             'value' => $field_value,
@@ -2004,7 +2006,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                             $found_existing_option = false;
                             if ( isset( $post[$field_key] ) && is_array( $post[$field_key] ) ){
                                 foreach ( $post[$field_key] as $option ){
-                                    if ( $revert_key == $option['ID'] ){
+                                    if ( $revert_key === $option['ID'] ){
                                         $found_existing_option = true;
                                     }
                                 }
@@ -2020,7 +2022,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                             // Remove any flagged existing values.
                             foreach ( $post[$field_key] as $option ){
                                 $id = $option['ID'];
-                                if ( $revert_key == $id ){
+                                if ( $revert_key === $id ){
                                     $values[] = [
                                         'value' => $id,
                                         'delete' => true
@@ -2058,23 +2060,23 @@ class DT_Posts extends Disciple_Tools_Posts {
                                 foreach ( $post[$field_key] as $option ){
 
                                     // Determine id to be used, based on field type
-                                    if ( $reverted['field_type'] == 'location' ) {
+                                    if ( $reverted['field_type'] === 'location' ) {
                                         $id = $option['id'];
 
-                                    } elseif ( $reverted['field_type'] == 'location_meta' ) {
+                                    } elseif ( $reverted['field_type'] === 'location_meta' ) {
                                         $id = $option['grid_meta_id'];
 
-                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                    } elseif ( $reverted['field_type'] === 'communication_channel' ) {
                                         $id = $option['value'];
 
-                                    } elseif ( $reverted['field_type'] == 'link' ) {
+                                    } elseif ( $reverted['field_type'] === 'link' ) {
                                         $id = $option['value'];
 
                                     } else {
                                         $id = $option;
                                     }
 
-                                    if ( $revert_key == $id ){
+                                    if ( $revert_key === $id ){
                                         $found_existing_option = true;
                                     }
                                 }
@@ -2083,7 +2085,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                             if ( !$found_existing_option ){
 
                                 // Structure value accordingly based on field type.
-                                if ( $reverted['field_type'] == 'location_meta' ){
+                                if ( $reverted['field_type'] === 'location_meta' ){
 
                                     /**
                                      * Assuming suitable mapping APIs are available, execute a lookup query, based on
@@ -2113,12 +2115,12 @@ class DT_Posts extends Disciple_Tools_Posts {
                                             }
                                         }
                                     }
-                                } elseif ( $reverted['field_type'] == 'communication_channel' ){
+                                } elseif ( $reverted['field_type'] === 'communication_channel' ){
                                     $values[] = [
                                         'key' => $revert_obj['meta']['meta_key'] ?? null,
                                         'value' => $revert_obj['value']
                                     ];
-                                } elseif ( $reverted['field_type'] == 'link' ) {
+                                } elseif ( $reverted['field_type'] === 'link' ) {
                                     $values[] = [
                                         'type' => 'default',
                                         'value' => $revert_obj['value']
@@ -2135,13 +2137,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                             foreach ( $post[$field_key] as $option ){
 
                                 // Determine id to be used, based on field type
-                                if ( $reverted['field_type'] == 'location' ) {
+                                if ( $reverted['field_type'] === 'location' ) {
                                     $id = $option['id'];
 
-                                } elseif ( $reverted['field_type'] == 'location_meta' ) {
+                                } elseif ( $reverted['field_type'] === 'location_meta' ) {
                                     $id = $option['grid_meta_id'];
 
-                                } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                } elseif ( $reverted['field_type'] === 'communication_channel' ) {
 
                                     // Force a match if key is found.
                                     if ( $option['key'] === ( $revert_obj['meta']['meta_key'] ?? '' ) ){
@@ -2149,7 +2151,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     } else {
                                         $id = '';
                                     }
-                                } elseif ( $reverted['field_type'] == 'link' ) {
+                                } elseif ( $reverted['field_type'] === 'link' ) {
 
                                     // Force a match if key is found.
                                     if ( $option['meta_id'] === ( $revert_obj['meta']['meta_id'] ?? '' ) ){
@@ -2161,16 +2163,16 @@ class DT_Posts extends Disciple_Tools_Posts {
                                     $id = $option;
                                 }
 
-                                if ( $revert_key == $id ){
+                                if ( $revert_key === $id ){
 
                                     // Determine correct value label to be used.
-                                    if ( $reverted['field_type'] == 'location_meta' ) {
+                                    if ( $reverted['field_type'] === 'location_meta' ) {
                                         $key = 'grid_meta_id';
 
-                                    } elseif ( $reverted['field_type'] == 'communication_channel' ) {
+                                    } elseif ( $reverted['field_type'] === 'communication_channel' ) {
                                         $key = 'key';
                                         $id = $revert_obj['meta']['meta_key'] ?? $revert_key;
-                                    } elseif ( $reverted['field_type'] == 'link' ) {
+                                    } elseif ( $reverted['field_type'] === 'link' ) {
                                         $key = 'meta_id';
                                         $id = $revert_obj['meta']['meta_id'] ?? $revert_key;
                                     } else {
@@ -2189,7 +2191,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                     // Package any available values to be updated, accordingly; by field type.
                     if ( !empty( $values ) ){
-                        if ( $reverted['field_type'] == 'communication_channel' ){
+                        if ( $reverted['field_type'] === 'communication_channel' ){
                             $post_updates[$field_key] = $values;
                         } else {
                             $post_updates[$field_key] = [
@@ -2222,7 +2224,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                     break;
                 case 'user_select':
                     $user_select_value = $reverted['values'][0];
-                    if ( $user_select_value != 'user-' ){
+                    if ( $user_select_value !== 'user-' ){
                         $post_updates[$field_key] = $user_select_value;
                     } else {
                         $post_updates[$field_key] = '';
@@ -2263,7 +2265,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
     public static function get_post_field_settings_by_p2p( $fields, $p2p_key, $p2p_direction ): array {
         foreach ( $fields as $key => $field ) {
-            if ( isset( $field['p2p_key'], $field['p2p_direction'] ) && $field['p2p_key'] == $p2p_key && in_array( $field['p2p_direction'], $p2p_direction ) ){
+            if ( isset( $field['p2p_key'], $field['p2p_direction'] ) && $field['p2p_key'] === $p2p_key && in_array( $field['p2p_direction'], $p2p_direction ) ){
                 return [
                     'key' => $key,
                     'settings' => $field
@@ -2386,7 +2388,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
         $result = $wpdb->delete( $table, $where );
 
-        if ( $result == false ) {
+        if ( $result === false ) {
             return new WP_Error( 'remove_shared', 'Record not deleted.', [ 'status' => 418 ] );
         } else {
 
@@ -2684,7 +2686,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             foreach ( $fields as $field_key => $field ){
                 if ( $field['type'] === 'key_select' || $field['type'] === 'multi_select' ){
                     foreach ( $field['default'] as $option_key => $option_value ){
-                        if ( isset( $option_value['deleted'] ) && $option_value['deleted'] == true ){
+                        if ( isset( $option_value['deleted'] ) && $option_value['deleted'] === true ){
                             unset( $fields[$field_key]['default'][$option_key] );
                         }
                     }
@@ -2696,7 +2698,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $load_tags ){
             global $wpdb;
             //get tag fields
-            $tag_fields = array_keys( array_filter( $fields, function ( $field ){
+            $tag_fields = array_keys( array_filter( $fields, function ( $field ) {
                 return $field['type'] === 'tags';
             } ) );
 
@@ -2743,7 +2745,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     public static function get_default_list_column_order( $post_type ){
         $fields = self::get_post_field_settings( $post_type );
         $columns = [];
-        uasort( $fields, function ( $a, $b ){
+        uasort( $fields, function ( $a, $b ) {
             $a_order = 0;
             if ( isset( $a['show_in_table'] ) ){
                 $a_order = is_numeric( $a['show_in_table'] ) ? $a['show_in_table'] : 90;
@@ -2785,7 +2787,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
         }
 
-        uasort( $tile_options[ $post_type ], function ( $a, $b ){
+        uasort( $tile_options[ $post_type ], function ( $a, $b ) {
             return ( $a['tile_priority'] ?? 100 ) <=> ( $b['tile_priority'] ?? 100 );
         });
         foreach ( $tile_options[$post_type] as $tile_key => &$tile_value ){
@@ -3065,7 +3067,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 case 'datetime':
                 case 'user_select':
                 case 'number':
-                    return $post[ $field_id ] == $value;
+                    return $post[ $field_id ] === $value;
                 case 'multi_select':
                 case 'links':
                 case 'tags':
@@ -3080,7 +3082,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                             // Attempt to find match within incoming value array.
                             if ( ! empty( $value ) && is_array( $value ) ) {
                                 foreach ( $value['values'] ?? $value as $val ) {
-                                    if ( $entry['value'] == $val['value'] ) {
+                                    if ( $entry['value'] === $val['value'] ) {
                                         return true;
                                     }
                                 }
