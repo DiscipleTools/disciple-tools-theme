@@ -146,7 +146,7 @@ class DT_Duplicate_Checker_And_Merging {
         if ( is_wp_error( $res ) ){
             return $res;
         }
-        $ids = array_map( function ( $post ){
+        $ids = array_map( function ( $post ) {
             return $post->ID;
         }, $res['posts'] );
 
@@ -352,7 +352,7 @@ class DT_Duplicate_Checker_And_Merging {
                     $update[ $key ] = $fields['timestamp'] ?? '';
                 }
                 if ( $field_type === 'array' && empty( $primary_post[ $key ] ) ) {
-                    if ( $key != 'duplicate_data' ) {
+                    if ( $key !== 'duplicate_data' ) {
                         $update[ $key ] = $fields;
                     }
                 }

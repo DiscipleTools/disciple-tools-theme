@@ -59,7 +59,7 @@ function dt_dra_disable_via_filters() {
 /*
  * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
  */
-add_filter( 'rest_endpoints', function( $endpoints ){
+add_filter( 'rest_endpoints', function ( $endpoints ) {
     $allowed_wp_v2_paths = apply_filters( 'allowed_wp_v2_paths', [ '/wp/v2/users/me' ] ); // enable wp/v2 endpoints in certain circumstances
     foreach ( $endpoints as $path => $endpoint ){
         if ( trailingslashit( $path ) === '/wp/v2/' ){
@@ -99,7 +99,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
      * JWT token authentication is also open on the Disciple.Tools use of WP REST API
      */
     $path = dt_get_url_path();
-    if ( $path == 'wp-json/jwt-auth/v1/token' || $path == 'wp-json/jwt-auth/v1/token/validate' ) {
+    if ( $path === 'wp-json/jwt-auth/v1/token' || $path === 'wp-json/jwt-auth/v1/token/validate' ) {
         $authorized = true;
     }
 

@@ -426,7 +426,7 @@ class Disciple_Tools_Post_Type_Template {
     }
 }
 
-add_action( 'after_setup_theme', function (){
+add_action( 'after_setup_theme', function () {
     $custom_post_types = get_option( 'dt_custom_post_types', [] );
     $already_registered = apply_filters( 'dt_registered_post_types', [] );
 
@@ -441,7 +441,7 @@ add_action( 'after_setup_theme', function (){
  * Set default list view permissions
  * only need to register this hook once
  */
-add_filter( 'dt_filter_access_permissions', function ( $permissions, $post_type ){
+add_filter( 'dt_filter_access_permissions', function ( $permissions, $post_type ) {
     if ( DT_Posts::can_view_all( $post_type ) ){
         $permissions = [];
     }
@@ -454,7 +454,7 @@ add_filter( 'dt_filter_access_permissions', function ( $permissions, $post_type 
 add_filter( 'dt_user_list_filters', 'base_dt_user_list_filters', 100, 2 );
 function base_dt_user_list_filters( $filters, $post_type ){
     // check of the all tab is declared
-    $tab_names = array_map( function ( $f ){
+    $tab_names = array_map( function ( $f ) {
         return $f['key'];
     }, $filters['tabs'] );
 
@@ -472,7 +472,7 @@ function base_dt_user_list_filters( $filters, $post_type ){
 
     if ( in_array( 'all', $tab_names, true ) ){
 
-        $filter_ids = array_map( function ( $f ){
+        $filter_ids = array_map( function ( $f ) {
             return $f['ID'];
         }, $filters['filters'] );
 

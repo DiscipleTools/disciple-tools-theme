@@ -211,13 +211,13 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
             if ( !isset( $rv[$source]['total_active_seeker_path'] ) ) {
                 $rv[$source]['total_active_seeker_path'] = 0;
             }
-            if ( $row['overall_status'] == 'active' ) {
+            if ( $row['overall_status'] === 'active' ) {
                 $rv[$source]['total_active_seeker_path'] += (int) $row['count'];
                 $rv[$source]['active_seeker_path_' . ( $row['seeker_path'] ?? 'null' )] = (int) $row['count'];
             }
         }
-        uasort( $rv, function( $a, $b ) {
-            if ( $a['total'] != $b['total'] ) {
+        uasort( $rv, function ( $a, $b ) {
+            if ( $a['total'] !== $b['total'] ) {
                 return $a['total'] - $b['total'];
             } else {
                 return strcmp( $a['name_of_source'], $b['name_of_source'] );

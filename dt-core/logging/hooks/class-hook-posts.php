@@ -129,7 +129,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] ) { // ignore nav items
+        if ( 'nav_menu_item' === $parent_post['post_type'] || 'attachment' === $parent_post['post_type'] ) { // ignore nav items
             return;
         }
 
@@ -182,7 +182,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $object_note  = $this->_key_name( $original_key, $fields ) . ' "' . $original . '" ';
             $field_type   = 'details';
             foreach ( $meta_value as $k => $v ) {
-                if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ) {
+                if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] === $v ) {
                     continue;
                 }
                 if ( $k === 'verified' ) {
@@ -196,7 +196,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $object_note = chop( $object_note, ', ' );
         }
 
-        if ( $meta_key == 'title' ) {
+        if ( $meta_key === 'title' ) {
             $object_note = 'Name changed to: ' . $meta_value;
         }
         if ( strpos( $meta_key, 'assigned_to' ) !== false ) {
@@ -338,7 +338,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
     }
 
-    public function hooks_p2p_created( $p2p_id, $action = 'connected to' ) { // I need to create two records. One for each end of the connection.
+    public function hooks_p2p_created( $p2p_id, $action = 'connected to' ) {
+        // I need to create two records. One for each end of the connection.
         // Get p2p record
         $p2p_record = p2p_get_connection( $p2p_id ); // returns object
         $p2p_from   = get_post( $p2p_record->p2p_from, ARRAY_A );
