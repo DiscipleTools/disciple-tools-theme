@@ -238,7 +238,11 @@ class Jwt_Auth_Public {
 		/*
 		 * Check the token from the headers.
 		 */
-		$token = $this->validate_token( new WP_REST_Request(), $auth_header );
+        $validate_token_rest_request = new WP_REST_Request( 'POST', 'token/validate' );
+        $validate_token_rest_request->set_query_params( array(
+            'auto_refresh_token' => true
+        ) );
+		$token = $this->validate_token( $validate_token_rest_request, $auth_header );
 
 		if ( empty( $token ) ){
             return $user;
@@ -382,17 +386,69 @@ class Jwt_Auth_Public {
 				);
 			}
 
-			/** Everything looks good return the decoded token if we are using the custom_token */
+            /** Carry out any final validation checks based on incoming request parameters.  */
+            $params = $request->get_params();
+
+            $refreshed_token = null;
+            if ( isset( $params['auto_refresh_token'] ) && $params['auto_refresh_token'] ) {
+                if ( ! isset( $token->exp ) ) {
+                    return new WP_Error(
+                        'jwt_auth_bad_exp',
+                        'Expiry timestamp not found in the token',
+                        [
+                            'status' => 403,
+                        ]
+                    );
+                }
+
+                $current_time_secs = time();
+                $time_remaining_secs = $token->exp - $current_time_secs;
+                $time_remaining_mins = $time_remaining_secs / MINUTE_IN_SECONDS;
+                $time_remaining_hrs = $time_remaining_secs / HOUR_IN_SECONDS;
+                $time_remaining_days = $time_remaining_secs / DAY_IN_SECONDS;
+
+                // Auto refresh if remaining time is below specified threshold.
+                $threshold = 5;
+                if ( $time_remaining_hrs < $threshold ) {
+                    $token->exp = apply_filters( 'jwt_auth_expire', $current_time_secs + ( DAY_IN_SECONDS * 7 ), $current_time_secs );
+
+                    $user = get_user_by( 'ID', $token->data->user->id );
+                    $encoding_token = [
+                        'iss'  => $token->iss,
+                        'iat'  => $token->iat,
+                        'nbf'  => $token->nbf,
+                        'exp'  => $token->exp,
+                        'data' => [
+                            'user' => [
+                                'id' => $token->data->user->id
+                            ],
+                        ]
+                    ];
+                    $refreshed_token = JWT::encode(
+                        apply_filters( 'jwt_auth_token_before_sign', $encoding_token, $user ),
+                        $secret_key,
+                        $algorithm
+                    );
+                }
+            }
+
+            /** Everything looks good return the decoded token if we are using the custom_token */
 			if ( $custom_token ) {
 				return $token;
 			}
 
-			/** This is for the /toke/validate endpoint*/
+			/** This is for the /token/validate endpoint */
+            $data = [
+                'status' => 200,
+            ];
+
+            if ( !empty( $refreshed_token ) ) {
+                $data['token'] = $refreshed_token;
+            }
+
 			return [
 				'code' => 'jwt_auth_valid_token',
-				'data' => [
-					'status' => 200,
-				],
+				'data' => $data
 			];
 		} catch ( Exception $e ) {
 			/** Something were wrong trying to decode the token, send back the error */
