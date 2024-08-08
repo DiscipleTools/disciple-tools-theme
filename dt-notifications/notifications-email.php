@@ -42,7 +42,7 @@ function dt_send_email( $email, $subject, $message_plain_text, bool $subject_pre
      */
     $disabled = apply_filters( 'dt_block_development_emails', false );
     if ( $disabled ) {
-        $print_email = [];
+        $print_email = array();
         $print_email['email'] = $email;
         $print_email['subject'] = $subject;
         $print_email['message'] = $message_plain_text;
@@ -77,7 +77,7 @@ function dt_send_email( $email, $subject, $message_plain_text, bool $subject_pre
     return dt_schedule_mail( $email, $subject, $message_plain_text );
 }
 
-function dt_schedule_mail( $email, $subject, $message, $headers = [] ){
+function dt_schedule_mail( $email, $subject, $message, $headers = array() ){
     /**
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
@@ -178,11 +178,12 @@ add_filter( 'wp_mail', function ( $args ) {
     if ( !empty( $base_email_reply_to ) ) {
 
         // Filter out any existing custom reply-to headers.
-        $headers = array_filter( $headers, function ( $header ) {
-            return strpos( strtolower( $header ), 'reply-to' ) !== 0;
+        $has_reply_to = array_filter( $headers, function ( $header ) {
+            return strpos( strtolower( $header ), 'reply-to' ) === 0;
         } );
-
-        $headers[] = 'Reply-To: ' . dt_default_email_name() . ' <' . $base_email_reply_to . '>';
+        if ( empty( $has_reply_to ) ){
+            $headers[] = 'Reply-To: ' . dt_default_email_name() . ' <' . $base_email_reply_to . '>';
+        }
     }
 
     $args['headers'] = $headers;
@@ -202,7 +203,7 @@ function convert_headers_to_array( $headers ): array {
             $headers = array_filter( explode( "\n", str_replace( "\r\n", "\n", $headers ) ) );
         }
     } else {
-        $headers = [];
+        $headers = array();
     }
 
     return $headers;
@@ -248,7 +249,7 @@ class DT_Send_Email_Job extends Job{
     public $email_headers;
 
 
-    public function __construct( $email_address, $email_subject, $email_message, $email_headers = [] ){
+    public function __construct( $email_address, $email_subject, $email_message, $email_headers = array() ){
         $this->email_address = $email_address;
         $this->email_message = $email_message;
         $this->email_subject = $email_subject;
@@ -262,5 +263,3 @@ class DT_Send_Email_Job extends Job{
         wp_mail( $this->email_address, $this->email_subject, $this->email_message, $this->email_headers );
     }
 }
-
-
