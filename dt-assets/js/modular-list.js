@@ -515,8 +515,6 @@
     clear_search_query();
 
     get_records();
-
-    refresh_split_by_view();
   }
 
   function clear_search_query() {
