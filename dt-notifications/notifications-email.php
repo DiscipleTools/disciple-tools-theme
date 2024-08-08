@@ -42,7 +42,7 @@ function dt_send_email( $email, $subject, $message_plain_text, bool $subject_pre
      */
     $disabled = apply_filters( 'dt_block_development_emails', false );
     if ( $disabled ) {
-        $print_email = [];
+        $print_email = array();
         $print_email['email'] = $email;
         $print_email['subject'] = $subject;
         $print_email['message'] = $message_plain_text;
@@ -77,7 +77,7 @@ function dt_send_email( $email, $subject, $message_plain_text, bool $subject_pre
     return dt_schedule_mail( $email, $subject, $message_plain_text );
 }
 
-function dt_schedule_mail( $email, $subject, $message, $headers = [] ){
+function dt_schedule_mail( $email, $subject, $message, $headers = array() ){
     /**
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
@@ -150,41 +150,73 @@ add_filter( 'wp_mail_from', function ( $email ) {
     $base_email = dt_get_option( 'dt_email_base_address' );
     if ( !empty( $base_email ) ){
         $email = $base_email;
+    } elseif ( strpos( $email, 'wordpress@' ) === 0 || empty( $email ) ) {
+        // Get the site domain and get rid of www.
+        $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+        if ( 'www.' === substr( $sitename, 0, 4 ) ){
+            $sitename = substr( $sitename, 4 );
+        }
+        $email = 'discipletools@' . $sitename;
     }
     return $email;
-} );
+}, 100, 1 );
 add_filter( 'wp_mail_from_name', function ( $name ) {
     $base_email_name = dt_get_option( 'dt_email_base_name' );
     if ( !empty( $base_email_name ) ) {
         $name = $base_email_name;
+    } elseif ( 'WordPress' === $name || empty( $name ) ){
+        $name = 'Disciple.Tools';
     }
     return $name;
-} );
+}, 100, 1 );
 
 /**
  * Intercept all outgoing messages and wrap within email template.
  */
 
 add_filter( 'wp_mail', function ( $args ) {
-    if ( empty( $args['headers'] ) || !html_content_type_detected( $args['headers'] ) ) {
+    $headers = convert_headers_to_array( $args['headers'] );
+    if ( empty( $headers ) || !html_content_type_detected( $args['headers'] ) ) {
         $args['message'] = dt_email_template_wrapper( $args['message'] ?? '', $args['subject'] ?? '' );
 
-        $headers = $args['headers'];
-        if ( empty( $headers ) ) {
-            $headers = [];
-        }
-
-        if ( is_array( $headers ) ) {
-            $headers[] = 'Content-Type: text/html; charset=UTF-8';
-        } else {
-            $headers .= "\r\nContent-Type: text/html; charset=UTF-8";
-        }
-
-        $args['headers'] = $headers;
+        $headers[] = 'Content-Type: text/html; charset=UTF-8';
     }
+
+    // Determine if default reply-to address should be used.
+    $base_email_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
+    if ( !empty( $base_email_reply_to ) ) {
+
+        // Filter out any existing custom reply-to headers.
+        $has_reply_to = array_filter( $headers, function ( $header ) {
+            return strpos( strtolower( $header ), 'reply-to' ) === 0;
+        } );
+        if ( empty( $has_reply_to ) ){
+            $headers[] = 'Reply-To: ' . dt_default_email_name() . ' <' . $base_email_reply_to . '>';
+        }
+    }
+
+    $args['headers'] = $headers;
 
     return $args;
 } );
+
+/**
+ * Convert $headers to array structure.
+ *
+ * @param string|string[] $headers
+ * @return array
+ */
+function convert_headers_to_array( $headers ): array {
+    if ( !empty( $headers ) ) {
+        if ( ! is_array( $headers ) ) {
+            $headers = array_filter( explode( "\n", str_replace( "\r\n", "\n", $headers ) ) );
+        }
+    } else {
+        $headers = array();
+    }
+
+    return $headers;
+}
 
 /**
  * Check if $headers contains Content-Type: text/html
@@ -226,7 +258,7 @@ class DT_Send_Email_Job extends Job{
     public $email_headers;
 
 
-    public function __construct( $email_address, $email_subject, $email_message, $email_headers = [] ){
+    public function __construct( $email_address, $email_subject, $email_message, $email_headers = array() ){
         $this->email_address = $email_address;
         $this->email_message = $email_message;
         $this->email_subject = $email_subject;
@@ -240,5 +272,3 @@ class DT_Send_Email_Job extends Job{
         wp_mail( $this->email_address, $this->email_subject, $this->email_message, $this->email_headers );
     }
 }
-
-
