@@ -112,13 +112,15 @@ class Jwt_Auth_Public {
 	 * Get the user and password in the request body and generate a JWT
 	 *
 	 * @param WP_REST_Request $request
+     * @param $user
 	 *
 	 * @return mixed|WP_Error|null
 	 */
-	public static function generate_token( WP_REST_Request $request ) {
+	public static function generate_token( WP_REST_Request $request, $user = null ) {
 		$secret_key = defined( 'JWT_AUTH_SECRET_KEY' ) ? JWT_AUTH_SECRET_KEY : false;
 		$username   = $request->get_param( 'username' );
 		$password   = $request->get_param( 'password' );
+        $params = $request->get_params();
 
 		/** First thing, check the secret key if not exist return an error*/
 		if ( ! $secret_key ) {
@@ -130,12 +132,15 @@ class Jwt_Auth_Public {
 				]
 			);
 		}
-		/** Try to authenticate the user with the passed credentials*/
-		$user = wp_authenticate( $username, $password );
+
+        /** Try to authenticate the user with the passed credentials*/
+        if ( ( ( isset( $params['auth_by_user'] ) && !$params['auth_by_user'] ) || !isset( $params['auth_by_user'] ) ) && ( empty( $user ) || !is_wp_error( $user ) ) && isset( $username, $password ) ) {
+            $user = wp_authenticate( $username, $password );
+        }
 
 		/** If the authentication fails return an error*/
-		if ( is_wp_error( $user ) ) {
-			$error_code = $user->get_error_code();
+		if ( is_wp_error( $user ) || empty( $user ) ) {
+			$error_code = !empty( $user ) ? $user->get_error_code() : 'null_user';
 
 			return new WP_Error(
 				'[jwt_auth] ' . $error_code,
