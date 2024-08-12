@@ -163,14 +163,10 @@ function dt_get_option( string $name ) {
             ]);
         case 'dt_custom_tiles':
 
-            $custom_tiles = get_option( 'dt_custom_tiles', [
+            return get_option( 'dt_custom_tiles', [
                 'contacts' => [],
                 'groups' => []
             ]);
-
-             $custom_tiles_with_translations = apply_filters( 'options_dt_custom_tiles', $custom_tiles );
-
-             return $custom_tiles_with_translations;
 
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
