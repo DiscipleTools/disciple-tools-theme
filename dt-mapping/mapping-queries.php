@@ -1276,14 +1276,14 @@ class Disciple_Tools_Mapping_Queries {
                     'address' => $result['address'] ?? '',
                     'post_id' => $result['post_id'],
                     'name' => $result['name'],
-                    'post_type' => $post_type,
+                    'post_type' => $post_type
                 ),
                 'geometry' => array(
                     'type' => 'Point',
                     'coordinates' => array(
                         $result['lng'],
                         $result['lat'],
-                        1,
+                        1
                     ),
                 ),
             );
