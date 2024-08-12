@@ -42,7 +42,7 @@ function dt_send_email( $email, $subject, $message_plain_text, bool $subject_pre
      */
     $disabled = apply_filters( 'dt_block_development_emails', false );
     if ( $disabled ) {
-        $print_email = array();
+        $print_email = [];
         $print_email['email'] = $email;
         $print_email['subject'] = $subject;
         $print_email['message'] = $message_plain_text;
@@ -77,7 +77,7 @@ function dt_send_email( $email, $subject, $message_plain_text, bool $subject_pre
     return dt_schedule_mail( $email, $subject, $message_plain_text );
 }
 
-function dt_schedule_mail( $email, $subject, $message, $headers = array() ){
+function dt_schedule_mail( $email, $subject, $message, $headers = [] ){
     /**
      * if a server cron is set up, then use the email scheduler
      * otherwise send the email normally
@@ -258,7 +258,7 @@ class DT_Send_Email_Job extends Job{
     public $email_headers;
 
 
-    public function __construct( $email_address, $email_subject, $email_message, $email_headers = array() ){
+    public function __construct( $email_address, $email_subject, $email_message, $email_headers = [] ){
         $this->email_address = $email_address;
         $this->email_message = $email_message;
         $this->email_subject = $email_subject;
