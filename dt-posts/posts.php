@@ -212,7 +212,7 @@ class Disciple_Tools_Posts
         return $shares;
     }
 
-    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to', $fields = array() ){
+    public static function format_connection_message( $p2p_id, $activity, $action = 'connected to', $fields = [] ){
         // Get p2p record
         $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
 
@@ -628,10 +628,10 @@ class Disciple_Tools_Posts
 
         $total_rows = min( $limit, sizeof( $posts ) );
 
-        return array(
+        return [
             'posts' => $posts,
             'total' => $total_rows,
-        );
+        ];
     }
 
     /**
@@ -642,38 +642,38 @@ class Disciple_Tools_Posts
      * @param array $args
      * @return array|mixed
      */
-    public static function fields_to_sql( $post_type, $query_array, $operator = 'AND', $args = array() ){
-        $examples = array(
-            'groups' => array( 3029, 39039 ),
-            'groups' => array( -3029 ),
-            'location_grid' => array( 123456 ),
-            'location_grid' => array( -123456 ),
-            'assigned_to' => array( 33 ),
-            'assigned_to' => array( -33 ),
-            'baptism_date' => array( 'start' => '2018-01-01', 'end' => '2019-01-01' ),
-            'requires_update' => array( '1' ),
-            'contact_phone' => array( '798456780' ),
-            'contact_phone' => array( '-798456780' ),
-            'contact_phone' => array( '^798456780' ),
-            'nickname' => array( 'hi' ),
-            'nickname' => array( '-hi' ),
-            'nickname' => array( '-hi', '-other' ),
-            'nickname' => array( '^hi' ),
-            'baptism_generation' => array( 'equality' => '>', 'number' => 4 ),
-            'overall_status' => array( 'active' ),
-            'overall_status' => array( '-close' ),
-            'milestones' => array( 'milestone_has_bible', 'milestone_reading_bible' ),
-            'milestones' => array( '-milestone_has_bible', '-milestone_reading_bible' ),
-        );
+    public static function fields_to_sql( $post_type, $query_array, $operator = 'AND', $args = [] ){
+        $examples = [
+            'groups' => [ 3029, 39039 ],
+            'groups' => [ -3029 ],
+            'location_grid' => [ 123456 ],
+            'location_grid' => [ -123456 ],
+            'assigned_to' => [ 33 ],
+            'assigned_to' => [ -33 ],
+            'baptism_date' => [ 'start' => '2018-01-01', 'end' => '2019-01-01' ],
+            'requires_update' => [ '1' ],
+            'contact_phone' => [ '798456780' ],
+            'contact_phone' => [ '-798456780' ],
+            'contact_phone' => [ '^798456780' ],
+            'nickname' => [ 'hi' ],
+            'nickname' => [ '-hi' ],
+            'nickname' => [ '-hi', '-other' ],
+            'nickname' => [ '^hi' ],
+            'baptism_generation' => [ 'equality' => '>', 'number' => 4 ],
+            'overall_status' => [ 'active' ],
+            'overall_status' => [ '-close' ],
+            'milestones' => [ 'milestone_has_bible', 'milestone_reading_bible' ],
+            'milestones' => [ '-milestone_has_bible', '-milestone_reading_bible' ],
+        ];
 
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
         if ( empty( $args ) ){
-            $args = array(
-                'joins_fields' => array(),
+            $args = [
+                'joins_fields' => [],
                 'joins_sql' => '',
-                'where_sql' => '',
-            );
+                'where_sql' => ''
+            ];
         }
 
         global $wpdb;
@@ -688,10 +688,10 @@ class Disciple_Tools_Posts
                 if ( isset( $field_settings[$query_key]['type'] ) ){
                     $field_type = $field_settings[$query_key]['type'];
 
-                    if ( in_array( $query_key, array( 'name', 'post_date' ) ) ){
+                    if ( in_array( $query_key, [ 'name', 'post_date' ] ) ){
                         if ( $query_key === 'name' ){
                             if ( !is_array( $query_value ) ){
-                                 $query_value = array( $query_value );
+                                 $query_value = [ $query_value ];
                             }
                             $connector = ' OR ';
                             $equality = 'LIKE';
@@ -727,7 +727,7 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         // add postmeta join fields
-                        if ( in_array( $field_type, array( 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'datetime', 'number', 'user_select' ) ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'datetime', 'number', 'user_select' ] ) ){
                             if ( !in_array( $table_key, $args['joins_fields'] ) ){
                                 if ( isset( $field_settings[$query_key]['private'] ) && $field_settings[$query_key]['private'] ) {
                                     $args['joins_fields'][] = $table_key;
@@ -740,14 +740,14 @@ class Disciple_Tools_Posts
                         }
 
 
-                        if ( in_array( $field_type, array( 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'datetime', 'user_select' ) ) ){
+                        if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'boolean', 'date', 'datetime', 'user_select' ] ) ){
                             /**
                              * key_select, multi_select, tags, boolean, date
                              */
                             $index = -1;
                             $query_for_null_values = false;
                             if ( !is_array( $query_value ) ){
-                                return new WP_Error( __FUNCTION__, "$query_key must be an array", array( 'status' => 400 ) );
+                                return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
                             foreach ( $query_value as $value_key => $value ){
                                 $index++;
@@ -820,7 +820,7 @@ class Disciple_Tools_Posts
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
                             }
-                        } else if ( in_array( $field_type, array( 'connection' ) ) ){
+                        } else if ( in_array( $field_type, [ 'connection' ] ) ){
                             /**
                              * connection
                              */
@@ -828,10 +828,10 @@ class Disciple_Tools_Posts
                                 continue;
                             }
 
-                            $in = array();
-                            $not_in = array();
+                            $in = [];
+                            $not_in = [];
                             if ( !is_array( $query_value ) ){
-                                return new WP_Error( __FUNCTION__, "$query_key must be an array", array( 'status' => 400 ) );
+                                return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
                             if ( empty( $query_value ) ){
                                 if ( $field_settings[$query_key]['p2p_direction'] === 'to' ){
@@ -890,7 +890,7 @@ class Disciple_Tools_Posts
                                     ) ";
                                 }
                             }
-                        } else if ( in_array( $field_type, array( 'location' ) ) ){
+                        } else if ( in_array( $field_type, [ 'location' ] ) ){
                             /**
                              * location
                              */
@@ -907,10 +907,10 @@ class Disciple_Tools_Posts
 
                                 ) as $table_key ON ( $table_key.post_id = p.ID )";
                             }
-                            $in = array();
-                            $not_in = array();
+                            $in = [];
+                            $not_in = [];
                             if ( !is_array( $query_value ) ){
-                                return new WP_Error( __FUNCTION__, "$query_key must be an array", array( 'status' => 400 ) );
+                                return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
                             if ( empty( $query_value ) ){
                                 $where_sql .= "$table_key.post_id IS NULL";
@@ -943,7 +943,7 @@ class Disciple_Tools_Posts
                                     AND ( $table_key.grid_id IS NULL OR $table_key.grid_id NOT IN (" . $location_grid_ids .') )
                                 ';
                             }
-                        } else if ( in_array( $field_type, array( 'text', 'communication_channel' ) ) ){
+                        } else if ( in_array( $field_type, [ 'text', 'communication_channel' ] ) ){
                             /**
                              * text, communication_channel
                              */
@@ -961,14 +961,14 @@ class Disciple_Tools_Posts
                             $query_for_null_values = null;
 
                             if ( !is_array( $query_value ) ){
-                                return new WP_Error( __FUNCTION__, "$query_key must be an array", array( 'status' => 400 ) );
+                                return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
                             }
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
                                 $where_sql .= " OR $table_key.meta_value = '' ";
                             }
                             foreach ( $query_value as $value_key => $value ){
-                                $index++;
+                                $index ++;
                                 $equality = 'LIKE';
 
                                 //allow negative searches
@@ -992,12 +992,12 @@ class Disciple_Tools_Posts
                             if ( $query_for_null_values ){
                                 $where_sql .= " OR $table_key.meta_value IS NULL ";
                             }
-                        } else if ( in_array( $field_type, array( 'number' ) ) ){
+                        } else if ( in_array( $field_type, [ 'number' ] ) ){
                             /**
                              * number
                              */
                             $equality = '=';
-                            $value = is_numeric( $query_value ) ? esc_sql( $query_value ) : array();
+                            $value = is_numeric( $query_value ) ? esc_sql( $query_value ) : [];
                             if ( isset( $query_value['operator'] ) ) {
                                 $equality = esc_sql( $query_value['operator'] );
                             }
@@ -1010,7 +1010,7 @@ class Disciple_Tools_Posts
                                 $where_sql .= " $table_key.meta_value $equality " . esc_sql( $value );
                             }
                         } else {
-                            return new WP_Error( __FUNCTION__, "you can not filter $field_type fields", array( 'status' => 400 ) );
+                            return new WP_Error( __FUNCTION__, "you can not filter $field_type fields", [ 'status' => 400 ] );
                         }
                     }
                 } else if ( $query_key === 'shared_with' ){
@@ -1027,7 +1027,7 @@ class Disciple_Tools_Posts
                     $where_sql .= " $table_key.user_id IN ( $user_ids ) ";
 
                 } else {
-                    return new WP_Error( __FUNCTION__, 'One or more fields do not exist', array( 'key' => $query_key, 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, 'One or more fields do not exist', [ 'key' => $query_key, 'status' => 400 ] );
                 }
                 if ( !empty( $where_sql ) ){
                     $index_pos++;
@@ -1053,11 +1053,11 @@ class Disciple_Tools_Posts
 
     public static function search_viewable_post( string $post_type, array $query, bool $check_permissions = true ){
         if ( $check_permissions && !self::can_access( $post_type ) ) {
-            return new WP_Error( __FUNCTION__, 'You do not have access to these', array( 'status' => 403 ) );
+            return new WP_Error( __FUNCTION__, 'You do not have access to these', [ 'status' => 403 ] );
         }
         $post_types = DT_Posts::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
-            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
         }
 
         //filter in to add or remove query parameters.
@@ -1067,7 +1067,7 @@ class Disciple_Tools_Posts
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
         if ( !isset( $post_settings['fields'] ) || empty( $post_settings['fields'] ) ){
-            return new WP_Error( __FUNCTION__, "$post_type settings not yet loaded", array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, "$post_type settings not yet loaded", [ 'status' => 400 ] );
         }
         $post_fields = $post_settings['fields'];
 
@@ -1097,7 +1097,7 @@ class Disciple_Tools_Posts
             }
             unset( $query['sort'] );
         }
-        $fields_to_search = array();
+        $fields_to_search = [];
         if ( isset( $query['fields_to_search'] ) ){
             $fields_to_search = $query['fields_to_search'];
             unset( $query ['fields_to_search'] );
@@ -1106,7 +1106,7 @@ class Disciple_Tools_Posts
             unset( $query['combine'] ); //remove deprecated combine
         }
 
-        $map_bounds = array();
+        $map_bounds = [];
         if ( isset( $query['map_bounds'] ) ) {
             $map_bounds = $query['map_bounds'];
             unset( $query ['map_bounds'] );
@@ -1126,9 +1126,9 @@ class Disciple_Tools_Posts
                 $search = str_replace( ' ', '%', $search );
             }
 
-            $other_search_fields = array();
+            $other_search_fields = [];
             if ( empty( $fields_to_search ) ) {
-                $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', array() );
+                $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
                 $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
                     OR p.ID IN ( SELECT post_id
                                 FROM $wpdb->postmeta
@@ -1288,9 +1288,9 @@ class Disciple_Tools_Posts
             $group_by_sql = ', sort.meta_value';
         }
 
-        $permissions = array(
-            'shared_with' => array( 'me' ),
-        );
+        $permissions = [
+            'shared_with' => [ 'me' ]
+        ];
         $permissions = apply_filters( 'dt_filter_access_permissions', $permissions, $post_type );
 
         if ( $check_permissions && !empty( $permissions ) ){
@@ -1330,7 +1330,7 @@ class Disciple_Tools_Posts
         // phpcs:enable
 
         if ( empty( $posts ) && !empty( $wpdb->last_error ) ){
-            return new WP_Error( __FUNCTION__, 'Sorry, we had a query issue.', array( 'status' => 500 ) );
+            return new WP_Error( __FUNCTION__, 'Sorry, we had a query issue.', [ 'status' => 500 ] );
         }
 
         //search by post_id
@@ -1345,10 +1345,10 @@ class Disciple_Tools_Posts
         foreach ( $posts as $post ) {
             $post->post_title = wp_specialchars_decode( $post->post_title );
         }
-        return array(
+        return [
             'posts' => $posts,
             'total' => (int) $total_rows,
-        );
+        ];
     }
 
 
@@ -1407,17 +1407,17 @@ class Disciple_Tools_Posts
 
 
     public static function get_subassigned_users( $post_id ){
-        $users = array();
+        $users = [];
         $subassigned = get_posts(
-            array(
+            [
                 'connected_type'      => 'contacts_to_subassigned',
                 'connected_direction' => 'to',
                 'connected_items'     => $post_id,
                 'nopaging'            => true,
                 'suppress_filters'    => false,
                 'meta_key'            => 'type',
-                'meta_value'          => 'user',
-            )
+                'meta_value'          => 'user'
+            ]
         );
         foreach ( $subassigned as $c ) {
             $user_id = get_post_meta( $c->ID, 'corresponds_to_user', true );
@@ -1434,7 +1434,7 @@ class Disciple_Tools_Posts
      */
     public static function get_multi_select_options( $post_type, $field, $search = '', $limit = 20 ){
         if ( !self::can_access( $post_type ) ){
-            return new WP_Error( __FUNCTION__, 'You do not have access to: ' . $field, array( 'status' => 403 ) );
+            return new WP_Error( __FUNCTION__, 'You do not have access to: ' . $field, [ 'status' => 403 ] );
         }
         global $wpdb;
         $fields = DT_Posts::get_post_field_settings( $post_type );
@@ -1467,7 +1467,7 @@ class Disciple_Tools_Posts
 
     public static function delete_post( string $post_type, int $post_id, bool $check_permissions = true ){
         if ( $check_permissions && !self::can_delete( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, 'You do not have permission for this', array( 'status' => 403 ) );
+            return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
         }
 
         global $wpdb;
@@ -1483,18 +1483,18 @@ class Disciple_Tools_Posts
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_post_user_meta WHERE post_id = %s", $post_id ) );
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_location_grid_meta WHERE post_id = %s AND post_type = %s", $post_id, $post_type ) );
 
-        dt_activity_insert( array(
+        dt_activity_insert( [
             'action' => 'record_deleted',
             'object_type' => $post_type,
             'object_id' => $post_id,
-            'object_name' => $post_title,
-        ) );
+            'object_name' => $post_title
+        ] );
 
         return true;
     }
 
     public static function is_post_key_contact_method_or_connection( $post_settings, $key ) {
-        $channel_keys = array();
+        $channel_keys = [];
         foreach ( $post_settings['channels'] as $channel_key => $channel_value ) {
             $channel_keys[] = 'contact_' . $channel_key;
         }
@@ -1512,8 +1512,8 @@ class Disciple_Tools_Posts
      *
      * @return array
      */
-    public static function check_for_invalid_post_fields( array $post_settings, array $fields, array $allowed_fields = array() ) {
-        $bad_fields = array();
+    public static function check_for_invalid_post_fields( array $post_settings, array $fields, array $allowed_fields = [] ) {
+        $bad_fields = [];
         $field_settings = $post_settings['fields'];
         $field_settings['title'] = '';
         foreach ( $fields as $field => $value ) {
@@ -1530,20 +1530,20 @@ class Disciple_Tools_Posts
         $current_user_id = get_current_user_id();
 
         foreach ( $fields as $field_key => $field ){
-            if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]['type'], array( 'multi_select', 'tags' ) ) ) ){
+            if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]['type'], [ 'multi_select', 'tags' ] ) ) ){
                 if ( !isset( $field['values'] ) ){
-                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $field['force_values'] ) && $field['force_values'] == true ){
                     delete_post_meta( $post_id, $field_key );
-                    $existing_contact[ $field_key ] = array();
+                    $existing_contact[ $field_key ] = [];
                 }
                 foreach ( $field['values'] as $value ){
                     if ( isset( $value['value'] ) ){
                         if ( isset( $value['delete'] ) && $value['delete'] == true ){
                             if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                                 if ( !$current_user_id ){
-                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", array( 'status' => 400 ) );
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                                 }
 
                                 //delete user meta
@@ -1554,35 +1554,35 @@ class Disciple_Tools_Posts
                                     AND meta_key =  %s
                                     AND meta_value = %s", $current_user_id, $post_id, $field_key, $value['value'] ) );
                                 if ( !$delete ){
-                                    return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, array( 'status' => 500 ) );
+                                    return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, [ 'status' => 500 ] );
                                 }
                             } else {
                                 delete_post_meta( $post_id, $field_key, $value['value'] );
                             }
                         } else {
                             //save private multiselect fields to the dt_post_user_meta table
-                            $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : array();
+                            $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
                             if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                                 if ( !$current_user_id ){
-                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", array( 'status' => 400 ) );
+                                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                                 }
-                                $insert = array();
-                                $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, array(
+                                $insert = [];
+                                $insert = $wpdb->insert( $wpdb->dt_post_user_meta, [
                                     'user_id'  => $current_user_id,
                                     'post_id'  => $post_id,
                                     'meta_key' => $field_key,
-                                    'meta_value' => $value['value'],
-                                    )
+                                    'meta_value' => $value['value']
+                                    ]
                                 );
                                 if ( !$insert ) {
-                                    return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                                    return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                                 }
                             } else if ( !in_array( $value['value'], $existing_array ) ){
                                     add_post_meta( $post_id, $field_key, $value['value'] );
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                     }
                 }
             }
@@ -1591,6 +1591,7 @@ class Disciple_Tools_Posts
     }
 
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
+
         global $wpdb;
         foreach ( $fields as $field_key => $field ){
 
@@ -1599,24 +1600,24 @@ class Disciple_Tools_Posts
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location' ) ){
                 if ( !isset( $field['values'] ) ) {
-                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $field['force_values'] ) && $field['force_values'] == true ){
                     delete_post_meta( $post_id, $field_key );
-                    $existing_post[ $field_key ] = array();
+                    $existing_post[ $field_key ] = [];
                 }
                 foreach ( $field['values'] as $value ){
                     if ( isset( $value['value'] ) ){
                         if ( isset( $value['delete'] ) && $value['delete'] == true ){
                             delete_post_meta( $post_id, $field_key, $value['value'] );
                         } else {
-                            $existing_array = isset( $existing_post[ $field_key ] ) ? $existing_post[ $field_key ] : array();
+                            $existing_array = isset( $existing_post[ $field_key ] ) ? $existing_post[ $field_key ] : [];
                             if ( !in_array( $value['value'], $existing_array ) ){
                                 add_post_meta( $post_id, $field_key, $value['value'] );
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                     }
                 }
             } // end default location_grid processing
@@ -1647,7 +1648,7 @@ class Disciple_Tools_Posts
              ********************************************************/
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location_meta' ) ){
                 if ( !isset( $field['values'] ) ) {
-                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
                 }
                 $geocoder = new Location_Grid_Geocoder();
 
@@ -1656,7 +1657,7 @@ class Disciple_Tools_Posts
                     delete_post_meta( $post_id, 'location_grid' );
                     delete_post_meta( $post_id, 'location_grid_meta' );
                     Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0 );
-                    $existing_post[ $field_key ] = array();
+                    $existing_post[ $field_key ] = [];
                 }
 
                 // process crud
@@ -1693,7 +1694,7 @@ class Disciple_Tools_Posts
                     else if ( isset( $value['grid_id'] ) && ! empty( $value['grid_id'] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value['grid_id'] );
                         if ( $grid ) {
-                            $location_meta_grid = array();
+                            $location_meta_grid = [];
 
                             // creates the full record from the grid_id
                             Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
@@ -1737,7 +1738,7 @@ class Disciple_Tools_Posts
                     else if ( isset( $value['lng'], $value['lat'] ) ) {
                         $grid = $geocoder->get_grid_id_by_lnglat( $value['lng'], $value['lat'] );
                         if ( $grid ) {
-                            $location_meta_grid = array();
+                            $location_meta_grid = [];
 
                             $full_name = Disciple_Tools_Mapping_Queries::get_full_name_by_grid_id( $grid['grid_id'] );
 
@@ -1782,7 +1783,7 @@ class Disciple_Tools_Posts
                     $field_value = 'user-' . $field_value;
                 }
                 if ( !is_string( $field_value ) || strpos( $field_value, 'user-' ) !== 0 ){
-                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, "incorrect format for user_select: $field_key, received $field_value", [ 'status' => 400 ] );
                 }
                 $user_id = explode( '-', $field_value )[1];
                 if ( empty( $user_id ) ){
@@ -1790,7 +1791,7 @@ class Disciple_Tools_Posts
                 }
                 $user = get_user_by( 'id', $user_id );
                 if ( !$user || !user_can( $user->ID, 'access_' . $post_type ) ){
-                    return new WP_Error( __FUNCTION__, "user does not have access to $post_type", array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, "user does not have access to $post_type", [ 'status' => 400 ] );
                 }
                 update_post_meta( $post_id, $field_key, $field_value );
                 DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
@@ -1806,7 +1807,7 @@ class Disciple_Tools_Posts
                 continue;
             }
             $details_key = $field_key;
-            $values = array();
+            $values = [];
             if ( isset( $fields[$details_key] ) && isset( $fields[$details_key]['values'] ) ){
                 $values = $fields[$details_key]['values'];
             } else if ( isset( $fields[$details_key] ) && is_array( $fields[$details_key] ) ) {
@@ -1836,13 +1837,13 @@ class Disciple_Tools_Posts
                     }
                 }
             }
-            $existing_values = array_map( function ( $value ) {
+            $existing_values = array_map( function( $value ) {
                 return $value['value'];
-            }, $existing_contact[$details_key] ?? array() );
+            }, $existing_contact[$details_key] ?? [] );
             foreach ( $values as $field ){
                 if ( isset( $field['delete'] ) && $field['delete'] == true ){
                     if ( !isset( $field['key'] ) ){
-                        return new WP_Error( __FUNCTION__, 'missing key on: ' . $details_key, array( 'status' => 400 ) );
+                        return new WP_Error( __FUNCTION__, 'missing key on: ' . $details_key, [ 'status' => 400 ] );
                     }
                     //delete field
                     $potential_error = delete_post_meta( $post_id, $field['key'] );
@@ -1873,7 +1874,7 @@ class Disciple_Tools_Posts
                         }
                     }
                 } else {
-                    return new WP_Error( __FUNCTION__, 'Is not an array or missing value on: ' . $details_key, array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, 'Is not an array or missing value on: ' . $details_key, [ 'status' => 400 ] );
                 }
                 if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
                     return $potential_error;
@@ -1898,27 +1899,27 @@ class Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ) {
             if ( isset( $field_settings[ $field_key ] ) && ( $field_settings[ $field_key ]['type'] === 'task' ) ) {
                 if ( !isset( $field['values'] ) ){
-                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
                 }
 
                 foreach ( $field['values'] as $value ){
                     if ( isset( $value['value'] ) || ( !empty( $value['delete'] && !empty( $value['id'] ) ) ) ){
                         $current_user_id = get_current_user_id();
                         if ( !$current_user_id ){
-                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", array( 'status' => 400 ) );
+                            return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                         }
                         if ( !empty( $value['id'] ) ) {
                             //see if we find the value with the correct id on this contact for this user.
                             $exists = false;
                             $existing_field = null;
-                            foreach ( $existing_record[$field_key] ?? array() as $v ){
+                            foreach ( $existing_record[$field_key] ?? [] as $v ){
                                 if ( (int) $v['id'] === (int) $value['id'] ){
                                     $exists = true;
                                     $existing_field = $v;
                                 }
                             }
                             if ( !$exists ){
-                                return new WP_Error( __FUNCTION__, "A field for key $field_key with id " . $value['id'] . ' was not found for this user on this post', array( 'status' => 400 ) );
+                                return new WP_Error( __FUNCTION__, "A field for key $field_key with id " . $value['id'] . ' was not found for this user on this post', [ 'status' => 400 ] );
                             }
                             if ( isset( $value['delete'] ) && $value['delete'] == true ) {
                                 //delete user meta
@@ -1929,11 +1930,11 @@ class Disciple_Tools_Posts
                                     AND post_id = %s
                             ", $value['id'], $current_user_id, $post_id ) );
                                 if ( !$delete ){
-                                    return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, array( 'status' => 500 ) );
+                                    return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, [ 'status' => 500 ] );
                                 }
                             } else {
                                 //update user meta
-                                $update = array();
+                                $update = [];
                                 if ( is_array( $value['value'] ) ){
                                     foreach ( $value['value'] as $val_key => $val_data ) {
                                         $existing_field['value'][$val_key] = $val_data;
@@ -1950,42 +1951,42 @@ class Disciple_Tools_Posts
                                 }
                                 $update = $wpdb->update( $wpdb->dt_post_user_meta,
                                     $update,
-                                    array(
+                                    [
                                         'id'       => $value['id'],
                                         'user_id'  => $current_user_id,
                                         'post_id'  => $post_id,
                                         'meta_key' => $field_key,
-                                    )
+                                    ]
                                 );
                                 if ( !$update ) {
-                                    return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                                    return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                                 }
                             }
                         } else {
                             //create user meta
                             $date = $value['date'] ?? null;
                             $create = $wpdb->insert( $wpdb->dt_post_user_meta,
-                                array(
+                                [
                                     'user_id' => $current_user_id,
                                     'post_id' => $post_id,
                                     'meta_key' => $field_key,
                                     'meta_value' => is_array( $value['value'] ) ? serialize( $value['value'] ) : $value['value'],
                                     'date' => $date,
-                                    'category' => $value['category'] ?? null,
-                                )
+                                    'category' => $value['category'] ?? null
+                                ]
                             );
                             if ( !$create ){
-                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Missing 'value' or 'id' key on field: " . $field_key, array( 'status' => 400 ) );
+                        return new WP_Error( __FUNCTION__, "Missing 'value' or 'id' key on field: " . $field_key, [ 'status' => 400 ] );
                     }
                 }
             }
 
             /* The Link field type is handled seperately so has not been added to this array */
-            $private_field_types = array( 'text', 'textarea', 'date', 'datetime', 'key_select', 'boolean', 'number' );
+            $private_field_types = [ 'text', 'textarea', 'date', 'datetime', 'key_select', 'boolean', 'number' ];
             if ( isset( $field_settings[ $field_key ]['type'] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] && in_array( $field_settings[ $field_key ]['type'], $private_field_types, true ) ) {
                 if ( $field_settings[ $field_key ]['type'] === 'boolean' ){
                     if ( $fields[$field_key] === '1' || $fields[$field_key] === 'yes' || $fields[$field_key] === 'true' ){
@@ -2002,7 +2003,7 @@ class Disciple_Tools_Posts
 
                 $current_user_id = get_current_user_id();
                 if ( !$current_user_id ){
-                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", array( 'status' => 400 ) );
+                    return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                 }
 
                 //Find the id if a row exists that has the same user_id same post_id and same meta_key
@@ -2017,27 +2018,27 @@ class Disciple_Tools_Posts
                 if ( $all_user_meta ) {
                     $update = $wpdb->update( $wpdb->dt_post_user_meta,
                         array( 'meta_value' => $field_value ),
-                        array(
+                        [
                             'id'       => $all_user_meta[0]['id'],
                             'user_id'  => $current_user_id,
                             'post_id'  => $post_id,
                             'meta_key' => $field_key,
-                        )
+                        ]
                     );
                     if ( $update === false ) {
-                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                     }
                 } else {
                     $create = $wpdb->insert( $wpdb->dt_post_user_meta,
-                        array(
+                        [
                             'user_id' => $current_user_id,
                             'post_id' => $post_id,
                             'meta_key' => $field_key,
                             'meta_value' => $field_value,
-                        )
+                        ]
                     );
                     if ( !$create ){
-                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                        return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                     }
                 }
             }
@@ -2057,14 +2058,14 @@ class Disciple_Tools_Posts
             }
 
             if ( !isset( $field['values'] ) ){
-                return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, array( 'status' => 400 ) );
+                return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
             }
 
             foreach ( $field['values'] as $value ) {
                 if ( isset( $value['delete'] ) && $value['delete'] === true ) {
                     if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                         if ( !$current_user_id ){
-                            return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', array( 'status' => 400 ) );
+                            return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
                         }
 
                         //delete user meta
@@ -2072,7 +2073,7 @@ class Disciple_Tools_Posts
                         DELETE FROM $wpdb->dt_post_user_meta
                         WHERE id = %s", $value['meta_id'] ) );
                         if ( !$delete ){
-                            return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, array( 'status' => 500 ) );
+                            return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, [ 'status' => 500 ] );
                         }
                     } else {
                         delete_metadata_by_mid( 'post', $value['meta_id'] );
@@ -2082,12 +2083,12 @@ class Disciple_Tools_Posts
                         //save private link fields to the dt_post_user_meta table
                         if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                             if ( !$current_user_id ){
-                                return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', array( 'status' => 400 ) );
+                                return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
                             }
-                            $update = array();
-                            $update = $wpdb->update( $wpdb->dt_post_user_meta, array( 'meta_value' => $value['value'] ), array( 'id' => $value['meta_id'] ) );
+                            $update = [];
+                            $update = $wpdb->update( $wpdb->dt_post_user_meta, [ 'meta_value' => $value['value'] ], [ 'id' => $value['meta_id'] ] );
                             if ( !$update ) {
-                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                             }
                         } else {
                             update_metadata_by_mid( 'post', $value['meta_id'], $value['value'] );
@@ -2097,25 +2098,25 @@ class Disciple_Tools_Posts
                         //save private multiselect fields to the dt_post_user_meta table
                         if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                             if ( !$current_user_id ){
-                                return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', array( 'status' => 400 ) );
+                                return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
                             }
-                            $insert = array();
-                            $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, array(
+                            $insert = [];
+                            $insert = $wpdb->insert( $wpdb->dt_post_user_meta, [
                                 'user_id'  => $current_user_id,
                                 'post_id'  => $post_id,
                                 'meta_key' => $meta_key,
-                                'meta_value' => $value['value'],
-                                )
+                                'meta_value' => $value['value']
+                                ]
                             );
                             if ( !$insert ) {
-                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, array( 'status' => 500 ) );
+                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
                             }
                         } else {
                             add_post_meta( $post_id, $meta_key, $value['value'] );
                         }
                     }
                 } else {
-                    return new WP_Error( __FUNCTION__, 'Value missing on field: ' . $field_key, array( 'status' => 500 ) );
+                    return new WP_Error( __FUNCTION__, 'Value missing on field: ' . $field_key, [ 'status' => 500 ] );
                 }
             }
         }
@@ -2163,7 +2164,7 @@ class Disciple_Tools_Posts
                 $new_meta_key = self::create_channel_metakey( $type, 'contact' );
             }
             update_post_meta( $post_id, $new_meta_key, $value );
-            $details = array( 'verified' => false );
+            $details = [ 'verified' => false ];
             foreach ( $field as $key => $value ){
                 if ( $key != 'value' && $key != 'key' ){
                     $details[$key] = $value;
@@ -2173,7 +2174,7 @@ class Disciple_Tools_Posts
 
             return $new_meta_key;
         } else {
-            return new WP_Error( __FUNCTION__, 'malformed key', array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'malformed key', [ 'status' => 400 ] );
         }
     }
 
@@ -2190,7 +2191,7 @@ class Disciple_Tools_Posts
 
             $details_key = $key . '_details';
             $old_details = get_post_meta( $post_id, $details_key, true );
-            $details = isset( $old_details ) ? $old_details : array();
+            $details = isset( $old_details ) ? $old_details : [];
             $new_value = false;
             foreach ( $values as $detail_key => $detail_value ) {
                 if ( !isset( $details[$detail_key] ) || $details[$detail_key] !== $detail_value ){
@@ -2211,9 +2212,9 @@ class Disciple_Tools_Posts
         foreach ( $post_settings['connection_types'] as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
                 if ( !isset( $fields[$connection_type]['values'] ) ){
-                    return new WP_Error( __FUNCTION__, 'Missing values field on connection: ' . $connection_type, array( 'status' => 500 ) );
+                    return new WP_Error( __FUNCTION__, 'Missing values field on connection: ' . $connection_type, [ 'status' => 500 ] );
                 }
-                $existing_connections = array();
+                $existing_connections = [];
                 if ( isset( $existing_contact[$connection_type] ) ){
                     foreach ( $existing_contact[$connection_type] as $connection ){
                         $existing_connections[] = isset( $connection->ID ) ? $connection->ID : $connection['ID'];
@@ -2221,7 +2222,7 @@ class Disciple_Tools_Posts
                 }
                 //check for new connections
                 $connection_field = $fields[$connection_type];
-                $new_connections = array();
+                $new_connections = [];
                 foreach ( $connection_field['values'] as $connection_value ){
                     if ( isset( $connection_value['value'] ) && !is_numeric( $connection_value['value'] ) ){
                         if ( filter_var( $connection_value['value'], FILTER_VALIDATE_EMAIL ) ){
@@ -2253,7 +2254,7 @@ class Disciple_Tools_Posts
                         } else if ( !empty( $connection_value['value'] ) ) {
                             $new_connections[] = $connection_value['value'];
                             if ( !in_array( $connection_value['value'], $existing_connections ) ){
-                                $potential_error = self::add_connection_to_post( $post_settings['post_type'], $post_id, $connection_type, $connection_value['value'], $connection_value['meta'] ?? array() );
+                                $potential_error = self::add_connection_to_post( $post_settings['post_type'], $post_id, $connection_type, $connection_value['value'], $connection_value['meta'] ?? [] );
                                 $existing_connections[] = $connection_value['value'];
                                 if ( is_wp_error( $potential_error ) ) {
                                     return $potential_error;
@@ -2265,7 +2266,7 @@ class Disciple_Tools_Posts
                         }
                     } else {
                         $value = isset( $connection_value['value'] ) ?: json_encode( $connection_value );
-                        return new WP_Error( __FUNCTION__, "Missing 'value' key on : " . $connection_type . ', go: ' . $value, array( 'status' => 500 ) );
+                        return new WP_Error( __FUNCTION__, "Missing 'value' key on : " . $connection_type . ', go: ' . $value, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections
@@ -2320,15 +2321,15 @@ class Disciple_Tools_Posts
         }
     }
 
-    private static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value, $meta = array() ){
+    private static function add_connection_to_post( string $post_type, int $post_id, string $field_key, int $value, $meta = [] ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $connect = null;
-        $field_setting = $post_settings['fields'][$field_key] ?? array();
+        $field_setting = $post_settings['fields'][$field_key] ?? [];
         if ( !isset( $field_setting['p2p_key'], $field_setting['p2p_direction'] ) ) {
-            return new WP_Error( __FUNCTION__, 'Could not add connection. Field settings missing', array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Could not add connection. Field settings missing', [ 'status' => 400 ] );
         }
 
-        $associated_workflow_detected = Disciple_Tools_Workflows_Execution_Handler::has_workflows_by_fields( $post_type, ( $post_settings['connection_types'] ?? array() ) );
+        $associated_workflow_detected = Disciple_Tools_Workflows_Execution_Handler::has_workflows_by_fields( $post_type, ( $post_settings['connection_types'] ?? [] ) );
         $current_connected_post = null;
         if ( ( $field_setting['post_type'] !== $post_type ) || $associated_workflow_detected ){
             $current_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, true, false );
@@ -2346,7 +2347,7 @@ class Disciple_Tools_Posts
             );
         }
         if ( is_wp_error( $connect ) ) {
-            return new WP_Error( __FUNCTION__, 'Error adding connection on field: ' . $field_key, array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Error adding connection on field: ' . $field_key, [ 'status' => 400 ] );
         }
         if ( $connect ) {
             do_action( 'post_connection_added', $post_type, $post_id, $field_key, $value );
@@ -2361,19 +2362,19 @@ class Disciple_Tools_Posts
                     $updated_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, false, false );
 
                     // Dispatch post updated action hook
-                    do_action( 'dt_post_updated', $connection->post_type, $connection->ID, array(
-                        $reversed_field['key'] => array(
-                            'values' => array(
+                    do_action( 'dt_post_updated', $connection->post_type, $connection->ID, [
+                        $reversed_field['key'] => [
+                            'values' => [
                                 'value' => $post_id,
-                            ),
-                        ),
-                    ), $current_connected_post, $updated_connected_post );
+                            ]
+                        ]
+                    ], $current_connected_post, $updated_connected_post );
                 }
             }
 
             return $connection;
         } else {
-            return new WP_Error( __FUNCTION__, 'Error adding connection on field: ' . $field_key, array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Error adding connection on field: ' . $field_key, [ 'status' => 400 ] );
         }
     }
 
@@ -2385,16 +2386,16 @@ class Disciple_Tools_Posts
      * @return array
      */
     private static function get_reverse_connection_field( $connection_field_key, $connection_field_details ) {
-        $reversed_field = array();
+        $reversed_field = [];
         $settings       = DT_Posts::get_post_settings( $connection_field_details['post_type'] ?? '' );
-        foreach ( $settings['fields'] ?? array() as $field_key => $field ) {
+        foreach ( $settings['fields'] ?? [] as $field_key => $field ) {
             if ( ( $field['type'] === 'connection' ) && isset( $field['p2p_key'], $field['p2p_direction'] ) ) {
                 if ( $field['p2p_key'] === $connection_field_details['p2p_key'] && $connection_field_key !== $field_key ) {
-                    $reversed_field = array(
+                    $reversed_field = [
                         'post_type' => $connection_field_details['post_type'],
                         'key'   => $field_key,
-                        'field' => $field,
-                    );
+                        'field' => $field
+                    ];
                 }
             }
         }
@@ -2404,9 +2405,9 @@ class Disciple_Tools_Posts
 
     private static function remove_connection_from_post( string $post_type, int $post_id, string $field_key, int $value ){
         $post_settings = DT_Posts::get_post_settings( $post_type );
-        $field_setting = $post_settings['fields'][$field_key] ?? array();
+        $field_setting = $post_settings['fields'][$field_key] ?? [];
         if ( !isset( $field_setting['p2p_key'], $field_setting['p2p_direction'] ) ) {
-            return new WP_Error( __FUNCTION__, 'Could not remove connection. Field settings missing', array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Could not remove connection. Field settings missing', [ 'status' => 400 ] );
         }
         $disconnect = null;
         if ( $field_setting['p2p_direction'] === 'to' || $field_setting['p2p_direction'] === 'any' ){
@@ -2418,13 +2419,13 @@ class Disciple_Tools_Posts
             $disconnect = p2p_type( $field_setting['p2p_key'] )->disconnect( $post_id, $value );
         }
         if ( is_wp_error( $disconnect ) ) {
-            return new WP_Error( __FUNCTION__, 'Error removing connection on field: ' . $field_key, array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Error removing connection on field: ' . $field_key, [ 'status' => 400 ] );
         }
         if ( $disconnect ){
             do_action( 'post_connection_removed', $post_type, $post_id, $field_key, $value );
             return $disconnect;
         } else {
-            return new WP_Error( __FUNCTION__, 'Error removing connection on field: ' . $field_key, array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Error removing connection on field: ' . $field_key, [ 'status' => 400 ] );
         }
     }
 
@@ -2446,7 +2447,7 @@ class Disciple_Tools_Posts
      *
      * @return void
      */
-    public static function adjust_post_custom_fields( $post_type, int $post_id, array &$fields, array $fields_to_return = array(), $meta_fields = null, $post_user_meta = null ) {
+    public static function adjust_post_custom_fields( $post_type, int $post_id, array &$fields, array $fields_to_return = [], $meta_fields = null, $post_user_meta = null ) {
         if ( is_array( $post_type ) && isset( $post_type['post_type'] ) ){
             $post_type = $post_type['post_type'];
         }
@@ -2493,10 +2494,10 @@ class Disciple_Tools_Posts
                         $label = $value[0]['value'];
                     }
 
-                    $fields[$key] = array(
+                    $fields[$key] = [
                         'key' => $value[0]['value'],
-                        'label' => $label,
-                    );
+                        'label' => $label
+                    ];
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'user_select' ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0]['value'] ); // Separate the type and id
@@ -2505,12 +2506,12 @@ class Disciple_Tools_Posts
                             $id = $meta_array[1];
                             if ( $type == 'user' && $id ) {
                                 $user = get_user_by( 'id', $id );
-                                $fields[$key] = array(
+                                $fields[$key] = [
                                     'id' => $id,
                                     'type' => $type,
                                     'display' => wp_specialchars_decode( $user && is_user_member_of_blog( $id ) ? $user->display_name : __( 'Removed User', 'disciple_tools' ) ),
-                                    'assigned-to' => $value[0]['value'],
-                                );
+                                    'assigned-to' => $value[0]['value']
+                                ];
                             }
                         }
                     }
@@ -2520,7 +2521,7 @@ class Disciple_Tools_Posts
                     if ( $key === 'tags' ){
                         $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
                     } else {
-                        $multi_select_values = array();
+                        $multi_select_values = [];
                         foreach ( $value as $value_key ){
                             if ( !empty( $value_key['value'] ) && isset( $field_settings[$key]['default'][$value_key['value']] ) ){
                                 $multi_select_values[] = $value_key['value'];
@@ -2538,29 +2539,29 @@ class Disciple_Tools_Posts
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'date' ) {
                     if ( isset( $value[0]['value'] ) && !empty( $value[0]['value'] ) ){
-                        $fields[$key] = array(
+                        $fields[$key] = [
                             'timestamp' => is_numeric( $value[0]['value'] ) ? (int) $value[0]['value'] : dt_format_date( $value[0]['value'], 'U' ),
                             'formatted' => dt_format_date( $value[0]['value'] ),
-                        );
+                        ];
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'datetime' ) {
                     if ( isset( $value[0]['value'] ) && !empty( $value[0]['value'] ) ){
-                        $fields[$key] = array(
+                        $fields[$key] = [
                             'timestamp' => is_numeric( $value[0]['value'] ) ? (int) $value[0]['value'] : dt_format_date( $value[0]['value'], 'U' ),
                             'formatted' => dt_format_date( $value[0]['value'], 'Y-m-d H:i:s' ),
-                        );
+                        ];
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location' ) {
                     $names = Disciple_Tools_Mapping_Queries::get_names_from_ids( array_map( $map_values, $value ) );
-                    $fields[$key] = array();
+                    $fields[$key] = [];
                     foreach ( $names as $id => $name ) {
-                        $fields[$key][] = array(
+                        $fields[$key][] = [
                             'id' => $id,
-                            'label' => $name,
-                        );
+                            'label' => $name
+                        ];
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'location_meta' ) {
-                    $fields[$key] = array();
+                    $fields[$key] = [];
                     foreach ( $value as $meta ) {
                         $location_grid_meta = Location_Grid_Meta::get_location_grid_meta_by_id( $meta['value'] );
                         if ( $location_grid_meta ) {
@@ -2574,7 +2575,7 @@ class Disciple_Tools_Posts
 
                     if ( isset( $field_settings[$field_key] ) && $field_settings[$field_key]['type'] === 'link' ) {
                         if ( !isset( $fields[$field_key] ) ) {
-                            $fields[$field_key] = array();
+                            $fields[$field_key] = [];
                         }
 
                         $type = $link_info['type'];
@@ -2584,11 +2585,11 @@ class Disciple_Tools_Posts
                         }
 
                         foreach ( $value as $meta ) {
-                            $meta = array(
+                            $meta = [
                                 'type' => $type,
                                 'value' => $meta['value'],
                                 'meta_id' => $meta['meta_id'],
-                            );
+                            ];
 
                             $fields[$field_key][] = $meta;
                         }
@@ -2596,10 +2597,10 @@ class Disciple_Tools_Posts
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'image' ){
                     if ( !empty( $value[0]['value'] ) ){
                         if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
-                            $fields[$key] = array(
+                            $fields[$key] = [
                                 'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
                                 'full' => DT_storage::get_file_url( $value[0]['value'] ),
-                            );
+                            ];
                         }
                     }
                 } else {
@@ -2610,18 +2611,18 @@ class Disciple_Tools_Posts
 
         if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
             if ( isset( $fields['location_grid_meta'] ) ){
-                $ids = dt_get_keys_map( $fields['location_grid'] ?? array(), 'id' );
+                $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
                 foreach ( $fields['location_grid_meta'] as $meta ) {
-                    foreach ( ( $fields['location_grid'] ?? array() ) as $index => $grid ){
+                    foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
                         if ( (int) $grid['id'] === (int) $meta['grid_id'] ){
                             $fields['location_grid'][$index]['matched_search'] = $meta['label'];
                         }
                     }
                     if ( !in_array( (int) $meta['grid_id'], $ids ) ){
-                        $fields['location_grid'][] = array(
+                        $fields['location_grid'][] = [
                             'id' => (int) $meta['grid_id'],
-                            'label' => $meta['label'],
-                        );
+                            'label' => $meta['label']
+                        ];
                     }
                 }
             }
@@ -2630,7 +2631,7 @@ class Disciple_Tools_Posts
                     if ( is_array( $value ) ){
                         $value = $value[0];
                     }
-                    $fields['location_grid_meta'][] = array( 'label' => $value, 'key' => $key );
+                    $fields['location_grid_meta'][] = [ 'label' => $value, 'key' => $key ];
                 }
             }
         }
@@ -2659,29 +2660,29 @@ class Disciple_Tools_Posts
                 }
 
                 if ( !isset( $fields[ $field_key ] ) ) {
-                    $fields[$field_key] = array();
+                    $fields[$field_key] = [];
                 }
                 if ( $field_settings[$field_key]['type'] === 'task' ) {
-                    $fields[$field_key][] = array(
+                    $fields[$field_key][] = [
                         'id' => $m['id'],
                         'value' => maybe_unserialize( $m['meta_value'] ),
                         'date' => $m['date'],
-                        'category' => $m['category'],
-                    );
+                        'category' => $m['category']
+                    ];
                 } else if ( isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
                     if ( $field_settings[$field_key]['type'] === 'multi_select' ) {
-                        if ( !is_array( $fields[$field_key] ) ) { $fields[$field_key] = array(); }
+                        if ( !is_array( $fields[$field_key] ) ) { $fields[$field_key] = []; }
 
                         array_push( $fields[$field_key], $m['meta_value'] );
 
                     } else if ( $field_settings[$field_key]['type'] === 'tags' ) {
-                        if ( !is_array( $fields[$field_key] ) ) { $fields[$field_key] = array(); }
+                        if ( !is_array( $fields[$field_key] ) ) { $fields[$field_key] = []; }
 
                         array_push( $fields[$field_key], $m['meta_value'] );
 
                     } else if ( $field_settings[$field_key]['type'] === 'key_select' ){
                         if ( !is_array( $fields[$field_key] ) ) {
-                            $fields[$field_key] = array();
+                            $fields[$field_key] = [];
                         }
                         $key = $m['meta_value'];
                         $label = isset( $field_settings[$field_key]['default'][$m['meta_value']]['label'] ) ? $field_settings[$field_key]['default'][$m['meta_value']]['label'] : $key;
@@ -2692,7 +2693,7 @@ class Disciple_Tools_Posts
 
                         if ( isset( $field_settings[$field_key] ) && $field_settings[$field_key]['type'] === 'link' ) {
                             if ( !isset( $fields[$field_key] ) ) {
-                                $fields[$field_key] = array();
+                                $fields[$field_key] = [];
                             }
 
                             $type = $link_info['type'];
@@ -2701,11 +2702,11 @@ class Disciple_Tools_Posts
                                 continue;
                             }
 
-                            $meta = array(
+                            $meta = [
                                 'type' => $type,
                                 'value' => $m['meta_value'],
                                 'meta_id' => $m['id'],
-                            );
+                            ];
 
                             $fields[$field_key][] = $meta;
                         }
@@ -2758,7 +2759,7 @@ class Disciple_Tools_Posts
     }
 
     public static function is_link_key( $key, $field_settings ) {
-        $link_keys = array();
+        $link_keys = [];
 
         foreach ( $field_settings as $field_key => $field_value ) {
             if ( $field_value['type'] !== 'link' ) {
@@ -2777,16 +2778,16 @@ class Disciple_Tools_Posts
     }
 
     public static function get_link_info( $key, $field_settings ) {
-        $link_keys = array();
+        $link_keys = [];
 
         foreach ( $field_settings as $field_key => $field_value ) {
             if ( $field_value['type'] !== 'link' ) {
                 continue;
             }
-            $link_keys[] = array(
+            $link_keys[] = [
                 'stub' => 'link_field_' . $field_key . '_',
-                'field_key' => $field_key,
-            );
+                'field_key' => $field_key
+            ];
         }
 
         foreach ( $link_keys as $link_info ) {
@@ -2806,14 +2807,14 @@ class Disciple_Tools_Posts
      * @param $records
      * @param array $fields_to_return
      */
-    public static function get_all_connected_fields_on_list( $field_settings, &$records, array $fields_to_return = array() ){
+    public static function get_all_connected_fields_on_list( $field_settings, &$records, array $fields_to_return = [] ){
         global $wpdb;
-        $post_ids = array_map( function ( $r ) {
+        $post_ids = array_map( function ( $r ){
             return $r['ID'];
         }, $records );
         $ids_sql = dt_array_to_sql( $post_ids );
-        $p2p_types = array();
-        $connection_fields = array();
+        $p2p_types = [];
+        $connection_fields = [];
         foreach ( $field_settings as $field_key => $field_value ){
             if ( $field_value['type'] === 'connection' && ( empty( $fields_to_return ) || in_array( $field_key, $fields_to_return ) ) && !empty( $records ) ){
                 $p2p_types[$field_value['p2p_key']] = $field_value;
@@ -2839,9 +2840,9 @@ class Disciple_Tools_Posts
         //phpcs:enable
 
 
-        $connected_post_ids = array();
-        $p2p_values_mapped_by_post_id = array();
-        $p2p_ids = array();
+        $connected_post_ids = [];
+        $p2p_values_mapped_by_post_id = [];
+        $p2p_ids = [];
         foreach ( $p2p_records as $p2p_record_row ){
             $connected_post_ids[] = $p2p_record_row['p2p_to'];
             $connected_post_ids[] = $p2p_record_row['p2p_from'];
@@ -2862,7 +2863,7 @@ class Disciple_Tools_Posts
             WHERE p.ID in ( $connected_post_ids_sql )
         ", ARRAY_A );
         //phpcs:enable
-        $connected_posts_mapped = array();
+        $connected_posts_mapped = [];
         foreach ( $connected_posts as $cp ){
             $connected_posts_mapped[$cp['ID']] = $cp;
         }
@@ -2885,9 +2886,9 @@ class Disciple_Tools_Posts
         foreach ( $records as &$record ){
             foreach ( $connection_fields as $field_key => $field_value ){
                 if ( !isset( $record[$field_key] ) ) {
-                    $record[$field_key] = array();
+                    $record[$field_key] = [];
                 }
-                foreach ( ( $p2p_values_mapped_by_post_id[$record['ID']] ?? array() ) as $p2p_record ){
+                foreach ( ( $p2p_values_mapped_by_post_id[$record['ID']] ?? [] ) as $p2p_record ){
                     if ( $p2p_record['p2p_type'] === $field_value['p2p_key'] ){
                         $connection_id = 0;
                         if ( ( $field_value['p2p_direction'] === 'from' || $field_value['p2p_direction'] === 'any' ) && $p2p_record['p2p_to'] != $record['ID'] ) {
@@ -2897,7 +2898,7 @@ class Disciple_Tools_Posts
                         }
                         if ( $connection_id && isset( $connected_posts_mapped[$connection_id] ) ){
                             $connection_post = $connected_posts_mapped[$connection_id];
-                            $connection_meta = array();
+                            $connection_meta = [];
                             foreach ( $all_p2p_meta as $meta ){
                                 if ( $meta['p2p_id'] == $p2p_record['p2p_id'] ){
                                     $connection_meta[$meta['meta_key']] = $meta['meta_value'];
@@ -2923,9 +2924,9 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         // Determine corresponding status key for given post type
-        $post_settings = apply_filters( 'dt_get_post_type_settings', array(), $post_type );
+        $post_settings = apply_filters( 'dt_get_post_type_settings', [], $post_type );
         if ( empty( $post_settings['status_field']['status_key'] ) ) {
-            return array();
+            return [];
         }
         $status_key = $post_settings['status_field']['status_key'];
 
@@ -2943,15 +2944,15 @@ class Disciple_Tools_Posts
 
         // Extract full status details
         $status_settings = $post_settings['fields'];
-        $statuses        = array();
+        $statuses        = [];
         foreach ( $post_meta_results as $meta ) {
             if ( isset( $status_settings[ $status_key ]['default'][ $meta['meta_value'] ] ) ) {
                 $default                      = $status_settings[ $status_key ]['default'][ $meta['meta_value'] ];
-                $statuses[ $meta['post_id'] ] = array(
+                $statuses[ $meta['post_id'] ] = [
                     'key'   => $meta['meta_value'],
                     'label' => $default['label'],
-                    'color' => $default['color'] ?? '',
-                );
+                    'color' => $default['color'] ?? ''
+                ];
             }
         }
 
@@ -2959,11 +2960,11 @@ class Disciple_Tools_Posts
     }
 
     public static function get_post_field_option( $field_settings, $field_key, $option_key ): array {
-        return $field_settings[ $field_key ]['default'][ $option_key ] ?? array();
+        return $field_settings[ $field_key ]['default'][ $option_key ] ?? [];
     }
 
     public static function get_post_field_options_keys( $field_settings, $field_key ): array {
-        return array_keys( $field_settings[ $field_key ]['default'] ) ?? array();
+        return array_keys( $field_settings[ $field_key ]['default'] ) ?? [];
     }
 
     public static function get_post_field_option_attribute( $field_settings, $field_key, $option_key, $option_attrib ) {
@@ -2977,14 +2978,14 @@ class Disciple_Tools_Posts
      * @return array
      */
     public static function filter_wp_post_object_fields( $post, $meta = null ){
-        $filtered_post = array(
+        $filtered_post = [
             'ID'            => (int) $post['ID'],
             'post_type'     => $post['post_type'],
             'post_date_gmt' => $post['post_date_gmt'],
             'post_date'     => $post['post_date'],
             'post_title'    => wp_specialchars_decode( $post['post_title'] ),
-            'permalink'     => get_permalink( $post['ID'] ),
-        );
+            'permalink'     => get_permalink( $post['ID'] )
+        ];
         if ( $meta ){
             $filtered_post['meta'] = $meta;
         }
@@ -2996,18 +2997,18 @@ class Disciple_Tools_Posts
         }
 
         // Capture status info
-        $filtered_post['status'] = self::get_post_status( array( $post['ID'] ), $post['post_type'] )[ $post['ID'] ] ?? null;
+        $filtered_post['status'] = self::get_post_status( [ $post['ID'] ], $post['post_type'] )[ $post['ID'] ] ?? null;
 
         return $filtered_post;
     }
 
     public static function format_post_contact_details( $post_settings, $meta_fields, $type, $key, $value ) {
-        $details = array();
+        $details = [];
         if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
             $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
 
             if ( !is_array( $details ) ) {
-                $details = array();
+                $details = [];
             }
         }
         $details['value'] = $value;
@@ -3106,15 +3107,15 @@ class Disciple_Tools_Posts
                     // Inserting to location grid meta
                     $geocoder           = new Location_Grid_Geocoder();
                     $grid_row           = $geocoder->get_grid_id_by_lnglat( $lng, $lat );
-                    $location_meta_grid = array(
+                    $location_meta_grid = [
                         'post_id'   => $post_id,
                         'post_type' => $post_type,
                         'grid_id'   => $grid_row['grid_id'],
                         'lng'       => $lng,
                         'lat'       => $lat,
                         'level'     => '',
-                        'label'     => $address,
-                    );
+                        'label'     => $address
+                    ];
 
                     // Validating and adding to location grid meta
                     Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
@@ -3131,6 +3132,7 @@ class Disciple_Tools_Posts
 
         return false;
     }
+
 }
 
 /**
@@ -3186,8 +3188,8 @@ class Disciple_Tools_Metabox_Address
     public function address_fields( $post_id ) {
         global $wpdb, $post;
 
-        $fields = array();
-        $current_fields = array();
+        $fields = [];
+        $current_fields = [];
 
         $id = $post->ID ?? $post_id;
         if ( isset( $id ) ) {
@@ -3220,13 +3222,14 @@ class Disciple_Tools_Metabox_Address
                         $tag = ' (' . ucwords( $details['type'] ) . ')';
                     }
                 }
-                $fields[ $value['meta_key'] ] = array(
+                $fields[ $value['meta_key'] ] = [
                     'name' => ucwords( $names[1] ) . $tag,
                     'tag'  => $names[1],
-                );
+                ];
             }
         }
 
         return $fields;
     }
+
 }
