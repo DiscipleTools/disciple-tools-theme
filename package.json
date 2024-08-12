@@ -51,7 +51,7 @@
     "prettier": "npx prettier --write .",
     "update-foundation": "npm install foundation-sites",
     "prepare": "husky install",
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "npx lint-staged --allow-empty"
   },
   "lint-staged": {
     "*.php": [
