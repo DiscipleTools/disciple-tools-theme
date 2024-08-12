@@ -242,7 +242,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             /**
              * URL loader
              */
-            add_action( 'wp_loaded', function () {
+            add_action( 'wp_loaded', function() {
                 $template_for_url = [
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
@@ -508,6 +508,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/dependencies/deprecated-dt-functions.php' );
 
             add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
+
         } // End __construct()
 
         /**
