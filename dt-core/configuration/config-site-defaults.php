@@ -67,11 +67,11 @@ function dt_seeker_path_triggers_update( $options ): void {
 }
 
 function dt_seeker_path_trigger_deltas( $update_required_options, $options ): array {
-    $deltas = array();
+    $deltas = [];
 
-    foreach ( $options ?? array() as $opt_key => $opt_val ) {
+    foreach ( $options ?? [] as $opt_key => $opt_val ) {
         $found = false;
-        foreach ( $update_required_options ?? array() as $required ) {
+        foreach ( $update_required_options ?? [] as $required ) {
 
             // Is there already a trigger specified?
             if ( $required['seeker_path'] === $opt_key ) {
@@ -81,12 +81,12 @@ function dt_seeker_path_trigger_deltas( $update_required_options, $options ): ar
 
         // If not, then assign as new delta
         if ( ! $found ) {
-            $deltas[] = array(
+            $deltas[] = [
                 'status'      => 'active',
                 'seeker_path' => $opt_key,
                 'days'        => 30,
-                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tool' ),
-            );
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tool' )
+            ];
         }
     }
 
@@ -143,12 +143,13 @@ function dt_get_option( string $name ) {
             if ( !get_option( 'dt_site_custom_lists' ) ) { // options doesn't exist, create new.
                 add_option( 'dt_site_custom_lists', $default_custom_lists, '', true );
             }
-            elseif ( (int) get_option( 'dt_site_custom_lists' )['version'] < $default_custom_lists['version'] ) {
-                // option exists but version is behind
+            else {
+                if ( (int) get_option( 'dt_site_custom_lists' )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
                     $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
 //                    updating the option is not always working right away, return the non updated option instead of failing.
-                if ( !$upgrade ) {
-                    return $default_custom_lists;
+                    if ( !$upgrade ) {
+                        return $default_custom_lists;
+                    }
                 }
             }
             //return apply_filters( "dt_site_custom_lists", get_option( 'dt_site_custom_lists' ) );
@@ -156,23 +157,23 @@ function dt_get_option( string $name ) {
             break;
 
         case 'dt_field_customizations':
-            return get_option( 'dt_field_customizations', array(
-                'contacts' => array(),
-                'groups' => array(),
-            ));
+            return get_option( 'dt_field_customizations', [
+                'contacts' => [],
+                'groups' => []
+            ]);
         case 'dt_custom_tiles':
 
-            return get_option( 'dt_custom_tiles', array(
-                'contacts' => array(),
-                'groups' => array(),
-            ));
+            return get_option( 'dt_custom_tiles', [
+                'contacts' => [],
+                'groups' => []
+            ]);
 
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
                 // set base users to system admin
-                $users = get_users( array( 'role' => 'dispatcher' ) );
+                $users = get_users( [ 'role' => 'dispatcher' ] );
                 if ( empty( $users ) ) {
-                    $users = get_users( array( 'role' => 'administrator' ) );
+                    $users = get_users( [ 'role' => 'administrator' ] );
                 }
                 if ( empty( $users ) ) {
                     return false;
@@ -250,20 +251,20 @@ function dt_get_option( string $name ) {
             return $site_options['group_preferences'];
 
         case 'dt_working_languages':
-            $languages = get_option( 'dt_working_languages', array() );
+            $languages = get_option( 'dt_working_languages', [] );
             if ( empty( $languages ) ){
-                $languages = array(
-                    'en' => array( 'label' => 'English' ),
-                    'fr' => array( 'label' => 'French' ),
-                    'es' => array( 'label' => 'Spanish' ),
-                );
+                $languages = [
+                    'en' => [ 'label' => 'English' ],
+                    'fr' => [ 'label' => 'French' ],
+                    'es' => [ 'label' => 'Spanish' ]
+                ];
             }
             $languages = DT_Posts_Hooks::dt_get_field_options_translation( $languages );
             return apply_filters( 'dt_working_languages', $languages );
 
         case 'dt_post_type_modules':
-            $modules = apply_filters( 'dt_post_type_modules', array() );
-            $module_options = get_option( 'dt_post_type_modules', array() );
+            $modules = apply_filters( 'dt_post_type_modules', [] );
+            $module_options = get_option( 'dt_post_type_modules', [] );
             // remove modules not present
             foreach ( $module_options as $key => $module ){
                 if ( ! isset( $modules[$key] ) ) {
@@ -275,7 +276,7 @@ function dt_get_option( string $name ) {
             return apply_filters( 'dt_post_type_modules_after', $modules );
 
         case 'dt_comment_types':
-            return get_option( 'dt_comment_types', array() );
+            return get_option( 'dt_comment_types', [] );
 
         default:
             return false;
@@ -329,54 +330,54 @@ function dt_update_option( $name, $value, $autoload = false ) {
  * @return array
  */
 function dt_get_site_options_defaults() {
-    $fields = array();
+    $fields = [];
 
     $fields['version'] = '9';
 
-    $fields['notifications'] = array(
-        'channels' => array(
-            'email' => array(
-                'label' => __( 'Email', 'disciple_tools' ),
-            ),
-            'web' => array(
-                'label' => __( 'Web', 'disciple_tools' ),
-            ),
-        ),
-        'types' => array(
-            'new_assigned' => array(
+    $fields['notifications'] = [
+        'channels' => [
+            'email' => [
+                'label' => __( 'Email', 'disciple_tools' )
+            ],
+            'web' => [
+                'label' => __( 'Web', 'disciple_tools' )
+            ]
+        ],
+        'types' => [
+            'new_assigned' => [
                 'label' => __( 'Newly Assigned Contact', 'disciple_tools' ),
                 'web'   => true,
-                'email' => true,
-            ),
-            'mentions' => array(
+                'email' => true
+            ],
+            'mentions' => [
                 'label' => __( '@Mentions', 'disciple_tools' ),
                 'web'   => true,
-                'email' => true,
-            ),
-            'comments' => array(
+                'email' => true
+            ],
+            'comments' => [
                 'label' => __( 'New Comments', 'disciple_tools' ),
                 'web'   => false,
-                'email' => false,
-            ),
-            'updates' => array(
+                'email' => false
+            ],
+            'updates' => [
                 'label' => __( 'Update Needed', 'disciple_tools' ),
                 'web'   => true,
-                'email' => true,
-            ),
-            'changes' => array(
+                'email' => true
+            ],
+            'changes' => [
                 'label' => __( 'Contact Info Changed', 'disciple_tools' ),
                 'web'   => false,
-                'email' => false,
-            ),
-            'milestones' => array(
+                'email' => false
+            ],
+            'milestones' => [
                 'label' => __( 'Contact Milestones and Group Health metrics', 'disciple_tools' ),
                 'web'   => false,
-                'email' => false,
-            ),
-        ),
-    );
+                'email' => false
+            ]
+        ]
+    ];
 
-    $fields['daily_reports'] = array(
+    $fields['daily_reports'] = [
         'build_report_for_contacts'  => true,
         'build_report_for_groups'    => true,
         'build_report_for_facebook'  => false,
@@ -385,69 +386,69 @@ function dt_get_site_options_defaults() {
         'build_report_for_adwords'   => false,
         'build_report_for_mailchimp' => false,
         'build_report_for_youtube'   => false,
-    );
+    ];
 
-    $fields['update_required'] = array(
+    $fields['update_required'] = [
         'enabled' => true,
-        'options' => array(
-            array(
+        'options' => [
+            [
                 'status'      => 'active',
                 'seeker_path' => 'none',
                 'days'        => 3,
-                'comment'     => __( 'This contact is active but there is no record of anybody contacting them. Please do contact them.', 'disciple_tools' ),
-            ),
-            array(
+                'comment'     => __( 'This contact is active but there is no record of anybody contacting them. Please do contact them.', 'disciple_tools' )
+            ],
+            [
                 'status'      => 'active',
                 'seeker_path' => 'attempted',
                 'days'        => 7,
-                'comment'     => __( 'Please try connecting with this contact again.', 'disciple_tools' ),
-            ),
-            array(
+                'comment'     => __( 'Please try connecting with this contact again.', 'disciple_tools' )
+            ],
+            [
                 'status'      => 'active',
                 'seeker_path' => 'established',
                 'days'        => 30,
-                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' ),
-            ),
-            array(
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
                 'status'      => 'active',
                 'seeker_path' => 'scheduled',
                 'days'        => 30,
-                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' ),
-            ),
-            array(
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
                 'status'      => 'active',
                 'seeker_path' => 'met',
                 'days'        => 30,
-                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' ),
-            ),
-            array(
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
                 'status'      => 'active',
                 'seeker_path' => 'ongoing',
                 'days'        => 30,
-                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' ),
-            ),
-            array(
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
                 'status'      => 'active',
                 'seeker_path' => 'coaching',
                 'days'        => 30,
-                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' ),
-            ),
-        ),
-    );
-    $fields['group_update_required'] = array(
+                'comment'     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ]
+        ]
+    ];
+    $fields['group_update_required'] = [
         'enabled' => true,
-        'options' => array(
-            array(
+        'options' => [
+            [
                 'status'      => 'active',
                 'days'        => 30,
-                'comment'     => __( "We haven't heard about this group in a while. Do you have an update?", 'disciple_tools' ),
-            ),
-        ),
-    );
-    $fields['group_preferences'] = array(
+                'comment'     => __( "We haven't heard about this group in a while. Do you have an update?", 'disciple_tools' )
+            ]
+        ]
+    ];
+    $fields['group_preferences'] = [
         'church_metrics' => true,
         'four_fields' => false,
-    );
+    ];
 
     return $fields;
 }
@@ -464,101 +465,101 @@ function dt_get_site_options_defaults() {
  * @return array|mixed
  */
 function dt_get_site_custom_lists( string $list_title = null ) {
-    $fields = array();
+    $fields = [];
 
     $fields['version'] = 10;
 
     // the prefix dt_user_ assists db meta queries on the user
-    $fields['user_fields'] = array(
-        'dt_user_personal_phone'   => array(
+    $fields['user_fields'] = [
+        'dt_user_personal_phone'   => [
             'label'       => __( 'Personal Phone', 'disciple_tools' ),
             'key'         => 'dt_user_personal_phone',
             'type'        => 'phone',
             'description' => __( 'Personal phone is private to the team, not for distribution.', 'disciple_tools' ),
             'enabled'     => true,
-        ),
-        'dt_user_personal_email'   => array(
+        ],
+        'dt_user_personal_email'   => [
             'label'       => __( 'Personal Email', 'disciple_tools' ),
             'key'         => 'dt_user_personal_email',
             'type'        => 'email',
             'description' => __( 'Personal email is private to the team, not for distribution.', 'disciple_tools' ),
             'enabled'     => true,
-        ),
-        'dt_user_personal_address' => array(
+        ],
+        'dt_user_personal_address' => [
             'label'       => __( 'Personal Address', 'disciple_tools' ),
             'key'         => 'dt_user_personal_address',
             'type'        => 'address',
             'description' => __( 'Personal address is private to the team, not for distribution.', 'disciple_tools' ),
             'enabled'     => true,
-        ),
-        'dt_user_work_phone'       => array(
+        ],
+        'dt_user_work_phone'       => [
             'label'       => __( 'Work Phone', 'disciple_tools' ),
             'key'         => 'dt_user_work_phone',
             'type'        => 'phone',
             'description' => __( 'Work phone is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => true,
-        ),
-        'dt_user_work_email'       => array(
+        ],
+        'dt_user_work_email'       => [
             'label'       => __( 'Work Email', 'disciple_tools' ),
             'key'         => 'dt_user_work_email',
             'type'        => 'email',
             'description' => __( 'Work email is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => true,
-        ),
-        'dt_user_work_facebook'    => array(
+        ],
+        'dt_user_work_facebook'    => [
             'label'       => __( 'Work Facebook', 'disciple_tools' ),
             'key'         => 'dt_user_work_facebook',
             'type'        => 'social',
             'description' => __( 'Work Facebook is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => false,
-        ),
-        'dt_user_work_whatsapp'    => array(
+        ],
+        'dt_user_work_whatsapp'    => [
             'label'       => __( 'Work WhatsApp', 'disciple_tools' ),
             'key'         => 'dt_user_work_whatsapp',
             'type'        => 'other',
             'description' => __( 'Work WhatsApp is for distribution to contacts and seekers.', 'disciple_tools' ),
             'enabled'     => false,
-        ),
-    );
+        ],
+    ];
 
     // alias's must be lower case with no spaces
-    $fields['comment_reaction_options'] = array(
-            'thumbs_up' => array( 'name' => __( 'thumbs up', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png', 'emoji' => '👍' ),
-            'heart' => array( 'name' => __( 'heart', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png', 'emoji' => '❤️' ),
-            'laugh' => array( 'name' => __( 'laugh', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png', 'emoji' => '😄' ),
-            'wow' => array( 'name' => __( 'wow', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png', 'emoji' => '😮' ),
-            'sad' => array( 'name' => __( 'sad', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png', 'emoji' => '😟' ),
-            'prayer' => array( 'name' => __( 'prayer', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f64f.png', 'emoji' => '🙏' ),
+    $fields['comment_reaction_options'] = [
+            'thumbs_up' => [ 'name' => __( 'thumbs up', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png', 'emoji' => '👍' ],
+            'heart' => [ 'name' => __( 'heart', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png', 'emoji' => '❤️'],
+            'laugh' => [ 'name' => __( 'laugh', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png', 'emoji' => '😄' ],
+            'wow' => [ 'name' => __( 'wow', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png', 'emoji' => '😮' ],
+            'sad' => [ 'name' => __( 'sad', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png', 'emoji' => '😟' ],
+            'prayer' => [ 'name' => __( 'prayer', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f64f.png', 'emoji' => '🙏' ],
             //"praise" => [ 'name' => __( "praise", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f64c.png', 'emoji' => '🙌' ],
             //"angry" => [ 'name' => __( "angry", "disciple_tools" ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f620.png', 'emoji' => '😠' ],
-        );
+        ];
 
-    $fields['sources'] = array();
+    $fields['sources'] = [];
 
-    $fields['contact_address_types'] = array(
-        'home'  => array( 'label' => __( 'Home', 'disciple_tools' ) ),
-        'work'  => array( 'label' => __( 'Work', 'disciple_tools' ) ),
-        'other' => array( 'label' => __( 'Other', 'disciple_tools' ) ),
-    );
-    $fields['group_preferences'] = array(
+    $fields['contact_address_types'] = [
+        'home'  => [ 'label' => __( 'Home', 'disciple_tools' ) ],
+        'work'  => [ 'label' => __( 'Work', 'disciple_tools' ) ],
+        'other' => [ 'label' => __( 'Other', 'disciple_tools' ) ],
+    ];
+    $fields['group_preferences'] = [
         'church_metrics' => true,
         'four_fields' => false,
-    );
+    ];
 
-    $fields['user_workload_status'] = array(
-        'active' => array(
+    $fields['user_workload_status'] = [
+        'active' => [
             'label' => __( 'Accepting new contacts', 'disciple_tools' ),
-            'color' => '#4caf50',
-        ),
-        'existing' => array(
+            'color' => '#4caf50'
+        ],
+        'existing' => [
             'label' => __( "I'm only investing in existing contacts", 'disciple_tools' ),
-            'color' => '#ff9800',
-        ),
-        'too_many' => array(
+            'color' => '#ff9800'
+        ],
+        'too_many' => [
             'label' => __( 'I have too many contacts', 'disciple_tools' ),
-            'color' => '#F43636',
-        ),
-    );
+            'color' => '#F43636'
+        ]
+    ];
 
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
@@ -567,11 +568,11 @@ function dt_get_site_custom_lists( string $list_title = null ) {
 }
 
 function dt_get_location_levels() {
-    $fields = array();
+    $fields = [];
 
     $fields['version'] = 3;
 
-    $fields['location_levels'] = array(
+    $fields['location_levels'] = [
         'country' => 1,
         'administrative_area_level_1' => 1,
         'administrative_area_level_2' => 1,
@@ -579,9 +580,9 @@ function dt_get_location_levels() {
         'administrative_area_level_4' => 0,
         'locality' => 0,
         'neighborhood' => 0,
-    );
+    ];
 
-    $fields['location_levels_labels'] = array(
+    $fields['location_levels_labels'] = [
         'country' => 'Country',
         'administrative_area_level_1' => 'Admin Level 1 (ex. state / province) ',
         'administrative_area_level_2' => 'Admin Level 2 (ex. county)',
@@ -589,7 +590,7 @@ function dt_get_location_levels() {
         'administrative_area_level_4' => 'Admin Level 4',
         'locality' => 'Locality (ex. city name)',
         'neighborhood' => 'Neighborhood',
-    );
+    ];
 
     return $fields;
 }
@@ -623,7 +624,7 @@ function dt_site_options_upgrade_version( string $name ) {
 
 
 function dt_get_initial_install_meta( $arg = '' ){
-    $at_install = get_option( 'dt_initial_install_meta', array() );
+    $at_install = get_option( 'dt_initial_install_meta', [] );
     if ( !isset( $at_install['time'] ) ){
         $at_install['time'] = 0;
     }

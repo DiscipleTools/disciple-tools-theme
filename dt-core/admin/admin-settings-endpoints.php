@@ -17,7 +17,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
      */
     public function __construct() {
         $this->namespace = $this->context;
-        add_action( 'rest_api_init', array( $this, 'add_api_routes' ) );
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     /**
@@ -25,203 +25,203 @@ class Disciple_Tools_Admin_Settings_Endpoints {
      */
     public function add_api_routes() {
         register_rest_route(
-            $this->namespace, '/plugin-install', array(
+            $this->namespace, '/plugin-install', [
                 'methods'  => 'POST',
-                'callback' => array( $this, 'plugin_install' ),
-                'permission_callback' => array( $this, 'plugin_install_permission_check' ),
-            )
+                'callback' => [ $this, 'plugin_install' ],
+                'permission_callback' => [ $this, 'plugin_install_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/plugin-delete', array(
+            $this->namespace, '/plugin-delete', [
                 'methods'  => 'POST',
-                'callback' => array( $this, 'plugin_delete' ),
-                'permission_callback' => array( $this, 'plugin_install_permission_check' ),
-            )
+                'callback' => [ $this, 'plugin_delete' ],
+                'permission_callback' => [ $this, 'plugin_install_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/plugin-activate', array(
+            $this->namespace, '/plugin-activate', [
                 'methods'  => 'POST',
-                'callback' => array( $this, 'plugin_activate' ),
-                'permission_callback' => array( $this, 'plugin_activate_permission_check' ),
-            )
+                'callback' => [ $this, 'plugin_activate' ],
+                'permission_callback' => [ $this, 'plugin_activate_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/plugin-deactivate', array(
+            $this->namespace, '/plugin-deactivate', [
                 'methods'  => 'POST',
-                'callback' => array( $this, 'plugin_deactivate' ),
-                'permission_callback' => array( $this, 'plugin_activate_permission_check' ),
-            )
+                'callback' => [ $this, 'plugin_deactivate' ],
+                'permission_callback' => [ $this, 'plugin_activate_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/get-post-fields', array(
+            $this->namespace, '/get-post-fields', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'get_post_fields' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'get_post_fields' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/create-new-post-type', array(
+            $this->namespace, '/create-new-post-type', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'create_new_post_type' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'create_new_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/update-post-type', array(
+            $this->namespace, '/update-post-type', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'update_post_type' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'update_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/delete-post-type', array(
+            $this->namespace, '/delete-post-type', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'delete_post_type' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'delete_post_type' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/update-roles', array(
+            $this->namespace, '/update-roles', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'update_roles' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'update_roles' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/create-new-tile', array(
+            $this->namespace, '/create-new-tile', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'create_new_tile' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'create_new_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/get-tile', array(
+            $this->namespace, '/get-tile', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'get_tile' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'get_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/edit-tile', array(
+            $this->namespace, '/edit-tile', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'edit_tile' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'edit_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/delete-tile', array(
+            $this->namespace, '/delete-tile', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'delete_tile' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'delete_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/edit-translations', array(
+            $this->namespace, '/edit-translations', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'edit_translations' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'edit_translations' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/new-field', array(
+            $this->namespace, '/new-field', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'new_field' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'new_field' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/edit-field', array(
+            $this->namespace, '/edit-field', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'edit_field' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-                )
+                'callback' => [ $this, 'edit_field' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+                ]
         );
 
         register_rest_route(
-            $this->namespace, '/field', array(
+            $this->namespace, '/field', [
                 'methods' => 'DELETE',
-                'callback' => array( $this, 'delete_field' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'delete_field' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/new-field-option', array(
+            $this->namespace, '/new-field-option', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'new_field_option' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'new_field_option' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/edit-field-option', array(
+            $this->namespace, '/edit-field-option', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'edit_field_option' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'edit_field_option' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/field-option', array(
+            $this->namespace, '/field-option', [
                 'methods' => 'DELETE',
-                'callback' => array( $this, 'delete_field_option' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'delete_field_option' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/update-tiles-and-fields-order', array(
+            $this->namespace, '/update-tiles-and-fields-order', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'update_tiles_and_fields_order' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'update_tiles_and_fields_order' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/update-field-options-order', array(
+            $this->namespace, '/update-field-options-order', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'update_field_options_order' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'update_field_options_order' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/remove-custom-field-name', array(
+            $this->namespace, '/remove-custom-field-name', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'remove_custom_field_name' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'remove_custom_field_name' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/remove-custom-field-option-label', array(
+            $this->namespace, '/remove-custom-field-option-label', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'remove_custom_field_option_label' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'remove_custom_field_option_label' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
 
         register_rest_route(
-            $this->namespace, '/languages', array(
+            $this->namespace, '/languages', [
                 'methods' => 'POST',
-                'callback' => array( $this, 'update_languages' ),
-                'permission_callback' => array( $this, 'default_permission_check' ),
-            )
+                'callback' => [ $this, 'update_languages' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
         );
     }
 
@@ -269,50 +269,50 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public static function get_post_fields() {
-        $output = array();
+        $output = [];
         $post_types = DT_Posts::get_post_types();
 
         foreach ( $post_types as $post_type ) {
             $post_label = DT_Posts::get_label_for_post_type( $post_type );
-            $output[] = array(
+            $output[] = [
                 'label' => $post_label,
                 'post_type' => $post_type,
                 'post_tile' => null,
                 'post_setting' => null,
-            );
-            $no_tile_elements = array();
+            ];
+            $no_tile_elements = [];
 
             $post_tiles = DT_Posts::get_post_tiles( $post_type );
             foreach ( $post_tiles as $tile_key => $tile_value ) {
-                $output[] = array(
+                $output[] = [
                     'label' => $post_label . ' > ' . $tile_value['label'],
                     'post_type' => $post_type,
                     'post_tile' => $tile_key,
                     'post_setting' => null,
-                );
+                ];
 
                 $post_settings = DT_Posts::get_post_settings( $post_type, false );
 
                 foreach ( $post_settings['fields'] as $setting_key => $setting_value ) {
                     if ( isset( $setting_value['tile'] ) && $setting_value['tile'] === $tile_key ) {
-                        $output[] = array(
+                        $output[] = [
                             'label' => $post_label . ' > ' . $tile_value['label'] . ' > ' . $setting_value['name'],
                             'post_type' => $post_type,
                             'post_tile' => $tile_key,
                             'post_setting' => $setting_key,
-                        );
+                        ];
                     }
                     if ( !isset( $setting_value['tile'] ) || $setting_value['tile'] === 'no_tile' ) {
                         if ( in_array( $post_label . ' > ' . $setting_value['name'], $no_tile_elements ) ) {
                             continue;
                         }
                         $setting_value['label'] = '(No Tile)';
-                            $output[] = array(
+                            $output[] = [
                                 'label' => $post_label . ' > ' . $setting_value['label'] . ' > ' . $setting_value['name'],
                                 'post_type' => $post_type,
                                 'post_tile' => 'no-tile-hidden',
                                 'post_setting' => $setting_key,
-                            );
+                            ];
                             $no_tile_elements[] = $post_label . ' > ' . $setting_value['name'];
                     }
                 }
@@ -323,7 +323,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function create_new_post_type( WP_REST_Request $request ){
         $params = $request->get_params();
-        $response = array();
+        $response = [];
         if ( isset( $params['key'], $params['single'], $params['plural'] ) ){
             $key = $params['key'];
             $single = $params['single'];
@@ -331,41 +331,41 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             // Validate specified posy type key.
             if ( strlen( $key ) > 20 ) {
-                return array(
+                return [
                     'success' => false,
-                    'msg' => 'Unable to create '. $key .' record type. Specified key character count greater than 20.',
-                );
+                    'msg' => 'Unable to create '. $key .' record type. Specified key character count greater than 20.'
+                ];
             }
 
             // Create new post type.
-            $custom_post_types = get_option( 'dt_custom_post_types', array() );
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
             if ( !isset( $custom_post_types[$key] ) && !in_array( $key, DT_Posts::get_post_types() ) ){
-                $custom_post_types[$key] = array(
+                $custom_post_types[$key] = [
                     'label_singular' => $single,
                     'label_plural' => $plural,
                     'hidden' => false,
-                    'is_custom' => true,
-                );
+                    'is_custom' => true
+                ];
 
                 update_option( 'dt_custom_post_types', $custom_post_types );
 
                 // Return successful response.
-                $response = array(
+                $response = [
                     'success' => true,
                     'post_type' => $key,
-                    'post_type_label' => $plural,
-                );
+                    'post_type_label' => $plural
+                ];
             } else {
-                $response = array(
+                $response = [
                     'success' => false,
-                    'msg' => 'Unable to create '. $key .' record type; which already exists.',
-                );
+                    'msg' => 'Unable to create '. $key .' record type; which already exists.'
+                ];
             }
         } else {
-            $response = array(
+            $response = [
                 'success' => false,
-                'msg' => 'Unable to create record type; due to missing parameters.',
-            );
+                'msg' => 'Unable to create record type; due to missing parameters.'
+            ];
         }
 
         return $response;
@@ -374,13 +374,13 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function update_post_type( WP_REST_Request $request ){
         $params = $request->get_params();
         if ( !isset( $params['post_type'] ) ){
-            return new WP_Error( __FUNCTION__, 'Missing post type', array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Missing post type', [ 'status' => 400 ] );
         }
         $post_type = $params['post_type'];
         // Fetch existing post type settings and update.
-        $custom_post_types = get_option( 'dt_custom_post_types', array() );
+        $custom_post_types = get_option( 'dt_custom_post_types', [] );
 
-        $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : array();
+        $post_type_settings = !empty( $custom_post_types[$post_type] ) ? $custom_post_types[$post_type] : [];
         $is_custom = $post_type_settings['is_custom'] ?? false;
 
         //set labels
@@ -393,7 +393,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             unset( $post_type_settings['label_plural'] );
         }
         if ( $is_custom && ( empty( $params['single'] ) || empty( $params['plural'] ) ) ){
-            return new WP_Error( __FUNCTION__, 'Missing record type labels', array( 'status' => 400 ) );
+            return new WP_Error( __FUNCTION__, 'Missing record type labels', [ 'status' => 400 ] );
         }
 
         //set hidden
@@ -403,9 +403,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         update_option( 'dt_custom_post_types', $custom_post_types );
 
-        return array(
+        return [
             'updated' => true,
-        );
+        ];
     }
 
     public static function delete_post_type( WP_REST_Request $request ){
@@ -417,14 +417,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             // Ensure current user has the ability to delete post type;
             if ( !current_user_can( 'delete_any_' . $post_type ) ){
-                return array(
+                return [
                     'deleted' => false,
-                    'msg' => 'Current user unable to delete '. $post_type .' record type.',
-                );
+                    'msg' => 'Current user unable to delete '. $post_type .' record type.'
+                ];
             }
 
             // Only process custom post types.
-            $custom_post_types = get_option( 'dt_custom_post_types', array() );
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
             if ( isset( $custom_post_types[$post_type] ) ){
 
                 // Remove custom post type.
@@ -462,10 +462,10 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $deleted_msg = 'Unable to delete record type; due to missing parameters.';
         }
 
-        return array(
+        return [
             'deleted' => $deleted,
-            'msg' => $deleted_msg,
-        );
+            'msg' => $deleted_msg
+        ];
     }
 
     public static function update_roles( WP_REST_Request $request ){
@@ -479,7 +479,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $existing_roles_permissions = Disciple_Tools_Roles::get_dt_roles_and_permissions();
 
             // Fetch existing custom roles.
-            $existing_custom_roles = get_option( 'dt_custom_roles', array() );
+            $existing_custom_roles = get_option( 'dt_custom_roles', [] );
 
             // Proceed with storing updates, accordingly overwriting existing roles.
             foreach ( $roles as $role => $capabilities ){
@@ -490,8 +490,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 }
 
                 // Sync updated custom role with existing settings.
-                $updated_custom_role = array();
-                $existing_role = $existing_roles_permissions[$role] ?? array();
+                $updated_custom_role = [];
+                $existing_role = $existing_roles_permissions[$role] ?? [];
                 $updated_custom_role['label'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['label'] ?? '' ) : $role;
                 $updated_custom_role['description'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['description'] ?? '' ) : '';
                 $updated_custom_role['slug'] = $role;
@@ -499,8 +499,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
 
                 // Identify capabilities selection states.
-                $updated_capabilities = array();
-                foreach ( $capabilities ?? array() as $capability ){
+                $updated_capabilities = [];
+                foreach ( $capabilities ?? [] as $capability ){
                     $updated_capabilities[$capability['key']] = $capability['enabled'];
                 }
 
@@ -517,9 +517,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $updated = true;
         }
 
-        return array(
-            'updated' => $updated,
-        );
+        return [
+            'updated' => $updated
+        ];
     }
 
     public static function create_new_tile( WP_REST_Request $request ) {
@@ -532,14 +532,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $post_tiles = DT_Posts::get_post_tiles( $post_type );
 
             if ( in_array( $tile_key, array_keys( $post_tiles ) ) ) {
-                return new WP_Error( __FUNCTION__, 'Tile already exists', array( 'status' => 400 ) );
+                return new WP_Error( __FUNCTION__, 'Tile already exists', [ 'status' => 400 ] );
             }
 
             if ( !isset( $tile_options[$post_type] ) ) {
-                $tile_options[$post_type] = array();
+                $tile_options[$post_type] = [];
             }
 
-            $tile_options[$post_type][$tile_key] = array( 'label' => $new_tile_name );
+            $tile_options[$post_type][$tile_key] = [ 'label' => $new_tile_name ];
 
             $new_tile_description = null;
             if ( isset( $post_submission['new_tile_description'] ) ) {
@@ -548,12 +548,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
 
             update_option( 'dt_custom_tiles', $tile_options );
-            $created_tile = array(
+            $created_tile = [
                 'post_type' => $post_type,
                 'key' => $tile_key,
                 'label' => $new_tile_name,
                 'description' => $new_tile_description,
-            );
+            ];
             return $created_tile;
         }
         return false;
@@ -575,7 +575,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $tile_key = $post_submission['tile_key'];
 
         if ( !isset( $tile_options[$post_type][$tile_key] ) ) {
-            $tile_options[$post_type][$tile_key] = array();
+            $tile_options[$post_type][$tile_key] = [];
         }
 
         $custom_tile = $tile_options[$post_type][$tile_key];
@@ -634,7 +634,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public static function is_custom_tile( $post_type, $tile_key ) {
-        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
 
         foreach ( $default_fields as $fields ) {
             foreach ( $fields as $field_key => $field_value ) {
@@ -678,7 +678,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     }
                     $field_key = $post_submission['field_key'];
                     $field_option_key = $post_submission['field_option_key'];
-                    $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key] ?? array();
+                    $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key] ?? [];
                     break;
             }
             // Check if translation is a description
@@ -686,7 +686,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             if ( strpos( $post_submission['translation_type'], 'description' ) ) {
                 $translations_element_key = 'description_translations';
             }
-            $translated_element[$translations_element_key] = array();
+            $translated_element[$translations_element_key] = [];
 
             foreach ( $translations as $lang_key => $translation_val ) {
                 if ( $lang_key !== '' || !is_null( $lang_key ) ) {
@@ -719,7 +719,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function plugin_install( WP_REST_Request $request ) {
-        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
         $params = $request->get_params();
         $download_url = sanitize_text_field( wp_unslash( $params['download_url'] ) );
         set_time_limit( 0 );
@@ -753,14 +753,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function plugin_delete( WP_REST_Request $request ) {
-        require_once ABSPATH . 'wp-admin/includes/file.php';
-        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
         $params = $request->get_params();
         $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
         $installed_plugins = get_plugins();
         foreach ( $installed_plugins as $index => $plugin ) {
             if ( $plugin['TextDomain'] === $plugin_slug ) {
-                delete_plugins( array( $index ) );
+                delete_plugins( [ $index ] );
                 return true;
             }
         }
@@ -785,30 +785,30 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
             if ( isset( $post_fields[ $field_key ] ) ){
-                return new WP_Error( __METHOD__, 'Field already exists', array( 'status' => 400 ) );
+                return new WP_Error( __METHOD__, 'Field already exists', [ 'status' => 400 ] );
             }
-            $new_field = array(
+            $new_field = [
                 'name' => $post_submission['new_field_name'],
                 'type' => $field_type,
                 'default' => '',
                 'tile' => $tile_key,
                 'customizable' => 'all',
-                'private' => $field_private,
-            );
-            if ( in_array( $field_type, array( 'key_select', 'multi_select', 'tags', 'link' ) ) ){
-                $new_field['default'] = array();
+                'private' => $field_private
+            ];
+            if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link' ] ) ){
+                $new_field['default'] = [];
 
                 if ( $field_type === 'link' ) {
-                    $new_field['default']['default'] = array(
-                        'label' => 'Default',
-                    );
+                    $new_field['default']['default'] = [
+                        'label' => 'Default'
+                    ];
                 }
             }
             if ( $field_type === 'connection' ){
-                $new_field = array();
-                $connection_field_options = $post_submission['connection_field_options'] ?? array();
+                $new_field = [];
+                $connection_field_options = $post_submission['connection_field_options'] ?? [];
                 if ( !$connection_field_options['connection_target'] ){
-                    return new WP_Error( __METHOD__, 'Please select a connection target', array( 'status' => 400 ) );
+                    return new WP_Error( __METHOD__, 'Please select a connection target', [ 'status' => 400 ] );
                 }
 
                 $p2p_key = $post_type . '_to_' . $connection_field_options['connection_target'];
@@ -823,7 +823,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     if ( $connection_field_options['multidirectional'] != 1 ) {
                         $direction = 'from';
                     }
-                    $custom_field_options[$post_type][$field_key] = array(
+                    $custom_field_options[$post_type][$field_key] = [
                         'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $connection_field_options['connection_target'],
@@ -831,12 +831,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'p2p_key' => $p2p_key,
                         'tile'     => $tile_key,
                         'customizable' => 'all',
-                    );
+                    ];
 
                     // If not multidirectional, create the reverse direction field
                     if ( $connection_field_options['multidirectional'] != 1 ){
                         $reverse_name = $connection_field_options['reverse_connection_name'] ?: $post_submission['new_field_name'];
-                        $custom_field_options[$post_type][$field_key . '_reverse']  = array(
+                        $custom_field_options[$post_type][$field_key . '_reverse']  = [
                             'name'        => $reverse_name,
                             'type'        => 'connection',
                             'post_type' => $post_type,
@@ -844,12 +844,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                             'p2p_key' => $p2p_key,
                             'tile'     => 'other',
                             'customizable' => 'all',
-                            'hidden' => !empty( $connection_field_options['disable_reverse_connection'] ),
-                        );
+                            'hidden' => !empty( $connection_field_options['disable_reverse_connection'] )
+                        ];
                     }
                 } else {
                     $direction = 'from';
-                    $custom_field_options[$post_type][$field_key] = array(
+                    $custom_field_options[$post_type][$field_key] = [
                         'name'        => $post_submission['new_field_name'],
                         'type'        => 'connection',
                         'post_type' => $connection_field_options['connection_target'],
@@ -857,7 +857,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'p2p_key' => $p2p_key,
                         'tile'     => $tile_key,
                         'customizable' => 'all',
-                    );
+                    ];
                     // Create the reverse fields on the connection post type
                     $reverse_name = $connection_field_options['other_field_name'] ?: $post_submission['new_field_name'];
                     $reverse_post_type = $connection_field_options['connection_target'];
@@ -865,7 +865,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     if ( isset( $custom_field_options[$reverse_post_type][$reverse_key] ) ){
                         $reverse_key = dt_create_field_key( $reverse_key, true );
                     }
-                    $custom_field_options[$connection_field_options['connection_target']][$reverse_key]  = array(
+                    $custom_field_options[$connection_field_options['connection_target']][$reverse_key]  = [
                         'name'        => $reverse_name,
                         'type'        => 'connection',
                         'post_type' => $post_type,
@@ -873,8 +873,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                         'p2p_key' => $p2p_key,
                         'tile'     => 'other',
                         'customizable' => 'all',
-                        'hidden' => !empty( $connection_field_options['disable_other_post_type_field'] ),
-                    );
+                        'hidden' => !empty( $connection_field_options['disable_other_post_type_field'] )
+                    ];
                 }
             }
             if ( !empty( $new_field ) ){
@@ -899,10 +899,10 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $field_option_icon = $post_submission['field_option_icon'];
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
-            $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = array(
+            $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = [
                     'label' => $new_field_option_name,
                     'description' => $new_field_option_description,
-                );
+                ];
 
             if ( $field_option_icon ){
                 $field_option_icon = strtolower( trim( $field_option_icon ) );
@@ -923,7 +923,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public static function edit_field_option( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
         if ( !isset( $post_submission['post_type'], $post_submission['tile_key'], $post_submission['field_key'], $post_submission['field_option_key'], $post_submission['new_field_option_label'] ) ) {
-            return new WP_Error( __METHOD__, __( 'Missing required parameters', 'disciple_tools' ), array( 'status' => 400 ) );
+            return new WP_Error( __METHOD__, __( 'Missing required parameters', 'disciple_tools' ), [ 'status' => 400 ] );
         }
         $field_key = $post_submission['field_key'];
         $post_type = $post_submission['post_type'];
@@ -933,11 +933,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $field_option_icon = $post_submission['field_option_icon'];
 
         $fields = DT_Posts::get_post_field_settings( $post_type, false, true );
-        $field_options = $fields[$field_key]['default'] ?? array();
-        $field_option = $field_options[$field_option_key] ?? array();
+        $field_options = $fields[$field_key]['default'] ?? [];
+        $field_option = $field_options[$field_option_key] ?? [];
 
         $field_customizations = dt_get_option( 'dt_field_customizations' );
-        $custom_field_option = array();
+        $custom_field_option = [];
         if ( isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
             $custom_field_option = array_merge( $field_customizations[$post_type][$field_key]['default'][$field_option_key], $custom_field_option );
         }
@@ -981,7 +981,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public function delete_field_option( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
         if ( !isset( $post_submission['post_type'], $post_submission['field_key'], $post_submission['field_option_key'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing post_type or field_key or field_option_key', array( 'status' => 400 ) );
+            return new WP_Error( __METHOD__, 'Missing post_type or field_key or field_option_key', [ 'status' => 400 ] );
         }
         $field_key = $post_submission['field_key'];
         $post_type = $post_submission['post_type'];
@@ -989,7 +989,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         $field_customizations = dt_get_option( 'dt_field_customizations' );
         if ( !isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
-            return new WP_Error( __METHOD__, 'Field option does not exist', array( 'status' => 400 ) );
+            return new WP_Error( __METHOD__, 'Field option does not exist', [ 'status' => 400 ] );
         }
 
         unset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] );
@@ -998,7 +998,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function plugin_activate( WP_REST_Request $request ) {
-        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
         $params = $request->get_params();
         $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
         $installed_plugins = get_plugins();
@@ -1013,7 +1013,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function default_field_name_changed( $post_type, $field_key, $custom_name ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
-        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
         if ( ( $all_non_custom_fields[$field_key]['name'] ?? '' ) === trim( $custom_name ) ) {
             return false;
@@ -1022,7 +1022,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
     public static function default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_label ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
-        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
         if ( $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] ?? '' == trim( $custom_label ) ) {
             return false;
@@ -1032,7 +1032,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function get_default_field_name( $post_type, $field_key ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
-        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
         $default_name = $all_non_custom_fields[$field_key]['name'] ?? '';
         return $default_name;
@@ -1040,14 +1040,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
     public static function get_default_field_option_label( $post_type, $field_key, $field_option_key ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
-        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
         $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] ?? '';
         return $default_name;
     }
     public static function get_default_field_option_description( $post_type, $field_key, $field_option_key ) {
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
-        $default_fields = apply_filters( 'dt_custom_fields_settings', array(), $post_type );
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
         $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['description'] ?? '';
         return $default_name;
@@ -1060,12 +1060,12 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $tile_options = dt_get_option( 'dt_custom_tiles' );
 
         if ( !isset( $tile_options[$post_type] ) ) {
-            $tile_options[$post_type] = array();
+            $tile_options[$post_type] = [];
         }
 
         foreach ( $dt_custom_tiles_and_fields_ordered as $tile_key => $tile_values ) {
             if ( !isset( $tile_options[$post_type][$tile_key] ) ) {
-                $tile_options[$post_type][$tile_key] = array();
+                $tile_options[$post_type][$tile_key] = [];
             }
             $tile_options[$post_type][$tile_key]['tile_priority'] = $tile_values['tile_priority'];
             $tile_options[$post_type][$tile_key]['order'] = $tile_values['order'];
@@ -1081,7 +1081,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $field_key = sanitize_text_field( wp_unslash( $post_submission['field_key'] ) );
 
         $field_customizations = dt_get_option( 'dt_field_customizations' );
-        $custom_field = $field_customizations[$post_type][$field_key] ?? array();
+        $custom_field = $field_customizations[$post_type][$field_key] ?? [];
 
         $sortable_field_options_ordering = dt_recursive_sanitize_array( $post_submission['sortable_field_options_ordering'] );
         if ( !empty( $sortable_field_options_ordering ) ) {
@@ -1145,7 +1145,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         if ( isset( $post_fields[$field_key] ) ) {
             if ( !isset( $field_customizations[$post_type][$field_key] ) ){
-                $field_customizations[$post_type][$field_key] = array();
+                $field_customizations[$post_type][$field_key] = [];
             }
             $custom_field = $field_customizations[$post_type][$field_key];
 
@@ -1184,7 +1184,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
             // show only for types
             if ( isset( $post_submission['visibility']['type_visibility'] ) && isset( $post_fields['type']['default'] ) ) {
-                $selected = array();
+                $selected = [];
                 foreach ( $post_fields['type']['default'] as $type_key => $type_value ){
                     if ( in_array( $type_key, $post_submission['visibility']['type_visibility'], true ) ){
                         $selected[] = $type_key;
@@ -1218,14 +1218,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $post_fields = DT_Posts::get_post_field_settings( $post_type, false, true );
             return $post_fields[$field_key];
         }
-        return new WP_Error( 'error', 'Something went wrong', array( 'status' => 500 ) );
+        return new WP_Error( 'error', 'Something went wrong', [ 'status' => 500 ] );
     }
 
     public function delete_field( WP_REST_Request $request ) {
         $post_submission = $request->get_params();
 
         if ( !isset( $post_submission['post_type'], $post_submission['field_key'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing post_type or field_key', array( 'status' => 400 ) );
+            return new WP_Error( __METHOD__, 'Missing post_type or field_key', [ 'status' => 400 ] );
         }
 
         $post_type = $post_submission['post_type'];
@@ -1250,7 +1250,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function plugin_deactivate( WP_REST_Request $request ) {
-        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
         $params = $request->get_params();
         $plugin_slug = sanitize_text_field( wp_unslash( $params['plugin_slug'] ) );
         $installed_plugins = get_plugins();
