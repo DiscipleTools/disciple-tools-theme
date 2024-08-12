@@ -39,7 +39,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      * The disciple_tools_load_plugins hook
      * Set up hook for loading plugins
      */
-    add_action( 'after_setup_theme', function () {
+    add_action( 'after_setup_theme', function (){
         do_action( 'disciple_tools_load_plugins' );
     }, 30 );
 
