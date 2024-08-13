@@ -1305,29 +1305,23 @@ class Disciple_Tools_Mapping_Queries {
         $post_id_filter_sql = '';
         $shared_user_join_sql = '';
         $shared_user_condition_sql = '';
-        if ( isset( $args['list_all'], $args['list_all_by_user_id'] ) && !$args['list_all'] ) {
+        if ( isset( $args['slug'], $args['user_id'] ) && $args['slug'] === 'personal' ) {
             $post_id_filter_sql = $wpdb->prepare( "
-            SELECT * FROM
-                      (
                         SELECT api_p.ID
                         FROM $wpdb->posts api_p
-                        LEFT JOIN $wpdb->postmeta as field_type ON ( field_type.post_id = api_p.ID AND field_type.meta_key = 'type' )
-                        WHERE (field_type.meta_value = 'access' OR field_type.meta_value = 'user' OR field_type.meta_value = 'access_placeholder')
-                          AND (api_p.post_status = 'publish')
+                        WHERE (api_p.post_status = 'publish')
                           AND api_p.post_type = %s
                           GROUP BY api_p.ID
-                          LIMIT 0, 50000
-                      ) AS assigned_post_ids
             ", ( ( $post_type === 'system-users' ) ? 'contacts' : $post_type ) );
 
             if ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ) {
-                $shared_user_join_sql = "LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = um.meta_value            )";
+                $shared_user_join_sql = "LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = um.meta_value )";
                 $post_id_filter_sql = 'AND (um.meta_value IN ('. $post_id_filter_sql .'))';
             } else {
                 $shared_user_join_sql = "LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = p.ID )";
                 $post_id_filter_sql = 'AND (p.ID IN ('. $post_id_filter_sql .'))';
             }
-            $shared_user_condition_sql = "AND (field_shared_with.user_id = ". $args['list_all_by_user_id'] .")";
+            $shared_user_condition_sql = "AND (field_shared_with.user_id = ". $args['user_id'] .")";
         }
 
         if ( isset( $args['field_key'], $args['field_type'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){

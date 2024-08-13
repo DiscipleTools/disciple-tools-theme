@@ -18,7 +18,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public $slug = 'dynamic_records_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/records/dynamic-records-map.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics', 'multiplier' ];
+    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics', 'access_contacts', 'access_groups' ];
     public $namespace = 'dt-metrics/records';
     public $base_filter = [];
 
@@ -107,7 +107,6 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                     'map_key' => DT_Mapbox_API::get_key(),
                     'no_map_key_msg' => _x( 'To view this map, a mapbox key is needed; click here to add.', 'install mapbox key to view map', 'disciple_tools' ),
                     'map_mirror' => dt_get_location_grid_mirror( true ),
-                    'can_list_all' => in_array( $this->base_slug, [ 'records' ] ),
                     'menu_slug' => $this->base_slug,
                     'post_type' => $this->post_type,
                     'post_types' => $this->post_type_options,
@@ -190,14 +189,16 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                     break;
             }
 
-            // Determine if record restriction (listing-all) should take effect.
-            $params = self::capture_list_all_setting( $params );
+            // Determine type of query to be executed, based on incoming slug.
+            if ( isset( $params['slug'] ) && $params['slug'] === 'personal' ) {
+                $params['user_id'] = get_current_user_id();
+            }
 
             // Execute request query.
             $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params, $offset, $limit );
 
-            // Ensure to unset list_all_by_user_id for security reasons.
-            unset( $params['list_all_by_user_id'] );
+            // Ensure to unset user_id for security reasons.
+            unset( $params['user_id'] );
         }
 
         return [
@@ -267,17 +268,4 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 
         return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
     }
-
-    private function capture_list_all_setting( $params ) {
-        if ( !isset( $params['list_all'] ) || !$params['list_all'] ) {
-            $params['list_all'] = false;
-            $params['list_all_by_user_id'] = get_current_user_id();
-        } else {
-            $params['list_all'] = true;
-            $params['list_all_by_user_id'] = null;
-        }
-
-        return $params;
-    }
-
 }

@@ -31,7 +31,7 @@ jQuery(document).ready(function ($) {
 
       body.offset = offset;
       body.limit = limit;
-      body.list_all = mapbox_library_api.obj.settings.can_list_all;
+      body.slug = mapbox_library_api.obj.settings.menu_slug;
       let query = await window.makeRequest(
         'POST',
         mapbox_library_api.obj.settings.post_type_rest_url,
