@@ -127,14 +127,14 @@ class Disciple_Tools_Contacts_Transfer {
                                 <div class="section-subheader">
                                     <img style="max-height: 14px; max-width: 14px;"
                                          src="<?php echo esc_html( $status_settings['icon'] ); ?>">
-                                    <?php echo esc_html( $status_settings['name'] ); ?> : <?php echo esc_html( $status['label'] ); ?>
+                                    <?php echo esc_html( $status_settings['name'] ); ?> : <?php echo esc_html( $status['label'] ?? '' ); ?>
                                 </div>
 
                                 <!-- Seeker Path -->
                                 <div class="section-subheader">
                                     <img style="max-height: 15px; max-width: 15px;"
                                          src="<?php echo esc_html( $seeker_settings['icon'] ); ?>">
-                                    <?php echo esc_html( $seeker_settings['name'] ); ?> : <?php echo esc_html( $seeker['label'] ); ?>
+                                    <?php echo esc_html( $seeker_settings['name'] ); ?> : <?php echo esc_html( $seeker['label'] ?? '' ); ?>
                                 </div>
                                 <br>
 
