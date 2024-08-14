@@ -18,18 +18,12 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public $slug = 'dynamic_records_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/records/dynamic-records-map.js'; // should be full file name plus extension
-    public $permissions = [];
+    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
     public $namespace = 'dt-metrics/records';
     public $base_filter = [];
 
     public function __construct( $base_slug, $base_title ) {
-        if ( !$this->has_permission() ){
-            return;
-        }
-
-        // Ensure metric is only made available for specific user roles.
-        $current_user = wp_get_current_user();
-        if ( !empty( $current_user ) && !empty( $current_user->roles ) && empty( array_intersect( [ 'administrator', 'multiplier' ], $current_user->roles ) ) ) {
+        if ( ( $base_slug === 'records' ) && !$this->has_permission() ) {
             return;
         }
 
