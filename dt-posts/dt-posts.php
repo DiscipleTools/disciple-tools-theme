@@ -2763,7 +2763,7 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
 
-    public static function get_post_tiles( $post_type, $return_cache = true ){
+    public static function get_post_tiles( $post_type, $return_cache = true, $translate = true ){
         $cached = wp_cache_get( $post_type . '_tile_options' );
         if ( $return_cache && $cached ){
             return $cached;
@@ -2782,6 +2782,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         foreach ( $sections as $section_id ){
             if ( ! isset( $tile_options[ $post_type ][ $section_id ] ) ) {
                 $tile_options[$post_type][$section_id] = [];
+            }
+        }
+        //translations
+        if ( !is_admin() && $translate ) {
+            $user_locale = get_user_locale();
+            foreach ( $tile_options[$post_type] as $key => $value ) {
+                if ( isset( $tile_options[$post_type][$key]['translations'][$user_locale] ) && !empty( $tile_options[$post_type][$key]['translations'][$user_locale] ) ) {
+                    $tile_options[$post_type][$key]['label'] = $tile_options[$post_type][$key]['translations'][$user_locale];
+                }
             }
         }
 
