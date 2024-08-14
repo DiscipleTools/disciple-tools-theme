@@ -332,6 +332,7 @@ class DT_Contacts_Base {
         return $fields;
     }
 
+    //  eventually we will remove this function but for the time being we are keeping it
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === 'contacts' ){
             $post = DT_Posts::get_post( $post_type, $post_id );
@@ -355,6 +356,32 @@ class DT_Contacts_Base {
                     <?php esc_html_e( 'See duplicates', 'disciple_tools' ) ?></a></li>
             <?php
         }
+    }
+
+
+    public static function getRecordActionsArray() {
+        $recordActions = array();
+    
+        // Define your actions with label, icon, and isModal properties
+        $recordActions[] = array(
+            'label' => 'Archive-Contact',
+            'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
+            'isModal' => true
+        );
+    
+        $recordActions[] = array(
+            'label' => 'Change-Record-Type',
+            'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
+            'isModal' => true
+        );
+    
+        $recordActions[] = array(
+            'label' => 'See-duplicates',
+            'icon' => get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2',
+            'isModal' => true
+        );
+    
+        return $recordActions;
     }
 
 

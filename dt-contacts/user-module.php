@@ -97,6 +97,32 @@ class DT_Contacts_User {
         return $filters;
     }
 
+    public static function getRecordActionsArray($post_type, $post_id) {
+        $recordActions = array();
+        if ( $post_type === 'contacts' ){
+            $contact = DT_Posts::get_post( $post_type, $post_id );
+            if ( current_user_can( 'create_users' ) || DT_User_Management::non_admins_can_make_users() ){
+
+                $recordActions[] = array(
+                    'label' => 'Make-a-user-from-this-contact',
+                    'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
+                    'isModal' => false,
+                    'href'=> home_url('/') . 'user-management/add-user?contact_id=' . $post_id,
+                );
+                if(current_user_can('create_users')){
+                    $recordActions[]= array(
+                        'label' => 'Link-to-an-existing-user',
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/link.svg',
+                        'isModal' => true,
+                        'href'=>'',
+                    );
+                }
+            }
+        }
+        return $recordActions;
+
+    }
+
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === 'contacts' ){
             $contact = DT_Posts::get_post( $post_type, $post_id );

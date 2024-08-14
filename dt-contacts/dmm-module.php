@@ -402,7 +402,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $contact = DT_Posts::get_post( 'contacts', get_the_ID() );
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
-
+<!-- comment and activity  -->
             <ul class="dropdown menu" data-dropdown-menu style="display: inline-block">
                 <li style="border-radius: 5px">
                     <a class="button menu-white-dropdown-arrow"
