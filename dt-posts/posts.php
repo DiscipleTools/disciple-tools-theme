@@ -177,8 +177,10 @@ class Disciple_Tools_Posts
             if ( isset( $post_settings['label_singular'] ) ){
                 return $post_settings['label_singular'];
             }
-        } elseif ( isset( $post_settings['label_plural'] ) ) {
+        } else {
+            if ( isset( $post_settings['label_plural'] ) ){
                 return $post_settings['label_plural'];
+            }
         }
         return $post_type;
     }
@@ -496,83 +498,85 @@ class Disciple_Tools_Posts
                         $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     }
                 }
-            } elseif ( self::is_link_key( $activity->meta_key, $fields ) ) {
+            } else {
+                if ( self::is_link_key( $activity->meta_key, $fields ) ) {
                     $value = $activity->meta_value;
                     $link_info = self::get_link_info( $activity->meta_key, $fields );
-                if ( isset( $link_info['field_key'] ) && isset( $link_info['type'] ) ) {
-                    $field_key = $link_info['field_key'];
-                    $link_type = $link_info['type'];
-                    $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
-                    if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
-                        if ( $activity->meta_value === 'value_deleted' ) {
-                            $value = $activity->old_value;
-                            $message = sprintf( _x( '%1$s removed from %2$s links', 'link1 removed from Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
+                    if ( isset( $link_info['field_key'] ) && isset( $link_info['type'] ) ) {
+                        $field_key = $link_info['field_key'];
+                        $link_type = $link_info['type'];
+                        $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
+                        if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
+                            if ( $activity->meta_value === 'value_deleted' ) {
+                                $value = $activity->old_value;
+                                $message = sprintf( _x( '%1$s removed from %2$s links', 'link1 removed from Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
+                            } else {
+                                $value = $activity->meta_value;
+                                $message = sprintf( _x( '%1$s added to %2$s links', 'link1 added to Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
+                            }
+                        }
+                    }
+                } else if ( strpos( $activity->meta_key, '_details' ) !== false ) {
+                    $meta_value = maybe_unserialize( $activity->meta_value );
+                    $original_key = str_replace( '_details', '', $activity->meta_key );
+                    $original = get_post_meta( $activity->object_id, $original_key, true );
+                    if ( !is_string( $original ) ){
+                        $original = 'Not a string';
+                    }
+                    $name = $fields[ $activity->meta_key ]['name'] ?? '';
+                    if ( !empty( $name ) && !empty( $original ) ){
+                        $object_note = $name . ' "'. $original .'" ';
+                        if ( is_array( $meta_value ) ){
+                            foreach ( $meta_value as $k => $v ){
+                                $prev_value = $activity->old_value;
+                                if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ){
+                                    continue;
+                                }
+                                if ( $k === 'verified' ) {
+                                    $object_note .= $v ? _x( 'verified', 'message', 'disciple_tools' ) : _x( 'not verified', 'message', 'disciple_tools' );
+                                }
+                                if ( $k === 'invalid' ) {
+                                    $object_note .= $v ? _x( 'invalidated', 'message', 'disciple_tools' ) : _x( 'not invalidated', 'message', 'disciple_tools' );
+                                }
+                                $object_note .= ', ';
+                            }
                         } else {
-                            $value = $activity->meta_value;
-                            $message = sprintf( _x( '%1$s added to %2$s links', 'link1 added to Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
+                            $object_note = $meta_value;
+                        }
+                        $object_note = chop( $object_note, ', ' );
+                        $message = $object_note;
+                    }
+                } else if ( strpos( $activity->meta_key, 'contact_' ) === 0 ) {
+                    $channel = explode( '_', $activity->meta_key );
+                    $channel_key_count = count( $channel ) - 1;
+                    //handle when a communication channel key has an underscore in it.
+                    if ( isset( $channel[1] ) ) {
+                        $channel_key = '';
+                        for ( $i = 1; $i < $channel_key_count; $i++ ) {
+                            if ( $channel_key ) {
+                                $channel_key = $channel_key . '_' . $channel[$i];
+                            } else {
+                                $channel_key = $channel[$i];
+                            }
                         }
                     }
-                }
-            } else if ( strpos( $activity->meta_key, '_details' ) !== false ) {
-                $meta_value = maybe_unserialize( $activity->meta_value );
-                $original_key = str_replace( '_details', '', $activity->meta_key );
-                $original = get_post_meta( $activity->object_id, $original_key, true );
-                if ( !is_string( $original ) ){
-                    $original = 'Not a string';
-                }
-                $name = $fields[ $activity->meta_key ]['name'] ?? '';
-                if ( !empty( $name ) && !empty( $original ) ){
-                    $object_note = $name . ' "'. $original .'" ';
-                    if ( is_array( $meta_value ) ){
-                        foreach ( $meta_value as $k => $v ){
-                            $prev_value = $activity->old_value;
-                            if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ){
-                                continue;
-                            }
-                            if ( $k === 'verified' ) {
-                                $object_note .= $v ? _x( 'verified', 'message', 'disciple_tools' ) : _x( 'not verified', 'message', 'disciple_tools' );
-                            }
-                            if ( $k === 'invalid' ) {
-                                $object_note .= $v ? _x( 'invalidated', 'message', 'disciple_tools' ) : _x( 'not invalidated', 'message', 'disciple_tools' );
-                            }
-                            $object_note .= ', ';
-                        }
-                    } else {
-                        $object_note = $meta_value;
-                    }
-                    $object_note = chop( $object_note, ', ' );
-                    $message = $object_note;
-                }
-            } else if ( strpos( $activity->meta_key, 'contact_' ) === 0 ) {
-                $channel = explode( '_', $activity->meta_key );
-                $channel_key_count = count( $channel ) - 1;
-                //handle when a communication channel key has an underscore in it.
-                if ( isset( $channel[1] ) ) {
-                    $channel_key = '';
-                    for ( $i = 1; $i < $channel_key_count; $i++ ) {
-                        if ( $channel_key ) {
-                            $channel_key = $channel_key . '_' . $channel[$i];
+                    if ( isset( $channel_key ) && isset( $post_type_settings['channels'][ $channel_key ] ) ){
+                        $channel = $post_type_settings['channels'][ $channel_key ];
+                        if ( $activity->old_value === '' ){
+                            $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->meta_value );
+                        } else if ( $activity->meta_value != 'value_deleted' ){
+                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
                         } else {
-                            $channel_key = $channel[$i];
+                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value );
                         }
                     }
+                } else if ( $activity->meta_key == 'title' ){
+                    $message = sprintf( _x( 'Name changed to: %s', 'message', 'disciple_tools' ), $activity->meta_value );
+                } else if ( $activity->meta_key === '_sample' ){
+                    $message = _x( 'Created from Demo Plugin', 'message', 'disciple_tools' );
+                } else {
+                    $message = $activity->meta_key . ': ' . $activity->meta_value;
                 }
-                if ( isset( $channel_key ) && isset( $post_type_settings['channels'][ $channel_key ] ) ){
-                    $channel = $post_type_settings['channels'][ $channel_key ];
-                    if ( $activity->old_value === '' ){
-                        $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->meta_value );
-                    } else if ( $activity->meta_value != 'value_deleted' ){
-                        $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
-                    } else {
-                        $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value );
-                    }
-                }
-            } else if ( $activity->meta_key == 'title' ){
-                $message = sprintf( _x( 'Name changed to: %s', 'message', 'disciple_tools' ), $activity->meta_value );
-            } else if ( $activity->meta_key === '_sample' ){
-                $message = _x( 'Created from Demo Plugin', 'message', 'disciple_tools' );
-            } else {
-                $message = $activity->meta_key . ': ' . $activity->meta_value;
             }
         } elseif ( $activity->action === 'assignment_decline' ){
             $user = get_user_by( 'ID', $activity->user_id );
@@ -1048,6 +1052,7 @@ class Disciple_Tools_Posts
         }
         $args['where_sql'] = str_replace( "$operator ()", '', $args['where_sql'] );
         return $args;
+
     }
 
 
@@ -1567,7 +1572,7 @@ class Disciple_Tools_Posts
                                     return new WP_Error( __FUNCTION__, "Cannot update post_user_meta fields for no user on {$field_key}.", [ 'status' => 400 ] );
                                 }
                                 $insert = [];
-                                $insert = $wpdb->insert( $wpdb->dt_post_user_meta, [
+                                $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, [
                                     'user_id'  => $current_user_id,
                                     'post_id'  => $post_id,
                                     'meta_key' => $field_key,
@@ -1837,7 +1842,7 @@ class Disciple_Tools_Posts
                     }
                 }
             }
-            $existing_values = array_map( function( $value ) {
+            $existing_values = array_map( function( $value ){
                 return $value['value'];
             }, $existing_contact[$details_key] ?? [] );
             foreach ( $values as $field ){
@@ -2078,45 +2083,47 @@ class Disciple_Tools_Posts
                     } else {
                         delete_metadata_by_mid( 'post', $value['meta_id'] );
                     }
-                } elseif ( isset( $value['value'] ) ) {
-                    if ( isset( $value['meta_id'] ) && $value['meta_id'] ) {
-                        //save private link fields to the dt_post_user_meta table
-                        if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
-                            if ( !$current_user_id ){
-                                return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
-                            }
-                            $update = [];
-                            $update = $wpdb->update( $wpdb->dt_post_user_meta, [ 'meta_value' => $value['value'] ], [ 'id' => $value['meta_id'] ] );
-                            if ( !$update ) {
-                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
+                } else {
+                    if ( isset( $value['value'] ) ) {
+                        if ( isset( $value['meta_id'] ) && $value['meta_id'] ) {
+                            //save private link fields to the dt_post_user_meta table
+                            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
+                                if ( !$current_user_id ){
+                                    return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
+                                }
+                                $update = [];
+                                $update = $wpdb->update( $wpdb->dt_post_user_meta, [ 'meta_value' => $value['value'] ], [ 'id' => $value['meta_id'] ] );
+                                if ( !$update ) {
+                                    return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
+                                }
+                            } else {
+                                update_metadata_by_mid( 'post', $value['meta_id'], $value['value'] );
                             }
                         } else {
-                            update_metadata_by_mid( 'post', $value['meta_id'], $value['value'] );
+                            $meta_key = self::create_link_metakey( $field_key, $value['type'] );
+                            //save private multiselect fields to the dt_post_user_meta table
+                            if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
+                                if ( !$current_user_id ){
+                                    return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
+                                }
+                                $insert = [];
+                                $insert = $wpdb->insert(        $wpdb->dt_post_user_meta, [
+                                    'user_id'  => $current_user_id,
+                                    'post_id'  => $post_id,
+                                    'meta_key' => $meta_key,
+                                    'meta_value' => $value['value']
+                                    ]
+                                );
+                                if ( !$insert ) {
+                                    return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
+                                }
+                            } else {
+                                add_post_meta( $post_id, $meta_key, $value['value'] );
+                            }
                         }
                     } else {
-                        $meta_key = self::create_link_metakey( $field_key, $value['type'] );
-                        //save private multiselect fields to the dt_post_user_meta table
-                        if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {
-                            if ( !$current_user_id ){
-                                return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
-                            }
-                            $insert = [];
-                            $insert = $wpdb->insert( $wpdb->dt_post_user_meta, [
-                                'user_id'  => $current_user_id,
-                                'post_id'  => $post_id,
-                                'meta_key' => $meta_key,
-                                'meta_value' => $value['value']
-                                ]
-                            );
-                            if ( !$insert ) {
-                                return new WP_Error( __FUNCTION__, 'Something wrong on field: ' . $field_key, [ 'status' => 500 ] );
-                            }
-                        } else {
-                            add_post_meta( $post_id, $meta_key, $value['value'] );
-                        }
+                        return new WP_Error( __FUNCTION__, 'Value missing on field: ' . $field_key, [ 'status' => 500 ] );
                     }
-                } else {
-                    return new WP_Error( __FUNCTION__, 'Value missing on field: ' . $field_key, [ 'status' => 500 ] );
                 }
             }
         }
@@ -2365,7 +2372,7 @@ class Disciple_Tools_Posts
                     do_action( 'dt_post_updated', $connection->post_type, $connection->ID, [
                         $reversed_field['key'] => [
                             'values' => [
-                                'value' => $post_id,
+                                'value' => $post_id
                             ]
                         ]
                     ], $current_connected_post, $updated_connected_post );
@@ -2686,7 +2693,7 @@ class Disciple_Tools_Posts
                         }
                         $key = $m['meta_value'];
                         $label = isset( $field_settings[$field_key]['default'][$m['meta_value']]['label'] ) ? $field_settings[$field_key]['default'][$m['meta_value']]['label'] : $key;
-                        $fields[$field_key] = array( 'key' => $key, 'label' => $label );
+                        $fields[$field_key] = array( 'key' => $key, 'label' => $label  );
                     } else if ( self::is_link_key( $m['meta_key'], $field_settings ) ) {
                         $link_info = self::get_link_info( $m['meta_key'], $field_settings );
                         $field_key = $link_info['field_key'];

@@ -694,7 +694,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         }
                         $selected = isset( $post[$field_key]['key'] ) && $post[$field_key]['key'] === strval( $option_key ); ?>
                         <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? 'selected' : '' )?>>
-                            <?php echo esc_html( $option_value['label'] ?? '' ) ?>
+                            <?php echo esc_html( $option_value['label'] ) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

@@ -273,7 +273,7 @@ class Disciple_Tools_Contacts_Transfer {
                 <?php if ( $foreign_key_exists ) : ?>
                     <div class="cell" id="transfer-warning">
 
-                        <h6><?php printf( esc_html__( 'Already transfered to %s', 'disciple_tools' ), esc_html( $site_title ) ) ?></h6>
+                        <h6><?php echo sprintf( esc_html__( 'Already transfered to %s', 'disciple_tools' ), esc_html( $site_title ) ) ?></h6>
                         <p><?php esc_html_e( 'NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?', 'disciple_tools' ) ?></p>
                         <p>
                             <button type="button"
@@ -437,7 +437,7 @@ class Disciple_Tools_Contacts_Transfer {
                     'body'    => [
                         'post_id'              => $result_body->created_id,
                         'comments'             => $comment_chunks[ $i ],
-                        'transfer_foreign_key' => $result_body->transfer_foreign_key,
+                        'transfer_foreign_key' => $result_body->transfer_foreign_key
                     ],
                     'headers' => [
                         'Authorization' => 'Bearer ' . $site['transfer_token'],
