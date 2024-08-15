@@ -275,9 +275,17 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
             $this->template( 'begin' );
 
+            ?>
+            <div id="post-body-content">
+            <?php
             $this->workflows_post_types_section( $selected_post_type );
             $this->workflows_management_section( $selected_post_type );
             $this->workflows_design_section( $selected_post_type );
+            ?>
+            </div>
+
+            <?php $this->right_column() ?>
+            <?php
 
             $this->template( 'end' );
 
@@ -762,6 +770,12 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                         </span>
                                 </td>
                             </tr>
+                            <tr><td><span>
+                                    Help Text [<a href="#" class="dt-docs"
+                                        data-title="dt_right_docs_help_text_title"
+                                        data-content="dt_right_docs_help_text_content">&#63;</a>]
+                                </span></td>
+                            </tr>
                             <tr>
                                 <td colspan="3">
                                     <span id="workflows_design_section_step3_exception_message"
@@ -955,6 +969,31 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         }
 
         return $workflows;
+    }
+
+    public function right_column() {
+        ?>
+        <div id="postbox-container-1" class="postbox-container">
+        <!-- Box -->
+        <table style="display: none;" id="dt_right_docs_section" class="widefat striped">
+            <thead>
+            <tr>
+                <th id="dt_right_docs_title"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="dt_right_docs_content"></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <br>
+        <!-- End Box -->
+        <?php
+
+        // Include helper documentation
+        include 'tab-workflows-docs.php';
     }
 
 }

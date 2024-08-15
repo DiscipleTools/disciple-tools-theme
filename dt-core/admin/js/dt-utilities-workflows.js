@@ -805,11 +805,18 @@ jQuery(function ($) {
         return sort_by_string(a['name'].toUpperCase(), b['name'].toUpperCase());
       });
 
+      let help_text = $('#dt_right_docs_help_text_list');
+
       // Add sorted field names
       fields.forEach(function (field, idx) {
         if (field['id'] && field['name']) {
           let option = `<option value="${window.dt_admin_shared.escape(field['id'])}">${window.dt_admin_shared.escape(field['name'])}</option>`;
           fields_select.append(option);
+
+          if (field['type'] === 'connection' || field['type'] === 'user_select') {
+            let help = `<li>${field['name']} - {${field['id']}}</li>`
+            help_text.append(help);
+          }
         }
       });
     }
