@@ -813,8 +813,11 @@ jQuery(function ($) {
           let option = `<option value="${window.dt_admin_shared.escape(field['id'])}">${window.dt_admin_shared.escape(field['name'])}</option>`;
           fields_select.append(option);
 
-          if (field['type'] === 'connection' || field['type'] === 'user_select') {
-            let help = `<li>${field['name']} - {${field['id']}}</li>`
+          if (
+            field['type'] === 'connection' ||
+            field['type'] === 'user_select'
+          ) {
+            let help = `<li>${field['name']} - {${field['id']}}</li>`;
             help_text.append(help);
           }
         }
