@@ -34,6 +34,3 @@ jQuery(function ($) {
     );
   });
 });
-
-//create placeholder help section
-//us id attributes starting with dt_ instead of ml_links_

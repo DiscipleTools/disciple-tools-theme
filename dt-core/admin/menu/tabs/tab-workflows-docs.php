@@ -1,4 +1,4 @@
-<!-- Here you can create different Help Text lists for use in different places -->
+<!-- Here you can create different Help Texts for use in different places -->
 
 <!-- Help Text -->
 <div id="dt_right_docs_help_text_title" style="display: none;">
