@@ -71,12 +71,12 @@ class DT_Login_Endpoints {
             $payload['name'] = $body->user->displayName;
         }
 
-        if ( empty( $prayload['email'] ) && isset( $body->user->email ) ) {
+        if ( empty( $payload['email'] ) && isset( $body->user->email ) ) {
             $payload['email'] = $body->user->email;
         }
 
         //phpcs:disable
-        if ( empty( $prayload['email'] ) && isset( $body->additionalUserInfo->profile->email ) ){
+        if ( empty( $payload['email'] ) && isset( $body->additionalUserInfo->profile->email ) ){
             $payload['email'] = $body->additionalUserInfo->profile->email;
         }
         //phpcs:enable
