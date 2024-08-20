@@ -499,7 +499,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
 
                 // Identify capabilities selection states.
-                $updated_capabilities = [];
+                $updated_capabilities = ( isset( $existing_custom_roles[$role]['capabilities'] ) && is_array( $existing_custom_roles[$role]['capabilities'] ) ) ? $existing_custom_roles[$role]['capabilities'] : [];
                 foreach ( $capabilities ?? [] as $capability ){
                     $updated_capabilities[$capability['key']] = $capability['enabled'];
                 }
