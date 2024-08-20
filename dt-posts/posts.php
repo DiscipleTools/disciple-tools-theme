@@ -1686,11 +1686,8 @@ class Disciple_Tools_Posts
                         $location_meta_grid['level'] = $value['level'];
                         $location_meta_grid['label'] = $value['label'];
 
-                        // Check for pre-existing grid entries and avoid duplicates.
-                        $duplicate_location_grid_meta = $wpdb->get_results( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'location_grid' AND meta_value = %d", $post_id, $value['grid_id'] ), ARRAY_A );
-
                         // Proceed accordingly with addition.
-                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, ( ( count( $duplicate_location_grid_meta ) > 0 ) ? $duplicate_location_grid_meta[0]['meta_id'] : null ) );
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
                         if ( is_wp_error( $potential_error ) ) {
                             return $potential_error;
                         }
