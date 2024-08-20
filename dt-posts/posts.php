@@ -1597,6 +1597,7 @@ class Disciple_Tools_Posts
 
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
 
+        global $wpdb;
         foreach ( $fields as $field_key => $field ){
 
             /********************************************************
@@ -1672,6 +1673,25 @@ class Disciple_Tools_Posts
                         Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post );
                     }
 
+                    // Add by pre-defined meta grid values.
+                    else if ( !empty( $value['grid_id'] ) && !empty( $value['label'] ) && !empty( $value['level'] ) && !empty( $value['lng'] ) && !empty( $value['lat'] ) ) {
+                        $location_meta_grid = array();
+
+                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                        $location_meta_grid['post_id'] = $post_id;
+                        $location_meta_grid['post_type'] = $post_type;
+                        $location_meta_grid['grid_id'] = $value['grid_id'];
+                        $location_meta_grid['lng'] = $value['lng'];
+                        $location_meta_grid['lat'] = $value['lat'];
+                        $location_meta_grid['level'] = $value['level'];
+                        $location_meta_grid['label'] = $value['label'];
+
+                        // Proceed accordingly with addition.
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                        if ( is_wp_error( $potential_error ) ) {
+                            return $potential_error;
+                        }
+                    }
                     // Add by grid_id
                     else if ( isset( $value['grid_id'] ) && ! empty( $value['grid_id'] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value['grid_id'] );
