@@ -3812,24 +3812,57 @@
     $(split_by_no_results_msg).fadeOut('fast');
 
     $(split_by_results).slideUp('fast', function () {
-      let filters =
+      let split_by_filters =
         current_filter.query !== undefined ? current_filter.query : [];
-      window.API.split_by(list_settings.post_type, field_id, filters).then(
-        function (response) {
+
+      // Create filter for all available field options.
+      let default_options_filters = JSON.parse(
+        JSON.stringify(split_by_filters),
+      );
+      delete default_options_filters['fields'];
+
+      // First, always fetch all available options for given field_id.
+      window.API.split_by(
+        list_settings.post_type,
+        field_id,
+        default_options_filters,
+      ).then(function (default_options) {
+        // Next, execute split_by query for given filters.
+        window.API.split_by(
+          list_settings.post_type,
+          field_id,
+          split_by_filters,
+        ).then(function (split_by_response) {
           $(split_by_current_filter_button).removeClass('loading');
           let summary_displayed = false;
-          if (response && response.length > 0) {
+          if (default_options && default_options.length > 0) {
             let html = '';
-            $.each(response, function (idx, result) {
+
+            // Iterate over default options and highlight selected filters.
+            $.each(default_options, function (idx, result) {
               if (result['value']) {
                 summary_displayed = true;
                 let option_id = result['value'];
                 let option_id_label =
                   result['label'] !== '' ? result['label'] : result['value'];
 
+                // Determine if option should be selected.
+                let option_selected = false;
+                if (split_by_filters['fields']) {
+                  if (
+                    split_by_filters['fields'].filter(
+                      (option) =>
+                        option[field_id] !== undefined &&
+                        option[field_id].includes(option_id),
+                    ).length > 0
+                  ) {
+                    option_selected = true;
+                  }
+                }
+
                 html += `
                     <label class="list-view">
-                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
+                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" ${option_selected ? 'checked' : ''} value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
                       <span>${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
                       <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}">${window.SHAREDFUNCTIONS.escapeHTML(result['count'])}</span>
                     </label>
@@ -3848,8 +3881,8 @@
               $(split_by_no_results_msg).fadeIn('fast');
             });
           }
-        },
-      );
+        });
+      });
     });
   }
 
@@ -3868,33 +3901,29 @@
         filter['query']['fields'] = [];
       }
 
-      // Ensure to avoid duplicate entries.
-      let dup_detected = false;
-      if (Array.isArray(filter['query']['fields'])) {
-        const dup_filter = filter['query']['fields'].filter((field) => {
-          return (
-            Object.prototype.hasOwnProperty.call(field, field_id) &&
-            Array.isArray(field[field_id]) &&
-            field[field_id].includes(option_id)
-          );
-        });
-        dup_detected = dup_filter.length > 0;
-      }
-
-      // Only proceed with filter insert, if no duplications have been detected.
-      if (!dup_detected) {
-        // Add new label.
-        filter['labels'].push({
-          id: option_id,
-          field: field_id,
-          name: `${window.SHAREDFUNCTIONS.escapeHTML(field_id_label)}: ${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}`,
-        });
-
-        let query_field_obj = {};
-        query_field_obj[field_id] = option_id !== 'NULL' ? [option_id] : [];
-        if (filter['query']['fields'].push !== undefined) {
-          filter['query']['fields'].push(query_field_obj);
+      // Ensure to enforce toggling of options of the same field, instead of tacking onto any previous selections.
+      filter['query']['fields'] = filter['query']['fields'].filter(
+        (field) => field[field_id] === undefined,
+      );
+      filter['labels'] = filter['labels'].filter((label) => {
+        if (label['id'] && label['field']) {
+          return label['id'] !== option_id && label['field'] !== field_id;
         }
+
+        return true;
+      });
+
+      // Add new label.
+      filter['labels'].push({
+        id: option_id,
+        field: field_id,
+        name: `${window.SHAREDFUNCTIONS.escapeHTML(field_id_label)}: ${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}`,
+      });
+
+      let query_field_obj = {};
+      query_field_obj[field_id] = option_id !== 'NULL' ? [option_id] : [];
+      if (filter['query']['fields'].push !== undefined) {
+        filter['query']['fields'].push(query_field_obj);
       }
     }
 
