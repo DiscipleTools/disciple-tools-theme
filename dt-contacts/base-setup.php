@@ -332,54 +332,37 @@ class DT_Contacts_Base {
         return $fields;
     }
 
-    //  eventually we will remove this function but for the time being we are keeping it
-    public static function dt_record_admin_actions( $post_type, $post_id ){
-        if ( $post_type === 'contacts' ){
-            $post = DT_Posts::get_post( $post_type, $post_id );
-            if ( empty( $post['archive'] ) && isset( $post['type']['key'] ) && ( $post['type']['key'] === 'personal' || $post['type']['key'] === 'placeholder' ) ) :?>
-                <li>
-                    <a data-open="archive-record-modal">
-                        <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2' ) ?>"/>
-                        <?php echo esc_html( sprintf( _x( 'Archive %s', 'Archive Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_singular'] ) ) ?></a>
-                </li>
-            <?php endif; ?>
+//adding the list items in array.
+     public static function dt_record_admin_actions($post_type, $post_id) {
 
-            <li>
-                <a data-open="contact-type-modal">
-                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2' ) ?>"/>
-                    <?php echo esc_html( sprintf( _x( 'Change %s Type', 'Change Record Type', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_singular'] ) ) ?></a>
-            </li>
-            <li><a data-open="merge-dupe-edit-modal">
-                    <img class="dt-icon"
-                         src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2' ) ?>"/>
-
-                    <?php esc_html_e( 'See duplicates', 'disciple_tools' ) ?></a></li>
-            <?php
-        }
-    }
-
-
-    public static function getRecordActionsArray() {
         $recordActions = array();
     
-        // Define your actions with label, icon, and isModal properties
-        $recordActions[] = array(
-            'label' => 'Archive-Contact',
-            'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
-            'isModal' => true
-        );
+        if ($post_type === 'contacts') {
+            $post = DT_Posts::get_post($post_type, $post_id);
     
-        $recordActions[] = array(
-            'label' => 'Change-Record-Type',
-            'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
-            'isModal' => true
-        );
+            if (empty($post['archive']) && isset($post['type']['key']) && ($post['type']['key'] === 'personal' || $post['type']['key'] === 'placeholder')) {
+                // Archive Contact action
+                $recordActions[] = array(
+                    'label' => 'Archive-Contact',
+                    'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
+                    'isModal' => true
+                );
+            }
     
-        $recordActions[] = array(
-            'label' => 'See-duplicates',
-            'icon' => get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2',
-            'isModal' => true
-        );
+            // Change Record Type action
+            $recordActions[] = array(
+                'label' => 'Change-Record-Type',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
+                'isModal' => true
+            );
+    
+            // See Duplicates action
+            $recordActions[] = array(
+                'label' => 'See-duplicates',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2',
+                'isModal' => true
+            );
+        }
     
         return $recordActions;
     }

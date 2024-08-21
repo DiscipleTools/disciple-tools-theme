@@ -97,6 +97,7 @@ class DT_Contacts_User {
         return $filters;
     }
 
+    //to get the list items of action items into array.
     public static function getRecordActionsArray($post_type, $post_id) {
         $recordActions = array();
         if ( $post_type === 'contacts' ){
@@ -123,6 +124,7 @@ class DT_Contacts_User {
 
     }
 
+    //RN the function is handling the modal action also so creating the function for list items above.
     public static function dt_record_admin_actions( $post_type, $post_id ){
         if ( $post_type === 'contacts' ){
             $contact = DT_Posts::get_post( $post_type, $post_id );

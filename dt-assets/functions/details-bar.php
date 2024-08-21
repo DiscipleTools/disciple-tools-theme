@@ -85,7 +85,7 @@ function dt_print_details_bar(
                         }
 
 
-                        $recordActionsArray = DT_Contacts_Base::getRecordActionsArray();
+                        $recordActionsArray = DT_Contacts_Base::dt_record_admin_actions($dt_post_type,$post_id);
 
                         // Loop through the $recordActionsArray and use the properties as required
                         foreach ($recordActionsArray as $recordAction) {
@@ -112,45 +112,13 @@ function dt_print_details_bar(
                         ?>
 
                             <div class="cell grid-x shrink center-items">
-                               
+                               <!-- replaced the ul with dt-dropdown to handle admin actions -->
                                 <dt-dropdown label="Admin Actions"
                                     options=<?php echo json_encode($optionsArray) ?>
                                     >
                                 </dt-dropdown>
-
-                                <!-- <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
-                                    <li style="border-radius: 5px">
-                                        <a class="button menu-white-dropdown-arrow"
-                                            style="background-color: #00897B; color: white;">
-                                            <?php esc_html_e('Admin Actions', 'disciple_tools') ?></a>
-                                        <ul class="menu is-dropdown-submenu">
-                                            <?php if (DT_Posts::can_delete($dt_post_type, $post_id)): ?>
-                                                <li><a data-open="delete-record-modal">
-                                                        <img class="dt-icon"
-                                                            src="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/trash.svg') ?>" />
-                                                        <?php echo esc_html(sprintf(_x('Delete %s', 'Delete Contact', 'disciple_tools'), DT_Posts::get_post_settings($dt_post_type)['label_singular'])) ?></a>
-                                                </li>
-                                            <?php endif; ?>
-                                            <?php if (DT_Posts::can_update($dt_post_type, $post_id)): ?>
-                                                <li><a data-open="record_history_modal">
-                                                        <span class="mdi mdi-history" style="font-size: 20px;"></span>
-                                                        <?php echo esc_html(sprintf(_x('View %s History', 'View Contact History', 'disciple_tools'), DT_Posts::get_post_settings($dt_post_type)['label_singular'])) ?>
-                                                    </a>
-                                                </li>
-                                            <?php endif; ?>
-                                            <li><a class="open-merge-with-post"
-                                                    data-post_type="<?php echo esc_html($dt_post_type) ?>">
-                                                    <img class="dt-icon"
-                                                        src="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2') ?>" />
-                                                    <?php echo esc_html(sprintf(_x('Merge with another %s', 'Merge with another record', 'disciple_tools'), DT_Posts::get_post_settings($dt_post_type)['label_singular'])) ?>
-                                                </a>
-                                            </li>
-                                            <?php get_template_part('dt-assets/parts/merge', 'details'); ?>
-                                            <?php do_action('dt_record_admin_actions', $dt_post_type, $post_id); ?>
-                                        </ul>
-                                    </li>
-                                </ul> -->
                             </div>
+                            
                             <div class="cell grid-x shrink center-items">
                                 <span id="admin-bar-issues"></span>
                             </div>
