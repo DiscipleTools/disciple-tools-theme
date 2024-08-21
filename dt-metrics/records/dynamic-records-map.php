@@ -18,15 +18,11 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public $slug = 'dynamic_records_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/records/dynamic-records-map.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = [];
     public $namespace = 'dt-metrics/records';
     public $base_filter = [];
 
     public function __construct( $base_slug, $base_title ) {
-        if ( ( $base_slug === 'records' ) && !$this->has_permission() ) {
-            return;
-        }
-
         $this->base_slug = $base_slug;
         $this->base_title = $base_title;
 
@@ -181,6 +177,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 
         // Ensure to prevent any backdoor entries for non-slug related requests.
         if ( !empty( $params['post_type'] ) && !empty( $params['slug'] ) ) {
+            $slug = $params['slug'];
 
             // Ensure params shape is altered accordingly, for system based post types.
             switch ( $params['post_type'] ){
@@ -191,16 +188,28 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                     break;
             }
 
-            // Determine type of query to be executed, based on incoming slug.
-            if ( $params['slug'] === 'personal' ) {
-                $params['user_id'] = get_current_user_id();
+            // Ensure user has required permissions, based on specified slug request.
+            $has_permission = false;
+            if ( ( $slug === 'personal' ) && $this->has_permission_for( [ 'view_project_metrics' ] ) ) {
+                $has_permission = true;
+            }
+            if ( ( $slug === 'records' ) && $this->has_permission_for( [ 'dt_all_access_contacts', 'view_project_metrics' ] ) ) {
+                $has_permission = true;
             }
 
-            // Execute request query.
-            $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params, $offset, $limit );
+            if ( $has_permission ) {
 
-            // Ensure to unset user_id for security reasons.
-            unset( $params['user_id'] );
+                // Determine type of query to be executed, based on incoming slug.
+                if ( $slug === 'personal' ) {
+                    $params['user_id'] = get_current_user_id();
+                }
+
+                // Execute request query.
+                $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params, $offset, $limit );
+
+                // Ensure to unset user_id for security reasons.
+                unset( $params['user_id'] );
+            }
         }
 
         return [
