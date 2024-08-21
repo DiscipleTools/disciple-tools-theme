@@ -1,6 +1,8 @@
 jQuery(document).ready(function ($) {
   let spinner_html =
     '<span class="loading-spinner users-spinner active"></span>';
+  const loading_spinner = jQuery('#loading-spinner');
+  const loading_legend = jQuery('#loading-legend');
   let mapbox_library_api = {
     container_set_up: false,
     current_map_type: 'points',
@@ -18,7 +20,7 @@ jQuery(document).ready(function ($) {
       offset = 0,
       limit = 50000,
     ) {
-      jQuery('#loading-spinner').show();
+      jQuery(loading_spinner).show();
       if (data.response === undefined) {
         data = {
           request: {},
@@ -38,12 +40,13 @@ jQuery(document).ready(function ($) {
         body,
         mapbox_library_api.obj.settings.rest_base_url,
       );
+      jQuery(loading_spinner).hide();
 
       data.request = query.request;
       data.response.features = data.response.features.concat(
         query.response.features,
       );
-      jQuery('#loading-legend').html(
+      jQuery(loading_legend).html(
         `<span>(${data.response.features.length.toLocaleString()})</span>`,
       );
 
@@ -62,8 +65,7 @@ jQuery(document).ready(function ($) {
           limit,
         );
       }
-      jQuery('#loading-legend').html('');
-      jQuery('#loading-spinner').hide();
+      jQuery(loading_legend).html('');
       return data;
     },
     setup_container: function () {

@@ -178,7 +178,9 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $params = $request->get_json_params() ?? $request->get_body_params();
         $offset = !empty( $params['offset'] ) ? $params['offset'] : 0;
         $limit = !empty( $params['limit'] ) ? $params['limit'] : 500000;
-        if ( !empty( $params['post_type'] ) ){
+
+        // Ensure to prevent any backdoor entries for non-slug related requests.
+        if ( !empty( $params['post_type'] ) && !empty( $params['slug'] ) ) {
 
             // Ensure params shape is altered accordingly, for system based post types.
             switch ( $params['post_type'] ){
@@ -190,7 +192,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
             }
 
             // Determine type of query to be executed, based on incoming slug.
-            if ( isset( $params['slug'] ) && $params['slug'] === 'personal' ) {
+            if ( $params['slug'] === 'personal' ) {
                 $params['user_id'] = get_current_user_id();
             }
 
