@@ -246,12 +246,12 @@ function dt_display_tile($tile, $post): bool
                                 ?>
                                 <!-- duplicate check button integration -->
                                 <dt-modal class="duplicate-detected duplicates-detected-notice"
-                                headerClass={"header-blue-bg":true}
+                                    headerClass={"header-blue-bg":true}
                                     buttonClass={"duplicates-detected-button":true} buttonLabel="Duplicate Detected"
                                     buttonStyle={"background-color":"transparent","border":"1px","color":"#3f729b","border-style":"solid","font-weight":"600","border-color":"#3f729b","display":""}
                                     imageStyle={"filter":"hue-rotate(0deg)"}
                                     imageSrc="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/broken.svg') ?>"
-                                    title="Duplicate Detected">
+                                    title="Duplicate Contacts">
                                     <span slot="content">
 
                                         <h4 class="merge-modal-subheading">
@@ -260,8 +260,8 @@ function dt_display_tile($tile, $post): bool
                                         <div class="center">
                                             <h4 class="merge-modal-subheading">
                                                 <?php esc_html_e('Possible Duplicates', 'disciple_tools') ?></h4>
-                                            <a
-                                                id="dismiss_all_duplicates"><?php esc_html_e('Dismiss All', 'disciple_tools'); ?></a>
+                                            <a 
+                                                id="dismiss_all_duplicates" style="font-size: .9375rem"><?php esc_html_e('Dismiss All', 'disciple_tools'); ?></a>
                                             <div id="duplicates-spinner" class="loading-spinner active merge-modal-spinner">
                                             </div>
                                         </div>
