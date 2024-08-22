@@ -11,14 +11,10 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     public $base_title;
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics', 'multiplier' ];
+    public $permissions = [];
     public $namespace = null;
 
     public function __construct( $base_slug, $base_title ) {
-        if ( !$this->has_permission() ){
-            return;
-        }
-
         $this->base_slug = $base_slug;
         $this->base_title = $base_title;
 
@@ -52,26 +48,66 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     }
 
     public function tree( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ){
+        $params = dt_recursive_sanitize_array( $request->get_params() );
+        if ( ! isset( $params['p2p_type'], $params['p2p_direction'], $params['post_type'], $params['slug'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type, slug ]', [ 'status' => 400 ] );
+        }
+
+        $slug = $params['slug'];
+
+        // Ensure user has required permissions, based on specified slug request.
+        $has_permission = false;
+        if ( ( $slug === 'personal' ) && current_user_can( 'access_contacts' ) ) {
+            $has_permission = true;
+        }
+        if ( ( $slug === 'records' ) && ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'view_project_metrics' ) ) ) {
+            $has_permission = true;
+        }
+
+        if ( $has_permission ) {
+            $user = wp_get_current_user();
+            $post_type = $params['post_type'];
+            $post_settings = DT_Posts::get_post_settings( $post_type );
+
+            // Determine scope of query focus, based on specified slug.
+            $focus_id = $params['focus_id'] ?? 0;
+            if ( ( $post_type === 'contacts' ) && ( $slug === 'personal' ) ) {
+                $focus_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+            }
+
+            // Ensure sourced focus_id is not a wp exception.
+            if ( is_wp_error( $focus_id ) ) {
+                return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
+            }
+
+            $filters = [
+                'slug' => $slug,
+                'post_type' => $post_type,
+                'show_archived' => $params['show_archived'] ?? false,
+                'status_key' => $post_settings['status_field']['status_key'] ?? '',
+                'archived_key' => $post_settings['status_field']['archived_key'] ?? ''
+            ];
+            $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
+
+            $can_list_all = current_user_can( 'list_all_' . $post_type );
+            if ( $post_type === 'contacts' && current_user_can( 'dt_all_access_contacts' ) ){
+                $can_list_all = true;
+            }
+            $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters, $can_list_all );
+
+            // Ensure empty hits on personal based slugs, still ensure user node is accessible.
+            if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
+                $generated_genmap['shared'] = 1;
+                $generated_genmap['name'] = $user->display_name;
+            }
+
+            return [
+                'data_layers' => $this->package_data_layer_post_fields( $query, $post_type, $post_settings, $params['data_layers'] ?? [] ),
+                'genmap' => $generated_genmap
+            ];
+        } else {
             return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
-        $params = dt_recursive_sanitize_array( $request->get_params() );
-        if ( ! isset( $params['p2p_type'], $params['p2p_direction'], $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type ]', [ 'status' => 400 ] );
-        }
-
-        $post_type = $params['post_type'];
-        $post_settings = DT_Posts::get_post_settings( $post_type );
-
-        $filters = [
-            'post_type' => $post_type,
-            'show_archived' => $params['show_archived'] ?? false,
-            'status_key' => $post_settings['status_field']['status_key'] ?? '',
-            'archived_key' => $post_settings['status_field']['archived_key'] ?? ''
-        ];
-        $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
-
-        return $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $params['focus_id'] ?? 0, $filters );
     }
 
     public function scripts() {
@@ -98,6 +134,12 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'translations' => [
                     'title' => __( 'Generational Trees', 'disciple_tools' ),
                     'show_archived' => __( 'Show Archived', 'disciple_tools' ),
+                    'data_layer_title' => __( 'Data Layers', 'disciple_tools' ),
+                    'data_layer_settings_color_label' => __( 'Node Color', 'disciple_tools' ),
+                    'data_layer_settings_color_default_label' => __( 'Default', 'disciple_tools' ),
+                    'add_data_layer' => __( 'Add Data Layer', 'disciple_tools' ),
+                    'icon_data_layer' => __( 'Show as icons', 'disciple_tools' ),
+                    'select_data_layer_field' => __( 'select data layer field to capture', 'disciple_tools' ),
                     'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                     'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
                     'members' => __( 'Members', 'disciple_tools' ),
@@ -131,7 +173,14 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                         'title' => __( 'Infinite Loops', 'disciple_tools' )
                     ]
                 ],
-                'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? []
+                'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? [],
+                'data_layer_supported_field_types' => [
+                    'date',
+                    'key_select',
+                    'multi_select',
+                    'tags'
+                ],
+                'data_layers' => []
             ]
         );
 
@@ -165,42 +214,46 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         // Determine archived meta values.
         $status_key = $filters['status_key'] ?? '';
-        $query = $wpdb->get_results( $wpdb->prepare( "
-                    SELECT
-                      a.ID         as id,
-                      0            as parent_id,
-                      a.post_title as name,
-                      ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status,
-                      ( SELECT EXISTS( SELECT p_shared.user_id FROM $wpdb->dt_share as p_shared WHERE p_shared.user_id = %d AND p_shared.post_id = a.ID ) ) as shared
-                    FROM $wpdb->posts as a
-                    WHERE a.post_type = %s
-                    AND a.ID %1s IN (
-                      SELECT DISTINCT (p2p_from)
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = %s
-                      GROUP BY p2p_from
-                    )
-                      AND a.ID %1s IN (
-                      SELECT DISTINCT (p2p_to)
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = %s
-                      GROUP BY p2p_to
-                    )
-                    UNION
-                    SELECT
-                      p.%1s  as id,
-                      p.%1s    as parent_id,
-                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name,
-                      ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status,
-                      ( SELECT EXISTS( SELECT u_shared.user_id FROM $wpdb->dt_share as u_shared WHERE u_shared.user_id = %d AND u_shared.post_id = p.%1s ) ) as shared
-                    FROM $wpdb->p2p as p
-                    WHERE p.p2p_type = %s;
-                ", $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type ), ARRAY_A );
 
-        return $query;
+        // Prepare sql shape to be executed.
+        $prepared_query = $wpdb->prepare( "
+                SELECT
+                  a.ID         as id,
+                  0            as parent_id,
+                  a.post_title as name,
+                  ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status,
+                  ( SELECT EXISTS( SELECT p_shared.user_id FROM $wpdb->dt_share as p_shared WHERE p_shared.user_id = %d AND p_shared.post_id = a.ID ) ) as shared
+                FROM $wpdb->posts as a
+                WHERE a.post_type = %s
+                AND a.ID %1s IN (
+                  SELECT DISTINCT (p2p_from)
+                  FROM $wpdb->p2p
+                  WHERE p2p_type = %s
+                  GROUP BY p2p_from
+                )
+                  AND a.ID %1s IN (
+                  SELECT DISTINCT (p2p_to)
+                  FROM $wpdb->p2p
+                  WHERE p2p_type = %s
+                  GROUP BY p2p_to
+                )
+                UNION
+                SELECT
+                  p.%1s  as id,
+                  p.%1s    as parent_id,
+                  (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name,
+                  ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status,
+                  ( SELECT EXISTS( SELECT u_shared.user_id FROM $wpdb->dt_share as u_shared WHERE u_shared.user_id = %d AND u_shared.post_id = p.%1s ) ) as shared
+                FROM $wpdb->p2p as p
+                WHERE p.p2p_type = %s;
+            ", $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type );
+
+        //phpcs:disable
+        return $wpdb->get_results( $prepared_query, ARRAY_A );
+        //phpcs:enable
     }
 
-    public function get_genmap( $query, $depth_limit, $focus_id, $filters = [] ) {
+    public function get_genmap( $query, $depth_limit, $focus_id, $filters = [], $can_list_all = false ){
 
         if ( is_wp_error( $query ) ){
             return $this->_circular_structure_error( $query );
@@ -210,7 +263,9 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
         $menu_data = $this->prepare_menu_array( $query );
 
-        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters );
+        $user_contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+
+        return $this->build_array( $focus_id ?? 0, $menu_data, 0, $depth_limit, $filters, $can_list_all, $user_contact_id );
     }
 
     public function prepare_menu_array( $query ) {
@@ -228,7 +283,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         return $menu_data;
     }
 
-    public function build_array( $parent_id, $menu_data, $gen, $depth_limit, $filters = [] ) {
+    public function build_array( $parent_id, $menu_data, $gen, $depth_limit, $filters = [], $can_list_all = false, $user_contact_id = null ) {
         $children = [];
         if ( isset( $menu_data['parents'][$parent_id] ) && ( $gen < $depth_limit ) )
         {
@@ -236,11 +291,15 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
             foreach ( $menu_data['parents'][$parent_id] as $item_id )
             {
-                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit, $filters );
+                $children[] = $this->build_array( $item_id, $menu_data, $next_gen, $depth_limit, $filters, $can_list_all, $user_contact_id );
             }
         }
 
+        // Ensure to force a record node share for administrators.
         $shared = intval( $menu_data['items'][ $parent_id ]['shared'] ?? 0 );
+        if ( $parent_id === $user_contact_id || $can_list_all ){
+            $shared = 1;
+        }
         $array = [
             'id' => $parent_id,
             'name' => ( ( $shared === 1 ) || ( $gen === 0 ) ) ? ( $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM' ) : '',
@@ -320,6 +379,69 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
 
         return $updated_children;
+    }
+
+    public function package_data_layer_post_fields( $query, $post_type, $post_settings, $data_layer_settings ): array {
+        global $wpdb;
+
+        if ( !isset( $data_layer_settings['color'], $data_layer_settings['layers'] ) ) {
+            return [];
+        }
+
+        $packaged_data_layer_post_fields = [];
+        $post_field_settings = $post_settings['fields'] ?? [];
+
+        // Capture all query post ids; which shall be interrogated further.
+        $post_ids = [];
+        foreach ( $query as $post ) {
+            if ( !empty( $post['id'] ) ) {
+                $post_ids[] = $post['id'];
+            }
+        }
+
+        if ( !empty( $post_ids ) ) {
+
+            // Next, package post meta fields to be captured.
+            $data_layer_fields = array_merge( $data_layer_settings['layers'], ( ( $data_layer_settings['color'] !== 'default-node-color' ) ? [ $data_layer_settings['color'] ] : [] ) );
+
+            // Construct sql to fetch identified post data layer fields.
+            $post_ids_array_sql = dt_array_to_sql( $post_ids, true );
+            $data_layer_fields_array_sql = dt_array_to_sql( $data_layer_fields );
+
+            // phpcs:disable
+            $query = $wpdb->get_results( $wpdb->prepare( "
+                SELECT DISTINCT post_id, meta_key, meta_value
+                FROM $wpdb->postmeta
+                WHERE post_id IN (%1s) AND meta_key IN ($data_layer_fields_array_sql)
+            ", $post_ids_array_sql ), ARRAY_A );
+            // phpcs:enable
+
+            // Package data layer post fields.
+            foreach ( $query as $postmeta ) {
+                $post_id = $postmeta['post_id'];
+                $meta_key = $postmeta['meta_key'];
+                $meta_value = $postmeta['meta_value'];
+
+                if ( !isset( $post_field_settings[ $meta_key ] ) ) {
+                    continue;
+                }
+
+                if ( !isset( $packaged_data_layer_post_fields[ $post_id ] ) ) {
+                    $packaged_data_layer_post_fields[ $post_id ] = [];
+                }
+
+                if ( !isset( $packaged_data_layer_post_fields[ $post_id ][ $meta_key ] ) ) {
+                    $packaged_data_layer_post_fields[ $post_id ][ $meta_key ] = [];
+                }
+
+                $packaged_data_layer_post_fields[ $post_id ][ $meta_key ][] = [
+                    'label' => $post_field_settings[ $meta_key ]['name'],
+                    'value' => $meta_value
+                ];
+            }
+        }
+
+        return $packaged_data_layer_post_fields;
     }
 }
 

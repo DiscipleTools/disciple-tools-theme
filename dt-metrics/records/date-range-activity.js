@@ -43,29 +43,41 @@ function project_activity_during_date_range() {
   chartDiv.innerHTML = `
     <div class="section-header">${title_date_range_activity}</div>
     <section class="chart-controls">
-        <label class="section-subheader" for="post-type-select">${post_type_select_label}</label>
-        <select class="select-field" id="post-type-select">
-            ${Object.entries(postTypeOptions).map(
-              ([value, label]) => `
-                <option value="${value}"> ${label} </option>
-            `,
-            )}
-        </select>
-
-        <label class="section-subheader" for="post-field-select">${post_field_select_label}</label>
-        <select class="select-field" id="post-field-select">
-            ${buildFieldSelectOptions()}
-        </select>
-        <div id="post-field-value-entry-div"></div>
-
-        <label class="section-subheader" for="date-select">${date_select_label}</label>
-        <div class="date_range_picker">
-            <i class="fi-calendar"></i>&nbsp;
-            <span>${window.moment().format('YYYY')}</span>
-            <i class="dt_caret down"></i>
-        </div>
-
-        <br><br>
+        <table>
+            <thead>
+                <tr>
+                    <th><label class="section-subheader" for="post-type-select">${post_type_select_label}</label></th>
+                    <th><label class="section-subheader" for="post-field-select">${post_field_select_label}</label></th>
+                    <th><label class="section-subheader" for="date-select">${date_select_label}</label></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="vertical-align: top;">
+                        <select class="select-field" id="post-type-select">
+                            ${Object.entries(postTypeOptions).map(
+                              ([value, label]) => `
+                                <option value="${value}"> ${label} </option>
+                            `,
+                            )}
+                        </select>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <select class="select-field" id="post-field-select">
+                            ${buildFieldSelectOptions()}
+                        </select>
+                        <div id="post-field-value-entry-div"></div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <div class="date_range_picker">
+                            <i class="fi-calendar"></i>&nbsp;
+                            <span>${window.moment().format('YYYY')}</span>
+                            <i class="dt_caret down"></i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <button class="button" id="post-field-submit-button">${submit_button_label}</button>
         <div id="chart-loading-spinner" class="loading-spinner"></div>
     </section>

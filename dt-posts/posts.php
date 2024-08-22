@@ -1597,6 +1597,7 @@ class Disciple_Tools_Posts
 
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
 
+        global $wpdb;
         foreach ( $fields as $field_key => $field ){
 
             if ( isset( $field_settings[$field_key] ) && ( $field_settings[$field_key]['type'] === 'location' ) && ( ( $field_settings[$field_key]['mode'] ?? 'normal' ) === 'normal' ) ) {
@@ -1673,6 +1674,25 @@ class Disciple_Tools_Posts
                         Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $field_key, $existing_post );
                     }
 
+                    // Add by pre-defined meta grid values.
+                    else if ( !empty( $value['grid_id'] ) && !empty( $value['label'] ) && !empty( $value['level'] ) && !empty( $value['lng'] ) && !empty( $value['lat'] ) ) {
+                        $location_meta_grid = array();
+
+                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                        $location_meta_grid['post_id'] = $post_id;
+                        $location_meta_grid['post_type'] = $post_type;
+                        $location_meta_grid['grid_id'] = $value['grid_id'];
+                        $location_meta_grid['lng'] = $value['lng'];
+                        $location_meta_grid['lat'] = $value['lat'];
+                        $location_meta_grid['level'] = $value['level'];
+                        $location_meta_grid['label'] = $value['label'];
+
+                        // Proceed accordingly with addition.
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                        if ( is_wp_error( $potential_error ) ) {
+                            return $potential_error;
+                        }
+                    }
                     // Add by grid_id
                     else if ( isset( $value['grid_id'] ) && ! empty( $value['grid_id'] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value['grid_id'] );
@@ -2313,8 +2333,10 @@ class Disciple_Tools_Posts
         if ( !isset( $field_setting['p2p_key'], $field_setting['p2p_direction'] ) ) {
             return new WP_Error( __FUNCTION__, 'Could not add connection. Field settings missing', [ 'status' => 400 ] );
         }
+
+        $associated_workflow_detected = Disciple_Tools_Workflows_Execution_Handler::has_workflows_by_fields( $post_type, ( $post_settings['connection_types'] ?? [] ) );
         $current_connected_post = null;
-        if ( $field_setting['post_type'] !== $post_type ){
+        if ( ( $field_setting['post_type'] !== $post_type ) || $associated_workflow_detected ){
             $current_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, true, false );
         }
 
@@ -2338,7 +2360,7 @@ class Disciple_Tools_Posts
             $connection->permalink = get_permalink( $value );
 
             // Determine if update action to be fired for corresponding connection.
-            if ( $connection->post_type != $post_type ) {
+            if ( ( $connection->post_type != $post_type ) || $associated_workflow_detected ) {
                 $reversed_field = self::get_reverse_connection_field( $field_key, $field_setting );
                 if ( ! empty( $reversed_field ) ) {
 

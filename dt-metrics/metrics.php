@@ -39,6 +39,8 @@ class Disciple_Tools_Metrics{
                 // Personal
                 require_once( get_template_directory() . '/dt-metrics/records/genmap.php' );
                 new DT_Metrics_Groups_Genmap( 'personal', __( 'Personal', 'disciple_tools' ) );
+                require_once( get_template_directory() . '/dt-metrics/records/dynamic-records-map.php' );
+                new DT_Metrics_Dynamic_Records_Map( 'personal', __( 'Personal', 'disciple_tools' ) );
                 require_once( get_template_directory() . '/dt-metrics/personal/coaching-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/baptism-tree.php' );
                 require_once( get_template_directory() . '/dt-metrics/personal/group-tree.php' );
@@ -80,11 +82,12 @@ class Disciple_Tools_Metrics{
 
                     /* Record Types */
                     new DT_Metrics_Groups_Genmap( 'records', __( 'Genmap', 'disciple_tools' ) );
-                    require_once( get_template_directory() . '/dt-metrics/records/dynamic-records-map.php' );
+                    new DT_Metrics_Dynamic_Records_Map( 'records', __( 'Records Map', 'disciple_tools' ) );
                 }
                 if ( !empty( $modules['access_module']['enabled'] ) ){
                     require_once( get_template_directory() . '/dt-metrics/combined/critical-path.php' );
                 }
+                require_once( get_template_directory() . '/dt-metrics/records/select-tags-charts.php' );
                 require_once( get_template_directory() . '/dt-metrics/records/time-charts.php' );
                 require_once( get_template_directory() . '/dt-metrics/records/date-range-activity.php' );
             }, 1000);

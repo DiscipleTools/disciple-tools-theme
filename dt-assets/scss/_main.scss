@@ -1,3 +1,4 @@
+@use "sass:map";
 /************************************************
 
 Stylesheet: Main Stylesheet
@@ -43,6 +44,13 @@ color:$light-gray;
     width: 100%;
 }
 
+html {
+    --primary-color: #{map.get($foundation-palette, "primary")};
+    --secondary-color: #{map.get($foundation-palette, "secondary")};
+    --success-color: #{map.get($foundation-palette, "success")};
+    --warning-color: #{map.get($foundation-palette, "warning")};
+    --alert-color: #{map.get($foundation-palette, "alert")};
+}
 body {
     background-color: #e2e2e2;
 }
@@ -1465,6 +1473,29 @@ img.dt-red-icon, i.dt-red-icon {
 img.dt-black-icon, i.dt-black-icon {
     filter: invert(0%) sepia(0%) saturate(17%) hue-rotate(193deg) brightness(99%) contrast(101%);
 }
+
+/**
+ * Metrics - Gen-Mapper
+ */
+
+.dt-metrics-plus-count {
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+}
+
+.dt-metrics-node-icon-small {
+    font-size: 15px;
+    min-width: 15px;
+    min-height: 15px;
+    max-width: 15px;
+    max-height: 15px;
+}
+
+/**
+ * Metrics - Gen-Mapper
+ */
+
 
 .error-text {
     color: red;
