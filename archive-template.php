@@ -240,6 +240,7 @@ dt_please_log_in();
                         </button>
                     </div>
                     <div class="section-body">
+                        <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="split_by_current_filter_select_labels"></div>
                         <table>
                             <tbody style="border: none;">
                             <tr style="border: none;">
