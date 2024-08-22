@@ -1629,7 +1629,8 @@ jQuery(function ($) {
     let help_button = $('#workflows_design_section_step3_help_text');
     const new_help_button = `<a id="workflows_design_section_step3_help_text">[<a class="dt-docs"
         data-title="dt_right_docs_comments_title"
-        data-content="dt_right_docs_comments_content">&#63;</a>]</a>`;
+        data-content="dt_right_docs_comments_content"
+        style="cursor: pointer;">&#63;</a>]</a>`;
     help_button.replaceWith(new_help_button);
 
     return response;
