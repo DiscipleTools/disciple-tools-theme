@@ -82,6 +82,21 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         'mappings'                                         => $this->fetch_mapping_config()
                     )
                 );
+
+                wp_register_style( 'workflows-css', false );
+                wp_enqueue_style( 'workflows-css' );
+                wp_add_inline_style( 'workflows-css', '
+                #post-body {
+                    display: flex;
+                    gap: 20px;
+                }
+                #postbox-container-1 {
+                    position: sticky;
+                    top: 2rem;
+                    height: 100px;
+                    float: none;
+                }
+                ' );
             }
         }
     }
@@ -274,18 +289,12 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             $selected_post_type = $this->fetch_selected_post_type();
 
             $this->template( 'begin' );
-
-            ?>
-            <div id="post-body-content">
-            <?php
             $this->workflows_post_types_section( $selected_post_type );
             $this->workflows_management_section( $selected_post_type );
             $this->workflows_design_section( $selected_post_type );
-            ?>
-            </div>
 
-            <?php $this->right_column() ?>
-            <?php
+            $this->template( 'right_column' );
+            $this->right_column();
 
             $this->template( 'end' );
 
@@ -751,7 +760,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr id="workflows_design_section_step3_action_value_tr">
                                 <td>
-                                    value:
+                                    value: <a id="workflows_design_section_step3_help_text" type="hidden"></a>
                                 </td>
                                 <td>
                                     <input id="workflows_design_section_step3_action_value_id" type="hidden"
@@ -769,12 +778,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                                                class="button float-right"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></a>
                                         </span>
                                 </td>
-                            </tr>
-                            <tr><td><span>
-                                    Help Text [<a href="#" class="dt-docs"
-                                        data-title="dt_right_docs_help_text_title"
-                                        data-content="dt_right_docs_help_text_content">&#63;</a>]
-                                </span></td>
                             </tr>
                             <tr>
                                 <td colspan="3">
@@ -973,7 +976,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
     public function right_column() {
         ?>
-        <div id="postbox-container-1" class="postbox-container">
         <!-- Box -->
         <table style="display: none;" id="dt_right_docs_section" class="widefat striped">
             <thead>
@@ -987,7 +989,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             </tr>
             </tbody>
         </table>
-        </div>
         <br>
         <!-- End Box -->
         <?php
