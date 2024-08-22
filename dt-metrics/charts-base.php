@@ -97,16 +97,6 @@ abstract class DT_Metrics_Chart_Base
         return $pass;
     }
 
-    public function has_permission_for( $permissions ): bool {
-        $pass = count( $permissions ) === 0;
-        foreach ( $permissions as $permission ){
-            if ( current_user_can( $permission ) ){
-                $pass = true;
-            }
-        }
-        return $pass;
-    }
-
     public function my_list() {
         $list = Disciple_Tools_Posts::search_viewable_post( 'contacts', [ 'assigned_to' => [ 'shared', 'me' ] ] );
         if ( is_wp_error( $list ) ) {

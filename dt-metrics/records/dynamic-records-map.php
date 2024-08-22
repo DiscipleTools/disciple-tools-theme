@@ -190,10 +190,10 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 
             // Ensure user has required permissions, based on specified slug request.
             $has_permission = false;
-            if ( ( $slug === 'personal' ) && $this->has_permission_for( [ 'view_project_metrics' ] ) ) {
+            if ( ( $slug === 'personal' ) && current_user_can( 'access_contacts' ) ) {
                 $has_permission = true;
             }
-            if ( ( $slug === 'records' ) && $this->has_permission_for( [ 'dt_all_access_contacts', 'view_project_metrics' ] ) ) {
+            if ( ( $slug === 'records' ) && ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'view_project_metrics' ) ) ) {
                 $has_permission = true;
             }
 
