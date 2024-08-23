@@ -46,16 +46,13 @@
        include all of WordPress, which includes a bunch of other rules not in
        the WordPress namespaces. -->
   <rule ref="WordPress">
-
-
-    <!-- TODO: enable these rules: -->
-
     <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
     <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
     <exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
 
     <!-- We currently don't want these rules that WordPress imports: -->
-
+    <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman" />
+    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
     <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSE" />
     <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSEIF" />
     <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedIF" />
@@ -67,7 +64,7 @@
     <exclude name="Generic.Commenting.DocComment.SpacingBeforeTags" />
     <exclude name="Generic.PHP.ForbiddenFunctions.FoundWithAlternative" />
     <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
-    <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+    <exclude name="Universal.Operators.DisallowShortTernary" />
     <exclude name="PSR2.ControlStructures.SwitchDeclaration.BodyOnNextLineCASE" />
     <exclude name="PSR2.ControlStructures.SwitchDeclaration.BreakIndent" />
     <exclude name="PSR2.ControlStructures.SwitchDeclaration.SpaceBeforeColonCASE" />
@@ -176,50 +173,24 @@
     <exclude name="WordPress.Security.EscapeOutput" />
     <exclude name="WordPress.DB.PreparedSQL" />
     <exclude name="WordPress.Security.NonceVerification" />
+    <exclude name="Generic.Files.OneObjectStructurePerFile" />
   </rule>
 
   <rule ref="Generic.Classes">
-    <exclude name="Generic.Classes.OpeningBraceSameLine" />
+    <exclude name="Generic.Classes.OpeningBraceSameLine" /> <!--@todo-->
   </rule>
-
-  <rule ref="Generic.Functions">
-    <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman" />
-    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
-  </rule>
-
   <rule ref="Generic.CodeAnalysis">
-    <exclude name="Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence" />
+    <exclude name="Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence" /> <!--@todo-->
   </rule>
-
   <rule ref="Generic.WhiteSpace">
-    <exclude name="Generic.WhiteSpace.IncrementDecrementSpacing" />
-  </rule>
-
-  <rule ref="Generic.Files">
-    <exclude name="Generic.Files.OneObjectStructurePerFile" />
-    <exclude name="Generic.Files.EndFileNoNewline" />
-    <exclude name="Generic.Files.LineLength" />
-    <exclude name="Generic.Files.InlineHTML" />
-    <exclude name="Generic.Files.ExecutableFile" />
-    <exclude name="Generic.Files.OneClassPerFile" />
-    <exclude name="Generic.Files.EndFileNewline" />
-  </rule>
-
-  <rule ref="Squiz.Arrays">
-    <exclude name="Squiz.Arrays.ArrayDeclaration" />
-    <exclude name="Squiz.Arrays.ArrayBracketSpacing" />
+    <exclude name="Generic.WhiteSpace.IncrementDecrementSpacing" /> <!--@todo-->
   </rule>
 
   <rule ref="Universal.Arrays">
     <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
-    <exclude name="Universal.Arrays.DuplicateArrayKey" />
-    <exclude name="Universal.Arrays.MixedArrayKeyTypes" />
-    <exclude name="Universal.Arrays.MixedKeyedUnkeyedArray" />
-  </rule>
-
-  <rule ref="Universal.Operators">
-    <exclude name="Universal.Operators.DisallowShortTernary" />
-    <exclude name="Universal.Operators.ConcatPosition" />
+    <exclude name="Universal.Arrays.DuplicateArrayKey" /> <!--@todo-->
+    <exclude name="Universal.Arrays.MixedArrayKeyTypes" />  <!--@todo-->
+    <exclude name="Universal.Arrays.MixedKeyedUnkeyedArray" />  <!--@todo-->
   </rule>
 
   <rule ref="Universal.Files">
@@ -237,33 +208,24 @@
   </rule>
 
   <rule ref="Universal.WhiteSpace">
-    <exclude name="Universal.WhiteSpace.CommaSpacing" />
+    <exclude name="Universal.WhiteSpace.CommaSpacing" /> <!--@todo-->
   </rule>
 
   <rule ref="NormalizedArrays.Arrays">
     <exclude name="NormalizedArrays.Arrays.CommaAfterLast" />
-    <exclude name="NormalizedArrays.Arrays.ArrayBraceSpacing" />
+    <exclude name="NormalizedArrays.Arrays.ArrayBraceSpacing" /> <!--@todo-->
   </rule>
 
   <rule ref="PSR2.Classes">
-    <exclude name="PSR2.Classes.ClassDeclaration" />
+    <exclude name="PSR2.Classes.ClassDeclaration" /> <!--@todo-->
   </rule>
 
   <rule ref="PSR2.Files">
-    <exclude name="PSR2.Files.EndFileNewline" />
-  </rule>
-
-  <rule ref="Squiz.Functions">
-    <exclude name="Squiz.Functions.FunctionDeclaration" />
-    <exclude name="Squiz.Functions.LowercaseFunctionKeywords" />
-  </rule>
-
-  <rule ref="Squiz.CSS">
-    <exclude name="Squiz.CSS.ClassDefinitionOpeningBraceSpace" />
+    <exclude name="PSR2.Files.EndFileNewline" /> <!--@todo-->
   </rule>
 
   <rule ref="PSR12.Functions">
-    <exclude name="PSR12.Functions.ReturnTypeDeclaration" />
+    <exclude name="PSR12.Functions.ReturnTypeDeclaration.SpaceBeforeColon" />
   </rule>
 
   <rule ref="Modernize.FunctionCalls">
