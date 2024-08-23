@@ -956,7 +956,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
 
         return $workflows;
     }
-
 }
 
 Disciple_Tools_Tab_Workflows::instance();

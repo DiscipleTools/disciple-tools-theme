@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-06-25T10:59:06+00:00\n"
+"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
 "PO-Revision-Date: 2024-06-26 16:59+0000\n"
 "Last-Translator: Dragana <celikdragana0@gmail.com>\n"
-"Language-Team: Bosnian <https://translate.disciple.tools/projects/"
-"disciple-tools/disciple-tools-theme/bs_BA/>\n"
+"Language-Team: Bosnian <https://translate.disciple.tools/projects/disciple-"
+"tools/disciple-tools-theme/bs_BA/>\n"
 "Language: bs_BA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,20 +17,24 @@ msgstr ""
 "X-Generator: Weblate 5.6.1\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr "Alati za učenike"
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
+#: style.css
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
 msgstr "Disciple.Tools je sistem upravljanja pokretom za stvaranje učenika."
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
@@ -359,8 +363,8 @@ msgid "Search Users"
 msgstr "Pretražite korisnike"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:106
-#: dt-metrics/records/genmap.php:110 dt-posts/dt-posts.php:2773
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:134 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -553,7 +557,7 @@ msgstr "Ne"
 
 #: archive-template.php:1040 archive-template.php:1041
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:128 dt-metrics/records/time-charts.php:119
+#: dt-metrics/records/genmap.php:152 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
@@ -821,7 +825,7 @@ msgid "Locations you are responsible for"
 msgstr "Lokacije za koje ste odgovorni"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:118
+#: dt-metrics/records/genmap.php:142
 msgid "Add"
 msgstr "Dodaj"
 
@@ -1482,7 +1486,7 @@ msgstr "Napravi zapis"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:124 dt-posts/custom-post-type.php:171
+#: dt-metrics/records/genmap.php:148 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "Ime"
@@ -1519,6 +1523,7 @@ msgstr "Vratite aktivnost"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "Polje"
@@ -1618,7 +1623,7 @@ msgstr "Operater"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:105 dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:129 dt-metrics/records/genmap.php:136
 msgid "Assigned To"
 msgstr "Dodijeljen"
 
@@ -1896,7 +1901,7 @@ msgid "Accepted"
 msgstr "Prihvaćen/a"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:96
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -2067,7 +2072,7 @@ msgstr "Provjera za duplikate"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:105
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
@@ -3002,9 +3007,9 @@ msgstr "Grupa"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:109
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:111
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:135
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "Grupe"
@@ -3217,7 +3222,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Datum kada je ova grupa prestala da se sastaje (ako je primjenjivo)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:115
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:139
 msgid "Member Count"
 msgstr "Broj članova"
 
@@ -3543,7 +3548,8 @@ msgstr "Kritična staza"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:101 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "Projekt"
@@ -3707,7 +3713,7 @@ msgstr ""
 "metrika ispod."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:129
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
 msgid "Metrics"
 msgstr "Pokazatelji"
 
@@ -3831,6 +3837,7 @@ msgstr "Filtrirajte kontakte prema datumskom rasponu:"
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:432
 msgid "All Time"
@@ -3970,32 +3977,32 @@ msgid "Group Generation Tree"
 msgstr "Drvo generacijskih grupa"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:101
+#: dt-metrics/records/genmap.php:125
 msgid "Highlight Active"
 msgstr "Istaknite Aktivan/na"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:102
+#: dt-metrics/records/genmap.php:126
 msgid "Highlight Churches"
 msgstr "Istaknite Crkve"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:103 dt-metrics/records/genmap.php:116
+#: dt-metrics/records/genmap.php:127 dt-metrics/records/genmap.php:140
 msgid "Members"
 msgstr "Članovi"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:104
+#: dt-metrics/records/genmap.php:128
 msgid "View Record"
 msgstr "Pogledajte zapis"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:107
+#: dt-metrics/records/genmap.php:131
 msgid "Total Members"
 msgstr "Ukupan broj članova"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:108
+#: dt-metrics/records/genmap.php:132
 msgid "View Group"
 msgstr "Pogledajte grupu"
 
@@ -4003,7 +4010,7 @@ msgstr "Pogledajte grupu"
 msgid "Genmap"
 msgstr "Generacijska mapa"
 
-#: dt-metrics/metrics.php:112
+#: dt-metrics/metrics.php:113
 msgid "Dynamic Metrics"
 msgstr "Dinamični pokazatelji"
 
@@ -4045,6 +4052,7 @@ msgid "Comments I Posted"
 msgstr "Komentari i objave"
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "Datum"
@@ -4119,6 +4127,7 @@ msgid "Field Activity"
 msgstr "Aktivnost na terenu"
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
 msgid "Record Type"
 msgstr "Vrsta zapisa"
@@ -4145,7 +4154,8 @@ msgid "Reload"
 msgstr "Ponovo učitaj"
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
 msgstr "Naslov"
 
@@ -4199,53 +4209,75 @@ msgstr "Vrste zapisa"
 msgid "System"
 msgstr "Sistem"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:99
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:123
 msgid "Generational Trees"
 msgstr "Generacijsko drvo"
 
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:124
 msgid "Show Archived"
 msgstr "Prikaži arhivirano"
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:137
 msgid "Coaches"
 msgstr "Treneri"
 
-#: dt-metrics/records/genmap.php:114
+#: dt-metrics/records/genmap.php:138
 msgid "Type"
 msgstr "Tip"
 
-#: dt-metrics/records/genmap.php:117
+#: dt-metrics/records/genmap.php:141
 msgid "Open"
 msgstr "Otvoreno"
 
-#: dt-metrics/records/genmap.php:119
+#: dt-metrics/records/genmap.php:143
 msgid "Focus"
 msgstr "Fokus"
 
-#: dt-metrics/records/genmap.php:120
+#: dt-metrics/records/genmap.php:144
 msgid "Hide"
 msgstr "Sakriti"
 
-#: dt-metrics/records/genmap.php:123
+#: dt-metrics/records/genmap.php:147
 msgid "Add Child To"
 msgstr "Dodaj dijete u"
 
-#: dt-metrics/records/genmap.php:125
+#: dt-metrics/records/genmap.php:149
 msgid "Add Child"
 msgstr "Dodaj dijete"
 
-#: dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:150
 msgid "Focus On Node"
 msgstr "Fokusiraj se na čvor"
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:151
 msgid "Are you sure you wish to focus on node?"
 msgstr "Jeste li sigurni da se želite fokusirati na čvor?"
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:155
 msgid "Infinite Loops"
 msgstr "Beskonačne petlje"
+
+#: dt-metrics/records/select-tags-charts.php:32
+#, fuzzy
+#| msgid "All cumulative totals"
+msgid "Field Cumulative Values"
+msgstr "Svi kumulativni iznosi"
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid ""
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+msgid "Records"
+msgstr "Zapis"
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+msgid "No Records Available"
+msgstr "Nema dostupnih zapisa"
 
 #: dt-metrics/records/time-charts.php:41
 msgid "Field Charts"
@@ -4283,18 +4315,6 @@ msgstr "Pojedinačni kumulativni iznosi"
 #: dt-metrics/records/time-charts.php:118
 msgid "Records changes"
 msgstr "Promjene zapisa"
-
-#: dt-metrics/records/time-charts.php:121
-msgid "Records"
-msgstr "Zapis"
-
-#: dt-metrics/records/time-charts.php:122
-msgid "No."
-msgstr "Ne."
-
-#: dt-metrics/records/time-charts.php:124
-msgid "No Records Available"
-msgstr "Nema dostupnih zapisa"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4849,7 +4869,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Nije podijeljeno sa %s"
 
-#: dt-posts/posts.php:2494
+#: dt-posts/posts.php:2496
 msgid "Removed User"
 msgstr "Uklonite korisnika"
 
@@ -5497,7 +5517,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "Ovaj ste zadatak postavili na %1$s: %2$s"
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr "D.T radni tok"
 
@@ -5832,6 +5852,9 @@ msgstr "Pristup skeniranim kontaktima:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Pronađeni duplikati:"
+
+#~ msgid "No."
+#~ msgstr "Ne."
 
 #~ msgid "Generation Map"
 #~ msgstr "Generacijska mapa"

@@ -45,7 +45,6 @@ class DT_User_Management
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
 
         add_filter( 'script_loader_tag', [ $this, 'script_loader_tag' ], 10, 3 );
-
     }
 
     public static function has_permission(){
@@ -402,7 +401,6 @@ class DT_User_Management
         }
 
         return $user_response;
-
     }
 
     public function get_user_endpoint( WP_REST_Request $request ) {
@@ -872,7 +870,5 @@ class DT_User_Management
             'sent' => isset( $params['email'] ) ? retrieve_password( $params['email'] ) : false
         ];
     }
-
-
 }
 new DT_User_Management();

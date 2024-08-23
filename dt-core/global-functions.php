@@ -61,17 +61,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         function dt_default_email_address(): string{
             $default_addr = apply_filters( 'wp_mail_from', '' );
 
-            if ( empty( $default_addr ) ){
-
-                // Get the site domain and get rid of www.
-                $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
-                if ( 'www.' === substr( $sitename, 0, 4 ) ){
-                    $sitename = substr( $sitename, 4 );
-                }
-
-                $default_addr = 'wordpress@' . $sitename;
-            }
-
             return $default_addr;
         }
     }
@@ -79,10 +68,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     if ( !function_exists( 'dt_default_email_name' ) ){
         function dt_default_email_name(): string{
             $default_name = apply_filters( 'wp_mail_from_name', '' );
-
-            if ( empty( $default_name ) ){
-                $default_name = 'WordPress';
-            }
 
             return $default_name;
         }
@@ -142,9 +127,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
          */
         function dt_is_rest( $namespace = null ) {
             $prefix = rest_get_url_prefix();
-            if ( defined( 'REST_REQUEST' ) && REST_REQUEST
-                 || isset( $_GET['rest_route'] )
-                    && strpos( trim( sanitize_text_field( wp_unslash( $_GET['rest_route'] ) ), '\\/' ), $prefix, 0 ) === 0 ) {
+            if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST )
+                 || ( isset( $_GET['rest_route'] )
+                    && strpos( trim( sanitize_text_field( wp_unslash( $_GET['rest_route'] ) ), '\\/' ), $prefix, 0 ) === 0 ) ) {
                 return true;
             }
             $rest_url    = wp_parse_url( site_url( $prefix ) );
@@ -589,7 +574,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $can_update = true;
         }
         $field_disabled = !empty( $fields[$field_key]['readonly'] );
-        if ( !$field_disabled && ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) {
+        if ( !$field_disabled && ( $can_update || ( isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) ) {
             $disabled = '';
         }
         $custom_display = !empty( $fields[$field_key]['custom_display'] );

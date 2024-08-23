@@ -336,5 +336,4 @@ class PostsTest extends WP_UnitTestCase {
         ], true, false );
         $this->assertWPError( $delete_anothers_task );
     }
-
 }

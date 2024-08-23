@@ -19,7 +19,7 @@ class DT_Login_User_Manager {
     public function __construct( array $firebase_auth ) {
         $this->firebase_auth = $firebase_auth;
         $this->uid = $this->firebase_auth['user_id'];
-        $this->email = $this->firebase_auth['email'];
+        $this->email = $this->firebase_auth['email'] ?? null;
         $this->name = $this->firebase_auth['name'];
         $this->identities = (array) $this->firebase_auth['firebase']->identities;
         $this->sign_in_provider = $this->firebase_auth['firebase']->sign_in_provider;
@@ -64,10 +64,16 @@ class DT_Login_User_Manager {
         return $response;
     }
 
-    private function user_exists() {
+    private function get_user(){
         $user = get_user_by( 'email', $this->email );
+        if ( empty( $user ) ) {
+            $user = get_user_by( 'login', $this->uid );
+        }
+        return $user;
+    }
 
-        return $user ? true : false;
+    private function user_exists() {
+        return !empty( $this->get_user() );
     }
 
     private function create_user() {
@@ -91,12 +97,12 @@ class DT_Login_User_Manager {
     }
 
     private function update_user() {
-        $user = get_user_by( 'email', $this->email );
+        $user = $this->get_user();
 
-        $user_role = $user->roles[0];
-
-        if ( !$user_role ) {
+        if ( !isset( $user->roles ) || !is_array( $user->roles ) || empty( $user_roles ) ) {
             $user_role = $this->get_default_role();
+        } else {
+            $user_role = $user->roles[0];
         }
 
         $this->add_user_to_blog_if_needed( $user->ID, $user_role ); // add user to site.
@@ -142,9 +148,21 @@ class DT_Login_User_Manager {
             wp_logout();
         }
 
+        $login_length = DT_Login_Fields::get( 'login_length' );
+        if ( empty( $login_length ) || !is_numeric( $login_length ) ) {
+            $login_length = 14;
+        }
+
+        add_filter( 'auth_cookie_expiration', function () use ( $login_length ) {
+            return $login_length * DAY_IN_SECONDS;
+        } );
+
         add_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );    // hook in earlier than other callbacks to short-circuit them
 
-        $user = wp_signon( array( 'user_login' => $this->email ) );
+        $user = wp_signon( [
+            'user_login' => $this->email ?: $this->uid,
+            'remember' => true,
+        ] );
 
         remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
 
@@ -208,6 +226,9 @@ class DT_Login_User_Manager {
      */
     public function allow_programmatic_login( $user, $user_identifier, $password ) {
         $user = get_user_by( 'email', $user_identifier );
+        if ( empty( $user ) ) {
+            $user = get_user_by( 'login', $user_identifier );
+        }
         return $user;
     }
 }

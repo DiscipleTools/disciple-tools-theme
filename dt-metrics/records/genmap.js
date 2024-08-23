@@ -1,3 +1,5 @@
+const DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY = 'data_layer_settings';
+
 jQuery(document).ready(function ($) {
   if (
     window.wpApiShare.url_path.startsWith(
@@ -30,6 +32,9 @@ jQuery(document).ready(function ($) {
                   <span>
                     <select id="select_post_type_fields" style="width: 200px;"></select>
                   </span>
+                  <span id="show_data_layer_title" class="button select-button empty-select-button" style="margin-top: 5px; margin-left: 10px;">
+                    <i class="mdi mdi-filter-plus-outline" style="font-size: 15px;"></i>
+                  </span>
                   <span style="display: inline-block; margin-right: 10px; margin-left: 10px;" class="show-closed-switch">
                       ${window.lodash.escape(translations.show_archived)}
                       <div class="switch tiny">
@@ -42,12 +47,28 @@ jQuery(document).ready(function ($) {
                   <span>
                     <i class="fi-loop" onclick="window.load_genmap()" style="font-size: 1.5em; padding:.5em;cursor:pointer;"></i>
                   </span>
+                  <br>
               </div>
               <div class="cell medium-2" >
                 <h2 style="float:right;">${window.lodash.escape(translations.title)}</h2>
               </div>
           </div>
-
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-10">
+              <div id="data_layer_settings" style="display: none;">
+                <label for="data_layer_settings_color">${window.lodash.escape(translations.data_layer_settings_color_label)}<br>
+                  <select id="data_layer_settings_color" name="data_layer_settings_color" style="max-width: 70%;"></select>
+                </label>
+                <br>
+                <label for="data_layer_settings_table">${window.lodash.escape(translations.data_layer_title)}<br>
+                  <table id="data_layer_settings_table" name="data_layer_settings_table">
+                    <tbody style="border: none;"></tbody>
+                  </table>
+                </label>
+                <span id="add_data_layer" class="button">${window.lodash.escape(translations.add_data_layer)}</span>
+              </div>
+            </div>
+          </div>
           <hr>
 
           <div class="grid-x grid-padding-x">
@@ -69,6 +90,15 @@ jQuery(document).ready(function ($) {
           </div>
 
           <div id="modal" class="reveal" data-reveal></div>
+
+          <style>
+            .orgchart .hierarchy .custom-adjusted-connect-left:first-child::before {
+                left: 60px;
+            }
+            .orgchart .hierarchy .custom-adjusted-connect-width:last-child::before {
+                width: 60px;
+            }
+          </style>
        `);
 
     window.load_genmap = (focus_id = null) => {
@@ -87,6 +117,7 @@ jQuery(document).ready(function ($) {
         post_type: selected_post_type,
         gen_depth_limit: 100,
         show_archived: jQuery('#archivedToggle').prop('checked'),
+        data_layers: package_data_layer_settings(),
         slug: window.dtMetricsProject.base_slug,
       };
 
@@ -113,35 +144,46 @@ jQuery(document).ready(function ($) {
         )
         .promise()
         .then((response) => {
+          let { genmap, data_layers } = response;
+          window.dtMetricsProject.data_layers = data_layers;
+
           let container = jQuery('#genmap');
           container.empty();
 
-          let loops = identify_infinite_loops(response, []);
+          let loops = identify_infinite_loops(genmap, []);
           if (loops.length > 0) {
             display_infinite_loops(loops);
           }
 
+          const has_data_layers = payload?.data_layers?.layers.length > 0;
           var nodeTemplate = function (data) {
             return `
             <div class="title" data-item-id="${window.lodash.escape(data.id)}">${window.lodash.escape(data.name)}</div>
-            <div class="content">${window.lodash.escape(data.content)}</div>
+            <div class="content" style="${has_data_layers ? 'height: 90px;' : ''} padding-left: 5px; padding-right: 5px; ">${window.lodash.escape(data.content)}</div>
           `;
+          };
+
+          var createNode = function ($node, data) {
+            if (has_data_layers) {
+              $node.css('width', '120px');
+            }
           };
 
           // Ensure no result responses are reshaped accordingly.
           if (
-            response &&
-            typeof response === 'string' &&
-            response.includes('No Results')
+            genmap &&
+            typeof genmap === 'string' &&
+            genmap.includes('No Results')
           ) {
-            response = {};
+            genmap = {};
           }
 
           orgchart_container = container.orgchart({
-            data: response,
+            data: genmap,
             nodeContent: 'content',
             direction: 'l2r',
             nodeTemplate: nodeTemplate,
+            createNode: createNode,
             initCompleted: function (chart) {
               const post_types = window.dtMetricsProject.post_types;
 
@@ -151,7 +193,7 @@ jQuery(document).ready(function ($) {
 
               // Identify and obfuscate items not shared with current user.
               const non_shared_items = identify_items_by_field_value(
-                response,
+                genmap,
                 'shared',
                 0,
                 {},
@@ -185,7 +227,7 @@ jQuery(document).ready(function ($) {
                 post_types[selected_post_type]?.status_field?.archived_key
               ) {
                 const archived_items = identify_items_by_field_value(
-                  response,
+                  genmap,
                   'status',
                   post_types[selected_post_type]['status_field'][
                     'archived_key'
@@ -207,8 +249,200 @@ jQuery(document).ready(function ($) {
                   }
                 }
               }
+
+              /**
+               * Data Layer Settings
+               */
+
+              const data_layer_local_storage_settings =
+                window.SHAREDFUNCTIONS.get_json_from_local_storage(
+                  DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+                  {},
+                  jQuery('#select_post_types').val(),
+                );
+
+              const post_type_field_settings =
+                post_types[selected_post_type]['fields'];
+              const data_layer_node_color_field = $(
+                '#data_layer_settings_color',
+              ).val();
+              for (const [post_id, layer_settings] of Object.entries(
+                data_layers,
+              )) {
+                // First, ensure there is a valid node handle corresponding to post_id; also ensuring non-shared items are ignored.
+                const node = $(chart).find(`#${post_id}.node`);
+                if (node && !non_shared_items[post_id]) {
+                  // Next, determine node color to be adopted.
+                  let data_layer_node_color = null;
+                  if (
+                    layer_settings[data_layer_node_color_field] &&
+                    layer_settings[data_layer_node_color_field][0]['value'] &&
+                    post_type_field_settings[data_layer_node_color_field] &&
+                    post_type_field_settings[data_layer_node_color_field][
+                      'default'
+                    ] &&
+                    post_type_field_settings[data_layer_node_color_field][
+                      'default'
+                    ][
+                      layer_settings[data_layer_node_color_field][0]['value']
+                    ] &&
+                    post_type_field_settings[data_layer_node_color_field][
+                      'default'
+                    ][layer_settings[data_layer_node_color_field][0]['value']][
+                      'color'
+                    ]
+                  ) {
+                    data_layer_node_color =
+                      post_type_field_settings[data_layer_node_color_field][
+                        'default'
+                      ][
+                        layer_settings[data_layer_node_color_field][0]['value']
+                      ]['color'];
+                  }
+
+                  // Next, collate data layer values to be appended within node content.
+                  let collated_data_layer_content =
+                    collate_data_layer_content(post_id);
+
+                  let data_layer_content_html = '';
+
+                  // Loop, extract & display accordingly, by data layer order.
+                  data_layer_local_storage_settings.layers.forEach(
+                    (field_id) => {
+                      const content = collated_data_layer_content[field_id];
+                      if (content) {
+                        // Convert collated data layer content to html representation.
+                        data_layer_content_html += `<br>`;
+
+                        // Toggle between label/icon node displays, accordingly by local storage setting.
+                        const use_icons =
+                          data_layer_local_storage_settings[
+                            'show_icons_for_fields'
+                          ] !== undefined
+                            ? data_layer_local_storage_settings.show_icons_for_fields.includes(
+                                field_id,
+                              )
+                            : false;
+
+                        if (!use_icons) {
+                          switch (post_type_field_settings[field_id]['type']) {
+                            case 'date':
+                            case 'key_select': {
+                              data_layer_content_html += `${content['content']}`;
+                              break;
+                            }
+                            case 'tags':
+                            case 'multi_select': {
+                              data_layer_content_html +=
+                                content['content'].join(', ');
+                              break;
+                            }
+                          }
+                        } else {
+                          let icons_total = 0;
+                          let icons_total_limit = 4;
+                          let icons_total_limit_counter = 0;
+
+                          const collated_data_layer_field_icons =
+                            collate_data_layer_field_icons(
+                              post_type_field_settings[field_id],
+                              content['content'],
+                            );
+
+                          // Ensure to default to showing default icons over field icon.
+                          let icons = [];
+                          if (
+                            collated_data_layer_field_icons['default_icons']
+                              .length > 0
+                          ) {
+                            icons =
+                              collated_data_layer_field_icons['default_icons'];
+                          } else if (
+                            collated_data_layer_field_icons['field_icons']
+                              .length > 0
+                          ) {
+                            icons =
+                              collated_data_layer_field_icons['field_icons'];
+                          }
+
+                          // Proceed with displaying icons, accordingly by line limits.
+                          icons_total +=
+                            icons.length +
+                            collated_data_layer_field_icons['no_icons_counter'];
+                          icons.forEach((icon) => {
+                            if (icons_total_limit_counter < icons_total_limit) {
+                              data_layer_content_html += icon + '&nbsp;';
+                            } else if (
+                              icons_total_limit_counter === icons_total_limit
+                            ) {
+                              // Determine if a plus extra count is required.
+                              let plus_count =
+                                icons_total - icons_total_limit_counter;
+                              if (plus_count > 0) {
+                                data_layer_content_html += `<span class="dt-metrics-plus-count">+${plus_count}</span>`;
+                              }
+                            }
+                            icons_total_limit_counter++;
+                          });
+                        }
+                      }
+                    },
+                  );
+
+                  // Update post node's content.
+                  const initial_node_content = $(node)
+                    .find('.content')
+                    .first()
+                    .text();
+                  $(node)
+                    .find('.content')
+                    .html(`${initial_node_content}${data_layer_content_html}`);
+
+                  // Finally, adjust node color accordingly, by specified node color.
+                  if (data_layer_node_color) {
+                    $(node).css('background-color', data_layer_node_color);
+                    $(node)
+                      .find('.title')
+                      .css('background-color', data_layer_node_color);
+                    $(node)
+                      .find('.content')
+                      .css('background-color', data_layer_node_color);
+                    $(node).find('.content').css('border', '0px');
+                  }
+                }
+              }
             },
           });
+
+          // Adjust node sizes accordingly, if data layers have been assigned.
+          if (has_data_layers) {
+            $(container)
+              .find('.node')
+              .each(function (idx, node) {
+                const children = orgchart_container.getChildren($(node));
+
+                // Ensure node has multiple children; before extracting the first & last siblings.
+                if (children.length > 1) {
+                  const first_child = $(children).first();
+                  if (first_child) {
+                    $(first_child)
+                      .parent()
+                      .toggleClass('custom-adjusted-connect-left');
+                  }
+
+                  const last_child = $(children).last();
+                  if (last_child) {
+                    $(last_child)
+                      .parent()
+                      .toggleClass('custom-adjusted-connect-width');
+                  }
+                } else if (children.length === 1) {
+                  $(children)
+                    .parent()
+                    .toggleClass('custom-adjusted-connect-left');
+                }
+              });
+          }
 
           let container_height = window.innerHeight - 200; // because it is rotated
           container.height(container_height);
@@ -246,20 +480,32 @@ jQuery(document).ready(function ($) {
         jQuery('#select_post_types').val(request_params.record_type);
       }
 
-      refresh_post_type_field_select_list(function () {
-        if (request_params && request_params.field) {
-          jQuery('#select_post_type_fields').val(request_params.field);
-          window.load_genmap(
-            request_params.focus_id ? request_params.focus_id : null,
-          );
-        } else {
-          window.load_genmap();
-        }
+      // Refresh data layer node color options for selected post type.
+      refresh_data_layer_node_color();
+
+      // Load data layer settings.
+      load_data_layer_settings(false, function () {
+        refresh_post_type_field_select_list(function () {
+          if (request_params && request_params.field) {
+            jQuery('#select_post_type_fields').val(request_params.field);
+            window.load_genmap(
+              request_params.focus_id ? request_params.focus_id : null,
+            );
+          } else {
+            window.load_genmap();
+          }
+        });
       });
     });
 
     jQuery('#select_post_types').on('change', function (e) {
-      refresh_post_type_field_select_list(window.load_genmap);
+      refresh_post_type_field_select_list(function () {
+        // Refresh data layer node color options for selected post type.
+        refresh_data_layer_node_color();
+
+        // Load data layer settings.
+        load_data_layer_settings(false, window.load_genmap);
+      });
     });
 
     jQuery('#select_post_type_fields').on('change', function (e) {
@@ -304,6 +550,447 @@ jQuery(document).ready(function ($) {
     jQuery(document).on('click', '#archivedToggle', function (e) {
       window.load_genmap();
     });
+
+    jQuery(document).on('click', '#show_data_layer_title', function (e) {
+      const data_layer_settings = jQuery('#data_layer_settings');
+      const show_data_layer_title = jQuery('#show_data_layer_title');
+      if (data_layer_settings.is(':visible')) {
+        data_layer_settings.slideUp('fast', function () {
+          show_data_layer_title.removeClass('selected-select-button');
+          show_data_layer_title.addClass('empty-select-button');
+        });
+      } else {
+        data_layer_settings.slideDown('fast', function () {
+          show_data_layer_title.removeClass('empty-select-button');
+          show_data_layer_title.addClass('selected-select-button');
+        });
+      }
+    });
+
+    jQuery(document).on('click', '#add_data_layer', function (e) {
+      add_data_layer_settings();
+    });
+
+    jQuery(document).on('click', '.del-data-layer', function (e) {
+      $(e.target).parent().parent().remove();
+
+      // Save updated data layers settings.
+      window.SHAREDFUNCTIONS.save_json_to_local_storage(
+        DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+        package_data_layer_settings(),
+        jQuery('#select_post_types').val(),
+      );
+
+      // Refresh tree shape and subsequent node data.
+      window.load_genmap();
+    });
+
+    jQuery(document).on('change', '.show-data-layer-icons-input', function (e) {
+      // Save updated data layers settings.
+      window.SHAREDFUNCTIONS.save_json_to_local_storage(
+        DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+        package_data_layer_settings(),
+        jQuery('#select_post_types').val(),
+      );
+
+      // Refresh tree shape and subsequent node data.
+      window.load_genmap();
+    });
+
+    jQuery(document).on('change', '.data-layer-field', function (e) {
+      // Save updated data layers settings.
+      window.SHAREDFUNCTIONS.save_json_to_local_storage(
+        DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+        package_data_layer_settings(),
+        jQuery('#select_post_types').val(),
+      );
+
+      // Refresh tree shape and subsequent node data.
+      window.load_genmap();
+    });
+
+    jQuery(document).on('change', '#data_layer_settings_color', function (e) {
+      // Save updated data layers settings.
+      window.SHAREDFUNCTIONS.save_json_to_local_storage(
+        DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+        package_data_layer_settings(),
+        jQuery('#select_post_types').val(),
+      );
+
+      // Refresh tree shape and subsequent node data.
+      window.load_genmap();
+    });
+  }
+
+  function collate_data_layer_content(post_id, convert_raw_values = true) {
+    let data_layer_content_raw = {};
+    const data_layers = window.dtMetricsProject.data_layers;
+    if (data_layers && data_layers[post_id]) {
+      const selected_post_type = jQuery('#select_post_types').val();
+      const post_types = window.dtMetricsProject.post_types;
+      const post_type_field_settings = post_types[selected_post_type]['fields'];
+
+      for (const [field_id, values] of Object.entries(data_layers[post_id])) {
+        if (post_type_field_settings[field_id]) {
+          // Iterate over values, extracting content accordingly, by field type.
+          values.forEach(function (value) {
+            switch (post_type_field_settings[field_id]['type']) {
+              case 'date': {
+                let date_value = convert_raw_values
+                  ? new Date(value['value'] * 1000).toLocaleString()
+                  : value['value'];
+                data_layer_content_raw[field_id] = {
+                  label: value['label'],
+                  content: date_value,
+                };
+                break;
+              }
+              case 'key_select': {
+                let key_select_value = value['value'];
+                if (
+                  convert_raw_values &&
+                  post_type_field_settings[field_id]['default'] &&
+                  post_type_field_settings[field_id]['default'][
+                    value['value']
+                  ] &&
+                  post_type_field_settings[field_id]['default'][value['value']][
+                    'label'
+                  ]
+                ) {
+                  key_select_value =
+                    post_type_field_settings[field_id]['default'][
+                      value['value']
+                    ]['label'];
+                }
+                data_layer_content_raw[field_id] = {
+                  label: value['label'],
+                  content: key_select_value,
+                };
+                break;
+              }
+              case 'tags':
+              case 'multi_select': {
+                if (!data_layer_content_raw[field_id]) {
+                  data_layer_content_raw[field_id] = {
+                    label: value['label'],
+                    content: [],
+                  };
+                }
+                let multi_select_value = value['value'];
+                if (
+                  convert_raw_values &&
+                  !['tags'].includes(
+                    post_type_field_settings[field_id]['type'],
+                  ) &&
+                  post_type_field_settings[field_id]['default'] &&
+                  post_type_field_settings[field_id]['default'][
+                    value['value']
+                  ] &&
+                  post_type_field_settings[field_id]['default'][value['value']][
+                    'label'
+                  ]
+                ) {
+                  multi_select_value =
+                    post_type_field_settings[field_id]['default'][
+                      value['value']
+                    ]['label'];
+                }
+                data_layer_content_raw[field_id]['content'].push(
+                  multi_select_value,
+                );
+                break;
+              }
+            }
+          });
+        }
+      }
+    }
+
+    return data_layer_content_raw;
+  }
+
+  function collate_data_layer_field_icons(field_settings, content) {
+    let field_icons = [];
+    let default_icons = [];
+    let no_icons_counter = 0;
+
+    // Determine if there are any available field level icons.
+    let field_icon = null;
+    if (field_settings['icon']) {
+      field_icon = field_settings['icon'];
+    } else if (field_settings['font-icon']) {
+      field_icon = field_settings['font-icon'];
+    }
+
+    // Generate corresponding icon html accordingly, based on identified field icon.
+    if (field_icon) {
+      field_icon = field_icon.trim().toLowerCase();
+      if (field_icon.startsWith('mdi')) {
+        field_icons.push(
+          `<i class="mdi ${field_icon} dt-metrics-node-icon-small"></i>`,
+        );
+      } else {
+        field_icons.push(
+          `<img class="dt-white-icon dt-metrics-node-icon-small" src="${field_icon}" alt="${field_settings['name']}"/>`,
+        );
+      }
+    } else {
+      no_icons_counter++;
+    }
+
+    // Extract default icons for specific field types.
+    switch (field_settings['type']) {
+      case 'key_select':
+      case 'multi_select': {
+        if (field_settings['default'] && content.length > 0) {
+          for (const [option_id, option] of Object.entries(
+            field_settings['default'],
+          )) {
+            if (content.includes(option['label'])) {
+              if (
+                option?.icon &&
+                option.icon.trim().toLowerCase().startsWith('mdi')
+              ) {
+                default_icons.push(
+                  `<i class="mdi ${option.icon} dt-metrics-node-icon-small"></i>`,
+                );
+              } else if (
+                option?.icon &&
+                option.icon.trim().toLowerCase().startsWith('http')
+              ) {
+                default_icons.push(
+                  `<img class="dt-white-icon dt-metrics-node-icon-small" src="${option.icon}" alt="${option['label']}"/>`,
+                );
+              } else if (
+                option['font-icon'] &&
+                option['font-icon'].trim().toLowerCase().startsWith('mdi')
+              ) {
+                default_icons.push(
+                  `<i class="mdi ${option['font-icon']} dt-metrics-node-icon-small"></i>`,
+                );
+              } else if (
+                option['font-icon'] &&
+                option['font-icon'].trim().toLowerCase().startsWith('http')
+              ) {
+                default_icons.push(
+                  `<img class="dt-white-icon dt-metrics-node-icon-small" src="${option['font-icon']}" alt="${option['label']}"/>`,
+                );
+              } else {
+                no_icons_counter++;
+              }
+            }
+          }
+        }
+        break;
+      }
+    }
+
+    return {
+      field_icons: field_icons,
+      default_icons: default_icons,
+      no_icons_counter: no_icons_counter,
+    };
+  }
+
+  function load_data_layer_settings(show_data_layer_settings, callback = null) {
+    const data_layer_settings_div = $('#data_layer_settings');
+    const data_layer_settings_color = $('#data_layer_settings_color');
+    const show_data_layer_title = $('#show_data_layer_title');
+    const data_layer_settings_table = $('#data_layer_settings_table');
+
+    // First, reset data layer elements.
+    data_layer_settings_div.slideUp('fast', function () {
+      show_data_layer_title.removeClass('selected-select-button');
+      show_data_layer_title.addClass('empty-select-button');
+      data_layer_settings_table.find('tbody').empty();
+
+      // Next, proceed with loading and displaying any previously stored data layers.
+      const data_layer_settings =
+        window.SHAREDFUNCTIONS.get_json_from_local_storage(
+          DATA_LAYER_SETTINGS_LOCAL_STORAGE_KEY,
+          {},
+          jQuery('#select_post_types').val(),
+        );
+      if (data_layer_settings?.color && data_layer_settings?.layers) {
+        // Set default color and data layers.
+        data_layer_settings_color.val(data_layer_settings.color);
+        data_layer_settings.layers.forEach(function (field_id, idx) {
+          add_data_layer_settings(field_id);
+        });
+
+        // Select any identified icon toggles.
+        if (data_layer_settings['show_icons_for_fields'] !== undefined) {
+          data_layer_settings.show_icons_for_fields.forEach(
+            function (field_id, idx) {
+              const icons_input = $(
+                `.show-data-layer-icons-input[data-field_id='${field_id}']`,
+              );
+              if (icons_input) {
+                $(icons_input).prop('checked', true);
+              }
+            },
+          );
+        }
+
+        // Once re-populated, display loaded data layers.
+        if (show_data_layer_settings) {
+          data_layer_settings_div.slideDown('fast', function () {
+            show_data_layer_title.removeClass('empty-select-button');
+            show_data_layer_title.addClass('selected-select-button');
+
+            if (callback) {
+              callback();
+            }
+          });
+        } else if (callback) {
+          callback();
+        }
+      } else if (callback) {
+        callback();
+      }
+    });
+  }
+
+  function package_data_layer_settings() {
+    let packaged_data_layer_settings = {
+      color: $('#data_layer_settings_color').val(),
+      layers: [],
+      show_icons_for_fields: [],
+    };
+
+    // Iterate and capture specified data field layers.
+    $('#data_layer_settings_table')
+      .find('tbody tr')
+      .each(function (idx, tr) {
+        // Capture data layer fields.
+        const data_layer_field = $(tr).find('.data-layer-field').val();
+        if (data_layer_field) {
+          packaged_data_layer_settings['layers'].push(data_layer_field);
+        }
+
+        // Capture data layers to be shown as icons.
+        const show_data_layer_icons = $(tr).find(
+          '.show-data-layer-icons-input',
+        );
+        const show_icons = $(show_data_layer_icons).prop('checked');
+        if (data_layer_field && show_icons) {
+          packaged_data_layer_settings['show_icons_for_fields'].push(
+            data_layer_field,
+          );
+        }
+      });
+
+    return packaged_data_layer_settings;
+  }
+
+  function refresh_data_layer_node_color() {
+    const post_type = jQuery('#select_post_types').val();
+    const post_type_settings = window.dtMetricsProject.post_types[post_type];
+
+    if (post_type && post_type_settings) {
+      const data_layer_settings_color = $('#data_layer_settings_color');
+      data_layer_settings_color.empty();
+      data_layer_settings_color.append(
+        $('<option />')
+          .val('default-node-color')
+          .text(
+            `${window.lodash.escape(window.dtMetricsProject.translations.data_layer_settings_color_default_label)}`,
+          ),
+      );
+
+      // Determine status field for given post type.
+      if (
+        post_type_settings?.status_field?.status_key &&
+        post_type_settings['fields'] &&
+        post_type_settings['fields'][
+          post_type_settings['status_field']['status_key']
+        ]
+      ) {
+        data_layer_settings_color.append(
+          $('<option />')
+            .val(post_type_settings['status_field']['status_key'])
+            .text(
+              post_type_settings['fields'][
+                post_type_settings['status_field']['status_key']
+              ]['name'],
+            ),
+        );
+      }
+    }
+  }
+
+  function add_data_layer_settings(selected_field_id = null) {
+    const post_type = jQuery('#select_post_types').val();
+    const post_type_settings = window.dtMetricsProject.post_types[post_type];
+
+    if (post_type && post_type_settings) {
+      const supported_field_types =
+        window.dtMetricsProject.data_layer_supported_field_types;
+      let selected_fields = [];
+
+      // Filter out fields, suitable for data layer settings.
+      for (const [field_id, field_setting] of Object.entries(
+        post_type_settings.fields,
+      )) {
+        if (
+          supported_field_types.includes(field_setting['type']) &&
+          (!Object.prototype.hasOwnProperty.call(field_setting, 'hidden') ||
+            field_setting['hidden'] === false) &&
+          (!Object.prototype.hasOwnProperty.call(field_setting, 'private') ||
+            field_setting['private'] === false)
+        ) {
+          selected_fields.push({
+            id: field_id,
+            label: field_setting['name'].trim(),
+          });
+        }
+      }
+
+      // Ensure suitable fields have been identified.
+      if (selected_fields.length > 0) {
+        selected_fields = window.lodash.sortBy(selected_fields, [
+          function (o) {
+            return o.label;
+          },
+        ]);
+
+        const translations = window.dtMetricsProject.translations;
+        const data_layer_settings_table = $('#data_layer_settings_table');
+        const data_row_count = $(data_layer_settings_table).find('tr').length;
+        $(data_layer_settings_table).find('tbody').append(`
+          <tr style="border: none;">
+            <td style="padding-left: 0;">
+              <select class="data-layer-field" style="margin-top: 15px;">
+                <option selected disabled value="">--- ${window.lodash.escape(window.dtMetricsProject.translations.select_data_layer_field)} ---</option>
+                ${(function (options, option_id) {
+                  let options_html = ``;
+                  options.forEach(function (field) {
+                    let selected =
+                      option_id && option_id === field['id'] ? 'selected' : '';
+                    options_html += `<option value="${field['id']}" ${selected}>${field['label']}</option>`;
+                  });
+
+                  return options_html;
+                })(selected_fields, selected_field_id)}
+              </select>
+            </td>
+            <td style="vertical-align: top; text-align: center;">
+                <span style="display: inline-block; margin-right: 10px; margin-left: 10px;" class="show-closed-switch">
+                    ${window.lodash.escape(translations.icon_data_layer)}
+                    <br>
+                    <div class="switch tiny">
+                        <input class="switch-input show-data-layer-icons-input" id="show_data_layer_icons_${data_row_count}" type="checkbox" name="show_data_layer_icons_${data_row_count}" data-field_id="${selected_field_id}">
+                        <label class="switch-paddle show-data-layer-icons-label" for="show_data_layer_icons_${data_row_count}" data-field_id="${selected_field_id}">
+                            <span class="show-for-sr">${window.lodash.escape(translations.icon_data_layer)}</span>
+                        </label>
+                    </div>
+                </span>
+            </td>
+            <td><button class="button clear-date-button del-data-layer" style="border: 1px solid #cacaca;">x</button></td>
+          </tr>
+        `);
+      }
+    }
   }
 
   function identify_items_by_field_value(data, field, value, items) {
@@ -726,6 +1413,46 @@ jQuery(document).ready(function ($) {
         ? 'disabled'
         : '';
 
+    // Capture any identified data layers.
+    let data_layer_template = '';
+    const collated_data_layer_content = collate_data_layer_content(data.ID);
+    if (Object.keys(collated_data_layer_content).length > 0) {
+      const post_type_field_settings =
+        window.dtMetricsProject.post_types[jQuery('#select_post_types').val()][
+          'fields'
+        ];
+
+      data_layer_template += `
+        <div class="cell">`;
+
+      for (const [field_id, content] of Object.entries(
+        collated_data_layer_content,
+      )) {
+        data_layer_template += `${content['label']}:`;
+
+        switch (post_type_field_settings[field_id]['type']) {
+          case 'date':
+          case 'key_select': {
+            data_layer_template += `
+            <ul>
+              <li>${content['content']}</li>
+            </ul>`;
+            break;
+          }
+          case 'tags':
+          case 'multi_select': {
+            data_layer_template += `
+            <ul>
+              ${content['content'].map((x) => `<li>${x}</li>`).join('')}
+            </ul>`;
+            break;
+          }
+        }
+      }
+
+      data_layer_template += `</div>`;
+    }
+
     let template = '';
 
     if (post_type === 'contacts') {
@@ -760,6 +1487,7 @@ jQuery(document).ready(function ($) {
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
+          ${data_layer_template}
           <div class="cell">
             ${escaped_translations.details.status}: ${window.lodash.escape(status)}
           </div>
@@ -818,6 +1546,7 @@ jQuery(document).ready(function ($) {
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2><hr>
           </div>
+          ${data_layer_template}
           <div class="cell">
             ${escaped_translations.details.status}: ${window.lodash.escape(status)}
           </div>
@@ -847,6 +1576,7 @@ jQuery(document).ready(function ($) {
           <div class="cell">
             <h2>${window.lodash.escape(data.title)}</h2>
           </div>
+          ${data_layer_template}
         </div>
       `;
     }

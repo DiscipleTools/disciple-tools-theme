@@ -15,7 +15,6 @@ class DT_Mapping_Module_Migration_0011 extends DT_Mapping_Module_Migration {
      * @throws \Exception  Got error when creating table $name.
      */
     public function up() {
-
     }
 
     /**
@@ -36,5 +35,4 @@ class DT_Mapping_Module_Migration_0011 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

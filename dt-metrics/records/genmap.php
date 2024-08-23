@@ -11,14 +11,10 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     public $base_title;
     public $title;
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics', 'multiplier' ];
+    public $permissions = [];
     public $namespace = null;
 
     public function __construct( $base_slug, $base_title ) {
-        if ( !$this->has_permission() ){
-            return;
-        }
-
         $this->base_slug = $base_slug;
         $this->base_title = $base_title;
 
@@ -52,50 +48,66 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     }
 
     public function tree( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ){
+        $params = dt_recursive_sanitize_array( $request->get_params() );
+        if ( ! isset( $params['p2p_type'], $params['p2p_direction'], $params['post_type'], $params['slug'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type, slug ]', [ 'status' => 400 ] );
+        }
+
+        $slug = $params['slug'];
+
+        // Ensure user has required permissions, based on specified slug request.
+        $has_permission = false;
+        if ( ( $slug === 'personal' ) && current_user_can( 'access_contacts' ) ) {
+            $has_permission = true;
+        }
+        if ( ( $slug === 'records' ) && ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'view_project_metrics' ) ) ) {
+            $has_permission = true;
+        }
+
+        if ( $has_permission ) {
+            $user = wp_get_current_user();
+            $post_type = $params['post_type'];
+            $post_settings = DT_Posts::get_post_settings( $post_type );
+
+            // Determine scope of query focus, based on specified slug.
+            $focus_id = $params['focus_id'] ?? 0;
+            if ( ( $post_type === 'contacts' ) && ( $slug === 'personal' ) ) {
+                $focus_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+            }
+
+            // Ensure sourced focus_id is not a wp exception.
+            if ( is_wp_error( $focus_id ) ) {
+                return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
+            }
+
+            $filters = [
+                'slug' => $slug,
+                'post_type' => $post_type,
+                'show_archived' => $params['show_archived'] ?? false,
+                'status_key' => $post_settings['status_field']['status_key'] ?? '',
+                'archived_key' => $post_settings['status_field']['archived_key'] ?? ''
+            ];
+            $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
+
+            $can_list_all = current_user_can( 'list_all_' . $post_type );
+            if ( $post_type === 'contacts' && current_user_can( 'dt_all_access_contacts' ) ){
+                $can_list_all = true;
+            }
+            $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters, $can_list_all );
+
+            // Ensure empty hits on personal based slugs, still ensure user node is accessible.
+            if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
+                $generated_genmap['shared'] = 1;
+                $generated_genmap['name'] = $user->display_name;
+            }
+
+            return [
+                'data_layers' => $this->package_data_layer_post_fields( $query, $post_type, $post_settings, $params['data_layers'] ?? [] ),
+                'genmap' => $generated_genmap
+            ];
+        } else {
             return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 400 ] );
         }
-        $params = dt_recursive_sanitize_array( $request->get_params() );
-        if ( ! isset( $params['p2p_type'], $params['p2p_direction'], $params['post_type'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing parameters! [Required: p2p_type, p2p_direction, post_type ]', [ 'status' => 400 ] );
-        }
-
-        $user = wp_get_current_user();
-        $post_type = $params['post_type'];
-        $post_settings = DT_Posts::get_post_settings( $post_type );
-
-        // Determine scope of query focus, based on specified slug.
-        $slug = $params['slug'] ?? 'personal';
-        $focus_id = $params['focus_id'] ?? 0;
-        if ( ( $post_type === 'contacts' ) && ( $slug === 'personal' ) ) {
-            $user_contact_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
-            if ( intval( $user_contact_id ) ){
-                $focus_id = $user_contact_id;
-            }
-        }
-
-        $filters = [
-            'slug' => $slug,
-            'post_type' => $post_type,
-            'show_archived' => $params['show_archived'] ?? false,
-            'status_key' => $post_settings['status_field']['status_key'] ?? '',
-            'archived_key' => $post_settings['status_field']['archived_key'] ?? ''
-        ];
-        $query = $this->get_query( $post_type, $params['p2p_type'], $params['p2p_direction'], $filters );
-
-        $can_list_all = current_user_can( 'list_all_' . $post_type );
-        if ( $post_type === 'contacts' && current_user_can( 'dt_all_access_contacts' ) ){
-            $can_list_all = true;
-        }
-        $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters, $can_list_all );
-
-        // Ensure empty hits on personal based slugs, still ensure user node is accessible.
-        if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
-            $generated_genmap['shared'] = 1;
-            $generated_genmap['name'] = $user->display_name;
-        }
-
-        return $generated_genmap;
     }
 
     public function scripts() {
@@ -122,6 +134,12 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'translations' => [
                     'title' => __( 'Generational Trees', 'disciple_tools' ),
                     'show_archived' => __( 'Show Archived', 'disciple_tools' ),
+                    'data_layer_title' => __( 'Data Layers', 'disciple_tools' ),
+                    'data_layer_settings_color_label' => __( 'Node Color', 'disciple_tools' ),
+                    'data_layer_settings_color_default_label' => __( 'Default', 'disciple_tools' ),
+                    'add_data_layer' => __( 'Add Data Layer', 'disciple_tools' ),
+                    'icon_data_layer' => __( 'Show as icons', 'disciple_tools' ),
+                    'select_data_layer_field' => __( 'select data layer field to capture', 'disciple_tools' ),
                     'highlight_active' => __( 'Highlight Active', 'disciple_tools' ),
                     'highlight_churches' => __( 'Highlight Churches', 'disciple_tools' ),
                     'members' => __( 'Members', 'disciple_tools' ),
@@ -155,7 +173,14 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                         'title' => __( 'Infinite Loops', 'disciple_tools' )
                     ]
                 ],
-                'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? []
+                'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? [],
+                'data_layer_supported_field_types' => [
+                    'date',
+                    'key_select',
+                    'multi_select',
+                    'tags'
+                ],
+                'data_layers' => []
             ]
         );
 
@@ -355,5 +380,67 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         return $updated_children;
     }
-}
 
+    public function package_data_layer_post_fields( $query, $post_type, $post_settings, $data_layer_settings ): array {
+        global $wpdb;
+
+        if ( !isset( $data_layer_settings['color'], $data_layer_settings['layers'] ) ) {
+            return [];
+        }
+
+        $packaged_data_layer_post_fields = [];
+        $post_field_settings = $post_settings['fields'] ?? [];
+
+        // Capture all query post ids; which shall be interrogated further.
+        $post_ids = [];
+        foreach ( $query as $post ) {
+            if ( !empty( $post['id'] ) ) {
+                $post_ids[] = $post['id'];
+            }
+        }
+
+        if ( !empty( $post_ids ) ) {
+
+            // Next, package post meta fields to be captured.
+            $data_layer_fields = array_merge( $data_layer_settings['layers'], ( ( $data_layer_settings['color'] !== 'default-node-color' ) ? [ $data_layer_settings['color'] ] : [] ) );
+
+            // Construct sql to fetch identified post data layer fields.
+            $post_ids_array_sql = dt_array_to_sql( $post_ids, true );
+            $data_layer_fields_array_sql = dt_array_to_sql( $data_layer_fields );
+
+            // phpcs:disable
+            $query = $wpdb->get_results( $wpdb->prepare( "
+                SELECT DISTINCT post_id, meta_key, meta_value
+                FROM $wpdb->postmeta
+                WHERE post_id IN (%1s) AND meta_key IN ($data_layer_fields_array_sql)
+            ", $post_ids_array_sql ), ARRAY_A );
+            // phpcs:enable
+
+            // Package data layer post fields.
+            foreach ( $query as $postmeta ) {
+                $post_id = $postmeta['post_id'];
+                $meta_key = $postmeta['meta_key'];
+                $meta_value = $postmeta['meta_value'];
+
+                if ( !isset( $post_field_settings[ $meta_key ] ) ) {
+                    continue;
+                }
+
+                if ( !isset( $packaged_data_layer_post_fields[ $post_id ] ) ) {
+                    $packaged_data_layer_post_fields[ $post_id ] = [];
+                }
+
+                if ( !isset( $packaged_data_layer_post_fields[ $post_id ][ $meta_key ] ) ) {
+                    $packaged_data_layer_post_fields[ $post_id ][ $meta_key ] = [];
+                }
+
+                $packaged_data_layer_post_fields[ $post_id ][ $meta_key ][] = [
+                    'label' => $post_field_settings[ $meta_key ]['name'],
+                    'value' => $meta_value
+                ];
+            }
+        }
+
+        return $packaged_data_layer_post_fields;
+    }
+}

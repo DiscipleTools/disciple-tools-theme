@@ -17,14 +17,12 @@ class DT_Mapping_Module_Migration_0019 extends DT_Mapping_Module_Migration {
         }
 
         $wpdb->query( "UPDATE $wpdb->dt_location_grid SET level = '0' WHERE level is NULL AND level_name = 'admin0'" );
-
     }
 
     /**
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
@@ -39,5 +37,4 @@ class DT_Mapping_Module_Migration_0019 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

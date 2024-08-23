@@ -71,6 +71,16 @@ class DT_Login_Endpoints {
             $payload['name'] = $body->user->displayName;
         }
 
+        if ( empty( $payload['email'] ) && isset( $body->user->email ) ) {
+            $payload['email'] = $body->user->email;
+        }
+
+        //phpcs:disable
+        if ( empty( $payload['email'] ) && isset( $body->additionalUserInfo->profile->email ) ){
+            $payload['email'] = $body->additionalUserInfo->profile->email;
+        }
+        //phpcs:enable
+
         $user_manager = new DT_Login_User_Manager( $payload );
 
         try {
@@ -170,6 +180,5 @@ class DT_Login_Endpoints {
 
         return $payload;
     }
-
 }
 DT_Login_Endpoints::instance();

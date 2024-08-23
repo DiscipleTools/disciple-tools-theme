@@ -71,7 +71,6 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
                 ],
             ]
         );
-
     }
 
     public function tree( WP_REST_Request $request ) {
@@ -140,7 +139,5 @@ class DT_Metrics_Coaching_Tree extends DT_Metrics_Chart_Base
         }
         return $menu_data;
     }
-
-
 }
 new DT_Metrics_Coaching_Tree();
