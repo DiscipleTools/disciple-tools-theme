@@ -176,7 +176,6 @@
 
   <rule ref="NormalizedArrays.Arrays">
     <exclude name="NormalizedArrays.Arrays.CommaAfterLast" />
-    <exclude name="NormalizedArrays.Arrays.ArrayBraceSpacing" /> <!--@todo-->
   </rule>
 
   <rule ref="PSR2.Classes">

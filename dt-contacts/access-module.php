@@ -1230,7 +1230,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 if ( empty( $allowed_sources ) || in_array( 'all', $allowed_sources, true ) ){
                     $permissions['type'] = [ 'access', 'access_placeholder' ];
                 } elseif ( !in_array( 'restrict_all_sources', $allowed_sources ) ){
-                    $permissions[] = [ 'type' => [ 'access' ], 'sources' => $allowed_sources];
+                    $permissions[] = [ 'type' => [ 'access' ], 'sources' => $allowed_sources ];
                 }
             }
         }

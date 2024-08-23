@@ -2672,7 +2672,7 @@ class Disciple_Tools_Posts
                         }
                         $key = $m['meta_value'];
                         $label = isset( $field_settings[$field_key]['default'][$m['meta_value']]['label'] ) ? $field_settings[$field_key]['default'][$m['meta_value']]['label'] : $key;
-                        $fields[$field_key] = array( 'key' => $key, 'label' => $label  );
+                        $fields[$field_key] = array( 'key' => $key, 'label' => $label );
                     } else if ( self::is_link_key( $m['meta_key'], $field_settings ) ) {
                         $link_info = self::get_link_info( $m['meta_key'], $field_settings );
                         $field_key = $link_info['field_key'];
