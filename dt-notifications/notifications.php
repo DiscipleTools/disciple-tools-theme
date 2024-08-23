@@ -419,7 +419,6 @@ class Disciple_Tools_Notifications
         }
 
         return $result;
-
     }
 
     /**
@@ -869,7 +868,6 @@ class Disciple_Tools_Notifications
                 '%d'
             ]
         );
-
     }
 
 

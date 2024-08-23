@@ -38,7 +38,6 @@ class DT_Contacts_DMM extends DT_Module_Base {
         add_action( 'dt_comment_action_quick_action', [ $this, 'dt_comment_action_quick_action' ], 10, 1 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-
     }
 
     public function dt_custom_fields_settings( $fields, $post_type ){

@@ -444,7 +444,6 @@ function dt_site_scripts() {
             ]
         );
     }
-
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
 

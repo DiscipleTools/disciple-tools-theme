@@ -1451,7 +1451,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 echo 'Error in step 2';
                 die();
             }
-
         }
         public function process_step_2() {
             dt_write_log( __METHOD__ );
@@ -2573,7 +2572,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </table>
             </form>
             <?php
-
         }
 
         public function box_credits() {
@@ -2781,8 +2779,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $query .= ';';
             $query = str_replace( ', ;', ';', $query ); //remove last comma
             $wpdb->query( $query );  //phpcs:ignore
-
-
         }
 
         public function remove_additional_levels( $admin0_code, $level ) {
@@ -2795,7 +2791,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $level ) );
             dt_write_log( $result );
              return $result;
-
         }
 
         public function migrations_reset_and_rerun() {

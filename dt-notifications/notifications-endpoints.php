@@ -107,7 +107,6 @@ class Disciple_Tools_Notifications_Endpoints
                 ],
             ]
         );
-
     }
 
     /**

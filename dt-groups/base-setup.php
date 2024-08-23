@@ -41,7 +41,6 @@ class DT_Groups_Base extends DT_Module_Base {
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
         add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 20, 2 );
-
     }
 
     public function after_setup_theme(){

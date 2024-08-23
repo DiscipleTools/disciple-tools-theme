@@ -141,7 +141,6 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
         $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( $status );
 
         return $results;
-
     }
 
     public function get_user_list( WP_REST_Request $request ){

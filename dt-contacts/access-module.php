@@ -357,8 +357,6 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
 
         return $fields;
-
-
     }
 
     public function add_api_routes(){
@@ -378,7 +376,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'permission_callback' => '__return_true',
             ]
         );
-
     }
 
     public function dt_details_additional_tiles( $sections, $post_type = '' ){

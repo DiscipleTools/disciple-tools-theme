@@ -658,7 +658,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_options', $site_options, true );
             update_option( 'dt_custom_tiles', $tile_options, true );
         }
-
     }
 
     public function update_group_preferences(){
@@ -842,7 +841,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_custom_post_types', $post_type_settings, true );
         }
-
     }
 
     public function show_dt_contact_preferences(){
@@ -875,7 +873,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_performance_mode', $dt_performance_mode, true );
         }
-
     }
 
     public function dt_performance_mode(){

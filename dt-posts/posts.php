@@ -1054,7 +1054,6 @@ class Disciple_Tools_Posts
         }
         $args['where_sql'] = str_replace( "$operator ()", '', $args['where_sql'] );
         return $args;
-
     }
 
 

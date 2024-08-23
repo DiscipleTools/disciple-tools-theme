@@ -47,7 +47,6 @@ class DT_Metrics_Personal_Groups_Tree extends DT_Metrics_Chart_Base
                 ],
             ]
         );
-
     }
 
     public function tree( WP_REST_Request $request ) {

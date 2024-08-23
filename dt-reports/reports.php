@@ -438,8 +438,6 @@ class Disciple_Tools_Reports
             [ '%s' ],
             [ '%d', '%s' ]
         );
-
-
     }
 
 

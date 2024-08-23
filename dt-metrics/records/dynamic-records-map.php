@@ -223,7 +223,6 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         }
 
         return $list;
-
     }
 
     public function get_list_by_grid_id( WP_REST_Request $request ) {

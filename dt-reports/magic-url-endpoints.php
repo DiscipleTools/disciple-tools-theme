@@ -78,7 +78,6 @@ class Disciple_Tools_Magic_Endpoints
                 ]
             ]
         );
-
     }
 
     /**

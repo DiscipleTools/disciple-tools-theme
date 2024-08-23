@@ -22,7 +22,6 @@ class Disciple_Tools_Migration_0054 extends Disciple_Tools_Migration {
                 WHERE action = 'field_update' AND field_type = 'array'
             "
         );
-
     }
 
     public function down() {

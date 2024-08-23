@@ -210,7 +210,6 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_api_whitelist', $api_whitelist, true );
         }
-
     }
 
     public function show_dt_api_whitelist(){

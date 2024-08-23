@@ -63,7 +63,6 @@ class Disciple_Tools_Migration_0013 extends Disciple_Tools_Migration {
 
 
         update_option( 'dt_field_customizations', $custom_field_options );
-
     }
 
     public function down() {

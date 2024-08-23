@@ -697,7 +697,6 @@ class Disciple_Tools_Contacts_Transfer {
         }
 
         return self::contact_transfer( $params['contact_id'], $params['site_post_id'] );
-
     }
 
     /**

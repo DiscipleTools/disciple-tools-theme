@@ -75,7 +75,6 @@ function dt_display_tile( $tile, $post ): bool {
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
     add_action( 'dt_nav_add_after', function ( $desktop = true ){
         dt_print_details_bar( $desktop );
-
     }, 10, 1);
     get_header();
 

@@ -26,7 +26,6 @@ class DT_Mapping_Module_Migration_0015 extends DT_Mapping_Module_Migration
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**

@@ -26,7 +26,6 @@ if ( !defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
     class Disciple_Tools_Google_Geocode_API {
         public function __construct() {
-
         }
 
         public static function get_key() {

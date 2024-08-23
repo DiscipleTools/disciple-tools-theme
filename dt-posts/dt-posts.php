@@ -2560,7 +2560,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             WHERE ID IN ( $ids_sql )
         ", ARRAY_A );
         //phpcs:enable
-
     }
 
     public static function get_post_meta_with_ids( $post_id ) {

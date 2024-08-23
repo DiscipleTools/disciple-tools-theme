@@ -20,7 +20,6 @@ class Disciple_Tools_Migration_0004 extends Disciple_Tools_Migration {
                 $wpdb->esc_like( 'address_' ) . '%'
             )
         );
-
     }
 
     public function down() {

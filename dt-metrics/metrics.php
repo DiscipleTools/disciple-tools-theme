@@ -132,7 +132,6 @@ class Disciple_Tools_Metrics{
                 return $tabs;
             }, 25 );
         }
-
     }
 }
 

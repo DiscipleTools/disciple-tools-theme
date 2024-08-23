@@ -688,8 +688,6 @@ class Disciple_Tools_Queries
         }
 
         return $this->check_tree_health( $list );
-
-
     }
 
     /**
