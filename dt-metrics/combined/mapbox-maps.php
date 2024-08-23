@@ -209,7 +209,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         $modules = dt_get_option( 'dt_post_type_modules' );
         if ( $post_type === 'contacts' ){
             if ( !empty( $modules['access_module']['enabled'] ) ){
-                $query = [ 'type' => [ 'access' ],  'overall_status' => [ '-closed' ] ];
+                $query = [ 'type' => [ 'access' ], 'overall_status' => [ '-closed' ] ];
             }
         }
         if ( $post_type === 'groups' ){

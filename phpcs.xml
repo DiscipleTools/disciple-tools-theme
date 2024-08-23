@@ -174,10 +174,6 @@
     <exclude name="Universal.ControlStructures.IfElseDeclaration" />
   </rule>
 
-  <rule ref="Universal.WhiteSpace">
-    <exclude name="Universal.WhiteSpace.CommaSpacing" /> <!--@todo-->
-  </rule>
-
   <rule ref="NormalizedArrays.Arrays">
     <exclude name="NormalizedArrays.Arrays.CommaAfterLast" />
     <exclude name="NormalizedArrays.Arrays.ArrayBraceSpacing" /> <!--@todo-->
