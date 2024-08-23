@@ -75,7 +75,6 @@ function dt_display_tile( $tile, $post ): bool {
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
     add_action( 'dt_nav_add_after', function ( $desktop = true ){
         dt_print_details_bar( $desktop );
-
     }, 10, 1);
     get_header();
 
@@ -277,7 +276,7 @@ function dt_display_tile( $tile, $post ): bool {
                                     }
                                     $field = $post_settings['fields'][$field_key];
                                     $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
-                                    if ( isset( $post_settings['fields'][$field_key]['hidden'] ) && true === $post_settings['fields'][$field_key]['hidden']
+                                    if ( ( isset( $post_settings['fields'][$field_key]['hidden'] ) && true === $post_settings['fields'][$field_key]['hidden'] )
                                         || !$enabled_for_type ){
                                         continue;
                                     }

@@ -75,7 +75,5 @@ class Disciple_Tools_Multi_Roles {
             // Edit users.
             require_once( 'class-user-edit.php' );
         }
-
     } // End __construct()
-
 }

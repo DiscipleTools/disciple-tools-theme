@@ -134,10 +134,8 @@ class Disciple_Tools_Metrics{
                 return $tabs;
             }, 25 );
         }
-
     }
 }
 
 
 Disciple_Tools_Metrics::instance();
-

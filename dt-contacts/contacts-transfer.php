@@ -429,7 +429,7 @@ class Disciple_Tools_Contacts_Transfer {
 
         if ( sizeof( $comment_chunks ) > 1 && isset( $result_body->transfer_foreign_key, $result_body->created_id ) ) {
             $size = sizeof( $comment_chunks );
-            for ( $i = 1; $i < $size; $i ++ ) {
+            for ( $i = 1; $i < $size; $i++ ) {
 
                 $args = [
                     'method'  => 'POST',
@@ -751,7 +751,6 @@ class Disciple_Tools_Contacts_Transfer {
         }
 
         return self::contact_transfer( $params['contact_id'], $params['site_post_id'] );
-
     }
 
     /**

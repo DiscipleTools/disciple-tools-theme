@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
     public function up() {
-
     }
 
     public function down() {
@@ -26,4 +25,3 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
         return [];
     }
 }
-

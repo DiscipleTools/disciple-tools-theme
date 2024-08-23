@@ -12,7 +12,7 @@
     } else {
         $can_update = true;
     }
-    if ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) {
+    if ( $can_update || ( isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) {
         $disabled = '';
     }
     ?>

@@ -244,12 +244,17 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields[ $field_key ] );
             }
             if ( $field_type === 'number' && $field_value !== '' && (
-                isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
-                $field_value < $post_settings['fields'][$field_key]['min_option'] ||
-                isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
-                $field_value > $post_settings['fields'][$field_key]['max_option']
+                    (
+                        isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
+                        $field_value < $post_settings['fields'][$field_key]['min_option']
+                    )
+                    ||
+                    (
+                        isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
+                        $field_value > $post_settings['fields'][$field_key]['max_option']
+                    )
                 )
-            ) {
+            ){
                 return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
             }
             if ( $field_type === 'number' && $is_private ) {
@@ -516,10 +521,10 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
 
                 if ( $field_type === 'number' && $field_value !== '' && (
-                    isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
-                    $field_value < $post_settings['fields'][$field_key]['min_option'] ||
-                    isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
-                    $field_value > $post_settings['fields'][$field_key]['max_option']
+                    ( isset( $post_settings['fields'][$field_key]['min_option'] ) && ( !empty( $post_settings['fields'][$field_key]['min_option'] ) || $post_settings['fields'][$field_key]['min_option'] === 0 ) &&
+                    $field_value < $post_settings['fields'][$field_key]['min_option'] ) ||
+                    ( isset( $post_settings['fields'][$field_key]['max_option'] ) && ( !empty( $post_settings['fields'][$field_key]['max_option'] ) || $post_settings['fields'][$field_key]['max_option'] === 0 ) &&
+                    $field_value > $post_settings['fields'][$field_key]['max_option'] )
                     )
                 ) {
                      return new WP_Error( __FUNCTION__, "number value must be within min, max bounds: $field_key, received $field_value", [ 'status' => 400 ] );
@@ -2555,7 +2560,6 @@ class DT_Posts extends Disciple_Tools_Posts {
             WHERE ID IN ( $ids_sql )
         ", ARRAY_A );
         //phpcs:enable
-
     }
 
     public static function get_post_meta_with_ids( $post_id ) {
@@ -3280,5 +3284,3 @@ class DT_Posts extends Disciple_Tools_Posts {
         ];
     }
 }
-
-

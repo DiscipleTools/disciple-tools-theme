@@ -39,4 +39,3 @@ function dt_p2p_title_escape( $title, $object = null, $type = null ){
     return esc_html( $title );
 }
 add_filter( 'p2p_connected_title', 'dt_p2p_title_escape' );
-

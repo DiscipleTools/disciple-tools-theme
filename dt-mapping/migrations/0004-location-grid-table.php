@@ -16,7 +16,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {
-            $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
+            $rv = $wpdb->query( $table ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             if ( $rv == false ) {
                 dt_write_log( "Got error when creating table $name: $wpdb->last_error" );
             }
@@ -30,7 +30,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {
-            $rv = $wpdb->query( "DROP TABLE `{$name}`" ); // WPCS: unprepared SQL OK
+            $rv = $wpdb->query( "DROP TABLE `{$name}`" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             if ( $rv == false ) {
                 throw new Exception( "Got error when dropping table $name: $wpdb->last_error" );
             }
@@ -100,5 +100,4 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

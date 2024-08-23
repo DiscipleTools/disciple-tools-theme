@@ -173,7 +173,6 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         }
 
         return $list;
-
     }
 
     public function get_list_by_grid_id( WP_REST_Request $request ) {
@@ -209,7 +208,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         $modules = dt_get_option( 'dt_post_type_modules' );
         if ( $post_type === 'contacts' ){
             if ( !empty( $modules['access_module']['enabled'] ) ){
-                $query = [ 'type' => [ 'access' ],  'overall_status' => [ '-closed' ] ];
+                $query = [ 'type' => [ 'access' ], 'overall_status' => [ '-closed' ] ];
             }
         }
         if ( $post_type === 'groups' ){
@@ -236,7 +235,6 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
         $results = Disciple_Tools_Mapping_Queries::query_user_location_grid_totals( $status );
 
         return $results;
-
     }
 
     public function get_user_list( WP_REST_Request $request ){
@@ -262,7 +260,5 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 
         return $list;
     }
-
-
 }
 new DT_Metrics_Mapbox_Combined_Maps();

@@ -59,5 +59,4 @@ class Disciple_Tools_Counter_Locations extends Disciple_Tools_Counter_Base
                 break;
         }
     }
-
 }

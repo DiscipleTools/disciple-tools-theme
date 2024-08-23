@@ -607,5 +607,4 @@ class Disciple_Tools_People_Groups_Post_Type
             $submenu['edit.php?post_type=peoplegroups'][10]
         );
     }
-
 } // End Class

@@ -507,7 +507,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/dependencies/deprecated-dt-functions.php' );
 
             add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
-
         } // End __construct()
 
         /**
@@ -529,7 +528,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         public function __wakeup() {
             wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
-
     } // End Class
 
 

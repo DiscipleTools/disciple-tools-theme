@@ -61,7 +61,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              * @see     mapping.php:77
              */
             add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints' ], 10, 1 );
-
         }
 
         /**
@@ -156,7 +155,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              */
             return $base_url;
         }
-
     }
     DT_Mapping_Module_Config::instance();
 }

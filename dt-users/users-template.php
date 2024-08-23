@@ -199,4 +199,3 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
 function dt_get_base_user( $id_only = false ) {
     return Disciple_Tools_Users::get_base_user( $id_only );
 }
-
