@@ -139,9 +139,7 @@
     <exclude name="WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion" />
 
     <exclude name="PEAR.Files.IncludingFile" />
-<!--    <exclude name="PSR2.Methods.FunctionClosingBrace" />-->
-    <exclude name="WordPress.Security.EscapeOutput" />
-    <exclude name="WordPress.DB.PreparedSQL" />
+    <exclude name="WordPress.Security.EscapeOutput.ExceptionNotEscaped" />
     <exclude name="WordPress.Security.NonceVerification" />
     <exclude name="Generic.Files.OneObjectStructurePerFile" />
   </rule>

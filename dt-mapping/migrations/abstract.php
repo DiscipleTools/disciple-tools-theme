@@ -89,7 +89,7 @@ abstract class DT_Mapping_Module_Migration {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $expected_table ) {
-            $got_table = $wpdb->get_var( "SHOW CREATE TABLE `$name`", 1, 0 ); // WPCS: unprepared SQL OK
+            $got_table = $wpdb->get_var( "SHOW CREATE TABLE `$name`", 1, 0 ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $got_table = self::clean_create_query( $got_table );
             $expected_table = self::clean_create_query( $expected_table );
             if ( $got_table !== $expected_table ) {

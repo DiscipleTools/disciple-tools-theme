@@ -35,7 +35,7 @@ class Disciple_Tools_Migration_0037 extends Disciple_Tools_Migration {
         // create new reports table
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {
-            $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
+            $rv = $wpdb->query( $table ); // //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             if ( $rv == false ) {
                 throw new Exception( "Got error when creating table $name: $wpdb->last_error" );
             }
