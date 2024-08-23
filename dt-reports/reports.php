@@ -516,5 +516,4 @@ class Disciple_Tools_Reports
 
         return $meta_value['meta_value'];
     }
-
 }

@@ -264,7 +264,6 @@ class Disciple_Tools_Usage {
 
         return $data;
     }
-
 }
 
 class Disciple_Tools_Usage_Scheduler {

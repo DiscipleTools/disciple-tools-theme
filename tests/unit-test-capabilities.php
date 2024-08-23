@@ -42,6 +42,5 @@ class CapabilitiesTest extends WP_UnitTestCase {
             $this->assertArrayHasKey( $slug, $capabilities );
         }
     }
-
 }
 

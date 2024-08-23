@@ -1007,6 +1007,5 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             }
             return $level;
         }
-
     }
 }

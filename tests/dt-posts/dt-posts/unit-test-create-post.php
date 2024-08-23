@@ -172,5 +172,4 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertNotWPError( $contact4 );
 
     }
-
 }

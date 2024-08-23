@@ -180,6 +180,5 @@ class DT_Login_Endpoints {
 
         return $payload;
     }
-
 }
 DT_Login_Endpoints::instance();

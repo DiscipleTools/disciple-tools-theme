@@ -294,6 +294,4 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         ", $start, $end ));
         return $count;
     }
-
-
 }

@@ -156,7 +156,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Config' ) ) {
              */
             return $base_url;
         }
-
     }
     DT_Mapping_Module_Config::instance();
 }

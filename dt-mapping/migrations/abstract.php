@@ -120,8 +120,6 @@ abstract class DT_Mapping_Module_Migration {
         $rv = preg_replace( '/\s\s+/', ' ', $rv );
         return $rv;
     }
-
-
 }
 
 /**

@@ -397,6 +397,5 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         asort( $select_options );
         return $select_options;
     }
-
 }
 new DT_Metrics_Date_Range_Activity();

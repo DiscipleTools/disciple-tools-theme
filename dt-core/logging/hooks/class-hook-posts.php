@@ -448,5 +448,4 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             dt_activity_insert( $activity );
         }
     }
-
 }

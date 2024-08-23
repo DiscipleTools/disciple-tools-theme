@@ -49,5 +49,4 @@ class DT_Mapping_Module_Migration_0013 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

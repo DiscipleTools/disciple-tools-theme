@@ -298,7 +298,6 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         $data['custom_column_data']   = $column_data;
         return $data;
     }
-
 }
 new DT_Metrics_Hover_Map();
 

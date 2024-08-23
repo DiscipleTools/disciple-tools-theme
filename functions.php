@@ -529,7 +529,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         public function __wakeup() {
             wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
-
     } // End Class
 
 

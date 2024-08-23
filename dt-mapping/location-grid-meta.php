@@ -315,6 +315,5 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
             return $status;
         }
-
     }
 }

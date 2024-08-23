@@ -58,6 +58,5 @@ class Disciple_Tools_Metrics_Personal_Activity_Log extends DT_Metrics_Chart_Base
             ]
         );
     }
-
 }
 new Disciple_Tools_Metrics_Personal_Activity_Log();

@@ -120,5 +120,4 @@ class Disciple_Tools_Migration_0037 extends Disciple_Tools_Migration {
     public function test() {
         $this->test_expected_tables();
     }
-
 }

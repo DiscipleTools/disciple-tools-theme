@@ -833,7 +833,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
             return $ip;
         }
-
     }
 }
 

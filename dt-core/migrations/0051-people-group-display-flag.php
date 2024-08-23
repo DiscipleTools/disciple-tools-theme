@@ -42,5 +42,4 @@ class Disciple_Tools_Migration_0051 extends Disciple_Tools_Migration {
      */
     public function test() {
     }
-
 }

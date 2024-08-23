@@ -77,5 +77,4 @@ class Disciple_Tools_Multi_Roles {
         }
 
     } // End __construct()
-
 }

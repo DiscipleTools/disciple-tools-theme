@@ -32,5 +32,4 @@ class DT_Posts_Metrics {
 
         return $counts;
     }
-
 }

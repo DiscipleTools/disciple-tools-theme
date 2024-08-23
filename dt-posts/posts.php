@@ -3118,7 +3118,6 @@ class Disciple_Tools_Posts
 
         return false;
     }
-
 }
 
 /**
@@ -3217,5 +3216,4 @@ class Disciple_Tools_Metabox_Address
 
         return $fields;
     }
-
 }

@@ -178,10 +178,6 @@
     <exclude name="NormalizedArrays.Arrays.CommaAfterLast" />
   </rule>
 
-  <rule ref="PSR2.Classes">
-    <exclude name="PSR2.Classes.ClassDeclaration" /> <!--@todo-->
-  </rule>
-
   <rule ref="PSR2.Files">
     <exclude name="PSR2.Files.EndFileNewline" /> <!--@todo-->
   </rule>

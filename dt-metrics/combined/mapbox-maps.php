@@ -262,7 +262,5 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 
         return $list;
     }
-
-
 }
 new DT_Metrics_Mapbox_Combined_Maps();

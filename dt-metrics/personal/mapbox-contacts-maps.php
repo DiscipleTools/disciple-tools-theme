@@ -187,7 +187,5 @@ class DT_Metrics_Mapbox_Personal_Contacts_Maps extends DT_Metrics_Chart_Base
 
         return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
     }
-
-
 }
 new DT_Metrics_Mapbox_Personal_Contacts_Maps();

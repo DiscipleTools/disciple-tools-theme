@@ -872,7 +872,5 @@ class DT_User_Management
             'sent' => isset( $params['email'] ) ? retrieve_password( $params['email'] ) : false
         ];
     }
-
-
 }
 new DT_User_Management();

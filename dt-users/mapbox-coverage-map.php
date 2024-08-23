@@ -167,6 +167,5 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
 
         return $list;
     }
-
 }
 new DT_Users_Mapbox_Coverage_Map();
