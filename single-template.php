@@ -12,7 +12,7 @@ if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
 function dt_display_tile( $tile, $post ): bool {
 
     // If nothing, display by default!
-    if ( empty( $tile['display_conditions'] ) || ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] === 'visible' ) ) {
+    if ( empty( $tile['display_conditions'] ) || ( isset( $tile['display_conditions']['visibility'] ) && $tile['display_conditions']['visibility'] == 'visible' ) ) {
         return true;
     }
 
@@ -20,13 +20,13 @@ function dt_display_tile( $tile, $post ): bool {
         return true;
     }
 
-    if ( $tile['display_conditions']['visibility'] === 'hidden' ) {
+    if ( $tile['display_conditions']['visibility'] == 'hidden' ) {
         return false;
     }
 
     // Determine if all specified fields must be present & iterate.
     $field_presence      = [];
-    $all_fields_required = isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] === 'and';
+    $all_fields_required = isset( $tile['display_conditions']['operator'] ) && $tile['display_conditions']['operator'] == 'and';
     $field_settings      = DT_Posts::get_post_field_settings( get_post_type() );
     foreach ( $tile['display_conditions']['conditions'] ?? [] as $condition ) {
 
@@ -38,7 +38,7 @@ function dt_display_tile( $tile, $post ): bool {
         if ( isset( $post[ $field_id ], $field_settings[ $field_id ] ) ) {
             switch ( $field_settings[ $field_id ]['type'] ) {
                 case 'key_select':
-                    $field_presence[] = $post[ $field_id ]['key'] === $option_id;
+                    $field_presence[] = $post[ $field_id ]['key'] == $option_id;
                     break;
 
                 case 'tags':
@@ -73,7 +73,7 @@ function dt_display_tile( $tile, $post ): bool {
     $tiles = DT_Posts::get_post_tiles( $post_type );
 
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
-    add_action( 'dt_nav_add_after', function ( $desktop = true ) {
+    add_action( 'dt_nav_add_after', function ( $desktop = true ){
         dt_print_details_bar( $desktop );
 
     }, 10, 1);
@@ -344,7 +344,7 @@ function dt_display_tile( $tile, $post ): bool {
                                         <div class="section-body">
                                             <?php
                                             // let the plugin add section content
-                                            add_action( 'dt_details_additional_section', function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ) {
+                                            add_action( 'dt_details_additional_section', function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ){
                                                 if ( $pt !== $post_type || $tile_key !== $t_key ){
                                                     return;
                                                 }

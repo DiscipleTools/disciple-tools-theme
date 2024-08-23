@@ -375,45 +375,45 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                     <!-- General Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'general' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'general' || ! isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'general' || ! isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'General Settings', 'disciple_tools' ) ?>
                     </a>
 
                     <!-- Starting Map -->
                     <a href="<?php echo esc_attr( $link ) . 'focus' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'focus' ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'focus' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Mapping Focus', 'disciple_tools' ) ?>
                     </a>
 
                     <!-- Polygon -->
                     <a href="<?php echo esc_attr( $link ) . 'polygons' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'polygons' ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'polygons' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Polygons', 'disciple_tools' ) ?>
                     </a>
                     <!-- Levels -->
                     <a href="<?php echo esc_attr( $link ) . 'levels' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'levels' ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'levels' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Levels', 'disciple_tools' ) ?>
                     </a>
                     <!-- Geocoding -->
                     <a href="<?php echo esc_attr( $link ) . 'geocoding' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'geocoding' ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'geocoding' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Geocoding', 'disciple_tools' ) ?>
                     </a>
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'names' ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Migration -->
                     <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'migration' ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
                     </a>
 
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'credits' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab === 'credits' ) ? 'nav-tab-active' : '' ); ?>">
+                        <?php echo esc_attr( ( $tab == 'credits' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Credits', 'disciple_tools' ) ?>
                     </a>
 
@@ -1413,7 +1413,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 curl_close( $ch_start );
 
                 $zip = new ZipArchive();
-                if ( $zip->open( $local_zip_path ) !== 'true' )
+                if ( $zip->open( $local_zip_path ) != 'true' )
                 {
                     error_log( 'Error :- Unable to open the Zip File' );
                 }
@@ -2733,7 +2733,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
             $zip = new ZipArchive();
             $extract_path = $uploads_dir . 'location_grid_download';
-            if ( $zip->open( $zip_file ) !== 'true' )
+            if ( $zip->open( $zip_file ) != 'true' )
             {
                 error_log( 'Error :- Unable to open the Zip File' );
             }
@@ -3050,8 +3050,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $uploads_dir = trailingslashit( $dir['basedir'] );
             // load list to array, make geonameid key
             $geonames_ref = [];
-            $geonmes_ref_raw = array_map( function ( $v ) {
-                return str_getcsv( $v, "\t" );
+            $geonmes_ref_raw = array_map( function( $v ){return str_getcsv( $v, "\t" );
             }, file( $uploads_dir . 'location_grid_download/geonames_ref_table.tsv' ) );
             if ( empty( $geonmes_ref_raw ) ) {
                 throw new Exception( 'Failed to build array from remote file.' );

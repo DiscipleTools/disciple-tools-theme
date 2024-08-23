@@ -129,7 +129,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'field_settings' ],
-                    'permission_callback' => function () {
+                    'permission_callback' => function(){
                         return $this->has_permission();
                     },
                 ],
@@ -141,7 +141,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'render_field_html' ],
-                    'permission_callback' => function () {
+                    'permission_callback' => function(){
                         return $this->has_permission();
                     },
                 ]
@@ -153,7 +153,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'date_range_activity' ],
-                    'permission_callback' => function () {
+                    'permission_callback' => function(){
                         return $this->has_permission();
                     },
                 ],
@@ -209,7 +209,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             $obj_subtype_sql = '';
 
             // Accommodate special cases.
-            if ( ( $field_type === 'date' ) && ( $params['field'] === 'post_date' ) ) {
+            if ( ( $field_type == 'date' ) && ( $params['field'] == 'post_date' ) ) {
 
                 $results = $wpdb->get_results( $wpdb->prepare( "
                 SELECT DISTINCT p.ID as id, p.post_title AS post_title, p.post_type AS post_type, UNIX_TIMESTAMP(p.post_date) AS post_timestamp
@@ -238,19 +238,19 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 ];
             }
 
-            if ( $field_type === 'communication_channel' ){
+            if ( $field_type == 'communication_channel' ){
                 $field_type_sql = "AND (field_type = '' OR field_type = '" . esc_sql( $field_type ) . "')";
                 $meta_key_sql = "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "%'";
                 $meta_value_sql = "AND meta_value LIKE '" . ( empty( $params['value'] ) ? '%' : esc_sql( $params['value'] ) ) . "'";
 
-            } elseif ( ( $field_type === 'connection' ) || ( $field_type === 'location' ) ){
-                if ( $field_type === 'connection' ){
+            } elseif ( ( $field_type == 'connection' ) || ( $field_type == 'location' ) ){
+                if ( $field_type == 'connection' ){
 
                     // Determine field types to be expected, based on p2p_direction.
                     $field_types = [ $field_type ];
                     if ( !empty( $settings['p2p_direction'] ) ){
                         $p2p_direction = $settings['p2p_direction'];
-                        if ( $p2p_direction === 'any' ){
+                        if ( $p2p_direction == 'any' ){
                             $field_types[] = 'connection to';
                             $field_types[] = 'connection from';
                         } else {
@@ -259,7 +259,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     }
                     $field_type_sql = 'AND field_type IN (' . dt_array_to_sql( $field_types ) . ')';
                 }
-                $meta_key_sql = ( $field_type === 'connection' ) ? "AND meta_key LIKE '". esc_sql( !empty( $settings['p2p_key'] ) ? $settings['p2p_key'] : '%' ) ."'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
+                $meta_key_sql = ( $field_type == 'connection' ) ? "AND meta_key LIKE '". esc_sql( !empty( $settings['p2p_key'] ) ? $settings['p2p_key'] : '%' ) ."'" : "AND meta_key LIKE '" . esc_sql( $params['field'] ) . "'";
 
                 $values = [];
                 foreach ( $params['value'] ?? [] as $value ){
@@ -268,9 +268,9 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                     }
                 }
                 $meta_value_sql = ( !empty( $values ) ? 'AND meta_value IN (' . dt_array_to_sql( $values ) . ')' : "AND meta_value LIKE '%'" );
-                $obj_subtype_sql = ( $field_type === 'connection' ) ? "AND object_subtype IN ('" . esc_sql( $params['field'] ) . "','p2p')" : '';
+                $obj_subtype_sql = ( $field_type == 'connection' ) ? "AND object_subtype IN ('" . esc_sql( $params['field'] ) . "','p2p')" : '';
 
-            } elseif ( $field_type === 'user_select' ){
+            } elseif ( $field_type == 'user_select' ){
                 $value = $params['value'];
                 $meta_value_sql = ( !empty( $value ) ? "AND meta_value LIKE 'user-" . $value['ID'] . "'" : "AND meta_value LIKE '%'" );
 
@@ -308,22 +308,22 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                 // Determine new value label to be returned.
                 $new_value = $activity['meta_value'] ?? '';
                 $deleted = false;
-                if ( $field_type === 'connection' ){
+                if ( $field_type == 'connection' ){
                     if ( isset( $settings['post_type'], $new_value ) ){
                         $post = DT_Posts::get_post( $settings['post_type'], $new_value, true, false );
                         if ( !is_wp_error( $post ) ){
                             $new_value = $post['name'] ?? $new_value;
                         }
                     }
-                    if ( $activity['action'] === 'disconnected from' ){
+                    if ( $activity['action'] == 'disconnected from' ){
                         $deleted = true;
                     }
-                } elseif ( $field_type === 'location' ){
+                } elseif ( $field_type == 'location' ){
                     $geocoder = new Location_Grid_Geocoder();
                     $new_value = $geocoder->_format_full_name( [ 'grid_id' => $new_value ] );
 
-                } elseif ( $field_type === 'user_select' ){
-                    if ( strpos( $new_value, 'user-' ) === 0 ){
+                } elseif ( $field_type == 'user_select' ){
+                    if ( strpos( $new_value, 'user-' ) == 0 ){
                         $user_id = Disciple_Tools_Users::get_contact_for_user( substr( $new_value, 5 ) );
                         if ( !empty( $user_id ) ){
                             $post = DT_Posts::get_post( 'contacts', $user_id, true, false );
@@ -332,20 +332,20 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
                             }
                         }
                     }
-                } elseif ( $field_type === 'date' ){
+                } elseif ( $field_type == 'date' ){
                     if ( is_numeric( $new_value ) ){
-                        $new_value = ( $new_value !== 'value_deleted' ) ? gmdate( 'F j, Y, g:i A', $new_value ) : '';
-                    } elseif ( $new_value === 'value_deleted' ){
+                        $new_value = ( $new_value != 'value_deleted' ) ? gmdate( 'F j, Y, g:i A', $new_value ) : '';
+                    } elseif ( $new_value == 'value_deleted' ){
                         $new_value = '';
                         $deleted = true;
                     }
-                } elseif ( $field_type === 'boolean' ){
-                    $new_value = ( $new_value === 1 ) ? __( 'True', 'disciple_tools' ) : __( 'False', 'disciple_tools' );
+                } elseif ( $field_type == 'boolean' ){
+                    $new_value = ( $new_value == 1 ) ? __( 'True', 'disciple_tools' ) : __( 'False', 'disciple_tools' );
 
                 } elseif ( isset( $settings['default'], $settings['default'][$new_value], $settings['default'][$new_value]['label'] ) ){
                     $new_value = $settings['default'][$new_value]['label'];
 
-                } elseif ( $new_value === 'value_deleted' ){
+                } elseif ( $new_value == 'value_deleted' ){
                     $new_value = '';
                     $deleted = true;
                 }

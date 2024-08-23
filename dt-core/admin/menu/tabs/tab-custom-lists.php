@@ -53,7 +53,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
     public function add_tab( $tab ) {
         echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=custom-lists" class="nav-tab ';
-        if ( $tab === 'custom-lists' ) {
+        if ( $tab == 'custom-lists' ) {
             echo 'nav-tab-active';
         }
         echo '">'. esc_html__( 'Custom Lists' ) . '</a>';
@@ -65,7 +65,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      * @param $tab
      */
     public function content( $tab ) {
-        if ( 'custom-lists' === $tab ) :
+        if ( 'custom-lists' == $tab ) :
 
             $this->template( 'begin' );
 
@@ -270,7 +270,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 if ( !isset( $comment_type_fields[$type] ) ){
                     $filtered_types = apply_filters( 'dt_comments_additional_sections', [], 'contacts' );
                     foreach ( $filtered_types ?? [] as $filtered_type ){
-                        if ( $filtered_type['key'] === $type ){
+                        if ( $filtered_type['key'] == $type ){
                             $comment_type_fields[$type] = $filtered_type;
                             $comment_type_fields[$type]['is_comment_type'] = true;
                         }
@@ -446,7 +446,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         }
 
                         $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
-                        $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] === true; ?>
+                        $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true; ?>
 
                     <tr>
                         <input type="hidden" name="channel_fields[<?php echo esc_html( $channel_key ) ?>]">
@@ -535,7 +535,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 }
                 if ( isset( $_POST['channel_label'][$field_key]['default'] ) ){
                     $label = sanitize_text_field( wp_unslash( $_POST['channel_label'][$field_key]['default'] ) );
-                    if ( $field_settings['name'] !== $label ){
+                    if ( $field_settings['name'] != $label ){
                         $custom_contact_fields[$field_key]['name'] = $label;
                     }
                 }
@@ -557,7 +557,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
 
                     // Update icon accordingly and nullify alternative
-                    if ( ! isset( $channel_options[ $icon_key ] ) || $channel_options[ $icon_key ] !== $icon ) {
+                    if ( ! isset( $channel_options[ $icon_key ] ) || $channel_options[ $icon_key ] != $icon ) {
                         $custom_contact_fields[ $field_key ][ $icon_key ]      = $icon;
                         $custom_contact_fields[ $field_key ][ $null_icon_key ] = null;
                     }
@@ -619,7 +619,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     private function languages_box(){
         $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
-        uasort($dt_global_languages_list, function ( $a, $b ) {
+        uasort($dt_global_languages_list, function( $a, $b ) {
             return strcmp( $a['label'], $b['label'] );
         });
         $form_name = 'languages_box';
@@ -638,12 +638,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php foreach ( $languages as $language_key => $language_option ) :
 
-                    $enabled = !isset( $language_option['deleted'] ) || $language_option['deleted'] === false; ?>
-
+                    $enabled = !isset( $language_option['deleted'] ) || $language_option['deleted'] == false; ?>
+                    
                     <tr class="language-row" data-lang="<?php echo esc_html( $language_key ) ?>">
                         <td class='lang_key'><?php echo esc_html( $language_key ) ?></td>
                         <td class='default_label'><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
-                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] !== $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
+                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
                         <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
 
                         <td class='enabled'>

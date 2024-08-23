@@ -286,7 +286,7 @@ final class Disciple_Tools_Capability_Factory {
         }
 
         //Filter our restricted capabilities
-        $capabilities = array_filter($capabilities, function ( $key ) {
+        $capabilities = array_filter($capabilities, function( $key ) {
             return !in_array( $key, $this->restricted_capabilities() );
         }, ARRAY_FILTER_USE_KEY);
 

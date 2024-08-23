@@ -88,7 +88,7 @@ class Disciple_Tools_Roles
         $user_management_caps = self::default_user_management_caps();
         $manage_dt_caps = self::default_manage_dt_caps();
         $metrics_caps = self::default_all_metrics_caps();
-        $manage_role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function ( $caps, $slug ) {
+        $manage_role_caps = array_reduce(dt_multi_role_get_plugin_capabilities(), function( $caps, $slug ) {
             $caps[$slug] = true;
             return $caps;
         }, []);
@@ -365,7 +365,7 @@ class Disciple_Tools_Roles
         );
 
         add_filter(
-            'pre_option_default_role', function () {
+            'pre_option_default_role', function() {
                 return 'subscriber';
             }
         );

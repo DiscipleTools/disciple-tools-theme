@@ -22,11 +22,9 @@ class Disciple_Tools_Login_Terms extends DT_Login_Page_Base
         if ( ( 'terms-of-service' === substr( $url, 0, 16 ) ) ) {
             add_action( 'template_redirect', [ $this, 'theme_redirect' ] );
 
-            add_filter( 'dt_blank_access', function () {
-                return true;
+            add_filter( 'dt_blank_access', function(){ return true;
             } );
-            add_filter( 'dt_allow_non_login_access', function () {
-                return true;
+            add_filter( 'dt_allow_non_login_access', function(){ return true;
             }, 100, 1 );
 
             add_filter( 'dt_blank_title', [ $this, '_browser_tab_title' ] );

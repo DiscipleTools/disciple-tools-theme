@@ -16,7 +16,7 @@ class DT_User_Metrics {
         /*
          * Permission check if the current user can view the requested user
          */
-        $can_view_user_stats = function ( WP_REST_Request $request ) {
+        $can_view_user_stats = function ( WP_REST_Request $request ){
             $params = $request->get_params();
             $user_id = get_current_user_id();
             if ( isset( $params['user_id'] ) && !empty( $params['user_id'] ) ){
@@ -106,10 +106,10 @@ class DT_User_Metrics {
                     $a->object_note_short = __( 'Updated fields', 'disciple_tools' );
                     $a->field = $a->action === 'field_update' ? $post_fields[ $a->object_subtype ]['name'] : null;
                 }
-                if ( $a->action === 'comment' ) {
+                if ( $a->action == 'comment' ) {
                     $a->object_note_short = __( 'Made %n comments', 'disciple_tools' );
                 }
-                if ( $a->action === 'created' ) {
+                if ( $a->action == 'created' ) {
                     $a->object_note = __( 'Created record', 'disciple_tools' );
                 }
                 if ( $a->action === 'logged_in' ) {

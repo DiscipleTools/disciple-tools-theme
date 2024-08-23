@@ -546,14 +546,14 @@ class DT_Groups_Base extends DT_Module_Base {
 
     public static function church_metrics_is_enabled() {
         $group_preferences = dt_get_option( 'group_preferences' );
-        if ( $group_preferences['church_metrics'] === 1 ) {
+        if ( $group_preferences['church_metrics'] == 1 ) {
             return true;
         }
     }
 
     public static function four_fields_is_enabled() {
         $group_preferences = dt_get_option( 'group_preferences' );
-        if ( $group_preferences['four_fields'] === 1 ) {
+        if ( $group_preferences['four_fields'] == 1 ) {
             return true;
         }
     }
@@ -744,7 +744,7 @@ class DT_Groups_Base extends DT_Module_Base {
     private static function check_requires_update( $group_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $group_id, 'requires_update', true );
-            if ( $requires_update === 'yes' || $requires_update === true || $requires_update === '1' ){
+            if ( $requires_update == 'yes' || $requires_update == true || $requires_update == '1' ){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the groups.)
                 if ( DT_Posts::can_view_all( 'groups' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $group_id, 'assigned_to', true ) ) === get_current_user_id() ){
@@ -833,7 +833,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
             // uniqueify the milestones array
-            $data['milestones'] = array_reduce( $data['milestones'], function ( $array, $milestone ) {
+            $data['milestones'] = array_reduce( $data['milestones'], function ( $array, $milestone ){
                 if ( !in_array( $milestone, $array, true ) ) {
                     $array[] = $milestone;
                     return $array;

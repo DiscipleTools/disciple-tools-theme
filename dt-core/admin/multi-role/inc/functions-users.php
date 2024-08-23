@@ -138,7 +138,7 @@ function dt_list_roles( $use_cache = true ){
 
     $expected_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( $use_cache );
 
-    uasort( $expected_roles, function ( $item1, $item2 ) {
+    uasort( $expected_roles, function ( $item1, $item2 ){
         return ( $item1['order'] ?? 50 ) <=> ( $item2['order'] ?? 50 );
     } );
 

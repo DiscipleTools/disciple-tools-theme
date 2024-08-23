@@ -11,7 +11,7 @@ class DT_Admin_Endpoints {
             $this->namespace, '/scripts/reset_count_field', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'reset_count_field' ],
-                'permission_callback' => function () {
+                'permission_callback' => function(){
                     return current_user_can( 'manage_dt' );
                 },
             ]
@@ -20,7 +20,7 @@ class DT_Admin_Endpoints {
             $this->namespace, '/scripts/reset_count_field_progress', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'reset_count_field_progress' ],
-                'permission_callback' => function () {
+                'permission_callback' => function(){
                     return current_user_can( 'manage_dt' );
                 },
             ]
@@ -29,7 +29,7 @@ class DT_Admin_Endpoints {
             $this->namespace, '/scripts/update_custom_field_translations', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'update_custom_field_translations' ],
-                'permission_callback' => function () {
+                'permission_callback' => function(){
                     return current_user_can( 'manage_dt' );
                 },
             ]
@@ -38,7 +38,7 @@ class DT_Admin_Endpoints {
             $this->namespace, '/scripts/process_jobs', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'process_jobs' ],
-                'permission_callback' => function () {
+                'permission_callback' => function(){
                     return current_user_can( 'manage_dt' );
                 },
             ]
@@ -47,7 +47,7 @@ class DT_Admin_Endpoints {
             $this->namespace, '/scripts/data_clean_up', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'data_clean_up' ],
-                'permission_callback' => function () {
+                'permission_callback' => function(){
                     return current_user_can( 'manage_dt' );
                 },
             ]
@@ -56,7 +56,7 @@ class DT_Admin_Endpoints {
             $this->namespace, '/scripts/locations_clean_up', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'locations_clean_up' ],
-                'permission_callback' => function () {
+                'permission_callback' => function(){
                     return current_user_can( 'manage_dt' );
                 },
             ]

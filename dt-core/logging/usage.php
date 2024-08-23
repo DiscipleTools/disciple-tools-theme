@@ -48,7 +48,7 @@ class Disciple_Tools_Usage {
         foreach ( $network_active_plugins as $plugin => $time ){
             $active_plugins_options[] = $plugin;
         }
-        $active_plugins = array_map( function ( $folder_slash_plugin ) {
+        $active_plugins = array_map( function ( $folder_slash_plugin ){
             return explode( '/', $folder_slash_plugin )[1];
         }, $active_plugins_options );
 

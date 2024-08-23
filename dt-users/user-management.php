@@ -27,14 +27,14 @@ class DT_User_Management
             if ( strpos( $url_path, 'user-management/user' ) !== false || ( strpos( $url_path, 'user-management/add-user' ) !== false && ( current_user_can( 'create_users' ) ) ) ){
 
 
-                add_action( 'init', function () {
+                add_action( 'init', function() {
                     add_rewrite_rule( 'user-management/user/([a-z0-9-]+)[/]?$', 'index.php?dt_user_id=$matches[1]', 'top' );
                 } );
-                add_filter( 'query_vars', function ( $query_vars ) {
+                add_filter( 'query_vars', function( $query_vars ) {
                     $query_vars[] = 'dt_user_id';
                     return $query_vars;
                 } );
-                add_action( 'template_include', function ( $template ) {
+                add_action( 'template_include', function( $template ) {
                     if ( get_query_var( 'dt_user_id' ) === false || get_query_var( 'dt_user_id' ) === '' ) {
                         return $template;
                     }
@@ -95,7 +95,7 @@ class DT_User_Management
                 [
                     'methods'  => 'GET',
                     'callback' => [ $this, 'get_users_endpoints' ],
-                    'permission_callback' => function () {
+                    'permission_callback' => function(){
                         return $this->has_permission();
                     },
                 ],
@@ -106,7 +106,7 @@ class DT_User_Management
                 [
                     'methods'  => 'POST',
                     'callback' => [ $this, 'get_users_paged_endpoint' ],
-                    'permission_callback' => function () {
+                    'permission_callback' => function(){
                         return $this->has_permission();
                     },
                 ],
@@ -117,7 +117,7 @@ class DT_User_Management
                 [
                     'methods' => 'POST',
                     'callback' => [ $this, 'send_pwd_reset_email' ],
-                    'permission_callback' => function () {
+                    'permission_callback' => function(){
                         return $this->has_permission();
                     },
                 ],
@@ -662,7 +662,7 @@ class DT_User_Management
                     }
                 }
                 if ( $field_value['type'] === 'array_keys' ){
-                    if ( $field_key !== 'capabilities' ){
+                    if ( $field_key != 'capabilities' ){
                         $select .= ", um_$field_key.meta_value as $field_key";
                         $joins .= " LEFT JOIN $wpdb->usermeta as um_$field_key on ( um_$field_key.user_id = users.ID AND um_$field_key.meta_key = '{$field_value['key']}' ) ";
                     }

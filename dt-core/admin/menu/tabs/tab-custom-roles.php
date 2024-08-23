@@ -87,7 +87,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         ?>
 
         <a href="<?php echo esc_url( $this->url_base ) ?>"
-           class="nav-tab <?php echo esc_html( $tab === 'roles' ? 'nav-tab-active' : '' ) ?>">
+           class="nav-tab <?php echo esc_html( $tab == 'roles' ? 'nav-tab-active' : '' ) ?>">
             <?php echo esc_html__( 'Roles' ) ?>
         </a>
         <?php
@@ -246,7 +246,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         $option = get_option( self::OPTION_NAME, [] );
 
-        $updated_capabilities = array_reduce( $capabilities, function ( $updated_capabilities, $capability ) {
+        $updated_capabilities = array_reduce( $capabilities, function ( $updated_capabilities, $capability ){
             $updated_capabilities[$capability] = true;
             return $updated_capabilities;
         }, [] );
@@ -500,7 +500,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
 
         // Extract accordingly, based on incoming role availability.
         if ( !empty( $role['permissions'] ) ){
-            $role_capabilities = array_keys( array_filter( $role['permissions'], function ( $v, $k ) {
+            $role_capabilities = array_keys( array_filter( $role['permissions'], function ( $v, $k ){
                 return is_bool( $v ) && ( $v === true );
             }, ARRAY_FILTER_USE_BOTH ) );
         } else {
@@ -579,7 +579,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         if ( !empty( $role['capabilities'] ) && is_int( array_keys( $role['capabilities'] )[0] ) ){
             $role_capabilities = $role['capabilities'];
         } else {
-            $role_capabilities = array_keys( array_filter( $role['capabilities'], function ( $v, $k ) {
+            $role_capabilities = array_keys( array_filter( $role['capabilities'], function ( $v, $k ){
                 return is_bool( $v ) && ( $v === true );
             }, ARRAY_FILTER_USE_BOTH ) );
         }

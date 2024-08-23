@@ -484,7 +484,7 @@ class Disciple_Tools_Posts_Endpoints {
                 'args'     => [
                     'post_type' => $arg_schemas['post_type'],
                 ],
-                'permission_callback' => function ( WP_REST_Request $request ) {
+                'permission_callback' => function ( WP_REST_Request $request ){
                     $params = $request->get_params();
                     $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
                     return DT_Posts::can_create( $post_type );
@@ -502,7 +502,7 @@ class Disciple_Tools_Posts_Endpoints {
                         'post_type' => $arg_schemas['post_type'],
                         'id' => $arg_schemas['id']
                     ],
-                    'permission_callback' => function ( WP_REST_Request $request ) {
+                    'permission_callback' => function( WP_REST_Request $request ) {
                         $params = $request->get_params();
                         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
                         return DT_Posts::can_access( $post_type );

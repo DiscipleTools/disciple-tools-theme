@@ -208,8 +208,7 @@ final class Disciple_Tools_Admin_User_Edit {
      * @access public
      * @return void
      */
-    public function print_styles() {
-        ?>
+    public function print_styles() { ?>
 
         <style type="text/css">.user-role-wrap{ display: none !important; }</style>
 

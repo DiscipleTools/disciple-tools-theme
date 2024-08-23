@@ -39,7 +39,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      * The disciple_tools_load_plugins hook
      * Set up hook for loading plugins
      */
-    add_action( 'after_setup_theme', function () {
+    add_action( 'after_setup_theme', function (){
         do_action( 'disciple_tools_load_plugins' );
     }, 30 );
 
@@ -48,7 +48,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      * Disciple.Tools theme and plugins are loaded.
      * It is now safe to us the Disciple.Tools API, run actions and views
      */
-    add_action( 'init', function () {
+    add_action( 'init', function (){
         do_action( 'disciple_tools_loaded' );
     }, 10 );
 
@@ -75,7 +75,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
     /**
      * Run migrations after theme is loaded
      */
-    add_action( 'init', function () {
+    add_action( 'init', function (){
         /**
          * We want to make sure migrations are run on updates.
          *
@@ -242,7 +242,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             /**
              * URL loader
              */
-            add_action( 'wp_loaded', function () {
+            add_action( 'wp_loaded', function() {
                 $template_for_url = [
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
@@ -269,7 +269,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              *
              * @return string
              */
-            add_filter( 'locale', function () {
+            add_filter( 'locale', function() {
                 if ( is_admin() ) {
                     return $this->site_locale;
                 } else {

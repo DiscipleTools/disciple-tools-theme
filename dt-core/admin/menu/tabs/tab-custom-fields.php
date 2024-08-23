@@ -51,7 +51,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     public function add_tab( $tab ) {
         ?>
         <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_options&tab=custom-fields"
-           class="nav-tab <?php echo esc_html( $tab === 'custom-fields' ? 'nav-tab-active' : '' ) ?>">
+           class="nav-tab <?php echo esc_html( $tab == 'custom-fields' ? 'nav-tab-active' : '' ) ?>">
             <?php echo esc_html__( 'Fields' ) ?>
         </a>
         <?php
@@ -69,7 +69,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
     public function content( $tab ) {
         global $wp_post_types;
 
-        if ( 'custom-fields' === $tab ) :
+        if ( 'custom-fields' == $tab ) :
             $show_add_field = false;
             $field_key = false;
             if ( isset( $_POST['field_key'] ) ){
@@ -210,7 +210,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $select_options = [];
         $selected_post_type = sanitize_text_field( wp_unslash( $selected_post_type ) );
         $fields = $this->get_post_fields( $selected_post_type );
-        uasort($fields, function ( $a, $b ) {
+        uasort($fields, function( $a, $b ) {
             return $a['name'] <=> $b['name'];
         });
         if ( $fields ){
@@ -471,7 +471,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <?php
                     $custom_fields = dt_get_option( 'dt_field_customizations' );
                     $custom_field = $custom_fields[$post_type][$field_key] ?? [];
-                    if ( isset( $custom_field['customizable'] ) && $custom_field['customizable'] === 'all' ) : ?>
+                    if ( isset( $custom_field['customizable'] ) && $custom_field['customizable'] == 'all' ) : ?>
                         <button type="button" name="delete" id='open-delete-confirm-modal' class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
                     <?php endif ?>
                     </td>
@@ -593,7 +593,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <tbody class="sortable-field-options">
                 <?php foreach ( $field_options as $key => $option ) :
 
-                    if ( !( isset( $option['deleted'] ) && $option['deleted'] === true ) ):
+                    if ( !( isset( $option['deleted'] ) && $option['deleted'] == true ) ):
                         $label = $option['label'] ?? '';
                         $in_defaults = isset( $defaults[$field_key]['default'][$key] );
                         ?>
@@ -727,7 +727,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 endforeach; ?>
                 <?php foreach ( $field_options as $key => $option ) :
                     $label = $option['label'] ?? '';
-                    if ( isset( $option['deleted'] ) && $option['deleted'] === true ): ?>
+                    if ( isset( $option['deleted'] ) && $option['deleted'] == true ): ?>
                         <tr class="ui-state-default" style="background-color: #eee">
                             <td></td>
                             <td class="sortable-field-options-key"><?php echo esc_html( $key ) ?></td>
@@ -823,7 +823,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         if ( isset( $post_submission['save_create_form'] ) ){
             $types_options = $post_fields['type']['default'];
-            $non_hidden_types = array_filter( $types_options, function ( $type ) {
+            $non_hidden_types = array_filter( $types_options, function ( $type ){
                 return !isset( $type['hidden'] ) || empty( $type['hidden'] );
             });
             $create_form_options = isset( $post_submission['create_form_options'] ) ? $post_submission['create_form_options'] : false;
@@ -892,7 +892,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $custom_field['hidden'] = false;
             }
             //field description
-            if ( isset( $post_submission['field_description'] ) && $post_submission['field_description'] !== ( $custom_field['description'] ?? '' ) ){
+            if ( isset( $post_submission['field_description'] ) && $post_submission['field_description'] != ( $custom_field['description'] ?? '' ) ){
                 $custom_field['description'] = $post_submission['field_description'];
             }
 
@@ -941,7 +941,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
 
                                 // Update icon accordingly and nullify alternative
-                                if ( ! isset( $field_options[ $option_key ][ $icon_key ] ) || $field_options[ $option_key ][ $icon_key ] !== $val ) {
+                                if ( ! isset( $field_options[ $option_key ][ $icon_key ] ) || $field_options[ $option_key ][ $icon_key ] != $val ) {
                                     $custom_field['default'][ $option_key ][ $icon_key ]      = $val;
                                     $custom_field['default'][ $option_key ][ $null_icon_key ] = null;
                                 }
@@ -951,7 +951,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             $option_key = substr( $key, 13 );
 
                             if ( !empty( $val ) ){
-                                if ( !isset( $field_options[$option_key]['label'] ) || $field_options[$option_key]['label'] !== $val ){
+                                if ( !isset( $field_options[$option_key]['label'] ) || $field_options[$option_key]['label'] != $val ){
                                     $custom_field['default'][$option_key]['label'] = $val;
                                 }
                                 $field_options[$option_key]['label'] = $val;
