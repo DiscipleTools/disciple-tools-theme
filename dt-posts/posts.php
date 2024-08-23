@@ -647,6 +647,7 @@ class Disciple_Tools_Posts
      * @return array|mixed
      */
     public static function fields_to_sql( $post_type, $query_array, $operator = 'AND', $args = [] ){
+        /**
         $examples = [
             'groups' => [ 3029, 39039 ],
             'groups' => [ -3029 ],
@@ -669,6 +670,7 @@ class Disciple_Tools_Posts
             'milestones' => [ 'milestone_has_bible', 'milestone_reading_bible' ],
             'milestones' => [ '-milestone_has_bible', '-milestone_reading_bible' ],
         ];
+        */
 
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
 

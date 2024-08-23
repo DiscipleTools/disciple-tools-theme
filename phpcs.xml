@@ -156,7 +156,6 @@
 
   <rule ref="Universal.Arrays">
     <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
-    <exclude name="Universal.Arrays.DuplicateArrayKey" /> <!--@todo-->
     <exclude name="Universal.Arrays.MixedArrayKeyTypes" />  <!--@todo-->
     <exclude name="Universal.Arrays.MixedKeyedUnkeyedArray" />  <!--@todo-->
   </rule>
