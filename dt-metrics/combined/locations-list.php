@@ -295,5 +295,3 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
     }
 }
 new DT_Metrics_Locations_List();
-
-

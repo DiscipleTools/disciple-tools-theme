@@ -43,4 +43,3 @@ class CapabilitiesTest extends WP_UnitTestCase {
         }
     }
 }
-

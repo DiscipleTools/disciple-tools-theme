@@ -26,4 +26,3 @@ class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
         return [];
     }
 }
-

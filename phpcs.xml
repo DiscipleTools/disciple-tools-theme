@@ -178,10 +178,6 @@
     <exclude name="NormalizedArrays.Arrays.CommaAfterLast" />
   </rule>
 
-  <rule ref="PSR2.Files">
-    <exclude name="PSR2.Files.EndFileNewline" /> <!--@todo-->
-  </rule>
-
   <rule ref="PSR12.Functions">
     <exclude name="PSR12.Functions.ReturnTypeDeclaration.SpaceBeforeColon" />
   </rule>

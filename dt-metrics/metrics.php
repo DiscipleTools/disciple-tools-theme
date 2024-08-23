@@ -138,4 +138,3 @@ class Disciple_Tools_Metrics{
 
 
 Disciple_Tools_Metrics::instance();
-

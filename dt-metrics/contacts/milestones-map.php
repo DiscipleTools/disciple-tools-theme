@@ -235,5 +235,3 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
     }
 }
 new DT_Metrics_Milestones_Map_Chart();
-
-

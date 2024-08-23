@@ -435,4 +435,3 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         return $packaged_data_layer_post_fields;
     }
 }
-

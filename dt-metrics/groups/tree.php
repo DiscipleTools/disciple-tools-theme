@@ -149,5 +149,3 @@ class DT_Metrics_Groups_Tree extends DT_Metrics_Chart_Base
     }
 }
 new DT_Metrics_Groups_Tree();
-
-
