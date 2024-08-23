@@ -140,7 +140,6 @@
 
     <exclude name="PEAR.Files.IncludingFile" />
     <exclude name="WordPress.Security.EscapeOutput.ExceptionNotEscaped" />
-    <exclude name="WordPress.Security.NonceVerification" />
     <exclude name="Generic.Files.OneObjectStructurePerFile" />
   </rule>
 
