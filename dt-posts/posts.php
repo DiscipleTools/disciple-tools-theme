@@ -226,7 +226,7 @@ class Disciple_Tools_Posts
         //don't create activity on connection fields that are hidden
         foreach ( $fields as $field ){
             if ( isset( $field['p2p_key'] ) && $field['p2p_key'] === $activity->meta_key ){
-                if ( ( ( $activity->field_type === 'connection to' ) || $activity->object_note === 'connection to' ) && $field['p2p_direction'] === 'to' || ( ( $activity->field_type === 'connection to' ) || $activity->object_note === 'connection to' ) && $field['p2p_direction'] !== 'to' ){
+                if ( ( ( $activity->field_type === 'connection to' || $activity->object_note === 'connection to' ) && $field['p2p_direction'] === 'to' ) || ( ( $activity->field_type === 'connection to' || $activity->object_note === 'connection to' ) && $field['p2p_direction'] !== 'to' ) ){
                     if ( isset( $field['hidden'] ) && !empty( $field['hidden'] ) ){
                         return '';
                     }
@@ -3018,7 +3018,7 @@ class Disciple_Tools_Posts
      */
     public static function geolocate_addresses( $post_id, $post_type, $field_key, $address_value ): bool {
         // Check if geocoder apis exist.
-        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() || class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ){
+        if ( ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) || ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ){
 
             $address_transpose_success = false;
 

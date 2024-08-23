@@ -142,9 +142,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
          */
         function dt_is_rest( $namespace = null ) {
             $prefix = rest_get_url_prefix();
-            if ( defined( 'REST_REQUEST' ) && REST_REQUEST
-                 || isset( $_GET['rest_route'] )
-                    && strpos( trim( sanitize_text_field( wp_unslash( $_GET['rest_route'] ) ), '\\/' ), $prefix, 0 ) === 0 ) {
+            if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST )
+                 || ( isset( $_GET['rest_route'] )
+                    && strpos( trim( sanitize_text_field( wp_unslash( $_GET['rest_route'] ) ), '\\/' ), $prefix, 0 ) === 0 ) ) {
                 return true;
             }
             $rest_url    = wp_parse_url( site_url( $prefix ) );
@@ -589,7 +589,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             $can_update = true;
         }
         $field_disabled = !empty( $fields[$field_key]['readonly'] );
-        if ( !$field_disabled && ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) {
+        if ( !$field_disabled && ( $can_update || ( isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) ) {
             $disabled = '';
         }
         $custom_display = !empty( $fields[$field_key]['custom_display'] );

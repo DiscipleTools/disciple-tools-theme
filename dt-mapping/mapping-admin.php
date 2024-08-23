@@ -753,7 +753,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 else if ( $option['type'] === 'country' && empty( $_POST['children'] ) ) {
                     $option['children'] = Disciple_Tools_Mapping_Queries::get_countries( true );
                 }
-                else if ( $option['type'] === 'state' && ( !isset( $_POST['children'] ) || empty( $_POST['children'] ) && !empty( $_POST['parent'] ) ) ) {
+                else if ( $option['type'] === 'state' && ( !isset( $_POST['children'] ) || empty( $_POST['children'] ) ) && !empty( $_POST['parent'] ) ) {
                     $list = Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $option['parent'] );
                     foreach ( $list as $item ) {
                         $option['children'][] = $item['grid_id'];

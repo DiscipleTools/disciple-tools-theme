@@ -147,12 +147,8 @@
   </rule>
 
   <rule ref="Generic.Classes">
-    <exclude name="Generic.Classes.OpeningBraceSameLine" /> <!--@todo-->
+    <exclude name="Generic.Classes.OpeningBraceSameLine" />
   </rule>
-  <rule ref="Generic.CodeAnalysis">
-    <exclude name="Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence" /> <!--@todo-->
-  </rule>
-
 
   <rule ref="Universal.Arrays">
     <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
