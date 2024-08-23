@@ -524,7 +524,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
          */
         public function _is_in_polygon( $points_polygon, $vertices_x, $vertices_y, $longitude_x, $latitude_y ) {
             $i = $j = $c = 0;
-            for ( $i = 0, $j = $points_polygon - 1; $i < $points_polygon; $j = $i ++ ) {
+            for ( $i = 0, $j = $points_polygon - 1; $i < $points_polygon; $j = $i++ ) {
                 if ( ( ( $vertices_y[ $i ] > $latitude_y != ( $vertices_y[ $j ] > $latitude_y ) ) && ( $longitude_x < ( $vertices_x[ $j ] - $vertices_x[ $i ] ) * ( $latitude_y - $vertices_y[ $i ] ) / ( $vertices_y[ $j ] - $vertices_y[ $i ] ) + $vertices_x[ $i ] ) ) ) {
                     $c = ! $c;
                 }

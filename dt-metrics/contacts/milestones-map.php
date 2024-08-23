@@ -212,7 +212,7 @@ class DT_Metrics_Milestones_Map_Chart extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 

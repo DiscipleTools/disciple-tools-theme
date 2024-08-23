@@ -264,7 +264,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
 
                     // Increment counts
                     $counts[ $generation ][ $element['group_type'] ]++;
-                    $counts[ $generation ]['total'] ++;
+                    $counts[ $generation ]['total']++;
                 }
                 if ( !isset( $element['children'] ) || !empty( $element['children'] ) ){
                     $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );

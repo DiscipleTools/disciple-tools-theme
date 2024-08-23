@@ -972,7 +972,7 @@ class Disciple_Tools_Posts
                                 $where_sql .= " OR $table_key.meta_value = '' ";
                             }
                             foreach ( $query_value as $value_key => $value ){
-                                $index ++;
+                                $index++;
                                 $equality = 'LIKE';
 
                                 //allow negative searches

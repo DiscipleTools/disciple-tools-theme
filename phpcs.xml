@@ -152,9 +152,7 @@
   <rule ref="Generic.CodeAnalysis">
     <exclude name="Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence" /> <!--@todo-->
   </rule>
-  <rule ref="Generic.WhiteSpace">
-    <exclude name="Generic.WhiteSpace.IncrementDecrementSpacing" /> <!--@todo-->
-  </rule>
+
 
   <rule ref="Universal.Arrays">
     <exclude name="Universal.Arrays.DisallowShortArraySyntax" />

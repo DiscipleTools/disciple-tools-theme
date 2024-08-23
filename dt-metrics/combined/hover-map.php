@@ -144,7 +144,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -189,7 +189,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -234,7 +234,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -284,7 +284,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
