@@ -57,8 +57,5 @@ class Disciple_Tools_Tab_People_Groups extends Disciple_Tools_Abstract_Menu_Base
 
         endif;
     }
-
-
-
 }
 Disciple_Tools_Tab_People_Groups::instance();

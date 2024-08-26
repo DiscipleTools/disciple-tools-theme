@@ -997,7 +997,6 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         // Include helper documentation
         include 'tab-workflows-docs.php';
     }
-
 }
 
 Disciple_Tools_Tab_Workflows::instance();

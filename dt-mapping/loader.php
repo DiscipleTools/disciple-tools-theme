@@ -72,7 +72,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Loader' ) ) {
             /** Core */
             require_once( 'mapping.php' );
             require_once( 'location-grid-meta.php' );
-
         }
     }
 }

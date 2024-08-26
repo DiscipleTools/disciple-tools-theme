@@ -499,7 +499,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
 
                 // Identify capabilities selection states.
-                $updated_capabilities = [];
+                $updated_capabilities = ( isset( $existing_custom_roles[$role]['capabilities'] ) && is_array( $existing_custom_roles[$role]['capabilities'] ) ) ? $existing_custom_roles[$role]['capabilities'] : [];
                 foreach ( $capabilities ?? [] as $capability ){
                     $updated_capabilities[$capability['key']] = $capability['enabled'];
                 }
@@ -563,7 +563,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $params = $request->get_params();
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
         $tile_key = sanitize_text_field( wp_unslash( $params['tile_key'] ) );
-        $tile_options = DT_Posts::get_post_tiles( $post_type, false );
+        $tile_options = DT_Posts::get_post_tiles( $post_type, false, false );
         return $tile_options[$tile_key];
     }
 
@@ -686,9 +686,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             if ( strpos( $post_submission['translation_type'], 'description' ) ) {
                 $translations_element_key = 'description_translations';
             }
-            if ( empty( $translated_element ) ) {
-                $translated_element = [ $translations_element_key => [] ];
-            }
+            $translated_element[$translations_element_key] = [];
 
             foreach ( $translations as $lang_key => $translation_val ) {
                 if ( $lang_key !== '' || !is_null( $lang_key ) ) {

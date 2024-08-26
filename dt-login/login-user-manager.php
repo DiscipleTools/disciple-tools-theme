@@ -19,7 +19,7 @@ class DT_Login_User_Manager {
     public function __construct( array $firebase_auth ) {
         $this->firebase_auth = $firebase_auth;
         $this->uid = $this->firebase_auth['user_id'];
-        $this->email = $this->firebase_auth['email'];
+        $this->email = $this->firebase_auth['email'] ?? null;
         $this->name = $this->firebase_auth['name'];
         $this->identities = (array) $this->firebase_auth['firebase']->identities;
         $this->sign_in_provider = $this->firebase_auth['firebase']->sign_in_provider;
@@ -64,10 +64,16 @@ class DT_Login_User_Manager {
         return $response;
     }
 
-    private function user_exists() {
+    private function get_user(){
         $user = get_user_by( 'email', $this->email );
+        if ( empty( $user ) ) {
+            $user = get_user_by( 'login', $this->uid );
+        }
+        return $user;
+    }
 
-        return $user ? true : false;
+    private function user_exists() {
+        return !empty( $this->get_user() );
     }
 
     private function create_user() {
@@ -91,7 +97,7 @@ class DT_Login_User_Manager {
     }
 
     private function update_user() {
-        $user = get_user_by( 'email', $this->email );
+        $user = $this->get_user();
 
         if ( !isset( $user->roles ) || !is_array( $user->roles ) || empty( $user_roles ) ) {
             $user_role = $this->get_default_role();
@@ -154,7 +160,7 @@ class DT_Login_User_Manager {
         add_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );    // hook in earlier than other callbacks to short-circuit them
 
         $user = wp_signon( [
-            'user_login' => $this->email,
+            'user_login' => $this->email ?: $this->uid,
             'remember' => true,
         ] );
 
@@ -220,6 +226,9 @@ class DT_Login_User_Manager {
      */
     public function allow_programmatic_login( $user, $user_identifier, $password ) {
         $user = get_user_by( 'email', $user_identifier );
+        if ( empty( $user ) ) {
+            $user = get_user_by( 'login', $user_identifier );
+        }
         return $user;
     }
 }

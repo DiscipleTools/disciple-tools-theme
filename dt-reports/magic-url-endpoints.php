@@ -78,7 +78,6 @@ class Disciple_Tools_Magic_Endpoints
                 ]
             ]
         );
-
     }
 
     /**
@@ -271,6 +270,5 @@ class Disciple_Tools_Magic_Endpoints
 
         return $message;
     }
-
 }
 Disciple_Tools_Magic_Endpoints::instance();

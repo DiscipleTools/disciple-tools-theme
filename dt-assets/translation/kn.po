@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-06-25T10:59:06+00:00\n"
+"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Kannada <https://translate.disciple.tools/projects/disciple-"
@@ -16,20 +16,24 @@ msgstr ""
 "X-Generator: Weblate 4.14.1\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr "ಶಿಷ್ಯ ಪರಿಕರಗಳು"
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
+#: style.css
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
 msgstr "ಶಿಷ್ಯ. ಪರಿಕರಗಳು ಶಿಷ್ಯರನ್ನು ಮಾಡುವ ಚಳುವಳಿಗಳಿಗೆ ಒಕ್ಕೂಟದ ನಿರ್ವಹಣಾ ವ್ಯವಸ್ಥೆಯಾಗಿದೆ."
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
@@ -359,8 +363,8 @@ msgid "Search Users"
 msgstr "ಬಳಕೆದಾರರನ್ನು ಹುಡುಕಿ"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:106
-#: dt-metrics/records/genmap.php:110 dt-posts/dt-posts.php:2773
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:134 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -562,7 +566,7 @@ msgstr "ಇಲ್ಲ"
 
 #: archive-template.php:1040 archive-template.php:1041
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:128 dt-metrics/records/time-charts.php:119
+#: dt-metrics/records/genmap.php:152 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
@@ -846,7 +850,7 @@ msgid "Locations you are responsible for"
 msgstr "ನೀವು ಜವಾಬ್ದಾರರಾಗಿರುವ ಸ್ಥಳಗಳು"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:118
+#: dt-metrics/records/genmap.php:142
 msgid "Add"
 msgstr "ಸೇರಿಸಿ"
 
@@ -1543,7 +1547,7 @@ msgstr "ರೆಕಾರ್ಡ್ ರಚಿಸಿ"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:124 dt-posts/custom-post-type.php:171
+#: dt-metrics/records/genmap.php:148 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "ಹೆಸರು"
@@ -1586,6 +1590,7 @@ msgstr "ಚಟುವಟಿಕೆಯನ್ನು ಹಿಂತಿರುಗಿಸ�
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "ಕ್ಷೇತ್ರ"
@@ -1686,7 +1691,7 @@ msgstr "ಡಿಜಿಟಲ್ ಪ್ರತಿಕ್ರಿಯೆ"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:105 dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:129 dt-metrics/records/genmap.php:136
 msgid "Assigned To"
 msgstr "ಗೆ ನಿಯೋಜಿಸಲಾಗಿದೆ"
 
@@ -1963,7 +1968,7 @@ msgid "Accepted"
 msgstr "ಸ್ವೀಕರಿಸಲಾಗಿದೆ"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:96
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
 #: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
@@ -2131,7 +2136,7 @@ msgstr "ನಕಲಿ ಪರೀಕ್ಷಕ"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:105
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
@@ -3063,9 +3068,9 @@ msgstr "ಗುಂಪು"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:109
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:111
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:135
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "ಗುಂಪುಗಳು"
@@ -3277,7 +3282,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "ಈ ಗುಂಪು ಸಭೆ ನಿಲ್ಲಿಸಿದ ದಿನಾಂಕ (ಅನ್ವಯಿಸಿದರೆ)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:115
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:139
 msgid "Member Count"
 msgstr "ಸದಸ್ಯರ ಎಣಿಕೆ"
 
@@ -3612,7 +3617,8 @@ msgstr "ವಿಮರ್ಶಾತ್ಮಕ ಹಾದಿ"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:101 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "ಯೋಜನೆ"
@@ -3774,7 +3780,7 @@ msgstr ""
 "ಕೆಳಗಿನ ಮೆಟ್ರಿಕ್‌ಗಳ ವಿವರವಾದ ಪಟ್ಟಿಯನ್ನು ಪ್ರದರ್ಶಿಸಲು ಟೈಮ್‌ಲೈನ್ ದಿನದ ಸಾರಾಂಶವನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:129
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
 msgid "Metrics"
 msgstr "ಮೆಟ್ರಿಕ್ಸ್"
 
@@ -3898,6 +3904,7 @@ msgstr "ದಿನಾಂಕ ವ್ಯಾಪ್ತಿಗೆ ಸಂಪರ್ಕಗ�
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:432
 msgid "All Time"
@@ -4037,32 +4044,32 @@ msgid "Group Generation Tree"
 msgstr "ಗುಂಪು ಉತ್ಪಾದನೆ ಮರ"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:101
+#: dt-metrics/records/genmap.php:125
 msgid "Highlight Active"
 msgstr "ಸಕ್ರಿಯವಾಗಿ ಹೈಲೈಟ್ ಮಾಡಿ"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:102
+#: dt-metrics/records/genmap.php:126
 msgid "Highlight Churches"
 msgstr "ಚರ್ಚುಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಿ"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:103 dt-metrics/records/genmap.php:116
+#: dt-metrics/records/genmap.php:127 dt-metrics/records/genmap.php:140
 msgid "Members"
 msgstr "ಸದಸ್ಯರು"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:104
+#: dt-metrics/records/genmap.php:128
 msgid "View Record"
 msgstr "ರೆಕಾರ್ಡ್ ವೀಕ್ಷಿಸಿ"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:107
+#: dt-metrics/records/genmap.php:131
 msgid "Total Members"
 msgstr "ಒಟ್ಟು ಸದಸ್ಯರು"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:108
+#: dt-metrics/records/genmap.php:132
 msgid "View Group"
 msgstr "ಗುಂಪನ್ನು ವೀಕ್ಷಿಸಿ"
 
@@ -4070,7 +4077,7 @@ msgstr "ಗುಂಪನ್ನು ವೀಕ್ಷಿಸಿ"
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:112
+#: dt-metrics/metrics.php:113
 #, fuzzy
 #| msgid "Metrics"
 msgid "Dynamic Metrics"
@@ -4114,6 +4121,7 @@ msgid "Comments I Posted"
 msgstr "ನಾನು ಪೋಸ್ಟ್ ಮಾಡಿದ ಕಾಮೆಂಟ್‌ಗಳು"
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "ದಿನಾಂಕ"
@@ -4190,6 +4198,7 @@ msgid "Field Activity"
 msgstr "ದೈನಂದಿನ ಚಟುವಟಿಕೆ"
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
 #, fuzzy
 #| msgid "Record"
@@ -4224,7 +4233,8 @@ msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
 msgstr ""
 
@@ -4293,66 +4303,92 @@ msgstr "ದಾಖಲೆ"
 msgid "System"
 msgstr "ಸಿಸ್ಟಮ್"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:99
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:123
 #, fuzzy
 #| msgid "Group Generation Tree"
 msgid "Generational Trees"
 msgstr "ಗುಂಪು ಉತ್ಪಾದನೆ ಮರ"
 
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:124
 #, fuzzy
 #| msgid "Archived"
 msgid "Show Archived"
 msgstr "ಸಂಗ್ರಹಿಸಲಾಗಿದೆ"
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:137
 msgid "Coaches"
 msgstr "ತರಬೇತುದಾರರು"
 
-#: dt-metrics/records/genmap.php:114
+#: dt-metrics/records/genmap.php:138
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "ಮಾದರಿ:"
 
-#: dt-metrics/records/genmap.php:117
+#: dt-metrics/records/genmap.php:141
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ"
 
-#: dt-metrics/records/genmap.php:119
+#: dt-metrics/records/genmap.php:143
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:120
+#: dt-metrics/records/genmap.php:144
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:123
+#: dt-metrics/records/genmap.php:147
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "ಮಕ್ಕಳ ಗುಂಪು"
 
-#: dt-metrics/records/genmap.php:125
+#: dt-metrics/records/genmap.php:149
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:150
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:151
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "%s ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?"
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:155
 msgid "Infinite Loops"
 msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:32
+#, fuzzy
+#| msgid "All cumulative totals"
+msgid "Field Cumulative Values"
+msgstr "ಎಲ್ಲಾ ಸಂಚಿತ ಮೊತ್ತಗಳು"
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid ""
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records"
+msgstr "ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ"
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+#, fuzzy
+#| msgid "No Data Available"
+msgid "No Records Available"
+msgstr "ಯಾವುದೇ ಮಾಹಿತಿ ಇಲ್ಲ"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
@@ -4402,24 +4438,6 @@ msgstr "ಏಕ ಸಂಚಿತ ಮೊತ್ತಗಳು"
 #| msgid "Add Records"
 msgid "Records changes"
 msgstr "ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ"
-
-#: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records"
-msgstr "ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ"
-
-#: dt-metrics/records/time-charts.php:122
-#, fuzzy
-#| msgid "No"
-msgid "No."
-msgstr "ಇಲ್ಲ"
-
-#: dt-metrics/records/time-charts.php:124
-#, fuzzy
-#| msgid "No Data Available"
-msgid "No Records Available"
-msgstr "ಯಾವುದೇ ಮಾಹಿತಿ ಇಲ್ಲ"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4994,7 +5012,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s ನೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿಲ್ಲ"
 
-#: dt-posts/posts.php:2494
+#: dt-posts/posts.php:2496
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -5652,7 +5670,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "ನೀವು ಈ ಕಾರ್ಯವನ್ನು %1$s: %2$s ನಲ್ಲಿ ಹೊಂದಿಸಿದ್ದೀರಿ"
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr "ಡಿಟಿ ವರ್ಕ್‌ಫ್ಲೋ"
 
@@ -5994,6 +6012,11 @@ msgstr "ಪ್ರವೇಶ ಸಂಪರ್ಕಗಳನ್ನು ಸ್ಕ್ಯ�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ನಕಲುಗಳು ಕಂಡುಬಂದಿವೆ:"
+
+#, fuzzy
+#~| msgid "No"
+#~ msgid "No."
+#~ msgstr "ಇಲ್ಲ"
 
 #, fuzzy
 #~| msgid "Generation"

@@ -22,7 +22,6 @@ class Disciple_Tools_Migration_0010 extends Disciple_Tools_Migration {
                 update_post_meta( $meta['post_id'], $meta['meta_key'], $date );
             }
         }
-
     }
 
     public function down() {
