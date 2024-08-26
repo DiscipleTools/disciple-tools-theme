@@ -93,8 +93,9 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                 #postbox-container-1 {
                     position: sticky;
                     top: 2rem;
-                    height: 100px;
+                    height: calc(100vh - 2rem);
                     float: none;
+                    overflow-y: auto;
                 }
                 ' );
             }
@@ -760,7 +761,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr id="workflows_design_section_step3_action_value_tr">
                                 <td>
-                                    value: <a id="workflows_design_section_step3_help_text" type="hidden"></a>
+                                    value: <span id="workflows_design_section_step3_help_text" type="hidden"></span>
                                 </td>
                                 <td>
                                     <input id="workflows_design_section_step3_action_value_id" type="hidden"

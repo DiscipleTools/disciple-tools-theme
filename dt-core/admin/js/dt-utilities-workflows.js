@@ -1576,6 +1576,9 @@ jQuery(function ($) {
   }
 
   function fetch_event_value_field(base_url, field, event_value_object_id) {
+    document.getElementById(
+      'workflows_design_section_step3_help_text',
+    ).textContent = '';
     switch (field['type']) {
       case 'text':
       case 'number':
@@ -1627,10 +1630,9 @@ jQuery(function ($) {
       `<textarea placeholder="Enter text..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
 
     let help_button = $('#workflows_design_section_step3_help_text');
-    const new_help_button = `<a id="workflows_design_section_step3_help_text">[<a class="dt-docs"
+    const new_help_button = `<span id="workflows_design_section_step3_help_text">[<a href"#/" class="dt-docs"
         data-title="dt_right_docs_comments_title"
-        data-content="dt_right_docs_comments_content"
-        style="cursor: pointer;">&#63;</a>]</a>`;
+        data-content="dt_right_docs_comments_content">&#63;</a>]</span>`;
     help_button.replaceWith(new_help_button);
 
     return response;
