@@ -157,7 +157,6 @@ class SiteLinkTest extends WP_UnitTestCase {
         $site_link_id = wp_insert_post( $post );
         Site_Link_System::build_cached_option();
         return $site_link_id;
-
     }
 
     public static function setUpBeforeClass(): void {

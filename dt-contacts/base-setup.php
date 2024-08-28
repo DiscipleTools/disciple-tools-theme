@@ -42,7 +42,6 @@ class DT_Contacts_Base {
 
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
-
     }
 
 
@@ -606,7 +605,6 @@ class DT_Contacts_Base {
 
     public function add_api_routes() {
         $namespace = 'dt-posts/v2';
-
     }
 
 
@@ -704,7 +702,6 @@ class DT_Contacts_Base {
                 </div>
             </section>
         <?php endif;
-
     }
     public function dt_record_icon( $icon, $post_type, $dt_post ){
         if ( $post_type == 'contacts' ) {

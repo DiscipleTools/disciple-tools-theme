@@ -103,5 +103,4 @@ class DT_Login_Firebase_Token {
 
         return true;
     }
-
 }

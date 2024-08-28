@@ -1486,5 +1486,4 @@ class Disciple_Tools_Users
 
         return user_can( $user, 'dt_all_access_contacts' ) && ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true );
     }
-
 }

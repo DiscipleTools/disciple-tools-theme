@@ -132,7 +132,7 @@ function build_email_body_logs_summary( $deltas ): string {
                 <td style="color: #153643; font-family: Arial, sans-serif; font-size: 14px;">' . esc_attr( $delta->object_note ) . '</td>
             </tr>';
 
-        if ( $summary_count ++ >= $summary_limit ) {
+        if ( $summary_count++ >= $summary_limit ) {
             break;
         }
     }

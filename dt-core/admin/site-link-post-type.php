@@ -1054,7 +1054,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
             $uri = $this->get_url_path();
 
-            if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
+            if ( $uri && ( ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) ) : ?>
                 <script>
                     jQuery(function($) {
                         $(`<div><a href="https://disciple.tools/user-docs/getting-started-info/admin/site-links/" style="margin-bottom:15px;" target="_blank">
@@ -1590,6 +1590,5 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             add_filter( 'site_link_type', [ $this, 'default_site_link_type' ], 10, 1 );
             add_filter( 'site_link_type_capabilities', [ $this, 'default_site_link_capabilities' ], 10, 1 );
         } // End __construct()
-
     } // End Class
 }

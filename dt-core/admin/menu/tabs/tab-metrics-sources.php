@@ -205,7 +205,5 @@ class Disciple_Tools_Metric_Sources_Tab extends Disciple_Tools_Abstract_Menu_Bas
             }
         }
     }
-
-
 }
 Disciple_Tools_Metric_Sources_Tab::instance();

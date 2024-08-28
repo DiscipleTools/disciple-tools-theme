@@ -753,7 +753,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 else if ( $option['type'] === 'country' && empty( $_POST['children'] ) ) {
                     $option['children'] = Disciple_Tools_Mapping_Queries::get_countries( true );
                 }
-                else if ( $option['type'] === 'state' && ( !isset( $_POST['children'] ) || empty( $_POST['children'] ) && !empty( $_POST['parent'] ) ) ) {
+                else if ( $option['type'] === 'state' && ( !isset( $_POST['children'] ) || empty( $_POST['children'] ) ) && !empty( $_POST['parent'] ) ) {
                     $list = Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $option['parent'] );
                     foreach ( $list as $item ) {
                         $option['children'][] = $item['grid_id'];
@@ -1366,7 +1366,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $local_download_dir_path = $uploads_dir . 'location_grid_download';
 
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
-                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.', '..' ) );
                 foreach ( $scan as $f ) {
                     if ( is_dir( $uploads_dir . 'location_grid_download/' . $f ) ) {
                         rmdir( $uploads_dir . 'location_grid_download/' . $f );
@@ -1451,7 +1451,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 echo 'Error in step 2';
                 die();
             }
-
         }
         public function process_step_2() {
             dt_write_log( __METHOD__ );
@@ -1532,7 +1531,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $dir = wp_upload_dir();
             $uploads_dir = trailingslashit( $dir['basedir'] );
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
-                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.', '..' ) );
                 foreach ( $scan as $f ) {
                     if ( is_dir( $uploads_dir . 'location_grid_download/' . $f ) ) {
                         rmdir( $uploads_dir . 'location_grid_download/' . $f );
@@ -2573,7 +2572,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </table>
             </form>
             <?php
-
         }
 
         public function box_credits() {
@@ -2781,8 +2779,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $query .= ';';
             $query = str_replace( ', ;', ';', $query ); //remove last comma
             $wpdb->query( $query );  //phpcs:ignore
-
-
         }
 
         public function remove_additional_levels( $admin0_code, $level ) {
@@ -2795,7 +2791,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $level ) );
             dt_write_log( $result );
              return $result;
-
         }
 
         public function migrations_reset_and_rerun() {

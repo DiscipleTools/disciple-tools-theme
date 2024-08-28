@@ -132,5 +132,4 @@ abstract class Disciple_Tools_Abstract_Menu_Base
                 break;
         }
     }
-
 }

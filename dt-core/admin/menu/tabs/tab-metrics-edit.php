@@ -230,7 +230,6 @@ class Disciple_Tools_Metric_Edit_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
         $this->box( 'bottom' );
     }
-
 }
 Disciple_Tools_Metric_Edit_Tab::instance();
 

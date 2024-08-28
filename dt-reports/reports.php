@@ -438,8 +438,6 @@ class Disciple_Tools_Reports
             [ '%s' ],
             [ '%d', '%s' ]
         );
-
-
     }
 
 
@@ -516,5 +514,4 @@ class Disciple_Tools_Reports
 
         return $meta_value['meta_value'];
     }
-
 }
