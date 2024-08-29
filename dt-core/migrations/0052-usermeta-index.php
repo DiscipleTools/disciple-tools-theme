@@ -17,7 +17,7 @@ class Disciple_Tools_Migration_0052 extends Disciple_Tools_Migration {
                 and index_name like %s
             ", DB_NAME, 'index_user_id_meta_key' ));
         if ( $index_exists === 0 ){
-            $wpdb->query( "ALTER TABLE `{$wpdb->prefix}usermeta` ADD INDEX index_user_id_meta_key (user_id, meta_key)" );
+            $wpdb->query( "ALTER TABLE `$wpdb->usermeta` ADD INDEX index_user_id_meta_key (user_id, meta_key)" );
         }
     }
 
