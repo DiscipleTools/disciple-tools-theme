@@ -147,10 +147,11 @@ function dt_make_email_footer() {
  * none available.
  */
 add_filter( 'wp_mail_from', function ( $email ) {
-    $base_email = dt_get_option( 'dt_email_base_address' );
-    if ( !empty( $base_email ) ){
-        $email = $base_email;
-    } elseif ( strpos( $email, 'wordpress@' ) === 0 || empty( $email ) ) {
+    if ( strpos( $email, 'wordpress@' ) === 0 || empty( $email ) ) {
+        $base_email = dt_get_option( 'dt_email_base_address' );
+        if ( !empty( $base_email ) ){
+            return $base_email;
+        }
         // Get the site domain and get rid of www.
         $sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
         if ( 'www.' === substr( $sitename, 0, 4 ) ){
@@ -161,11 +162,12 @@ add_filter( 'wp_mail_from', function ( $email ) {
     return $email;
 }, 100, 1 );
 add_filter( 'wp_mail_from_name', function ( $name ) {
-    $base_email_name = dt_get_option( 'dt_email_base_name' );
-    if ( !empty( $base_email_name ) ) {
-        $name = $base_email_name;
-    } elseif ( 'WordPress' === $name || empty( $name ) ){
+    if ( 'WordPress' === $name || empty( $name ) ){
         $name = 'Disciple.Tools';
+        $base_email_name = dt_get_option( 'dt_email_base_name' );
+        if ( !empty( $base_email_name ) ){
+            $name = $base_email_name;
+        }
     }
     return $name;
 }, 100, 1 );
