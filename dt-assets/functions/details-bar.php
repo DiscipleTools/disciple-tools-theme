@@ -227,15 +227,19 @@ function dt_print_details_bar(
                                     </button>
                                 <?php else:
                                     if ($following): ?>
-                                        <button class="button follow hollow"
-                                            data-value="following"><?php echo esc_html(__('Following', 'disciple_tools')) ?>
-                                            <i class="fi-eye"></i>
-                                        </button>
+                                        <dt-button custom="true" id="following-button" label="Following" posttype="contacts" type="button"
+                                            outline title="" context="primary" confirm="">Following<svg
+                                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5" />
+                                        </svg></dt-button>
                                     <?php else: ?>
-                                        <button class="button follow"
-                                            data-value=""><?php echo esc_html(__('Follow', 'disciple_tools')) ?>
-                                            <i class="fi-eye"></i>
-                                        </button>
+                                        <dt-button custom="true" id="follow-button" label="Follow" posttype="contacts" type="button" title=""
+                                        context="primary" confirm="">Follow<svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                                            height="1em" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5" />
+                                        </svg></dt-button>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </div>
