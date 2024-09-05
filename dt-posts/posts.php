@@ -1538,7 +1538,18 @@ class Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ){
             if ( isset( $field_settings[$field_key] ) && ( in_array( $field_settings[$field_key]['type'], [ 'multi_select', 'tags' ] ) ) ){
                 if ( !isset( $field['values'] ) ){
-                    return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
+                    if ( !is_array( $field ) ){
+                        return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
+                    }
+                    $f = [ 'values' => [] ];
+                    foreach ( $field as $value ){
+                        if ( !is_string( $value ) ){
+                            return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
+
+                        }
+                        $f['values'][] = [ 'value' => $value ];
+                    }
+                    $field = $f;
                 }
                 if ( isset( $field['force_values'] ) && $field['force_values'] == true ){
                     delete_post_meta( $post_id, $field_key );
