@@ -1496,6 +1496,9 @@ class Disciple_Tools_Posts
             'object_name' => $post_title
         ] );
 
+        //hook for signaling that a post has been deleted
+        do_action( 'dt_post_deleted', $post_type, $post_id, $post_title );
+
         return true;
     }
 
