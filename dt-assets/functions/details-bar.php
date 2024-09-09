@@ -269,18 +269,6 @@ function dt_print_details_bar(
                                     error="">
       
                                     </dt-users-connection>
-                                    <div id="share_t" name="form-share" class="scrollable-typeahead">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input class="js-typeahead-share input-height"
-                                                        name="share[query]"
-                                                        placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                        autocomplete="off">
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <?php
                                     /**
