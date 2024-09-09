@@ -242,6 +242,33 @@ function dt_print_details_bar(
 
                                 <div class="share details">
                                     <var id="share-result-container" class="result-container share-result-container"></var>
+                                    
+                                    <?php
+
+                                    // Map the values of the array to extract specific fields
+                                    $value = array_map(function($item) {
+                                        return [
+                                            'id' => (int)$item['user_id'],
+                                            'post_id' => (int)$item['post_id'],
+                                            'avatar' => $item['meta'],
+                                            'label' => $item['display_name'] 
+                                        ];
+                                    }, $shared_with);
+
+                                    ?>
+
+                                    <dt-users-connection 
+                                    name="field-name" 
+                                    placeholder="Search Users" 
+                                    options="" 
+                                    value="<?php echo esc_attr( json_encode( $value ) ) ?>" 
+                                    onchange="" 
+                                    icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" 
+                                    iconalttext="Icon Alt Text" 
+                                    privatelabel="" 
+                                    error="">
+      
+                                    </dt-users-connection>
                                     <div id="share_t" name="form-share" class="scrollable-typeahead">
                                         <div class="typeahead__container">
                                             <div class="typeahead__field">
