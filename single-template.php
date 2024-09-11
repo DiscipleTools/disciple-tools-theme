@@ -439,7 +439,7 @@ function dt_display_tile( $tile, $post ): bool
                                         $field = $post_settings['fields'][$field_key];
                                         $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
                                         if (
-                                            isset( $post_settings['fields'][$field_key]['hidden'] ) && true === $post_settings['fields'][$field_key]['hidden']
+                                            ( isset( $post_settings['fields'][$field_key]['hidden'] ) && true === $post_settings['fields'][$field_key]['hidden'] )
                                             || !$enabled_for_type
                                         ) {
                                             continue;
