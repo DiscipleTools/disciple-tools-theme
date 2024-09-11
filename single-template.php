@@ -114,7 +114,6 @@ function dt_display_tile( $tile, $post ): bool
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
     add_action('dt_nav_add_after', function ( $desktop = true ) {
         dt_print_details_bar( $desktop );
-
     }, 10, 1);
     get_header();
 
@@ -197,7 +196,13 @@ function dt_display_tile( $tile, $post ): bool
                                     }
                                 }
                                 foreach ( $order as $field_key ) {
-                                    if ( !isset( $post_settings['fields'][$field_key] ) ) {
+                                    if ( !isset( $post_settings['fields'][$field_key] ) ){
+                                        continue;
+                                    }
+                                    $field = $post_settings['fields'][$field_key];
+                                    $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
+                                    if ( ( isset( $post_settings['fields'][$field_key]['hidden'] ) && true === $post_settings['fields'][$field_key]['hidden'] )
+                                        || !$enabled_for_type ){
                                         continue;
                                     }
 
@@ -259,7 +264,7 @@ function dt_display_tile( $tile, $post ): bool
                                         <div class="center">
                                             <h4 class="merge-modal-subheading">
                                                 <?php esc_html_e( 'Possible Duplicates', 'disciple_tools' ) ?></h4>
-                                            <a 
+                                            <a
                                                 id="dismiss_all_duplicates" style="font-size: .9375rem"><?php esc_html_e( 'Dismiss All', 'disciple_tools' ); ?></a>
                                             <div id="duplicates-spinner" class="loading-spinner active merge-modal-spinner">
                                             </div>
@@ -322,7 +327,7 @@ function dt_display_tile( $tile, $post ): bool
                                                         <?php esc_html_e( 'Merge', 'disciple_tools' ); ?>
                                                     </button>
                                                 </form>
-                                                
+
                                             </div>
                                         </div>
 

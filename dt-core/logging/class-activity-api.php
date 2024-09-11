@@ -147,5 +147,3 @@ class Disciple_Tools_Activity_Log_API {
         do_action( 'dt_insert_activity', $args );
     }
 }
-
-

@@ -258,6 +258,5 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
          * The action should be constructed as "dt_async_task_$this->action"
          */
         abstract protected function run_action();
-
     }
 }

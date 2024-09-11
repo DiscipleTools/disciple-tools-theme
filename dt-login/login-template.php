@@ -562,5 +562,4 @@ function dt_login_form_links() {
         </p>
     </div>
     <?php
-
 }

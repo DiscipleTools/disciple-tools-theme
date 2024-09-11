@@ -33,7 +33,6 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 50, 1 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 11, 1 );
         add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 100, 3 );
-
     }
 
     public function register_post_type(){

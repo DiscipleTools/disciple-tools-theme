@@ -357,8 +357,6 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
 
         return $fields;
-
-
     }
 
     public function add_api_routes(){
@@ -378,7 +376,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'permission_callback' => '__return_true',
             ]
         );
-
     }
 
     public function dt_details_additional_tiles( $sections, $post_type = '' ){
@@ -417,7 +414,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             $can_update = true;
         }
         $disabled = 'disabled';
-        if ( $can_update || isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) {
+        if ( $can_update || ( isset( $post['assigned_to']['id'] ) && $post['assigned_to']['id'] == get_current_user_id() ) ) {
             $disabled = '';
         }
         if ( isset( $post['post_type'] ) && $post['post_type'] === 'contacts' && $field_key === 'overall_status'
@@ -1232,7 +1229,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 if ( empty( $allowed_sources ) || in_array( 'all', $allowed_sources, true ) ){
                     $permissions['type'] = [ 'access', 'access_placeholder' ];
                 } elseif ( !in_array( 'restrict_all_sources', $allowed_sources ) ){
-                    $permissions[] = [ 'type' => [ 'access' ], 'sources' => $allowed_sources];
+                    $permissions[] = [ 'type' => [ 'access' ], 'sources' => $allowed_sources ];
                 }
             }
         }

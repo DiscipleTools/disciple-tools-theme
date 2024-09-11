@@ -26,7 +26,6 @@ class DT_Login_Page_Base
         $this->header_style();
         $this->header_javascript();
         do_action( 'dt_login_head_bottom' );
-
     }
     public function header_style(){
         ?>
@@ -176,7 +175,6 @@ class DT_Login_Page_Base
         wp_footer();
     }
     public function scripts() {
-
     }
     public function _print_scripts(){
         // @link /disciple-tools-theme/dt-assets/functions/enqueue-scripts.php
@@ -215,6 +213,5 @@ class DT_Login_Page_Base
     }
 
     public function body(){
-
     }
 }
