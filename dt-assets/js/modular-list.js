@@ -1,5 +1,29 @@
+if (
+  window.WebComponentServices &&
+  window.WebComponentServices.ComponentService
+) {
+  // Create a new instance of ComponentService
+  const service = new window.WebComponentServices.ComponentService(
+    'contacts',
+    '',
+    // eslint-disable-next-line no-undef
+    wpApiShare.nonce,
+  );
+  // Initialize the ComponentService
+  service.initialize();
+  window.componentService = service;
+
+  // Create a new instance of apiService
+  const initApiService = new window.WebComponentServices.ApiService(
+    // eslint-disable-next-line no-undef
+    wpApiShare.nonce,
+  );
+}
 'use strict';
 (function ($, list_settings, Foundation) {
+
+
+
   let selected_filters = $('#selected-filters');
   let new_filter_labels = [];
   let custom_filters = [];
