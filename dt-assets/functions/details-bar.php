@@ -98,7 +98,7 @@ function dt_print_details_bar(
                                 // Use $label, $icon, $isModal as needed for each record action
                             }
 
-                            $contact_actions_array = DT_Contacts_User::getRecordActionsArray( $dt_post_type, $post_id );
+                            $contact_actions_array = DT_Contacts_User::get_record_actions_array( $dt_post_type, $post_id );
 
 
                             foreach ( $contact_actions_array as $contact_action ){

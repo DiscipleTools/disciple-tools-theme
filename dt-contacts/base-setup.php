@@ -334,14 +334,14 @@ class DT_Contacts_Base {
 //adding the list items in array.
     public static function dt_record_admin_actions( $post_type, $post_id ) {
 
-        $recordActions = array();
+        $record_actions = array();
 
         if ( $post_type === 'contacts' ) {
             $post = DT_Posts::get_post( $post_type, $post_id );
 
             if ( empty( $post['archive'] ) && isset( $post['type']['key'] ) && ( $post['type']['key'] === 'personal' || $post['type']['key'] === 'placeholder' ) ) {
                 // Archive Contact action
-                $recordActions[] = array(
+                $record_actions[] = array(
                     'label' => 'Archive-Contact',
                     'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
                     'isModal' => true
@@ -349,21 +349,21 @@ class DT_Contacts_Base {
             }
 
             // Change Record Type action
-            $recordActions[] = array(
+            $record_actions[] = array(
                 'label' => 'Change-Record-Type',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'isModal' => true
             );
 
             // See Duplicates action
-            $recordActions[] = array(
+            $record_actions[] = array(
                 'label' => 'See-duplicates',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2',
                 'isModal' => true
             );
         }
 
-        return $recordActions;
+        return $record_actions;
     }
 
 
