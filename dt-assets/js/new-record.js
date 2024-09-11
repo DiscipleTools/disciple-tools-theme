@@ -20,63 +20,64 @@ if (
     wpApiShare.nonce,
   );
 
+  // CODE COMMENTED AS THIS FUNCTIONALITY IS MOVED IN WEB COMPONENTS
   // Add an event listener to the form with the class 'js-create-post' when it's submitted
-  document
-    .querySelector('.js-create-post')
-    .addEventListener('submit', function (event) {
-      if (event) {
-        event.preventDefault();
-      }
-      const form = event.target;
-      // Initialize an object to store form data and element data
-      const formData = new FormData(form);
-      const data = {
-        form: {},
-        el: {
-          type: 'access',
-        },
-      };
+  // document
+  //   .querySelector('.js-create-post')
+  //   .addEventListener('submit', function (event) {
+  //     if (event) {
+  //       event.preventDefault();
+  //     }
+  //     const form = event.target;
+  //     // Initialize an object to store form data and element data
+  //     const formData = new FormData(form);
+  //     const data = {
+  //       form: {},
+  //       el: {
+  //         type: 'access',
+  //       },
+  //     };
 
-      formData.forEach((value, key) => (data.form[key] = value));
-      Array.from(form.elements).forEach((el) => {
-        if (
-          el.localName.startsWith('dt-') &&
-          el.value &&
-          String(el.value).trim() !== ''
-        ) {
-          // Check specific element types and handle accordingly
-          if (el.localName.startsWith('dt-comm')) {
-            // For 'dt-comm' elements, extract and store filtered values
-            const filteredValues = el.value.map((item) => {
-              return { value: item.value };
-            });
-            data.el[el.name] = filteredValues;
-          } else if (
-            el.localName.startsWith('dt-multi') ||
-            el.localName.startsWith('dt-tags')
-          ) {
-            // For 'dt-multi' or 'dt-tags' elements, extract and store filtered values
-            const filteredValues = el.value.map((item) => {
-              return { value: item };
-            });
-            data.el[el.name] = { values: filteredValues };
-          } else if (el.localName.startsWith('dt-connection')) {
-            // For 'dt-connection' elements, extract and store filtered values
-            const filteredValues = el.value.map((item) => {
-              return { value: item.label };
-            });
-            data.el[el.name] = { values: filteredValues };
-          } else {
-            // For other elements, simply store the value
-            data.el[el.name] = el.value;
-          }
-        }
-      });
-      // Call the createPost method of initApiService to create a post with the collected data
-      initApiService.createPost('contacts', data.el).then(function (response) {
-        window.location = response.permalink;
-      });
-    });
+  //     formData.forEach((value, key) => (data.form[key] = value));
+  //     Array.from(form.elements).forEach((el) => {
+  //       if (
+  //         el.localName.startsWith('dt-') &&
+  //         el.value &&
+  //         String(el.value).trim() !== ''
+  //       ) {
+  //         // Check specific element types and handle accordingly
+  //         if (el.localName.startsWith('dt-comm')) {
+  //           // For 'dt-comm' elements, extract and store filtered values
+  //           const filteredValues = el.value.map((item) => {
+  //             return { value: item.value };
+  //           });
+  //           data.el[el.name] = filteredValues;
+  //         } else if (
+  //           el.localName.startsWith('dt-multi') ||
+  //           el.localName.startsWith('dt-tags')
+  //         ) {
+  //           // For 'dt-multi' or 'dt-tags' elements, extract and store filtered values
+  //           const filteredValues = el.value.map((item) => {
+  //             return { value: item };
+  //           });
+  //           data.el[el.name] = { values: filteredValues };
+  //         } else if (el.localName.startsWith('dt-connection')) {
+  //           // For 'dt-connection' elements, extract and store filtered values
+  //           const filteredValues = el.value.map((item) => {
+  //             return { value: item.label };
+  //           });
+  //           data.el[el.name] = { values: filteredValues };
+  //         } else {
+  //           // For other elements, simply store the value
+  //           data.el[el.name] = el.value;
+  //         }
+  //       }
+  //     });
+  //     // Call the createPost method of initApiService to create a post with the collected data
+  //     initApiService.createPost('contacts', data.el).then(function (response) {
+  //       window.location = response.permalink;
+  //     });
+  //   });
   // Function to capitalize the first letter of a given string
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
