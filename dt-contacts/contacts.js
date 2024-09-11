@@ -108,7 +108,7 @@ jQuery(document).ready(function ($) {
   //   }
 
   //   });
-  
+
   let merge_dupe_edit_modal = $('#merge-dupe-edit-modal');
   let possible_duplicates = [];
   let openedOnce = false;
@@ -149,10 +149,8 @@ jQuery(document).ready(function ($) {
 
       openedOnce = true;
     }
- 
   });
 
- 
   // merge_dupe_edit_modal.on('open.zf.reveal', function () {
   //   if (!openedOnce) {
   //     let original_contact_html = `<div class="merge-modal-contact-row">
@@ -191,7 +189,6 @@ jQuery(document).ready(function ($) {
   //     openedOnce = true;
   //   }
   // });
-
 
   function loadDuplicates() {
     let dups_with_data = possible_duplicates;
