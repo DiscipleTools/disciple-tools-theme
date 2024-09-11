@@ -121,7 +121,6 @@ class DT_Contacts_User {
             }
         }
         return $recordActions;
-
     }
 
     //RN the function is handling the modal action also so creating the function for list items above.

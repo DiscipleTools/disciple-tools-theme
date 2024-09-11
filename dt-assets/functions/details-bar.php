@@ -56,11 +56,11 @@ function dt_print_details_bar(
                             <!-- Admin Actions dt-dropdown -->
 
                             <?php
-                            $optionsArray = array();
+                            $options_array = array();
 
                         // Check if delete operation is allowed
                             if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) {
-                                $optionsArray[] = array(
+                                $options_array[] = array(
                                 'label' => 'Delete-Contact',
                                 'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ),
                                 'isModal' => true,
@@ -68,7 +68,7 @@ function dt_print_details_bar(
                             }
 
                             if ( DT_Posts::can_update( $dt_post_type, $post_id ) ){
-                                $optionsArray[] =array(
+                                $options_array[] =array(
                                 'label' => 'View-Contact-History',
                                 'icon' => esc_html( get_template_directory_uri(). '/dt-assets/images/history.svg' ),
                                 'isModal' => true,
@@ -77,7 +77,7 @@ function dt_print_details_bar(
 
                         // Check if update operation is allowed
                             if ( DT_Posts::can_update( $dt_post_type, $post_id ) ) {
-                                $optionsArray[] = array(
+                                $options_array[] = array(
                                 'label' => 'Merge-with-another-record',
                                 'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ),
                                 'isModal' => true,
@@ -85,28 +85,28 @@ function dt_print_details_bar(
                             }
 
 
-                            $recordActionsArray = DT_Contacts_Base::dt_record_admin_actions( $dt_post_type, $post_id );
+                            $record_actions_array = DT_Contacts_Base::dt_record_admin_actions( $dt_post_type, $post_id );
 
-                        // Loop through the $recordActionsArray and use the properties as required
-                            foreach ( $recordActionsArray as $recordAction ) {
-                                $optionsArray[] = array(
-                                'label' => $recordAction['label'],
-                                'icon' => $recordAction['icon'],
-                                'isModal' => $recordAction['isModal'],
+                        // Loop through the $record_actions_array and use the properties as required
+                            foreach ( $record_actions_array as $record_action ) {
+                                $options_array[] = array(
+                                'label' => $record_action['label'],
+                                'icon' => $record_action['icon'],
+                                'isModal' => $record_action['isModal'],
                                 );
 
                                 // Use $label, $icon, $isModal as needed for each record action
                             }
 
-                            $contactActionsArray = DT_Contacts_User::getRecordActionsArray( $dt_post_type, $post_id );
+                            $contact_actions_array = DT_Contacts_User::getRecordActionsArray( $dt_post_type, $post_id );
 
 
-                            foreach ( $contactActionsArray as $contactAction ){
-                                $optionsArray[] = array(
-                                'label' => $contactAction['label'],
-                                'icon' => $contactAction['icon'],
-                                'isModal' => $contactAction['isModal'],
-                                'href' => $contactAction['href'],
+                            foreach ( $contact_actions_array as $contact_action ){
+                                $options_array[] = array(
+                                'label' => $contact_action['label'],
+                                'icon' => $contact_action['icon'],
+                                'isModal' => $contact_action['isModal'],
+                                'href' => $contact_action['href'],
                                 );
                             }
                             ?>
@@ -114,11 +114,11 @@ function dt_print_details_bar(
                             <div class="cell grid-x shrink center-items">
                                <!-- replaced the ul with dt-dropdown to handle admin actions -->
                                 <dt-dropdown label="Admin Actions"
-                                    options=<?php echo json_encode( $optionsArray ) ?>
+                                    options=<?php echo json_encode( $options_array ) ?>
                                     >
                                 </dt-dropdown>
                             </div>
-                            
+
                             <div class="cell grid-x shrink center-items">
                                 <span id="admin-bar-issues"></span>
                             </div>
