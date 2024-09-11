@@ -333,14 +333,14 @@ class DT_Contacts_Base {
     }
 
 //adding the list items in array.
-     public static function dt_record_admin_actions($post_type, $post_id) {
+    public static function dt_record_admin_actions( $post_type, $post_id ) {
 
         $recordActions = array();
-    
-        if ($post_type === 'contacts') {
-            $post = DT_Posts::get_post($post_type, $post_id);
-    
-            if (empty($post['archive']) && isset($post['type']['key']) && ($post['type']['key'] === 'personal' || $post['type']['key'] === 'placeholder')) {
+
+        if ( $post_type === 'contacts' ) {
+            $post = DT_Posts::get_post( $post_type, $post_id );
+
+            if ( empty( $post['archive'] ) && isset( $post['type']['key'] ) && ( $post['type']['key'] === 'personal' || $post['type']['key'] === 'placeholder' ) ) {
                 // Archive Contact action
                 $recordActions[] = array(
                     'label' => 'Archive-Contact',
@@ -348,14 +348,14 @@ class DT_Contacts_Base {
                     'isModal' => true
                 );
             }
-    
+
             // Change Record Type action
             $recordActions[] = array(
                 'label' => 'Change-Record-Type',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'isModal' => true
             );
-    
+
             // See Duplicates action
             $recordActions[] = array(
                 'label' => 'See-duplicates',
@@ -363,7 +363,7 @@ class DT_Contacts_Base {
                 'isModal' => true
             );
         }
-    
+
         return $recordActions;
     }
 

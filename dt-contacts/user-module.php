@@ -98,7 +98,7 @@ class DT_Contacts_User {
     }
 
     //to get the list items of action items into array.
-    public static function getRecordActionsArray($post_type, $post_id) {
+    public static function getRecordActionsArray( $post_type, $post_id ) {
         $recordActions = array();
         if ( $post_type === 'contacts' ){
             $contact = DT_Posts::get_post( $post_type, $post_id );
@@ -108,14 +108,14 @@ class DT_Contacts_User {
                     'label' => 'Make-a-user-from-this-contact',
                     'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
                     'isModal' => false,
-                    'href'=> home_url('/') . 'user-management/add-user?contact_id=' . $post_id,
+                    'href' => home_url( '/' ) . 'user-management/add-user?contact_id=' . $post_id,
                 );
-                if(current_user_can('create_users')){
-                    $recordActions[]= array(
+                if ( current_user_can( 'create_users' ) ){
+                    $recordActions[] = array(
                         'label' => 'Link-to-an-existing-user',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/link.svg',
                         'isModal' => true,
-                        'href'=>'',
+                        'href' =>'',
                     );
                 }
             }
