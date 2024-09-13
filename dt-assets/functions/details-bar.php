@@ -297,20 +297,35 @@ function dt_print_details_bar(
                                             </h6>
 
                                             <div class="share details">
-                                                <var id="share-result-container"
-                                                    class="result-container share-result-container"></var>
-                                                <div id="share_t" name="form-share" class="scrollable-typeahead">
-                                                    <div class="typeahead__container">
-                                                        <div class="typeahead__field">
-                                                            <span class="typeahead__query">
-                                                                <input class="js-typeahead-share input-height" name="share[query]"
-                                                                    placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                                    autocomplete="off">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <var id="share-result-container" class="result-container share-result-container"></var>
+
+                                    <?php
+
+                                    // Map the values of the array to extract specific fields
+                                    $value = array_map( function ( $item ) {
+                                        return array(
+                                            'id' => (int) $item['user_id'],
+                                            'post_id' => (int) $item['post_id'],
+                                            'avatar' => $item['meta'],
+                                            'label' => $item['display_name'],
+                                        );
+                                    }, $shared_with);
+
+                                    ?>
+
+                                    <dt-users-connection
+                                    name="field-name"
+                                    placeholder="Search Users"
+                                    options=""
+                                    value="<?php echo esc_attr( json_encode( $value ) ) ?>"
+                                    onchange=""
+                                    icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+                                    iconalttext="Icon Alt Text"
+                                    privatelabel=""
+                                    error="">
+
+                                    </dt-users-connection>
+                                </div>
                                             <?php
                                             /**
                                              * This fires below the share section, and can add additional share based elements.
