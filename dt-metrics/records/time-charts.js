@@ -52,22 +52,38 @@ function projectTimeCharts() {
   chartDiv.innerHTML = `
         <div class="section-header"> ${title_time_charts} </div>
         <section class="chart-controls">
-            <label class="section-subheader" for="post-type-select"> ${post_type_select_label} </label>
-            <select class="select-field" id="post-type-select">
-                ${Object.entries(postTypeOptions).map(
-                  ([value, label]) => `
-                    <option value="${value}"> ${label} </option>
-                `,
-                )}
-            </select>
-            <label class="section-subheader" for="post-field-select">${post_field_select_label}</label>
-            <select class="select-field" id="post-field-select">
-                ${buildFieldSelectOptions()}
-            </select>
-            <label class="section-subheader" for="date-select">${date_select_label}</label>
-            <select class="select-field" id="date-select">
-                ${buildDateSelectOptions(all_time)}
-            </select>
+            <table>
+                <thead>
+                    <tr>
+                        <th><label class="section-subheader" for="post-type-select"> ${post_type_select_label} </label></th>
+                        <th><label class="section-subheader" for="post-field-select">${post_field_select_label}</label></th>
+                        <th><label class="section-subheader" for="date-select">${date_select_label}</label></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <select class="select-field" id="post-type-select">
+                                ${Object.entries(postTypeOptions).map(
+                                  ([value, label]) => `
+                                    <option value="${value}"> ${label} </option>
+                                `,
+                                )}
+                            </select>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <select class="select-field" id="post-field-select">
+                                ${buildFieldSelectOptions()}
+                            </select>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <select class="select-field" id="date-select">
+                                ${buildDateSelectOptions(all_time)}
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <div id="chart-loading-spinner" class="loading-spinner active"></div>
         </section>
         <hr>
@@ -862,7 +878,7 @@ function displayPostListModalRecordsHandler(records, limit) {
           <table>
             <thead>
                 <tr>
-                    <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_no)}</th>
+                    <th></th>
                     <th>${window.lodash.escape(window.dtMetricsProject.translations.modal_table_head_title)}</th>
                 </tr>
             </thead>
@@ -1251,7 +1267,9 @@ function formatCompoundYearData(yearlyData) {
   const formattedYearlyData = [];
   let i = 0;
   for (let year = minYear; year < maxYear + 1; year++, i++) {
-    const yearData = yearlyData.find((data) => data.year === String(year));
+    const yearData = yearlyData.find(
+      (data) => String(data.year) === String(year),
+    );
 
     cumulativeTotals = calculateCumulativeTotals(
       keys,
@@ -1347,7 +1365,9 @@ function formatCompoundMonthData(monthlyData) {
     }
 
     const monthData =
-      monthlyData.find((mData) => mData.month === String(monthNumber)) || {};
+      monthlyData.find(
+        (mData) => String(mData.month) === String(monthNumber),
+      ) || {};
     cumulativeTotals = calculateCumulativeTotals(
       keys,
       monthData,

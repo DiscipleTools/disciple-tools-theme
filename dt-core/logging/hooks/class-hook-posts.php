@@ -108,7 +108,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function hooks_added_post_meta( $mid, $object_id, $meta_key, $meta_value ) {
 
         return $this->hooks_updated_post_meta( $mid, $object_id, $meta_key, $meta_value, true );
-
     }
 
 
@@ -305,7 +304,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         } else {
             return $meta_key;
         }
-
     }
 
     /**
@@ -401,7 +399,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'field_type'     => 'connection',
             ]
         );
-
     }
 
     //note: delete is given an array of ids
@@ -448,5 +445,4 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             dt_activity_insert( $activity );
         }
     }
-
 }

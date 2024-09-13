@@ -139,7 +139,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -184,7 +184,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -229,7 +229,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -279,7 +279,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -293,8 +293,5 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         $data['custom_column_data']   = $column_data;
         return $data;
     }
-
 }
 new DT_Metrics_Locations_List();
-
-

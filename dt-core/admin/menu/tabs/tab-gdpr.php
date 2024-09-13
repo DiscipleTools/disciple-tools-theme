@@ -200,6 +200,5 @@ foreach ( $contact_references as $key => $record ) {
 
         return $results;
     }
-
 }
 Disciple_Tools_GDPR_Tab::instance();

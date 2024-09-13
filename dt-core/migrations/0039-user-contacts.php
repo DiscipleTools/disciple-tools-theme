@@ -20,7 +20,6 @@ class Disciple_Tools_Migration_0039 extends Disciple_Tools_Migration {
             FROM $wpdb->posts p
             INNER JOIN $wpdb->postmeta as pm ON ( pm.post_id = p.ID AND pm.meta_key = 'corresponds_to_user' )
         ");
-
     }
 
     public function down() {

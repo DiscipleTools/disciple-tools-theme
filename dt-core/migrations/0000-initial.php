@@ -29,7 +29,7 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {
-            $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
+            $rv = $wpdb->query( $table ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             if ( $rv == false ) {
                 throw new Exception( "Got error when creating table $name: $wpdb->last_error" );
             }
@@ -43,7 +43,7 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {
-            $rv = $wpdb->query( "DROP TABLE `{$name}`" ); // WPCS: unprepared SQL OK
+            $rv = $wpdb->query( "DROP TABLE `{$name}`" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             if ( $rv == false ) {
                 throw new Exception( "Got error when dropping table $name: $wpdb->last_error" );
             }
@@ -125,5 +125,4 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
     public function test() {
         $this->test_expected_tables();
     }
-
 }

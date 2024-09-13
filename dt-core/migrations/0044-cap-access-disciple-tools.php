@@ -13,7 +13,6 @@ class Disciple_Tools_Migration_0044 extends Disciple_Tools_Migration {
 
     public function down() {
         global $wpdb;
-
     }
 
     public function test() {

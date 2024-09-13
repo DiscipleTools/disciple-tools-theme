@@ -374,7 +374,6 @@ class Disciple_Tools_Counter
 
         return $type;
     }
-
 }
 Disciple_Tools_Counter::instance();
 
@@ -689,8 +688,6 @@ class Disciple_Tools_Queries
         }
 
         return $this->check_tree_health( $list );
-
-
     }
 
     /**
@@ -761,5 +758,4 @@ class Disciple_Tools_Queries
         }
         return $descendants;
     }
-
 }

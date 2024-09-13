@@ -282,7 +282,5 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
         }
         return $rv;
     }
-
-
 }
 new DT_Metrics_Sources_Chart();

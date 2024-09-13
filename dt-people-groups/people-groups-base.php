@@ -343,6 +343,5 @@ class Disciple_Tools_People_Groups_Base {
 
         return $permissions;
     }
-
 }
 

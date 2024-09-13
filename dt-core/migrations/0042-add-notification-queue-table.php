@@ -25,8 +25,8 @@ class Disciple_Tools_Migration_0042 extends Disciple_Tools_Migration {
                 `date_queued` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `date_sent` DATETIME NULL,
                 PRIMARY KEY (`id`)
-            ) $charset_collate;"
-        ); // WPCS: unprepared SQL OK
+            ) $charset_collate;" //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
         if ( $rv == false ) {
             throw new Exception( "Got error when creating table $wpdb->dt_notifications_queue: $wpdb->last_error" );
         }
