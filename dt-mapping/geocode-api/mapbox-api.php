@@ -804,7 +804,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     return false;
                     break;
             }
-
         }
 
         private static function context_filter( $context, $feature ) {
@@ -833,7 +832,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
             return $ip;
         }
-
     }
 }
 

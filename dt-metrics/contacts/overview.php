@@ -311,6 +311,5 @@ class DT_Metrics_Contacts_Overview extends DT_Metrics_Chart_Base
 
         return $results;
     }
-
 }
 new DT_Metrics_Contacts_Overview();

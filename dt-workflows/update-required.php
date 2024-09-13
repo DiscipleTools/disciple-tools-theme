@@ -20,7 +20,6 @@ class Disciple_Tools_Update_Needed {
     public static function find_contacts_that_need_an_update(){
         do_action( 'dt_find_contacts_that_need_an_update' );
     }
-
 }
 
 class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {

@@ -179,7 +179,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.63.0';
+            $this->version = '1.66.0';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -507,7 +507,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/dependencies/deprecated-dt-functions.php' );
 
             add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
-
         } // End __construct()
 
         /**
@@ -529,7 +528,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         public function __wakeup() {
             wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
-
     } // End Class
 
 

@@ -171,7 +171,5 @@ class DT_Metrics_Personal_Coaching_Tree extends DT_Metrics_Chart_Base
         }
         return $menu_data;
     }
-
-
 }
 new DT_Metrics_Personal_Coaching_Tree();

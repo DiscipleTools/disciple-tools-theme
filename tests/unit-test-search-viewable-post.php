@@ -146,17 +146,17 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $this->assertGreaterThan( 1, $start['total'] );
         $this->assertEquals( $baptism['ID'], $end['posts'][0]->ID );
 
-        $contact = DT_Posts::create_post( 'contacts', ['name' => 'x', 'post_date' => '2003-01-02' ], true, false );
+        $contact = DT_Posts::create_post( 'contacts', [ 'name' => 'x', 'post_date' => '2003-01-02' ], true, false );
         $this->assertNotWPError( $contact );
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'post_date' => [ 'start' => '2003-01-02', 'end' => '2003-01-02' ] ], false );
         $this->assertCount( 1, $res['posts'] );
         $this->assertEquals( $contact['ID'], $res['posts'][0]->ID );
-        $contact = DT_Posts::create_post( 'contacts', ['name' => 'x', 'post_date' => '2002-01-02' ], true, false );
+        $contact = DT_Posts::create_post( 'contacts', [ 'name' => 'x', 'post_date' => '2002-01-02' ], true, false );
         $this->assertNotWPError( $contact );
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'name' => 'x', [ 'post_date' => [ 'start' => '2002-01-02', 'end' => '2002-01-02' ] ] ], false );
         $this->assertCount( 1, $res['posts'] );
         $this->assertEquals( $contact['ID'], $res['posts'][0]->ID );
-        $contact = DT_Posts::create_post( 'contacts', ['name' => 'x', 'baptism_date' => '2003-01-02' ], true, false );
+        $contact = DT_Posts::create_post( 'contacts', [ 'name' => 'x', 'baptism_date' => '2003-01-02' ], true, false );
         $this->assertNotWPError( $contact );
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'baptism_date' => [ 'start' => '2003-01-02', 'end' => '2003-01-02' ] ], false );
         $this->assertCount( 1, $res['posts'] );
@@ -244,7 +244,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         /**
          * text
          */
-        $nick = DT_Posts::create_post( 'contacts', [ 'name' => 'a', 'nickname' => 'Bob the teacher'], true, false );
+        $nick = DT_Posts::create_post( 'contacts', [ 'name' => 'a', 'nickname' => 'Bob the teacher' ], true, false );
         $this->assertNotWPError( $nick );
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'nickname' => [ 'Bob the builder' ] ], false );
         $this->assertContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
@@ -437,14 +437,14 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $this->assertEquals( $res1, $res2 );
 
         //more ANDs
-        $res1 = DT_Posts::search_viewable_post( 'contacts', [ 'name' => [ 'this_is_a_test1' ], 'gender' => [ 'male' ], 'groups' => [ $group['ID'] ]  ], false );
+        $res1 = DT_Posts::search_viewable_post( 'contacts', [ 'name' => [ 'this_is_a_test1' ], 'gender' => [ 'male' ], 'groups' => [ $group['ID'] ] ], false );
         $res2 = DT_Posts::search_viewable_post( 'contacts', [ 'fields' => [ 'name' => [ 'this_is_a_test1' ], 'gender' => [ 'male' ], 'groups' => [ $group['ID'] ] ] ], false );
         $this->assertCount( 1, $res2['posts'] );
         $this->assertEquals( $res1, $res2 );
 
         //mixing ANDs and ORs
-        $res1 = DT_Posts::search_viewable_post( 'contacts', [ [ 'name' => [ 'this_is_a_test1' ], 'gender' => [ 'male' ], ], 'groups' => [ $group['ID'] ]  ], false );
-        $res2 = DT_Posts::search_viewable_post( 'contacts', [ 'fields' => [ [ 'name' => [ 'this_is_a_test1' ], 'gender' => [ 'male' ]], [ 'groups' => [ $group['ID'] ] ] ] ], false );
+        $res1 = DT_Posts::search_viewable_post( 'contacts', [ [ 'name' => [ 'this_is_a_test1' ], 'gender' => [ 'male' ], ], 'groups' => [ $group['ID'] ] ], false );
+        $res2 = DT_Posts::search_viewable_post( 'contacts', [ 'fields' => [ [ 'name' => [ 'this_is_a_test1' ], 'gender' => [ 'male' ] ], [ 'groups' => [ $group['ID'] ] ] ] ], false );
         $this->assertCount( 2, $res2['posts'] );
         $this->assertEquals( $res1, $res2 );
     }

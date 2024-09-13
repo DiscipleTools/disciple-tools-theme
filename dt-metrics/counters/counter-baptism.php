@@ -316,7 +316,4 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
             }
         }
     }
-
-
-
 }

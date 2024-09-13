@@ -163,14 +163,10 @@ function dt_get_option( string $name ) {
             ]);
         case 'dt_custom_tiles':
 
-            $custom_tiles = get_option( 'dt_custom_tiles', [
+            return get_option( 'dt_custom_tiles', [
                 'contacts' => [],
                 'groups' => []
             ]);
-
-             $custom_tiles_with_translations = apply_filters( 'options_dt_custom_tiles', $custom_tiles );
-
-             return $custom_tiles_with_translations;
 
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
@@ -241,6 +237,8 @@ function dt_get_option( string $name ) {
             return $subject_base;
             break;
 
+        case 'dt_email_base_address_reply_to':
+            return get_option( 'dt_email_base_address_reply_to', '' );
         case 'dt_email_base_address':
             return get_option( 'dt_email_base_address', '' );
         case 'dt_email_base_name':
@@ -529,7 +527,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     // alias's must be lower case with no spaces
     $fields['comment_reaction_options'] = [
             'thumbs_up' => [ 'name' => __( 'thumbs up', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png', 'emoji' => '👍' ],
-            'heart' => [ 'name' => __( 'heart', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png', 'emoji' => '❤️'],
+            'heart' => [ 'name' => __( 'heart', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png', 'emoji' => '❤️' ],
             'laugh' => [ 'name' => __( 'laugh', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png', 'emoji' => '😄' ],
             'wow' => [ 'name' => __( 'wow', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png', 'emoji' => '😮' ],
             'sad' => [ 'name' => __( 'sad', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png', 'emoji' => '😟' ],

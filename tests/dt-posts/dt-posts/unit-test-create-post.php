@@ -151,7 +151,6 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertNotWPError( $contact1 );
         $this->assertSame( (int) $contact1['groups'][0]['ID'], (int) $group1['ID'] );
         $this->assertSame( (int) $contact1['baptized'][0]['ID'], (int) $contact2['ID'] );
-
     }
 
     public function test_custom_number_field_min_max_error() {
@@ -170,7 +169,5 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         // test that clearing the field is not an error
         $contact4 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => '' ], true, false );
         $this->assertNotWPError( $contact4 );
-
     }
-
 }

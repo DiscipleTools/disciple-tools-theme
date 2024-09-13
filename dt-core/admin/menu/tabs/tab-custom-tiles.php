@@ -346,7 +346,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
 
         <?php
-
     }
 
     private function process_tile_order( $post_type ){

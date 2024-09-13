@@ -126,5 +126,3 @@ function dt_new_user_scripts(){
         wp_enqueue_script( 'jquery-ui-autocomplete' );
     }
 }
-
-

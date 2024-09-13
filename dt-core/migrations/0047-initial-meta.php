@@ -20,7 +20,6 @@ class Disciple_Tools_Migration_0047 extends Disciple_Tools_Migration {
                 'theme_version' => 0,
             ] );
         }
-
     }
 
     public function down() {

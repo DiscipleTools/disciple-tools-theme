@@ -53,39 +53,70 @@ function dt_print_details_bar(
                                     </div>
                                 <?php } ?>
                             </div>
+                            <!-- Admin Actions dt-dropdown -->
+
+                            <?php
+                            $options_array = array();
+
+                        // Check if delete operation is allowed
+                            if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) {
+                                $options_array[] = array(
+                                'label' => 'Delete-Contact',
+                                'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ),
+                                'isModal' => true,
+                                );
+                            }
+
+                            if ( DT_Posts::can_update( $dt_post_type, $post_id ) ){
+                                $options_array[] =array(
+                                'label' => 'View-Contact-History',
+                                'icon' => esc_html( get_template_directory_uri(). '/dt-assets/images/history.svg' ),
+                                'isModal' => true,
+                                );
+                            }
+
+                        // Check if update operation is allowed
+                            if ( DT_Posts::can_update( $dt_post_type, $post_id ) ) {
+                                $options_array[] = array(
+                                'label' => 'Merge-with-another-record',
+                                'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ),
+                                'isModal' => true,
+                                );
+                            }
+
+
+                            $record_actions_array = DT_Contacts_Base::dt_record_admin_actions( $dt_post_type, $post_id );
+
+                        // Loop through the $record_actions_array and use the properties as required
+                            foreach ( $record_actions_array as $record_action ) {
+                                $options_array[] = array(
+                                'label' => $record_action['label'],
+                                'icon' => $record_action['icon'],
+                                'isModal' => $record_action['isModal'],
+                                );
+
+                                // Use $label, $icon, $isModal as needed for each record action
+                            }
+
+                            $contact_actions_array = DT_Contacts_User::get_record_actions_array( $dt_post_type, $post_id );
+
+
+                            foreach ( $contact_actions_array as $contact_action ){
+                                $options_array[] = array(
+                                'label' => $contact_action['label'],
+                                'icon' => $contact_action['icon'],
+                                'isModal' => $contact_action['isModal'],
+                                'href' => $contact_action['href'],
+                                );
+                            }
+                            ?>
+
                             <div class="cell grid-x shrink center-items">
-                                <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
-                                    <li style="border-radius: 5px">
-                                        <a class="button menu-white-dropdown-arrow"
-                                            style="background-color: #00897B; color: white;">
-                                            <?php esc_html_e( 'Admin Actions', 'disciple_tools' ) ?></a>
-                                        <ul class="menu is-dropdown-submenu">
-                                            <?php if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ): ?>
-                                                <li><a data-open="delete-record-modal">
-                                                        <img class="dt-icon"
-                                                            src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ) ?>" />
-                                                        <?php echo esc_html( sprintf( _x( 'Delete %s', 'Delete Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) ?></a>
-                                                </li>
-                                            <?php endif; ?>
-                                            <?php if ( DT_Posts::can_update( $dt_post_type, $post_id ) ): ?>
-                                                <li><a data-open="record_history_modal">
-                                                        <span class="mdi mdi-history" style="font-size: 20px;"></span>
-                                                        <?php echo esc_html( sprintf( _x( 'View %s History', 'View Contact History', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) ?>
-                                                    </a>
-                                                </li>
-                                            <?php endif; ?>
-                                            <li><a class="open-merge-with-post"
-                                                    data-post_type="<?php echo esc_html( $dt_post_type ) ?>">
-                                                    <img class="dt-icon"
-                                                        src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ) ?>" />
-                                                    <?php echo esc_html( sprintf( _x( 'Merge with another %s', 'Merge with another record', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) ?>
-                                                </a>
-                                            </li>
-                                            <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
-                                            <?php do_action( 'dt_record_admin_actions', $dt_post_type, $post_id ); ?>
-                                        </ul>
-                                    </li>
-                                </ul>
+                               <!-- replaced the ul with dt-dropdown to handle admin actions -->
+                                <dt-dropdown label="Admin Actions"
+                                    options=<?php echo json_encode( $options_array ) ?>
+                                    >
+                                </dt-dropdown>
                             </div>
                             <div class="cell grid-x shrink center-items">
                                 <span id="admin-bar-issues"></span>
@@ -321,8 +352,6 @@ function dt_print_details_bar(
                                     </use>
                                 </svg>
                             </button>
-
-
                         <?php endif; ?>
                         <?php if ( $share_button ): ?>
                             <div class="cell shrink">

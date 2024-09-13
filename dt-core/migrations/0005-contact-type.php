@@ -23,7 +23,6 @@ class Disciple_Tools_Migration_0005 extends Disciple_Tools_Migration {
         foreach ( $queried_contacts->posts as $user_contact ){
             update_post_meta( $user_contact->ID, 'type', 'user' );
         }
-
     }
 
     public function down() {
