@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
+"POT-Creation-Date: 2024-08-20T10:49:20+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.disciple.tools/"
@@ -70,7 +70,7 @@ msgstr "记录所有者将收到访问请求通知。你是否愿意继续？"
 msgid "Submit Request"
 msgstr "提交请求"
 
-#: 403.php:55 archive-template.php:1103 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1107 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -86,7 +86,7 @@ msgid "Cancel"
 msgstr "取消"
 
 #: 403.php:59 archive-template.php:505 archive-template.php:547
-#: archive-template.php:772 archive-template.php:1127
+#: archive-template.php:772 archive-template.php:1131
 #: dt-assets/functions/enqueue-scripts.php:440
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
@@ -147,9 +147,9 @@ msgid "Filters"
 msgstr "筛选器"
 
 #: archive-template.php:36 archive-template.php:138 archive-template.php:655
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:726
-#: dt-core/global-functions.php:754 dt-core/global-functions.php:886
-#: dt-core/global-functions.php:930 dt-posts/custom-post-type.php:20
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:711
+#: dt-core/global-functions.php:739 dt-core/global-functions.php:871
+#: dt-core/global-functions.php:915 dt-posts/custom-post-type.php:20
 #: template-settings.php:399
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -353,14 +353,14 @@ msgstr "从列表中选择所有你要更新的 %1$s ，并在下方更新它们
 
 #: archive-template.php:569 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/access-module.php:587 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:968
+#: dt-core/global-functions.php:953
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "搜索用户"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:130
-#: dt-metrics/records/genmap.php:134 dt-posts/dt-posts.php:2773
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:139
+#: dt-metrics/records/genmap.php:143 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -411,7 +411,7 @@ msgstr "查看更少选项"
 msgid "Update"
 msgstr "更新资料"
 
-#: archive-template.php:751 archive-template.php:855
+#: archive-template.php:751 archive-template.php:859
 #: dt-assets/functions/enqueue-scripts.php:330
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
@@ -437,160 +437,160 @@ msgstr "在下面进行选择"
 msgid "Select all the %1$s to whom you want to message."
 msgstr "选择您要向其发送应用链接的所有 %1$s。"
 
-#: archive-template.php:802
+#: archive-template.php:806
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:804
+#: archive-template.php:808
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:806
+#: archive-template.php:810
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:808
+#: archive-template.php:812
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:810
+#: archive-template.php:814
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:812
+#: archive-template.php:816
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:814
+#: archive-template.php:818
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:837
+#: archive-template.php:841
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:839
+#: archive-template.php:843
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:841
+#: archive-template.php:845
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:842 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:846 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:845 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:849 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:137
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "创建记录"
 
-#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "发送到选定的记录"
 
-#: archive-template.php:851 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "您必须至少选择一条记录"
 
-#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:858 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:100
 msgid "Send"
 msgstr "发送"
 
-#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:858 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "链接"
 
-#: archive-template.php:859
+#: archive-template.php:863
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:904
+#: archive-template.php:908
 msgid "Loading..."
 msgstr "载入中..."
 
-#: archive-template.php:909 dt-assets/functions/enqueue-scripts.php:410
+#: archive-template.php:913 dt-assets/functions/enqueue-scripts.php:410
 msgid "Load More"
 msgstr "装载更多"
 
-#: archive-template.php:921
+#: archive-template.php:925
 msgid "Field Name"
 msgstr "字段名称"
 
-#: archive-template.php:977
+#: archive-template.php:981
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "输入搜索"
 
-#: archive-template.php:986
+#: archive-template.php:990
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "所有％1 $ s与％2 $ s"
 
-#: archive-template.php:989
+#: archive-template.php:993
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "没有 %2$s 的所有 %1$s"
 
-#: archive-template.php:996
+#: archive-template.php:1000
 msgid "Filter for subassigned OR Assigned To"
 msgstr "筛选子分配或分配给"
 
-#: archive-template.php:1005 dt-assets/functions/enqueue-scripts.php:321
+#: archive-template.php:1009 dt-assets/functions/enqueue-scripts.php:321
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "创立日期"
 
-#: archive-template.php:1012 archive-template.php:1019
+#: archive-template.php:1016 archive-template.php:1023
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "没有设置"
 
-#: archive-template.php:1033 archive-template.php:1034
-#: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:686
+#: archive-template.php:1037 archive-template.php:1038
+#: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:671
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:197 template-settings.php:313
 #: template-settings.php:577
 msgid "No"
 msgstr "没有"
 
-#: archive-template.php:1040 archive-template.php:1041
-#: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:152 dt-metrics/records/time-charts.php:119
+#: archive-template.php:1044 archive-template.php:1045
+#: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:672
+#: dt-metrics/records/genmap.php:161 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "是"
 
-#: archive-template.php:1045
+#: archive-template.php:1049
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "范围开始"
 
-#: archive-template.php:1048 archive-template.php:1059
+#: archive-template.php:1052 archive-template.php:1063
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "明确"
 
-#: archive-template.php:1055
+#: archive-template.php:1059
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "范围结束"
 
-#: archive-template.php:1070
+#: archive-template.php:1074
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "筛选器名称"
 
-#: archive-template.php:1075
+#: archive-template.php:1079
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -598,7 +598,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "所有％1 $ s与％2 $ s"
 
-#: archive-template.php:1079
+#: archive-template.php:1083
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -606,7 +606,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "没有 %2$s 的所有 %1$s"
 
-#: archive-template.php:1083
+#: archive-template.php:1087
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -614,7 +614,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "所有％1 $ s与％2 $ s"
 
-#: archive-template.php:1087
+#: archive-template.php:1091
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -622,15 +622,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "没有 %2$s 的所有 %1$s"
 
-#: archive-template.php:1111
+#: archive-template.php:1115
 msgid "Filter Name"
 msgstr "筛选器名称"
 
-#: archive-template.php:1116
+#: archive-template.php:1120
 msgid "Filter Records"
 msgstr "筛选记录"
 
-#: archive-template.php:1120 dt-assets/functions/enqueue-scripts.php:281
+#: archive-template.php:1124 dt-assets/functions/enqueue-scripts.php:281
 #: dt-assets/functions/enqueue-scripts.php:316
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -638,7 +638,7 @@ msgstr "保存"
 
 #: dt-assets/functions/details-bar.php:52
 #: dt-assets/functions/details-bar.php:262
-#: dt-core/configuration/config-site-defaults.php:367
+#: dt-core/configuration/config-site-defaults.php:365
 #: dt-workflows/update-required.php:80 dt-workflows/update-required.php:129
 msgid "Update Needed"
 msgstr "需要更新"
@@ -846,7 +846,7 @@ msgid "Locations you are responsible for"
 msgstr "您负责的位置"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:142
+#: dt-metrics/records/genmap.php:151
 msgid "Add"
 msgstr "添加"
 
@@ -1524,7 +1524,7 @@ msgstr "创建记录"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:148 dt-posts/custom-post-type.php:171
+#: dt-metrics/records/genmap.php:157 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "名称"
@@ -1666,7 +1666,7 @@ msgstr "数字响应器"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:129 dt-metrics/records/genmap.php:136
+#: dt-metrics/records/genmap.php:138 dt-metrics/records/genmap.php:145
 msgid "Assigned To"
 msgstr "分配给"
 
@@ -1947,7 +1947,7 @@ msgid "Personal"
 msgstr "个人"
 
 #: dt-contacts/access-module.php:285
-#: dt-core/configuration/config-site-defaults.php:347
+#: dt-core/configuration/config-site-defaults.php:345
 msgid "Web"
 msgstr "网页"
 
@@ -2189,7 +2189,7 @@ msgid "WhatsApp"
 msgstr "Whatsapp"
 
 #: dt-contacts/base-setup.php:202
-#: dt-core/configuration/config-site-defaults.php:344
+#: dt-core/configuration/config-site-defaults.php:342
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
 #: dt-users/users.php:129 template-settings.php:166
@@ -2295,7 +2295,7 @@ msgid "Archive"
 msgstr "存档"
 
 #: dt-contacts/base-setup.php:438
-#: dt-core/configuration/config-site-defaults.php:546
+#: dt-core/configuration/config-site-defaults.php:544
 #: dt-groups/base-setup.php:622 template-settings.php:212
 msgid "Other"
 msgstr "其他"
@@ -2413,40 +2413,40 @@ msgstr "将此联系人转移到："
 msgid "Confirm Transfer"
 msgstr "确认转账"
 
-#: dt-contacts/contacts-transfer.php:381
+#: dt-contacts/contacts-transfer.php:425
 msgid "Unknown error."
 msgstr "未知错误。"
 
-#: dt-contacts/contacts-transfer.php:413
+#: dt-contacts/contacts-transfer.php:457
 msgid "Minor transfer error."
 msgstr "较小的传输错误。"
 
-#: dt-contacts/contacts-transfer.php:435
+#: dt-contacts/contacts-transfer.php:479
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "此联系人已移至 %s，作进一步跟进。"
 
-#: dt-contacts/contacts-transfer.php:569
+#: dt-contacts/contacts-transfer.php:623
 msgid "Contact transferred from site"
 msgstr "联系人已从网站转移"
 
-#: dt-contacts/contacts-transfer.php:572 dt-contacts/contacts-transfer.php:587
-#: dt-contacts/contacts-transfer.php:617 dt-contacts/contacts-transfer.php:832
+#: dt-contacts/contacts-transfer.php:626 dt-contacts/contacts-transfer.php:641
+#: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:886
 msgid "Transfer Bot"
 msgstr "转移机器人"
 
-#: dt-contacts/contacts-transfer.php:579
+#: dt-contacts/contacts-transfer.php:633
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "警报：上一次传输可能重复的联系人。"
 
-#: dt-contacts/contacts-transfer.php:1149
+#: dt-contacts/contacts-transfer.php:1203
 msgid "redacted email"
 msgstr "已编辑的电邮"
 
-#: dt-contacts/contacts-transfer.php:1150
+#: dt-contacts/contacts-transfer.php:1204
 msgid "redacted name"
 msgstr "已编辑的姓名"
 
-#: dt-contacts/contacts-transfer.php:1151
+#: dt-contacts/contacts-transfer.php:1205
 msgid "redacted"
 msgstr "已编辑的"
 
@@ -2737,149 +2737,149 @@ msgstr "管理员"
 msgid "Subscriber"
 msgstr "订户"
 
-#: dt-core/configuration/config-site-defaults.php:352
+#: dt-core/configuration/config-site-defaults.php:350
 msgid "Newly Assigned Contact"
 msgstr "新分配的联系人"
 
-#: dt-core/configuration/config-site-defaults.php:357
+#: dt-core/configuration/config-site-defaults.php:355
 msgid "@Mentions"
 msgstr "@提及"
 
-#: dt-core/configuration/config-site-defaults.php:362
+#: dt-core/configuration/config-site-defaults.php:360
 msgid "New Comments"
 msgstr "新评论"
 
-#: dt-core/configuration/config-site-defaults.php:372
+#: dt-core/configuration/config-site-defaults.php:370
 msgid "Contact Info Changed"
 msgstr "联系信息已更改"
 
-#: dt-core/configuration/config-site-defaults.php:377
+#: dt-core/configuration/config-site-defaults.php:375
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "联系人里程碑和组健康指标"
 
-#: dt-core/configuration/config-site-defaults.php:402
+#: dt-core/configuration/config-site-defaults.php:400
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
 msgstr "该联系人处于活动状态，但是没有任何人与他们联系的记录。请与他们联系。"
 
-#: dt-core/configuration/config-site-defaults.php:408
+#: dt-core/configuration/config-site-defaults.php:406
 msgid "Please try connecting with this contact again."
 msgstr "请尝试再次与此联系人联系。"
 
-#: dt-core/configuration/config-site-defaults.php:414
-#: dt-core/configuration/config-site-defaults.php:420
-#: dt-core/configuration/config-site-defaults.php:426
-#: dt-core/configuration/config-site-defaults.php:432
-#: dt-core/configuration/config-site-defaults.php:438
+#: dt-core/configuration/config-site-defaults.php:412
+#: dt-core/configuration/config-site-defaults.php:418
+#: dt-core/configuration/config-site-defaults.php:424
+#: dt-core/configuration/config-site-defaults.php:430
+#: dt-core/configuration/config-site-defaults.php:436
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
 msgstr "我们已经有一段时间没有听说这个人了。您有此联系人的最新消息吗？"
 
-#: dt-core/configuration/config-site-defaults.php:448
+#: dt-core/configuration/config-site-defaults.php:446
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "我们已经有一段时间没有听说过这个小组了。你有更新吗？"
 
-#: dt-core/configuration/config-site-defaults.php:479
+#: dt-core/configuration/config-site-defaults.php:477
 msgid "Personal Phone"
 msgstr "个人电话"
 
-#: dt-core/configuration/config-site-defaults.php:482
+#: dt-core/configuration/config-site-defaults.php:480
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "个人电话是团队专用的，不用于分发。"
 
-#: dt-core/configuration/config-site-defaults.php:486
+#: dt-core/configuration/config-site-defaults.php:484
 msgid "Personal Email"
 msgstr "私人邮箱"
 
-#: dt-core/configuration/config-site-defaults.php:489
+#: dt-core/configuration/config-site-defaults.php:487
 msgid "Personal email is private to the team, not for distribution."
 msgstr "个人电子邮件是团队专用的，不能分发。"
 
-#: dt-core/configuration/config-site-defaults.php:493
+#: dt-core/configuration/config-site-defaults.php:491
 msgid "Personal Address"
 msgstr "个人地址"
 
-#: dt-core/configuration/config-site-defaults.php:496
+#: dt-core/configuration/config-site-defaults.php:494
 msgid "Personal address is private to the team, not for distribution."
 msgstr "个人地址仅供团队使用，不能用于分发。"
 
-#: dt-core/configuration/config-site-defaults.php:500
+#: dt-core/configuration/config-site-defaults.php:498
 msgid "Work Phone"
 msgstr "工作电话"
 
-#: dt-core/configuration/config-site-defaults.php:503
+#: dt-core/configuration/config-site-defaults.php:501
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "工作电话用于分发给联系人和寻求者。"
 
-#: dt-core/configuration/config-site-defaults.php:507
+#: dt-core/configuration/config-site-defaults.php:505
 msgid "Work Email"
 msgstr "工作电邮"
 
-#: dt-core/configuration/config-site-defaults.php:510
+#: dt-core/configuration/config-site-defaults.php:508
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "工作电子邮件用于分发给联系人和求职者。"
 
-#: dt-core/configuration/config-site-defaults.php:514
+#: dt-core/configuration/config-site-defaults.php:512
 msgid "Work Facebook"
 msgstr "工作Facebook"
 
-#: dt-core/configuration/config-site-defaults.php:517
+#: dt-core/configuration/config-site-defaults.php:515
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "Facebook工作用于向联系人和求职者分发。"
 
-#: dt-core/configuration/config-site-defaults.php:521
+#: dt-core/configuration/config-site-defaults.php:519
 msgid "Work WhatsApp"
 msgstr "工作WhatsApp"
 
-#: dt-core/configuration/config-site-defaults.php:524
+#: dt-core/configuration/config-site-defaults.php:522
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "工作WhatsApp用于分发给联系人和寻求者。"
 
-#: dt-core/configuration/config-site-defaults.php:531
+#: dt-core/configuration/config-site-defaults.php:529
 msgid "thumbs up"
 msgstr "点赞"
 
-#: dt-core/configuration/config-site-defaults.php:532
+#: dt-core/configuration/config-site-defaults.php:530
 msgid "heart"
 msgstr "喜爱"
 
-#: dt-core/configuration/config-site-defaults.php:533
+#: dt-core/configuration/config-site-defaults.php:531
 msgid "laugh"
 msgstr "好笑"
 
-#: dt-core/configuration/config-site-defaults.php:534
+#: dt-core/configuration/config-site-defaults.php:532
 msgid "wow"
 msgstr "赞叹"
 
-#: dt-core/configuration/config-site-defaults.php:535
+#: dt-core/configuration/config-site-defaults.php:533
 msgid "sad"
 msgstr "悲伤"
 
-#: dt-core/configuration/config-site-defaults.php:536
+#: dt-core/configuration/config-site-defaults.php:534
 msgid "prayer"
 msgstr "祷告"
 
-#: dt-core/configuration/config-site-defaults.php:544
+#: dt-core/configuration/config-site-defaults.php:542
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "家"
 
-#: dt-core/configuration/config-site-defaults.php:545
+#: dt-core/configuration/config-site-defaults.php:543
 msgid "Work"
 msgstr "工作"
 
-#: dt-core/configuration/config-site-defaults.php:555
+#: dt-core/configuration/config-site-defaults.php:553
 msgid "Accepting new contacts"
 msgstr "接受新联系人"
 
-#: dt-core/configuration/config-site-defaults.php:559
+#: dt-core/configuration/config-site-defaults.php:557
 msgid "I'm only investing in existing contacts"
 msgstr "我只投资现有的联系人"
 
-#: dt-core/configuration/config-site-defaults.php:563
+#: dt-core/configuration/config-site-defaults.php:561
 msgid "I have too many contacts"
 msgstr "我的联络人太多"
 
@@ -2930,17 +2930,17 @@ msgstr "如果这是一个错误，请忽略此电子邮件，将不会发生任
 msgid "To reset your password, visit the following address:"
 msgstr "要重置密码，请访问以下地址："
 
-#: dt-core/global-functions.php:564 single-template.php:413
+#: dt-core/global-functions.php:549 single-template.php:413
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
 msgstr "这是必需的"
 
-#: dt-core/global-functions.php:728
+#: dt-core/global-functions.php:713
 msgid "Add new tag \"%s\""
 msgstr "添加新标签 \"%s\""
 
-#: dt-core/global-functions.php:729
+#: dt-core/global-functions.php:714
 msgid "Tag \"%s\" is already being used"
 msgstr "标签 \"%s\" 已经被使用"
 
@@ -3027,7 +3027,7 @@ msgstr "组"
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:135
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:144
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "团体"
@@ -3238,7 +3238,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "该小组停止开会的日期（如果适用）。"
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:139
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:148
 msgid "Member Count"
 msgstr "会员人数"
 
@@ -3985,32 +3985,32 @@ msgid "Group Generation Tree"
 msgstr "组生成树"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:125
+#: dt-metrics/records/genmap.php:134
 msgid "Highlight Active"
 msgstr "凸显活跃用户"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:135
 msgid "Highlight Churches"
 msgstr "凸显教堂"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:127 dt-metrics/records/genmap.php:140
+#: dt-metrics/records/genmap.php:136 dt-metrics/records/genmap.php:149
 msgid "Members"
 msgstr "会员"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:128
+#: dt-metrics/records/genmap.php:137
 msgid "View Record"
 msgstr "查看记录"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:140
 msgid "Total Members"
 msgstr "全部成员"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:132
+#: dt-metrics/records/genmap.php:141
 msgid "View Group"
 msgstr "查看群组"
 
@@ -4244,64 +4244,94 @@ msgstr "记录"
 msgid "System"
 msgstr "系统"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:123
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:126
 #, fuzzy
 #| msgid "Group Generation Tree"
 msgid "Generational Trees"
 msgstr "组生成树"
 
-#: dt-metrics/records/genmap.php:124
+#: dt-metrics/records/genmap.php:127
 #, fuzzy
 #| msgid "Archived"
 msgid "Show Archived"
 msgstr "存档"
 
-#: dt-metrics/records/genmap.php:137
+#: dt-metrics/records/genmap.php:128
+#, fuzzy
+#| msgid "prayer"
+msgid "Data Layers"
+msgstr "祷告"
+
+#: dt-metrics/records/genmap.php:129
+msgid "Node Color"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:130
+#, fuzzy
+#| msgid "Default Filters"
+msgid "Default"
+msgstr "默认过滤"
+
+#: dt-metrics/records/genmap.php:131
+msgid "Add Data Layer"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:132
+#, fuzzy
+#| msgid "Show all fields"
+msgid "Show as icons"
+msgstr "展示全部字段"
+
+#: dt-metrics/records/genmap.php:133
+msgid "select data layer field to capture"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:146
 msgid "Coaches"
 msgstr "培训员"
 
-#: dt-metrics/records/genmap.php:138
+#: dt-metrics/records/genmap.php:147
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "类型："
 
-#: dt-metrics/records/genmap.php:141
+#: dt-metrics/records/genmap.php:150
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "打开用"
 
-#: dt-metrics/records/genmap.php:143
+#: dt-metrics/records/genmap.php:152
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:144
+#: dt-metrics/records/genmap.php:153
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:147
+#: dt-metrics/records/genmap.php:156
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "儿童组"
 
-#: dt-metrics/records/genmap.php:149
+#: dt-metrics/records/genmap.php:158
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:150
+#: dt-metrics/records/genmap.php:159
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:151
+#: dt-metrics/records/genmap.php:160
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "你确定要删除 %s 吗？"
 
-#: dt-metrics/records/genmap.php:155
+#: dt-metrics/records/genmap.php:164
 msgid "Infinite Loops"
 msgstr ""
 
@@ -4604,7 +4634,7 @@ msgstr "帖子已与用户共享。"
 msgid "Details"
 msgstr "详情"
 
-#: dt-posts/dt-posts.php:2843
+#: dt-posts/dt-posts.php:2852
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4616,7 +4646,7 @@ msgstr ""
 "@[%1$s](%2$s) - 用户 %3$s 已请求访问 %4$s [%5$s](%6$s) 。如果需要，请与该用户"
 "分享此记录以授予访问权。"
 
-#: dt-posts/dt-posts.php:2849
+#: dt-posts/dt-posts.php:2858
 msgid "Access Request"
 msgstr "访问请求"
 
@@ -4946,7 +4976,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "未与％s共享"
 
-#: dt-posts/posts.php:2496
+#: dt-posts/posts.php:2516
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
