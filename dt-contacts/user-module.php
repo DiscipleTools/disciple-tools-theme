@@ -105,14 +105,14 @@ class DT_Contacts_User {
             if ( current_user_can( 'create_users' ) || DT_User_Management::non_admins_can_make_users() ){
 
                 $record_actions[] = array(
-                    'label' => 'Make-a-user-from-this-contact',
+                    'label' => 'Make&nbsp;a&nbsp;user&nbsp;from&nbsp;this&nbsp;contact',
                     'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
                     'isModal' => false,
                     'href' => home_url( '/' ) . 'user-management/add-user?contact_id=' . $post_id,
                 );
-                if ( current_user_can( 'create_users' ) ){
-                    $record_actions[] = array(
-                        'label' => 'Link-to-an-existing-user',
+                if(current_user_can('create_users')){
+                    $record_actions[]= array(
+                        'label' => 'Link&nbsp;to&nbsp;an&nbsp;existing&nbsp;user',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/link.svg',
                         'isModal' => true,
                         'href' =>'',
