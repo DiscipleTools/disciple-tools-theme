@@ -1808,8 +1808,10 @@ jQuery(document).ready(function ($) {
   /**
    * Merging
    */
-
-  $('.open-merge-with-post').on('click', function (evt) {
+  let hasTriggered_open_merge_with_post = false;
+  $('.open-merge-with-post').on('mouseenter', function (evt) {
+    if (!hasTriggered_open_merge_with_post) {
+    
     let merge_post_type = $(evt.currentTarget).data('post_type');
     if (!window.Typeahead['.js-typeahead-merge_with']) {
       $.typeahead({
@@ -1853,7 +1855,9 @@ jQuery(document).ready(function ($) {
       user_select_input.trigger('input.typeahead');
       user_select_input.focus();
     });
-    $('#merge-with-post-modal').foundation('open');
+    // $('#merge-with-post-modal').foundation('open');
+    hasTriggered_open_merge_with_post= true;
+  }
   });
 
   /**
