@@ -112,7 +112,7 @@ jQuery(document).ready(function ($) {
   let merge_dupe_edit_modal = $('#merge-dupe-edit-modal');
   let possible_duplicates = [];
   let openedOnce = false;
-  $(document).on('click', '.duplicate-detected', function () {
+  $(document).on('click , mouseenter', '.duplicate-detected', function () {
     if (!openedOnce) {
       let original_contact_html = `<div class="merge-modal-contact-row">
         <h5>

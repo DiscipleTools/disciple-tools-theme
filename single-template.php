@@ -255,7 +255,8 @@ function dt_display_tile( $tile, $post ): bool
                                     buttonStyle={"background-color":"transparent","border":"1px","color":"#3f729b","border-style":"solid","font-weight":"600","border-color":"#3f729b","display":""}
                                     imageStyle={"filter":"hue-rotate(0deg)"}
                                     imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' ) ?>"
-                                    title="Duplicate Contacts">
+                                    title="Duplicate Contacts"
+                                    id="see-duplicates">
                                     <span slot="content">
 
                                         <h4 class="merge-modal-subheading">
