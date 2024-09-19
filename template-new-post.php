@@ -26,14 +26,13 @@ function get_help_modal_html()
 {
 
     ?>
-    <h1 id="help-modal-field-title">Contact Type</h1>
     <p id="help-modal-field-description" class="make-links-clickable" style="white-space: pre-line">See full documentation
         here: <a href="https://disciple.tools/user-docs/getting-started-info/contacts/contact-types"
             rel="noopener noreferrer"
             target="_blank">https://disciple.tools/user-docs/getting-started-info/contacts/contact-types</a></p>
 
     <div id="help-modal-field-body">
-        <ul>
+        <ul class="pre-list-styling">
             <li><strong>User</strong> - Representing a User in the system</li>
             <li><strong>Private Contact</strong> - A friend, family member or acquaintance</li>
             <li><strong>Standard Contact</strong> - A contact to collaborate on</li>
@@ -81,29 +80,22 @@ function get_help_modal_html()
 
                 <!-- choose the record type -->
                 <?php if ($type_choice_present) { ?>
-                    <div class="type-control-field" style="margin-top:20px">
-                        <strong>
-                            <?php echo esc_html(sprintf(__('Select the %s type:', 'disciple_tools'), $post_settings['label_singular'])) ?>
-                            <?php if ($dt_post_type === 'contacts'): ?>
+                    <div class="type-control-field field--flex" style="margin-top:20px">
+                        <?php echo esc_html(sprintf(__('Select the %s type:', 'disciple_tools'), $post_settings['label_singular'])) ?>
+                        <?php if ($dt_post_type === 'contacts'): ?>
+                            <dt-modal dialogClass={"dt-modal--contact-type":true} class="help-button-field" title="Contact Type"
+                                context="alert" context="alert" ishelp="" buttonClass={help-button-tile}
+                                buttonStyle={"background":"none","border":"0px"} data-section="type-help-text"
+                                imageSrc="http://localhost/nextLit/wp-content/themes/disciple-tools-theme/dt-assets/images/help.svg">
+                                <span slot="content">
 
-                                <dt-modal class="help-button-field" context="alert" context="alert" ishelp=""
-                                    buttonClass={help-button-tile} buttonStyle={"background":"none","border":"0px"}
-                                    data-section="type-help-text"
-                                    imageSrc="http://localhost/nextLit/wp-content/themes/disciple-tools-theme/dt-assets/images/help.svg">
-                                    <span slot="content">
-
-                                        <?php
-                                        $html = get_help_modal_html();
-                                        echo wp_kses_post($html);
-                                        ?>
-                                        <h5><?php echo esc_html_x('Need more help?', 'Optional Documentation', 'disciple_tools') ?>
-                                        </h5>
-                                        <a class="button small" id="docslink" href="https://disciple.tools/user-docs"
-                                            target="_blank"><?php echo esc_html_x('Read the documentation', 'Optional Documentation', 'disciple_tools') ?></a>
-                                    </span>
-                                </dt-modal>
-                            <?php endif; ?>
-                        </strong>
+                                    <?php
+                                    $html = get_help_modal_html();
+                                    echo wp_kses_post($html);
+                                    ?>
+                                </span>
+                            </dt-modal>
+                        <?php endif; ?>
                     </div>
                     <div class="type-options">
                         <?php if (isset($post_settings['fields']['type']['default'])) {
