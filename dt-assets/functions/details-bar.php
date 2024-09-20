@@ -276,6 +276,62 @@ function dt_print_details_bar(
                                     <span slot="close-button">Cancel</span>
                             </dt-modal>
                             <?php  endif; ?>
+
+                            <dt-modal id="link-to-an-existing-user" closeButton hideButton title="<?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?>">
+                                            <span slot="content">
+                                            <!-- <div class="reveal" id="link-to-user-modal" style="min-height:500px"> -->
+
+                                            <!-- <h3><?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?></h3> -->
+
+                                            <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
+                                                <p><?php esc_html_e( 'This contact already represents a user.', 'disciple_tools' ) ?></p>
+                                            <?php else : ?>
+
+
+                                                <p><?php echo esc_html_x( 'To link to an existing user, first, find the user using the field below.', 'Step 1 of link user', 'disciple_tools' ) ?></p>
+
+                                                <div class="user-select details">
+                                                    <var id="user-select-result-container" class="result-container user-select-result-container"></var>
+                                                    <div id="user-select_t" name="form-user-select">
+                                                        <div class="typeahead__container">
+                                                            <div class="typeahead__field">
+                                                            <span class="typeahead__query">
+                                                                <input class="js-typeahead-user-select input-height"
+                                                                        name="user-select[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                                        autocomplete="off">
+                                                            </span>
+                                                                    <span class="typeahead__button">
+                                                                <button type="button" class="search_user-select typeahead__image_button input-height" data-id="user-select_t">
+                                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                                                </button>
+                                                            </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br>
+                                                <div class="confirm-merge-with-user" style="display: none">
+                                                    <p><?php echo esc_html_x( 'To finish the linking, merge this contact with the existing user details.', 'Step 2 of link user', 'disciple_tools' ) ?></p>
+                                                </div>
+
+                                            <?php endif; ?>
+
+                                            <div class="grid-x">
+                                                
+                                                <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='get'>
+                                                    <input type='hidden' name='currentid' value='<?php echo esc_html( $post_id );?>'/>
+                                                    <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
+                                                    <button type='submit' class="button confirm-merge-with-user" style="display: none">
+                                                        <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
+                                                    </button>
+                                                   <br><br> 
+                                                </form>
+                                            </div>
+                                            <!-- </div> -->
+                                            </span>
+                                            <span slot="close-button">Cancel</span>
+                            </dt-modal>
                             </div>
                             <div class="cell grid-x shrink center-items">
                                 <span id="admin-bar-issues"></span>
