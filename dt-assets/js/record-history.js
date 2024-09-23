@@ -10,7 +10,6 @@ jQuery(document).ready(function ($) {
   let hasTriggered = false;
   $(document).on('mouseenter', '.record_history_modal', function () {
     if (!hasTriggered) { // Check if it has not been triggered yet
-        console.log('I am in contact history modal');
         init_record_history_modal();
         hasTriggered = true; // Set the flag to true after execution
     }

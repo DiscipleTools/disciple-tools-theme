@@ -350,7 +350,7 @@ class DT_Contacts_Base {
 
             // Change Record Type action
             $record_actions[] = array(
-                'label' => 'Change&nbsp;Record&nbsp;Type',
+                'label' => 'Change&nbsp;Contact&nbsp;Type',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'isModal' => true
             );
