@@ -244,9 +244,9 @@ function dt_print_details_bar(
                                             $post_change_record_type = DT_Posts::get_post( $dt_post_type, $post_id );
                                          
                                             ?>
-                                <dt-modal id="change-record-type" submitButton closeButton hideButton title="<?php echo esc_html( $contact_fields['type']['name'] ?? '' )?>">
+                                <dt-modal id="change-contact-type" submitButton closeButton hideButton title="<?php echo esc_html( $contact_fields['type']['name'] ?? '' )?>">
                                     <span slot="content">
-                                        <p><?php echo nl2br( wp_kses_post( $contact_fields['type']['description'] ?? '' ) )?></p>
+                                    <p><?php echo nl2br( wp_kses_post( make_clickable( $contact_fields['type']['description'] ?? '' ) ) ); ?></p>
                                         <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
 
                                         <select id="type-options">
