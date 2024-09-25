@@ -61,7 +61,7 @@ function dt_print_details_bar(
                         // Check if delete operation is allowed
                             if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) {
                                 $options_array[] = array(
-                                'label' => 'Delete-Contact',
+                                'label' => 'Delete&nbsp;Contact',
                                 'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ),
                                 'isModal' => true,
                                 );
@@ -69,7 +69,7 @@ function dt_print_details_bar(
 
                             if ( DT_Posts::can_update( $dt_post_type, $post_id ) ){
                                 $options_array[] =array(
-                                'label' => 'View-Contact-History',
+                                'label' => 'View&nbsp;Contact&nbsp;History',
                                 'icon' => esc_html( get_template_directory_uri(). '/dt-assets/images/history.svg' ),
                                 'isModal' => true,
                                 );
@@ -78,7 +78,7 @@ function dt_print_details_bar(
                         // Check if update operation is allowed
                             if ( DT_Posts::can_update( $dt_post_type, $post_id ) ) {
                                 $options_array[] = array(
-                                'label' => 'Merge-with-another-record',
+                                'label' => 'Merge&nbsp;with&nbsp;another&nbsp;record',
                                 'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ),
                                 'isModal' => true,
                                 );
@@ -117,6 +117,217 @@ function dt_print_details_bar(
                                     options=<?php echo json_encode( $options_array ) ?>
                                     >
                                 </dt-dropdown>
+                    <!-- delete contact list item modal -->
+                                <dt-modal submitButton closeButton id="delete-contact" hideButton  title=<?php echo esc_html( str_replace( ' ', '_', sprintf( _x( 'Delete %s', 'Delete Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) );?>>
+                                    <span slot="content">
+
+                            <p><?php echo esc_html( sprintf( _x( 'Are you sure you want to delete %s?', 'Are you sure you want to delete name?', 'disciple_tools' ), $dt_post['name'] ) ) ?>
+                            </p>
+                                <br>
+                                    </span>
+                                    <span slot="submit-button">
+                                        <button class="button alert loader" type="button" id="delete-record">
+                                            <?php esc_html_e( 'Delete', 'disciple_tools' ); ?>
+                                                </button>
+                                    </span>
+                                    <span slot="close-button">Cancel</span>
+                                </dt-modal>
+
+                                    <?php
+                                    global $post;
+                                    ?>
+                            <!-- view contact history list item modal -->
+                                <dt-modal id="view-contact-history" headerClass={"dt-modal--full-width":true}  class="record_history_modal" hideButton title=<?php echo esc_html( str_replace( ' ', '_', sprintf( _x( '%s Record History', 'Record History', 'disciple_tools' ), $post->post_title ) ) ) ?>>
+                                    <span slot="content">
+
+                                    <div style="padding-bottom: 50px;">
+                                        <hr>
+
+                                        <div class="grid-container">
+                                            <div class="grid-x">
+                                                <div class="cell small-4">
+                                                    <table style="border: none;  max-width: 300px;">
+                                                        <tbody style="border: none;">
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <h4><?php esc_html_e( 'Filter To Date', 'disciple_tools' ) ?></h4>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <select id="record_history_calendar">
+                                                                    <option value="" selected disabled>--- <?php esc_html_e( 'select date to filter by', 'disciple_tools' ) ?> ---</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="border: none;">
+                                                            <td style="vertical-align: top;">
+                                                                <span><?php esc_html_e( 'show all', 'disciple_tools' ) ?></span>
+                                                            </td>
+                                                            <td>
+                                                                <div class="switch tiny">
+                                                                    <input class="switch-input" id="record_history_all_activities_switch" type="checkbox"
+                                                                        name="record_history_all_activities_switch" checked>
+                                                                    <label class="switch-paddle" for="record_history_all_activities_switch">
+                                                            <span
+                                                                class="show-for-sr"><?php esc_html_e( 'show all', 'disciple_tools' ) ?></span>
+                                                                    </label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                                <div class="cell small-8">
+                                                    <span id="record_history_progress_spinner" class="loading-spinner" style="display: table; margin: 0 auto 10px;"></span>
+                                                    <div id="record_history_activities" style="display: none;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                    </div>
+
+                                    </span>
+                                </dt-modal>
+
+                                <!-- Merge with another record list item modal -->
+                                <dt-modal class="open-merge-with-post" id="merge-with-another-record"  data-post_type="<?php echo esc_html( $dt_post_type ) ?>"  hideButton title=<?php echo esc_html( str_replace( ' ', '_', sprintf( _x( 'Merge %s', 'Merge Contacts', 'disciple_tools' ), $post_settings['label_plural'] ?? $dt_post_type ) ) )?>>
+                                    <span slot="content">
+                                <div id="merge-with-post-modal" style="min-height:500px">
+                                    <p><?php echo esc_html( sprintf( _x( 'Merge this %1$s with another %2$s', 'Merge this contact with another contact', 'disciple_tools' ), $post_settings['label_singular'] ?? $dt_post_type, $post_settings['label_singular'] ?? $dt_post_type ) )?></p>
+                                    <div class="merge_with details">
+                                        <var id="merge_with-result-container" class="result-container merge_with-result-container"></var>
+                                        <div id="merge_with_t" name="form-merge_with">
+                                            <div class="typeahead__container">
+                                                <div class="typeahead__field">
+                                                    <span class="typeahead__query">
+                                                        <input class="js-typeahead-merge_with input-height"
+                                                            name="merge_with[query]" placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $post_settings['label_plural'] ?? $dt_post_type ) ) ?>"
+                                                            autocomplete="off">
+                                                    </span>
+                                                    <span class="typeahead__button">
+                                                        <button type="button" class="search_merge_with typeahead__image_button input-height" data-id="user-select_t">
+                                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="confirm-merge-with-post" style="display: none">
+                                        <p><span id="name-of-post-to-merge"></span> <?php echo esc_html_x( 'selected.', 'added to the end of a sentence', 'disciple_tools' ); ?></p>
+                                        <p><?php esc_html_e( 'Click merge to continue.', 'disciple_tools' ); ?></p>
+                                    </div>
+                                    <div class="grid-x">
+
+                                        <form
+                                            action="<?php echo esc_url( site_url() ); ?>/<?php echo esc_html( dt_get_post_type() ); ?>/mergedetails"
+                                            method="get">
+                                            <input type="hidden" name="currentid" value="<?php echo esc_html( get_the_ID() ); ?>"/>
+                                            <input id="confirm-merge-with-post-id" type="hidden" name="dupeid" value=""/>
+                                            <button type="submit" class="button confirm-merge-with-post" style="display: none;">
+                                                <?php esc_html_e( 'Merge', 'disciple_tools' ); ?>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                </span>
+                                </dt-modal>
+
+                                <!-- change record type list item modal -->
+                                        <?php
+                                        if ( $dt_post_type === 'contacts' ):
+                                            $contact_fields = DT_Posts::get_post_field_settings( $dt_post_type );
+                                            $post_change_record_type = DT_Posts::get_post( $dt_post_type, $post_id );
+
+                                            ?>
+                                <dt-modal id="change-contact-type" submitButton closeButton hideButton title="<?php echo esc_html( $contact_fields['type']['name'] ?? '' )?>">
+                                    <span slot="content">
+                                    <p><?php echo nl2br( wp_kses_post( make_clickable( $contact_fields['type']['description'] ?? '' ) ) ); ?></p>
+                                        <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+
+                                        <select id="type-options">
+                                            <?php
+                                            foreach ( $contact_fields['type']['default'] as $option_key => $option ) {
+                                                if ( !empty( $option['label'] ) && ( !isset( $option['hidden'] ) || $option['hidden'] !== true ) ) {
+                                                    $selected = ( $option_key === ( $post_change_record_type['type']['key'] ?? '' ) ) ? 'selected' : '';
+                                                    ?>
+                                                    <option value="<?php echo esc_attr( $option_key ) ?>" <?php echo esc_html( $selected ) ?>>
+                                                        <?php echo esc_html( $option['label'] ?? '' ) ?>
+                                                        <?php if ( !empty( $option['description'] ) ){
+                                                            echo esc_html( ' - ' . $option['description'] ?? '' );
+                                                        } ?>
+                                                    </option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                </span>
+                                <span slot="submit-button">
+                                    <button class="button loader" type="button" id="confirm-type-close" data-field="closed">
+                                            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
+                                    </button>
+
+                                    </span>
+                                    <span slot="close-button">Cancel</span>
+                            </dt-modal>
+                            <?php endif; ?>
+
+                            <dt-modal id="link-to-an-existing-user" closeButton hideButton title="<?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?>">
+                                            <span slot="content">
+
+                                            <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
+                                                <p><?php esc_html_e( 'This contact already represents a user.', 'disciple_tools' ) ?></p>
+                                            <?php else : ?>
+
+
+                                                <p><?php echo esc_html_x( 'To link to an existing user, first, find the user using the field below.', 'Step 1 of link user', 'disciple_tools' ) ?></p>
+
+                                                <div class="user-select details">
+                                                    <var id="user-select-result-container" class="result-container user-select-result-container"></var>
+                                                    <div id="user-select_t" name="form-user-select">
+                                                        <div class="typeahead__container">
+                                                            <div class="typeahead__field">
+                                                            <span class="typeahead__query">
+                                                                <input class="js-typeahead-user-select input-height"
+                                                                        name="user-select[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                                        autocomplete="off">
+                                                            </span>
+                                                                    <span class="typeahead__button">
+                                                                <button type="button" class="search_user-select typeahead__image_button input-height" data-id="user-select_t">
+                                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                                                </button>
+                                                            </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <br>
+                                                <div class="confirm-merge-with-user" style="display: none">
+                                                    <p><?php echo esc_html_x( 'To finish the linking, merge this contact with the existing user details.', 'Step 2 of link user', 'disciple_tools' ) ?></p>
+                                                </div>
+
+                                            <?php endif; ?>
+
+                                            <div class="grid-x">
+
+                                                <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='get'>
+                                                    <input type='hidden' name='currentid' value='<?php echo esc_html( $post_id );?>'/>
+                                                    <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
+                                                    <button type='submit' class="button confirm-merge-with-user" style="display: none">
+                                                        <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
+                                                    </button>
+                                                   <br><br>
+                                                </form>
+                                            </div>
+                                            </span>
+                                            <span slot="close-button">Cancel</span>
+                            </dt-modal>
                             </div>
                             <div class="cell grid-x shrink center-items">
                                 <span id="admin-bar-issues"></span>

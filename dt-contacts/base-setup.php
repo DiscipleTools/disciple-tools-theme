@@ -342,7 +342,7 @@ class DT_Contacts_Base {
             if ( empty( $post['archive'] ) && isset( $post['type']['key'] ) && ( $post['type']['key'] === 'personal' || $post['type']['key'] === 'placeholder' ) ) {
                 // Archive Contact action
                 $record_actions[] = array(
-                    'label' => 'Archive-Contact',
+                    'label' => 'Archive&nbsp;Contact',
                     'icon' => get_template_directory_uri() . '/dt-assets/images/archive.svg?v=2',
                     'isModal' => true
                 );
@@ -350,14 +350,14 @@ class DT_Contacts_Base {
 
             // Change Record Type action
             $record_actions[] = array(
-                'label' => 'Change-Record-Type',
+                'label' => 'Change&nbsp;Contact&nbsp;Type',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'isModal' => true
             );
 
             // See Duplicates action
             $record_actions[] = array(
-                'label' => 'See-duplicates',
+                'label' => 'See&nbsp;duplicates',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/duplicate.svg?v=2',
                 'isModal' => true
             );

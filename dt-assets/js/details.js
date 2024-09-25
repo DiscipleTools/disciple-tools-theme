@@ -1808,52 +1808,55 @@ jQuery(document).ready(function ($) {
   /**
    * Merging
    */
-
-  $('.open-merge-with-post').on('click', function (evt) {
-    let merge_post_type = $(evt.currentTarget).data('post_type');
-    if (!window.Typeahead['.js-typeahead-merge_with']) {
-      $.typeahead({
-        input: '.js-typeahead-merge_with',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        source: window.TYPEAHEADS.typeaheadPostsSource(merge_post_type, {
-          'include-users': false,
-        }),
-        templateValue: '{{name}}',
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        dynamic: true,
-        hint: true,
-        emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
-          window.wpApiShare.translations.no_records_found,
-        ),
-        callback: {
-          onClick: function (node, a, item) {
-            $('.confirm-merge-with-post').show();
-            $('#confirm-merge-with-post-id').val(item.ID);
-            $('#name-of-post-to-merge').html(item.name);
+  let hasTriggered_open_merge_with_post = false;
+  $('.open-merge-with-post').on('mouseenter', function (evt) {
+    if (!hasTriggered_open_merge_with_post) {
+      let merge_post_type = $(evt.currentTarget).data('post_type');
+      if (!window.Typeahead['.js-typeahead-merge_with']) {
+        $.typeahead({
+          input: '.js-typeahead-merge_with',
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          source: window.TYPEAHEADS.typeaheadPostsSource(merge_post_type, {
+            'include-users': false,
+          }),
+          templateValue: '{{name}}',
+          template: window.TYPEAHEADS.contactListRowTemplate,
+          dynamic: true,
+          hint: true,
+          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
+            window.wpApiShare.translations.no_records_found,
+          ),
+          callback: {
+            onClick: function (node, a, item) {
+              $('.confirm-merge-with-post').show();
+              $('#confirm-merge-with-post-id').val(item.ID);
+              $('#name-of-post-to-merge').html(item.name);
+            },
+            onResult: function (node, query, result, resultCount) {
+              let text = window.TYPEAHEADS.typeaheadHelpText(
+                resultCount,
+                query,
+                result,
+              );
+              $('#merge_with-result-container').html(text);
+            },
+            onHideLayout: function () {
+              $('.merge_with-result-container').html('');
+            },
           },
-          onResult: function (node, query, result, resultCount) {
-            let text = window.TYPEAHEADS.typeaheadHelpText(
-              resultCount,
-              query,
-              result,
-            );
-            $('#merge_with-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('.merge_with-result-container').html('');
-          },
-        },
+        });
+      }
+      let user_select_input = $(`.js-typeahead-merge_with`);
+      $('.search_merge_with').on('click', function () {
+        user_select_input.val('');
+        user_select_input.trigger('input.typeahead');
+        user_select_input.focus();
       });
+      // $('#merge-with-post-modal').foundation('open');
+      hasTriggered_open_merge_with_post = true;
     }
-    let user_select_input = $(`.js-typeahead-merge_with`);
-    $('.search_merge_with').on('click', function () {
-      user_select_input.val('');
-      user_select_input.trigger('input.typeahead');
-      user_select_input.focus();
-    });
-    $('#merge-with-post-modal').foundation('open');
   });
 
   /**
