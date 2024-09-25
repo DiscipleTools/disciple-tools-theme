@@ -120,7 +120,7 @@ function dt_print_details_bar(
                     <!-- delete contact list item modal -->
                                 <dt-modal submitButton closeButton id="delete-contact" hideButton  title=<?php echo esc_html( str_replace( ' ', '_', sprintf( _x( 'Delete %s', 'Delete Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $dt_post_type )['label_singular'] ) ) );?>>
                                     <span slot="content">
-                                    
+
                             <p><?php echo esc_html( sprintf( _x( 'Are you sure you want to delete %s?', 'Are you sure you want to delete name?', 'disciple_tools' ), $dt_post['name'] ) ) ?>
                             </p>
                                 <br>
@@ -186,7 +186,7 @@ function dt_print_details_bar(
                                             </div>
                                         </div>
                                         <br>
-                                        
+
                                     </div>
 
                                     </span>
@@ -222,7 +222,7 @@ function dt_print_details_bar(
                                         <p><?php esc_html_e( 'Click merge to continue.', 'disciple_tools' ); ?></p>
                                     </div>
                                     <div class="grid-x">
-                                        
+
                                         <form
                                             action="<?php echo esc_url( site_url() ); ?>/<?php echo esc_html( dt_get_post_type() ); ?>/mergedetails"
                                             method="get">
@@ -271,7 +271,7 @@ function dt_print_details_bar(
                                     <button class="button loader" type="button" id="confirm-type-close" data-field="closed">
                                             <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                                     </button>
-                                        
+
                                     </span>
                                     <span slot="close-button">Cancel</span>
                             </dt-modal>
@@ -315,14 +315,14 @@ function dt_print_details_bar(
                                             <?php endif; ?>
 
                                             <div class="grid-x">
-                                                
+
                                                 <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='get'>
                                                     <input type='hidden' name='currentid' value='<?php echo esc_html( $post_id );?>'/>
                                                     <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
                                                     <button type='submit' class="button confirm-merge-with-user" style="display: none">
                                                         <?php echo esc_html__( 'Merge', 'disciple_tools' )?>
                                                     </button>
-                                                   <br><br> 
+                                                   <br><br>
                                                 </form>
                                             </div>
                                             </span>
