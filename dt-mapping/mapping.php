@@ -132,7 +132,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             /* End DEFAULT MAPPING DEFINITION */
 
             add_action( 'delete_post', [ $this, 'delete_grid_meta_on_post_delete' ] );
-
         }
 
         /**
@@ -190,7 +189,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     'mapping_module' => $this->localize_script(),
                 ]
             );
-
         }
 
 
@@ -322,7 +320,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     );
                 }
             }
-
         }
 
         /************************************************************************************************************

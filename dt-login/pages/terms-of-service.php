@@ -38,7 +38,6 @@ class Disciple_Tools_Login_Terms extends DT_Login_Page_Base
 
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
-
     }
 
     public function body(){

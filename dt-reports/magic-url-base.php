@@ -439,5 +439,4 @@ abstract class DT_Magic_Url_Base {
         }
         return $apps_list;
     }
-
 }

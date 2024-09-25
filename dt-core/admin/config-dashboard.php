@@ -254,7 +254,7 @@ final class Disciple_Tools_Dashboard
                 }
 
                 if ( $dt_setup_wizard_items[$item_key]['complete'] === true ) {
-                    $completed ++;
+                    $completed++;
                 }
             }
 

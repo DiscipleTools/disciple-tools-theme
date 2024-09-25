@@ -137,6 +137,9 @@ class DT_Admin_Endpoints {
 
                     if ( !empty( $option_key ) ){
                         $defaults[$option_key] = [];
+                        if ( !empty( $custom_field['default'][$option_key]['label'] ) ) {
+                            $defaults[$option_key]['label'] = $custom_field['default'][$option_key]['label'];
+                        }
                         $defaults[$option_key]['translations'] = [];
                         $defaults[$option_key]['description_translations'] = [];
 

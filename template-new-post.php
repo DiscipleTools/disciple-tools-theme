@@ -189,8 +189,10 @@ function get_help_modal_html() {
                     <div style="text-align: center">
                         <a href="<?php echo esc_html( get_site_url() . '/' . $dt_post_type ) ?>"
                             class="button small clear"><?php echo esc_html__( 'Cancel', 'disciple_tools' ) ?></a>
-                        <button class="button loader js-create-post-button dt-green" type="submit"
-                            disabled><?php esc_html_e( 'Save and continue editing', 'disciple_tools' ); ?></button>
+                        <!-- <button class="button loader js-create-post-button dt-green" type="submit" disabled><?php esc_html_e( 'Save and continue editing', 'disciple_tools' ); ?></button> -->
+                        <dt-button posttype="contacts" context="success" type="submit" id="create-post-button">Save and
+                            continue
+                            editing</dt-button>
                     </div>
                     <div class="error-text"></div>
                 </div>

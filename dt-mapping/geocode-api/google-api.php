@@ -26,7 +26,6 @@ if ( !defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
     class Disciple_Tools_Google_Geocode_API {
         public function __construct() {
-
         }
 
         public static function get_key() {
@@ -662,7 +661,6 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
             $api_key = self::get_key();
             wp_enqueue_script( 'google-search-widget', 'https://maps.googleapis.com/maps/api/js?libraries=places&key='.$api_key, [ 'jquery', 'mapbox-gl', 'shared-functions' ], '1', false );
         }
-
     }
 }
 /**

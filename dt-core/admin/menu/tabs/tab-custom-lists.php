@@ -375,7 +375,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {
                                         if ( ! empty( $type['translations'][ $val['language'] ] ) ) {
-                                            $number_of_translations ++;
+                                            $number_of_translations++;
                                         }
                                     }
                                     ?>
@@ -829,7 +829,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {
                                         if ( !empty( $fields[$field_key]['translations'][$val['language']] ) ) {
-                                            $number_of_translations ++;
+                                            $number_of_translations++;
                                         }
                                     }
                                     ?>

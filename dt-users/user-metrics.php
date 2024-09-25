@@ -43,7 +43,6 @@ class DT_User_Metrics {
         }
         $include = [ 'comment', 'field_update', 'created' ];
         return self::get_user_activity( $user_id, $include );
-
     }
 
     public static function get_user_activity( $user_id, $include = [] ) {
@@ -201,7 +200,6 @@ class DT_User_Metrics {
     }
 
     public static function get_user_last_activity(){
-
     }
 
     /**

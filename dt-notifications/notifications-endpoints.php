@@ -107,7 +107,6 @@ class Disciple_Tools_Notifications_Endpoints
                 ],
             ]
         );
-
     }
 
     /**
@@ -218,5 +217,4 @@ class Disciple_Tools_Notifications_Endpoints
             return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
         }
     }
-
 }

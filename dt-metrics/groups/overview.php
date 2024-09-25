@@ -230,7 +230,5 @@ class DT_Metrics_Groups_Overview extends DT_Metrics_Chart_Base
 
         return $results;
     }
-
-
 }
 new DT_Metrics_Groups_Overview();

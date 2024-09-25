@@ -166,7 +166,6 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             }
 
             return $wpdb->insert_id;
-
         }
 
         public static function delete_location_grid_meta( int $post_id, $type, int $value, array $existing_post = null ) {
@@ -273,7 +272,6 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             }
 
             return $wpdb->insert_id;
-
         }
 
         public static function delete_user_location_grid_meta( int $user_id, $type, $grid_meta_id, array $existing_post = null ) {
@@ -315,6 +313,5 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
             return $status;
         }
-
     }
 }

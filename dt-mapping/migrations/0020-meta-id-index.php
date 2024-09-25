@@ -27,16 +27,12 @@ class DT_Mapping_Module_Migration_0020 extends DT_Mapping_Module_Migration {
         if ( $index_exists === 0 ){
             $wpdb->query( "ALTER TABLE `$wpdb->dt_location_grid_meta` ADD INDEX postmeta_id_location_grid (postmeta_id_location_grid)" );
         }
-
-
-
     }
 
     /**
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
@@ -51,5 +47,4 @@ class DT_Mapping_Module_Migration_0020 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }
