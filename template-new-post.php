@@ -22,9 +22,8 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
     $type_choice_present = true;
 }
 
-function get_help_modal_html()
-{
-
+function get_help_modal_html() {
+    ob_start(); // Start output buffering
     ?>
     <p id="help-modal-field-description" class="make-links-clickable" style="white-space: pre-line">See full documentation
         here: <a href="https://disciple.tools/user-docs/getting-started-info/contacts/contact-types"
@@ -40,15 +39,9 @@ function get_help_modal_html()
             <li><strong>Private Connection</strong> - Connected to a contact, or generational fruit</li>
         </ul>
     </div>
-
     <?php
-}
-
-
-
-
-
-?>
+    return ob_get_clean(); // Get the buffer content and clean the buffer
+} ?>
 
 <div id="content" class="template-new-post">
     <div id="inner-content" class="grid-x grid-margin-x">
@@ -83,7 +76,7 @@ function get_help_modal_html()
                         <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings['label_singular'] ) ) ?>
                         <?php if ( $dt_post_type === 'contacts' ): ?>
 
-                            <dt-modal dialogClass={"dt-modal--contact-type":true} title="Contact Type" context="alert"
+                            <dt-modal headerClass={"dt-modal--contact-type":true} title="Contact Type" context="alert"
                                 context="alert" ishelp="" buttonStyle={"background":"none","border":"0px"}
                                 data-section="type-help-text"
                                 imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>">
