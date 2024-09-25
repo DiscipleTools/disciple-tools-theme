@@ -83,10 +83,11 @@ function get_help_modal_html()
                     <div class="type-control-field field--flex" style="margin-top:20px">
                         <?php echo esc_html(sprintf(__('Select the %s type:', 'disciple_tools'), $post_settings['label_singular'])) ?>
                         <?php if ($dt_post_type === 'contacts'): ?>
-                            <dt-modal dialogClass={"dt-modal--contact-type":true} class="help-button-field" title="Contact Type"
-                                context="alert" context="alert" ishelp="" buttonClass={help-button-tile}
-                                buttonStyle={"background":"none","border":"0px"} data-section="type-help-text"
-                                imageSrc="http://localhost/nextLit/wp-content/themes/disciple-tools-theme/dt-assets/images/help.svg">
+
+                            <dt-modal dialogClass={"dt-modal--contact-type":true} title="Contact Type" context="alert"
+                                context="alert" ishelp="" buttonStyle={"background":"none","border":"0px"}
+                                data-section="type-help-text"
+                                imageSrc="<?php echo esc_html(get_template_directory_uri() . '/dt-assets/images/help.svg') ?>">
                                 <span slot="content">
 
                                     <?php
