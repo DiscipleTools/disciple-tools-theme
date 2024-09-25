@@ -137,7 +137,7 @@ function dt_print_details_bar(
                                     global $post;
                                     ?>
                             <!-- view contact history list item modal -->
-                                <dt-modal id="view-contact-history" headerClass={"dt-modal--full-width":true}  class="record_history_modal" hideButton title=<?php echo esc_html( str_replace( search:' ', replace:'_', subject:sprintf( _x( '%s Record History', 'Record History', 'disciple_tools' ), $post->post_title ) ) ) ?>>
+                                <dt-modal id="view-contact-history" headerClass={"dt-modal--full-width":true}  class="record_history_modal" hideButton title=<?php echo esc_html( str_replace( ' ', '_', sprintf( _x( '%s Record History', 'Record History', 'disciple_tools' ), $post->post_title ) ) ) ?>>
                                     <span slot="content">
 
                                     <div style="padding-bottom: 50px;">
