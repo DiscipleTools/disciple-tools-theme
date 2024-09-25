@@ -21,7 +21,27 @@ $selected_type = null;
 if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields']['type']['default'] ) > 1 ) {
     $type_choice_present = true;
 }
-?>
+
+function get_help_modal_html() {
+    ob_start(); // Start output buffering
+    ?>
+    <p id="help-modal-field-description" class="make-links-clickable" style="white-space: pre-line">See full documentation
+        here: <a href="https://disciple.tools/user-docs/getting-started-info/contacts/contact-types"
+            rel="noopener noreferrer"
+            target="_blank">https://disciple.tools/user-docs/getting-started-info/contacts/contact-types</a></p>
+
+    <div id="help-modal-field-body">
+        <ul class="pre-list-styling">
+            <li><strong>User</strong> - Representing a User in the system</li>
+            <li><strong>Private Contact</strong> - A friend, family member or acquaintance</li>
+            <li><strong>Standard Contact</strong> - A contact to collaborate on</li>
+            <li><strong>Connection</strong> - Connected to a contact, or generational fruit</li>
+            <li><strong>Private Connection</strong> - Connected to a contact, or generational fruit</li>
+        </ul>
+    </div>
+    <?php
+    return ob_get_clean(); // Get the buffer content and clean the buffer
+} ?>
 
 <div id="content" class="template-new-post">
     <div id="inner-content" class="grid-x grid-margin-x">
@@ -52,16 +72,23 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
 
                 <!-- choose the record type -->
                 <?php if ( $type_choice_present ) { ?>
-                    <div class="type-control-field" style="margin-top:20px">
-                        <strong>
-                            <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings['label_singular'] ) ) ?>
-                            <?php if ( $dt_post_type === 'contacts' ): ?>
-                                <button class="help-button-field" type="button" data-section="type-help-text">
-                                    <img class="help-icon"
-                                        src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" />
-                                </button>
-                            <?php endif; ?>
-                        </strong>
+                    <div class="type-control-field field--flex" style="margin-top:20px">
+                        <?php echo esc_html( sprintf( __( 'Select the %s type:', 'disciple_tools' ), $post_settings['label_singular'] ) ) ?>
+                        <?php if ( $dt_post_type === 'contacts' ): ?>
+
+                            <dt-modal headerClass={"dt-modal--contact-type":true} title="Contact Type" context="alert"
+                                context="alert" ishelp="" buttonStyle={"background":"none","border":"0px"}
+                                data-section="type-help-text"
+                                imageSrc="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>">
+                                <span slot="content">
+
+                                    <?php
+                                    $html = get_help_modal_html();
+                                    echo wp_kses_post( $html );
+                                    ?>
+                                </span>
+                            </dt-modal>
+                        <?php endif; ?>
                     </div>
                     <div class="type-options">
                         <?php if ( isset( $post_settings['fields']['type']['default'] ) ) {
@@ -139,10 +166,11 @@ if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields
                         <div <?php echo esc_html( !$show_field ? 'style=display:none' : '' ); ?>
                             class="form-field <?php echo esc_html( $classes ); ?>">
                             <?php
-                            render_field_for_display( $field_key, $post_settings['fields'], [ 'post_type' => $dt_post_type ] );
+                            render_field_for_display( $field_key, $post_settings['fields'], array( 'post_type' => $dt_post_type ) );
                             if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
                                 <p class="help-text" id="name-help-text">
-                                    <?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
+                                    <?php esc_html_e( 'This is required', 'disciple_tools' ); ?>
+                                </p>
                             <?php } ?>
                         </div>
                     <?php } ?>
