@@ -193,7 +193,7 @@ function dt_print_details_bar(
                                 </dt-modal>
 
                                 <!-- Merge with another record list item modal -->
-                                <dt-modal class="open-merge-with-post" id="merge-with-another-record"  data-post_type="<?php echo esc_html( $dt_post_type ) ?>"  hideButton title=<?php echo esc_html( str_replace( search:' ', replace:'_', subject: sprintf( _x( 'Merge %s', 'Merge Contacts', 'disciple_tools' ), $post_settings['label_plural'] ?? $dt_post_type ) ) )?>>
+                                <dt-modal class="open-merge-with-post" id="merge-with-another-record"  data-post_type="<?php echo esc_html( $dt_post_type ) ?>"  hideButton title=<?php echo esc_html( str_replace( ' ', '_', sprintf( _x( 'Merge %s', 'Merge Contacts', 'disciple_tools' ), $post_settings['label_plural'] ?? $dt_post_type ) ) )?>>
                                     <span slot="content">
                                 <div id="merge-with-post-modal" style="min-height:500px">
                                     <p><?php echo esc_html( sprintf( _x( 'Merge this %1$s with another %2$s', 'Merge this contact with another contact', 'disciple_tools' ), $post_settings['label_singular'] ?? $dt_post_type, $post_settings['label_singular'] ?? $dt_post_type ) )?></p>
