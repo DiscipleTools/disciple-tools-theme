@@ -9,11 +9,12 @@ jQuery(document).ready(function ($) {
   // Event Listeners
   let hasTriggered = false;
   $(document).on('mouseenter', '.record_history_modal', function () {
-    if (!hasTriggered) { // Check if it has not been triggered yet
-        init_record_history_modal();
-        hasTriggered = true; // Set the flag to true after execution
+    if (!hasTriggered) {
+      // Check if it has not been triggered yet
+      init_record_history_modal();
+      hasTriggered = true; // Set the flag to true after execution
     }
-});
+  });
 
   $(document).on(
     'click',
