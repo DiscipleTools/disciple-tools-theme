@@ -59,27 +59,27 @@ function dt_print_details_bar(
                             $options_array = array();
 
                         // Check if delete operation is allowed
-                        if (DT_Posts::can_delete($dt_post_type, $post_id)) {
-                            $options_array[] = array(
+                            if ( DT_Posts::can_delete( $dt_post_type, $post_id ) ) {
+                                $options_array[] = array(
                                 'label' => 'Delete&nbsp;Contact',
-                                'icon' => esc_html(get_template_directory_uri() . '/dt-assets/images/trash.svg'),
+                                'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/trash.svg' ),
                                 'isModal' => true,
                                 );
                             }
 
-                        if (DT_Posts::can_update($dt_post_type, $post_id)){
-                            $options_array[]=array(
+                            if ( DT_Posts::can_update( $dt_post_type, $post_id ) ){
+                                $options_array[] =array(
                                 'label' => 'View&nbsp;Contact&nbsp;History',
-                                'icon' => esc_html(get_template_directory_uri(). '/dt-assets/images/history.svg'),
+                                'icon' => esc_html( get_template_directory_uri(). '/dt-assets/images/history.svg' ),
                                 'isModal' => true,
                                 );
                             }
 
                         // Check if update operation is allowed
-                        if (DT_Posts::can_update($dt_post_type, $post_id)) {
-                            $options_array[] = array(
+                            if ( DT_Posts::can_update( $dt_post_type, $post_id ) ) {
+                                $options_array[] = array(
                                 'label' => 'Merge&nbsp;with&nbsp;another&nbsp;record',
-                                'icon' =>  esc_html(get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2'),
+                                'icon' => esc_html( get_template_directory_uri() . '/dt-assets/images/merge.svg?v=2' ),
                                 'isModal' => true,
                                 );
                             }
@@ -137,7 +137,7 @@ function dt_print_details_bar(
                                     global $post;
                                     ?>
                             <!-- view contact history list item modal -->
-                                <dt-modal id="view-contact-history" headerClass={"dt-modal--full-width":true}  class="record_history_modal" hideButton title=<?php echo esc_html(str_replace(search:' ',replace:'_',subject:sprintf( _x( '%s Record History', 'Record History', 'disciple_tools' ), $post->post_title ) )) ?>>
+                                <dt-modal id="view-contact-history" headerClass={"dt-modal--full-width":true}  class="record_history_modal" hideButton title=<?php echo esc_html( str_replace( search:' ', replace:'_', subject:sprintf( _x( '%s Record History', 'Record History', 'disciple_tools' ), $post->post_title ) ) ) ?>>
                                     <span slot="content">
 
                                     <div style="padding-bottom: 50px;">
@@ -193,7 +193,7 @@ function dt_print_details_bar(
                                 </dt-modal>
 
                                 <!-- Merge with another record list item modal -->
-                                <dt-modal class="open-merge-with-post" id="merge-with-another-record"  data-post_type="<?php echo esc_html( $dt_post_type ) ?>"  hideButton title=<?php echo esc_html(str_replace(search:' ',replace:'_',subject: sprintf( _x( 'Merge %s', 'Merge Contacts', 'disciple_tools' ), $post_settings['label_plural'] ?? $dt_post_type )))?>>
+                                <dt-modal class="open-merge-with-post" id="merge-with-another-record"  data-post_type="<?php echo esc_html( $dt_post_type ) ?>"  hideButton title=<?php echo esc_html( str_replace( search:' ', replace:'_', subject: sprintf( _x( 'Merge %s', 'Merge Contacts', 'disciple_tools' ), $post_settings['label_plural'] ?? $dt_post_type ) ) )?>>
                                     <span slot="content">
                                 <div id="merge-with-post-modal" style="min-height:500px">
                                     <p><?php echo esc_html( sprintf( _x( 'Merge this %1$s with another %2$s', 'Merge this contact with another contact', 'disciple_tools' ), $post_settings['label_singular'] ?? $dt_post_type, $post_settings['label_singular'] ?? $dt_post_type ) )?></p>
@@ -239,10 +239,10 @@ function dt_print_details_bar(
 
                                 <!-- change record type list item modal -->
                                         <?php
-                                         if ( $dt_post_type === 'contacts' ):
+                                        if ( $dt_post_type === 'contacts' ):
                                             $contact_fields = DT_Posts::get_post_field_settings( $dt_post_type );
                                             $post_change_record_type = DT_Posts::get_post( $dt_post_type, $post_id );
-                                         
+
                                             ?>
                                 <dt-modal id="change-contact-type" submitButton closeButton hideButton title="<?php echo esc_html( $contact_fields['type']['name'] ?? '' )?>">
                                     <span slot="content">
@@ -269,13 +269,13 @@ function dt_print_details_bar(
                                 </span>
                                 <span slot="submit-button">
                                     <button class="button loader" type="button" id="confirm-type-close" data-field="closed">
-                                        <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
+                                            <?php echo esc_html__( 'Confirm', 'disciple_tools' )?>
                                     </button>
                                         
                                     </span>
                                     <span slot="close-button">Cancel</span>
                             </dt-modal>
-                            <?php  endif; ?>
+                            <?php endif; ?>
 
                             <dt-modal id="link-to-an-existing-user" closeButton hideButton title="<?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?>">
                                             <span slot="content">

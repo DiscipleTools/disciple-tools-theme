@@ -110,8 +110,8 @@ class DT_Contacts_User {
                     'isModal' => false,
                     'href' => home_url( '/' ) . 'user-management/add-user?contact_id=' . $post_id,
                 );
-                if(current_user_can('create_users')){
-                    $record_actions[]= array(
+                if ( current_user_can( 'create_users' ) ){
+                    $record_actions[] = array(
                         'label' => 'Link&nbsp;to&nbsp;an&nbsp;existing&nbsp;user',
                         'icon' => get_template_directory_uri() . '/dt-assets/images/link.svg',
                         'isModal' => true,
