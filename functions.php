@@ -89,21 +89,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         }
     } );
 
-    /** Setup key for JWT authentication */
-    if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
-        if ( get_option( 'my_jwt_key' ) ) {
-            define( 'JWT_AUTH_SECRET_KEY', get_option( 'my_jwt_key' ) );
-        } else {
-            try {
-                $iv = password_hash( random_bytes_no_null( 16 ), PASSWORD_DEFAULT );
-                update_option( 'my_jwt_key', $iv );
-                define( 'JWT_AUTH_SECRET_KEY', $iv );
-            } catch ( Exception $e ) {
-                dt_write_log( $e->getMessage() );
-            }
-        }
-    }
-
     /**
      * Intended to avoid restrictions with passing null-containing strings to bcrypt functions like password_hash.
      *
@@ -125,6 +110,21 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         }
 
         return substr( $str, 0, $length );
+    }
+
+    /** Setup key for JWT authentication */
+    if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
+        if ( get_option( 'my_jwt_key' ) ) {
+            define( 'JWT_AUTH_SECRET_KEY', get_option( 'my_jwt_key' ) );
+        } else {
+            try {
+                $iv = password_hash( random_bytes_no_null( 16 ), PASSWORD_DEFAULT );
+                update_option( 'my_jwt_key', $iv );
+                define( 'JWT_AUTH_SECRET_KEY', $iv );
+            } catch ( Exception $e ) {
+                dt_write_log( $e->getMessage() );
+            }
+        }
     }
 
     /**
