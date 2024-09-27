@@ -10,7 +10,6 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
-use Random\RandomException;
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 /**
@@ -99,7 +98,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
                 $iv = password_hash( random_bytes_no_null( 16 ), PASSWORD_DEFAULT );
                 update_option( 'my_jwt_key', $iv );
                 define( 'JWT_AUTH_SECRET_KEY', $iv );
-            } catch ( RandomException | ValueError $e ) {
+            } catch ( ValueError $e ) {
                 dt_write_log( $e->getMessage() );
             }
         }
@@ -113,7 +112,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      *
      * @param int $length
      * @return string
-     * @throws RandomException
      *
      * @since 1.67.0
      */
