@@ -10,6 +10,7 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
+use Random\RandomException;
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 /**
@@ -94,10 +95,38 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         if ( get_option( 'my_jwt_key' ) ) {
             define( 'JWT_AUTH_SECRET_KEY', get_option( 'my_jwt_key' ) );
         } else {
-            $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
-            update_option( 'my_jwt_key', $iv );
-            define( 'JWT_AUTH_SECRET_KEY', $iv );
+            try {
+                $iv = password_hash( random_bytes_no_null( 16 ), PASSWORD_DEFAULT );
+                update_option( 'my_jwt_key', $iv );
+                define( 'JWT_AUTH_SECRET_KEY', $iv );
+            } catch ( RandomException | ValueError $e ) {
+                dt_write_log( $e->getMessage() );
+            }
         }
+    }
+
+    /**
+     * Intended to avoid restrictions with passing null-containing strings to bcrypt functions like password_hash.
+     *
+     * In particular, prevents the error "Bcrypt password must not contain null character" when passing output of
+     * random_bytes directly to password_hash.
+     *
+     * @param int $length
+     * @return string
+     * @throws RandomException
+     *
+     * @since 1.67.0
+     */
+    function random_bytes_no_null( int $length ): string {
+        $str = '';
+        while ( true ) {
+            $str .= str_replace( "\0", '', random_bytes( $length ) );
+            if ( strlen( $str ) >= $length ) {
+                break;
+            }
+        }
+
+        return substr( $str, 0, $length );
     }
 
     /**
