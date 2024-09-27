@@ -138,7 +138,5 @@ class DT_Metrics_Contacts_Baptism_Tree extends DT_Metrics_Chart_Base
         }
         return $menu_data;
     }
-
-
 }
 new DT_Metrics_Contacts_Baptism_Tree();

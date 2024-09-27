@@ -166,6 +166,5 @@ class Disciple_Tools_Counter_Connected extends Disciple_Tools_Counter_Base  {
         ) );
 
         return $results;
-
     }
 }

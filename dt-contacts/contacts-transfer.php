@@ -127,14 +127,14 @@ class Disciple_Tools_Contacts_Transfer {
                                 <div class="section-subheader">
                                     <img style="max-height: 14px; max-width: 14px;"
                                          src="<?php echo esc_html( $status_settings['icon'] ); ?>">
-                                    <?php echo esc_html( $status_settings['name'] ); ?> : <?php echo esc_html( $status['label'] ); ?>
+                                    <?php echo esc_html( $status_settings['name'] ); ?> : <?php echo esc_html( $status['label'] ?? '' ); ?>
                                 </div>
 
                                 <!-- Seeker Path -->
                                 <div class="section-subheader">
                                     <img style="max-height: 15px; max-width: 15px;"
                                          src="<?php echo esc_html( $seeker_settings['icon'] ); ?>">
-                                    <?php echo esc_html( $seeker_settings['name'] ); ?> : <?php echo esc_html( $seeker['label'] ); ?>
+                                    <?php echo esc_html( $seeker_settings['name'] ); ?> : <?php echo esc_html( $seeker['label'] ?? '' ); ?>
                                 </div>
                                 <br>
 
@@ -330,6 +330,8 @@ class Disciple_Tools_Contacts_Transfer {
      * @return WP_Error|bool
      */
     public static function contact_transfer( $contact_id, $site_post_id ) {
+        global $wpdb;
+
         $errors = new WP_Error();
 
         /**************************************************************************************************************
@@ -348,6 +350,48 @@ class Disciple_Tools_Contacts_Transfer {
         if ( isset( $postmeta_data['duplicate_data'] ) ) {
             unset( $postmeta_data['duplicate_data'] );
         }
+
+        // Ensure location based field types, are shaped accordingly and packaged with universal grid data.
+        $field_settings = DT_Posts::get_post_field_settings( $post_data['post_type'] );
+        $updated_postmeta_data = array();
+        foreach ( $postmeta_data as $key => $value ) {
+            if ( isset( $field_settings[ $key ] ) && in_array( $field_settings[ $key ]['type'], array( 'location', 'location_meta' ) ) ) {
+                switch ( $field_settings[ $key ]['type'] ) {
+                    case 'location':
+                        $updated_locations = array();
+                        foreach ( $value as $location_grid_id ) {
+                            $updated_locations[] = array(
+                                'value' => $location_grid_id,
+                            );
+                        }
+                        $updated_postmeta_data[ $key ] = array(
+                            'values' => $updated_locations,
+                        );
+                        break;
+                    case 'location_meta':
+                        $updated_location_metas = array();
+                        foreach ( $value as $grid_meta_id ) {
+                            $location_grid_meta = $wpdb->get_results( $wpdb->prepare( "SELECT grid_id, lng, lat, level, label FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
+                            if ( ( count( $location_grid_meta ) > 0 ) && isset( $location_grid_meta[0]['grid_id'], $location_grid_meta[0]['lng'], $location_grid_meta[0]['lat'], $location_grid_meta[0]['level'], $location_grid_meta[0]['label'] ) ) {
+                                $updated_location_metas[] = array(
+                                    'grid_id' => $location_grid_meta[0]['grid_id'],
+                                    'lng' => $location_grid_meta[0]['lng'],
+                                    'lat' => $location_grid_meta[0]['lat'],
+                                    'level' => $location_grid_meta[0]['level'],
+                                    'label' => $location_grid_meta[0]['label'],
+                                );
+                            }
+                        }
+                        $updated_postmeta_data[ $key ] = array(
+                            'values' => $updated_location_metas,
+                        );
+                        break;
+                }
+            } else {
+                $updated_postmeta_data[ $key ] = $value;
+            }
+        }
+
         $contact = DT_Posts::get_post( 'contacts', $contact_id );
 
         $comments       = dt_get_comments_with_redacted_user_data( $contact_id );
@@ -360,7 +404,7 @@ class Disciple_Tools_Contacts_Transfer {
                 'transfer_token' => $site['transfer_token'],
                 'contact_data'   => [
                     'post'                 => $post_data,
-                    'postmeta'             => $postmeta_data,
+                    'postmeta'             => $updated_postmeta_data,
                     'comments'             => isset( $comment_chunks[0] ) ? $comment_chunks[0] : [],
                     'people_groups'        => $contact['people_groups'],
                     'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
@@ -385,7 +429,7 @@ class Disciple_Tools_Contacts_Transfer {
 
         if ( sizeof( $comment_chunks ) > 1 && isset( $result_body->transfer_foreign_key, $result_body->created_id ) ) {
             $size = sizeof( $comment_chunks );
-            for ( $i = 1; $i < $size; $i ++ ) {
+            for ( $i = 1; $i < $size; $i++ ) {
 
                 $args = [
                     'method'  => 'POST',
@@ -490,15 +534,19 @@ class Disciple_Tools_Contacts_Transfer {
         $comment_data       = $contact_data['comments'] ?? [];
         $meta_input         = [];
         $lagging_meta_input = [];
+        $lagging_location_meta_input = [];
         $errors             = new WP_Error();
         $site_link_post_id  = Site_Link_System::get_post_id_by_site_key( Site_Link_System::decrypt_transfer_token( $params['transfer_token'] ) );
+        $field_settings = DT_Posts::get_post_field_settings( $post_args['post_type'] );
 
         /**
          * Insert contact record and meta
          */
         // build meta value elements
         foreach ( $contact_data['postmeta'] as $key => $value ) {
-            if ( isset( $value[1] ) ) {
+            if ( isset( $field_settings[ $key ] ) && in_array( $field_settings[ $key ]['type'], array( 'location', 'location_meta' ) ) ) {
+                $lagging_location_meta_input[ $key ] = $value;
+            } elseif ( isset( $value[1] ) ) {
                 foreach ( $value as $item ) {
                     $lagging_meta_input[] = [ $key => $item ];
                 }
@@ -553,6 +601,12 @@ class Disciple_Tools_Contacts_Transfer {
                     $errors->add( 'meta_insert_fail', 'Meta data insert fail for "' . $key . '"' );
                 }
             }
+        }
+
+        // Insert location based lagging post meta field types.
+        $inserted_location_fields = DT_Posts::update_location_grid_fields( $field_settings, $post_id, $lagging_location_meta_input, $post_args['post_type'] );
+        if ( is_wp_error( $inserted_location_fields ) ) {
+            $errors->add( 'location_meta_insert_fail', 'Failed to insert location meta for ' . $post_args['ID'] );
         }
 
         /**
@@ -697,7 +751,6 @@ class Disciple_Tools_Contacts_Transfer {
         }
 
         return self::contact_transfer( $params['contact_id'], $params['site_post_id'] );
-
     }
 
     /**

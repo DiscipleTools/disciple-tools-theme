@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class DT_Contacts_DMM  extends DT_Module_Base {
+class DT_Contacts_DMM extends DT_Module_Base {
     public $post_type = 'contacts';
     public $module = 'dmm_module';
 
@@ -38,7 +38,6 @@ class DT_Contacts_DMM  extends DT_Module_Base {
         add_action( 'dt_comment_action_quick_action', [ $this, 'dt_comment_action_quick_action' ], 10, 1 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-
     }
 
     public function dt_custom_fields_settings( $fields, $post_type ){
@@ -402,7 +401,7 @@ class DT_Contacts_DMM  extends DT_Module_Base {
             $contact = DT_Posts::get_post( 'contacts', get_the_ID() );
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             ?>
-
+<!-- comment and activity  -->
             <ul class="dropdown menu" data-dropdown-menu style="display: inline-block">
                 <li style="border-radius: 5px">
                     <a class="button menu-white-dropdown-arrow"
@@ -538,5 +537,4 @@ class DT_Contacts_DMM  extends DT_Module_Base {
         }
         return $query;
     }
-
 }

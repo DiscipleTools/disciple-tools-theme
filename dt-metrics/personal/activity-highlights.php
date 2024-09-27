@@ -640,6 +640,5 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             $prepare_args[] = $epoch_timestamp ? strtotime( $to ) : $to;
         }
     }
-
 }
 new Disciple_Tools_Metrics_Personal_Activity_Highlights();

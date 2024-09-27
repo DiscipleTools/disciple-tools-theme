@@ -1058,6 +1058,7 @@ html[dir="rtl"] .add-link-dropdown__content {
     background-color: #f2f2f2;
     padding:2%;
     overflow: hidden;
+    font-size: .9375rem !important;
 }
 .merge-modal-contact-name {
     color: #3f729b;
@@ -1117,4 +1118,12 @@ dt-modal:not(:defined){
         }
     }
 
+}
+
+#help-modal-field-body .pre-list-styling {
+    margin-left: 1.25rem;
+    list-style-type: disc;
+}
+.type-control-field.field--flex {
+    display: flex;
 }

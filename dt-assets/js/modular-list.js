@@ -32,6 +32,7 @@ if (
   let filterToEdit = '';
   let filter_accordions = $('#list-filter-tabs');
   let currentFilters = $('#current-filters');
+  let split_by_filter_labels = $('#split_by_current_filter_select_labels');
   let cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(
     'last_view',
     {},
@@ -401,7 +402,7 @@ if (
     $(label).remove();
 
     // Refresh view records
-    get_records_for_current_filter(current_filter);
+    get_records_for_current_filter(current_filter, true);
   }
 
   /**
@@ -482,7 +483,10 @@ if (
     window.history.pushState(null, document.title, url.search);
   }
 
-  function get_records_for_current_filter(custom_filter = null) {
+  function get_records_for_current_filter(
+    custom_filter = null,
+    remove_all_split_by_checked_options = false,
+  ) {
     let checked = $('.js-list-view:checked');
     let current_view = checked.val();
     let filter_id = checked.data('id') || current_view || '';
@@ -492,8 +496,10 @@ if (
     if (custom_filter) {
       current_filter = custom_filter;
 
-      // Ensure to uncheck all split by option filters, to avoid infinity loops!
-      $('.js-list-view-split-by').prop('checked', false);
+      // If specified, ensure to uncheck all split by option filters, to avoid infinity loops!
+      if (remove_all_split_by_checked_options) {
+        $('.js-list-view-split-by').prop('checked', false);
+      }
     } else if (current_view === 'custom_filter') {
       let filterId = checked.data('id');
       current_filter = window.lodash.find(custom_filters, { ID: filterId });
@@ -731,6 +737,9 @@ if (
         }
       });
     }
+
+    // Capture available filters, ensuring to ignore any sort labels below.
+    split_by_filter_labels.html(html);
 
     if (filter.query.sort) {
       let sortLabel = filter.query.sort;
@@ -3802,36 +3811,82 @@ if (
    */
 
   $('#split_by_current_filter_button').on('click', function () {
+    refresh_split_by_view();
+  });
+
+  $(document).on('change', '.js-list-view-split-by', () => {
+    get_records_for_current_filter(current_filter);
+  });
+
+  function refresh_split_by_view() {
     let field_id = $('#split_by_current_filter_select').val();
     if (!field_id) {
       return;
     }
-    $(this).addClass('loading');
-    let split_by_accordion = $('.split-by-current-filter-accordion');
-    let split_by_results = $('#split_by_current_filter_results');
-    let split_by_no_results_msg = $('#split_by_current_filter_no_results_msg');
+
+    const split_by_current_filter_button = $('#split_by_current_filter_button');
+    const split_by_accordion = $('.split-by-current-filter-accordion');
+    const split_by_results = $('#split_by_current_filter_results');
+    const split_by_no_results_msg = $(
+      '#split_by_current_filter_no_results_msg',
+    );
+
+    $(split_by_current_filter_button).addClass('loading');
 
     $(split_by_no_results_msg).fadeOut('fast');
 
     $(split_by_results).slideUp('fast', function () {
-      let filters =
+      let split_by_filters =
         current_filter.query !== undefined ? current_filter.query : [];
-      window.API.split_by(list_settings.post_type, field_id, filters).then(
-        function (response) {
-          $('#split_by_current_filter_button').removeClass('loading');
+
+      // Create filter for all available field options.
+      let default_options_filters = JSON.parse(
+        JSON.stringify(split_by_filters),
+      );
+      delete default_options_filters['fields'];
+
+      // First, always fetch all available options for given field_id.
+      window.API.split_by(
+        list_settings.post_type,
+        field_id,
+        default_options_filters,
+      ).then(function (default_options) {
+        // Next, execute split_by query for given filters.
+        window.API.split_by(
+          list_settings.post_type,
+          field_id,
+          split_by_filters,
+        ).then(function (split_by_response) {
+          $(split_by_current_filter_button).removeClass('loading');
           let summary_displayed = false;
-          if (response && response.length > 0) {
+          if (default_options && default_options.length > 0) {
             let html = '';
-            $.each(response, function (idx, result) {
+
+            // Iterate over default options and highlight selected filters.
+            $.each(default_options, function (idx, result) {
               if (result['value']) {
                 summary_displayed = true;
                 let option_id = result['value'];
                 let option_id_label =
                   result['label'] !== '' ? result['label'] : result['value'];
 
+                // Determine if option should be selected.
+                let option_selected = false;
+                if (split_by_filters['fields']) {
+                  if (
+                    split_by_filters['fields'].filter(
+                      (option) =>
+                        option[field_id] !== undefined &&
+                        option[field_id].includes(option_id),
+                    ).length > 0
+                  ) {
+                    option_selected = true;
+                  }
+                }
+
                 html += `
                     <label class="list-view">
-                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
+                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" ${option_selected ? 'checked' : ''} value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
                       <span>${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
                       <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}">${window.SHAREDFUNCTIONS.escapeHTML(result['count'])}</span>
                     </label>
@@ -3850,14 +3905,10 @@ if (
               $(split_by_no_results_msg).fadeIn('fast');
             });
           }
-        },
-      );
+        });
+      });
     });
-  });
-
-  $(document).on('change', '.js-list-view-split-by', () => {
-    get_records_for_current_filter();
-  });
+  }
 
   function apply_split_by_filters(filter, field_id, option_id, option_label) {
     if (filter && field_id && option_id && option_label) {
@@ -3869,17 +3920,29 @@ if (
         field_id_label = setting_fields[field_id]['name'];
       }
 
+      // Ensure a fields array is available.
+      if (filter['query']['fields'] === undefined) {
+        filter['query']['fields'] = [];
+      }
+
+      // Ensure to enforce toggling of options of the same field, instead of tacking onto any previous selections.
+      filter['query']['fields'] = filter['query']['fields'].filter(
+        (field) => field[field_id] === undefined,
+      );
+      filter['labels'] = filter['labels'].filter((label) => {
+        if (label['id'] && label['field']) {
+          return label['id'] !== option_id && label['field'] !== field_id;
+        }
+
+        return true;
+      });
+
       // Add new label.
       filter['labels'].push({
         id: option_id,
         field: field_id,
         name: `${window.SHAREDFUNCTIONS.escapeHTML(field_id_label)}: ${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}`,
       });
-
-      // Ensure a fields array is available.
-      if (filter['query']['fields'] === undefined) {
-        filter['query']['fields'] = [];
-      }
 
       let query_field_obj = {};
       query_field_obj[field_id] = option_id !== 'NULL' ? [option_id] : [];

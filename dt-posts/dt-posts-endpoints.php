@@ -841,6 +841,7 @@ class Disciple_Tools_Posts_Endpoints {
 
     public function storage_upload( WP_REST_Request $request ) {
         $params = $request->get_params();
+        //phpcs:ignore WordPress.Security.NonceVerification.Missing
         if ( !isset( $params['post_type'], $params['id'], $params['meta_key'], $_FILES['storage_upload_files'] ) ) {
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
@@ -856,7 +857,7 @@ class Disciple_Tools_Posts_Endpoints {
         $post_id = $params['id'];
         $meta_key = $params['meta_key'];
         $key_prefix = $params['key_prefix'] ?? '';
-        $files = dt_recursive_sanitize_array( $_FILES['storage_upload_files'] );
+        $files = dt_recursive_sanitize_array( $_FILES['storage_upload_files'] ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
         // Only process the first file within the uploaded array.
         $uploaded_file = [

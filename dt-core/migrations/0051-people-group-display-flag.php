@@ -27,7 +27,6 @@ class Disciple_Tools_Migration_0051 extends Disciple_Tools_Migration {
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
@@ -42,5 +41,4 @@ class Disciple_Tools_Migration_0051 extends Disciple_Tools_Migration {
      */
     public function test() {
     }
-
 }

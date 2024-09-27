@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-04-26T16:53:47+00:00\n"
+"POT-Creation-Date: 2024-07-12T14:37:29+00:00\n"
 "PO-Revision-Date: 2024-02-08 09:16+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Burmese <https://translate.disciple.tools/projects/disciple-"
@@ -16,20 +16,24 @@ msgstr ""
 "X-Generator: Weblate 5.3.1\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr "Disciple Tools"
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
+#: style.css
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
 msgstr "Disciple.Tools သည် တပည့်လှုပ်ရှားမှုများပြုလုပ်ရန်အတွက် ညွန့်ပေါင်းစီမံခန့်ခွဲမှုစနစ်တစ်ခုဖြစ်သည်။"
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
@@ -66,14 +70,14 @@ msgstr "ဝင်ရောက်ခွင့်တောင်းဆိုချ
 msgid "Submit Request"
 msgstr "တင်သွင်းမှုတောင်းဆိုမှုကို"
 
-#: 403.php:55 archive-template.php:1098 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1103 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:518 dt-contacts/access-module.php:549
-#: dt-contacts/access-module.php:577 dt-contacts/base-setup.php:380
-#: dt-contacts/base-setup.php:415 dt-contacts/user-module.php:159
+#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
+#: dt-contacts/access-module.php:558 dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:411 dt-contacts/user-module.php:159
 #: single-template.php:418 single-template.php:435
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
@@ -82,7 +86,8 @@ msgid "Cancel"
 msgstr "ပယ်ဖျက်ပါ"
 
 #: 403.php:59 archive-template.php:505 archive-template.php:547
-#: archive-template.php:772 archive-template.php:1122
+#: archive-template.php:772 archive-template.php:1127
+#: dt-assets/functions/enqueue-scripts.php:440
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
 #: dt-assets/parts/loop-activity-comment.php:206
@@ -109,12 +114,12 @@ msgstr "ပယ်ဖျက်ပါ"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/access-module.php:523 dt-contacts/access-module.php:554
-#: dt-contacts/access-module.php:582 dt-contacts/access-module.php:673
-#: dt-contacts/base-setup.php:385 dt-contacts/base-setup.php:420
-#: dt-contacts/dmm-module.php:524 dt-contacts/dmm-module.php:526
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:623
-#: dt-groups/base-setup.php:628 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/access-module.php:504 dt-contacts/access-module.php:535
+#: dt-contacts/access-module.php:563 dt-contacts/access-module.php:654
+#: dt-contacts/base-setup.php:381 dt-contacts/base-setup.php:416
+#: dt-contacts/dmm-module.php:521 dt-contacts/dmm-module.php:523
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:598
+#: dt-groups/base-setup.php:603 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:423
@@ -327,7 +332,7 @@ msgstr "အစုလိုက်ပို့ရန်အက်ပ်"
 msgid "More"
 msgstr "နောက်ထပ်"
 
-#: archive-template.php:481 dt-contacts/base-setup.php:309
+#: archive-template.php:481 dt-contacts/base-setup.php:305
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "မော်ကွန်းတင်သည်။"
@@ -349,15 +354,15 @@ msgid ""
 msgstr "စာရင်းမှသင်မွမ်းမံလိုသည့် %1$s အားလုံးကိုရွေးချယ်ပြီးအောက်ပါတို့ကိုအ‌ဆင့်မြင့်တင်ပါ"
 
 #: archive-template.php:569 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:606 dt-contacts/user-module.php:137
+#: dt-contacts/access-module.php:587 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:968
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "အသုံးပြုသူများကိုရှာပါ"
 
 #: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
-#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2767
+#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:134 dt-posts/dt-posts.php:2773
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:128
 msgid "Status"
@@ -374,8 +379,8 @@ msgstr "နှင့်မျှဝေပါ"
 msgid "Unshare with selected user"
 msgstr "%s နှင့်မမျှဝေပါ"
 
-#: archive-template.php:675 dt-assets/functions/details-bar.php:166
-#: dt-posts/custom-post-type.php:209
+#: archive-template.php:675 dt-assets/functions/details-bar.php:186
+#: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "နောက်လိုက်ပါ"
 
@@ -409,20 +414,20 @@ msgid "Update"
 msgstr "အဆင့်မြင့်တင်သည်"
 
 #: archive-template.php:751 archive-template.php:855
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:330
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "အောက်တွင် ရွေးချယ်မှုများ ပြုလုပ်ပါ။"
 
-#: archive-template.php:759 dt-assets/functions/enqueue-scripts.php:176
-#: dt-assets/functions/enqueue-scripts.php:210
-#: dt-assets/functions/enqueue-scripts.php:275
-#: dt-assets/functions/enqueue-scripts.php:315
+#: archive-template.php:759 dt-assets/functions/enqueue-scripts.php:179
+#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/functions/enqueue-scripts.php:278
+#: dt-assets/functions/enqueue-scripts.php:318
 #: dt-assets/parts/loop-activity-comment.php:161 single-template.php:438
 msgid "Delete"
 msgstr "ဖျက်သိမ်းသည်"
 
-#: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:328
+#: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:331
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
@@ -475,10 +480,12 @@ msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
 #: archive-template.php:842 dt-reports/magic-url-bulk-send.php:58
+#: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
 msgstr ""
 
 #: archive-template.php:845 dt-reports/magic-url-bulk-send.php:64
+#: dt-reports/magic-url-setup.php:137
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
@@ -505,88 +512,88 @@ msgstr "လင့်များ"
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:899
+#: archive-template.php:904
 msgid "Loading..."
 msgstr "ဖတ်နေသည် ..."
 
-#: archive-template.php:904 dt-assets/functions/enqueue-scripts.php:406
+#: archive-template.php:909 dt-assets/functions/enqueue-scripts.php:410
 msgid "Load More"
 msgstr "နောက်ထပ်တင်ပါ"
 
-#: archive-template.php:916
+#: archive-template.php:921
 msgid "Field Name"
 msgstr "အကွက်အမည်"
 
-#: archive-template.php:972
+#: archive-template.php:977
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "ရှာဖွေရန်ရိုက်ပါ"
 
-#: archive-template.php:981
+#: archive-template.php:986
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s ဖြင့် %1$s အားလုံး"
 
-#: archive-template.php:984
+#: archive-template.php:989
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s မပါဘဲ %1$s အားလုံး"
 
-#: archive-template.php:991
+#: archive-template.php:996
 #, fuzzy
 msgid "Filter for subassigned OR Assigned To"
 msgstr "subassigned OR မှ Assigned များအတွက် filter"
 
-#: archive-template.php:1000 dt-assets/functions/enqueue-scripts.php:318
-#: dt-posts/custom-post-type.php:186
+#: archive-template.php:1005 dt-assets/functions/enqueue-scripts.php:321
+#: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "ဖန်တီးသည့်ရက်စွဲ"
 
-#: archive-template.php:1007 archive-template.php:1014
+#: archive-template.php:1012 archive-template.php:1019
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
 msgid "None Set"
 msgstr "အဘယ်သူမျှမသတ်မှတ်"
 
-#: archive-template.php:1028 archive-template.php:1029
-#: dt-assets/functions/enqueue-scripts.php:226 dt-core/global-functions.php:686
+#: archive-template.php:1033 archive-template.php:1034
+#: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:686
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:197 template-settings.php:313
 #: template-settings.php:577
 msgid "No"
 msgstr "မဟုတ်ဘူး"
 
-#: archive-template.php:1035 archive-template.php:1036
-#: dt-assets/functions/enqueue-scripts.php:225 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
+#: archive-template.php:1040 archive-template.php:1041
+#: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:687
+#: dt-metrics/records/genmap.php:152 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:196
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "ဟုတ်တယ်"
 
-#: archive-template.php:1040
+#: archive-template.php:1045
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "စတင်ရန်"
 
-#: archive-template.php:1043 archive-template.php:1054
+#: archive-template.php:1048 archive-template.php:1059
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ရှင်းလင်းသည်"
 
-#: archive-template.php:1050
+#: archive-template.php:1055
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "အကွာအဝေးအဆုံး"
 
-#: archive-template.php:1065
+#: archive-template.php:1070
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "စစ်ထုတ်ရန်အမည်"
 
-#: archive-template.php:1070
+#: archive-template.php:1075
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -594,7 +601,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s ဖြင့် %1$s အားလုံး"
 
-#: archive-template.php:1074
+#: archive-template.php:1079
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -602,7 +609,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%2$s မပါဘဲ %1$s အားလုံး"
 
-#: archive-template.php:1078
+#: archive-template.php:1083
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -610,7 +617,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s ဖြင့် %1$s အားလုံး"
 
-#: archive-template.php:1082
+#: archive-template.php:1087
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -618,73 +625,73 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$s မပါဘဲ %1$s အားလုံး"
 
-#: archive-template.php:1106
+#: archive-template.php:1111
 msgid "Filter Name"
 msgstr "စစ်ထုတ်ရန်အမည်"
 
-#: archive-template.php:1111
+#: archive-template.php:1116
 msgid "Filter Records"
 msgstr "မှတ်တမ်းများ စစ်ထုတ်မည်"
 
-#: archive-template.php:1115 dt-assets/functions/enqueue-scripts.php:278
-#: dt-assets/functions/enqueue-scripts.php:313
+#: archive-template.php:1120 dt-assets/functions/enqueue-scripts.php:281
+#: dt-assets/functions/enqueue-scripts.php:316
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
 msgstr "သိမ်းဆည်းပါ"
 
-#: dt-assets/functions/details-bar.php:51
-#: dt-assets/functions/details-bar.php:242
+#: dt-assets/functions/details-bar.php:52
+#: dt-assets/functions/details-bar.php:262
 #: dt-core/configuration/config-site-defaults.php:367
 #: dt-workflows/update-required.php:80 dt-workflows/update-required.php:129
 msgid "Update Needed"
 msgstr "အဆင့်မြင့်တင်ဖို့လိုအပ်သည်"
 
-#: dt-assets/functions/details-bar.php:62
+#: dt-assets/functions/details-bar.php:63
 msgid "Admin Actions"
 msgstr "အက်မင်လုပ်ဆောင်ချက်များ"
 
-#: dt-assets/functions/details-bar.php:67 single-template.php:430
+#: dt-assets/functions/details-bar.php:68 single-template.php:430
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "%s ကိုဖျက်ပါ"
 
-#: dt-assets/functions/details-bar.php:72
+#: dt-assets/functions/details-bar.php:73
 msgctxt "View Contact History"
 msgid "View %s History"
 msgstr ""
 
-#: dt-assets/functions/details-bar.php:80
+#: dt-assets/functions/details-bar.php:81
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
 msgstr "အခြား %s နှင့် ပေါင်းစည်းပါ။"
 
-#: dt-assets/functions/details-bar.php:96
-#: dt-assets/functions/details-bar.php:252
+#: dt-assets/functions/details-bar.php:97
+#: dt-assets/functions/details-bar.php:272
 msgid "Previous record"
 msgstr "ယခင်မှတ်တမ်း"
 
-#: dt-assets/functions/details-bar.php:124
-#: dt-assets/functions/details-bar.php:277
+#: dt-assets/functions/details-bar.php:140
+#: dt-assets/functions/details-bar.php:308
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "%s အားဖြင့်"
 
-#: dt-assets/functions/details-bar.php:130
-#: dt-assets/functions/details-bar.php:284
+#: dt-assets/functions/details-bar.php:150
+#: dt-assets/functions/details-bar.php:316
 msgid "Next record"
 msgstr "နောက်မှတ်တမ်း"
 
-#: dt-assets/functions/details-bar.php:150
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:221
+#: dt-assets/functions/details-bar.php:170
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:229
 msgid "Tasks"
 msgstr "လုပ်ငန်းတာဝန်များ"
 
-#: dt-assets/functions/details-bar.php:157
-#: dt-assets/functions/details-bar.php:162
+#: dt-assets/functions/details-bar.php:177
+#: dt-assets/functions/details-bar.php:182
 msgid "Following"
 msgstr "နောက်လိုက်သည်"
 
-#: dt-assets/functions/details-bar.php:176
+#: dt-assets/functions/details-bar.php:196
 msgid "Share"
 msgstr "မျှဝေပါ"
 
@@ -722,8 +729,8 @@ msgid "Showing %1$s items matching %2$s"
 msgstr "%2$s နှင့်ကိုက်ညီသော %1$s ပစ္စည်းများပြနေသည်"
 
 #: dt-assets/functions/enqueue-scripts.php:118
-#: dt-assets/functions/enqueue-scripts.php:175
-#: dt-assets/functions/enqueue-scripts.php:314 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:317 template-settings.php:119
 #: template-settings.php:605
 msgid "Edit"
 msgstr "တည်းဖြတ်ပါ"
@@ -737,297 +744,352 @@ msgstr ""
 msgid "Copied: %s"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:138
+#: dt-assets/functions/enqueue-scripts.php:141
 msgid "You don't have any unread notifications"
 msgstr "သင့်မှာမဖတ်ရသေး‌‌သောအသိပေးချက်များမရှိပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:139
+#: dt-assets/functions/enqueue-scripts.php:142
 msgid "You don't have any notifications"
 msgstr "သင့်မှာအသိပေးချက်များမရှိပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:173 dt-posts/dt-posts.php:1707
+#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1713
 msgid "D.T System"
 msgstr "D.T စနစ်"
 
-#: dt-assets/functions/enqueue-scripts.php:177
+#: dt-assets/functions/enqueue-scripts.php:180
 msgid "Translate with Google Translate"
 msgstr "Google Translate ဖြင့်ဘာသာပြန်ပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:181
 msgid "Hide Translation"
 msgstr "ဘာသာပြန်ကိုဖျောက်ထားပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:179
+#: dt-assets/functions/enqueue-scripts.php:182
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s သည် %2$s ရုပ်ပြောင်ဖြင့်တုံ့ပြန်ခဲ့သည်"
 
-#: dt-assets/functions/enqueue-scripts.php:180
+#: dt-assets/functions/enqueue-scripts.php:183
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s နှင့် %1$s သည် %2$s ရုပ်ပြောင်ဖြင့်တုံ့ပြန်မှု"
 
-#: dt-assets/functions/enqueue-scripts.php:211
+#: dt-assets/functions/enqueue-scripts.php:214
 msgid "Mark as complete"
 msgstr "ပြီးသွားပြီလို့မှတ်သားပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:212
+#: dt-assets/functions/enqueue-scripts.php:215
 msgid "No task created"
 msgstr "အလုပ်တစ်ခုမျှမဖန်တီးထားပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/functions/enqueue-scripts.php:216
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "သတိပေးချက်"
 
-#: dt-assets/functions/enqueue-scripts.php:214
+#: dt-assets/functions/enqueue-scripts.php:217
 msgid "No note set"
 msgstr "မှတ်စုသတ်မှတ်မထားပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:215
+#: dt-assets/functions/enqueue-scripts.php:218
 msgid "Duplicates Detected"
 msgstr "ပုံတူပွားများ တွေ့ရှိသည်"
 
-#: dt-assets/functions/enqueue-scripts.php:216
+#: dt-assets/functions/enqueue-scripts.php:219
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
 #: dt-users/template-new-user.php:293 template-merge-post-details.php:130
 #: template-merge-post-details.php:187
 msgid "Merge"
 msgstr "ပေါင်းစည်း"
 
-#: dt-assets/functions/enqueue-scripts.php:217
+#: dt-assets/functions/enqueue-scripts.php:220
 msgid "Dismiss"
 msgstr "ပယ်ချသည်"
 
-#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:221
 msgid "Dismissed Duplicates"
 msgstr "ပုံတူပွားများ ထုပ်ပစ်ခဲ့သည်"
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:222
 msgid "Duplicates on: %s"
 msgstr ":%s တွင် ပုံတူပွားများ"
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:223
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "လွှဲပြောင်းမှုမအောင်မြင်ပါ။ site-to-site configuration ကိုစစ်ဆေးပါ။"
 
-#: dt-assets/functions/enqueue-scripts.php:221
+#: dt-assets/functions/enqueue-scripts.php:224
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "လွှဲပြောင်းအပ်ဒိတ် မအောင်မြင်ပါ။ ဆိုက်မှ ဆိုက်ဖွဲ့စည်းပုံအား စစ်ဆေးပါ။"
 
-#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:225
 msgid "Transfer update successful."
 msgstr "လွှဲပြောင်းအပ်ဒိတ် အောင်မြင်ပါပြီ။"
 
-#: dt-assets/functions/enqueue-scripts.php:223
+#: dt-assets/functions/enqueue-scripts.php:226
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "%s တွင်ဖန်တီးထားသည်"
 
-#: dt-assets/functions/enqueue-scripts.php:224
+#: dt-assets/functions/enqueue-scripts.php:227
 msgid "Open With"
 msgstr "ဖြင့်ဖွင့်ပါ။"
 
-#: dt-assets/functions/enqueue-scripts.php:244
+#: dt-assets/functions/enqueue-scripts.php:247
 msgid "Revert Record Back To This Point"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:245
+#: dt-assets/functions/enqueue-scripts.php:248
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "%s ကိုသင်ဖျက်ဖို့သေချာပါသလား။"
 
-#: dt-assets/functions/enqueue-scripts.php:276
+#: dt-assets/functions/enqueue-scripts.php:279
 msgid "Locations you are responsible for"
 msgstr "သင်တာ ၀ န်ရှိသောနေရာများ"
 
-#: dt-assets/functions/enqueue-scripts.php:277
-#: dt-metrics/records/genmap.php:104
+#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-metrics/records/genmap.php:142
 msgid "Add"
 msgstr "ထည့်ပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:279 template-settings.php:296
+#: dt-assets/functions/enqueue-scripts.php:282 template-settings.php:296
 msgid "link"
 msgstr "link"
 
-#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:283
 msgid "copy"
 msgstr "ကော်ပီ"
 
-#: dt-assets/functions/enqueue-scripts.php:296
+#: dt-assets/functions/enqueue-scripts.php:299
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "တူတာတွေ တွေ့သည်။"
 
-#: dt-assets/functions/enqueue-scripts.php:297
+#: dt-assets/functions/enqueue-scripts.php:300
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "%s အတွက် တူတာတွေ အားလုံးကို ထုတ်ပစ်သည်။"
 
-#: dt-assets/functions/enqueue-scripts.php:316
+#: dt-assets/functions/enqueue-scripts.php:319
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "_START_ of _TOTAL_ ပြနေသည်။"
 
-#: dt-assets/functions/enqueue-scripts.php:317
+#: dt-assets/functions/enqueue-scripts.php:320
 msgid "Sorting By"
 msgstr "မျိုးတူစုအလိုက်"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Date Modified"
 msgstr "ပြုပြင်မွမ်းမံသည့်ရက်စွဲ"
 
-#: dt-assets/functions/enqueue-scripts.php:320
+#: dt-assets/functions/enqueue-scripts.php:323
 msgid "No filters, create one below"
 msgstr "စစ်ထုတ်ကိရိယာများမရှိပါ၊ အောက်တွင်အသစ်တစ်ခုဖန်တီးပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:321
+#: dt-assets/functions/enqueue-scripts.php:324
 #, fuzzy
 msgid "No records found matching your filter."
 msgstr "သင့် filter နှင့်လိုက်ဖက်သောမှတ်တမ်းများမရှိပါ။"
 
-#: dt-assets/functions/enqueue-scripts.php:322 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1076 dt-posts/custom-post-type.php:439
+#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:503
+#: dt-groups/base-setup.php:1051 dt-posts/custom-post-type.php:485
 msgctxt "All records"
 msgid "All %s"
 msgstr "%s အားလုံး"
 
-#: dt-assets/functions/enqueue-scripts.php:323
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "start"
 msgstr "စတင်ပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:327
 msgid "end"
 msgstr "အဆုံး"
 
-#: dt-assets/functions/enqueue-scripts.php:325
+#: dt-assets/functions/enqueue-scripts.php:328
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1315 dt-groups/base-setup.php:994
+#: dt-contacts/access-module.php:1301 dt-groups/base-setup.php:969
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-metrics/records/dynamic-records-map.php:96
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "အားလုံး"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "Without"
 msgstr "မရှိရင်"
 
-#: dt-assets/functions/enqueue-scripts.php:329
+#: dt-assets/functions/enqueue-scripts.php:332
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:333
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "မပို့ပါ (တရားဝင်အီးမေးလ် ပျောက်ဆုံးနေဖွယ်ရှိသည်)"
 
-#: dt-assets/functions/enqueue-scripts.php:331
+#: dt-assets/functions/enqueue-scripts.php:334
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:332
+#: dt-assets/functions/enqueue-scripts.php:335
 msgid "Exclude Item"
 msgstr "ပစ္စည်းကို ဖယ်ထုတ်ပါ။"
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:338
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:336
+#: dt-assets/functions/enqueue-scripts.php:339
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:339
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:350
 #, fuzzy
 #| msgctxt "Contacts List"
 #| msgid "%s List"
 msgid "Full List"
 msgstr "%s စာရင်း"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:343
 #, fuzzy
 #| msgid "Address"
 msgid "No Addresses"
 msgstr "လိပ်စာ"
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:344
 msgid "With Additional Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:345
 msgid "Open Email for Group"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:346
 #, fuzzy
 #| msgid "Open Modal"
 msgid "Open All"
 msgstr "Modal ကိုဖွင့်ပါ။"
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:347
 msgid "Show Group Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:351
 msgid "Has No Phone Number"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:349
+#: dt-assets/functions/enqueue-scripts.php:352
 msgid "Has Additional Phone Numbers"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:353
+#: dt-assets/functions/enqueue-scripts.php:356
 #, fuzzy
 msgid "Mapped Locations"
 msgstr "တပတ်ရစ်နေရာများ"
 
-#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:357
 #, fuzzy
 #| msgctxt "Reason Paused label"
 #| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
 msgstr "အားလပ်ရက်မှာဆက်သွယ်ပါ"
 
-#: dt-assets/functions/enqueue-scripts.php:355
+#: dt-assets/functions/enqueue-scripts.php:358
 #, fuzzy
 #| msgid "Add Records"
 msgid "Records on zoomed map"
 msgstr "မှတ်တမ်းများထည့်ပါ။"
 
-#: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:359
 msgid "No Zoomed Map Records Found!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:360
 msgid "Open Zoomed Map Records"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:358
-#: dt-assets/functions/enqueue-scripts.php:359
+#: dt-assets/functions/enqueue-scripts.php:361
+#: dt-assets/functions/enqueue-scripts.php:362
 #, fuzzy
 #| msgid "Filter Name"
 msgid "Filtered Map"
 msgstr "စစ်ထုတ်ရန်အမည်"
 
-#: dt-assets/functions/enqueue-scripts.php:386 dt-contacts/base-setup.php:51
+#: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:51
 #: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "အဆက်အသွယ်"
 
-#: dt-assets/functions/enqueue-scripts.php:387
+#: dt-assets/functions/enqueue-scripts.php:391
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:429
+msgid "File Upload"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:430
+#, fuzzy
+#| msgid "Choose an option:"
+msgid "Choose a file"
+msgstr "ရွေးစရာတစ်ခုကိုရွေးချယ်ပါ"
+
+#: dt-assets/functions/enqueue-scripts.php:431
+msgid "or drag it here"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:432
+msgid "Successfully Uploaded!"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:433
+msgid "Error!"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:434
+#, fuzzy
+#| msgid "Unable to update"
+msgid "Unable to upload, please try again"
+msgstr "အဆင့်မြှင့် တင်၍ မရပါ"
+
+#: dt-assets/functions/enqueue-scripts.php:435
+msgid "Upload"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:436
+#, fuzzy
+#| msgid "Delete Filter"
+msgid "Delete Existing File"
+msgstr "Filter ကိုဖျက်ပါ"
+
+#: dt-assets/functions/enqueue-scripts.php:437
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you wish to delete existing file?"
+msgstr "%s ကိုသင်ဖျက်ဖို့သေချာပါသလား။"
+
+#: dt-assets/functions/enqueue-scripts.php:438
+msgid "Successfully Deleted!"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:439
+#, fuzzy
+#| msgid "Delete and replace the app link"
+msgid "Delete failed, please try again"
+msgstr "အက်ပ်လင့်ခ်ကို ဖျက်ပြီး အစားထိုးပါ။"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1288,9 +1350,8 @@ msgid ""
 "this system operates in."
 msgstr "'Edit' ကိုနှိပ်ခြင်းအားဖြင့်သင်သည်ဤစနစ်တွင်လည်ပတ်နေသောဘာသာစကားကဲ့သို့သောအရာများကိုညှိနိုင်သည်။"
 
-#: dt-assets/parts/modals/modal-help.php:66 dt-contacts/base-setup.php:192
-#: dt-groups/base-setup.php:359 dt-people-groups/people-groups-base.php:194
-#: dt-people-groups/people-groups-base.php:203 dt-users/users.php:169
+#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:243
+#: dt-users/users.php:169
 msgid "Locations"
 msgstr "တည်နေရာများ"
 
@@ -1450,15 +1511,15 @@ msgstr "ဖြင့်ဖွင့်ပါ။"
 msgid "Copy the link to the clipboard"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:121
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:130
 msgid "Send the link via email."
 msgstr "လင့်ခ်ကို အီးမေးလ်ဖြင့် ပေးပို့ပါ။"
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:158
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:180
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "မိုဘိုင်းစက်ပေါ်တွင် မှော်လင့်ခ်ကို ဖွင့်ရန် QR ကုဒ်ကို စကန်ဖတ်ပါ။"
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:163
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:185
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1473,7 +1534,7 @@ msgstr "မှတ်တမ်း ကိုဖန်တီးပါ"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:110 dt-posts/custom-post-type.php:169
+#: dt-metrics/records/genmap.php:148 dt-posts/custom-post-type.php:171
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "နာမည်"
@@ -1517,6 +1578,7 @@ msgstr "ပြန်လည်လှုပ်ရှားမှု"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "နယ်ပယ်"
@@ -1615,49 +1677,24 @@ msgstr "လုပ်ဖော်ကိုင်ဖက်"
 msgid "Digital Responder"
 msgstr "ဒစ်ဂျစ်တယ်တုံ့ပြန်မှု"
 
-#: dt-contacts/access-module.php:104
-msgid "Standard Contact"
-msgstr "စံအဆက်အသွယ်"
-
-#: dt-contacts/access-module.php:106
-msgid "A contact to collaborate on"
-msgstr "ပူးပေါင်းဆောင်ရွက်ရန် အဆက်အသွယ်တစ်ခု"
-
-#: dt-contacts/access-module.php:107
-msgid "Me and project leadership"
-msgstr "ကျွန်တော်နှင့် ပရောဂျက်ခေါင်းဆောင်"
-
-#: dt-contacts/access-module.php:113
-msgid "Connection"
-msgstr "ဆက်သွယ်မှု"
-
-#: dt-contacts/access-module.php:115 dt-contacts/dmm-module.php:51
-#, fuzzy
-msgid "Connected to a contact, or generational fruit"
-msgstr "အဆက်အသွယ်တစ်ခုသို့မဟုတ်မျိုးဆက်အသီးများနှင့်ချိတ်ဆက်ထားသည်"
-
-#: dt-contacts/access-module.php:118
-msgid "Collaborators"
-msgstr "ပူးပေါင်းဆောင်ရွက်သူများ"
-
-#: dt-contacts/access-module.php:123 dt-groups/base-setup.php:137
+#: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
 #: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:91 dt-metrics/records/genmap.php:98
+#: dt-metrics/records/genmap.php:129 dt-metrics/records/genmap.php:136
 msgid "Assigned To"
 msgstr "တာဝန်ပေးအပ်သည်"
 
-#: dt-contacts/access-module.php:124
+#: dt-contacts/access-module.php:105
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "ဒီအဆက်အသွယ်အပေါ်အစီရင်ခံရန်တာဝန်ရှိသောအဓိကပုဂ္ဂိုလ်ကိုရွေးချယ်ပါ။"
 
-#: dt-contacts/access-module.php:134 dt-metrics/contacts/seeker-path.php:25
+#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 #, fuzzy
 msgid "Seeker Path"
 msgstr "ရှာသူလမ်းကြောင်း"
 
-#: dt-contacts/access-module.php:135
+#: dt-contacts/access-module.php:116
 #, fuzzy
 msgctxt "Seeker Path field description"
 msgid ""
@@ -1667,125 +1704,125 @@ msgstr ""
 "အဆက်အသွယ်နှင့်သင်၏တိုးတက်မှု၏ status ထားပါ။ "
 "ဤရွေ့ကားအဆက်အသွယ်ရှေ့ဆက်ကူညီရန်တိကျတဲ့နိုင်ရန်အတွက်ဖြစ်ပျက်သောအဆင့်များဖြစ်ကြသည်။"
 
-#: dt-contacts/access-module.php:139
+#: dt-contacts/access-module.php:120
 msgid "Contact Attempt Needed"
 msgstr "ဆက်သွယ်ရန် လိုအပ်သော ကြိုးပမ်းမှု။"
 
-#: dt-contacts/access-module.php:143
+#: dt-contacts/access-module.php:124
 msgid "Contact Attempted"
 msgstr "ဆက်သွယ်ရန်ကြိုးစားပါ"
 
-#: dt-contacts/access-module.php:147 dt-contacts/dmm-module.php:232
+#: dt-contacts/access-module.php:128 dt-contacts/dmm-module.php:232
 msgid "Contact Established"
 msgstr "ဆက်သွယ်ရန်တည်ထောင်ပြီးပြီ"
 
-#: dt-contacts/access-module.php:151
+#: dt-contacts/access-module.php:132
 msgid "First Meeting Scheduled"
 msgstr "ပထမ ဦး ဆုံးအစည်းအဝေးစီစဉ်ထား"
 
-#: dt-contacts/access-module.php:155
+#: dt-contacts/access-module.php:136
 msgid "First Meeting Complete"
 msgstr "ပထမ ဦး ဆုံးအစည်းအဝေးပြီးပြီ"
 
-#: dt-contacts/access-module.php:159 dt-metrics/counter.php:140
+#: dt-contacts/access-module.php:140 dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
 msgstr "ကျင်းပနေဆဲ အစည်းအဝေးများ"
 
-#: dt-contacts/access-module.php:163
+#: dt-contacts/access-module.php:144
 msgid "Being Coached"
 msgstr "နည်းပြခြင်း ခံရ"
 
-#: dt-contacts/access-module.php:175 dt-contacts/base-setup.php:299
+#: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:295
 msgid "Contact Status"
 msgstr "အဆက်အသွယ်အခြေအနေ"
 
-#: dt-contacts/access-module.php:180
+#: dt-contacts/access-module.php:161
 msgid "New Contact"
 msgstr "အဆက်အသွယ်အသစ်"
 
-#: dt-contacts/access-module.php:181
+#: dt-contacts/access-module.php:162
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "စနစ်ထဲမှာအဆက်အသွယ်အသစ်ဖြစ်ပါတယ်"
 
-#: dt-contacts/access-module.php:185
+#: dt-contacts/access-module.php:166
 msgid "Not Ready"
 msgstr "အဆင်သင့်မဖြစ်သေးပါ"
 
-#: dt-contacts/access-module.php:186
+#: dt-contacts/access-module.php:167
 msgctxt "Contact Status field description"
 msgid ""
 "There is not enough information to move forward with the contact at this "
 "time."
 msgstr "ယခုအချိန်တွင်အဆက်အသွယ်နှင့်အတူရှေ့ဆက်ဖို့သတင်းအချက်အလက်အလုံအလောက်မရှိပါ။"
 
-#: dt-contacts/access-module.php:190
+#: dt-contacts/access-module.php:171
 msgid "Dispatch Needed"
 msgstr "ပေးပို့ရန်လိုအပ်သည်"
 
-#: dt-contacts/access-module.php:191
+#: dt-contacts/access-module.php:172
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "ဒီအဆက်အသွယ်ကိုမြှောက်ကိန်းပေးဖို့လိုတယ်။"
 
-#: dt-contacts/access-module.php:195
+#: dt-contacts/access-module.php:176
 msgid "Waiting to be accepted"
 msgstr "လက်ခံပေးဖို့စောင့်ဆိုင်းခြင်း"
 
-#: dt-contacts/access-module.php:196
+#: dt-contacts/access-module.php:177
 msgctxt "Contact Status field description"
 msgid ""
 "The contact has been assigned to someone, but has not yet been accepted by "
 "that person."
 msgstr "အဆက်အသွယ်ကိုတစ်စုံတစ် ဦး ထံအပ်နှံထားပြီးဖြစ်သော်လည်းထိုပုဂ္ဂိုလ်ကလက်ခံခြင်းမရှိသေးပါ။"
 
-#: dt-contacts/access-module.php:201
+#: dt-contacts/access-module.php:182
 msgid "Paused"
 msgstr "ဆိုင်းငံ့မှု"
 
-#: dt-contacts/access-module.php:202
+#: dt-contacts/access-module.php:183
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "ယခုအဆက်အသွယ်သည်ခေတ္တဆိုင်းငံ့ထားသည် (ဆိုလိုသည်မှာ အားလပ်ရက်မှာ (သို့မဟုတ်) တုံ့ပြန်မည်မဟုတ်) ။"
 
-#: dt-contacts/access-module.php:217
+#: dt-contacts/access-module.php:198
 msgid "Reason Not Ready"
 msgstr "အကြောင်းပြချက်မဆင်သင့်မဖြစ်သေး"
 
-#: dt-contacts/access-module.php:218
+#: dt-contacts/access-module.php:199
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "အဆက်အသွယ်သည်သုံးစွဲသူအားသတ်မှတ်ရန်အဆင်သင့်မဖြစ်သေးသည့်အဓိကအကြောင်းရင်း။"
 
-#: dt-contacts/access-module.php:225
+#: dt-contacts/access-module.php:206
 msgid "Insufficient Contact Information"
 msgstr "ဆက်သွယ်ရန်အချက်အလက်မလုံလောက်ပါ"
 
-#: dt-contacts/access-module.php:228
+#: dt-contacts/access-module.php:209
 msgid "Unknown Location"
 msgstr "မသိသောနေရာ"
 
-#: dt-contacts/access-module.php:231
+#: dt-contacts/access-module.php:212
 msgid "Only wants media"
 msgstr "မီဒီယာကိုသာလိုချင်သည်"
 
-#: dt-contacts/access-module.php:234
+#: dt-contacts/access-module.php:215
 msgid "Outside Area"
 msgstr "အပြင်ဘက်.ရိယာ"
 
-#: dt-contacts/access-module.php:237
+#: dt-contacts/access-module.php:218
 msgid "Needs Review"
 msgstr "ပြန်လည်သုံးသပ်ရန်လိုအပ်သည်"
 
-#: dt-contacts/access-module.php:240
+#: dt-contacts/access-module.php:221
 msgid "Waiting for Confirmation"
 msgstr "အတည်ပြုချက်ကိုစောင့်ဆိုင်း"
 
-#: dt-contacts/access-module.php:248
+#: dt-contacts/access-module.php:229
 msgid "Reason Paused"
 msgstr "အကြောင်းပြချက်ဆိုင်းငံ့မှု"
 
-#: dt-contacts/access-module.php:249
+#: dt-contacts/access-module.php:230
 msgctxt "Optional Documentation"
 msgid ""
 "A paused contact is one you are not currently interacting with but expect to "
@@ -1794,135 +1831,136 @@ msgstr ""
 "ခေတ္တဆိုင်းငံ့ထားသောအဆက်အသွယ်တစ်ခုသည်သင်နှင့်လက်ရှိဆက်သွယ်မှုမရှိုပါ၊"
 "သို့သော်အနာဂတ်တွင်မျှော်လင့်ထားသည့်အဆက်အသွယ်တစ်ခုဖြစ်သည်။"
 
-#: dt-contacts/access-module.php:253
+#: dt-contacts/access-module.php:234
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "အားလပ်ရက်မှာဆက်သွယ်ပါ"
 
-#: dt-contacts/access-module.php:254
+#: dt-contacts/access-module.php:235
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "အဆက်အသွယ်ကမတုံ့ပြန်ပါ"
 
-#: dt-contacts/access-module.php:255
+#: dt-contacts/access-module.php:236
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "ဆက်သွယ်မရပါ"
 
-#: dt-contacts/access-module.php:256
+#: dt-contacts/access-module.php:237
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "အဆက်အသွယ်ကစိတ်ဝင်စားမှု/ဆာငတ်မှုအနည်းငယ်သာရှိသည်"
 
-#: dt-contacts/access-module.php:257
+#: dt-contacts/access-module.php:238
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "အဆက်အသွယ်ကပဏာမခြေလှမ်းမရှိကြောင်းပြသည်"
 
-#: dt-contacts/access-module.php:258
+#: dt-contacts/access-module.php:239
 #, fuzzy
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "ဆက်သွယ်ရန်မေးခွန်းထုတ်စရာအကြောင်းရင်းရှိပါတယ်"
 
-#: dt-contacts/access-module.php:259
+#: dt-contacts/access-module.php:240
 #, fuzzy
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "ဘောလုံးသည်အဆက်အသွယ်၏တရားရုံးတွင်ဖြစ်သည်"
 
-#: dt-contacts/access-module.php:260
+#: dt-contacts/access-module.php:241
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "အဆက်အသွယ်သည်အလိုအလျောက်စာသားမက်ဆေ့ခ်ျများကိုတုံ့ပြန်လျှင်/မည်သို့တုံ့ပြန်သည်ကို ကျွန်ုပ်တို့ကြည့်လိုသည်"
 
-#: dt-contacts/access-module.php:267
+#: dt-contacts/access-module.php:248
 msgid "Reason Archived"
 msgstr "အကြောင်းပြချက်ကို သိမ်းဆည်းထားသည်။"
 
-#: dt-contacts/access-module.php:268
+#: dt-contacts/access-module.php:249
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr "ပိတ်ထားသည့်အဆက်အသွယ်ဆိုသည်မှာသင်မဆက်သွယ်နိုင်သော(သို့)မဆက်သွယ်လိုသောဆက်သွယ်မှုဖြစ်သည်။"
 
-#: dt-contacts/access-module.php:272
+#: dt-contacts/access-module.php:253
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "ပုံတူပွား"
 
-#: dt-contacts/access-module.php:273
+#: dt-contacts/access-module.php:254
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "ဆက်သွယ်ရန်အချက်အလက်မလုံလောက်ပါ"
 
-#: dt-contacts/access-module.php:274
+#: dt-contacts/access-module.php:255
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "ဆက်သွယ်ရန်တောင်းဆိုချက်ကိုတင်ပြရန်ငြင်းဆိုသည်"
 
-#: dt-contacts/access-module.php:275
+#: dt-contacts/access-module.php:256
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "ရန်လိုသည်၊ဂိမ်းကစားသည် (သို့) ကိုယ်ကြိုးရှာသည်"
 
-#: dt-contacts/access-module.php:276
+#: dt-contacts/access-module.php:257
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "ငြင်းခုန်ဖို့(သို့မဟုတ်)ဆွေးနွေးငြင်းခုံဖို့သာလိုချင်သည်"
 
-#: dt-contacts/access-module.php:277
+#: dt-contacts/access-module.php:258
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "မီဒီယာ(သို့မဟုတ်)စာအုပ်ပဲလိုချင်သည်"
 
-#: dt-contacts/access-module.php:278
+#: dt-contacts/access-module.php:259
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "စိတ်ဝင်စားတော့မှာမဟုတ်ဘူး"
 
-#: dt-contacts/access-module.php:279
+#: dt-contacts/access-module.php:260
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "တုံ့ပြန်မှုရှိတော့မှာမဟုတ်ပါ"
 
-#: dt-contacts/access-module.php:280
+#: dt-contacts/access-module.php:261
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "အသင်းတော်တွင်(သို့မဟုတ်)အခြားသူများနှင့်ချိတ်ဆက်ထားသည်"
 
-#: dt-contacts/access-module.php:281
+#: dt-contacts/access-module.php:262
 #, fuzzy
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "အဆက်အသွယ်ကိုလက်တွဲဖော်သို့ပြောင်းခဲ့သည်"
 
-#: dt-contacts/access-module.php:282
+#: dt-contacts/access-module.php:263
 #, fuzzy
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "Martyred"
 
-#: dt-contacts/access-module.php:283
+#: dt-contacts/access-module.php:264
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "ပြောင်းရွှေ့ခံ့သည်(သို့မဟုတ်)နေရာပြောင်းရွှေ့ခဲ့သည်"
 
-#: dt-contacts/access-module.php:284
+#: dt-contacts/access-module.php:265
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "GDPR တောင်းဆိုချက်"
 
-#: dt-contacts/access-module.php:285
+#: dt-contacts/access-module.php:266
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "မသိဘူး"
 
-#: dt-contacts/access-module.php:292
+#: dt-contacts/access-module.php:273
 msgid "Accepted"
 msgstr "လက်ခံသည်"
 
-#: dt-contacts/access-module.php:300 dt-contacts/base-setup.php:528
-#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
+#: dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1930,159 +1968,159 @@ msgstr "လက်ခံသည်"
 msgid "Personal"
 msgstr "ပုဂ္ဂိုလ်ရေး"
 
-#: dt-contacts/access-module.php:304
+#: dt-contacts/access-module.php:285
 #: dt-core/configuration/config-site-defaults.php:347
 msgid "Web"
 msgstr "web"
 
-#: dt-contacts/access-module.php:308 dt-contacts/base-setup.php:230
+#: dt-contacts/access-module.php:289 dt-contacts/base-setup.php:226
 msgid "Facebook"
 msgstr "ဖေ့စ်ဘွတ်ခ်"
 
-#: dt-contacts/access-module.php:312 dt-contacts/base-setup.php:238
+#: dt-contacts/access-module.php:293 dt-contacts/base-setup.php:234
 msgid "Twitter"
 msgstr "တွစ်တာ"
 
-#: dt-contacts/access-module.php:316
+#: dt-contacts/access-module.php:297
 msgid "Transfer"
 msgstr "လွှဲပြောင်းခြင်း"
 
-#: dt-contacts/access-module.php:318
+#: dt-contacts/access-module.php:299
 #, fuzzy
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "အခြား Disciple.Tools site တစ်ခုနှင့် ပူးပေါင်း၍ ဆက်သွယ်ရန်။"
 
-#: dt-contacts/access-module.php:331 dt-metrics/contacts/sources.php:90
+#: dt-contacts/access-module.php:312 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "သတင်းရင်းမြစ်များ"
 
-#: dt-contacts/access-module.php:332
+#: dt-contacts/access-module.php:313
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "ဤအဆက်အသွယ်မှလာသည့်ဝက်ဘ်ဆိုက်၊ ဖြစ်ရပ် (သို့) တည်နေရာ"
 
-#: dt-contacts/access-module.php:344
+#: dt-contacts/access-module.php:325
 msgid "Campaigns"
 msgstr "စည်းရုံးလှုံ့ဆော်ရေး"
 
-#: dt-contacts/access-module.php:345
+#: dt-contacts/access-module.php:326
 msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr "ဤအဆက်အသွယ်နှင့်အပြန်အလှန်ဆက်သွယ်သည့်စျေးကွက်ရှာဖွေရေးလှုပ်ရှားမှုများသို့မဟုတ်ဝင်ရောက်ခွင့်လှုပ်ရှားမှုများ"
 
-#: dt-contacts/access-module.php:412 dt-metrics/combined/critical-path.php:77
+#: dt-contacts/access-module.php:393 dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "နောက်ဆက်တွဲပြုလုပ်ခြင်း"
 
-#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
-#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:394
+#: dt-contacts/access-module.php:480 dt-contacts/access-module.php:511
+#: dt-contacts/access-module.php:542 dt-contacts/base-setup.php:390
 msgid "Choose an option:"
 msgstr "ရွေးစရာတစ်ခုကိုရွေးချယ်ပါ"
 
-#: dt-contacts/access-module.php:521 dt-contacts/access-module.php:552
-#: dt-contacts/access-module.php:580 dt-contacts/base-setup.php:418
+#: dt-contacts/access-module.php:502 dt-contacts/access-module.php:533
+#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:414
 msgid "Confirm"
 msgstr "အတည်ပြုပါ"
 
-#: dt-contacts/access-module.php:624
+#: dt-contacts/access-module.php:605
 #, fuzzy
 msgid "Multipliers"
 msgstr "ပွားခြင်းများ"
 
-#: dt-contacts/access-module.php:627
+#: dt-contacts/access-module.php:608
 msgid "Dispatchers"
 msgstr "စေလွှတ်သူများ"
 
-#: dt-contacts/access-module.php:630
+#: dt-contacts/access-module.php:611
 msgid "Digital Responders"
 msgstr "ဒစ်ဂျစ်တယ် တုံ့ပြန်သူများ"
 
-#: dt-contacts/access-module.php:637
+#: dt-contacts/access-module.php:618
 msgid "Assign To"
 msgstr "တာဝန်ပေးသည်"
 
-#: dt-contacts/access-module.php:689
+#: dt-contacts/access-module.php:670
 msgid "This contact has been assigned to you."
 msgstr "ဒီအဆက်အသွယ်ကိုသင့်အားတာဝန်ပေးအပ်ထားသည်။"
 
-#: dt-contacts/access-module.php:690
+#: dt-contacts/access-module.php:671
 msgid "Accept"
 msgstr "လက်ခံသည်"
 
-#: dt-contacts/access-module.php:691
+#: dt-contacts/access-module.php:672
 msgid "Decline"
 msgstr "ငြင်းဆိုသည်"
 
-#: dt-contacts/access-module.php:929 dt-contacts/access-module.php:939
+#: dt-contacts/access-module.php:915 dt-contacts/access-module.php:925
 msgid "My Follow-Up"
 msgstr "ကျွနုပ်၏နောက်ဆက်တွဲထားမှု"
 
-#: dt-contacts/access-module.php:940 dt-contacts/access-module.php:961
-#: dt-contacts/access-module.php:984 dt-contacts/access-module.php:1009
-#: dt-groups/base-setup.php:986
+#: dt-contacts/access-module.php:926 dt-contacts/access-module.php:947
+#: dt-contacts/access-module.php:970 dt-contacts/access-module.php:995
+#: dt-groups/base-setup.php:961
 msgid "Assigned to me"
 msgstr "ကျွနုပ်ကိုတာဝန်ပေးအပ်သည်"
 
-#: dt-contacts/access-module.php:941 dt-contacts/access-module.php:962
-#: dt-contacts/access-module.php:985 dt-contacts/access-module.php:1010
+#: dt-contacts/access-module.php:927 dt-contacts/access-module.php:948
+#: dt-contacts/access-module.php:971 dt-contacts/access-module.php:996
 msgid "Sub-assigned to me"
 msgstr "ကျွန်တော့်ကိုခွဲပေးလိုက်တယ်"
 
-#: dt-contacts/access-module.php:1049
+#: dt-contacts/access-module.php:1035
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "%s နောက်ဆက်တွဲထားမှု"
 
-#: dt-contacts/access-module.php:1057
+#: dt-contacts/access-module.php:1043
 msgid "All Follow-Up"
 msgstr "နောက်ဆက်တွဲထားမှု အားလုံး"
 
-#: dt-contacts/access-module.php:1159 dt-contacts/access-module.php:1160
+#: dt-contacts/access-module.php:1145 dt-contacts/access-module.php:1146
 msgid "Subassigned only"
 msgstr "Subassigned သာ"
 
-#: dt-contacts/access-module.php:1316
+#: dt-contacts/access-module.php:1302
 msgid "Ready"
 msgstr "အဆင်သင့်"
 
-#: dt-contacts/access-module.php:1317
+#: dt-contacts/access-module.php:1303
 msgid "Recent"
 msgstr "မကြာမှီ"
 
-#: dt-contacts/access-module.php:1318
+#: dt-contacts/access-module.php:1304
 msgid "Location"
 msgstr "တည်နေရာ"
 
-#: dt-contacts/access-module.php:1319
+#: dt-contacts/access-module.php:1305
 msgid "Assign"
 msgstr "တာဝန်ပေးပါ။"
 
-#: dt-contacts/access-module.php:1320 dt-users/template-new-user.php:134
+#: dt-contacts/access-module.php:1306 dt-users/template-new-user.php:134
 #: template-settings.php:226
 msgid "Language"
 msgstr "ဘာသာစကား"
 
-#: dt-contacts/access-module.php:1321 dt-contacts/base-setup.php:267
+#: dt-contacts/access-module.php:1307 dt-contacts/base-setup.php:263
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
 #: template-settings.php:714
 msgid "Gender"
 msgstr "ကျား/မ"
 
-#: dt-contacts/access-module.php:1494
+#: dt-contacts/access-module.php:1480
 #, fuzzy
 msgid "This record might be a duplicate of: "
 msgstr "ဤမှတ်တမ်းသည် - :၏ပုံတူပွားတစ်ခုဖြစ်ကောင်းဖြစ်နိုင်သည်"
 
-#: dt-contacts/access-module.php:1500 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/access-module.php:1486 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "ပုံတူပွား စစ်ဆေးသူ"
 
 #: dt-contacts/base-setup.php:51 dt-contacts/base-setup.php:64
-#: dt-contacts/base-setup.php:255 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:251 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
 #: dt-metrics/combined/locations-list.php:123
@@ -2092,7 +2130,7 @@ msgstr "ပုံတူပွား စစ်ဆေးသူ"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:102
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-metrics/records/dynamic-records-map.php:31
@@ -2105,53 +2143,78 @@ msgstr "အဆက်အသွယ်များ"
 msgid "Nickname"
 msgstr "အမည်ပြောင်"
 
-#: dt-contacts/base-setup.php:111
+#: dt-contacts/base-setup.php:112
 msgid "Contact Type"
 msgstr "အဆက်အသွယ်အမျိုးအစား"
 
-#: dt-contacts/base-setup.php:115
+#: dt-contacts/base-setup.php:116
 msgid "User"
 msgstr "အသုံးပြုသူ"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:117
 msgid "Representing a User in the system"
 msgstr "စနစ်အတွင်းအသုံးပြုသူတစ် ဦး ကိုကိုယ်စားပြုသည်"
 
-#: dt-contacts/base-setup.php:122
+#: dt-contacts/base-setup.php:123
 msgid "Private Contact"
 msgstr "သီးသန့်ဆက်သွယ်ရန်"
 
-#: dt-contacts/base-setup.php:124
+#: dt-contacts/base-setup.php:125
 msgid "A friend, family member or acquaintance"
 msgstr "သူငယ်ချင်း၊ မိသားစုဝင် (သို့) ခင်မင်သူ"
 
-#: dt-contacts/base-setup.php:125 dt-contacts/dmm-module.php:54
+#: dt-contacts/base-setup.php:126 dt-contacts/dmm-module.php:54
 msgid "Only me"
 msgstr "ငါတွက်သာ"
 
-#: dt-contacts/base-setup.php:149 dt-users/users.php:162
+#: dt-contacts/base-setup.php:133
+msgid "Standard Contact"
+msgstr "စံအဆက်အသွယ်"
+
+#: dt-contacts/base-setup.php:135
+msgid "A contact to collaborate on"
+msgstr "ပူးပေါင်းဆောင်ရွက်ရန် အဆက်အသွယ်တစ်ခု"
+
+#: dt-contacts/base-setup.php:136
+msgid "Me and project leadership"
+msgstr "ကျွန်တော်နှင့် ပရောဂျက်ခေါင်းဆောင်"
+
+#: dt-contacts/base-setup.php:142
+msgid "Connection"
+msgstr "ဆက်သွယ်မှု"
+
+#: dt-contacts/base-setup.php:144 dt-contacts/dmm-module.php:51
+#, fuzzy
+msgid "Connected to a contact, or generational fruit"
+msgstr "အဆက်အသွယ်တစ်ခုသို့မဟုတ်မျိုးဆက်အသီးများနှင့်ချိတ်ဆက်ထားသည်"
+
+#: dt-contacts/base-setup.php:147
+msgid "Collaborators"
+msgstr "ပူးပေါင်းဆောင်ရွက်သူများ"
+
+#: dt-contacts/base-setup.php:168 dt-users/users.php:162
 msgid "Languages"
 msgstr "ဘာသာစကားများ"
 
-#: dt-contacts/base-setup.php:158 template-settings.php:179
+#: dt-contacts/base-setup.php:177 template-settings.php:179
 msgid "Phone"
 msgstr "ဖုန်း"
 
-#: dt-contacts/base-setup.php:166
+#: dt-contacts/base-setup.php:185
 msgid "Signal"
 msgstr "အချက်ပြ"
 
-#: dt-contacts/base-setup.php:171
+#: dt-contacts/base-setup.php:190
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:176
+#: dt-contacts/base-setup.php:195
 #, fuzzy
 #| msgid "Whatsapp"
 msgid "WhatsApp"
 msgstr "Whatsapp"
 
-#: dt-contacts/base-setup.php:183
+#: dt-contacts/base-setup.php:202
 #: dt-core/configuration/config-site-defaults.php:344
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
@@ -2159,164 +2222,152 @@ msgstr "Whatsapp"
 msgid "Email"
 msgstr "အီးမေးလ်"
 
-#: dt-contacts/base-setup.php:193 dt-groups/base-setup.php:360
-#: dt-people-groups/people-groups-base.php:195
-#: dt-people-groups/people-groups-base.php:205
-#, fuzzy
-msgctxt "Optional Documentation"
-msgid "The general location where this contact is located."
-msgstr "ဒီအဆက်အသွယ်တည်ရှိရာအထွေထွေတည်နေရာ။"
-
-#: dt-contacts/base-setup.php:201 dt-groups/base-setup.php:369
-msgid "Locations or Address"
-msgstr "တည်နေရာများ(သို့)လိပ်စာ"
-
-#: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:378
-#: dt-people-groups/people-groups-base.php:213 template-settings.php:190
+#: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:357
+#: dt-people-groups/people-groups-base.php:194 template-settings.php:190
 msgid "Address"
 msgstr "လိပ်စာ"
 
-#: dt-contacts/base-setup.php:246
+#: dt-contacts/base-setup.php:242
 msgid "Other Social Links"
 msgstr "အခြားလူမှုဆက်သွယ်မှုများ"
 
-#: dt-contacts/base-setup.php:255
+#: dt-contacts/base-setup.php:251
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "အခြား$s သို့ဆက်သွယ်မှုများ"
 
-#: dt-contacts/base-setup.php:256
+#: dt-contacts/base-setup.php:252
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "စနစ်ထဲတွင်ဒီအဆက်အသွယ်သည်အခြားအဆက်အသွယ်နှင့်အတူဆက်ဆံရေးရှိသည်။"
 
-#: dt-contacts/base-setup.php:270 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:266 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "ကျား"
 
-#: dt-contacts/base-setup.php:271 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:267 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "မ"
 
-#: dt-contacts/base-setup.php:278
+#: dt-contacts/base-setup.php:274
 msgid "Age"
 msgstr "အသက်"
 
-#: dt-contacts/base-setup.php:282
+#: dt-contacts/base-setup.php:278
 msgid "Under 18 years old"
 msgstr "အသက် ၁၈ နှစ်အောက်"
 
-#: dt-contacts/base-setup.php:283
+#: dt-contacts/base-setup.php:279
 msgid "18-25 years old"
 msgstr "၁၈-၂၅ နှစ်"
 
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/base-setup.php:280
 msgid "26-40 years old"
 msgstr "၂၅-၄၀နှစ်"
 
-#: dt-contacts/base-setup.php:285
+#: dt-contacts/base-setup.php:281
 msgid "Over 40 years old"
 msgstr "အသက် ၄၀ ကျော်"
 
-#: dt-contacts/base-setup.php:293 dt-groups/base-setup.php:104
+#: dt-contacts/base-setup.php:289 dt-groups/base-setup.php:102
 #: dt-people-groups/people-groups-base.php:150
 msgid "Requires Update"
 msgstr "အဆင့်မြင့်တင်ရန်လိုအပ်သည်"
 
-#: dt-contacts/base-setup.php:300
+#: dt-contacts/base-setup.php:296
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "အဆက်အသွယ်အခြေအနေသည်အဆက်အသွယ်နှင့်ဆက်သွယ်မှုမှာတိုးတက်မှုကိုဖော်ပြသည်။"
 
-#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:120
+#: dt-contacts/base-setup.php:300 dt-groups/base-setup.php:118
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "လုပ်ရှားသော"
 
-#: dt-contacts/base-setup.php:305
+#: dt-contacts/base-setup.php:301
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "ဆက်သွယ်ရန်သည်တိုးတက်နေပြီး / သို့မဟုတ်အဆက်မပြတ်မွမ်းမံနေသည်။"
 
-#: dt-contacts/base-setup.php:311
+#: dt-contacts/base-setup.php:307
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
 "have decided not to continue with him/her."
 msgstr "ဒီအဆက်အသွယ်ကသူတို့ဆက်မလုပ်ချင်တော့ကြောင်း(သို့မဟုတ်)သူ/သူမနှင့်အတူဆက်မသွားရန်ဆုံးဖြတ်ခဲ့သည်"
 
-#: dt-contacts/base-setup.php:346 dt-contacts/base-setup.php:375
+#: dt-contacts/base-setup.php:342 dt-contacts/base-setup.php:371
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "%s မော်ကွန်းတိုက်"
 
-#: dt-contacts/base-setup.php:353
+#: dt-contacts/base-setup.php:349
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "%s အမျိုးအစားပြောင်းပါ"
 
-#: dt-contacts/base-setup.php:359
+#: dt-contacts/base-setup.php:355
 msgid "See duplicates"
 msgstr "ထပ်တူများကိုကြည့်ပါ"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:372
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "%s မော်ကွန်းတင် ချင်တာ သင်သေချာပါသလား။"
 
-#: dt-contacts/base-setup.php:383
+#: dt-contacts/base-setup.php:379
 msgid "Archive"
 msgstr "မော်ကွန်းတိုက်"
 
-#: dt-contacts/base-setup.php:442
+#: dt-contacts/base-setup.php:438
 #: dt-core/configuration/config-site-defaults.php:546
-#: dt-groups/base-setup.php:647 template-settings.php:212
+#: dt-groups/base-setup.php:622 template-settings.php:212
 msgid "Other"
 msgstr "အခြား"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1068
-#: dt-posts/custom-post-type.php:418
+#: dt-contacts/base-setup.php:497 dt-groups/base-setup.php:1043
+#: dt-posts/custom-post-type.php:464
 #, fuzzy
 msgid "Default Filters"
 msgstr "ပုံမှန် filter များ"
 
-#: dt-contacts/base-setup.php:494
+#: dt-contacts/base-setup.php:507
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "%s အားလုံးကျွန်ုပ်ကြည့်နိုင်သည်"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1082
-#: dt-posts/custom-post-type.php:451
+#: dt-contacts/base-setup.php:518 dt-groups/base-setup.php:1057
+#: dt-posts/custom-post-type.php:497
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "အကြိုက်ဆုံး%s"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
+#: dt-contacts/base-setup.php:524 dt-groups/base-setup.php:1062
+#: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:503
 msgid "Favorite"
 msgstr "အကြိုက်ဆုံး"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1093
-#: dt-posts/custom-post-type.php:466
+#: dt-contacts/base-setup.php:530 dt-groups/base-setup.php:1068
+#: dt-posts/custom-post-type.php:512
 msgid "My Recently Viewed"
 msgstr "မကြာသေးမီကကျွနုပ်၏ကြည့်ရှုမှု"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1098
-#: dt-posts/custom-post-type.php:471
+#: dt-contacts/base-setup.php:535 dt-groups/base-setup.php:1073
+#: dt-posts/custom-post-type.php:517
 msgid "Last 30 viewed"
 msgstr "နောက်ဆုံး ကြည့်ရှုခဲ့သော ၃၀ ခု"
 
-#: dt-contacts/base-setup.php:552 dt-contacts/base-setup.php:560
-#: dt-contacts/base-setup.php:578 dt-contacts/base-setup.php:579
+#: dt-contacts/base-setup.php:565 dt-contacts/base-setup.php:573
+#: dt-contacts/base-setup.php:591 dt-contacts/base-setup.php:592
 msgid "Shared with me"
 msgstr "ငါနဲ့မျှဝေခဲ့တယ်"
 
-#: dt-contacts/base-setup.php:688
+#: dt-contacts/base-setup.php:701
 msgid "This %s is archived"
 msgstr "ဤ %s သည် မော်ကွန်းတင်သည်။"
 
-#: dt-contacts/base-setup.php:690
+#: dt-contacts/base-setup.php:703
 msgid "Restore"
 msgstr "ပြန်လည်ထည့်သွင်းသည်။"
 
@@ -2561,7 +2612,7 @@ msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "ဒီအဆက်အသွယ်ကိုဘယ်သူကနှစ်ခြင်းခံပေးခဲ့တာလဲ။"
 
-#: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:399
+#: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:374
 #: dt-people-groups/people-groups-base.php:96
 #: dt-people-groups/people-groups-base.php:106
 msgid "People Groups"
@@ -2592,26 +2643,26 @@ msgstr "အစည်းအဝေး မပြထားပါ"
 msgid "Faith"
 msgstr "ယုံကြည်ခြင်း"
 
-#: dt-contacts/dmm-module.php:361
+#: dt-contacts/dmm-module.php:358
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "%s ချိတ်ဆက်သည်"
 
-#: dt-contacts/dmm-module.php:374 dt-contacts/dmm-module.php:384
-#: dt-contacts/dmm-module.php:394 dt-contacts/dmm-module.php:395
+#: dt-contacts/dmm-module.php:371 dt-contacts/dmm-module.php:381
+#: dt-contacts/dmm-module.php:391 dt-contacts/dmm-module.php:392
 msgid "Coached by me"
 msgstr "ငါအားဖြင့်နည်းပြသည်"
 
-#: dt-contacts/dmm-module.php:413
+#: dt-contacts/dmm-module.php:410
 #: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr "လျင်မြန်သောလုပ်ဆောင်ချက်များ"
 
-#: dt-contacts/dmm-module.php:494
+#: dt-contacts/dmm-module.php:491
 msgid "Who was this contact baptized by and when?"
 msgstr "ဒီအဆက်အသွယ်ကိုဘယ်သူကနဲ့ဘယ်အချိန်မှာနှစ်ခြင်းခံတာလဲ။"
 
-#: dt-contacts/dmm-module.php:508
+#: dt-contacts/dmm-module.php:505
 #, fuzzy
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
@@ -3000,59 +3051,59 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-groups/base-setup.php:51 dt-groups/base-setup.php:63
-#: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
+#: dt-groups/base-setup.php:49 dt-groups/base-setup.php:61
+#: dt-groups/base-setup.php:166 dt-metrics/personal/activity-highlights.php:58
 #: dt-metrics/personal/group-tree.php:165
 msgid "Group"
 msgstr "အုပ်စု"
 
-#: dt-groups/base-setup.php:51 dt-groups/base-setup.php:64
-#: dt-groups/base-setup.php:462 dt-groups/base-setup.php:646
+#: dt-groups/base-setup.php:49 dt-groups/base-setup.php:62
+#: dt-groups/base-setup.php:437 dt-groups/base-setup.php:621
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:106
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:97
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:135
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "အုပ်စုများ"
 
-#: dt-groups/base-setup.php:115
+#: dt-groups/base-setup.php:113
 msgid "Group Status"
 msgstr "အုပ်စုအခြေအနေ"
 
-#: dt-groups/base-setup.php:116
+#: dt-groups/base-setup.php:114
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "အုပ်စု၏လက်ရှိအခြေအနေကိုသတ်မှတ်ပါ။"
 
-#: dt-groups/base-setup.php:121
+#: dt-groups/base-setup.php:119
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "အုပ်စုသည်တက်ကြွစွာအစည်းအဝေးလုပ်ပါသည်။"
 
-#: dt-groups/base-setup.php:125 dt-users/users.php:180
+#: dt-groups/base-setup.php:123 dt-users/users.php:180
 msgid "Inactive"
 msgstr "မလှုပ်ရှားသော"
 
-#: dt-groups/base-setup.php:126
+#: dt-groups/base-setup.php:124
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "အုပ်စုသည်အစည်းအဝေးမလုပ်တော့ပါ"
 
-#: dt-groups/base-setup.php:138
+#: dt-groups/base-setup.php:136
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "ဤအုပ်စုအပေါ်အစီရင်ခံရန်တာဝန်ရှိသည့်အဓိကပုဂ္ဂိုလ်ကိုရွေးချယ်ပါ။"
 
-#: dt-groups/base-setup.php:146
+#: dt-groups/base-setup.php:144
 msgid "Group Coach / Church Planter"
 msgstr "အုပ်စုနည်းပြ / အသင်းတော် ဖွဲ့စည်းသူ"
 
-#: dt-groups/base-setup.php:147
+#: dt-groups/base-setup.php:145
 #, fuzzy
 msgctxt "Optional Documentation"
 msgid ""
@@ -3063,176 +3114,176 @@ msgstr ""
 "ဤအုပ်စုကို ဖွဲ့စည်းခဲ့သူ / သို့မဟုတ် သင်ကြားပေးသူ။ လူအများအပြားကိုဤအဖွဲ့၏နည်းပြများ / "
 "အသင်းတော်ဖွဲ့စည်းသူများဖြစ်နိုင်သော်လည်းလူတစ် ဦး တည်းကိုသာအဖွဲ့တစ်ခုသို့ခန့်အပ်နိုင်သည်။"
 
-#: dt-groups/base-setup.php:159
+#: dt-groups/base-setup.php:157
 msgid "Group Type"
 msgstr "အုပ်စုအမျိုးအစား"
 
-#: dt-groups/base-setup.php:164
+#: dt-groups/base-setup.php:162
 msgid "Pre-Group"
 msgstr "Pre-Group "
 
-#: dt-groups/base-setup.php:165
+#: dt-groups/base-setup.php:163
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "မယုံကြည်သူများ၊အများဆုံးရှိသောအုပ်စုတစ်စု။"
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:167
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "ယုံကြည်သူ ၃ ဦး နှင့်အထက်ရှိသော်လည်းအသင်းတော်အဖြစ်သတ်မှတ်ခြင်းမခံရသည့်အုပ်စု။"
 
-#: dt-groups/base-setup.php:172
+#: dt-groups/base-setup.php:170
 msgid "Church"
 msgstr "အသင်းတော်"
 
-#: dt-groups/base-setup.php:173
+#: dt-groups/base-setup.php:171
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "ယုံကြည်သူ (၃) ဦး နှင့်အထက်ရှိပြီးအသင်းတော်အဖြစ်သတ်မှတ်ခြင်းခံရသော အုပ်စု။"
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:174
 msgid "Team"
 msgstr "အသင်းအဖွဲ့"
 
-#: dt-groups/base-setup.php:177
+#: dt-groups/base-setup.php:175
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr "အသင်းတော်အဖြစ်မတွေ့မြင်နိုင်သေးသော ((သို့)အသင်းတော်ဖြစ်လာရန်ကြိုးစားသော) အထူးအဖွဲ့။"
 
-#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:639
+#: dt-groups/base-setup.php:190 dt-groups/base-setup.php:614
 msgid "Church Health"
 msgstr "အသင်းတော် ကျန်းမာရေး"
 
-#: dt-groups/base-setup.php:193
+#: dt-groups/base-setup.php:191
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "အုပ်စုတစ်စု / အသင်းတော်တိုးတက်မှုနှင့်ကျန်းမာရေးကိုခြေရာခံပါ။"
 
-#: dt-groups/base-setup.php:197 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:195 dt-metrics/personal/baptism-tree.php:139
 msgid "Baptism"
 msgstr "ဗတ္တိဇံ"
 
-#: dt-groups/base-setup.php:198
+#: dt-groups/base-setup.php:196
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "အုပ်စုသည်နှစ်ခြင်းခံနေသည်။"
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:200
 msgid "Bible Study"
 msgstr "ကျမ်းစာလေ့လာမှု"
 
-#: dt-groups/base-setup.php:203
+#: dt-groups/base-setup.php:201
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "အဆိုပါအုပ်စုသည်သမ္မာကျမ်းစာလေ့လာနေသည်။"
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:205
 msgid "Communion"
 msgstr "ပွဲတော်"
 
-#: dt-groups/base-setup.php:208
+#: dt-groups/base-setup.php:206
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "အဆိုပါအဖွဲ့သည်ပွဲတော်ကျင့်သုံးနေသည်။"
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:210
 msgid "Fellowship"
 msgstr "မိတ်သဟာယဖွဲ့"
 
-#: dt-groups/base-setup.php:213
+#: dt-groups/base-setup.php:211
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "အုပ်စုသည်မိတ်သဟာယဖွဲ့ခြင်းဖြစ်သည်။"
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:215
 msgid "Giving"
 msgstr "ပေးသည်"
 
-#: dt-groups/base-setup.php:218
+#: dt-groups/base-setup.php:216
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "အဖွဲ့ကပေးနေတယ်။"
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:220
 msgid "Prayer"
 msgstr "ဆုတောင်းခြင်း"
 
-#: dt-groups/base-setup.php:223
+#: dt-groups/base-setup.php:221
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "အုပ်စုသည်ဆုတောင်းနေသည်။"
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:225
 msgid "Praise"
 msgstr "ချီးမွမ်းသည်"
 
-#: dt-groups/base-setup.php:228
+#: dt-groups/base-setup.php:226
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "အုပ်စုကချီးမွမ်းနေသည်။"
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:230
 msgid "Sharing the Gospel"
 msgstr "ဧဝံဂေလိတရားကိုမျှဝေခြင်း"
 
-#: dt-groups/base-setup.php:233
+#: dt-groups/base-setup.php:231
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "အဆိုပါအုပ်စုသည်ဧဝံဂေလိတရားကိုမျှဝေသည်။"
 
-#: dt-groups/base-setup.php:237 dt-groups/base-setup.php:300
+#: dt-groups/base-setup.php:235 dt-groups/base-setup.php:298
 msgid "Leaders"
 msgstr "ခေါင်းဆောင်များ"
 
-#: dt-groups/base-setup.php:238
+#: dt-groups/base-setup.php:236
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "အုပ်စုတွင်ခေါင်းဆောင်များရှိသည်။"
 
-#: dt-groups/base-setup.php:242 dt-groups/base-setup.php:440
+#: dt-groups/base-setup.php:240 dt-groups/base-setup.php:415
 msgid "Church Commitment"
 msgstr "အသင်းတော် ကတိကဝတ်"
 
-#: dt-groups/base-setup.php:243
+#: dt-groups/base-setup.php:241
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "အဆိုပါအုပ်စုသည်အသင်းတော်ဖြစ်ဖို့ကတိသစ္စာပြုထားသည်။"
 
-#: dt-groups/base-setup.php:253 dt-users/template-user-management.php:180
+#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
 #: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "စတင်သည့်ရက်စွဲ"
 
-#: dt-groups/base-setup.php:254
+#: dt-groups/base-setup.php:252
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "ဤအဖွဲ့အစည်းအဝေးစတင်ကျင်းပသည့်ရက်စွဲ။"
 
-#: dt-groups/base-setup.php:261
+#: dt-groups/base-setup.php:259
 msgid "Church Start Date"
 msgstr "အသင်းတော်စတင်သည့်ရက်စွဲ"
 
-#: dt-groups/base-setup.php:262
+#: dt-groups/base-setup.php:260
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "ဤအုပ်စုသည်အသင်းတော်အဖြစ်ပထမဆုံးအကြိမ်သတ်မှတ်သည့်နေ့ရက်။"
 
-#: dt-groups/base-setup.php:270 dt-users/template-user-management.php:181
+#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
 #: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "အဆုံးသတ်ရက်စွဲ"
 
-#: dt-groups/base-setup.php:271
+#: dt-groups/base-setup.php:269
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "ဤအုပ်စုသည်အစည်းအဝေးကိုရပ်ဆိုင်းသည့်နေ့ရက် (သက်ဆိုင်လျှင်) ။"
 
-#: dt-groups/base-setup.php:281 dt-metrics/records/genmap.php:101
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:139
 msgid "Member Count"
 msgstr "အသင်းဝင် ရေတွက်ခြင်း"
 
-#: dt-groups/base-setup.php:282
+#: dt-groups/base-setup.php:280
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3244,34 +3295,34 @@ msgstr ""
 "အသင်းဝင်စာရင်းတွင်ဖယ်ရှားသောအခါ၎င်းသည်အလိုအလျောက် update လုပ်လိမ့်မည်။ စနစ်အတွင်းမပါ ၀ "
 "င်နိုင်သော်လည်းအဖွဲ့ ၀ င်များပါ ၀ င်သူများပါ ၀ င်ရန်ဤနံပါတ်ကိုလက်ဖြင့်ပြောင်းလဲပါ။"
 
-#: dt-groups/base-setup.php:290 dt-groups/base-setup.php:594
-#: dt-groups/base-setup.php:638
+#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:569
+#: dt-groups/base-setup.php:613
 msgid "Member List"
 msgstr "အသင်းဝင်စာရင်း"
 
-#: dt-groups/base-setup.php:291
+#: dt-groups/base-setup.php:289
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "ဤအုပ်စု၏အဖွဲ့ဝင်များဖြစ်သောအဆက်အသွယ်။"
 
-#: dt-groups/base-setup.php:310
+#: dt-groups/base-setup.php:308
 msgid "Leader Count"
 msgstr "ခေါင်းဆောင် ဘွဲ့"
 
-#: dt-groups/base-setup.php:318
+#: dt-groups/base-setup.php:316
 msgid "Parent Group"
 msgstr "မိဘအုပ်စု"
 
-#: dt-groups/base-setup.php:319
+#: dt-groups/base-setup.php:317
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "ဒီအဖွဲ့ကိုတည်ထောင်သည့်အဖွဲ့။"
 
-#: dt-groups/base-setup.php:330
+#: dt-groups/base-setup.php:328
 msgid "Peer Group"
 msgstr "အဆင့်တူအုပ်စု"
 
-#: dt-groups/base-setup.php:331
+#: dt-groups/base-setup.php:329
 #, fuzzy
 msgctxt "Optional Documentation"
 msgid ""
@@ -3281,105 +3332,105 @@ msgstr ""
 "မိဘ / ကလေးဆက်ဆံရေးမဟုတ်သောဆက်နွယ်မှုအုပ်စု။ ၎င်းသည်ပူးပေါင်းသောအုပ်စုများကိုပေါင်းစည်းတော့မည်၊ "
 "မကြာသေးမီကခွဲထုတ်ရန်၊စသည်တို့ကိုညွှန်ပြလိမ့်မည်။"
 
-#: dt-groups/base-setup.php:342
+#: dt-groups/base-setup.php:340
 msgid "Child Group"
 msgstr "ကလေးအုပ်စု"
 
-#: dt-groups/base-setup.php:343
+#: dt-groups/base-setup.php:341
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "ဤအုပ်စုမှထုတ်ပယ်ခံရသောအုပ်စုတစ်စု။"
 
-#: dt-groups/base-setup.php:400
+#: dt-groups/base-setup.php:375
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "ဤအုပ်စုမှကိုယ်စားပြုသောလူအုပ်စုများ။"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:388
 msgid "Unbelievers"
 msgstr "မယုံကြည်သူများ"
 
-#: dt-groups/base-setup.php:414
+#: dt-groups/base-setup.php:389
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "ဤအုပ်စုထဲကမယုံကြည်သူများအရေအတွက်။"
 
-#: dt-groups/base-setup.php:422
+#: dt-groups/base-setup.php:397
 msgid "Believers"
 msgstr "ယုံကြည်သူများ"
 
-#: dt-groups/base-setup.php:423
+#: dt-groups/base-setup.php:398
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "ဤအုပ်စုထဲကယုံကြည်သူများအရေအတွက်"
 
-#: dt-groups/base-setup.php:431
+#: dt-groups/base-setup.php:406
 msgid "Accountable"
 msgstr "တာဝန်ခံ"
 
-#: dt-groups/base-setup.php:432
+#: dt-groups/base-setup.php:407
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "တာဝန်ခံအုပ်စုထဲကလူဦးရေ။"
 
-#: dt-groups/base-setup.php:441
+#: dt-groups/base-setup.php:416
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "ဤဟာသည် အသင်းတော် ၊ ဟုတ် (သို့) မဟုတ်။"
 
-#: dt-groups/base-setup.php:449
+#: dt-groups/base-setup.php:424
 msgid "Multiplying"
 msgstr "တိုးပွားစေခြင်း"
 
-#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:425
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
 "multiplying?"
 msgstr "အခြားအဖွဲ့များစတင်ရန်ကူညီပေးနေသူအရေအတွက်။ အဖွဲ့ဝင်ဘယ်နှစ်ယောက်တိုးပွားသနည်း။"
 
-#: dt-groups/base-setup.php:463
+#: dt-groups/base-setup.php:438
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "ဒီအဆက်အသွယ်အဖွဲ့သည်အသင်းဝင်ဖြစ်ပါသည်။"
 
-#: dt-groups/base-setup.php:475
+#: dt-groups/base-setup.php:450
 msgid "Leader of Group"
 msgstr "Group မှခေါင်းဆောင်"
 
-#: dt-groups/base-setup.php:485
+#: dt-groups/base-setup.php:460
 msgid "Coach of Group"
 msgstr "နည်းပြအဖွဲ့"
 
-#: dt-groups/base-setup.php:597
+#: dt-groups/base-setup.php:572
 msgid "Create"
 msgstr "ဖန်တီးပါ"
 
-#: dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:577
 msgid "Select"
 msgstr "ရွေးချယ်ပါ"
 
-#: dt-groups/base-setup.php:607
+#: dt-groups/base-setup.php:582
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "အသင်း၀င်သစ်များကိုထည့်သွင်းရန် 'Create' သို့မဟုတ် 'Select' ကိုနှိပ်ပါ။"
 
-#: dt-groups/base-setup.php:613
+#: dt-groups/base-setup.php:588
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "ရှိပြီးသားအဆက်အသွယ်များမှအဖွဲ့ဝင်များထည့်ပါ။"
 
-#: dt-groups/base-setup.php:614
+#: dt-groups/base-setup.php:589
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr "'အသင်းဝင်စာရင်း' အကွက်ထဲ၊ဤအုပ်စုထဲသို့ထည့်ရန်ရှိပြီးသားအဆက်အသွယ်၏အမည်ကိုရိုက်ပါ။"
 
-#: dt-groups/base-setup.php:642
+#: dt-groups/base-setup.php:617
 msgid "Four Fields"
 msgstr "နယ်ပယ် လေးခု"
 
-#: dt-groups/base-setup.php:643
+#: dt-groups/base-setup.php:618
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3538,7 +3589,7 @@ msgstr "စာရင်း"
 msgid "Refresh Cached Data"
 msgstr "သိုလှောင်ထားသည့်ဒေတာများကို လန်းဆန်းအောင်လုပ်သည်"
 
-#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:283
+#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:260
 msgid "Population"
 msgstr "လူ ဦး ရေ"
 
@@ -3561,7 +3612,8 @@ msgstr "အရေးကြီးသောလမ်းကြောင်း"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:98 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "စီမံကိန်း"
@@ -3723,7 +3775,7 @@ msgid ""
 msgstr "အောက်ဖော်ပြပါ မက်ထရစ်များ၏ အသေးစိတ်စာရင်းကို ပြသရန် အချိန်ဇယားရက်အကျဉ်းကို နှိပ်ပါ။"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:126
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
 #, fuzzy
 msgid "Metrics"
 msgstr "မက်ထရစ်"
@@ -3737,7 +3789,7 @@ msgid "No Activity Detected!"
 msgstr "လုပ်ဆောင်ချက် မတွေ့ပါ။"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:149
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:151
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "%s အသစ်"
@@ -3849,6 +3901,7 @@ msgstr "ဆက်သွယ်ရန်ရက်စွဲအကွာအဝေး
 #: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
 #: dt-users/template-user-management.php:432
 msgid "All Time"
@@ -3989,38 +4042,42 @@ msgid "Group Generation Tree"
 msgstr "မျိုးဆက်အုပ်စုပုံစံ"
 
 #: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:87
+#: dt-metrics/records/genmap.php:125
 #, fuzzy
 msgid "Highlight Active"
 msgstr "Active ကိုအထူးပြုပါ"
 
 #: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:88
+#: dt-metrics/records/genmap.php:126
 #, fuzzy
 msgid "Highlight Churches"
 msgstr "အသင်းတော်များကိုမီးမောင်းထိုးပြ"
 
 #: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:89 dt-metrics/records/genmap.php:102
+#: dt-metrics/records/genmap.php:127 dt-metrics/records/genmap.php:140
 msgid "Members"
 msgstr "အဖွဲ့ဝင်များ"
 
 #: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:90
+#: dt-metrics/records/genmap.php:128
 msgid "View Record"
 msgstr "မှတ်တမ်းကိုကြည့်ပါ"
 
 #: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:93
+#: dt-metrics/records/genmap.php:131
 msgid "Total Members"
 msgstr "အဖွဲ့ဝင်များစုစုပေါင်း"
 
 #: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:94
+#: dt-metrics/records/genmap.php:132
 msgid "View Group"
 msgstr "အုပ်စုကိုကြည့်ပါ"
 
-#: dt-metrics/metrics.php:109
+#: dt-metrics/metrics.php:82
+msgid "Genmap"
+msgstr ""
+
+#: dt-metrics/metrics.php:113
 #, fuzzy
 msgid "Dynamic Metrics"
 msgstr "မက်ထရစ်"
@@ -4063,6 +4120,7 @@ msgid "Comments I Posted"
 msgstr "ကျွန်တော် တင်ထားသော မှတ်ချက်များ"
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "ရက်စွဲ"
@@ -4141,6 +4199,7 @@ msgid "Field Activity"
 msgstr "နေ့စဉ်လှုပ်ရှားမှု"
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
 #, fuzzy
 #| msgid "Record"
@@ -4175,7 +4234,8 @@ msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
 msgstr ""
 
@@ -4244,64 +4304,92 @@ msgstr "မှတ်တမ်း"
 msgid "System"
 msgstr "စနစ်"
 
-#: dt-metrics/records/genmap.php:23
-msgid "Genmap"
-msgstr ""
-
-#: dt-metrics/records/genmap.php:24 dt-metrics/records/genmap.php:86
+#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:123
 #, fuzzy
-#| msgid "Generation"
-msgid "Generation Map"
-msgstr "မျိုးဆက်"
+#| msgid "Group Generation Tree"
+msgid "Generational Trees"
+msgstr "မျိုးဆက်အုပ်စုပုံစံ"
 
-#: dt-metrics/records/genmap.php:99
+#: dt-metrics/records/genmap.php:124
+#, fuzzy
+#| msgid "Archived"
+msgid "Show Archived"
+msgstr "မော်ကွန်းတင်သည်။"
+
+#: dt-metrics/records/genmap.php:137
 msgid "Coaches"
 msgstr "နည်းပြများ"
 
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:138
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "အမျိုးအစား:"
 
-#: dt-metrics/records/genmap.php:103
+#: dt-metrics/records/genmap.php:141
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "ဖြင့်ဖွင့်ပါ။"
 
-#: dt-metrics/records/genmap.php:105
+#: dt-metrics/records/genmap.php:143
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:106
+#: dt-metrics/records/genmap.php:144
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:109
+#: dt-metrics/records/genmap.php:147
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "ကလေးအုပ်စု"
 
-#: dt-metrics/records/genmap.php:111
+#: dt-metrics/records/genmap.php:149
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:150
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:151
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "%s ကိုသင်ဖျက်ဖို့သေချာပါသလား။"
 
-#: dt-metrics/records/genmap.php:117
+#: dt-metrics/records/genmap.php:155
 msgid "Infinite Loops"
 msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:32
+#, fuzzy
+#| msgid "All cumulative totals"
+msgid "Field Cumulative Values"
+msgstr "အားလုံးစုစုပေါင်းစုစုပေါင်း"
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid ""
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records"
+msgstr "မှတ်တမ်းများထည့်ပါ။"
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+#, fuzzy
+#| msgid "No Data Available"
+msgid "No Records Available"
+msgstr "Data မရနိုင်ပါ။"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
@@ -4351,24 +4439,6 @@ msgstr "လူပျိုစုစုပေါင်းစုစုပေါင
 #| msgid "Add Records"
 msgid "Records changes"
 msgstr "မှတ်တမ်းများထည့်ပါ။"
-
-#: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records"
-msgstr "မှတ်တမ်းများထည့်ပါ။"
-
-#: dt-metrics/records/time-charts.php:122
-#, fuzzy
-#| msgid "No"
-msgid "No."
-msgstr "မဟုတ်ဘူး"
-
-#: dt-metrics/records/time-charts.php:124
-#, fuzzy
-#| msgid "No Data Available"
-msgid "No Records Available"
-msgstr "Data မရနိုင်ပါ။"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4495,32 +4565,32 @@ msgstr ""
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:221
-#: dt-posts/custom-post-type.php:178
+#: dt-people-groups/people-groups-base.php:202
+#: dt-posts/custom-post-type.php:186
 msgid "Last Modified"
 msgstr "နောက်ဆုံးပြင်ဆင်ထားသော"
 
-#: dt-people-groups/people-groups-base.php:290
+#: dt-people-groups/people-groups-base.php:267
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:297
+#: dt-people-groups/people-groups-base.php:274
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:304
+#: dt-people-groups/people-groups-base.php:281
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:311
+#: dt-people-groups/people-groups-base.php:288
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:302
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:327
+#: dt-people-groups/people-groups-base.php:304
 msgid "Joshua Project"
 msgstr ""
 
@@ -4541,51 +4611,65 @@ msgstr "ဘာသာပြန်ချက်များ"
 msgid "Enter the People Group title here"
 msgstr "ဤနေရာတွင် People Group ခေါင်းစဉ်ကိုထည့်ပါ"
 
-#: dt-posts/custom-post-type.php:201
+#: dt-posts/custom-post-type.php:180
+msgid "Picture"
+msgstr ""
+
+#: dt-posts/custom-post-type.php:209
 #, fuzzy
 msgid "Tags"
 msgstr "အမှတ်အသားများ (Tags)"
 
-#: dt-posts/custom-post-type.php:202
+#: dt-posts/custom-post-type.php:210
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "ဆက်စပ်ပစ္စည်းများကို အုပ်စုဖွဲ့ရန် အသုံးဝင်သောနည်းလမ်း။"
 
-#: dt-posts/custom-post-type.php:215
+#: dt-posts/custom-post-type.php:223
 msgid "Un-Follow"
 msgstr "နောက်မလိုက်တော့ပါ"
+
+#: dt-posts/custom-post-type.php:244
+#, fuzzy
+msgctxt "Optional Documentation"
+msgid "The general location where this record is located."
+msgstr "ဒီအဆက်အသွယ်တည်ရှိရာအထွေထွေတည်နေရာ။"
+
+#: dt-posts/custom-post-type.php:252
+msgid "Locations or Address"
+msgstr "တည်နေရာများ(သို့)လိပ်စာ"
 
 #: dt-posts/dt-posts.php:100
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1699
+#: dt-posts/dt-posts.php:1705
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "Magic Link တင်ပြခြင်း။"
 
-#: dt-posts/dt-posts.php:1699
+#: dt-posts/dt-posts.php:1705
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "Magic Link တင်ပြခြင်း။"
 
-#: dt-posts/dt-posts.php:1701 dt-posts/dt-posts.php:2248
+#: dt-posts/dt-posts.php:1707 dt-posts/dt-posts.php:2254
 #, fuzzy
 msgid "Revert Bot"
 msgstr "ပြန်လည်လှုပ်ရှားမှု"
 
-#: dt-posts/dt-posts.php:2488
+#: dt-posts/dt-posts.php:2494
 msgid "Post already shared with user."
 msgstr "ပို့စ်ကိုအသုံးပြုသူနှင့်မျှဝေပြီးပါပြီ။"
 
-#: dt-posts/dt-posts.php:2768 single-template.php:175
+#: dt-posts/dt-posts.php:2774 single-template.php:175
 msgid "Details"
 msgstr "အသေးစိတ်"
 
-#: dt-posts/dt-posts.php:2837
+#: dt-posts/dt-posts.php:2843
 #, fuzzy
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
@@ -4598,7 +4682,7 @@ msgstr ""
 "@[%1$s](%2$s) - သုံးစွဲသူ %3$s က %4$s [%5$s](%6$s) ကိုဝင်ရောက်ခွင့်တောင်းခံထားတယ်။ "
 "လိုချင်ပါကအသုံးပြုရန်ခွင့်ပြုရန်အသုံးပြုသူနှင့်ဤမှတ်တမ်းကိုမျှဝေပါ။"
 
-#: dt-posts/dt-posts.php:2843
+#: dt-posts/dt-posts.php:2849
 msgid "Access Request"
 msgstr "အသုံးပြုခွင့်တောင်းဆိုမှု"
 
@@ -4931,7 +5015,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s နှင့်မမျှဝေပါ"
 
-#: dt-posts/posts.php:2494
+#: dt-posts/posts.php:2496
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -4968,13 +5052,13 @@ msgstr ""
 msgid "Configure email message"
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:61
+#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:134
 #, fuzzy
 #| msgid "Select app to email"
 msgid "Selected app name"
 msgstr "အီးမေးလ်သို့ အက်ပ်ကို ရွေးပါ။"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:140
 msgid "Unique link to access the app."
 msgstr ""
 
@@ -5032,18 +5116,29 @@ msgid "Reset"
 msgstr ""
 
 #: dt-reports/magic-url-setup.php:121
+msgid ""
+"Hello,\n"
+"\n"
+"Please click on the button below to access your app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Thanks!"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:130
 msgid "Add email address"
 msgstr "အီးမေးလ်လိပ်စာထည့်ပါ။"
 
-#: dt-reports/magic-url-setup.php:122
+#: dt-reports/magic-url-setup.php:131
 msgid "Add a note"
 msgstr "မှတ်စုတစ်ခုထည့်ပါ။"
 
-#: dt-reports/magic-url-setup.php:122
+#: dt-reports/magic-url-setup.php:144
 msgid "Send email with link"
 msgstr "လင့်ခ်ဖြင့် အီးမေးလ်ပို့ပါ။"
 
-#: dt-reports/magic-url-setup.php:164
+#: dt-reports/magic-url-setup.php:186
 msgid "Delete and replace the app link"
 msgstr "အက်ပ်လင့်ခ်ကို ဖျက်ပြီး အစားထိုးပါ။"
 
@@ -5581,7 +5676,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "ဤအလုပ်ကို %1$s : %2$s တွင်သင်သတ်မှတ်ထားသည်"
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr "D.T အလုပ်အသွားအလာ"
 
@@ -5924,6 +6019,16 @@ msgid "Duplicates found:"
 msgstr "ပုံတူပွားများ တွေ့ရှိသည်"
 
 #, fuzzy
+#~| msgid "No"
+#~ msgid "No."
+#~ msgstr "မဟုတ်ဘူး"
+
+#, fuzzy
+#~| msgid "Generation"
+#~ msgid "Generation Map"
+#~ msgstr "မျိုးဆက်"
+
+#, fuzzy
 #~| msgid "List"
 #~ msgid "Map List Filter"
 #~ msgstr "စာရင်း"
@@ -5942,11 +6047,6 @@ msgstr "ပုံတူပွားများ တွေ့ရှိသည်"
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
 #~ msgstr "%s ကိုတာဝန်ပေးအပ်ထားသည်"
-
-#, fuzzy
-#~| msgid "Group Generation Tree"
-#~ msgid "Generation Tree"
-#~ msgstr "မျိုးဆက်အုပ်စုပုံစံ"
 
 #, fuzzy
 #~| msgid "Generation"

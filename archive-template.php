@@ -257,6 +257,7 @@ dt_please_log_in();
                         </button>
                     </div>
                     <div class="section-body">
+                        <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="split_by_current_filter_select_labels"></div>
                         <table>
                             <tbody style="border: none;">
                                 <tr style="border: none;">
@@ -869,6 +870,10 @@ Thanks!';
 
                                     $comms_channels[$channel_key] = $channel_value;
                                 }
+                                $msg_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
+                                if ( empty( $msg_reply_to ) ) {
+                                    $msg_reply_to = dt_get_option( 'dt_email_base_address' );
+                                }
                                 ?>
                                 <label
                                     for="bulk_send_msg_subject"><?php echo esc_html__('Message subject', 'disciple_tools'); ?></label>
@@ -884,13 +889,9 @@ Thanks!';
                                 <span id="bulk_send_msg_from_name_support_text"
                                     style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__('A valid from name must be specified.', 'disciple_tools'); ?></span><br>
 
-                                <label
-                                    for="bulk_send_msg_reply_to"><?php echo esc_html__('Message reply to', 'disciple_tools'); ?></label>
-                                <input type="text" id="bulk_send_msg_reply_to"
-                                    value="<?php echo esc_attr(dt_get_option('dt_email_base_address')); ?>"
-                                    style="margin-bottom: 0" />
-                                <span id="bulk_send_msg_reply_to_support_text"
-                                    style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__('A valid reply to email address must be specified.', 'disciple_tools'); ?></span><br>
+                                <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( $msg_reply_to ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
 
                                 <span><?php echo sprintf(esc_html__('Emails will be sent from: %s', 'disciple_tools'), esc_html(dt_default_email_address())); ?></span><br>
 

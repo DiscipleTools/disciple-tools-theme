@@ -227,6 +227,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 'role__in' => [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ],
                 'order'    => 'ASC',
                 'orderby'  => 'display_name',
+                'number'    => '200',
             ]
         );
 
@@ -333,25 +334,36 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <table class="widefat">
                 <tbody>
                 <tr>
-                    <td>
-                        <label
-                            for="email_address"><?php echo esc_html( sprintf( 'Specify notification from email address. Leave blank to use default (%s)', dt_default_email_address() ) ) ?></label>
-                    </td>
-                    <td>
-                        <input name="email_address" id="email_address"
-                               value="<?php echo esc_html( dt_get_option( 'dt_email_base_address' ) ) ?>"/>
-                    </td>
+                  <td>
+                    <label
+                      for="email_name"><?php echo esc_html( sprintf( 'From name. Default is: %s', dt_default_email_name() ) ) ?></label>
+                  </td>
+                  <td>
+                    <input name="email_name" id="email_name" placeholder="<?php echo esc_html( dt_default_email_name() ); ?>"
+                           value="<?php echo esc_html( dt_get_option( 'dt_email_base_name' ) ) ?>"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="email_address"><?php echo esc_html( sprintf( 'From Email Address. Default is %s', dt_default_email_address() ) ) ?></label>
+                  </td>
+                  <td>
+                    <input name="email_address" id="email_address" placeholder="<?php echo esc_html( dt_default_email_address() ); ?>"
+                           value="<?php echo esc_html( dt_get_option( 'dt_email_base_address' ) ) ?>"/>
+                  </td>
                 </tr>
                 <tr>
                     <td>
-                        <label
-                            for="email_name"><?php echo esc_html( sprintf( 'Specify notification from name. Leave blank to use default (%s)', dt_default_email_name() ) ) ?></label>
+                        <label pl
+                            for="email_address_reply_to"><?php echo esc_html( 'Reply to email address. Defaults to "From Email Address"' ) ?></label>
                     </td>
                     <td>
-                        <input name="email_name" id="email_name"
-                               value="<?php echo esc_html( dt_get_option( 'dt_email_base_name' ) ) ?>"/>
+                        <input name="email_address_reply_to" id="email_address_reply_to"
+                               value="<?php echo esc_html( dt_get_option( 'dt_email_base_address_reply_to' ) ) ?>"/>
                     </td>
                 </tr>
+
+
                 <tr>
                     <td>
                         <label
@@ -382,14 +394,19 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 update_option( 'dt_email_base_subject', $email_subject );
             }
 
+            if ( isset( $_POST['email_address_reply_to'] ) ) {
+                $email_address_reply_to = sanitize_text_field( wp_unslash( $_POST['email_address_reply_to'] ) );
+                update_option( 'dt_email_base_address_reply_to', $email_address_reply_to );
+            }
+
             if ( isset( $_POST['email_address'] ) ) {
-                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_address'] ) );
-                update_option( 'dt_email_base_address', $email_subject );
+                $email_address = sanitize_text_field( wp_unslash( $_POST['email_address'] ) );
+                update_option( 'dt_email_base_address', $email_address );
             }
 
             if ( isset( $_POST['email_name'] ) ) {
-                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_name'] ) );
-                update_option( 'dt_email_base_name', $email_subject );
+                $email_name = sanitize_text_field( wp_unslash( $_POST['email_name'] ) );
+                update_option( 'dt_email_base_name', $email_name );
             }
         }
     }
@@ -657,7 +674,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_options', $site_options, true );
             update_option( 'dt_custom_tiles', $tile_options, true );
         }
-
     }
 
     public function update_group_preferences(){
@@ -841,7 +857,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_custom_post_types', $post_type_settings, true );
         }
-
     }
 
     public function show_dt_contact_preferences(){
@@ -874,7 +889,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             update_option( 'dt_performance_mode', $dt_performance_mode, true );
         }
-
     }
 
     public function dt_performance_mode(){
