@@ -1,4 +1,5 @@
 <?php
+require_once ABSPATH . 'wp-content/themes/disciple-tools-theme-next/dt-core/global-functions.php';
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class DT_Contacts_DMM extends DT_Module_Base {
@@ -474,7 +475,7 @@ class DT_Contacts_DMM extends DT_Module_Base {
             return new WP_Error( 'get_activity', 'Missing a valid contact id or activity id', [ 'status' => 400 ] );
         }
     }
-
+    
 
     public function dt_record_footer( $post_type, $post_id ){
         if ( $post_type !== 'contacts' ){
@@ -484,46 +485,32 @@ class DT_Contacts_DMM extends DT_Module_Base {
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
         $post = DT_Posts::get_post( 'contacts', $post_id );
         ?>
-        <div class="reveal" id="baptism-modal" data-reveal data-close-on-click="false">
-
-            <h3><?php echo esc_html( $field_settings['baptized']['name'] ?? '' )?></h3>
+        <dt-modal id="baptized-modal" title="Baptised" closeButton>
+            <span slot="content">
+            <div id="baptism-modal" data-close-on-click="false">
             <p><?php esc_html_e( 'Who was this contact baptized by and when?', 'disciple_tools' )?></p>
-
             <div>
-                <div class="section-subheader">
-                    <?php echo esc_html( $field_settings['baptized_by']['name'] ?? '' )?>
-                </div>
                 <div class="modal_baptized_by details">
-                    <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>
-                    <div id="modal_baptized_by_t" name="form-modal_baptized_by" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-modal_baptized_by input-height"
-                                           name="modal_baptized_by[query]"
-                                           placeholder="<?php echo esc_html_x( 'Search multipliers and contacts', 'input field placeholder', 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
-                        </div>
+                    
+                    <?php 
+                    render_field_for_display( 'baptized_by', $field_settings, $post );
+                    ?>
                     </div>
-                </div>
-
-                <span class="section-subheader"><?php echo esc_html( $field_settings['baptism_date']['name'] )?></span>
-                <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $post['baptism_date']['timestamp'] ?? '' );?>" id="modal-baptism-date-picker" autocomplete="off">
-
+                <?php render_field_for_display( 'baptism_date', $field_settings, $post );?>
             </div>
 
-
-            <div class="grid-x">
-                <button class="button" data-close type="button" id="close-baptism-modal">
-                    <?php echo esc_html__( 'Close', 'disciple_tools' )?>
-                </button>
-                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<br>
+<br>           
             </div>
-        </div>
+            
+        </span>
+       <span slot="close-button">
+           <button class="button" data-close type="button" id="close-baptism-modal">
+               <?php echo esc_html__( 'Close', 'disciple_tools' )?>
+           </button>
+       </span>
+        </dt-modal>
+        
         <?php
     }
 
