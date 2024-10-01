@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
-    "@disciple.tools/web-components": "^0.6.1",
+    "@disciple.tools/web-components": "^0.6.4",
     "babel-eslint": "^10.1.0",
     "browserslist": "^4.17.0",
     "dotenv": "^16.4.5",
