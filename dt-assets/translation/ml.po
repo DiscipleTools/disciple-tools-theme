@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-08-20T10:49:20+00:00\n"
+"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
 "PO-Revision-Date: 2023-10-21 06:17+0000\n"
 "Last-Translator: Bijo Thomas <bijothoma@gmail.com>\n"
 "Language-Team: Malayalam <https://translate.disciple.tools/projects/disciple-"
@@ -71,23 +71,23 @@ msgstr ""
 msgid "Submit Request"
 msgstr "അഭ്യർത്ഥന സമർപ്പിക്കുക"
 
-#: 403.php:55 archive-template.php:1107 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1108 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
-#: dt-contacts/access-module.php:558 dt-contacts/base-setup.php:376
-#: dt-contacts/base-setup.php:411 dt-contacts/user-module.php:159
-#: single-template.php:418 single-template.php:435
+#: dt-contacts/access-module.php:496 dt-contacts/access-module.php:527
+#: dt-contacts/access-module.php:555 dt-contacts/base-setup.php:375
+#: dt-contacts/base-setup.php:410 dt-contacts/user-module.php:159
+#: single-template.php:417 single-template.php:434
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:180
 msgid "Cancel"
 msgstr "റദ്ദാക്കുക"
 
-#: 403.php:59 archive-template.php:505 archive-template.php:547
-#: archive-template.php:772 archive-template.php:1131
+#: 403.php:59 archive-template.php:506 archive-template.php:548
+#: archive-template.php:773 archive-template.php:1132
 #: dt-assets/functions/enqueue-scripts.php:440
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
@@ -115,16 +115,16 @@ msgstr "റദ്ദാക്കുക"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/access-module.php:504 dt-contacts/access-module.php:535
-#: dt-contacts/access-module.php:563 dt-contacts/access-module.php:654
-#: dt-contacts/base-setup.php:381 dt-contacts/base-setup.php:416
-#: dt-contacts/dmm-module.php:521 dt-contacts/dmm-module.php:523
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:598
-#: dt-groups/base-setup.php:603 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/access-module.php:501 dt-contacts/access-module.php:532
+#: dt-contacts/access-module.php:560 dt-contacts/access-module.php:651
+#: dt-contacts/base-setup.php:380 dt-contacts/base-setup.php:415
+#: dt-contacts/dmm-module.php:520 dt-contacts/dmm-module.php:522
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:597
+#: dt-groups/base-setup.php:602 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:423
-#: single-template.php:440 template-new-bulk-post.php:223
+#: dt-users/user-initial-setup.php:82 single-template.php:422
+#: single-template.php:439 template-new-bulk-post.php:223
 #: template-new-bulk-post.php:295 template-new-post.php:185
 #: template-settings.php:602
 msgid "Close"
@@ -148,7 +148,7 @@ msgstr "പുതിയ%s സൃഷ്ടിക്കുക"
 msgid "Filters"
 msgstr "ഫിൽട്ടറുകൾ"
 
-#: archive-template.php:36 archive-template.php:138 archive-template.php:655
+#: archive-template.php:36 archive-template.php:138 archive-template.php:656
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:711
 #: dt-core/global-functions.php:739 dt-core/global-functions.php:871
 #: dt-core/global-functions.php:915 dt-posts/custom-post-type.php:20
@@ -176,7 +176,7 @@ msgid "Comments"
 msgstr "അഭിപ്രായങ്ങൾ"
 
 #: archive-template.php:63 archive-template.php:162
-#: dt-users/user-management.php:231
+#: dt-users/user-management.php:230
 msgid "Search"
 msgstr "തിരയുക"
 
@@ -192,12 +192,12 @@ msgstr "എല്ലാ ഫീൽഡുകളും തിരയുക"
 msgid "Communication Channels"
 msgstr "വാര്‍ത്താവിനിമയ മാദ്ധ്യമങ്ങള്‍"
 
-#: archive-template.php:111 archive-template.php:206 archive-template.php:542
+#: archive-template.php:111 archive-template.php:206 archive-template.php:543
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "പ്രയോഗിക്കുക"
 
-#: archive-template.php:112 archive-template.php:207 archive-template.php:543
+#: archive-template.php:112 archive-template.php:207 archive-template.php:544
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "സ്ഥിരസ്ഥിതിയായി പുന reset സജ്ജമാക്കുക"
@@ -216,48 +216,48 @@ msgctxt "Split By"
 msgid "Split By"
 msgstr "പിളരുവാന്‍ ഉപയോഗിക്കുന്നത്"
 
-#: archive-template.php:295
+#: archive-template.php:296
 msgid "No results found"
 msgstr "ആവശ്യമായ ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല."
 
-#: archive-template.php:301
+#: archive-template.php:302
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:313 archive-template.php:336
+#: archive-template.php:314 archive-template.php:337
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "പട്ടിക"
 
-#: archive-template.php:317 archive-template.php:340
+#: archive-template.php:318 archive-template.php:341
 msgid "BCC Email List"
 msgstr ""
 
-#: archive-template.php:318
+#: archive-template.php:319
 #, fuzzy
 #| msgid "Phone"
 msgid "Phone List"
 msgstr "ഫോൺ"
 
-#: archive-template.php:323 archive-template.php:348
+#: archive-template.php:324 archive-template.php:349
 #, fuzzy
 #| msgid "List"
 msgid "Map List"
 msgstr "പട്ടിക"
 
-#: archive-template.php:332
+#: archive-template.php:333
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:337
+#: archive-template.php:338
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:341
+#: archive-template.php:342
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -267,323 +267,323 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 
-#: archive-template.php:344
+#: archive-template.php:345
 #, fuzzy
 #| msgid "Member List"
 msgid "Phone Number List"
 msgstr "അംഗങ്ങളുടെ പട്ടിക"
 
-#: archive-template.php:345
+#: archive-template.php:346
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
 
-#: archive-template.php:349
+#: archive-template.php:350
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
 
-#: archive-template.php:375
+#: archive-template.php:376
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s പട്ടിക"
 
-#: archive-template.php:382
+#: archive-template.php:383
 msgid "Sort"
 msgstr "അടുക്കുക"
 
-#: archive-template.php:387
+#: archive-template.php:388
 msgid "Newest"
 msgstr "ഏറ്റവും പുതിയത്"
 
-#: archive-template.php:392
+#: archive-template.php:393
 msgid "Oldest"
 msgstr "ഏറ്റവും പഴയത്"
 
-#: archive-template.php:397
+#: archive-template.php:398
 msgid "Most recently modified"
 msgstr "ഏറ്റവും സമീപകാലത്ത് പരിഷ്‌ക്കരിച്ചു"
 
-#: archive-template.php:402
+#: archive-template.php:403
 msgid "Least recently modified"
 msgstr "കുറഞ്ഞത് അടുത്തിടെ പരിഷ്‌ക്കരിച്ചു"
 
-#: archive-template.php:412 template-new-bulk-post.php:89
+#: archive-template.php:413 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "ഫീൽഡുകൾ"
 
-#: archive-template.php:419
+#: archive-template.php:420
 msgid "Bulk Edit"
 msgstr "ബൾക്ക് എഡിറ്റ്"
 
-#: archive-template.php:426
+#: archive-template.php:427
 msgid "Bulk Send Message"
 msgstr ""
 
-#: archive-template.php:460 dt-assets/parts/nav-topbar.php:65
-#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
+#: archive-template.php:461 dt-assets/parts/nav-topbar.php:65
+#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "കൂടുതല്‍"
 
-#: archive-template.php:481 dt-contacts/base-setup.php:305
+#: archive-template.php:482 dt-contacts/base-setup.php:304
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "ശേഖരിച്ചു"
 
-#: archive-template.php:485
+#: archive-template.php:486
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "കാണിക്കുക"
 
-#: archive-template.php:508
+#: archive-template.php:509
 msgid "Choose which fields to display as columns in the list"
 msgstr "ലിസ്റ്റിലെ നിരകളായി പ്രദർശിപ്പിക്കേണ്ട ഫീൽഡുകൾ തിരഞ്ഞെടുക്കുക"
 
-#: archive-template.php:551
+#: archive-template.php:552
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "ലിസ്റ്റിൽ നിന്ന് അപ്‌ഡേറ്റ് ചെയ്യാൻ ആഗ്രഹിക്കുന്ന എല്ലാ %1$s ഉം തിരഞ്ഞെടുക്കുക, അവ ചുവടെ "
 "അപ്‌ഡേറ്റുചെയ്യുക"
 
-#: archive-template.php:569 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:587 dt-contacts/user-module.php:137
+#: archive-template.php:570 dt-assets/parts/modals/modal-share.php:27
+#: dt-contacts/access-module.php:584 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:953
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ഉപയോക്താക്കളെ തിരയുക"
 
-#: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:139
-#: dt-metrics/records/genmap.php:143 dt-posts/dt-posts.php:2773
+#: archive-template.php:594 dt-metrics/groups/tree.php:86
+#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
-#: single-template.php:128
+#: single-template.php:127
 msgid "Status"
 msgstr "പദവി"
 
-#: archive-template.php:643
+#: archive-template.php:644
 msgid "Share with:"
 msgstr "ഇതുമായി പങ്കിടുക:"
 
-#: archive-template.php:663
+#: archive-template.php:664
 msgid "Unshare with selected user"
 msgstr "തിരഞ്ഞെടുത്ത ഉപയോക്താവുമായി പങ്കിടാതിരിക്കുക"
 
-#: archive-template.php:675 dt-assets/functions/details-bar.php:186
-#: dt-posts/custom-post-type.php:217
+#: archive-template.php:676 dt-assets/functions/details-bar.php:186
+#: dt-posts/custom-post-type.php:216
 msgid "Follow"
 msgstr "പിന്തുടരുക"
 
-#: archive-template.php:680 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:681 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "അഭിപ്രായങ്ങളും പ്രവർത്തനവും"
 
-#: archive-template.php:685 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:686 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "നിങ്ങളുടെ അഭിപ്രായമോ കുറിപ്പോ ഇവിടെ എഴുതുക"
 
-#: archive-template.php:693 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:694 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "തരം:"
 
-#: archive-template.php:713 dt-users/template-new-user.php:127
+#: archive-template.php:714 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "കൂടുതൽ ഓപ്ഷനുകൾ കാണുക"
 
-#: archive-template.php:714 dt-users/template-new-user.php:130
+#: archive-template.php:715 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "കുറച്ച് ഓപ്ഷനുകൾ കാണുക"
 
-#: archive-template.php:750 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:751 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "അപ്ഡേറ്റ് ചെയ്യുക"
 
-#: archive-template.php:751 archive-template.php:859
+#: archive-template.php:752 archive-template.php:860
 #: dt-assets/functions/enqueue-scripts.php:330
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "താഴെ കൊടുത്തിരിക്കുന്നതില്‍ നിന്ന് തിരഞ്ഞെടുക്കുക"
 
-#: archive-template.php:759 dt-assets/functions/enqueue-scripts.php:179
+#: archive-template.php:760 dt-assets/functions/enqueue-scripts.php:179
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/functions/enqueue-scripts.php:278
 #: dt-assets/functions/enqueue-scripts.php:318
-#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:438
+#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:437
 msgid "Delete"
 msgstr "ഇല്ലാതാക്കുക"
 
-#: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:331
+#: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
 msgid "Delete Selections Below"
 msgstr "താഴെയുള്ള തിരഞ്ഞെടുപ്പുകള്‍  നീക്കം ചെയ്യുക"
 
-#: archive-template.php:776
+#: archive-template.php:777
 msgid "Select all the %1$s to whom you want to message."
 msgstr ""
 
-#: archive-template.php:806
+#: archive-template.php:807
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:808
+#: archive-template.php:809
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:810
+#: archive-template.php:811
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:812
+#: archive-template.php:813
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:814
+#: archive-template.php:815
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:816
+#: archive-template.php:817
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:818
+#: archive-template.php:819
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:841
+#: archive-template.php:842
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:843
+#: archive-template.php:844
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:845
+#: archive-template.php:846
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:846 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:849 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:137
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "റെക്കോർഡ് സൃഷ്ടിക്കുക"
 
-#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr ""
 
-#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:856 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr ""
 
-#: archive-template.php:858 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:100
 msgid "Send"
 msgstr ""
 
-#: archive-template.php:858 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr ""
 
-#: archive-template.php:863
+#: archive-template.php:864
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:908
+#: archive-template.php:909
 msgid "Loading..."
 msgstr "ലോഡിംഗ്..."
 
-#: archive-template.php:913 dt-assets/functions/enqueue-scripts.php:410
+#: archive-template.php:914 dt-assets/functions/enqueue-scripts.php:410
 msgid "Load More"
 msgstr "കൂടുതൽ ലോഡുചെയ്യുക"
 
-#: archive-template.php:925
+#: archive-template.php:926
 msgid "Field Name"
 msgstr "പ്രവര്‍ത്തനതലത്തിന്‍റെ പേര്"
 
-#: archive-template.php:981
+#: archive-template.php:982
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "തിരയാൻ ടൈപ്പുചെയ്യുക"
 
-#: archive-template.php:990
+#: archive-template.php:991
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s ഉള്ള എല്ലാ %1$s"
 
-#: archive-template.php:993
+#: archive-template.php:994
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr ""
 
-#: archive-template.php:1000
+#: archive-template.php:1001
 msgid "Filter for subassigned OR Assigned To"
 msgstr "നിയുക്തമാക്കിയ അല്ലെങ്കിൽ നിയുക്തമാക്കിയതിന് ഫിൽട്ടർ ചെയ്യുക"
 
-#: archive-template.php:1009 dt-assets/functions/enqueue-scripts.php:321
-#: dt-posts/custom-post-type.php:194
+#: archive-template.php:1010 dt-assets/functions/enqueue-scripts.php:321
+#: dt-posts/custom-post-type.php:193
 msgid "Creation Date"
 msgstr "സൃഷ്ടിക്കൽ തീയതി"
 
-#: archive-template.php:1016 archive-template.php:1023
+#: archive-template.php:1017 archive-template.php:1024
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1051
 msgid "None Set"
 msgstr "ഒന്നുമില്ല സജ്ജമാക്കി"
 
-#: archive-template.php:1037 archive-template.php:1038
+#: archive-template.php:1038 archive-template.php:1039
 #: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:671
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: dt-users/user-management.php:197 template-settings.php:313
+#: dt-users/user-management.php:196 template-settings.php:313
 #: template-settings.php:577
 msgid "No"
 msgstr "ഇല്ല"
 
-#: archive-template.php:1044 archive-template.php:1045
+#: archive-template.php:1045 archive-template.php:1046
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:672
-#: dt-metrics/records/genmap.php:161 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 dt-users/user-management.php:196
+#: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
+#: dt-posts/posts.php:460 dt-users/user-management.php:195
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "അതെ"
 
-#: archive-template.php:1049
+#: archive-template.php:1050
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "ശ്രേണി ആരംഭിക്കുക"
 
-#: archive-template.php:1052 archive-template.php:1063
+#: archive-template.php:1053 archive-template.php:1064
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "മായ്‌ക്കുക"
 
-#: archive-template.php:1059
+#: archive-template.php:1060
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "ശ്രേണി അവസാനം"
 
-#: archive-template.php:1074
+#: archive-template.php:1075
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "പേര് ഫിൽട്ടർ ചെയ്യുക"
 
-#: archive-template.php:1079
+#: archive-template.php:1080
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -591,7 +591,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s ഉള്ള എല്ലാ %1$s"
 
-#: archive-template.php:1083
+#: archive-template.php:1084
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -599,7 +599,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%2$s ഉള്ള എല്ലാ %1$s"
 
-#: archive-template.php:1087
+#: archive-template.php:1088
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -607,7 +607,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s ഉള്ള എല്ലാ %1$s"
 
-#: archive-template.php:1091
+#: archive-template.php:1092
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -615,15 +615,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$s ഉള്ള എല്ലാ %1$s"
 
-#: archive-template.php:1115
+#: archive-template.php:1116
 msgid "Filter Name"
 msgstr "പേര് ഫിൽട്ടർ ചെയ്യുക"
 
-#: archive-template.php:1120
+#: archive-template.php:1121
 msgid "Filter Records"
 msgstr "റെക്കോർഡുകൾ ഫിൽട്ടർ ചെയ്യുക"
 
-#: archive-template.php:1124 dt-assets/functions/enqueue-scripts.php:281
+#: archive-template.php:1125 dt-assets/functions/enqueue-scripts.php:281
 #: dt-assets/functions/enqueue-scripts.php:316
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -632,7 +632,7 @@ msgstr "രക്ഷിക്കും"
 #: dt-assets/functions/details-bar.php:52
 #: dt-assets/functions/details-bar.php:262
 #: dt-core/configuration/config-site-defaults.php:365
-#: dt-workflows/update-required.php:80 dt-workflows/update-required.php:129
+#: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
 msgid "Update Needed"
 msgstr "അപ്‌ഡേറ്റ് ആവശ്യമാണ്"
 
@@ -640,7 +640,7 @@ msgstr "അപ്‌ഡേറ്റ് ആവശ്യമാണ്"
 msgid "Admin Actions"
 msgstr "അഡ്‌മിൻ പ്രവർത്തനങ്ങൾ"
 
-#: dt-assets/functions/details-bar.php:68 single-template.php:430
+#: dt-assets/functions/details-bar.php:68 single-template.php:429
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "%s ഇല്ലാതാക്കുക"
@@ -674,7 +674,7 @@ msgid "Next record"
 msgstr "അടുത്ത റെക്കോർഡ്"
 
 #: dt-assets/functions/details-bar.php:170
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:229
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:228
 msgid "Tasks"
 msgstr "ചുമതലകൾ"
 
@@ -742,7 +742,7 @@ msgstr "നിങ്ങൾക്ക് വായിക്കാത്ത അറ�
 msgid "You don't have any notifications"
 msgstr "നിങ്ങൾക്ക് അറിയിപ്പുകളൊന്നുമില്ല"
 
-#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1713
+#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1718
 msgid "D.T System"
 msgstr "D.T സിസ്റ്റം"
 
@@ -841,7 +841,7 @@ msgid "Locations you are responsible for"
 msgstr "നിങ്ങൾക്ക് ഉത്തരവാദിത്തമുള്ള ലൊക്കേഷനുകൾ"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:151
+#: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "ചേർക്കുക"
 
@@ -884,8 +884,8 @@ msgstr "ഫിൽട്ടറുകളൊന്നുമില്ല, ചുവ�
 msgid "No records found matching your filter."
 msgstr "നിങ്ങളുടെ ഫിൽട്ടറുമായി പൊരുത്തപ്പെടുന്ന രേഖകളൊന്നും കണ്ടെത്തിയില്ല."
 
-#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:503
-#: dt-groups/base-setup.php:1051 dt-posts/custom-post-type.php:485
+#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:502
+#: dt-groups/base-setup.php:1050 dt-posts/custom-post-type.php:484
 msgctxt "All records"
 msgid "All %s"
 msgstr "എല്ലാം%s"
@@ -900,9 +900,9 @@ msgstr "അവസാനിക്കുന്നു"
 
 #: dt-assets/functions/enqueue-scripts.php:328
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1301 dt-groups/base-setup.php:969
+#: dt-contacts/access-module.php:1298 dt-groups/base-setup.php:968
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-metrics/records/dynamic-records-map.php:96
+#: dt-metrics/records/dynamic-records-map.php:98
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "എല്ലാം"
@@ -1016,8 +1016,8 @@ msgstr ""
 msgid "Filtered Map"
 msgstr "പേര് ഫിൽട്ടർ ചെയ്യുക"
 
-#: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:51
-#: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
+#: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "ബന്ധപ്പെടുക"
 
@@ -1117,7 +1117,7 @@ msgstr "അഡ്മിൻ"
 #: dt-metrics/combined/hover-map.php:265
 #: dt-metrics/combined/locations-list.php:260
 #: dt-metrics/records/dynamic-records-map.php:65
-#: dt-users/user-management.php:135 dt-users/user-management.php:232
+#: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
 msgstr "ഉപയോക്താക്കൾ"
 
@@ -1353,7 +1353,7 @@ msgstr ""
 "'എഡിറ്റുചെയ്യുക' ക്ലിക്കുചെയ്യുന്നതിലൂടെ, ഈ സിസ്റ്റം പ്രവർത്തിക്കുന്ന ഭാഷ പോലുള്ള കാര്യങ്ങൾ "
 "നിങ്ങൾക്ക് ക്രമീകരിക്കാൻ കഴിയും."
 
-#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:243
+#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:242
 #: dt-users/users.php:169
 msgid "Locations"
 msgstr "ലൊക്കേഷനുകൾ"
@@ -1536,8 +1536,8 @@ msgid "Create Record"
 msgstr "റെക്കോർഡ് സൃഷ്ടിക്കുക"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:157 dt-posts/custom-post-type.php:171
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
+#: dt-metrics/records/genmap.php:166 dt-posts/custom-post-type.php:170
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "പേര്"
@@ -1677,9 +1677,9 @@ msgstr "പങ്കാളി"
 msgid "Digital Responder"
 msgstr "ഡിജിറ്റൽ റെസ്‌പോണ്ടർ"
 
-#: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
-#: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:138 dt-metrics/records/genmap.php:145
+#: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
+#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
+#: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "നിയോഗിച്ചിട്ടുള്ള"
 
@@ -1708,11 +1708,11 @@ msgstr ""
 msgid "Contact Attempt Needed"
 msgstr "ബന്ധപ്പെടാനുള്ള ശ്രമം ആവശ്യമാണ്"
 
-#: dt-contacts/access-module.php:124
+#: dt-contacts/access-module.php:124 dt-contacts/dmm-module.php:222
 msgid "Contact Attempted"
 msgstr "ബന്ധപ്പെടാനുള്ള ശ്രമം"
 
-#: dt-contacts/access-module.php:128 dt-contacts/dmm-module.php:232
+#: dt-contacts/access-module.php:128 dt-contacts/dmm-module.php:231
 msgid "Contact Established"
 msgstr "കോൺ‌ടാക്റ്റ് സ്ഥാപിച്ചു"
 
@@ -1732,7 +1732,7 @@ msgstr "നടന്നുകൊണ്ടിരിക്കുന്ന മീ�
 msgid "Being Coached"
 msgstr "പരിശീലകനാകുന്നു"
 
-#: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:295
+#: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
 msgid "Contact Status"
 msgstr "ബന്ധപ്പെടേണ്ട നില"
 
@@ -1956,9 +1956,9 @@ msgstr "അജ്ഞാതം"
 msgid "Accepted"
 msgstr "സ്വീകരിച്ചു"
 
-#: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
-#: dt-metrics/personal/activity-highlights.php:23
+#: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
+#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1971,11 +1971,11 @@ msgstr "വ്യക്തിഗതം"
 msgid "Web"
 msgstr "വെബ്"
 
-#: dt-contacts/access-module.php:289 dt-contacts/base-setup.php:226
+#: dt-contacts/access-module.php:289 dt-contacts/base-setup.php:225
 msgid "Facebook"
 msgstr "ഫേസ്ബുക്ക്"
 
-#: dt-contacts/access-module.php:293 dt-contacts/base-setup.php:234
+#: dt-contacts/access-module.php:293 dt-contacts/base-setup.php:233
 msgid "Twitter"
 msgstr "ട്വിറ്റർ"
 
@@ -2008,114 +2008,114 @@ msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr "ഈ കോൺ‌ടാക്റ്റ് സംവദിച്ച മാർക്കറ്റിംഗ് കാമ്പെയ്‌നുകൾ അല്ലെങ്കിൽ ആക്‌സസ്സ് പ്രവർത്തനങ്ങൾ."
 
-#: dt-contacts/access-module.php:393 dt-metrics/combined/critical-path.php:77
+#: dt-contacts/access-module.php:390 dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "ഫോളോ അപ്പ്"
 
-#: dt-contacts/access-module.php:480 dt-contacts/access-module.php:511
-#: dt-contacts/access-module.php:542 dt-contacts/base-setup.php:390
+#: dt-contacts/access-module.php:477 dt-contacts/access-module.php:508
+#: dt-contacts/access-module.php:539 dt-contacts/base-setup.php:389
 msgid "Choose an option:"
 msgstr "ഒരു ഓപ്ഷൻ തിരഞ്ഞെടുക്കുക:"
 
-#: dt-contacts/access-module.php:502 dt-contacts/access-module.php:533
-#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:414
+#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
+#: dt-contacts/access-module.php:558 dt-contacts/base-setup.php:413
 msgid "Confirm"
 msgstr "സ്ഥിരീകരിക്കുക"
 
-#: dt-contacts/access-module.php:605
+#: dt-contacts/access-module.php:602
 msgid "Multipliers"
 msgstr "മൾട്ടിപ്ലയറുകൾ"
 
-#: dt-contacts/access-module.php:608
+#: dt-contacts/access-module.php:605
 msgid "Dispatchers"
 msgstr ""
 
-#: dt-contacts/access-module.php:611
+#: dt-contacts/access-module.php:608
 msgid "Digital Responders"
 msgstr ""
 
-#: dt-contacts/access-module.php:618
+#: dt-contacts/access-module.php:615
 msgid "Assign To"
 msgstr ""
 
-#: dt-contacts/access-module.php:670
+#: dt-contacts/access-module.php:667
 msgid "This contact has been assigned to you."
 msgstr "ഈ കോൺ‌ടാക്റ്റ് നിങ്ങൾക്ക് നൽകിയിട്ടുണ്ട്."
 
-#: dt-contacts/access-module.php:671
+#: dt-contacts/access-module.php:668
 msgid "Accept"
 msgstr "അംഗീകരിക്കുക"
 
-#: dt-contacts/access-module.php:672
+#: dt-contacts/access-module.php:669
 msgid "Decline"
 msgstr "നിരസിക്കുക"
 
-#: dt-contacts/access-module.php:915 dt-contacts/access-module.php:925
+#: dt-contacts/access-module.php:912 dt-contacts/access-module.php:922
 msgid "My Follow-Up"
 msgstr "എന്റെ ഫോളോ-അപ്പ്"
 
-#: dt-contacts/access-module.php:926 dt-contacts/access-module.php:947
-#: dt-contacts/access-module.php:970 dt-contacts/access-module.php:995
-#: dt-groups/base-setup.php:961
+#: dt-contacts/access-module.php:923 dt-contacts/access-module.php:944
+#: dt-contacts/access-module.php:967 dt-contacts/access-module.php:992
+#: dt-groups/base-setup.php:960
 msgid "Assigned to me"
 msgstr "എനിക്ക് നിയോഗിച്ചു"
 
-#: dt-contacts/access-module.php:927 dt-contacts/access-module.php:948
-#: dt-contacts/access-module.php:971 dt-contacts/access-module.php:996
+#: dt-contacts/access-module.php:924 dt-contacts/access-module.php:945
+#: dt-contacts/access-module.php:968 dt-contacts/access-module.php:993
 msgid "Sub-assigned to me"
 msgstr "എനിക്ക് ഉപ-നിയുക്തമാക്കി"
 
-#: dt-contacts/access-module.php:1035
+#: dt-contacts/access-module.php:1032
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ഫോളോ-അപ്പ്%s"
 
-#: dt-contacts/access-module.php:1043
+#: dt-contacts/access-module.php:1040
 msgid "All Follow-Up"
 msgstr "എല്ലാം ഫോളോ-അപ്പ്"
 
-#: dt-contacts/access-module.php:1145 dt-contacts/access-module.php:1146
+#: dt-contacts/access-module.php:1142 dt-contacts/access-module.php:1143
 msgid "Subassigned only"
 msgstr "ഉപവിഭാഗം മാത്രം"
 
-#: dt-contacts/access-module.php:1302
+#: dt-contacts/access-module.php:1299
 msgid "Ready"
 msgstr ""
 
-#: dt-contacts/access-module.php:1303
+#: dt-contacts/access-module.php:1300
 msgid "Recent"
 msgstr ""
 
-#: dt-contacts/access-module.php:1304
+#: dt-contacts/access-module.php:1301
 msgid "Location"
 msgstr "സ്ഥാനം"
 
-#: dt-contacts/access-module.php:1305
+#: dt-contacts/access-module.php:1302
 msgid "Assign"
 msgstr ""
 
-#: dt-contacts/access-module.php:1306 dt-users/template-new-user.php:134
+#: dt-contacts/access-module.php:1303 dt-users/template-new-user.php:134
 #: template-settings.php:226
 msgid "Language"
 msgstr "ഭാഷ"
 
-#: dt-contacts/access-module.php:1307 dt-contacts/base-setup.php:263
+#: dt-contacts/access-module.php:1304 dt-contacts/base-setup.php:262
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
 #: template-settings.php:714
 msgid "Gender"
 msgstr "ലിംഗഭേദം"
 
-#: dt-contacts/access-module.php:1480
+#: dt-contacts/access-module.php:1477
 msgid "This record might be a duplicate of: "
 msgstr "ഈ റെക്കോർഡ് ഇതിന്റെ തനിപ്പകർപ്പായിരിക്കാം: "
 
-#: dt-contacts/access-module.php:1486 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/access-module.php:1483 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "ഡ്യൂപ്ലിക്കേറ്റ് ചെക്കർ"
 
-#: dt-contacts/base-setup.php:51 dt-contacts/base-setup.php:64
-#: dt-contacts/base-setup.php:251 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
+#: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
 #: dt-metrics/combined/locations-list.php:123
@@ -2125,90 +2125,89 @@ msgstr "ഡ്യൂപ്ലിക്കേറ്റ് ചെക്കർ"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
-#: dt-metrics/records/dynamic-records-map.php:31
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
 msgstr "കോൺ‌ടാക്റ്റുകൾ"
 
-#: dt-contacts/base-setup.php:104
+#: dt-contacts/base-setup.php:103
 msgid "Nickname"
 msgstr "വിളിപ്പേര്"
 
-#: dt-contacts/base-setup.php:112
+#: dt-contacts/base-setup.php:111
 msgid "Contact Type"
 msgstr "ബന്ധപ്പെടാനുള്ള തരം"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:115
 msgid "User"
 msgstr "ഉപയോക്താവ്"
 
-#: dt-contacts/base-setup.php:117
+#: dt-contacts/base-setup.php:116
 msgid "Representing a User in the system"
 msgstr "സിസ്റ്റത്തിലെ ഒരു ഉപയോക്താവിനെ പ്രതിനിധീകരിക്കുന്നു"
 
-#: dt-contacts/base-setup.php:123
+#: dt-contacts/base-setup.php:122
 msgid "Private Contact"
 msgstr ""
 
-#: dt-contacts/base-setup.php:125
+#: dt-contacts/base-setup.php:124
 msgid "A friend, family member or acquaintance"
 msgstr "ഒരു സുഹൃത്ത്, കുടുംബാംഗം അല്ലെങ്കിൽ പരിചയക്കാരൻ"
 
-#: dt-contacts/base-setup.php:126 dt-contacts/dmm-module.php:54
+#: dt-contacts/base-setup.php:125 dt-contacts/dmm-module.php:53
 msgid "Only me"
 msgstr "ഞാൻ മാത്രം"
 
-#: dt-contacts/base-setup.php:133
+#: dt-contacts/base-setup.php:132
 msgid "Standard Contact"
 msgstr ""
 
-#: dt-contacts/base-setup.php:135
+#: dt-contacts/base-setup.php:134
 msgid "A contact to collaborate on"
 msgstr ""
 
-#: dt-contacts/base-setup.php:136
+#: dt-contacts/base-setup.php:135
 msgid "Me and project leadership"
 msgstr ""
 
-#: dt-contacts/base-setup.php:142
+#: dt-contacts/base-setup.php:141
 msgid "Connection"
 msgstr "കണക്ഷൻ"
 
-#: dt-contacts/base-setup.php:144 dt-contacts/dmm-module.php:51
+#: dt-contacts/base-setup.php:143 dt-contacts/dmm-module.php:50
 msgid "Connected to a contact, or generational fruit"
 msgstr "ഒരു കോൺടാക്റ്റിലേക്ക് അല്ലെങ്കിൽ തലമുറ ഫലവുമായി ബന്ധിപ്പിച്ചു"
 
-#: dt-contacts/base-setup.php:147
+#: dt-contacts/base-setup.php:146
 msgid "Collaborators"
 msgstr "സഹകാരികൾ"
 
-#: dt-contacts/base-setup.php:168 dt-users/users.php:162
+#: dt-contacts/base-setup.php:167 dt-users/users.php:162
 msgid "Languages"
 msgstr "ഭാഷകൾ"
 
-#: dt-contacts/base-setup.php:177 template-settings.php:179
+#: dt-contacts/base-setup.php:176 template-settings.php:179
 msgid "Phone"
 msgstr "ഫോൺ"
 
-#: dt-contacts/base-setup.php:185
+#: dt-contacts/base-setup.php:184
 msgid "Signal"
 msgstr ""
 
-#: dt-contacts/base-setup.php:190
+#: dt-contacts/base-setup.php:189
 msgid "Viber"
 msgstr ""
 
-#: dt-contacts/base-setup.php:195
+#: dt-contacts/base-setup.php:194
 #, fuzzy
 #| msgid "Work WhatsApp"
 msgid "WhatsApp"
 msgstr "വാട്ട്‌സ്ആപ്പ് പ്രവർത്തിക്കുക"
 
-#: dt-contacts/base-setup.php:202
+#: dt-contacts/base-setup.php:201
 #: dt-core/configuration/config-site-defaults.php:342
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
@@ -2216,75 +2215,75 @@ msgstr "വാട്ട്‌സ്ആപ്പ് പ്രവർത്തി�
 msgid "Email"
 msgstr "ഇമെയിൽ"
 
-#: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:357
+#: dt-contacts/base-setup.php:209 dt-groups/base-setup.php:356
 #: dt-people-groups/people-groups-base.php:194 template-settings.php:190
 msgid "Address"
 msgstr "വിലാസം"
 
-#: dt-contacts/base-setup.php:242
+#: dt-contacts/base-setup.php:241
 msgid "Other Social Links"
 msgstr "മറ്റ് സോഷ്യൽ ലിങ്കുകൾ"
 
-#: dt-contacts/base-setup.php:251
+#: dt-contacts/base-setup.php:250
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "മറ്റ്%s- ലേക്കുള്ള കണക്ഷനുകൾ"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:251
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "സിസ്റ്റത്തിലെ മറ്റൊരു കോൺ‌ടാക്റ്റുമായി ഈ കോൺ‌ടാക്റ്റിന് ഉള്ള ബന്ധം."
 
-#: dt-contacts/base-setup.php:266 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:265 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "ആൺ"
 
-#: dt-contacts/base-setup.php:267 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:266 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "പെൺ"
 
-#: dt-contacts/base-setup.php:274
+#: dt-contacts/base-setup.php:273
 msgid "Age"
 msgstr "പ്രായം"
 
-#: dt-contacts/base-setup.php:278
+#: dt-contacts/base-setup.php:277
 msgid "Under 18 years old"
 msgstr "18 വയസ്സിന് താഴെയുള്ളവർ"
 
-#: dt-contacts/base-setup.php:279
+#: dt-contacts/base-setup.php:278
 msgid "18-25 years old"
 msgstr "18-25 വയസ്സ്"
 
-#: dt-contacts/base-setup.php:280
+#: dt-contacts/base-setup.php:279
 msgid "26-40 years old"
 msgstr "26-40 വയസ്സ്"
 
-#: dt-contacts/base-setup.php:281
+#: dt-contacts/base-setup.php:280
 msgid "Over 40 years old"
 msgstr "40 വയസ്സിനു മുകളിൽ"
 
-#: dt-contacts/base-setup.php:289 dt-groups/base-setup.php:102
+#: dt-contacts/base-setup.php:288 dt-groups/base-setup.php:101
 #: dt-people-groups/people-groups-base.php:150
 msgid "Requires Update"
 msgstr "അപ്‌ഡേറ്റ് ആവശ്യമാണ്"
 
-#: dt-contacts/base-setup.php:296
+#: dt-contacts/base-setup.php:295
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "കോൺടാക്റ്റുമായി ആശയവിനിമയം നടത്തുന്നതിലെ പുരോഗതിയെ കോൺടാക്റ്റ് നില വിവരിക്കുന്നു."
 
-#: dt-contacts/base-setup.php:300 dt-groups/base-setup.php:118
+#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:117
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "സജീവമാണ്"
 
-#: dt-contacts/base-setup.php:301
+#: dt-contacts/base-setup.php:300
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "കോൺ‌ടാക്റ്റ് പുരോഗമിക്കുന്നു കൂടാതെ / അല്ലെങ്കിൽ നിരന്തരം അപ്‌ഡേറ്റ് ചെയ്യുന്നു."
 
-#: dt-contacts/base-setup.php:307
+#: dt-contacts/base-setup.php:306
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
@@ -2293,76 +2292,76 @@ msgstr ""
 "ഈ കോൺ‌ടാക്റ്റ് അവർ‌ ഇനിമേൽ‌ തുടരാൻ‌ താൽ‌പ്പര്യപ്പെടുന്നില്ല അല്ലെങ്കിൽ‌ അവനോടൊപ്പം / അവളുമായി "
 "തുടരേണ്ടതില്ലെന്ന് നിങ്ങൾ‌ തീരുമാനിച്ചു."
 
-#: dt-contacts/base-setup.php:342 dt-contacts/base-setup.php:371
+#: dt-contacts/base-setup.php:341 dt-contacts/base-setup.php:370
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "ആർക്കൈവ്%s"
 
-#: dt-contacts/base-setup.php:349
+#: dt-contacts/base-setup.php:348
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "%s തരം മാറ്റുക"
 
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:354
 msgid "See duplicates"
 msgstr "തനിപ്പകർപ്പുകൾ കാണുക"
 
-#: dt-contacts/base-setup.php:372
+#: dt-contacts/base-setup.php:371
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "%s ആർക്കൈവ് ചെയ്യണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?"
 
-#: dt-contacts/base-setup.php:379
+#: dt-contacts/base-setup.php:378
 msgid "Archive"
 msgstr "ശേഖരം"
 
-#: dt-contacts/base-setup.php:438
+#: dt-contacts/base-setup.php:437
 #: dt-core/configuration/config-site-defaults.php:544
-#: dt-groups/base-setup.php:622 template-settings.php:212
+#: dt-groups/base-setup.php:621 template-settings.php:212
 msgid "Other"
 msgstr "മറ്റുള്ളവ"
 
-#: dt-contacts/base-setup.php:497 dt-groups/base-setup.php:1043
-#: dt-posts/custom-post-type.php:464
+#: dt-contacts/base-setup.php:496 dt-groups/base-setup.php:1042
+#: dt-posts/custom-post-type.php:463
 msgid "Default Filters"
 msgstr "സ്ഥിരസ്ഥിതി ഫിൽട്ടറുകൾ"
 
-#: dt-contacts/base-setup.php:507
+#: dt-contacts/base-setup.php:506
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "എല്ലാ%s ഉം എനിക്ക് കാണാൻ കഴിയും"
 
-#: dt-contacts/base-setup.php:518 dt-groups/base-setup.php:1057
-#: dt-posts/custom-post-type.php:497
+#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1056
+#: dt-posts/custom-post-type.php:496
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "പ്രിയപ്പെട്ട%s"
 
-#: dt-contacts/base-setup.php:524 dt-groups/base-setup.php:1062
-#: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:503
+#: dt-contacts/base-setup.php:523 dt-groups/base-setup.php:1061
+#: dt-posts/custom-post-type.php:200 dt-posts/custom-post-type.php:502
 msgid "Favorite"
 msgstr "പ്രിയപ്പെട്ടവ"
 
-#: dt-contacts/base-setup.php:530 dt-groups/base-setup.php:1068
-#: dt-posts/custom-post-type.php:512
+#: dt-contacts/base-setup.php:529 dt-groups/base-setup.php:1067
+#: dt-posts/custom-post-type.php:511
 msgid "My Recently Viewed"
 msgstr "എന്റെ സമീപകാലത്ത് കണ്ടത്"
 
-#: dt-contacts/base-setup.php:535 dt-groups/base-setup.php:1073
-#: dt-posts/custom-post-type.php:517
+#: dt-contacts/base-setup.php:534 dt-groups/base-setup.php:1072
+#: dt-posts/custom-post-type.php:516
 msgid "Last 30 viewed"
 msgstr "അവസാനം കണ്ടത് 30"
 
-#: dt-contacts/base-setup.php:565 dt-contacts/base-setup.php:573
-#: dt-contacts/base-setup.php:591 dt-contacts/base-setup.php:592
+#: dt-contacts/base-setup.php:564 dt-contacts/base-setup.php:572
+#: dt-contacts/base-setup.php:590 dt-contacts/base-setup.php:591
 msgid "Shared with me"
 msgstr "എന്നോട് പങ്കിട്ടു"
 
-#: dt-contacts/base-setup.php:701
+#: dt-contacts/base-setup.php:699
 msgid "This %s is archived"
 msgstr "ഈ%s ആർക്കൈവുചെയ്‌തു"
 
-#: dt-contacts/base-setup.php:703
+#: dt-contacts/base-setup.php:701
 msgid "Restore"
 msgstr "പുന .സ്ഥാപിക്കുക"
 
@@ -2453,7 +2452,7 @@ msgid "Contact transferred from site"
 msgstr "കോൺ‌ടാക്റ്റ് സൈറ്റിൽ നിന്ന് കൈമാറി"
 
 #: dt-contacts/contacts-transfer.php:626 dt-contacts/contacts-transfer.php:641
-#: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:886
+#: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:885
 msgid "Transfer Bot"
 msgstr "ട്രാൻസ്ഫർ ബോട്ട്"
 
@@ -2461,27 +2460,27 @@ msgstr "ട്രാൻസ്ഫർ ബോട്ട്"
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "അലേർട്ട്: മുമ്പത്തെ കൈമാറ്റത്തിൽ നിന്നുള്ള തനിപ്പകർപ്പ് കോൺടാക്റ്റ്."
 
-#: dt-contacts/contacts-transfer.php:1203
+#: dt-contacts/contacts-transfer.php:1202
 msgid "redacted email"
 msgstr "പുനർനിർമ്മിച്ച ഇമെയിൽ"
 
-#: dt-contacts/contacts-transfer.php:1204
+#: dt-contacts/contacts-transfer.php:1203
 msgid "redacted name"
 msgstr "മാറ്റം വരുത്തിയ പേര്"
 
-#: dt-contacts/contacts-transfer.php:1205
+#: dt-contacts/contacts-transfer.php:1204
 msgid "redacted"
 msgstr "പുനർനിർമ്മിച്ചു"
 
-#: dt-contacts/dmm-module.php:49
+#: dt-contacts/dmm-module.php:48
 msgid "Private Connection"
 msgstr ""
 
-#: dt-contacts/dmm-module.php:59
+#: dt-contacts/dmm-module.php:58
 msgid "Faith Milestones"
 msgstr "വിശ്വാസം നാഴികക്കല്ലുകൾ"
 
-#: dt-contacts/dmm-module.php:60
+#: dt-contacts/dmm-module.php:59
 msgctxt "Optional Documentation"
 msgid ""
 "Assign which milestones the contact has reached in their faith journey. "
@@ -2491,168 +2490,164 @@ msgstr ""
 "അവരുടെ വിശ്വാസ യാത്രയിൽ കോൺടാക്റ്റ് എത്തിച്ചേർന്ന നാഴികക്കല്ലുകൾ നിർണ്ണയിക്കുക. ഇത് ഒരു "
 "കോൺ‌ടാക്റ്റിന്റെ ആത്മീയ യാത്രയിലെ ആഘോഷിക്കപ്പെടേണ്ടവയാണ്, പക്ഷേ ഏത് ക്രമത്തിലും സംഭവിക്കാം."
 
-#: dt-contacts/dmm-module.php:64
+#: dt-contacts/dmm-module.php:63
 msgid "Has Bible"
 msgstr "ബൈബിൾ ഉണ്ട്"
 
-#: dt-contacts/dmm-module.php:69
+#: dt-contacts/dmm-module.php:68
 msgid "Reading Bible"
 msgstr "ബൈബിൾ വായിക്കുന്നു"
 
-#: dt-contacts/dmm-module.php:74
+#: dt-contacts/dmm-module.php:73
 msgid "States Belief"
 msgstr "സംസ്ഥാനങ്ങളുടെ വിശ്വാസം"
 
-#: dt-contacts/dmm-module.php:79
+#: dt-contacts/dmm-module.php:78
 msgid "Can Share Gospel/Testimony"
 msgstr "സുവിശേഷം / സാക്ഷ്യം പങ്കിടാൻ കഴിയും"
 
-#: dt-contacts/dmm-module.php:84
+#: dt-contacts/dmm-module.php:83
 msgid "Sharing Gospel/Testimony"
 msgstr "സുവിശേഷം / സാക്ഷ്യം പങ്കിടൽ"
 
-#: dt-contacts/dmm-module.php:89 dt-contacts/dmm-module.php:202
+#: dt-contacts/dmm-module.php:88 dt-contacts/dmm-module.php:201
 msgid "Baptized"
 msgstr "സ്‌നാനമേറ്റു"
 
-#: dt-contacts/dmm-module.php:94
+#: dt-contacts/dmm-module.php:93
 msgid "Baptizing"
 msgstr "സ്‌നാപനമേൽക്കുന്നു"
 
-#: dt-contacts/dmm-module.php:99
+#: dt-contacts/dmm-module.php:98
 msgid "In Church/Group"
 msgstr "പള്ളിയിൽ / ഗ്രൂപ്പിൽ"
 
-#: dt-contacts/dmm-module.php:104
+#: dt-contacts/dmm-module.php:103
 msgid "Starting Churches"
 msgstr "പള്ളികൾ ആരംഭിക്കുന്നു"
 
-#: dt-contacts/dmm-module.php:115
+#: dt-contacts/dmm-module.php:114
 msgid "Faith Status"
 msgstr "വിശ്വാസ നില"
 
-#: dt-contacts/dmm-module.php:120
+#: dt-contacts/dmm-module.php:119
 msgid "Seeker"
 msgstr "അന്വേഷകൻ"
 
-#: dt-contacts/dmm-module.php:123
+#: dt-contacts/dmm-module.php:122
 msgid "Believer"
 msgstr "വിശ്വാസി"
 
-#: dt-contacts/dmm-module.php:126
+#: dt-contacts/dmm-module.php:125
 msgid "Leader"
 msgstr "നേതാവ്"
 
-#: dt-contacts/dmm-module.php:134
+#: dt-contacts/dmm-module.php:133
 msgid "Sub-assigned to"
 msgstr "എന്നതിലേക്ക് ഉപ-നിയുക്തമാക്കി"
 
-#: dt-contacts/dmm-module.php:135
+#: dt-contacts/dmm-module.php:134
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
 "കോൺടാക്റ്റിനെ പിന്തുടരാൻ ഉപയോക്താവിനെ നിയോഗിച്ച വ്യക്തിയെ ബന്ധപ്പെടുക അല്ലെങ്കിൽ സഹായിക്കുക."
 
-#: dt-contacts/dmm-module.php:146
+#: dt-contacts/dmm-module.php:145
 msgid "Sub-assigned on other Contacts"
 msgstr "മറ്റ് കോൺ‌ടാക്റ്റുകളിൽ ഉപ-നിയുക്തമാക്കി"
 
-#: dt-contacts/dmm-module.php:147
+#: dt-contacts/dmm-module.php:146
 msgid "Contacts this contacts is subassigned on"
 msgstr "ഈ കോൺ‌ടാക്റ്റുകൾ‌ സബ്‌സൈൻ‌ ചെയ്‌തിരിക്കുന്നു"
 
-#: dt-contacts/dmm-module.php:159
+#: dt-contacts/dmm-module.php:158
 msgid "Is Coaching"
 msgstr "കോച്ചിംഗ് ആണ്"
 
-#: dt-contacts/dmm-module.php:160
+#: dt-contacts/dmm-module.php:159
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
 msgstr "ആരാണ് ഈ കോൺടാക്റ്റ് കോച്ചിംഗ്"
 
-#: dt-contacts/dmm-module.php:169
+#: dt-contacts/dmm-module.php:168
 msgid "Baptism Date"
 msgstr "സ്നാപന തീയതി"
 
-#: dt-contacts/dmm-module.php:177 dt-metrics/counter.php:157
+#: dt-contacts/dmm-module.php:176 dt-metrics/counter.php:157
 msgid "Baptism Generation"
 msgstr "സ്നാപന തലമുറ"
 
-#: dt-contacts/dmm-module.php:182
+#: dt-contacts/dmm-module.php:181
 msgid "Coached by"
 msgstr "പരിശീലകൻ"
 
-#: dt-contacts/dmm-module.php:183
+#: dt-contacts/dmm-module.php:182
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
 msgstr "ആരാണ് ഈ കോൺ‌ടാക്റ്റിനെ പരിശീലിപ്പിക്കുന്നത്"
 
-#: dt-contacts/dmm-module.php:192
+#: dt-contacts/dmm-module.php:191
 #: dt-metrics/personal/activity-highlights.php:68
 msgid "Baptized by"
 msgstr "സ്‌നാനമേറ്റു"
 
-#: dt-contacts/dmm-module.php:193
+#: dt-contacts/dmm-module.php:192
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
 msgstr "ഈ കോൺ‌ടാക്റ്റിനെ സ്‌നാനപ്പെടുത്തിയതാരാണ്"
 
-#: dt-contacts/dmm-module.php:203
+#: dt-contacts/dmm-module.php:202
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "ഈ കോൺ‌ടാക്റ്റ് ആരാണ് സ്‌നാപനമേറ്റത്"
 
-#: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:374
+#: dt-contacts/dmm-module.php:211 dt-groups/base-setup.php:373
 #: dt-people-groups/people-groups-base.php:96
 #: dt-people-groups/people-groups-base.php:106
 msgid "People Groups"
 msgstr "പീപ്പിൾ ഗ്രൂപ്പുകൾ"
 
-#: dt-contacts/dmm-module.php:213
+#: dt-contacts/dmm-module.php:212
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
 msgstr "ഈ കോൺ‌ടാക്റ്റ് പ്രതിനിധീകരിക്കുന്ന ആളുകളുടെ ഗ്രൂപ്പുകൾ."
 
-#: dt-contacts/dmm-module.php:223
-msgid "No Answer"
-msgstr "ഉത്തരമില്ല"
-
-#: dt-contacts/dmm-module.php:241
+#: dt-contacts/dmm-module.php:240
 msgid "Meeting Scheduled"
 msgstr "മീറ്റിംഗ് ഷെഡ്യൂൾ ചെയ്തു"
 
-#: dt-contacts/dmm-module.php:250
+#: dt-contacts/dmm-module.php:249
 msgid "Meeting Complete"
 msgstr "മീറ്റിംഗ് പൂർത്തിയായി"
 
-#: dt-contacts/dmm-module.php:259
+#: dt-contacts/dmm-module.php:258
 msgid "Meeting No-show"
 msgstr "മീറ്റിംഗ് നോ-ഷോ"
 
-#: dt-contacts/dmm-module.php:277
+#: dt-contacts/dmm-module.php:276
 msgid "Faith"
 msgstr "വിശ്വാസം"
 
-#: dt-contacts/dmm-module.php:358
+#: dt-contacts/dmm-module.php:357
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "കണക്റ്റുചെയ്‌ത%s"
 
-#: dt-contacts/dmm-module.php:371 dt-contacts/dmm-module.php:381
-#: dt-contacts/dmm-module.php:391 dt-contacts/dmm-module.php:392
+#: dt-contacts/dmm-module.php:370 dt-contacts/dmm-module.php:380
+#: dt-contacts/dmm-module.php:390 dt-contacts/dmm-module.php:391
 msgid "Coached by me"
 msgstr "ഞാൻ പരിശീലകൻ"
 
-#: dt-contacts/dmm-module.php:410
+#: dt-contacts/dmm-module.php:409
 #: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr "ദ്രുത പ്രവർത്തനങ്ങൾ"
 
-#: dt-contacts/dmm-module.php:491
+#: dt-contacts/dmm-module.php:490
 msgid "Who was this contact baptized by and when?"
 msgstr "ആരാണ് ഈ കോൺ‌ടാക്റ്റ് സ്നാനമേറ്റത്, എപ്പോൾ?"
 
-#: dt-contacts/dmm-module.php:505
+#: dt-contacts/dmm-module.php:504
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "മൾട്ടിപ്ലയറുകളും കോൺ‌ടാക്റ്റുകളും തിരയുക"
@@ -2961,7 +2956,7 @@ msgstr "ഇത് ഒരു തെറ്റാണെങ്കിൽ, ഈ ഇമ�
 msgid "To reset your password, visit the following address:"
 msgstr "നിങ്ങളുടെ പാസ്‌വേഡ് പുന reset സജ്ജമാക്കാൻ, ഇനിപ്പറയുന്ന വിലാസം സന്ദർശിക്കുക:"
 
-#: dt-core/global-functions.php:549 single-template.php:413
+#: dt-core/global-functions.php:549 single-template.php:412
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
@@ -3042,59 +3037,59 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-groups/base-setup.php:49 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:166 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:165
+#: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
+#: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
+#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "ഗ്രൂപ്പ്"
 
-#: dt-groups/base-setup.php:49 dt-groups/base-setup.php:62
-#: dt-groups/base-setup.php:437 dt-groups/base-setup.php:621
+#: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
+#: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:144
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "ഗ്രൂപ്പുകൾ"
 
-#: dt-groups/base-setup.php:113
+#: dt-groups/base-setup.php:112
 msgid "Group Status"
 msgstr "ഗ്രൂപ്പ് നില"
 
-#: dt-groups/base-setup.php:114
+#: dt-groups/base-setup.php:113
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "ഗ്രൂപ്പിന്റെ നിലവിലെ നില സജ്ജമാക്കുക."
 
-#: dt-groups/base-setup.php:119
+#: dt-groups/base-setup.php:118
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "സംഘം സജീവമായി കണ്ടുമുട്ടുന്നു."
 
-#: dt-groups/base-setup.php:123 dt-users/users.php:180
+#: dt-groups/base-setup.php:122 dt-users/users.php:180
 msgid "Inactive"
 msgstr "നിഷ്‌ക്രിയം"
 
-#: dt-groups/base-setup.php:124
+#: dt-groups/base-setup.php:123
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "ഗ്രൂപ്പ് ഇപ്പോൾ കൂടിക്കാഴ്ച നടത്തുന്നില്ല."
 
-#: dt-groups/base-setup.php:136
+#: dt-groups/base-setup.php:135
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "ഈ ഗ്രൂപ്പിൽ റിപ്പോർട്ടുചെയ്യാൻ ഉത്തരവാദിയായ പ്രധാന വ്യക്തിയെ തിരഞ്ഞെടുക്കുക."
 
-#: dt-groups/base-setup.php:144
+#: dt-groups/base-setup.php:143
 msgid "Group Coach / Church Planter"
 msgstr "ഗ്രൂപ്പ് കോച്ച് / ചർച്ച് പ്ലാന്റർ"
 
-#: dt-groups/base-setup.php:145
+#: dt-groups/base-setup.php:144
 msgctxt "Optional Documentation"
 msgid ""
 "The person who planted and/or is coaching this group. Only one person can be "
@@ -3105,176 +3100,176 @@ msgstr ""
 "വ്യക്തിയെ മാത്രമേ നിയോഗിക്കാൻ കഴിയൂ, ഒന്നിലധികം ആളുകൾക്ക് ഈ ഗ്രൂപ്പിന്റെ പരിശീലകർ / ചർച്ച് "
 "പ്ലാന്ററുകൾ ആകാം."
 
-#: dt-groups/base-setup.php:157
+#: dt-groups/base-setup.php:156
 msgid "Group Type"
 msgstr "ഗ്രൂപ്പ് തരം"
 
-#: dt-groups/base-setup.php:162
+#: dt-groups/base-setup.php:161
 msgid "Pre-Group"
 msgstr "പ്രീ-ഗ്രൂപ്പ്"
 
-#: dt-groups/base-setup.php:163
+#: dt-groups/base-setup.php:162
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "പ്രധാനമായും വിശ്വാസികളല്ലാത്തവരുടെ ഒരു സംഘം."
 
-#: dt-groups/base-setup.php:167
+#: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "മൂന്നോ അതിലധികമോ വിശ്വാസികളുള്ള ഒരു സംഘം എന്നാൽ സഭയായി തിരിച്ചറിയുന്നില്ല."
 
-#: dt-groups/base-setup.php:170
+#: dt-groups/base-setup.php:169
 msgid "Church"
 msgstr "ക്രിസ്ത്യൻ പള്ളി"
 
-#: dt-groups/base-setup.php:171
+#: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "മൂന്നോ അതിലധികമോ വിശ്വാസികളുള്ള ഒരു സംഘം സഭയായി തിരിച്ചറിയുന്നു."
 
-#: dt-groups/base-setup.php:174
+#: dt-groups/base-setup.php:173
 msgid "Team"
 msgstr "ടീം"
 
-#: dt-groups/base-setup.php:175
+#: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr "ഒരു സഭയായി കണ്ടുമുട്ടാത്ത ഒരു പ്രത്യേക സംഘം (അല്ലെങ്കിൽ സഭയാകാൻ ശ്രമിക്കുന്നു)."
 
-#: dt-groups/base-setup.php:190 dt-groups/base-setup.php:614
+#: dt-groups/base-setup.php:189 dt-groups/base-setup.php:613
 msgid "Church Health"
 msgstr "പള്ളി ആരോഗ്യം"
 
-#: dt-groups/base-setup.php:191
+#: dt-groups/base-setup.php:190
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "ഒരു ഗ്രൂപ്പിന്റെ / സഭയുടെ പുരോഗതിയും ആരോഗ്യവും ട്രാക്കുചെയ്യുക."
 
-#: dt-groups/base-setup.php:195 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
 msgid "Baptism"
 msgstr "സ്നാനം"
 
-#: dt-groups/base-setup.php:196
+#: dt-groups/base-setup.php:195
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "സംഘം സ്‌നാപനമേൽക്കുന്നു."
 
-#: dt-groups/base-setup.php:200
+#: dt-groups/base-setup.php:199
 msgid "Bible Study"
 msgstr "ബൈബിൾ പഠനം"
 
-#: dt-groups/base-setup.php:201
+#: dt-groups/base-setup.php:200
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "സംഘം ബൈബിൾ പഠിക്കുന്നു."
 
-#: dt-groups/base-setup.php:205
+#: dt-groups/base-setup.php:204
 msgid "Communion"
 msgstr "കൂട്ടായ്മ"
 
-#: dt-groups/base-setup.php:206
+#: dt-groups/base-setup.php:205
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "സംഘം കൂട്ടായ്മ പരിശീലിക്കുന്നു."
 
-#: dt-groups/base-setup.php:210
+#: dt-groups/base-setup.php:209
 msgid "Fellowship"
 msgstr "കൂട്ടായ്മ"
 
-#: dt-groups/base-setup.php:211
+#: dt-groups/base-setup.php:210
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "കൂട്ടായ്മയാണ് സംഘം."
 
-#: dt-groups/base-setup.php:215
+#: dt-groups/base-setup.php:214
 msgid "Giving"
 msgstr "നൽകുന്ന"
 
-#: dt-groups/base-setup.php:216
+#: dt-groups/base-setup.php:215
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "ഗ്രൂപ്പ് നൽകുന്നു."
 
-#: dt-groups/base-setup.php:220
+#: dt-groups/base-setup.php:219
 msgid "Prayer"
 msgstr "പ്രാർത്ഥന"
 
-#: dt-groups/base-setup.php:221
+#: dt-groups/base-setup.php:220
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "സംഘം പ്രാർത്ഥിക്കുന്നു."
 
-#: dt-groups/base-setup.php:225
+#: dt-groups/base-setup.php:224
 msgid "Praise"
 msgstr "സ്തുതി"
 
-#: dt-groups/base-setup.php:226
+#: dt-groups/base-setup.php:225
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "സംഘം പ്രശംസിക്കുന്നു."
 
-#: dt-groups/base-setup.php:230
+#: dt-groups/base-setup.php:229
 msgid "Sharing the Gospel"
 msgstr "സുവിശേഷം പങ്കിടുന്നു"
 
-#: dt-groups/base-setup.php:231
+#: dt-groups/base-setup.php:230
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "സംഘം സുവിശേഷം പങ്കിടുന്നു."
 
-#: dt-groups/base-setup.php:235 dt-groups/base-setup.php:298
+#: dt-groups/base-setup.php:234 dt-groups/base-setup.php:297
 msgid "Leaders"
 msgstr "നേതാക്കൾ"
 
-#: dt-groups/base-setup.php:236
+#: dt-groups/base-setup.php:235
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "സംഘത്തിന് നേതാക്കളുണ്ട്."
 
-#: dt-groups/base-setup.php:240 dt-groups/base-setup.php:415
+#: dt-groups/base-setup.php:239 dt-groups/base-setup.php:414
 msgid "Church Commitment"
 msgstr "സഭയുടെ പ്രതിബദ്ധത"
 
-#: dt-groups/base-setup.php:241
+#: dt-groups/base-setup.php:240
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "സംഘം സഭയായിരിക്കാൻ പ്രതിജ്ഞാബദ്ധരാണ്."
 
-#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
+#: dt-groups/base-setup.php:250 dt-users/template-user-management.php:180
 #: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "ആരംഭിക്കുന്ന തീയതി"
 
-#: dt-groups/base-setup.php:252
+#: dt-groups/base-setup.php:251
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "ഈ ഗ്രൂപ്പ് മീറ്റിംഗ് ആരംഭിച്ച തീയതി."
 
-#: dt-groups/base-setup.php:259
+#: dt-groups/base-setup.php:258
 msgid "Church Start Date"
 msgstr "ചർച്ച് ആരംഭ തീയതി"
 
-#: dt-groups/base-setup.php:260
+#: dt-groups/base-setup.php:259
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "ഈ സംഘം ആദ്യമായി ഒരു സഭയാണെന്ന് തിരിച്ചറിഞ്ഞ തീയതി."
 
-#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
+#: dt-groups/base-setup.php:267 dt-users/template-user-management.php:181
 #: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "അവസാന ദിവസം"
 
-#: dt-groups/base-setup.php:269
+#: dt-groups/base-setup.php:268
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "ഈ ഗ്രൂപ്പ് മീറ്റിംഗ് നിർത്തിയ തീയതി (ബാധകമെങ്കിൽ)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:148
+#: dt-groups/base-setup.php:278 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "അംഗങ്ങളുടെ എണ്ണം"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:279
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3286,34 +3281,34 @@ msgstr ""
 "നീക്കംചെയ്യുമ്പോഴോ ഇത് സ്വപ്രേരിതമായി അപ്‌ഡേറ്റ് ചെയ്യപ്പെടും. സിസ്റ്റത്തിൽ ഇല്ലാത്തവരും ഗ്രൂപ്പിലെ "
 "അംഗങ്ങളുമായ ആളുകളെ ഉൾപ്പെടുത്തുന്നതിന് ഈ നമ്പർ സ്വമേധയാ മാറ്റുക."
 
-#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:569
-#: dt-groups/base-setup.php:613
+#: dt-groups/base-setup.php:287 dt-groups/base-setup.php:568
+#: dt-groups/base-setup.php:612
 msgid "Member List"
 msgstr "അംഗങ്ങളുടെ പട്ടിക"
 
-#: dt-groups/base-setup.php:289
+#: dt-groups/base-setup.php:288
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "ഈ ഗ്രൂപ്പിലെ അംഗങ്ങളായ കോൺ‌ടാക്റ്റുകൾ."
 
-#: dt-groups/base-setup.php:308
+#: dt-groups/base-setup.php:307
 msgid "Leader Count"
 msgstr "ലീഡർ എണ്ണം"
 
-#: dt-groups/base-setup.php:316
+#: dt-groups/base-setup.php:315
 msgid "Parent Group"
 msgstr "രക്ഷാകർതൃ ഗ്രൂപ്പ്"
 
-#: dt-groups/base-setup.php:317
+#: dt-groups/base-setup.php:316
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "ഈ ഗ്രൂപ്പ് സ്ഥാപിച്ച ഒരു ഗ്രൂപ്പ്."
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:327
 msgid "Peer Group"
 msgstr "പിയർ ഗ്രൂപ്പ്"
 
-#: dt-groups/base-setup.php:329
+#: dt-groups/base-setup.php:328
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3322,94 +3317,94 @@ msgstr ""
 "ബന്ധത്തിൽ ഒരു രക്ഷകർത്താവ് / കുട്ടി അല്ലാത്ത ഒരു അനുബന്ധ ഗ്രൂപ്പ്. ഇത് സഹകരിക്കുന്ന, ലയിപ്പിക്കാൻ "
 "പോകുന്ന, അടുത്തിടെ വിഭജിച്ച മുതലായ ഗ്രൂപ്പുകളെ സൂചിപ്പിക്കാം."
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:339
 msgid "Child Group"
 msgstr "കുട്ടികളുടെ ഗ്രൂപ്പ്"
 
-#: dt-groups/base-setup.php:341
+#: dt-groups/base-setup.php:340
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "ഈ ഗ്രൂപ്പിൽ നിന്ന് പുറത്താക്കിയ ഒരു ഗ്രൂപ്പ്."
 
-#: dt-groups/base-setup.php:375
+#: dt-groups/base-setup.php:374
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "ഈ ഗ്രൂപ്പ് പ്രതിനിധീകരിക്കുന്ന പീപ്പിൾ ഗ്രൂപ്പുകൾ."
 
-#: dt-groups/base-setup.php:388
+#: dt-groups/base-setup.php:387
 msgid "Unbelievers"
 msgstr "അവിശ്വാസികൾ"
 
-#: dt-groups/base-setup.php:389
+#: dt-groups/base-setup.php:388
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "ഈ ഗ്രൂപ്പിലെ അവിശ്വാസികളുടെ എണ്ണം."
 
-#: dt-groups/base-setup.php:397
+#: dt-groups/base-setup.php:396
 msgid "Believers"
 msgstr "വിശ്വാസികൾ"
 
-#: dt-groups/base-setup.php:398
+#: dt-groups/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "ഈ ഗ്രൂപ്പിലെ വിശ്വാസികളുടെ എണ്ണം."
 
-#: dt-groups/base-setup.php:406
+#: dt-groups/base-setup.php:405
 msgid "Accountable"
 msgstr "ഉത്തരവാദിത്തമുള്ള"
 
-#: dt-groups/base-setup.php:407
+#: dt-groups/base-setup.php:406
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "ഉത്തരവാദിത്ത ഗ്രൂപ്പിലെ ആളുകളുടെ എണ്ണം."
 
-#: dt-groups/base-setup.php:416
+#: dt-groups/base-setup.php:415
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "ഇതൊരു സഭയാണോ - അതെ അല്ലെങ്കിൽ ഇല്ല?"
 
-#: dt-groups/base-setup.php:424
+#: dt-groups/base-setup.php:423
 msgid "Multiplying"
 msgstr "ഗുണിക്കുന്നു"
 
-#: dt-groups/base-setup.php:425
+#: dt-groups/base-setup.php:424
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
 "multiplying?"
 msgstr "മറ്റ് ഗ്രൂപ്പുകൾ ആരംഭിക്കാൻ സഹായിക്കുന്ന ആളുകളുടെ എണ്ണം. എത്ര അംഗങ്ങൾ ഗുണിക്കുന്നു?"
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:437
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "ഈ കോൺ‌ടാക്റ്റ് അംഗമായ ഗ്രൂപ്പുകൾ‌."
 
-#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:449
 msgid "Leader of Group"
 msgstr "ഗ്രൂപ്പ് നേതാവ്"
 
-#: dt-groups/base-setup.php:460
+#: dt-groups/base-setup.php:459
 msgid "Coach of Group"
 msgstr ""
 
-#: dt-groups/base-setup.php:572
+#: dt-groups/base-setup.php:571
 msgid "Create"
 msgstr "സൃഷ്ടിക്കാൻ"
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:576
 msgid "Select"
 msgstr "തിരഞ്ഞെടുക്കുക"
 
-#: dt-groups/base-setup.php:582
+#: dt-groups/base-setup.php:581
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "പുതിയ അംഗങ്ങളെ ചേർക്കുന്നതിന്, 'സൃഷ്ടിക്കുക' അല്ലെങ്കിൽ 'തിരഞ്ഞെടുക്കുക' ക്ലിക്കുചെയ്യുക."
 
-#: dt-groups/base-setup.php:588
+#: dt-groups/base-setup.php:587
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "നിലവിലുള്ള കോൺ‌ടാക്റ്റുകളിൽ നിന്ന് അംഗങ്ങളെ ചേർക്കുക"
 
-#: dt-groups/base-setup.php:589
+#: dt-groups/base-setup.php:588
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3418,11 +3413,11 @@ msgstr ""
 "'അംഗ ലിസ്റ്റ്' ഫീൽഡിൽ, ഈ ഗ്രൂപ്പിലേക്ക് ചേർക്കുന്നതിന് നിലവിലുള്ള ഒരു കോൺടാക്റ്റിന്റെ പേര് "
 "ടൈപ്പുചെയ്യുക."
 
-#: dt-groups/base-setup.php:617
+#: dt-groups/base-setup.php:616
 msgid "Four Fields"
 msgstr "നാല് ഫീൽഡുകൾ"
 
-#: dt-groups/base-setup.php:618
+#: dt-groups/base-setup.php:617
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3564,32 +3559,32 @@ msgstr "സ്ഥാനം ഇല്ലാതാക്കുക"
 msgid "Open Mapping"
 msgstr "ഓപ്പൺ മാപ്പിംഗ്"
 
-#: dt-mapping/mapping-module-config.php:74 dt-mapping/mapping.php:147
-#: dt-mapping/mapping.php:302
+#: dt-mapping/mapping-module-config.php:73 dt-mapping/mapping.php:146
+#: dt-mapping/mapping.php:300
 msgid "Mapping"
 msgstr "മാപ്പിംഗ്"
 
-#: dt-mapping/mapping.php:149
+#: dt-mapping/mapping.php:148
 msgid "Map"
 msgstr "മാപ്പ്"
 
-#: dt-mapping/mapping.php:150
+#: dt-mapping/mapping.php:149
 msgid "List"
 msgstr "പട്ടിക"
 
-#: dt-mapping/mapping.php:303
+#: dt-mapping/mapping.php:301
 msgid "Refresh Cached Data"
 msgstr "കാഷെ ചെയ്‌ത ഡാറ്റ പുതുക്കുക"
 
-#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:260
+#: dt-mapping/mapping.php:302 dt-people-groups/people-groups-base.php:260
 msgid "Population"
 msgstr "ജനസംഖ്യ"
 
-#: dt-mapping/mapping.php:643 dt-mapping/mapping.php:724
+#: dt-mapping/mapping.php:640 dt-mapping/mapping.php:721
 msgid "World"
 msgstr "ലോകം"
 
-#: dt-metrics/charts-base.php:132
+#: dt-metrics/charts-base.php:131
 msgid "No Results"
 msgstr "ഫലങ്ങളൊന്നുമില്ല"
 
@@ -3604,7 +3599,7 @@ msgstr "ഗുരുതരമായ പാത"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3753,7 +3748,7 @@ msgstr "കഴിഞ്ഞ മാസം"
 #: dt-metrics/combined/daily-activity.php:80
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
-#: dt-notifications/notifications.php:497
+#: dt-notifications/notifications.php:496
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s മാസം മുമ്പ്"
@@ -3765,7 +3760,7 @@ msgid ""
 msgstr ""
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
 msgid "Metrics"
 msgstr "അളവുകൾ"
 
@@ -3778,7 +3773,7 @@ msgid "No Activity Detected!"
 msgstr ""
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:151
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "പുതിയ%s"
@@ -3800,7 +3795,7 @@ msgstr "സംയോജിത മാപ്പുകൾ"
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
 #: dt-metrics/personal/mapbox-contacts-maps.php:60
 #: dt-metrics/personal/mapbox-groups-maps.php:54
-#: dt-metrics/records/dynamic-records-map.php:102
+#: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
@@ -4024,45 +4019,51 @@ msgstr "തലമുറ"
 msgid "Groups Tree"
 msgstr "ഗ്രൂപ്പുകൾ ട്രീ"
 
-#: dt-metrics/groups/tree.php:81
+#: dt-metrics/groups/tree.php:80
 msgid "Group Generation Tree"
 msgstr "ഗ്രൂപ്പ് ജനറേഷൻ ട്രീ"
 
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:134
+#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
+#: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
 msgstr "സജീവമായി ഹൈലൈറ്റ് ചെയ്യുക"
 
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:135
+#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
+#: dt-metrics/records/genmap.php:144
 msgid "Highlight Churches"
 msgstr "പള്ളികളെ ഹൈലൈറ്റ് ചെയ്യുക"
 
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:136 dt-metrics/records/genmap.php:149
+#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
 msgid "Members"
 msgstr "അംഗങ്ങൾ"
 
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:137
+#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
+#: dt-metrics/records/genmap.php:146
 msgid "View Record"
 msgstr "റെക്കോർഡ് കാണുക"
 
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:140
+#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
+#: dt-metrics/records/genmap.php:149
 msgid "Total Members"
 msgstr "ആകെ അംഗങ്ങൾ"
 
-#: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:141
+#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
+#: dt-metrics/records/genmap.php:150
 msgid "View Group"
 msgstr "ഗ്രൂപ്പ് കാണുക"
 
-#: dt-metrics/metrics.php:82
+#: dt-metrics/metrics.php:84
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:113
+#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
+#, fuzzy
+#| msgid "Record Hits:"
+msgid "Records Map"
+msgstr "റെക്കോർഡ് ഹിറ്റുകൾ:"
+
+#: dt-metrics/metrics.php:115
 #, fuzzy
 #| msgid "Metrics"
 msgid "Dynamic Metrics"
@@ -4120,7 +4121,7 @@ msgstr ""
 msgid "Activity Log"
 msgstr ""
 
-#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:194
+#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr ""
 
@@ -4148,7 +4149,7 @@ msgstr "ശിഷ്യൻ"
 msgid "My Groups Tree"
 msgstr "എന്റെ ഗ്രൂപ്പുകൾ ട്രീ"
 
-#: dt-metrics/personal/group-tree.php:82
+#: dt-metrics/personal/group-tree.php:81
 msgid "My Group Generation Tree"
 msgstr "എന്റെ ഗ്രൂപ്പ് ജനറേഷൻ ട്രീ"
 
@@ -4241,139 +4242,133 @@ msgstr ""
 msgid "False"
 msgstr ""
 
-#: dt-metrics/records/dynamic-records-map.php:30
-#, fuzzy
-#| msgid "Record Hits:"
-msgid "Records Map"
-msgstr "റെക്കോർഡ് ഹിറ്റുകൾ:"
-
-#: dt-metrics/records/dynamic-records-map.php:91 template-new-bulk-post.php:264
+#: dt-metrics/records/dynamic-records-map.php:93 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr ""
 
-#: dt-metrics/records/dynamic-records-map.php:92
+#: dt-metrics/records/dynamic-records-map.php:94
 #, fuzzy
 #| msgid "Post Type"
 msgid "Post Types"
 msgstr "പോസ്റ്റ് തരം"
 
-#: dt-metrics/records/dynamic-records-map.php:93
+#: dt-metrics/records/dynamic-records-map.php:95
 #, fuzzy
 #| msgid "Prayer"
 msgid "Layer"
 msgstr "പ്രാർത്ഥന"
 
-#: dt-metrics/records/dynamic-records-map.php:94
+#: dt-metrics/records/dynamic-records-map.php:96
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
 msgstr "%s ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?"
 
-#: dt-metrics/records/dynamic-records-map.php:95
+#: dt-metrics/records/dynamic-records-map.php:97
 #, fuzzy
 #| msgid "Record"
 msgid "Record Types"
 msgstr "റെക്കോർഡ്"
 
-#: dt-metrics/records/dynamic-records-map.php:97
-#: dt-notifications/notifications.php:922
-#: dt-notifications/notifications.php:929
-#: dt-notifications/notifications.php:936
-#: dt-notifications/notifications.php:940
-#: dt-notifications/notifications.php:950
-#: dt-notifications/notifications.php:957
+#: dt-metrics/records/dynamic-records-map.php:99
+#: dt-notifications/notifications.php:920
+#: dt-notifications/notifications.php:927
+#: dt-notifications/notifications.php:934
+#: dt-notifications/notifications.php:938
+#: dt-notifications/notifications.php:948
+#: dt-notifications/notifications.php:955
 msgid "System"
 msgstr "സിസ്റ്റം"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
 #, fuzzy
 #| msgid "Group Generation Tree"
 msgid "Generational Trees"
 msgstr "ഗ്രൂപ്പ് ജനറേഷൻ ട്രീ"
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:136
 #, fuzzy
 #| msgid "Archived"
 msgid "Show Archived"
 msgstr "ശേഖരിച്ചു"
 
-#: dt-metrics/records/genmap.php:128
+#: dt-metrics/records/genmap.php:137
 #, fuzzy
 #| msgid "Prayer"
 msgid "Data Layers"
 msgstr "പ്രാർത്ഥന"
 
-#: dt-metrics/records/genmap.php:129
+#: dt-metrics/records/genmap.php:138
 msgid "Node Color"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:139
 #, fuzzy
 #| msgid "Default Filters"
 msgid "Default"
 msgstr "സ്ഥിരസ്ഥിതി ഫിൽട്ടറുകൾ"
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:132
+#: dt-metrics/records/genmap.php:141
 #, fuzzy
 #| msgid "Show all fields"
 msgid "Show as icons"
 msgstr "എല്ലാ ഫീൽഡുകളും കാണിക്കുക"
 
-#: dt-metrics/records/genmap.php:133
+#: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:146
+#: dt-metrics/records/genmap.php:155
 msgid "Coaches"
 msgstr "കോച്ചുകൾ"
 
-#: dt-metrics/records/genmap.php:147
+#: dt-metrics/records/genmap.php:156
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "തരം:"
 
-#: dt-metrics/records/genmap.php:150
+#: dt-metrics/records/genmap.php:159
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "എന്തുപയോഗിച്ച് തുറക്കണം"
 
-#: dt-metrics/records/genmap.php:152
+#: dt-metrics/records/genmap.php:161
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:153
+#: dt-metrics/records/genmap.php:162
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:156
+#: dt-metrics/records/genmap.php:165
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "കുട്ടികളുടെ ഗ്രൂപ്പ്"
 
-#: dt-metrics/records/genmap.php:158
+#: dt-metrics/records/genmap.php:167
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:159
+#: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:160
+#: dt-metrics/records/genmap.php:169
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "%s ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?"
 
-#: dt-metrics/records/genmap.php:164
+#: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
 msgstr ""
 
@@ -4471,93 +4466,93 @@ msgstr ""
 msgid "Daily Digest"
 msgstr ""
 
-#: dt-notifications/notifications.php:477
+#: dt-notifications/notifications.php:476
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s മിനിറ്റ് മുമ്പ്"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:482
+#: dt-notifications/notifications.php:481
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s മണിക്കൂർ മുമ്പ്"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:487
+#: dt-notifications/notifications.php:486
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s ദിവസം മുമ്പ്"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:492
+#: dt-notifications/notifications.php:491
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s ആഴ്ച മുമ്പ്"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:511
+#: dt-notifications/notifications.php:510
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s വർഷം മുമ്പ്"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:515
+#: dt-notifications/notifications.php:514
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "%s വർഷം മുമ്പ്"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:911
+#: dt-notifications/notifications.php:909
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "%s സൃഷ്ടിച്ച് നിങ്ങൾക്ക് നൽകി."
 
-#: dt-notifications/notifications.php:913
+#: dt-notifications/notifications.php:911
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "നിങ്ങളെ നിയോഗിച്ചു: %1$s."
 
-#: dt-notifications/notifications.php:919
+#: dt-notifications/notifications.php:917
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s %2$s മുതൽ %3$s വരെ നൽകി."
 
-#: dt-notifications/notifications.php:923
+#: dt-notifications/notifications.php:921
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s നിങ്ങളുമായി %2$s പങ്കിട്ടു."
 
-#: dt-notifications/notifications.php:930
+#: dt-notifications/notifications.php:928
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "%1$s നിങ്ങളെ %2$s ൽ പരാമർശിച്ചു: %3$s"
 
-#: dt-notifications/notifications.php:937
+#: dt-notifications/notifications.php:935
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "%1$s %2$s എന്ന് അഭിപ്രായപ്പെട്ടു: %3$s"
 
-#: dt-notifications/notifications.php:941
+#: dt-notifications/notifications.php:939
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "%1$s നിങ്ങൾക്ക് നിയുക്തമാക്കിയ %2$s."
 
-#: dt-notifications/notifications.php:951
+#: dt-notifications/notifications.php:949
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "%1$s %3$s ൽ %2$s നാഴികക്കല്ല് ചേർത്തു."
 
-#: dt-notifications/notifications.php:954
+#: dt-notifications/notifications.php:952
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, %2$s ൽ ഒരു അപ്‌ഡേറ്റ് അഭ്യർത്ഥിക്കുന്നു."
 
-#: dt-notifications/notifications.php:958
+#: dt-notifications/notifications.php:956
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "%1$s പരിഷ്കരിച്ച കോൺ‌ടാക്റ്റ് വിശദാംശങ്ങൾ‌ %2$s."
 
-#: dt-notifications/notifications.php:961
+#: dt-notifications/notifications.php:959
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s ഇനിപ്പറയുന്നതിൽ അസൈൻമെന്റ് നിരസിച്ചു: %2$s."
@@ -4576,7 +4571,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:202
-#: dt-posts/custom-post-type.php:186
+#: dt-posts/custom-post-type.php:185
 msgid "Last Modified"
 msgstr "അവസാനം പരിഷ്കരിച്ചത്"
 
@@ -4620,24 +4615,24 @@ msgstr "വിവർത്തനങ്ങൾ"
 msgid "Enter the People Group title here"
 msgstr "പീപ്പിൾ ഗ്രൂപ്പ് ശീർഷകം ഇവിടെ നൽകുക"
 
-#: dt-posts/custom-post-type.php:180
+#: dt-posts/custom-post-type.php:179
 msgid "Picture"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:209
+#: dt-posts/custom-post-type.php:208
 msgid "Tags"
 msgstr "ടാഗുകൾ"
 
-#: dt-posts/custom-post-type.php:210
+#: dt-posts/custom-post-type.php:209
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr ""
 
-#: dt-posts/custom-post-type.php:223
+#: dt-posts/custom-post-type.php:222
 msgid "Un-Follow"
 msgstr "പിന്തുടരരുത്"
 
-#: dt-posts/custom-post-type.php:244
+#: dt-posts/custom-post-type.php:243
 #, fuzzy
 #| msgctxt "Optional Documentation"
 #| msgid "The general location where this contact is located."
@@ -4645,7 +4640,7 @@ msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
 msgstr "ഈ കോൺ‌ടാക്റ്റ് സ്ഥിതിചെയ്യുന്ന പൊതു സ്ഥാനം."
 
-#: dt-posts/custom-post-type.php:252
+#: dt-posts/custom-post-type.php:251
 msgid "Locations or Address"
 msgstr "ലൊക്കേഷനുകൾ അല്ലെങ്കിൽ വിലാസം"
 
@@ -4654,29 +4649,29 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1705
+#: dt-posts/dt-posts.php:1710
 msgid "%s Submission"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1705
+#: dt-posts/dt-posts.php:1710
 msgid "Magic Link"
 msgstr ""
 
-#: dt-posts/dt-posts.php:1707 dt-posts/dt-posts.php:2254
+#: dt-posts/dt-posts.php:1712 dt-posts/dt-posts.php:2259
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "പ്രവർത്തനം പഴയപടിയാക്കുക"
 
-#: dt-posts/dt-posts.php:2494
+#: dt-posts/dt-posts.php:2499
 msgid "Post already shared with user."
 msgstr "പോസ്റ്റ് ഇതിനകം ഉപയോക്താവുമായി പങ്കിട്ടു."
 
-#: dt-posts/dt-posts.php:2774 single-template.php:175
+#: dt-posts/dt-posts.php:2778 single-template.php:174
 msgid "Details"
 msgstr "വിശദാംശങ്ങൾ"
 
-#: dt-posts/dt-posts.php:2852
+#: dt-posts/dt-posts.php:2856
 #, fuzzy
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
@@ -4689,7 +4684,7 @@ msgstr ""
 "@[%1$s](%2$s) - %3$s ഉപയോക്താവ് %4$s [%5$s](%6$s) ലേക്ക് ആക്സസ് അഭ്യർത്ഥിച്ചു. "
 "വേണമെങ്കിൽ, ആക്സസ് അനുവദിക്കുന്നതിന് ഈ റെക്കോർഡ് ഉപയോക്താവുമായി പങ്കിടുക."
 
-#: dt-posts/dt-posts.php:2858
+#: dt-posts/dt-posts.php:2862
 msgid "Access Request"
 msgstr "പ്രവേശന അഭ്യർത്ഥന"
 
@@ -5019,7 +5014,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s ഉപയോഗിച്ച് പങ്കിടാത്തത്"
 
-#: dt-posts/posts.php:2516
+#: dt-posts/posts.php:2522
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -5484,7 +5479,7 @@ msgstr "അധിക ശിഷ്യൻ.ടൂൾസ് വിവരങ്ങൾ
 msgid "Corresponds to Contact"
 msgstr "കോൺ‌ടാക്റ്റുമായി യോജിക്കുന്നു"
 
-#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:192
+#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:191
 msgid "View Contact"
 msgstr "കോൺ‌ടാക്റ്റ് കാണുക"
 
@@ -5510,98 +5505,98 @@ msgstr ""
 msgid "Default Language"
 msgstr "ഭാഷ"
 
-#: dt-users/user-management.php:137
+#: dt-users/user-management.php:136
 msgid "Add User"
 msgstr "ഉപയോക്താവിനെ ചേർക്കുക"
 
-#: dt-users/user-management.php:181
+#: dt-users/user-management.php:180
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%3$s ദിവസങ്ങൾക്ക് ശേഷം %2$s ൽ %1$s സ്വീകരിച്ചു"
 
-#: dt-users/user-management.php:182
+#: dt-users/user-management.php:181
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s %2$s ദിവസത്തേക്ക് കോൺ‌ടാക്റ്റ് ശ്രമത്തിനായി കാത്തിരിക്കുന്നു"
 
-#: dt-users/user-management.php:183
+#: dt-users/user-management.php:182
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "%3$s ദിവസങ്ങൾക്ക് ശേഷം %2$s ൽ %1$s മായി ബന്ധപ്പെടാൻ ശ്രമിച്ചു"
 
-#: dt-users/user-management.php:184
+#: dt-users/user-management.php:183
 msgid "Unable to update"
 msgstr "അപ്‌ഡേറ്റുചെയ്യാനായില്ല"
 
-#: dt-users/user-management.php:185
+#: dt-users/user-management.php:184
 msgid "View New User"
 msgstr "പുതിയ ഉപയോക്താവിനെ കാണുക"
 
-#: dt-users/user-management.php:186
+#: dt-users/user-management.php:185
 msgid "View New Contact"
 msgstr ""
 
-#: dt-users/user-management.php:187
+#: dt-users/user-management.php:186
 msgid "Email address is already in the system as a user!"
 msgstr "ഒരു ഉപയോക്താവെന്ന നിലയിൽ ഇമെയിൽ വിലാസം ഇതിനകം സിസ്റ്റത്തിൽ ഉണ്ട്!"
 
-#: dt-users/user-management.php:188
+#: dt-users/user-management.php:187
 msgid "Username is already in the system as a user!"
 msgstr "ഉപയോക്തൃനാമം ഇതിനകം ഒരു ഉപയോക്താവായി സിസ്റ്റത്തിൽ ഉണ്ട്!"
 
-#: dt-users/user-management.php:189
+#: dt-users/user-management.php:188
 msgid "Remove"
 msgstr "നീക്കംചെയ്യുക"
 
-#: dt-users/user-management.php:190
+#: dt-users/user-management.php:189
 msgid "This contact is already a user."
 msgstr "ഈ കോൺ‌ടാക്റ്റ് ഇതിനകം ഒരു ഉപയോക്താവാണ്."
 
-#: dt-users/user-management.php:191
+#: dt-users/user-management.php:190
 msgid "View User"
 msgstr "ഉപയോക്താവിനെ കാണുക"
 
-#: dt-users/user-management.php:195 template-settings.php:311
+#: dt-users/user-management.php:194 template-settings.php:311
 #: template-settings.php:575
 msgid "Enable"
 msgstr "പ്രവർത്തനക്ഷമമാക്കുക"
 
-#: dt-users/user-management.php:230
+#: dt-users/user-management.php:229
 msgid "Go"
 msgstr ""
 
-#: dt-users/user-management.php:233
+#: dt-users/user-management.php:232
 #, fuzzy
 #| msgctxt "Showing 30 items matching bob"
 #| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
 msgstr "%2$s മായി പൊരുത്തപ്പെടുന്ന %1$s ഇനങ്ങൾ കാണിക്കുന്നു"
 
-#: dt-users/user-management.php:354
+#: dt-users/user-management.php:353
 msgid "%s days since last update"
 msgstr "അവസാന അപ്‌ഡേറ്റ് മുതൽ%s ദിവസങ്ങൾ"
 
-#: dt-users/user-metrics.php:106
+#: dt-users/user-metrics.php:105
 msgid "Updated fields"
 msgstr ""
 
-#: dt-users/user-metrics.php:110
+#: dt-users/user-metrics.php:109
 msgid "Made %n comments"
 msgstr ""
 
-#: dt-users/user-metrics.php:113
+#: dt-users/user-metrics.php:112
 msgid "Created record"
 msgstr ""
 
-#: dt-users/user-metrics.php:116
+#: dt-users/user-metrics.php:115
 msgid "Logged In %n times"
 msgstr ""
 
-#: dt-users/user-metrics.php:117
+#: dt-users/user-metrics.php:116
 msgid "Logged In"
 msgstr "ലോഗിൻ ചെയ്‌തു"
 
-#: dt-users/user-metrics.php:120
+#: dt-users/user-metrics.php:119
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "%s- ൽ അസൈൻമെന്റ് നിരസിച്ചു"
@@ -5688,44 +5683,44 @@ msgstr ""
 msgid "See what browser you are using."
 msgstr "നിങ്ങൾ ഏത് ബ്ര browser സറാണ് ഉപയോഗിക്കുന്നതെന്ന് കാണുക."
 
-#: single-template.php:100 single-template.php:108
+#: single-template.php:99 single-template.php:107
 msgid "This %s needs an update."
 msgstr "ഈ%s ന് ഒരു അപ്‌ഡേറ്റ് ആവശ്യമാണ്."
 
-#: single-template.php:102 single-template.php:110
+#: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
 msgstr "ഒരു അഭിപ്രായം പോസ്റ്റുചെയ്‌ത് ഒരു അപ്‌ഡേറ്റ് നൽകുക."
 
-#: single-template.php:259
+#: single-template.php:258
 msgid "Edit all details fields"
 msgstr "എല്ലാ വിശദാംശങ്ങളും ഫീൽഡുകൾ എഡിറ്റുചെയ്യുക"
 
-#: single-template.php:384
+#: single-template.php:383
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:405 template-new-bulk-post.php:276
+#: single-template.php:404 template-new-bulk-post.php:276
 #: template-new-post.php:167
 msgid "Create Tag"
 msgstr "ടാഗ് സൃഷ്ടിക്കുക"
 
-#: single-template.php:406 template-new-bulk-post.php:277
+#: single-template.php:405 template-new-bulk-post.php:277
 #: template-new-post.php:168
 msgid "Create a tag and apply it to this record."
 msgstr "ഒരു ടാഗ് സൃഷ്‌ടിച്ച് ഈ റെക്കോർഡിലേക്ക് പ്രയോഗിക്കുക."
 
-#: single-template.php:410 single-template.php:412
+#: single-template.php:409 single-template.php:411
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
 #: template-new-post.php:172 template-new-post.php:174
 msgid "Tag"
 msgstr "ടാഗ് ചെയ്യുക"
 
-#: single-template.php:421 template-new-bulk-post.php:293
+#: single-template.php:420 template-new-bulk-post.php:293
 #: template-new-post.php:183
 msgid "Create and apply tag"
 msgstr "ടാഗ് സൃഷ്ടിച്ച് പ്രയോഗിക്കുക"
 
-#: single-template.php:431
+#: single-template.php:430
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "%s ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?"
@@ -6000,6 +5995,9 @@ msgstr "കോൺ‌ടാക്റ്റുകൾ ആക്‌സസ്സു�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "തനിപ്പകർപ്പുകൾ കണ്ടെത്തി:"
+
+#~ msgid "No Answer"
+#~ msgstr "ഉത്തരമില്ല"
 
 #, fuzzy
 #~| msgid "No"
