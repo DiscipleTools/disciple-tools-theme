@@ -161,6 +161,7 @@ class DT_Login_User_Manager {
 
         $user = wp_signon( [
             'user_login' => $this->email ?: $this->uid,
+            'user_password' => '', // Safeguard against NULL exception and further downstream json parsing errors.
             'remember' => true,
         ] );
 

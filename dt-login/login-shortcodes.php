@@ -173,7 +173,7 @@ function dt_firebase_login_ui( $atts ) {
           const response = JSON.parse(json)
 
           if ( response.status === 200 ) {
-            const { login_method, jwt } = response.body
+            const { login_method, jwt, redirect_url } = response.body
 
             if ( login_method === 'mobile' ) {
               if ( !Object.prototype.hasOwnProperty.call( jwt, 'token' ) ) {
@@ -186,8 +186,8 @@ function dt_firebase_login_ui( $atts ) {
               localStorage.setItem( 'login_method', 'mobile' )
             }
 
-
-            window.location = config.redirect_url
+            // Support last-ditch custom url redirects.
+            window.location = ( ( redirect_url ) ? redirect_url : config.redirect_url );
           } else {
             showLoader(false)
             showErrorMessage(response.message)
