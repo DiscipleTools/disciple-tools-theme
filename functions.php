@@ -438,6 +438,8 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             new Disciple_Tools_Core_Endpoints();
             require_once( 'dt-core/admin/admin-settings-endpoints.php' );
             new Disciple_Tools_Admin_Settings_Endpoints();
+            require_once( 'dt-core/configuration/class-pwa.php' );
+            new Disciple_Tools_PWA();
 
             /**
              * Admin panel
