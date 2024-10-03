@@ -74,12 +74,22 @@ class Jwt_Auth_Public {
 	 * Add the endpoints to the API
 	 */
 	public function add_api_routes() {
+        register_rest_route( $this->namespace, 'token', [
+            'methods'             => 'GET',
+            'callback'            => [ $this, 'exchange_cookie_for_jwt' ],
+            'permission_callback' => '__return_true',
+        ] );
 		register_rest_route( $this->namespace, 'token', [
 			'methods'             => 'POST',
 			'callback'            => [ $this, 'generate_token' ],
 			'permission_callback' => '__return_true',
 		] );
-
+        register_rest_route( $this->namespace, 'token/refresh', [
+                'methods'             => 'POST',
+                'callback'            => [ $this, 'refresh_access_token' ],
+                'permission_callback' => '__return_true'
+            ]
+        );
 		register_rest_route( $this->namespace, 'token/validate', [
 			'methods'             => 'POST',
 			'callback'            => [ $this, 'validate_token' ],
@@ -146,53 +156,58 @@ class Jwt_Auth_Public {
 			);
 		}
 
-		/** Valid credentials, the user exists create the according Token */
-		$issuedAt  = time();
-		$notBefore = apply_filters( 'jwt_auth_not_before', $issuedAt, $issuedAt );
-		$expire    = apply_filters( 'jwt_auth_expire', $issuedAt + ( DAY_IN_SECONDS * 7 ), $issuedAt );
 
-		$token = [
-			'iss'  => get_bloginfo( 'url' ),
-			'iat'  => $issuedAt,
-			'nbf'  => $notBefore,
-			'exp'  => $expire,
-			'data' => [
-				'user' => [
-					'id' => $user->data->ID,
-				],
-			],
-		];
-
-		/** Let the user modify the token data before the sign. */
-		$algorithm = self::get_algorithm();
-
-		if ( $algorithm === false ) {
-			return new WP_Error(
-				'jwt_auth_unsupported_algorithm',
-				__( 'Algorithm not supported, see https://www.rfc-editor.org/rfc/rfc7518#section-3', 'wp-api-jwt-auth' ),
-				[
-					'status' => 403,
-				]
-			);
-		}
-
-		$token = JWT::encode(
-			apply_filters( 'jwt_auth_token_before_sign', $token, $user ),
-			$secret_key,
-			$algorithm
-		);
-
-		/** The token is signed, now create the object with no sensible user data to the client*/
-		$data = [
-			'token'             => $token,
-			'user_email'        => $user->data->user_email,
-			'user_nicename'     => $user->data->user_nicename,
-			'user_display_name' => $user->data->display_name,
-		];
-
+        $data = self::generate_token_for_user( $user );
 		/** Let the user modify the data before send it back */
 		return apply_filters( 'jwt_auth_token_before_dispatch', $data, $user );
 	}
+
+    private static function generate_token_for_user( $user ){
+        $secret_key = defined( 'JWT_AUTH_SECRET_KEY' ) ? JWT_AUTH_SECRET_KEY : false;
+        /** Valid credentials, the user exists create the according Token */
+        $issuedAt  = time();
+        $notBefore = apply_filters( 'jwt_auth_not_before', $issuedAt, $issuedAt );
+        $expire    = apply_filters( 'jwt_auth_expire', $issuedAt + ( DAY_IN_SECONDS * 7 ), $issuedAt );
+
+        $token = [
+            'iss'  => get_bloginfo( 'url' ),
+            'iat'  => $issuedAt,
+            'nbf'  => $notBefore,
+            'exp'  => $expire,
+            'data' => [
+                'user' => [
+                    'id' => $user->data->ID,
+                ],
+            ],
+        ];
+
+        /** Let the user modify the token data before the sign. */
+        $algorithm = self::get_algorithm();
+
+        if ( $algorithm === false ) {
+            return new WP_Error(
+                'jwt_auth_unsupported_algorithm',
+                __( 'Algorithm not supported, see https://www.rfc-editor.org/rfc/rfc7518#section-3', 'wp-api-jwt-auth' ),
+                [
+                    'status' => 403,
+                ]
+            );
+        }
+
+        $token = JWT::encode(
+            apply_filters( 'jwt_auth_token_before_sign', $token, $user ),
+            $secret_key,
+            $algorithm
+        );
+
+        /** The token is signed, now create the object with no sensible user data to the client*/
+        return [
+            'token'             => $token,
+            'user_email'        => $user->data->user_email,
+            'user_nicename'     => $user->data->user_nicename,
+            'user_display_name' => $user->data->display_name,
+        ];
+    }
 
 	/**
 	 * This is our Middleware to try to authenticate the user according to the
@@ -405,6 +420,58 @@ class Jwt_Auth_Public {
 			);
 		}
 	}
+
+    public function refresh_access_token(WP_REST_Request $request) {
+        $validated = $this->validate_token( $request );
+        if ( !$validated || is_wp_error( $validated ) ) {
+            return $validated;
+        }
+        $user = wp_get_current_user();
+        if ( empty( $user->ID ) ) {
+            return new WP_Error(
+                'jwt_auth_no_user',
+                'No user logged in',
+                [
+                    'status' => 403,
+                ]
+            );
+        }
+        $auth = self::generate_token_for_user( $user );
+        if ( is_wp_error( $auth ) ) {
+            return $auth;
+        }
+        $token = $auth['token'];
+
+        //remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
+
+        if ( $token ) {
+            return [
+//                'login_method' => DT_Login_Methods::MOBILE,
+                'token' => $token,
+            ];
+        }
+    }
+
+    public function exchange_cookie_for_jwt(WP_REST_Request $request) {
+        $cookie_user = wp_validate_auth_cookie();
+
+        $user = get_user_by( 'ID', $cookie_user );
+        if ( empty( $user->ID ) ) {
+            return new WP_Error(
+                'jwt_auth_no_user',
+                'No user logged in',
+                [
+                    'status' => 403,
+                ]
+            );
+        }
+        $auth = self::generate_token_for_user( $user );
+        $token = $auth['token'];
+        wp_redirect( 'exp://127.0.0.1:8081/?token=' . $token );
+        //wp_redirect( 'discipletools://example.com/?token=' . $token );
+        //wp_redirect( 'dt://example.com/?token=' . $token );
+        exit;
+    }
 
 	/**
 	 * Filter to hook the rest_pre_dispatch, if the is an error in the request
