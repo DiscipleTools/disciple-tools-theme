@@ -219,12 +219,12 @@ class DT_Contacts_DMM extends DT_Module_Base {
                 'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'contact_count', 'connection_field' => 'contacts' ]
             ];
             $fields['quick_button_no_answer'] = [
-                'name'        => __( 'No Answer', 'disciple_tools' ),
+                'name'        => __( 'Contact Attempted', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'number',
                 'default'     => 0,
                 'section'     => 'quick_buttons',
-                'icon'        => get_template_directory_uri() . '/dt-assets/images/account-voice-off.svg?v=2',
+                'icon'        => get_template_directory_uri() . '/dt-assets/images/send.svg',
                 'customizable' => false
             ];
             $fields['quick_button_contact_established'] = [

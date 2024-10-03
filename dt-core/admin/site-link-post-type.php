@@ -1514,6 +1514,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     $type['create_' . $post_type] = sprintf( __( 'Create %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
                     $type['create_update_' . $post_type] = sprintf( __( 'Create and Update %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
                 }
+                $type['all_permissions'] = 'All permissions';
             }
 
             return $type;
@@ -1532,6 +1533,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         $args['capabilities'][] = 'update_any_' . $post_type;
                     }
                 }
+            }
+            if ( 'all_permissions' === $args['connection_type'] ){
+                $existing_roles_permissions = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+                $administrator_permissions = array_keys( $existing_roles_permissions['administrator']['permissions'] );
+                $args['capabilities'] = $administrator_permissions;
             }
 
             return $args;

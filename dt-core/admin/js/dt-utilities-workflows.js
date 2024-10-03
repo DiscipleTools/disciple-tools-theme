@@ -805,11 +805,21 @@ jQuery(function ($) {
         return sort_by_string(a['name'].toUpperCase(), b['name'].toUpperCase());
       });
 
+      let help_text = $('#dt_right_docs_comments_list');
+
       // Add sorted field names
       fields.forEach(function (field, idx) {
         if (field['id'] && field['name']) {
           let option = `<option value="${window.dt_admin_shared.escape(field['id'])}">${window.dt_admin_shared.escape(field['name'])}</option>`;
           fields_select.append(option);
+
+          if (
+            field['type'] === 'connection' ||
+            field['type'] === 'user_select'
+          ) {
+            let help = `<li>${field['name']} - <code>{${field['id']}}</code></li>`;
+            help_text.append(help);
+          }
         }
       });
     }
@@ -1566,6 +1576,9 @@ jQuery(function ($) {
   }
 
   function fetch_event_value_field(base_url, field, event_value_object_id) {
+    document.getElementById(
+      'workflows_design_section_step3_help_text',
+    ).textContent = '';
     switch (field['type']) {
       case 'text':
       case 'number':
@@ -1615,6 +1628,12 @@ jQuery(function ($) {
     response['id'] = Date.now();
     response['html'] =
       `<textarea placeholder="Enter text..." style="min-width: 100%;" id="${window.dt_admin_shared.escape(response['id'])}">`;
+
+    let help_button = $('#workflows_design_section_step3_help_text');
+    const new_help_button = `<span id="workflows_design_section_step3_help_text">[<a href="#" class="dt-docs"
+        data-title="dt_right_docs_comments_title"
+        data-content="dt_right_docs_comments_content">&#63;</a>]</span>`;
+    help_button.replaceWith(new_help_button);
 
     return response;
   }
