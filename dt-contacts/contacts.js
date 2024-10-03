@@ -95,19 +95,14 @@ jQuery(document).ready(function ($) {
   /**
    * Duplicates
    */
-  // window
-  //   .makeRequestOnPosts('GET', `${post_type}/${post_id}/duplicates`)
-  //   .then((response) => {
-  //     if (response.ids && response.ids.length > 0) {
-  //       $('.details-title-section').html(`
-  //       <button class="button hollow center-items duplicates-detected-button" id="duplicates-detected-notice">
-  //         <img style="height:20px" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-  //         <strong>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.duplicates_detected)}</strong>
-  //       </button>
-  //     `);
-  //   }
-
-  //   });
+  window
+    .makeRequestOnPosts('GET', `${post_type}/${post_id}/duplicates`)
+    .then((response) => {
+      console.log(response);
+      if (response.ids && response.ids.length > 0) {
+        document.querySelector('#see-duplicates').style.display = 'block';
+      }
+    });
 
   let merge_dupe_edit_modal = $('#merge-dupe-edit-modal');
   let possible_duplicates = [];

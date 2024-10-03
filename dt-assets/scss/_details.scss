@@ -1080,6 +1080,9 @@ html[dir="rtl"] .add-link-dropdown__content {
     margin-bottom: 0;
     padding: .5em .5em;
 }
+dt-modal#see-duplicates {
+    display: none;
+}
 /** DT Modal Content CSS Starts **/
 dt-modal:not(:defined){
     display: none;
