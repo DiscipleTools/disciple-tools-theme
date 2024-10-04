@@ -7,7 +7,7 @@ class DT_Metrics_Mapbox_Combined_Maps extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'records'; // lowercase
     public $base_title;
 
     public $title;
