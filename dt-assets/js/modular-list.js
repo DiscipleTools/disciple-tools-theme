@@ -19,11 +19,8 @@ if (
     wpApiShare.nonce,
   );
 }
-'use strict';
+('use strict');
 (function ($, list_settings, Foundation) {
-
-
-
   let selected_filters = $('#selected-filters');
   let new_filter_labels = [];
   let custom_filters = [];
