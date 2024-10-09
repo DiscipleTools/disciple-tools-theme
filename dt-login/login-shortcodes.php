@@ -16,13 +16,14 @@ function dt_firebase_login_ui( $atts ) {
     $atts = shortcode_atts( [
         'lang_code' => $default_lang,
         'redirect_to' => $default_redirect_to,
+        'success_url' => ( !empty( $atts['success_url'] ) ? $atts['success_url'] : null ),
+        'error_url' => ( !empty( $atts['error_url'] ) ? $atts['error_url'] : null )
     ], $atts );
 
     $lang_code = $atts['lang_code'];
     $redirect_to = $atts['redirect_to'];
 
     $firebase_langs = dt_login_firebase_supported_languages();
-
 
     if ( !in_array( $lang_code, $firebase_langs ) ) {
         if ( strpos( $lang_code, '_' ) !== false ) {
@@ -47,6 +48,8 @@ function dt_firebase_login_ui( $atts ) {
     $config['tos_url'] = DT_Login_Fields::get( 'tos_url' ) ? DT_Login_Fields::get( 'tos_url' ) : '';
     $config['privacy_url'] = DT_Login_Fields::get( 'privacy_url' ) ? DT_Login_Fields::get( 'privacy_url' ) : '';
     $config['disable_sign_up_status'] = !dt_can_users_register();
+    $config['success_url'] = ( !empty( $atts['success_url'] ) ? $atts['success_url'] : null );
+    $config['error_url'] = ( !empty( $atts['error_url'] ) ? $atts['error_url'] : null );
 
     $sign_in_options = [];
     $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
@@ -173,7 +176,7 @@ function dt_firebase_login_ui( $atts ) {
           const response = JSON.parse(json)
 
           if ( response.status === 200 ) {
-            const { login_method, jwt, redirect_url } = response.body
+            const { login_method, jwt } = response.body
 
             if ( login_method === 'mobile' ) {
               if ( !Object.prototype.hasOwnProperty.call( jwt, 'token' ) ) {
@@ -186,8 +189,12 @@ function dt_firebase_login_ui( $atts ) {
               localStorage.setItem( 'login_method', 'mobile' )
             }
 
-            // Support last-ditch custom url redirects.
-            window.location = ( ( redirect_url ) ? redirect_url : config.redirect_url );
+            // Redirect based on specified settings or override urls.
+            if ( config['success_url'] ) {
+                window.location = config['success_url'];
+            } else {
+                window.location = config.redirect_url;
+            }
           } else {
             showLoader(false)
             showErrorMessage(response.message)

@@ -81,29 +81,25 @@ class DT_Login_Endpoints {
         }
         //phpcs:enable
 
-        $error_response = null;
         $user_manager = new DT_Login_User_Manager( $payload );
 
         try {
             $response = $user_manager->login();
         } catch ( \Throwable $th ) {
-            $error_response = new WP_Error( $th->getCode(), $th->getMessage(), [ 'status' => 401 ] );
+            return new WP_Error( $th->getCode(), $th->getMessage(), [ 'status' => 401 ] );
         }
 
         if ( is_wp_error( $response ) ) {
-            $error_response = $response;
+            return $response;
         }
         if ( !$response ) {
-            $error_response = new WP_Error( 'login_error', 'Something went wrong with the login', [ 'status' => 401 ] );
+            return new WP_Error( 'login_error', 'Something went wrong with the login', [ 'status' => 401 ] );
         }
 
-        // Provide opportunity to update response packet.
-        $rest_response = apply_filters( 'dt_sso_login_response', [
+        return new WP_REST_Response( [
             'status' => 200,
             'body' => $response,
-        ], $payload, $error_response );
-
-        return !is_null( $error_response ) ? $error_response : new WP_REST_Response( $rest_response );
+        ] );
     }
 
     /**
