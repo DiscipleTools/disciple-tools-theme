@@ -475,7 +475,7 @@ class DT_Contacts_DMM extends DT_Module_Base {
             return new WP_Error( 'get_activity', 'Missing a valid contact id or activity id', [ 'status' => 400 ] );
         }
     }
-    
+
 
     public function dt_record_footer( $post_type, $post_id ){
         if ( $post_type !== 'contacts' ){
@@ -492,7 +492,7 @@ class DT_Contacts_DMM extends DT_Module_Base {
             <div>
                 <div class="modal_baptized_by details">
                     
-                    <?php 
+                    <?php
                     render_field_for_display( 'baptized_by', $field_settings, $post );
                     ?>
                     </div>
