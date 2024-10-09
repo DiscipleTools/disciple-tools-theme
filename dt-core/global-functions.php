@@ -708,7 +708,10 @@ if ( !defined( 'DT_FUNCTIONS_READY' ) ) {
                     <?php $faith_milestone = array( $fields[$field_key]['default'] );
                     $faith_milestone_json = json_encode( $faith_milestone );
                     ?>
+                            <?php $is_modal_array = [ 'Baptized' ];
+                            $is_modal_json = json_encode( $is_modal_array );?>
                         <dt-multiselect-buttons-group context=<?php echo wp_kses_post( $shared_attributes ) ?>
+                            isModal='<?php echo esc_attr( $is_modal_json ); ?>'
                             buttons='<?php echo esc_attr( $faith_milestone_json ); ?>'
                             value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
                         <?php dt_render_icon_slot( $fields[$field_key] ) ?></dt-multiselect-buttons-group>
