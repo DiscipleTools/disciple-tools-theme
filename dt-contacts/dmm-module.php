@@ -1,5 +1,4 @@
 <?php
-require_once ABSPATH . 'wp-content/themes/disciple-tools-theme-next/dt-core/global-functions.php';
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class DT_Contacts_DMM extends DT_Module_Base {
@@ -491,7 +490,7 @@ class DT_Contacts_DMM extends DT_Module_Base {
             <p><?php esc_html_e( 'Who was this contact baptized by and when?', 'disciple_tools' )?></p>
             <div>
                 <div class="modal_baptized_by details">
-                    
+
                     <?php
                     render_field_for_display( 'baptized_by', $field_settings, $post );
                     ?>
@@ -500,9 +499,9 @@ class DT_Contacts_DMM extends DT_Module_Base {
             </div>
 
 <br>
-<br>           
+<br>
             </div>
-            
+
         </span>
        <span slot="close-button">
            <button class="button" data-close type="button" id="close-baptism-modal">
@@ -510,7 +509,7 @@ class DT_Contacts_DMM extends DT_Module_Base {
            </button>
        </span>
         </dt-modal>
-        
+
         <?php
     }
 
