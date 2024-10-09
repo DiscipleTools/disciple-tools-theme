@@ -98,23 +98,16 @@ jQuery(document).ready(function ($) {
   window
     .makeRequestOnPosts('GET', `${post_type}/${post_id}/duplicates`)
     .then((response) => {
+      console.log(response);
       if (response.ids && response.ids.length > 0) {
-        $('.details-title-section').html(`
-        <button class="button hollow center-items duplicates-detected-button" id="duplicates-detected-notice">
-          <img style="height:20px" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-          <strong>${window.SHAREDFUNCTIONS.escapeHTML(window.detailsSettings.translations.duplicates_detected)}</strong>
-        </button>
-      `);
+        document.querySelector('#see-duplicates').style.display = 'block';
       }
     });
-  let merge_dupe_edit_modal = $('#merge-dupe-edit-modal');
-  $(document).on('click', '#duplicates-detected-notice', function () {
-    merge_dupe_edit_modal.foundation('open');
-  });
 
+  let merge_dupe_edit_modal = $('#merge-dupe-edit-modal');
   let possible_duplicates = [];
   let openedOnce = false;
-  merge_dupe_edit_modal.on('open.zf.reveal', function () {
+  $(document).on('click , mouseenter', '.duplicate-detected', function () {
     if (!openedOnce) {
       let original_contact_html = `<div class="merge-modal-contact-row">
         <h5>
@@ -132,7 +125,7 @@ jQuery(document).ready(function ($) {
           ) {
             post[field_key].forEach((contact_info) => {
               if (contact_info.value !== '') {
-                original_contact_html += `<img src='${window.SHAREDFUNCTIONS.escapeHTML(field_settings.icon)}'><span style="margin-right: 15px;">&nbsp;${window.SHAREDFUNCTIONS.escapeHTML(contact_info.value)}</span>`;
+                original_contact_html += `<img src='${window.SHAREDFUNCTIONS.escapeHTML(field_settings.icon)}'><span style="font-size: .9375rem;margin-right: 15px;">&nbsp;${window.SHAREDFUNCTIONS.escapeHTML(contact_info.value)}</span>`;
               }
             });
           }
@@ -152,6 +145,46 @@ jQuery(document).ready(function ($) {
       openedOnce = true;
     }
   });
+
+  // merge_dupe_edit_modal.on('open.zf.reveal', function () {
+  //   if (!openedOnce) {
+  //     let original_contact_html = `<div class="merge-modal-contact-row">
+  //       <h5>
+  //       <a href="${window.wpApiShare.site_url}/${post_type}/${window.SHAREDFUNCTIONS.escapeHTML(post_id)}" class="merge-modal-contact-name" target=_blank>
+  //       ${window.SHAREDFUNCTIONS.escapeHTML(post.name)}
+  //       <span class="merge-modal-contact-info"> #${post_id} (${window.lodash.get(post, 'overall_status.label') || ''}) </span>
+  //       </a>
+  //       </h5>`;
+  //     window.lodash.forOwn(
+  //       window.detailsSettings.post_settings.fields,
+  //       (field_settings, field_key) => {
+  //         if (
+  //           field_settings.type === 'communication_channel' &&
+  //           post[field_key]
+  //         ) {
+  //           post[field_key].forEach((contact_info) => {
+  //             if (contact_info.value !== '') {
+  //               original_contact_html += `<img src='${window.SHAREDFUNCTIONS.escapeHTML(field_settings.icon)}'><span style="font-size: .9375rem;margin-right: 15px;">&nbsp;${window.SHAREDFUNCTIONS.escapeHTML(contact_info.value)}</span>`;
+  //             }
+  //           });
+  //         }
+  //       },
+  //     );
+  //     original_contact_html += `</div>`;
+  //     $('#original-contact').append(original_contact_html);
+
+  //     window.API.get_duplicates_on_post('contacts', post_id).done(
+  //       (dups_with_data) => {
+  //         possible_duplicates = dups_with_data;
+  //         $('#duplicates-spinner').removeClass('active');
+  //         loadDuplicates();
+  //       },
+  //     );
+
+  //     openedOnce = true;
+  //   }
+  // });
+
   function loadDuplicates() {
     let dups_with_data = possible_duplicates;
     if (dups_with_data) {
@@ -220,7 +253,7 @@ jQuery(document).ready(function ($) {
         ) {
           dupe.post[field_key].forEach((contact_info) => {
             if (contact_info.value !== '') {
-              html += `<img src='${window.SHAREDFUNCTIONS.escapeHTML(field_settings.icon)}'><span style="margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${window.SHAREDFUNCTIONS.escapeHTML(contact_info.value)}</span>`;
+              html += `<img src='${window.SHAREDFUNCTIONS.escapeHTML(field_settings.icon)}'><span style="font-size: .9375rem;margin-right: 15px; ${matched_values.includes(contact_info.value) ? 'font-weight:bold;' : ''}">&nbsp;${window.SHAREDFUNCTIONS.escapeHTML(contact_info.value)}</span>`;
             }
           });
         }

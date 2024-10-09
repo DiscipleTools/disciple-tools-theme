@@ -129,6 +129,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         );
 
         register_rest_route(
+            $this->namespace, '/delete-tile', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'delete_tile' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+
+        register_rest_route(
             $this->namespace, '/edit-translations', [
                 'methods' => 'POST',
                 'callback' => [ $this, 'edit_translations' ],
