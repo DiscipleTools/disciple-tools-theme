@@ -971,7 +971,7 @@ Thanks!';
                 } else {
                     $columns_json = json_encode( [] ); // Fallback to an empty array if not valid
                 } ?>
-                <dt-list postType="<?php echo $post_type ?>" columns="<?php echo esc_attr( $columns_json ); ?>"></dt-list>
+                <dt-list postType="<?php echo esc_attr( $post_type ); ?>" columns="<?php echo esc_attr( $columns_json ); ?>"></dt-list>
             </main>
         </div>
     </div>
