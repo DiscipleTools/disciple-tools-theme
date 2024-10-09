@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-08-20T10:49:20+00:00\n"
+"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Punjabi <https://translate.disciple.tools/projects/disciple-"
@@ -70,23 +70,23 @@ msgstr "ਰਿਕਾਰਡ ਮਾਲਕ ਨੂੰ ਪਹੁੰਚ ਬੇਨਤ�
 msgid "Submit Request"
 msgstr "ਬੇਨਤੀ ਜਮ੍ਹਾਂ ਕਰੋ"
 
-#: 403.php:55 archive-template.php:1107 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1108 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
-#: dt-contacts/access-module.php:558 dt-contacts/base-setup.php:376
-#: dt-contacts/base-setup.php:411 dt-contacts/user-module.php:159
-#: single-template.php:418 single-template.php:435
+#: dt-contacts/access-module.php:496 dt-contacts/access-module.php:527
+#: dt-contacts/access-module.php:555 dt-contacts/base-setup.php:375
+#: dt-contacts/base-setup.php:410 dt-contacts/user-module.php:159
+#: single-template.php:417 single-template.php:434
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:153
 #: template-new-post.php:180
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: 403.php:59 archive-template.php:505 archive-template.php:547
-#: archive-template.php:772 archive-template.php:1131
+#: 403.php:59 archive-template.php:506 archive-template.php:548
+#: archive-template.php:773 archive-template.php:1132
 #: dt-assets/functions/enqueue-scripts.php:440
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
@@ -114,16 +114,16 @@ msgstr "ਰੱਦ ਕਰੋ"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/access-module.php:504 dt-contacts/access-module.php:535
-#: dt-contacts/access-module.php:563 dt-contacts/access-module.php:654
-#: dt-contacts/base-setup.php:381 dt-contacts/base-setup.php:416
-#: dt-contacts/dmm-module.php:521 dt-contacts/dmm-module.php:523
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:598
-#: dt-groups/base-setup.php:603 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/access-module.php:501 dt-contacts/access-module.php:532
+#: dt-contacts/access-module.php:560 dt-contacts/access-module.php:651
+#: dt-contacts/base-setup.php:380 dt-contacts/base-setup.php:415
+#: dt-contacts/dmm-module.php:520 dt-contacts/dmm-module.php:522
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:597
+#: dt-groups/base-setup.php:602 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:423
-#: single-template.php:440 template-new-bulk-post.php:223
+#: dt-users/user-initial-setup.php:82 single-template.php:422
+#: single-template.php:439 template-new-bulk-post.php:223
 #: template-new-bulk-post.php:295 template-new-post.php:185
 #: template-settings.php:602
 msgid "Close"
@@ -147,7 +147,7 @@ msgstr "ਨਵਾਂ%s ਬਣਾਓ"
 msgid "Filters"
 msgstr "ਫਿਲਟਰ"
 
-#: archive-template.php:36 archive-template.php:138 archive-template.php:655
+#: archive-template.php:36 archive-template.php:138 archive-template.php:656
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:711
 #: dt-core/global-functions.php:739 dt-core/global-functions.php:871
 #: dt-core/global-functions.php:915 dt-posts/custom-post-type.php:20
@@ -175,7 +175,7 @@ msgid "Comments"
 msgstr "ਟਿਪਣੀਆਂ"
 
 #: archive-template.php:63 archive-template.php:162
-#: dt-users/user-management.php:231
+#: dt-users/user-management.php:230
 msgid "Search"
 msgstr "ਖੋਜ"
 
@@ -191,12 +191,12 @@ msgstr "ਸਾਰੇ ਖੇਤਰ ਖੋਜੋ"
 msgid "Communication Channels"
 msgstr "ਸੰਚਾਰ ਚੈਨਲ"
 
-#: archive-template.php:111 archive-template.php:206 archive-template.php:542
+#: archive-template.php:111 archive-template.php:206 archive-template.php:543
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "ਲਾਗੂ ਕਰੋ"
 
-#: archive-template.php:112 archive-template.php:207 archive-template.php:543
+#: archive-template.php:112 archive-template.php:207 archive-template.php:544
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "ਡਿਫੌਲਟ ਤੇ ਰੀਸੈਟ ਕਰੋ"
@@ -215,50 +215,50 @@ msgctxt "Split By"
 msgid "Split By"
 msgstr ""
 
-#: archive-template.php:295
+#: archive-template.php:296
 #, fuzzy
 #| msgid "No duplicates found."
 msgid "No results found"
 msgstr "ਕੋਈ ਡੁਪਲਿਕੇਟ ਨਹੀਂ ਮਿਲੀਆਂ."
 
-#: archive-template.php:301
+#: archive-template.php:302
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:313 archive-template.php:336
+#: archive-template.php:314 archive-template.php:337
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "ਸੂਚੀ"
 
-#: archive-template.php:317 archive-template.php:340
+#: archive-template.php:318 archive-template.php:341
 msgid "BCC Email List"
 msgstr ""
 
-#: archive-template.php:318
+#: archive-template.php:319
 #, fuzzy
 #| msgid "Phone"
 msgid "Phone List"
 msgstr "ਫੋਨ"
 
-#: archive-template.php:323 archive-template.php:348
+#: archive-template.php:324 archive-template.php:349
 #, fuzzy
 #| msgid "List"
 msgid "Map List"
 msgstr "ਸੂਚੀ"
 
-#: archive-template.php:332
+#: archive-template.php:333
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:337
+#: archive-template.php:338
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:341
+#: archive-template.php:342
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -268,330 +268,330 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 
-#: archive-template.php:344
+#: archive-template.php:345
 #, fuzzy
 #| msgid "Member List"
 msgid "Phone Number List"
 msgstr "ਸਦੱਸ ਸੂਚੀ"
 
-#: archive-template.php:345
+#: archive-template.php:346
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
 
-#: archive-template.php:349
+#: archive-template.php:350
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
 
-#: archive-template.php:375
+#: archive-template.php:376
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s ਸੂਚੀ"
 
-#: archive-template.php:382
+#: archive-template.php:383
 msgid "Sort"
 msgstr "ਲੜੀਬੱਧ"
 
-#: archive-template.php:387
+#: archive-template.php:388
 msgid "Newest"
 msgstr "ਨਵੀਨਤਮ"
 
-#: archive-template.php:392
+#: archive-template.php:393
 msgid "Oldest"
 msgstr "ਸਭ ਤੋਂ ਪੁਰਾਣਾ"
 
-#: archive-template.php:397
+#: archive-template.php:398
 msgid "Most recently modified"
 msgstr "ਹਾਲ ਹੀ ਵਿੱਚ ਸੋਧਿਆ ਗਿਆ"
 
-#: archive-template.php:402
+#: archive-template.php:403
 msgid "Least recently modified"
 msgstr "ਘੱਟ ਤੋਂ ਘੱਟ ਹਾਲ ਹੀ ਵਿੱਚ ਸੋਧਿਆ ਗਿਆ"
 
-#: archive-template.php:412 template-new-bulk-post.php:89
+#: archive-template.php:413 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "ਖੇਤਰ"
 
-#: archive-template.php:419
+#: archive-template.php:420
 msgid "Bulk Edit"
 msgstr "ਥੋਕ ਸੰਪਾਦਨ"
 
-#: archive-template.php:426
+#: archive-template.php:427
 #, fuzzy
 #| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "ਬਲਕ ਭੇਜੋ ਐਪ"
 
-#: archive-template.php:460 dt-assets/parts/nav-topbar.php:65
-#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
+#: archive-template.php:461 dt-assets/parts/nav-topbar.php:65
+#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "ਹੋਰ"
 
-#: archive-template.php:481 dt-contacts/base-setup.php:305
+#: archive-template.php:482 dt-contacts/base-setup.php:304
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "ਆਰਕਾਈਵ ਕੀਤਾ"
 
-#: archive-template.php:485
+#: archive-template.php:486
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "ਨਵਾਂ$s"
 
-#: archive-template.php:508
+#: archive-template.php:509
 msgid "Choose which fields to display as columns in the list"
 msgstr "ਸੂਚੀ ਵਿੱਚ ਕਾਲਮ ਦੇ ਰੂਪ ਵਿੱਚ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਲਈ ਕਿਹੜੇ ਖੇਤਰ ਚੁਣੋ"
 
-#: archive-template.php:551
+#: archive-template.php:552
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "ਉਹ ਸਾਰੇ %1$s ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਸੂਚੀ ਵਿੱਚੋਂ ਅਪਡੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਹੇਠਾਂ ਅਪਡੇਟ ਕਰੋ"
 
-#: archive-template.php:569 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:587 dt-contacts/user-module.php:137
+#: archive-template.php:570 dt-assets/parts/modals/modal-share.php:27
+#: dt-contacts/access-module.php:584 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:953
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ਖੋਜਕਰਤਾ"
 
-#: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:139
-#: dt-metrics/records/genmap.php:143 dt-posts/dt-posts.php:2773
+#: archive-template.php:594 dt-metrics/groups/tree.php:86
+#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
-#: single-template.php:128
+#: single-template.php:127
 msgid "Status"
 msgstr "ਸਥਿਤੀ"
 
-#: archive-template.php:643
+#: archive-template.php:644
 msgid "Share with:"
 msgstr "ਇਸ ਨਾਲ ਸਾਂਝਾ ਕਰੋ:"
 
-#: archive-template.php:663
+#: archive-template.php:664
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "%s ਨਾਲ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ"
 
-#: archive-template.php:675 dt-assets/functions/details-bar.php:186
-#: dt-posts/custom-post-type.php:217
+#: archive-template.php:676 dt-assets/functions/details-bar.php:186
+#: dt-posts/custom-post-type.php:216
 msgid "Follow"
 msgstr "ਅਨੁਸਰਣ ਕਰੋ"
 
-#: archive-template.php:680 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:681 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "ਟਿੱਪਣੀਆਂ ਅਤੇ ਗਤੀਵਿਧੀ"
 
-#: archive-template.php:685 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:686 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "ਆਪਣੀ ਟਿੱਪਣੀ ਜਾਂ ਨੋਟ ਇੱਥੇ ਲਿਖੋ"
 
-#: archive-template.php:693 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:694 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "ਕਿਸਮ:"
 
-#: archive-template.php:713 dt-users/template-new-user.php:127
+#: archive-template.php:714 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "ਹੋਰ ਵਿਕਲਪ ਵੇਖੋ"
 
-#: archive-template.php:714 dt-users/template-new-user.php:130
+#: archive-template.php:715 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "ਘੱਟ ਵਿਕਲਪ ਵੇਖੋ"
 
-#: archive-template.php:750 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:751 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "ਅਪਡੇਟ"
 
-#: archive-template.php:751 archive-template.php:859
+#: archive-template.php:752 archive-template.php:860
 #: dt-assets/functions/enqueue-scripts.php:330
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "ਹੇਠਾਂ ਚੋਣ ਕਰੋ"
 
-#: archive-template.php:759 dt-assets/functions/enqueue-scripts.php:179
+#: archive-template.php:760 dt-assets/functions/enqueue-scripts.php:179
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/functions/enqueue-scripts.php:278
 #: dt-assets/functions/enqueue-scripts.php:318
-#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:438
+#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:437
 msgid "Delete"
 msgstr "ਮਿਟਾਓ"
 
-#: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:331
+#: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "ਹੇਠਾਂ ਚੋਣ ਕਰੋ"
 
-#: archive-template.php:776
+#: archive-template.php:777
 #, fuzzy
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "ਉਹਨਾਂ ਸਾਰੇ %1$s ਨੂੰ ਚੁਣੋ ਜਿਨ੍ਹਾਂ ਨੂੰ ਤੁਸੀਂ ਐਪ ਲਿੰਕ ਭੇਜਣਾ ਚਾਹੁੰਦੇ ਹੋ।"
 
-#: archive-template.php:806
+#: archive-template.php:807
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:808
+#: archive-template.php:809
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:810
+#: archive-template.php:811
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:812
+#: archive-template.php:813
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:814
+#: archive-template.php:815
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:816
+#: archive-template.php:817
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:818
+#: archive-template.php:819
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:841
+#: archive-template.php:842
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:843
+#: archive-template.php:844
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:845
+#: archive-template.php:846
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:846 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:849 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:137
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "ਰਿਕਾਰਡ ਬਣਾਓ"
 
-#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "ਚੁਣੇ ਹੋਏ ਰਿਕਾਰਡਾਂ ਨੂੰ ਭੇਜੋ"
 
-#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:856 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ ਇੱਕ ਰਿਕਾਰਡ ਚੁਣਨਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: archive-template.php:858 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:100
 msgid "Send"
 msgstr "ਭੇਜੋ"
 
-#: archive-template.php:858 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "ਲਿੰਕ"
 
-#: archive-template.php:863
+#: archive-template.php:864
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:908
+#: archive-template.php:909
 msgid "Loading..."
 msgstr "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ ..."
 
-#: archive-template.php:913 dt-assets/functions/enqueue-scripts.php:410
+#: archive-template.php:914 dt-assets/functions/enqueue-scripts.php:410
 msgid "Load More"
 msgstr "ਹੋਰ ਲੋਡ ਕਰ"
 
-#: archive-template.php:925
+#: archive-template.php:926
 msgid "Field Name"
 msgstr "ਖੇਤਰ ਦਾ ਨਾਮ"
 
-#: archive-template.php:981
+#: archive-template.php:982
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "ਖੋਜ ਕਰਨ ਲਈ ਟਾਈਪ ਕਰੋ"
 
-#: archive-template.php:990
+#: archive-template.php:991
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s ਨਾਲ ਸਾਰੇ %1$s"
 
-#: archive-template.php:993
+#: archive-template.php:994
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s ਤੋਂ ਬਿਨਾਂ ਸਾਰੇ %1$s"
 
-#: archive-template.php:1000
+#: archive-template.php:1001
 msgid "Filter for subassigned OR Assigned To"
 msgstr "ਫਿਲਟਰ ਅਧੀਨ ਜਾਂ ਨਿਰਧਾਰਤ ਕਰਨ ਲਈ"
 
-#: archive-template.php:1009 dt-assets/functions/enqueue-scripts.php:321
-#: dt-posts/custom-post-type.php:194
+#: archive-template.php:1010 dt-assets/functions/enqueue-scripts.php:321
+#: dt-posts/custom-post-type.php:193
 msgid "Creation Date"
 msgstr "ਬਣਾਉਣ ਦੀ ਮਿਤੀ"
 
-#: archive-template.php:1016 archive-template.php:1023
+#: archive-template.php:1017 archive-template.php:1024
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1046
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1051
 msgid "None Set"
 msgstr "ਕੋਈ ਵੀ ਸੈੱਟ ਨਹੀਂ"
 
-#: archive-template.php:1037 archive-template.php:1038
+#: archive-template.php:1038 archive-template.php:1039
 #: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:671
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: dt-users/user-management.php:197 template-settings.php:313
+#: dt-users/user-management.php:196 template-settings.php:313
 #: template-settings.php:577
 msgid "No"
 msgstr "ਨਹੀਂ"
 
-#: archive-template.php:1044 archive-template.php:1045
+#: archive-template.php:1045 archive-template.php:1046
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:672
-#: dt-metrics/records/genmap.php:161 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 dt-users/user-management.php:196
+#: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
+#: dt-posts/posts.php:460 dt-users/user-management.php:195
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "ਹਾਂ"
 
-#: archive-template.php:1049
+#: archive-template.php:1050
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "ਸੀਮਾ ਅਰੰਭ"
 
-#: archive-template.php:1052 archive-template.php:1063
+#: archive-template.php:1053 archive-template.php:1064
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ਸਾਫ"
 
-#: archive-template.php:1059
+#: archive-template.php:1060
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "ਸੀਮਾ ਅੰਤ"
 
-#: archive-template.php:1074
+#: archive-template.php:1075
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "ਫਿਲਟਰ ਨਾਮ"
 
-#: archive-template.php:1079
+#: archive-template.php:1080
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -599,7 +599,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s ਨਾਲ ਸਾਰੇ %1$s"
 
-#: archive-template.php:1083
+#: archive-template.php:1084
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -607,7 +607,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%2$s ਤੋਂ ਬਿਨਾਂ ਸਾਰੇ %1$s"
 
-#: archive-template.php:1087
+#: archive-template.php:1088
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -615,7 +615,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s ਨਾਲ ਸਾਰੇ %1$s"
 
-#: archive-template.php:1091
+#: archive-template.php:1092
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -623,15 +623,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$s ਤੋਂ ਬਿਨਾਂ ਸਾਰੇ %1$s"
 
-#: archive-template.php:1115
+#: archive-template.php:1116
 msgid "Filter Name"
 msgstr "ਫਿਲਟਰ ਨਾਮ"
 
-#: archive-template.php:1120
+#: archive-template.php:1121
 msgid "Filter Records"
 msgstr "ਫਿਲਟਰ ਰਿਕਾਰਡ"
 
-#: archive-template.php:1124 dt-assets/functions/enqueue-scripts.php:281
+#: archive-template.php:1125 dt-assets/functions/enqueue-scripts.php:281
 #: dt-assets/functions/enqueue-scripts.php:316
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -640,7 +640,7 @@ msgstr "ਸੇਵ"
 #: dt-assets/functions/details-bar.php:52
 #: dt-assets/functions/details-bar.php:262
 #: dt-core/configuration/config-site-defaults.php:365
-#: dt-workflows/update-required.php:80 dt-workflows/update-required.php:129
+#: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
 msgid "Update Needed"
 msgstr "ਅਪਡੇਟ ਦੀ ਲੋੜ ਹੈ"
 
@@ -648,7 +648,7 @@ msgstr "ਅਪਡੇਟ ਦੀ ਲੋੜ ਹੈ"
 msgid "Admin Actions"
 msgstr "ਪ੍ਰਬੰਧਕੀ ਕਾਰਵਾਈਆਂ"
 
-#: dt-assets/functions/details-bar.php:68 single-template.php:430
+#: dt-assets/functions/details-bar.php:68 single-template.php:429
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "%s ਹਟਾਓ"
@@ -680,7 +680,7 @@ msgid "Next record"
 msgstr "ਅਗਲਾ ਰਿਕਾਰਡ"
 
 #: dt-assets/functions/details-bar.php:170
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:229
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:228
 msgid "Tasks"
 msgstr "ਕੰਮ"
 
@@ -748,7 +748,7 @@ msgstr "ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਨਾ-ਪੜ੍ਹੀਆਂ ਸ�
 msgid "You don't have any notifications"
 msgstr "ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਵੀ ਸੂਚਨਾਵਾਂ ਨਹੀਂ ਹਨ"
 
-#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1713
+#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1718
 msgid "D.T System"
 msgstr "ਡੀ.ਟੀ."
 
@@ -847,7 +847,7 @@ msgid "Locations you are responsible for"
 msgstr "ਉਹ ਸਥਾਨ ਜਿਨ੍ਹਾਂ ਲਈ ਤੁਸੀਂ ਜ਼ਿੰਮੇਵਾਰ ਹੋ"
 
 #: dt-assets/functions/enqueue-scripts.php:280
-#: dt-metrics/records/genmap.php:151
+#: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "ਸ਼ਾਮਲ ਕਰੋ"
 
@@ -891,8 +891,8 @@ msgstr "ਫਿਲਟਰ ਨਹੀਂ, ਹੇਠਾਂ ਇੱਕ ਬਣਾਓ"
 msgid "No records found matching your filter."
 msgstr "ਤੁਹਾਡੇ ਫਿਲਟਰ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਕੋਈ ਰਿਕਾਰਡ ਨਹੀਂ ਮਿਲਿਆ."
 
-#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:503
-#: dt-groups/base-setup.php:1051 dt-posts/custom-post-type.php:485
+#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:502
+#: dt-groups/base-setup.php:1050 dt-posts/custom-post-type.php:484
 msgctxt "All records"
 msgid "All %s"
 msgstr "ਸਾਰੇ$s"
@@ -907,9 +907,9 @@ msgstr "ਅੰਤ"
 
 #: dt-assets/functions/enqueue-scripts.php:328
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1301 dt-groups/base-setup.php:969
+#: dt-contacts/access-module.php:1298 dt-groups/base-setup.php:968
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-metrics/records/dynamic-records-map.php:96
+#: dt-metrics/records/dynamic-records-map.php:98
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "ਸਾਰੇ"
@@ -1023,8 +1023,8 @@ msgstr ""
 msgid "Filtered Map"
 msgstr "ਫਿਲਟਰ ਨਾਮ"
 
-#: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:51
-#: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
+#: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:50
+#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "ਸੰਪਰਕ"
 
@@ -1126,7 +1126,7 @@ msgstr "ਐਡਮਿਨ"
 #: dt-metrics/combined/hover-map.php:265
 #: dt-metrics/combined/locations-list.php:260
 #: dt-metrics/records/dynamic-records-map.php:65
-#: dt-users/user-management.php:135 dt-users/user-management.php:232
+#: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
 msgstr "ਉਪਭੋਗਤਾ"
 
@@ -1359,7 +1359,7 @@ msgstr ""
 "'ਸੰਪਾਦਿਤ ਕਰੋ' ਤੇ ਕਲਿਕ ਕਰਕੇ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ ਨੂੰ ਅਨੁਕੂਲ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ ਜਿਵੇਂ ਕਿ ਇਹ ਸਿਸਟਮ ਕੰਮ ਕਰਦਾ "
 "ਹੈ."
 
-#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:243
+#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:242
 #: dt-users/users.php:169
 msgid "Locations"
 msgstr "ਸਥਾਨ"
@@ -1542,8 +1542,8 @@ msgid "Create Record"
 msgstr "ਰਿਕਾਰਡ ਬਣਾਓ"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:157 dt-posts/custom-post-type.php:171
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
+#: dt-metrics/records/genmap.php:166 dt-posts/custom-post-type.php:170
 #: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "ਨਾਮ"
@@ -1683,9 +1683,9 @@ msgstr "ਸਾਥੀ"
 msgid "Digital Responder"
 msgstr "ਡਿਜੀਟਲ ਜਵਾਬ ਦੇਣ ਵਾਲਾ"
 
-#: dt-contacts/access-module.php:104 dt-groups/base-setup.php:135
-#: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:138 dt-metrics/records/genmap.php:145
+#: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
+#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
+#: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "ਨੂੰ ਦਿੱਤਾ"
 
@@ -1712,11 +1712,11 @@ msgstr ""
 msgid "Contact Attempt Needed"
 msgstr "ਸੰਪਰਕ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
 
-#: dt-contacts/access-module.php:124
+#: dt-contacts/access-module.php:124 dt-contacts/dmm-module.php:222
 msgid "Contact Attempted"
 msgstr "ਸੰਪਰਕ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ"
 
-#: dt-contacts/access-module.php:128 dt-contacts/dmm-module.php:232
+#: dt-contacts/access-module.php:128 dt-contacts/dmm-module.php:231
 msgid "Contact Established"
 msgstr "ਸੰਪਰਕ ਸਥਾਪਿਤ"
 
@@ -1736,7 +1736,7 @@ msgstr "ਚੱਲ ਰਹੀਆਂ ਮੀਟਿੰਗਾਂ"
 msgid "Being Coached"
 msgstr "ਕੋਚ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:295
+#: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
 msgid "Contact Status"
 msgstr "ਸੰਪਰਕ ਸਥਿਤੀ"
 
@@ -1959,9 +1959,9 @@ msgstr "ਅਣਜਾਣ"
 msgid "Accepted"
 msgstr "ਸਵੀਕਾਰਿਆ"
 
-#: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:541
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:97
-#: dt-metrics/personal/activity-highlights.php:23
+#: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
+#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1974,11 +1974,11 @@ msgstr "ਨਿੱਜੀ"
 msgid "Web"
 msgstr "ਵੈੱਬ"
 
-#: dt-contacts/access-module.php:289 dt-contacts/base-setup.php:226
+#: dt-contacts/access-module.php:289 dt-contacts/base-setup.php:225
 msgid "Facebook"
 msgstr "ਫੇਸਬੁੱਕ"
 
-#: dt-contacts/access-module.php:293 dt-contacts/base-setup.php:234
+#: dt-contacts/access-module.php:293 dt-contacts/base-setup.php:233
 msgid "Twitter"
 msgstr "ਟਵਿੱਟਰ"
 
@@ -2011,114 +2011,114 @@ msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr "ਮਾਰਕੀਟਿੰਗ ਮੁਹਿੰਮਾਂ ਜਾਂ ਐਕਸੈਸ ਗਤੀਵਿਧੀਆਂ ਜਿਨ੍ਹਾਂ ਨਾਲ ਇਸ ਸੰਪਰਕ ਨੇ ਗੱਲਬਾਤ ਕੀਤੀ."
 
-#: dt-contacts/access-module.php:393 dt-metrics/combined/critical-path.php:77
+#: dt-contacts/access-module.php:390 dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "Ran leti"
 
-#: dt-contacts/access-module.php:480 dt-contacts/access-module.php:511
-#: dt-contacts/access-module.php:542 dt-contacts/base-setup.php:390
+#: dt-contacts/access-module.php:477 dt-contacts/access-module.php:508
+#: dt-contacts/access-module.php:539 dt-contacts/base-setup.php:389
 msgid "Choose an option:"
 msgstr "ਕੋਈ ਵਿਕਲਪ ਚੁਣੋ:"
 
-#: dt-contacts/access-module.php:502 dt-contacts/access-module.php:533
-#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:414
+#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
+#: dt-contacts/access-module.php:558 dt-contacts/base-setup.php:413
 msgid "Confirm"
 msgstr "ਪੁਸ਼ਟੀ ਕਰੋ"
 
-#: dt-contacts/access-module.php:605
+#: dt-contacts/access-module.php:602
 msgid "Multipliers"
 msgstr "ਗੁਣਾ"
 
-#: dt-contacts/access-module.php:608
+#: dt-contacts/access-module.php:605
 msgid "Dispatchers"
 msgstr "ਡਿਸਪੈਚਰ"
 
-#: dt-contacts/access-module.php:611
+#: dt-contacts/access-module.php:608
 msgid "Digital Responders"
 msgstr "ਡਿਜੀਟਲ ਜਵਾਬ ਦੇਣ ਵਾਲੇ"
 
-#: dt-contacts/access-module.php:618
+#: dt-contacts/access-module.php:615
 msgid "Assign To"
 msgstr "ਨੂੰ ਸੌਂਪੋ"
 
-#: dt-contacts/access-module.php:670
+#: dt-contacts/access-module.php:667
 msgid "This contact has been assigned to you."
 msgstr "ਇਹ ਸੰਪਰਕ ਤੁਹਾਨੂੰ ਦਿੱਤਾ ਗਿਆ ਹੈ."
 
-#: dt-contacts/access-module.php:671
+#: dt-contacts/access-module.php:668
 msgid "Accept"
 msgstr "ਸਵੀਕਾਰ ਕਰੋ"
 
-#: dt-contacts/access-module.php:672
+#: dt-contacts/access-module.php:669
 msgid "Decline"
 msgstr "ਅਸਵੀਕਾਰ"
 
-#: dt-contacts/access-module.php:915 dt-contacts/access-module.php:925
+#: dt-contacts/access-module.php:912 dt-contacts/access-module.php:922
 msgid "My Follow-Up"
 msgstr "ਮੇਰਾ ਫਾਲੋ-ਅਪ"
 
-#: dt-contacts/access-module.php:926 dt-contacts/access-module.php:947
-#: dt-contacts/access-module.php:970 dt-contacts/access-module.php:995
-#: dt-groups/base-setup.php:961
+#: dt-contacts/access-module.php:923 dt-contacts/access-module.php:944
+#: dt-contacts/access-module.php:967 dt-contacts/access-module.php:992
+#: dt-groups/base-setup.php:960
 msgid "Assigned to me"
 msgstr "ਮੈਨੂੰ ਸਪੁਰਦ ਕੀਤਾ"
 
-#: dt-contacts/access-module.php:927 dt-contacts/access-module.php:948
-#: dt-contacts/access-module.php:971 dt-contacts/access-module.php:996
+#: dt-contacts/access-module.php:924 dt-contacts/access-module.php:945
+#: dt-contacts/access-module.php:968 dt-contacts/access-module.php:993
 msgid "Sub-assigned to me"
 msgstr "ਮੈਨੂੰ ਸੌਂਪਿਆ ਗਿਆ"
 
-#: dt-contacts/access-module.php:1035
+#: dt-contacts/access-module.php:1032
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ਫਾਲੋ-ਅਪ$s"
 
-#: dt-contacts/access-module.php:1043
+#: dt-contacts/access-module.php:1040
 msgid "All Follow-Up"
 msgstr "ਸਾਰੇ ਫਾਲੋ-ਅਪ"
 
-#: dt-contacts/access-module.php:1145 dt-contacts/access-module.php:1146
+#: dt-contacts/access-module.php:1142 dt-contacts/access-module.php:1143
 msgid "Subassigned only"
 msgstr "ਸਿਰਫ ਸੌਂਪਿਆ ਗਿਆ"
 
-#: dt-contacts/access-module.php:1302
+#: dt-contacts/access-module.php:1299
 msgid "Ready"
 msgstr "ਤਿਆਰ ਹੈ"
 
-#: dt-contacts/access-module.php:1303
+#: dt-contacts/access-module.php:1300
 msgid "Recent"
 msgstr "ਹਾਲ ਹੀ"
 
-#: dt-contacts/access-module.php:1304
+#: dt-contacts/access-module.php:1301
 msgid "Location"
 msgstr "ਟਿਕਾਣਾ"
 
-#: dt-contacts/access-module.php:1305
+#: dt-contacts/access-module.php:1302
 msgid "Assign"
 msgstr "ਅਸਾਈਨ ਕਰੋ"
 
-#: dt-contacts/access-module.php:1306 dt-users/template-new-user.php:134
+#: dt-contacts/access-module.php:1303 dt-users/template-new-user.php:134
 #: template-settings.php:226
 msgid "Language"
 msgstr "ਭਾਸ਼ਾ"
 
-#: dt-contacts/access-module.php:1307 dt-contacts/base-setup.php:263
+#: dt-contacts/access-module.php:1304 dt-contacts/base-setup.php:262
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
 #: template-settings.php:714
 msgid "Gender"
 msgstr "ਲਿੰਗ"
 
-#: dt-contacts/access-module.php:1480
+#: dt-contacts/access-module.php:1477
 msgid "This record might be a duplicate of: "
 msgstr "ਇਹ ਰਿਕਾਰਡ ਇਸਦਾ ਡੁਪਲੀਕੇਟ ਹੋ ਸਕਦਾ ਹੈ: "
 
-#: dt-contacts/access-module.php:1486 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/access-module.php:1483 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
 msgid "Duplicate Checker"
 msgstr "ਡੁਪਲਿਕੇਟ ਚੈਕਰ"
 
-#: dt-contacts/base-setup.php:51 dt-contacts/base-setup.php:64
-#: dt-contacts/base-setup.php:251 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
+#: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:128
 #: dt-metrics/combined/locations-list.php:123
@@ -2128,90 +2128,89 @@ msgstr "ਡੁਪਲਿਕੇਟ ਚੈਕਰ"
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
 #: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:106
+#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
-#: dt-metrics/records/dynamic-records-map.php:31
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
 msgstr "ਸੰਪਰਕ"
 
-#: dt-contacts/base-setup.php:104
+#: dt-contacts/base-setup.php:103
 msgid "Nickname"
 msgstr "ਉਪਨਾਮ"
 
-#: dt-contacts/base-setup.php:112
+#: dt-contacts/base-setup.php:111
 msgid "Contact Type"
 msgstr "ਸੰਪਰਕ ਕਿਸਮ"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:115
 msgid "User"
 msgstr "ਉਪਭੋਗਤਾ"
 
-#: dt-contacts/base-setup.php:117
+#: dt-contacts/base-setup.php:116
 msgid "Representing a User in the system"
 msgstr "ਸਿਸਟਮ ਵਿੱਚ ਇੱਕ ਉਪਭੋਗਤਾ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੈ"
 
-#: dt-contacts/base-setup.php:123
+#: dt-contacts/base-setup.php:122
 msgid "Private Contact"
 msgstr "ਨਿੱਜੀ ਸੰਪਰਕ"
 
-#: dt-contacts/base-setup.php:125
+#: dt-contacts/base-setup.php:124
 msgid "A friend, family member or acquaintance"
 msgstr "ਇੱਕ ਦੋਸਤ, ਪਰਿਵਾਰ ਦਾ ਮੈਂਬਰ ਜਾਂ ਜਾਣੂ"
 
-#: dt-contacts/base-setup.php:126 dt-contacts/dmm-module.php:54
+#: dt-contacts/base-setup.php:125 dt-contacts/dmm-module.php:53
 msgid "Only me"
 msgstr "ਸਿਰਫ ਮੈਨੂੰ"
 
-#: dt-contacts/base-setup.php:133
+#: dt-contacts/base-setup.php:132
 msgid "Standard Contact"
 msgstr "ਮਿਆਰੀ ਸੰਪਰਕ"
 
-#: dt-contacts/base-setup.php:135
+#: dt-contacts/base-setup.php:134
 msgid "A contact to collaborate on"
 msgstr "ਸਹਿਯੋਗ ਕਰਨ ਲਈ ਇੱਕ ਸੰਪਰਕ"
 
-#: dt-contacts/base-setup.php:136
+#: dt-contacts/base-setup.php:135
 msgid "Me and project leadership"
 msgstr "ਮੈਂ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਲੀਡਰਸ਼ਿਪ"
 
-#: dt-contacts/base-setup.php:142
+#: dt-contacts/base-setup.php:141
 msgid "Connection"
 msgstr "ਕੁਨੈਕਸ਼ਨ"
 
-#: dt-contacts/base-setup.php:144 dt-contacts/dmm-module.php:51
+#: dt-contacts/base-setup.php:143 dt-contacts/dmm-module.php:50
 msgid "Connected to a contact, or generational fruit"
 msgstr "ਸੰਪਰਕ ਜਾਂ ਪੀੜ੍ਹੀ ਦੇ ਫਲ ਨਾਲ ਜੁੜਿਆ ਹੋਇਆ ਹੈ"
 
-#: dt-contacts/base-setup.php:147
+#: dt-contacts/base-setup.php:146
 msgid "Collaborators"
 msgstr "ਸਹਿਯੋਗੀ"
 
-#: dt-contacts/base-setup.php:168 dt-users/users.php:162
+#: dt-contacts/base-setup.php:167 dt-users/users.php:162
 msgid "Languages"
 msgstr "ਭਾਸ਼ਾਵਾਂ"
 
-#: dt-contacts/base-setup.php:177 template-settings.php:179
+#: dt-contacts/base-setup.php:176 template-settings.php:179
 msgid "Phone"
 msgstr "ਫੋਨ"
 
-#: dt-contacts/base-setup.php:185
+#: dt-contacts/base-setup.php:184
 msgid "Signal"
 msgstr "ਇਸ਼ਾਰਾ"
 
-#: dt-contacts/base-setup.php:190
+#: dt-contacts/base-setup.php:189
 msgid "Viber"
 msgstr "ਵਾਈਬਰ"
 
-#: dt-contacts/base-setup.php:195
+#: dt-contacts/base-setup.php:194
 #, fuzzy
 #| msgid "Whatsapp"
 msgid "WhatsApp"
 msgstr "Whatsapp"
 
-#: dt-contacts/base-setup.php:202
+#: dt-contacts/base-setup.php:201
 #: dt-core/configuration/config-site-defaults.php:342
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
@@ -2219,75 +2218,75 @@ msgstr "Whatsapp"
 msgid "Email"
 msgstr "ਈ - ਮੇਲ"
 
-#: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:357
+#: dt-contacts/base-setup.php:209 dt-groups/base-setup.php:356
 #: dt-people-groups/people-groups-base.php:194 template-settings.php:190
 msgid "Address"
 msgstr "ਪਤਾ"
 
-#: dt-contacts/base-setup.php:242
+#: dt-contacts/base-setup.php:241
 msgid "Other Social Links"
 msgstr "ਹੋਰ ਸਮਾਜਿਕ ਲਿੰਕ"
 
-#: dt-contacts/base-setup.php:251
+#: dt-contacts/base-setup.php:250
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "ਹੋਰ$s ਨਾਲ ਕੁਨੈਕਸ਼ਨ"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:251
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "ਇਹ ਸੰਪਰਕ ਸਿਸਟਮ ਵਿੱਚ ਕਿਸੇ ਹੋਰ ਸੰਪਰਕ ਨਾਲ ਹੁੰਦਾ ਹੈ."
 
-#: dt-contacts/base-setup.php:266 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:265 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "ਨਰ"
 
-#: dt-contacts/base-setup.php:267 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:266 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "Femaleਰਤ"
 
-#: dt-contacts/base-setup.php:274
+#: dt-contacts/base-setup.php:273
 msgid "Age"
 msgstr "ਉਮਰ"
 
-#: dt-contacts/base-setup.php:278
+#: dt-contacts/base-setup.php:277
 msgid "Under 18 years old"
 msgstr "18 ਸਾਲ ਤੋਂ ਘੱਟ ਉਮਰ ਦੇ"
 
-#: dt-contacts/base-setup.php:279
+#: dt-contacts/base-setup.php:278
 msgid "18-25 years old"
 msgstr "18-25 ਸਾਲ ਦੀ ਉਮਰ"
 
-#: dt-contacts/base-setup.php:280
+#: dt-contacts/base-setup.php:279
 msgid "26-40 years old"
 msgstr "26-40 ਸਾਲ"
 
-#: dt-contacts/base-setup.php:281
+#: dt-contacts/base-setup.php:280
 msgid "Over 40 years old"
 msgstr "40 ਸਾਲ ਤੋਂ ਵੱਧ ਉਮਰ ਦੇ"
 
-#: dt-contacts/base-setup.php:289 dt-groups/base-setup.php:102
+#: dt-contacts/base-setup.php:288 dt-groups/base-setup.php:101
 #: dt-people-groups/people-groups-base.php:150
 msgid "Requires Update"
 msgstr "ਅਪਡੇਟ ਦੀ ਲੋੜ ਹੈ"
 
-#: dt-contacts/base-setup.php:296
+#: dt-contacts/base-setup.php:295
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "ਸੰਪਰਕ ਸਥਿਤੀ ਸੰਪਰਕ ਨਾਲ ਸੰਚਾਰ ਕਰਨ ਦੀ ਪ੍ਰਗਤੀ ਬਾਰੇ ਦੱਸਦੀ ਹੈ."
 
-#: dt-contacts/base-setup.php:300 dt-groups/base-setup.php:118
+#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:117
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "ਕਿਰਿਆਸ਼ੀਲ"
 
-#: dt-contacts/base-setup.php:301
+#: dt-contacts/base-setup.php:300
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "ਸੰਪਰਕ ਜਾਰੀ ਹੈ ਅਤੇ / ਜਾਂ ਨਿਰੰਤਰ ਅਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ."
 
-#: dt-contacts/base-setup.php:307
+#: dt-contacts/base-setup.php:306
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
@@ -2296,76 +2295,76 @@ msgstr ""
 "ਇਸ ਸੰਪਰਕ ਨੇ ਇਹ ਜਾਣਿਆ ਹੈ ਕਿ ਉਹ ਹੁਣ ਜਾਰੀ ਨਹੀਂ ਰਹਿਣਾ ਚਾਹੁੰਦੇ ਜਾਂ ਤੁਸੀਂ ਉਸ ਨਾਲ ਜਾਰੀ ਨਾ ਰਹਿਣ "
 "ਦਾ ਫੈਸਲਾ ਕੀਤਾ ਹੈ."
 
-#: dt-contacts/base-setup.php:342 dt-contacts/base-setup.php:371
+#: dt-contacts/base-setup.php:341 dt-contacts/base-setup.php:370
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "ਪੁਰਾਲੇਖ$s"
 
-#: dt-contacts/base-setup.php:349
+#: dt-contacts/base-setup.php:348
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "%s ਕਿਸਮ ਬਦਲੋ"
 
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:354
 msgid "See duplicates"
 msgstr "ਡੁਪਲਿਕੇਟ ਵੇਖੋ"
 
-#: dt-contacts/base-setup.php:372
+#: dt-contacts/base-setup.php:371
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਪੁਰਾਲੇਖ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: dt-contacts/base-setup.php:379
+#: dt-contacts/base-setup.php:378
 msgid "Archive"
 msgstr "ਪੁਰਾਲੇਖ"
 
-#: dt-contacts/base-setup.php:438
+#: dt-contacts/base-setup.php:437
 #: dt-core/configuration/config-site-defaults.php:544
-#: dt-groups/base-setup.php:622 template-settings.php:212
+#: dt-groups/base-setup.php:621 template-settings.php:212
 msgid "Other"
 msgstr "ਹੋਰ"
 
-#: dt-contacts/base-setup.php:497 dt-groups/base-setup.php:1043
-#: dt-posts/custom-post-type.php:464
+#: dt-contacts/base-setup.php:496 dt-groups/base-setup.php:1042
+#: dt-posts/custom-post-type.php:463
 msgid "Default Filters"
 msgstr "ਮੂਲ ਫਿਲਟਰ"
 
-#: dt-contacts/base-setup.php:507
+#: dt-contacts/base-setup.php:506
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "ਸਾਰੇ$s ਮੈਂ ਵੇਖ ਸਕਦਾ ਹਾਂ"
 
-#: dt-contacts/base-setup.php:518 dt-groups/base-setup.php:1057
-#: dt-posts/custom-post-type.php:497
+#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1056
+#: dt-posts/custom-post-type.php:496
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "ਮਨਪਸੰਦ$s"
 
-#: dt-contacts/base-setup.php:524 dt-groups/base-setup.php:1062
-#: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:503
+#: dt-contacts/base-setup.php:523 dt-groups/base-setup.php:1061
+#: dt-posts/custom-post-type.php:200 dt-posts/custom-post-type.php:502
 msgid "Favorite"
 msgstr "ਮਨਪਸੰਦ"
 
-#: dt-contacts/base-setup.php:530 dt-groups/base-setup.php:1068
-#: dt-posts/custom-post-type.php:512
+#: dt-contacts/base-setup.php:529 dt-groups/base-setup.php:1067
+#: dt-posts/custom-post-type.php:511
 msgid "My Recently Viewed"
 msgstr "ਮੇਰਾ ਹਾਲ ਹੀ ਵਿੱਚ ਵੇਖਿਆ ਗਿਆ"
 
-#: dt-contacts/base-setup.php:535 dt-groups/base-setup.php:1073
-#: dt-posts/custom-post-type.php:517
+#: dt-contacts/base-setup.php:534 dt-groups/base-setup.php:1072
+#: dt-posts/custom-post-type.php:516
 msgid "Last 30 viewed"
 msgstr "ਪਿਛਲੇ 30 ਵਾਰ ਵੇਖਿਆ ਗਿਆ"
 
-#: dt-contacts/base-setup.php:565 dt-contacts/base-setup.php:573
-#: dt-contacts/base-setup.php:591 dt-contacts/base-setup.php:592
+#: dt-contacts/base-setup.php:564 dt-contacts/base-setup.php:572
+#: dt-contacts/base-setup.php:590 dt-contacts/base-setup.php:591
 msgid "Shared with me"
 msgstr "ਮੇਰੇ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ"
 
-#: dt-contacts/base-setup.php:701
+#: dt-contacts/base-setup.php:699
 msgid "This %s is archived"
 msgstr "ਇਹ$s ਪੁਰਾਲੇਖ ਹੈ"
 
-#: dt-contacts/base-setup.php:703
+#: dt-contacts/base-setup.php:701
 msgid "Restore"
 msgstr "ਮੁੜ"
 
@@ -2456,7 +2455,7 @@ msgid "Contact transferred from site"
 msgstr "ਸੰਪਰਕ ਸਾਈਟ ਤੋਂ ਤਬਦੀਲ ਕੀਤਾ"
 
 #: dt-contacts/contacts-transfer.php:626 dt-contacts/contacts-transfer.php:641
-#: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:886
+#: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:885
 msgid "Transfer Bot"
 msgstr "ਬੋਟ ਤਬਦੀਲ ਕਰੋ"
 
@@ -2464,27 +2463,27 @@ msgstr "ਬੋਟ ਤਬਦੀਲ ਕਰੋ"
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr "ਐਲਰਟ: ਪਿਛਲੇ ਟ੍ਰਾਂਸਫਰ ਤੋਂ ਸੰਭਵ ਡੁਪਲਿਕੇਟ ਸੰਪਰਕ."
 
-#: dt-contacts/contacts-transfer.php:1203
+#: dt-contacts/contacts-transfer.php:1202
 msgid "redacted email"
 msgstr "redacted ਈਮੇਲ"
 
-#: dt-contacts/contacts-transfer.php:1204
+#: dt-contacts/contacts-transfer.php:1203
 msgid "redacted name"
 msgstr "redacted ਨਾਮ"
 
-#: dt-contacts/contacts-transfer.php:1205
+#: dt-contacts/contacts-transfer.php:1204
 msgid "redacted"
 msgstr "redacted"
 
-#: dt-contacts/dmm-module.php:49
+#: dt-contacts/dmm-module.php:48
 msgid "Private Connection"
 msgstr "ਪ੍ਰਾਈਵੇਟ ਕਨੈਕਸ਼ਨ"
 
-#: dt-contacts/dmm-module.php:59
+#: dt-contacts/dmm-module.php:58
 msgid "Faith Milestones"
 msgstr "ਵਿਸ਼ਵਾਸ ਪੱਥਰ"
 
-#: dt-contacts/dmm-module.php:60
+#: dt-contacts/dmm-module.php:59
 msgctxt "Optional Documentation"
 msgid ""
 "Assign which milestones the contact has reached in their faith journey. "
@@ -2494,167 +2493,163 @@ msgstr ""
 "ਨਿਰਧਾਰਤ ਕਰੋ ਕਿ ਉਨ੍ਹਾਂ ਦੀ ਵਿਸ਼ਵਾਸ ਯਾਤਰਾ ਵਿਚ ਕਿਹੜਾ ਮੀਲ ਪੱਥਰ ਪਹੁੰਚ ਗਿਆ ਹੈ. ਇਹ ਸੰਪਰਕ ਦੇ "
 "ਆਤਮਿਕ ਯਾਤਰਾ ਦੇ ਜਸ਼ਨ ਮਨਾਉਣ ਦੇ ਮਹੱਤਵਪੂਰਣ ਨੁਕਤੇ ਹਨ ਪਰ ਕਿਸੇ ਵੀ ਕ੍ਰਮ ਵਿੱਚ ਹੋ ਸਕਦੇ ਹਨ."
 
-#: dt-contacts/dmm-module.php:64
+#: dt-contacts/dmm-module.php:63
 msgid "Has Bible"
 msgstr "ਬਾਈਬਲ ਹੈ"
 
-#: dt-contacts/dmm-module.php:69
+#: dt-contacts/dmm-module.php:68
 msgid "Reading Bible"
 msgstr "ਬਾਈਬਲ ਪੜ੍ਹ ਰਹੀ ਹੈ"
 
-#: dt-contacts/dmm-module.php:74
+#: dt-contacts/dmm-module.php:73
 msgid "States Belief"
 msgstr "ਰਾਜ ਵਿਸ਼ਵਾਸ"
 
-#: dt-contacts/dmm-module.php:79
+#: dt-contacts/dmm-module.php:78
 msgid "Can Share Gospel/Testimony"
 msgstr "ਖੁਸ਼ਖਬਰੀ / ਪ੍ਰਸੰਸਾ ਨੂੰ ਸਾਂਝਾ ਕਰ ਸਕਦਾ ਹੈ"
 
-#: dt-contacts/dmm-module.php:84
+#: dt-contacts/dmm-module.php:83
 msgid "Sharing Gospel/Testimony"
 msgstr "ਖੁਸ਼ਖਬਰੀ / ਗਵਾਹੀ ਸਾਂਝੀ ਕਰਨਾ"
 
-#: dt-contacts/dmm-module.php:89 dt-contacts/dmm-module.php:202
+#: dt-contacts/dmm-module.php:88 dt-contacts/dmm-module.php:201
 msgid "Baptized"
 msgstr "ਬਪਤਿਸਮਾ ਲਿਆ"
 
-#: dt-contacts/dmm-module.php:94
+#: dt-contacts/dmm-module.php:93
 msgid "Baptizing"
 msgstr "ਬਪਤਿਸਮਾ"
 
-#: dt-contacts/dmm-module.php:99
+#: dt-contacts/dmm-module.php:98
 msgid "In Church/Group"
 msgstr "ਚਰਚ / ਸਮੂਹ ਵਿੱਚ"
 
-#: dt-contacts/dmm-module.php:104
+#: dt-contacts/dmm-module.php:103
 msgid "Starting Churches"
 msgstr "ਚਰਚਾਂ ਦੀ ਸ਼ੁਰੂਆਤ"
 
-#: dt-contacts/dmm-module.php:115
+#: dt-contacts/dmm-module.php:114
 msgid "Faith Status"
 msgstr "ਵਿਸ਼ਵਾਸ ਸਥਿਤੀ"
 
-#: dt-contacts/dmm-module.php:120
+#: dt-contacts/dmm-module.php:119
 msgid "Seeker"
 msgstr "ਭਾਲਣ ਵਾਲਾ"
 
-#: dt-contacts/dmm-module.php:123
+#: dt-contacts/dmm-module.php:122
 msgid "Believer"
 msgstr "ਵਿਸ਼ਵਾਸੀ"
 
-#: dt-contacts/dmm-module.php:126
+#: dt-contacts/dmm-module.php:125
 msgid "Leader"
 msgstr "ਲੀਡਰ"
 
-#: dt-contacts/dmm-module.php:134
+#: dt-contacts/dmm-module.php:133
 msgid "Sub-assigned to"
 msgstr "ਨੂੰ ਸੌਂਪਿਆ ਗਿਆ"
 
-#: dt-contacts/dmm-module.php:135
+#: dt-contacts/dmm-module.php:134
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "ਸੰਪਰਕ ਜਾਂ ਉਪਭੋਗਤਾ ਦੀ ਸਹਾਇਤਾ ਕੀਤੀ ਗਈ ਉਪਭੋਗਤਾ ਨੂੰ ਸੰਪਰਕ ਦੀ ਪਾਲਣਾ ਕਰਨ ਲਈ."
 
-#: dt-contacts/dmm-module.php:146
+#: dt-contacts/dmm-module.php:145
 msgid "Sub-assigned on other Contacts"
 msgstr "ਹੋਰ ਸੰਪਰਕਾਂ ਤੇ ਸਬ-ਸਪੁਰਦ ਕੀਤਾ"
 
-#: dt-contacts/dmm-module.php:147
+#: dt-contacts/dmm-module.php:146
 msgid "Contacts this contacts is subassigned on"
 msgstr "ਸੰਪਰਕ ਜਿਹੜੇ ਇਨ੍ਹਾਂ ਸੰਪਰਕਾਂ 'ਤੇ ਅਧੀਨ ਹਨ"
 
-#: dt-contacts/dmm-module.php:159
+#: dt-contacts/dmm-module.php:158
 msgid "Is Coaching"
 msgstr "ਕੋਚਿੰਗ ਹੈ"
 
-#: dt-contacts/dmm-module.php:160
+#: dt-contacts/dmm-module.php:159
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
 msgstr "ਇਹ ਸੰਪਰਕ ਕੋਚਿੰਗ ਕੌਣ ਹੈ"
 
-#: dt-contacts/dmm-module.php:169
+#: dt-contacts/dmm-module.php:168
 msgid "Baptism Date"
 msgstr "ਬਪਤਿਸਮੇ ਦੀ ਮਿਤੀ"
 
-#: dt-contacts/dmm-module.php:177 dt-metrics/counter.php:157
+#: dt-contacts/dmm-module.php:176 dt-metrics/counter.php:157
 msgid "Baptism Generation"
 msgstr "ਬਪਤਿਸਮੇ ਦੀ ਪੀੜ੍ਹੀ"
 
-#: dt-contacts/dmm-module.php:182
+#: dt-contacts/dmm-module.php:181
 msgid "Coached by"
 msgstr "ਦੁਆਰਾ ਕੋਚ ਕੀਤਾ ਗਿਆ"
 
-#: dt-contacts/dmm-module.php:183
+#: dt-contacts/dmm-module.php:182
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
 msgstr "ਕੌਣ ਇਸ ਸੰਪਰਕ ਦੀ ਸਿਖਲਾਈ ਦੇ ਰਿਹਾ ਹੈ"
 
-#: dt-contacts/dmm-module.php:192
+#: dt-contacts/dmm-module.php:191
 #: dt-metrics/personal/activity-highlights.php:68
 msgid "Baptized by"
 msgstr "ਦੁਆਰਾ ਬਪਤਿਸਮਾ ਲਿਆ"
 
-#: dt-contacts/dmm-module.php:193
+#: dt-contacts/dmm-module.php:192
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
 msgstr "ਕਿਸ ਨੇ ਇਸ ਸੰਪਰਕ ਨੂੰ ਬਪਤਿਸਮਾ ਦਿੱਤਾ"
 
-#: dt-contacts/dmm-module.php:203
+#: dt-contacts/dmm-module.php:202
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
 msgstr "ਕਿਸ ਨੇ ਇਸ ਸੰਪਰਕ ਨੇ ਬਪਤਿਸਮਾ ਲਿਆ ਹੈ"
 
-#: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:374
+#: dt-contacts/dmm-module.php:211 dt-groups/base-setup.php:373
 #: dt-people-groups/people-groups-base.php:96
 #: dt-people-groups/people-groups-base.php:106
 msgid "People Groups"
 msgstr "ਲੋਕ ਸਮੂਹ"
 
-#: dt-contacts/dmm-module.php:213
+#: dt-contacts/dmm-module.php:212
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
 msgstr "ਇਸ ਸੰਪਰਕ ਦੁਆਰਾ ਪ੍ਰਸਤੁਤ ਕੀਤੇ ਸਮੂਹ ਸਮੂਹ."
 
-#: dt-contacts/dmm-module.php:223
-msgid "No Answer"
-msgstr "ਕੋਈ ਉੱਤਰ ਨਹੀਂ"
-
-#: dt-contacts/dmm-module.php:241
+#: dt-contacts/dmm-module.php:240
 msgid "Meeting Scheduled"
 msgstr "ਬੈਠਕ ਤਹਿ"
 
-#: dt-contacts/dmm-module.php:250
+#: dt-contacts/dmm-module.php:249
 msgid "Meeting Complete"
 msgstr "ਮੀਟਿੰਗ ਪੂਰੀ"
 
-#: dt-contacts/dmm-module.php:259
+#: dt-contacts/dmm-module.php:258
 msgid "Meeting No-show"
 msgstr "ਮੁਲਾਕਾਤ ਨੋ-ਸ਼ੋਅ"
 
-#: dt-contacts/dmm-module.php:277
+#: dt-contacts/dmm-module.php:276
 msgid "Faith"
 msgstr "ਵਿਸ਼ਵਾਸ"
 
-#: dt-contacts/dmm-module.php:358
+#: dt-contacts/dmm-module.php:357
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "ਜੁੜਿਆ$s"
 
-#: dt-contacts/dmm-module.php:371 dt-contacts/dmm-module.php:381
-#: dt-contacts/dmm-module.php:391 dt-contacts/dmm-module.php:392
+#: dt-contacts/dmm-module.php:370 dt-contacts/dmm-module.php:380
+#: dt-contacts/dmm-module.php:390 dt-contacts/dmm-module.php:391
 msgid "Coached by me"
 msgstr "ਮੈਨੂੰ ਸਿਖਾਇਆ"
 
-#: dt-contacts/dmm-module.php:410
+#: dt-contacts/dmm-module.php:409
 #: dt-metrics/personal/activity-highlights.php:218
 msgid "Quick Actions"
 msgstr "ਤੇਜ਼ ਕਾਰਵਾਈਆਂ"
 
-#: dt-contacts/dmm-module.php:491
+#: dt-contacts/dmm-module.php:490
 msgid "Who was this contact baptized by and when?"
 msgstr "ਇਹ ਸੰਪਰਕ ਕਿਸ ਨੇ ਅਤੇ ਕਦੋਂ ਕੀਤਾ ਸੀ?"
 
-#: dt-contacts/dmm-module.php:505
+#: dt-contacts/dmm-module.php:504
 msgctxt "input field placeholder"
 msgid "Search multipliers and contacts"
 msgstr "ਗੁਣਕ ਅਤੇ ਸੰਪਰਕ ਖੋਜੋ"
@@ -2959,7 +2954,7 @@ msgstr "ਜੇ ਇਹ ਕੋਈ ਗਲਤੀ ਸੀ, ਬੱਸ ਇਸ ਈਮੇ�
 msgid "To reset your password, visit the following address:"
 msgstr "ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰਨ ਲਈ, ਹੇਠ ਦਿੱਤੇ ਪਤੇ ਤੇ ਜਾਓ:"
 
-#: dt-core/global-functions.php:549 single-template.php:413
+#: dt-core/global-functions.php:549 single-template.php:412
 #: template-new-bulk-post.php:285 template-new-post.php:138
 #: template-new-post.php:175
 msgid "This is required"
@@ -3040,59 +3035,59 @@ msgstr ""
 msgid "Find out more"
 msgstr ""
 
-#: dt-groups/base-setup.php:49 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:166 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:165
+#: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
+#: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
+#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "ਸਮੂਹ"
 
-#: dt-groups/base-setup.php:49 dt-groups/base-setup.php:62
-#: dt-groups/base-setup.php:437 dt-groups/base-setup.php:621
+#: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
+#: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:173
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:110
+#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
 #: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:144
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
 msgstr "ਸਮੂਹ"
 
-#: dt-groups/base-setup.php:113
+#: dt-groups/base-setup.php:112
 msgid "Group Status"
 msgstr "ਸਮੂਹ ਸਥਿਤੀ"
 
-#: dt-groups/base-setup.php:114
+#: dt-groups/base-setup.php:113
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "ਸਮੂਹ ਦੀ ਮੌਜੂਦਾ ਸਥਿਤੀ ਨਿਰਧਾਰਤ ਕਰੋ."
 
-#: dt-groups/base-setup.php:119
+#: dt-groups/base-setup.php:118
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "ਸਮੂਹ ਸਰਗਰਮੀ ਨਾਲ ਮਿਲ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:123 dt-users/users.php:180
+#: dt-groups/base-setup.php:122 dt-users/users.php:180
 msgid "Inactive"
 msgstr "ਨਾ-ਸਰਗਰਮ"
 
-#: dt-groups/base-setup.php:124
+#: dt-groups/base-setup.php:123
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "ਸਮੂਹ ਹੁਣ ਨਹੀਂ ਮਿਲ ਰਿਹਾ."
 
-#: dt-groups/base-setup.php:136
+#: dt-groups/base-setup.php:135
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "ਮੁੱਖ ਸਮੂਹ ਦੀ ਚੋਣ ਕਰੋ ਜੋ ਇਸ ਸਮੂਹ ਬਾਰੇ ਰਿਪੋਰਟਿੰਗ ਲਈ ਜ਼ਿੰਮੇਵਾਰ ਹੈ."
 
-#: dt-groups/base-setup.php:144
+#: dt-groups/base-setup.php:143
 msgid "Group Coach / Church Planter"
 msgstr "ਸਮੂਹ ਕੋਚ / ਚਰਚ ਪਲਾਨਟਰ"
 
-#: dt-groups/base-setup.php:145
+#: dt-groups/base-setup.php:144
 msgctxt "Optional Documentation"
 msgid ""
 "The person who planted and/or is coaching this group. Only one person can be "
@@ -3102,177 +3097,177 @@ msgstr ""
 "ਉਹ ਵਿਅਕਤੀ ਜਿਸਨੇ ਇਸ ਸਮੂਹ ਨੂੰ ਲਾਇਆ ਅਤੇ / ਜਾਂ ਕੋਚਿੰਗ ਦੇ ਰਿਹਾ ਹੈ. ਇੱਕ ਸਮੂਹ ਨੂੰ ਸਿਰਫ ਇੱਕ ਵਿਅਕਤੀ "
 "ਨਿਰਧਾਰਤ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ ਜਦੋਂ ਕਿ ਬਹੁਤ ਸਾਰੇ ਲੋਕ ਇਸ ਸਮੂਹ ਦੇ ਕੋਚ / ਚਰਚ ਦੇ ਬਾਗਬਾਨ ਹੋ ਸਕਦੇ ਹਨ."
 
-#: dt-groups/base-setup.php:157
+#: dt-groups/base-setup.php:156
 msgid "Group Type"
 msgstr "ਸਮੂਹ ਕਿਸਮ"
 
-#: dt-groups/base-setup.php:162
+#: dt-groups/base-setup.php:161
 msgid "Pre-Group"
 msgstr "ਪੂਰਵ-ਸਮੂਹ"
 
-#: dt-groups/base-setup.php:163
+#: dt-groups/base-setup.php:162
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "ਇੱਕ ਸਮੂਹ ਮੁੱਖ ਤੌਰ ਤੇ ਗੈਰ-ਵਿਸ਼ਵਾਸੀ"
 
-#: dt-groups/base-setup.php:167
+#: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "ਇੱਕ ਸਮੂਹ ਜਿਸ ਵਿੱਚ 3 ਜਾਂ ਵਧੇਰੇ ਵਿਸ਼ਵਾਸੀ ਹਨ ਪਰ ਚਰਚ ਵਜੋਂ ਪਛਾਣ ਨਹੀਂ ਕਰ ਰਹੇ."
 
-#: dt-groups/base-setup.php:170
+#: dt-groups/base-setup.php:169
 msgid "Church"
 msgstr "ਚਰਚ"
 
-#: dt-groups/base-setup.php:171
+#: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "ਇੱਕ ਸਮੂਹ ਜਿਸ ਵਿੱਚ 3 ਜਾਂ ਵਧੇਰੇ ਵਿਸ਼ਵਾਸੀ ਹਨ ਅਤੇ ਚਰਚ ਵਜੋਂ ਪਛਾਣਦੇ ਹਨ."
 
-#: dt-groups/base-setup.php:174
+#: dt-groups/base-setup.php:173
 msgid "Team"
 msgstr "ਟੀਮ"
 
-#: dt-groups/base-setup.php:175
+#: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
 "ਇੱਕ ਵਿਸ਼ੇਸ਼ ਸਮੂਹ ਜੋ ਇੱਕ ਚਰਚ ਦੇ ਰੂਪ ਵਿੱਚ ਨਹੀਂ ਮਿਲ ਰਿਹਾ (ਜਾਂ ਚਰਚ ਬਣਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰ ਰਿਹਾ ਹੈ)."
 
-#: dt-groups/base-setup.php:190 dt-groups/base-setup.php:614
+#: dt-groups/base-setup.php:189 dt-groups/base-setup.php:613
 msgid "Church Health"
 msgstr "ਚਰਚ ਸਿਹਤ"
 
-#: dt-groups/base-setup.php:191
+#: dt-groups/base-setup.php:190
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "ਕਿਸੇ ਸਮੂਹ / ਚਰਚ ਦੀ ਤਰੱਕੀ ਅਤੇ ਸਿਹਤ ਦਾ ਪਤਾ ਲਗਾਓ."
 
-#: dt-groups/base-setup.php:195 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
 msgid "Baptism"
 msgstr "ਬਪਤਿਸਮਾ"
 
-#: dt-groups/base-setup.php:196
+#: dt-groups/base-setup.php:195
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "ਸਮੂਹ ਬਪਤਿਸਮਾ ਲੈ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:200
+#: dt-groups/base-setup.php:199
 msgid "Bible Study"
 msgstr "ਬਾਈਬਲ ਸਟੱਡੀ"
 
-#: dt-groups/base-setup.php:201
+#: dt-groups/base-setup.php:200
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "ਸਮੂਹ ਬਾਈਬਲ ਦਾ ਅਧਿਐਨ ਕਰ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:205
+#: dt-groups/base-setup.php:204
 msgid "Communion"
 msgstr "ਨੜੀ"
 
-#: dt-groups/base-setup.php:206
+#: dt-groups/base-setup.php:205
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "ਸਮੂਹ ਸਾਂਝ ਦਾ ਅਭਿਆਸ ਕਰ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:210
+#: dt-groups/base-setup.php:209
 msgid "Fellowship"
 msgstr "ਫੈਲੋਸ਼ਿਪ"
 
-#: dt-groups/base-setup.php:211
+#: dt-groups/base-setup.php:210
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "ਸਮੂਹ ਸੰਗਤ ਕਰ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:215
+#: dt-groups/base-setup.php:214
 msgid "Giving"
 msgstr "ਦੇਣਾ"
 
-#: dt-groups/base-setup.php:216
+#: dt-groups/base-setup.php:215
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "ਸਮੂਹ ਦੇ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:220
+#: dt-groups/base-setup.php:219
 msgid "Prayer"
 msgstr "ਪ੍ਰਾਰਥਨਾ"
 
-#: dt-groups/base-setup.php:221
+#: dt-groups/base-setup.php:220
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "ਸਮੂਹ ਪ੍ਰਾਰਥਨਾ ਕਰ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:225
+#: dt-groups/base-setup.php:224
 msgid "Praise"
 msgstr "ਵਡਿਆਈ"
 
-#: dt-groups/base-setup.php:226
+#: dt-groups/base-setup.php:225
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "ਸਮੂਹ ਸ਼ਲਾਘਾ ਕਰ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:230
+#: dt-groups/base-setup.php:229
 msgid "Sharing the Gospel"
 msgstr "ਇੰਜੀਲ ਨੂੰ ਸਾਂਝਾ ਕਰਨਾ"
 
-#: dt-groups/base-setup.php:231
+#: dt-groups/base-setup.php:230
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "ਸਮੂਹ ਖੁਸ਼ਖਬਰੀ ਨੂੰ ਸਾਂਝਾ ਕਰ ਰਿਹਾ ਹੈ."
 
-#: dt-groups/base-setup.php:235 dt-groups/base-setup.php:298
+#: dt-groups/base-setup.php:234 dt-groups/base-setup.php:297
 msgid "Leaders"
 msgstr "ਲੀਡਰ"
 
-#: dt-groups/base-setup.php:236
+#: dt-groups/base-setup.php:235
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "ਸਮੂਹ ਵਿੱਚ ਆਗੂ ਹਨ।"
 
-#: dt-groups/base-setup.php:240 dt-groups/base-setup.php:415
+#: dt-groups/base-setup.php:239 dt-groups/base-setup.php:414
 msgid "Church Commitment"
 msgstr "ਚਰਚ ਦੀ ਵਚਨਬੱਧਤਾ"
 
-#: dt-groups/base-setup.php:241
+#: dt-groups/base-setup.php:240
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "ਸਮੂਹ ਨੇ ਚਰਚ ਬਣਨ ਲਈ ਵਚਨਬੱਧ ਕੀਤਾ ਹੈ."
 
-#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
+#: dt-groups/base-setup.php:250 dt-users/template-user-management.php:180
 #: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "ਤਾਰੀਖ ਸ਼ੁਰੂ"
 
-#: dt-groups/base-setup.php:252
+#: dt-groups/base-setup.php:251
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "ਇਸ ਸਮੂਹ ਦੀ ਮੁਲਾਕਾਤ ਸ਼ੁਰੂ ਹੋਣ ਦੀ ਮਿਤੀ."
 
-#: dt-groups/base-setup.php:259
+#: dt-groups/base-setup.php:258
 msgid "Church Start Date"
 msgstr "ਚਰਚ ਦੀ ਸ਼ੁਰੂਆਤ ਦੀ ਮਿਤੀ"
 
-#: dt-groups/base-setup.php:260
+#: dt-groups/base-setup.php:259
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "ਇਸ ਸਮੂਹ ਨੇ ਪਹਿਲਾਂ ਚਰਚ ਹੋਣ ਦੀ ਪਛਾਣ ਕੀਤੀ ਸੀ."
 
-#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
+#: dt-groups/base-setup.php:267 dt-users/template-user-management.php:181
 #: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "ਅੰਤ ਦੀ ਮਿਤੀ"
 
-#: dt-groups/base-setup.php:269
+#: dt-groups/base-setup.php:268
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "ਇਸ ਸਮੂਹ ਨੇ ਮਿਲਣਾ ਬੰਦ ਕਰ ਦਿੱਤਾ ਤਾਰੀਖ (ਜੇ ਲਾਗੂ ਹੁੰਦਾ ਹੈ)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:148
+#: dt-groups/base-setup.php:278 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "ਮੈਂਬਰ ਗਿਣਤੀ"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:279
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3284,34 +3279,34 @@ msgstr ""
 "ਇਹ ਆਪਣੇ ਆਪ ਅਪਡੇਟ ਹੋ ਜਾਂਦਾ ਹੈ. ਇਸ ਨੰਬਰ ਨੂੰ ਹੱਥੀਂ ਬਦਲੋ ਉਹਨਾਂ ਲੋਕਾਂ ਨੂੰ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਜੋ ਸਿਸਟਮ ਵਿੱਚ "
 "ਨਹੀਂ ਹੋ ਸਕਦੇ ਪਰ ਸਮੂਹ ਦੇ ਮੈਂਬਰ ਵੀ ਹਨ."
 
-#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:569
-#: dt-groups/base-setup.php:613
+#: dt-groups/base-setup.php:287 dt-groups/base-setup.php:568
+#: dt-groups/base-setup.php:612
 msgid "Member List"
 msgstr "ਸਦੱਸ ਸੂਚੀ"
 
-#: dt-groups/base-setup.php:289
+#: dt-groups/base-setup.php:288
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "ਸੰਪਰਕ ਜੋ ਇਸ ਸਮੂਹ ਦੇ ਮੈਂਬਰ ਹਨ."
 
-#: dt-groups/base-setup.php:308
+#: dt-groups/base-setup.php:307
 msgid "Leader Count"
 msgstr "ਲੀਡਰ ਗਿਣਤੀ"
 
-#: dt-groups/base-setup.php:316
+#: dt-groups/base-setup.php:315
 msgid "Parent Group"
 msgstr "ਪੇਰੈਂਟ ਸਮੂਹ"
 
-#: dt-groups/base-setup.php:317
+#: dt-groups/base-setup.php:316
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "ਇਕ ਸਮੂਹ ਜਿਸ ਨੇ ਇਸ ਸਮੂਹ ਦੀ ਸਥਾਪਨਾ ਕੀਤੀ."
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:327
 msgid "Peer Group"
 msgstr "ਪੀਅਰ ਸਮੂਹ"
 
-#: dt-groups/base-setup.php:329
+#: dt-groups/base-setup.php:328
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3320,57 +3315,57 @@ msgstr ""
 "ਇੱਕ ਸੰਬੰਧਿਤ ਸਮੂਹ ਜੋ ਰਿਸ਼ਤੇਦਾਰੀ ਵਿੱਚ ਮਾਂ-ਪਿਓ / ਬੱਚਾ ਨਹੀਂ ਹੁੰਦਾ. ਇਹ ਉਹਨਾਂ ਸਮੂਹਾਂ ਨੂੰ ਸੰਕੇਤ ਕਰ ਸਕਦਾ "
 "ਹੈ ਜੋ ਸਹਿਯੋਗ ਕਰਦੇ ਹਨ, ਅਭੇਦ ਹੋਣ ਵਾਲੇ ਹਨ, ਹਾਲ ਹੀ ਵਿੱਚ ਵਿਭਾਜਨ, ਆਦਿ."
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:339
 msgid "Child Group"
 msgstr "ਚਾਈਲਡ ਗਰੁੱਪ"
 
-#: dt-groups/base-setup.php:341
+#: dt-groups/base-setup.php:340
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "ਇੱਕ ਸਮੂਹ ਜੋ ਇਸ ਸਮੂਹ ਵਿੱਚੋਂ ਬਾਹਰ ਆ ਗਿਆ ਹੈ."
 
-#: dt-groups/base-setup.php:375
+#: dt-groups/base-setup.php:374
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "ਲੋਕ ਸਮੂਹ ਇਸ ਸਮੂਹ ਦੁਆਰਾ ਪ੍ਰਸਤੁਤ ਕੀਤੇ ਗਏ."
 
-#: dt-groups/base-setup.php:388
+#: dt-groups/base-setup.php:387
 msgid "Unbelievers"
 msgstr "ਅਵਿਸ਼ਵਾਸੀ"
 
-#: dt-groups/base-setup.php:389
+#: dt-groups/base-setup.php:388
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "ਇਸ ਸਮੂਹ ਵਿੱਚ ਅਵਿਸ਼ਵਾਸੀਆਂ ਦੀ ਗਿਣਤੀ."
 
-#: dt-groups/base-setup.php:397
+#: dt-groups/base-setup.php:396
 msgid "Believers"
 msgstr "ਵਿਸ਼ਵਾਸੀ"
 
-#: dt-groups/base-setup.php:398
+#: dt-groups/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "ਇਸ ਸਮੂਹ ਵਿੱਚ ਵਿਸ਼ਵਾਸੀ ਦੀ ਗਿਣਤੀ."
 
-#: dt-groups/base-setup.php:406
+#: dt-groups/base-setup.php:405
 msgid "Accountable"
 msgstr "ਜਵਾਬਦੇਹ"
 
-#: dt-groups/base-setup.php:407
+#: dt-groups/base-setup.php:406
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "ਜਵਾਬਦੇਹੀ ਸਮੂਹ ਵਿੱਚ ਲੋਕਾਂ ਦੀ ਗਿਣਤੀ."
 
-#: dt-groups/base-setup.php:416
+#: dt-groups/base-setup.php:415
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "ਕੀ ਇਹ ਚਰਚ ਹੈ - ਹਾਂ ਜਾਂ ਨਹੀਂ?"
 
-#: dt-groups/base-setup.php:424
+#: dt-groups/base-setup.php:423
 msgid "Multiplying"
 msgstr "ਗੁਣਾ"
 
-#: dt-groups/base-setup.php:425
+#: dt-groups/base-setup.php:424
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
@@ -3378,37 +3373,37 @@ msgid ""
 msgstr ""
 "ਹੋਰ ਸਮੂਹਾਂ ਨੂੰ ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਸਹਾਇਤਾ ਕਰਨ ਵਾਲੇ ਵਿਅਕਤੀਆਂ ਦੀ ਸੰਖਿਆ. ਕਿੰਨੇ ਮੈਂਬਰ ਗੁਣਾ ਕਰ ਰਹੇ ਹਨ?"
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:437
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "ਸਮੂਹਾਂ ਦਾ ਇਹ ਸੰਪਰਕ ਮੈਂਬਰ ਹੈ."
 
-#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:449
 msgid "Leader of Group"
 msgstr "ਸਮੂਹ ਦੇ ਆਗੂ"
 
-#: dt-groups/base-setup.php:460
+#: dt-groups/base-setup.php:459
 msgid "Coach of Group"
 msgstr "ਗਰੁੱਪ ਦੇ ਕੋਚ"
 
-#: dt-groups/base-setup.php:572
+#: dt-groups/base-setup.php:571
 msgid "Create"
 msgstr "ਬਣਾਓ"
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:576
 msgid "Select"
 msgstr "ਚੁਣੋ"
 
-#: dt-groups/base-setup.php:582
+#: dt-groups/base-setup.php:581
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "ਨਵੇਂ ਮੈਂਬਰ ਸ਼ਾਮਲ ਕਰਨ ਲਈ, 'ਬਣਾਓ' ਜਾਂ 'ਚੁਣੋ' ਤੇ ਕਲਿਕ ਕਰੋ."
 
-#: dt-groups/base-setup.php:588
+#: dt-groups/base-setup.php:587
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "ਮੌਜੂਦਾ ਸੰਪਰਕਾਂ ਤੋਂ ਮੈਂਬਰ ਸ਼ਾਮਲ ਕਰੋ"
 
-#: dt-groups/base-setup.php:589
+#: dt-groups/base-setup.php:588
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3416,11 +3411,11 @@ msgid ""
 msgstr ""
 "'ਮੈਂਬਰ ਸੂਚੀ' ਖੇਤਰ ਵਿਚ, ਇਸ ਸਮੂਹ ਵਿਚ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਕਿਸੇ ਮੌਜੂਦਾ ਸੰਪਰਕ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ."
 
-#: dt-groups/base-setup.php:617
+#: dt-groups/base-setup.php:616
 msgid "Four Fields"
 msgstr "ਚਾਰ ਖੇਤਰ"
 
-#: dt-groups/base-setup.php:618
+#: dt-groups/base-setup.php:617
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3562,32 +3557,32 @@ msgstr "ਟਿਕਾਣਾ ਮਿਟਾਓ"
 msgid "Open Mapping"
 msgstr "ਓਪਨ ਮੈਪਿੰਗ"
 
-#: dt-mapping/mapping-module-config.php:74 dt-mapping/mapping.php:147
-#: dt-mapping/mapping.php:302
+#: dt-mapping/mapping-module-config.php:73 dt-mapping/mapping.php:146
+#: dt-mapping/mapping.php:300
 msgid "Mapping"
 msgstr "ਮੈਪਿੰਗ"
 
-#: dt-mapping/mapping.php:149
+#: dt-mapping/mapping.php:148
 msgid "Map"
 msgstr "ਨਕਸ਼ਾ"
 
-#: dt-mapping/mapping.php:150
+#: dt-mapping/mapping.php:149
 msgid "List"
 msgstr "ਸੂਚੀ"
 
-#: dt-mapping/mapping.php:303
+#: dt-mapping/mapping.php:301
 msgid "Refresh Cached Data"
 msgstr "ਕੈਚੇਡ ਡੇਟਾ ਨੂੰ ਤਾਜ਼ਾ ਕਰੋ"
 
-#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:260
+#: dt-mapping/mapping.php:302 dt-people-groups/people-groups-base.php:260
 msgid "Population"
 msgstr "ਆਬਾਦੀ"
 
-#: dt-mapping/mapping.php:643 dt-mapping/mapping.php:724
+#: dt-mapping/mapping.php:640 dt-mapping/mapping.php:721
 msgid "World"
 msgstr "ਵਿਸ਼ਵ"
 
-#: dt-metrics/charts-base.php:132
+#: dt-metrics/charts-base.php:131
 msgid "No Results"
 msgstr "ਕੋਈ ਨਤੀਜੇ ਨਹੀਂ"
 
@@ -3602,7 +3597,7 @@ msgstr "ਨਾਜ਼ੁਕ ਮਾਰਗ"
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
 #: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:102 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3752,7 +3747,7 @@ msgstr "ਪਿਛਲਾ ਮਹੀਨਾ"
 #: dt-metrics/combined/daily-activity.php:80
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
-#: dt-notifications/notifications.php:497
+#: dt-notifications/notifications.php:496
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s ਮਹੀਨਾ ਪਹਿਲਾਂ"
@@ -3765,7 +3760,7 @@ msgstr ""
 "ਹੇਠਾਂ ਮੈਟ੍ਰਿਕਸ ਦੀ ਵਿਸਤ੍ਰਿਤ ਸੂਚੀ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਲਈ ਟਾਈਮਲਾਈਨ ਦਿਨ ਦੇ ਸੰਖੇਪ 'ਤੇ ਕਲਿੱਕ ਕਰੋ।"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:130
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
 msgid "Metrics"
 msgstr "ਮੈਟ੍ਰਿਕਸ"
 
@@ -3778,7 +3773,7 @@ msgid "No Activity Detected!"
 msgstr "ਕੋਈ ਗਤੀਵਿਧੀ ਨਹੀਂ ਮਿਲੀ!"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:151
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:38
 msgid "New %s"
 msgstr "ਨਵਾਂ$s"
@@ -3800,7 +3795,7 @@ msgstr "ਸੰਯੁਕਤ ਨਕਸ਼ੇ"
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
 #: dt-metrics/personal/mapbox-contacts-maps.php:60
 #: dt-metrics/personal/mapbox-groups-maps.php:54
-#: dt-metrics/records/dynamic-records-map.php:102
+#: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
@@ -4024,45 +4019,51 @@ msgstr "ਪੀੜ੍ਹੀ"
 msgid "Groups Tree"
 msgstr "ਗਰੁੱਪ ਟ੍ਰੀ"
 
-#: dt-metrics/groups/tree.php:81
+#: dt-metrics/groups/tree.php:80
 msgid "Group Generation Tree"
 msgstr "ਸਮੂਹ ਉਤਪਤੀ ਲੜੀ"
 
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:134
+#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
+#: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
 msgstr "ਹਾਈਲਾਈਟ ਐਕਟਿਵ"
 
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:135
+#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
+#: dt-metrics/records/genmap.php:144
 msgid "Highlight Churches"
 msgstr "ਚਰਚਿਆਂ ਨੂੰ ਉਜਾਗਰ ਕਰੋ"
 
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:136 dt-metrics/records/genmap.php:149
+#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
 msgid "Members"
 msgstr "ਸਦੱਸ"
 
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:137
+#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
+#: dt-metrics/records/genmap.php:146
 msgid "View Record"
 msgstr "ਰਿਕਾਰਡ ਵੇਖੋ"
 
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:140
+#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
+#: dt-metrics/records/genmap.php:149
 msgid "Total Members"
 msgstr "ਕੁੱਲ ਮੈਂਬਰ"
 
-#: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:141
+#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
+#: dt-metrics/records/genmap.php:150
 msgid "View Group"
 msgstr "ਸਮੂਹ ਵੇਖੋ"
 
-#: dt-metrics/metrics.php:82
+#: dt-metrics/metrics.php:84
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:113
+#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records Map"
+msgstr "ਰਿਕਾਰਡ ਸ਼ਾਮਲ ਕਰੋ"
+
+#: dt-metrics/metrics.php:115
 #, fuzzy
 #| msgid "Metrics"
 msgid "Dynamic Metrics"
@@ -4120,7 +4121,7 @@ msgstr "%1$d %2$s ਬਣਾਇਆ ਗਿਆ"
 msgid "Activity Log"
 msgstr "ਗਤੀਵਿਧੀ ਲੌਗ"
 
-#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:194
+#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "ਘੱਟ"
 
@@ -4148,7 +4149,7 @@ msgstr "ਚੇਲਾ"
 msgid "My Groups Tree"
 msgstr "ਮੇਰੇ ਸਮੂਹ ਦੇ ਦਰੱਖਤ"
 
-#: dt-metrics/personal/group-tree.php:82
+#: dt-metrics/personal/group-tree.php:81
 msgid "My Group Generation Tree"
 msgstr "ਮੇਰੀ ਸਮੂਹ ਪੀੜ੍ਹੀ ਦਾ ਰੁੱਖ"
 
@@ -4243,139 +4244,133 @@ msgstr ""
 msgid "False"
 msgstr ""
 
-#: dt-metrics/records/dynamic-records-map.php:30
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "ਰਿਕਾਰਡ ਸ਼ਾਮਲ ਕਰੋ"
-
-#: dt-metrics/records/dynamic-records-map.php:91 template-new-bulk-post.php:264
+#: dt-metrics/records/dynamic-records-map.php:93 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "ਰਿਕਾਰਡ ਸ਼ਾਮਲ ਕਰੋ"
 
-#: dt-metrics/records/dynamic-records-map.php:92
+#: dt-metrics/records/dynamic-records-map.php:94
 #, fuzzy
 #| msgid "Post Type"
 msgid "Post Types"
 msgstr "ਪੋਸਟ ਦੀ ਕਿਸਮ"
 
-#: dt-metrics/records/dynamic-records-map.php:93
+#: dt-metrics/records/dynamic-records-map.php:95
 #, fuzzy
 #| msgid "prayer"
 msgid "Layer"
 msgstr "ਪ੍ਰਾਰਥਨਾ"
 
-#: dt-metrics/records/dynamic-records-map.php:94
+#: dt-metrics/records/dynamic-records-map.php:96
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
 msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: dt-metrics/records/dynamic-records-map.php:95
+#: dt-metrics/records/dynamic-records-map.php:97
 #, fuzzy
 #| msgid "Record"
 msgid "Record Types"
 msgstr "ਰਿਕਾਰਡ"
 
-#: dt-metrics/records/dynamic-records-map.php:97
-#: dt-notifications/notifications.php:922
-#: dt-notifications/notifications.php:929
-#: dt-notifications/notifications.php:936
-#: dt-notifications/notifications.php:940
-#: dt-notifications/notifications.php:950
-#: dt-notifications/notifications.php:957
+#: dt-metrics/records/dynamic-records-map.php:99
+#: dt-notifications/notifications.php:920
+#: dt-notifications/notifications.php:927
+#: dt-notifications/notifications.php:934
+#: dt-notifications/notifications.php:938
+#: dt-notifications/notifications.php:948
+#: dt-notifications/notifications.php:955
 msgid "System"
 msgstr "ਸਿਸਟਮ"
 
-#: dt-metrics/records/genmap.php:27 dt-metrics/records/genmap.php:126
+#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
 #, fuzzy
 #| msgid "Group Generation Tree"
 msgid "Generational Trees"
 msgstr "ਸਮੂਹ ਉਤਪਤੀ ਲੜੀ"
 
-#: dt-metrics/records/genmap.php:127
+#: dt-metrics/records/genmap.php:136
 #, fuzzy
 #| msgid "Archived"
 msgid "Show Archived"
 msgstr "ਆਰਕਾਈਵ ਕੀਤਾ"
 
-#: dt-metrics/records/genmap.php:128
+#: dt-metrics/records/genmap.php:137
 #, fuzzy
 #| msgid "prayer"
 msgid "Data Layers"
 msgstr "ਪ੍ਰਾਰਥਨਾ"
 
-#: dt-metrics/records/genmap.php:129
+#: dt-metrics/records/genmap.php:138
 msgid "Node Color"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:130
+#: dt-metrics/records/genmap.php:139
 #, fuzzy
 #| msgid "Default Filters"
 msgid "Default"
 msgstr "ਮੂਲ ਫਿਲਟਰ"
 
-#: dt-metrics/records/genmap.php:131
+#: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:132
+#: dt-metrics/records/genmap.php:141
 #, fuzzy
 #| msgid "Show all fields"
 msgid "Show as icons"
 msgstr "ਸਾਰੇ ਖੇਤਰ ਦਿਖਾਓ"
 
-#: dt-metrics/records/genmap.php:133
+#: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:146
+#: dt-metrics/records/genmap.php:155
 msgid "Coaches"
 msgstr "ਕੋਚ"
 
-#: dt-metrics/records/genmap.php:147
+#: dt-metrics/records/genmap.php:156
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "ਕਿਸਮ:"
 
-#: dt-metrics/records/genmap.php:150
+#: dt-metrics/records/genmap.php:159
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "ਨਾਲ ਖੋਲ੍ਹੋ"
 
-#: dt-metrics/records/genmap.php:152
+#: dt-metrics/records/genmap.php:161
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:153
+#: dt-metrics/records/genmap.php:162
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:156
+#: dt-metrics/records/genmap.php:165
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "ਚਾਈਲਡ ਗਰੁੱਪ"
 
-#: dt-metrics/records/genmap.php:158
+#: dt-metrics/records/genmap.php:167
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:159
+#: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:160
+#: dt-metrics/records/genmap.php:169
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: dt-metrics/records/genmap.php:164
+#: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
 msgstr ""
 
@@ -4475,93 +4470,93 @@ msgstr "ਘੰਟਾਵਾਰ ਡਾਇਜੈਸਟ"
 msgid "Daily Digest"
 msgstr "ਰੋਜ਼ਾਨਾ ਡਾਇਜੈਸਟ"
 
-#: dt-notifications/notifications.php:477
+#: dt-notifications/notifications.php:476
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s ਮਿੰਟ ਪਹਿਲਾਂ"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:482
+#: dt-notifications/notifications.php:481
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s ਘੰਟਾ ਪਹਿਲਾਂ"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:487
+#: dt-notifications/notifications.php:486
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s ਦਿਨ ਪਹਿਲਾਂ"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:492
+#: dt-notifications/notifications.php:491
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s ਹਫ਼ਤਾ ਪਹਿਲਾਂ"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:511
+#: dt-notifications/notifications.php:510
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s ਸਾਲ ਪਹਿਲਾਂ"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:515
+#: dt-notifications/notifications.php:514
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "%s ਸਾਲ ਪਹਿਲਾਂ"
 msgstr[1] ""
 
-#: dt-notifications/notifications.php:911
+#: dt-notifications/notifications.php:909
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "%s ਨੂੰ ਬਣਾਇਆ ਗਿਆ ਅਤੇ ਤੁਹਾਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਸੀ."
 
-#: dt-notifications/notifications.php:913
+#: dt-notifications/notifications.php:911
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "ਤੁਹਾਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਹੈ: %1$s."
 
-#: dt-notifications/notifications.php:919
+#: dt-notifications/notifications.php:917
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s %2$s ਨੂੰ %3$s ਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ."
 
-#: dt-notifications/notifications.php:923
+#: dt-notifications/notifications.php:921
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s ਨੇ %2$s ਤੁਹਾਡੇ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ."
 
-#: dt-notifications/notifications.php:930
+#: dt-notifications/notifications.php:928
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "%1$s ਨੇ %2$s ਕਹਿਣ ਤੇ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ: %3$s"
 
-#: dt-notifications/notifications.php:937
+#: dt-notifications/notifications.php:935
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "%1$s ਨੇ %2$s ਦੇ ਕਹਿਣ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ: %3$s"
 
-#: dt-notifications/notifications.php:941
+#: dt-notifications/notifications.php:939
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "%1$s ਨੇ ਤੁਹਾਡੇ ਲਈ ਅਧੀਨ ਕੀਤਾ %2$s."
 
-#: dt-notifications/notifications.php:951
+#: dt-notifications/notifications.php:949
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "%1$s ਨੇ %3$s ਤੇ ਮੀਲਪੱਥਰ %2$s ਜੋੜਿਆ."
 
-#: dt-notifications/notifications.php:954
+#: dt-notifications/notifications.php:952
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, %2$s ਤੇ ਅਪਡੇਟ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਜਾਂਦੀ ਹੈ."
 
-#: dt-notifications/notifications.php:958
+#: dt-notifications/notifications.php:956
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "%1$s %2$s ਤੇ ਸੋਧੇ ਹੋਏ ਸੰਪਰਕ ਵੇਰਵੇ."
 
-#: dt-notifications/notifications.php:961
+#: dt-notifications/notifications.php:959
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s ਨੇ: %2$s ਤੇ ਅਸਾਈਨਮੈਂਟ ਅਸਵੀਕਾਰ ਕਰ ਦਿੱਤੀ."
@@ -4580,7 +4575,7 @@ msgid "Groups Total"
 msgstr ""
 
 #: dt-people-groups/people-groups-base.php:202
-#: dt-posts/custom-post-type.php:186
+#: dt-posts/custom-post-type.php:185
 msgid "Last Modified"
 msgstr "ਆਖਰੀ ਵਾਰ ਸੰਸ਼ੋਧਿਤ"
 
@@ -4624,24 +4619,24 @@ msgstr "ਅਨੁਵਾਦ"
 msgid "Enter the People Group title here"
 msgstr "ਇੱਥੇ ਪੀਪਲਜ਼ ਗਰੁੱਪ ਦਾ ਸਿਰਲੇਖ ਦਾਖਲ ਕਰੋ"
 
-#: dt-posts/custom-post-type.php:180
+#: dt-posts/custom-post-type.php:179
 msgid "Picture"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:209
+#: dt-posts/custom-post-type.php:208
 msgid "Tags"
 msgstr "ਟੈਗਸ"
 
-#: dt-posts/custom-post-type.php:210
+#: dt-posts/custom-post-type.php:209
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "ਸੰਬੰਧਿਤ ਆਈਟਮਾਂ ਨੂੰ ਸਮੂਹ ਕਰਨ ਦਾ ਇੱਕ ਉਪਯੋਗੀ ਤਰੀਕਾ।"
 
-#: dt-posts/custom-post-type.php:223
+#: dt-posts/custom-post-type.php:222
 msgid "Un-Follow"
 msgstr "ਅਨ-ਫਾਲੋ"
 
-#: dt-posts/custom-post-type.php:244
+#: dt-posts/custom-post-type.php:243
 #, fuzzy
 #| msgctxt "Optional Documentation"
 #| msgid "The general location where this contact is located."
@@ -4649,7 +4644,7 @@ msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
 msgstr "ਸਧਾਰਣ ਸਥਾਨ ਜਿੱਥੇ ਇਹ ਸੰਪਰਕ ਸਥਿਤ ਹੈ."
 
-#: dt-posts/custom-post-type.php:252
+#: dt-posts/custom-post-type.php:251
 msgid "Locations or Address"
 msgstr "ਸਥਾਨ ਜਾਂ ਪਤਾ"
 
@@ -4658,33 +4653,33 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1705
+#: dt-posts/dt-posts.php:1710
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "ਮੈਜਿਕ ਲਿੰਕ ਸਬਮਿਸ਼ਨ"
 
-#: dt-posts/dt-posts.php:1705
+#: dt-posts/dt-posts.php:1710
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "ਮੈਜਿਕ ਲਿੰਕ ਸਬਮਿਸ਼ਨ"
 
-#: dt-posts/dt-posts.php:1707 dt-posts/dt-posts.php:2254
+#: dt-posts/dt-posts.php:1712 dt-posts/dt-posts.php:2259
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "ਸਰਗਰਮੀ ਨੂੰ ਮੁੜ"
 
-#: dt-posts/dt-posts.php:2494
+#: dt-posts/dt-posts.php:2499
 msgid "Post already shared with user."
 msgstr "ਪੋਸਟ ਪਹਿਲਾਂ ਹੀ ਉਪਭੋਗਤਾ ਨਾਲ ਸਾਂਝੀ ਕੀਤੀ ਗਈ ਹੈ."
 
-#: dt-posts/dt-posts.php:2774 single-template.php:175
+#: dt-posts/dt-posts.php:2778 single-template.php:174
 msgid "Details"
 msgstr "ਵੇਰਵਾ"
 
-#: dt-posts/dt-posts.php:2852
+#: dt-posts/dt-posts.php:2856
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4696,7 +4691,7 @@ msgstr ""
 "@  [%1$s]( %2$s) - ਉਪਭੋਗਤਾ %3$s ਨੇ %4$s [%5$s](%6$s) ਤੱਕ ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ. ਜੇ "
 "ਲੋੜੀਂਦਾ ਹੈ, ਤਾਂ ਇਸ ਰਿਕਾਰਡ ਨੂੰ ਉਪਭੋਗਤਾ ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਲਈ ਪਹੁੰਚ ਦਿਓ."
 
-#: dt-posts/dt-posts.php:2858
+#: dt-posts/dt-posts.php:2862
 msgid "Access Request"
 msgstr "ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ"
 
@@ -5025,7 +5020,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s ਨਾਲ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ"
 
-#: dt-posts/posts.php:2516
+#: dt-posts/posts.php:2522
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -5499,7 +5494,7 @@ msgstr "ਵਾਧੂ ਚੇਲਾ. ਟੂਲਸ ਜਾਣਕਾਰੀ"
 msgid "Corresponds to Contact"
 msgstr "ਸੰਪਰਕ ਕਰਨ ਲਈ ਪੱਤਰ"
 
-#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:192
+#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:191
 msgid "View Contact"
 msgstr "ਸੰਪਰਕ ਵੇਖੋ"
 
@@ -5527,98 +5522,98 @@ msgstr "ਉਪਭੋਗਤਾ ਨੂੰ ਸੱਦਾ ਦਿਓ"
 msgid "Default Language"
 msgstr "ਵਰਤੋਂਕਾਰ ਭਾਸ਼ਾ"
 
-#: dt-users/user-management.php:137
+#: dt-users/user-management.php:136
 msgid "Add User"
 msgstr "ਯੂਜ਼ਰ ਸ਼ਾਮਲ ਕਰੋ"
 
-#: dt-users/user-management.php:181
+#: dt-users/user-management.php:180
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s %2$s ਨੂੰ %3$s ਦਿਨਾਂ ਬਾਅਦ ਸਵੀਕਾਰਿਆ ਗਿਆ ਸੀ"
 
-#: dt-users/user-management.php:182
+#: dt-users/user-management.php:181
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s %2$s ਦਿਨਾਂ ਲਈ ਸੰਪਰਕ ਕੋਸ਼ਿਸ਼ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ"
 
-#: dt-users/user-management.php:183
+#: dt-users/user-management.php:182
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "%1$s ਨਾਲ ਸੰਪਰਕ ਕਰਨ ਦੀ %3$s ਦਿਨਾਂ ਬਾਅਦ %2$s ਤੇ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਗਈ"
 
-#: dt-users/user-management.php:184
+#: dt-users/user-management.php:183
 msgid "Unable to update"
 msgstr "ਅਪਡੇਟ ਕਰਨ ਵਿੱਚ ਅਸਮਰੱਥ"
 
-#: dt-users/user-management.php:185
+#: dt-users/user-management.php:184
 msgid "View New User"
 msgstr "ਨਵਾਂ ਯੂਜ਼ਰ ਵੇਖੋ"
 
-#: dt-users/user-management.php:186
+#: dt-users/user-management.php:185
 msgid "View New Contact"
 msgstr "ਨਵਾਂ ਸੰਪਰਕ ਵੇਖੋ"
 
-#: dt-users/user-management.php:187
+#: dt-users/user-management.php:186
 msgid "Email address is already in the system as a user!"
 msgstr "ਈਮੇਲ ਪਤਾ ਪਹਿਲਾਂ ਹੀ ਸਿਸਟਮ ਵਿੱਚ ਇੱਕ ਉਪਭੋਗਤਾ ਦੇ ਰੂਪ ਵਿੱਚ ਹੈ!"
 
-#: dt-users/user-management.php:188
+#: dt-users/user-management.php:187
 msgid "Username is already in the system as a user!"
 msgstr "ਉਪਭੋਗਤਾ ਨਾਮ ਪਹਿਲਾਂ ਹੀ ਸਿਸਟਮ ਵਿੱਚ ਇੱਕ ਉਪਭੋਗਤਾ ਦੇ ਰੂਪ ਵਿੱਚ ਹੈ!"
 
-#: dt-users/user-management.php:189
+#: dt-users/user-management.php:188
 msgid "Remove"
 msgstr "ਹਟਾਓ"
 
-#: dt-users/user-management.php:190
+#: dt-users/user-management.php:189
 msgid "This contact is already a user."
 msgstr "ਇਹ ਸੰਪਰਕ ਪਹਿਲਾਂ ਹੀ ਉਪਭੋਗਤਾ ਹੈ."
 
-#: dt-users/user-management.php:191
+#: dt-users/user-management.php:190
 msgid "View User"
 msgstr "ਯੂਜ਼ਰ ਵੇਖੋ"
 
-#: dt-users/user-management.php:195 template-settings.php:311
+#: dt-users/user-management.php:194 template-settings.php:311
 #: template-settings.php:575
 msgid "Enable"
 msgstr "ਯੋਗ"
 
-#: dt-users/user-management.php:230
+#: dt-users/user-management.php:229
 msgid "Go"
 msgstr ""
 
-#: dt-users/user-management.php:233
+#: dt-users/user-management.php:232
 #, fuzzy
 #| msgctxt "Showing 30 items matching bob"
 #| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
 msgstr "%2$s ਨਾਲ ਮਿਲਦੇ %1$s ਆਈਟਮਾਂ ਦਿਖਾ ਰਿਹਾ ਹੈ"
 
-#: dt-users/user-management.php:354
+#: dt-users/user-management.php:353
 msgid "%s days since last update"
 msgstr "ਆਖਰੀ ਅਪਡੇਟ ਤੋਂ$s ਦਿਨ"
 
-#: dt-users/user-metrics.php:106
+#: dt-users/user-metrics.php:105
 msgid "Updated fields"
 msgstr "ਅੱਪਡੇਟ ਕੀਤੇ ਖੇਤਰ"
 
-#: dt-users/user-metrics.php:110
+#: dt-users/user-metrics.php:109
 msgid "Made %n comments"
 msgstr "%n ਟਿੱਪਣੀਆਂ ਕੀਤੀਆਂ"
 
-#: dt-users/user-metrics.php:113
+#: dt-users/user-metrics.php:112
 msgid "Created record"
 msgstr "ਰਿਕਾਰਡ ਬਣਾਇਆ"
 
-#: dt-users/user-metrics.php:116
+#: dt-users/user-metrics.php:115
 msgid "Logged In %n times"
 msgstr "%n ਵਾਰ ਲਾਗਇਨ ਕੀਤਾ"
 
-#: dt-users/user-metrics.php:117
+#: dt-users/user-metrics.php:116
 msgid "Logged In"
 msgstr "ਲਾਗਇਨ"
 
-#: dt-users/user-metrics.php:120
+#: dt-users/user-metrics.php:119
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "%s ਉੱਤੇ ਅਸਾਈਨਮੈਂਟ ਅਸਵੀਕਾਰ ਕੀਤਾ"
@@ -5705,44 +5700,44 @@ msgstr ""
 msgid "See what browser you are using."
 msgstr "ਵੇਖੋ ਕਿ ਤੁਸੀਂ ਕਿਹੜਾ ਬ੍ਰਾ .ਜ਼ਰ ਵਰਤ ਰਹੇ ਹੋ."
 
-#: single-template.php:100 single-template.php:108
+#: single-template.php:99 single-template.php:107
 msgid "This %s needs an update."
 msgstr "ਇਸ$s ਨੂੰ ਇੱਕ ਅਪਡੇਟ ਦੀ ਲੋੜ ਹੈ."
 
-#: single-template.php:102 single-template.php:110
+#: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
 msgstr "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਟਿੱਪਣੀ ਪੋਸਟ ਕਰਕੇ ਇੱਕ ਅਪਡੇਟ ਪ੍ਰਦਾਨ ਕਰੋ."
 
-#: single-template.php:259
+#: single-template.php:258
 msgid "Edit all details fields"
 msgstr "ਸਾਰੇ ਵੇਰਵੇ ਵਾਲੇ ਖੇਤਰਾਂ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰੋ"
 
-#: single-template.php:384
+#: single-template.php:383
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:405 template-new-bulk-post.php:276
+#: single-template.php:404 template-new-bulk-post.php:276
 #: template-new-post.php:167
 msgid "Create Tag"
 msgstr "ਟੈਗ ਬਣਾਓ"
 
-#: single-template.php:406 template-new-bulk-post.php:277
+#: single-template.php:405 template-new-bulk-post.php:277
 #: template-new-post.php:168
 msgid "Create a tag and apply it to this record."
 msgstr "ਇੱਕ ਟੈਗ ਬਣਾਓ ਅਤੇ ਇਸ ਰਿਕਾਰਡ ਤੇ ਲਾਗੂ ਕਰੋ."
 
-#: single-template.php:410 single-template.php:412
+#: single-template.php:409 single-template.php:411
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
 #: template-new-post.php:172 template-new-post.php:174
 msgid "Tag"
 msgstr "ਟੈਗ"
 
-#: single-template.php:421 template-new-bulk-post.php:293
+#: single-template.php:420 template-new-bulk-post.php:293
 #: template-new-post.php:183
 msgid "Create and apply tag"
 msgstr "ਟੈਗ ਬਣਾਓ ਅਤੇ ਲਾਗੂ ਕਰੋ"
 
-#: single-template.php:431
+#: single-template.php:430
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
@@ -6020,6 +6015,9 @@ msgstr "ਪਹੁੰਚ ਸਕੈਨ ਸਕੈਨ:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ਡੁਪਲਿਕੇਟ ਮਿਲਿਆ:"
+
+#~ msgid "No Answer"
+#~ msgstr "ਕੋਈ ਉੱਤਰ ਨਹੀਂ"
 
 #, fuzzy
 #~| msgid "No"
