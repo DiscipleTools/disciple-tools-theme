@@ -15,14 +15,13 @@ function dt_firebase_login_ui( $atts ) {
     $default_redirect_to = DT_Login_Fields::get( 'redirect_url' );
     $atts = shortcode_atts( [
         'lang_code' => $default_lang,
-        'redirect_to' => $default_redirect_to,
+        'redirect_to' => $default_redirect_to
     ], $atts );
 
     $lang_code = $atts['lang_code'];
     $redirect_to = $atts['redirect_to'];
 
     $firebase_langs = dt_login_firebase_supported_languages();
-
 
     if ( !in_array( $lang_code, $firebase_langs ) ) {
         if ( strpos( $lang_code, '_' ) !== false ) {
@@ -186,8 +185,7 @@ function dt_firebase_login_ui( $atts ) {
               localStorage.setItem( 'login_method', 'mobile' )
             }
 
-
-            window.location = config.redirect_url
+            window.location = config.redirect_url;
           } else {
             showLoader(false)
             showErrorMessage(response.message)
