@@ -15,9 +15,7 @@ function dt_firebase_login_ui( $atts ) {
     $default_redirect_to = DT_Login_Fields::get( 'redirect_url' );
     $atts = shortcode_atts( [
         'lang_code' => $default_lang,
-        'redirect_to' => $default_redirect_to,
-        'success_url' => ( !empty( $atts['success_url'] ) ? $atts['success_url'] : null ),
-        'error_url' => ( !empty( $atts['error_url'] ) ? $atts['error_url'] : null )
+        'redirect_to' => $default_redirect_to
     ], $atts );
 
     $lang_code = $atts['lang_code'];
@@ -48,8 +46,6 @@ function dt_firebase_login_ui( $atts ) {
     $config['tos_url'] = DT_Login_Fields::get( 'tos_url' ) ? DT_Login_Fields::get( 'tos_url' ) : '';
     $config['privacy_url'] = DT_Login_Fields::get( 'privacy_url' ) ? DT_Login_Fields::get( 'privacy_url' ) : '';
     $config['disable_sign_up_status'] = !dt_can_users_register();
-    $config['success_url'] = ( !empty( $atts['success_url'] ) ? $atts['success_url'] : null );
-    $config['error_url'] = ( !empty( $atts['error_url'] ) ? $atts['error_url'] : null );
 
     $sign_in_options = [];
     $sign_in_options['google'] = DT_Login_Fields::get( 'identity_providers_google' ) === 'on' ? true : false;
@@ -189,12 +185,7 @@ function dt_firebase_login_ui( $atts ) {
               localStorage.setItem( 'login_method', 'mobile' )
             }
 
-            // Redirect based on specified settings or override urls.
-            if ( config['success_url'] ) {
-                window.location = config['success_url'];
-            } else {
-                window.location = config.redirect_url;
-            }
+            window.location = config.redirect_url;
           } else {
             showLoader(false)
             showErrorMessage(response.message)
