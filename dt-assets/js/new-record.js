@@ -1,6 +1,128 @@
+// Check if the web component services and ComponentService are available
+if (
+  window.WebComponentServices &&
+  window.WebComponentServices.ComponentService
+) {
+  // Create a new instance of ComponentService
+  const service = new window.WebComponentServices.ComponentService(
+    window.new_record_localized.post_type,
+    '',
+    // eslint-disable-next-line no-undef
+    wpApiShare.nonce,
+  );
+  // Initialize the ComponentService
+  service.initialize();
+  window.componentService = service;
+
+  // Create a new instance of apiService
+  const initApiService = new window.WebComponentServices.ApiService(
+    // eslint-disable-next-line no-undef
+    wpApiShare.nonce,
+  );
+
+  // CODE COMMENTED AS THIS FUNCTIONALITY IS MOVED IN WEB COMPONENTS
+  // Add an event listener to the form with the class 'js-create-post' when it's submitted
+  // document
+  //   .querySelector('.js-create-post')
+  //   .addEventListener('submit', function (event) {
+  //     if (event) {
+  //       event.preventDefault();
+  //     }
+  //     const form = event.target;
+  //     // Initialize an object to store form data and element data
+  //     const formData = new FormData(form);
+  //     const data = {
+  //       form: {},
+  //       el: {
+  //         type: 'access',
+  //       },
+  //     };
+
+  //     formData.forEach((value, key) => (data.form[key] = value));
+  //     Array.from(form.elements).forEach((el) => {
+  //       if (
+  //         el.localName.startsWith('dt-') &&
+  //         el.value &&
+  //         String(el.value).trim() !== ''
+  //       ) {
+  //         // Check specific element types and handle accordingly
+  //         if (el.localName.startsWith('dt-comm')) {
+  //           // For 'dt-comm' elements, extract and store filtered values
+  //           const filteredValues = el.value.map((item) => {
+  //             return { value: item.value };
+  //           });
+  //           data.el[el.name] = filteredValues;
+  //         } else if (
+  //           el.localName.startsWith('dt-multi') ||
+  //           el.localName.startsWith('dt-tags')
+  //         ) {
+  //           // For 'dt-multi' or 'dt-tags' elements, extract and store filtered values
+  //           const filteredValues = el.value.map((item) => {
+  //             return { value: item };
+  //           });
+  //           data.el[el.name] = { values: filteredValues };
+  //         } else if (el.localName.startsWith('dt-connection')) {
+  //           // For 'dt-connection' elements, extract and store filtered values
+  //           const filteredValues = el.value.map((item) => {
+  //             return { value: item.label };
+  //           });
+  //           data.el[el.name] = { values: filteredValues };
+  //         } else {
+  //           // For other elements, simply store the value
+  //           data.el[el.name] = el.value;
+  //         }
+  //       }
+  //     });
+  //     // Call the createPost method of initApiService to create a post with the collected data
+  //     initApiService.createPost('contacts', data.el).then(function (response) {
+  //       window.location = response.permalink;
+  //     });
+  //   });
+  // Function to capitalize the first letter of a given string
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  // eslint-disable-next-line no-inner-declarations
+  async function check_field_value_exists(field_type, value) {
+    const email = value;
+    let post_type = window.wpApiShare.post_type;
+    let data = {
+      communication_channel: field_type,
+      field_value: email,
+    };
+    await initApiService
+      .checkFieldValueExists(post_type, data)
+      .then((response) => {
+        return response;
+      })
+      .then((result) => {
+        if (!Object.keys(result).length) {
+          document
+            .querySelector(`.form-fields dt-comm-channel[id="${field_type}"]`)
+            .setAttribute('error', '');
+        } else {
+          document
+            .querySelector(`.form-fields dt-comm-channel[id="${field_type}"]`)
+            .setAttribute(
+              'error',
+              `${capitalizeFirstLetter(
+                field_type.split('_')[1],
+              )} already exists`,
+            );
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+}
+// Below JQuery code would gradually removed, when all the web-components are integrate abd tested.
+
 jQuery(function ($) {
   window.post_type_fields =
     window.new_record_localized.post_type_settings.fields;
+  // console.log('dededded',window.post_type_fields);
   let new_post = {};
   let temp_type = $('.type-options .selected').attr('id');
   if (temp_type) {
@@ -104,81 +226,89 @@ jQuery(function ($) {
   });
 
   /* breadcrumb: new-field-type Add the new link type data to the new_post array */
-  $('.js-create-post').on('submit', function () {
-    $('.js-create-post-button').attr('disabled', true).addClass('loading');
-    new_post.title = $('.js-create-post input[name=title]').val();
-    $('.select-field').each((index, entry) => {
-      if ($(entry).val()) {
-        new_post[$(entry).attr('id')] = $(entry).val();
-      }
-    });
-    $('.text-input').each((index, entry) => {
-      if ($(entry).val()) {
-        new_post[$(entry).attr('id')] = $(entry).val();
-      }
-    });
-    $('.link-input').each((index, entry) => {
-      let fieldKey = $(entry).data('field-key');
-      let type = $(entry).data('type');
-      if ($(entry).val()) {
-        if (!Object.prototype.hasOwnProperty.call(new_post, fieldKey)) {
-          new_post[fieldKey] = { values: [] };
-        }
-        new_post[fieldKey].values.push({
-          value: $(entry).val(),
-          type: type,
-        });
-      }
-    });
-    $('.dt_textarea').each((index, entry) => {
-      if ($(entry).val()) {
-        new_post[$(entry).attr('id')] = $(entry).val();
-      }
-    });
-    $('.dt-communication-channel').each((index, entry) => {
-      let val = $(entry).val();
-      if (val.length > 0) {
-        let channel = $(entry).data('field');
-        if (!new_post[channel]) {
-          new_post[channel] = [];
-        }
-        new_post[channel].push({
-          value: $(entry).val(),
-        });
-      }
-    });
-    $('.selected-select-button').each((index, entry) => {
-      let optionKey = $(entry).attr('id');
-      let fieldKey = $(entry).data('field-key');
-      if (!new_post[fieldKey]) {
-        new_post[fieldKey] = { values: [] };
-      }
-      new_post[fieldKey].values.push({
-        value: optionKey,
-      });
-    });
-    if (typeof window.selected_location_grid_meta !== 'undefined') {
-      new_post['location_grid_meta'] =
-        window.selected_location_grid_meta.location_grid_meta;
-    }
+  // $('.js-create-post').on('submit', function () {
+  //   $('.js-create-post-button').attr('disabled', true).addClass('loading');
+  //   new_post.title = $('.js-create-post input[name=title]').val();
+  //   $('.select-field').each((index, entry) => {
+  //     if ($(entry).val()) {
+  //       new_post[$(entry).attr('id')] = $(entry).val();
+  //     }
+  //   });
+  //   $('.text-input').each((index, entry) => {
+  //     if ($(entry).val()) {
+  //       new_post[$(entry).attr('id')] = $(entry).val();
+  //     }
+  //   });
+  //   $('.link-input').each((index, entry) => {
+  //     let fieldKey = $(entry).data('field-key');
+  //     let type = $(entry).data('type');
+  //     if ($(entry).val()) {
+  //       if (!Object.prototype.hasOwnProperty.call(new_post, fieldKey)) {
+  //         new_post[fieldKey] = { values: [] };
+  //       }
+  //       new_post[fieldKey].values.push({
+  //         value: $(entry).val(),
+  //         type: type,
+  //       });
+  //     }
+  //   });
+  //   $('.dt_textarea').each((index, entry) => {
+  //     if ($(entry).val()) {
+  //       new_post[$(entry).attr('id')] = $(entry).val();
+  //     }
+  //   });
+  //   $('.dt-communication-channel').each((index, entry) => {
+  //     let val = $(entry).val();
+  //     if (val.length > 0) {
+  //       let channel = $(entry).data('field');
+  //       if (!new_post[channel]) {
+  //         new_post[channel] = [];
+  //       }
+  //       new_post[channel].push({
+  //         value: $(entry).val(),
+  //       });
+  //     }
+  //   });
+  //   $('.selected-select-button').each((index, entry) => {
+  //     let optionKey = $(entry).attr('id');
+  //     let fieldKey = $(entry).data('field-key');
+  //     if (!new_post[fieldKey]) {
+  //       new_post[fieldKey] = { values: [] };
+  //     }
+  //     new_post[fieldKey].values.push({
+  //       value: optionKey,
+  //     });
+  //   });
+  //   if (typeof window.selected_location_grid_meta !== 'undefined') {
+  //     new_post['location_grid_meta'] =
+  //       window.selected_location_grid_meta.location_grid_meta;
+  //   }
 
-    window.API.create_post(window.new_record_localized.post_type, new_post)
-      .promise()
-      .then(function (data) {
-        window.location = data.permalink;
-      })
-      .catch(function (error) {
-        const message = error.responseJSON?.message || error.responseText;
-        $('.js-create-post-button')
-          .removeClass('loading')
-          .addClass('alert')
-          .attr('disabled', false);
-        $('.error-text').html(message);
-      });
-    return false;
-  });
+  //   window.API.create_post(window.new_record_localized.post_type, new_post)
+  //     .promise()
+  //     .then(function (data) {
+  //       window.location = data.permalink;
+  //     })
+  //     .catch(function (error) {
+  //       const message = error.responseJSON?.message || error.responseText;
+  //       $('.js-create-post-button')
+  //         .removeClass('loading')
+  //         .addClass('alert')
+  //         .attr('disabled', false);
+  //       $('.error-text').html(message);
+  //     });
+  //   return false;
+  // });
 
   let field_settings = window.new_record_localized.post_type_settings.fields;
+  $('.js-create-post').on('click', '.delete-button', function () {
+    var field_type = $(this).prev('input').data('field');
+    var element_index = $(this).data(`${field_type}-index`);
+    $(
+      `.communication-channel-error[data-${field_type}-index="${element_index}"]`,
+    ).remove();
+    $(this).parent().remove();
+  });
 
   function date_picker_init(is_bulk = false, bulk_id = 0) {
     // Determine field class name to be used.
@@ -797,8 +927,12 @@ jQuery(function ($) {
       let new_records_count = ++bulk_record_id_counter;
       let html = `<div class="form-fields-record form-fields-record-subsequent">
         <input type="hidden" id="bulk_record_id" value="${new_records_count}">
-        <div class="record-divider"><span>${generate_record_removal_button_html(new_records_count)}</span></div>
-        <span class="landscape-record-removal-button">${generate_record_removal_button_html(new_records_count)}</span>
+        <div class="record-divider"><span>${generate_record_removal_button_html(
+          new_records_count,
+        )}</span></div>
+        <span class="landscape-record-removal-button">${generate_record_removal_button_html(
+          new_records_count,
+        )}</span>
         ${fields_html}
       </div>`;
       let updated_records = $('#form_fields_records').append(html);
@@ -1685,7 +1819,9 @@ jQuery(function ($) {
   });
 
   function generate_record_removal_button_html(record_id) {
-    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.SHAREDFUNCTIONS.escapeHTML(window.new_record_localized.bulk_record_removal_but_img_uri)}"></button>`;
+    let button_html = `<button data-record-id="${record_id}" class="record-removal-button" type="button" ><img src="${window.SHAREDFUNCTIONS.escapeHTML(
+      window.new_record_localized.bulk_record_removal_but_img_uri,
+    )}"></button>`;
     return button_html;
   }
 
@@ -1708,94 +1844,6 @@ jQuery(function ($) {
       }
     }
   }
-
-  // Check for phone and email duplication
-  let non_duplicable_fields = ['contact_phone', 'contact_email'];
-  $.each(non_duplicable_fields, function (field_key, field_type) {
-    if (window.new_record_localized.post_type_settings.fields[field_type]) {
-      var field_name =
-        window.new_record_localized.post_type_settings.fields[field_type].name;
-      $(`input[data-field="${field_type}"]`).attr(
-        `data-${field_type}-index`,
-        '0',
-      );
-      $(`input[data-field="${field_type}"]`).after(
-        `<span class="loading-spinner" data-${field_type}-index="0" style="margin: 0.5rem;"></span>`,
-      );
-      $(`input[data-field="${field_type}"]`).parent().after(`
-        <div class="communication-channel-error" data-${field_type}-index="0" style="display: none;">
-          ${window.new_record_localized.translations.value_already_exists.replace('%s', field_name)}:
-          <span class="duplicate-ids" data-${field_type}-index="0" style="color: #3f729b;"></span>
-          </div>`);
-    }
-  });
-
-  function check_field_value_exists(field_type, element_index) {
-    var email = $(`input[data-${field_type}-index="${element_index}"]`).val();
-    $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr(
-      'class',
-      'loading-spinner active',
-    );
-    if (!email) {
-      $(
-        `.communication-channel-error[data-${field_type}-index="${element_index}"]`,
-      ).hide();
-      $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr(
-        'class',
-        'loading-spinner',
-      );
-      return;
-    }
-    var post_type = window.wpApiShare.post_type;
-    var data = { communication_channel: `${field_type}`, field_value: email };
-    jQuery
-      .ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        url:
-          window.wpApiShare.root +
-          `dt-posts/v2/${post_type}/check_field_value_exists`,
-        beforeSend: (xhr) => {
-          xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-        },
-      })
-      .then((result) => {
-        if (!$.isEmptyObject(result)) {
-          var duplicate_ids_html = '';
-          $.each(result, function (k, v) {
-            if (k > 0) {
-              duplicate_ids_html += ', ';
-            }
-            duplicate_ids_html += `<a href="/${post_type}/${v.post_id}" target="_blank">${window.new_record_localized.translations.contact} #${v.post_id}</a>`;
-          });
-          $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html(
-            duplicate_ids_html,
-          );
-          $(
-            `.communication-channel-error[data-${field_type}-index="${element_index}"]`,
-          ).show();
-        } else {
-          $(
-            `.communication-channel-error[data-${field_type}-index="${element_index}"]`,
-          ).hide();
-          $(`.duplicate-ids[data-${field_type}-index="${element_index}"]`).html(
-            '',
-          );
-        }
-        $(`.loading-spinner[data-${field_type}-index="${element_index}"]`).attr(
-          'class',
-          'loading-spinner',
-        );
-      });
-  }
-
-  $('.form-fields').on('change', 'input[data-field^="contact_"]', function () {
-    var post_type = $(this).data('field');
-    var element_index = $(this).data(`${post_type}-index`);
-    check_field_value_exists(post_type, element_index);
-  });
 
   /**
    * ============== [ BULK RECORD ADDING FUNCTIONALITY ] ==============
