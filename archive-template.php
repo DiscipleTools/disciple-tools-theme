@@ -251,17 +251,17 @@ dt_please_log_in();
                 </div>
                 <br>
                 <dt-list-help-box
-    listFiltersTab
-  postType="contacts"
-  postTypeLabel="Contacts Filters"
-></dt-list-help-box>
+                    listFiltersTab
+                    postType="contacts"
+                    postTypeLabel="Contacts Filters"
+                ></dt-list-help-box>
 
 <!-- Other way of handeling modal by handleing template in dt-theme only -->
-<!-- <dt-modal id="create-custom-filter" hidebutton>
-        <span slot="content">
-        Vijender
-        </span>
-        </dt-modal> -->
+            <!--<dt-modal id="create-custom-filter" hidebutton>
+                    <span slot="content">
+                    Test
+                </span>
+                </dt-modal> -->
 <br>
                 <div class="bordered-box">
                     <div class="section-header">
