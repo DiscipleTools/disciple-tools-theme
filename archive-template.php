@@ -870,50 +870,16 @@ Thanks!';
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
-                    <div class="table-container">
-                        <table class="table-remove-top-border js-list stack striped" id="records-table">
-                            <thead>
-                                <tr class="table-headers dnd-moved sortable">
-                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
-                                    <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
-                                    </th>
-                                    <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
-
-                                    <?php $columns = [];
-                                    if ( empty( $fields_to_show_in_table ) ){
-                                        $columns = DT_Posts::get_default_list_column_order( $post_type );
-                                    }
-                                    $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
-                                    if ( in_array( 'favorite', $columns ) ) {
-                                        ?>
-                                        <th style="width:36px; background-image:none; cursor:default"></th>
-                                        <?php
-                                    }
-                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ):
-                                        if ( in_array( 'record_picture', $columns ) ) : ?>
-                                            <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
-                                        <?php endif; ?>
-                                    <?php endif;
-                                    foreach ( $columns as $field_key ):
-                                        if ( ! in_array( $field_key, [ 'favorite', 'record_picture' ] ) ):
-                                            if ( isset( $post_settings['fields'][$field_key]['name'] ) ) : ?>
-                                                <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
-                                                    <?php echo esc_html( $post_settings['fields'][ $field_key ]['name'] ) ?>
-                                                </th>
-                                            <?php endif;
-                                        endif;
-                                    endforeach ?>
-                                </tr>
-                            </thead>
-                            <tbody id="table-content">
-                                <tr class="js-list-loading"><td colspan=7><?php esc_html_e( 'Loading...', 'disciple_tools' ); ?></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="center">
-                        <button id="load-more" class="button loader" style="display: none"><?php esc_html_e( 'Load More', 'disciple_tools' ) ?></button>
-                    </div>
                 </div>
+                <?php $columns = DT_Posts::get_default_list_column_order( $post_type ); // Check if $columns is indeed an array
+                if ( is_array( $columns ) ) {
+                    // Encode the array to JSON format
+                    $columns_json = json_encode( $columns );
+                    // echo $columns_json;
+                } else {
+                    $columns_json = json_encode( [] ); // Fallback to an empty array if not valid
+                } ?>
+                <dt-list postType="<?php echo esc_attr( $post_type ); ?>" columns="<?php echo esc_attr( $columns_json ); ?>"></dt-list>
             </main>
         </div>
     </div>
