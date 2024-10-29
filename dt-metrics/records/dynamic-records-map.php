@@ -28,7 +28,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 
         parent::__construct();
 
-        $this->title = __( 'Records Map', 'disciple_tools' );
+        $this->title = __( 'Maps', 'disciple_tools' );
 
         // Build post types array, ignoring some for now.
         // TODO: Only select post types with valid location field types!

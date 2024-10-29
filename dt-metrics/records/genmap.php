@@ -20,7 +20,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
 
         parent::__construct();
 
-        $this->title = __( 'Generational Trees', 'disciple_tools' );
+        $this->title = __( 'GenMapper Trees', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -132,7 +132,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 'map_key' => empty( DT_Mapbox_API::get_key() ) ? '' : DT_Mapbox_API::get_key(),
                 'data' => [],
                 'translations' => [
-                    'title' => __( 'Generational Trees', 'disciple_tools' ),
+                    'title' => $this->title,
                     'show_archived' => __( 'Show Archived', 'disciple_tools' ),
                     'data_layer_title' => __( 'Data Layers', 'disciple_tools' ),
                     'data_layer_settings_color_label' => __( 'Node Color', 'disciple_tools' ),

@@ -7,7 +7,7 @@ class DT_Metrics_Critical_Path_Chart extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'access'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'critical_path'; // lowercase

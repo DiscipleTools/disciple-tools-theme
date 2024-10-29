@@ -1,7 +1,5 @@
 jQuery(document).ready(function ($) {
-  if (
-    window.wpApiShare.url_path.startsWith('metrics/combined/daily-activity')
-  ) {
+  if (window.wpApiShare.url_path.startsWith('metrics/records/daily-activity')) {
     display_daily_activity();
   }
 

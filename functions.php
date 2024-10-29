@@ -89,14 +89,41 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         }
     } );
 
+    /**
+     * Intended to avoid restrictions with passing null-containing strings to bcrypt functions like password_hash.
+     *
+     * In particular, prevents the error "Bcrypt password must not contain null character" when passing output of
+     * random_bytes directly to password_hash.
+     *
+     * @param int $length
+     * @return string
+     *
+     * @since 1.67.0
+     */
+    function random_bytes_no_null( int $length ): string {
+        $str = '';
+        while ( true ) {
+            $str .= str_replace( "\0", '', random_bytes( $length ) );
+            if ( strlen( $str ) >= $length ) {
+                break;
+            }
+        }
+
+        return substr( $str, 0, $length );
+    }
+
     /** Setup key for JWT authentication */
     if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
         if ( get_option( 'my_jwt_key' ) ) {
             define( 'JWT_AUTH_SECRET_KEY', get_option( 'my_jwt_key' ) );
         } else {
-            $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
-            update_option( 'my_jwt_key', $iv );
-            define( 'JWT_AUTH_SECRET_KEY', $iv );
+            try {
+                $iv = password_hash( random_bytes_no_null( 16 ), PASSWORD_DEFAULT );
+                update_option( 'my_jwt_key', $iv );
+                define( 'JWT_AUTH_SECRET_KEY', $iv );
+            } catch ( Exception $e ) {
+                dt_write_log( $e->getMessage() );
+            }
         }
     }
 
@@ -179,7 +206,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '1.67.0';
+            $this->version = '1.68.1';
             // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -438,6 +465,8 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             new Disciple_Tools_Core_Endpoints();
             require_once( 'dt-core/admin/admin-settings-endpoints.php' );
             new Disciple_Tools_Admin_Settings_Endpoints();
+            require_once( 'dt-core/configuration/class-pwa.php' );
+            new Disciple_Tools_PWA();
 
             /**
              * Admin panel

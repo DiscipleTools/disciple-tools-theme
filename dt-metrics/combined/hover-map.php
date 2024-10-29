@@ -8,7 +8,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'records'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'hover_map'; // lowercase
@@ -22,7 +22,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
         if ( !$this->has_permission() ){
             return;
         }
-        $this->title = __( 'Hover Map', 'disciple_tools' );
+        $this->title = __( 'Simple Map', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
@@ -62,7 +62,7 @@ class DT_Metrics_Hover_Map extends DT_Metrics_Chart_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'translations' => [
-                    'title' => __( 'Hover Map', 'disciple_tools' )
+                    'title' => __( 'Simple Map', 'disciple_tools' )
                 ]
             ]
         );

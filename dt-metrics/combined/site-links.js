@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-  if (window.wpApiShare.url_path.startsWith('metrics/combined/site-links')) {
+  if (window.wpApiShare.url_path.startsWith('metrics/access/site-links')) {
     display_site_link_metrics();
   }
 
