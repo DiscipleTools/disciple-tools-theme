@@ -308,8 +308,16 @@ abstract class DT_Magic_Url_Base {
      * @return bool
      */
     public function authorize_url( $authorized ){
-        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->root . '/v1/'.$this->type ) !== false ) {
-            $authorized = true;
+        if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+            $request_uri = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+
+            if ( strpos( $request_uri, $this->root . '/v1/' . $this->type ) !== false ) {
+                $authorized = true;
+
+            // Ensure location fields remain accessible for sub-assigned templates.
+            } else if ( ( $this->root === 'templates' ) && ( strpos( $request_uri, 'search_location_grid_by_name' ) !== false ) ) {
+                $authorized = true;
+            }
         }
         return $authorized;
     }

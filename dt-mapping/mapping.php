@@ -470,7 +470,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function search_location_grid_by_name( WP_REST_Request $request ){
-            if ( ! current_user_can( 'read_location' ) && ! $this->permissions ) {
+
+            // Support ML HTTP Bypass.
+            if ( !isset( $_SERVER['HTTP_DT_MAGIC_LINK'] ) && ( !current_user_can( 'read_location' ) && !$this->permissions ) ) {
                 return new WP_Error( __FUNCTION__, 'No permissions to read locations', [ 'status' => 403 ] );
             }
             $params = $request->get_params();
