@@ -161,13 +161,14 @@ class DT_Login_User_Manager {
 
         $user = wp_signon( [
             'user_login' => $this->email ?: $this->uid,
+            'user_password' => 'not-the-real-password',
             'remember' => true,
         ] );
 
         remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
 
         if ( is_a( $user, 'WP_User' ) ) {
-            wp_set_current_user( $user->ID, $user->user_login );
+            wp_set_current_user( $user->ID, $user->data->user_login );
 
             if ( is_user_logged_in() ) {
                 return [
