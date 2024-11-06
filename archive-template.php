@@ -229,6 +229,20 @@ dt_please_log_in();
                     </div>
                 </div>
                 <br>
+                <dt-list-filters
+                    listFiltersTab
+                    postType="contacts"
+                    postTypeLabel="Contacts Filters"
+                ></dt-list-filters>
+
+                <br>
+                <dt-list-filters 
+                    splitBy
+                    postType="contacts" 
+                    postTypeLabel="Split By"
+                    >
+                    </dt-list-filters>
+                    <br>
                 <div class="bordered-box">
                     <div class="section-header">
                         <?php echo esc_html( _x( 'Split By', 'Split By', 'disciple_tools' ) ) ?>
@@ -295,6 +309,11 @@ dt_please_log_in();
                         </ul>
                         <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
                     </div>
+
+
+
+
+                    
                 </div>
                 <br>
                 <div class="bordered-box">
