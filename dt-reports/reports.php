@@ -174,7 +174,7 @@ class Disciple_Tools_Reports
      * @param array $args
      * @return false|int
      */
-    public static function update( array $args ) {
+    public static function update( array $args, $create_activity_log = false ) {
         global $wpdb;
 
         if ( ! isset( $args['id'] ) ){
@@ -242,18 +242,20 @@ class Disciple_Tools_Reports
             }
         }
 
-        dt_activity_insert(
-            [
-                'action' => 'update_report',
-                'object_type' => $args['type'],
-                'object_subtype' => $args['subtype'],
-                'object_id' => $args['post_id'],
-                'object_name' => 'report',
-                'meta_id'      => $report_id,
-                'meta_key'     => ' ',
-                'object_note'  => __( 'Updated report', 'disciple_tools' ),
-            ]
-        );
+        if ( $create_activity_log ){
+            dt_activity_insert(
+                [
+                    'action' => 'update_report',
+                    'object_type' => $args['type'],
+                    'object_subtype' => $args['subtype'],
+                    'object_id' => $args['post_id'],
+                    'object_name' => 'report',
+                    'meta_id' => $report_id,
+                    'meta_key' => ' ',
+                    'object_note' => __( 'Updated report', 'disciple_tools' ),
+                ]
+            );
+        }
 
         // Final action on insert.
         do_action( 'dt_update_report', $args );

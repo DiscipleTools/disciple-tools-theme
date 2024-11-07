@@ -1478,6 +1478,8 @@ class Disciple_Tools_Posts
 
         global $wpdb;
 
+        do_action( 'dt_before_post_deleted', $post_type, $post_id );
+
         $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
 
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id = %s", $post_id ) );
@@ -1495,6 +1497,9 @@ class Disciple_Tools_Posts
             'object_id' => $post_id,
             'object_name' => $post_title
         ] );
+
+        //hook for signaling that a post has been deleted
+        do_action( 'dt_post_deleted', $post_type, $post_id, $post_title );
 
         return true;
     }

@@ -29,7 +29,7 @@ class DT_Metrics_Select_Tags_Charts extends DT_Metrics_Chart_Base
             return;
         }
 
-        $this->title = __( 'Field Cumulative Values', 'disciple_tools' );
+        $this->title = __( 'Simple Chart', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );

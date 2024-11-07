@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'records'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'daily-activity'; // lowercase

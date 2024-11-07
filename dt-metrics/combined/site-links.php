@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'access'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'site-links'; // lowercase
@@ -20,7 +20,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
             return;
         }
         $this->title      = __( 'Transferred Contacts', 'disciple_tools' );
-        $this->base_title = __( 'Project', 'disciple_tools' );
+        $this->base_title = __( 'Access', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {

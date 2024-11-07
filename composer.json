@@ -4,6 +4,10 @@
         "wp-coding-standards/wpcs": "3.1.*",
         "squizlabs/php_codesniffer": "*"
     },
+    "scripts": {
+        "lint": "vendor/bin/phpcs",
+        "lintfix": "vendor/bin/phpcbf"
+    },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true

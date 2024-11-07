@@ -38,7 +38,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return;
         }
 
-        $this->title = __( 'Field Charts', 'disciple_tools' );
+        $this->title = __( 'Advanced Charts', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
