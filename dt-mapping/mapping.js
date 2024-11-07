@@ -234,7 +234,6 @@ function setUpData(features, map_data) {
       }
       /* end custom column */
     } else {
-
       // Always ensure to default to global map fill color, if no location data is present.
       mapFeature.properties.fill = window.am4core.color(mapFillColor);
     }
