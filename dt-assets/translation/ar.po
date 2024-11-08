@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
-"PO-Revision-Date: 2024-09-11 16:59+0000\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"PO-Revision-Date: 2024-10-09 10:59+0000\n"
 "Last-Translator: FarahDoumani <farahdoumani@gmail.com>\n"
-"Language-Team: Arabic <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/ar/>\n"
+"Language-Team: Arabic <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -213,16 +213,13 @@ msgid "Create custom filter"
 msgstr "إنشاء مرشح مُخصص"
 
 #: archive-template.php:234
-#, fuzzy
 msgctxt "Split By"
 msgid "Split By"
 msgstr "جزئه إلى"
 
 #: archive-template.php:296
-#, fuzzy
-#| msgid "No duplicates found."
 msgid "No results found"
-msgstr "لم يتم العثور على تكرارات."
+msgstr "لم يتم العثور على تكرارات"
 
 #: archive-template.php:302
 msgctxt "List Exports"
@@ -1972,7 +1969,7 @@ msgstr "تم القبول"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2138,8 +2135,7 @@ msgstr "مُدَقِّق التكرار"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3059,8 +3055,7 @@ msgstr "المجموعة"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3607,8 +3602,8 @@ msgstr "المسار الحرج"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3773,7 +3768,7 @@ msgid ""
 msgstr "انقر على ملخص يوم المخطط الزمني لعرض قائمة مفصلة بالمقاييس أدناه."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "المقاييس"
 
@@ -3792,9 +3787,10 @@ msgid "New %s"
 msgstr "%s جديد"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "تحوم الخريطة"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "اسم التصفية"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3821,6 +3817,12 @@ msgstr "المستخدمون النشطون"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "جهات الاتصال المنقولة"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "قبول"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4066,21 +4068,13 @@ msgstr "مجموع الأعضاء"
 msgid "View Group"
 msgstr "مشاهدة المجموعة"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "إضافة السجلات"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "المقاييس"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4192,9 +4186,9 @@ msgstr "احصائيات اعتبارًا من"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "النشاط"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "سجل النشاط"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4296,10 +4290,10 @@ msgstr "تسجيل"
 msgid "System"
 msgstr "النظام"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "شجرة جيل المجموعة"
 
 #: dt-metrics/records/genmap.php:136
@@ -4389,9 +4383,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "جميع الإجماليات التراكمية"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "خانات الرسوم البيانية بمرور الوقت"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4415,9 +4409,9 @@ msgstr "لا توجد بيانات متاحة"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "خانات الرسوم البيانية بمرور الوقت"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "البحث المتقدم"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5188,9 +5182,13 @@ msgstr "حذف واستبدال رابط التطبيق"
 msgid "Added new report"
 msgstr "أُضيف تقرير جديد"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "تقرير مُحدث"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "تحوم الخريطة"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -6009,7 +6007,7 @@ msgstr ""
 "أو اسم مستعار لتمثيلك."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6053,6 +6051,26 @@ msgstr "جهات اتصال الوصول المفحوصة:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "التكرارات التي تم إيجادها:"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "إضافة السجلات"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "المقاييس"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "النشاط"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "جميع الإجماليات التراكمية"
 
 #~ msgid "No Answer"
 #~ msgstr "لا يوجد إجابة"

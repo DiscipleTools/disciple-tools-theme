@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsac <corsacca+muggle@gmail.com>\n"
 "Language-Team: Somali <https://translate.disciple.tools/projects/disciple-"
@@ -1972,7 +1972,7 @@ msgstr "La aqbalay"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2142,8 +2142,7 @@ msgstr "Checker nuqul"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3078,8 +3077,7 @@ msgstr "Koox"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3635,8 +3633,8 @@ msgstr "Dariiqa Halis ah"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3798,7 +3796,7 @@ msgid ""
 msgstr ""
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "Qiyaaso"
 
@@ -3817,9 +3815,10 @@ msgid "New %s"
 msgstr "Cusub %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Hover Map"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "Magaca Filter"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3846,6 +3845,12 @@ msgstr "Isticmaalayaasha Firfircoon"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr ""
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "Aqbal"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4092,21 +4097,13 @@ msgstr "Wadarta Xubnaha"
 msgid "View Group"
 msgstr "Kooxda Eeg"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Record Hits:"
-msgid "Records Map"
-msgstr "Diiwaanada Diiwaangelinta:"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "Qiyaaso"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4218,9 +4215,9 @@ msgstr "tirakoob sidii"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "Waxqabadka Maalinlaha ah"
+#| msgid "Activity"
+msgid "Activity Logs"
+msgstr "Waxqabadka"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4320,10 +4317,10 @@ msgstr "Diiwaan"
 msgid "System"
 msgstr "Nidaamka"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "Geedka Abuurka Kooxda"
 
 #: dt-metrics/records/genmap.php:136
@@ -4411,9 +4408,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "Dhamaan wadarta wadarta"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "Meelaha ku yaal Jaantusyada Waqtiga"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4435,9 +4432,9 @@ msgstr ""
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "Meelaha ku yaal Jaantusyada Waqtiga"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "Raadin Sareysa"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5164,9 +5161,13 @@ msgstr ""
 msgid "Added new report"
 msgstr "Lagu daray warbixin cusub"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Warbixin la cusbooneysiiyay"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Hover Map"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5983,7 +5984,7 @@ msgstr ""
 "ama magac kale oo loo yaqaan 'alias photo' si uu kuu matalo"
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6029,6 +6030,26 @@ msgstr "Xiriirinta marin u helka ayaa la marsiiyey"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Nuqullada la helay:"
+
+#, fuzzy
+#~| msgid "Record Hits:"
+#~ msgid "Records Map"
+#~ msgstr "Diiwaanada Diiwaangelinta:"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Qiyaaso"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "Waxqabadka Maalinlaha ah"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Dhamaan wadarta wadarta"
 
 #~ msgid "No Answer"
 #~ msgstr "Jawaab malahan"

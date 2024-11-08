@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2024-07-02 08:59+0000\n"
 "Last-Translator: Leila Mohamed <nevergvup.leila@gmail.com>\n"
 "Language-Team: Swahili <https://translate.disciple.tools/projects/disciple-"
@@ -1899,7 +1899,7 @@ msgstr "Amekubaliwa"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2069,8 +2069,7 @@ msgstr "Kikagua nakala"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -2999,8 +2998,7 @@ msgstr "Kikundi"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3541,8 +3539,8 @@ msgstr "Njia Muhimu"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3706,7 +3704,7 @@ msgstr ""
 "hapa chini."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "Metriki"
 
@@ -3725,9 +3723,10 @@ msgid "New %s"
 msgstr "%s mpya"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Hover Ramani"
+#, fuzzy
+#| msgid "Filtered Map"
+msgid "Simple Map"
+msgstr "Ramani Iliyochujwa"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3756,6 +3755,12 @@ msgstr "Watumiaji Amilifu"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "Anwani Zilizohamishwa"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "Kubali"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4001,17 +4006,13 @@ msgstr "Jumla ya Wanachama"
 msgid "View Group"
 msgstr "Angalia Kikundi"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr "Genmap"
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-msgid "Records Map"
-msgstr "Rekodi Ramani"
-
-#: dt-metrics/metrics.php:115
-msgid "Dynamic Metrics"
-msgstr "Vipimo vya Nguvu"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4122,8 +4123,10 @@ msgid "stats as of"
 msgstr "takwimu kama za"
 
 #: dt-metrics/records/date-range-activity.php:43
-msgid "Field Activity"
-msgstr "Shughuli ya shamba"
+#, fuzzy
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "Kumbukumbu ya Shughuli"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4204,8 +4207,10 @@ msgstr "Aina za Rekodi"
 msgid "System"
 msgstr "Mfumo"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
-msgid "Generational Trees"
+#: dt-metrics/records/genmap.php:23
+#, fuzzy
+#| msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "Miti ya Vizazi"
 
 #: dt-metrics/records/genmap.php:136
@@ -4284,9 +4289,9 @@ msgstr "Mizunguko isiyo na kikomo"
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "Jumla jumla"
+#| msgid "Field Charts"
+msgid "Simple Chart"
+msgstr "Mizunguko isiyo na kikomo"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4305,8 +4310,10 @@ msgid "No Records Available"
 msgstr "Hakuna Rekodi Zinazopatikana"
 
 #: dt-metrics/records/time-charts.php:41
-msgid "Field Charts"
-msgstr "Mizunguko isiyo na kikomo"
+#, fuzzy
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "Utafutaji wa Juu"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5022,9 +5029,13 @@ msgstr "Futa na ubadilishe kiungo cha programu"
 msgid "Added new report"
 msgstr "Imeongeza ripoti mpya"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Ripoti iliyosasishwa"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Hover Ramani"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5827,7 +5838,9 @@ msgstr ""
 "badala yake uchague picha ya katuni, dhahania au lakabu ili kukuwakilisha."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+#, fuzzy
+#| msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr "pakia picha mpya ya wasifu"
 
 #: template-settings.php:648 template-settings.php:649
@@ -5871,6 +5884,20 @@ msgstr "Anwani za ufikiaji zimechanganuliwa:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Nakala zimepatikana:"
+
+#~ msgid "Records Map"
+#~ msgstr "Rekodi Ramani"
+
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Vipimo vya Nguvu"
+
+#~ msgid "Field Activity"
+#~ msgstr "Shughuli ya shamba"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Jumla jumla"
 
 #~ msgid "No Answer"
 #~ msgstr "Hakuna Jibu"
