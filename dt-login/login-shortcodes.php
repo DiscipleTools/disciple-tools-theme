@@ -167,7 +167,7 @@ function dt_firebase_login_ui( $atts ) {
         //get all data from inputs with ids starting with 'extra_register_input_'
         const extraData = Array.from(document.querySelectorAll('input[id^="extra_register_input_"]')).reduce((acc, input) => {
           const key = input.id.replace('extra_register_input_', '')
-          acc[key] = input.value
+          acc[key] = (input.type && input.type === 'checkbox') ? input.checked : input.value
           return acc
         }, {})
         if ( Object.keys(extraData).length > 0 ) {
