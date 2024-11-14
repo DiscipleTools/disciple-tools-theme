@@ -30,7 +30,8 @@ class Disciple_Tools_Notifications_Comments
         }
 
         $comment_with_users = self::match_mention( $comment->comment_content ); // fail if no match for mention found
-        if ( ( $comment->comment_type === 'comment' ) || ( isset( $comment_with_users['user_ids'] ) && ( count( $comment_with_users['user_ids'] ) > 0 ) ) ) {
+        $comment_types_to_notify = apply_filters( 'dt_filter_comment_types_receiving_comment_notification', [ 'comment' ] );
+        if ( ( in_array( $comment->comment_type, $comment_types_to_notify ) ) || ( isset( $comment_with_users['user_ids'] ) && ( count( $comment_with_users['user_ids'] ) > 0 ) ) ) {
             $comment->comment_content = $comment_with_users['comment'];
             $mentioned_user_ids = $comment_with_users['user_ids'];
             $post_id = $comment->comment_post_ID;
