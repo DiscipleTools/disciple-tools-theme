@@ -208,6 +208,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             // challenge https connection
             if ( WP_DEBUG !== true ) {
                 $disable_site_link_https_check = get_option( 'dt_disable_site_link_https_check', false );
+                $disable_site_link_https_check = add_filter( 'dt_disable_site_link_https_check', $disable_site_link_https_check );
                 if ( empty( $disable_site_link_https_check ) ){
                     if ( !isset( $_SERVER['HTTPS'] ) ){
                         dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
