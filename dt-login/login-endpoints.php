@@ -96,9 +96,11 @@ class DT_Login_Endpoints {
             return new WP_Error( 'login_error', 'Something went wrong with the login', [ 'status' => 401 ] );
         }
 
+        //phpcs:disable
         if ( isset( $body->extraData ) ) {
             do_action( 'dt_sso_login_extra_fields', (array) $body->extraData, (array) $body );
         }
+        //phpcs:enable
 
         return new WP_REST_Response( [
             'status' => 200,

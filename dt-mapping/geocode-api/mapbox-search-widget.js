@@ -11,17 +11,17 @@ jQuery(document).ready(function () {
 
 //declare escapeHTML function if it doesn't exist
 //this file function might be included in other systems and should not depend on window.SHAREDFUNCTIONS
-if ( typeof window.escapeHTML === 'undefined' ) {
+if (typeof window.escapeHTML === 'undefined') {
   window.escapeHTML = function (str) {
     if (typeof str === 'undefined') return '';
     if (typeof str !== 'string') return str;
     return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-  }
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  };
 }
 
 // write location list from post contents
