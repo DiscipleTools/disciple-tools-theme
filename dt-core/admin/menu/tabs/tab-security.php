@@ -51,6 +51,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
             self::template( 'begin', 1 );
 
             $this->save_settings();
+            $this->security_headers_box();
             $this->security_enable_box();
 
 
@@ -73,7 +74,7 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function security_enable_box() {
+    public function security_headers_box() {
         $this->box( 'top', 'Enable and Configure Security Headers' );
 
         $xss_disabled = get_option( 'dt_disable_header_xss' );
@@ -117,6 +118,31 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
         $this->box( 'bottom' );
     }
 
+
+    public function security_enable_box() {
+        $this->box( 'top', 'Security Settings' );
+
+        $disable_site_link_https_check = get_option( 'dt_disable_site_link_https_check', false );
+        ?>
+        <p></p>
+
+        <form method="POST" action="">
+            <?php wp_nonce_field( 'security_settings', 'security_settings_nonce' ); ?>
+            <table class="form-table">
+                <tr>
+                    <th>Site link HTTPS check</th>
+                    <td><input name="site_link_https_check" type="checkbox" value="1" <?php echo $disable_site_link_https_check ? '' : 'checked' ?>></td>
+                    <td>Uncheck to support localhost instances and instances behind VPNs</td>
+                </tr>
+            </table>
+
+            <button type="submit" class="button button-primary">Save Changes</button>
+        </form>
+
+        <?php
+        $this->box( 'bottom' );
+    }
+
     public function save_settings(){
         if ( !empty( $_POST ) ){
             if ( isset( $_POST['security_headers_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['security_headers_nonce'] ), 'security_headers' ) ) {
@@ -128,6 +154,10 @@ class Disciple_Tools_Security_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             if ( isset( $_POST['usage_data_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['usage_data_nonce'] ), 'usage_data' ) ) {
                 update_option( 'dt_disable_usage_data', isset( $_POST['usage'] ) ? '1' : '0' );
+            }
+
+            if ( isset( $_POST['security_settings_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['security_settings_nonce'] ), 'security_settings' ) ) {
+                update_option( 'dt_disable_site_link_https_check', isset( $_POST['site_link_https_check'] ) ? '0' : '1' );
             }
         }
     }
