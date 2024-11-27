@@ -207,14 +207,17 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
              */
             // challenge https connection
             if ( WP_DEBUG !== true ) {
-                if ( !isset( $_SERVER['HTTPS'] ) ) {
-                    dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
+                $disable_site_link_https_check = add_filter( 'dt_disable_site_link_https_check', false );
+                if ( empty( $disable_site_link_https_check ) ){
+                    if ( !isset( $_SERVER['HTTPS'] ) ){
+                        dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
 
-                    return false;
-                } elseif ( !( 'on' === $_SERVER['HTTPS'] ) ) {
-                    dt_write_log( __METHOD__ . ': Failed https challenge' );
+                        return false;
+                    } elseif ( !( 'on' === $_SERVER['HTTPS'] ) ){
+                        dt_write_log( __METHOD__ . ': Failed https challenge' );
 
-                    return false;
+                        return false;
+                    }
                 }
             }
 
