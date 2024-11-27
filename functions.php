@@ -595,7 +595,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
         $wpdb->dt_notifications_queue = $wpdb->prefix . 'dt_notifications_queue';
         $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
-        $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+        $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
         $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
         $more_tables = apply_filters( 'dt_custom_tables', [] );

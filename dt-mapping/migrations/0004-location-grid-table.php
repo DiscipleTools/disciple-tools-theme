@@ -43,9 +43,10 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
     public function get_expected_tables(): array {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
+        $location_grid_table_name = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
         return array(
-            "{$wpdb->prefix}dt_location_grid" =>
-                "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_location_grid` (
+            "{$location_grid_table_name}" =>
+                "CREATE TABLE IF NOT EXISTS `{$location_grid_table_name}` (
                   `grid_id` bigint(20) NOT NULL AUTO_INCREMENT,
                   `name` varchar(200) NOT NULL DEFAULT '',
                   `level` int(1) DEFAULT NULL,

@@ -12,6 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
 
     public function up() {
+        global $wpdb;
+        if ( ! isset( $wpdb->dt_location_grid ) ) {
+            $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
+        }
+        $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $wpdb->dt_location_grid" );
+        if ( $rows >= 1 ) {
+            /* Test if database is already created */
+            error_log( 'database already installed' );
+            return;
+        }
 
         // get uploads director
         $dir = wp_upload_dir();
@@ -85,6 +95,10 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
      * @throws \Exception Did not find files.
      */
     public function test() {
+        if ( apply_filters( 'dt_using_multisite_location_grid_table', false ) ) {
+            return;
+        }
+
         $dir = wp_upload_dir();
         $uploads_dir = trailingslashit( $dir['basedir'] );
 

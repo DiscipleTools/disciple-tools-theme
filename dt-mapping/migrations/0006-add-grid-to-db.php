@@ -13,7 +13,7 @@ class DT_Mapping_Module_Migration_0006 extends DT_Mapping_Module_Migration {
     public function up() {
         global $wpdb;
         if ( ! isset( $wpdb->dt_location_grid ) ) {
-            $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+            $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
         }
 
         $file = 'dt_location_grid.tsv';

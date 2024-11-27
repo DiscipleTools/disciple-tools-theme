@@ -13,7 +13,7 @@ class DT_Mapping_Module_Migration_0018 extends DT_Mapping_Module_Migration {
     public function up() {
         global $wpdb;
         if ( ! isset( $wpdb->dt_location_grid ) ) {
-            $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+            $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
         }
 
         $count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->dt_location_grid WHERE east_longitude < west_longitude" );

@@ -1509,7 +1509,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $wpdb;
             $wpdb->query("
                 INSERT INTO {$wpdb->prefix}dt_location_grid_upgrade
-                SELECT * FROM {$wpdb->prefix}dt_location_grid WHERE grid_id >= 1000000000
+                SELECT * FROM $wpdb->dt_location_grid WHERE grid_id >= 1000000000
             ");
 
             return true;
@@ -1518,10 +1518,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             dt_write_log( __METHOD__ );
             global $wpdb;
             $wpdb->query("
-                DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid`
+                DROP TABLE IF EXISTS `$wpdb->dt_location_grid`
             ");
             $wpdb->query("
-                RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `{$wpdb->prefix}dt_location_grid`;
+                RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `$wpdb->dt_location_grid`;
             ");
             $wpdb->query( "UPDATE $wpdb->dt_location_grid SET level = '0' WHERE level is NULL AND level_name = 'admin0'" );
             return true;
@@ -2796,7 +2796,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function migrations_reset_and_rerun() {
             global $wpdb;
             // drop tables
-            $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+            $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
             $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_location_grid" );
 
             // delete
