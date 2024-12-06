@@ -13,7 +13,6 @@ class DT_Mapping_Module_Migration_0014 extends DT_Mapping_Module_Migration {
      */
     public function up() {
         global $wpdb;
-        $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
         // test for a specific feature that was changed in v2 to see if the v2 dataset was installed in 0006. This will be true for installs after 1.30.2, and not true installs before 1.30.2.
         $is_v2 = $wpdb->get_var( "SELECT grid_id FROM $wpdb->dt_location_grid WHERE grid_id = 100364199 AND latitude LIKE '%39.8097%'" );
         if ( empty( $is_v2 ) ) {
