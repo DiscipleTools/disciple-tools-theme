@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class DT_Mapping_Module_Migration_0004
+ * Setup dt_location_grid table if it does not exist.
  * @version_added 0.22.1
  */
 class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {

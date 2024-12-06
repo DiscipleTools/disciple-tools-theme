@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Class DT_Mapping_Module_Migration_0017
- * checks east and west are installed correctly
+ * make sure level is 0 instead of null
  */
 class DT_Mapping_Module_Migration_0019 extends DT_Mapping_Module_Migration {
 

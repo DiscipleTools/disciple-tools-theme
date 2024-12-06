@@ -11,6 +11,9 @@ class DT_Mapping_Module_Migration_0018 extends DT_Mapping_Module_Migration {
      * @throws \Exception  Got error when creating table $name.
      */
     public function up() {
+        if ( version_compare( dt_get_initial_install_meta( 'theme_version' ), '1.67.0', '>=' ) ){
+            return;
+        }
         global $wpdb;
 
         $count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->dt_location_grid WHERE east_longitude < west_longitude" );
