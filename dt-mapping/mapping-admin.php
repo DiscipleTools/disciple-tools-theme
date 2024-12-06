@@ -400,16 +400,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php echo esc_attr( ( $tab == 'geocoding' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Geocoding', 'disciple_tools' ) ?>
                     </a>
-                    <!-- Names Tab -->
-                    <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
-                    </a>
-                    <!-- Add Migration -->
-                    <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
-                    </a>
+                    <?php if ( !apply_filters( 'dt_using_multisite_location_grid_table', false ) ) : ?>
+                      <!-- Names Tab -->
+                      <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
+                          <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
+                          <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
+                      </a>
+                      <!-- Add Migration -->
+                      <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
+                          <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
+                          <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
+                      </a>
+                    <?php endif; ?>
 
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'credits' ?>" class="nav-tab
