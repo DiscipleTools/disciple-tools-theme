@@ -431,6 +431,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-login/pages/base.php' );
             require_once( 'dt-login/login-functions.php' );
             require_once( 'dt-login/login-email.php' );
+            require_once( 'dt-login/login-utilities.php' );
 
             // pages
             require_once( 'dt-login/login-page.php' );
