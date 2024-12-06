@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class DT_Mapping_Module_Migration_0004
+ * Setup dt_location_grid table if it does not exist.
  * @version_added 0.22.1
  */
 class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
@@ -44,8 +45,8 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
         return array(
-            "{$wpdb->prefix}dt_location_grid" =>
-                "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_location_grid` (
+            "{$wpdb->dt_location_grid}" =>
+                "CREATE TABLE IF NOT EXISTS `{$wpdb->dt_location_grid}` (
                   `grid_id` bigint(20) NOT NULL AUTO_INCREMENT,
                   `name` varchar(200) NOT NULL DEFAULT '',
                   `level` int(1) DEFAULT NULL,

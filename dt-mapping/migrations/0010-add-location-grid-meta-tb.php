@@ -3,6 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Class DT_Mapping_Module_Migration_0010
+ * Install the location_grid_meta table.
  * @version_added 0.30.0
  */
 class DT_Mapping_Module_Migration_0010 extends DT_Mapping_Module_Migration {
