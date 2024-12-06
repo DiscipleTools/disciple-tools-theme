@@ -1178,6 +1178,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_levels() {
+            global $wpdb;
+            $location_grid_count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->dt_location_grid" );
+            $disabled = $location_grid_count > 386000;
+
             ?>
             <!-- Box -->
             <table class="widefat striped">
@@ -1191,8 +1195,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             (levels 3, 4, 5). Installing administrative levels will increase the database from 50k records to 380k records
                         </p>
                         <hr>
+                      <?php if ( $disabled ) : ?>
+                          <p><strong>All lower levels are already installed</strong></p>
+                      <?php else : ?>
                         <p><a class="button" id="upgrade_button" href="<?php echo esc_url( trailingslashit( admin_url() ) ) ?>admin.php?page=<?php echo esc_attr( $this->token ) ?>&tab=levels&loop=true" disabled="true">Upgrade Away!</a></p>
                         <p id="show_message">LEAVE THIS PAGE OPEN UNTIL YOU SEE "FINISHED"</p>
+                      <?php endif; ?>
                     </th>
                 </tr>
                 </thead>
