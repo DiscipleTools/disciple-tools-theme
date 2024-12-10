@@ -31,15 +31,29 @@ class Disciple_Tools_Setup_Wizard
         add_filter( 'tgmpa_load', '__return_false', 100 );
 
         add_action( 'admin_head', function() {
-            remove_action( 'admin_notices', 'update_nag', 3  );
+            remove_action( 'admin_notices', 'update_nag', 3 );
             remove_action( 'admin_notices', 'maintenance_nag', 10 );
             remove_action( 'network_admin_notices', 'update_nag', 3 );
             remove_action( 'network_admin_notices', 'maintenance_nag', 3 );
         });
+        dt_theme_enqueue_script( 'setup-wizard', 'dt-core/admin/components/setup-wizard.js', [], true );
+        wp_localize_script( 'setup-wizard', 'setupWizardShare', [
+            'translations' => [
+                'title' => esc_html__( 'Disciple.Tools Setup Wizard', 'disciple_tools' ),
+            ],
+        ] );
+        add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
     }
 
     public function has_access_permission() {
         return !current_user_can( 'manage_dt' );
+    }
+
+    public function filter_script_loader_tag( $tag, $handle ) {
+        if ( in_array( $handle, [ 'setup-wizard' ] ) ) {
+            $tag = preg_replace( '/(.*)(><\/script>)/', '$1 type="module"$2', $tag );
+        }
+        return $tag;
     }
 
     public function add_dt_options_menu() {
@@ -65,9 +79,9 @@ class Disciple_Tools_Setup_Wizard
         }
 
         ?>
-        <div class="wrap">
-            <h2><?php esc_html_e( 'Disciple.Tools Setup Wizard', 'disciple_tools' ) ?></h2>
-        </div>
+
+            <setup-wizard></setup-wizard>
+
         <?php
     }
 }
