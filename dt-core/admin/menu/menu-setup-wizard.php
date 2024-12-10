@@ -1,8 +1,8 @@
 <?php
 /**
- * Disciple_Tools_Setup_Wizard class for the admin page
+ * DT_Setup_Wizard class for the admin page
  *
- * @class      Disciple_Tools_Setup_Wizard
+ * @class      DT_Setup_Wizard
  * @version    0.1.0
  * @since      0.1.0
  * @package    Disciple.Tools
@@ -14,9 +14,9 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Disciple_Tools_Setup_Wizard
+ * Class DT_Setup_Wizard
  */
-class Disciple_Tools_Setup_Wizard
+class DT_Setup_Wizard
 {
     private static $_instance = null;
     public static function instance() {
@@ -40,6 +40,8 @@ class Disciple_Tools_Setup_Wizard
         wp_localize_script( 'setup-wizard', 'setupWizardShare', [
             'translations' => [
                 'title' => esc_html__( 'Disciple.Tools Setup Wizard', 'disciple_tools' ),
+                'next' => esc_html__( 'Next', 'disciple_tools' ),
+                'back' => esc_html__( 'Back', 'disciple_tools' ),
             ],
         ] );
         add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
@@ -85,4 +87,4 @@ class Disciple_Tools_Setup_Wizard
         <?php
     }
 }
-Disciple_Tools_Setup_Wizard::instance();
+DT_Setup_Wizard::instance();
