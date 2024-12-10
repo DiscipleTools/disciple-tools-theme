@@ -496,6 +496,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
                 /* Note: The load order matters for the menus and submenus. Submenu must load after menu. */
                 require_once( 'dt-core/admin/menu/tabs/abstract-tabs-base.php' ); // registers all the menu pages and tabs
                 require_once( 'dt-core/admin/menu/menu-settings.php' );
+                require_once( 'dt-core/admin/menu/menu-setup-wizard.php' );
 
                 require_once( 'dt-core/admin/menu/menu-extensions.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-featured-extensions.php' );
