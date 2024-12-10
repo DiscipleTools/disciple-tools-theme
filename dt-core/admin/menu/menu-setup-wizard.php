@@ -30,20 +30,20 @@ class Disciple_Tools_Setup_Wizard
         add_action( 'admin_menu', [ $this, 'add_dt_options_menu' ] );
         add_filter( 'tgmpa_load', '__return_false', 100 );
 
-        add_action('admin_head', function() {
-            remove_action( 'admin_notices', 'update_nag',      3  );
+        add_action( 'admin_head', function() {
+            remove_action( 'admin_notices', 'update_nag', 3  );
             remove_action( 'admin_notices', 'maintenance_nag', 10 );
             remove_action( 'network_admin_notices', 'update_nag', 3 );
             remove_action( 'network_admin_notices', 'maintenance_nag', 3 );
         });
     }
 
-    public function hasAccessPermission() {
+    public function has_access_permission() {
         return !current_user_can( 'manage_dt' );
     }
 
     public function add_dt_options_menu() {
-        if ( $this->hasAccessPermission() ) {
+        if ( $this->has_access_permission() ) {
             return;
         }
 
@@ -60,7 +60,7 @@ class Disciple_Tools_Setup_Wizard
     }
 
     public function content() {
-        if ( $this->hasAccessPermission() ) {
+        if ( $this->has_access_permission() ) {
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }
 
