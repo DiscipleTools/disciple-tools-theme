@@ -20,6 +20,14 @@ export class SetupWizard extends LitElement {
                 border: none;
                 padding: 0.5rem 1.5rem;
                 border-radius: 8px;
+                cursor: pointer;
+                background-color: #efefef;
+                transition: background-color 120ms linear;
+            }
+            button:hover,
+            button:active,
+            button:focus {
+                background-color: #cdcdcd;
             }
             /* Composition */
             .wrap {
@@ -47,8 +55,8 @@ export class SetupWizard extends LitElement {
                 align-items: center;
             }
             /* Utilities */
-            .flex-center {
-                justify-content: center;
+            .flex-end {
+                justify-content: end;
             }
             /* Blocks */
             .wizard {
@@ -91,7 +99,7 @@ export class SetupWizard extends LitElement {
                     <div class="content">
                         <h2>${this.translations.title}</h2>
                         Content here
-                        <div class="cluster flex-center">
+                        <div class="cluster flex-end">
                             <button>${this.translations.back}</button>
                             <button class="btn-primary">${this.translations.next}</button>
                         </div>
