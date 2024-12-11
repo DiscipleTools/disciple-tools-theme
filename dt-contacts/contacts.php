@@ -38,6 +38,9 @@ DT_Contacts_User::instance();
 require_once 'dmm-module.php';
 DT_Contacts_DMM::instance();
 
+require_once 'module-coaching.php';
+require_once 'module-baptisms.php';
+
 require_once 'access-module.php';
 DT_Contacts_Access::instance();
 

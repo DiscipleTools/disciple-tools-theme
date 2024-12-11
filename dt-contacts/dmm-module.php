@@ -25,12 +25,9 @@ class DT_Contacts_DMM extends DT_Module_Base {
          //display tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
-        add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
 
         //hooks
-        add_action( 'post_connection_removed', [ $this, 'post_connection_removed' ], 10, 4 );
         add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
-        add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 10, 2 );
 
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
@@ -154,59 +151,6 @@ class DT_Contacts_DMM extends DT_Module_Base {
             ];
 
 
-            $fields['coaching'] = [
-                'name' => __( 'Is Coaching', 'disciple_tools' ),
-                'description' => _x( 'Who is this contact coaching', 'Optional Documentation', 'disciple_tools' ),
-                'type' => 'connection',
-                'post_type' => 'contacts',
-                'p2p_direction' => 'to',
-                'p2p_key' => 'contacts_to_contacts',
-                'tile' => 'other',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/coaching.svg?v=2',
-            ];
-            $fields['baptism_date'] = [
-                'name' => __( 'Baptism Date', 'disciple_tools' ),
-                'description' => '',
-                'type' => 'date',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-heart.svg?v=2',
-                'tile' => 'details',
-            ];
-
-            $fields['baptism_generation'] = [
-                'name'        => __( 'Baptism Generation', 'disciple_tools' ),
-                'type'        => 'number',
-                'default'     => '',
-            ];
-            $fields['coached_by'] = [
-                'name' => __( 'Coached by', 'disciple_tools' ),
-                'description' => _x( 'Who is coaching this contact', 'Optional Documentation', 'disciple_tools' ),
-                'type' => 'connection',
-                'post_type' => 'contacts',
-                'p2p_direction' => 'from',
-                'p2p_key' => 'contacts_to_contacts',
-                'tile' => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/coach.svg?v=2',
-            ];
-            $fields['baptized_by'] = [
-                'name' => __( 'Baptized by', 'disciple_tools' ),
-                'description' => _x( 'Who baptized this contact', 'Optional Documentation', 'disciple_tools' ),
-                'type' => 'connection',
-                'post_type' => 'contacts',
-                'p2p_direction' => 'from',
-                'p2p_key' => 'baptizer_to_baptized',
-                'tile'     => 'faith',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/baptism.svg?v=2',
-            ];
-            $fields['baptized'] = [
-                'name' => __( 'Baptized', 'disciple_tools' ),
-                'description' => _x( 'Who this contact has baptized', 'Optional Documentation', 'disciple_tools' ),
-                'type' => 'connection',
-                'post_type' => 'contacts',
-                'p2p_direction' => 'to',
-                'p2p_key' => 'baptizer_to_baptized',
-                'tile'     => 'faith',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/child.svg?v=2',
-            ];
             $fields['people_groups'] = [
                 'name' => __( 'People Groups', 'disciple_tools' ),
                 'description' => _x( 'The people groups represented by this contact.', 'Optional Documentation', 'disciple_tools' ),
@@ -263,9 +207,6 @@ class DT_Contacts_DMM extends DT_Module_Base {
                 'icon'        => get_template_directory_uri() . '/dt-assets/images/calendar-remove.svg?v=2',
                 'customizable' => false
             ];
-
-
-
         }
         return dt_array_merge_recursive_distinct( $declared_fields, $fields );
     }
@@ -292,52 +233,7 @@ class DT_Contacts_DMM extends DT_Module_Base {
                     Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
                 }
             }
-            if ( $post_key === 'coached_by' ){
-                $user_id = get_post_meta( $value, 'corresponds_to_user', true );
-                if ( $user_id ){
-                    DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, true );
-                }
-            }
-            if ( $post_key === 'baptized' ){
-                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
-                $milestones = get_post_meta( $post_id, 'milestones' );
-                if ( empty( $milestones ) || !in_array( 'milestone_baptizing', $milestones ) ){
-                    add_post_meta( $post_id, 'milestones', 'milestone_baptizing' );
-                }
-                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
-            }
-            if ( $post_key === 'baptized_by' ){
-                $milestones = get_post_meta( $post_id, 'milestones' );
-                if ( empty( $milestones ) || !in_array( 'milestone_baptized', $milestones ) ){
-                    add_post_meta( $post_id, 'milestones', 'milestone_baptized' );
-                }
-                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
-            }
         }
-    }
-    public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
-        if ( $post_type === 'contacts' ){
-            if ( $post_key === 'baptized_by' ){
-                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $post_id );
-            }
-            if ( $post_key === 'baptized' ){
-                Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $value );
-            }
-        }
-    }
-
-    //Add, remove or modify fields before the fields are processed in post create
-    public function dt_post_create_fields( $fields, $post_type ){
-        if ( $post_type === 'contacts' ){
-            //mark a new user contact as being coached be the user who added the new user.
-            if ( isset( $fields['type'] ) && $fields['type'] === 'user' ){
-                $current_user_contact = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
-                if ( $current_user_contact && !is_wp_error( $current_user_contact ) ){
-                    $fields['coached_by'] = [ 'values' => [ [ 'value' => $current_user_contact ] ] ];
-                }
-            }
-        }
-        return $fields;
     }
 
 
@@ -347,7 +243,6 @@ class DT_Contacts_DMM extends DT_Module_Base {
             global $wpdb;
             $performance_mode = get_option( 'dt_performance_mode', false );
             $user_post_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() ) ?? 0;
-            $coached_by_me = $performance_mode ? 0 : $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(p2p_to) FROM $wpdb->p2p WHERE p2p_to = %s AND p2p_type = 'contacts_to_contacts'", esc_sql( $user_post_id ) ) );
 
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
             $shared_by_type_counts = $performance_mode ? [] : DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
@@ -362,35 +257,8 @@ class DT_Contacts_DMM extends DT_Module_Base {
                 ],
                 'count' => $shared_by_type_counts['keys']['placeholder'] ?? '',
             ];
-            $filters['filters'][] = [
-                'ID' => 'my_coached',
-                'visible' => '1',
-                'type' => 'default',
-                'tab' => 'default',
-                'name' => __( 'Coached by me', 'disciple_tools' ),
-                'count' => $coached_by_me > 0 ? $coached_by_me : '',
-                'query' => [
-                    'coached_by' => [ 'me' ],
-                    'overall_status' => [ '-closed' ],
-                    'sort' => 'seeker_path',
-                ],
-                'labels' => [
-                    [
-                        'id' => 'me',
-                        'name' => __( 'Coached by me', 'disciple_tools' ),
-                        'field' => 'coached_by',
-                    ],
-                ],
-            ];
         }
 
-        //translation for default fields
-        foreach ( $filters['filters'] as $index => $filter ) {
-            if ( $filter['name'] === 'Coached by me' ) {
-                $filters['filters'][$index]['name'] = __( 'Coached by me', 'disciple_tools' );
-                $filters['filters'][$index]['labels'][0]['name'] = __( 'Coached by me', 'disciple_tools' );
-            }
-        }
         return $filters;
     }
 
@@ -475,57 +343,6 @@ class DT_Contacts_DMM extends DT_Module_Base {
         }
     }
 
-
-    public function dt_record_footer( $post_type, $post_id ){
-        if ( $post_type !== 'contacts' ){
-            return;
-        }
-        get_template_part( 'dt-assets/parts/modals/modal', 'revert' );
-        $field_settings = DT_Posts::get_post_field_settings( $post_type );
-        $post = DT_Posts::get_post( 'contacts', $post_id );
-        ?>
-        <div class="reveal" id="baptism-modal" data-reveal data-close-on-click="false">
-
-            <h3><?php echo esc_html( $field_settings['baptized']['name'] ?? '' )?></h3>
-            <p><?php esc_html_e( 'Who was this contact baptized by and when?', 'disciple_tools' )?></p>
-
-            <div>
-                <div class="section-subheader">
-                    <?php echo esc_html( $field_settings['baptized_by']['name'] ?? '' )?>
-                </div>
-                <div class="modal_baptized_by details">
-                    <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>
-                    <div id="modal_baptized_by_t" name="form-modal_baptized_by" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-modal_baptized_by input-height"
-                                           name="modal_baptized_by[query]"
-                                           placeholder="<?php echo esc_html_x( 'Search multipliers and contacts', 'input field placeholder', 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <span class="section-subheader"><?php echo esc_html( $field_settings['baptism_date']['name'] )?></span>
-                <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $post['baptism_date']['timestamp'] ?? '' );?>" id="modal-baptism-date-picker" autocomplete="off">
-
-            </div>
-
-
-            <div class="grid-x">
-                <button class="button" data-close type="button" id="close-baptism-modal">
-                    <?php echo esc_html__( 'Close', 'disciple_tools' )?>
-                </button>
-                <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-        <?php
-    }
 
     public function dt_search_viewable_posts_query( $query ){
         if ( isset( $query['combine'] ) && in_array( 'subassigned', $query['combine'] ) && isset( $query['assigned_to'], $query['subassigned'] ) ){
