@@ -2,7 +2,7 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 add_filter( 'dt_post_type_modules', function( $modules ){
-    $modules['contact_baptisms_module'] = [
+    $modules['contacts_baptisms_module'] = [
         'name' => 'Baptisms Module',
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
@@ -14,7 +14,7 @@ add_filter( 'dt_post_type_modules', function( $modules ){
 
 class DT_Contacts_Baptisms extends DT_Module_Base {
     public $post_type = 'contacts';
-    public $module = 'contact_baptisms_module';
+    public $module = 'contacts_baptisms_module';
 
     private static $_instance = null;
     public static function instance() {

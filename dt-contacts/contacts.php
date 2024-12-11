@@ -8,13 +8,6 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         'post_type' => 'contacts',
         'description' => 'Default contact functionality'
     ];
-    $modules['dmm_module'] = [
-        'name' => 'DMM Module',
-        'enabled' => true,
-        'prerequisites' => [ 'contacts_base' ],
-        'post_type' => 'contacts',
-        'description' => 'Field and workflows for Disciple Making Movements'
-    ];
     $modules['access_module'] = [
         'name' => 'Access Module',
         'enabled' => true,
