@@ -42,6 +42,7 @@ class DT_Contacts_Base {
 
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
+        add_filter( 'dt_search_viewable_posts_query', [ $this, 'dt_search_viewable_posts_query' ], 10, 1 );
     }
 
 
@@ -145,12 +146,23 @@ class DT_Contacts_Base {
                         'order' => 40,
                         'visibility' => __( 'Collaborators', 'disciple_tools' ),
                         'in_create_form' => false,
-                    ]
+                    ],
+                    'placeholder' => [
+                        'label' => __( 'Private Connection', 'disciple_tools' ),
+                        'color' => '#FF9800',
+                        'description' => __( 'Connected to a contact, or generational fruit', 'disciple_tools' ),
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/locked.svg?v=2',
+                        'order' => 40,
+                        'visibility' => __( 'Only me', 'disciple_tools' ),
+                        'in_create_form' => false,
+                        'hidden' => !$private_contacts_enabled,
+                    ],
                 ],
                 'description' => 'See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'customizable' => false
             ];
+
             $fields['duplicate_data'] = [
                 'name' => 'Duplicates', //system string does not need translation
                 'type' => 'array',
@@ -307,6 +319,30 @@ class DT_Contacts_Base {
                     ]
                 ]
             ];
+
+            $fields['subassigned'] = [
+                'name' => __( 'Sub-assigned to', 'disciple_tools' ),
+                'description' => __( 'Contact or User assisting the Assigned To user to follow up with the contact.', 'disciple_tools' ),
+                'type' => 'connection',
+                'post_type' => 'contacts',
+                'p2p_direction' => 'to',
+                'p2p_key' => 'contacts_to_subassigned',
+                'tile' => 'status',
+                'custom_display' => false,
+                'icon' => get_template_directory_uri() . '/dt-assets/images/subassigned.svg?v=2',
+            ];
+
+            $fields['subassigned_on'] = [
+                'name' => __( 'Sub-assigned on other Contacts', 'disciple_tools' ),
+                'description' => __( 'Contacts this contacts is subassigned on', 'disciple_tools' ),
+                'type' => 'connection',
+                'post_type' => 'contacts',
+                'p2p_direction' => 'from',
+                'p2p_key' => 'contacts_to_subassigned',
+                'tile' => 'no_tile',
+                'custom_display' => false,
+                'icon' => get_template_directory_uri() . '/dt-assets/images/subassigned.svg?v=2',
+            ];
         }
         return $fields;
     }
@@ -359,6 +395,9 @@ class DT_Contacts_Base {
 
     public function dt_record_footer( $post_type, $post_id ){
         if ( $post_type === 'contacts' ) :
+            //revert modal
+            get_template_part( 'dt-assets/parts/modals/modal', 'revert' );
+
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             $post = DT_Posts::get_post( $post_type, $post_id );
 
@@ -441,6 +480,15 @@ class DT_Contacts_Base {
 
 
     public function post_connection_added( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === 'contacts' ){
+            if ( $post_key === 'subassigned' ){
+                $user_id = get_post_meta( $value, 'corresponds_to_user', true );
+                if ( $user_id ){
+                    DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
+                    Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
+                }
+            }
+        }
     }
     public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
     }
@@ -488,7 +536,8 @@ class DT_Contacts_Base {
     //list page filters function
     public static function dt_user_list_filters( $filters, $post_type ){
         if ( $post_type === 'contacts' ){
-            $shared_by_type_counts = DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
+            $performance_mode = get_option( 'dt_performance_mode', false );
+            $shared_by_type_counts = $performance_mode ? [] : DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
 
             $filters['tabs'][] = [
@@ -545,6 +594,17 @@ class DT_Contacts_Base {
                 ],
                 'count' => $shared_by_type_counts['keys']['personal'] ?? '',
             ];
+            $filters['filters'][] = [
+                'ID' => 'placeholder',
+                'tab' => 'default',
+                'name' => sprintf( _x( 'Connected %s', 'Personal records', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    'type' => [ 'placeholder' ],
+                    'overall_status' => [ '-closed' ],
+                    'sort' => 'name'
+                ],
+                'count' => $shared_by_type_counts['keys']['placeholder'] ?? '',
+            ];
             $filters['filters'] = self::add_default_custom_list_filters( $filters['filters'] );
         }
         return $filters;
@@ -594,6 +654,17 @@ class DT_Contacts_Base {
         return $filters;
     }
 
+    public function dt_search_viewable_posts_query( $query ){
+        if ( isset( $query['combine'] ) && in_array( 'subassigned', $query['combine'] ) && isset( $query['assigned_to'], $query['subassigned'] ) ){
+            $a = $query['assigned_to'];
+            $s = $query['subassigned'];
+            unset( $query['assigned_to'] );
+            unset( $query['subassigned'] );
+            $query[] = [ 'assigned_to' => $a, 'subassigned' => $s ];
+        }
+        return $query;
+    }
+
 
     public function scripts(){
         if ( is_singular( 'contacts' ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
@@ -605,6 +676,40 @@ class DT_Contacts_Base {
 
     public function add_api_routes() {
         $namespace = 'dt-posts/v2';
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'revert_activity' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+    }
+
+    /**
+     * Revert an activity
+     * @todo move this work for any post type
+     * @param WP_REST_Request $request
+     * @return array|WP_Error
+     */
+    public function revert_activity( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) && isset( $params['activity_id'] ) ) {
+            $contact_id = $params['id'];
+            $activity_id = $params['activity_id'];
+            if ( !DT_Posts::can_update( 'contacts', $contact_id ) ) {
+                return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+            }
+            $activity = DT_Posts::get_post_single_activity( 'contacts', $contact_id, $activity_id );
+            if ( empty( $activity->old_value ) ){
+                if ( strpos( $activity->meta_key, 'quick_button_' ) !== false ){
+                    $activity->old_value = 0;
+                }
+            }
+            update_post_meta( $contact_id, $activity->meta_key, $activity->old_value ?? '' );
+            return DT_Posts::get_post( 'contacts', $contact_id );
+        } else {
+            return new WP_Error( 'get_activity', 'Missing a valid contact id or activity id', [ 'status' => 400 ] );
+        }
     }
 
 

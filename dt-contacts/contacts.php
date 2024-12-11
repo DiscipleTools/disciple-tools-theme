@@ -35,9 +35,8 @@ new DT_Duplicate_Checker_And_Merging();
 require_once 'user-module.php';
 DT_Contacts_User::instance();
 
-require_once 'dmm-module.php';
-DT_Contacts_DMM::instance();
-
+require_once 'module-faith.php';
+require_once 'module-followup.php';
 require_once 'module-coaching.php';
 require_once 'module-baptisms.php';
 
