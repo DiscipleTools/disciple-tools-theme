@@ -119,12 +119,12 @@ class DT_Setup_Wizard
                 ],
             ],
             [
-                'name' => 'First step',
-                'description' => 'The first step of this amazing setup wizard',
+                'name' => 'Second step',
+                'description' => 'The second step of this amazing setup wizard',
             ],
             [
-                'name' => 'First step',
-                'description' => 'The first step of this amazing setup wizard',
+                'name' => 'Third step',
+                'description' => 'The third step of this amazing setup wizard',
             ],
         ];
     }

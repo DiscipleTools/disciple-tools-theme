@@ -200,6 +200,7 @@ export class SetupWizard extends LitElement {
     static get properties() {
         return {
             steps: { type: Array },
+            currentStepNumber: { type: Number, attribute: false },
         };
     }
 
@@ -208,6 +209,7 @@ export class SetupWizard extends LitElement {
 
         this.translations = setupWizardShare.translations
         this.steps = []
+        this.currentStepNumber = 0
 
         const url = new URL(location.href)
 
@@ -288,12 +290,20 @@ export class SetupWizard extends LitElement {
                                             <span>Phone</span>
                                         </label>
                                     </div>
+                                    <h3>Stepper</h3>
+                                    <div class="flow | stepper">
+                                        ${this.renderStep()}
+                                        <div class="cluster">
+                                            <button @click=${this.back}>Back</button>
+                                            <button @click=${this.next} class="btn-primary">Next</button>
+                                        </div>
+                                    </div>
                                 </div>
                             ` : html`
                                 Content here
                                 <div class="cluster ms-auto">
-                                    <button>${this.translations.back}</button>
-                                    <button class="btn-primary">${this.translations.next}</button>
+                                    <button @click=${this.back}>${this.translations.back}</button>
+                                    <button @click=${this.next} class="btn-primary">${this.translations.next}</button>
                                 </div>
                             `
                         }
@@ -301,6 +311,37 @@ export class SetupWizard extends LitElement {
                 </div>
             </div>
         `;
+    }
+
+
+    back() {
+        this.gotoStep(this.currentStepNumber - 1)
+    }
+    next() {
+        this.gotoStep(this.currentStepNumber + 1)
+    }
+    gotoStep(i) {
+        if ( i < 0 ) {
+            this.currentStepNumber = 0
+            return
+        }
+        if ( i > this.steps.length - 1 ) {
+            this.currentStepNumber = this.steps.length - 1
+            return
+        }
+        this.currentStepNumber = i;
+    }
+
+    renderStep() {
+        if (this.steps.length === 0) {
+            return
+        }
+        const step = this.steps[this.currentStepNumber]
+
+        return html`
+            <h4>${step.name}</h4>
+            <p>${step.description}</p>
+        `
     }
 }
 customElements.define('setup-wizard', SetupWizard);
