@@ -1,7 +1,5 @@
 import {html, css, LitElement} from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/core/lit-core.min.js';
 
-console.log('setup-wizard.js')
-
 export class SetupWizard extends LitElement {
     static styles = [
         css`
@@ -101,6 +99,28 @@ export class SetupWizard extends LitElement {
                     grid-template-columns: repeat(auto-fit, minmax(min(var(--column-size, 250px), 100%), 1fr));
                 }
             }
+            .cover {
+                display: flex;
+                flex-direction: column;
+                min-block-size: 90vh;
+                padding: 1rem;
+            }
+
+            .cover > * {
+                margin-block: 0.5rem;
+            }
+
+            .cover > :first-child:not(.content) {
+                margin-block-start: 0;
+            }
+
+            .cover > :last-child:not(.content) {
+                margin-block-end: 0;
+            }
+
+            .cover > .content {
+                margin-block-end: auto;
+            }
             /* Utilities */
             .ms-auto {
                 margin-left: auto;
@@ -113,14 +133,11 @@ export class SetupWizard extends LitElement {
                 border-radius: 12px;
                 border: 1px solid transparent;
                 overflow: hidden;
+                background-color: white;
             }
             .sidebar {
                 background-color: grey;
                 color: white;
-                padding: 1rem;
-            }
-            .content {
-                background-color: white;
                 padding: 1rem;
             }
             .btn-primary {
@@ -225,89 +242,19 @@ export class SetupWizard extends LitElement {
     render() {
         return html`
             <div class="wrap">
-
-                <div class="wizard">
-                    <div class="content">
-                        <h2>${this.translations.title}</h2>
-                        ${
-                            this.isKitchenSink ? html`
-                                <div class="flow">
-                                    <h3>A cluster of buttons</h3>
-                                    <div class="cluster">
-                                        <button>Bog standard button</button>
-                                        <button class="btn-primary">Primary button</button>
-                                    </div>
-                                    <h3>A grid of button cards</h3>
-                                    <div class="grid">
-                                        <button class="btn-card">A button card</button>
-                                        <button class="btn-card">A button card</button>
-                                        <button class="btn-card">A button card</button>
-                                    </div>
-                                    <h3>Fields</h3>
-                                    <div class="input-group">
-                                        <label for="foo">Foo</label>
-                                        <input placeholder="foo" type="text" name="foo" id="foo">
-                                    </div>
-                                    <div class="input-group">
-                                        <label for="bar">bar</label>
-                                        <input placeholder="bar" type="text" name="bar" id="bar">
-                                    </div>
-                                    <div class="input-group">
-                                        <label for="day">day</label>
-                                        <select name="day" id="day">
-                                            <option value="1">1</option>
-                                            <option value="any">any</option>
-                                            <option value="thing">thing</option>
-                                        </select>
-                                    </div>
-                                    <h3>Breadcrumbs</h3>
-                                    <div class="breadcrumbs">
-                                        <div class="crumb complete" title="foo"></div>
-                                        <div class="crumb active" title="bar"></div>
-                                        <div class="crumb" title="day"></div>
-                                    </div>
-
-                                    <h3>Selectable items</h3>
-                                    <div class="grid" size="small">
-                                        <label class="toggle">
-                                            <input type="checkbox">
-                                            <span>Name</span>
-                                        </label>
-                                        <label class="toggle">
-                                            <input type="checkbox">
-                                            <span>Gender</span>
-                                        </label>
-                                        <label class="toggle">
-                                            <input type="checkbox">
-                                            <span>Email</span>
-                                        </label>
-                                        <label class="toggle">
-                                            <input type="checkbox">
-                                            <span>Location</span>
-                                        </label>
-                                        <label class="toggle">
-                                            <input type="checkbox">
-                                            <span>Phone</span>
-                                        </label>
-                                    </div>
-                                    <h3>Stepper</h3>
-                                    <div class="flow | stepper">
-                                        ${this.renderStep()}
-                                        <div class="cluster">
-                                            <button @click=${this.back}>Back</button>
-                                            <button @click=${this.next} class="btn-primary">Next</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            ` : html`
-                                Content here
-                                <div class="cluster ms-auto">
-                                    <button @click=${this.back}>${this.translations.back}</button>
-                                    <button @click=${this.next} class="btn-primary">${this.translations.next}</button>
-                                </div>
-                            `
-                        }
-                    </div>
+                <div class="cover | wizard">
+                    <h2>${this.translations.title}</h2>
+                    ${
+                        this.isKitchenSink ? this.kitchenSink() : html`
+                            <div class="content">
+                                ${this.renderStep()}
+                            </div>
+                            <div class="cluster ms-auto">
+                                <button @click=${this.back}>${this.translations.back}</button>
+                                <button @click=${this.next} class="btn-primary">${this.translations.next}</button>
+                            </div>
+                        `
+                    }
                 </div>
             </div>
         `;
@@ -341,6 +288,152 @@ export class SetupWizard extends LitElement {
         return html`
             <h4>${step.name}</h4>
             <p>${step.description}</p>
+            ${(step.config ?? []).map((component) => this.renderComponent(component))}
+        `
+    }
+
+    renderComponent(component) {
+        switch (component.type) {
+            case 'decision':
+                return this.renderDecision(component)
+            case 'options':
+                return this.renderOptions2(component)
+            case 'multi_select':
+                return this.renderMultiSelect(component)
+            default:
+                return ''
+        }
+    }
+
+    renderDecision(component) {
+        return html`
+            <div class="decisions">
+                ${component.description ? html`
+                    <p>${component.description}</p>
+                ` : ''}
+                <div class="grid">
+
+                ${component.options && component.options.length > 0
+                    ? component.options.map((option) => html`
+                        <button class="btn-card" data-key=${option.key}>
+                            <h3>${option.name}</h3>
+                            <p>${option.description ?? ''}</p>
+                        </button>
+                    `) : ''
+                }
+                </div>
+            </div>
+        `
+    }
+    renderMultiSelect(component) {
+        return html`
+            <div class="multiSelect">
+                ${component.description ? html`
+                    <p>${component.description}</p>
+                ` : ''}
+                <div class="grid" size="small">
+                    ${component.options && component.options.length > 0
+                        ? component.options.map((option) => html`
+                            <label class="toggle" for="${option.key}">
+                                <input ?checked=${option.checked} type="checkbox" name="${option.key}" id="${option.key}">
+                                <span>${option.name}</span>
+                            </label>
+                        `) : ''
+                    }
+                </div>
+            </div>
+        `
+    }
+    renderOptions2(component) {
+        return html`
+            <div class="options">
+                ${component.description ? html`
+                    <p>${component.description}</p>
+                ` : ''}
+                <div class="flow">
+                    ${component.options && component.options.length > 0
+                        ? component.options.map((option) => html`
+                            <div class="input-group">
+                                <label for="${option.key}">${option.name}</label>
+                                <input placeholder="${option.value}" type="text" name="${option.key}" id="${option.key}">
+                            </div>
+                        `) : ''
+                    }
+                </div>
+            </div>
+        `
+    }
+
+    kitchenSink() {
+        return html`
+            <div class="flow">
+                <h3>A cluster of buttons</h3>
+                <div class="cluster">
+                    <button>Bog standard button</button>
+                    <button class="btn-primary">Primary button</button>
+                </div>
+                <h3>A grid of button cards</h3>
+                <div class="grid">
+                    <button class="btn-card">A button card</button>
+                    <button class="btn-card">A button card</button>
+                    <button class="btn-card">A button card</button>
+                </div>
+                <h3>Fields</h3>
+                <div class="input-group">
+                    <label for="foo">Foo</label>
+                    <input placeholder="foo" type="text" name="foo" id="foo">
+                </div>
+                <div class="input-group">
+                    <label for="bar">bar</label>
+                    <input placeholder="bar" type="text" name="bar" id="bar">
+                </div>
+                <div class="input-group">
+                    <label for="day">day</label>
+                    <select name="day" id="day">
+                        <option value="1">1</option>
+                        <option value="any">any</option>
+                        <option value="thing">thing</option>
+                    </select>
+                </div>
+                <h3>Breadcrumbs</h3>
+                <div class="breadcrumbs">
+                    <div class="crumb complete" title="foo"></div>
+                    <div class="crumb active" title="bar"></div>
+                    <div class="crumb" title="day"></div>
+                </div>
+
+                <h3>Selectable items</h3>
+                <div class="grid" size="small">
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <span>Name</span>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <span>Gender</span>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <span>Email</span>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <span>Location</span>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox">
+                        <span>Phone</span>
+                    </label>
+                </div>
+                <h3>Stepper</h3>
+                <div class="flow | stepper">
+                    ${this.renderStep()}
+                    <div class="cluster">
+                        <button @click=${this.back}>Back</button>
+                        <button @click=${this.next} class="btn-primary">Next</button>
+                    </div>
+                </div>
+            </div>
         `
     }
 }

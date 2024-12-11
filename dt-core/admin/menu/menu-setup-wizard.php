@@ -94,37 +94,107 @@ class DT_Setup_Wizard
     }
 
     public function setup_wizard_steps() {
+        $bloginfo = get_bloginfo();
         return [
             [
-                'name' => 'First step',
-                'description' => 'The first step of this amazing setup wizard',
+                'name' => 'Choose your path',
+                'description' => 'How are you planning to use DT?',
                 'config' => [
-                    'options' => [
-                        [
-                            'key' => 'blogname',
-                            'name' => 'Blog Name',
-                            'value' => 'My DT Instance',
-                        ],
-                        [
-                            'key' => 'blogdescription',
-                            'name' => 'Blog Description',
-                            'value' => 'My DT Instance',
-                        ],
-                        [
-                            'key' => 'admin_email',
-                            'name' => 'Admin Email',
-                            'value' => 'My DT Instance',
+                    [
+                        'type' => 'decision',
+                        'options' => [
+                            [
+                                'key' => 'm2m',
+                                'name' => 'Access Ministry',
+                                'description' => 'Are you filtering for contacts for engagement?',
+                            ],
+                            [
+                                'key' => 'crm',
+                                'name' => 'Relationship Manager',
+                                'description' => 'Are you needing to manage your contacts?',
+                            ],
+                            [
+                                'key' => 'dmm',
+                                'name' => 'Disciple Making Movements',
+                                'description' => 'Are you managing multiplying groups?',
+                            ],
                         ],
                     ],
                 ],
             ],
             [
-                'name' => 'Second step',
-                'description' => 'The second step of this amazing setup wizard',
+                'name' => 'Site details',
+                'description' => 'Fill in some site details',
+                'config' => [
+                    [
+                        'type' => 'options',
+                        'options' => [
+                            [
+                                'key' => 'blogname',
+                                'name' => 'Site name',
+                                'value' => isset( $bloginfo['name'] ) ? $bloginfo['name'] : '',
+                            ],
+                            [
+                                'key' => 'blogdescription',
+                                'name' => 'Site description',
+                                'value' => isset( $bloginfo['description'] ) ? $bloginfo['description'] : '',
+                            ],
+                            [
+                                'key' => 'admin_email',
+                                'name' => 'Admin email',
+                                'value' => isset( $bloginfo['admin_email'] ) ? $bloginfo['admin_email'] : '',
+                            ]
+                        ],
+                    ]
+                ],
             ],
             [
-                'name' => 'Third step',
-                'description' => 'The third step of this amazing setup wizard',
+                'name' => 'Field options',
+                'description' => 'Based on your choices we would recommend the selected fields.',
+                'config' => [
+                    [
+                        'type' => 'multi_select',
+                        'description' => 'Recommended fields',
+                        'options' => [
+                            [
+                                'key' => 'name',
+                                'name' => 'Name',
+                                'checked' => true,
+                            ],
+                            [
+                                'key' => 'contact_email',
+                                'name' => 'Email',
+                                'checked' => true,
+                            ],
+                            [
+                                'key' => 'location',
+                                'name' => 'Location',
+                                'checked' => true,
+                            ],
+                            [
+                                'key' => 'contact_phone',
+                                'name' => 'Phone',
+                                'checked' => true,
+                            ],
+                        ],
+                    ],
+                    [
+                        'type' => 'multi_select',
+                        'description' => 'Optional fields',
+                        'options' => [
+                            [
+                                'key' => 'sources',
+                                'name' => 'Sources',
+                                'checked' => false,
+                            ],
+                            [
+                                'key' => 'communication_channels',
+                                'name' => 'Communication channels',
+                                'checked' => false,
+                            ],
+                        ],
+                    ]
+                ],
             ],
         ];
     }
