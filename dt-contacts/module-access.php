@@ -26,11 +26,13 @@ class DT_Contacts_Access extends DT_Module_Base {
         //setup fields
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 20, 2 );
+
         //display tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 20, 2 );
         add_action( 'dt_record_top_above_details', [ $this, 'dt_record_top_above_details' ], 20, 2 );
         add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 7 );
         add_filter( 'dt_render_field_for_display_fields', [ $this, 'dt_render_field_for_display_fields' ], 100, 3 );
+        add_action( 'dt_comment_action_quick_action', [ $this, 'dt_comment_action_quick_action' ], 10, 1 );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -41,11 +43,9 @@ class DT_Contacts_Access extends DT_Module_Base {
         //api
         add_filter( 'dt_post_update_fields', [ $this, 'dt_post_update_fields' ], 10, 4 );
         add_action( 'dt_comment_created', [ $this, 'dt_comment_created' ], 20, 4 );
-        add_action( 'dt_post_created', [ $this, 'dt_post_created' ], 10, 3 );
         add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 5, 2 );
         add_action( 'dt_post_updated', [ $this, 'dt_post_updated' ], 10, 5 );
 
-        add_filter( 'dt_filter_users_receiving_comment_notification', [ $this, 'dt_filter_users_receiving_comment_notification' ], 10, 4 );
 
         //users table fields
         add_filter( 'dt_users_fields', [ $this, 'dt_users_fields' ], 10, 1 );
@@ -97,20 +97,7 @@ class DT_Contacts_Access extends DT_Module_Base {
     public function dt_custom_fields_settings( $fields, $post_type ){
         $declared_fields = $fields;
         if ( $post_type === 'contacts' ){
-            if ( isset( $fields['type']['default']['personal'] ) ){
-                $fields['type']['default']['personal']['default'] = false;
-            }
-            $fields['assigned_to'] = [
-                'name'        => __( 'Assigned To', 'disciple_tools' ),
-                'description' => __( 'Select the main person who is responsible for reporting on this contact.', 'disciple_tools' ),
-                'type'        => 'user_select',
-                'default'     => '',
-                'tile'        => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg?v=2',
-                'show_in_table' => 25,
-                'only_for_types' => [ 'access', 'user' ],
-                'custom_display' => false
-            ];
+
             $fields['seeker_path'] = [
                 'name'        => __( 'Seeker Path', 'disciple_tools' ),
                 'description' => _x( 'Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward.', 'Seeker Path field description', 'disciple_tools' ),
@@ -157,11 +144,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'type'        => 'key_select',
                 'default_color' => '#366184',
                 'default'     => [
-                    'new'   => [
-                        'label' => __( 'New Contact', 'disciple_tools' ),
-                        'description' => _x( 'The contact is new in the system.', 'Contact Status field description', 'disciple_tools' ),
-                        'color' => '#F43636',
-                    ],
+                    'new'   => [], //already declared. Here to indicate order
                     'unassignable' => [
                         'label' => __( 'Not Ready', 'disciple_tools' ),
                         'description' => _x( 'There is not enough information to move forward with the contact at this time.', 'Contact Status field description', 'disciple_tools' ),
@@ -244,6 +227,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'only_for_types' => [ 'access' ]
             ];
 
+            //@todo maybe move
             $fields['reason_closed'] = [
                 'name'        => __( 'Reason Archived', 'disciple_tools' ),
                 'description' => _x( "A closed contact is one you can't or don't wish to interact with.", 'Optional Documentation', 'disciple_tools' ),
@@ -276,50 +260,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'hidden'      => true,
                 'only_for_types' => [ 'access' ]
             ];
-            $sources_default = [
-                'personal'           => [
-                    'label'       => __( 'Personal', 'disciple_tools' ),
-                    'key'         => 'personal',
-                ],
-                'web'           => [
-                    'label'       => __( 'Web', 'disciple_tools' ),
-                    'key'         => 'web',
-                ],
-                'facebook'      => [
-                    'label'       => __( 'Facebook', 'disciple_tools' ),
-                    'key'         => 'facebook',
-                ],
-                'twitter'       => [
-                    'label'       => __( 'Twitter', 'disciple_tools' ),
-                    'key'         => 'twitter',
-                ],
-                'transfer' => [
-                    'label'       => __( 'Transfer', 'disciple_tools' ),
-                    'key'         => 'transfer',
-                    'description' => __( 'Contacts transferred from a partnership with another Disciple.Tools site.', 'disciple_tools' ),
-                ]
-            ];
-            foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
-                if ( !isset( $sources_default[$key] ) ) {
-                    if ( isset( $value['enabled'] ) && $value['enabled'] === false ) {
-                        $value['deleted'] = true;
-                    }
-                    $sources_default[ $key ] = $value;
-                }
-            }
-
-            $fields['sources'] = [
-                'name'        => __( 'Sources', 'disciple_tools' ),
-                'description' => _x( 'The website, event or location this contact came from.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'multi_select',
-                'default'     => $sources_default,
-                'tile'     => 'details',
-                'customizable' => 'all',
-                'display' => 'typeahead',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/arrow-collapse-all.svg?v=2',
-                'only_for_types' => [ 'access' ],
-                'in_create_form' => [ 'access' ]
-            ];
 
             $fields['campaigns'] = [
                 'name' => __( 'Campaigns', 'disciple_tools' ),
@@ -331,21 +271,51 @@ class DT_Contacts_Access extends DT_Module_Base {
                 'only_for_types' => [ 'access' ],
             ];
 
-            if ( empty( $fields['contact_phone']['in_create_form'] ) ){
-                $fields['contact_phone']['in_create_form'] = [ 'access' ];
-            } elseif ( is_array( $fields['contact_phone']['in_create_form'] ) ){
-                $fields['contact_phone']['in_create_form'][] = 'access';
-            }
-            if ( empty( $fields['contact_email']['in_create_form'] ) ){
-                $fields['contact_email']['in_create_form'] = [ 'access' ];
-            } elseif ( is_array( $fields['contact_email']['in_create_form'] ) ){
-                $fields['contact_email']['in_create_form'][] = 'access';
-            }
-            if ( empty( $fields['contact_address']['in_create_form'] ) ){
-                $fields['contact_address']['in_create_form'] = [ 'access' ];
-            } elseif ( is_array( $fields['contact_address']['in_create_form'] ) ){
-                $fields['contact_address']['in_create_form'][] = 'access';
-            }
+            $fields['quick_button_no_answer'] = [
+                'name'        => __( 'Contact Attempted', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'number',
+                'default'     => 0,
+                'section'     => 'quick_buttons',
+                'icon'        => get_template_directory_uri() . '/dt-assets/images/send.svg',
+                'customizable' => false
+            ];
+            $fields['quick_button_contact_established'] = [
+                'name'        => __( 'Contact Established', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'number',
+                'default'     => 0,
+                'section'     => 'quick_buttons',
+                'icon'        => get_template_directory_uri() . '/dt-assets/images/account-voice.svg?v=2',
+                'customizable' => false
+            ];
+            $fields['quick_button_meeting_scheduled'] = [
+                'name'        => __( 'Meeting Scheduled', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'number',
+                'default'     => 0,
+                'section'     => 'quick_buttons',
+                'icon'        => get_template_directory_uri() . '/dt-assets/images/calendar-plus.svg?v=2',
+                'customizable' => false
+            ];
+            $fields['quick_button_meeting_complete'] = [
+                'name'        => __( 'Meeting Complete', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'number',
+                'default'     => 0,
+                'section'     => 'quick_buttons',
+                'icon'        => get_template_directory_uri() . '/dt-assets/images/calendar-check.svg?v=2',
+                'customizable' => false
+            ];
+            $fields['quick_button_no_show'] = [
+                'name'        => __( 'Meeting No-show', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'number',
+                'default'     => 0,
+                'section'     => 'quick_buttons',
+                'icon'        => get_template_directory_uri() . '/dt-assets/images/calendar-remove.svg?v=2',
+                'customizable' => false
+            ];
 
             $declared_fields  = dt_array_merge_recursive_distinct( $declared_fields, $fields );
 
@@ -392,9 +362,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                     'type' => [ 'access' ],
                 ]
             ];
-            if ( isset( $sections['status']['order'] ) && !in_array( 'overall_status', $sections['status']['order'], true ) ){
-                $sections['status']['order'] = array_merge( [ 'overall_status', 'assigned_to' ], $sections['status']['order'] );
-            }
         }
         return $sections;
     }
@@ -657,6 +624,12 @@ class DT_Contacts_Access extends DT_Module_Base {
     }
 
 
+    /**
+     * Notification Banner for Accepting an assigned contact
+     * @param $post_type
+     * @param $contact
+     * @return void
+     */
     public function dt_record_top_above_details( $post_type, $contact ){
         if ( $post_type === 'contacts' && isset( $contact['type'] ) && $contact['type']['key'] === 'access' ) {
             $current_user = wp_get_current_user();
@@ -680,7 +653,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( ( !isset( $existing_post['type']['key'] ) || $existing_post['type']['key'] !== 'access' ) && ( !isset( $fields['type'] ) || $fields['type'] !== 'access' ) ){
                 return $fields;
             }
-            //make sure and access contact is assigned to a user
+            //make sure an access contact is assigned to a user
             if ( isset( $fields['assigned_to'] ) ) {
                 if ( !isset( $existing_post['assigned_to'] ) || $fields['assigned_to'] !== $existing_post['assigned_to']['assigned-to'] ){
                     $user_id = dt_get_user_id_from_assigned_to( $fields['assigned_to'] );
@@ -736,18 +709,6 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
     }
 
-    // Runs after post is created and fields are processed.
-    public function dt_post_created( $post_type, $post_id, $initial_request_fields ){
-        if ( $post_type === 'contacts' ){
-            $post = DT_Posts::get_post( $post_type, $post_id, true, false );
-            if ( !isset( $post['type']['key'] ) || $post['type']['key'] !== 'access' ){
-                return;
-            }
-            //check for duplicate along other access contacts
-            $this->check_for_duplicates( $post_type, $post_id );
-        }
-    }
-
     // Add, remove or modify fields before the fields are processed on post create.
     public function dt_post_create_fields( $fields, $post_type ){
         if ( $post_type !== 'contacts' ){
@@ -759,28 +720,13 @@ class DT_Contacts_Access extends DT_Module_Base {
                 $fields['type'] = 'access_placeholder';
             }
         }
-        if ( !isset( $fields['type'] ) && isset( $fields['sources'] ) ){
-            if ( !empty( $fields['sources'] ) ){
-                $fields['type'] = 'access';
-            }
-        }
-        //If a contact is created via site link or externally without a source, make sure the contact is accessible
-        if ( !isset( $fields['type'] ) && get_current_user_id() === 0 ){
-            $fields['type'] = 'access';
-        }
+
 
         /**
          * Stop here if the type is not "access"
          */
         if ( !isset( $fields['type'] ) || $fields['type'] !== 'access' ){
             return $fields;
-        }
-        if ( !isset( $fields['overall_status'] ) ){
-            if ( get_current_user_id() ){
-                $fields['overall_status'] = 'active';
-            } else {
-                $fields['overall_status'] = 'new';
-            }
         }
         if ( !isset( $fields['assigned_to'] ) ){
             if ( get_current_user_id() ) {
@@ -905,26 +851,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 }
             }
 
-            // add assigned to me filters
-            $filters['filters'][] = [
-                'ID' => 'my_all',
-                'tab' => 'default',
-                'name' => __( 'My Follow-Up', 'disciple_tools' ),
-                'query' => [
-                    'assigned_to' => [ 'me' ],
-                    'subassigned' => [ 'me' ],
-                    'combine' => [ 'subassigned' ],
-                    'overall_status' => [ '-closed' ],
-                    'type' => [ 'access' ],
-                    'sort' => 'overall_status',
-                ],
-                'labels' => [
-                    [ 'name' => __( 'My Follow-Up', 'disciple_tools' ), 'field' => 'combine', 'id' => 'subassigned' ],
-                    [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
-                    [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
-                ],
-                'count' => $total_my ?? '',
-            ];
             foreach ( $fields['overall_status']['default'] as $status_key => $status_value ) {
                 if ( isset( $status_counts[$status_key] ) || $performance_mode ) {
                     $filters['filters'][] = [
@@ -1098,53 +1024,10 @@ class DT_Contacts_Access extends DT_Module_Base {
                     }
                 }
             }
-            $filters['filters'] = self::add_default_custom_list_filters( $filters['filters'] );
         }
         return $filters;
     }
 
-    //list page filters function
-    private static function add_default_custom_list_filters( $filters ){
-        if ( empty( $filters ) ){
-            $filters = [];
-        }
-        $default_filters = [
-            [
-                'ID' => 'my_subassigned',
-                'visible' => '1',
-                'type' => 'default',
-                'tab' => 'custom',
-                'name' => 'Subassigned to me',
-                'query' => [
-                    'subassigned' => [ 'me' ],
-                    'sort' => 'overall_status',
-                ],
-                'labels' => [
-                    [
-                        'id' => 'me',
-                        'name' => 'Subassigned to me',
-                        'field' => 'subassigned',
-                    ],
-                ],
-            ],
-        ];
-        $contact_filter_ids = array_map( function ( $a ){
-            return $a['ID'];
-        }, $filters );
-        foreach ( $default_filters as $filter ) {
-            if ( !in_array( $filter['ID'], $contact_filter_ids ) ){
-                array_unshift( $filters, $filter );
-            }
-        }
-        //translation for default fields
-        foreach ( $filters as $index => $filter ) {
-            if ( $filter['name'] === 'Subassigned to me' ) {
-                $filters[$index]['name'] = __( 'Subassigned only', 'disciple_tools' );
-                $filters[$index]['labels'][0]['name'] = __( 'Subassigned only', 'disciple_tools' );
-            }
-        }
-        return $filters;
-    }
 
     //list page filters function
     private static function get_all_contacts_status_seeker_path(){
@@ -1307,6 +1190,50 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
     }
 
+    /**
+     * Adds the quick actions dropdown to the contact comments section
+     * @param $post_type
+     * @return void
+     */
+    public function dt_comment_action_quick_action( $post_type ){
+        if ( $post_type === 'contacts' ){
+            $contact = DT_Posts::get_post( 'contacts', get_the_ID() );
+            $contact_fields = DT_Posts::get_post_field_settings( $post_type );
+            ?>
+
+            <ul class="dropdown menu" data-dropdown-menu style="display: inline-block">
+              <li style="border-radius: 5px">
+                <a class="button menu-white-dropdown-arrow"
+                   style="background-color: #00897B; color: white;">
+                    <?php esc_html_e( 'Quick Actions', 'disciple_tools' ) ?></a>
+                <ul class="menu is-dropdown-submenu" style="width: max-content">
+                    <?php foreach ( $contact_fields as $field => $val ){
+                        if ( strpos( $field, 'quick_button' ) === 0 ){
+                            $current_value = 0;
+                            if ( isset( $contact[$field] ) ){
+                                $current_value = $contact[$field];
+                            } ?>
+                            <li class="quick-action-menu" data-id="<?php echo esc_attr( $field ) ?>">
+                              <a>
+                                  <?php dt_render_field_icon( $val ); ?>
+                                  <?php echo esc_html( $val['name'] ); ?>
+                                (<span
+                                  class="<?php echo esc_attr( $field ) ?>"><?php echo esc_html( $current_value ); ?></span>)
+                              </a>
+                            </li>
+                        <?php }
+                    } ?>
+                </ul>
+              </li>
+            </ul>
+            <button class="help-button" data-section="quick-action-help-text">
+              <img class="help-icon"
+                   src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg?v=2' ) ?>"/>
+            </button>
+            <?php
+        }
+    }
+
     private static function handle_quick_action_button_event( int $contact_id, array $field, bool $check_permissions = true ) {
         $update = [];
         $key = key( $field );
@@ -1462,50 +1389,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                 return $contact;
             }
         }
-    }
-
-    /*
-     * Check other access contacts for possible duplicates
-     */
-    private function check_for_duplicates( $post_type, $post_id ){
-        if ( get_current_user_id() === 0 ){
-            $current_user = wp_get_current_user();
-            $had_cap = current_user_can( 'dt_all_access_contacts' );
-            $current_user->add_cap( 'dt_all_access_contacts' );
-            $dup_ids = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( $post_type, $post_id, true );
-            if ( ! is_wp_error( $dup_ids ) && sizeof( $dup_ids['ids'] ) < 10 ){
-                $comment = __( 'This record might be a duplicate of: ', 'disciple_tools' );
-                foreach ( $dup_ids['ids'] as $id_of_duplicate ){
-                    $comment .= " \n -  [$id_of_duplicate]($id_of_duplicate)";
-                }
-                $args = [
-                    'user_id' => 0,
-                    'comment_author' => __( 'Duplicate Checker', 'disciple_tools' )
-                ];
-                DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'duplicate', $args, false, true );
-            }
-            if ( !$had_cap ){
-                $current_user->remove_cap( 'dt_all_access_contacts' );
-            }
-        }
-    }
-
-    public function dt_filter_users_receiving_comment_notification( $users_to_notify, $post_type, $post_id, $comment ){
-        if ( $post_type === 'contacts' ){
-            $post = DT_Posts::get_post( $post_type, $post_id );
-            if ( !is_wp_error( $post ) && isset( $post['type']['key'] ) && $post['type']['key'] === 'access' ){
-                $following_all = get_users( [
-                    'meta_key' => 'dt_follow_all',
-                    'meta_value' => true
-                ] );
-                foreach ( $following_all as $user ){
-                    if ( !in_array( $user->ID, $users_to_notify ) ){
-                        $users_to_notify[] = $user->ID;
-                    }
-                }
-            }
-        }
-        return $users_to_notify;
     }
 
 
