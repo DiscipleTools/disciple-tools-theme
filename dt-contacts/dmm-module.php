@@ -150,18 +150,6 @@ class DT_Contacts_DMM extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/subassigned.svg?v=2',
             ];
 
-
-            $fields['people_groups'] = [
-                'name' => __( 'People Groups', 'disciple_tools' ),
-                'description' => _x( 'The people groups represented by this contact.', 'Optional Documentation', 'disciple_tools' ),
-                'type' => 'connection',
-                'post_type' => 'peoplegroups',
-                'p2p_direction' => 'from',
-                'p2p_key' => 'contacts_to_peoplegroups',
-                'tile'     => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg?v=2',
-                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'contact_count', 'connection_field' => 'contacts' ]
-            ];
             $fields['quick_button_no_answer'] = [
                 'name'        => __( 'Contact Attempted', 'disciple_tools' ),
                 'description' => '',
