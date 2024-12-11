@@ -7,7 +7,7 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => ''
+        'description' => 'Adds baptism fields and workflows'
     ];
     return $modules;
 }, 10, 1 );
