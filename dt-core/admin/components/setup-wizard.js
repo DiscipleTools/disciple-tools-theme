@@ -22,6 +22,12 @@ export class SetupWizard extends LitElement {
             button, input, label {
                 line-height: 1.1;
             }
+            /* Box sizing rules */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+            }
             /* Global */
             h1, h2, h3 {
                 font-weight: 500;
@@ -44,6 +50,7 @@ export class SetupWizard extends LitElement {
                 padding: 0.2em 0.5em;
                 border-radius: 8px;
                 border: 2px solid #cdcdcd;
+                background-color: white;
             }
             /* Composition */
             .wrap {
@@ -84,10 +91,14 @@ export class SetupWizard extends LitElement {
             .grid {
                 display: grid;
                 grid-gap: 1rem;
+
+                &[size="small"] {
+                    --column-size: 100px;
+                }
             }
             @supports (width: min(250px, 100%)) {
                 .grid {
-                    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(min(var(--column-size, 250px), 100%), 1fr));
                 }
             }
             /* Utilities */
@@ -123,12 +134,32 @@ export class SetupWizard extends LitElement {
             }
             .btn-card {
                 padding: 1rem 2rem;
-                box-shadow: 2px 2px 8px 0px #ababab;
+                box-shadow: 1px 1px 3px 0px #ababab;
             }
             .input-group {
                 display: flex;
                 flex-direction: column;
                 gap: 0.4rem;
+            }
+            .toggle {
+                position: relative;
+                display: inline-block;
+
+                input {
+                    display: none;
+                }
+                span {
+                    display: inline-block;
+                    padding-block: 1rem;
+                    background-color: #cdcdcd;
+                    border-radius: 8px;
+                    width: 100%;
+                    text-align: center;
+                }
+                input:checked + span {
+                    background-color: #4caf50;
+                    color: white;
+                }
             }
             .breadcrumbs {
                 --gap: 6rem;
@@ -235,8 +266,28 @@ export class SetupWizard extends LitElement {
                                     </div>
 
                                     <h3>Selectable items</h3>
-
-                                    <h3></h3>
+                                    <div class="grid" size="small">
+                                        <label class="toggle">
+                                            <input type="checkbox">
+                                            <span>Name</span>
+                                        </label>
+                                        <label class="toggle">
+                                            <input type="checkbox">
+                                            <span>Gender</span>
+                                        </label>
+                                        <label class="toggle">
+                                            <input type="checkbox">
+                                            <span>Email</span>
+                                        </label>
+                                        <label class="toggle">
+                                            <input type="checkbox">
+                                            <span>Location</span>
+                                        </label>
+                                        <label class="toggle">
+                                            <input type="checkbox">
+                                            <span>Phone</span>
+                                        </label>
+                                    </div>
                                 </div>
                             ` : html`
                                 Content here
