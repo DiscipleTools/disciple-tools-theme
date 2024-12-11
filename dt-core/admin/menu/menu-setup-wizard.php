@@ -37,12 +37,18 @@ class DT_Setup_Wizard
             remove_action( 'network_admin_notices', 'maintenance_nag', 3 );
         });
         dt_theme_enqueue_script( 'setup-wizard', 'dt-core/admin/components/setup-wizard.js', [], true );
+
+        $steps = $this->setup_wizard_steps();
+
+        $steps = apply_filters( 'dt_setup_wizard_steps', $steps );
+
         wp_localize_script( 'setup-wizard', 'setupWizardShare', [
             'translations' => [
                 'title' => esc_html__( 'Disciple.Tools Setup Wizard', 'disciple_tools' ),
                 'next' => esc_html__( 'Next', 'disciple_tools' ),
                 'back' => esc_html__( 'Back', 'disciple_tools' ),
             ],
+            'steps' => $steps,
         ] );
         add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
     }
@@ -85,6 +91,42 @@ class DT_Setup_Wizard
             <setup-wizard></setup-wizard>
 
         <?php
+    }
+
+    public function setup_wizard_steps() {
+        return [
+            [
+                'name' => 'First step',
+                'description' => 'The first step of this amazing setup wizard',
+                'config' => [
+                    'options' => [
+                        [
+                            'key' => 'blogname',
+                            'name' => 'Blog Name',
+                            'value' => 'My DT Instance',
+                        ],
+                        [
+                            'key' => 'blogdescription',
+                            'name' => 'Blog Description',
+                            'value' => 'My DT Instance',
+                        ],
+                        [
+                            'key' => 'admin_email',
+                            'name' => 'Admin Email',
+                            'value' => 'My DT Instance',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'First step',
+                'description' => 'The first step of this amazing setup wizard',
+            ],
+            [
+                'name' => 'First step',
+                'description' => 'The first step of this amazing setup wizard',
+            ],
+        ];
     }
 }
 DT_Setup_Wizard::instance();
