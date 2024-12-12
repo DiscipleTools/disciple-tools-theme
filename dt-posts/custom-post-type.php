@@ -179,7 +179,8 @@ class Disciple_Tools_Post_Type_Template {
             'name' => __( 'Picture', 'disciple_tools' ),
             'type' => 'image',
             'show_in_table' => 1,
-            'hidden' => !class_exists( 'DT_Storage' ) || !DT_Storage::is_enabled()
+            'hidden' => !class_exists( 'DT_Storage' ) || !DT_Storage::is_enabled(),
+            'customizable' => false,
         ];
         $fields['last_modified'] =[
             'name' => __( 'Last Modified', 'disciple_tools' ),
@@ -216,25 +217,29 @@ class Disciple_Tools_Post_Type_Template {
             'name'        => __( 'Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
-            'hidden'      => true
+            'hidden'      => true,
+            'customizable' => false,
         ];
         $fields['unfollow'] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
-            'hidden'      => true
+            'hidden'      => true,
+            'customizable' => false,
         ];
         $fields['tasks'] = [
             'name' => __( 'Tasks', 'disciple_tools' ),
             'type' => 'task',
             'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-clock.svg',
-            'private' => true
+            'private' => true,
+            'customizable' => false,
         ];
         //notes field used for adding comments when creating a record
         $fields['notes'] = [
             'name' => 'Notes',
             'type' => 'array',
-            'hidden' => true
+            'hidden' => true,
+            'customizable' => false,
         ];
 
         // add location fields

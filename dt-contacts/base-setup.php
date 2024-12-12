@@ -176,7 +176,8 @@ class DT_Contacts_Base {
             $fields['duplicate_of'] = [
                 'name' => 'Duplicate of', //system string does not need translation
                 'type' => 'text',
-                'hidden' => true
+                'hidden' => true,
+                'customizable' => false,
             ];
 
             $fields['languages'] = [
