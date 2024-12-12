@@ -1173,9 +1173,9 @@ class DT_Contacts_Access extends DT_Module_Base {
 
     public function scripts(){
         if ( is_singular( 'contacts' ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
-            wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/contacts_access.js', [
+            wp_enqueue_script( 'dt_contacts_access', get_template_directory_uri() . '/dt-contacts/module-access.js', [
                 'jquery',
-            ], filemtime( get_theme_file_path() . '/dt-contacts/contacts_access.js' ), true );
+            ], filemtime( get_theme_file_path() . '/dt-contacts/module-access.js' ), true );
             wp_localize_script( 'dt_contacts_access', 'dt_contacts_access', [
                 'translations' => [
                     'all' => __( 'All', 'disciple_tools' ),

@@ -296,7 +296,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         /**
          * key_select
          */
-        $paused = DT_Posts::create_post( 'contacts', [ 'name' => 'x', 'overall_status' => 'paused' ], true, false );
+        $paused = DT_Posts::create_post( 'contacts', [ 'name' => 'x', 'overall_status' => 'paused', 'gender' => 'male' ], true, false );
         $this->assertNotWPError( $paused );
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'overall_status' => [ 'paused', 'active' ] ], false );
         $this->assertContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
@@ -308,7 +308,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $res = DT_Posts::search_viewable_post( 'contacts', [ 'overall_status' => [ '-closed' ] ], false );
         $this->assertContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
         //empty search = with none of the field
-        $res = DT_Posts::search_viewable_post( 'contacts', [ 'overall_status' => [] ], false );
+        $res = DT_Posts::search_viewable_post( 'contacts', [ 'gender' => [] ], false );
         $this->assertNotEmpty( $res['posts'] );
         $this->assertNotContains( $paused['ID'], $this->map_ids( $res['posts'] ) );
         $this->assertNotContains( $sample_contact['ID'], $this->map_ids( $res['posts'] ) );
