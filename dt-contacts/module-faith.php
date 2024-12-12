@@ -89,7 +89,6 @@ class DT_Contacts_Faith extends DT_Module_Base {
                         'icon' => get_template_directory_uri() . '/dt-assets/images/stream.svg?v=2',
                     ],
                 ],
-                'customizable' => 'add_only',
                 'tile' => 'faith',
                 'show_in_table' => 20,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/bible.svg?v=2',

@@ -132,7 +132,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                       'description' => ''
                     ],
                 ],
-                'customizable' => 'add_only',
                 'tile' => 'followup',
                 'show_in_table' => 15,
                 'only_for_types' => [ 'access' ],
