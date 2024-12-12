@@ -93,8 +93,8 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             if ( $post_type === 'contacts' && current_user_can( 'dt_all_access_contacts' ) ){
                 $can_list_all = true;
             }
-            $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters, $can_list_all );
 
+            $generated_genmap = $this->get_genmap( $query, $params['gen_depth_limit'] ?? 100, $focus_id, $filters, $can_list_all );
             // Ensure empty hits on personal based slugs, still ensure user node is accessible.
             if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
                 $generated_genmap['shared'] = 1;
@@ -259,7 +259,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             return $this->_circular_structure_error( $query );
         }
         if ( empty( $query ) ) {
-            return $this->_no_results();
+            return [];
         }
         $menu_data = $this->prepare_menu_array( $query );
 

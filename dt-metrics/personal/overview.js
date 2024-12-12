@@ -45,7 +45,8 @@ jQuery(function () {
         </div>`;
     }
 
-    html += `<h3 class="section-header" style="margin-top:40px;">${window.SHAREDFUNCTIONS.escapeHTML(translations.title_groups)}</h3>
+    if (sourceData.gr)
+      html += `<h3 class="section-header" style="margin-top:40px;">${window.SHAREDFUNCTIONS.escapeHTML(translations.title_groups)}</h3>
         <div class="cell">
             <div class="cell center callout">
                 <div class="grid-x">
@@ -57,12 +58,16 @@ jQuery(function () {
                     </div>
                </div>
             </div>
-        </div>
-
+        </div>`;
+    if (sourceData.group_types) {
+      html += `
         <div class="cell"  id="my_groups_health_container">
             <div id="my_groups_health" style="height: 500px;"></div>
             <hr>
-        </div>
+        </div>`;
+    }
+    if (sourceData.group_health && sourceData.group_generations) {
+      html += `
         <div class="cell">
             <div class="grid-x">
                 <div class="cell medium-6 center">
@@ -72,8 +77,9 @@ jQuery(function () {
                     <div id="group_generations" style="height: 400px;"></div>
                 </div>
             </div>
-        </div>
-      </div>`;
+        </div>`;
+    }
+    html += `</div>`;
 
     chartDiv.empty().html(html);
 
@@ -89,13 +95,18 @@ jQuery(function () {
       // build charts
       drawMyContactsProgress();
     }
-    if (sourceData.preferences.groups.church_metrics) {
+    if (
+      sourceData.preferences.groups.church_metrics &&
+      sourceData.group_health
+    ) {
       drawMyGroupHealth();
-    } else {
-      jQuery('#my_groups_health_container').remove();
     }
-    drawGroupTypes();
-    drawGroupGenerations();
+    if (sourceData.group_types) {
+      drawGroupTypes();
+    }
+    if (sourceData.group_generations) {
+      drawGroupGenerations();
+    }
 
     function drawMyContactsProgress() {
       let chart = window.am4core.create(
