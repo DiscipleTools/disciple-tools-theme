@@ -248,14 +248,6 @@ class DT_Contacts_Base {
                 'tile' => 'details',
                 'customizable' => false
             ];
-            $fields['contact_twitter'] = [
-                'name' => __( 'Twitter', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . '/dt-assets/images/twitter.svg?v=2',
-                'hide_domain' => true,
-                'type' => 'communication_channel',
-                'tile' => 'details',
-                'customizable' => false
-            ];
             $fields['contact_other'] = [
                 'name' => __( 'Other Social Links', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/chat.svg?v=2',
