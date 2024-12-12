@@ -935,7 +935,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php foreach ( $modules as $module_key => $module_values ) : ?>
                     <tr>
-                        <td><?php echo esc_html( $module_values['name'] ); ?></td>
+                        <td style="<?php echo esc_html( !empty( $module_values['submodule'] ) ? 'padding-left:30px' : '' ) ?>">
+                            <?php echo esc_html( !empty( $module_values['submodule'] ) ? ' > ' : '' ) ?>
+                            <?php echo esc_html( $module_values['name'] ); ?>
+                        </td>
                         <td>
                             <input type="checkbox"
                                    name="<?php echo esc_html( $module_key ); ?>"

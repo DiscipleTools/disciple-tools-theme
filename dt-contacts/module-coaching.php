@@ -7,7 +7,8 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => 'Adds coaching fields, list filters and workflows'
+        'description' => 'Adds coaching fields, list filters and workflows',
+        'submodule' => true,
     ];
     return $modules;
 }, 10, 1 );

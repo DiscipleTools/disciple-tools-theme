@@ -13,7 +13,8 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => 'Field and workflows for follow-up ministries'
+        'description' => 'Field and workflows for follow-up ministries',
+        'submodule' => true
     ];
     return $modules;
 }, 10, 1 );
