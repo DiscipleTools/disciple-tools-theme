@@ -20,6 +20,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
         'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
         'tags' => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
+        'gender' => 'male',
     ];
 
     public $sample_group = [
