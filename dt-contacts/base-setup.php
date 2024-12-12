@@ -315,17 +315,18 @@ class DT_Contacts_Base {
                 'tile'     => 'status',
                 'type' => 'key_select',
                 'select_cannot_be_empty' => true,
-                'default_color' => '#F43636',
+                'default_color' => '#4CAF50',
                 'default' => [
-                    'new'   => [
-                        'label' => __( 'New Contact', 'disciple_tools' ),
-                        'description' => _x( 'The contact is new in the system.', 'Contact Status field description', 'disciple_tools' ),
-                        'color' => '#F43636',
-                    ],
                     'active'       => [
                         'label' => __( 'Active', 'disciple_tools' ),
                         'description' => _x( 'The contact is progressing and/or continually being updated.', 'Contact Status field description', 'disciple_tools' ),
                         'color' => '#4CAF50',
+                        'default' => true,
+                    ],
+                    'new'   => [
+                        'label' => __( 'New Contact', 'disciple_tools' ),
+                        'description' => _x( 'The contact is new in the system.', 'Contact Status field description', 'disciple_tools' ),
+                        'color' => '#F43636',
                     ],
                     'closed' => [
                         'label' => __( 'Archived', 'disciple_tools' ),
