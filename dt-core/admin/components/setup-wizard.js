@@ -289,6 +289,7 @@ export class SetupWizard extends LitElement {
         return staticHtml`
             <${unsafeStatic(component)}
                 .step=${step}
+                ?firstStep=${this.currentStepNumber === 0}
                 @back=${this.back}
                 @next=${this.next}
             ></${unsafeStatic(component)}>

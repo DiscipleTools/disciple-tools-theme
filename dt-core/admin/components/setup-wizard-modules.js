@@ -13,6 +13,7 @@ export class SetupWizardModules extends OpenLitElement {
     static get properties() {
         return {
             step: { type: Object },
+            firstStep: { type: Boolean },
         };
     }
 
@@ -28,6 +29,7 @@ export class SetupWizardModules extends OpenLitElement {
             <div class="cover">
                 <div class="content">Sort out modules here</div>
                 <setup-wizard-controls
+                    ?hideBack=${this.firstStep}
                     @next=${this.next}
                     @back=${this.back}
                 ></setup-wizard-controls>
