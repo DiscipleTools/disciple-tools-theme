@@ -8,6 +8,12 @@ export class SetupWizard extends LitElement {
                 font-size: 18px;
                 line-height: 1.4;
                 font-family: Arial, Helvetica, sans-serif;
+                --primary-color: #3f729b;
+                --primary-hover-color: #366184;
+                --secondary-color: #4caf50;
+                --default-color: #efefef;
+                --default-hover-color: #cdcdcd;
+                --default-dark: #ababab;
             }
             /* Resets */
             /* Inherit fonts for inputs and buttons */
@@ -30,25 +36,25 @@ export class SetupWizard extends LitElement {
             /* Global */
             h1, h2, h3 {
                 font-weight: 500;
-                color: #3f729b;
+                color: var(--primary-color);
             }
             button {
                 border: none;
                 padding: 0.5rem 1.5rem;
                 border-radius: 8px;
                 cursor: pointer;
-                background-color: #efefef;
+                background-color: var(--default-color);
                 transition: background-color 120ms linear;
             }
             button:hover,
             button:active,
             button:focus {
-                background-color: #cdcdcd;
+                background-color: var(--default-hover-color);
             }
             select, input {
                 padding: 0.2em 0.5em;
                 border-radius: 8px;
-                border: 2px solid #cdcdcd;
+                border: 2px solid var(--default-hover-color);
                 background-color: white;
             }
             /* Composition */
@@ -135,24 +141,32 @@ export class SetupWizard extends LitElement {
                 padding: 1rem;
             }
             .btn-primary {
-                background-color: #3f729b;
-                color: #fefefe;
+                background-color: var(--primary-color);
+                color: var(--default-color);
             }
             .btn-primary:hover,
             .btn-primary:focus,
             .btn-primary:active {
-                background-color: #366184;
+                background-color: var(--primary-hover-color);
             }
             .btn-card {
-                background-color: #3f729b;
-                color: #fefefe;
+                background-color: var(--primary-color);
+                color: var(--default-color);
                 padding: 1rem 2rem;
-                box-shadow: 1px 1px 3px 0px #ababab;
+                box-shadow: 1px 1px 3px 0px var(--default-dark);
+            }
+            .btn-card.selected {
+                background-color: var(--secondary-color);
+            }
+            .btn-card.selected:focus,
+            .btn-card.selected:hover,
+            .btn-card.selected:active {
+                background-color: var(--secondary-color);
             }
             .btn-card:focus,
             .btn-card:hover,
             .btn-card:active {
-                background-color: #366184;
+                background-color: var(--primary-hover-color);
             }
             .input-group {
                 display: flex;
@@ -169,13 +183,13 @@ export class SetupWizard extends LitElement {
                 span {
                     display: inline-block;
                     padding-block: 1rem;
-                    background-color: #cdcdcd;
+                    background-color: var(--default-dark);
                     border-radius: 8px;
                     width: 100%;
                     text-align: center;
                 }
                 input:checked + span {
-                    background-color: #4caf50;
+                    background-color: var(--secondary-color);
                     color: white;
                 }
             }
@@ -193,7 +207,7 @@ export class SetupWizard extends LitElement {
                 position: absolute;
                 height: 3px;
                 border-radius: 10px;
-                background-color: #3F729B;
+                background-color: var(--primary);
                 left: calc( ( var(--gap) + var(--divider-width) ) / -2 - 2px );
                 top: calc(50% - 1px);
             }
@@ -202,14 +216,14 @@ export class SetupWizard extends LitElement {
                 width: 16px;
                 height: 16px;
                 border-radius: 100%;
-                border: 2px solid #cdcdcd;
+                border: 2px solid var(--default-hover-color);
             }
             .crumb.complete {
-                background-color: #3F729B;
-                border-color: #3F729B;
+                background-color: var(--primary);
+                border-color: var(--primary);
             }
             .crumb.active {
-                outline: 5px solid #3F729B;
+                outline: 5px solid var(--primary);
                 outline-offset: -10px;
             }
         `
@@ -296,26 +310,6 @@ export class SetupWizard extends LitElement {
         `
     }
 
-    renderDecision(component) {
-        return html`
-            <div class="decisions">
-                ${component.description ? html`
-                    <p>${component.description}</p>
-                ` : ''}
-                <div class="grid">
-
-                ${component.options && component.options.length > 0
-                    ? component.options.map((option) => html`
-                        <button class="btn-card" data-key=${option.key} @click=${option.callback}>
-                            <h3 class="white">${option.name}</h3>
-                            <p>${option.description ?? ''}</p>
-                        </button>
-                    `) : ''
-                }
-                </div>
-            </div>
-        `
-    }
     renderMultiSelect(component) {
         return html`
             <div class="multiSelect">

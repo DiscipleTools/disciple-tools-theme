@@ -110,7 +110,7 @@ class DT_Setup_Wizard
                 'component' => 'setup-wizard-modules',
                 'description' => 'How are you planning to use DT?',
                 'config' => [
-                    'm2m',
+                    'media',
                     'crm',
                     'dmm',
                 ]
