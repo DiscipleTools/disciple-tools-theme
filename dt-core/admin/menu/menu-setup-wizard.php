@@ -37,10 +37,11 @@ class DT_Setup_Wizard
             remove_action( 'network_admin_notices', 'maintenance_nag', 3 );
         });
         dt_theme_enqueue_script( 'setup-wizard', 'dt-core/admin/components/setup-wizard.js', [], true );
-
-        $steps = $this->setup_wizard_steps();
-
-        $steps = apply_filters( 'dt_setup_wizard_steps', $steps );
+        dt_theme_enqueue_script( 'setup-wizard-open-element', 'dt-core/admin/components/setup-wizard-open-element.js', [ 'setup-wizard' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-modules', 'dt-core/admin/components/setup-wizard-modules.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-plugins', 'dt-core/admin/components/setup-wizard-plugins.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-details', 'dt-core/admin/components/setup-wizard-details.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-controls', 'dt-core/admin/components/setup-wizard-controls.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
 
         wp_localize_script( 'setup-wizard', 'setupWizardShare', [
             'translations' => [
@@ -48,7 +49,8 @@ class DT_Setup_Wizard
                 'next' => esc_html__( 'Next', 'disciple_tools' ),
                 'back' => esc_html__( 'Back', 'disciple_tools' ),
             ],
-            'steps' => $steps,
+            'steps' => $this->setup_wizard_steps(),
+            'data' => $this->setup_wizard_data(),
         ] );
         add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
     }
@@ -58,7 +60,7 @@ class DT_Setup_Wizard
     }
 
     public function filter_script_loader_tag( $tag, $handle ) {
-        if ( in_array( $handle, [ 'setup-wizard' ] ) ) {
+        if ( str_starts_with( $handle, 'setup-wizard' ) ) {
             $tag = preg_replace( '/(.*)(><\/script>)/', '$1 type="module"$2', $tag );
         }
         return $tag;
@@ -88,6 +90,12 @@ class DT_Setup_Wizard
 
         ?>
 
+            <style>
+                body {
+                    margin: 0;
+                }
+            </style>
+
             <setup-wizard></setup-wizard>
 
         <?php
@@ -95,36 +103,22 @@ class DT_Setup_Wizard
 
     public function setup_wizard_steps() {
         $bloginfo = get_bloginfo();
-        return [
+        $steps = [
             [
+                'key' => 'choose_your_path',
                 'name' => 'Choose your path',
+                'component' => 'setup-wizard-modules',
                 'description' => 'How are you planning to use DT?',
                 'config' => [
-                    [
-                        'type' => 'decision',
-                        'options' => [
-                            [
-                                'key' => 'm2m',
-                                'name' => 'Access Ministry',
-                                'description' => 'Are you filtering for contacts for engagement?',
-                            ],
-                            [
-                                'key' => 'crm',
-                                'name' => 'Relationship Manager',
-                                'description' => 'Are you needing to manage your contacts?',
-                            ],
-                            [
-                                'key' => 'dmm',
-                                'name' => 'Disciple Making Movements',
-                                'description' => 'Are you managing multiplying groups?',
-                            ],
-                        ],
-                    ],
-                ],
+                    'm2m',
+                    'crm',
+                    'dmm',
+                ]
             ],
             [
                 'name' => 'Site details',
                 'description' => 'Fill in some site details',
+                'component' => 'setup-wizard-details',
                 'config' => [
                     [
                         'type' => 'options',
@@ -149,54 +143,122 @@ class DT_Setup_Wizard
                 ],
             ],
             [
-                'name' => 'Field options',
-                'description' => 'Based on your choices we would recommend the selected fields.',
-                'config' => [
-                    [
-                        'type' => 'multi_select',
-                        'description' => 'Recommended fields',
-                        'options' => [
-                            [
-                                'key' => 'name',
-                                'name' => 'Name',
-                                'checked' => true,
-                            ],
-                            [
-                                'key' => 'contact_email',
-                                'name' => 'Email',
-                                'checked' => true,
-                            ],
-                            [
-                                'key' => 'location',
-                                'name' => 'Location',
-                                'checked' => true,
-                            ],
-                            [
-                                'key' => 'contact_phone',
-                                'name' => 'Phone',
-                                'checked' => true,
-                            ],
-                        ],
+                'name' => 'Plugins',
+                'description' => 'Choose which plugins to install.',
+                'component' => 'setup-wizard-plugins',
+            ],
+        ];
+
+        $steps = apply_filters( 'dt_setup_wizard_steps', $steps );
+
+        return $steps;
+    }
+    public function setup_wizard_data() : array {
+        $data = [
+            'use_cases' => [
+                'media' => [
+                    'key' => 'media',
+                    'name' => 'Access Ministry',
+                    'description' => 'Are you filtering for contacts for engagement?',
+                    'recommended_modules' => [
+                        'foo',
+                        'lorem',
                     ],
-                    [
-                        'type' => 'multi_select',
-                        'description' => 'Optional fields',
-                        'options' => [
-                            [
-                                'key' => 'sources',
-                                'name' => 'Sources',
-                                'checked' => false,
-                            ],
-                            [
-                                'key' => 'communication_channels',
-                                'name' => 'Communication channels',
-                                'checked' => false,
-                            ],
-                        ],
-                    ]
+                    'recommended_plugins' => [
+                        'loremoo',
+                        'ipsum',
+                        'dolor',
+                        'amit',
+                    ],
+                ],
+                'crm' => [
+                    'key' => 'crm',
+                    'name' => 'Relationship Manager',
+                    'description' => 'Are you needing to manage your contacts?',
+                    'recommended_modules' => [],
+                    'recommended_plugins' => [
+                        'loremoo',
+                        'ipsum',
+                        'dolor',
+                        'amit',
+                    ],
+                ],
+                'dmm' => [
+                    'key' => 'dmm',
+                    'name' => 'Disciple Making Movements',
+                    'description' => 'Are you managing multiplying groups?',
+                    'recommended_modules' => [
+                        'bar',
+                        'ipsum',
+                        'dolor',
+                    ],
+                    'recommended_plugins' => [
+                        'lorem',
+                        'ipsum',
+                        'dolor',
+                        'amit',
+                    ],
+                ],
+            ],
+            'modules' => [
+                [
+                    'key' => 'ipsum',
+                    'name' => 'Ipsum',
+                    'description' => 'Track who is ipsuming who',
+                    'details' => [
+                        'fields' => [],
+                        'tiles' => [],
+                        'workflows' => [],
+                    ],
+                ],
+                [
+                    'key' => 'dolor',
+                    'name' => 'Dolor',
+                    'description' => 'Track who has been dolored when, and by who',
+                ],
+                [
+                    'key' => 'lorem',
+                    'name' => 'lorem',
+                    'description' => 'Track the lorem status of your contacts',
+                ],
+                [
+                    'key' => 'foo',
+                    'name' => 'Foo',
+                    'description' => 'Track contacts: who is fooing up with who; reminders of who needs fooing up with',
+                ],
+                [
+                    'key' => 'bar',
+                    'name' => 'Bar',
+                    'description' => 'Track bars of people and their lorem status',
+                ],
+            ],
+            'plugins' => [
+                [
+                    'key' => 'lorem',
+                    'name' => 'lorem',
+                    'description' => 'Fugiat deserunt Lorem veniam et veniam cillum tempor exercitation velit ex velit cupidatat nostrud.',
+                ],
+                [
+                    'key' => 'ipsum',
+                    'name' => 'ipsum',
+                    'description' => 'Mollit pariatur sit fugiat officia aliqua irure commodo nostrud et elit.',
+                ],
+                [
+                    'key' => 'dolor',
+                    'name' => 'dolor',
+                    'description' => 'Esse qui fugiat irure nisi consectetur.',
+                ],
+                [
+                    'key' => 'amit',
+                    'name' => 'amit',
+                    'description' => 'Consectetur consequat esse id aute commodo ea qui cillum.',
                 ],
             ],
         ];
+
+        $data = apply_filters( 'dt_setup_wizard_data', $data );
+
+        return $data;
     }
 }
 DT_Setup_Wizard::instance();

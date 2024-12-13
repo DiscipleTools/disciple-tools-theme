@@ -1,4 +1,4 @@
-import {html, css, LitElement} from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/core/lit-core.min.js';
+import {html, css, LitElement, staticHtml, unsafeStatic, literal} from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 
 export class SetupWizard extends LitElement {
     static styles = [
@@ -7,6 +7,7 @@ export class SetupWizard extends LitElement {
                 display: block;
                 font-size: 18px;
                 line-height: 1.4;
+                font-family: Arial, Helvetica, sans-serif;
             }
             /* Resets */
             /* Inherit fonts for inputs and buttons */
@@ -53,20 +54,7 @@ export class SetupWizard extends LitElement {
             /* Composition */
             .wrap {
                 padding: 1rem;
-                min-height: 80vh;
-            }
-            .with-sidebar {
-                display: flex;
-                flex-wrap: wrap;
-                gap: var(--s1);
-            }
-            .with-sidebar > :first-child {
-                flex-basis: 0;
-                flex-grow: 999;
-                min-inline-size: 70%;
-            }
-            .with-sidebar > :last-child {
-                flex-grow: 1;
+                min-height: 100vh;
             }
             .cluster {
                 display: flex;
@@ -74,6 +62,9 @@ export class SetupWizard extends LitElement {
                 gap: var(--space, 1rem);
                 justify-content: flex-start;
                 align-items: center;
+            }
+            .cluster[position="end"] {
+                justify-content: flex-end;
             }
             .flow {
                 display: flex;
@@ -102,8 +93,7 @@ export class SetupWizard extends LitElement {
             .cover {
                 display: flex;
                 flex-direction: column;
-                min-block-size: 90vh;
-                padding: 1rem;
+                min-block-size: 80vh;
             }
 
             .cover > * {
@@ -128,12 +118,16 @@ export class SetupWizard extends LitElement {
             .align-start {
                 align-items: flex-start;
             }
+            .white {
+                color: white;
+            }
             /* Blocks */
             .wizard {
                 border-radius: 12px;
                 border: 1px solid transparent;
                 overflow: hidden;
                 background-color: white;
+                padding: 1rem;
             }
             .sidebar {
                 background-color: grey;
@@ -150,8 +144,15 @@ export class SetupWizard extends LitElement {
                 background-color: #366184;
             }
             .btn-card {
+                background-color: #3f729b;
+                color: #fefefe;
                 padding: 1rem 2rem;
                 box-shadow: 1px 1px 3px 0px #ababab;
+            }
+            .btn-card:focus,
+            .btn-card:hover,
+            .btn-card:active {
+                background-color: #366184;
             }
             .input-group {
                 display: flex;
@@ -218,6 +219,7 @@ export class SetupWizard extends LitElement {
         return {
             steps: { type: Array },
             currentStepNumber: { type: Number, attribute: false },
+            decision: { type: String, attribute: false },
         };
     }
 
@@ -242,18 +244,14 @@ export class SetupWizard extends LitElement {
     render() {
         return html`
             <div class="wrap">
-                <div class="cover | wizard">
+                <div class="wizard">
                     <h2>${this.translations.title}</h2>
                     ${
-                        this.isKitchenSink ? this.kitchenSink() : html`
-                            <div class="content">
+                        this.isKitchenSink
+                            ? this.kitchenSink()
+                            : html`
                                 ${this.renderStep()}
-                            </div>
-                            <div class="cluster ms-auto">
-                                <button @click=${this.back}>${this.translations.back}</button>
-                                <button @click=${this.next} class="btn-primary">${this.translations.next}</button>
-                            </div>
-                        `
+                            `
                     }
                 </div>
             </div>
@@ -273,10 +271,12 @@ export class SetupWizard extends LitElement {
             return
         }
         if ( i > this.steps.length - 1 ) {
+            /* TODO: Then we have finished the wizard and need to exit or show some completion message */
             this.currentStepNumber = this.steps.length - 1
             return
         }
         this.currentStepNumber = i;
+        console.log(this.currentStepNumber)
     }
 
     renderStep() {
@@ -284,25 +284,15 @@ export class SetupWizard extends LitElement {
             return
         }
         const step = this.steps[this.currentStepNumber]
+        const { component } = step
 
-        return html`
-            <h4>${step.name}</h4>
-            <p>${step.description}</p>
-            ${(step.config ?? []).map((component) => this.renderComponent(component))}
+        return staticHtml`
+            <${unsafeStatic(component)}
+                .step=${step}
+                @back=${this.back}
+                @next=${this.next}
+            ></${unsafeStatic(component)}>
         `
-    }
-
-    renderComponent(component) {
-        switch (component.type) {
-            case 'decision':
-                return this.renderDecision(component)
-            case 'options':
-                return this.renderOptions2(component)
-            case 'multi_select':
-                return this.renderMultiSelect(component)
-            default:
-                return ''
-        }
     }
 
     renderDecision(component) {
@@ -315,8 +305,8 @@ export class SetupWizard extends LitElement {
 
                 ${component.options && component.options.length > 0
                     ? component.options.map((option) => html`
-                        <button class="btn-card" data-key=${option.key}>
-                            <h3>${option.name}</h3>
+                        <button class="btn-card" data-key=${option.key} @click=${option.callback}>
+                            <h3 class="white">${option.name}</h3>
                             <p>${option.description ?? ''}</p>
                         </button>
                     `) : ''
@@ -344,7 +334,26 @@ export class SetupWizard extends LitElement {
             </div>
         `
     }
-    renderOptions2(component) {
+    renderModuleDecision(component) {
+        return html`
+            <div class="decisions">
+                ${component.description ? html`
+                    <p>${component.description}</p>
+                ` : ''}
+                <div class="grid">
+                    ${component.options && component.options.length > 0
+                        ? component.options.map((option) => html`
+                            <button class="btn-card" data-key=${option.key}>
+                                <h3 class="white">${option.name}</h3>
+                                <p>${option.description ?? ''}</p>
+                            </button>
+                        `) : ''
+                    }
+                </div>
+            </div>
+        `
+    }
+    renderFields(component) {
         return html`
             <div class="options">
                 ${component.description ? html`
@@ -362,6 +371,9 @@ export class SetupWizard extends LitElement {
                 </div>
             </div>
         `
+    }
+
+    renderControls() {
     }
 
     kitchenSink() {
