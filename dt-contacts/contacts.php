@@ -11,9 +11,10 @@ add_filter( 'dt_post_type_modules', function( $modules ){
     $modules['access_module'] = [
         'name' => 'Access Module',
         'enabled' => true,
-        'prerequisites' => [ 'dmm_module', 'contacts_base' ],
+        'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => 'Field and workflows for follow-up ministries'
+        'description' => 'Field and workflows for follow-up ministries',
+        'submodule' => true
     ];
     return $modules;
 }, 10, 1 );
@@ -32,7 +33,7 @@ require_once 'module-faith.php';
 require_once 'module-coaching.php';
 require_once 'module-baptisms.php';
 
-require_once 'access-module.php';
+require_once 'module-access.php';
 DT_Contacts_Access::instance();
 
 require_once 'contacts-utils.php';
