@@ -75,7 +75,7 @@ function build_post_types_option_list_html( $group_name ) {
     $search_post_types = DT_Posts::get_post_types();
     foreach ( $search_post_types as $search_post_type ) {
         $post_settings = DT_Posts::get_post_settings( $search_post_type );
-        $name          = $post_settings['label_plural'];
+        $name = $post_settings['label_plural'] ?? $search_post_type;
         if ( ! empty( $name ) && ( $search_post_type !== 'peoplegroups' ) ) {
             echo '<label style="cursor: pointer; white-space: nowrap;"><input id="' . esc_html( $search_post_type ) . '" type="radio" class="advanced-search-modal-post-types" name="' . esc_html( $group_name ) . '" value="' . esc_html( $search_post_type ) . '">' . esc_html( $name ) . '</label>';
         }

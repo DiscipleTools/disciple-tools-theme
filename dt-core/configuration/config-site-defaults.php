@@ -379,17 +379,6 @@ function dt_get_site_options_defaults() {
         ]
     ];
 
-    $fields['daily_reports'] = [
-        'build_report_for_contacts'  => true,
-        'build_report_for_groups'    => true,
-        'build_report_for_facebook'  => false,
-        'build_report_for_twitter'   => false,
-        'build_report_for_analytics' => false,
-        'build_report_for_adwords'   => false,
-        'build_report_for_mailchimp' => false,
-        'build_report_for_youtube'   => false,
-    ];
-
     $fields['update_required'] = [
         'enabled' => true,
         'options' => [
