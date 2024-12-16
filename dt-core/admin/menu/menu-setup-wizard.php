@@ -36,6 +36,11 @@ class DT_Setup_Wizard
             remove_action( 'network_admin_notices', 'update_nag', 3 );
             remove_action( 'network_admin_notices', 'maintenance_nag', 3 );
         });
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+        add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
+    }
+
+    public function enqueue_scripts(){
         dt_theme_enqueue_script( 'setup-wizard', 'dt-core/admin/components/setup-wizard.js', [], true );
         dt_theme_enqueue_script( 'setup-wizard-open-element', 'dt-core/admin/components/setup-wizard-open-element.js', [ 'setup-wizard' ], true );
         dt_theme_enqueue_script( 'setup-wizard-modules', 'dt-core/admin/components/setup-wizard-modules.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
@@ -52,7 +57,6 @@ class DT_Setup_Wizard
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
         ] );
-        add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
     }
 
     public function has_access_permission() {

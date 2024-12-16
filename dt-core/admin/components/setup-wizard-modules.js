@@ -24,7 +24,7 @@ export class SetupWizardModules extends OpenLitElement {
         super()
 
         this.stage = 'prompt'
-        this.data = setupWizardShare.data
+        this.data = window.setupWizardShare.data
         this.useCases = []
         this.option = {}
     }

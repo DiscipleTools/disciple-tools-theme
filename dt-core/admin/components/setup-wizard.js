@@ -240,7 +240,7 @@ export class SetupWizard extends LitElement {
     constructor() {
         super()
 
-        this.translations = setupWizardShare.translations
+        this.translations = window.setupWizardShare.translations
         this.steps = []
         this.currentStepNumber = 0
 
@@ -250,8 +250,8 @@ export class SetupWizard extends LitElement {
     }
 
     firstUpdated() {
-        if (this.steps.length === 0 && setupWizardShare && setupWizardShare.steps && setupWizardShare.steps.length !== 0) {
-            this.steps = setupWizardShare.steps
+        if (this.steps.length === 0 && window.setupWizardShare && window.setupWizardShare.steps && window.setupWizardShare.steps.length !== 0) {
+            this.steps = window.setupWizardShare.steps
         }
     }
 
