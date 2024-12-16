@@ -39,7 +39,20 @@ export class SetupWizardModules extends OpenLitElement {
     this.useCases = useCaseKeys.map(
       (useCaseKey) => this.data.use_cases[useCaseKey],
     );
-    this.availableModules = this.data.modules;
+    this.availableModules = Object.entries(this.data.modules)
+      .map(([key, module]) => {
+        return {
+          key,
+          ...module,
+        };
+      })
+      .reduce((modules, module) => {
+        if (module.locked) {
+          return modules;
+        }
+        modules.push(module);
+        return modules;
+      }, []);
   }
 
   back() {
@@ -174,7 +187,7 @@ export class SetupWizardModules extends OpenLitElement {
                                       key=${module.key}
                                       ?checked=${this.selectedModules.includes(
                                         module.key,
-                                      )}
+                                      ) || module.enabled}
                                       @input=${() =>
                                         this.toggleModule(module.key)}
                                     />

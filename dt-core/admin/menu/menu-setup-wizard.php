@@ -19,6 +19,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class DT_Setup_Wizard
 {
     private static $_instance = null;
+    private $root = 'setup-wizard';
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -160,6 +161,7 @@ class DT_Setup_Wizard
         return $steps;
     }
     public function setup_wizard_data() : array {
+        $modules = dt_get_option( 'dt_post_type_modules' );
         $data = [
             'use_cases' => [
                 'media' => [
@@ -167,8 +169,7 @@ class DT_Setup_Wizard
                     'name' => 'Access Ministry',
                     'description' => 'Are you filtering for contacts for engagement?',
                     'recommended_modules' => [
-                        'foo',
-                        'lorem',
+                        'access_module',
                     ],
                     'recommended_plugins' => [
                         'loremoo',
@@ -194,50 +195,16 @@ class DT_Setup_Wizard
                     'name' => 'Disciple Making Movements',
                     'description' => 'Are you managing multiplying groups?',
                     'recommended_modules' => [
-                        'bar',
-                        'ipsum',
-                        'dolor',
+                        'contacts_faith_module',
+                        'contacts_coaching_module',
+                        'contacts_baptisms_module',
+                        'groups_base',
+                        'people_groups_module',
                     ],
-                    'recommended_plugins' => [
-                        'lorem',
-                        'ipsum',
-                        'dolor',
-                        'amit',
-                    ],
+                    'recommended_plugins' => [],
                 ],
             ],
-            'modules' => [
-                [
-                    'key' => 'ipsum',
-                    'name' => 'Ipsum',
-                    'description' => 'Track who is ipsuming who',
-                    'details' => [
-                        'fields' => [],
-                        'tiles' => [],
-                        'workflows' => [],
-                    ],
-                ],
-                [
-                    'key' => 'dolor',
-                    'name' => 'Dolor',
-                    'description' => 'Track who has been dolored when, and by who',
-                ],
-                [
-                    'key' => 'lorem',
-                    'name' => 'lorem',
-                    'description' => 'Track the lorem status of your contacts',
-                ],
-                [
-                    'key' => 'foo',
-                    'name' => 'Foo',
-                    'description' => 'Track contacts: who is fooing up with who; reminders of who needs fooing up with',
-                ],
-                [
-                    'key' => 'bar',
-                    'name' => 'Bar',
-                    'description' => 'Track bars of people and their lorem status',
-                ],
-            ],
+            'modules' => $modules,
             'plugins' => [
                 [
                     'key' => 'lorem',
