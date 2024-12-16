@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Kannada <https://translate.disciple.tools/projects/disciple-"
@@ -1969,7 +1969,7 @@ msgstr "ಸ್ವೀಕರಿಸಲಾಗಿದೆ"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2135,8 +2135,7 @@ msgstr "ನಕಲಿ ಪರೀಕ್ಷಕ"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3063,8 +3062,7 @@ msgstr "ಗುಂಪು"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3611,8 +3609,8 @@ msgstr "ವಿಮರ್ಶಾತ್ಮಕ ಹಾದಿ"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3775,7 +3773,7 @@ msgstr ""
 "ಕೆಳಗಿನ ಮೆಟ್ರಿಕ್‌ಗಳ ವಿವರವಾದ ಪಟ್ಟಿಯನ್ನು ಪ್ರದರ್ಶಿಸಲು ಟೈಮ್‌ಲೈನ್ ದಿನದ ಸಾರಾಂಶವನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "ಮೆಟ್ರಿಕ್ಸ್"
 
@@ -3794,9 +3792,10 @@ msgid "New %s"
 msgstr "ಸುದ್ದಿ"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "ನಕ್ಷೆಯನ್ನು ಸುಳಿದಾಡಿ"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "ಫಿಲ್ಟರ್ ಹೆಸರು"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3823,6 +3822,12 @@ msgstr "ಸಕ್ರಿಯ ಬಳಕೆದಾರರು"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "ವರ್ಗಾವಣೆಗೊಂಡ ಸಂಪರ್ಕಗಳು"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "ಒಪ್ಪಿಕೊಳ್ಳಿ"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4068,21 +4073,13 @@ msgstr "ಒಟ್ಟು ಸದಸ್ಯರು"
 msgid "View Group"
 msgstr "ಗುಂಪನ್ನು ವೀಕ್ಷಿಸಿ"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "ಮೆಟ್ರಿಕ್ಸ್"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4194,9 +4191,9 @@ msgstr "ಅಂಕಿಅಂಶಗಳು"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "ದೈನಂದಿನ ಚಟುವಟಿಕೆ"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "ಚಟುವಟಿಕೆ ದಾಖಲೆ"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4298,10 +4295,10 @@ msgstr "ದಾಖಲೆ"
 msgid "System"
 msgstr "ಸಿಸ್ಟಮ್"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "ಗುಂಪು ಉತ್ಪಾದನೆ ಮರ"
 
 #: dt-metrics/records/genmap.php:136
@@ -4391,9 +4388,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "ಎಲ್ಲಾ ಸಂಚಿತ ಮೊತ್ತಗಳು"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "ಟೈಮ್ ಚಾರ್ಟ್‌ಗಳ ಕ್ಷೇತ್ರಗಳು"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4417,9 +4414,9 @@ msgstr "ಯಾವುದೇ ಮಾಹಿತಿ ಇಲ್ಲ"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "ಟೈಮ್ ಚಾರ್ಟ್‌ಗಳ ಕ್ಷೇತ್ರಗಳು"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "ವಿಸ್ತೃತ ಹುಡುಕಾಟ"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5168,9 +5165,13 @@ msgstr "ಅಪ್ಲಿಕೇಶನ್ ಲಿಂಕ್ ಅನ್ನು ಅಳಿ
 msgid "Added new report"
 msgstr "ಹೊಸ ವರದಿಯನ್ನು ಸೇರಿಸಲಾಗಿದೆ"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "ನವೀಕರಿಸಿದ ವರದಿ"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "ನಕ್ಷೆಯನ್ನು ಸುಳಿದಾಡಿ"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5992,7 +5993,7 @@ msgstr ""
 "ಕಾರ್ಟೂನ್, ಅಮೂರ್ತ ಅಥವಾ ಅಲಿಯಾಸ್ ಫೋಟೋವನ್ನು ಆರಿಸಿ."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6037,6 +6038,26 @@ msgstr "ಪ್ರವೇಶ ಸಂಪರ್ಕಗಳನ್ನು ಸ್ಕ್ಯ�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ನಕಲುಗಳು ಕಂಡುಬಂದಿವೆ:"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "ಮೆಟ್ರಿಕ್ಸ್"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "ದೈನಂದಿನ ಚಟುವಟಿಕೆ"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "ಎಲ್ಲಾ ಸಂಚಿತ ಮೊತ್ತಗಳು"
 
 #~ msgid "No Answer"
 #~ msgstr "ಉತ್ತರ ಇಲ್ಲ"

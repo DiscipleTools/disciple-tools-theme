@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
-"PO-Revision-Date: 2024-10-01 03:59+0000\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"PO-Revision-Date: 2024-10-13 22:59+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Spanish (Latin America) <https://translate.disciple.tools/"
 "projects/disciple-tools/disciple-tools-theme/es_419/>\n"
@@ -428,7 +428,7 @@ msgstr "Hacer Selecciones Debajo"
 #: dt-assets/functions/enqueue-scripts.php:318
 #: dt-assets/parts/loop-activity-comment.php:161 single-template.php:437
 msgid "Delete"
-msgstr "Eliminar"
+msgstr "Borrar"
 
 #: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
 msgid "Delete Selections Below"
@@ -724,7 +724,7 @@ msgstr "Copiar"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 msgid "Copied: %s"
-msgstr ""
+msgstr "Copiado: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:141
 msgid "You don't have any unread notifications"
@@ -1601,7 +1601,7 @@ msgstr "Tareas existentes para este registro:"
 #: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:187
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
-msgstr "Salir"
+msgstr "Cerrar sesión"
 
 #: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
@@ -1927,7 +1927,7 @@ msgstr "Aceptó"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2096,8 +2096,7 @@ msgstr "Revisador de duplicados"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -2183,7 +2182,7 @@ msgstr "WhatsApp"
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
 #: dt-users/users.php:129 template-settings.php:166
 msgid "Email"
-msgstr "Correo Electrónico"
+msgstr "Email"
 
 #: dt-contacts/base-setup.php:209 dt-groups/base-setup.php:356
 #: dt-people-groups/people-groups-base.php:194 template-settings.php:190
@@ -3041,8 +3040,7 @@ msgstr "Grupo"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3484,7 +3482,7 @@ msgstr "Re-escribir la Contraseña"
 #: dt-login/login-template.php:312 dt-login/login-template.php:374
 #: dt-login/login-template.php:545
 msgid "Register"
-msgstr "Registrar"
+msgstr "Registrarse"
 
 #: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
@@ -3501,7 +3499,7 @@ msgstr "Acción del usuario confirmada."
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr "Acceso"
+msgstr "Iniciar sesión"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
@@ -3590,8 +3588,8 @@ msgstr "Camino de fe"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3757,7 +3755,7 @@ msgstr ""
 "detallada de métricas."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "Métricas"
 
@@ -3776,9 +3774,8 @@ msgid "New %s"
 msgstr "%s nuevo"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Mapa hover"
+msgid "Simple Map"
+msgstr "Mapa simple"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3807,6 +3804,10 @@ msgstr "Usuarios activos"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "Contactos Transferidos"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+msgid "Access"
+msgstr "Acceso"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4053,17 +4054,13 @@ msgstr "Miembros totales"
 msgid "View Group"
 msgstr "Ver grupo"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr "Mapa de generaciones"
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-msgid "Records Map"
-msgstr "Mapa de registros"
-
-#: dt-metrics/metrics.php:115
-msgid "Dynamic Metrics"
-msgstr "Métricas dinámicas"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr "Mapas"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4174,8 +4171,8 @@ msgid "stats as of"
 msgstr "estadísticas al"
 
 #: dt-metrics/records/date-range-activity.php:43
-msgid "Field Activity"
-msgstr "Actividad en el campo"
+msgid "Activity Logs"
+msgstr "Registros de Actividades"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4256,8 +4253,8 @@ msgstr "Tipos de registros"
 msgid "System"
 msgstr "Sistema"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
-msgid "Generational Trees"
+#: dt-metrics/records/genmap.php:23
+msgid "GenMapper Trees"
 msgstr "Árboles generacionales"
 
 #: dt-metrics/records/genmap.php:136
@@ -4306,7 +4303,7 @@ msgstr "Enfocar"
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr "Esconder"
+msgstr "Ocultar"
 
 #: dt-metrics/records/genmap.php:165
 msgid "Add Child To"
@@ -4329,8 +4326,8 @@ msgid "Infinite Loops"
 msgstr "Bucles Infinitos"
 
 #: dt-metrics/records/select-tags-charts.php:32
-msgid "Field Cumulative Values"
-msgstr "Valores acumulativos de campo"
+msgid "Simple Chart"
+msgstr "Gráficos simple"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4351,8 +4348,8 @@ msgid "No Records Available"
 msgstr "No hay registros disponibles"
 
 #: dt-metrics/records/time-charts.php:41
-msgid "Field Charts"
-msgstr "Gráficos de campos"
+msgid "Advanced Charts"
+msgstr "Gráficos Avanzada"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5070,9 +5067,13 @@ msgstr "Eliminar y reemplazar el enlace a la app"
 msgid "Added new report"
 msgstr "Nuevo informe agregado"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Informe actualizado"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Mapa hover"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5882,7 +5883,7 @@ msgstr ""
 "alias para representarlo."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr "Subir una nueva imagen de perfil"
 
 #: template-settings.php:648 template-settings.php:649
@@ -5928,6 +5929,18 @@ msgstr "Acceder a los contactos escaneados:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Se encontraron duplicados:"
+
+#~ msgid "Records Map"
+#~ msgstr "Mapa de registros"
+
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Métricas dinámicas"
+
+#~ msgid "Field Activity"
+#~ msgstr "Actividad en el campo"
+
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Valores acumulativos de campo"
 
 #~ msgid "No Answer"
 #~ msgstr "Sin respuesta"

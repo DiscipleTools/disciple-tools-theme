@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-10-28 17:05+0000\n"
 "Last-Translator: ajay karki <ajaykarki667@gmail.com>\n"
 "Language-Team: Nepali <https://translate.disciple.tools/projects/disciple-"
@@ -1958,7 +1958,7 @@ msgstr "स्वीकार गरियो"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2124,8 +2124,7 @@ msgstr "नक्कल परीक्षक"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3052,8 +3051,7 @@ msgstr "समूह "
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3597,8 +3595,8 @@ msgstr "आलोचनात्मक बाटो "
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3761,7 +3759,7 @@ msgstr ""
 "तलको मेट्रिक्सको विस्तृत सूची प्रदर्शन गर्नको लागि टाइमलाइन दिन सारांशमा क्लिक गर्नुहोस्।"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "मेट्रिक्स "
 
@@ -3780,9 +3778,10 @@ msgid "New %s"
 msgstr "नयाँ$s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "होभर नक्शा"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "नाम छान्नुहोस्"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3809,6 +3808,10 @@ msgstr "सक्रिय प्रयोगकर्ताहरू"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "स्थानान्तरण गरिएका सम्पर्कहरू"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+msgid "Access"
+msgstr "पहुँच"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4054,21 +4057,13 @@ msgstr "जम्मा सदस्यहरु "
 msgid "View Group"
 msgstr "समूह हेर्नुहोस्"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "रेकर्डहरू थप्नुहोस्"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "मेट्रिक्स "
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4180,9 +4175,9 @@ msgstr "को रूपमा तथ्यान्क"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "दैनिक क्रियाकलाप "
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "गतिविधि लग"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4284,10 +4279,10 @@ msgstr "रेकर्ड"
 msgid "System"
 msgstr "प्रणाली"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "समूह पुस्ता रुख "
 
 #: dt-metrics/records/genmap.php:136
@@ -4377,9 +4372,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "सबै संचयी योगफल"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "समय चार्टमा क्षेत्रहरू"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4403,9 +4398,9 @@ msgstr "कुनै डाटा उपलब्ध छैन"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "समय चार्टमा क्षेत्रहरू"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "उन्नत खोजी"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5147,9 +5142,13 @@ msgstr "एप लिङ्क मेटाउनुहोस् र बदल�
 msgid "Added new report"
 msgstr "नयाँ रिपोर्ट थपियो"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "अद्यावधिक रिपोर्ट"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "होभर नक्शा"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5964,7 +5963,7 @@ msgstr ""
 "अमूर्त, वा उपनाम फोटो छान्नुहोस्।"
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6008,6 +6007,26 @@ msgstr "सम्पर्कहरू स्क्यान गर्नुह�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "नक्कल भेटियो:"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "रेकर्डहरू थप्नुहोस्"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "मेट्रिक्स "
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "दैनिक क्रियाकलाप "
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "सबै संचयी योगफल"
 
 #~ msgid "No Answer"
 #~ msgstr "जवाफ छैन"
@@ -6197,9 +6216,6 @@ msgstr "नक्कल भेटियो:"
 #~ msgctxt "My records"
 #~ msgid "My %s"
 #~ msgstr "मेरो$s"
-
-#~ msgid "Access"
-#~ msgstr "पहुँच"
 
 #~ msgid "Someone to follow-up with"
 #~ msgstr "कसैलाई फलो-अप गर्नका लागि"
