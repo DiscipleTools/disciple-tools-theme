@@ -1184,34 +1184,34 @@ class Disciple_Tools_Mapping_Queries {
             GROUP BY t5.admin5_grid_id;
             ",
                 // 0
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 1
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 2
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 3
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 4
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 5
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status
             ), ARRAY_A );
 

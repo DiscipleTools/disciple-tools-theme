@@ -42,7 +42,7 @@ if ( file_exists( $mapping_url . 'geocode-api/location-grid-geocoder.php' ) ) {
 
 // register global database
 global $wpdb;
-$wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+$wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
 $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
 
