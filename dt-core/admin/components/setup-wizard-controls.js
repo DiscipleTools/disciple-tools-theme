@@ -6,6 +6,8 @@ export class SetupWizardControls extends OpenLitElement {
     return {
       translations: { type: Object },
       hideBack: { type: Boolean },
+      backLabel: { type: String },
+      nextLabel: { type: String },
     };
   }
   back() {
@@ -20,12 +22,10 @@ export class SetupWizardControls extends OpenLitElement {
         ${this.hideBack
           ? ''
           : html`
-              <button @click=${this.back}>
-                ${this.translations?.back ?? 'back'}
-              </button>
+              <button @click=${this.back}>${this.backLabel ?? 'back'}</button>
             `}
         <button @click=${this.next} class="btn-primary">
-          ${this.translations?.next ?? 'next'}
+          ${this.nextLabel ?? 'next'}
         </button>
       </div>
     `;
