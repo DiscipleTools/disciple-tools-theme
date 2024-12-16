@@ -202,6 +202,7 @@ export class SetupWizard extends LitElement {
           border-radius: 8px;
           width: 100%;
           text-align: center;
+          transition: all 120ms linear;
         }
         input:checked + div {
           background-color: var(--secondary-color);

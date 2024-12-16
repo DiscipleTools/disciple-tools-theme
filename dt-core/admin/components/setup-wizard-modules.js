@@ -72,6 +72,16 @@ export class SetupWizardModules extends OpenLitElement {
   selectOption(option) {
     this.option = option;
     this.selectedModules = option.recommended_modules;
+    // Checkboxes use their own internal state when clicked and not the html attribute
+    // So we need to manually set them all when programmatically selecting them
+    const checkBoxes = this.renderRoot.querySelectorAll(
+      'input[type="checkbox"]',
+    );
+    checkBoxes.forEach((checkbox) => {
+      checkbox.checked = this.selectedModules.includes(
+        checkbox.getAttribute('key'),
+      );
+    });
   }
   toggleModule(key) {
     if (this.selectedModules.includes(key)) {
@@ -146,10 +156,11 @@ export class SetupWizardModules extends OpenLitElement {
                                   <label class="toggle" key=${module.key}>
                                     <input
                                       type="checkbox"
+                                      key=${module.key}
                                       ?checked=${this.selectedModules.includes(
                                         module.key,
                                       )}
-                                      @change=${() =>
+                                      @input=${() =>
                                         this.toggleModule(module.key)}
                                     />
                                     <div class="flow">
