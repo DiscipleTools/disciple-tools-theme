@@ -19,6 +19,10 @@ export class SetupWizardPlugins extends OpenLitElement {
       firstStep: { type: Boolean },
     };
   }
+  constructor() {
+    super();
+    this.plugins = window.setupWizardShare.data.plugins;
+  }
 
   back() {
     this.dispatchEvent(new CustomEvent('back'));
@@ -30,9 +34,54 @@ export class SetupWizardPlugins extends OpenLitElement {
   render() {
     return html`
       <div class="cover">
-        <div class="content">Sort out plugins here</div>
+        <div class="content">
+          <div
+            class="plugin grid"
+            style="grid-template-columns: 1fr 1fr 1fr 1fr"
+          >
+            ${this.plugins.map((plugin) => {
+              return html`
+                <div
+                  class="btn-card flow ${plugin.active || plugin.selected
+                    ? 'selected'
+                    : ''}"
+                  @click=${() => {
+                    plugin.selected = !plugin.selected;
+                    this.requestUpdate();
+                  }}
+                >
+                  <div style="display: inline">${plugin.name}</div>
+                  <div>
+                    ${plugin.installed && !plugin.active
+                      ? html`<div
+                          class="tag"
+                          style="background-color:var(--default-dark)"
+                        >
+                          Installed
+                        </div>`
+                      : ''}
+                    ${plugin.active
+                      ? html`<div
+                          class="tag"
+                          style="background-color: var(--secondary-color);"
+                        >
+                          Active
+                        </div>`
+                      : ''}
+                  </div>
+                  <div title="${plugin.description}">
+                    ${plugin.description.length > 100
+                      ? plugin.description.substring(0, 100) + '...'
+                      : plugin.description}
+                  </div>
+                </div>
+              `;
+            })}
+          </div>
+        </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
+          .translations=${{ next: 'install and activate selected plugins' }}
           @next=${this.next}
           @back=${this.back}
         ></setup-wizard-controls>

@@ -246,6 +246,11 @@ export class SetupWizard extends LitElement {
         outline: 5px solid var(--primary);
         outline-offset: -10px;
       }
+      .tag {
+        border: 1px solid black;
+        display: inline;
+        padding: 0.2em 0.5em;
+      }
     `,
   ];
 
