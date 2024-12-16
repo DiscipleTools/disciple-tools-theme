@@ -259,7 +259,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             return $this->_circular_structure_error( $query );
         }
         if ( empty( $query ) ) {
-            return $this->_no_results();
+            return [];
         }
         $menu_data = $this->prepare_menu_array( $query );
 
