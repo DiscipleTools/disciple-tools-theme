@@ -88,13 +88,15 @@ class Disciple_Tools_Metrics_Personal_Overview extends DT_Metrics_Chart_Base
         $data = [
             'preferences'       => $this->preferences(),
             'hero_stats'        => $this->chart_my_hero_stats(),
-            'group_types'       => $this->chart_group_types(),
-            'group_health'      => $this->chart_group_health(),
-            'group_generations' => $this->chart_group_generations(),
         ];
         $modules = dt_get_option( 'dt_post_type_modules' );
         if ( !empty( $modules['access_module']['enabled'] ) ){
             $data['contacts_progress'] = $this->chart_contacts_progress();
+        }
+        if ( !empty( $modules['groups_base']['enabled'] ) ){
+            $data['group_types'] = $this->chart_group_types();
+            $data['group_health'] = $this->chart_group_health();
+            $data['group_generations'] = $this->chart_group_generations();
         }
 
         return apply_filters( 'dt_my_metrics', $data );

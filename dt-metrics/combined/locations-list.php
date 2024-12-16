@@ -73,10 +73,13 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
     public function data( $force_refresh = false ) {
         //get initial data
         $data = DT_Mapping_Module::instance()->data();
+        $post_types = DT_Posts::get_post_types();
 
         $data = $this->add_contacts_column( $data );
-        $data = $this->add_groups_column( $data );
-        $data = $this->add_churches_column( $data );
+        if ( !empty( $post_types['groups'] ) ) {
+            $data = $this->add_groups_column( $data );
+            $data = $this->add_churches_column( $data );
+        }
         $data = $this->add_users_column( $data );
 
         return $data;
