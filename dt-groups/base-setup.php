@@ -174,7 +174,6 @@ class DT_Groups_Base extends DT_Module_Base {
                         'description' => _x( 'A special group that is not meeting as a church (or trying to become church).', 'Optional Documentation', 'disciple_tools' ),
                     ],
                 ],
-                'customizable' => 'add_only',
                 'tile' => 'groups',
                 'in_create_form' => true,
                 'show_in_table' => 15,
@@ -241,7 +240,6 @@ class DT_Groups_Base extends DT_Module_Base {
                         'icon' => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
                     ],
                 ],
-                'customizable' => 'add_only',
                 'tile' => 'health-metrics',
                 'custom_display' => true
             ];
