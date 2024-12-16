@@ -3,17 +3,17 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
-"PO-Revision-Date: 2023-05-31 16:20+0000\n"
-"Last-Translator: Luke Baumgartner <baumgartner.luke@gmail.com>\n"
-"Language-Team: Turkish <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/tr_TR/>\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"PO-Revision-Date: 2024-10-08 15:59+0000\n"
+"Last-Translator: Micah Mills <micahmills@gmail.com>\n"
+"Language-Team: Turkish <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/tr_TR/>\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -224,39 +224,35 @@ msgstr "Sonuç bulunamadı"
 #: archive-template.php:302
 msgctxt "List Exports"
 msgid "List Exports"
-msgstr ""
+msgstr "Liste Dışa Aktarma"
 
 #: archive-template.php:314 archive-template.php:337
-#, fuzzy
-#| msgid "List"
 msgid "CSV List"
-msgstr "Liste"
+msgstr "CSV Liste"
 
 #: archive-template.php:318 archive-template.php:341
 msgid "BCC Email List"
-msgstr ""
+msgstr "BCC E-posta Listesi"
 
 #: archive-template.php:319
-#, fuzzy
-#| msgid "Phone"
 msgid "Phone List"
-msgstr "Telefon"
+msgstr "Telefon Listesi"
 
 #: archive-template.php:324 archive-template.php:349
-#, fuzzy
-#| msgid "List"
 msgid "Map List"
-msgstr "Liste"
+msgstr "Harita Listesi"
 
 #: archive-template.php:333
 msgid "List Exports Help"
-msgstr ""
+msgstr "Liste Dışa Aktarma Yardımı"
 
 #: archive-template.php:338
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
+"Mevcut filtreyi kullanarak temel bilgileri dışarı aktarmanın ve diğer "
+"uygulamalarda kullanmanın basit bir yoludur."
 
 #: archive-template.php:342
 msgid ""
@@ -267,12 +263,17 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"Mevcut filtreyi kullanarak, kullanılabilir e-postalar 50'ye göre "
+"gruplandırılır ve varsayılan e-posta istemcinize gruba göre başlatılabilir. "
+"Birçok e-posta sağlayıcısı, BCC e-postalarına 50 sınırlaması koyar. \"Hepsini"
+" Aç\" düğmesini kullanarak tüm grupları aynı anda açabilirsiniz. Liste çok "
+"büyükse, bu e-posta sağlayıcınızı uyarabilir. BCC e-posta aracı, küçük grup "
+"e-postalarına yardımcı olmak için tasarlanmıştır. Toplu e-posta, toplu e-"
+"posta sağlayıcıları aracılığıyla işlenmelidir."
 
 #: archive-template.php:345
-#, fuzzy
-#| msgid "Member List"
 msgid "Phone Number List"
-msgstr "Üye Listesi"
+msgstr "Telefon Numarası Listesi"
 
 #: archive-template.php:346
 msgid ""
@@ -280,12 +281,17 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"Mevcut filtreyi kullanarak, bu, bir numara listesini bir mesajlaşma "
+"uygulamasına, WhatsApp'a, Signal'e vb. kopyalamak için tasarlanmıştır. Bu, "
+"bir grup sohbeti başlatmanın hızlı bir yoludur."
 
 #: archive-template.php:350
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
+"Mevcut filtreyi kullanarak, listelenen kişilerin bilinen konumlarının temel "
+"bir nokta haritası oluşturulur."
 
 #: archive-template.php:376
 msgctxt "Contacts List"
@@ -321,10 +327,8 @@ msgid "Bulk Edit"
 msgstr "Toplu Düzenleme"
 
 #: archive-template.php:427
-#, fuzzy
-#| msgid "Bulk Send App"
 msgid "Bulk Send Message"
-msgstr "Çoklu Gönder Uygulması"
+msgstr "Çoklu Mesaj Gönder"
 
 #: archive-template.php:461 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
@@ -371,11 +375,8 @@ msgid "Share with:"
 msgstr "Şununla Paylaş:"
 
 #: archive-template.php:664
-#, fuzzy
-#| msgctxt "message"
-#| msgid "Unshared with %s"
 msgid "Unshare with selected user"
-msgstr "%s ile artık paylaşılmıyor"
+msgstr "Seçili kullanıcıyla paylaşımı kaldır"
 
 #: archive-template.php:676 dt-assets/functions/details-bar.php:186
 #: dt-posts/custom-post-type.php:216
@@ -426,68 +427,62 @@ msgid "Delete"
 msgstr "Sil"
 
 #: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
-#, fuzzy
-#| msgid "Make Selections Below"
 msgid "Delete Selections Below"
-msgstr "Seçimleri Aşağıdan Yap"
+msgstr "Aşağıdaki Seçimleri Sil"
 
 #: archive-template.php:777
-#, fuzzy
-#| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
-msgstr "Uygulama bağlantılarını göndermek istediğiniz tüm %1$s kişileri seçin."
+msgstr "Mesaj göndermek istediğiniz tüm %1$s seçin."
 
 #: archive-template.php:807
 msgid "Message subject"
-msgstr ""
+msgstr "Mesaj konusu"
 
 #: archive-template.php:809
 msgid "A valid message subject must be entered."
-msgstr ""
+msgstr "Geçerli bir mesaj konusu girilmelidir."
 
 #: archive-template.php:811
 msgid "Message from name"
-msgstr ""
+msgstr "Mesaj Gönderen adı"
 
 #: archive-template.php:813
 msgid "A valid from name must be specified."
-msgstr ""
+msgstr "Geçerli bir gönderici adı belirtilmelidir."
 
 #: archive-template.php:815
 msgid "Message reply to"
-msgstr ""
+msgstr "Adrese cevap mesajı"
 
 #: archive-template.php:817
 msgid "A valid reply to email address must be specified."
-msgstr ""
+msgstr "Geçerli bir e-posta adresine cevap verilmesi zorunludur."
 
 #: archive-template.php:819
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "E-postalar şu adresten gönderilecek: %s"
 
 #: archive-template.php:842
 msgid "Please ensure a valid send method has been specified."
-msgstr ""
+msgstr "Lütfen geçerli bir gönderim yönteminin belirtildiğinden emin olun."
 
 #: archive-template.php:844
 msgid "Message"
-msgstr ""
+msgstr "Mesaj"
 
 #: archive-template.php:846
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "Lütfen geçerli bir gönderme mesajı girdiğinizden emin olun."
 
 #: archive-template.php:847 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
-msgstr ""
+msgstr "Mesaj yer tutucuları"
 
 #: archive-template.php:850 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:137
-#, fuzzy
-#| msgid "Create Record"
 msgid "Name of the Record"
-msgstr "Kayıt Oluştur"
+msgstr "Kaydın Adı"
 
 #: archive-template.php:855 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
@@ -508,7 +503,7 @@ msgstr "Bağlantılar"
 
 #: archive-template.php:864
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "Geçerli kayıt seçimlerinin yapıldığından emin olun."
 
 #: archive-template.php:909
 msgid "Loading..."
@@ -584,43 +579,29 @@ msgid "Range End"
 msgstr "Aralık sonu"
 
 #: archive-template.php:1075
-#, fuzzy
-#| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
-msgstr "Filtre Adı"
+msgstr "Değere Göre Filtrele"
 
 #: archive-template.php:1080
-#, fuzzy
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "%2$s içeren tüm %1$s"
+msgstr "%2$s'de filtrelenmiş değere sahip tüm %1$s"
 
 #: archive-template.php:1084
-#, fuzzy
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "%2$s olmadan tüm %1$s"
+msgstr "%2$s'de filtrelenmiş değer olmayan tüm %1$s"
 
 #: archive-template.php:1088
-#, fuzzy
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "%2$s içeren tüm %1$s"
+msgstr "%2$s içindeki herhangi bir değere sahip tüm %1$s"
 
 #: archive-template.php:1092
-#, fuzzy
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "%2$s olmadan tüm %1$s"
+msgstr "%2$s'de değeri olmayan tüm %1$s"
 
 #: archive-template.php:1116
 msgid "Filter Name"
@@ -733,11 +714,11 @@ msgstr "Düzenle"
 #: dt-assets/functions/enqueue-scripts.php:119
 #: dt-reports/magic-url-setup.php:97 template-settings.php:303
 msgid "Copy"
-msgstr ""
+msgstr "Kopyala"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 msgid "Copied: %s"
-msgstr ""
+msgstr "Kopyalandı: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:141
 msgid "You don't have any unread notifications"
@@ -916,7 +897,7 @@ msgstr "İçermeyen"
 #: dt-assets/functions/enqueue-scripts.php:332
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
-msgstr ""
+msgstr "gönderilmesi planlanıyor"
 
 #: dt-assets/functions/enqueue-scripts.php:333
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -926,7 +907,7 @@ msgstr "gönderilmemiş (geçersiz eposta olabilir)"
 #: dt-assets/functions/enqueue-scripts.php:334
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "Sıraya bak"
 
 #: dt-assets/functions/enqueue-scripts.php:335
 msgid "Exclude Item"
@@ -935,7 +916,7 @@ msgstr "Ögeyi Çıkar"
 #: dt-assets/functions/enqueue-scripts.php:338
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr ""
+msgstr "Dışa aktarılan csv verisi tüm %2$s %1$s alanı içerecektir."
 
 #: dt-assets/functions/enqueue-scripts.php:339
 msgctxt ""
@@ -943,80 +924,66 @@ msgctxt ""
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
+"Aşağıda gösterilen %2$s görünür %1$s alanı içerecek şekilde csv verisi dışa "
+"aktarıldı."
 
 #: dt-assets/functions/enqueue-scripts.php:342
 #: dt-assets/functions/enqueue-scripts.php:350
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
 msgid "Full List"
-msgstr "%s Listesi"
+msgstr "Tam Liste"
 
 #: dt-assets/functions/enqueue-scripts.php:343
-#, fuzzy
-#| msgid "Address"
 msgid "No Addresses"
-msgstr "Adres"
+msgstr "Adresler Yok"
 
 #: dt-assets/functions/enqueue-scripts.php:344
 msgid "With Additional Addresses"
-msgstr ""
+msgstr "Ek Adreslerle"
 
 #: dt-assets/functions/enqueue-scripts.php:345
 msgid "Open Email for Group"
-msgstr ""
+msgstr "Grup için Açık E-posta"
 
 #: dt-assets/functions/enqueue-scripts.php:346
-#, fuzzy
-#| msgid "Open Modal"
 msgid "Open All"
-msgstr "Modalı Aç"
+msgstr "Tümünü aç"
 
 #: dt-assets/functions/enqueue-scripts.php:347
 msgid "Show Group Addresses"
-msgstr ""
+msgstr "Grup Adreslerini Göster"
 
 #: dt-assets/functions/enqueue-scripts.php:351
 msgid "Has No Phone Number"
-msgstr ""
+msgstr "Telefon Numarası Yok"
 
 #: dt-assets/functions/enqueue-scripts.php:352
 msgid "Has Additional Phone Numbers"
-msgstr ""
+msgstr "Ek Telefon Numaraları Var"
 
 #: dt-assets/functions/enqueue-scripts.php:356
-#, fuzzy
-#| msgid "Used Locations"
 msgid "Mapped Locations"
-msgstr "Kullanılan Konumlar"
+msgstr "Haritalanmış Konumlar"
 
 #: dt-assets/functions/enqueue-scripts.php:357
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
-msgstr "Kişi Tatilde"
+msgstr "Konumsuz Kişi"
 
 #: dt-assets/functions/enqueue-scripts.php:358
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records on zoomed map"
-msgstr "Kayıt Ekle"
+msgstr "Yakınlaştırılmış haritadaki kayıtlar"
 
 #: dt-assets/functions/enqueue-scripts.php:359
 msgid "No Zoomed Map Records Found!"
-msgstr ""
+msgstr "Yakınlaştırılmış Harita Kaydı Bulunamadı!"
 
 #: dt-assets/functions/enqueue-scripts.php:360
 msgid "Open Zoomed Map Records"
-msgstr ""
+msgstr "Yakınlaştırılmış Harita Kayıtlarını Aç"
 
 #: dt-assets/functions/enqueue-scripts.php:361
 #: dt-assets/functions/enqueue-scripts.php:362
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filtered Map"
-msgstr "Filtre Adı"
+msgstr "Filtrelenmiş Harita"
 
 #: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:50
 #: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
@@ -1030,58 +997,47 @@ msgstr "%s zaten var"
 
 #: dt-assets/functions/enqueue-scripts.php:429
 msgid "File Upload"
-msgstr ""
+msgstr "Dosya Yükleme"
 
 #: dt-assets/functions/enqueue-scripts.php:430
-#, fuzzy
-#| msgid "Choose an option:"
 msgid "Choose a file"
-msgstr "Bir seçeneği seç:"
+msgstr "Bir dosya seçin"
 
 #: dt-assets/functions/enqueue-scripts.php:431
 msgid "or drag it here"
-msgstr ""
+msgstr "veya buraya sürükleyin"
 
 #: dt-assets/functions/enqueue-scripts.php:432
 msgid "Successfully Uploaded!"
-msgstr ""
+msgstr "Başarıyla Yüklendi!"
 
 #: dt-assets/functions/enqueue-scripts.php:433
 msgid "Error!"
-msgstr ""
+msgstr "Hata!"
 
 #: dt-assets/functions/enqueue-scripts.php:434
-#, fuzzy
-#| msgid "Unable to update"
 msgid "Unable to upload, please try again"
-msgstr "Güncellenemiyor"
+msgstr "Yüklenemedi, lütfen tekrar deneyin"
 
 #: dt-assets/functions/enqueue-scripts.php:435
 msgid "Upload"
-msgstr ""
+msgstr "Yüklemek"
 
 #: dt-assets/functions/enqueue-scripts.php:436
-#, fuzzy
-#| msgid "Delete Filter"
 msgid "Delete Existing File"
-msgstr "Filtreyi Sil"
+msgstr "Mevcut Dosyayı Sil"
 
 #: dt-assets/functions/enqueue-scripts.php:437
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete existing file?"
-msgstr "%s'i Silmek İstediğinize Emin misiniz?"
+msgstr "Mevcut dosyayı silmek istediğinizden emin misiniz?"
 
 #: dt-assets/functions/enqueue-scripts.php:438
 msgid "Successfully Deleted!"
-msgstr ""
+msgstr "Başarıyla Silindi!"
 
 #: dt-assets/functions/enqueue-scripts.php:439
-#, fuzzy
-#| msgid "Delete and replace the app link"
 msgid "Delete failed, please try again"
-msgstr "Uygulama bağlantısını sil ve değiştir"
+msgstr "Silme başarısız oldu, lütfen tekrar deneyin"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1130,10 +1086,8 @@ msgid "Help"
 msgstr "Yardım"
 
 #: dt-assets/functions/menu.php:106
-#, fuzzy
-#| msgid "D.T Record"
 msgid "D.T Forum"
-msgstr "D.T. Kayıt"
+msgstr "D.T Forum"
 
 #: dt-assets/parts/loop-activity-comment.php:83
 msgid "Submit comment"
@@ -1953,7 +1907,7 @@ msgstr "Kabul Edildi"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2105,7 +2059,7 @@ msgstr "Cinsiyet"
 
 #: dt-contacts/access-module.php:1477
 msgid "This record might be a duplicate of: "
-msgstr "Bu Kayır Şunların Kopyası Olabilir"
+msgstr "Bu Kayır Şunların Kopyası Olabilir: "
 
 #: dt-contacts/access-module.php:1483 dt-contacts/duplicates-merging.php:485
 #: dt-contacts/duplicates-merging.php:567
@@ -2122,8 +2076,7 @@ msgstr "Yinelenen Denetleyici"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -2223,7 +2176,7 @@ msgstr "Diğer Sosyal Bağlantılar"
 #: dt-contacts/base-setup.php:250
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "Başka kayıtlara bağlantılar"
+msgstr "Başka %s bağlantılar"
 
 #: dt-contacts/base-setup.php:251
 msgctxt "Optional Documentation"
@@ -2306,7 +2259,7 @@ msgstr "Yinelenenleri görün"
 #: dt-contacts/base-setup.php:371
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
-msgstr "%s dosyasını arşivlemek istediğinizden emin misiniz?\n"
+msgstr "%s dosyasını arşivlemek istediğinizden emin misiniz?"
 
 #: dt-contacts/base-setup.php:378
 msgid "Archive"
@@ -2909,18 +2862,16 @@ msgstr "Fazla kişilerim var"
 #: dt-core/configuration/restrict-site-access.php:249
 msgid "Check your email for the confirmation link, then visit the"
 msgstr ""
+"Onay bağlantısı için e-postanızı kontrol edin, ardından şu adresi ziyaret "
+"edin"
 
 #: dt-core/configuration/restrict-site-access.php:253
-#, fuzzy
-#| msgid "Login"
 msgid "Login Page"
-msgstr "Oturum açın"
+msgstr "Giriş Sayfası"
 
 #: dt-core/configuration/restrict-site-access.php:254
-#, fuzzy
-#| msgid "login"
 msgid "login page"
-msgstr "giriş yap"
+msgstr "giriş sayfası"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
@@ -3001,13 +2952,15 @@ msgstr "Diğer haberler yok."
 
 #: dt-core/release-notifications.php:95
 msgid "Freely given, but not cheap"
-msgstr ""
+msgstr "Ücretsizdir, ancak ucuz değildir"
 
 #: dt-core/release-notifications.php:97
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
+"Disciple.Tools sisteminin sürekli gelişmesi ve bakımı için bağışlar "
+"gereklidir. Bağış vermek ister misiniz?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3056,8 +3009,7 @@ msgstr "Grup"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3468,7 +3420,7 @@ msgstr ""
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
-msgstr ""
+msgstr "E-posta veya şifre eksik."
 
 #: dt-login/login-template.php:164 dt-login/login-template.php:244
 #: dt-login/login-template.php:365
@@ -3524,10 +3476,8 @@ msgid "Remember Me"
 msgstr "Beni Hatırla"
 
 #: dt-login/login-template.php:552
-#, fuzzy
-#| msgid "Reset Password"
 msgid "Lost Password"
-msgstr "Şifreni Sıfırla"
+msgstr "Şifremi Unuttum"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:218
@@ -3599,8 +3549,8 @@ msgstr "En Önemli Yol"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3764,7 +3714,7 @@ msgstr ""
 "çizelgesine tıklayın."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "Ölçümler"
 
@@ -3783,9 +3733,8 @@ msgid "New %s"
 msgstr "Yeni %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Hover Haritası"
+msgid "Simple Map"
+msgstr "Basit Harita"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3814,6 +3763,10 @@ msgstr "Aktif Kullanıcılar"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "Aktarılmış Kişiler"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+msgid "Access"
+msgstr "Erişim"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4059,21 +4012,13 @@ msgstr "Toplam Üyeler"
 msgid "View Group"
 msgstr "Grubu Görüntüle"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
-msgstr ""
+msgstr "Nesil Haritası"
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "Kayıt Ekle"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "Ölçümler"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr "Haritalar"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4184,24 +4129,18 @@ msgid "stats as of"
 msgstr "itibariyle istatistikler"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "İşlemler"
+msgid "Activity Logs"
+msgstr "İşlemler Kaydı"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
-#, fuzzy
-#| msgid "Record"
 msgid "Record Type"
-msgstr "Kayıt"
+msgstr "Kayıt Türü"
 
 #: dt-metrics/records/date-range-activity.php:103
-#, fuzzy
-#| msgid "Activity"
 msgid "Any Activity"
-msgstr "İşlemler"
+msgstr "Herhangi Bir Etkinlik"
 
 #: dt-metrics/records/date-range-activity.php:104
 #: dt-metrics/records/time-charts.php:108
@@ -4209,75 +4148,58 @@ msgid "Total"
 msgstr "Toplam"
 
 #: dt-metrics/records/date-range-activity.php:105
-#, fuzzy
-#| msgid "Date Ranges"
 msgid "Date Range"
-msgstr "Tarih Aralıkları"
+msgstr "Tarih Aralığı"
 
 #: dt-metrics/records/date-range-activity.php:106
-#, fuzzy
-#| msgid "Custom"
 msgid "Custom Range"
-msgstr "Özel Filtreler"
+msgstr "Özel Aralık"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
-msgstr ""
+msgstr "Tekrar Yükle"
 
 #: dt-metrics/records/date-range-activity.php:108
 #: dt-metrics/records/select-tags-charts.php:91
 #: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: dt-metrics/records/date-range-activity.php:109
-#, fuzzy
-#| msgid "No Activity Detected!"
 msgid "Time Activity Recorded"
-msgstr "İşlem Bulunmuyor!"
+msgstr "Zaman Etkinliği Kaydedildi"
 
 #: dt-metrics/records/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
 msgid "New Value"
-msgstr "Eski Değer"
+msgstr "Yeni Değer"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "True"
-msgstr ""
+msgstr "Doğru"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
-msgstr ""
+msgstr "Yanlış"
 
 #: dt-metrics/records/dynamic-records-map.php:93 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "Kayıt Ekle"
 
 #: dt-metrics/records/dynamic-records-map.php:94
-#, fuzzy
-#| msgid "Post Type"
 msgid "Post Types"
-msgstr "Gönderi Türü"
+msgstr "Gönderi Türleri"
 
 #: dt-metrics/records/dynamic-records-map.php:95
-#, fuzzy
-#| msgid "prayer"
 msgid "Layer"
-msgstr "dua"
+msgstr "Katman"
 
 #: dt-metrics/records/dynamic-records-map.php:96
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
-msgstr "%s'i Silmek İstediğinize Emin misiniz?"
+msgstr "Katmanı silmek istediğinizden emin misiniz?"
 
 #: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgid "Record"
 msgid "Record Types"
-msgstr "Kayıt"
+msgstr "Kayıt Türleri"
 
 #: dt-metrics/records/dynamic-records-map.php:99
 #: dt-notifications/notifications.php:920
@@ -4289,157 +4211,124 @@ msgstr "Kayıt"
 msgid "System"
 msgstr "Sistem"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
-#, fuzzy
-#| msgid "Group Generation Tree"
-msgid "Generational Trees"
-msgstr "Grup Soyağacı"
+#: dt-metrics/records/genmap.php:23
+msgid "GenMapper Trees"
+msgstr "Nesil Harita Ağacı"
 
 #: dt-metrics/records/genmap.php:136
-#, fuzzy
-#| msgid "Archived"
 msgid "Show Archived"
-msgstr "Arşivlendi"
+msgstr "Arşivlenenleri Göster"
 
 #: dt-metrics/records/genmap.php:137
-#, fuzzy
-#| msgid "prayer"
 msgid "Data Layers"
-msgstr "dua"
+msgstr "Veri Katmanları"
 
 #: dt-metrics/records/genmap.php:138
 msgid "Node Color"
-msgstr ""
+msgstr "Düğüm Rengi"
 
 #: dt-metrics/records/genmap.php:139
-#, fuzzy
-#| msgid "Default Filters"
 msgid "Default"
-msgstr "Standart Filtreler"
+msgstr "Varsayılan"
 
 #: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
-msgstr ""
+msgstr "Veri Katmanı Ekle"
 
 #: dt-metrics/records/genmap.php:141
-#, fuzzy
-#| msgid "Show all fields"
 msgid "Show as icons"
-msgstr "Tüm Alanları Düzelt"
+msgstr "Simge olarak göster"
 
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
-msgstr ""
+msgstr "yakalanacak veri katmanı alanını seçin"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
 msgstr "Koçlar"
 
 #: dt-metrics/records/genmap.php:156
-#, fuzzy
-#| msgid "Type:"
 msgid "Type"
-msgstr "Tür:"
+msgstr "Tür"
 
 #: dt-metrics/records/genmap.php:159
-#, fuzzy
-#| msgid "Open With"
 msgid "Open"
-msgstr "Aracıyla Aç"
+msgstr "Aç"
 
 #: dt-metrics/records/genmap.php:161
 msgid "Focus"
-msgstr ""
+msgstr "Odak Noktası"
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr ""
+msgstr "Sakla"
 
 #: dt-metrics/records/genmap.php:165
-#, fuzzy
-#| msgid "Child Group"
 msgid "Add Child To"
-msgstr "Alt Nesil Gruplar"
+msgstr "Çocuğu Şuraya Ekle"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Add Child"
-msgstr ""
+msgstr "Çocuk Ekle"
 
 #: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
-msgstr ""
+msgstr "Düğüme Odaklanma"
 
 #: dt-metrics/records/genmap.php:169
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
-msgstr "%s'i Silmek İstediğinize Emin misiniz?"
+msgstr "Düğüme odaklanmak istediğinizden emin misiniz?"
 
 #: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
-msgstr ""
+msgstr "Sonsuz Döngüler"
 
 #: dt-metrics/records/select-tags-charts.php:32
-#, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "Tüm kümülatif toplamlar"
+msgid "Simple Chart"
+msgstr "Basit Grafik"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
 "This chart shows the total number for each field value at the end of the "
 "selected date."
 msgstr ""
+"Bu grafik, seçilen tarihin sonunda her alan değerinin toplam sayısını "
+"gösterir."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records"
-msgstr "Kayıt Ekle"
+msgstr "Kayıtlar"
 
 #: dt-metrics/records/select-tags-charts.php:92
 #: dt-metrics/records/time-charts.php:123
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No Records Available"
-msgstr "Veri Mevcut Değil"
+msgstr "Kayıt Yok"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "Zaman Çizelgelerindeki Alanlar"
+msgid "Advanced Charts"
+msgstr "Gelişmiş Grafikler"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "Eklenen"
 
 #: dt-metrics/records/time-charts.php:110
-#, fuzzy
-#| msgid "Delete"
 msgid "Deleted"
-msgstr "Sil"
+msgstr "Silindi"
 
 #: dt-metrics/records/time-charts.php:111
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Connected"
-msgstr "Bağlandı %s"
+msgstr "Bağlı"
 
 #: dt-metrics/records/time-charts.php:112
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Disconnected"
-msgstr "Bağlandı %s"
+msgstr "Bağlantısız"
 
 #: dt-metrics/records/time-charts.php:113
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "%2$s içinde %2$s"
+msgstr "%1$s %2$s içinde"
 
 #: dt-metrics/records/time-charts.php:116
 msgid "All cumulative totals"
@@ -4450,10 +4339,8 @@ msgid "Single cumulative totals"
 msgstr "Bireysel kümülatif toplamlar"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
-msgstr "Kayıt Ekle"
+msgstr "Kayıt değişiklikleri"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4480,7 +4367,7 @@ msgstr "Günlük Özeti"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s dakika önce"
-msgstr[1] "%s  dakika önce"
+msgstr[1] "%s dakika önce"
 
 #: dt-notifications/notifications.php:481
 msgid "%s hour ago"
@@ -4492,7 +4379,7 @@ msgstr[1] "%s saat önce"
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s gün önce"
-msgstr[1] "%s  gün önce"
+msgstr[1] "%s gün önce"
 
 #: dt-notifications/notifications.php:491
 msgid "%s week ago"
@@ -4627,7 +4514,7 @@ msgstr "İnsan Grubunun adını buraya gir"
 
 #: dt-posts/custom-post-type.php:179
 msgid "Picture"
-msgstr ""
+msgstr "Resim"
 
 #: dt-posts/custom-post-type.php:208
 msgid "Tags"
@@ -4643,12 +4530,9 @@ msgid "Un-Follow"
 msgstr "Takibi Bırak"
 
 #: dt-posts/custom-post-type.php:243
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid "The general location where this contact is located."
 msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
-msgstr "Bu kişinin oturduğu veya olduğu genel konumu."
+msgstr "Bu kaydın bulunduğu genel konum."
 
 #: dt-posts/custom-post-type.php:251
 msgid "Locations or Address"
@@ -4657,25 +4541,19 @@ msgstr "Bölgeler ve Adresler"
 #: dt-posts/dt-posts.php:100
 msgid ""
 "This record was automatically updated rather than creating a new record."
-msgstr ""
+msgstr "Bu kayıt yeni bir kayıt oluşturmak yerine otomatik olarak güncellendi."
 
 #: dt-posts/dt-posts.php:1710
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "%s Submission"
-msgstr "Sihirli Bağlantı Gönderimi"
+msgstr "%s Gönderimi"
 
 #: dt-posts/dt-posts.php:1710
-#, fuzzy
-#| msgid "Magic Links"
 msgid "Magic Link"
-msgstr "Sihirli Bağlantılar"
+msgstr "Sihirli Bağlantı"
 
 #: dt-posts/dt-posts.php:1712 dt-posts/dt-posts.php:2259
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
-msgstr "İşlemi Geri Al"
+msgstr "Geri Alma Botu"
 
 #: dt-posts/dt-posts.php:2499
 msgid "Post already shared with user."
@@ -4894,12 +4772,9 @@ msgid "%1$s removed from %2$s"
 msgstr "%1$s, %2$s dan kaldırıldı"
 
 #: dt-posts/posts.php:416
-#, fuzzy
-#| msgctxt "Total in January"
-#| msgid "%1$s in %2$s"
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%2$s içinde %2$s"
+msgstr "%1$s: %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -5015,10 +4890,8 @@ msgid "Unshared with %s"
 msgstr "%s ile artık paylaşılmıyor"
 
 #: dt-posts/posts.php:2522
-#, fuzzy
-#| msgid "Remove"
 msgid "Removed User"
-msgstr "Kaldır"
+msgstr "Kullanıcı Kaldırıldı"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -5038,28 +4911,33 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Merhaba {{name}},\n"
+"\n"
+"Uygulamanıza erişmek için lütfen aşağıdaki butona tıklayın.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Teşekkürler!"
 
 #: dt-reports/magic-url-bulk-send.php:51
 msgid "Configure email subject"
-msgstr ""
+msgstr "E-posta konusunu yapılandır"
 
 #: dt-reports/magic-url-bulk-send.php:54
 msgid "{{app}} will be replaced with the selected app name."
-msgstr ""
+msgstr "{{app}} seçili uygulama adı ile değiştirilecektir."
 
 #: dt-reports/magic-url-bulk-send.php:56
 msgid "Configure email message"
-msgstr ""
+msgstr "E-posta mesajını yapılandır"
 
 #: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:134
-#, fuzzy
-#| msgid "Select app to email"
 msgid "Selected app name"
-msgstr "E-posta atılacak uygulamayı seç"
+msgstr "Seçili uygulama adı"
 
 #: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:140
 msgid "Unique link to access the app."
-msgstr ""
+msgstr "Uygulamaya erişim için benzersiz bağlantı."
 
 #: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
@@ -5116,6 +4994,13 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Merhaba,\n"
+"\n"
+"Uygulamanıza erişmek için lütfen aşağıdaki butona tıklayın.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Teşekkürler!"
 
 #: dt-reports/magic-url-setup.php:130
 msgid "Add email address"
@@ -5137,9 +5022,13 @@ msgstr "Uygulama bağlantısını sil ve değiştir"
 msgid "Added new report"
 msgstr "Yeni Rapor Eklendi"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Güncelleme Raporu"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Hover Haritası"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5331,16 +5220,12 @@ msgid "Travel or Away Dates"
 msgstr "Seyahat veya Müsait Olmayan Tarihler"
 
 #: dt-users/template-user-management.php:191
-#, fuzzy
-#| msgid "Users"
 msgid "User Apps"
-msgstr "Kullanıcı"
+msgstr "Kullanıcı Uygulamaları"
 
 #: dt-users/template-user-management.php:197
-#, fuzzy
-#| msgid "App Activation"
 msgid "Activation"
-msgstr "Uygulama Aktivasyonu"
+msgstr "Aktivasyon"
 
 #: dt-users/template-user-management.php:212
 msgid "User Profile"
@@ -5356,10 +5241,8 @@ msgid "Edit User"
 msgstr "Kişi Editle"
 
 #: dt-users/template-user-management.php:225
-#, fuzzy
-#| msgid "Password Required"
 msgid "Email Password Reset"
-msgstr "Şifre Gereklidir"
+msgstr "E-posta Şifre Sıfırlama"
 
 #: dt-users/template-user-management.php:288 dt-users/users.php:147
 #: template-settings.php:159
@@ -5568,14 +5451,11 @@ msgstr "Etkinleştir"
 
 #: dt-users/user-management.php:229
 msgid "Go"
-msgstr ""
+msgstr "Git"
 
 #: dt-users/user-management.php:232
-#, fuzzy
-#| msgctxt "Showing 30 items matching bob"
-#| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
-msgstr "%2$s ile eşleşen %1$s öğe gösteriliyor"
+msgstr "%2$s'den %1$s gösteriliyor"
 
 #: dt-users/user-management.php:353
 msgid "%s days since last update"
@@ -5608,11 +5488,11 @@ msgstr "%s 'nin atanması reddedildi"
 
 #: dt-users/users.php:124
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: dt-users/users.php:154
 msgid "Locale"
-msgstr ""
+msgstr "Yerel"
 
 #: dt-users/users.php:178
 msgid "Away"
@@ -5702,7 +5582,7 @@ msgstr "Tüm Ayrıntı Alanları Düzeltin"
 
 #: single-template.php:383
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "Gizli Döşemeleri Göster"
 
 #: single-template.php:404 template-new-bulk-post.php:276
 #: template-new-post.php:167
@@ -5889,15 +5769,13 @@ msgid "No Travel Scheduled"
 msgstr "Seyahat Planlanmamıştır"
 
 #: template-settings.php:489
-#, fuzzy
-#| msgid "Contact Info Changed"
 msgid "Contact Info"
-msgstr "Kişinin Bilgisi Değişti"
+msgstr "Kişinin Bilgisi"
 
 #: template-settings.php:493
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
-msgstr ""
+msgstr "E-posta bildirimleri şu adrese gönderilecek: %s"
 
 #: template-settings.php:510
 msgid "Email preferences"
@@ -5941,26 +5819,20 @@ msgid "edit image on gravatar.com"
 msgstr "gravatar.com'da resmi düzenle"
 
 #: template-settings.php:637
-#, fuzzy
-#| msgid ""
-#| "Disciple Tools System does not store images. For profile images we use "
-#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
-#| "suggest not using a personal photo, but instead choose a cartoon, "
-#| "abstract, or alias photo to represent you."
 msgid ""
 "Disciple Tools System does not store images. All media assets will be placed "
 "within specified media connection storage service. If you have security "
 "concerns, we suggest not using a personal photo, but instead choose a "
 "cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Disciple Tools Sistemi resimleri hafızasında tutmaz. Profil resimleri için "
-"Gravatar (Globally Recognized Avatar) kullanıyoruz. Güvenlik sorunların "
-"varsa, kişisel fotoğrafını kullanamamanı öneririz, bunun yerine seni temsil "
-"eden bir çizim, soyut bir resim ya da başka bir fotoğraf kullanabilirsin."
+"Disciple Tools Sistemi görselleri saklamaz. Tüm medya varlıkları belirtilen "
+"medya bağlantı depolama hizmetine yerleştirilecektir. Güvenlik endişeleriniz "
+"varsa, kişisel bir fotoğraf kullanmamanızı, bunun yerine sizi temsil edecek "
+"bir karikatür, soyut veya takma ad fotoğrafı seçmenizi öneririz."
 
 #: template-settings.php:638
-msgid "upload new profile image"
-msgstr ""
+msgid "Upload new profile image"
+msgstr "Yeni profil resmi yükle"
 
 #: template-settings.php:648 template-settings.php:649
 msgid "Username cannot be changed"
@@ -6002,7 +5874,27 @@ msgstr "Taranmış Erişim Kişileri:"
 #: template-view-duplicates.php:31
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
-msgstr "Benzer Kopyalar Bulundu"
+msgstr "Yinelenenler bulundu:"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "Kayıt Ekle"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Ölçümler"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "İşlemler"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Tüm kümülatif toplamlar"
 
 #~ msgid "No Answer"
 #~ msgstr "Cevap yok"

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Gujarati <https://translate.disciple.tools/projects/disciple-"
@@ -1958,7 +1958,7 @@ msgstr "સ્વીકાર્યું"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2124,8 +2124,7 @@ msgstr "ડુપ્લિકેટ તપાસનાર"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3046,8 +3045,7 @@ msgstr "જૂથ"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3590,8 +3588,8 @@ msgstr "મુશ્કેલ રસ્તો"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3752,7 +3750,7 @@ msgstr ""
 "નીચે મેટ્રિક્સની વિગતવાર સૂચિ પ્રદર્શિત કરવા માટે સમયરેખા દિવસના સારાંશ પર ક્લિક કરો."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "મેટ્રિક્સ"
 
@@ -3771,9 +3769,10 @@ msgid "New %s"
 msgstr "સમાચાર"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "નકશો હoverવર"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "ફિલ્ટર નામ"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3800,6 +3799,12 @@ msgstr "સક્રિય વપરાશકર્તાઓ"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "સ્થાનાંતરિત સંપર્કો"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "સ્વીકારો"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4045,21 +4050,13 @@ msgstr "કુલ સભ્યો"
 msgid "View Group"
 msgstr "જૂથ જુઓ"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "રેકોર્ડ્સ ઉમેરો"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "મેટ્રિક્સ"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4171,9 +4168,9 @@ msgstr "તરીકે આંકડા"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "દૈનિક પ્રવૃત્તિ"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "પ્રવૃત્તિ લોગ"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4275,10 +4272,10 @@ msgstr "રેકોર્ડ"
 msgid "System"
 msgstr "સિસ્ટમ"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "ગ્રુપ જનરેશન ટ્રી"
 
 #: dt-metrics/records/genmap.php:136
@@ -4368,9 +4365,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "તમામ સંચિત સરેરાશ"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "સમય ચાર્ટો ઉપરના ક્ષેત્રો"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4394,9 +4391,9 @@ msgstr "કોઈ ડેટા ઉપલબ્ધ નથી"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "સમય ચાર્ટો ઉપરના ક્ષેત્રો"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "અદ્યતન શોધ"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5145,9 +5142,13 @@ msgstr "એપ્લિકેશન લિંકને કાઢી નાખો
 msgid "Added new report"
 msgstr "નવો અહેવાલ ઉમેર્યો"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "અપડેટ અહેવાલ"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "નકશો હoverવર"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5965,7 +5966,7 @@ msgstr ""
 "ઉપનામનો ફોટો પસંદ કરો."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6009,6 +6010,26 @@ msgstr "સંપર્કો સ્કેન કરો:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ડુપ્લિકેટ્સ મળી:"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "રેકોર્ડ્સ ઉમેરો"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "મેટ્રિક્સ"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "દૈનિક પ્રવૃત્તિ"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "તમામ સંચિત સરેરાશ"
 
 #~ msgid "No Answer"
 #~ msgstr "કોઇ જવાબ નથિ"
