@@ -369,18 +369,6 @@ class DT_Groups_Base extends DT_Module_Base {
 
 
 
-            $fields['people_groups'] = [
-                'name' => __( 'People Groups', 'disciple_tools' ),
-                'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg?v=2',
-                'type' => 'connection',
-                'post_type' => 'peoplegroups',
-                'p2p_direction' => 'from',
-                'p2p_key' => 'groups_to_peoplegroups',
-                'tile' => 'details',
-                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'group_total', 'connection_field' => 'groups' ]
-            ];
-
             $field_fields_enabled = self::four_fields_is_enabled();
 
             $fields['four_fields_unbelievers'] = [
