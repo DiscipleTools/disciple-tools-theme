@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Japanese <https://translate.disciple.tools/projects/disciple-"
@@ -1964,7 +1964,7 @@ msgstr "承認済み"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2130,8 +2130,7 @@ msgstr "重複チェッカー"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3056,8 +3055,7 @@ msgstr "グループ"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3606,8 +3604,8 @@ msgstr "クリティカルパス"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3766,7 +3764,7 @@ msgstr ""
 "す。"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "指標"
 
@@ -3785,9 +3783,10 @@ msgid "New %s"
 msgstr "新しい％s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "ホバーマップ"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "フィルタ名"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3814,6 +3813,12 @@ msgstr "アクティブユーザー"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "転送された連絡先"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "受け入れる"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4059,21 +4064,13 @@ msgstr "総会員数"
 msgid "View Group"
 msgstr "グループを表示"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "記録を追加"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "指標"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4185,9 +4182,9 @@ msgstr "現在の統計"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "日々の活動"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "アクティビティログ"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4289,10 +4286,10 @@ msgstr "記録"
 msgid "System"
 msgstr "システム"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "グループ生成ツリー"
 
 #: dt-metrics/records/genmap.php:136
@@ -4382,9 +4379,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "全ての累計"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "タイムチャート上のフィールド"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4408,9 +4405,9 @@ msgstr "データがありません"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "タイムチャート上のフィールド"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "高度な検索"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5152,9 +5149,13 @@ msgstr "アプリのリンクを削除して置き換える"
 msgid "Added new report"
 msgstr "新しいレポートを追加しました"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "更新されたレポート"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "ホバーマップ"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5975,7 +5976,7 @@ msgstr ""
 "て表現することをお勧めします。"
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6019,6 +6020,26 @@ msgstr "スキャンされた連絡先にアクセスします。"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "重複が見つかりました："
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "記録を追加"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "指標"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "日々の活動"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "全ての累計"
 
 #~ msgid "No Answer"
 #~ msgstr "答えなし"

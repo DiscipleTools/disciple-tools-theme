@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
-"PO-Revision-Date: 2024-09-25 16:59+0000\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"PO-Revision-Date: 2024-10-11 13:59+0000\n"
 "Last-Translator: Sarah <s.colpart@gmail.com>\n"
 "Language-Team: French <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/fr_FR/>\n"
@@ -410,7 +410,7 @@ msgstr "Voir moins d'options"
 #: archive-template.php:751 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
-msgstr "Mettre à jour"
+msgstr "Mise à jour"
 
 #: archive-template.php:752 archive-template.php:860
 #: dt-assets/functions/enqueue-scripts.php:330
@@ -424,7 +424,7 @@ msgstr "Faire des sélections ci-dessous"
 #: dt-assets/functions/enqueue-scripts.php:318
 #: dt-assets/parts/loop-activity-comment.php:161 single-template.php:437
 msgid "Delete"
-msgstr "Effacer"
+msgstr "Supprimer"
 
 #: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
 #, fuzzy
@@ -731,7 +731,7 @@ msgstr "Affichant %1$s éléments correspondant à %2$s"
 #: dt-assets/functions/enqueue-scripts.php:317 template-settings.php:119
 #: template-settings.php:605
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #: dt-assets/functions/enqueue-scripts.php:119
 #: dt-reports/magic-url-setup.php:97 template-settings.php:303
@@ -1992,7 +1992,7 @@ msgstr "Accepté"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2161,8 +2161,7 @@ msgstr "Vérificateur en double"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -2355,7 +2354,7 @@ msgstr "Archiver"
 #: dt-core/configuration/config-site-defaults.php:544
 #: dt-groups/base-setup.php:621 template-settings.php:212
 msgid "Other"
-msgstr "Autre"
+msgstr "Autres"
 
 #: dt-contacts/base-setup.php:496 dt-groups/base-setup.php:1042
 #: dt-posts/custom-post-type.php:463
@@ -3111,8 +3110,7 @@ msgstr "Groupe"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3580,7 +3578,7 @@ msgstr ""
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr ""
+msgstr "Se connecter"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
@@ -3671,8 +3669,8 @@ msgstr "Chemin critique"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3836,7 +3834,7 @@ msgstr ""
 "détaillée de mesures en-dessous."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "Métriques"
 
@@ -3855,9 +3853,10 @@ msgid "New %s"
 msgstr "Nouveau %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Carte de survol"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "Nom du filtre"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3886,6 +3885,12 @@ msgstr "Utilisateurs actifs"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "Contacts transférés"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "Accepter"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4132,21 +4137,13 @@ msgstr "Nombre total de membres"
 msgid "View Group"
 msgstr "Afficher le groupe"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "Ajouter les fichiers"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "Métriques"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4258,9 +4255,9 @@ msgstr "stats au"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "Activité"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "Journal d'activité"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4301,7 +4298,7 @@ msgstr ""
 #: dt-metrics/records/select-tags-charts.php:91
 #: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: dt-metrics/records/date-range-activity.php:109
 #, fuzzy
@@ -4362,10 +4359,10 @@ msgstr "Fichier"
 msgid "System"
 msgstr "Système"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "Arbre généalogique de groupe"
 
 #: dt-metrics/records/genmap.php:136
@@ -4407,10 +4404,8 @@ msgid "Coaches"
 msgstr "Les entraîneurs"
 
 #: dt-metrics/records/genmap.php:156
-#, fuzzy
-#| msgid "Type:"
 msgid "Type"
-msgstr "Type :"
+msgstr "Type"
 
 #: dt-metrics/records/genmap.php:159
 #, fuzzy
@@ -4424,7 +4419,7 @@ msgstr ""
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr ""
+msgstr "Cacher"
 
 #: dt-metrics/records/genmap.php:165
 #, fuzzy
@@ -4453,9 +4448,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "Tous les totaux cumulés"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "Graphiques des champs au fil du temps"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4479,9 +4474,9 @@ msgstr "Pas de données disponibles"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "Graphiques des champs au fil du temps"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "Recherche avancée"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5231,9 +5226,13 @@ msgstr "Supprimer et remplacer le lien de l'application"
 msgid "Added new report"
 msgstr "Ajout d'un nouveau rapport"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Rapport mis à jour"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Carte de survol"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5297,7 +5296,7 @@ msgstr "Pseudo (votre nom affiché sur ce site)"
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
 #: dt-users/users.php:135 template-settings.php:140 template-settings.php:647
 msgid "Username"
-msgstr "Nom d’Utilisateur"
+msgstr "Nom d'utilisateur"
 
 #: dt-users/template-new-user.php:137
 msgid "Role"
@@ -5655,7 +5654,7 @@ msgstr "Le nom d'utilisateur est déjà dans le système en tant qu'utilisateur�
 
 #: dt-users/user-management.php:188
 msgid "Remove"
-msgstr "Supprimer"
+msgstr "Enlever"
 
 #: dt-users/user-management.php:189
 msgid "This contact is already a user."
@@ -5915,7 +5914,7 @@ msgstr "Charger plus de notifications"
 
 #: template-settings.php:56
 msgid "Apps"
-msgstr "Applis"
+msgstr "Applications"
 
 #: template-settings.php:58 template-settings.php:332
 msgid "Multiplier Preferences"
@@ -6069,7 +6068,7 @@ msgstr ""
 "pour vous représenter."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6117,6 +6116,26 @@ msgstr "Contacts d'accés analysés :"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Doubles trouvés :"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "Ajouter les fichiers"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Métriques"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "Activité"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Tous les totaux cumulés"
 
 #~ msgid "No Answer"
 #~ msgstr "Pas de réponse"

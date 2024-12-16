@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Serbian <https://translate.disciple.tools/projects/disciple-"
@@ -1970,7 +1970,7 @@ msgstr "Prihvaćen"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2139,8 +2139,7 @@ msgstr "Kontrolor duplikata"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3076,8 +3075,7 @@ msgstr "Grupe"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3627,8 +3625,8 @@ msgstr "Neophodan put"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3793,7 +3791,7 @@ msgstr ""
 "metrike."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "Metrika"
 
@@ -3812,9 +3810,10 @@ msgid "New %s"
 msgstr "Nov %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Cela mapa"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "Filtriraj Ime"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3841,6 +3840,12 @@ msgstr "Aktivni korisnici"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "Preneti kontakti"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "Prihvati"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4086,21 +4091,13 @@ msgstr "Svi članovi"
 msgid "View Group"
 msgstr "Vidi grupu"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "Dodaj zapise"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "Metrika"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4212,9 +4209,9 @@ msgstr "statistika počev od"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "Dnevne aktivnosti"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "Evidencija aktivnosti"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4316,10 +4313,10 @@ msgstr "Zapis"
 msgid "System"
 msgstr "Sistem"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "Generacijsko stablo grupa"
 
 #: dt-metrics/records/genmap.php:136
@@ -4409,9 +4406,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "Svi kumulativni iznosi"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "Polja preko vremenskog grafikona"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4435,9 +4432,9 @@ msgstr "Nema dostupnih podataka"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "Polja preko vremenskog grafikona"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "Napredna pretraga"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5191,9 +5188,13 @@ msgstr "Izbrišite i zamenite vezu ka aplikaciji"
 msgid "Added new report"
 msgstr "Dodan je novi izveštaj"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Ažuriran izveštaj"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Cela mapa"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -6018,7 +6019,7 @@ msgstr ""
 "apstrakciju ili izmišljenu fotografiju koja predstavlja vas."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6064,6 +6065,26 @@ msgstr "Pristup skeniranim kontaktima:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Pronađenih duplikata:"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "Dodaj zapise"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Metrika"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "Dnevne aktivnosti"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Svi kumulativni iznosi"
 
 #~ msgid "No Answer"
 #~ msgstr "Nema odgovora"

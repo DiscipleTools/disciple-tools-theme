@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:32+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.disciple.tools/"
@@ -1938,7 +1938,7 @@ msgstr "公认"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2104,8 +2104,7 @@ msgstr "重复项检查器"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3020,8 +3019,7 @@ msgstr "组"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3560,8 +3558,8 @@ msgstr "关键路径"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3718,7 +3716,7 @@ msgid ""
 msgstr "单击时间线日期摘要以在下面显示详细的指标列表。"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "指标"
 
@@ -3737,9 +3735,10 @@ msgid "New %s"
 msgstr "新％s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "悬停地图"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "筛选器名称"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3766,6 +3765,12 @@ msgstr "活跃用户"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "转移的联系人"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "接受"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4009,21 +4014,13 @@ msgstr "全部成员"
 msgid "View Group"
 msgstr "查看群组"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "添加记录"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "指标"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4135,9 +4132,9 @@ msgstr "统计数据截止"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "日常活动"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "活动日志"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4239,10 +4236,10 @@ msgstr "记录"
 msgid "System"
 msgstr "系统"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "组生成树"
 
 #: dt-metrics/records/genmap.php:136
@@ -4332,9 +4329,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "所有累计总数"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "时间图表中的字段"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4358,9 +4355,9 @@ msgstr "没有可用数据"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "时间图表中的字段"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "高级搜索"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5102,9 +5099,13 @@ msgstr "删除并替换应用链接"
 msgid "Added new report"
 msgstr "添加了新报告"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "更新了报告"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "悬停地图"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5911,7 +5912,7 @@ msgstr ""
 "片来代表您。"
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -5953,6 +5954,26 @@ msgstr "已扫描的访问联系人："
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "已找到的重复内容："
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "添加记录"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "指标"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "日常活动"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "所有累计总数"
 
 #~ msgid "No Answer"
 #~ msgstr "没有答案"

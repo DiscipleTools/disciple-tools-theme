@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-09-17T14:30:22+00:00\n"
+"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Hausa <https://translate.disciple.tools/projects/disciple-"
@@ -1971,7 +1971,7 @@ msgstr "An karɓa"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:99 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -2141,8 +2141,7 @@ msgstr "Kwafin Checker"
 #: dt-metrics/contacts/mapbox-maps.php:28
 #: dt-metrics/contacts/milestones-map.php:25
 #: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:108
+#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
 #: dt-metrics/personal/mapbox-contacts-maps.php:28
 #: dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
@@ -3076,8 +3075,7 @@ msgstr "Rukuni"
 #: dt-metrics/combined/locations-list.php:168
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:112
-#: dt-metrics/personal/mapbox-groups-maps.php:28
+#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3632,8 +3630,8 @@ msgstr "Hanya mai mahimmanci"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:104 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
@@ -3796,7 +3794,7 @@ msgstr ""
 "Danna kan taƙaitawar ranakun lokaci don nuna cikakken jerin awo a ƙasa."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:132
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
 msgid "Metrics"
 msgstr "Awo"
 
@@ -3815,9 +3813,10 @@ msgid "New %s"
 msgstr "Sabon %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Tsayawa Taswira"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "Sunan Tace"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3844,6 +3843,12 @@ msgstr "Masu Amfani da Ayyuka"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "Canja wurin Lambobin sadarwa"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "Yarda"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4089,21 +4094,13 @@ msgstr "Jimlar Membobi"
 msgid "View Group"
 msgstr "Duba Groupungiya"
 
-#: dt-metrics/metrics.php:84
+#: dt-metrics/metrics.php:86
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:85 dt-metrics/records/dynamic-records-map.php:31
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "Ƙara Records"
-
-#: dt-metrics/metrics.php:115
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "Awo"
+#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4215,9 +4212,9 @@ msgstr "stats kamar yadda na"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "Ayyukan yau da kullun"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "Log ɗin Ayyuka"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4319,10 +4316,10 @@ msgstr "Rikodi"
 msgid "System"
 msgstr "Tsarin"
 
-#: dt-metrics/records/genmap.php:23 dt-metrics/records/genmap.php:135
+#: dt-metrics/records/genmap.php:23
 #, fuzzy
 #| msgid "Group Generation Tree"
-msgid "Generational Trees"
+msgid "GenMapper Trees"
 msgstr "Tungiyar Bishiyar Groupungiya"
 
 #: dt-metrics/records/genmap.php:136
@@ -4412,9 +4409,9 @@ msgstr ""
 
 #: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
-#| msgid "All cumulative totals"
-msgid "Field Cumulative Values"
-msgstr "Dukkan jimla"
+#| msgid "Fields over Time Charts"
+msgid "Simple Chart"
+msgstr "Fiungiyoyi a kan Taswirar Lokaci"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
@@ -4438,9 +4435,9 @@ msgstr "Babu Bayanai"
 
 #: dt-metrics/records/time-charts.php:41
 #, fuzzy
-#| msgid "Fields over Time Charts"
-msgid "Field Charts"
-msgstr "Fiungiyoyi a kan Taswirar Lokaci"
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "Binciken Bincike"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -5189,9 +5186,13 @@ msgstr "Share kuma musanya hanyar haɗin app"
 msgid "Added new report"
 msgstr "Newara sabon rahoto"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Rahoton da aka sabunta"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Tsayawa Taswira"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -6014,7 +6015,7 @@ msgstr ""
 "maimakon haka zaɓi katun, hoto, ko kuma sunan laƙabi don wakiltar ku."
 
 #: template-settings.php:638
-msgid "upload new profile image"
+msgid "Upload new profile image"
 msgstr ""
 
 #: template-settings.php:648 template-settings.php:649
@@ -6061,6 +6062,26 @@ msgstr "Samun damar shiga lambobin sadarwa:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Abubuwan da aka samo:"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "Ƙara Records"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Awo"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "Ayyukan yau da kullun"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Dukkan jimla"
 
 #~ msgid "No Answer"
 #~ msgstr "Babu Amsa"

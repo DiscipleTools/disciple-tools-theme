@@ -18,8 +18,13 @@ $post_settings = DT_Posts::get_post_settings( $dt_post_type );
 
 $type_choice_present = false;
 $selected_type = null;
-if ( isset( $post_settings['fields']['type'] ) && sizeof( $post_settings['fields']['type']['default'] ) > 1 ){
-    $type_choice_present = true;
+if ( isset( $post_settings['fields']['type']['default'] ) ){
+    $non_hidden_choices = array_filter( $post_settings['fields']['type']['default'], function ( $type_option ){
+        return empty( $type_option['hidden'] ) && !empty( $type_option['in_create_form'] );
+    } );
+    if ( count( $non_hidden_choices ) > 1 ){
+        $type_choice_present = true;
+    }
 }
 ?>
 

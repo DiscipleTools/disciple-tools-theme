@@ -59,9 +59,9 @@ class Disciple_Tools_PWA
         if ( !isset( $_SERVER['REQUEST_URI'] ) ) {
             return;
         }
-        $uri = remove_query_arg( array_keys( $_GET ), sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
+        $uri = dt_get_url_path( true );
 
-        if ( '/manifest.json' === $uri ) {
+        if ( 'manifest.json' === $uri ) {
             $this->print_manifest_json();
             return;
         }
