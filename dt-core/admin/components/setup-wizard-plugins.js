@@ -81,7 +81,7 @@ export class SetupWizardPlugins extends OpenLitElement {
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
-          .translations=${{ next: 'install and activate selected plugins' }}
+          nextLabel="install and activate selected plugins"
           @next=${this.next}
           @back=${this.back}
         ></setup-wizard-controls>
