@@ -92,7 +92,7 @@ jQuery(function ($) {
                         </div>
                         <div class="extension-buttons"></div>
                         <div class="desc column-description">
-                            <p>${plugin_description}</p>
+                            <p title="${plugin['description']}">${shorten_description(plugin['description'])}</p>
                             <p class="authors">
                                 <cite>${plugin_by_text.replace(
                                   '%s',
@@ -151,8 +151,8 @@ jQuery(function ($) {
   }
 
   function shorten_description(description = '') {
-    if (description.length > 75) {
-      description = description.slice(0, 175) + '...';
+    if (description.length > 88) {
+      description = description.slice(0, 88) + '...';
     }
     return description;
   }
