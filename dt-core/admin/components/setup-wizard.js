@@ -121,21 +121,17 @@ export class SetupWizard extends LitElement {
         flex-direction: column;
         min-block-size: 80vh;
       }
-
       .cover > * {
         margin-block: 0.5rem;
       }
-
+      .cover > .content {
+        margin-block-end: auto;
+      }
       .cover > :first-child:not(.content) {
         margin-block-start: 0;
       }
-
       .cover > :last-child:not(.content) {
         margin-block-end: 0;
-      }
-
-      .cover > .content {
-        margin-block-end: auto;
       }
       /* Utilities */
       .ms-auto {
@@ -196,21 +192,25 @@ export class SetupWizard extends LitElement {
       .toggle {
         position: relative;
         display: inline-block;
-
         input {
           display: none;
         }
-        span {
+        div {
           display: inline-block;
           padding-block: 1rem;
-          background-color: var(--default-dark);
+          background-color: var(--default-color);
           border-radius: 8px;
           width: 100%;
           text-align: center;
         }
-        input:checked + span {
+        input:checked + div {
           background-color: var(--secondary-color);
           color: white;
+          h1,
+          h2,
+          h3 {
+            color: white;
+          }
         }
       }
       .breadcrumbs {
@@ -447,23 +447,23 @@ export class SetupWizard extends LitElement {
         <div class="grid" size="small">
           <label class="toggle">
             <input type="checkbox" />
-            <span>Name</span>
+            <div>Name</div>
           </label>
           <label class="toggle">
             <input type="checkbox" />
-            <span>Gender</span>
+            <div>Gender</div>
           </label>
           <label class="toggle">
             <input type="checkbox" />
-            <span>Email</span>
+            <div>Email</div>
           </label>
           <label class="toggle">
             <input type="checkbox" />
-            <span>Location</span>
+            <div>Location</div>
           </label>
           <label class="toggle">
             <input type="checkbox" />
-            <span>Phone</span>
+            <div>Phone</div>
           </label>
         </div>
         <h3>Stepper</h3>
