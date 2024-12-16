@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Tamil <https://translate.disciple.tools/projects/disciple-"
@@ -363,8 +363,7 @@ msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "பயனர்களைத் தேடுங்கள்"
 
-#: archive-template.php:594 dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
 #: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
@@ -1128,8 +1127,8 @@ msgid "Admin"
 msgstr "நிர்வாகம்"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1693,7 +1692,6 @@ msgid "Digital Responder"
 msgstr "டிஜிட்டல் பதிலளிப்பவர்"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "ஒதுக்கப்படும்"
@@ -1703,8 +1701,8 @@ msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "இந்த தொடர்பைப் புகாரளிக்கப் பொறுப்பான முக்கிய நபரைத் தேர்ந்தெடுக்கவும்."
 
-#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
+#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "தேடுபவர் பாதை"
 
@@ -1746,6 +1744,7 @@ msgid "Being Coached"
 msgstr "பயிற்சியாளராக இருப்பது"
 
 #: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "தொடர்பு நிலை"
 
@@ -1974,11 +1973,8 @@ msgstr "ஏற்றுக்கொள்ளப்பட்டது"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "தனிப்பட்ட"
 
@@ -2133,16 +2129,10 @@ msgstr "நகல் சரிபார்ப்பு"
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
@@ -2490,7 +2480,8 @@ msgstr "திருத்தியது"
 msgid "Private Connection"
 msgstr "தனிப்பட்ட இணைப்பு"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
 msgid "Faith Milestones"
 msgstr "நம்பிக்கை மைல்கற்கள்"
 
@@ -2652,7 +2643,7 @@ msgid "Coached by me"
 msgstr "என்னால் பயிற்றுவிக்கப்பட்டவர்"
 
 #: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:218
+#: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "விரைவான செயல்கள்"
 
@@ -3052,7 +3043,6 @@ msgstr ""
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "குழு"
 
@@ -3060,11 +3050,10 @@ msgstr "குழு"
 #: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3163,7 +3152,7 @@ msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "ஒரு குழு / தேவாலயத்தின் முன்னேற்றம் மற்றும் ஆரோக்கியத்தைக் கண்காணிக்கவும்."
 
-#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194
 msgid "Baptism"
 msgstr "ஞானஸ்நானம்"
 
@@ -3549,8 +3538,8 @@ msgid "Lost Password"
 msgstr "கடவுச்சொல்லை மீட்டமைக்க"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "தேவாலயங்கள்"
 
@@ -3618,7 +3607,7 @@ msgstr "சிக்கலான பாதை"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
@@ -3743,9 +3732,7 @@ msgstr ""
 msgid "Activity by Day"
 msgstr "நாள் தோறும் செயல்பாடு"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "தேதி வரம்பிற்கு வடிகட்டவும்"
@@ -3783,7 +3770,7 @@ msgstr ""
 "செய்யவும்."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "அளவீடுகள்"
 
@@ -3817,8 +3804,6 @@ msgstr "ஒருங்கிணைந்த வரைபடங்கள்"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
 #: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
@@ -3872,53 +3857,9 @@ msgstr "தேதி வரம்பில் %s மாற்றங்கள்"
 msgid "No Data Available"
 msgstr "தரவு எதுவும் கிடைக்கவில்லை"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "ஞானஸ்நானம் மரம்"
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "ஞானஸ்நானம் உருவாக்கும் மரம்"
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "பயிற்சி மரம்"
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "பயிற்சி தலைமுறை மரம்"
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "தொடர்பு வரைபடங்களை அணுகவும்"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "மைல்கற்கள் வரைபடம்"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "மைல்கற்கள்"
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "மைல்கற்கள் விளக்கப்படம்"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "தேதி வரம்பிற்கு தொடர்புகளை வடிகட்டவும்:"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/select-tags-charts.php:89
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
-msgid "All Time"
-msgstr "எல்லா நேரமும்"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3955,6 +3896,18 @@ msgstr "அனைத்து செயலில் உள்ள தொடர்
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "ஆதாரங்கள் விளக்கப்படம்"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "தேதி வரம்பிற்கு தொடர்புகளை வடிகட்டவும்:"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "எல்லா நேரமும்"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -4045,49 +3998,11 @@ msgstr "தலைமுறைகள்"
 msgid "Generation"
 msgstr "தலைமுறை"
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "குழுக்கள் மரம்"
-
-#: dt-metrics/groups/tree.php:80
-msgid "Group Generation Tree"
-msgstr "குழு தலைமுறை மரம்"
-
-#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
-#: dt-metrics/records/genmap.php:143
-msgid "Highlight Active"
-msgstr "செயலில் முன்னிலைப்படுத்தவும்"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:144
-msgid "Highlight Churches"
-msgstr "தேவாலயங்களை முன்னிலைப்படுத்தவும்"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
-msgid "Members"
-msgstr "உறுப்பினர்கள்"
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:146
-msgid "View Record"
-msgstr "பதிவைப் பார்க்கவும்"
-
-#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:149
-msgid "Total Members"
-msgstr "மொத்த உறுப்பினர்கள்"
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:150
-msgid "View Group"
-msgstr "குழுவைக் காண்க"
-
-#: dt-metrics/metrics.php:86
+#: dt-metrics/metrics.php:79
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
 msgstr ""
 
@@ -4134,7 +4049,7 @@ msgstr "நான் பதிவிட்ட கருத்துக்கள�
 msgid "Date"
 msgstr "தேதி"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "%1$d %2$s உருவாக்கப்பட்டது"
 
@@ -4146,42 +4061,6 @@ msgstr "நடவடிக்கை பதிவு"
 #: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "குறைவாக"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "என் ஞானஸ்நான மரம்"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "எனது ஞானஸ்நானம் உருவாக்கும் மரம்"
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "எனது பயிற்சி மரம்"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "எனது பயிற்சி தலைமுறை மரம்"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "சீடர்"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "எனது குழுக்கள் மரம்"
-
-#: dt-metrics/personal/group-tree.php:81
-msgid "My Group Generation Tree"
-msgstr "எனது குழு தலைமுறை மரம்"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "தொடர்புகள் வரைபடங்கள்"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "குழுக்கள் வரைபடங்கள்"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4346,6 +4225,30 @@ msgstr "எல்லா புலங்களையும் காட்டு"
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "செயலில் முன்னிலைப்படுத்தவும்"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "தேவாலயங்களை முன்னிலைப்படுத்தவும்"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "உறுப்பினர்கள்"
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "பதிவைப் பார்க்கவும்"
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "மொத்த உறுப்பினர்கள்"
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "குழுவைக் காண்க"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
@@ -6048,6 +5951,60 @@ msgstr "அணுகல் தொடர்புகள் ஸ்கேன்:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "நகல்கள் காணப்படுகின்றன:"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "ஞானஸ்நானம் மரம்"
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "ஞானஸ்நானம் உருவாக்கும் மரம்"
+
+#~ msgid "Coaching Tree"
+#~ msgstr "பயிற்சி மரம்"
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "பயிற்சி தலைமுறை மரம்"
+
+#~ msgid "Milestones Map"
+#~ msgstr "மைல்கற்கள் வரைபடம்"
+
+#~ msgid "Milestones"
+#~ msgstr "மைல்கற்கள்"
+
+#~ msgid "Milestones Chart"
+#~ msgstr "மைல்கற்கள் விளக்கப்படம்"
+
+#~ msgid "Groups Tree"
+#~ msgstr "குழுக்கள் மரம்"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "குழு தலைமுறை மரம்"
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "என் ஞானஸ்நான மரம்"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "எனது ஞானஸ்நானம் உருவாக்கும் மரம்"
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "எனது பயிற்சி மரம்"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "எனது பயிற்சி தலைமுறை மரம்"
+
+#~ msgid "Disciple"
+#~ msgstr "சீடர்"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "எனது குழுக்கள் மரம்"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "எனது குழு தலைமுறை மரம்"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "தொடர்புகள் வரைபடங்கள்"
+
+#~ msgid "Groups Maps"
+#~ msgstr "குழுக்கள் வரைபடங்கள்"
 
 #, fuzzy
 #~| msgid "Add Records"

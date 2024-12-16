@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
 "PO-Revision-Date: 2024-06-26 16:59+0000\n"
 "Last-Translator: Dragana <celikdragana0@gmail.com>\n"
 "Language-Team: Bosnian <https://translate.disciple.tools/projects/disciple-"
@@ -362,8 +362,7 @@ msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Pretražite korisnike"
 
-#: archive-template.php:594 dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
 #: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
@@ -1074,8 +1073,8 @@ msgid "Admin"
 msgstr "Admin"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1622,7 +1621,6 @@ msgid "Digital Responder"
 msgstr "Operater"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Dodijeljen"
@@ -1633,8 +1631,8 @@ msgid ""
 msgstr ""
 "Odaberite glavnu osobu koja je odgovorna za izvještavanje o ovom kontaktu."
 
-#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
+#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "Put tragača"
 
@@ -1676,6 +1674,7 @@ msgid "Being Coached"
 msgstr "U toku treniranja"
 
 #: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Status kontakta"
 
@@ -1902,11 +1901,8 @@ msgstr "Prihvaćen/a"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Lično"
 
@@ -2064,16 +2060,10 @@ msgstr "Provjera za duplikate"
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
@@ -2420,7 +2410,8 @@ msgstr "Redigovano"
 msgid "Private Connection"
 msgstr "Privatna veza"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
 msgid "Faith Milestones"
 msgstr "Prekretnica vjere"
 
@@ -2585,7 +2576,7 @@ msgid "Coached by me"
 msgstr "Ja sam ga/je trenirao/la"
 
 #: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:218
+#: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "Brze akcije"
 
@@ -2989,7 +2980,6 @@ msgstr "Saznati više"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "Grupa"
 
@@ -2997,11 +2987,10 @@ msgstr "Grupa"
 #: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3096,7 +3085,7 @@ msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Pratite napredak i zdravlje grupe / crkve."
 
-#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194
 msgid "Baptism"
 msgstr "Krštenje"
 
@@ -3471,8 +3460,8 @@ msgid "Lost Password"
 msgstr "Izgubljena šifra"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "Crkve"
 
@@ -3540,7 +3529,7 @@ msgstr "Kritična staza"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
@@ -3665,9 +3654,7 @@ msgstr ""
 msgid "Activity by Day"
 msgstr "Aktivnost po danu"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "Filtrirajte prema datumskom rasponu"
@@ -3706,7 +3693,7 @@ msgstr ""
 "metrika ispod."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "Pokazatelji"
 
@@ -3740,8 +3727,6 @@ msgstr "Kombinirane mape"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
 #: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
@@ -3795,53 +3780,9 @@ msgstr "%s promjena tokom perioda"
 msgid "No Data Available"
 msgstr "Nema dostupnih podataka"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "Drvo krštenja"
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "Drvo generacijskih krštenja"
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "Drvo treniranja"
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "Drvo generacijskih trenera"
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "Pristupite kontakt mapama"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "Mapa prekretnica"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "Prekretnice"
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "Grafikon prekretnica"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "Filtrirajte kontakte prema datumskom rasponu:"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/select-tags-charts.php:89
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
-msgid "All Time"
-msgstr "Cijelo vrijeme"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3878,6 +3819,18 @@ msgstr "Slijeđenje svih aktivnih kontakata"
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "Grafikon izvora"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "Filtrirajte kontakte prema datumskom rasponu:"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "Cijelo vrijeme"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -3968,49 +3921,11 @@ msgstr "Generacije"
 msgid "Generation"
 msgstr "Generacija"
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "Stablo grupa"
-
-#: dt-metrics/groups/tree.php:80
-msgid "Group Generation Tree"
-msgstr "Drvo generacijskih grupa"
-
-#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
-#: dt-metrics/records/genmap.php:143
-msgid "Highlight Active"
-msgstr "Istaknite Aktivan/na"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:144
-msgid "Highlight Churches"
-msgstr "Istaknite Crkve"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
-msgid "Members"
-msgstr "Članovi"
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:146
-msgid "View Record"
-msgstr "Pogledajte zapis"
-
-#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:149
-msgid "Total Members"
-msgstr "Ukupan broj članova"
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:150
-msgid "View Group"
-msgstr "Pogledajte grupu"
-
-#: dt-metrics/metrics.php:86
+#: dt-metrics/metrics.php:79
 msgid "Genmap"
 msgstr "Generacijska mapa"
 
-#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
 msgstr ""
 
@@ -4057,7 +3972,7 @@ msgstr "Komentari i objave"
 msgid "Date"
 msgstr "Datum"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "Kreirano %1$d %2$s"
 
@@ -4069,42 +3984,6 @@ msgstr "Dnevnik aktivnosti"
 #: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "Manje"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "Moje drvo krštenja"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "Moje drvo generacije krštenja"
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "Moje drvo trenera"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "Moje drvo generacije trenera"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "Učenik"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "Stablo mojih grupa"
-
-#: dt-metrics/personal/group-tree.php:81
-msgid "My Group Generation Tree"
-msgstr "Stablo generacije moje grupe"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "Kontakti mape"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "Grupe mape"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4246,6 +4125,30 @@ msgstr "Prikaži sva polja"
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "Istaknite Aktivan/na"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "Istaknite Crkve"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "Članovi"
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "Pogledajte zapis"
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "Ukupan broj članova"
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "Pogledajte grupu"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
@@ -5890,6 +5793,60 @@ msgstr "Pristup skeniranim kontaktima:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Pronađeni duplikati:"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "Drvo krštenja"
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "Drvo generacijskih krštenja"
+
+#~ msgid "Coaching Tree"
+#~ msgstr "Drvo treniranja"
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "Drvo generacijskih trenera"
+
+#~ msgid "Milestones Map"
+#~ msgstr "Mapa prekretnica"
+
+#~ msgid "Milestones"
+#~ msgstr "Prekretnice"
+
+#~ msgid "Milestones Chart"
+#~ msgstr "Grafikon prekretnica"
+
+#~ msgid "Groups Tree"
+#~ msgstr "Stablo grupa"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "Drvo generacijskih grupa"
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "Moje drvo krštenja"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "Moje drvo generacije krštenja"
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "Moje drvo trenera"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "Moje drvo generacije trenera"
+
+#~ msgid "Disciple"
+#~ msgstr "Učenik"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "Stablo mojih grupa"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "Stablo generacije moje grupe"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "Kontakti mape"
+
+#~ msgid "Groups Maps"
+#~ msgstr "Grupe mape"
 
 #~ msgid "Records Map"
 #~ msgstr "Dodaj mape"

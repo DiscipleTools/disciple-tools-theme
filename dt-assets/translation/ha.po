@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Hausa <https://translate.disciple.tools/projects/disciple-"
@@ -360,8 +360,7 @@ msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Masu Amfani da Bincike"
 
-#: archive-template.php:594 dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
 #: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
@@ -1124,8 +1123,8 @@ msgid "Admin"
 msgstr "Gudanarwa"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1689,7 +1688,6 @@ msgid "Digital Responder"
 msgstr "Mai ba da amsa na Dijital"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Sanyawa Zuwa"
@@ -1701,8 +1699,8 @@ msgstr ""
 "Zaɓi babban mutumin da ke da alhakin bayar da rahoto game da wannan lambar "
 "sadarwar."
 
-#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
+#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "Hanyar Mai Neman"
 
@@ -1744,6 +1742,7 @@ msgid "Being Coached"
 msgstr "Ana Koyawa"
 
 #: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Halin Saduwa"
 
@@ -1971,11 +1970,8 @@ msgstr "An karɓa"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Na sirri"
 
@@ -2134,16 +2130,10 @@ msgstr "Kwafin Checker"
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
@@ -2493,7 +2483,8 @@ msgstr "sake gyarawa"
 msgid "Private Connection"
 msgstr "Haɗin Kai"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
 msgid "Faith Milestones"
 msgstr "Bangaran Imani"
 
@@ -2658,7 +2649,7 @@ msgid "Coached by me"
 msgstr "Kocina da ni"
 
 #: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:218
+#: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "Ayyuka Cikin Sauri"
 
@@ -3063,7 +3054,6 @@ msgstr ""
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "Rukuni"
 
@@ -3071,11 +3061,10 @@ msgstr "Rukuni"
 #: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3175,7 +3164,7 @@ msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Bibiya ci gaba da lafiyar ƙungiyar / coci."
 
-#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194
 msgid "Baptism"
 msgstr "Baftisma"
 
@@ -3561,8 +3550,8 @@ msgid "Lost Password"
 msgstr "Sake saita kalmar wucewa"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "Ikklisiya"
 
@@ -3630,7 +3619,7 @@ msgstr "Hanya mai mahimmanci"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
@@ -3755,9 +3744,7 @@ msgstr ""
 msgid "Activity by Day"
 msgstr "Ayyuka ta rana"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "Tace zuwa kwanan wata"
@@ -3794,7 +3781,7 @@ msgstr ""
 "Danna kan taƙaitawar ranakun lokaci don nuna cikakken jerin awo a ƙasa."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "Awo"
 
@@ -3828,8 +3815,6 @@ msgstr "Hada Taswirori"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
 #: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
@@ -3883,53 +3868,9 @@ msgstr "%s canje-canje yayin kewayon kwanan wata"
 msgid "No Data Available"
 msgstr "Babu Bayanai"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "Baftisma"
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "Baftisma Tsarin Zamani"
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "Koyarwar Bishiya"
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "Koyarwar Zamani Mai Horarwa"
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "Shiga Taswirar Saduwa"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "Taswirar Milestones"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "Dutse masu tsayi"
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "Shafin Milestones"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "Tace lambobin sadarwa zuwa kwanan wata:"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/select-tags-charts.php:89
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
-msgid "All Time"
-msgstr "Duk Lokaci"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3966,6 +3907,18 @@ msgstr "Bin duk lambobin aiki"
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "Shafin tushe"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "Tace lambobin sadarwa zuwa kwanan wata:"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "Duk Lokaci"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -4056,49 +4009,11 @@ msgstr "tsararraki"
 msgid "Generation"
 msgstr "Zamani"
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "Kungiyoyi"
-
-#: dt-metrics/groups/tree.php:80
-msgid "Group Generation Tree"
-msgstr "Tungiyar Bishiyar Groupungiya"
-
-#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
-#: dt-metrics/records/genmap.php:143
-msgid "Highlight Active"
-msgstr "Haskaka Aiki"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:144
-msgid "Highlight Churches"
-msgstr "Haskaka Ikklisiya"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
-msgid "Members"
-msgstr "Membobi"
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:146
-msgid "View Record"
-msgstr "Duba Rikodi"
-
-#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:149
-msgid "Total Members"
-msgstr "Jimlar Membobi"
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:150
-msgid "View Group"
-msgstr "Duba Groupungiya"
-
-#: dt-metrics/metrics.php:86
+#: dt-metrics/metrics.php:79
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
 msgstr ""
 
@@ -4145,7 +4060,7 @@ msgstr "Sharhi Na Buga"
 msgid "Date"
 msgstr "Kwanan wata"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "An ƙirƙira %1$d %2$s"
 
@@ -4157,42 +4072,6 @@ msgstr "Log ɗin Ayyuka"
 #: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "Kadan"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "Itatuwan Baftisma Na"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "Tsarin Bishiyar Na Baftisma"
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "Bishiyar Koyawa Na"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "Bishiyar Zamani Na Koyawa"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "Almajiri"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "Reeungiyata Itace"
-
-#: dt-metrics/personal/group-tree.php:81
-msgid "My Group Generation Tree"
-msgstr "Tungiya ta Groupungiya ta Groupungiya"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "Lambobin sadarwa"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "Taswirar sungiyoyi"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4357,6 +4236,30 @@ msgstr "Nuna duk filayen"
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "Haskaka Aiki"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "Haskaka Ikklisiya"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "Membobi"
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "Duba Rikodi"
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "Jimlar Membobi"
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "Duba Groupungiya"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
@@ -6062,6 +5965,60 @@ msgstr "Samun damar shiga lambobin sadarwa:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Abubuwan da aka samo:"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "Baftisma"
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "Baftisma Tsarin Zamani"
+
+#~ msgid "Coaching Tree"
+#~ msgstr "Koyarwar Bishiya"
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "Koyarwar Zamani Mai Horarwa"
+
+#~ msgid "Milestones Map"
+#~ msgstr "Taswirar Milestones"
+
+#~ msgid "Milestones"
+#~ msgstr "Dutse masu tsayi"
+
+#~ msgid "Milestones Chart"
+#~ msgstr "Shafin Milestones"
+
+#~ msgid "Groups Tree"
+#~ msgstr "Kungiyoyi"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "Tungiyar Bishiyar Groupungiya"
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "Itatuwan Baftisma Na"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "Tsarin Bishiyar Na Baftisma"
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "Bishiyar Koyawa Na"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "Bishiyar Zamani Na Koyawa"
+
+#~ msgid "Disciple"
+#~ msgstr "Almajiri"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "Reeungiyata Itace"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "Tungiya ta Groupungiya ta Groupungiya"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "Lambobin sadarwa"
+
+#~ msgid "Groups Maps"
+#~ msgstr "Taswirar sungiyoyi"
 
 #, fuzzy
 #~| msgid "Add Records"
