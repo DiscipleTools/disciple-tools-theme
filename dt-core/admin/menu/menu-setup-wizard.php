@@ -52,6 +52,8 @@ class DT_Setup_Wizard
             'translations' => [
                 'title' => esc_html__( 'Disciple.Tools Setup Wizard', 'disciple_tools' ),
                 'next' => esc_html__( 'Next', 'disciple_tools' ),
+                'submit' => esc_html__( 'Submit', 'disciple_tools' ),
+                'confirm' => esc_html__( 'Confirm', 'disciple_tools' ),
                 'back' => esc_html__( 'Back', 'disciple_tools' ),
             ],
             'steps' => $this->setup_wizard_steps(),

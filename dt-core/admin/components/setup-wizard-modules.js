@@ -22,7 +22,7 @@ export class SetupWizardModules extends OpenLitElement {
     super();
     this.stage = 'work';
     this.data = window.setupWizardShare.data;
-    this.useCases = [];
+    this.translations = window.setupWizardShare.translations;
     this.option = {};
     this.availableModules = [];
     this.selectedModules = [];
@@ -45,6 +45,8 @@ export class SetupWizardModules extends OpenLitElement {
   back() {
     switch (this.stage) {
       case 'follow-up':
+      /* Fallthrough */
+      case 'confirm':
         this.stage = 'work';
         break;
       case 'work':
@@ -61,12 +63,25 @@ export class SetupWizardModules extends OpenLitElement {
         this.stage = 'work';
         break;
       case 'work':
+        this.stage = 'confirm';
+        break;
+      case 'confirm':
         /* TODO: fire off to the API here */
         this.stage = 'follow-up';
         break;
       case 'follow-up':
         this.dispatchEvent(new CustomEvent('next'));
         break;
+    }
+  }
+  nextLabel() {
+    switch (this.stage) {
+      case 'work':
+        return this.translations.confirm;
+      case 'confirm':
+        return this.translations.submit;
+      default:
+        return this.translations.next;
     }
   }
   selectOption(option) {
@@ -178,6 +193,15 @@ export class SetupWizardModules extends OpenLitElement {
                 </section>
               `
             : ''}
+          ${this.stage === 'confirm'
+            ? html`
+                <h2>Confirm your selection</h2>
+                <h3>These modules will be turned on</h3>
+                <ul></ul>
+                <h3>These modules will be turned off</h3>
+                <ul></ul>
+              `
+            : ''}
           ${this.stage === 'follow-up'
             ? html`
                 <h2>Your choices have been implemented</h2>
@@ -190,6 +214,8 @@ export class SetupWizardModules extends OpenLitElement {
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep && this.stage === 'prompt'}
+          nextLabel=${this.nextLabel()}
+          backLabel=${this.translations.back}
           @next=${this.next}
           @back=${this.back}
         ></setup-wizard-controls>
