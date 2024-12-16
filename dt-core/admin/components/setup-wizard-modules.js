@@ -1,18 +1,11 @@
 import {
   html,
   css,
+  repeat,
 } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 import { OpenLitElement } from './setup-wizard-open-element.js';
 
 export class SetupWizardModules extends OpenLitElement {
-  static styles = [
-    css`
-      :host {
-        display: block;
-      }
-    `,
-  ];
-
   static get properties() {
     return {
       step: { type: Object },
@@ -20,16 +13,19 @@ export class SetupWizardModules extends OpenLitElement {
       stage: { type: String, attribute: false },
       useCases: { type: Array, attribute: false },
       option: { type: Object, attribute: false },
+      availableModules: { type: Array, attribute: false },
+      selectedModules: { type: Array, attribute: false },
     };
   }
 
   constructor() {
     super();
-
-    this.stage = 'prompt';
+    this.stage = 'work';
     this.data = window.setupWizardShare.data;
     this.useCases = [];
     this.option = {};
+    this.availableModules = [];
+    this.selectedModules = [];
   }
 
   firstUpdated() {
@@ -43,8 +39,7 @@ export class SetupWizardModules extends OpenLitElement {
     this.useCases = useCaseKeys.map(
       (useCaseKey) => this.data.use_cases[useCaseKey],
     );
-
-    console.log(useCaseKeys, this.useCases);
+    this.availableModules = this.data.modules;
   }
 
   back() {
@@ -74,15 +69,26 @@ export class SetupWizardModules extends OpenLitElement {
         break;
     }
   }
-
   selectOption(option) {
     this.option = option;
+    this.selectedModules = option.recommended_modules;
+  }
+  toggleModule(key) {
+    if (this.selectedModules.includes(key)) {
+      const index = this.selectedModules.findIndex((module) => module === key);
+      this.selectedModules = [
+        ...this.selectedModules.slice(0, index),
+        ...this.selectedModules.slice(index + 1),
+      ];
+    } else {
+      this.selectedModules = [...this.selectedModules, key];
+    }
   }
 
   render() {
     return html`
       <div class="cover">
-        <div class="content">
+        <div class="content flow">
           ${this.stage === 'prompt'
             ? html`
                 <h2>Time to customize what fields are available.</h2>
@@ -126,6 +132,39 @@ export class SetupWizardModules extends OpenLitElement {
                       : ''}
                   </div>
                 </div>
+                <section>
+                  <h2>Available Modules</h2>
+                  <div class="modules">
+                    ${Object.keys(this.availableModules).length > 0
+                      ? html`
+                          <div class="flow" size="small">
+                            ${repeat(
+                              this.availableModules,
+                              (module) => module.key,
+                              (module) => {
+                                return html`
+                                  <label class="toggle" key=${module.key}>
+                                    <input
+                                      type="checkbox"
+                                      ?checked=${this.selectedModules.includes(
+                                        module.key,
+                                      )}
+                                      @change=${() =>
+                                        this.toggleModule(module.key)}
+                                    />
+                                    <div class="flow">
+                                      <h3>${module.name}</h3>
+                                      <p>${module.description}</p>
+                                    </div>
+                                  </label>
+                                `;
+                              },
+                            )}
+                          </div>
+                        `
+                      : ''}
+                  </div>
+                </section>
               `
             : ''}
           ${this.stage === 'follow-up'
