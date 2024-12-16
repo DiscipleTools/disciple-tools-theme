@@ -42,6 +42,10 @@ class DT_Contacts_Base {
 
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
+        add_filter( 'dt_search_viewable_posts_query', [ $this, 'dt_search_viewable_posts_query' ], 10, 1 );
+
+        //notifications
+        add_filter( 'dt_filter_users_receiving_comment_notification', [ $this, 'dt_filter_users_receiving_comment_notification' ], 10, 4 );
     }
 
 
@@ -359,6 +363,9 @@ class DT_Contacts_Base {
 
     public function dt_record_footer( $post_type, $post_id ){
         if ( $post_type === 'contacts' ) :
+            //revert modal
+            get_template_part( 'dt-assets/parts/modals/modal', 'revert' );
+
             $contact_fields = DT_Posts::get_post_field_settings( $post_type );
             $post = DT_Posts::get_post( $post_type, $post_id );
 
@@ -441,6 +448,15 @@ class DT_Contacts_Base {
 
 
     public function post_connection_added( $post_type, $post_id, $post_key, $value ){
+        if ( $post_type === 'contacts' ){
+            if ( $post_key === 'subassigned' ){
+                $user_id = get_post_meta( $value, 'corresponds_to_user', true );
+                if ( $user_id ){
+                    DT_Posts::add_shared( $post_type, $post_id, $user_id, null, false, false, false );
+                    Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $post_id );
+                }
+            }
+        }
     }
     public function post_connection_removed( $post_type, $post_id, $post_key, $value ){
     }
@@ -485,11 +501,58 @@ class DT_Contacts_Base {
         return $fields;
     }
 
+    /*
+     * Check other access contacts for possible duplicates
+     */
+    private function check_for_duplicates( $post_type, $post_id ){
+        if ( get_current_user_id() === 0 ){
+            $current_user = wp_get_current_user();
+            $had_cap = current_user_can( 'dt_all_access_contacts' );
+            $current_user->add_cap( 'dt_all_access_contacts' );
+            $dup_ids = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( $post_type, $post_id, true );
+            if ( ! is_wp_error( $dup_ids ) && sizeof( $dup_ids['ids'] ) < 10 ){
+                $comment = __( 'This record might be a duplicate of: ', 'disciple_tools' );
+                foreach ( $dup_ids['ids'] as $id_of_duplicate ){
+                    $comment .= " \n -  [$id_of_duplicate]($id_of_duplicate)";
+                }
+                $args = [
+                    'user_id' => 0,
+                    'comment_author' => __( 'Duplicate Checker', 'disciple_tools' )
+                ];
+                DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'duplicate', $args, false, true );
+            }
+            if ( !$had_cap ){
+                $current_user->remove_cap( 'dt_all_access_contacts' );
+            }
+        }
+    }
+
+    public function dt_filter_users_receiving_comment_notification( $users_to_notify, $post_type, $post_id, $comment ){
+        if ( $post_type === 'contacts' ){
+            $post = DT_Posts::get_post( $post_type, $post_id );
+            if ( !is_wp_error( $post ) && isset( $post['type']['key'] ) && $post['type']['key'] === 'access' ){
+                $following_all = get_users( [
+                    'meta_key' => 'dt_follow_all',
+                    'meta_value' => true
+                ] );
+                foreach ( $following_all as $user ){
+                    if ( !in_array( $user->ID, $users_to_notify ) ){
+                        $users_to_notify[] = $user->ID;
+                    }
+                }
+            }
+        }
+        return $users_to_notify;
+    }
+
     //list page filters function
     public static function dt_user_list_filters( $filters, $post_type ){
         if ( $post_type === 'contacts' ){
-            $shared_by_type_counts = DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
+            $performance_mode = get_option( 'dt_performance_mode', false );
+            $shared_by_type_counts = $performance_mode ? [] : DT_Posts_Metrics::get_shared_with_meta_field_counts( 'contacts', 'type' );
             $post_label_plural = DT_Posts::get_post_settings( $post_type )['label_plural'];
+            $private_contacts_enabled = $post_type_settings['contacts']['enable_private_contacts'] ?? false;
+
 
             $filters['tabs'][] = [
                 'key' => 'default',
@@ -534,16 +597,49 @@ class DT_Contacts_Base {
                     [ 'id' => 'recent', 'name' => __( 'Last 30 viewed', 'disciple_tools' ) ]
                 ]
             ];
+            // add assigned to me filters
             $filters['filters'][] = [
-                'ID' => 'personal',
+                'ID' => 'my_all',
                 'tab' => 'default',
-                'name' => __( 'Personal', 'disciple_tools' ),
+                'name' => __( 'My Assigned Contacts', 'disciple_tools' ),
                 'query' => [
-                    'type' => [ 'personal' ],
-                    'sort' => 'name',
+                    'assigned_to' => [ 'me' ],
+                    'subassigned' => [ 'me' ],
+                    'combine' => [ 'subassigned' ],
                     'overall_status' => [ '-closed' ],
+                    'type' => [ 'access' ],
+                    'sort' => 'overall_status',
                 ],
-                'count' => $shared_by_type_counts['keys']['personal'] ?? '',
+                'labels' => [
+                    [ 'name' => __( 'My Follow-Up', 'disciple_tools' ), 'field' => 'combine', 'id' => 'subassigned' ],
+                    [ 'name' => __( 'Assigned to me', 'disciple_tools' ), 'field' => 'assigned_to', 'id' => 'me' ],
+                    [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
+                ],
+                'count' => $total_my ?? '',
+            ];
+            if ( $private_contacts_enabled ){
+                $filters['filters'][] = [
+                    'ID' => 'personal',
+                    'tab' => 'default',
+                    'name' => __( 'Personal', 'disciple_tools' ),
+                    'query' => [
+                        'type' => [ 'personal' ],
+                        'sort' => 'name',
+                        'overall_status' => [ '-closed' ],
+                    ],
+                    'count' => $shared_by_type_counts['keys']['personal'] ?? '',
+                ];
+            }
+            $filters['filters'][] = [
+                'ID' => 'placeholder',
+                'tab' => 'default',
+                'name' => sprintf( _x( 'Connected %s', 'Personal records', 'disciple_tools' ), $post_label_plural ),
+                'query' => [
+                    'type' => [ 'placeholder' ],
+                    'overall_status' => [ '-closed' ],
+                    'sort' => 'name'
+                ],
+                'count' => $shared_by_type_counts['keys']['placeholder'] ?? '',
             ];
             $filters['filters'] = self::add_default_custom_list_filters( $filters['filters'] );
         }
@@ -573,7 +669,25 @@ class DT_Contacts_Base {
                         'field' => 'shared_with'
                     ],
                 ],
-            ]
+            ],
+            [
+                'ID' => 'my_subassigned',
+                'visible' => '1',
+                'type' => 'default',
+                'tab' => 'custom',
+                'name' => 'Subassigned to me',
+                'query' => [
+                    'subassigned' => [ 'me' ],
+                    'sort' => 'overall_status',
+                ],
+                'labels' => [
+                    [
+                        'id' => 'me',
+                        'name' => 'Subassigned to me',
+                        'field' => 'subassigned',
+                    ],
+                ],
+            ],
         ];
         //prepend filter if it is not already created.
         $contact_filter_ids = array_map( function ( $a ){
@@ -590,6 +704,10 @@ class DT_Contacts_Base {
                 $filters[$index]['name'] = __( 'Shared with me', 'disciple_tools' );
                 $filters[$index]['labels'][0]['name'] = __( 'Shared with me', 'disciple_tools' );
             }
+            if ( $filter['name'] === 'Subassigned to me' ) {
+                $filters[$index]['name'] = __( 'Subassigned only', 'disciple_tools' );
+                $filters[$index]['labels'][0]['name'] = __( 'Subassigned only', 'disciple_tools' );
+            }
         }
         return $filters;
     }
@@ -605,6 +723,40 @@ class DT_Contacts_Base {
 
     public function add_api_routes() {
         $namespace = 'dt-posts/v2';
+        register_rest_route(
+            $namespace, '/contacts/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'revert_activity' ],
+                'permission_callback' => '__return_true',
+            ]
+        );
+    }
+
+    /**
+     * Revert an activity
+     * @todo move this work for any post type
+     * @param WP_REST_Request $request
+     * @return array|WP_Error
+     */
+    public function revert_activity( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) && isset( $params['activity_id'] ) ) {
+            $contact_id = $params['id'];
+            $activity_id = $params['activity_id'];
+            if ( !DT_Posts::can_update( 'contacts', $contact_id ) ) {
+                return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+            }
+            $activity = DT_Posts::get_post_single_activity( 'contacts', $contact_id, $activity_id );
+            if ( empty( $activity->old_value ) ){
+                if ( strpos( $activity->meta_key, 'quick_button_' ) !== false ){
+                    $activity->old_value = 0;
+                }
+            }
+            update_post_meta( $contact_id, $activity->meta_key, $activity->old_value ?? '' );
+            return DT_Posts::get_post( 'contacts', $contact_id );
+        } else {
+            return new WP_Error( 'get_activity', 'Missing a valid contact id or activity id', [ 'status' => 400 ] );
+        }
     }
 
 

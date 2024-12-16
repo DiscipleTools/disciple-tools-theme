@@ -8,13 +8,6 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         'post_type' => 'contacts',
         'description' => 'Default contact functionality'
     ];
-    $modules['dmm_module'] = [
-        'name' => 'DMM Module',
-        'enabled' => true,
-        'prerequisites' => [ 'contacts_base' ],
-        'post_type' => 'contacts',
-        'description' => 'Field and workflows for Disciple Making Movements'
-    ];
     $modules['access_module'] = [
         'name' => 'Access Module',
         'enabled' => true,
@@ -35,8 +28,9 @@ new DT_Duplicate_Checker_And_Merging();
 require_once 'user-module.php';
 DT_Contacts_User::instance();
 
-require_once 'dmm-module.php';
-DT_Contacts_DMM::instance();
+require_once 'module-faith.php';
+require_once 'module-coaching.php';
+require_once 'module-baptisms.php';
 
 require_once 'access-module.php';
 DT_Contacts_Access::instance();
