@@ -41,8 +41,6 @@ export class SetupWizardModules extends OpenLitElement {
       return modules;
     }, {});
 
-    /* TODO: This is for after they have made changes to the use cases */
-    /* Once they have manually made changes to the modules selection, then this should reflect the currently updated modules */
     Object.entries(this.data.use_cases).forEach(([key, useCase]) => {
       if (useCase.selected) {
         useCase.recommended_modules.forEach((moduleKey) => {
@@ -50,7 +48,6 @@ export class SetupWizardModules extends OpenLitElement {
         });
       }
     });
-    console.log(this.availableModules, this.selectedModules);
   }
 
   back() {
