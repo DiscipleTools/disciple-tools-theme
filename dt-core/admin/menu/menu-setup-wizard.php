@@ -44,6 +44,7 @@ class DT_Setup_Wizard
     public function enqueue_scripts(){
         dt_theme_enqueue_script( 'setup-wizard', 'dt-core/admin/components/setup-wizard.js', [], true );
         dt_theme_enqueue_script( 'setup-wizard-open-element', 'dt-core/admin/components/setup-wizard-open-element.js', [ 'setup-wizard' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-use-cases', 'dt-core/admin/components/setup-wizard-use-cases.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-modules', 'dt-core/admin/components/setup-wizard-modules.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-plugins', 'dt-core/admin/components/setup-wizard-plugins.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-details', 'dt-core/admin/components/setup-wizard-details.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
@@ -112,15 +113,21 @@ class DT_Setup_Wizard
         $bloginfo = get_bloginfo();
         $steps = [
             [
-                'key' => 'choose_your_path',
-                'name' => 'Choose your path',
-                'component' => 'setup-wizard-modules',
+                'key' => 'choose_your_use_cases',
+                'name' => 'Choose your use cases',
+                'component' => 'setup-wizard-use-cases',
                 'description' => 'How are you planning to use DT?',
                 'config' => [
                     'media',
                     'crm',
                     'dmm',
                 ]
+            ],
+            [
+                'key' => 'choose_your_modules',
+                'name' => 'Choose your modules',
+                'component' => 'setup-wizard-modules',
+                'description' => 'What modules do you want to use?',
             ],
             [
                 'name' => 'Site details',

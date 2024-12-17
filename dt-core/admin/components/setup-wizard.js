@@ -191,7 +191,8 @@ export class SetupWizard extends LitElement {
       }
       .toggle {
         position: relative;
-        display: inline-block;
+        display: inline-flex;
+        cursor: pointer;
         input {
           display: none;
         }
