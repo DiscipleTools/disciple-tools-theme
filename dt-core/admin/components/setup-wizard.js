@@ -198,7 +198,7 @@ export class SetupWizard extends LitElement {
         }
         div {
           display: inline-block;
-          padding-block: 1rem;
+          padding: 1rem 0.5rem;
           background-color: var(--default-color);
           border-radius: 8px;
           width: 100%;
