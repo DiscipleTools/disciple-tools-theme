@@ -197,14 +197,14 @@ class DT_Setup_Wizard
                     'name' => 'Access Ministry',
                     'description' => 'Are you filtering for contacts for engagement?',
                     'recommended_modules' => [
-                        'foo',
-                        'lorem',
+                        'access_module',
                     ],
                     'recommended_plugins' => [
-                        'loremoo',
-                        'ipsum',
-                        'dolor',
-                        'amit',
+                        'disciple-tools-webform',
+                        'disciple-tools-facebook',
+                        'disciple-tools-dashboard',
+                        'disciple-tools-import',
+                        'disciple-tools-bulk-magic-link-sender',
                     ],
                 ],
                 'crm' => [
@@ -213,10 +213,9 @@ class DT_Setup_Wizard
                     'description' => 'Are you needing to manage your contacts?',
                     'recommended_modules' => [],
                     'recommended_plugins' => [
-                        'loremoo',
-                        'ipsum',
-                        'dolor',
-                        'amit',
+                        'disciple-tools-webform',
+                        'disciple-tools-import',
+                        'disciple-tools-bulk-magic-link-sender',
                     ],
                 ],
                 'dmm' => [
@@ -224,15 +223,16 @@ class DT_Setup_Wizard
                     'name' => 'Disciple Making Movements',
                     'description' => 'Are you managing multiplying groups?',
                     'recommended_modules' => [
-                        'bar',
-                        'ipsum',
-                        'dolor',
+                        'contacts_baptisms_module',
+                        'contacts_faith_module',
+                        'contacts_coaching_module',
+                        'groups_base',
+                        'people_groups_module'
                     ],
                     'recommended_plugins' => [
-                        'lorem',
-                        'ipsum',
-                        'dolor',
-                        'amit',
+                        'disciple-tools-webform',
+                        'disciple-tools-bulk-magic-link-sender',
+                        'disciple-tools-training',
                     ],
                 ],
             ],
