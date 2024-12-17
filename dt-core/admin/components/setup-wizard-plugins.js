@@ -97,16 +97,22 @@ export class SetupWizardPlugins extends OpenLitElement {
                 }
 
                 return html`
-          <tr @click=${() => {
-            plugin.selected = !plugin.selected;
-            this.requestUpdate();
-          }}>
-            <td>${plugin.name}</td>
-            <td>${action}</td>
-            <td style="max-width: 50%">${plugin.description}</td>
-            <td><a href=${plugin.permalink} target="_blank">Plugin Link</a></
-          </tr>
-          `;
+                  <tr
+                    @click=${() => {
+                      plugin.selected = !plugin.selected;
+                      this.requestUpdate();
+                    }}
+                  >
+                    <td>${plugin.name}</td>
+                    <td>${action}</td>
+                    <td style="max-width: 50%">${plugin.description}</td>
+                    <td>
+                      <a href=${plugin.permalink} target="_blank">
+                        Plugin Link
+                      </a>
+                    </td>
+                  </tr>
+                `;
               })}
             </tbody>
           </table>
