@@ -92,7 +92,6 @@ export class SetupWizardUseCases extends OpenLitElement {
     } else {
       this.options[option] = true;
     }
-    console.log(this.options);
   }
   saveOptions() {
     for (const option in this.options) {
@@ -102,7 +101,6 @@ export class SetupWizardUseCases extends OpenLitElement {
   }
 
   render() {
-    console.log(this.options);
     return html`
       <div class="cover">
         <div class="content flow">

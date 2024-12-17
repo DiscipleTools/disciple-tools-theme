@@ -135,8 +135,6 @@ function dt_get_option( string $name ) {
             }
             return get_option( 'dt_site_options' );
 
-            break;
-
         case 'dt_site_custom_lists':
             $default_custom_lists = dt_get_site_custom_lists();
 
@@ -154,7 +152,6 @@ function dt_get_option( string $name ) {
             }
             //return apply_filters( "dt_site_custom_lists", get_option( 'dt_site_custom_lists' ) );
             return get_option( 'dt_site_custom_lists' );
-            break;
 
         case 'dt_field_customizations':
             return get_option( 'dt_field_customizations', [
@@ -192,8 +189,6 @@ function dt_get_option( string $name ) {
             else {
                 return get_option( 'dt_base_user' );
             }
-            break;
-
 
         case 'location_levels':
             $default_levels = dt_get_location_levels();
@@ -216,7 +211,6 @@ function dt_get_option( string $name ) {
                 $levels = get_option( 'dt_location_levels' );
             }
             return $levels['location_levels'];
-            break;
         case 'auto_location':
             $setting = get_option( 'dt_auto_location' );
             if ( false === $setting ) {
@@ -224,8 +218,6 @@ function dt_get_option( string $name ) {
                 $setting = get_option( 'dt_auto_location' );
             }
             return $setting;
-            break;
-
         case 'dt_storage_connection_id':
             return get_option( 'dt_storage_connection_id', '' );
 
@@ -235,8 +227,6 @@ function dt_get_option( string $name ) {
                 update_option( 'dt_email_base_subject', 'Disciple.Tools' );
             }
             return $subject_base;
-            break;
-
         case 'dt_email_base_address_reply_to':
             return get_option( 'dt_email_base_address_reply_to', '' );
         case 'dt_email_base_address':
@@ -282,7 +272,6 @@ function dt_get_option( string $name ) {
 
         default:
             return false;
-            break;
     }
 }
 
@@ -313,15 +302,11 @@ function dt_update_option( $name, $value, $autoload = false ) {
             $levels = wp_parse_args( $levels, $default_levels );
 
             return update_option( 'dt_location_levels', $levels, $autoload );
-
-            break;
         case 'auto_location':
             return update_option( 'dt_auto_location', $value, $autoload );
-            break;
 
         default:
             return false;
-            break;
     }
 }
 

@@ -11,7 +11,8 @@ export class SetupWizardModules extends OpenLitElement {
       step: { type: Object },
       stage: { type: String, attribute: false },
       availableModules: { type: Array, attribute: false },
-      selectedModules: { type: Array, attribute: false },
+      selectedModules: { type: Object, attribute: false },
+      loading: { Boolean, attribute: false },
     };
   }
 
@@ -20,23 +21,7 @@ export class SetupWizardModules extends OpenLitElement {
     this.stage = 'work';
     this.data = window.setupWizardShare.data;
     this.translations = window.setupWizardShare.translations;
-    this.availableModules = [];
-
-    this.selectedModules = Object.entries(this.data.use_cases).reduce(
-      (selectedModules, [key, useCase]) => {
-        if (useCase.selected) {
-          useCase.recommended_modules.forEach((moduleKey) => {
-            selectedModules.push(moduleKey);
-          });
-        }
-        return selectedModules;
-      },
-      [],
-    );
-  }
-
-  firstUpdated() {
-    /* Reduce the keys down to ones that exist in the details list of use cases */
+    this.loading = false;
     this.availableModules = Object.entries(this.data.modules)
       .map(([key, module]) => {
         return {
@@ -51,6 +36,21 @@ export class SetupWizardModules extends OpenLitElement {
         modules.push(module);
         return modules;
       }, []);
+    this.selectedModules = this.availableModules.reduce((modules, module) => {
+      modules[module.key] = false;
+      return modules;
+    }, {});
+
+    /* TODO: This is for after they have made changes to the use cases */
+    /* Once they have manually made changes to the modules selection, then this should reflect the currently updated modules */
+    Object.entries(this.data.use_cases).forEach(([key, useCase]) => {
+      if (useCase.selected) {
+        useCase.recommended_modules.forEach((moduleKey) => {
+          this.selectedModules[moduleKey] = true;
+        });
+      }
+    });
+    console.log(this.availableModules, this.selectedModules);
   }
 
   back() {
@@ -63,10 +63,10 @@ export class SetupWizardModules extends OpenLitElement {
         break;
     }
   }
-  next() {
+  async next() {
     switch (this.stage) {
       case 'work':
-        /* TODO: fire off to the API here */
+        await this.submitModuleChanges();
         this.stage = 'follow-up';
         break;
       case 'follow-up':
@@ -79,17 +79,19 @@ export class SetupWizardModules extends OpenLitElement {
   }
   toggleModule(key) {
     const checkbox = this.renderRoot.querySelector(`#${key}`);
-    if (this.selectedModules.includes(key)) {
+    if (this.selectedModules[key]) {
       checkbox.checked = false;
-      const index = this.selectedModules.findIndex((module) => module === key);
-      this.selectedModules = [
-        ...this.selectedModules.slice(0, index),
-        ...this.selectedModules.slice(index + 1),
-      ];
+      this.selectedModules[key] = false;
     } else {
       checkbox.checked = true;
-      this.selectedModules = [...this.selectedModules, key];
+      this.selectedModules[key] = true;
     }
+  }
+  async submitModuleChanges() {
+    this.loading = true;
+    this.requestUpdate();
+    await window.dt_admin_shared.modules_update(this.selectedModules);
+    this.loading = false;
   }
 
   render() {
@@ -133,9 +135,9 @@ export class SetupWizardModules extends OpenLitElement {
                                       <input
                                         type="checkbox"
                                         id=${module.key}
-                                        ?checked=${this.selectedModules.includes(
-                                          module.key,
-                                        )}
+                                        ?checked=${this.selectedModules[
+                                          module.key
+                                        ]}
                                       />
                                     </td>
                                     <td>${module.name}</td>
@@ -149,6 +151,7 @@ export class SetupWizardModules extends OpenLitElement {
                     </tbody>
                   </table>
                 </section>
+                ${this.loading ? html`<span class="spinner"></span>` : ''}
               `
             : ''}
           ${this.stage === 'follow-up'
