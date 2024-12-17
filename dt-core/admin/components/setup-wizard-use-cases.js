@@ -22,9 +22,19 @@ export class SetupWizardUseCases extends OpenLitElement {
     this.stage = 'work';
     this.data = window.setupWizardShare.data;
     this.translations = window.setupWizardShare.translations;
-    this.options = {};
     this.availableModules = [];
     this.selectedModules = [];
+    this.options = Object.entries(this.data.use_cases).reduce(
+      (options, [key, useCase]) => {
+        const selected =
+          (useCase.selected && useCase.selected === true) || false;
+        return {
+          ...options,
+          [key]: selected,
+        };
+      },
+      {},
+    );
   }
 
   firstUpdated() {
