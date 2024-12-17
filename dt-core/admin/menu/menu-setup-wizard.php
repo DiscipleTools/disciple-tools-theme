@@ -167,8 +167,40 @@ class DT_Setup_Wizard
 
         return $steps;
     }
+
+    public static function get_plugins_list(){
+        $dt_plugins = Disciple_Tools_Tab_Featured_Extensions::get_dt_plugins();
+        $enabled_plugins = [
+            'disciple-tools-dashboard',
+            'disciple-tools-webform',
+            'disciple-tools-facebook',
+            'disciple-tools-import',
+            'disciple-tools-bulk-magic-link-sender',
+            'disciple-tools-team-module',
+            'disciple-tools-storage',
+            'disciple-tools-prayer-campaigns',
+            'dt-home',
+        ];
+        if ( is_multisite() ){
+            $enabled_plugins[] = 'disciple-tools-multisite';
+        }
+        //auto assignment
+        //share app
+
+
+        $plugin_data = [];
+        foreach ( $dt_plugins as $plugin ) {
+            if ( in_array( $plugin->slug, $enabled_plugins, true ) ) {
+                $plugin_data[] = $plugin;
+            }
+        }
+        return $plugin_data;
+    }
+
+
     public function setup_wizard_data() : array {
         $modules = dt_get_option( 'dt_post_type_modules' );
+        $plugin_data = self::get_plugins_list();
         $data = [
             'use_cases' => [
                 'media' => [
@@ -179,10 +211,11 @@ class DT_Setup_Wizard
                         'access_module',
                     ],
                     'recommended_plugins' => [
-                        'loremoo',
-                        'ipsum',
-                        'dolor',
-                        'amit',
+                        'disciple-tools-webform',
+                        'disciple-tools-facebook',
+                        'disciple-tools-dashboard',
+                        'disciple-tools-import',
+                        'disciple-tools-bulk-magic-link-sender',
                     ],
                 ],
                 'crm' => [
@@ -191,10 +224,9 @@ class DT_Setup_Wizard
                     'description' => 'Are you needing to manage your contacts?',
                     'recommended_modules' => [],
                     'recommended_plugins' => [
-                        'loremoo',
-                        'ipsum',
-                        'dolor',
-                        'amit',
+                        'disciple-tools-webform',
+                        'disciple-tools-import',
+                        'disciple-tools-bulk-magic-link-sender',
                     ],
                 ],
                 'dmm' => [
@@ -202,38 +234,21 @@ class DT_Setup_Wizard
                     'name' => 'Disciple Making Movements',
                     'description' => 'Are you managing multiplying groups?',
                     'recommended_modules' => [
+                        'contacts_baptisms_module',
                         'contacts_faith_module',
                         'contacts_coaching_module',
-                        'contacts_baptisms_module',
                         'groups_base',
-                        'people_groups_module',
+                        'people_groups_module'
                     ],
-                    'recommended_plugins' => [],
+                    'recommended_plugins' => [
+                        'disciple-tools-webform',
+                        'disciple-tools-bulk-magic-link-sender',
+                        'disciple-tools-training',
+                    ],
                 ],
             ],
             'modules' => $modules,
-            'plugins' => [
-                [
-                    'key' => 'lorem',
-                    'name' => 'lorem',
-                    'description' => 'Fugiat deserunt Lorem veniam et veniam cillum tempor exercitation velit ex velit cupidatat nostrud.',
-                ],
-                [
-                    'key' => 'ipsum',
-                    'name' => 'ipsum',
-                    'description' => 'Mollit pariatur sit fugiat officia aliqua irure commodo nostrud et elit.',
-                ],
-                [
-                    'key' => 'dolor',
-                    'name' => 'dolor',
-                    'description' => 'Esse qui fugiat irure nisi consectetur.',
-                ],
-                [
-                    'key' => 'amit',
-                    'name' => 'amit',
-                    'description' => 'Consectetur consequat esse id aute commodo ea qui cillum.',
-                ],
-            ],
+            'plugins' => $plugin_data,
         ];
 
         $data = apply_filters( 'dt_setup_wizard_data', $data );

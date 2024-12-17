@@ -170,6 +170,8 @@ export class SetupWizard extends LitElement {
         color: var(--default-color);
         padding: 1rem 2rem;
         box-shadow: 1px 1px 3px 0px var(--default-dark);
+        cursor: pointer;
+        position: relative;
       }
       .btn-card.selected {
         background-color: var(--secondary-color);
@@ -183,6 +185,22 @@ export class SetupWizard extends LitElement {
       .btn-card:hover,
       .btn-card:active {
         background-color: var(--primary-hover-color);
+      }
+      .btn-card-gray {
+        background-color: var(--default-color);
+        color: black;
+      }
+      .btn-card-gray:hover {
+        background-color: var(--secondary-color);
+        opacity: 0.8;
+      }
+      .btn-card.disabled {
+        background-color: var(--secondary-color);
+        opacity: 0.5;
+        color: var(--default-color);
+      }
+      .btn-card.disabled:hover {
+        background-color: var(--default-hover-color);
       }
       .input-group {
         display: flex;
@@ -247,6 +265,32 @@ export class SetupWizard extends LitElement {
       .crumb.active {
         outline: 5px solid var(--primary);
         outline-offset: -10px;
+      }
+      .tag {
+        border: 1px solid black;
+        display: inline;
+        padding: 0.2em 0.5em;
+        background-color: var(--primary-color);
+      }
+      .spinner {
+        background: url('images/spinner.gif') no-repeat;
+        background-size: 20px 20px;
+        opacity: 0.7;
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+      table {
+        margin-bottom: 1rem;
+      }
+      table td {
+        padding: 0.5rem;
+      }
+      table thead tr {
+        background-color: var(--default-color);
+      }
+      table tr:nth-child(even) {
+        background-color: var(--default-color);
       }
     `,
   ];
