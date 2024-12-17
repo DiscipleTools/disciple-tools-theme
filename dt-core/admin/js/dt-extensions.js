@@ -185,70 +185,6 @@ jQuery(function ($) {
     card_back.append('<br><span class="loading"></span>');
   });
 
-  function makeRequest(type, url, data, base = 'dt/v1/') {
-    // Add trailing slash if missing
-    if (!base.endsWith('/') && !url.startsWith('/')) {
-      base += '/';
-    }
-    const options = {
-      type: type,
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      url: url.startsWith('http')
-        ? url
-        : `${window.wpApiSettings.root}${base}${url}`,
-      beforeSend: (xhr) => {
-        xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
-      },
-    };
-    if (data) {
-      options.data = type === 'GET' ? data : JSON.stringify(data);
-    }
-    return jQuery.ajax(options);
-  }
-
-  window.API = {
-    plugin_install: (download_url) =>
-      makeRequest(
-        'POST',
-        `plugin-install`,
-        {
-          download_url: download_url,
-        },
-        `dt-admin-settings/`,
-      ),
-
-    plugin_delete: (plugin_slug) =>
-      makeRequest(
-        'POST',
-        `plugin-delete`,
-        {
-          plugin_slug: plugin_slug,
-        },
-        `dt-admin-settings/`,
-      ),
-
-    plugin_activate: (plugin_slug) =>
-      makeRequest(
-        'POST',
-        `plugin-activate`,
-        {
-          plugin_slug: plugin_slug,
-        },
-        `dt-admin-settings/`,
-      ),
-
-    plugin_deactivate: (plugin_slug) =>
-      makeRequest(
-        'POST',
-        `plugin-deactivate`,
-        {
-          plugin_slug: plugin_slug,
-        },
-        `dt-admin-settings/`,
-      ),
-  };
-
   function get_plugin_download_url(plugin_slug) {
     const all_plugins = window.plugins.all_plugins;
     var download_url = false;
@@ -262,7 +198,8 @@ jQuery(function ($) {
 
   function plugin_install(plugin_slug) {
     var download_url = get_plugin_download_url(plugin_slug);
-    window.API.plugin_install(download_url)
+    window.dt_admin_shared
+      .plugin_install(download_url)
       .promise()
       .then(function (response) {
         if (!response) {
@@ -284,7 +221,8 @@ jQuery(function ($) {
   }
 
   function plugin_delete(plugin_slug) {
-    window.API.plugin_delete(plugin_slug)
+    window.dt_admin_shared
+      .plugin_delete(plugin_slug)
       .promise()
       .then(function (response) {
         if (!response) {
@@ -303,7 +241,8 @@ jQuery(function ($) {
   }
 
   function plugin_activate(plugin_slug) {
-    window.API.plugin_activate(plugin_slug)
+    window.dt_admin_shared
+      .plugin_activate(plugin_slug)
       .promise()
       .then(function (response) {
         if (!response) {
@@ -322,7 +261,8 @@ jQuery(function ($) {
   }
   function plugin_deactivate(plugin_slug) {
     let can_install_plugins = window.plugins.can_install_plugins;
-    window.API.plugin_deactivate(plugin_slug)
+    window.dt_admin_shared
+      .plugin_deactivate(plugin_slug)
       .promise()
       .then(function (response) {
         if (!response) {

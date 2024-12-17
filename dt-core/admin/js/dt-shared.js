@@ -4,6 +4,28 @@ shared scripts applicable to all sections.
  */
 'use strict';
 
+function makeRequest(type, url, data, base = 'dt/v1/') {
+  // Add trailing slash if missing
+  if (!base.endsWith('/') && !url.startsWith('/')) {
+    base += '/';
+  }
+  const options = {
+    type: type,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    url: url.startsWith('http')
+      ? url
+      : `${window.wpApiSettings.root}${base}${url}`,
+    beforeSend: (xhr) => {
+      xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
+    },
+  };
+  if (data) {
+    options.data = type === 'GET' ? data : JSON.stringify(data);
+  }
+  return jQuery.ajax(options);
+}
+
 window.dt_admin_shared = {
   escape(str) {
     if (typeof str !== 'string') return str;
@@ -14,6 +36,45 @@ window.dt_admin_shared = {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;');
   },
+  plugin_install: (download_url) =>
+    makeRequest(
+      'POST',
+      `plugin-install`,
+      {
+        download_url: download_url,
+      },
+      `dt-admin-settings/`,
+    ),
+
+  plugin_delete: (plugin_slug) =>
+    makeRequest(
+      'POST',
+      `plugin-delete`,
+      {
+        plugin_slug: plugin_slug,
+      },
+      `dt-admin-settings/`,
+    ),
+
+  plugin_activate: (plugin_slug) =>
+    makeRequest(
+      'POST',
+      `plugin-activate`,
+      {
+        plugin_slug: plugin_slug,
+      },
+      `dt-admin-settings/`,
+    ),
+
+  plugin_deactivate: (plugin_slug) =>
+    makeRequest(
+      'POST',
+      `plugin-deactivate`,
+      {
+        plugin_slug: plugin_slug,
+      },
+      `dt-admin-settings/`,
+    ),
 };
 
 jQuery(function ($) {
