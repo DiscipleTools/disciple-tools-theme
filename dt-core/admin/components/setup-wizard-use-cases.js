@@ -82,11 +82,12 @@ export class SetupWizardUseCases extends OpenLitElement {
     } else {
       this.options[option] = true;
     }
+    console.log(this.options);
   }
   saveOptions() {
     for (const option in this.options) {
-      console.log(option);
-      window.setupWizardShare.data.use_cases[option].selected = true;
+      window.setupWizardShare.data.use_cases[option].selected =
+        this.options[option];
     }
   }
 
