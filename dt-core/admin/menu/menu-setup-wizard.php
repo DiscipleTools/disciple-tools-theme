@@ -49,6 +49,8 @@ class DT_Setup_Wizard
         dt_theme_enqueue_script( 'setup-wizard-plugins', 'dt-core/admin/components/setup-wizard-plugins.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-details', 'dt-core/admin/components/setup-wizard-details.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-controls', 'dt-core/admin/components/setup-wizard-controls.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-intro', 'dt-core/admin/components/setup-wizard-intro.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-celebration', 'dt-core/admin/components/setup-wizard-celebration.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
 
         wp_localize_script( 'setup-wizard', 'setupWizardShare', [
             'translations' => [
@@ -60,6 +62,7 @@ class DT_Setup_Wizard
             ],
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
+            'admin_url' => admin_url(),
         ] );
     }
 
@@ -113,6 +116,10 @@ class DT_Setup_Wizard
         $bloginfo = get_bloginfo();
         $steps = [
             [
+                'key' => 'intro',
+                'component' => 'setup-wizard-intro',
+            ],
+            [
                 'key' => 'choose_your_use_cases',
                 'name' => 'Choose your use cases',
                 'component' => 'setup-wizard-use-cases',
@@ -130,37 +137,14 @@ class DT_Setup_Wizard
                 'description' => 'What modules do you want to use?',
             ],
             [
-                'name' => 'Site details',
-                'description' => 'Fill in some site details',
-                'component' => 'setup-wizard-details',
-                'config' => [
-                    [
-                        'type' => 'options',
-                        'options' => [
-                            [
-                                'key' => 'blogname',
-                                'name' => 'Site name',
-                                'value' => isset( $bloginfo['name'] ) ? $bloginfo['name'] : '',
-                            ],
-                            [
-                                'key' => 'blogdescription',
-                                'name' => 'Site description',
-                                'value' => isset( $bloginfo['description'] ) ? $bloginfo['description'] : '',
-                            ],
-                            [
-                                'key' => 'admin_email',
-                                'name' => 'Admin email',
-                                'value' => isset( $bloginfo['admin_email'] ) ? $bloginfo['admin_email'] : '',
-                            ]
-                        ],
-                    ]
-                ],
-            ],
-            [
                 'name' => 'Plugins',
                 'description' => 'Choose which plugins to install.',
                 'component' => 'setup-wizard-plugins',
             ],
+            [
+                'key' => 'celebration',
+                'component' => 'setup-wizard-celebration',
+            ]
         ];
 
         $steps = apply_filters( 'dt_setup_wizard_steps', $steps );

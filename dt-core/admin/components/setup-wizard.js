@@ -329,8 +329,8 @@ export class SetupWizard extends LitElement {
   render() {
     return html`
       <div class="wrap">
+        <h2>${this.translations.title}</h2>
         <div class="wizard">
-          <h2>${this.translations.title}</h2>
           ${this.isKitchenSink
             ? this.kitchenSink()
             : html` ${this.renderStep()} `}
@@ -443,8 +443,6 @@ export class SetupWizard extends LitElement {
       </div>
     `;
   }
-
-  renderControls() {}
 
   kitchenSink() {
     return html`
