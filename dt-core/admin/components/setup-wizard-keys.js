@@ -32,6 +32,9 @@ export class SetupWizardKeys extends OpenLitElement {
 
     this.dispatchEvent(new CustomEvent('next'));
   }
+  skip() {
+    this.dispatchEvent(new CustomEvent('next'));
+  }
 
   constructor() {
     super();
@@ -201,6 +204,7 @@ export class SetupWizardKeys extends OpenLitElement {
           ?hideBack=${this.firstStep}
           @next=${this.next}
           @back=${this.back}
+          @skip=${this.skip}
           .saving=${this._saving}
         ></setup-wizard-controls>
       </div>
