@@ -223,7 +223,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/modules-update', [
                 'methods' => 'POST',
@@ -231,6 +230,27 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/update-dt-options', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_dt_options' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+    }
+
+    public function update_dt_options( WP_REST_REQUEST $request ){
+        $params = $request->get_params();
+        $updated = false;
+        foreach ( $params as $option_key => $option_value ){
+            //only allow updating D.T options
+            if ( strpos( $option_key, 'dt_' ) !== 0 ){
+                continue;
+            }
+            update_option( $option_key, $option_value );
+            $updated = true;
+        }
+        return $updated;
     }
 
     public function update_modules( WP_REST_REQUEST $request ) {

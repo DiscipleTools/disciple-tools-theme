@@ -70,7 +70,8 @@ export class SetupWizardPlugins extends OpenLitElement {
   render() {
     return html`
       <div class="cover">
-        <div class="content">
+        <div class="content flow">
+          <h2>Recommended Plugins</h2>
           <table>
             <thead>
               <tr>
@@ -123,7 +124,7 @@ export class SetupWizardPlugins extends OpenLitElement {
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
-          nextLabel="install and activate selected plugins"
+          nextLabel="Install and Activate Selected Plugins"
           @next=${this.next}
           @back=${this.back}
           @skip=${this.skip}

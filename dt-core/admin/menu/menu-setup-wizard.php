@@ -48,6 +48,7 @@ class DT_Setup_Wizard
         dt_theme_enqueue_script( 'setup-wizard-modules', 'dt-core/admin/components/setup-wizard-modules.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-plugins', 'dt-core/admin/components/setup-wizard-plugins.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-details', 'dt-core/admin/components/setup-wizard-details.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-keys', 'dt-core/admin/components/setup-wizard-keys.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-controls', 'dt-core/admin/components/setup-wizard-controls.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-intro', 'dt-core/admin/components/setup-wizard-intro.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-celebration', 'dt-core/admin/components/setup-wizard-celebration.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
@@ -160,6 +161,15 @@ class DT_Setup_Wizard
                 'name' => 'Plugins',
                 'description' => 'Choose which plugins to install.',
                 'component' => 'setup-wizard-plugins',
+            ],
+            [
+                'name' => 'Site keys',
+                'description' => 'Fill in some site details',
+                'component' => 'setup-wizard-keys',
+                'config' => [
+                    'dt_google_map_key' => Disciple_Tools_Google_Geocode_API::get_key(),
+                    'dt_mapbox_api_key' => DT_Mapbox_API::get_key(),
+                ],
             ],
             [
                 'key' => 'celebration',
