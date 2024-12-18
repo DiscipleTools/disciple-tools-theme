@@ -18,7 +18,7 @@ export class SetupWizardKeys extends OpenLitElement {
       step: { type: Object },
       firstStep: { type: Boolean },
       _options: { type: Object },
-      saving: { type: Boolean },
+      _saving: { type: Boolean, attribute: false },
     };
   }
 
@@ -26,16 +26,16 @@ export class SetupWizardKeys extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    this.saving = true;
+    this._saving = true;
     await window.dt_admin_shared.update_dt_options(this._options);
-    this.saving = false;
+    this._saving = false;
 
     this.dispatchEvent(new CustomEvent('next'));
   }
 
   constructor() {
     super();
-    this.saving = false;
+    this._saving = false;
     this._options = {
       dt_mapbox_api_key: '',
       dt_google_map_key: '',
@@ -200,7 +200,7 @@ export class SetupWizardKeys extends OpenLitElement {
           ?hideBack=${this.firstStep}
           @next=${this.next}
           @back=${this.back}
-          .saving=${this.saving}
+          .saving=${this._saving}
         ></setup-wizard-controls>
       </div>
     `;
