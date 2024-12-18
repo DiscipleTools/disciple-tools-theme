@@ -16,7 +16,11 @@ export class SetupWizardCelebration extends OpenLitElement {
   back() {
     this.dispatchEvent(new CustomEvent('back'));
   }
-  next() {
+  async next() {
+    await window.dt_admin_shared.update_dt_options({
+      dt_setup_wizard_seen: true,
+      dt_setup_wizard_completed: true,
+    });
     window.location.href = window.setupWizardShare.admin_url;
   }
 
