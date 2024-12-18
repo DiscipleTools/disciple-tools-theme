@@ -4,7 +4,6 @@ import { OpenLitElement } from './setup-wizard-open-element.js';
 export class SetupWizardControls extends OpenLitElement {
   static get properties() {
     return {
-      translations: { type: Object },
       hideBack: { type: Boolean },
       backLabel: { type: String },
       nextLabel: { type: String },

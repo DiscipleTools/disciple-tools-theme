@@ -74,11 +74,12 @@ export class SetupWizardPlugins extends OpenLitElement {
                 <th>Plugin Name</th>
                 <th>
                   Install/Activate <br />
-                  <spin
+                  <span
                     style="color: blue;cursor: pointer"
                     @click=${() => this.select_all()}
-                    >select all</spin
                   >
+                    select all
+                  </span>
                 </th>
                 <th style="width: 60%">Description</th>
                 <th>Info</th>

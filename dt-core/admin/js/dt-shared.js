@@ -75,6 +75,15 @@ window.dt_admin_shared = {
       },
       `dt-admin-settings/`,
     ),
+  modules_update: (modules) =>
+    makeRequest(
+      'POST',
+      'modules-update',
+      {
+        modules,
+      },
+      `dt-admin-settings/`,
+    ),
 };
 
 jQuery(function ($) {
