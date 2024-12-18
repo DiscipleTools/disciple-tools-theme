@@ -242,7 +242,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         foreach ( $modules as $key => $module ) {
             if ( array_key_exists( $key, $modules_to_update ) ) {
-                $modules[$key]['enabled'] = $modules_to_update[$key] === '1' ? true : false;
+                $modules[$key]['enabled'] = !empty( $modules_to_update[$key] ) ? true : false;
             }
         }
 
