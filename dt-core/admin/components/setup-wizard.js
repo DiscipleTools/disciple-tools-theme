@@ -210,17 +210,19 @@ export class SetupWizard extends LitElement {
       }
       .toggle {
         position: relative;
-        display: inline-block;
+        display: inline-flex;
+        cursor: pointer;
         input {
           display: none;
         }
         div {
           display: inline-block;
-          padding-block: 1rem;
+          padding: 1rem 0.5rem;
           background-color: var(--default-color);
           border-radius: 8px;
           width: 100%;
           text-align: center;
+          transition: all 120ms linear;
         }
         input:checked + div {
           background-color: var(--secondary-color);
@@ -340,8 +342,8 @@ export class SetupWizard extends LitElement {
   render() {
     return html`
       <div class="wrap">
+        <h2>${this.translations.title}</h2>
         <div class="wizard">
-          <h2>${this.translations.title}</h2>
           ${this.isKitchenSink
             ? this.kitchenSink()
             : html` ${this.renderStep()} `}
@@ -453,8 +455,6 @@ export class SetupWizard extends LitElement {
       </div>
     `;
   }
-
-  renderControls() {}
 
   kitchenSink() {
     return html`

@@ -223,7 +223,13 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
-
+        register_rest_route(
+            $this->namespace, '/modules-update', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_modules' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
         register_rest_route(
             $this->namespace, '/update-dt-options', [
                 'methods' => 'POST',
@@ -245,6 +251,23 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $updated = true;
         }
         return $updated;
+    }
+
+    public function update_modules( WP_REST_REQUEST $request ) {
+        $modules_option_name = 'dt_post_type_modules';
+        $modules_to_update = $request->get_param( 'modules' );
+        $modules_to_update = dt_recursive_sanitize_array( $modules_to_update );
+
+        $modules = dt_get_option( $modules_option_name );
+
+        foreach ( $modules as $key => $module ) {
+            if ( array_key_exists( $key, $modules_to_update ) ) {
+                $modules[$key]['enabled'] = !empty( $modules_to_update[$key] ) ? true : false;
+            }
+        }
+
+        update_option( $modules_option_name, $modules );
+        return true;
     }
 
     public function update_languages( WP_REST_REQUEST $request ) {

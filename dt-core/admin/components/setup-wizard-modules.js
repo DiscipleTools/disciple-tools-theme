@@ -9,12 +9,10 @@ export class SetupWizardModules extends OpenLitElement {
   static get properties() {
     return {
       step: { type: Object },
-      firstStep: { type: Boolean },
       stage: { type: String, attribute: false },
-      useCases: { type: Array, attribute: false },
-      option: { type: Object, attribute: false },
       availableModules: { type: Array, attribute: false },
-      selectedModules: { type: Array, attribute: false },
+      selectedModules: { type: Object, attribute: false },
+      loading: { Boolean, attribute: false },
     };
   }
 
@@ -22,24 +20,34 @@ export class SetupWizardModules extends OpenLitElement {
     super();
     this.stage = 'work';
     this.data = window.setupWizardShare.data;
-    this.useCases = [];
-    this.option = {};
-    this.availableModules = [];
-    this.selectedModules = [];
-  }
+    this.translations = window.setupWizardShare.translations;
+    this.loading = false;
+    this.availableModules = Object.entries(this.data.modules)
+      .map(([key, module]) => {
+        return {
+          key,
+          ...module,
+        };
+      })
+      .reduce((modules, module) => {
+        if (module.locked) {
+          return modules;
+        }
+        modules.push(module);
+        return modules;
+      }, []);
+    this.selectedModules = this.availableModules.reduce((modules, module) => {
+      modules[module.key] = false;
+      return modules;
+    }, {});
 
-  firstUpdated() {
-    /* Reduce the keys down to ones that exist in the details list of use cases */
-    const useCaseKeys = this.step.config.reduce((keys, key) => {
-      if (this.data.use_cases[key]) {
-        return [...keys, key];
+    Object.entries(this.data.use_cases).forEach(([key, useCase]) => {
+      if (useCase.selected) {
+        useCase.recommended_modules.forEach((moduleKey) => {
+          this.selectedModules[moduleKey] = true;
+        });
       }
-      return keys;
-    }, []);
-    this.useCases = useCaseKeys.map(
-      (useCaseKey) => this.data.use_cases[useCaseKey],
-    );
-    this.availableModules = this.data.modules;
+    });
   }
 
   back() {
@@ -48,20 +56,14 @@ export class SetupWizardModules extends OpenLitElement {
         this.stage = 'work';
         break;
       case 'work':
-        this.stage = 'prompt';
-        break;
-      case 'prompt':
         this.dispatchEvent(new CustomEvent('back'));
         break;
     }
   }
-  next() {
+  async next() {
     switch (this.stage) {
-      case 'prompt':
-        this.stage = 'work';
-        break;
       case 'work':
-        /* TODO: fire off to the API here */
+        await this.submitModuleChanges();
         this.stage = 'follow-up';
         break;
       case 'follow-up':
@@ -69,116 +71,99 @@ export class SetupWizardModules extends OpenLitElement {
         break;
     }
   }
-  selectOption(option) {
-    this.option = option;
-    this.selectedModules = option.recommended_modules;
+  nextLabel() {
+    return this.translations.next;
   }
   toggleModule(key) {
-    if (this.selectedModules.includes(key)) {
-      const index = this.selectedModules.findIndex((module) => module === key);
-      this.selectedModules = [
-        ...this.selectedModules.slice(0, index),
-        ...this.selectedModules.slice(index + 1),
-      ];
+    const checkbox = this.renderRoot.querySelector(`#${key}`);
+    if (this.selectedModules[key]) {
+      checkbox.checked = false;
+      this.selectedModules[key] = false;
     } else {
-      this.selectedModules = [...this.selectedModules, key];
+      checkbox.checked = true;
+      this.selectedModules[key] = true;
     }
+  }
+  async submitModuleChanges() {
+    this.loading = true;
+    this.requestUpdate();
+    await window.dt_admin_shared.modules_update(this.selectedModules);
+    this.loading = false;
   }
 
   render() {
     return html`
       <div class="cover">
         <div class="content flow">
-          ${this.stage === 'prompt'
-            ? html`
-                <h2>Time to customize what fields are available.</h2>
-                <p>
-                  In the next step you will be able to choose between some
-                  common use cases of Disciple.Tools
-                </p>
-                <p>
-                  You will still be able to customize to your particular use
-                  case.
-                </p>
-              `
-            : ''}
           ${this.stage === 'work'
             ? html`
-                <h2>Choose a use case</h2>
+                <h2>Module selection</h2>
                 <p>
-                  Choose one of these use cases to tailor what parts of
-                  Disciple.Tools to turn on.
+                  The recommended modules for your chosen use case(s) are
+                  selected below
                 </p>
                 <p>
-                  You can fine tune those choices further to your own needs.
+                  Feel free to change this selection according to what you need
+                  D.T to do.
                 </p>
-                <div class="decisions">
-                  <div class="grid">
-                    ${this.useCases && this.useCases.length > 0
-                      ? this.useCases.map(
-                          (option) => html`
-                            <button
-                              class="btn-card ${this.option.key === option.key
-                                ? 'selected'
-                                : ''}"
-                              data-key=${option.key}
-                              @click=${() => this.selectOption(option)}
-                            >
-                              <h3 class="white">${option.name}</h3>
-                              <p>${option.description ?? ''}</p>
-                            </button>
-                          `,
-                        )
-                      : ''}
-                  </div>
-                </div>
                 <section>
-                  <h2>Available Modules</h2>
-                  <div class="modules">
-                    ${Object.keys(this.availableModules).length > 0
-                      ? html`
-                          <div class="flow" size="small">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Module</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${Object.keys(this.availableModules).length > 0
+                        ? html`
                             ${repeat(
                               this.availableModules,
                               (module) => module.key,
                               (module) => {
                                 return html`
-                                  <label class="toggle" key=${module.key}>
-                                    <input
-                                      type="checkbox"
-                                      ?checked=${this.selectedModules.includes(
-                                        module.key,
-                                      )}
-                                      @change=${() =>
-                                        this.toggleModule(module.key)}
-                                    />
-                                    <div class="flow">
-                                      <h3>${module.name}</h3>
-                                      <p>${module.description}</p>
-                                    </div>
-                                  </label>
+                                  <tr
+                                    key=${module.key}
+                                    @click=${() =>
+                                      this.toggleModule(module.key)}
+                                  >
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        id=${module.key}
+                                        ?checked=${this.selectedModules[
+                                          module.key
+                                        ]}
+                                      />
+                                    </td>
+                                    <td>${module.name}</td>
+                                    <td>${module.description}</td>
+                                  </tr>
                                 `;
                               },
                             )}
-                          </div>
-                        `
-                      : ''}
-                  </div>
+                          `
+                        : ''}
+                    </tbody>
+                  </table>
                 </section>
+                ${this.loading ? html`<span class="spinner"></span>` : ''}
               `
             : ''}
           ${this.stage === 'follow-up'
             ? html`
-                <h2>Your choices have been implemented</h2>
+                <h2>The modules you have chosen have been turned on.</h2>
                 <p>
-                  You can make further changes to the way D.T. works in the
-                  'Settings (DT)' section of the Wordpress admin.
+                  You can adjust these modules to your liking in the 'Settings
+                  (DT)' section of the Wordpress admin.
                 </p>
               `
             : ''}
         </div>
         <setup-wizard-controls
-          ?hideBack=${this.firstStep && this.stage === 'prompt'}
+          nextLabel=${this.nextLabel()}
+          backLabel=${this.translations.back}
           @next=${this.next}
           @back=${this.back}
         ></setup-wizard-controls>

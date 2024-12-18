@@ -19,6 +19,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class DT_Setup_Wizard
 {
     private static $_instance = null;
+    private $root = 'setup-wizard';
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -43,20 +44,26 @@ class DT_Setup_Wizard
     public function enqueue_scripts(){
         dt_theme_enqueue_script( 'setup-wizard', 'dt-core/admin/components/setup-wizard.js', [], true );
         dt_theme_enqueue_script( 'setup-wizard-open-element', 'dt-core/admin/components/setup-wizard-open-element.js', [ 'setup-wizard' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-use-cases', 'dt-core/admin/components/setup-wizard-use-cases.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-modules', 'dt-core/admin/components/setup-wizard-modules.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-plugins', 'dt-core/admin/components/setup-wizard-plugins.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-details', 'dt-core/admin/components/setup-wizard-details.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-keys', 'dt-core/admin/components/setup-wizard-keys.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-controls', 'dt-core/admin/components/setup-wizard-controls.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-intro', 'dt-core/admin/components/setup-wizard-intro.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-celebration', 'dt-core/admin/components/setup-wizard-celebration.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
 
         wp_localize_script( 'setup-wizard', 'setupWizardShare', [
             'translations' => [
                 'title' => esc_html__( 'Disciple.Tools Setup Wizard', 'disciple_tools' ),
                 'next' => esc_html__( 'Next', 'disciple_tools' ),
+                'submit' => esc_html__( 'Submit', 'disciple_tools' ),
+                'confirm' => esc_html__( 'Confirm', 'disciple_tools' ),
                 'back' => esc_html__( 'Back', 'disciple_tools' ),
             ],
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
+            'admin_url' => admin_url(),
         ] );
     }
 
@@ -110,9 +117,13 @@ class DT_Setup_Wizard
         $bloginfo = get_bloginfo();
         $steps = [
             [
-                'key' => 'choose_your_path',
-                'name' => 'Choose your path',
-                'component' => 'setup-wizard-modules',
+                'key' => 'intro',
+                'component' => 'setup-wizard-intro',
+            ],
+            [
+                'key' => 'choose_your_use_cases',
+                'name' => 'Choose your use cases',
+                'component' => 'setup-wizard-use-cases',
                 'description' => 'How are you planning to use DT?',
                 'config' => [
                     'media',
@@ -121,31 +132,10 @@ class DT_Setup_Wizard
                 ]
             ],
             [
-                'name' => 'Site details',
-                'description' => 'Fill in some site details',
-                'component' => 'setup-wizard-details',
-                'config' => [
-                    [
-                        'type' => 'options',
-                        'options' => [
-                            [
-                                'key' => 'blogname',
-                                'name' => 'Site name',
-                                'value' => isset( $bloginfo['name'] ) ? $bloginfo['name'] : '',
-                            ],
-                            [
-                                'key' => 'blogdescription',
-                                'name' => 'Site description',
-                                'value' => isset( $bloginfo['description'] ) ? $bloginfo['description'] : '',
-                            ],
-                            [
-                                'key' => 'admin_email',
-                                'name' => 'Admin email',
-                                'value' => isset( $bloginfo['admin_email'] ) ? $bloginfo['admin_email'] : '',
-                            ]
-                        ],
-                    ]
-                ],
+                'key' => 'choose_your_modules',
+                'name' => 'Choose your modules',
+                'component' => 'setup-wizard-modules',
+                'description' => 'What modules do you want to use?',
             ],
             [
                 'name' => 'Plugins',
@@ -161,6 +151,10 @@ class DT_Setup_Wizard
                     'dt_mapbox_api_key' => DT_Mapbox_API::get_key(),
                 ],
             ],
+            [
+                'key' => 'celebration',
+                'component' => 'setup-wizard-celebration',
+            ]
         ];
 
         $steps = apply_filters( 'dt_setup_wizard_steps', $steps );
@@ -199,6 +193,7 @@ class DT_Setup_Wizard
 
 
     public function setup_wizard_data() : array {
+        $modules = dt_get_option( 'dt_post_type_modules' );
         $plugin_data = self::get_plugins_list();
         $data = [
             'use_cases' => [
@@ -246,38 +241,7 @@ class DT_Setup_Wizard
                     ],
                 ],
             ],
-            'modules' => [
-                [
-                    'key' => 'ipsum',
-                    'name' => 'Ipsum',
-                    'description' => 'Track who is ipsuming who',
-                    'details' => [
-                        'fields' => [],
-                        'tiles' => [],
-                        'workflows' => [],
-                    ],
-                ],
-                [
-                    'key' => 'dolor',
-                    'name' => 'Dolor',
-                    'description' => 'Track who has been dolored when, and by who',
-                ],
-                [
-                    'key' => 'lorem',
-                    'name' => 'lorem',
-                    'description' => 'Track the lorem status of your contacts',
-                ],
-                [
-                    'key' => 'foo',
-                    'name' => 'Foo',
-                    'description' => 'Track contacts: who is fooing up with who; reminders of who needs fooing up with',
-                ],
-                [
-                    'key' => 'bar',
-                    'name' => 'Bar',
-                    'description' => 'Track bars of people and their lorem status',
-                ],
-            ],
+            'modules' => $modules,
             'plugins' => $plugin_data,
         ];
 
