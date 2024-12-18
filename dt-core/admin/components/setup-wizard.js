@@ -183,6 +183,7 @@ export class SetupWizard extends LitElement {
         border: 1px solid transparent;
         background-color: transparent;
         color: var(--primary-color);
+        box-shadow: none;
       }
       .btn-outline:hover,
       .btn-outline:focus {
@@ -398,8 +399,10 @@ export class SetupWizard extends LitElement {
     }
     this.currentStepNumber = i;
   }
-  exit() {
-    /* TODO: Set option dt_setup_wizard_seen */
+  async exit() {
+    await window.dt_admin_shared.update_dt_options({
+      dt_setup_wizard_seen: true,
+    });
     location.href = this.adminUrl;
   }
 
