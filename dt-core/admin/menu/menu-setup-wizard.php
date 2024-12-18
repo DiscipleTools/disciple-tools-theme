@@ -60,6 +60,9 @@ class DT_Setup_Wizard
                 'submit' => esc_html__( 'Submit', 'disciple_tools' ),
                 'confirm' => esc_html__( 'Confirm', 'disciple_tools' ),
                 'back' => esc_html__( 'Back', 'disciple_tools' ),
+                'skip' => esc_html__( 'Skip', 'disciple_tools' ),
+                'finish' => esc_html__( 'Finish', 'disciple_tools' ),
+                'exit' => esc_html__( 'Exit', 'disciple_tools' ),
             ],
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
@@ -93,6 +96,8 @@ class DT_Setup_Wizard
             $image_url,
             52,
         );
+        /* Hide the setup wizard in the menu */
+        remove_menu_page( 'dt_setup_wizard' );
     }
 
     public function content() {
@@ -105,6 +110,21 @@ class DT_Setup_Wizard
             <style>
                 body {
                     margin: 0;
+                }
+                html.wp-toolbar {
+                    padding-top: 0;
+                }
+                #adminmenuback,
+                #adminmenuwrap,
+                #wpadminbar  {
+                    display: none;
+                }
+                #wpcontent {
+                    margin-left: 0;
+                    padding-left: 0;
+                }
+                #wpbody {
+                    padding-top: 0 !important;
                 }
             </style>
 

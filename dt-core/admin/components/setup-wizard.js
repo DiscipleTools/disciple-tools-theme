@@ -4,7 +4,6 @@ import {
   LitElement,
   staticHtml,
   unsafeStatic,
-  literal,
 } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 
 export class SetupWizard extends LitElement {
@@ -54,13 +53,16 @@ export class SetupWizard extends LitElement {
         font-weight: 500;
         color: var(--primary-color);
       }
+      p {
+        max-width: 60ch;
+      }
       button {
         border: none;
         padding: 0.5rem 1.5rem;
         border-radius: 8px;
         cursor: pointer;
         background-color: var(--default-color);
-        transition: background-color 120ms linear;
+        transition: all 120ms linear;
         box-shadow: 1px 1px 3px 0 var(--default-dark);
       }
       button:hover,
@@ -89,6 +91,13 @@ export class SetupWizard extends LitElement {
       }
       .cluster[position='end'] {
         justify-content: flex-end;
+      }
+      .repel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        flex-direction: row-reverse;
       }
       .flow {
         display: flex;
@@ -138,6 +147,9 @@ export class SetupWizard extends LitElement {
       .ms-auto {
         margin-left: auto;
       }
+      .me-auto {
+        margin-right: auto;
+      }
       .align-start {
         align-items: flex-start;
       }
@@ -165,6 +177,17 @@ export class SetupWizard extends LitElement {
       .btn-primary:focus,
       .btn-primary:active {
         background-color: var(--primary-hover-color);
+      }
+      .btn-outline {
+        border: 1px solid transparent;
+        background-color: transparent;
+        color: var(--primary-color);
+        box-shadow: none;
+      }
+      .btn-outline:hover,
+      .btn-outline:focus {
+        border-color: var(--primary-color);
+        background-color: transparent;
       }
       .btn-card {
         background-color: var(--primary-color);
@@ -316,6 +339,7 @@ export class SetupWizard extends LitElement {
     super();
 
     this.translations = window.setupWizardShare.translations;
+    this.adminUrl = window.setupWizardShare.admin_url;
     this.steps = [];
     this.currentStepNumber = 0;
 
@@ -342,7 +366,12 @@ export class SetupWizard extends LitElement {
   render() {
     return html`
       <div class="wrap">
-        <h2>${this.translations.title}</h2>
+        <div class="repel">
+          <button class="btn-outline ms-auto" @click=${this.exit}>
+            ${this.translations.exit}
+          </button>
+          <h2 class="me-auto">${this.translations.title}</h2>
+        </div>
         <div class="wizard">
           ${this.isKitchenSink
             ? this.kitchenSink()
@@ -364,11 +393,16 @@ export class SetupWizard extends LitElement {
       return;
     }
     if (i > this.steps.length - 1) {
-      /* TODO: Then we have finished the wizard and need to exit or show some completion message */
       this.currentStepNumber = this.steps.length - 1;
       return;
     }
     this.currentStepNumber = i;
+  }
+  async exit() {
+    await window.dt_admin_shared.update_dt_options({
+      dt_setup_wizard_seen: true,
+    });
+    location.href = this.adminUrl;
   }
 
   renderStep() {

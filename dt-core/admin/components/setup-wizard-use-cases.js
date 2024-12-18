@@ -19,7 +19,7 @@ export class SetupWizardUseCases extends OpenLitElement {
 
   constructor() {
     super();
-    this.stage = 'work';
+    this.stage = 'prompt';
     this.data = window.setupWizardShare.data;
     this.translations = window.setupWizardShare.translations;
     this.availableModules = [];
@@ -77,6 +77,9 @@ export class SetupWizardUseCases extends OpenLitElement {
         break;
     }
   }
+  skip() {
+    this.dispatchEvent(new CustomEvent('next'));
+  }
   nextLabel() {
     switch (this.stage) {
       case 'work':
@@ -106,7 +109,7 @@ export class SetupWizardUseCases extends OpenLitElement {
         <div class="content flow">
           ${this.stage === 'prompt'
             ? html`
-                <h2>Time to customize what fields are available.</h2>
+                <h2>Time to choose your use cases</h2>
                 <p>
                   In the next step you will be able to choose between some
                   common use cases of Disciple.Tools
@@ -125,7 +128,8 @@ export class SetupWizardUseCases extends OpenLitElement {
                   Disciple.Tools to turn on.
                 </p>
                 <p>
-                  You can fine tune those choices further to your own needs.
+                  You can fine tune those choices further to your own needs in
+                  the following steps.
                 </p>
                 <div class="decisions">
                   <div class="grid">
@@ -166,8 +170,10 @@ export class SetupWizardUseCases extends OpenLitElement {
           ?hideBack=${this.firstStep && this.stage === 'prompt'}
           nextLabel=${this.nextLabel()}
           backLabel=${this.translations.back}
+          skipLabel=${this.translations.skip}
           @next=${this.next}
           @back=${this.back}
+          @skip=${this.skip}
         ></setup-wizard-controls>
       </div>
     `;

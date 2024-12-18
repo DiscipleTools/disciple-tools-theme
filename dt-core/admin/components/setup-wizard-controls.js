@@ -5,8 +5,10 @@ export class SetupWizardControls extends OpenLitElement {
   static get properties() {
     return {
       hideBack: { type: Boolean },
+      hideSkip: { type: Boolean },
       backLabel: { type: String },
       nextLabel: { type: String },
+      skipLabel: { type: String },
       saving: { type: Boolean },
     };
   }
@@ -16,9 +18,19 @@ export class SetupWizardControls extends OpenLitElement {
   next() {
     this.dispatchEvent(new CustomEvent('next'));
   }
+  skip() {
+    this.dispatchEvent(new CustomEvent('skip'));
+  }
   render() {
     return html`
       <div class="cluster" position="end">
+        ${this.hideSkip
+          ? ''
+          : html`
+              <button @click=${this.skip} class="btn-outline">
+                ${this.skipLabel ?? 'Skip'}
+              </button>
+            `}
         ${this.hideBack
           ? ''
           : html`

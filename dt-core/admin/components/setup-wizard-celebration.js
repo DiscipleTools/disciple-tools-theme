@@ -8,10 +8,19 @@ export class SetupWizardCelebration extends OpenLitElement {
     };
   }
 
+  constructor() {
+    super();
+    this.translations = window.setupWizardShare.translations;
+  }
+
   back() {
     this.dispatchEvent(new CustomEvent('back'));
   }
-  next() {
+  async next() {
+    await window.dt_admin_shared.update_dt_options({
+      dt_setup_wizard_seen: true,
+      dt_setup_wizard_completed: true,
+    });
     window.location.href = window.setupWizardShare.admin_url;
   }
 
@@ -38,6 +47,8 @@ export class SetupWizardCelebration extends OpenLitElement {
           </a>
         </div>
         <setup-wizard-controls
+          hideSkip
+          nextLabel=${this.translations.finish}
           @next=${this.next}
           @back=${this.back}
           nextLabel="Close Wizard"
