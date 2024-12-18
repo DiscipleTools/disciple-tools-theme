@@ -229,8 +229,17 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/multisite.php' );
             require_once( 'dt-core/global-functions.php' );
             require_once( 'dt-core/utilities/loader.php' );
+
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
+
+            $setup_wizard_completed = get_option( 'dt_setup_wizard_completed' );
+
+            $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+            if ( !$is_rest && is_admin() && !$setup_wizard_completed && $current_page !== 'dt_setup_wizard' ) {
+                wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard&noheader' ) );
+            }
+
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
             require_once( 'dt-core/libraries/wp-queue/wp-queue.php' ); //w
             if ( !class_exists( 'Jwt_Auth' ) ) {
