@@ -77,6 +77,9 @@ export class SetupWizardUseCases extends OpenLitElement {
         break;
     }
   }
+  skip() {
+    this.dispatchEvent(new CustomEvent('next'));
+  }
   nextLabel() {
     switch (this.stage) {
       case 'work':
@@ -167,8 +170,10 @@ export class SetupWizardUseCases extends OpenLitElement {
           ?hideBack=${this.firstStep && this.stage === 'prompt'}
           nextLabel=${this.nextLabel()}
           backLabel=${this.translations.back}
+          skipLabel=${this.translations.skip}
           @next=${this.next}
           @back=${this.back}
+          @skip=${this.skip}
         ></setup-wizard-controls>
       </div>
     `;

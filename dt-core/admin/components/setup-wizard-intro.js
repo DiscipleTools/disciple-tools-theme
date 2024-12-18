@@ -41,6 +41,7 @@ export class SetupWizardIntro extends OpenLitElement {
         </div>
         <setup-wizard-controls
           hideBack
+          hideSkip
           @next=${this.next}
           @back=${this.back}
         ></setup-wizard-controls>

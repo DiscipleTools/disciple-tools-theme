@@ -71,6 +71,9 @@ export class SetupWizardModules extends OpenLitElement {
         break;
     }
   }
+  skip() {
+    this.dispatchEvent(new CustomEvent('next'));
+  }
   nextLabel() {
     return this.translations.next;
   }
@@ -164,8 +167,10 @@ export class SetupWizardModules extends OpenLitElement {
         <setup-wizard-controls
           nextLabel=${this.nextLabel()}
           backLabel=${this.translations.back}
+          skipLabel=${this.translations.skip}
           @next=${this.next}
           @back=${this.back}
+          @skip=${this.skip}
         ></setup-wizard-controls>
       </div>
     `;

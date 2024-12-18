@@ -8,6 +8,11 @@ export class SetupWizardCelebration extends OpenLitElement {
     };
   }
 
+  constructor() {
+    super();
+    this.translations = window.setupWizardShare.translations;
+  }
+
   back() {
     this.dispatchEvent(new CustomEvent('back'));
   }
@@ -38,6 +43,8 @@ export class SetupWizardCelebration extends OpenLitElement {
           </a>
         </div>
         <setup-wizard-controls
+          hideSkip
+          nextLabel=${this.translations.finish}
           @next=${this.next}
           @back=${this.back}
         ></setup-wizard-controls>

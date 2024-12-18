@@ -28,6 +28,9 @@ export class SetupWizardPlugins extends OpenLitElement {
   back() {
     this.dispatchEvent(new CustomEvent('back'));
   }
+  skip() {
+    this.dispatchEvent(new CustomEvent('next'));
+  }
   async next() {
     const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
 
@@ -123,6 +126,7 @@ export class SetupWizardPlugins extends OpenLitElement {
           nextLabel="install and activate selected plugins"
           @next=${this.next}
           @back=${this.back}
+          @skip=${this.skip}
         ></setup-wizard-controls>
       </div>
     `;

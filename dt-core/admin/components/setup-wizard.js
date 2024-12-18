@@ -60,7 +60,7 @@ export class SetupWizard extends LitElement {
         border-radius: 8px;
         cursor: pointer;
         background-color: var(--default-color);
-        transition: background-color 120ms linear;
+        transition: all 120ms linear;
       }
       button:hover,
       button:active,
@@ -164,6 +164,16 @@ export class SetupWizard extends LitElement {
       .btn-primary:focus,
       .btn-primary:active {
         background-color: var(--primary-hover-color);
+      }
+      .btn-outline {
+        border: 1px solid transparent;
+        background-color: transparent;
+        color: var(--primary-color);
+      }
+      .btn-outline:hover,
+      .btn-outline:focus {
+        border-color: var(--primary-color);
+        background-color: transparent;
       }
       .btn-card {
         background-color: var(--primary-color);

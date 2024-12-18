@@ -59,6 +59,8 @@ class DT_Setup_Wizard
                 'submit' => esc_html__( 'Submit', 'disciple_tools' ),
                 'confirm' => esc_html__( 'Confirm', 'disciple_tools' ),
                 'back' => esc_html__( 'Back', 'disciple_tools' ),
+                'skip' => esc_html__( 'Skip', 'disciple_tools' ),
+                'finish' => esc_html__( 'Finish', 'disciple_tools' ),
             ],
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
