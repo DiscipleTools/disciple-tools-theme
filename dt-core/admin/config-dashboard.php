@@ -232,8 +232,9 @@ final class Disciple_Tools_Dashboard
         add_meta_box( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), 'dt_show_news_widget', 'dashboard', 'side', 'high' );
 
         $dt_setup_wizard_completed = get_option( 'dt_setup_wizard_completed' );
+        $is_administrator = current_user_can( 'manage_options' );
 
-        if ( empty( $dt_setup_wizard_completed ) ) {
+        if ( empty( $dt_setup_wizard_completed ) && $is_administrator ) {
             wp_add_dashboard_widget( 'dt_setup_wizard_new', 'Need help setting up Disciple.Tools?', function (){
                 ?>
 

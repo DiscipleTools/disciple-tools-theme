@@ -236,7 +236,8 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             $setup_wizard_seen = get_option( 'dt_setup_wizard_seen' );
 
             $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
-            if ( !$is_rest && is_admin() && !$setup_wizard_seen && $current_page !== 'dt_setup_wizard' ) {
+            $is_administrator = current_user_can( 'manage_options' );
+            if ( !$is_rest && is_admin() && !$setup_wizard_seen && $is_administrator && $current_page !== 'dt_setup_wizard' ) {
                 wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard' ) );
             }
 
