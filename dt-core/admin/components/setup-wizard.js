@@ -53,18 +53,17 @@ export class SetupWizard extends LitElement {
         font-weight: 500;
         color: var(--primary-color);
       }
+      p {
+        max-width: 60ch;
+      }
       button {
         border: none;
         padding: 0.5rem 1.5rem;
         border-radius: 8px;
         cursor: pointer;
         background-color: var(--default-color);
-<<<<<<< HEAD
         transition: all 120ms linear;
-=======
-        transition: background-color 120ms linear;
         box-shadow: 1px 1px 3px 0 var(--default-dark);
->>>>>>> feat/setup-wizard
       }
       button:hover,
       button:active,
