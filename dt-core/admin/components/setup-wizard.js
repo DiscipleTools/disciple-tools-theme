@@ -61,6 +61,7 @@ export class SetupWizard extends LitElement {
         cursor: pointer;
         background-color: var(--default-color);
         transition: background-color 120ms linear;
+        box-shadow: 1px 1px 3px 0 var(--default-dark);
       }
       button:hover,
       button:active,
@@ -278,13 +279,21 @@ export class SetupWizard extends LitElement {
         opacity: 0.7;
         width: 20px;
         height: 20px;
-        display: block;
+        display: inline-block;
+      }
+      .spinner.light {
+        background: url('images/wpspin_light-2x.gif') no-repeat;
+        background-size: 20px 20px;
+      }
+      button .spinner {
+        vertical-align: bottom;
       }
       table {
         margin-bottom: 1rem;
       }
       table td {
         padding: 0.5rem;
+        vertical-align: top;
       }
       table thead tr {
         background-color: var(--default-color);
@@ -313,6 +322,10 @@ export class SetupWizard extends LitElement {
     const url = new URL(location.href);
 
     this.isKitchenSink = url.searchParams.has('kitchen-sink');
+    //get step number from step url param
+    if (url.searchParams.has('step')) {
+      this.currentStepNumber = parseInt(url.searchParams.get('step'));
+    }
   }
 
   firstUpdated() {
@@ -356,7 +369,6 @@ export class SetupWizard extends LitElement {
       return;
     }
     this.currentStepNumber = i;
-    console.log(this.currentStepNumber);
   }
 
   renderStep() {
