@@ -40,6 +40,7 @@ export class SetupWizardCelebration extends OpenLitElement {
         <setup-wizard-controls
           @next=${this.next}
           @back=${this.back}
+          nextLabel="Close Wizard"
         ></setup-wizard-controls>
       </div>
     `;

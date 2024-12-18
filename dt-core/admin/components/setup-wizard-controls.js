@@ -22,10 +22,10 @@ export class SetupWizardControls extends OpenLitElement {
         ${this.hideBack
           ? ''
           : html`
-              <button @click=${this.back}>${this.backLabel ?? 'back'}</button>
+              <button @click=${this.back}>${this.backLabel ?? 'Back'}</button>
             `}
         <button @click=${this.next} class="btn-primary">
-          ${this.nextLabel ?? 'next'}
+          ${this.nextLabel ?? 'Next'}
           ${this.saving ? html`<span class="spinner light"></span>` : ''}
         </button>
       </div>
