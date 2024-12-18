@@ -92,6 +92,8 @@ class DT_Setup_Wizard
             $image_url,
             52,
         );
+        /* Hide the setup wizard in the menu */
+        remove_menu_page( 'dt_setup_wizard' );
     }
 
     public function content() {
