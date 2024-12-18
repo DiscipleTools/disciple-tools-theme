@@ -8,6 +8,7 @@ export class SetupWizardControls extends OpenLitElement {
       hideBack: { type: Boolean },
       backLabel: { type: String },
       nextLabel: { type: String },
+      saving: { type: Boolean },
     };
   }
   back() {
@@ -26,6 +27,7 @@ export class SetupWizardControls extends OpenLitElement {
             `}
         <button @click=${this.next} class="btn-primary">
           ${this.nextLabel ?? 'next'}
+          ${this.saving ? html`<span class="spinner light"></span>` : ''}
         </button>
       </div>
     `;

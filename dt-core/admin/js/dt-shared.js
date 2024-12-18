@@ -36,6 +36,14 @@ window.dt_admin_shared = {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;');
   },
+
+  /**
+   * Update options. Provide an object with the options to update.
+   * @param options
+   */
+  update_dt_options: (options) =>
+    makeRequest('POST', 'update-dt-options', options, 'dt-admin-settings/'),
+
   plugin_install: (download_url) =>
     makeRequest(
       'POST',
