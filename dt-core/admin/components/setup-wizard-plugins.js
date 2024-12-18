@@ -67,7 +67,8 @@ export class SetupWizardPlugins extends OpenLitElement {
   render() {
     return html`
       <div class="cover">
-        <div class="content">
+        <div class="content flow">
+          <h2>Recommended Plugins</h2>
           <table>
             <thead>
               <tr>

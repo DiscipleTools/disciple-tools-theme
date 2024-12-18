@@ -49,11 +49,12 @@ export class SetupWizardKeys extends OpenLitElement {
     this._options.dt_google_map_key = this.step.config.dt_google_map_key;
     return html`
       <div class="cover">
-        <div class="content">
+        <div class="content flow">
+          <h2>Mapping and Geocoding</h2>
           <table style="width: 100%">
             <thead>
               <tr>
-                <th>Plugin Name</th>
+                <th>Key</th>
                 <th>Description</th>
                 <th style="width: 30%">Value</th>
               </tr>
