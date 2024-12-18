@@ -237,7 +237,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
 
             $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
             if ( !$is_rest && is_admin() && !$setup_wizard_completed && $current_page !== 'dt_setup_wizard' ) {
-                wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard&noheader' ) );
+                wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard' ) );
             }
 
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance

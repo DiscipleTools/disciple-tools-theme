@@ -107,6 +107,18 @@ class DT_Setup_Wizard
                 body {
                     margin: 0;
                 }
+                html.wp-toolbar {
+                    padding-top: 0;
+                }
+                #adminmenuback,
+                #adminmenuwrap,
+                #wpadminbar  {
+                    display: none;
+                }
+                #wpcontent {
+                    margin-left: 0;
+                    padding-left: 0;
+                }
             </style>
 
             <setup-wizard></setup-wizard>
