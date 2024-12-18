@@ -25,9 +25,9 @@ export class SetupWizardKeys extends OpenLitElement {
   back() {
     this.dispatchEvent(new CustomEvent('back'));
   }
-  next() {
+  async next() {
     this.saving = true;
-    window.dt_admin_shared.update_dt_options(this._options);
+    await window.dt_admin_shared.update_dt_options(this._options);
     this.saving = false;
 
     this.dispatchEvent(new CustomEvent('next'));
