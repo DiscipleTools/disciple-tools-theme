@@ -61,6 +61,7 @@ class DT_Setup_Wizard
                 'back' => esc_html__( 'Back', 'disciple_tools' ),
                 'skip' => esc_html__( 'Skip', 'disciple_tools' ),
                 'finish' => esc_html__( 'Finish', 'disciple_tools' ),
+                'exit' => esc_html__( 'Exit', 'disciple_tools' ),
             ],
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
@@ -120,6 +121,9 @@ class DT_Setup_Wizard
                 #wpcontent {
                     margin-left: 0;
                     padding-left: 0;
+                }
+                #wpbody {
+                    padding-top: 0 !important;
                 }
             </style>
 

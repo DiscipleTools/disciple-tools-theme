@@ -4,7 +4,6 @@ import {
   LitElement,
   staticHtml,
   unsafeStatic,
-  literal,
 } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 
 export class SetupWizard extends LitElement {
@@ -89,6 +88,13 @@ export class SetupWizard extends LitElement {
       .cluster[position='end'] {
         justify-content: flex-end;
       }
+      .repel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        flex-direction: row-reverse;
+      }
       .flow {
         display: flex;
         flex-direction: column;
@@ -136,6 +142,9 @@ export class SetupWizard extends LitElement {
       /* Utilities */
       .ms-auto {
         margin-left: auto;
+      }
+      .me-auto {
+        margin-right: auto;
       }
       .align-start {
         align-items: flex-start;
@@ -317,6 +326,7 @@ export class SetupWizard extends LitElement {
     super();
 
     this.translations = window.setupWizardShare.translations;
+    this.adminUrl = window.setupWizardShare.admin_url;
     this.steps = [];
     this.currentStepNumber = 0;
 
@@ -339,7 +349,12 @@ export class SetupWizard extends LitElement {
   render() {
     return html`
       <div class="wrap">
-        <h2>${this.translations.title}</h2>
+        <div class="repel">
+          <button class="btn-outline ms-auto" @click=${this.exit}>
+            ${this.translations.exit}
+          </button>
+          <h2 class="me-auto">${this.translations.title}</h2>
+        </div>
         <div class="wizard">
           ${this.isKitchenSink
             ? this.kitchenSink()
@@ -361,12 +376,14 @@ export class SetupWizard extends LitElement {
       return;
     }
     if (i > this.steps.length - 1) {
-      /* TODO: Then we have finished the wizard and need to exit or show some completion message */
       this.currentStepNumber = this.steps.length - 1;
       return;
     }
     this.currentStepNumber = i;
-    console.log(this.currentStepNumber);
+  }
+  exit() {
+    /* TODO: Set option dt_setup_wizard_seen */
+    location.href = this.adminUrl;
   }
 
   renderStep() {
