@@ -50,25 +50,29 @@ export class SetupWizardKeys extends OpenLitElement {
         <div class="content flow">
           <h2>Part 3: Mapping and Geocoding</h2>
           <p>
-            Disciple.Tools comes with basic mapping which is only as precise as
-            a country county or department. Extra tools are needed to be able to
-            geolocate to more precise locations like a street address or a city.
-            See
+            Disciple.Tools provides basic mapping functionality for locations at
+            the country, state, or county level. For more precise geolocation,
+            such as street addresses or cities, additional tools like Mapbox and
+            Google API keys are recommended but not mandatory.
+          </p>
+          <p>
+            Mapbox offers detailed maps with precise location pins, while Google
+            enables accurate worldwide geocoding, especially in certain
+            countries where Mapbox data is limited.
+          </p>
+          <p>
+            Both tools provide free usage tiers sufficient for most users,
+            though exceeding limits may incur charges. Setup involves creating
+            accounts, generating API keys, and adding them here (or in
+            Disciple.Tools settings later).
+          </p>
+          <p>
+            For additional details and information, refer to the
             <a
               href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
               target="_blank"
-              >Geolocation Docs</a
-            >
-            for more details.
-          </p>
-          <p>
-            We highly recommend setting up Mapbox to enable better mapping and
-            location pins for your records. This however is not required and
-            Disciple.Tools can be used without it.
-          </p>
-          <p>
-            Mapbox is needed for better maps. You will want to also add a Google
-            key for more precise worldwide geocoding.
+              >Geolocation Documentation</a
+            >.
           </p>
           <table style="width: 100%">
             <thead>

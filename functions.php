@@ -87,6 +87,18 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
         }
+
+        $is_rest = dt_is_rest();
+
+        /**
+         * Redirect to setup wizard if not seen
+         */
+        $setup_wizard_seen = get_option( 'dt_setup_wizard_completed' );
+        $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+        $is_administrator = current_user_can( 'manage_options' );
+        if ( !$is_rest && !is_network_admin() && !wp_doing_cron() && !$setup_wizard_seen && $is_administrator && $current_page !== 'dt_setup_wizard' ) {
+            wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard' ) );
+        }
     } );
 
     /**
@@ -232,16 +244,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
 
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
-
-            /**
-             * Redirect to setup wizard if not seen
-             */
-            $setup_wizard_seen = get_option( 'dt_setup_wizard_completed' );
-            $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
-            $is_administrator = current_user_can( 'manage_options' );
-            if ( !$is_rest && !is_network_admin() && !wp_doing_cron() && !$setup_wizard_seen && $is_administrator && $current_page !== 'dt_setup_wizard' ) {
-                wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard' ) );
-            }
 
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
             require_once( 'dt-core/libraries/wp-queue/wp-queue.php' ); //w
