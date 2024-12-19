@@ -68,6 +68,7 @@ class DT_Setup_Wizard
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
             'admin_url' => admin_url(),
+            'can_install_plugins' => current_user_can( 'install_plugins' ),
         ] );
     }
 
