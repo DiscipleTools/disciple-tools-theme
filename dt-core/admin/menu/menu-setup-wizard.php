@@ -146,9 +146,9 @@ class DT_Setup_Wizard
                 'component' => 'setup-wizard-use-cases',
                 'description' => 'How are you planning to use DT?',
                 'config' => [
-                    'media',
                     'crm',
                     'dmm',
+                    'media',
                 ]
             ],
             [
@@ -217,10 +217,26 @@ class DT_Setup_Wizard
         $plugin_data = self::get_plugins_list();
         $data = [
             'use_cases' => [
+                'crm' => [
+                    'key' => 'crm',
+                    'name' => 'Simple Setup - Relationship Manager',
+                    'description' => 'Launch people ( seekers or believers ) on a journey that leads
+                     them closer to Christ. Set up your own fields, integrations and workflows to
+                     track them as them go.',
+                    'recommended_modules' => [],
+                    'recommended_plugins' => [
+                        'disciple-tools-webform',
+                        'disciple-tools-import',
+                        'disciple-tools-bulk-magic-link-sender',
+                    ],
+                ],
                 'media' => [
                     'key' => 'media',
-                    'name' => 'Access Ministry',
-                    'description' => 'Are you filtering for contacts for engagement?',
+                    'name' => 'Media or Follow-up Ministry',
+                    'description' => 'Do you find seekers through media or through events
+                        or trainings? Let your team(s) steward these leads, letting none fall
+                        through the cracks and inviting them into deeper relationships
+                        with God and others.',
                     'recommended_modules' => [
                         'access_module',
                     ],
@@ -232,21 +248,11 @@ class DT_Setup_Wizard
                         'disciple-tools-bulk-magic-link-sender',
                     ],
                 ],
-                'crm' => [
-                    'key' => 'crm',
-                    'name' => 'Relationship Manager',
-                    'description' => 'Are you needing to manage your contacts?',
-                    'recommended_modules' => [],
-                    'recommended_plugins' => [
-                        'disciple-tools-webform',
-                        'disciple-tools-import',
-                        'disciple-tools-bulk-magic-link-sender',
-                    ],
-                ],
                 'dmm' => [
                     'key' => 'dmm',
-                    'name' => 'Disciple Making Movements',
-                    'description' => 'Are you managing multiplying groups?',
+                    'name' => 'Church Growth and Disciple Making',
+                    'description' => 'Invest in the growth of individuals and churches as they multiply.
+                     Monitor church health and track individuals through coaching and faith milestones.',
                     'recommended_modules' => [
                         'contacts_baptisms_module',
                         'contacts_faith_module',

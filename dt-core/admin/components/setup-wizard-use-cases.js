@@ -88,13 +88,13 @@ export class SetupWizardUseCases extends OpenLitElement {
         return this.translations.next;
     }
   }
-  toggleOption(event) {
-    const option = event.target.id;
+  toggleOption(option) {
     if (this.options[option]) {
       this.options[option] = false;
     } else {
       this.options[option] = true;
     }
+    this.requestUpdate();
   }
   saveOptions() {
     for (const option in this.options) {
@@ -107,9 +107,9 @@ export class SetupWizardUseCases extends OpenLitElement {
     return html`
       <div class="cover">
         <div class="content flow">
+          <h2>Part 1: Use Cases</h2>
           ${this.stage === 'prompt'
             ? html`
-                <h2>Time to choose your use cases</h2>
                 <p>
                   In the next step you will be able to choose between some
                   common use cases of Disciple.Tools
@@ -122,46 +122,53 @@ export class SetupWizardUseCases extends OpenLitElement {
             : ''}
           ${this.stage === 'work'
             ? html`
-                <h2>Choose a use case</h2>
                 <p>
-                  Choose one of these use cases to tailor what parts of
+                  Choose one or more of these use cases to tailor what parts of
                   Disciple.Tools to turn on.
                 </p>
                 <p>
                   You can fine tune those choices further to your own needs in
                   the following steps.
                 </p>
-                <div class="decisions">
-                  <div class="grid">
-                    ${this.useCases && this.useCases.length > 0
-                      ? this.useCases.map(
-                          (option) => html`
-                            <label class="toggle" for="${option.key}">
+                <div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Use Case</th>
+                        <th style="width: 600px;">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${repeat(
+                        this.useCases,
+                        (option) => option.key,
+                        (option) => html`
+                          <tr @click="${() => this.toggleOption(option.key)}">
+                            <td>
                               <input
-                                ?checked=${option.selected}
+                                .checked=${this.options[option.key]}
                                 type="checkbox"
                                 name="${option.key}"
                                 id="${option.key}"
-                                @change=${this.toggleOption}
                               />
-                              <div>
-                                <h3>${option.name}</h3>
-                                <p>${option.description ?? ''}</p>
-                              </div>
-                            </label>
-                          `,
-                        )
-                      : ''}
-                  </div>
+                            </td>
+                            <td>${option.name}</td>
+                            <td>${option.description ?? ''}</td>
+                          </tr>
+                        `,
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               `
             : ''}
           ${this.stage === 'follow-up'
             ? html`
-                <h2>Use cases selected</h2>
+                <p><strong>Use cases selected.</strong></p>
                 <p>
-                  Now that you have chosen your use cases, we can recommend some
-                  modules and plugins that will be helpful for these use cases.
+                  Based on the use cases you have now chosen, we can recommend
+                  some modules and plugins that we think will be helpful.
                 </p>
               `
             : ''}

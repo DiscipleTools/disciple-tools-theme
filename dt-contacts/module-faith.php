@@ -3,11 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 add_filter( 'dt_post_type_modules', function( $modules ){
     $modules['contacts_faith_module'] = [
-        'name' => 'Faith Module',
+        'name' => 'Faith',
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => 'Adds faith field status and faith milestones',
+        'description' => 'Track progress of contacts in their faith journey',
         'submodule' => true,
     ];
     return $modules;

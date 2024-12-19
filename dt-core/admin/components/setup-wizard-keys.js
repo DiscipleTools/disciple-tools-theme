@@ -53,7 +53,27 @@ export class SetupWizardKeys extends OpenLitElement {
     return html`
       <div class="cover">
         <div class="content flow">
-          <h2>Mapping and Geocoding</h2>
+          <h2>Part 3: Mapping and Geocoding</h2>
+          <p>
+            Disciple.Tools comes with high level mapping which is only as
+            precise as a country county or department. Extra tools are needed to
+            be able to geolocate to more precise locations like a street address
+            or a city. See
+            <a
+              href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
+              >Geolocation Docs</a
+            >
+            for more details.
+          </p>
+          <p>
+            We highly recommend setting up MapBox to enable better mapping and
+            location pins for your records. This however is not required and
+            Disciple.Tools can be used without it.
+          </p>
+          <p>
+            Mapbox is needed for better maps. You will want to also add a Google
+            key for more precise worldwide geocoding.
+          </p>
           <table style="width: 100%">
             <thead>
               <tr>

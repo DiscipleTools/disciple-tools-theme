@@ -87,13 +87,13 @@ export class SetupWizardPlugins extends OpenLitElement {
     return html`
       <div class="cover">
         <div class="content flow">
-          <h2>Recommended Plugins</h2>
+          <h2>Part 2: Recommended Plugins</h2>
           <p>
             Plugins are optional and add additional functionality
             to Disciple.Tools based on your needs.
           </p>
           <p>
-            Plugins can be activated or disactivated at any time. You can find the full list of
+            Plugins can be activated or deactivated at any time. You can find the full list of
             Disciple.Tools plugin in the "Extensions (D.T)" tab later.
           </p>
           </p>

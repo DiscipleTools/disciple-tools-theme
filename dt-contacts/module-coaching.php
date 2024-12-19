@@ -3,11 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 add_filter( 'dt_post_type_modules', function( $modules ){
     $modules['contacts_coaching_module'] = [
-        'name' => 'Coaching Module',
+        'name' => 'Coaching',
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => 'Adds coaching fields, list filters and workflows',
+        'description' => 'Track contact coaching relationships',
         'submodule' => true,
     ];
     return $modules;
