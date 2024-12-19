@@ -81,6 +81,8 @@ export class SetupWizard extends LitElement {
       .wrap {
         padding: 1rem;
         min-height: 100vh;
+        max-width: 1200px;
+        margin: auto;
       }
       .cluster {
         display: flex;
@@ -129,7 +131,7 @@ export class SetupWizard extends LitElement {
       .cover {
         display: flex;
         flex-direction: column;
-        min-block-size: 80vh;
+        min-block-size: min(80vh, 800px);
       }
       .cover > * {
         margin-block: 0.5rem;
