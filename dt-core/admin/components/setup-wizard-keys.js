@@ -1,50 +1,45 @@
-import {
-  html,
-  css,
-} from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
+import { html } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 import { OpenLitElement } from './setup-wizard-open-element.js';
 
 export class SetupWizardKeys extends OpenLitElement {
-  static styles = [
-    css`
-      :host {
-        display: block;
-      }
-    `,
-  ];
-
   static get properties() {
     return {
       step: { type: Object },
       firstStep: { type: Boolean },
-      _options: { type: Object },
+      _options: { type: Object, attribute: false },
       _saving: { type: Boolean, attribute: false },
+      _finished: { type: Boolean, attribute: false },
     };
-  }
-
-  back() {
-    this.dispatchEvent(new CustomEvent('back'));
-  }
-  async next() {
-    this._saving = true;
-    await window.dt_admin_shared.update_dt_options(this._options);
-    this._saving = false;
-
-    this.dispatchEvent(new CustomEvent('next'));
-  }
-  skip() {
-    this.dispatchEvent(new CustomEvent('next'));
   }
 
   constructor() {
     super();
     this._saving = false;
+    this._finished = false;
     this._options = {
       dt_mapbox_api_key: '',
       dt_google_map_key: '',
     };
     this.show_mapbox_instructions = false;
     this.show_google_instructions = false;
+  }
+
+  back() {
+    this.dispatchEvent(new CustomEvent('back'));
+  }
+  async next() {
+    if (this._finished) {
+      this.dispatchEvent(new CustomEvent('next'));
+      return;
+    }
+
+    this._saving = true;
+    await window.dt_admin_shared.update_dt_options(this._options);
+    this._saving = false;
+    this._finished = true;
+  }
+  skip() {
+    this.dispatchEvent(new CustomEvent('next'));
   }
 
   render() {
@@ -219,13 +214,16 @@ export class SetupWizardKeys extends OpenLitElement {
               </tr>
             </tbody>
           </table>
+          ${this._finished
+            ? html` <section class="card success">Keys saved</section> `
+            : ''}
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
           @next=${this.next}
           @back=${this.back}
           @skip=${this.skip}
-          .saving=${this._saving}
+          ?saving=${this._saving}
         ></setup-wizard-controls>
       </div>
     `;

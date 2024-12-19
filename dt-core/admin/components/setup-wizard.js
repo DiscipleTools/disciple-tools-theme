@@ -81,6 +81,8 @@ export class SetupWizard extends LitElement {
       .wrap {
         padding: 1rem;
         min-height: 100vh;
+        max-width: 1200px;
+        margin: auto;
       }
       .cluster {
         display: flex;
@@ -129,7 +131,7 @@ export class SetupWizard extends LitElement {
       .cover {
         display: flex;
         flex-direction: column;
-        min-block-size: 80vh;
+        min-block-size: min(80vh, 800px);
       }
       .cover > * {
         margin-block: 0.5rem;
@@ -173,10 +175,18 @@ export class SetupWizard extends LitElement {
         background-color: var(--primary-color);
         color: var(--default-color);
       }
+      .btn-primary.saving {
+        background-color: var(--default-dark);
+        cursor: progress;
+      }
       .btn-primary:hover,
       .btn-primary:focus,
       .btn-primary:active {
         background-color: var(--primary-hover-color);
+
+        &.saving {
+          background-color: var(--default-dark);
+        }
       }
       .btn-outline {
         border: 1px solid transparent;
@@ -225,6 +235,17 @@ export class SetupWizard extends LitElement {
       }
       .btn-card.disabled:hover {
         background-color: var(--default-hover-color);
+      }
+      .card {
+        background-color: var(--default-color);
+        border-radius: 12px;
+        padding: 1rem 2rem;
+        width: fit-content;
+
+        &.success {
+          background-color: var(--secondary-color);
+          color: var(--default-color);
+        }
       }
       .input-group {
         display: flex;
