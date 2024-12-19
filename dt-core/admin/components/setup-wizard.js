@@ -140,7 +140,7 @@ export class SetupWizard extends LitElement {
         min-block-size: min(80vh, 800px);
       }
       .cover > * {
-        margin-block: 0.5rem;
+        margin-block: 2rem;
       }
       .cover > .content {
         margin-block-end: auto;
