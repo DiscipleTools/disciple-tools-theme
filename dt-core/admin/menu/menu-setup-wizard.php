@@ -234,7 +234,7 @@ class DT_Setup_Wizard
                     'key' => 'media',
                     'name' => 'Media or Follow-up Ministry',
                     'description' => 'Do you find seekers through media or through events
-                        or trainings. Let your team(s) steward these leads, letting none fall
+                        or trainings? Let your team(s) steward these leads, letting none fall
                         through the cracks and inviting them into deeper relationships
                         with God and others.',
                     'recommended_modules' => [

@@ -107,9 +107,9 @@ export class SetupWizardUseCases extends OpenLitElement {
     return html`
       <div class="cover">
         <div class="content flow">
+          <h2>Part 1: Use Cases</h2>
           ${this.stage === 'prompt'
             ? html`
-                <h2>Part 1: Use Cases</h2>
                 <p>
                   In the next step you will be able to choose between some
                   common use cases of Disciple.Tools
@@ -122,7 +122,6 @@ export class SetupWizardUseCases extends OpenLitElement {
             : ''}
           ${this.stage === 'work'
             ? html`
-                <h2>Part 1: Use Cases</h2>
                 <p>
                   Choose one or more of these use cases to tailor what parts of
                   Disciple.Tools to turn on.
@@ -166,11 +165,10 @@ export class SetupWizardUseCases extends OpenLitElement {
             : ''}
           ${this.stage === 'follow-up'
             ? html`
-                <h2>Part 1: Use Cases</h2>
                 <p><strong>Use cases selected.</strong></p>
                 <p>
                   Based on the use cases you have now chosen, we can recommend
-                  some modules and plugins that will think will be helpful.
+                  some modules and plugins that we think will be helpful.
                 </p>
               `
             : ''}
