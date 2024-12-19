@@ -19,7 +19,7 @@ export class SetupWizardUseCases extends OpenLitElement {
 
   constructor() {
     super();
-    this.stage = 'prompt';
+    this.stage = 'work';
     this.data = window.setupWizardShare.data;
     this.translations = window.setupWizardShare.translations;
     this.availableModules = [];
@@ -56,18 +56,12 @@ export class SetupWizardUseCases extends OpenLitElement {
         this.stage = 'work';
         break;
       case 'work':
-        this.stage = 'prompt';
-        break;
-      case 'prompt':
         this.dispatchEvent(new CustomEvent('back'));
         break;
     }
   }
   next() {
     switch (this.stage) {
-      case 'prompt':
-        this.stage = 'work';
-        break;
       case 'work':
         this.saveOptions();
         this.stage = 'follow-up';
@@ -108,19 +102,7 @@ export class SetupWizardUseCases extends OpenLitElement {
       <div class="cover">
         <div class="content flow">
           <h2>Part 1: Use Cases</h2>
-          ${this.stage === 'prompt'
-            ? html`
-                <p>
-                  In the next step you will be able to choose between some
-                  common use cases of Disciple.Tools
-                </p>
-                <p>
-                  You will still be able to customize to your particular use
-                  case.
-                </p>
-              `
-            : ''}
-          ${this.stage === 'work'
+          ${this.stage === 'work' && this.useCases
             ? html`
                 <p>
                   Choose one or more of these use cases to tailor what parts of

@@ -68,6 +68,7 @@ class DT_Setup_Wizard
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
             'admin_url' => admin_url(),
+            'image_url' => trailingslashit( get_template_directory_uri() ) . 'dt-assets/images/',
             'can_install_plugins' => current_user_can( 'install_plugins' ),
         ] );
     }
@@ -155,15 +156,15 @@ class DT_Setup_Wizard
     }
 
     public function setup_wizard_steps() {
-        $bloginfo = get_bloginfo();
         $steps = [
             [
                 'key' => 'intro',
+                'name' => 'Intro',
                 'component' => 'setup-wizard-intro',
             ],
             [
                 'key' => 'choose_your_use_cases',
-                'name' => 'Choose your use cases',
+                'name' => 'Part 1: Use cases',
                 'component' => 'setup-wizard-use-cases',
                 'description' => 'How are you planning to use DT?',
                 'config' => [
@@ -174,17 +175,17 @@ class DT_Setup_Wizard
             ],
             [
                 'key' => 'choose_your_modules',
-                'name' => 'Choose your modules',
+                'name' => 'Part 1: Modules',
                 'component' => 'setup-wizard-modules',
                 'description' => 'What modules do you want to use?',
             ],
             [
-                'name' => 'Plugins',
+                'name' => 'Part 2: Plugins',
                 'description' => 'Choose which plugins to install.',
                 'component' => 'setup-wizard-plugins',
             ],
             [
-                'name' => 'Site keys',
+                'name' => 'Part 3: Site keys',
                 'description' => 'Fill in some site details',
                 'component' => 'setup-wizard-keys',
                 'config' => [
@@ -194,6 +195,7 @@ class DT_Setup_Wizard
             ],
             [
                 'key' => 'celebration',
+                'name' => 'Celebration',
                 'component' => 'setup-wizard-celebration',
             ]
         ];
