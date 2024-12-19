@@ -93,7 +93,7 @@ export class SetupWizardPlugins extends OpenLitElement {
             to Disciple.Tools based on your needs.
           </p>
           <p>
-            Plugins can be activated or disactivated at any time. You can find the full list of
+            Plugins can be activated or deactivated at any time. You can find the full list of
             Disciple.Tools plugin in the "Extensions (D.T)" tab later.
           </p>
           </p>
