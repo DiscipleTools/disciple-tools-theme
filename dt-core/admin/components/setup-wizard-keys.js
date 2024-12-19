@@ -50,18 +50,19 @@ export class SetupWizardKeys extends OpenLitElement {
         <div class="content flow">
           <h2>Part 3: Mapping and Geocoding</h2>
           <p>
-            Disciple.Tools comes with high level mapping which is only as
-            precise as a country county or department. Extra tools are needed to
-            be able to geolocate to more precise locations like a street address
-            or a city. See
+            Disciple.Tools comes with basic mapping which is only as precise as
+            a country county or department. Extra tools are needed to be able to
+            geolocate to more precise locations like a street address or a city.
+            See
             <a
               href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
+              target="_blank"
               >Geolocation Docs</a
             >
             for more details.
           </p>
           <p>
-            We highly recommend setting up MapBox to enable better mapping and
+            We highly recommend setting up Mapbox to enable better mapping and
             location pins for your records. This however is not required and
             Disciple.Tools can be used without it.
           </p>
@@ -72,16 +73,16 @@ export class SetupWizardKeys extends OpenLitElement {
           <table style="width: 100%">
             <thead>
               <tr>
-                <th>Key</th>
+                <th>Name</th>
                 <th>Description</th>
-                <th style="width: 30%">Value</th>
+                <th style="width: 30%">Key</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Mapbox key</td>
                 <td>
-                  Upgrade maps and get precise locations with a MapBox key.
+                  Upgrade maps and get precise locations with a Mapbox key.
                   <br />
                   <button
                     type="button"
@@ -91,7 +92,7 @@ export class SetupWizardKeys extends OpenLitElement {
                       this.requestUpdate();
                     }}
                   >
-                    Show Instructions
+                    Expand Instructions
                   </button>
                   <div
                     ?hidden=${!this.show_mapbox_instructions}
@@ -101,14 +102,14 @@ export class SetupWizardKeys extends OpenLitElement {
                       <li>
                         Go to
                         <a href="https://www.mapbox.com/" target="_blank"
-                          >MapBox.com</a
+                          >Mapbox.com</a
                         >.
                       </li>
                       <li>
                         Register for a new account (<a
                           href="https://account.mapbox.com/auth/signup/"
                           target="_blank"
-                          >MapBox.com</a
+                          >Mapbox.com</a
                         >)<br />
                         <em
                           >(email required. A credit card might be required,
@@ -161,7 +162,7 @@ export class SetupWizardKeys extends OpenLitElement {
                       this.requestUpdate();
                     }}
                   >
-                    Show Instructions
+                    Expand Instructions
                   </button>
                   <div
                     ?hidden=${!this.show_google_instructions}
@@ -170,7 +171,9 @@ export class SetupWizardKeys extends OpenLitElement {
                     <ol>
                       <li>
                         Go to
-                        <a href="https://console.cloud.google.com"
+                        <a
+                          href="https://console.cloud.google.com"
+                          target="_blank"
                           >https://console.cloud.google.com</a
                         >.
                       </li>

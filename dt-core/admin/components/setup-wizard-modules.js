@@ -97,7 +97,7 @@ export class SetupWizardModules extends OpenLitElement {
                 </p>
                 <p>
                   Feel free to change this selection according to what you need
-                  D.T to do.
+                  Disciple.Tools to do.
                 </p>
                 <section>
                   <table>
@@ -152,7 +152,7 @@ export class SetupWizardModules extends OpenLitElement {
                         </p>
                         <p>
                           You can enable and disable these modules to your
-                          liking in the 'Settings (D.T)' section of the
+                          liking in the "Settings (D.T)" section of the
                           Wordpress admin.
                         </p>
                       </section>

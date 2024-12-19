@@ -115,7 +115,7 @@ export class SetupWizardPlugins extends OpenLitElement {
                   </span>
                 </th>
                 <th style="width: 60%">Description</th>
-                <th>Info</th>
+                <th>More Info</th>
               </tr>
             </thead>
             <tbody>
