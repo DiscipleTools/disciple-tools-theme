@@ -95,6 +95,7 @@ export class SetupWizardKeys extends OpenLitElement {
                   Upgrade maps and get precise locations with a Mapbox key.
                   <br />
                   <button
+                    class="btn-outline"
                     type="button"
                     @click=${() => {
                       this.show_mapbox_instructions =
@@ -165,6 +166,7 @@ export class SetupWizardKeys extends OpenLitElement {
                   key.
                   <br />
                   <button
+                    class="btn-outline"
                     type="button"
                     @click=${() => {
                       this.show_google_instructions =

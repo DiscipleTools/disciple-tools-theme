@@ -69,7 +69,6 @@ export class SetupWizard extends LitElement {
         cursor: pointer;
         background-color: var(--default-color);
         transition: all 120ms linear;
-        box-shadow: 1px 1px 3px 0 var(--default-dark);
       }
       button:hover,
       button:active,
