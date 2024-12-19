@@ -41,6 +41,12 @@ export class SetupWizardKeys extends OpenLitElement {
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
   }
+  nextLabel() {
+    if (this._finished) {
+      return 'Next';
+    }
+    return 'Confirm';
+  }
 
   render() {
     this._options.dt_mapbox_api_key = this.step.config.dt_mapbox_api_key;
@@ -223,10 +229,11 @@ export class SetupWizardKeys extends OpenLitElement {
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
+          ?saving=${this._saving}
+          nextLabel=${this.nextLabel()}
           @next=${this.next}
           @back=${this.back}
           @skip=${this.skip}
-          ?saving=${this._saving}
         ></setup-wizard-controls>
       </div>
     `;

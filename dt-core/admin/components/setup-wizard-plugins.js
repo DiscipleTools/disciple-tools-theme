@@ -84,7 +84,7 @@ export class SetupWizardPlugins extends OpenLitElement {
     if (this.finished) {
       return 'Next';
     }
-    return 'Install and Activate Selected Plugins';
+    return 'Confirm';
   }
 
   render() {

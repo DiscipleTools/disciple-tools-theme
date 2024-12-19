@@ -65,7 +65,10 @@ export class SetupWizardModules extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('next'));
   }
   nextLabel() {
-    return this.translations.next;
+    if (this.finished) {
+      return this.translations.next;
+    }
+    return this.translations.confirm;
   }
   toggleModule(key) {
     const checkbox = this.renderRoot.querySelector(`#${key}`);
