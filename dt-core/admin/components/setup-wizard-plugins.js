@@ -125,6 +125,12 @@ export class SetupWizardPlugins extends OpenLitElement {
                     .checked=${plugin.selected}
                   />`;
                 }
+                if (
+                  !window.setupWizardShare.can_install_plugins &&
+                  !plugin.installed
+                ) {
+                  action = 'Not Available*';
+                }
 
                 return html`
                   <tr
@@ -146,6 +152,14 @@ export class SetupWizardPlugins extends OpenLitElement {
               })}
             </tbody>
           </table>
+          ${
+            !window.setupWizardShare.can_install_plugins
+              ? html`<p>
+                  <strong>*Note:</strong> Only your server administrator can
+                  install plugins.
+                </p>`
+              : ''
+          }
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
