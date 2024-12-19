@@ -136,10 +136,10 @@ export class SetupWizard extends LitElement {
       .cover {
         display: flex;
         flex-direction: column;
-        min-block-size: min(80vh, 800px);
+        height: min(80vh, 800px);
       }
       .cover > * {
-        margin-block: 2rem;
+        margin-block: 1rem;
       }
       .cover > .content {
         margin-block-end: auto;
@@ -194,6 +194,9 @@ export class SetupWizard extends LitElement {
         background-color: white;
         padding: 1rem;
         border-radius: 10px;
+      }
+      .content {
+        overflow-y: auto;
       }
       .steps {
         padding-left: 24px;
