@@ -1,4 +1,7 @@
-import { html } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
+import {
+  html,
+  repeat,
+} from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 import { OpenLitElement } from './setup-wizard-open-element.js';
 
 export class SetupWizardPeopleGroups extends OpenLitElement {
@@ -6,39 +9,57 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     return {
       step: { type: Object },
       firstStep: { type: Boolean },
-      _saving: { type: Boolean, attribute: false },
-      _finished: { type: Boolean, attribute: false },
+      saving: { type: Boolean, attribute: false },
+      finished: { type: Boolean, attribute: false },
+      peopleGroups: { type: Array, attribute: false },
     };
   }
 
   constructor() {
     super();
-    this._saving = false;
-    this._finished = false;
+    this.saving = false;
+    this.finished = false;
+    this.peopleGroups = [];
   }
 
   back() {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    if (this._finished) {
+    if (this.finished) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
 
-    this._saving = true;
+    this.saving = true;
     /* TODO: save? or has that happened when they clicked buttons? */
-    this._saving = false;
-    this._finished = true;
+    this.saving = false;
+    this.finished = true;
   }
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
   }
   nextLabel() {
-    if (this._finished) {
+    if (this.finished) {
       return 'Next';
     }
     return 'Confirm';
+  }
+
+  async selectCountry(event) {
+    const country = event.target.value;
+
+    const peopleGroups =
+      await window.dt_admin_shared.people_groups_get(country);
+
+    this.peopleGroups = peopleGroups;
+  }
+
+  selectAll() {
+    this.peopleGroups.forEach((group) => {
+      group.selected = true;
+    });
+    this.requestUpdate();
   }
 
   render() {
@@ -62,21 +83,73 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                 in D.T.
               </li>
             </ol>
-            <select name="country" id="country">
+            <select name="country" id="country" @change=${this.selectCountry}>
+              <option value="">Select a country</option>
               ${this.step
                 ? Object.values(this.step.config.countries).map((country) => {
                     return html` <option value=${country}>${country}</option> `;
                   })
                 : ''}
             </select>
+            <div class="people-groups">
+              ${this.peopleGroups.length > 0
+                ? html`
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>
+                            Add <br />
+                            <span
+                              style="color: blue;cursor: pointer"
+                              @click=${() => this.selectAll()}
+                            >
+                              select all
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${repeat(
+                          this.peopleGroups,
+                          (people) => people[28],
+                          (people) => {
+                            let action = 'Active';
+                            if (people.installing) {
+                              action = html`<span class="spinner"></span>`;
+                            } else if (!people.active) {
+                              action = html`<input
+                                type="checkbox"
+                                .checked=${people.selected}
+                              />`;
+                            }
+
+                            return html`
+                              <tr
+                                @click=${() => {
+                                  people.selected = !people.selected;
+                                  this.requestUpdate();
+                                }}
+                              >
+                                <td>${people.PeopNameAcrossCountries}</td>
+                                <td>${action}</td>
+                              </tr>
+                            `;
+                          },
+                        )}
+                      </tbody>
+                    </table>
+                  `
+                : ''}
+            </div>
           </section>
-          ${this._finished
+          ${this.finished
             ? html` <section class="ms-auto card success">Keys saved</section> `
             : ''}
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
-          ?saving=${this._saving}
+          ?saving=${this.saving}
           nextLabel=${this.nextLabel()}
           @next=${this.next}
           @back=${this.back}
