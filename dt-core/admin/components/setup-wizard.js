@@ -421,7 +421,7 @@ export class SetupWizard extends LitElement {
   }
   async exit() {
     await window.dt_admin_shared.update_dt_options({
-      dt_setup_wizard_seen: true,
+      dt_setup_wizard_completed: true,
     });
     location.href = this.adminUrl;
   }
