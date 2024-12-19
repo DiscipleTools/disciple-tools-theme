@@ -239,6 +239,8 @@ class DT_Setup_Wizard
                         with God and others.',
                     'recommended_modules' => [
                         'access_module',
+                        'contacts_faith_module',
+                        'contacts_baptisms_module',
                     ],
                     'recommended_plugins' => [
                         'disciple-tools-webform',
@@ -256,7 +258,6 @@ class DT_Setup_Wizard
                     'recommended_modules' => [
                         'contacts_baptisms_module',
                         'contacts_faith_module',
-                        'contacts_coaching_module',
                         'groups_base',
                         'people_groups_module'
                     ],
@@ -264,6 +265,7 @@ class DT_Setup_Wizard
                         'disciple-tools-webform',
                         'disciple-tools-bulk-magic-link-sender',
                         'disciple-tools-training',
+                        'disciple-tools-import',
                     ],
                 ],
             ],
