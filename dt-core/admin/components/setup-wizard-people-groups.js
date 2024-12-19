@@ -32,7 +32,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     }
 
     this.saving = true;
-    /* TODO: save? or has that happened when they clicked buttons? */
+    await this.installPeopleGroups();
     this.saving = false;
     this.finished = true;
   }
@@ -61,6 +61,38 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     });
     this.requestUpdate();
   }
+  async installPeopleGroups() {
+    const peopleGroupsToInstall = this.peopleGroups.filter(
+      (peopleGroup) => peopleGroup.selected,
+    );
+
+    for (let peopleGroup of peopleGroupsToInstall) {
+      this.installPeopleGroup(peopleGroup);
+      await this.wait(500);
+    }
+  }
+  async installPeopleGroup(peopleGroup) {
+    peopleGroup.installing = true;
+    this.requestUpdate();
+
+    let data = {
+      rop3: peopleGroup.ROP3,
+      country: peopleGroup.Ctry,
+      location_grid: peopleGroup.location_grid,
+    };
+
+    await window.dt_admin_shared.people_groups_install(data);
+
+    peopleGroup.installing = false;
+    this.requestUpdate();
+  }
+  wait(time) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, time);
+    });
+  }
 
   render() {
     return html`
@@ -73,24 +105,28 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
               all. <br />(There are a lot of them though)
             </p>
             <button class="btn-primary">Import all</button>
-          </section>
-          <section>
             <p>or</p>
-            <ol>
-              <li>Choose a country in the dropdown</li>
-              <li>
-                Add only the people groups that you need for linking to contacts
-                in D.T.
-              </li>
-            </ol>
-            <select name="country" id="country" @change=${this.selectCountry}>
-              <option value="">Select a country</option>
-              ${this.step
-                ? Object.values(this.step.config.countries).map((country) => {
-                    return html` <option value=${country}>${country}</option> `;
-                  })
-                : ''}
-            </select>
+          </section>
+          <section class="flow">
+            <div>
+              <ol>
+                <li>Choose a country in the dropdown</li>
+                <li>
+                  Add only the people groups that you need for linking to
+                  contacts in D.T.
+                </li>
+              </ol>
+              <select name="country" id="country" @change=${this.selectCountry}>
+                <option value="">Select a country</option>
+                ${this.step
+                  ? Object.values(this.step.config.countries).map((country) => {
+                      return html`
+                        <option value=${country}>${country}</option>
+                      `;
+                    })
+                  : ''}
+              </select>
+            </div>
             <div class="people-groups">
               ${this.peopleGroups.length > 0
                 ? html`
@@ -98,6 +134,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                       <thead>
                         <tr>
                           <th>Name</th>
+                          <th>ROP3</th>
                           <th>
                             Add <br />
                             <span
@@ -114,7 +151,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                           this.peopleGroups,
                           (people) => people[28],
                           (people) => {
-                            let action = 'Active';
+                            let action = 'Added';
                             if (people.installing) {
                               action = html`<span class="spinner"></span>`;
                             } else if (!people.active) {
@@ -132,6 +169,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                                 }}
                               >
                                 <td>${people.PeopNameAcrossCountries}</td>
+                                <td>${people.ROP3}</td>
                                 <td>${action}</td>
                               </tr>
                             `;
