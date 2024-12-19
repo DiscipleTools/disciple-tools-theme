@@ -22,7 +22,7 @@ export class SetupWizardIntro extends OpenLitElement {
         <div class="content">
           <p>
             We're glad you are here, and want to help set you up so you can take
-            advantage of the powertool that is Disciple.Tools, D.T for short.
+            advantage of the power tool that is Disciple.Tools, D.T for short.
           </p>
           <p>
             D.T. can be used in many ways from managing connections and
