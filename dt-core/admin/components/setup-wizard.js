@@ -173,10 +173,18 @@ export class SetupWizard extends LitElement {
         background-color: var(--primary-color);
         color: var(--default-color);
       }
+      .btn-primary.saving {
+        background-color: var(--default-dark);
+        cursor: progress;
+      }
       .btn-primary:hover,
       .btn-primary:focus,
       .btn-primary:active {
         background-color: var(--primary-hover-color);
+
+        &.saving {
+          background-color: var(--default-dark);
+        }
       }
       .btn-outline {
         border: 1px solid transparent;

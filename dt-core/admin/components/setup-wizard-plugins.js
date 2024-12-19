@@ -1,26 +1,17 @@
-import {
-  html,
-  css,
-} from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
+import { html } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 import { OpenLitElement } from './setup-wizard-open-element.js';
 
 export class SetupWizardPlugins extends OpenLitElement {
-  static styles = [
-    css`
-      :host {
-        display: block;
-      }
-    `,
-  ];
-
   static get properties() {
     return {
       step: { type: Object },
       firstStep: { type: Boolean },
+      loading: { type: Boolean, attribute: false },
     };
   }
   constructor() {
     super();
+    this.loading = false;
     this.plugins = window.setupWizardShare.data.plugins;
     let recommended_plugins = [];
     Object.keys(window.setupWizardShare.data.use_cases || {}).forEach(
@@ -48,6 +39,7 @@ export class SetupWizardPlugins extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('next'));
   }
   async next() {
+    this.loading = true;
     const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
 
     for (let plugin of plugins_to_install) {
@@ -68,6 +60,7 @@ export class SetupWizardPlugins extends OpenLitElement {
         plugin.active = true;
       }
     }
+    this.loading = false;
     this.requestUpdate();
 
     this.dispatchEvent(new CustomEvent('next'));
@@ -150,6 +143,7 @@ export class SetupWizardPlugins extends OpenLitElement {
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
           nextLabel="Install and Activate Selected Plugins"
+          ?saving=${this.loading}
           @next=${this.next}
           @back=${this.back}
           @skip=${this.skip}

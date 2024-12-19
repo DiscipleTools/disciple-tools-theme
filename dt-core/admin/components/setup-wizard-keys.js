@@ -225,7 +225,7 @@ export class SetupWizardKeys extends OpenLitElement {
           @next=${this.next}
           @back=${this.back}
           @skip=${this.skip}
-          .saving=${this._saving}
+          ?saving=${this._saving}
         ></setup-wizard-controls>
       </div>
     `;

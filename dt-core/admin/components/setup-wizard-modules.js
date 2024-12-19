@@ -1,6 +1,5 @@
 import {
   html,
-  css,
   repeat,
 } from 'https://cdn.jsdelivr.net/gh/lit/dist@2.4.0/all/lit-all.min.js';
 import { OpenLitElement } from './setup-wizard-open-element.js';
@@ -151,7 +150,6 @@ export class SetupWizardModules extends OpenLitElement {
                     </tbody>
                   </table>
                 </section>
-                ${this.loading ? html`<span class="spinner"></span>` : ''}
               `
             : ''}
           ${this.stage === 'follow-up'
@@ -172,6 +170,7 @@ export class SetupWizardModules extends OpenLitElement {
           nextLabel=${this.nextLabel()}
           backLabel=${this.translations.back}
           skipLabel=${this.translations.skip}
+          ?saving=${this.loading}
           @next=${this.next}
           @back=${this.back}
           @skip=${this.skip}
