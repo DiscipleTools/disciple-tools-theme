@@ -50,6 +50,7 @@ class DT_Setup_Wizard
         dt_theme_enqueue_script( 'setup-wizard-plugins', 'dt-core/admin/components/setup-wizard-plugins.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-details', 'dt-core/admin/components/setup-wizard-details.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-keys', 'dt-core/admin/components/setup-wizard-keys.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
+        dt_theme_enqueue_script( 'setup-wizard-people-groups', 'dt-core/admin/components/setup-wizard-people-groups.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-controls', 'dt-core/admin/components/setup-wizard-controls.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-intro', 'dt-core/admin/components/setup-wizard-intro.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
         dt_theme_enqueue_script( 'setup-wizard-celebration', 'dt-core/admin/components/setup-wizard-celebration.js', [ 'setup-wizard', 'setup-wizard-open-element' ], true );
@@ -191,6 +192,15 @@ class DT_Setup_Wizard
                 'config' => [
                     'dt_google_map_key' => Disciple_Tools_Google_Geocode_API::get_key(),
                     'dt_mapbox_api_key' => DT_Mapbox_API::get_key(),
+                ],
+            ],
+            [
+                'name' => 'People Groups',
+                'description' => 'Install desired people groups data',
+                'component' => 'setup-wizard-people-groups',
+                'hidden' => true,
+                'config' => [
+                    'countries' => Disciple_Tools_People_Groups::get_country_dropdown(),
                 ],
             ],
             [

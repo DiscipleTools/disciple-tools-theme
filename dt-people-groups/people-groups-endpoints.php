@@ -134,8 +134,12 @@ class Disciple_Tools_People_Groups_Endpoints
     public function search_csv( WP_REST_Request $request ) {
 
         $params = $request->get_params();
+        $as_object = false;
+        if ( isset( $params['as_object'] ) ) {
+            $as_object = true;
+        }
         if ( isset( $params['s'] ) ) {
-            $people_groups = Disciple_Tools_People_Groups::search_csv( $params['s'] );
+            $people_groups = Disciple_Tools_People_Groups::search_csv( $params['s'], $as_object );
             return $people_groups;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter `s`' );

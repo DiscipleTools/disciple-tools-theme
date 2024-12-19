@@ -92,6 +92,15 @@ window.dt_admin_shared = {
       },
       `dt-admin-settings/`,
     ),
+  people_groups_get: (country) =>
+    makeRequest(
+      'POST',
+      'search_csv',
+      { s: country, as_object: true },
+      'dt/v1/people-groups',
+    ),
+  people_groups_install: (data) =>
+    makeRequest('POST', 'add_single_people_group', data, 'dt/v1/people-groups'),
 };
 
 jQuery(function ($) {
