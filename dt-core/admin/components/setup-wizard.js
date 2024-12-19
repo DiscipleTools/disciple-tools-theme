@@ -1,6 +1,7 @@
 import {
   html,
   css,
+  repeat,
   LitElement,
   staticHtml,
   unsafeStatic,
@@ -20,6 +21,7 @@ export class SetupWizard extends LitElement {
         --default-color: #efefef;
         --default-hover-color: #cdcdcd;
         --default-dark: #ababab;
+        --s1: 1rem;
       }
       /* Resets */
       /* Inherit fonts for inputs and buttons */
@@ -55,6 +57,10 @@ export class SetupWizard extends LitElement {
       }
       p {
         max-width: 60ch;
+      }
+      ul[role='list'],
+      ol[role='list'] {
+        list-style: none;
       }
       button {
         border: none;
@@ -145,6 +151,21 @@ export class SetupWizard extends LitElement {
       .cover > :last-child:not(.content) {
         margin-block-end: 0;
       }
+      .with-sidebar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s1);
+      }
+
+      .with-sidebar > :first-child {
+        flex-grow: 1;
+      }
+
+      .with-sidebar > :last-child {
+        flex-basis: 0;
+        flex-grow: 999;
+        min-inline-size: 50%;
+      }
       /* Utilities */
       .ms-auto {
         margin-left: auto;
@@ -170,6 +191,7 @@ export class SetupWizard extends LitElement {
         background-color: grey;
         color: white;
         padding: 1rem;
+        border-radius: 10px;
       }
       .btn-primary {
         background-color: var(--primary-color);
@@ -393,10 +415,23 @@ export class SetupWizard extends LitElement {
           </button>
           <h2 class="me-auto">${this.translations.title}</h2>
         </div>
-        <div class="wizard">
-          ${this.isKitchenSink
-            ? this.kitchenSink()
-            : html` ${this.renderStep()} `}
+        <div class="with-sidebar">
+          <div class="sidebar">
+            <ul class="flow" role="list">
+              ${repeat(
+                this.steps,
+                (step) => step.key,
+                (step) => {
+                  return html` <li key=${step.key}>${step.name}</li> `;
+                },
+              )}
+            </ul>
+          </div>
+          <div class="wizard">
+            ${this.isKitchenSink
+              ? this.kitchenSink()
+              : html` ${this.renderStep()} `}
+          </div>
         </div>
       </div>
     `;
