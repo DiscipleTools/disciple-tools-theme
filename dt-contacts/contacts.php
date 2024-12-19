@@ -9,11 +9,11 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         'description' => 'Default contact functionality'
     ];
     $modules['access_module'] = [
-        'name' => 'Access Module',
+        'name' => 'Follow-up',
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => 'Field and workflows for follow-up ministries',
+        'description' => 'Manage incoming contacts from various sources and assign them to users for follow-up.',
         'submodule' => true
     ];
     return $modules;
