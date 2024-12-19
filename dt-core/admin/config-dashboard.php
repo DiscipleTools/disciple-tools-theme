@@ -392,16 +392,9 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'hide_mark_done' => false
     ];
     $items['explore_custom_fields'] = [
-        'label' => 'Explore Custom Fields',
+        'label' => 'Explore Custom Tiles and Fields',
         'description' => 'Explore the custom fields section and unlock its full potential.',
-        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-fields' ),
-        'complete' => false,
-        'hide_mark_done' => false
-    ];
-    $items['explore_custom_tiles'] = [
-        'label' => 'Explore Custom Tiles',
-        'description' => 'Explore the custom tiles section and personalize your Disicple.Tools instance.',
-        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-tiles' ),
+        'link' => admin_url( 'admin.php?page=dt_customizations' ),
         'complete' => false,
         'hide_mark_done' => false
     ];
