@@ -55,10 +55,10 @@ export class SetupWizardKeys extends OpenLitElement {
         <div class="content flow">
           <h2>Part 3: Mapping and Geocoding</h2>
           <p>
-            Disciple.Tools comes with high level mapping which is only as
-            precise as a country county or department. Extra tools are needed to
-            be able to geolocate to more precise locations like a street address
-            or a city. See
+            Disciple.Tools comes with basic mapping which is only as precise as
+            a country county or department. Extra tools are needed to be able to
+            geolocate to more precise locations like a street address or a city.
+            See
             <a
               href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
               >Geolocation Docs</a
@@ -66,7 +66,7 @@ export class SetupWizardKeys extends OpenLitElement {
             for more details.
           </p>
           <p>
-            We highly recommend setting up MapBox to enable better mapping and
+            We highly recommend setting up Mapbox to enable better mapping and
             location pins for your records. This however is not required and
             Disciple.Tools can be used without it.
           </p>
@@ -86,7 +86,7 @@ export class SetupWizardKeys extends OpenLitElement {
               <tr>
                 <td>Mapbox key</td>
                 <td>
-                  Upgrade maps and get precise locations with a MapBox key.
+                  Upgrade maps and get precise locations with a Mapbox key.
                   <br />
                   <button
                     type="button"
@@ -106,14 +106,14 @@ export class SetupWizardKeys extends OpenLitElement {
                       <li>
                         Go to
                         <a href="https://www.mapbox.com/" target="_blank"
-                          >MapBox.com</a
+                          >Mapbox.com</a
                         >.
                       </li>
                       <li>
                         Register for a new account (<a
                           href="https://account.mapbox.com/auth/signup/"
                           target="_blank"
-                          >MapBox.com</a
+                          >Mapbox.com</a
                         >)<br />
                         <em
                           >(email required. A credit card might be required,

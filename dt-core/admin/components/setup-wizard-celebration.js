@@ -31,7 +31,7 @@ export class SetupWizardCelebration extends OpenLitElement {
         <div class="content flow">
           <p>
             You can change all of these choices in the Settings (D.T.) tab in
-            the WP admin.
+            the WordPress Admin.
           </p>
           <p>
             D.T. has a huge ability to be customized to serve your needs. If you
