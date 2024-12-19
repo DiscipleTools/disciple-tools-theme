@@ -224,7 +224,7 @@ export class SetupWizardKeys extends OpenLitElement {
             </tbody>
           </table>
           ${this._finished
-            ? html` <section class="card success">Keys saved</section> `
+            ? html` <section class="ms-auto card success">Keys saved</section> `
             : ''}
         </div>
         <setup-wizard-controls

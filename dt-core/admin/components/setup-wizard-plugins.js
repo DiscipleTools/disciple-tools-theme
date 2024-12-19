@@ -167,7 +167,7 @@ export class SetupWizardPlugins extends OpenLitElement {
           ${
             this.finished
               ? html`
-                  <section class="card success">
+                  <section class="ms-auto card success">
                     Finished installing and activating plugins
                   </section>
                 `

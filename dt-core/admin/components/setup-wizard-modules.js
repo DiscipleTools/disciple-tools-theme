@@ -146,7 +146,7 @@ export class SetupWizardModules extends OpenLitElement {
                 </section>
                 ${this.finished
                   ? html`
-                      <section class="card success">
+                      <section class="ms-auto card success">
                         <p>
                           <strong
                             >The modules you have chosen have been turned

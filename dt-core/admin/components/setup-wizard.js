@@ -166,6 +166,10 @@ export class SetupWizard extends LitElement {
         flex-grow: 999;
         min-inline-size: 50%;
       }
+      .center {
+        margin-left: auto;
+        margin-right: auto;
+      }
       /* Utilities */
       .ms-auto {
         margin-left: auto;
