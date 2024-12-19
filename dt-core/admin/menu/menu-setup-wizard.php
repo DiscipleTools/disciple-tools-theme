@@ -39,6 +39,7 @@ class DT_Setup_Wizard
         });
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
+        add_filter( 'dt_setup_wizard_items', [ $this, 'dt_setup_wizard_items' ], 10, 1 );
     }
 
     public function enqueue_scripts(){
@@ -69,6 +70,25 @@ class DT_Setup_Wizard
             'admin_url' => admin_url(),
             'can_install_plugins' => current_user_can( 'install_plugins' ),
         ] );
+    }
+
+    public function dt_setup_wizard_items( $items ){
+
+        $is_completed = !empty( get_option( 'dt_setup_wizard_completed' ) );
+        $is_administrator = current_user_can( 'manage_options' );
+
+        $setup_wizard_step = [
+            'label' => 'Setup Wizard',
+            'description' => 'D.T. can be used in many ways from managing connections and relationships, all the way through to tracking and managing a movement of Disciple Making.             In order to help you, we want to take you through a series of choices to give you the best start at getting Disciple.Tools setup ready to suit your needs.',
+            'link' => esc_url( admin_url( 'admin.php?page=dt_setup_wizard' ) ),
+            'complete' => $is_completed || !$is_administrator,
+            'hide_mark_done' => true
+        ];
+
+        return [
+            'getting_started' => $setup_wizard_step,
+            ...$items,
+        ];
     }
 
     public function has_access_permission() {

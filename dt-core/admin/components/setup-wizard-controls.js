@@ -16,6 +16,9 @@ export class SetupWizardControls extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   next() {
+    if (this.saving) {
+      return;
+    }
     this.dispatchEvent(new CustomEvent('next'));
   }
   skip() {
@@ -36,7 +39,11 @@ export class SetupWizardControls extends OpenLitElement {
           : html`
               <button @click=${this.back}>${this.backLabel ?? 'Back'}</button>
             `}
-        <button @click=${this.next} class="btn-primary">
+        <button
+          @click=${this.next}
+          class="btn-primary ${this.saving ? 'saving' : ''}"
+          ?disabled=${this.saving}
+        >
           ${this.nextLabel ?? 'Next'}
           ${this.saving ? html`<span class="spinner light"></span>` : ''}
         </button>
