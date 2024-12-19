@@ -136,7 +136,7 @@ export class SetupWizardPlugins extends OpenLitElement {
                     <td>${plugin.name}</td>
                     <td>${action}</td>
                     <td style="max-width: 50%">${plugin.description}</td>
-                    <td>
+                    <td @click=${(e) => e.stopImmediatePropagation()}>
                       <a href=${plugin.permalink} target="_blank">
                         Plugin Link
                       </a>
