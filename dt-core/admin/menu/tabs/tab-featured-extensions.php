@@ -232,7 +232,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <?php
     }
 
-    public function partial_array_search( $array, $find ) {
+    public static function partial_array_search( $array, $find ) {
         if ( $find == null || !$array || sizeof( $array ) == 0 ) {
             return -1;
         }
@@ -292,7 +292,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         return $distinct_categories;
     }
 
-    public function get_dt_plugins() {
+    public static function get_dt_plugins() {
         $all_plugins = get_plugins();
         $plugins = get_transient( 'dt_plugins_feed' );
         if ( empty( $plugins ) ){
@@ -312,7 +312,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             $plugin->blog_url = 'https://disciple.tools/plugins/' . $plugin->slug;
             $plugin->folder_name = get_home_path() . 'wp-content/plugins/' . $plugin->slug;
             $plugin->author_github_username = explode( '/', $plugin->homepage )[3];
-            $plugin->description = count_chars( $plugin->description ) > 128 ? trim( substr( $plugin->description, 0, 128 ) ) . '...' : $plugin->description; // Shorten descriptions to 88 chars
             $plugin->icon = ! isset( $plugin->icon ) ? 'https://s.w.org/plugins/geopattern-icon/' . $plugin->slug . '.svg' : $plugin->icon;
             $plugin->name = str_replace( 'Disciple Tools - ', '', $plugin->name );
             $plugin->name = str_replace( 'Disciple.Tools - ', '', $plugin->name );
@@ -320,13 +319,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             $plugin->active = false;
             $plugin->activation_path = '';
 
-            if ( $this->partial_array_search( $all_plugins, $plugin->slug ) !== -1 ) {
+            if ( self::partial_array_search( $all_plugins, $plugin->slug ) !== -1 ) {
                 $plugin->installed = true;
             }
 
-            if ( $this->partial_array_search( $active_plugins, $plugin->slug ) !== -1 ) {
+            if ( self::partial_array_search( $active_plugins, $plugin->slug ) !== -1 ) {
                 $plugin->active = true;
-                $plugin->activation_path = $this->partial_array_search( $active_plugins, $plugin->slug );
+                $plugin->activation_path = self::partial_array_search( $active_plugins, $plugin->slug );
             }
         }
         return $plugins;

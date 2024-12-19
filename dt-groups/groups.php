@@ -7,7 +7,7 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         'locked' => false,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'groups',
-        'description' => 'Default group functionality'
+        'description' => 'Track church health and generational growth'
     ];
     return $modules;
 }, 20, 1 );
