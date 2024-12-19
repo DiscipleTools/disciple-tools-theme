@@ -197,7 +197,7 @@ export class SetupWizard extends LitElement {
         border-radius: 10px;
       }
       .steps {
-        padding-left: 20px;
+        padding-left: 24px;
       }
       .step {
         position: relative;
@@ -207,14 +207,12 @@ export class SetupWizard extends LitElement {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 100%;
         height: 100%;
-        transform: scale(1.4);
-        display: flex;
-        justify-content: flex-start;
+        left: 0;
+        transform: translateX(-150%) scale(1.4);
       }
       .step[current]::before {
-        padding-left: 3px;
+        transform: translate(-210%) scale(1.4);
       }
       .btn-primary {
         background-color: var(--primary-color);
