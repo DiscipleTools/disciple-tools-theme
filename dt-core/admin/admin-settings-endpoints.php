@@ -258,12 +258,13 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $modules_to_update = $request->get_param( 'modules' );
         $modules_to_update = dt_recursive_sanitize_array( $modules_to_update );
 
-        $modules = dt_get_option( $modules_option_name );
+        $modules = get_option( $modules_option_name );
 
-        foreach ( $modules as $key => $module ) {
-            if ( array_key_exists( $key, $modules_to_update ) ) {
-                $modules[$key]['enabled'] = !empty( $modules_to_update[$key] ) ? true : false;
+        foreach ( $modules_to_update as $key => $enabled ){
+            if ( !isset( $modules[$key] ) ){
+                $modules[$key] = [];
             }
+            $modules[$key]['enabled'] = !empty( $enabled );
         }
 
         update_option( $modules_option_name, $modules );
