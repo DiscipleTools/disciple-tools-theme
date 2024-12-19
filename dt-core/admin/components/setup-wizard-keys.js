@@ -53,7 +53,7 @@ export class SetupWizardKeys extends OpenLitElement {
             Disciple.Tools provides basic mapping functionality for locations at
             the country, state, or county level. For more precise geolocation,
             such as street addresses or cities, additional tools like Mapbox and
-            Google API keys are recommended but not mandatory. See
+            Google API keys are recommended but not mandatory.
           </p>
           <p>
             Mapbox offers detailed maps with precise location pins, while Google
