@@ -18,11 +18,11 @@ export class SetupWizardIntro extends OpenLitElement {
   render() {
     return html`
       <div class="cover">
-        <h2>Setting up D.T. for you</h2>
+        <h2>Setting up Disciple.Tools. for you</h2>
         <div class="content">
           <p>
             We're glad you are here, and want to help set you up so you can take
-            advantage of the powertool that is D.T.
+            advantage of the powertool that is Disciple.Tools, D.T for short.
           </p>
           <p>
             D.T. can be used in many ways from managing connections and
@@ -31,12 +31,24 @@ export class SetupWizardIntro extends OpenLitElement {
           </p>
           <p>
             In order to help you, we want to take you through a series of
-            choices to give you the best start at getting Disiple.Tools setup
+            choices to give you the best start at getting Disciple.Tools setup
             ready to suit your needs.
           </p>
           <p>
-            Feel free to skip this setup stage if you already know what you
-            need. But if this will be helpful for you let's dive in.
+            <ol>
+              <li>
+                In Part 1 we'll choose which parts of the system we want to enable
+              </li>
+              <li>
+                In Part 2 we'll choose which plugins we want to install
+              </li>
+              <li>
+                In Part 3 we'll look at some extra setup options
+              </li>
+            </ol>
+          </p>
+          <p>
+            Ready? Let's get started.
           </p>
         </div>
         <setup-wizard-controls
