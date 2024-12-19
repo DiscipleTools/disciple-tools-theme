@@ -30,14 +30,14 @@ export class SetupWizardCelebration extends OpenLitElement {
         <h2>All finished</h2>
         <div class="content flow">
           <p>
-            You can change all of these choices in the Settings (D.T.) tab in
+            You can change all of these choices in the "Settings (D.T)" tab in
             the WordPress Admin.
           </p>
           <p>
-            D.T. has a huge ability to be customized to serve your needs. If you
-            have any questions or need any further assistance in getting D.T. to
-            work for you, please reach out on our community forum or our discord
-            channel.
+            Disciple.Tools has a huge ability to be customized to serve your
+            needs. If you have any questions or need any further assistance in
+            getting Disciple.Tools. to work for you, please reach out on our
+            community forum or our discord channel.
           </p>
           <a href="https://community.disciple.tools/" target="_blank">
             Community Forum

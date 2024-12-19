@@ -61,6 +61,7 @@ export class SetupWizardKeys extends OpenLitElement {
             See
             <a
               href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
+              target="_blank"
               >Geolocation Docs</a
             >
             for more details.
@@ -77,9 +78,9 @@ export class SetupWizardKeys extends OpenLitElement {
           <table style="width: 100%">
             <thead>
               <tr>
-                <th>Key</th>
+                <th>Name</th>
                 <th>Description</th>
-                <th style="width: 30%">Value</th>
+                <th style="width: 30%">Key</th>
               </tr>
             </thead>
             <tbody>
@@ -96,7 +97,7 @@ export class SetupWizardKeys extends OpenLitElement {
                       this.requestUpdate();
                     }}
                   >
-                    Show Instructions
+                    Expand Instructions
                   </button>
                   <div
                     ?hidden=${!this.show_mapbox_instructions}
@@ -166,7 +167,7 @@ export class SetupWizardKeys extends OpenLitElement {
                       this.requestUpdate();
                     }}
                   >
-                    Show Instructions
+                    Expand Instructions
                   </button>
                   <div
                     ?hidden=${!this.show_google_instructions}
@@ -175,7 +176,9 @@ export class SetupWizardKeys extends OpenLitElement {
                     <ol>
                       <li>
                         Go to
-                        <a href="https://console.cloud.google.com"
+                        <a
+                          href="https://console.cloud.google.com"
+                          target="_blank"
                           >https://console.cloud.google.com</a
                         >.
                       </li>

@@ -18,14 +18,14 @@ export class SetupWizardIntro extends OpenLitElement {
   render() {
     return html`
       <div class="cover">
-        <h2>Setting up Disciple.Tools. for you</h2>
+        <h2>Setting up Disciple.Tools for you</h2>
         <div class="content">
           <p>
             We're glad you are here, and want to help set you up so you can take
-            advantage of the power tool that is Disciple.Tools, D.T for short.
+            advantage of the power tool that is Disciple.Tools.
           </p>
           <p>
-            D.T. can be used in many ways from managing connections and
+            Disciple.Tools can be used in many ways from managing connections and
             relationships, all the way through to tracking and managing a
             movement of Disciple Making.
           </p>
