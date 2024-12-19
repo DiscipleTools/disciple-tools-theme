@@ -98,12 +98,12 @@ export class SetupWizardModules extends OpenLitElement {
     return html`
       <div class="cover">
         <div class="content flow">
+          <h2>Part 1: Module selection</h2>
           ${this.stage === 'work'
             ? html`
-                <h2>Module selection</h2>
                 <p>
                   The recommended modules for your chosen use case(s) are
-                  selected below
+                  selected below.
                 </p>
                 <p>
                   Feel free to change this selection according to what you need
@@ -156,10 +156,14 @@ export class SetupWizardModules extends OpenLitElement {
             : ''}
           ${this.stage === 'follow-up'
             ? html`
-                <h2>The modules you have chosen have been turned on.</h2>
                 <p>
-                  You can adjust these modules to your liking in the 'Settings
-                  (DT)' section of the Wordpress admin.
+                  <strong
+                    >The modules you have chosen have been turned on.</strong
+                  >
+                </p>
+                <p>
+                  You can enable and disable these modules to your liking in the
+                  'Settings (D.T)' section of the Wordpress admin.
                 </p>
               `
             : ''}
