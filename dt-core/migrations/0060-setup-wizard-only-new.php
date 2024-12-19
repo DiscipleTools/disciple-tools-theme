@@ -13,7 +13,7 @@ class Disciple_Tools_Migration_0060 extends Disciple_Tools_Migration {
             return;
         }
 
-        update_option( 'dt_setup_wizard_seen', true );
+        update_option( 'dt_setup_wizard_completed', true );
     }
 
     public function down() {
