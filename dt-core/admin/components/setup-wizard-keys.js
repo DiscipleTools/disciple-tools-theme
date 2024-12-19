@@ -53,7 +53,7 @@ export class SetupWizardKeys extends OpenLitElement {
     return html`
       <div class="cover">
         <div class="content flow">
-          <h2>Mapping and Geocoding</h2>
+          <h2>Part 3: Mapping and Geocoding</h2>
           <table style="width: 100%">
             <thead>
               <tr>
