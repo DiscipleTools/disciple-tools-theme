@@ -22,7 +22,23 @@ export class SetupWizardPlugins extends OpenLitElement {
   constructor() {
     super();
     this.plugins = window.setupWizardShare.data.plugins;
-    //@todo get list of recommended plugins
+    let recommended_plugins = [];
+    Object.keys(window.setupWizardShare.data.use_cases || {}).forEach(
+      (use_case) => {
+        if (window.setupWizardShare.data.use_cases[use_case].selected) {
+          recommended_plugins = recommended_plugins.concat(
+            window.setupWizardShare.data.use_cases[use_case]
+              .recommended_plugins,
+          );
+        }
+      },
+    );
+    //pre select recommended plugins
+    this.plugins.forEach((plugin) => {
+      if (recommended_plugins.includes(plugin.slug)) {
+        plugin.selected = true;
+      }
+    });
   }
 
   back() {
@@ -72,6 +88,15 @@ export class SetupWizardPlugins extends OpenLitElement {
       <div class="cover">
         <div class="content flow">
           <h2>Recommended Plugins</h2>
+          <p>
+            Plugins are optional and add additional functionality
+            to Disciple.Tools based on your needs.
+          </p>
+          <p>
+            Plugins can be activated or disactivated at any time. You can find the full list of
+            Disciple.Tools plugin in the "Extensions (D.T)" tab later.
+          </p>
+          </p>
           <table>
             <thead>
               <tr>
@@ -111,7 +136,7 @@ export class SetupWizardPlugins extends OpenLitElement {
                     <td>${plugin.name}</td>
                     <td>${action}</td>
                     <td style="max-width: 50%">${plugin.description}</td>
-                    <td>
+                    <td @click=${(e) => e.stopImmediatePropagation()}>
                       <a href=${plugin.permalink} target="_blank">
                         Plugin Link
                       </a>

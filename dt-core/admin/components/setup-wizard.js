@@ -312,7 +312,7 @@ export class SetupWizard extends LitElement {
         vertical-align: bottom;
       }
       table {
-        margin-bottom: 1rem;
+        padding-bottom: 1rem;
       }
       table td {
         padding: 0.5rem;

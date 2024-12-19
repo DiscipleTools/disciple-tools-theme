@@ -193,11 +193,11 @@ class DT_Setup_Wizard
             'disciple-tools-team-module',
             'disciple-tools-storage',
             'disciple-tools-prayer-campaigns',
-            'dt-home',
         ];
         if ( is_multisite() ){
             $enabled_plugins[] = 'disciple-tools-multisite';
         }
+        //dt-home
         //auto assignment
         //share app
 
