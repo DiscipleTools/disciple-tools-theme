@@ -147,8 +147,8 @@ class DT_Setup_Wizard
                 'description' => 'How are you planning to use DT?',
                 'config' => [
                     'crm',
-                    'dmm',
                     'media',
+                    'dmm',
                 ]
             ],
             [
