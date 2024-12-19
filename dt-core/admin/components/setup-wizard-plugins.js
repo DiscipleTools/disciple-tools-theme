@@ -7,11 +7,13 @@ export class SetupWizardPlugins extends OpenLitElement {
       step: { type: Object },
       firstStep: { type: Boolean },
       loading: { type: Boolean, attribute: false },
+      finished: { type: Boolean, attribute: false },
     };
   }
   constructor() {
     super();
     this.loading = false;
+    this.finished = false;
     this.plugins = window.setupWizardShare.data.plugins;
     let recommended_plugins = [];
     Object.keys(window.setupWizardShare.data.use_cases || {}).forEach(
@@ -39,6 +41,10 @@ export class SetupWizardPlugins extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('next'));
   }
   async next() {
+    if (this.finished) {
+      this.dispatchEvent(new CustomEvent('next'));
+      return;
+    }
     this.loading = true;
     const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
 
@@ -61,9 +67,8 @@ export class SetupWizardPlugins extends OpenLitElement {
       }
     }
     this.loading = false;
+    this.finished = true;
     this.requestUpdate();
-
-    this.dispatchEvent(new CustomEvent('next'));
   }
 
   select_all() {
@@ -74,6 +79,12 @@ export class SetupWizardPlugins extends OpenLitElement {
       plugin.selected = !already_all_selected;
     });
     this.requestUpdate();
+  }
+  nextLabel() {
+    if (this.finished) {
+      return 'Next';
+    }
+    return 'Install and Activate Selected Plugins';
   }
 
   render() {
@@ -139,10 +150,19 @@ export class SetupWizardPlugins extends OpenLitElement {
               })}
             </tbody>
           </table>
+          ${
+            this.finished
+              ? html`
+                  <section class="card success">
+                    Finished installing and activating plugins
+                  </section>
+                `
+              : ''
+          }
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
-          nextLabel="Install and Activate Selected Plugins"
+          nextLabel=${this.nextLabel()}
           ?saving=${this.loading}
           @next=${this.next}
           @back=${this.back}

@@ -12,6 +12,7 @@ export class SetupWizardModules extends OpenLitElement {
       availableModules: { type: Array, attribute: false },
       selectedModules: { type: Object, attribute: false },
       loading: { Boolean, attribute: false },
+      finished: { Boolean, attribute: false },
     };
   }
 
@@ -50,24 +51,14 @@ export class SetupWizardModules extends OpenLitElement {
   }
 
   back() {
-    switch (this.stage) {
-      case 'follow-up':
-        this.stage = 'work';
-        break;
-      case 'work':
-        this.dispatchEvent(new CustomEvent('back'));
-        break;
-    }
+    this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    switch (this.stage) {
-      case 'work':
-        await this.submitModuleChanges();
-        this.stage = 'follow-up';
-        break;
-      case 'follow-up':
-        this.dispatchEvent(new CustomEvent('next'));
-        break;
+    if (this.finished) {
+      this.dispatchEvent(new CustomEvent('next'));
+    } else {
+      await this.submitModuleChanges();
+      this.finished = true;
     }
   }
   skip() {
@@ -150,19 +141,23 @@ export class SetupWizardModules extends OpenLitElement {
                     </tbody>
                   </table>
                 </section>
-              `
-            : ''}
-          ${this.stage === 'follow-up'
-            ? html`
-                <p>
-                  <strong
-                    >The modules you have chosen have been turned on.</strong
-                  >
-                </p>
-                <p>
-                  You can enable and disable these modules to your liking in the
-                  'Settings (D.T)' section of the Wordpress admin.
-                </p>
+                ${this.finished
+                  ? html`
+                      <section class="card success">
+                        <p>
+                          <strong
+                            >The modules you have chosen have been turned
+                            on.</strong
+                          >
+                        </p>
+                        <p>
+                          You can enable and disable these modules to your
+                          liking in the 'Settings (D.T)' section of the
+                          Wordpress admin.
+                        </p>
+                      </section>
+                    `
+                  : ''}
               `
             : ''}
         </div>

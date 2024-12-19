@@ -234,6 +234,17 @@ export class SetupWizard extends LitElement {
       .btn-card.disabled:hover {
         background-color: var(--default-hover-color);
       }
+      .card {
+        background-color: var(--default-color);
+        border-radius: 12px;
+        padding: 1rem 2rem;
+        width: fit-content;
+
+        &.success {
+          background-color: var(--secondary-color);
+          color: var(--default-color);
+        }
+      }
       .input-group {
         display: flex;
         flex-direction: column;
