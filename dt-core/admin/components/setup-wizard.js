@@ -188,10 +188,29 @@ export class SetupWizard extends LitElement {
         padding: 1rem;
       }
       .sidebar {
-        background-color: grey;
-        color: white;
+        background-color: white;
         padding: 1rem;
         border-radius: 10px;
+      }
+      .steps {
+        padding-left: 20px;
+      }
+      .step {
+        position: relative;
+      }
+      .step::before {
+        content: var(--svg-url, '');
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        transform: scale(1.4);
+        display: flex;
+        justify-content: flex-start;
+      }
+      .step[current]::before {
+        padding-left: 3px;
       }
       .btn-primary {
         background-color: var(--primary-color);
@@ -383,6 +402,7 @@ export class SetupWizard extends LitElement {
 
     this.translations = window.setupWizardShare.translations;
     this.adminUrl = window.setupWizardShare.admin_url;
+    this.imageUrl = window.setupWizardShare.image_url;
     this.steps = [];
     this.currentStepNumber = 0;
 
@@ -405,6 +425,27 @@ export class SetupWizard extends LitElement {
       this.steps = window.setupWizardShare.steps;
     }
   }
+  updated() {
+    const allSteps = this.renderRoot.querySelectorAll('.step') || [];
+    const completedSteps =
+      this.renderRoot.querySelectorAll('.step[completed]') || [];
+    const currentStep = this.renderRoot.querySelector('.step[current]');
+    allSteps.forEach((step) => {
+      step.style.setProperty('--svg-url', '');
+    });
+    completedSteps.forEach((step) => {
+      step.style.setProperty(
+        '--svg-url',
+        `url('${this.imageUrl + 'verified.svg'}')`,
+      );
+    });
+    if (currentStep) {
+      currentStep.style.setProperty(
+        '--svg-url',
+        `url('${this.imageUrl + 'chevron_right.svg'}')`,
+      );
+    }
+  }
 
   render() {
     return html`
@@ -417,12 +458,21 @@ export class SetupWizard extends LitElement {
         </div>
         <div class="with-sidebar">
           <div class="sidebar">
-            <ul class="flow" role="list">
+            <ul class="flow | steps" role="list">
               ${repeat(
                 this.steps,
                 (step) => step.key,
-                (step) => {
-                  return html` <li key=${step.key}>${step.name}</li> `;
+                (step, i) => {
+                  return html`
+                    <li
+                      class="step"
+                      ?completed=${i < this.currentStepNumber}
+                      ?current=${i === this.currentStepNumber}
+                      key=${step.key}
+                    >
+                      ${step.name}
+                    </li>
+                  `;
                 },
               )}
             </ul>

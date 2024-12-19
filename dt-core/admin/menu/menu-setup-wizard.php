@@ -68,6 +68,7 @@ class DT_Setup_Wizard
             'steps' => $this->setup_wizard_steps(),
             'data' => $this->setup_wizard_data(),
             'admin_url' => admin_url(),
+            'image_url' => trailingslashit( get_template_directory_uri() ) . 'dt-assets/images/',
             'can_install_plugins' => current_user_can( 'install_plugins' ),
         ] );
     }
