@@ -90,8 +90,8 @@ export class SetupWizardModules extends OpenLitElement {
   render() {
     return html`
       <div class="cover">
+        <h2>Part 1: Module selection</h2>
         <div class="content flow">
-          <h2>Part 1: Module selection</h2>
           ${this.stage === 'work'
             ? html`
                 <p>
