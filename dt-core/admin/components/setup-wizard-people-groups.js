@@ -94,6 +94,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     await window.dt_admin_shared.people_groups_install(data);
 
     peopleGroup.installing = false;
+    peopleGroup.installed = true;
     this.checkIfAllFinished(peopleGroup.ROP3);
     this.requestUpdate();
   }
@@ -112,7 +113,10 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     ) {
       this.finished = true;
       this.saving = false;
+
+      this.peopleGroupsInstalled = [];
     }
+    this.requestUpdate();
   }
 
   render() {
@@ -175,7 +179,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                             let action = 'Added';
                             if (people.installing) {
                               action = html`<span class="spinner"></span>`;
-                            } else if (!people.active) {
+                            } else if (!people.installed) {
                               action = html`<input
                                 type="checkbox"
                                 .checked=${people.selected}
