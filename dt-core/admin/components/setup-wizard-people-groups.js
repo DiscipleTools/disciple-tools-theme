@@ -12,6 +12,13 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
       saving: { type: Boolean, attribute: false },
       finished: { type: Boolean, attribute: false },
       peopleGroups: { type: Array, attribute: false },
+      gettingBatches: { type: Boolean, attribute: false },
+      importingAll: { type: Boolean, attribute: false },
+      batchNumber: { type: Boolean, attribute: false },
+      totalBatches: { type: Boolean, attribute: false },
+      batchSize: { type: Number, attribute: false },
+      countryInstalling: { type: String, attribute: false },
+      importingFinished: { type: Boolean, attribute: false },
     };
   }
 
@@ -27,7 +34,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    if (this.finished) {
+    if (this.isFinished()) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
@@ -41,10 +48,13 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('next'));
   }
   nextLabel() {
-    if (this.finished) {
+    if (this.isFinished()) {
       return 'Next';
     }
     return 'Confirm';
+  }
+  isFinished() {
+    return this.finished || this.importingFinished;
   }
 
   async selectCountry(event) {
@@ -119,6 +129,40 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     });
   }
 
+  async getAllBatches() {
+    this.gettingBatches = true;
+    const result = await window.dt_admin_shared.people_groups_get_batches();
+    this.gettingBatches = false;
+
+    if (
+      confirm(
+        `Are you sure you want to import a total of ${result.total_records} people groups?`,
+      )
+    ) {
+      return this.importAll(result.batches);
+    }
+  }
+
+  async importAll(batches) {
+    this.importingAll = true;
+    this.batchNumber = 0;
+    this.totalBatches = batches.length;
+    for (const country in batches) {
+      this.batchNumber = this.batchNumber + 1;
+      const batch = batches[country];
+
+      this.countryInstalling = country;
+      this.batchSize = batch.length;
+      await window.dt_admin_shared.people_groups_install_batch(batch);
+
+      /* if (this.batchNumber === 2) {
+        break;
+      } */
+    }
+    this.importingAll = false;
+    this.importingFinished = true;
+  }
+
   render() {
     return html`
       <div class="cover">
@@ -127,31 +171,72 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
           <section class="flow">
             <p>
               If you're not sure which people groups to add, you can add them
-              all. <br />(There are a lot of them though)
+              all. <br />(There are around 17,000.)
             </p>
-            <button class="btn-primary fit-content">Import all</button>
-            <p>or</p>
+            ${!this.importingAll && !this.importingFinished
+              ? html`
+                  <button
+                    class="btn-primary fit-content"
+                    @click=${this.getAllBatches}
+                  >
+                    Import all
+                    ${this.gettingBatches
+                      ? html`<span class="spinner light"></span>`
+                      : ''}
+                  </button>
+                `
+              : ''}
+            ${this.importingAll && !this.importingFinished
+              ? html`
+                  <div class="cluster">
+                    <span class="spinner light"></span>
+                    <p>
+                      ${this.countryInstalling}: Processing ${this.batchSize}
+                      people groups
+                    </p>
+                  </div>
+                `
+              : ''}
+            ${this.importingAll
+              ? html`
+                  <button
+                    class="btn-primary fit-content"
+                    @click=${this.stopImport}
+                  >
+                    Stop Import
+                  </button>
+                `
+              : ''}
           </section>
           <section class="flow">
-            <div>
-              <ol>
-                <li>Choose a country in the dropdown</li>
-                <li>
-                  Add only the people groups that you need for linking to
-                  contacts in D.T.
-                </li>
-              </ol>
-              <select name="country" id="country" @change=${this.selectCountry}>
-                <option value="">Select a country</option>
-                ${this.step
-                  ? Object.values(this.step.config.countries).map((country) => {
-                      return html`
-                        <option value=${country}>${country}</option>
-                      `;
-                    })
-                  : ''}
-              </select>
-            </div>
+            ${!this.importingAll && !this.importingFinished
+              ? html`<div>
+                  <p>or</p>
+                  <ol>
+                    <li>Choose a country in the dropdown</li>
+                    <li>
+                      Add only the people groups that you need for linking to
+                      contacts in D.T.
+                    </li>
+                  </ol>
+                  <select
+                    name="country"
+                    id="country"
+                    @change=${this.selectCountry}
+                  >
+                    <option value="">Select a country</option>
+                    ${this.step
+                      ? Object.values(this.step.config.countries).map(
+                          (country) => {
+                            return html`
+                              <option value=${country}>${country}</option>
+                            `;
+                          },
+                        )
+                      : ''}
+                  </select>
+                </div>`
+              : ''}
             <div class="flow | people-groups">
               ${this.peopleGroups.length > 0
                 ? html`
@@ -213,10 +298,17 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                 </section>
               `
             : ''}
+          ${this.importingFinished
+            ? html`
+                <section class="ms-auto card success">
+                  Finished importing all people groups
+                </section>
+              `
+            : ''}
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
-          ?saving=${this.saving}
+          ?saving=${this.saving || this.importingAll}
           nextLabel=${this.nextLabel()}
           @next=${this.next}
           @back=${this.back}

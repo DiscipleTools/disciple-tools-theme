@@ -101,6 +101,20 @@ window.dt_admin_shared = {
     ),
   people_groups_install: (data) =>
     makeRequest('POST', 'add_single_people_group', data, 'dt/v1/people-groups'),
+  people_groups_get_batches: () =>
+    makeRequest(
+      'GET',
+      'get_bulk_people_groups_import_batches',
+      {},
+      'dt/v1/people-groups',
+    ),
+  people_groups_install_batch: (groups) =>
+    makeRequest(
+      'POST',
+      'add_bulk_people_groups',
+      { groups },
+      'dt/v1/people-groups',
+    ),
 };
 
 jQuery(function ($) {
