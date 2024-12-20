@@ -67,7 +67,8 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
         ? false
         : true;
     const peopleGroupsInstalled = this.peopleGroups.filter(
-      ({ installed }) => !installed,
+      ({ installed, ROP3 }) =>
+        !installed && !this.peopleGroupsInstalled.includes(ROP3),
     );
 
     peopleGroupsInstalled.forEach((group) => {
@@ -107,6 +108,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
 
     peopleGroup.installing = false;
     peopleGroup.installed = true;
+    this.peopleGroupsInstalled.push(peopleGroup.ROP3);
     this.requestUpdate();
   }
   wait(time) {
@@ -177,7 +179,10 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                             let action = 'Added';
                             if (people.installing) {
                               action = html`<span class="spinner"></span>`;
-                            } else if (!people.installed) {
+                            } else if (
+                              !people.installed &&
+                              !this.peopleGroupsInstalled.includes(people.ROP3)
+                            ) {
                               action = html`<input
                                 type="checkbox"
                                 .checked=${people.selected}
