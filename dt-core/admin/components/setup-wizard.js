@@ -179,6 +179,9 @@ export class SetupWizard extends LitElement {
       .align-start {
         align-items: flex-start;
       }
+      .fit-content {
+        width: fit-content;
+      }
       .white {
         color: white;
       }

@@ -20,6 +20,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     this.saving = false;
     this.finished = false;
     this.peopleGroups = [];
+    this.peopleGroupsInstalled = [];
   }
 
   back() {
@@ -33,8 +34,6 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
 
     this.saving = true;
     await this.installPeopleGroups();
-    this.saving = false;
-    this.finished = true;
   }
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
@@ -54,17 +53,28 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
 
     this.peopleGroups = peopleGroups;
   }
-
+  selectPeopleGroup(people) {
+    people.selected = !people.selected;
+    this.finished = false;
+    this.requestUpdate();
+  }
   selectAll() {
+    const selectAllOrNone =
+      this.peopleGroups.filter(({ selected }) => selected).length ===
+      this.peopleGroups.length
+        ? false
+        : true;
     this.peopleGroups.forEach((group) => {
-      group.selected = true;
+      group.selected = selectAllOrNone;
     });
+    this.finished = false;
     this.requestUpdate();
   }
   async installPeopleGroups() {
     const peopleGroupsToInstall = this.peopleGroups.filter(
       (peopleGroup) => peopleGroup.selected,
     );
+    this.peopleGroupsToInstall = peopleGroupsToInstall;
 
     for (let peopleGroup of peopleGroupsToInstall) {
       this.installPeopleGroup(peopleGroup);
@@ -84,6 +94,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     await window.dt_admin_shared.people_groups_install(data);
 
     peopleGroup.installing = false;
+    this.checkIfAllFinished(peopleGroup.ROP3);
     this.requestUpdate();
   }
   wait(time) {
@@ -93,18 +104,28 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
       }, time);
     });
   }
+  checkIfAllFinished(people) {
+    this.peopleGroupsInstalled.push(people);
+
+    if (
+      this.peopleGroupsInstalled.length === this.peopleGroupsToInstall.length
+    ) {
+      this.finished = true;
+      this.saving = false;
+    }
+  }
 
   render() {
     return html`
       <div class="cover">
         <h2>Import People Groups</h2>
         <div class="content flow">
-          <section>
+          <section class="flow">
             <p>
               If you're not sure which people groups to add, you can add them
               all. <br />(There are a lot of them though)
             </p>
-            <button class="btn-primary">Import all</button>
+            <button class="btn-primary fit-content">Import all</button>
             <p>or</p>
           </section>
           <section class="flow">
@@ -127,7 +148,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                   : ''}
               </select>
             </div>
-            <div class="people-groups">
+            <div class="flow | people-groups">
               ${this.peopleGroups.length > 0
                 ? html`
                     <table>
@@ -137,12 +158,12 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                           <th>ROP3</th>
                           <th>
                             Add <br />
-                            <span
-                              style="color: blue;cursor: pointer"
+                            <button
+                              class="btn-outline"
                               @click=${() => this.selectAll()}
                             >
                               select all
-                            </span>
+                            </button>
                           </th>
                         </tr>
                       </thead>
@@ -163,10 +184,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
 
                             return html`
                               <tr
-                                @click=${() => {
-                                  people.selected = !people.selected;
-                                  this.requestUpdate();
-                                }}
+                                @click=${() => this.selectPeopleGroup(people)}
                               >
                                 <td>${people.PeopNameAcrossCountries}</td>
                                 <td>${people.ROP3}</td>
