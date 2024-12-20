@@ -34,6 +34,8 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
 
     this.saving = true;
     await this.installPeopleGroups();
+    this.saving = false;
+    this.finished = true;
   }
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
@@ -64,24 +66,34 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
       this.peopleGroups.length
         ? false
         : true;
-    this.peopleGroups.forEach((group) => {
+    const peopleGroupsInstalled = this.peopleGroups.filter(
+      ({ installed }) => !installed,
+    );
+
+    peopleGroupsInstalled.forEach((group) => {
       group.selected = selectAllOrNone;
     });
-    this.finished = false;
-    this.requestUpdate();
+    console.log(peopleGroupsInstalled);
+    if (peopleGroupsInstalled.length > 0) {
+      this.finished = false;
+      this.requestUpdate();
+    }
   }
   async installPeopleGroups() {
     const peopleGroupsToInstall = this.peopleGroups.filter(
       (peopleGroup) => peopleGroup.selected,
     );
-    this.peopleGroupsToInstall = peopleGroupsToInstall;
 
-    for (let peopleGroup of peopleGroupsToInstall) {
-      this.installPeopleGroup(peopleGroup);
-      await this.wait(500);
-    }
+    const installationPromises = peopleGroupsToInstall.map((peopleGroup, i) => {
+      return this.wait(500 * i).then(() => {
+        return this.installPeopleGroup(peopleGroup);
+      });
+    });
+
+    await Promise.all(installationPromises);
   }
   async installPeopleGroup(peopleGroup) {
+    peopleGroup.selected = false;
     peopleGroup.installing = true;
     this.requestUpdate();
 
@@ -95,7 +107,6 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
 
     peopleGroup.installing = false;
     peopleGroup.installed = true;
-    this.checkIfAllFinished(peopleGroup.ROP3);
     this.requestUpdate();
   }
   wait(time) {
@@ -104,19 +115,6 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
         resolve();
       }, time);
     });
-  }
-  checkIfAllFinished(people) {
-    this.peopleGroupsInstalled.push(people);
-
-    if (
-      this.peopleGroupsInstalled.length === this.peopleGroupsToInstall.length
-    ) {
-      this.finished = true;
-      this.saving = false;
-
-      this.peopleGroupsInstalled = [];
-    }
-    this.requestUpdate();
   }
 
   render() {
@@ -204,7 +202,11 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
             </div>
           </section>
           ${this.finished
-            ? html` <section class="ms-auto card success">Keys saved</section> `
+            ? html`
+                <section class="ms-auto card success">
+                  People Groups installed
+                </section>
+              `
             : ''}
         </div>
         <setup-wizard-controls
