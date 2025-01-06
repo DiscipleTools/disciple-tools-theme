@@ -6,6 +6,7 @@ export class SetupWizardKeys extends OpenLitElement {
     return {
       step: { type: Object },
       firstStep: { type: Boolean },
+      toastMessage: { type: String, attribute: false },
       _options: { type: Object, attribute: false },
       _saving: { type: Boolean, attribute: false },
       _finished: { type: Boolean, attribute: false },
@@ -14,6 +15,7 @@ export class SetupWizardKeys extends OpenLitElement {
 
   constructor() {
     super();
+    this.toastMessage = '';
     this._saving = false;
     this._finished = false;
     this._options = {
@@ -37,6 +39,7 @@ export class SetupWizardKeys extends OpenLitElement {
     await window.dt_admin_shared.update_dt_options(this._options);
     this._saving = false;
     this._finished = true;
+    this.setToastMessage('Keys saved');
   }
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
@@ -46,6 +49,12 @@ export class SetupWizardKeys extends OpenLitElement {
       return 'Next';
     }
     return 'Confirm';
+  }
+  setToastMessage(message) {
+    this.toastMessage = message;
+    setTimeout(() => {
+      this.toastMessage = '';
+    }, 3000);
   }
 
   render() {
@@ -229,9 +238,12 @@ export class SetupWizardKeys extends OpenLitElement {
               </tr>
             </tbody>
           </table>
-          ${this._finished
-            ? html` <section class="ms-auto card success">Keys saved</section> `
-            : ''}
+          <section
+            class="ms-auto card success toast"
+            data-state=${this.toastMessage.length ? '' : 'empty'}
+          >
+            ${this.toastMessage}
+          </section>
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}

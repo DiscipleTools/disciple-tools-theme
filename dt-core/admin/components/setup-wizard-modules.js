@@ -9,6 +9,7 @@ export class SetupWizardModules extends OpenLitElement {
     return {
       step: { type: Object },
       stage: { type: String, attribute: false },
+      toastMessage: { type: String, attribute: false },
       availableModules: { type: Array, attribute: false },
       selectedModules: { type: Object, attribute: false },
       loading: { Boolean, attribute: false },
@@ -18,6 +19,7 @@ export class SetupWizardModules extends OpenLitElement {
 
   constructor() {
     super();
+    this.toastMessage = '';
     this.stage = 'work';
     this.data = window.setupWizardShare.data;
     this.translations = window.setupWizardShare.translations;
@@ -59,6 +61,7 @@ export class SetupWizardModules extends OpenLitElement {
     } else {
       await this.submitModuleChanges();
       this.finished = true;
+      this.setToastMessage('The modules you have chosen have been turned on.');
     }
   }
   skip() {
@@ -69,6 +72,12 @@ export class SetupWizardModules extends OpenLitElement {
       return this.translations.next;
     }
     return this.translations.confirm;
+  }
+  setToastMessage(message) {
+    this.toastMessage = message;
+    setTimeout(() => {
+      this.toastMessage = '';
+    }, 3000);
   }
   toggleModule(key) {
     const checkbox = this.renderRoot.querySelector(`#${key}`);
@@ -146,13 +155,11 @@ export class SetupWizardModules extends OpenLitElement {
                 </section>
                 ${this.finished
                   ? html`
-                      <section class="ms-auto card success">
-                        <p>
-                          <strong
-                            >The modules you have chosen have been turned
-                            on.</strong
-                          >
-                        </p>
+                      <section
+                        class="ms-auto card success toast"
+                        data-state=${this.toastMessage.length ? '' : 'empty'}
+                      >
+                        <p>${this.toastMessage}</p>
                         <p>
                           You can enable and disable these modules to your
                           liking in the "Settings (D.T)" section of the

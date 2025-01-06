@@ -135,6 +135,7 @@ export class SetupWizard extends LitElement {
       }
       .cover {
         display: flex;
+        position: relative;
         flex-direction: column;
         height: min(80vh, 800px);
       }
@@ -293,6 +294,23 @@ export class SetupWizard extends LitElement {
         &.success {
           background-color: var(--secondary-color);
           color: var(--default-color);
+        }
+      }
+      .toast {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 1rem;
+        margin-bottom: 3rem;
+        transition:
+          opacity 300ms ease 200ms,
+          transform 500ms cubic-bezier(0.5, 0.05, 0.2, 1.5) 200ms;
+
+        &[data-state='empty'] {
+          opacity: 0;
+          transform: translateY(0.25em);
+          transition: none;
+          padding: 0;
         }
       }
       .input-group {

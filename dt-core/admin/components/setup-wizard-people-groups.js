@@ -8,16 +8,17 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
   static get properties() {
     return {
       step: { type: Object },
+      peopleGroups: { type: Array, attribute: false },
+      batchSize: { type: Number, attribute: false },
+      countryInstalling: { type: String, attribute: false },
+      toastMessage: { type: String, attribute: false },
       firstStep: { type: Boolean },
       saving: { type: Boolean, attribute: false },
       finished: { type: Boolean, attribute: false },
-      peopleGroups: { type: Array, attribute: false },
       gettingBatches: { type: Boolean, attribute: false },
       importingAll: { type: Boolean, attribute: false },
       batchNumber: { type: Boolean, attribute: false },
       totalBatches: { type: Boolean, attribute: false },
-      batchSize: { type: Number, attribute: false },
-      countryInstalling: { type: String, attribute: false },
       importingFinished: { type: Boolean, attribute: false },
     };
   }
@@ -26,6 +27,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     super();
     this.saving = false;
     this.finished = false;
+    this.toastMessage = '';
     this.peopleGroups = [];
     this.peopleGroupsInstalled = [];
   }
@@ -34,7 +36,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    if (this.isFinished()) {
+    if (this.isFinished() || this.getSelectedPeopleGroups().length === 0) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
@@ -43,12 +45,13 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     await this.installPeopleGroups();
     this.saving = false;
     this.finished = true;
+    this.setToastMessage('People groups installed');
   }
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
   }
   nextLabel() {
-    if (this.isFinished()) {
+    if (this.isFinished() || this.getSelectedPeopleGroups().length === 0) {
       return 'Next';
     }
     return 'Confirm';
@@ -72,8 +75,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
   }
   selectAll() {
     const selectAllOrNone =
-      this.peopleGroups.filter(({ selected }) => selected).length ===
-      this.peopleGroups.length
+      this.getSelectedPeopleGroups().length === this.peopleGroups.length
         ? false
         : true;
     const peopleGroupsInstalled = this.peopleGroups.filter(
@@ -90,11 +92,11 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
       this.requestUpdate();
     }
   }
+  getSelectedPeopleGroups() {
+    return this.peopleGroups.filter((peopleGroup) => peopleGroup.selected);
+  }
   async installPeopleGroups() {
-    const peopleGroupsToInstall = this.peopleGroups.filter(
-      (peopleGroup) => peopleGroup.selected,
-    );
-
+    const peopleGroupsToInstall = this.getSelectedPeopleGroups();
     const installationPromises = peopleGroupsToInstall.map((peopleGroup, i) => {
       return this.wait(500 * i).then(() => {
         return this.installPeopleGroup(peopleGroup);
@@ -161,6 +163,13 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     }
     this.importingAll = false;
     this.importingFinished = true;
+    this.setToastMessage('Finished importing all people groups');
+  }
+  setToastMessage(message) {
+    this.toastMessage = message;
+    setTimeout(() => {
+      this.toastMessage = '';
+    }, 3000);
   }
 
   render() {
@@ -291,20 +300,12 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                 : ''}
             </div>
           </section>
-          ${this.finished
-            ? html`
-                <section class="ms-auto card success">
-                  People Groups installed
-                </section>
-              `
-            : ''}
-          ${this.importingFinished
-            ? html`
-                <section class="ms-auto card success">
-                  Finished importing all people groups
-                </section>
-              `
-            : ''}
+          <section
+            class="ms-auto card success toast"
+            data-state=${this.toastMessage.length ? '' : 'empty'}
+          >
+            ${this.toastMessage}
+          </section>
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
