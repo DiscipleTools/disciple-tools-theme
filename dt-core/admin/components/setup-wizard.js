@@ -48,6 +48,17 @@ export class SetupWizard extends LitElement {
       *::after {
         box-sizing: border-box;
       }
+
+      /* To force macs to show scrollbars */
+      ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 7px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
       /* Global */
       h1,
       h2,
