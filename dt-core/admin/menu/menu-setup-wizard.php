@@ -181,11 +181,13 @@ class DT_Setup_Wizard
                 'description' => 'What modules do you want to use?',
             ],
             [
+                'key' => 'plugins',
                 'name' => 'Part 2: Plugins',
                 'description' => 'Choose which plugins to install.',
                 'component' => 'setup-wizard-plugins',
             ],
             [
+                'key' => 'site_keys',
                 'name' => 'Part 3: Site keys',
                 'description' => 'Fill in some site details',
                 'component' => 'setup-wizard-keys',
@@ -195,10 +197,11 @@ class DT_Setup_Wizard
                 ],
             ],
             [
+                'key' => 'people_groups',
                 'name' => 'People Groups',
                 'description' => 'Install desired people groups data',
                 'component' => 'setup-wizard-people-groups',
-                'hidden' => true,
+                'disabled' => true,
                 'config' => [
                     'countries' => Disciple_Tools_People_Groups::get_country_dropdown(),
                 ],

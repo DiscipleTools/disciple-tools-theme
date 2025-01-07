@@ -485,7 +485,7 @@ export class SetupWizard extends LitElement {
           <div class="sidebar">
             <ul class="flow | steps" role="list">
               ${repeat(
-                this.steps,
+                this.steps.filter((step) => !step.disabled),
                 (step) => step.key,
                 (step, i) => {
                   return html`
@@ -518,6 +518,18 @@ export class SetupWizard extends LitElement {
   next() {
     this.gotoStep(this.currentStepNumber + 1);
   }
+  enableSteps(event) {
+    const steps = event.detail;
+
+    for (const key in steps) {
+      if (Object.prototype.hasOwnProperty.call(steps, key)) {
+        const enabled = steps[key];
+        const stepIndex = this.steps.findIndex((step) => step.key === key);
+        this.steps[stepIndex].disabled = !enabled;
+      }
+    }
+    this.requestUpdate();
+  }
   gotoStep(i) {
     if (i < 0) {
       this.currentStepNumber = 0;
@@ -527,7 +539,11 @@ export class SetupWizard extends LitElement {
       this.currentStepNumber = this.steps.length - 1;
       return;
     }
-    this.currentStepNumber = i;
+    if (this.steps[i].disabled) {
+      this.currentStepNumber = i + 1;
+    } else {
+      this.currentStepNumber = i;
+    }
   }
   async exit() {
     await window.dt_admin_shared.update_dt_options({
@@ -549,6 +565,7 @@ export class SetupWizard extends LitElement {
                 ?firstStep=${this.currentStepNumber === 0}
                 @back=${this.back}
                 @next=${this.next}
+                @enableSteps=${this.enableSteps}
             ></${unsafeStatic(component)}>
         `;
   }

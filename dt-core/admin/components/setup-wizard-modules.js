@@ -93,6 +93,13 @@ export class SetupWizardModules extends OpenLitElement {
     this.loading = true;
     this.requestUpdate();
     await window.dt_admin_shared.modules_update(this.selectedModules);
+
+    this.dispatchEvent(
+      new CustomEvent('enableSteps', {
+        detail: { people_groups: this.selectedModules.people_groups_module },
+      }),
+    );
+
     window.setupWizardShare.enabledModules = this.selectedModules;
     this.loading = false;
   }
