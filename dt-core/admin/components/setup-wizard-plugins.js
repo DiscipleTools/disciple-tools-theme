@@ -120,26 +120,24 @@ export class SetupWizardPlugins extends OpenLitElement {
             </thead>
             <tbody>
               ${this.plugins.map((plugin) => {
+                const disabled =
+                  !window.setupWizardShare.can_install_plugins &&
+                  !plugin.installed;
                 let action = 'Active';
                 if (plugin.installing) {
                   action = html`<span class="spinner"></span>`;
                 } else if (!plugin.active) {
                   action = html`<input
-                    type="checkbox"
-                    .checked=${plugin.selected}
-                  />`;
-                }
-                if (
-                  !window.setupWizardShare.can_install_plugins &&
-                  !plugin.installed
-                ) {
-                  action = 'Not Available*';
+                      type="checkbox"
+                      .checked=${plugin.selected}
+                      .disabled=${disabled}
+                    />${disabled ? '*' : ''}`;
                 }
 
                 return html`
                   <tr
                     @click=${() => {
-                      plugin.selected = !plugin.selected;
+                      plugin.selected = !plugin.selected && !disabled;
                       this.requestUpdate();
                     }}
                   >
@@ -159,8 +157,8 @@ export class SetupWizardPlugins extends OpenLitElement {
           ${
             !window.setupWizardShare.can_install_plugins
               ? html`<p>
-                  <strong>*Note:</strong> Only your server administrator can
-                  install plugins.
+                  <strong>*</strong>Only your server administrator can install
+                  plugins.
                 </p>`
               : ''
           }
