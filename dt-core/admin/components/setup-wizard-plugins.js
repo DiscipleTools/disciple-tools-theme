@@ -6,12 +6,14 @@ export class SetupWizardPlugins extends OpenLitElement {
     return {
       step: { type: Object },
       firstStep: { type: Boolean },
+      toastMessage: { type: String, attribute: false },
       loading: { type: Boolean, attribute: false },
       finished: { type: Boolean, attribute: false },
     };
   }
   constructor() {
     super();
+    this.toastMessage = '';
     this.loading = false;
     this.finished = false;
     this.plugins = window.setupWizardShare.data.plugins;
@@ -41,12 +43,12 @@ export class SetupWizardPlugins extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('next'));
   }
   async next() {
-    if (this.finished) {
+    const plugins_to_install = this.getPluginsToInstall();
+    if (this.finished || plugins_to_install.length === 0) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
     this.loading = true;
-    const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
 
     for (let plugin of plugins_to_install) {
       if (!plugin.installed) {
@@ -68,6 +70,8 @@ export class SetupWizardPlugins extends OpenLitElement {
     }
     this.loading = false;
     this.finished = true;
+    plugins_to_install.length &&
+      this.setToastMessage('Finished installing and activating plugins');
     this.requestUpdate();
   }
 
@@ -81,17 +85,28 @@ export class SetupWizardPlugins extends OpenLitElement {
     this.requestUpdate();
   }
   nextLabel() {
-    if (this.finished) {
+    const plugins_to_install = this.getPluginsToInstall();
+    if (this.finished || plugins_to_install.length === 0) {
       return 'Next';
     }
     return 'Confirm';
+  }
+  setToastMessage(message) {
+    this.toastMessage = message;
+    setTimeout(() => {
+      this.toastMessage = '';
+    }, 3000);
+  }
+  getPluginsToInstall() {
+    const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
+    return plugins_to_install;
   }
 
   render() {
     return html`
       <div class="cover">
+        <h2>Recommended Plugins</h2>
         <div class="content flow">
-          <h2>Recommended Plugins</h2>
           <p>
             Plugins are optional and add additional functionality
             to Disciple.Tools based on your needs.
@@ -159,20 +174,18 @@ export class SetupWizardPlugins extends OpenLitElement {
           ${
             !window.setupWizardShare.can_install_plugins
               ? html`<p>
+                  <strong>${this.toastMessage}</strong>
                   <strong>*</strong>Only your server administrator can install
                   plugins.
                 </p>`
               : ''
           }
-          ${
-            this.finished
-              ? html`
-                  <section class="ms-auto card success">
-                    Finished installing and activating plugins
-                  </section>
-                `
-              : ''
-          }
+        <section
+          class="ms-auto card success toast"
+          data-state=${this.toastMessage.length ? '' : 'empty'}
+        >
+          ${this.toastMessage}
+        </section>
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}
