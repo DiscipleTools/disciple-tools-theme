@@ -44,6 +44,7 @@ export class SetupWizardPlugins extends OpenLitElement {
   }
   async next() {
     const plugins_to_install = this.getPluginsToInstall();
+    console.log(this.finished, plugins_to_install);
     if (this.finished || plugins_to_install.length === 0) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
@@ -104,7 +105,7 @@ export class SetupWizardPlugins extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Recommended Plugins</h2>
         <div class="content stack">
           <p>

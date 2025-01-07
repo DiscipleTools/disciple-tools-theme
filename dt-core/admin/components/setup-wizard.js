@@ -144,22 +144,22 @@ export class SetupWizard extends LitElement {
           );
         }
       }
-      .cover {
+      .step-layout {
         display: flex;
         position: relative;
         flex-direction: column;
         height: min(80vh, 800px);
       }
-      .cover > * {
+      .step-layout > * {
         margin-block: 1rem;
       }
-      .cover > .content {
+      .step-layout > .content {
         margin-block-end: auto;
       }
-      .cover > :first-child:not(.content) {
+      .step-layout > :first-child:not(.content) {
         margin-block-start: 0;
       }
-      .cover > :last-child:not(.content) {
+      .step-layout > :last-child:not(.content) {
         margin-block-end: 0;
       }
       .with-sidebar {
@@ -323,13 +323,17 @@ export class SetupWizard extends LitElement {
           transform: translateY(0.25em);
           transition: none;
           padding: 0;
+
+          & .close-btn {
+            height: 0;
+          }
         }
 
         & .close-btn {
           position: absolute;
           color: inherit;
-          top: 0.5rem;
-          right: 0;
+          top: 0;
+          right: -0.8rem;
 
           &:hover {
             border-color: transparent;

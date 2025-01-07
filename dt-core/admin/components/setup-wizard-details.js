@@ -29,7 +29,7 @@ export class SetupWizardDetails extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <div class="content">Sort out details here</div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}

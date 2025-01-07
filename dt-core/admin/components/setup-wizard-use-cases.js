@@ -108,7 +108,7 @@ export class SetupWizardUseCases extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Use Cases</h2>
         <div class="content stack">
           ${this.useCases

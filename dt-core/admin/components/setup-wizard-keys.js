@@ -61,7 +61,7 @@ export class SetupWizardKeys extends OpenLitElement {
     this._options.dt_mapbox_api_key = this.step.config.dt_mapbox_api_key;
     this._options.dt_google_map_key = this.step.config.dt_google_map_key;
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Mapping and Geocoding</h2>
         <div class="content stack">
           <p>

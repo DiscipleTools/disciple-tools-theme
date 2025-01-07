@@ -106,7 +106,7 @@ export class SetupWizardModules extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Module selection</h2>
         <div class="content stack">
           ${this.stage === 'work'

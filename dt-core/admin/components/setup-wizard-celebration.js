@@ -25,7 +25,7 @@ export class SetupWizardCelebration extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>All finished</h2>
         <div class="content stack">
           <p>

@@ -193,7 +193,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Import People Groups</h2>
         <div class="content stack">
           <section class="stack">
