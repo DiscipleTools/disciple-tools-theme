@@ -30,6 +30,9 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     this.toastMessage = '';
     this.peopleGroups = [];
     this.peopleGroupsInstalled = [];
+
+    this.stoppingImport = false;
+    this.importStopped = false;
   }
 
   back() {
@@ -145,10 +148,18 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
   }
 
   async importAll(batches, total) {
+    this.stoppingImport = false;
+    this.importStopped = false;
     this.importingAll = true;
     this.totalPeopleGroupsInstalled = 0;
     this.totalPeopleGroups = total;
     for (const country in batches) {
+      if (this.stoppingImport) {
+        this.stoppingImport = false;
+        this.importStopped = true;
+        this.finishImport('Importing stopped');
+        return;
+      }
       const batch = batches[country];
 
       this.countryInstalling = country;
@@ -162,9 +173,16 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
         break;
       } */
     }
+    this.finishImport('Finished importing all people groups');
+  }
+  finishImport(message) {
     this.importingAll = false;
     this.importingFinished = true;
-    this.setToastMessage('Finished importing all people groups');
+    this.setToastMessage(message);
+  }
+  stopImport() {
+    this.stoppingImport = true;
+    this.requestUpdate();
   }
   setToastMessage(message) {
     this.toastMessage = message;
@@ -196,7 +214,9 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                   </button>
                 `
               : ''}
-            ${this.importingAll && !this.importingFinished
+            ${this.importingAll &&
+            !this.importingFinished &&
+            !this.importStopped
               ? html`
                   <div class="flow">
                     <span class="spinner light"></span>
@@ -222,6 +242,8 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                   </button>
                 `
               : ''}
+            ${this.stoppingImport ? html`<p>Stopping Import</p>` : ''}
+            ${this.importStopped ? html` <p>Import Stopped</p> ` : ''}
           </section>
           <section class="flow">
             ${!this.importingAll && !this.importingFinished
