@@ -195,8 +195,8 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     return html`
       <div class="cover">
         <h2>Import People Groups</h2>
-        <div class="content flow">
-          <section class="flow">
+        <div class="content stack">
+          <section class="stack">
             <p>
               If you're not sure which people groups to add, you can add them
               all. <br />(There are around 17,000.)
@@ -218,7 +218,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
             !this.importingFinished &&
             !this.importStopped
               ? html`
-                  <div class="flow">
+                  <div class="stack">
                     <span class="spinner light"></span>
                     <p>
                       Installing ${this.batchSize} people groups of
@@ -245,7 +245,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
             ${this.stoppingImport ? html`<p>Stopping Import</p>` : ''}
             ${this.importStopped ? html` <p>Import Stopped</p> ` : ''}
           </section>
-          <section class="flow">
+          <section class="stack">
             ${!this.importingAll && !this.importingFinished
               ? html`<div>
                   <p>or</p>
@@ -274,7 +274,7 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                   </select>
                 </div>`
               : ''}
-            <div class="flow | people-groups">
+            <div class="stack | people-groups">
               ${this.peopleGroups.length > 0
                 ? html`
                     <table>

@@ -106,15 +106,15 @@ export class SetupWizard extends LitElement {
         flex-wrap: wrap;
         flex-direction: row-reverse;
       }
-      .flow {
+      .stack {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
       }
-      .flow > * {
+      .stack > * {
         margin-block: 0;
       }
-      .flow > * + * {
+      .stack > * + * {
         margin-block-start: var(--spacing, 1rem);
       }
       .grid {
@@ -484,7 +484,7 @@ export class SetupWizard extends LitElement {
         </div>
         <div class="with-sidebar">
           <div class="sidebar">
-            <ul class="flow | steps" role="list">
+            <ul class="stack | steps" role="list">
               ${repeat(
                 this.steps.filter((step) => !step.disabled),
                 (step) => step.key,
@@ -619,7 +619,7 @@ export class SetupWizard extends LitElement {
     return html`
       <div class="options">
         ${component.description ? html` <p>${component.description}</p> ` : ''}
-        <div class="flow">
+        <div class="stack">
           ${component.options && component.options.length > 0
             ? component.options.map(
                 (option) => html`
@@ -642,7 +642,7 @@ export class SetupWizard extends LitElement {
 
   kitchenSink() {
     return html`
-      <div class="flow">
+      <div class="stack">
         <h3>A cluster of buttons</h3>
         <div class="cluster">
           <button>Bog standard button</button>
@@ -702,7 +702,7 @@ export class SetupWizard extends LitElement {
           </label>
         </div>
         <h3>Stepper</h3>
-        <div class="flow | stepper">
+        <div class="stack | stepper">
           ${this.renderStep()}
           <div class="cluster">
             <button @click=${this.back}>Back</button>

@@ -27,7 +27,7 @@ export class SetupWizardCelebration extends OpenLitElement {
     return html`
       <div class="cover">
         <h2>All finished</h2>
-        <div class="content flow">
+        <div class="content stack">
           <p>
             After closing this setup wizard, you'll find yourself in the
             WordPress admin dashboard. From there, you can explore these

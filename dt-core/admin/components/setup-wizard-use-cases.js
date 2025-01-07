@@ -101,7 +101,7 @@ export class SetupWizardUseCases extends OpenLitElement {
     return html`
       <div class="cover">
         <h2>Use Cases</h2>
-        <div class="content flow">
+        <div class="content stack">
           ${this.stage === 'work' && this.useCases
             ? html`
                 <p>
