@@ -105,7 +105,7 @@ export class SetupWizardPlugins extends OpenLitElement {
   render() {
     return html`
       <div class="cover">
-        <h2>Part 2: Recommended Plugins</h2>
+        <h2>Recommended Plugins</h2>
         <div class="content flow">
           <p>
             Plugins are optional and add additional functionality
@@ -130,40 +130,40 @@ export class SetupWizardPlugins extends OpenLitElement {
                   </span>
                 </th>
                 <th style="width: 60%">Description</th>
-                <th>More Info</th>
               </tr>
             </thead>
             <tbody>
               ${this.plugins.map((plugin) => {
+                const disabled =
+                  !window.setupWizardShare.can_install_plugins &&
+                  !plugin.installed;
                 let action = 'Active';
                 if (plugin.installing) {
                   action = html`<span class="spinner"></span>`;
                 } else if (!plugin.active) {
                   action = html`<input
-                    type="checkbox"
-                    .checked=${plugin.selected}
-                  />`;
-                }
-                if (
-                  !window.setupWizardShare.can_install_plugins &&
-                  !plugin.installed
-                ) {
-                  action = 'Not Available*';
+                      type="checkbox"
+                      .checked=${plugin.selected}
+                      .disabled=${disabled}
+                    />${disabled ? '*' : ''}`;
                 }
 
                 return html`
                   <tr
                     @click=${() => {
-                      plugin.selected = !plugin.selected;
+                      plugin.selected = !plugin.selected && !disabled;
                       this.requestUpdate();
                     }}
                   >
                     <td>${plugin.name}</td>
                     <td>${action}</td>
-                    <td style="max-width: 50%">${plugin.description}</td>
-                    <td @click=${(e) => e.stopImmediatePropagation()}>
+                    <td
+                      style="max-width: 50%"
+                      @click=${(e) => e.stopImmediatePropagation()}
+                    >
+                      ${plugin.description}
                       <a href=${plugin.permalink} target="_blank">
-                        Plugin Link
+                        More Info
                       </a>
                     </td>
                   </tr>
@@ -175,8 +175,8 @@ export class SetupWizardPlugins extends OpenLitElement {
             !window.setupWizardShare.can_install_plugins
               ? html`<p>
                   <strong>${this.toastMessage}</strong>
-                  <strong>*Note:</strong> Only your server administrator can
-                  install plugins.
+                  <strong>*</strong>Only your server administrator can install
+                  plugins.
                 </p>`
               : ''
           }

@@ -62,7 +62,7 @@ export class SetupWizardKeys extends OpenLitElement {
     this._options.dt_google_map_key = this.step.config.dt_google_map_key;
     return html`
       <div class="cover">
-        <h2>Part 3: Mapping and Geocoding</h2>
+        <h2>Mapping and Geocoding</h2>
         <div class="content flow">
           <p>
             Disciple.Tools provides basic mapping functionality for locations at
