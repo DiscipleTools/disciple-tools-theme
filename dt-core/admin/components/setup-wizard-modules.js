@@ -93,6 +93,7 @@ export class SetupWizardModules extends OpenLitElement {
     this.loading = true;
     this.requestUpdate();
     await window.dt_admin_shared.modules_update(this.selectedModules);
+    window.setupWizardShare.enabledModules = this.selectedModules;
     this.loading = false;
   }
 
