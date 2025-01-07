@@ -29,8 +29,9 @@ export class SetupWizardCelebration extends OpenLitElement {
         <h2>All finished</h2>
         <div class="content flow">
           <p>
-            You can change all of these choices in the "Settings (D.T)" tab in
-            the WordPress Admin.
+            After closing this setup wizard, you'll find yourself in the
+            WordPress admin dashboard. From there, you can explore these
+            settings and continue customizing your Disciple.Tools site.
           </p>
           <p>
             Disciple.Tools has a huge ability to be customized to serve your
