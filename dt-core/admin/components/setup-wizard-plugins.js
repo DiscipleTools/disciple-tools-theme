@@ -115,7 +115,6 @@ export class SetupWizardPlugins extends OpenLitElement {
                   </span>
                 </th>
                 <th style="width: 60%">Description</th>
-                <th>More Info</th>
               </tr>
             </thead>
             <tbody>
@@ -143,10 +142,13 @@ export class SetupWizardPlugins extends OpenLitElement {
                   >
                     <td>${plugin.name}</td>
                     <td>${action}</td>
-                    <td style="max-width: 50%">${plugin.description}</td>
-                    <td @click=${(e) => e.stopImmediatePropagation()}>
+                    <td
+                      style="max-width: 50%"
+                      @click=${(e) => e.stopImmediatePropagation()}
+                    >
+                      ${plugin.description}
                       <a href=${plugin.permalink} target="_blank">
-                        Plugin Link
+                        More Info
                       </a>
                     </td>
                   </tr>
