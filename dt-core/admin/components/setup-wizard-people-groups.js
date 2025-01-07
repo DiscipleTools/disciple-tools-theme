@@ -17,8 +17,8 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
       finished: { type: Boolean, attribute: false },
       gettingBatches: { type: Boolean, attribute: false },
       importingAll: { type: Boolean, attribute: false },
-      batchNumber: { type: Boolean, attribute: false },
-      totalBatches: { type: Boolean, attribute: false },
+      totalPeopleGroupsInstalled: { type: Boolean, attribute: false },
+      totalPeopleGroups: { type: Boolean, attribute: false },
       importingFinished: { type: Boolean, attribute: false },
     };
   }
@@ -86,7 +86,6 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
     peopleGroupsInstalled.forEach((group) => {
       group.selected = selectAllOrNone;
     });
-    console.log(peopleGroupsInstalled);
     if (peopleGroupsInstalled.length > 0) {
       this.finished = false;
       this.requestUpdate();
@@ -141,22 +140,24 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
         `Are you sure you want to import a total of ${result.total_records} people groups?`,
       )
     ) {
-      return this.importAll(result.batches);
+      return this.importAll(result.batches, result.total_records);
     }
   }
 
-  async importAll(batches) {
+  async importAll(batches, total) {
     this.importingAll = true;
-    this.batchNumber = 0;
-    this.totalBatches = batches.length;
+    this.totalPeopleGroupsInstalled = 0;
+    this.totalPeopleGroups = total;
     for (const country in batches) {
-      this.batchNumber = this.batchNumber + 1;
       const batch = batches[country];
 
       this.countryInstalling = country;
       this.batchSize = batch.length;
+
       await window.dt_admin_shared.people_groups_install_batch(batch);
 
+      this.totalPeopleGroupsInstalled =
+        this.totalPeopleGroupsInstalled + batch.length;
       /* if (this.batchNumber === 2) {
         break;
       } */
@@ -197,11 +198,16 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
               : ''}
             ${this.importingAll && !this.importingFinished
               ? html`
-                  <div class="cluster">
+                  <div class="flow">
                     <span class="spinner light"></span>
                     <p>
-                      ${this.countryInstalling}: Processing ${this.batchSize}
-                      people groups
+                      Installing ${this.batchSize} people groups of
+                      ${this.countryInstalling}
+                    </p>
+                    <p>
+                      Installed:
+                      ${this.totalPeopleGroupsInstalled}/${this
+                        .totalPeopleGroups}
                     </p>
                   </div>
                 `
