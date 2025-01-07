@@ -313,7 +313,7 @@ export class SetupWizard extends LitElement {
         bottom: 0;
         right: 0;
         margin: 1rem;
-        margin-bottom: 3rem;
+        margin-bottom: 4rem;
         transition:
           opacity 300ms ease 200ms,
           transform 500ms cubic-bezier(0.5, 0.05, 0.2, 1.5) 200ms;
@@ -323,6 +323,18 @@ export class SetupWizard extends LitElement {
           transform: translateY(0.25em);
           transition: none;
           padding: 0;
+        }
+
+        & .close-btn {
+          position: absolute;
+          color: inherit;
+          top: 0.5rem;
+          right: 0;
+
+          &:hover {
+            border-color: transparent;
+            color: black;
+          }
         }
       }
       .input-group {

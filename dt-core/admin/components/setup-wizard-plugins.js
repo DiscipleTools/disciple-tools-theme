@@ -93,9 +93,9 @@ export class SetupWizardPlugins extends OpenLitElement {
   }
   setToastMessage(message) {
     this.toastMessage = message;
-    setTimeout(() => {
-      this.toastMessage = '';
-    }, 3000);
+  }
+  dismissToast() {
+    this.toastMessage = '';
   }
   getPluginsToInstall() {
     const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
@@ -184,6 +184,12 @@ export class SetupWizardPlugins extends OpenLitElement {
           class="ms-auto card success toast"
           data-state=${this.toastMessage.length ? '' : 'empty'}
         >
+          <button
+            class="close-btn btn-outline"
+            @click=${this.dismissToast}
+          >
+            x
+          </button>
           ${this.toastMessage}
         </section>
         </div>

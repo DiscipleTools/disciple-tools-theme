@@ -186,9 +186,9 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
   }
   setToastMessage(message) {
     this.toastMessage = message;
-    setTimeout(() => {
-      this.toastMessage = '';
-    }, 3000);
+  }
+  dismissToast() {
+    this.toastMessage = '';
   }
 
   render() {
@@ -332,6 +332,9 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
             class="ms-auto card success toast"
             data-state=${this.toastMessage.length ? '' : 'empty'}
           >
+            <button class="close-btn btn-outline" @click=${this.dismissToast}>
+              x
+            </button>
             ${this.toastMessage}
           </section>
         </div>
