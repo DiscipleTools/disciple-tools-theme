@@ -41,7 +41,7 @@ export class SetupWizardCelebration extends OpenLitElement {
           <a href="https://community.disciple.tools/" target="_blank">
             Community Forum
           </a>
-          <a href="https://discord.gg/vrrcXYwwTU" target="_blank">
+          <a href="https://discord.gg/kp5pYmrhSd" target="_blank">
             Discord Invitation
           </a>
         </div>
