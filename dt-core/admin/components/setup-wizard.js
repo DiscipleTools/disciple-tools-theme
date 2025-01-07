@@ -135,11 +135,12 @@ export class SetupWizard extends LitElement {
       }
       .cover {
         display: flex;
+        position: relative;
         flex-direction: column;
-        min-block-size: min(80vh, 800px);
+        height: min(80vh, 800px);
       }
       .cover > * {
-        margin-block: 2rem;
+        margin-block: 1rem;
       }
       .cover > .content {
         margin-block-end: auto;
@@ -179,6 +180,9 @@ export class SetupWizard extends LitElement {
       .align-start {
         align-items: flex-start;
       }
+      .fit-content {
+        width: fit-content;
+      }
       .white {
         color: white;
       }
@@ -194,6 +198,9 @@ export class SetupWizard extends LitElement {
         background-color: white;
         padding: 1rem;
         border-radius: 10px;
+      }
+      .content {
+        overflow-y: auto;
       }
       .steps {
         padding-left: 24px;
@@ -287,6 +294,23 @@ export class SetupWizard extends LitElement {
         &.success {
           background-color: var(--secondary-color);
           color: var(--default-color);
+        }
+      }
+      .toast {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 1rem;
+        margin-bottom: 3rem;
+        transition:
+          opacity 300ms ease 200ms,
+          transform 500ms cubic-bezier(0.5, 0.05, 0.2, 1.5) 200ms;
+
+        &[data-state='empty'] {
+          opacity: 0;
+          transform: translateY(0.25em);
+          transition: none;
+          padding: 0;
         }
       }
       .input-group {
@@ -461,7 +485,7 @@ export class SetupWizard extends LitElement {
           <div class="sidebar">
             <ul class="flow | steps" role="list">
               ${repeat(
-                this.steps,
+                this.steps.filter((step) => !step.disabled),
                 (step) => step.key,
                 (step, i) => {
                   return html`
@@ -494,6 +518,18 @@ export class SetupWizard extends LitElement {
   next() {
     this.gotoStep(this.currentStepNumber + 1);
   }
+  enableSteps(event) {
+    const steps = event.detail;
+
+    for (const key in steps) {
+      if (Object.prototype.hasOwnProperty.call(steps, key)) {
+        const enabled = steps[key];
+        const stepIndex = this.steps.findIndex((step) => step.key === key);
+        this.steps[stepIndex].disabled = !enabled;
+      }
+    }
+    this.requestUpdate();
+  }
   gotoStep(i) {
     if (i < 0) {
       this.currentStepNumber = 0;
@@ -503,7 +539,11 @@ export class SetupWizard extends LitElement {
       this.currentStepNumber = this.steps.length - 1;
       return;
     }
-    this.currentStepNumber = i;
+    if (this.steps[i].disabled) {
+      this.currentStepNumber = i + 1;
+    } else {
+      this.currentStepNumber = i;
+    }
   }
   async exit() {
     await window.dt_admin_shared.update_dt_options({
@@ -525,6 +565,7 @@ export class SetupWizard extends LitElement {
                 ?firstStep=${this.currentStepNumber === 0}
                 @back=${this.back}
                 @next=${this.next}
+                @enableSteps=${this.enableSteps}
             ></${unsafeStatic(component)}>
         `;
   }
