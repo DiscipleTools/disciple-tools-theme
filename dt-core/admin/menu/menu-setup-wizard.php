@@ -164,7 +164,7 @@ class DT_Setup_Wizard
             ],
             [
                 'key' => 'choose_your_use_cases',
-                'name' => 'Part 1: Use cases',
+                'name' => 'Use cases',
                 'component' => 'setup-wizard-use-cases',
                 'description' => 'How are you planning to use DT?',
                 'config' => [
@@ -175,17 +175,17 @@ class DT_Setup_Wizard
             ],
             [
                 'key' => 'choose_your_modules',
-                'name' => 'Part 1: Modules',
+                'name' => 'Modules',
                 'component' => 'setup-wizard-modules',
                 'description' => 'What modules do you want to use?',
             ],
             [
-                'name' => 'Part 2: Plugins',
+                'name' => 'Plugins',
                 'description' => 'Choose which plugins to install.',
                 'component' => 'setup-wizard-plugins',
             ],
             [
-                'name' => 'Part 3: Site keys',
+                'name' => 'Site keys',
                 'description' => 'Fill in some site details',
                 'component' => 'setup-wizard-keys',
                 'config' => [
@@ -195,7 +195,7 @@ class DT_Setup_Wizard
             ],
             [
                 'key' => 'celebration',
-                'name' => 'Celebration',
+                'name' => 'Done',
                 'component' => 'setup-wizard-celebration',
             ]
         ];

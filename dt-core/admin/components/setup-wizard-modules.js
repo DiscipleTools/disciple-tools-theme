@@ -91,7 +91,7 @@ export class SetupWizardModules extends OpenLitElement {
     return html`
       <div class="cover">
         <div class="content flow">
-          <h2>Part 1: Module selection</h2>
+          <h2>Module selection</h2>
           ${this.stage === 'work'
             ? html`
                 <p>

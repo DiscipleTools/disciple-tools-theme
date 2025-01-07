@@ -197,6 +197,7 @@ export class SetupWizard extends LitElement {
       }
       .steps {
         padding-left: 24px;
+        padding-right: 24px;
       }
       .step {
         position: relative;
@@ -471,6 +472,7 @@ export class SetupWizard extends LitElement {
                       ?current=${i === this.currentStepNumber}
                       key=${step.key}
                     >
+                      <span>${i + 1}.</span>
                       ${step.name}
                     </li>
                   `;
