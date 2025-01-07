@@ -569,7 +569,11 @@ export class SetupWizard extends LitElement {
       return;
     }
     if (this.steps[i].disabled) {
-      this.currentStepNumber = i + 1;
+      if (this.currentStepNumber < i) {
+        this.gotoStep(i + 1);
+      } else {
+        this.gotoStep(i - 1);
+      }
     } else {
       this.currentStepNumber = i;
     }
