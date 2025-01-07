@@ -37,15 +37,16 @@ export class SetupWizardPlugins extends OpenLitElement {
   }
 
   back() {
-    this.dispatchEvent(new CustomEvent('back'));
+    if (this.canNavigate()) {
+      this.dispatchEvent(new CustomEvent('back'));
+    }
   }
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
   }
   async next() {
     const plugins_to_install = this.getPluginsToInstall();
-    console.log(this.finished, plugins_to_install);
-    if (this.finished || plugins_to_install.length === 0) {
+    if (this.canNavigate()) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
@@ -86,11 +87,13 @@ export class SetupWizardPlugins extends OpenLitElement {
     this.requestUpdate();
   }
   nextLabel() {
-    const plugins_to_install = this.getPluginsToInstall();
-    if (this.finished || plugins_to_install.length === 0) {
+    if (this.canNavigate()) {
       return 'Next';
     }
     return 'Confirm';
+  }
+  canNavigate() {
+    return this.finished || this.getPluginsToInstall().length === 0;
   }
   setToastMessage(message) {
     this.toastMessage = message;
