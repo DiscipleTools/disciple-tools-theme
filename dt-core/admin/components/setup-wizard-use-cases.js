@@ -9,6 +9,7 @@ export class SetupWizardUseCases extends OpenLitElement {
     return {
       step: { type: Object },
       firstStep: { type: Boolean },
+      toastMessage: { type: String, attribute: false },
       stage: { type: String, attribute: false },
       useCases: { type: Array, attribute: false },
       options: { type: Object, attribute: false },
@@ -20,6 +21,7 @@ export class SetupWizardUseCases extends OpenLitElement {
   constructor() {
     super();
     this.stage = 'work';
+    this.toastMessage = '';
     this.data = window.setupWizardShare.data;
     this.translations = window.setupWizardShare.translations;
     this.availableModules = [];
@@ -95,14 +97,21 @@ export class SetupWizardUseCases extends OpenLitElement {
       window.setupWizardShare.data.use_cases[option].selected =
         this.options[option];
     }
+    this.setToastMessage('Use cases selected');
+  }
+  setToastMessage(message) {
+    this.toastMessage = message;
+  }
+  dismissToast() {
+    this.toastMessage = '';
   }
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Use Cases</h2>
-        <div class="content flow">
-          ${this.stage === 'work' && this.useCases
+        <div class="content stack">
+          ${this.useCases
             ? html`
                 <p>
                   Choose one or more of these use cases to tailor what parts of
@@ -145,15 +154,20 @@ export class SetupWizardUseCases extends OpenLitElement {
                 </div>
               `
             : ''}
-          ${this.stage === 'follow-up'
-            ? html`
-                <p><strong>Use cases selected.</strong></p>
-                <p>
-                  Based on the use cases you have now chosen, we can recommend
-                  some modules and plugins that we think will be helpful.
-                </p>
-              `
-            : ''}
+          <section
+            class="ms-auto card success toast"
+            data-state=${this.toastMessage.length ? '' : 'empty'}
+          >
+            <button class="close-btn btn-outline" @click=${this.dismissToast}>
+              x
+            </button>
+
+            <p><strong>${this.toastMessage}</strong></p>
+            <p>
+              Based on the use cases you have now chosen, we can recommend some
+              modules and plugins that we think will be helpful.
+            </p>
+          </section>
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep && this.stage === 'prompt'}

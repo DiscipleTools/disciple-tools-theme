@@ -17,9 +17,9 @@ export class SetupWizardIntro extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Setting up Disciple.Tools for you</h2>
-        <div class="content">
+        <div class="content stack">
           <p>
             We're glad you are here, and we want to help set you up so you can take
             advantage of the power tool that is Disciple.Tools.

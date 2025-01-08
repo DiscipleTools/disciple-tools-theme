@@ -37,14 +37,16 @@ export class SetupWizardPlugins extends OpenLitElement {
   }
 
   back() {
-    this.dispatchEvent(new CustomEvent('back'));
+    if (this.canNavigate()) {
+      this.dispatchEvent(new CustomEvent('back'));
+    }
   }
   skip() {
     this.dispatchEvent(new CustomEvent('next'));
   }
   async next() {
     const plugins_to_install = this.getPluginsToInstall();
-    if (this.finished || plugins_to_install.length === 0) {
+    if (this.canNavigate()) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
@@ -85,17 +87,19 @@ export class SetupWizardPlugins extends OpenLitElement {
     this.requestUpdate();
   }
   nextLabel() {
-    const plugins_to_install = this.getPluginsToInstall();
-    if (this.finished || plugins_to_install.length === 0) {
+    if (this.canNavigate()) {
       return 'Next';
     }
     return 'Confirm';
   }
+  canNavigate() {
+    return this.finished || this.getPluginsToInstall().length === 0;
+  }
   setToastMessage(message) {
     this.toastMessage = message;
-    setTimeout(() => {
-      this.toastMessage = '';
-    }, 3000);
+  }
+  dismissToast() {
+    this.toastMessage = '';
   }
   getPluginsToInstall() {
     const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
@@ -104,9 +108,9 @@ export class SetupWizardPlugins extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Recommended Plugins</h2>
-        <div class="content flow">
+        <div class="content stack">
           <p>
             Plugins are optional and add additional functionality
             to Disciple.Tools based on your needs.
@@ -184,6 +188,12 @@ export class SetupWizardPlugins extends OpenLitElement {
           class="ms-auto card success toast"
           data-state=${this.toastMessage.length ? '' : 'empty'}
         >
+          <button
+            class="close-btn btn-outline"
+            @click=${this.dismissToast}
+          >
+            x
+          </button>
           ${this.toastMessage}
         </section>
         </div>

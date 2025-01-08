@@ -7,6 +7,7 @@ export class SetupWizardKeys extends OpenLitElement {
       step: { type: Object },
       firstStep: { type: Boolean },
       toastMessage: { type: String, attribute: false },
+      _changed: { type: String, attribute: false },
       _options: { type: Object, attribute: false },
       _saving: { type: Boolean, attribute: false },
       _finished: { type: Boolean, attribute: false },
@@ -18,6 +19,7 @@ export class SetupWizardKeys extends OpenLitElement {
     this.toastMessage = '';
     this._saving = false;
     this._finished = false;
+    this._changed = false;
     this._options = {
       dt_mapbox_api_key: '',
       dt_google_map_key: '',
@@ -30,7 +32,7 @@ export class SetupWizardKeys extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    if (this._finished) {
+    if (this._finished || !this._changed) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
@@ -45,25 +47,25 @@ export class SetupWizardKeys extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('next'));
   }
   nextLabel() {
-    if (this._finished) {
+    if (this._finished || !this._changed) {
       return 'Next';
     }
     return 'Confirm';
   }
   setToastMessage(message) {
     this.toastMessage = message;
-    setTimeout(() => {
-      this.toastMessage = '';
-    }, 3000);
+  }
+  dismissToast() {
+    this.toastMessage = '';
   }
 
   render() {
     this._options.dt_mapbox_api_key = this.step.config.dt_mapbox_api_key;
     this._options.dt_google_map_key = this.step.config.dt_google_map_key;
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Mapping and Geocoding</h2>
-        <div class="content flow">
+        <div class="content stack">
           <p>
             Disciple.Tools provides basic mapping functionality for locations at
             the country, state, or county level. For more precise geolocation,
@@ -163,6 +165,7 @@ export class SetupWizardKeys extends OpenLitElement {
                     name="mapbox"
                     .value=${this.step.config.dt_mapbox_api_key || ''}
                     @input=${(e) => {
+                      this._changed = true;
                       this._options.dt_mapbox_api_key = e.target.value;
                     }}
                   />
@@ -231,6 +234,7 @@ export class SetupWizardKeys extends OpenLitElement {
                     name="mapbox"
                     .value=${this.step.config.dt_google_map_key || ''}
                     @input=${(e) => {
+                      this._changed = true;
                       this._options.dt_google_map_key = e.target.value;
                     }}
                   />
@@ -242,6 +246,9 @@ export class SetupWizardKeys extends OpenLitElement {
             class="ms-auto card success toast"
             data-state=${this.toastMessage.length ? '' : 'empty'}
           >
+            <button class="close-btn btn-outline" @click=${this.dismissToast}>
+              x
+            </button>
             ${this.toastMessage}
           </section>
         </div>

@@ -75,9 +75,9 @@ export class SetupWizardModules extends OpenLitElement {
   }
   setToastMessage(message) {
     this.toastMessage = message;
-    setTimeout(() => {
-      this.toastMessage = '';
-    }, 3000);
+  }
+  dismissToast() {
+    this.toastMessage = '';
   }
   toggleModule(key) {
     const checkbox = this.renderRoot.querySelector(`#${key}`);
@@ -106,9 +106,9 @@ export class SetupWizardModules extends OpenLitElement {
 
   render() {
     return html`
-      <div class="cover">
+      <div class="step-layout">
         <h2>Module selection</h2>
-        <div class="content flow">
+        <div class="content stack">
           ${this.stage === 'work'
             ? html`
                 <p>
@@ -161,21 +161,22 @@ export class SetupWizardModules extends OpenLitElement {
                     </tbody>
                   </table>
                 </section>
-                ${this.finished
-                  ? html`
-                      <section
-                        class="ms-auto card success toast"
-                        data-state=${this.toastMessage.length ? '' : 'empty'}
-                      >
-                        <p>${this.toastMessage}</p>
-                        <p>
-                          You can enable and disable these modules to your
-                          liking in the "Settings (D.T)" section of the
-                          Wordpress admin.
-                        </p>
-                      </section>
-                    `
-                  : ''}
+                <section
+                  class="ms-auto card success toast"
+                  data-state=${this.toastMessage.length ? '' : 'empty'}
+                >
+                  <button
+                    class="close-btn btn-outline"
+                    @click=${this.dismissToast}
+                  >
+                    x
+                  </button>
+                  <p>${this.toastMessage}</p>
+                  <p>
+                    You can enable and disable these modules to your liking in
+                    the "Settings (D.T)" section of the Wordpress admin.
+                  </p>
+                </section>
               `
             : ''}
         </div>

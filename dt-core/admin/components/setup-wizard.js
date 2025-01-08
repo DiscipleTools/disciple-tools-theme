@@ -48,6 +48,17 @@ export class SetupWizard extends LitElement {
       *::after {
         box-sizing: border-box;
       }
+
+      /* To force macs to show scrollbars */
+      ::-webkit-scrollbar {
+        -webkit-appearance: none;
+        width: 7px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
       /* Global */
       h1,
       h2,
@@ -106,15 +117,15 @@ export class SetupWizard extends LitElement {
         flex-wrap: wrap;
         flex-direction: row-reverse;
       }
-      .flow {
+      .stack {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
       }
-      .flow > * {
+      .stack > * {
         margin-block: 0;
       }
-      .flow > * + * {
+      .stack > * + * {
         margin-block-start: var(--spacing, 1rem);
       }
       .grid {
@@ -133,22 +144,22 @@ export class SetupWizard extends LitElement {
           );
         }
       }
-      .cover {
+      .step-layout {
         display: flex;
         position: relative;
         flex-direction: column;
         height: min(80vh, 800px);
       }
-      .cover > * {
+      .step-layout > * {
         margin-block: 1rem;
       }
-      .cover > .content {
+      .step-layout > .content {
         margin-block-end: auto;
       }
-      .cover > :first-child:not(.content) {
+      .step-layout > :first-child:not(.content) {
         margin-block-start: 0;
       }
-      .cover > :last-child:not(.content) {
+      .step-layout > :last-child:not(.content) {
         margin-block-end: 0;
       }
       .with-sidebar {
@@ -302,7 +313,7 @@ export class SetupWizard extends LitElement {
         bottom: 0;
         right: 0;
         margin: 1rem;
-        margin-bottom: 3rem;
+        margin-bottom: 4rem;
         transition:
           opacity 300ms ease 200ms,
           transform 500ms cubic-bezier(0.5, 0.05, 0.2, 1.5) 200ms;
@@ -312,6 +323,22 @@ export class SetupWizard extends LitElement {
           transform: translateY(0.25em);
           transition: none;
           padding: 0;
+
+          & .close-btn {
+            height: 0;
+          }
+        }
+
+        & .close-btn {
+          position: absolute;
+          color: inherit;
+          top: 0;
+          right: -0.8rem;
+
+          &:hover {
+            border-color: transparent;
+            color: black;
+          }
         }
       }
       .input-group {
@@ -484,7 +511,7 @@ export class SetupWizard extends LitElement {
         </div>
         <div class="with-sidebar">
           <div class="sidebar">
-            <ul class="flow | steps" role="list">
+            <ul class="stack | steps" role="list">
               ${repeat(
                 this.steps.filter((step) => !step.disabled),
                 (step) => step.key,
@@ -542,7 +569,11 @@ export class SetupWizard extends LitElement {
       return;
     }
     if (this.steps[i].disabled) {
-      this.currentStepNumber = i + 1;
+      if (this.currentStepNumber < i) {
+        this.gotoStep(i + 1);
+      } else {
+        this.gotoStep(i - 1);
+      }
     } else {
       this.currentStepNumber = i;
     }
@@ -619,7 +650,7 @@ export class SetupWizard extends LitElement {
     return html`
       <div class="options">
         ${component.description ? html` <p>${component.description}</p> ` : ''}
-        <div class="flow">
+        <div class="stack">
           ${component.options && component.options.length > 0
             ? component.options.map(
                 (option) => html`
@@ -642,7 +673,7 @@ export class SetupWizard extends LitElement {
 
   kitchenSink() {
     return html`
-      <div class="flow">
+      <div class="stack">
         <h3>A cluster of buttons</h3>
         <div class="cluster">
           <button>Bog standard button</button>
@@ -702,7 +733,7 @@ export class SetupWizard extends LitElement {
           </label>
         </div>
         <h3>Stepper</h3>
-        <div class="flow | stepper">
+        <div class="stack | stepper">
           ${this.renderStep()}
           <div class="cluster">
             <button @click=${this.back}>Back</button>

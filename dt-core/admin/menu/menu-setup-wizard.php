@@ -201,7 +201,7 @@ class DT_Setup_Wizard
                 'name' => 'People Groups',
                 'description' => 'Install desired people groups data',
                 'component' => 'setup-wizard-people-groups',
-                'disabled' => false,
+                'disabled' => true,
                 'config' => [
                     'countries' => Disciple_Tools_People_Groups::get_country_dropdown(),
                 ],
