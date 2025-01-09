@@ -88,6 +88,8 @@ export class SetupWizardModules extends OpenLitElement {
       checkbox.checked = true;
       this.selectedModules[key] = true;
     }
+    this.finished = false;
+    this.dismissToast();
   }
   async submitModuleChanges() {
     this.loading = true;

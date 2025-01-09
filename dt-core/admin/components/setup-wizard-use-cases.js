@@ -90,14 +90,23 @@ export class SetupWizardUseCases extends OpenLitElement {
     } else {
       this.options[option] = true;
     }
+    this.dismissToast();
+    this.stage = 'work';
     this.requestUpdate();
+  }
+  selectedOptions() {
+    return Object.keys(this.options).filter((option) => this.options[option]);
   }
   saveOptions() {
     for (const option in this.options) {
       window.setupWizardShare.data.use_cases[option].selected =
         this.options[option];
     }
-    this.setToastMessage('Use cases selected');
+    if (this.selectedOptions().length) {
+      this.setToastMessage('Use cases selected');
+    } else {
+      this.setToastMessage('No use cases selected');
+    }
   }
   setToastMessage(message) {
     this.toastMessage = message;
@@ -164,8 +173,9 @@ export class SetupWizardUseCases extends OpenLitElement {
 
             <p><strong>${this.toastMessage}</strong></p>
             <p>
-              Based on the use cases you have now chosen, we can recommend some
-              modules and plugins that we think will be helpful.
+              ${this.selectedOptions().length
+                ? 'Based on the use case(s) you have now chosen, we can recommend some modules and plugins that we think will be helpful.'
+                : 'In the next steps, simply choose what options seems best'}
             </p>
           </section>
         </div>

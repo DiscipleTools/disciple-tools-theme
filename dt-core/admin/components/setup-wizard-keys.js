@@ -32,15 +32,15 @@ export class SetupWizardKeys extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    if (this._finished || !this._changed) {
+    if (this._finished && !this._changed) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
-
     this._saving = true;
     await window.dt_admin_shared.update_dt_options(this._options);
     this._saving = false;
     this._finished = true;
+    this._changed = false;
     this.setToastMessage('Keys saved');
   }
   skip() {
@@ -59,9 +59,19 @@ export class SetupWizardKeys extends OpenLitElement {
     this.toastMessage = '';
   }
 
-  render() {
+  updateOption(option, value) {
+    this._options[option] = value;
+    this._changed = true;
+    this._finished = false;
+    this.dismissToast();
+  }
+
+  firstUpdated() {
     this._options.dt_mapbox_api_key = this.step.config.dt_mapbox_api_key;
     this._options.dt_google_map_key = this.step.config.dt_google_map_key;
+  }
+
+  render() {
     return html`
       <div class="step-layout">
         <h2>Mapping and Geocoding</h2>
@@ -165,8 +175,7 @@ export class SetupWizardKeys extends OpenLitElement {
                     name="mapbox"
                     .value=${this.step.config.dt_mapbox_api_key || ''}
                     @input=${(e) => {
-                      this._changed = true;
-                      this._options.dt_mapbox_api_key = e.target.value;
+                      this.updateOption('dt_mapbox_api_key', e.target.value);
                     }}
                   />
                 </td>
@@ -234,8 +243,7 @@ export class SetupWizardKeys extends OpenLitElement {
                     name="mapbox"
                     .value=${this.step.config.dt_google_map_key || ''}
                     @input=${(e) => {
-                      this._changed = true;
-                      this._options.dt_google_map_key = e.target.value;
+                      this.updateOption('dt_google_map_key', e.target.value);
                     }}
                   />
                 </td>

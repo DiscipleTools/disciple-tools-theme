@@ -106,6 +106,12 @@ export class SetupWizardPlugins extends OpenLitElement {
   getPluginsToInstall() {
     return this.plugins.filter((plugin) => plugin.selected && !plugin.active);
   }
+  togglePlugin(plugin, disabled) {
+    plugin.selected = !plugin.selected && !disabled;
+    this.finished = false;
+    this.dismissToast();
+    this.requestUpdate();
+  }
 
   render() {
     return html`
@@ -154,13 +160,7 @@ export class SetupWizardPlugins extends OpenLitElement {
                 }
 
                 return html`
-                  <tr
-                    @click=${() => {
-                      plugin.selected = !plugin.selected && !disabled;
-                      this.finished = false;
-                      this.requestUpdate();
-                    }}
-                  >
+                  <tr @click=${() => this.togglePlugin(plugin, disabled)}>
                     <td>${plugin.name}</td>
                     <td>${action}</td>
                     <td
