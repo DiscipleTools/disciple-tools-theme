@@ -104,8 +104,7 @@ export class SetupWizardPlugins extends OpenLitElement {
     this.toastMessage = '';
   }
   getPluginsToInstall() {
-    const plugins_to_install = this.plugins.filter((plugin) => plugin.selected);
-    return plugins_to_install;
+    return this.plugins.filter((plugin) => plugin.selected && !plugin.active);
   }
 
   render() {
@@ -158,6 +157,7 @@ export class SetupWizardPlugins extends OpenLitElement {
                   <tr
                     @click=${() => {
                       plugin.selected = !plugin.selected && !disabled;
+                      this.finished = false;
                       this.requestUpdate();
                     }}
                   >
