@@ -31,7 +31,9 @@ export class SetupWizardPlugins extends OpenLitElement {
     //pre select recommended plugins
     this.plugins.forEach((plugin) => {
       if (recommended_plugins.includes(plugin.slug)) {
-        plugin.selected = true;
+        //only install plugins if the user has permissions to.
+        plugin.selected =
+          plugin.installed || window.setupWizardShare.can_install_plugins;
       }
     });
   }
@@ -178,7 +180,6 @@ export class SetupWizardPlugins extends OpenLitElement {
           ${
             !window.setupWizardShare.can_install_plugins
               ? html`<p>
-                  <strong>${this.toastMessage}</strong>
                   <strong>*</strong>Only your server administrator can install
                   plugins.
                 </p>`
