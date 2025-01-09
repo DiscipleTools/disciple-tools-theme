@@ -39,12 +39,14 @@ export class SetupWizardPlugins extends OpenLitElement {
   }
 
   back() {
-    if (this.canNavigate()) {
+    if (!this.loading) {
       this.dispatchEvent(new CustomEvent('back'));
     }
   }
   skip() {
-    this.dispatchEvent(new CustomEvent('next'));
+    if (!this.loading) {
+      this.dispatchEvent(new CustomEvent('next'));
+    }
   }
   async next() {
     const plugins_to_install = this.getPluginsToInstall();
