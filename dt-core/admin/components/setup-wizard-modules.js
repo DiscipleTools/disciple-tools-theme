@@ -158,11 +158,21 @@ export class SetupWizardModules extends OpenLitElement {
             <button class="close-btn btn-outline" @click=${this.dismissToast}>
               x
             </button>
-            <p>${this.toastMessage}</p>
-            <p>
-              You can enable and disable these modules to your liking in the
-              "Settings (D.T)" section of the Wordpress admin.
-            </p>
+            <div class="toast-layout">
+              <div class="center-all">
+                <img
+                  src="${window.setupWizardShare.admin_image_url +
+                  'check-circle.svg'}"
+                />
+              </div>
+              <div class="toast-message">
+                <p><strong>${this.toastMessage}</strong></p>
+                <p>
+                  You can enable and disable these modules to your liking in the
+                  "Settings (D.T)" section of the Wordpress admin.
+                </p>
+              </div>
+            </div>
           </section>
         </div>
         <setup-wizard-controls

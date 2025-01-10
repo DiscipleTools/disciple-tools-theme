@@ -427,6 +427,7 @@ export class SetupWizard extends LitElement {
         right: 0;
         margin: 1rem;
         margin-bottom: 4rem;
+        padding: 1rem 2rem 1rem 1rem;
         transition:
           opacity 300ms ease 200ms,
           transform 500ms cubic-bezier(0.5, 0.05, 0.2, 1.5) 200ms;
@@ -453,6 +454,24 @@ export class SetupWizard extends LitElement {
             color: black;
           }
         }
+      }
+      .toast-layout {
+        display: flex;
+        gap: 1rem;
+      }
+      .toast-message {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+      }
+      .toast-message > p {
+        margin-block: 0;
+      }
+      .toast img {
+        width: 80px;
+        height: 80px;
+        filter: invert(100%);
       }
       .input-group {
         display: flex;

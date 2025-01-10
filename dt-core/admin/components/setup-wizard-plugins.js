@@ -196,7 +196,15 @@ export class SetupWizardPlugins extends OpenLitElement {
             <button class="close-btn btn-outline" @click=${this.dismissToast}>
               x
             </button>
-            ${this.toastMessage}
+            <div class="toast-layout">
+              <div class="center-all">
+                <img
+                  src="${window.setupWizardShare.admin_image_url +
+                  'check-circle.svg'}"
+                />
+              </div>
+              <div class="toast-message">${this.toastMessage}</div>
+            </div>
           </section>
         </div>
         <setup-wizard-controls

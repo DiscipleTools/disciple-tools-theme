@@ -179,12 +179,22 @@ export class SetupWizardUseCases extends OpenLitElement {
               x
             </button>
 
-            <p><strong>${this.toastMessage}</strong></p>
-            <p>
-              ${this.selectedOptions().length
-                ? 'Based on the use case(s) you have now chosen, we can recommend some modules and plugins that we think will be helpful.'
-                : 'In the next steps, simply choose what options seems best'}
-            </p>
+            <div class="toast-layout">
+              <div class="center-all">
+                <img
+                  src="${window.setupWizardShare.admin_image_url +
+                  'check-circle.svg'}"
+                />
+              </div>
+              <div class="toast-message">
+                <p><strong>${this.toastMessage}</strong></p>
+                <p>
+                  ${this.selectedOptions().length
+                    ? 'Based on the use case(s) you have now chosen, we can recommend some modules and plugins that we think will be helpful.'
+                    : 'In the next steps, simply choose what options seems best'}
+                </p>
+              </div>
+            </div>
           </section>
         </div>
         <setup-wizard-controls
