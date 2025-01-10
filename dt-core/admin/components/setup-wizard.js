@@ -331,6 +331,38 @@ export class SetupWizard extends LitElement {
           color: var(--default-color);
         }
       }
+      .option-button {
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+        padding: 10px;
+        box-shadow: 2px 2px 3px 0 var(--default-dark);
+        cursor: pointer;
+      }
+      .option-button:hover {
+        background-color: var(--default-hover-color);
+      }
+      .option-button-checkmark {
+        display: flex;
+        padding-inline-start: 1rem;
+        align-items: center;
+      }
+      .option-button-checkmark > * {
+        width: 25px;
+        height: 25px;
+      }
+      .circle-div {
+        border-radius: 100%;
+        border: 1px solid black;
+      }
+      .center-all {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .option-button-image {
+        width: 60px;
+      }
+
       .toast {
         position: absolute;
         bottom: 0;
@@ -346,7 +378,6 @@ export class SetupWizard extends LitElement {
           transform: translateY(0.25em);
           transition: none;
           padding: 0;
-
           & .close-btn {
             height: 0;
           }
