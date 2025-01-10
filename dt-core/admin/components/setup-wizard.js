@@ -69,9 +69,32 @@ export class SetupWizard extends LitElement {
       p {
         max-width: 60ch;
       }
+      .text-blue {
+        color: var(--primary-color);
+      }
       ul[role='list'],
       ol[role='list'] {
         list-style: none;
+      }
+      .bubble-list {
+        list-style: none;
+        counter-reset: steps;
+      }
+      .bubble-list li {
+        counter-increment: steps;
+        margin-bottom: 1rem;
+      }
+      .bubble-list li::before {
+        content: counter(steps);
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        width: 1.5em;
+        height: 1.5em;
+        display: inline-block;
+        text-align: center;
+        line-height: 1.5em;
+        margin-right: 0.5em;
       }
       button {
         border: none;
