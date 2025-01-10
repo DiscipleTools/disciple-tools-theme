@@ -120,25 +120,24 @@ export class SetupWizardPlugins extends OpenLitElement {
       <div class="step-layout">
         <h2>Recommended Plugins</h2>
         <div class="content stack">
-          <p>
-            Plugins are optional and add additional functionality
-            to Disciple.Tools based on your needs.
-          </p>
-          <p>
-            Plugins can be activated or deactivated at any time. You can find the full list of
-            Disciple.Tools plugin in the "Extensions (D.T)" tab later.
-          </p>
-          </p>
+          <div class="centered-view">
+            <p>
+              Plugins are optional and add additional functionality to
+              Disciple.Tools based on your needs.
+            </p>
+            <p>
+              Plugins can be activated or deactivated at any time. You can find
+              the full list of Disciple.Tools plugin in the "Extensions (D.T)"
+              tab later.
+            </p>
+          </div>
           <table style="margin-right:1rem">
             <thead>
               <tr>
                 <th>Plugin Name</th>
                 <th>
                   Install/Activate <br />
-                  <span
-                    class="table-control"
-                    @click=${() => this.select_all()}
-                  >
+                  <span class="table-control" @click=${() => this.select_all()}>
                     (select all)
                   </span>
                 </th>
@@ -184,26 +183,21 @@ export class SetupWizardPlugins extends OpenLitElement {
               })}
             </tbody>
           </table>
-          ${
-            !window.setupWizardShare.can_install_plugins
-              ? html`<p>
-                  <strong>*</strong>Only your server administrator can install
-                  plugins.
-                </p>`
-              : ''
-          }
-        <section
-          class="ms-auto card success toast"
-          data-state=${this.toastMessage.length ? '' : 'empty'}
-        >
-          <button
-            class="close-btn btn-outline"
-            @click=${this.dismissToast}
+          ${!window.setupWizardShare.can_install_plugins
+            ? html`<p>
+                <strong>*</strong>Only your server administrator can install
+                plugins.
+              </p>`
+            : ''}
+          <section
+            class="ms-auto card success toast"
+            data-state=${this.toastMessage.length ? '' : 'empty'}
           >
-            x
-          </button>
-          ${this.toastMessage}
-        </section>
+            <button class="close-btn btn-outline" @click=${this.dismissToast}>
+              x
+            </button>
+            ${this.toastMessage}
+          </section>
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}

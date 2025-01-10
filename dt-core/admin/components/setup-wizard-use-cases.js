@@ -120,61 +120,57 @@ export class SetupWizardUseCases extends OpenLitElement {
       <div class="step-layout">
         <h2>Use Cases</h2>
         <div class="content stack">
-          ${this.useCases
-            ? html`
-                <p>
-                  Choose from the following use cases that best fit your needs
-                  to activate specific features in Disciple.Tools.
-                </p>
-                <p>
-                  You'll have the change to fine-tune these choices in the next
-                  steps.
-                </p>
-                <p>
-                  <strong>(Select one or more)</strong>
-                </p>
-                <div class="stack" style="margin-right:1rem;">
-                  ${repeat(
-                    this.useCases,
-                    (option) => option.key,
-                    (option) => html`
-                      <div
-                        class="option-button"
-                        @click="${() => this.toggleOption(option.key)}"
-                        ?selected="${this.options[option.key]}"
-                        style="
+          <div class="centered-view">
+            <p>
+              Choose from the following use cases that best fit your needs to
+              activate specific features in Disciple.Tools.
+            </p>
+            <p>
+              You'll have the change to fine-tune these choices in the next
+              steps.
+            </p>
+            <p>
+              <strong>(Select one or more)</strong>
+            </p>
+          </div>
+          <div class="stack" style="margin-right:1rem;">
+            ${repeat(
+              this.useCases || [],
+              (option) => option.key,
+              (option) => html`
+                <div
+                  class="option-button"
+                  @click="${() => this.toggleOption(option.key)}"
+                  ?selected="${this.options[option.key]}"
+                  style="
                           display: grid;
                           grid-template-columns: 70px 5fr 1fr;
                         "
-                      >
-                        <div class="option-button-checkmark">
-                          ${this.options[option.key]
-                            ? html`
-                                <img
-                                  src="${window.setupWizardShare.image_url +
-                                  'verified.svg'}"
-                                />
-                              `
-                            : html`<div class="circle-div"></div>`}
-                        </div>
-                        <div>
-                          <strong class="text-blue">${option.name}</strong
-                          ><br />
-                          ${option.description ?? ''}
-                        </div>
-                        <div class="center-all">
+                >
+                  <div class="option-button-checkmark">
+                    ${this.options[option.key]
+                      ? html`
                           <img
-                            class="option-button-image"
                             src="${window.setupWizardShare.image_url +
-                            'group.svg'}"
+                            'verified.svg'}"
                           />
-                        </div>
-                      </div>
-                    `,
-                  )}
+                        `
+                      : html`<div class="circle-div"></div>`}
+                  </div>
+                  <div>
+                    <strong class="text-blue">${option.name}</strong><br />
+                    ${option.description ?? ''}
+                  </div>
+                  <div class="center-all">
+                    <img
+                      class="option-button-image"
+                      src="${window.setupWizardShare.image_url + 'group.svg'}"
+                    />
+                  </div>
                 </div>
-              `
-            : ''}
+              `,
+            )}
+          </div>
           <section
             class="ms-auto card success toast"
             data-state=${this.toastMessage.length ? '' : 'empty'}

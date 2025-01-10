@@ -76,31 +76,33 @@ export class SetupWizardKeys extends OpenLitElement {
       <div class="step-layout">
         <h2>Mapping and Geocoding</h2>
         <div class="content stack">
-          <p>
-            Disciple.Tools provides basic mapping functionality for locations at
-            the country, state, or county level. For more precise geolocation,
-            such as street addresses or cities, additional tools like Mapbox and
-            Google API keys are recommended but not mandatory.
-          </p>
-          <p>
-            Mapbox offers detailed maps with precise location pins, while Google
-            enables accurate worldwide geocoding, especially in certain
-            countries where Mapbox data is limited.
-          </p>
-          <p>
-            Both tools provide free usage tiers sufficient for most users,
-            though exceeding limits may incur charges. Setup involves creating
-            accounts, generating API keys, and adding them here (or in
-            Disciple.Tools settings later).
-          </p>
-          <p>
-            For additional details and information, refer to the
-            <a
-              href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
-              target="_blank"
-              >Geolocation Documentation</a
-            >.
-          </p>
+          <div class="centered-view">
+            <p>
+              Disciple.Tools provides basic mapping functionality for locations
+              at the country, state, or county level. For more precise
+              geolocation, such as street addresses or cities, additional tools
+              like Mapbox and Google API keys are recommended but not mandatory.
+            </p>
+            <p>
+              Mapbox offers detailed maps with precise location pins, while
+              Google enables accurate worldwide geocoding, especially in certain
+              countries where Mapbox data is limited.
+            </p>
+            <p>
+              Both tools provide free usage tiers sufficient for most users,
+              though exceeding limits may incur charges. Setup involves creating
+              accounts, generating API keys, and adding them here (or in
+              Disciple.Tools settings later).
+            </p>
+            <p>
+              For additional details and information, refer to the
+              <a
+                href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
+                target="_blank"
+                >Geolocation Documentation</a
+              >.
+            </p>
+          </div>
           <table style="width: 100%">
             <thead>
               <tr>

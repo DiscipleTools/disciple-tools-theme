@@ -105,76 +105,65 @@ export class SetupWizardModules extends OpenLitElement {
       <div class="step-layout">
         <h2>Module selection</h2>
         <div class="content stack">
-          ${this.stage === 'work'
-            ? html`
-                <p>
-                  The recommended modules for your chosen use case(s) are
-                  selected below.
-                </p>
-                <p>
-                  Feel free to change this selection according to what you need
-                  Disciple.Tools to do.
-                </p>
-                <section
-                  style="margin-right: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"
-                >
-                  ${Object.keys(this.availableModules).length > 0
-                    ? html`
-                        ${repeat(
-                          this.availableModules,
-                          (module) => module.key,
-                          (module) => {
-                            return html`
-                              <div
-                                class="option-button"
-                                key=${module.key}
-                                @click=${() => this.toggleModule(module.key)}
-                                ?selected=${this.selectedModules[module.key]}
-                                style="
-                                display: grid;
-                                grid-template-columns: 70px 5fr"
-                              >
-                                <div class="option-button-checkmark">
-                                  ${this.selectedModules[module.key]
-                                    ? html`
-                                        <img
-                                          src="${window.setupWizardShare
-                                            .image_url + 'verified.svg'}"
-                                        />
-                                      `
-                                    : html` <div class="circle-div"></div> `}
-                                </div>
-                                <div>
-                                  <strong class="text-blue"
-                                    >${module.name}</strong
-                                  ><br />
-                                  ${module.description ?? ''}
-                                </div>
-                              </div>
-                            `;
-                          },
-                        )}
-                      `
-                    : ''}
-                </section>
-                <section
-                  class="ms-auto card success toast"
-                  data-state=${this.toastMessage.length ? '' : 'empty'}
-                >
-                  <button
-                    class="close-btn btn-outline"
-                    @click=${this.dismissToast}
+          <div class="centered-view">
+            <p>
+              The recommended modules for your chosen use case(s) are selected
+              below.
+            </p>
+            <p>
+              Feel free to change this selection according to what you need
+              Disciple.Tools to do.
+            </p>
+          </div>
+          <section
+            style="margin-right: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"
+          >
+            ${repeat(
+              this.availableModules || [],
+              (module) => module.key,
+              (module) => {
+                return html`
+                  <div
+                    class="option-button"
+                    key=${module.key}
+                    @click=${() => this.toggleModule(module.key)}
+                    ?selected=${this.selectedModules[module.key]}
+                    style="
+                    display: grid;
+                    grid-template-columns: 70px 5fr"
                   >
-                    x
-                  </button>
-                  <p>${this.toastMessage}</p>
-                  <p>
-                    You can enable and disable these modules to your liking in
-                    the "Settings (D.T)" section of the Wordpress admin.
-                  </p>
-                </section>
-              `
-            : ''}
+                    <div class="option-button-checkmark">
+                      ${this.selectedModules[module.key]
+                        ? html`
+                            <img
+                              src="${window.setupWizardShare.image_url +
+                              'verified.svg'}"
+                            />
+                          `
+                        : html` <div class="circle-div"></div> `}
+                    </div>
+                    <div>
+                      <strong class="text-blue">${module.name}</strong><br />
+                      ${module.description ?? ''}
+                    </div>
+                  </div>
+                `;
+              },
+            )}
+          </section>
+          <section
+            class="ms-auto card success toast"
+            data-state=${this.toastMessage.length ? '' : 'empty'}
+          >
+            <button class="close-btn btn-outline" @click=${this.dismissToast}>
+              x
+            </button>
+            <p>${this.toastMessage}</p>
+            <p>
+              You can enable and disable these modules to your liking in the
+              "Settings (D.T)" section of the Wordpress admin.
+            </p>
+          </section>
         </div>
         <setup-wizard-controls
           nextLabel=${this.nextLabel()}

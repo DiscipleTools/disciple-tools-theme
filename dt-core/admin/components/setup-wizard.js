@@ -65,9 +65,7 @@ export class SetupWizard extends LitElement {
       h3 {
         font-weight: 500;
         color: var(--primary-color);
-      }
-      p {
-        max-width: 60ch;
+        text-align: center;
       }
       .text-blue {
         color: var(--primary-color);
@@ -191,7 +189,7 @@ export class SetupWizard extends LitElement {
       .stack > * + * {
         margin-block-start: var(--spacing, 1rem);
       }
-      .centered {
+      .centered-view {
         max-width: 60ch;
         margin-left: auto;
         margin-right: auto;
@@ -412,6 +410,7 @@ export class SetupWizard extends LitElement {
       }
 
       .toast {
+        max-width: 60ch;
         position: absolute;
         bottom: 0;
         right: 0;
