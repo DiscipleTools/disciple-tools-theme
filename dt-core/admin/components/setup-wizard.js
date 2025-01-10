@@ -341,6 +341,9 @@ export class SetupWizard extends LitElement {
       .option-button:hover {
         background-color: var(--default-hover-color);
       }
+      .option-button[selected] {
+        background-color: var(--default-color);
+      }
       .option-button-checkmark {
         display: flex;
         padding-inline-start: 1rem;

@@ -141,6 +141,7 @@ export class SetupWizardUseCases extends OpenLitElement {
                       <div
                         class="option-button"
                         @click="${() => this.toggleOption(option.key)}"
+                        ?selected="${this.options[option.key]}"
                         style="
                           display: grid;
                           grid-template-columns: 70px 5fr 1fr;

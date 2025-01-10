@@ -80,16 +80,10 @@ export class SetupWizardModules extends OpenLitElement {
     this.toastMessage = '';
   }
   toggleModule(key) {
-    const checkbox = this.renderRoot.querySelector(`#${key}`);
-    if (this.selectedModules[key]) {
-      checkbox.checked = false;
-      this.selectedModules[key] = false;
-    } else {
-      checkbox.checked = true;
-      this.selectedModules[key] = true;
-    }
+    this.selectedModules[key] = !this.selectedModules[key];
     this.finished = false;
     this.dismissToast();
+    this.requestUpdate();
   }
   async submitModuleChanges() {
     this.loading = true;
@@ -121,47 +115,47 @@ export class SetupWizardModules extends OpenLitElement {
                   Feel free to change this selection according to what you need
                   Disciple.Tools to do.
                 </p>
-                <section>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Module</th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${Object.keys(this.availableModules).length > 0
-                        ? html`
-                            ${repeat(
-                              this.availableModules,
-                              (module) => module.key,
-                              (module) => {
-                                return html`
-                                  <tr
-                                    key=${module.key}
-                                    @click=${() =>
-                                      this.toggleModule(module.key)}
-                                  >
-                                    <td>
-                                      <input
-                                        type="checkbox"
-                                        id=${module.key}
-                                        ?checked=${this.selectedModules[
-                                          module.key
-                                        ]}
-                                      />
-                                    </td>
-                                    <td>${module.name}</td>
-                                    <td>${module.description}</td>
-                                  </tr>
-                                `;
-                              },
-                            )}
-                          `
-                        : ''}
-                    </tbody>
-                  </table>
+                <section
+                  style="margin-right: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"
+                >
+                  ${Object.keys(this.availableModules).length > 0
+                    ? html`
+                        ${repeat(
+                          this.availableModules,
+                          (module) => module.key,
+                          (module) => {
+                            return html`
+                              <div
+                                class="option-button"
+                                key=${module.key}
+                                @click=${() => this.toggleModule(module.key)}
+                                ?selected=${this.selectedModules[module.key]}
+                                style="
+                                display: grid;
+                                grid-template-columns: 70px 5fr"
+                              >
+                                <div class="option-button-checkmark">
+                                  ${this.selectedModules[module.key]
+                                    ? html`
+                                        <img
+                                          src="${window.setupWizardShare
+                                            .image_url + 'verified.svg'}"
+                                        />
+                                      `
+                                    : html` <div class="circle-div"></div> `}
+                                </div>
+                                <div>
+                                  <strong class="text-blue"
+                                    >${module.name}</strong
+                                  ><br />
+                                  ${module.description ?? ''}
+                                </div>
+                              </div>
+                            `;
+                          },
+                        )}
+                      `
+                    : ''}
                 </section>
                 <section
                   class="ms-auto card success toast"
