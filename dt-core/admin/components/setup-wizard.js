@@ -214,23 +214,28 @@ export class SetupWizard extends LitElement {
         overflow-y: auto;
       }
       .steps {
-        padding-left: 24px;
+        padding-left: 5px;
         padding-right: 24px;
       }
-      .step {
-        position: relative;
-      }
       .step::before {
-        content: var(--svg-url, '');
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        height: 100%;
-        left: 0;
-        transform: translateX(-150%) scale(1.4);
+        content: '•';
+        color: var(--primary-color);
+        margin-right: 10px;
+        font-weight: bold;
+        font-size: 1.5rem;
+        line-height: 0;
+        vertical-align: middle;
+        display: inline-block;
+        width: 10px;
       }
       .step[current]::before {
-        transform: translate(-210%) scale(1.4);
+        content: '>';
+        color: var(--primary-color);
+      }
+      .step[completed]::before {
+        content: '✓';
+        color: #00a32a;
+        font-size: 1.2rem;
       }
       .btn-primary {
         background-color: var(--primary-color);
@@ -478,27 +483,6 @@ export class SetupWizard extends LitElement {
       this.steps = window.setupWizardShare.steps;
     }
   }
-  updated() {
-    const allSteps = this.renderRoot.querySelectorAll('.step') || [];
-    const completedSteps =
-      this.renderRoot.querySelectorAll('.step[completed]') || [];
-    const currentStep = this.renderRoot.querySelector('.step[current]');
-    allSteps.forEach((step) => {
-      step.style.setProperty('--svg-url', '');
-    });
-    completedSteps.forEach((step) => {
-      step.style.setProperty(
-        '--svg-url',
-        `url('${this.imageUrl + 'verified.svg'}')`,
-      );
-    });
-    if (currentStep) {
-      currentStep.style.setProperty(
-        '--svg-url',
-        `url('${this.imageUrl + 'chevron_right.svg'}')`,
-      );
-    }
-  }
 
   render() {
     return html`
@@ -523,7 +507,7 @@ export class SetupWizard extends LitElement {
                       ?current=${i === this.currentStepNumber}
                       key=${step.key}
                     >
-                      <span>${i + 1}.</span>
+                      <!--                      <span>${i + 1}.</span>-->
                       ${step.name}
                     </li>
                   `;
