@@ -613,6 +613,14 @@ export class SetupWizard extends LitElement {
         filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg)
           brightness(94%) contrast(100%);
       }
+      .step-icon {
+        width: 60px;
+        height: 60px;
+        vertical-align: middle;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
     `,
   ];
 
@@ -681,7 +689,14 @@ export class SetupWizard extends LitElement {
           <button class="btn-outline ms-auto" @click=${this.exit}>
             ${this.translations.exit}
           </button>
-          <h2 class="me-auto">${this.translations.title}</h2>
+          <h2 class="me-auto">
+            ${this.translations.title}
+            <img
+              class="blue-svg"
+              style="height: 30px; vertical-align: sub;"
+              src="${window.setupWizardShare.admin_image_url + 'wizard.svg'}"
+            />
+          </h2>
         </div>
         <div class="with-sidebar">
           <div class="sidebar">

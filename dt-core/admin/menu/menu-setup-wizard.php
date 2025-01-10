@@ -266,6 +266,7 @@ class DT_Setup_Wizard
                         'disciple-tools-import',
                         'disciple-tools-bulk-magic-link-sender',
                     ],
+                    'image' => trailingslashit( get_template_directory_uri() ) . 'dt-core/admin/img/usecase-church.svg',
                 ],
                 'media' => [
                     'key' => 'media',
@@ -286,6 +287,7 @@ class DT_Setup_Wizard
                         'disciple-tools-import',
                         'disciple-tools-bulk-magic-link-sender',
                     ],
+                    'image' => trailingslashit( get_template_directory_uri() ) . 'dt-core/admin/img/usecase-media.svg',
                 ],
                 'dmm' => [
                     'key' => 'dmm',
@@ -304,6 +306,7 @@ class DT_Setup_Wizard
                         'disciple-tools-training',
                         'disciple-tools-import',
                     ],
+                    'image' => trailingslashit( get_template_directory_uri() ) . 'dt-core/admin/img/usecase-relationship.svg',
                 ],
             ],
             'modules' => $modules,

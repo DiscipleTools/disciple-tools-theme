@@ -163,8 +163,8 @@ export class SetupWizardUseCases extends OpenLitElement {
                   </div>
                   <div class="center-all">
                     <img
-                      class="option-button-image"
-                      src="${window.setupWizardShare.image_url + 'group.svg'}"
+                      class="option-button-image blue-svg"
+                      src="${option.image}"
                     />
                   </div>
                 </div>

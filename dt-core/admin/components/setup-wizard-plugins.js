@@ -118,6 +118,10 @@ export class SetupWizardPlugins extends OpenLitElement {
   render() {
     return html`
       <div class="step-layout">
+        <img
+          class="blue-svg step-icon"
+          src="${window.setupWizardShare.admin_image_url + 'plugin.svg'}"
+        />
         <h2>Recommended Plugins</h2>
         <div class="content stack">
           <div class="centered-view">
