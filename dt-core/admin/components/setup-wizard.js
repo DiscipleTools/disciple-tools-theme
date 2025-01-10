@@ -96,7 +96,8 @@ export class SetupWizard extends LitElement {
         line-height: 1.5em;
         margin-right: 0.5em;
       }
-      button {
+      button,
+      .button {
         border: none;
         padding: 0.5rem 1.5rem;
         border-radius: 8px;
@@ -189,6 +190,11 @@ export class SetupWizard extends LitElement {
       }
       .stack > * + * {
         margin-block-start: var(--spacing, 1rem);
+      }
+      .centered {
+        max-width: 60ch;
+        margin-left: auto;
+        margin-right: auto;
       }
       .grid {
         display: grid;
@@ -569,6 +575,14 @@ export class SetupWizard extends LitElement {
       }
       tr:last-of-type td {
         border-bottom: 2px solid var(--primary-color);
+      }
+      .green-svg {
+        filter: invert(52%) sepia(77%) saturate(383%) hue-rotate(73deg)
+          brightness(98%) contrast(83%);
+      }
+      .blue-svg {
+        filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg)
+          brightness(94%) contrast(100%);
       }
     `,
   ];
