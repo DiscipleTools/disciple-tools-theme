@@ -350,6 +350,7 @@ export class SetupWizard extends LitElement {
           & .close-btn {
             height: 0;
           }
+          z-index: -1;
         }
 
         & .close-btn {
