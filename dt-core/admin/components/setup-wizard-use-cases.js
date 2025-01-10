@@ -155,7 +155,7 @@ export class SetupWizardUseCases extends OpenLitElement {
                                   'verified.svg'}"
                                 />
                               `
-                            : html` <div class="circle-div"></div> `}
+                            : html`<div class="circle-div"></div>`}
                         </div>
                         <div>
                           <strong class="text-blue">${option.name}</strong

@@ -285,10 +285,10 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                           <th>
                             Add <br />
                             <button
-                              class="btn-outline"
+                              class="table-control btn-outline"
                               @click=${() => this.selectAll()}
                             >
-                              select all
+                              (select all)
                             </button>
                           </th>
                         </tr>

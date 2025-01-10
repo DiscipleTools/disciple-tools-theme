@@ -116,6 +116,45 @@ export class SetupWizard extends LitElement {
         border: 2px solid var(--default-hover-color);
         background-color: white;
       }
+      input[type='checkbox'] {
+        appearance: none;
+        background-color: #fff;
+        margin: 0;
+        font: inherit;
+        color: currentColor;
+        width: 1.15em;
+        height: 1.15em;
+        border: 0.1em solid currentColor;
+        border-radius: 0.15em;
+        transform: translateY(-0.075em);
+        display: inline-grid;
+        place-content: center;
+      }
+      input[type='checkbox']::before {
+        content: '';
+        width: 0.65em;
+        height: 0.65em;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em white;
+        transform-origin: bottom left;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+      }
+      input[type='checkbox']:checked {
+        background-color: var(--secondary-color);
+      }
+      input[type='checkbox']:checked::before {
+        transform: scale(1);
+      }
+      input[type='checkbox']:disabled {
+        --form-control-color: var(--default-dark);
+
+        color: var(--default-dark);
+        cursor: not-allowed;
+        background-color: var(--default-color);
+        filter: grayscale(1);
+      }
+
       /* Composition */
       .wrap {
         padding: 1rem;
@@ -484,18 +523,52 @@ export class SetupWizard extends LitElement {
       button .spinner {
         vertical-align: bottom;
       }
+
       table {
-        padding-bottom: 1rem;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 1rem;
       }
-      table td {
+      table thead {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: normal;
+      }
+      th {
+        font-weight: normal;
+        line-height: 1;
         padding: 0.5rem;
         vertical-align: top;
       }
-      table thead tr {
-        background-color: var(--default-color);
+      th .table-control {
+        color: #0dcaf0;
+        cursor: pointer;
+        font-size: 0.8rem;
       }
-      table tr:nth-child(even) {
-        background-color: var(--default-color);
+      th:first-of-type {
+        border-top-left-radius: 10px;
+      }
+      th:last-of-type {
+        border-top-right-radius: 10px;
+      }
+      tr:last-of-type td:first-of-type {
+        border-bottom-left-radius: 10px;
+      }
+      tr:last-of-type td:last-of-type {
+        border-bottom-right-radius: 10px;
+      }
+      tbody tr td:first-of-type {
+        border-left: 2px solid var(--primary-color);
+      }
+      tbody tr td:last-of-type {
+        border-right: 2px solid var(--primary-color);
+      }
+      td {
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--default-color);
+      }
+      tr:last-of-type td {
+        border-bottom: 2px solid var(--primary-color);
       }
     `,
   ];

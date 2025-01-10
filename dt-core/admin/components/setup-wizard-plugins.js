@@ -129,17 +129,17 @@ export class SetupWizardPlugins extends OpenLitElement {
             Disciple.Tools plugin in the "Extensions (D.T)" tab later.
           </p>
           </p>
-          <table>
+          <table style="margin-right:1rem">
             <thead>
               <tr>
                 <th>Plugin Name</th>
                 <th>
                   Install/Activate <br />
                   <span
-                    style="color: blue;cursor: pointer"
+                    class="table-control"
                     @click=${() => this.select_all()}
                   >
-                    select all
+                    (select all)
                   </span>
                 </th>
                 <th style="width: 60%">Description</th>
@@ -150,10 +150,15 @@ export class SetupWizardPlugins extends OpenLitElement {
                 const disabled =
                   !window.setupWizardShare.can_install_plugins &&
                   !plugin.installed;
-                let action = 'Active';
+                let action = html`<img
+                    style="height: 20px; filter: grayscale(1);"
+                    src="${window.setupWizardShare.image_url + 'verified.svg'}"
+                  /><br />
+                  <span style="color:grey">Active</span>`;
                 if (plugin.installing) {
                   action = html`<span class="spinner"></span>`;
                 } else if (!plugin.active) {
+                  action = html`<div class="circle-div"></div>`;
                   action = html`<input
                       type="checkbox"
                       .checked=${plugin.selected}
@@ -163,8 +168,8 @@ export class SetupWizardPlugins extends OpenLitElement {
 
                 return html`
                   <tr @click=${() => this.togglePlugin(plugin, disabled)}>
-                    <td>${plugin.name}</td>
-                    <td>${action}</td>
+                    <td><strong>${plugin.name}</strong></td>
+                    <td style="text-align: center;">${action}</td>
                     <td
                       style="max-width: 50%"
                       @click=${(e) => e.stopImmediatePropagation()}
