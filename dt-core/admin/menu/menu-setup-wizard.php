@@ -209,7 +209,7 @@ class DT_Setup_Wizard
             ],
             [
                 'key' => 'celebration',
-                'name' => 'Finished',
+                'name' => 'All Finished!',
                 'component' => 'setup-wizard-celebration',
             ]
         ];

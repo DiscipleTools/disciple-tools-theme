@@ -287,16 +287,27 @@ export class SetupWizard extends LitElement {
         position: relative;
       }
       .step::before {
-        content: var(--svg-url, '');
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        height: 100%;
-        left: 0;
-        transform: translateX(-150%) scale(1.4);
+        content: '•';
+        color: var(--primary-color);
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 1.5rem;
+        line-height: 0;
+        vertical-align: middle;
+        display: inline-block;
+        width: 10px;
+      }
+      .step[current]::before,
+      .step[completed]::before {
+        transform: scale(2.5) translateY(-1px);
+        content: var(--svg-url, '•');
       }
       .step[current]::before {
-        transform: translate(-210%) scale(1.4);
+        filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg)
+          brightness(94%) contrast(100%);
+      }
+      .step[completed]::before {
+        transform: translateX(-5px) translateY(-3px) scale(1.4);
       }
       .btn-primary {
         background-color: var(--primary-color);
@@ -639,7 +650,7 @@ export class SetupWizard extends LitElement {
     if (currentStep) {
       currentStep.style.setProperty(
         '--svg-url',
-        `url('${this.imageUrl + 'chevron_right.svg'}')`,
+        `url('${window.setupWizardShare.admin_image_url + 'chevron.svg'}')`,
       );
     }
   }
@@ -667,7 +678,6 @@ export class SetupWizard extends LitElement {
                       ?current=${i === this.currentStepNumber}
                       key=${step.key}
                     >
-                      <span>${i + 1}.</span>
                       ${step.name}
                     </li>
                   `;
