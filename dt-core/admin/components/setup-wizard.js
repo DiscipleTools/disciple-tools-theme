@@ -12,7 +12,7 @@ export class SetupWizard extends LitElement {
     css`
       :host {
         display: block;
-        font-size: 18px;
+        font-size: 16px;
         line-height: 1.4;
         font-family: Arial, Helvetica, sans-serif;
         --primary-color: #3f729b;
