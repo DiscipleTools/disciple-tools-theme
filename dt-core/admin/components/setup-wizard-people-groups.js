@@ -158,6 +158,8 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
         this.stoppingImport = false;
         this.importStopped = true;
         this.finishImport('Importing stopped');
+        this.importingAll = false;
+        this.importingFinished = false;
         return;
       }
       const batch = batches[country];
@@ -276,7 +278,9 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                   </div>`
                 : ''}
               <div class="stack | people-groups">
-                ${this.peopleGroups.length > 0
+                ${!this.importingAll &&
+                !this.importingFinished &&
+                this.peopleGroups.length > 0
                   ? html`
                       <table>
                         <thead>
