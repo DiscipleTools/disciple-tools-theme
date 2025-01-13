@@ -32,7 +32,7 @@ export class SetupWizardKeys extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    if (this._finished && !this._changed) {
+    if (this._finished || !this._changed) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
