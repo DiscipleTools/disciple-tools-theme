@@ -102,11 +102,22 @@ export class SetupWizard extends LitElement {
         cursor: pointer;
         background-color: var(--default-color);
         transition: all 120ms linear;
+        text-decoration: none;
       }
       button:hover,
       button:active,
       button:focus {
         background-color: var(--default-hover-color);
+      }
+      .btn-with-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .btn-with-icon img {
+        width: 20px;
+        height: 20px;
+        margin-left: 0.3rem;
       }
       select,
       input {
@@ -337,43 +348,7 @@ export class SetupWizard extends LitElement {
         border-color: var(--primary-color);
         background-color: transparent;
       }
-      .btn-card {
-        background-color: var(--primary-color);
-        color: var(--default-color);
-        padding: 1rem 2rem;
-        box-shadow: 1px 1px 3px 0px var(--default-dark);
-        cursor: pointer;
-        position: relative;
-      }
-      .btn-card.selected {
-        background-color: var(--secondary-color);
-      }
-      .btn-card.selected:focus,
-      .btn-card.selected:hover,
-      .btn-card.selected:active {
-        background-color: var(--secondary-color);
-      }
-      .btn-card:focus,
-      .btn-card:hover,
-      .btn-card:active {
-        background-color: var(--primary-hover-color);
-      }
-      .btn-card-gray {
-        background-color: var(--default-color);
-        color: black;
-      }
-      .btn-card-gray:hover {
-        background-color: var(--secondary-color);
-        opacity: 0.8;
-      }
-      .btn-card.disabled {
-        background-color: var(--secondary-color);
-        opacity: 0.5;
-        color: var(--default-color);
-      }
-      .btn-card.disabled:hover {
-        background-color: var(--default-hover-color);
-      }
+
       .card {
         background-color: var(--default-color);
         border-radius: 12px;
@@ -505,39 +480,6 @@ export class SetupWizard extends LitElement {
           }
         }
       }
-      .breadcrumbs {
-        --gap: 6rem;
-        --divider-width: calc(var(--gap) / 2);
-        display: flex;
-      }
-      .breadcrumbs > * + * {
-        margin-left: var(--gap);
-      }
-      .breadcrumbs > * + *:before {
-        content: '';
-        width: var(--divider-width);
-        position: absolute;
-        height: 3px;
-        border-radius: 10px;
-        background-color: var(--primary);
-        left: calc((var(--gap) + var(--divider-width)) / -2 - 2px);
-        top: calc(50% - 1px);
-      }
-      .crumb {
-        position: relative;
-        width: 16px;
-        height: 16px;
-        border-radius: 100%;
-        border: 2px solid var(--default-hover-color);
-      }
-      .crumb.complete {
-        background-color: var(--primary);
-        border-color: var(--primary);
-      }
-      .crumb.active {
-        outline: 5px solid var(--primary);
-        outline-offset: -10px;
-      }
       .tag {
         border: 1px solid black;
         display: inline;
@@ -613,6 +555,10 @@ export class SetupWizard extends LitElement {
       .blue-svg {
         filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg)
           brightness(94%) contrast(100%);
+      }
+      .white-svg {
+        filter: invert(99%) sepia(4%) saturate(75%) hue-rotate(109deg)
+          brightness(117%) contrast(100%);
       }
       .step-icon {
         width: 60px;
@@ -792,49 +738,6 @@ export class SetupWizard extends LitElement {
         `;
   }
 
-  renderMultiSelect(component) {
-    return html`
-      <div class="multiSelect">
-        ${component.description ? html` <p>${component.description}</p> ` : ''}
-        <div class="grid" size="small">
-          ${component.options && component.options.length > 0
-            ? component.options.map(
-                (option) => html`
-                  <label class="toggle" for="${option.key}">
-                    <input
-                      ?checked=${option.checked}
-                      type="checkbox"
-                      name="${option.key}"
-                      id="${option.key}"
-                    />
-                    <span>${option.name}</span>
-                  </label>
-                `,
-              )
-            : ''}
-        </div>
-      </div>
-    `;
-  }
-  renderModuleDecision(component) {
-    return html`
-      <div class="decisions">
-        ${component.description ? html` <p>${component.description}</p> ` : ''}
-        <div class="grid">
-          ${component.options && component.options.length > 0
-            ? component.options.map(
-                (option) => html`
-                  <button class="btn-card" data-key=${option.key}>
-                    <h3 class="white">${option.name}</h3>
-                    <p>${option.description ?? ''}</p>
-                  </button>
-                `,
-              )
-            : ''}
-        </div>
-      </div>
-    `;
-  }
   renderFields(component) {
     return html`
       <div class="options">

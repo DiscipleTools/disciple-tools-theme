@@ -60,10 +60,13 @@ export class SetupWizardCelebration extends OpenLitElement {
                 <a
                   href="https://community.disciple.tools/"
                   target="_blank"
-                  class="button btn-primary"
-                  style="display: inline-block"
+                  class="button btn-primary btn-with-icon"
                 >
                   Community Forum
+                  <img
+                    class="white-svg"
+                    src="${window.setupWizardShare.image_url + 'open-link.svg'}"
+                  />
                 </a>
               </div>
               <div style="text-align: center">
@@ -76,10 +79,13 @@ export class SetupWizardCelebration extends OpenLitElement {
                 <a
                   href="https://discord.gg/kp5pYmrhSd"
                   target="_blank"
-                  class="button btn-primary"
-                  style="display: inline-block"
+                  class="button btn-primary btn-with-icon"
                 >
                   Discord Invitation
+                  <img
+                    class="white-svg"
+                    src="${window.setupWizardShare.image_url + 'open-link.svg'}"
+                  />
                 </a>
               </div>
             </div>
