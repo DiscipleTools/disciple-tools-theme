@@ -118,28 +118,31 @@ export class SetupWizardPlugins extends OpenLitElement {
   render() {
     return html`
       <div class="step-layout">
+        <img
+          class="blue-svg step-icon"
+          src="${window.setupWizardShare.admin_image_url + 'plugin.svg'}"
+        />
         <h2>Recommended Plugins</h2>
         <div class="content stack">
-          <p>
-            Plugins are optional and add additional functionality
-            to Disciple.Tools based on your needs.
-          </p>
-          <p>
-            Plugins can be activated or deactivated at any time. You can find the full list of
-            Disciple.Tools plugin in the "Extensions (D.T)" tab later.
-          </p>
-          </p>
-          <table>
+          <div class="centered-view">
+            <p>
+              Plugins are optional and add additional functionality to
+              Disciple.Tools based on your needs.
+            </p>
+            <p>
+              Plugins can be activated or deactivated at any time. You can find
+              the full list of Disciple.Tools plugin in the "Extensions (D.T)"
+              tab later.
+            </p>
+          </div>
+          <table style="margin-right:1rem">
             <thead>
               <tr>
                 <th>Plugin Name</th>
                 <th>
                   Install/Activate <br />
-                  <span
-                    style="color: blue;cursor: pointer"
-                    @click=${() => this.select_all()}
-                  >
-                    select all
+                  <span class="table-control" @click=${() => this.select_all()}>
+                    (select all)
                   </span>
                 </th>
                 <th style="width: 60%">Description</th>
@@ -150,10 +153,15 @@ export class SetupWizardPlugins extends OpenLitElement {
                 const disabled =
                   !window.setupWizardShare.can_install_plugins &&
                   !plugin.installed;
-                let action = 'Active';
+                let action = html`<img
+                    style="height: 20px; filter: grayscale(1);"
+                    src="${window.setupWizardShare.image_url + 'verified.svg'}"
+                  /><br />
+                  <span style="color:grey">Active</span>`;
                 if (plugin.installing) {
-                  action = html`<span class="spinner"></span>`;
+                  action = html`<span class="spinner light"></span>`;
                 } else if (!plugin.active) {
+                  action = html`<div class="circle-div"></div>`;
                   action = html`<input
                       type="checkbox"
                       .checked=${plugin.selected}
@@ -163,8 +171,8 @@ export class SetupWizardPlugins extends OpenLitElement {
 
                 return html`
                   <tr @click=${() => this.togglePlugin(plugin, disabled)}>
-                    <td>${plugin.name}</td>
-                    <td>${action}</td>
+                    <td><strong>${plugin.name}</strong></td>
+                    <td style="text-align: center;">${action}</td>
                     <td
                       style="max-width: 50%"
                       @click=${(e) => e.stopImmediatePropagation()}
@@ -179,26 +187,29 @@ export class SetupWizardPlugins extends OpenLitElement {
               })}
             </tbody>
           </table>
-          ${
-            !window.setupWizardShare.can_install_plugins
-              ? html`<p>
-                  <strong>*</strong>Only your server administrator can install
-                  plugins.
-                </p>`
-              : ''
-          }
-        <section
-          class="ms-auto card success toast"
-          data-state=${this.toastMessage.length ? '' : 'empty'}
-        >
-          <button
-            class="close-btn btn-outline"
-            @click=${this.dismissToast}
+          ${!window.setupWizardShare.can_install_plugins
+            ? html`<p>
+                <strong>*</strong>Only your server administrator can install
+                plugins.
+              </p>`
+            : ''}
+          <section
+            class="ms-auto card success toast"
+            data-state=${this.toastMessage.length ? '' : 'empty'}
           >
-            x
-          </button>
-          ${this.toastMessage}
-        </section>
+            <button class="close-btn btn-outline" @click=${this.dismissToast}>
+              x
+            </button>
+            <div class="toast-layout">
+              <div class="center-all">
+                <img
+                  src="${window.setupWizardShare.admin_image_url +
+                  'check-circle.svg'}"
+                />
+              </div>
+              <div class="toast-message">${this.toastMessage}</div>
+            </div>
+          </section>
         </div>
         <setup-wizard-controls
           ?hideBack=${this.firstStep}

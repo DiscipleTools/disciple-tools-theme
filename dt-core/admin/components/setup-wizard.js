@@ -12,7 +12,7 @@ export class SetupWizard extends LitElement {
     css`
       :host {
         display: block;
-        font-size: 18px;
+        font-size: 16px;
         line-height: 1.4;
         font-family: Arial, Helvetica, sans-serif;
         --primary-color: #3f729b;
@@ -65,26 +65,59 @@ export class SetupWizard extends LitElement {
       h3 {
         font-weight: 500;
         color: var(--primary-color);
+        text-align: center;
       }
-      p {
-        max-width: 60ch;
+      .text-blue {
+        color: var(--primary-color);
       }
       ul[role='list'],
       ol[role='list'] {
         list-style: none;
       }
-      button {
+      .bubble-list {
+        list-style: none;
+        counter-reset: steps;
+      }
+      .bubble-list li {
+        counter-increment: steps;
+        margin-bottom: 1rem;
+      }
+      .bubble-list li::before {
+        content: counter(steps);
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        width: 1.5em;
+        height: 1.5em;
+        display: inline-block;
+        text-align: center;
+        line-height: 1.5em;
+        margin-right: 0.5em;
+      }
+      button,
+      .button {
         border: none;
         padding: 0.5rem 1.5rem;
         border-radius: 8px;
         cursor: pointer;
         background-color: var(--default-color);
         transition: all 120ms linear;
+        text-decoration: none;
       }
       button:hover,
       button:active,
       button:focus {
         background-color: var(--default-hover-color);
+      }
+      .btn-with-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .btn-with-icon img {
+        width: 20px;
+        height: 20px;
+        margin-left: 0.3rem;
       }
       select,
       input {
@@ -93,6 +126,45 @@ export class SetupWizard extends LitElement {
         border: 2px solid var(--default-hover-color);
         background-color: white;
       }
+      input[type='checkbox'] {
+        appearance: none;
+        background-color: #fff;
+        margin: 0;
+        font: inherit;
+        color: currentColor;
+        width: 1.15em;
+        height: 1.15em;
+        border: 0.1em solid currentColor;
+        border-radius: 0.15em;
+        transform: translateY(-0.075em);
+        display: inline-grid;
+        place-content: center;
+      }
+      input[type='checkbox']::before {
+        content: '';
+        width: 0.65em;
+        height: 0.65em;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em white;
+        transform-origin: bottom left;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+      }
+      input[type='checkbox']:checked {
+        background-color: var(--secondary-color);
+      }
+      input[type='checkbox']:checked::before {
+        transform: scale(1);
+      }
+      input[type='checkbox']:disabled {
+        --form-control-color: var(--default-dark);
+
+        color: var(--default-dark);
+        cursor: not-allowed;
+        background-color: var(--default-color);
+        filter: grayscale(1);
+      }
+
       /* Composition */
       .wrap {
         padding: 1rem;
@@ -127,6 +199,11 @@ export class SetupWizard extends LitElement {
       }
       .stack > * + * {
         margin-block-start: var(--spacing, 1rem);
+      }
+      .centered-view {
+        max-width: 60ch;
+        margin-left: auto;
+        margin-right: auto;
       }
       .grid {
         display: grid;
@@ -221,16 +298,27 @@ export class SetupWizard extends LitElement {
         position: relative;
       }
       .step::before {
-        content: var(--svg-url, '');
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        height: 100%;
-        left: 0;
-        transform: translateX(-150%) scale(1.4);
+        content: '•';
+        color: var(--primary-color);
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 1.5rem;
+        line-height: 0;
+        vertical-align: middle;
+        display: inline-block;
+        width: 10px;
+      }
+      .step[current]::before,
+      .step[completed]::before {
+        transform: scale(2.5) translateY(-1px);
+        content: var(--svg-url, '•');
       }
       .step[current]::before {
-        transform: translate(-210%) scale(1.4);
+        filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg)
+          brightness(94%) contrast(100%);
+      }
+      .step[completed]::before {
+        transform: translateX(-5px) translateY(-3px) scale(1.4);
       }
       .btn-primary {
         background-color: var(--primary-color);
@@ -260,43 +348,7 @@ export class SetupWizard extends LitElement {
         border-color: var(--primary-color);
         background-color: transparent;
       }
-      .btn-card {
-        background-color: var(--primary-color);
-        color: var(--default-color);
-        padding: 1rem 2rem;
-        box-shadow: 1px 1px 3px 0px var(--default-dark);
-        cursor: pointer;
-        position: relative;
-      }
-      .btn-card.selected {
-        background-color: var(--secondary-color);
-      }
-      .btn-card.selected:focus,
-      .btn-card.selected:hover,
-      .btn-card.selected:active {
-        background-color: var(--secondary-color);
-      }
-      .btn-card:focus,
-      .btn-card:hover,
-      .btn-card:active {
-        background-color: var(--primary-hover-color);
-      }
-      .btn-card-gray {
-        background-color: var(--default-color);
-        color: black;
-      }
-      .btn-card-gray:hover {
-        background-color: var(--secondary-color);
-        opacity: 0.8;
-      }
-      .btn-card.disabled {
-        background-color: var(--secondary-color);
-        opacity: 0.5;
-        color: var(--default-color);
-      }
-      .btn-card.disabled:hover {
-        background-color: var(--default-hover-color);
-      }
+
       .card {
         background-color: var(--default-color);
         border-radius: 12px;
@@ -305,15 +357,52 @@ export class SetupWizard extends LitElement {
 
         &.success {
           background-color: var(--secondary-color);
-          color: var(--default-color);
+          color: white;
         }
       }
+      .option-button {
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+        padding: 10px;
+        box-shadow: 2px 2px 3px 0 var(--default-dark);
+        cursor: pointer;
+      }
+      .option-button:hover {
+        background-color: var(--default-hover-color);
+      }
+      .option-button[selected] {
+        background-color: var(--default-color);
+      }
+      .option-button-checkmark {
+        display: flex;
+        padding-inline-start: 1rem;
+        align-items: center;
+      }
+      .option-button-checkmark > * {
+        width: 25px;
+        height: 25px;
+      }
+      .circle-div {
+        border-radius: 100%;
+        border: 1px solid black;
+      }
+      .center-all {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .option-button-image {
+        width: 60px;
+      }
+
       .toast {
+        max-width: 60ch;
         position: absolute;
         bottom: 0;
         right: 0;
         margin: 1rem;
         margin-bottom: 4rem;
+        padding: 1rem 2rem 1rem 1rem;
         transition:
           opacity 300ms ease 200ms,
           transform 500ms cubic-bezier(0.5, 0.05, 0.2, 1.5) 200ms;
@@ -323,10 +412,10 @@ export class SetupWizard extends LitElement {
           transform: translateY(0.25em);
           transition: none;
           padding: 0;
-
           & .close-btn {
             height: 0;
           }
+          z-index: -1;
         }
 
         & .close-btn {
@@ -340,6 +429,25 @@ export class SetupWizard extends LitElement {
             color: black;
           }
         }
+      }
+      .toast-layout {
+        display: flex;
+        gap: 1rem;
+      }
+      .toast-message {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+      }
+      .toast-message > p {
+        margin-block: 0;
+      }
+      .toast img {
+        width: 80px;
+        height: 80px;
+        filter: invert(99%) sepia(4%) saturate(75%) hue-rotate(109deg)
+          brightness(117%) contrast(100%);
       }
       .input-group {
         display: flex;
@@ -372,39 +480,6 @@ export class SetupWizard extends LitElement {
           }
         }
       }
-      .breadcrumbs {
-        --gap: 6rem;
-        --divider-width: calc(var(--gap) / 2);
-        display: flex;
-      }
-      .breadcrumbs > * + * {
-        margin-left: var(--gap);
-      }
-      .breadcrumbs > * + *:before {
-        content: '';
-        width: var(--divider-width);
-        position: absolute;
-        height: 3px;
-        border-radius: 10px;
-        background-color: var(--primary);
-        left: calc((var(--gap) + var(--divider-width)) / -2 - 2px);
-        top: calc(50% - 1px);
-      }
-      .crumb {
-        position: relative;
-        width: 16px;
-        height: 16px;
-        border-radius: 100%;
-        border: 2px solid var(--default-hover-color);
-      }
-      .crumb.complete {
-        background-color: var(--primary);
-        border-color: var(--primary);
-      }
-      .crumb.active {
-        outline: 5px solid var(--primary);
-        outline-offset: -10px;
-      }
       .tag {
         border: 1px solid black;
         display: inline;
@@ -426,18 +501,72 @@ export class SetupWizard extends LitElement {
       button .spinner {
         vertical-align: bottom;
       }
+
       table {
-        padding-bottom: 1rem;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 1rem;
       }
-      table td {
+      table thead {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: normal;
+      }
+      th {
+        font-weight: normal;
+        line-height: 1;
         padding: 0.5rem;
         vertical-align: top;
       }
-      table thead tr {
-        background-color: var(--default-color);
+      th .table-control {
+        color: #7ee9ff;
+        cursor: pointer;
+        font-size: 0.8rem;
       }
-      table tr:nth-child(even) {
-        background-color: var(--default-color);
+      th:first-of-type {
+        border-top-left-radius: 10px;
+      }
+      th:last-of-type {
+        border-top-right-radius: 10px;
+      }
+      tr:last-of-type td:first-of-type {
+        border-bottom-left-radius: 10px;
+      }
+      tr:last-of-type td:last-of-type {
+        border-bottom-right-radius: 10px;
+      }
+      tbody tr td:first-of-type {
+        border-left: 2px solid var(--primary-color);
+      }
+      tbody tr td:last-of-type {
+        border-right: 2px solid var(--primary-color);
+      }
+      td {
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--default-color);
+      }
+      tr:last-of-type td {
+        border-bottom: 2px solid var(--primary-color);
+      }
+      .green-svg {
+        filter: invert(52%) sepia(77%) saturate(383%) hue-rotate(73deg)
+          brightness(98%) contrast(83%);
+      }
+      .blue-svg {
+        filter: invert(41%) sepia(42%) saturate(518%) hue-rotate(164deg)
+          brightness(94%) contrast(100%);
+      }
+      .white-svg {
+        filter: invert(99%) sepia(4%) saturate(75%) hue-rotate(109deg)
+          brightness(117%) contrast(100%);
+      }
+      .step-icon {
+        width: 60px;
+        height: 60px;
+        vertical-align: middle;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
     `,
   ];
@@ -495,7 +624,7 @@ export class SetupWizard extends LitElement {
     if (currentStep) {
       currentStep.style.setProperty(
         '--svg-url',
-        `url('${this.imageUrl + 'chevron_right.svg'}')`,
+        `url('${window.setupWizardShare.admin_image_url + 'chevron.svg'}')`,
       );
     }
   }
@@ -507,7 +636,14 @@ export class SetupWizard extends LitElement {
           <button class="btn-outline ms-auto" @click=${this.exit}>
             ${this.translations.exit}
           </button>
-          <h2 class="me-auto">${this.translations.title}</h2>
+          <h2 class="me-auto">
+            ${this.translations.title}
+            <img
+              class="blue-svg"
+              style="height: 30px; vertical-align: sub;"
+              src="${window.setupWizardShare.admin_image_url + 'wizard.svg'}"
+            />
+          </h2>
         </div>
         <div class="with-sidebar">
           <div class="sidebar">
@@ -523,7 +659,6 @@ export class SetupWizard extends LitElement {
                       ?current=${i === this.currentStepNumber}
                       key=${step.key}
                     >
-                      <span>${i + 1}.</span>
                       ${step.name}
                     </li>
                   `;
@@ -603,49 +738,6 @@ export class SetupWizard extends LitElement {
         `;
   }
 
-  renderMultiSelect(component) {
-    return html`
-      <div class="multiSelect">
-        ${component.description ? html` <p>${component.description}</p> ` : ''}
-        <div class="grid" size="small">
-          ${component.options && component.options.length > 0
-            ? component.options.map(
-                (option) => html`
-                  <label class="toggle" for="${option.key}">
-                    <input
-                      ?checked=${option.checked}
-                      type="checkbox"
-                      name="${option.key}"
-                      id="${option.key}"
-                    />
-                    <span>${option.name}</span>
-                  </label>
-                `,
-              )
-            : ''}
-        </div>
-      </div>
-    `;
-  }
-  renderModuleDecision(component) {
-    return html`
-      <div class="decisions">
-        ${component.description ? html` <p>${component.description}</p> ` : ''}
-        <div class="grid">
-          ${component.options && component.options.length > 0
-            ? component.options.map(
-                (option) => html`
-                  <button class="btn-card" data-key=${option.key}>
-                    <h3 class="white">${option.name}</h3>
-                    <p>${option.description ?? ''}</p>
-                  </button>
-                `,
-              )
-            : ''}
-        </div>
-      </div>
-    `;
-  }
   renderFields(component) {
     return html`
       <div class="options">

@@ -120,49 +120,57 @@ export class SetupWizardUseCases extends OpenLitElement {
       <div class="step-layout">
         <h2>Use Cases</h2>
         <div class="content stack">
-          ${this.useCases
-            ? html`
-                <p>
-                  Choose one or more of these use cases to tailor what parts of
-                  Disciple.Tools to turn on.
-                </p>
-                <p>
-                  You can fine tune those choices further to your own needs in
-                  the following steps.
-                </p>
-                <div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Use Case</th>
-                        <th style="width: 600px;">Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${repeat(
-                        this.useCases,
-                        (option) => option.key,
-                        (option) => html`
-                          <tr @click="${() => this.toggleOption(option.key)}">
-                            <td>
-                              <input
-                                .checked=${this.options[option.key]}
-                                type="checkbox"
-                                name="${option.key}"
-                                id="${option.key}"
-                              />
-                            </td>
-                            <td>${option.name}</td>
-                            <td>${option.description ?? ''}</td>
-                          </tr>
-                        `,
-                      )}
-                    </tbody>
-                  </table>
+          <div class="centered-view">
+            <p>
+              Choose from the following use cases that best fit your needs to
+              activate specific features in Disciple.Tools.
+            </p>
+            <p>
+              You'll have the change to fine-tune these choices in the next
+              steps.
+            </p>
+            <p>
+              <strong>(Select one or more)</strong>
+            </p>
+          </div>
+          <div class="stack" style="margin-right:1rem;">
+            ${repeat(
+              this.useCases || [],
+              (option) => option.key,
+              (option) => html`
+                <div
+                  class="option-button"
+                  @click="${() => this.toggleOption(option.key)}"
+                  ?selected="${this.options[option.key]}"
+                  style="
+                          display: grid;
+                          grid-template-columns: 70px 5fr 1fr;
+                        "
+                >
+                  <div class="option-button-checkmark">
+                    ${this.options[option.key]
+                      ? html`
+                          <img
+                            src="${window.setupWizardShare.image_url +
+                            'verified.svg'}"
+                          />
+                        `
+                      : html`<div class="circle-div"></div>`}
+                  </div>
+                  <div>
+                    <strong class="text-blue">${option.name}</strong><br />
+                    ${option.description ?? ''}
+                  </div>
+                  <div class="center-all">
+                    <img
+                      class="option-button-image blue-svg"
+                      src="${option.image}"
+                    />
+                  </div>
                 </div>
-              `
-            : ''}
+              `,
+            )}
+          </div>
           <section
             class="ms-auto card success toast"
             data-state=${this.toastMessage.length ? '' : 'empty'}
@@ -171,12 +179,22 @@ export class SetupWizardUseCases extends OpenLitElement {
               x
             </button>
 
-            <p><strong>${this.toastMessage}</strong></p>
-            <p>
-              ${this.selectedOptions().length
-                ? 'Based on the use case(s) you have now chosen, we can recommend some modules and plugins that we think will be helpful.'
-                : 'In the next steps, simply choose what options seems best'}
-            </p>
+            <div class="toast-layout">
+              <div class="center-all">
+                <img
+                  src="${window.setupWizardShare.admin_image_url +
+                  'check-circle.svg'}"
+                />
+              </div>
+              <div class="toast-message">
+                <p><strong>${this.toastMessage}</strong></p>
+                <p>
+                  ${this.selectedOptions().length
+                    ? 'Based on the use case(s) you have now chosen, we can recommend some modules and plugins that we think will be helpful.'
+                    : 'In the next steps, simply choose what options seems best'}
+                </p>
+              </div>
+            </div>
           </section>
         </div>
         <setup-wizard-controls

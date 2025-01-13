@@ -158,6 +158,8 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
         this.stoppingImport = false;
         this.importStopped = true;
         this.finishImport('Importing stopped');
+        this.importingAll = false;
+        this.importingFinished = false;
         return;
       }
       const batch = batches[country];
@@ -196,138 +198,146 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
       <div class="step-layout">
         <h2>Import People Groups</h2>
         <div class="content stack">
-          <section class="stack">
-            <p>
-              If you're not sure which people groups to add, you can add them
-              all. <br />(There are around 17,000.)
-            </p>
-            ${!this.importingAll && !this.importingFinished
-              ? html`
-                  <button
-                    class="btn-primary fit-content"
-                    @click=${this.getAllBatches}
-                  >
-                    Import all
-                    ${this.gettingBatches
-                      ? html`<span class="spinner light"></span>`
-                      : ''}
-                  </button>
-                `
-              : ''}
-            ${this.importingAll &&
-            !this.importingFinished &&
-            !this.importStopped
-              ? html`
-                  <div class="stack">
-                    <span class="spinner light"></span>
-                    <p>
-                      Installing ${this.batchSize} people groups of
-                      ${this.countryInstalling}
-                    </p>
-                    <p>
-                      Installed:
-                      ${this.totalPeopleGroupsInstalled}/${this
-                        .totalPeopleGroups}
-                    </p>
-                  </div>
-                `
-              : ''}
-            ${this.importingAll
-              ? html`
-                  <button
-                    class="btn-primary fit-content"
-                    @click=${this.stopImport}
-                  >
-                    Stop Import
-                  </button>
-                `
-              : ''}
-            ${this.stoppingImport ? html`<p>Stopping Import</p>` : ''}
-            ${this.importStopped ? html` <p>Import Stopped</p> ` : ''}
-          </section>
-          <section class="stack">
-            ${!this.importingAll && !this.importingFinished
-              ? html`<div>
-                  <p>or</p>
-                  <ol>
-                    <li>Choose a country in the dropdown</li>
-                    <li>
-                      Add only the people groups that you need for linking to
-                      contacts in D.T.
-                    </li>
-                  </ol>
-                  <select
-                    name="country"
-                    id="country"
-                    @change=${this.selectCountry}
-                  >
-                    <option value="">Select a country</option>
-                    ${this.step
-                      ? Object.values(this.step.config.countries).map(
-                          (country) => {
-                            return html`
-                              <option value=${country}>${country}</option>
-                            `;
-                          },
-                        )
-                      : ''}
-                  </select>
-                </div>`
-              : ''}
-            <div class="stack | people-groups">
-              ${this.peopleGroups.length > 0
+          <div class="centered-view">
+            <section class="stack">
+              <p>
+                If you're not sure which people groups to add, you can add them
+                all. <br />(There are around 17,000.)
+              </p>
+              ${!this.importingAll && !this.importingFinished
                 ? html`
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>ROP3</th>
-                          <th>
-                            Add <br />
-                            <button
-                              class="btn-outline"
-                              @click=${() => this.selectAll()}
-                            >
-                              select all
-                            </button>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        ${repeat(
-                          this.peopleGroups,
-                          (people) => people[28],
-                          (people) => {
-                            let action = 'Added';
-                            if (people.installing) {
-                              action = html`<span class="spinner"></span>`;
-                            } else if (
-                              !people.installed &&
-                              !this.peopleGroupsInstalled.includes(people.ROP3)
-                            ) {
-                              action = html`<input
-                                type="checkbox"
-                                .checked=${people.selected}
-                              />`;
-                            }
-
-                            return html`
-                              <tr
-                                @click=${() => this.selectPeopleGroup(people)}
-                              >
-                                <td>${people.PeopNameAcrossCountries}</td>
-                                <td>${people.ROP3}</td>
-                                <td>${action}</td>
-                              </tr>
-                            `;
-                          },
-                        )}
-                      </tbody>
-                    </table>
+                    <button
+                      class="btn-primary fit-content"
+                      @click=${this.getAllBatches}
+                    >
+                      Import all
+                      ${this.gettingBatches
+                        ? html`<span class="spinner light"></span>`
+                        : ''}
+                    </button>
                   `
                 : ''}
-            </div>
-          </section>
+              ${this.importingAll &&
+              !this.importingFinished &&
+              !this.importStopped
+                ? html`
+                    <div class="stack">
+                      <span class="spinner light"></span>
+                      <p>
+                        Installing ${this.batchSize} people groups of
+                        ${this.countryInstalling}
+                      </p>
+                      <p>
+                        Installed:
+                        ${this.totalPeopleGroupsInstalled}/${this
+                          .totalPeopleGroups}
+                      </p>
+                    </div>
+                  `
+                : ''}
+              ${this.importingAll
+                ? html`
+                    <button
+                      class="btn-primary fit-content"
+                      @click=${this.stopImport}
+                    >
+                      Stop Import
+                    </button>
+                  `
+                : ''}
+              ${this.stoppingImport ? html`<p>Stopping Import</p>` : ''}
+              ${this.importStopped ? html` <p>Import Stopped</p> ` : ''}
+            </section>
+            <section class="stack">
+              ${!this.importingAll && !this.importingFinished
+                ? html`<div>
+                    <p>or</p>
+                    <ol>
+                      <li>Choose a country in the dropdown</li>
+                      <li>
+                        Add only the people groups that you need for linking to
+                        contacts in D.T.
+                      </li>
+                    </ol>
+                    <select
+                      name="country"
+                      id="country"
+                      @change=${this.selectCountry}
+                    >
+                      <option value="">Select a country</option>
+                      ${this.step
+                        ? Object.values(this.step.config.countries).map(
+                            (country) => {
+                              return html`
+                                <option value=${country}>${country}</option>
+                              `;
+                            },
+                          )
+                        : ''}
+                    </select>
+                  </div>`
+                : ''}
+              <div class="stack | people-groups">
+                ${!this.importingAll &&
+                !this.importingFinished &&
+                this.peopleGroups.length > 0
+                  ? html`
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>ROP3</th>
+                            <th>
+                              Add <br />
+                              <button
+                                class="table-control btn-outline"
+                                @click=${() => this.selectAll()}
+                              >
+                                (select all)
+                              </button>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${repeat(
+                            this.peopleGroups,
+                            (people) => people[28],
+                            (people) => {
+                              let action = 'Added';
+                              if (people.installing) {
+                                action = html`<span
+                                  class="spinner light"
+                                ></span>`;
+                              } else if (
+                                !people.installed &&
+                                !this.peopleGroupsInstalled.includes(
+                                  people.ROP3,
+                                )
+                              ) {
+                                action = html`<input
+                                  type="checkbox"
+                                  .checked=${people.selected}
+                                />`;
+                              }
+
+                              return html`
+                                <tr
+                                  @click=${() => this.selectPeopleGroup(people)}
+                                >
+                                  <td>${people.PeopNameAcrossCountries}</td>
+                                  <td>${people.ROP3}</td>
+                                  <td>${action}</td>
+                                </tr>
+                              `;
+                            },
+                          )}
+                        </tbody>
+                      </table>
+                    `
+                  : ''}
+              </div>
+            </section>
+          </div>
           <section
             class="ms-auto card success toast"
             data-state=${this.toastMessage.length ? '' : 'empty'}
@@ -335,7 +345,15 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
             <button class="close-btn btn-outline" @click=${this.dismissToast}>
               x
             </button>
-            ${this.toastMessage}
+            <div class="toast-layout">
+              <div class="center-all">
+                <img
+                  src="${window.setupWizardShare.admin_image_url +
+                  'check-circle.svg'}"
+                />
+              </div>
+              <div class="toast-message">${this.toastMessage}</div>
+            </div>
           </section>
         </div>
         <setup-wizard-controls

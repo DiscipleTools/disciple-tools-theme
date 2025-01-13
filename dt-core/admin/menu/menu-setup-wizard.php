@@ -70,6 +70,7 @@ class DT_Setup_Wizard
             'data' => $this->setup_wizard_data(),
             'admin_url' => admin_url(),
             'image_url' => trailingslashit( get_template_directory_uri() ) . 'dt-assets/images/',
+            'admin_image_url' => trailingslashit( get_template_directory_uri() ) . 'dt-core/admin/img/',
             'can_install_plugins' => current_user_can( 'install_plugins' ),
         ] );
     }
@@ -208,7 +209,7 @@ class DT_Setup_Wizard
             ],
             [
                 'key' => 'celebration',
-                'name' => 'Finished',
+                'name' => 'All Finished!',
                 'component' => 'setup-wizard-celebration',
             ]
         ];
@@ -265,6 +266,7 @@ class DT_Setup_Wizard
                         'disciple-tools-import',
                         'disciple-tools-bulk-magic-link-sender',
                     ],
+                    'image' => trailingslashit( get_template_directory_uri() ) . 'dt-core/admin/img/usecase-relationship.svg',
                 ],
                 'media' => [
                     'key' => 'media',
@@ -285,6 +287,7 @@ class DT_Setup_Wizard
                         'disciple-tools-import',
                         'disciple-tools-bulk-magic-link-sender',
                     ],
+                    'image' => trailingslashit( get_template_directory_uri() ) . 'dt-core/admin/img/usecase-media.svg',
                 ],
                 'dmm' => [
                     'key' => 'dmm',
@@ -303,6 +306,7 @@ class DT_Setup_Wizard
                         'disciple-tools-training',
                         'disciple-tools-import',
                     ],
+                    'image' => trailingslashit( get_template_directory_uri() ) . 'dt-core/admin/img/usecase-church.svg',
                 ],
             ],
             'modules' => $modules,

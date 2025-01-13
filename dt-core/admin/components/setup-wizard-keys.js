@@ -32,7 +32,7 @@ export class SetupWizardKeys extends OpenLitElement {
     this.dispatchEvent(new CustomEvent('back'));
   }
   async next() {
-    if (this._finished && !this._changed) {
+    if (this._finished || !this._changed) {
       this.dispatchEvent(new CustomEvent('next'));
       return;
     }
@@ -74,33 +74,39 @@ export class SetupWizardKeys extends OpenLitElement {
   render() {
     return html`
       <div class="step-layout">
+        <img
+          class="blue-svg step-icon"
+          src="${window.setupWizardShare.admin_image_url + 'mapping.svg'}"
+        />
         <h2>Mapping and Geocoding</h2>
         <div class="content stack">
-          <p>
-            Disciple.Tools provides basic mapping functionality for locations at
-            the country, state, or county level. For more precise geolocation,
-            such as street addresses or cities, additional tools like Mapbox and
-            Google API keys are recommended but not mandatory.
-          </p>
-          <p>
-            Mapbox offers detailed maps with precise location pins, while Google
-            enables accurate worldwide geocoding, especially in certain
-            countries where Mapbox data is limited.
-          </p>
-          <p>
-            Both tools provide free usage tiers sufficient for most users,
-            though exceeding limits may incur charges. Setup involves creating
-            accounts, generating API keys, and adding them here (or in
-            Disciple.Tools settings later).
-          </p>
-          <p>
-            For additional details and information, refer to the
-            <a
-              href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
-              target="_blank"
-              >Geolocation Documentation</a
-            >.
-          </p>
+          <div class="centered-view">
+            <p>
+              Disciple.Tools provides basic mapping functionality for locations
+              at the country, state, or county level. For more precise
+              geolocation, such as street addresses or cities, additional tools
+              like Mapbox and Google API keys are recommended but not mandatory.
+            </p>
+            <p>
+              Mapbox offers detailed maps with precise location pins, while
+              Google enables accurate worldwide geocoding, especially in certain
+              countries where Mapbox data is limited.
+            </p>
+            <p>
+              Both tools provide free usage tiers sufficient for most users,
+              though exceeding limits may incur charges. Setup involves creating
+              accounts, generating API keys, and adding them here (or in
+              Disciple.Tools settings later).
+            </p>
+            <p>
+              For additional details and information, refer to the
+              <a
+                href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
+                target="_blank"
+                >Geolocation Documentation</a
+              >.
+            </p>
+          </div>
           <table style="width: 100%">
             <thead>
               <tr>
@@ -257,7 +263,15 @@ export class SetupWizardKeys extends OpenLitElement {
             <button class="close-btn btn-outline" @click=${this.dismissToast}>
               x
             </button>
-            ${this.toastMessage}
+            <div class="toast-layout">
+              <div class="center-all">
+                <img
+                  src="${window.setupWizardShare.admin_image_url +
+                  'check-circle.svg'}"
+                />
+              </div>
+              <div class="toast-message">${this.toastMessage}</div>
+            </div>
           </section>
         </div>
         <setup-wizard-controls
