@@ -382,7 +382,7 @@ export class SetupWizard extends LitElement {
 
         &.success {
           background-color: var(--secondary-color);
-          color: var(--default-color);
+          color: white;
         }
       }
       .option-button {
@@ -471,7 +471,8 @@ export class SetupWizard extends LitElement {
       .toast img {
         width: 80px;
         height: 80px;
-        filter: invert(100%);
+        filter: invert(99%) sepia(4%) saturate(75%) hue-rotate(109deg)
+          brightness(117%) contrast(100%);
       }
       .input-group {
         display: flex;
