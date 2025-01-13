@@ -576,7 +576,7 @@ export class SetupWizard extends LitElement {
         vertical-align: top;
       }
       th .table-control {
-        color: #0dcaf0;
+        color: #7ee9ff;
         cursor: pointer;
         font-size: 0.8rem;
       }
