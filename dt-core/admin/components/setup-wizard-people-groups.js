@@ -301,7 +301,9 @@ export class SetupWizardPeopleGroups extends OpenLitElement {
                             (people) => {
                               let action = 'Added';
                               if (people.installing) {
-                                action = html`<span class="spinner"></span>`;
+                                action = html`<span
+                                  class="spinner light"
+                                ></span>`;
                               } else if (
                                 !people.installed &&
                                 !this.peopleGroupsInstalled.includes(

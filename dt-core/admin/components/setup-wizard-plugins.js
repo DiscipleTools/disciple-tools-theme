@@ -159,7 +159,7 @@ export class SetupWizardPlugins extends OpenLitElement {
                   /><br />
                   <span style="color:grey">Active</span>`;
                 if (plugin.installing) {
-                  action = html`<span class="spinner"></span>`;
+                  action = html`<span class="spinner light"></span>`;
                 } else if (!plugin.active) {
                   action = html`<div class="circle-div"></div>`;
                   action = html`<input
