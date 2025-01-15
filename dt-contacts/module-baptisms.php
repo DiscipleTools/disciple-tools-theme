@@ -3,11 +3,11 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 add_filter( 'dt_post_type_modules', function( $modules ){
     $modules['contacts_baptisms_module'] = [
-        'name' => 'Baptisms Module',
+        'name' => 'Baptisms',
         'enabled' => true,
         'prerequisites' => [ 'contacts_base' ],
         'post_type' => 'contacts',
-        'description' => 'Adds baptism fields and workflows',
+        'description' => 'Track contact baptism relationships, dates and generations',
         'submodule' => true,
     ];
     return $modules;

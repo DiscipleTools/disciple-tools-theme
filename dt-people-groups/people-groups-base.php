@@ -5,11 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_filter( 'dt_post_type_modules', function( $modules ){
     $modules['people_groups_module'] = [
-        'name' => 'People Groups Module',
+        'name' => 'People Groups',
         'enabled' => true,
         'prerequisites' => [],
         'post_type' => 'peoplegroups',
-        'description' => 'Enables people groups'
+        'description' => 'Create your own people groups or use Joshua Project data. Link your contacts and groups to their people group.',
     ];
     return $modules;
 }, 20, 1 );
