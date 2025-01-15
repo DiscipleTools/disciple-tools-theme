@@ -4,6 +4,28 @@ shared scripts applicable to all sections.
  */
 'use strict';
 
+function makeRequest(type, url, data, base = 'dt/v1/') {
+  // Add trailing slash if missing
+  if (!base.endsWith('/') && !url.startsWith('/')) {
+    base += '/';
+  }
+  const options = {
+    type: type,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    url: url.startsWith('http')
+      ? url
+      : `${window.wpApiSettings.root}${base}${url}`,
+    beforeSend: (xhr) => {
+      xhr.setRequestHeader('X-WP-Nonce', window.wpApiSettings.nonce);
+    },
+  };
+  if (data) {
+    options.data = type === 'GET' ? data : JSON.stringify(data);
+  }
+  return jQuery.ajax(options);
+}
+
 window.dt_admin_shared = {
   escape(str) {
     if (typeof str !== 'string') return str;
@@ -14,6 +36,85 @@ window.dt_admin_shared = {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&apos;');
   },
+
+  /**
+   * Update options. Provide an object with the options to update.
+   * @param options
+   */
+  update_dt_options: (options) =>
+    makeRequest('POST', 'update-dt-options', options, 'dt-admin-settings/'),
+
+  plugin_install: (download_url) =>
+    makeRequest(
+      'POST',
+      `plugin-install`,
+      {
+        download_url: download_url,
+      },
+      `dt-admin-settings/`,
+    ),
+
+  plugin_delete: (plugin_slug) =>
+    makeRequest(
+      'POST',
+      `plugin-delete`,
+      {
+        plugin_slug: plugin_slug,
+      },
+      `dt-admin-settings/`,
+    ),
+
+  plugin_activate: (plugin_slug) =>
+    makeRequest(
+      'POST',
+      `plugin-activate`,
+      {
+        plugin_slug: plugin_slug,
+      },
+      `dt-admin-settings/`,
+    ),
+
+  plugin_deactivate: (plugin_slug) =>
+    makeRequest(
+      'POST',
+      `plugin-deactivate`,
+      {
+        plugin_slug: plugin_slug,
+      },
+      `dt-admin-settings/`,
+    ),
+  modules_update: (modules) =>
+    makeRequest(
+      'POST',
+      'modules-update',
+      {
+        modules,
+      },
+      `dt-admin-settings/`,
+    ),
+  people_groups_get: (country) =>
+    makeRequest(
+      'POST',
+      'search_csv',
+      { s: country, as_object: true },
+      'dt/v1/people-groups',
+    ),
+  people_groups_install: (data) =>
+    makeRequest('POST', 'add_single_people_group', data, 'dt/v1/people-groups'),
+  people_groups_get_batches: () =>
+    makeRequest(
+      'GET',
+      'get_bulk_people_groups_import_batches',
+      {},
+      'dt/v1/people-groups',
+    ),
+  people_groups_install_batch: (groups) =>
+    makeRequest(
+      'POST',
+      'add_bulk_people_groups',
+      { groups },
+      'dt/v1/people-groups',
+    ),
 };
 
 jQuery(function ($) {

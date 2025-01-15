@@ -74,6 +74,12 @@ class DT_Mapping_Module_Migration_Engine
         if ( $target_migration_number >= count( self::get_migrations() ) ) {
             throw new Exception( "Migration number $target_migration_number does not exist" );
         }
+        global $wpdb;
+        //makes sure tables are set up
+        if ( !isset( $wpdb->dt_location_grid ) ){
+            $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
+        }
+
         while ( true ) {
             $current_migration_number = get_option( 'dt_mapping_module_migration_number' );
             if ( $current_migration_number === false ) {

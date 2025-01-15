@@ -400,16 +400,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php echo esc_attr( ( $tab == 'geocoding' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Geocoding', 'disciple_tools' ) ?>
                     </a>
-                    <!-- Names Tab -->
-                    <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
-                    </a>
-                    <!-- Add Migration -->
-                    <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
-                    </a>
+                    <?php if ( !apply_filters( 'dt_using_multisite_location_grid_table', false ) ) : ?>
+                      <!-- Names Tab -->
+                      <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
+                          <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
+                          <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
+                      </a>
+                      <!-- Add Migration -->
+                      <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
+                          <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
+                          <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
+                      </a>
+                    <?php endif; ?>
 
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'credits' ?>" class="nav-tab
@@ -1517,7 +1519,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $wpdb;
             $wpdb->query("
                 INSERT INTO {$wpdb->prefix}dt_location_grid_upgrade
-                SELECT * FROM {$wpdb->prefix}dt_location_grid WHERE grid_id >= 1000000000
+                SELECT * FROM $wpdb->dt_location_grid WHERE grid_id >= 1000000000
             ");
 
             return true;
@@ -1526,10 +1528,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             dt_write_log( __METHOD__ );
             global $wpdb;
             $wpdb->query("
-                DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid`
+                DROP TABLE IF EXISTS `$wpdb->dt_location_grid`
             ");
             $wpdb->query("
-                RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `{$wpdb->prefix}dt_location_grid`;
+                RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `$wpdb->dt_location_grid`;
             ");
             $wpdb->query( "UPDATE $wpdb->dt_location_grid SET level = '0' WHERE level is NULL AND level_name = 'admin0'" );
             return true;
@@ -1908,9 +1910,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function get_record_count_with_no_location_meta(){
             global $wpdb;
             return $wpdb->get_var( "
-                SELECT ( count(*) - (SELECT COUNT(DISTINCT( postmeta_id_location_grid )) FROM $wpdb->dt_location_grid_meta WHERE post_type != 'users') )
-                FROM $wpdb->postmeta pm
-                WHERE pm.meta_key = 'location_grid'
+                SELECT COUNT(*)
+                FROM $wpdb->postmeta
+                WHERE meta_key = 'location_grid'
+                  AND meta_id NOT IN (
+                    SELECT DISTINCT( postmeta_id_location_grid )
+                    FROM $wpdb->dt_location_grid_meta
+                  )
+                  AND meta_value >= 100000000
                 "
             );
         }
@@ -2804,7 +2811,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function migrations_reset_and_rerun() {
             global $wpdb;
             // drop tables
-            $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+            $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
             $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_location_grid" );
 
             // delete

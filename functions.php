@@ -87,6 +87,19 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
         }
+
+        $is_rest = dt_is_rest();
+
+        /**
+         * Redirect to setup wizard if not seen
+         */
+        $setup_wizard_completed = get_option( 'dt_setup_wizard_completed' );
+        $setup_wizard_completed = apply_filters( 'dt_setup_wizard_completed', $setup_wizard_completed );
+        $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+        $is_administrator = current_user_can( 'manage_options' );
+        if ( !$is_rest && !is_network_admin() && !wp_doing_cron() && !$setup_wizard_completed && $is_administrator && $current_page !== 'dt_setup_wizard' ) {
+            wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard' ) );
+        }
     } );
 
     /**
@@ -229,8 +242,10 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/multisite.php' );
             require_once( 'dt-core/global-functions.php' );
             require_once( 'dt-core/utilities/loader.php' );
+
             $is_rest = dt_is_rest();
             $url_path = dt_get_url_path();
+
             require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
             require_once( 'dt-core/libraries/wp-queue/wp-queue.php' ); //w
             if ( !class_exists( 'Jwt_Auth' ) ) {
@@ -496,6 +511,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
                 /* Note: The load order matters for the menus and submenus. Submenu must load after menu. */
                 require_once( 'dt-core/admin/menu/tabs/abstract-tabs-base.php' ); // registers all the menu pages and tabs
                 require_once( 'dt-core/admin/menu/menu-settings.php' );
+                require_once( 'dt-core/admin/menu/menu-setup-wizard.php' );
 
                 require_once( 'dt-core/admin/menu/menu-extensions.php' );
                 require_once( 'dt-core/admin/menu/tabs/tab-featured-extensions.php' );
@@ -595,7 +611,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
         $wpdb->dt_notifications_queue = $wpdb->prefix . 'dt_notifications_queue';
         $wpdb->dt_post_user_meta = $wpdb->prefix . 'dt_post_user_meta';
-        $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+        $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
         $wpdb->dt_location_grid_meta = $wpdb->prefix . 'dt_location_grid_meta';
 
         $more_tables = apply_filters( 'dt_custom_tables', [] );
